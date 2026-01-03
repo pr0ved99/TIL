@@ -1,80 +1,77 @@
-# 🚀 쉽게 설명하는 Git 기초 4. 평행우주 개발 (Branch, Merge)
+# 🚀 [TIL] 쉽게 정리하는 Git 기초 04. 평행우주 만들기! 브랜치와 머지
 
 ## 1. 브랜치(Branch)란?
-기존 코드의 복사본을 만들어 독립적으로 작업할 수 있는 **'가지'**를 의미합니다.
-- **안정성:** 메인 코드(`main`)를 건드리지 않고 새로운 기능을 실험할 수 있습니다.
-- **병렬 개발:** 여러 명의 팀원이 각자 맡은 기능을 동시에 개발할 수 있습니다.
+메인 코드(`main`)를 그대로 복사해서 나만의 독립적인 작업 공간을 만드는 것이다. 
+일종의 **'평행우주'**를 만든다고 생각하면 쉽다.
+
+- **안전한 실험:** 로봇의 모터 제어 알고리즘을 새로 짤 때, 메인 코드를 건드리지 않고 브랜치에서 마음껏 테스트할 수 있다.
+- **동시 작업:** 나는 센서 코드를 짜고, 팀원은 길 찾기 알고리즘을 짤 때 각자의 브랜치에서 작업하면 코드가 꼬이지 않는다.
 
 ---
 
-## 2. 브랜치 다루기 (생성 및 이동)
+## 2. 브랜치 자유자재로 다루기
 
-### 1) 브랜치 만들기 및 목록 확인
+### 1) 새로운 가지 만들기 (`branch`)
+"앞으로 'motor-test'라는 우주에서 작업할래!"라고 선언하는 것이다.
 ```bash
-git branch feature/motor    # 'feature/motor'라는 이름의 브랜치 생성
-git branch                  # 현재 존재하는 모든 브랜치 목록 확인
+git branch feature/motor-control  # 브랜치 생성
+git branch                        # 지금 어떤 브랜치들이 있는지 확인
 ```
 
-### 2) 브랜치 이동하기 (`switch`)
+### 2) 우주 이동하기 (`switch`)
+내가 작업할 공간으로 순간이동 하는 명령어다.
 ```bash
-git switch feature/motor    # 'feature/motor' 브랜치로 이동
-# 과거에는 git checkout 명령어를 사용했으나, 현재는 switch를 권장합니다.
-```
-
-### 3) 생성과 동시에 이동하기
-```bash
-git switch -c feature/sensor # 브랜치를 만들고 바로 이동까지 완료
+git switch feature/motor-control  # 내가 만든 브랜치로 이동
+# 꿀팁: 생성과 이동을 한 번에 하려면?
+git switch -c feature/sensor-data
 ```
 
 ---
 
-## 3. 코드 합치기 (`merge`)
-다른 브랜치에서 완료한 작업을 메인 브랜치에 반영하는 과정입니다.
+## 3. 작업 결과 합치기 (`merge`)
+다른 우주(브랜치)에서 개발이 성공적으로 끝났다면, 이제 원본(`main`)과 합칠 시간이다.
 
 ```bash
-# 1. 먼저 기준이 되는 브랜치(보통 main)로 이동합니다.
+# 1. 일단 메인 우주(main)로 돌아온다.
 git switch main
 
-# 2. 가져오고 싶은 브랜치를 합칩니다.
-git merge feature/motor
+# 2. 작업이 끝난 브랜치를 가져와서 합친다.
+git merge feature/motor-control
 ```
 
 ---
 
-## 4. 브랜치 워크플로우 다이어그램
+## 4. 브랜치 흐름 한눈에 보기
 
-메인 줄기에서 가지가 뻗어 나오고 다시 합쳐지는 과정을 시각적으로 확인해 보세요.
+로봇 프로젝트 코드가 어떻게 뻗어 나가고 합쳐지는지 시각화해봤다.
 
-
+[Image of Git branching and merging model for robotics projects]
 
 ```mermaid
 gitGraph
-    commit id: "Initial"
-    commit id: "Project Start"
-    branch feature/login
-    checkout feature/login
-    commit id: "Add UI"
-    commit id: "Add Logic"
+    commit id: "프로젝트 시작"
+    branch motor-dev
+    checkout motor-dev
+    commit id: "PID 제어 추가"
+    commit id: "모터 드라이버 연결"
     checkout main
-    commit id: "Fix Documentation"
-    merge feature/login
-    commit id: "Release v1.0"
+    commit id: "기본 UI 작성"
+    merge motor-dev
+    commit id: "v1.0 배포"
 ```
 
-1. **main:** 언제든 배포 가능한 깨끗한 상태를 유지하는 중심 줄기입니다.
-2. **feature/**: 새로운 기능을 개발할 때 뻗어 나오는 가지입니다. 개발이 끝나면 `main`으로 합쳐집니다.
+- **main:** 항상 돌아가야 하는 '진짜' 코드 줄기다.
+- **motor-dev:** 모터 기능을 실험하던 가지다. 성공하면 `main`으로 합쳐진다.
 
 ---
 
-## 5. 브랜치 삭제하기
-작업이 끝나고 합쳐진 브랜치는 깔끔하게 삭제해 주는 것이 좋습니다.
-```bash
-git branch -d feature/motor  # 사용이 끝난 브랜치 삭제
-```
+## 💡 오늘 깨달은 꿀팁
+- **브랜치 이름 짓기:** 보통 `feature/기능명` 식으로 이름을 지으면 나중에 협업할 때 팀원들이 알아보기 편하다.
+- **수시로 확인:** 내가 지금 어느 우주(브랜치)에 있는지 헷갈릴 때가 많다. `git status`나 VS Code 하단 바를 수시로 확인하는 습관을 들여야겠다.
 
 ---
 
-## 📚 향후 학습 로드맵
+## 📚 다음 공부 계획
 
-### Step 5. 실무 협업 기술 (`PR`, `Conflict`)
-- 실제 현업에서 가장 많이 쓰이는 **Pull Request** 방식과, 두 코드가 충돌했을 때 해결하는 **Conflict** 대처법을 배웁니다. 이것까지 마스터하면 Git 기초 과정이 완성됩니다!
+### Step 5. 팀 프로젝트의 꽃 (`PR & Conflict`)
+- 실제 팀원들과 코드를 합칠 때 검토받는 **Pull Request**와, 서로 같은 곳을 고쳤을 때 발생하는 **충돌(Conflict)** 해결법을 배우면 Git 기초 정복 완료!
