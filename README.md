@@ -11,6 +11,6 @@
 ## Algorithm
 알고리즘 문제 풀이는 별도 저장소에서 관리합니다.
 
-**[Daily Algorithm Repository 바로가기](https://github.com/pro0ved99/daily-algorithm)**
+**[Daily Algorithm Repository 바로가기](https://github.com/pr0ved99/daily-algorithm)**
 
 *이곳(TIL)에는 알고리즘 이롬과 오답 노트만 기록합니다.*
