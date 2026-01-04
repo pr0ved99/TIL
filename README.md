@@ -1,5 +1,6 @@
 # TIL (Today I Learned)
-매일 공부한 기술과 지식을 기록하는 저장소입니다.
+"**2026년 상반기 목표**: AI 의존도를 낮추고 데이터시트 기반의 기술 자립을 이룬다.
+(Current Status: Zero to One)"
 
 ## 카테고리
 - **Language**: C, C++, Python
