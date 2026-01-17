@@ -1,6 +1,8 @@
-<div align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=auto&height=250&section=header&text=TIL&fontSize=90&animation=fadeIn&fontAlignY=38&desc=Today%20I%20Learned&descAlignY=55&descSize=20" />
-</div>
+=======
+# TIL (Today I Learned)
+"**2026년 상반기 목표**: AI 의존도를 낮추고 데이터시트 기반의 기술 자립을 이룬다.
+(Current Status: Zero to One)"
+>>>>>>> docs/YHd
 
 <div align="center">
   <h3>🚀 Lee YeongHyeon's Tech Archive</h3>
