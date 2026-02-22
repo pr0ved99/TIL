@@ -1,0 +1,61 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# STM32CubeIDE specific
+# 💡 핵심: 아래 3개의 설정/프로젝트 환경 파일들은 다른 PC에서 
+# 'Import Existing Projects into Workspace'로 바로 열 수 있도록 
+# 의도적으로 깃허브에 올리기 위해 무시 규칙에서 제외(주석 처리)함!
+# .settings/
+.metadata/
+# .cproject
+# .project
+Debug/
+Release/
+
+# STM32CubeMX specific
+*.bak
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Other IDEs & Tools
+.vscode/
+.idea/
+*.swp
+*~

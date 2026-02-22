@@ -1,8 +1,6 @@
-=======
 # TIL (Today I Learned)
 "**2026년 상반기 목표**: AI 의존도를 낮추고 데이터시트 기반의 기술 자립을 이룬다.
 (Current Status: Zero to One)"
->>>>>>> docs/YHd
 
 <div align="center">
   <h3>🚀 Lee YeongHyeon's Tech Archive</h3>
@@ -26,10 +24,9 @@
 | 카테고리 | 상세 내용 |
 | :--- | :--- |
 | **💻 Language** | C, C++, Python 핵심 문법 및 고급 기법 |
-| **🔌 Embedded** | STM32(NUCLEO-F103RB), Raspberry Pi 5, Linux 환경 설정 |
+| **🔌 Embedded** | STM32(NUCLEO-F446RE), Raspberry Pi 5, Linux 환경 설정 |
 | **🤖 Robotics** | ROS 2 Humble, SLAM, Kinematics, URDF 모델링 |
 | **🧠 CS 기초** | Git 컨벤션, 네트워크, OS 원리 |
-| **🛡️ Project** | [Office-Guardian](https://github.com/{내_깃허브_아이디}/Office-Guardian) 개발 일지 및 트러블슈팅 |
 
 ---
 
