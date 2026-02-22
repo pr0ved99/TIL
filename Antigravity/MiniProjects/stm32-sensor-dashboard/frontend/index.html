@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STM32 Sensor Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo-container">
+                <div class="pulse-ring"></div>
+                <h1>STM32 <span class="highlight">Telemetry</span></h1>
+            </div>
+            <div class="status-indicator">
+                <span id="connection-dot" class="dot disconnected"></span>
+                <span id="connection-text">Disconnected</span>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Latest Reading Card -->
+            <section class="card stat-card">
+                <h2>Current Reading</h2>
+                <div class="stat-value-container">
+                    <span id="current-value" class="stat-value">--</span>
+                    <span id="current-unit" class="stat-unit">°C</span>
+                </div>
+                <div class="stat-footer">
+                    <span class="sensor-label">Sensor ID:</span>
+                    <span id="sensor-id" class="sensor-id">Unknown</span>
+                </div>
+                <div class="stat-footer">
+                    <span class="sensor-label">Last Update:</span>
+                    <span id="last-update" class="sensor-update">Never</span>
+                </div>
+            </section>
+
+            <!-- Chart Card -->
+            <section class="card chart-card">
+                <div class="chart-header">
+                    <h2>Real-time Temperature Trend</h2>
+                    <div class="chart-actions">
+                        <button id="btn-pause" class="btn-action">Pause</button>
+                        <button id="btn-clear" class="btn-action">Clear</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
