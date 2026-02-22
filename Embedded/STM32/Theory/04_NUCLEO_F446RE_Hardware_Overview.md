@@ -5,7 +5,7 @@
 * NUCLEO-F446RE 보드를 PC와 연결하려면 일반적인 케이블이 아닌 **Mini-B 타입의 USB 케이블**이 필요하다.
 * 이 케이블을 통해 보드에 전원 공급과 동시에 프로그램 디버깅이 가능하다.
 
-![USB Mini-B 케이블](../assets/usb_mini_b_cable.png)
+![USB Mini-B 케이블](../assets/usb_mini_b_cable.jpeg)
 
 ## 📌 2. 보드의 주요 구성 요소 (6가지)
 
