@@ -1,7 +1,7 @@
 # [STM32] 하드웨어 타이머(Timer)를 활용한 PWM LED 제어 실습
 
 ## 🎯 목표
-소프트웨어적인 `HAL_Delay()` 지연 함수 없이, STM32 내부 타이머(Timer) 모듈의 **PWM(Pulse Width Modulation)** 기능을 사용하여 **초록색 LED(LD2)**를 하드웨어적으로 점멸시킨다.
+소프트웨어적인 `HAL_Delay()` 지연 함수 없이, STM32 내부 타이머(Timer) 모듈의 **PWM(Pulse Width Modulation)** 기능을 사용하여 **초록색 LED(LD2)** 를 하드웨어적으로 점멸시킨다.
 
 ## 📖 PWM(Pulse Width Modulation)이란?
 디지털 신호의 켜짐(HIGH)과 꺼짐(LOW) 비율(Duty Cycle)을 자유자재로 조절하여, 아날로그와 같은 연속적인 출력을 만들어내는 기법이다.
