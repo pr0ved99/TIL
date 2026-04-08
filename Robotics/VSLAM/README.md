@@ -16,3 +16,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 ## Note
 
 학습 자료는 각 폴더 안에 Markdown 문서와 예제 코드로 정리한다.
+
+## Documents
+
+- `D435i_VSLAM_A_to_Z_Plan.md`: D435i 기반 VSLAM 구현 전체 계획 문서
