@@ -20,3 +20,6 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 ## Documents
 
 - `D435i_VSLAM_A_to_Z_Plan.md`: D435i 기반 VSLAM 구현 전체 계획 문서
+- `Turtle_Trash_Picking_VSLAM_Roadmap.md`: 쓰레기 수거 로봇용 VSLAM 기반 자율주행 단계별 계획
+- `Outdoor_Autonomous_Trash_Robot_Development_Roadmap.md`: 공터 환경 기준 전체 자율주행 개발 로드맵
+- `Simulation_First_Outdoor_Trash_Robot_Procedure.md`: URDF/시뮬레이션 선검증 기준 실제 개발 절차
