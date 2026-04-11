@@ -5,6 +5,8 @@
 - D435i의 `IMU`는 현재 환경에서 안정적으로 연속 입력이 들어오는 것을 확인했다.
 - `depth` 끊김의 핵심 원인은 센서 자체보다 `udev rules` 미적용, 중복 실행, 큰 이미지 토픽 처리 부담 쪽에 있었다.
 - 최종적으로는 `저해상도 depth-only 실행 + 컬러맵 시각화` 조합에서 연속성이 충분히 좋아진 상태를 확인했다.
+- `RTAB-Map`은 초기 실패 구간을 지나 현재 `rgbd_odometry` 품질값이 대체로 `130~190` 수준으로 안정적으로 나오는 상태까지 왔다.
+- 다만 `odom -> camera_link` TF 시작 시점 경고와, `flow` 프로필 이름이 실제 동작을 정확히 설명하지 못했던 문제는 남아 있었다.
 
 ## 시간순 기록
 
@@ -237,6 +239,85 @@ RTAB-Map detection rate = 1.000000 Hz
 
 - [`run_d435i_rgbd_mapping_camera.sh`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rgbd_mapping_camera.sh)
 - [`run_d435i_rtabmap_light.sh`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_light.sh)
+
+### 17:55
+
+- `run_d435i_rgbd_mapping_camera.sh`로 `640x480x15` RGB-D 입력을 다시 실행했다.
+- launch 로그에서 아래를 확인했다.
+
+```text
+Device USB type: 3.2
+Sync Mode: On
+Open profile: Depth 640x480x15
+Open profile: Color 640x480x15
+RealSense Node Is Up!
+```
+
+정리:
+
+- 카메라 입력 자체는 안정적으로 다시 올라왔다.
+- 현재 병목은 센서 bring-up이 아니라 RTAB-Map 쪽으로 범위를 좁힐 수 있다.
+
+### 17:56
+
+- `run_d435i_rtabmap_light.sh 3 flow`로 RTAB-Map을 다시 실행했다.
+- 시작 직후 `rgbd_odometry`에서 아래 경고를 확인했다.
+
+```text
+Vis/CorType=1 is not supported by OdometryF2M, using Features matching approach instead (type=0).
+```
+
+해석:
+
+- 스크립트의 `flow` 프로필은 실제로는 `OdometryF2M`에서 optical flow로 동작하지 않는다.
+- 즉, 이 이름은 오해를 만들 수 있었고, 실제 동작은 완화된 feature matching에 더 가깝다.
+
+### 17:57
+
+- 같은 실행에서 `rgbd_odometry` 품질값이 대부분 `130~190` 수준으로 연속적으로 나오는 것을 확인했다.
+
+대표 로그:
+
+```text
+Odom: quality=163
+Odom: quality=189
+Odom: quality=192
+Odom: quality=170
+Odom: quality=152
+```
+
+정리:
+
+- 이전처럼 `Not enough inliers 0/20`, `no odometry is provided`로 바로 죽는 상태는 벗어났다.
+- 현재는 `RTAB-Map 오도메트리 시작 성공`으로 판단할 수 있다.
+
+### 17:58
+
+- `rtabmap` 쪽에서는 아래 TF 경고를 1회 확인했다.
+
+```text
+Lookup would require extrapolation into the past
+We received odometry message, but we cannot get the corresponding TF odom->camera_link ...
+```
+
+해석:
+
+- 시작 시점에 `odom` TF와 센서 데이터 timestamp가 완전히 맞지 않는 구간이 있었다.
+- 현재는 치명적 중단으로 이어지지 않았지만, 추후 좌표계/시간 동기화 점검 항목으로 남겨야 한다.
+
+### 18:00
+
+- `run_d435i_rtabmap_light.sh`의 기본 프로필을 `relaxed`로 바꾸고, `flow`는 backward-compatible alias로만 남기도록 정리했다.
+
+정리:
+
+- 기본 실행이 실제 동작과 이름이 맞게 바뀌었다.
+- 지금 기준 추천 실행은 아래다.
+
+```bash
+bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rgbd_mapping_camera.sh
+bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_light.sh 3 relaxed
+```
 
 ### 12:16
 

@@ -3,7 +3,7 @@
 set -eo pipefail
 
 DETECTION_RATE="${1:-3}"
-ODOM_PROFILE="${2:-flow}"
+ODOM_PROFILE="${2:-relaxed}"
 
 if [[ -f /opt/ros/humble/setup.bash ]]; then
   # shellcheck disable=SC1091
@@ -14,16 +14,21 @@ set -u
 
 case "${ODOM_PROFILE}" in
   flow)
-    # Optical flow tends to be more forgiving for consecutive handheld RGB-D frames
-    # when FPS is kept reasonably high.
-    ODOM_ARGS="--Vis/CorType 1 --Vis/MinInliers 10 --Vis/MaxFeatures 1500"
+    echo "[WARN] 'flow' profile is kept as a backward-compatible alias."
+    echo "[WARN] OdometryF2M does not support Vis/CorType=1, so this falls back to relaxed feature matching."
+    ODOM_ARGS="--Vis/CorType 0 --Vis/MinInliers 10 --Vis/MaxFeatures 1500"
+    ;;
+  relaxed)
+    # Start-up friendly feature matching profile. This is the most practical
+    # default when verifying D435i RGB-D odometry by hand.
+    ODOM_ARGS="--Vis/CorType 0 --Vis/MinInliers 10 --Vis/MaxFeatures 1500"
     ;;
   feature)
-    ODOM_ARGS="--Vis/CorType 0 --Vis/MinInliers 10 --Vis/MaxFeatures 1500"
+    ODOM_ARGS="--Vis/CorType 0 --Vis/MinInliers 15 --Vis/MaxFeatures 1200"
     ;;
   *)
     echo "[ERROR] Unsupported odom profile: ${ODOM_PROFILE}"
-    echo "[ERROR] Supported profiles: flow, feature"
+    echo "[ERROR] Supported profiles: relaxed, feature, flow"
     exit 1
     ;;
 esac

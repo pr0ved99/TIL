@@ -5,7 +5,8 @@
 - 현재 프로젝트는 `센서 bring-up(Stage 0)`의 후반부에 있다.
 - `D435i depth`와 `IMU`는 ROS2에서 안정적으로 읽히는 상태까지 왔다.
 - 지금 새로 시도 중인 것은 `D435i 단독 RGB-D 3D 맵핑`이다.
-- 다만 `RTAB-Map` 기반 3D 맵은 아직 "성공적으로 돌아는 가지만 충분히 부드럽지는 않은 상태"다.
+- 현재 `RTAB-Map rgbd_odometry`는 품질값이 대체로 `130~190` 수준으로 살아나는 상태까지 왔다.
+- 다만 `RTAB-Map` 기반 3D 맵은 아직 "오도메트리는 살아났지만 TF 경고와 체감 부드러움은 더 점검이 필요한 상태"다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
@@ -160,6 +161,12 @@
 - 실내에서 D435i만으로 3D 맵이 실제로 쌓이는지 확인
 - 맵이 너무 느리거나 끊기지 않는지 확인
 
+최근 실측 결과:
+
+- `rgbd_odometry` 품질값이 대부분 `130~190` 수준으로 연속 출력됨
+- 즉, 이전의 `no odometry is provided` 중심 문제는 1차로 벗어남
+- 남은 주요 점검 항목은 `TF 시작 시점 경고`, `체감 부드러움`, `실내 경로 누적 안정성`
+
 ---
 
 ## 5. 현재 문제점
@@ -221,6 +228,33 @@
 
 즉, `실행 성공`과 `실사용 가능` 사이에서 아직 튜닝 중이다.
 
+### 문제 5. 시작 시점 TF 경고
+
+최근 로그에서 아래 경고를 1회 확인했다.
+
+```text
+Lookup would require extrapolation into the past
+We received odometry message, but we cannot get the corresponding TF odom->camera_link ...
+```
+
+해석:
+
+- `odom` TF와 센서 데이터 timestamp가 시작 시점에 완전히 맞지 않는 구간이 있었다.
+- 현재는 오도메트리 전체 실패로 이어지지는 않았지만, 좌표계와 시간 동기화 관점에서 다음 점검 후보다.
+
+### 문제 6. `flow` 프로필 이름과 실제 동작 불일치
+
+최근 로그에서 아래를 확인했다.
+
+```text
+Vis/CorType=1 is not supported by OdometryF2M, using Features matching approach instead (type=0).
+```
+
+해석:
+
+- 기존 `flow` 프로필 이름은 실제 동작을 정확히 설명하지 못했다.
+- 그래서 현재는 기본 프로필을 `relaxed`로 바꾸고, `flow`는 backward-compatible alias로만 유지했다.
+
 ---
 
 ## 6. 현재 가장 유력한 원인 정리
@@ -232,6 +266,8 @@
 2. `rviz + rtabmap_viz` 동시 사용 가능성
 3. `640x480x15` RGB-D 조합이 현재 PC에는 무거움
 4. VS Code 등 외부 CPU 부하
+5. 시작 시점 TF 외삽 경고
+6. 프로필 이름과 실제 오도메트리 backend 동작 불일치
 
 즉, 지금은 센서 권한 문제보다 **처리량과 시각화 부하 최적화**가 핵심이다.
 
@@ -265,6 +301,12 @@
 실행 스크립트:
 
 - [`run_d435i_rtabmap_light.sh`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_light.sh)
+
+현재 권장 프로필:
+
+```bash
+bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_light.sh 3 relaxed
+```
 
 ---
 
