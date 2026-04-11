@@ -45,6 +45,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`docs/troubleshooting/D435i_RealTime_Troubleshooting_History.md`](./docs/troubleshooting/D435i_RealTime_Troubleshooting_History.md): D435i 실시간성 문제를 실제로 어떻게 분리하고 해결했는지 전체 기록 정리
 - [`docs/troubleshooting/D435i_RealSense_Viewer_Triage_Checklist.md`](./docs/troubleshooting/D435i_RealSense_Viewer_Triage_Checklist.md): RealSense Viewer 기준으로 D435i 실시간성 문제를 분리 진단하는 체크리스트
+- [`docs/troubleshooting/Why_RealSense_Viewer_Looks_RealTime_But_RTABMap_Does_Not.md`](./docs/troubleshooting/Why_RealSense_Viewer_Looks_RealTime_But_RTABMap_Does_Not.md): 왜 `realsense-viewer`는 부드럽고 `RTAB-Map`은 더 무겁고 실패하기 쉬운지 정리
 
 ### daily
 
