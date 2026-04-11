@@ -30,11 +30,13 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`docs/learning/D435i_Jetson_Docker_Prerequisites.md`](./docs/learning/D435i_Jetson_Docker_Prerequisites.md): D435i와 Jetson Docker를 시작하기 전에 알아야 할 선수지식 정리
 - [`docs/learning/D435i_IMU_Topics_and_Enable_Guide.md`](./docs/learning/D435i_IMU_Topics_and_Enable_Guide.md): D435i IMU 토픽을 켜고 확인하는 방법 정리
+- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](./docs/learning/D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
 - [`docs/learning/D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
 - [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
 
 ### progress
 
+- [`docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md`](./docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md): AI로 논문 후보를 조사하고, baseline과 비교해 알고리즘 전환 여부를 결정하는 절차
 - [`docs/progress/Current_Progress_and_Open_Issues.md`](./docs/progress/Current_Progress_and_Open_Issues.md): 현재 프로젝트 위치, 완료된 것, 남은 문제, 다음 액션을 한 번에 보는 상태 문서
 - [`docs/progress/D435i_VSLAM_A_to_Z_Plan.md`](./docs/progress/D435i_VSLAM_A_to_Z_Plan.md): D435i 기반 VSLAM 구현 전체 계획 문서
 - [`docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md`](./docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md): 쓰레기 수거 로봇용 VSLAM 기반 자율주행 단계별 계획

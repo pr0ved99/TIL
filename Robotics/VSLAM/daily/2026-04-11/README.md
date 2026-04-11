@@ -7,6 +7,8 @@
 - 최종적으로는 `저해상도 depth-only 실행 + 컬러맵 시각화` 조합에서 연속성이 충분히 좋아진 상태를 확인했다.
 - `RTAB-Map`은 초기 실패 구간을 지나 현재 `rgbd_odometry` 품질값이 대체로 `130~190` 수준으로 안정적으로 나오는 상태까지 왔다.
 - 다만 `odom -> camera_link` TF 시작 시점 경고와, `flow` 프로필 이름이 실제 동작을 정확히 설명하지 못했던 문제는 남아 있었다.
+- `D435i IMU`의 축 방향도 직접 관찰 기준으로 1차 정리했다.
+- 하드웨어가 아직 없는 `IMU / wheel encoder / GPS` 연동은, 구현 전에 ROS2 구조를 먼저 설계하는 방향으로 다음 액션을 정리했다.
 
 ## 시간순 기록
 
@@ -318,6 +320,39 @@ We received odometry message, but we cannot get the corresponding TF odom->camer
 bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rgbd_mapping_camera.sh
 bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_light.sh 3 relaxed
 ```
+
+### 18:10
+
+- `D435i IMU`의 `camera_gyro_optical_frame` 기준 축을 직접 다시 확인했다.
+
+관찰 결과:
+
+- 오른쪽으로 회전 -> `angular_velocity.y` 증가
+- 위로 회전 -> `angular_velocity.x` 증가
+- 렌즈 정면 축 기준으로 몸체를 비틀기 -> `angular_velocity.z` 증가
+
+정리:
+
+- 현재 단계에서는 `x=상하 pitch`, `y=좌우 yaw`, `z=렌즈 축 기준 roll`로 이해하면 된다.
+- 이 내용은 이후 `TF`, `robot_localization`, 센서 융합에서 축 방향 실수를 줄이는 데 중요하다.
+
+관련 문서:
+
+- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/D435i_IMU_Axis_Interpretation.md)
+
+### 18:15
+
+- `AI`로 논문 후보를 조사하고 알고리즘 전환 여부를 판단하는 절차는 따로 문서화했다.
+
+정리:
+
+- 지금 바로 `RTAB-Map`을 버리고 갈아타는 것은 하지 않는다.
+- 현재는 `RTAB-Map`을 baseline으로 유지한다.
+- 필요하면 나중에 후보 알고리즘을 `baseline 대비 비교`하는 순서로만 진행한다.
+
+관련 문서:
+
+- [`docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md)
 
 ### 12:16
 

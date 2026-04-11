@@ -4,9 +4,11 @@
 
 - 현재 프로젝트는 `센서 bring-up(Stage 0)`의 후반부에 있다.
 - `D435i depth`와 `IMU`는 ROS2에서 안정적으로 읽히는 상태까지 왔다.
+- `D435i IMU`의 축 해석도 직접 관찰로 1차 정리했다.
 - 지금 새로 시도 중인 것은 `D435i 단독 RGB-D 3D 맵핑`이다.
 - 현재 `RTAB-Map rgbd_odometry`는 품질값이 대체로 `130~190` 수준으로 살아나는 상태까지 왔다.
 - 다만 `RTAB-Map` 기반 3D 맵은 아직 "오도메트리는 살아났지만 TF 경고와 체감 부드러움은 더 점검이 필요한 상태"다.
+- 장비 미도착 상태를 고려해, `IMU / wheel encoder / GPS` 연동 방식은 구현 전에 구조 설계를 먼저 정리하는 단계로 넘어갈 준비가 됐다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
@@ -100,6 +102,7 @@
 - `gyro`, `accel`, `imu` 토픽 확인
 - 실제 값 수신 확인
 - 주파수 안정성 확인
+- 축 방향 1차 해석 확인
 
 관찰값:
 
@@ -111,6 +114,16 @@
 
 - IMU는 현재 환경 기준으로 정상 동작
 - 이전의 끊김은 센서 자체보다 실행 환경 충돌 영향이 컸음
+
+직접 관찰한 축 해석:
+
+- 오른쪽 회전 -> `angular_velocity.y` 증가
+- 위로 회전 -> `angular_velocity.x` 증가
+- 렌즈 정면 축 기준 비틀기 -> `angular_velocity.z` 증가
+
+관련 문서:
+
+- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/D435i_IMU_Axis_Interpretation.md)
 
 ### 3-3. D435i 실시간성/연속성 문제 1차 해결
 
@@ -342,10 +355,14 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. `640x480x6` 기준으로 RTAB-Map 체감 속도 재확인
-2. 아직 느리면 `424x240x6` RGB-D 설정으로 더 낮춰보기
-3. VS Code 창/무거운 프로세스를 줄인 상태에서 다시 비교
-4. 맵이 충분히 쌓이면 그때 실내 3D 맵 성공 증빙 캡처 정리
+1. 현재 `RTAB-Map` 기준선을 유지한 채, 실내 짧은 구간 맵 누적 안정성을 한 번 더 확인
+2. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
+3. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
+4. 맵이 충분히 쌓이면 실내 3D 맵 성공 증빙 캡처와 요약 정리
+
+관련 문서:
+
+- [`docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md)
 
 ---
 
