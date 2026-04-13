@@ -41,6 +41,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`docs/progress/D435i_VSLAM_A_to_Z_Plan.md`](./docs/progress/D435i_VSLAM_A_to_Z_Plan.md): D435i 기반 VSLAM 구현 전체 계획 문서
 - [`docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md`](./docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md): 쓰레기 수거 로봇용 VSLAM 기반 자율주행 단계별 계획
 - [`docs/progress/Outdoor_Autonomous_Trash_Robot_Development_Roadmap.md`](./docs/progress/Outdoor_Autonomous_Trash_Robot_Development_Roadmap.md): 공터 환경 기준 전체 자율주행 개발 로드맵
+- [`docs/progress/PreArrival_Sensor_Fusion_Architecture.md`](./docs/progress/PreArrival_Sensor_Fusion_Architecture.md): `IMU / wheel encoder / GPS`가 도착하기 전 미리 고정해둘 ROS2 토픽, TF, EKF 구조 설계
 - [`docs/progress/Simulation_First_Outdoor_Trash_Robot_Procedure.md`](./docs/progress/Simulation_First_Outdoor_Trash_Robot_Procedure.md): URDF/시뮬레이션 선검증 기준 실제 개발 절차
 - [`docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md`](./docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md): 스프린트 실행 기준과 백로그 문서화 정리
 
@@ -64,3 +65,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`02_device_info_and_usb_type.png`](./assets/2026-04-09_task59_d435i_depth_check/02_device_info_and_usb_type.png)
 - [`03_ros2_topic_list.png`](./assets/2026-04-09_task59_d435i_depth_check/03_ros2_topic_list.png)
 - [`04_depth_view.png`](./assets/2026-04-09_task59_d435i_depth_check/04_depth_view.png)
+
+## Templates
+
+- [`templates/sensor_fusion_prebuild/README.md`](./templates/sensor_fusion_prebuild/README.md): `robot_localization`과 `navsat_transform` 연동을 미리 준비해두는 템플릿 모음
