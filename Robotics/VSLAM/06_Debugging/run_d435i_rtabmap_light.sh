@@ -4,6 +4,7 @@ set -eo pipefail
 
 DETECTION_RATE="${1:-3}"
 ODOM_PROFILE="${2:-relaxed}"
+ENABLE_IMU="${3:-false}"
 
 if [[ -f /opt/ros/humble/setup.bash ]]; then
   # shellcheck disable=SC1091
@@ -43,6 +44,13 @@ echo "[INFO] Make sure D435i RGB-D launch is already running"
 echo "[INFO] Approximate sync is enabled to reduce RGB/Depth timestamp mismatch drops"
 echo "[INFO] Larger queues are enabled for more robust RGB-D synchronization"
 echo "[INFO] odom_args=${ODOM_ARGS}"
+echo "[INFO] IMU enabled: ${ENABLE_IMU}"
+
+if [[ "${ENABLE_IMU}" == "true" ]]; then
+  IMU_ARGS="imu_topic:=/camera/camera/imu wait_imu_to_init:=true"
+else
+  IMU_ARGS="wait_imu_to_init:=false"
+fi
 
 exec ros2 launch rtabmap_launch rtabmap.launch.py \
   rgb_topic:=/camera/camera/color/image_raw \
@@ -51,7 +59,7 @@ exec ros2 launch rtabmap_launch rtabmap.launch.py \
   frame_id:=camera_link \
   approx_sync:=true \
   approx_sync_max_interval:=0.05 \
-  wait_imu_to_init:=false \
+  ${IMU_ARGS} \
   qos_image:=2 \
   qos_camera_info:=2 \
   topic_queue_size:=30 \

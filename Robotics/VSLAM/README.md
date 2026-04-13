@@ -39,11 +39,17 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md`](./docs/progress/AI_Assisted_Algorithm_Switching_Workflow.md): AI로 논문 후보를 조사하고, baseline과 비교해 알고리즘 전환 여부를 결정하는 절차
 - [`docs/progress/Current_Progress_and_Open_Issues.md`](./docs/progress/Current_Progress_and_Open_Issues.md): 현재 프로젝트 위치, 완료된 것, 남은 문제, 다음 액션을 한 번에 보는 상태 문서
 - [`docs/progress/D435i_VSLAM_A_to_Z_Plan.md`](./docs/progress/D435i_VSLAM_A_to_Z_Plan.md): D435i 기반 VSLAM 구현 전체 계획 문서
+- [`docs/progress/Jira_Tasks_From_Screenshot_2026-04-13.md`](./docs/progress/Jira_Tasks_From_Screenshot_2026-04-13.md): Jira 스크린샷 기준 Sprint/Backlog 정리
+- [`docs/progress/RTABMap_Tuning_Experiment_Plan.md`](./docs/progress/RTABMap_Tuning_Experiment_Plan.md): RTAB-Map 세팅 비교 실험 계획과 평가 기준
 - [`docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md`](./docs/progress/Turtle_Trash_Picking_VSLAM_Roadmap.md): 쓰레기 수거 로봇용 VSLAM 기반 자율주행 단계별 계획
 - [`docs/progress/Outdoor_Autonomous_Trash_Robot_Development_Roadmap.md`](./docs/progress/Outdoor_Autonomous_Trash_Robot_Development_Roadmap.md): 공터 환경 기준 전체 자율주행 개발 로드맵
 - [`docs/progress/PreArrival_Sensor_Fusion_Architecture.md`](./docs/progress/PreArrival_Sensor_Fusion_Architecture.md): `IMU / wheel encoder / GPS`가 도착하기 전 미리 고정해둘 ROS2 토픽, TF, EKF 구조 설계
 - [`docs/progress/Simulation_First_Outdoor_Trash_Robot_Procedure.md`](./docs/progress/Simulation_First_Outdoor_Trash_Robot_Procedure.md): URDF/시뮬레이션 선검증 기준 실제 개발 절차
 - [`docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md`](./docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md): 스프린트 실행 기준과 백로그 문서화 정리
+
+### process
+
+- [`docs/process/Jira_Convention_Guide.md`](./docs/process/Jira_Convention_Guide.md): Jira 에픽/스토리/태스크 작성 규칙과 스프린트 운영 컨벤션
 
 ### troubleshooting
 
@@ -69,3 +75,8 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 ## Templates
 
 - [`templates/sensor_fusion_prebuild/README.md`](./templates/sensor_fusion_prebuild/README.md): `robot_localization`과 `navsat_transform` 연동을 미리 준비해두는 템플릿 모음
+
+## Description
+
+- `trashbot_description/urdf/turtle_big.urdf.xacro`: 큰 거북이 기준 기본 URDF (센서 링크 포함)
+- `trashbot_description/urdf/turtle_small.urdf.xacro`: 작은 거북이 기준 기본 URDF (센서 링크 포함)
