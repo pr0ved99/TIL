@@ -7,6 +7,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - 이 폴더는 `주제별 문서 + 날짜별 작업 기록` 구조로 정리한다.
 - 개념, 계획, 트러블슈팅 같은 참고 문서는 `docs/` 아래에서 관리한다.
 - 실제로 하루 동안 무엇을 했는지는 `daily/YYYY-MM-DD/README.md`에 시간순으로 기록한다.
+- `Jetson`에서 직접 진행하는 실행/성능/GUI 검증은 `jetson/` 아래에서 별도로 기록한다.
 - 증빙 이미지와 캡처는 `assets/` 아래에서 관리한다.
 
 ## Structure
@@ -19,6 +20,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - `05_Loop_Closure`: 장소 인식, 재방문 검출, 포즈 그래프 보정
 - `06_Debugging`: 좌표계 오류, timestamp sync 문제, scale drift, 추적 실패 점검
 - `07_Evaluation`: ATE, RPE, FPS, latency, 메모리/연산량 평가
+- `jetson`: `Jetson` 현장 실행 기록, GUI 검증, 장치/성능 이슈 분리 관리
 
 ## Note
 
@@ -62,6 +64,14 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`daily/_template/README.md`](./daily/_template/README.md): 날짜별 작업 일지를 쓸 때 복사해서 사용하는 질문형 회고 템플릿
 - [`daily/2026-04-09/README.md`](./daily/2026-04-09/README.md): 프로젝트 방향, 스프린트 기준, D435i 1차 확인 정리
 - [`daily/2026-04-11/README.md`](./daily/2026-04-11/README.md): D435i 권한 문제, IMU 연속성, depth 저해상도 안정화 트러블슈팅 정리
+
+### jetson
+
+- [`jetson/README.md`](./jetson/README.md): `Jetson`에서 직접 진행하는 `VSLAM` 실행 기록 관리 기준
+- [`jetson/daily/2026-04-17/README.md`](./jetson/daily/2026-04-17/README.md): `SSH` 시작 이후 `모니터 + 키보드 + 마우스`를 직접 연결한 현재 작업 상태 기록
+- [`jetson/guides/README.md`](./jetson/guides/README.md): `Jetson`에서 바로 따라칠 수 있는 진행 방법 파일 목록
+- [`jetson/progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md`](./jetson/progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md): `Jetson`에서의 최종 목표와 단계별 로드맵
+- [`jetson/progress/Jetson_VSLAM_Daily_Execution_Plan.md`](./jetson/progress/Jetson_VSLAM_Daily_Execution_Plan.md): `Jetson` 기준 일일 실행 계획
 
 ## Evidence
 
