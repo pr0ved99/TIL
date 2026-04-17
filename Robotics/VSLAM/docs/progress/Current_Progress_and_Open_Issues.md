@@ -3,12 +3,18 @@
 ## 결론
 
 - 현재 프로젝트는 `센서 bring-up(Stage 0)`의 후반부에 있다.
-- `D435i depth`와 `IMU`는 ROS2에서 안정적으로 읽히는 상태까지 왔다.
+- 기존 PC 기준으로는 `D435i depth`와 `IMU`를 ROS2에서 안정적으로 읽는 상태까지 갔다.
 - `D435i IMU`의 축 해석도 직접 관찰로 1차 정리했다.
 - 지금 새로 시도 중인 것은 `D435i 단독 RGB-D 3D 맵핑`이다.
 - 현재 `RTAB-Map rgbd_odometry`는 품질값이 대체로 `130~190` 수준으로 살아나는 상태까지 왔다.
 - 다만 `RTAB-Map` 기반 3D 맵은 아직 "오도메트리는 살아났지만 TF 경고와 체감 부드러움은 더 점검이 필요한 상태"다.
 - 장비 미도착 상태를 고려해, `IMU / wheel encoder / GPS` 연동 방식은 구현 전에 구조 설계를 먼저 정리하는 단계로 넘어갈 준비가 됐다.
+- 현재는 `Jetson`에서 실제로 `VSLAM`을 돌리기 위한 환경으로 작업 범위를 옮기고 있다.
+- `Jetson` 작업은 `SSH` 접속으로 시작했지만, 지금은 `모니터 + 키보드 + 마우스`를 직접 연결한 상태에서 현장형 bring-up을 진행 중이다.
+- `Jetson` native 기준으로는 `D435i color/depth`와 `RTAB-Map` baseline이 실제로 다시 기동하는 데 성공했다.
+- 다만 현재 `Jetson`에서는 `D435i` 내장 IMU가 `HID Motion Sensor Failure`로 비활성화되어 있어, 운영 기준은 우선 `IMU OFF`다.
+- `rtabmap_viz`는 GUI display가 있는 직접 연결 세션에서 실제로 확인됐고, non-GUI shell에서는 `xcb` 오류가 날 수 있다.
+- 앞으로 `Jetson` 전용 진행 기록은 별도 폴더에서 분리 관리한다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
@@ -112,8 +118,10 @@
 
 해석:
 
-- IMU는 현재 환경 기준으로 정상 동작
+- 이전 PC 기준에서는 IMU가 정상 동작했다
 - 이전의 끊김은 센서 자체보다 실행 환경 충돌 영향이 컸음
+- 다만 `2026-04-17` Jetson native bring-up에서는 `No HID info provided, IMU is disabled`와 `HID Motion Sensor Failure! bad optional access` 로그가 확인됐고 IMU topic이 뜨지 않았다
+- 따라서 현재 운영 기준은 `Jetson baseline = IMU OFF`로 두고, IMU는 별도 진단 과제로 분리해 보는 편이 맞다
 
 직접 관찰한 축 해석:
 
@@ -152,6 +160,27 @@
 - [`depth_imu_local_mapper.py`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/depth_imu_local_mapper.py)
 - [`ros2_raw_rate_probe.py`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/ros2_raw_rate_probe.py)
 
+### 3-5. Jetson native baseline 확인
+
+완료된 것:
+
+- `Jetson`에서 `D435i` native bring-up 재현
+- color/depth topic 확인
+- `USB type 3.2` 확인
+- `424x240x15 + DetectionRate 2 + IMU OFF` 조합으로 `RTAB-Map` baseline 1차 기동 확인
+
+관찰값:
+
+- `rgbd_odometry` 품질값은 시작 직후 `0`에서 올라온 뒤 대체로 `60~160`
+- 안정 구간에서는 `120~150` 정도가 반복 관찰됨
+- `rtabmap_viz`는 GUI display 없는 shell에서 `qt.qpa.xcb` 오류로 종료됨
+- `Jetson` 로컬 그래픽 세션에서는 `rtabmap_viz`가 실제로 열리고 `3D Map`과 trajectory가 표시되는 스크린샷도 확보함
+
+해석:
+
+- `Jetson`에서도 `D435i + RTAB-Map` baseline은 IMU 없이 1차 동작한다
+- GUI 세션 조건까지 포함한 baseline 확인은 1차 완료됐고, 현재 남은 핵심 이슈는 `Jetson`의 `D435i IMU HID` 문제와 baseline 품질 비교다
+
 ---
 
 ## 4. 지금 새로 진행 중인 것
@@ -179,6 +208,14 @@
 - `rgbd_odometry` 품질값이 대부분 `130~190` 수준으로 연속 출력됨
 - 즉, 이전의 `no odometry is provided` 중심 문제는 1차로 벗어남
 - 남은 주요 점검 항목은 `TF 시작 시점 경고`, `체감 부드러움`, `실내 경로 누적 안정성`
+
+Jetson native 1차 결과:
+
+- `424x240x15`, `DetectionRate=2`, `IMU OFF` 조합으로 `RTAB-Map` baseline 재현
+- `D435i color/depth`는 정상, `USB type 3.2` 확인
+- `Jetson` 로컬 GUI에서도 `rtabmap_viz`가 실제로 열리는 것까지 확인
+- 관련 증빙: [`2026-04-18_jetson_rtabmap_viz_gui_baseline_424x240x15_detectionrate2_imuoff.png`](/home/jetson/yh_ws/TIL/Robotics/VSLAM/jetson/assets/screenshots/2026-04-18_jetson_rtabmap_viz_gui_baseline_424x240x15_detectionrate2_imuoff.png)
+- 현재 남은 핵심 이슈는 `Jetson IMU HID failure`와 baseline 품질 비교다
 
 ---
 
@@ -254,6 +291,42 @@ We received odometry message, but we cannot get the corresponding TF odom->camer
 
 - `odom` TF와 센서 데이터 timestamp가 시작 시점에 완전히 맞지 않는 구간이 있었다.
 - 현재는 오도메트리 전체 실패로 이어지지는 않았지만, 좌표계와 시간 동기화 관점에서 다음 점검 후보다.
+
+### 문제 6. Jetson native 환경에서 D435i IMU가 비활성화됨
+
+Jetson 실측 로그:
+
+```text
+No HID info provided, IMU is disabled
+HID Motion Sensor Failure! bad optional access
+```
+
+영향:
+
+- `/camera/camera/imu`, `gyro`, `accel` topic이 현재 기준선에서는 올라오지 않음
+- `Jetson`에서 visual-inertial 조합은 아직 바로 진행할 수 없음
+
+현재 판단:
+
+- 기준선 운영은 우선 `IMU OFF`
+- IMU는 별도 진단 과제로 분리
+- 사용자 확인상 물리 연결은 이미 `SS USB` 케이블 직결 상태다
+- 다만 `lsusb -t` 기준 USB 토폴로지상 upstream `USB 3.0 Hub` 장치가 보이고, 커널 로그에는 `GET_CUR -32`, `status -71`가 반복 보인다
+- 따라서 다음 1순위는 외부 허브 가정이 아니라 `IIO/HID sensor node`와 `USB control` 경로를 중심으로 재현하는 것이다
+
+### 문제 7. GUI display 없는 shell에서 `rtabmap_viz` 실행 실패
+
+Jetson 실측 로그:
+
+```text
+qt.qpa.xcb: could not connect to display
+Could not load the Qt platform plugin "xcb"
+```
+
+영향:
+
+- `SSH`나 비GUI shell에서는 `rtabmap_viz`를 기준선 확인 도구로 바로 쓰기 어렵다
+- GUI 검증은 직접 연결한 그래픽 세션에서 진행해야 한다
 
 ### 문제 6. `flow` 프로필 이름과 실제 동작 불일치
 
@@ -369,3 +442,30 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 ## 9. 지금 상태 한 줄 요약
 
 지금은 `D435i 센서 bring-up`은 거의 끝났고, **`D435i 단독 3D 맵핑을 실용 속도로 돌리기 위한 경량화/튜닝 단계`**에 있다.
+
+---
+
+## 10. Jetson 작업 전환 현황
+
+현재는 `PC`에서 개념 정리와 1차 실험을 진행하던 단계에서 한 걸음 더 나아가,
+**`Jetson`에서 직접 `VSLAM`을 돌리는 실행 환경 검증 단계**로 넘어가고 있다.
+
+지금 작업 방식은 아래와 같다.
+
+1. 먼저 `SSH`로 `Jetson`에 접속해 기본 환경과 저장소 접근을 정리한다.
+2. 그 다음 `Jetson`에 `모니터`, `키보드`, `마우스`를 직접 연결해 GUI와 장치 상태를 현장에서 확인한다.
+3. 이 상태에서 `D435i`, `RTAB-Map`, `realsense-viewer`, `RViz`, `rtabmap_viz`처럼 화면과 장치 상태를 함께 봐야 하는 작업을 진행한다.
+
+이 전환이 중요한 이유는 아래와 같다.
+
+- `Jetson` 실제 연산 성능 기준으로 `RTAB-Map`이 어느 정도까지 실용 속도로 도는지 확인해야 한다.
+- `USB`, `udev`, `GUI`, `device busy`, `viewer` 같은 문제는 `Jetson` 현장에서 직접 보는 편이 훨씬 빠르다.
+- 이후 `D435i + Jetson + 로봇 본체` 조합으로 넘어갈 때, 지금 정리한 실행 절차가 그대로 기반이 된다.
+
+기록 원칙도 같이 정리한다.
+
+- 전체 프로젝트 상태 요약은 계속 이 문서에서 관리한다.
+- `Jetson` 현장 작업 기록은 [`jetson/README.md`](../../jetson/README.md)와 [`jetson/daily/2026-04-17/README.md`](../../jetson/daily/2026-04-17/README.md)부터 분리 관리한다.
+
+즉, 지금 시점의 상태는
+`D435i 실험이 개념 검증 단계에서 끝난 것이 아니라, Jetson 실기 환경으로 옮겨가며 실제 운영 가능성을 확인하기 시작한 상태`라고 정리할 수 있다.
