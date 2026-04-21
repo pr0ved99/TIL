@@ -1,0 +1,340 @@
+jetson-vslam-rtabmap  | [INFO] Starting Docker RTAB-Map service
+jetson-vslam-rtabmap  | [INFO] preset=medium
+jetson-vslam-rtabmap  | [INFO] detection_rate=2
+jetson-vslam-rtabmap  | [INFO] odom_profile=feature
+jetson-vslam-rtabmap  | [INFO] queue_size=20
+jetson-vslam-rtabmap  | [INFO] imu_topic=/imu/data
+jetson-vslam-rtabmap  | [INFO] wait_imu_to_init=false
+jetson-vslam-rtabmap  | [INFO] [launch]: All log files can be found below /tmp/ros/log/2026-04-20-05-12-22-564513-ubuntu-20
+jetson-vslam-rtabmap  | [INFO] [launch]: Default logging verbosity is set to INFO
+jetson-vslam-rtabmap  | [INFO] [rgbd_odometry-1]: process started with pid [37]
+jetson-vslam-rtabmap  | [INFO] [rtabmap-2]: process started with pid [39]
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.206495339] [rtabmap.rtabmap]: rtabmap(maps): latch                      = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.206893699] [rtabmap.rtabmap]: rtabmap(maps): map_filter_radius          = 0.000000[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.206942053] [rtabmap.rtabmap]: rtabmap(maps): map_filter_angle           = 30.000000[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.206974663] [rtabmap.rtabmap]: rtabmap(maps): map_cleanup                = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.206995721] [rtabmap.rtabmap]: rtabmap(maps): map_always_update          = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.207015818] [rtabmap.rtabmap]: rtabmap(maps): map_empty_ray_tracing      = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.207033835] [rtabmap.rtabmap]: rtabmap(maps): cloud_output_voxelized     = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.207052204] [rtabmap.rtabmap]: rtabmap(maps): cloud_subtract_filtering   = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.207071053] [rtabmap.rtabmap]: rtabmap(maps): cloud_subtract_filtering_min_neighbors = 2[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.207123184] [rtabmap.rtabmap]: rtabmap(maps): octomap_tree_depth         = 16[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.219458528] [rtabmap.rgbd_odometry]: Odometry: frame_id               = camera_link[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.219959133] [rtabmap.rgbd_odometry]: Odometry: odom_frame_id          = odom[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.219999743] [rtabmap.rgbd_odometry]: Odometry: publish_tf             = true[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220022017] [rtabmap.rgbd_odometry]: Odometry: wait_for_transform     = 0.200000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220049602] [rtabmap.rgbd_odometry]: Odometry: log_to_rosout_level    = 4[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220130535] [rtabmap.rgbd_odometry]: Odometry: initial_pose           = xyz=0.000000,0.000000,0.000000 rpy=0.000000,-0.000000,0.000000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220167081] [rtabmap.rgbd_odometry]: Odometry: ground_truth_frame_id  = [0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220189930] [rtabmap.rgbd_odometry]: Odometry: ground_truth_base_frame_id = [0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220208459] [rtabmap.rgbd_odometry]: Odometry: config_path            = [0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220227053] [rtabmap.rgbd_odometry]: Odometry: publish_null_when_lost = true[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220244622] [rtabmap.rgbd_odometry]: Odometry: publish_compressed_sensor_data = false[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220263407] [rtabmap.rgbd_odometry]: Odometry: guess_frame_id         = [0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220280784] [rtabmap.rgbd_odometry]: Odometry: guess_min_translation  = 0.000000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220301169] [rtabmap.rgbd_odometry]: Odometry: guess_min_rotation     = 0.000000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220320818] [rtabmap.rgbd_odometry]: Odometry: guess_min_time         = 0.000000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220340371] [rtabmap.rgbd_odometry]: Odometry: expected_update_rate   = 0.000000 Hz[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220359828] [rtabmap.rgbd_odometry]: Odometry: max_update_rate        = 0.000000 Hz[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220379669] [rtabmap.rgbd_odometry]: Odometry: min_update_rate        = 0.000000 Hz[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220399031] [rtabmap.rgbd_odometry]: Odometry: wait_imu_to_init       = false[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220417240] [rtabmap.rgbd_odometry]: Odometry: always_check_imu_tf    = true[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220434361] [rtabmap.rgbd_odometry]: Odometry: sensor_data_compression_format = .jpg[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220459226] [rtabmap.rgbd_odometry]: Odometry: sensor_data_parallel_compression = true[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.220486844] [rtabmap.rgbd_odometry]: Odometry: stereoParams_=0 visParams_=1 icpParams_=0[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.231941464] [rtabmap.rtabmap]: rtabmap: frame_id      = camera_link[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232014428] [rtabmap.rtabmap]: rtabmap: map_frame_id  = map[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232040862] [rtabmap.rtabmap]: rtabmap: log_to_rosout_level  = 4[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232061919] [rtabmap.rtabmap]: rtabmap: initial_pose  = [0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232082080] [rtabmap.rtabmap]: rtabmap: use_action_for_goal  = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232108706] [rtabmap.rtabmap]: rtabmap: tf_delay      = 0.050000[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232140292] [rtabmap.rtabmap]: rtabmap: tf_tolerance  = 0.100000[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232164421] [rtabmap.rtabmap]: rtabmap: odom_sensor_sync   = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232186118] [rtabmap.rtabmap]: rtabmap: pub_loc_pose_only_when_localizing = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232207400] [rtabmap.rtabmap]: rtabmap: wait_for_transform = 0.200000[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232231465] [rtabmap.rtabmap]: rtabmap: gen_scan  = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.232253066] [rtabmap.rtabmap]: rtabmap: gen_depth  = false[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.234241630] [rtabmap.rgbd_odometry]: Odometry: Ignored parameter "Rtabmap/DetectionRate"="2" from arguments[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.234307810] [rtabmap.rgbd_odometry]: Odometry: Update parameter "Vis/CorType"="0" from arguments[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.234337796] [rtabmap.rgbd_odometry]: Odometry: Update parameter "Vis/MaxFeatures"="1200" from arguments[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.234358693] [rtabmap.rgbd_odometry]: Odometry: Update parameter "Vis/MinInliers"="15" from arguments[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243405653] [rtabmap.rgbd_odometry]: RGBDOdometry: approx_sync    = true[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243477561] [rtabmap.rgbd_odometry]: RGBDOdometry: approx_sync_max_interval = 0.050000[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243506683] [rtabmap.rgbd_odometry]: RGBDOdometry: topic_queue_size = 20[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243523004] [rtabmap.rgbd_odometry]: RGBDOdometry: sync_queue_size  = 20[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243536893] [rtabmap.rgbd_odometry]: RGBDOdometry: qos             = 2[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243549725] [rtabmap.rgbd_odometry]: RGBDOdometry: qos_camera_info = 2[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243563198] [rtabmap.rgbd_odometry]: RGBDOdometry: subscribe_rgbd = false[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243577119] [rtabmap.rgbd_odometry]: RGBDOdometry: rgbd_cameras   = 1[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243590208] [rtabmap.rgbd_odometry]: RGBDOdometry: keep_color     = false[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243603712] [rtabmap.rgbd_odometry]: RGBDOdometry: rgb_transport   = raw[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.243617281] [rtabmap.rgbd_odometry]: RGBDOdometry: depth_transport = raw[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.251312802] [rtabmap.rgbd_odometry]: 
+jetson-vslam-rtabmap  | [rgbd_odometry-1] rgbd_odometry subscribed to (approx sync, max interval=0.050000s, topic_queue_size=20, sync_queue_size=20):
+jetson-vslam-rtabmap  | [rgbd_odometry-1]    /camera/camera/color/image_raw,
+jetson-vslam-rtabmap  | [rgbd_odometry-1]    /camera/camera/aligned_depth_to_color/image_raw,
+jetson-vslam-rtabmap  | [rgbd_odometry-1]    /camera/camera/color/camera_info[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.262848963] [rtabmap.rtabmap]: Setting RTAB-Map parameter "Mem/IncrementalMemory"="true" (rosparam)[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.262972107] [rtabmap.rtabmap]: Setting RTAB-Map parameter "Mem/InitWMWithAllNodes"="false" (rosparam)[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.269268986] [rtabmap.rtabmap]: Update RTAB-Map parameter "Rtabmap/DetectionRate"="2" from arguments[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.269642000] [rtabmap.rtabmap]: RTAB-Map detection rate = 2.000000 Hz[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.269780312] [rtabmap.rtabmap]: rtabmap: Using database from "/tmp/rtabmap/rtabmap.db" (0 MB).[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.289492790] [rtabmap.rtabmap]: rtabmap: Database version = "0.22.1".[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.289601532] [rtabmap.rtabmap]: rtabmap: SLAM mode (Mem/IncrementalMemory=true)[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.321701741] [rtabmap.rtabmap]: Setup callbacks[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.321894456] [rtabmap.rtabmap]: rtabmap: subscribe_depth = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.321932475] [rtabmap.rtabmap]: rtabmap: subscribe_rgb = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.321962396] [rtabmap.rtabmap]: rtabmap: subscribe_stereo = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.321989246] [rtabmap.rtabmap]: rtabmap: subscribe_rgbd = false (rgbd_cameras=1)[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322016384] [rtabmap.rtabmap]: rtabmap: subscribe_sensor_data = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322043457] [rtabmap.rtabmap]: rtabmap: subscribe_odom_info = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322069315] [rtabmap.rtabmap]: rtabmap: subscribe_user_data = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322094020] [rtabmap.rtabmap]: rtabmap: subscribe_scan = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322119494] [rtabmap.rtabmap]: rtabmap: subscribe_scan_cloud = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322144231] [rtabmap.rtabmap]: rtabmap: subscribe_scan_descriptor = false[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322169000] [rtabmap.rtabmap]: rtabmap: topic_queue_size = 20[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322193738] [rtabmap.rtabmap]: rtabmap: sync_queue_size  = 20[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322218059] [rtabmap.rtabmap]: rtabmap: qos_image       = 2[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322242349] [rtabmap.rtabmap]: rtabmap: qos_camera_info = 2[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322266862] [rtabmap.rtabmap]: rtabmap: qos_scan        = 0[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322290768] [rtabmap.rtabmap]: rtabmap: qos_odom        = 0[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322342035] [rtabmap.rtabmap]: rtabmap: qos_user_data   = 0[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322375156] [rtabmap.rtabmap]: rtabmap: approx_sync     = true[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.322503324] [rtabmap.rtabmap]: Setup depth callback[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661943.333842962] [rtabmap.rtabmap]: 
+jetson-vslam-rtabmap  | [rtabmap-2] rtabmap subscribed to (approx sync):
+jetson-vslam-rtabmap  | [rtabmap-2]    /rtabmap/odom \
+jetson-vslam-rtabmap  | [rtabmap-2]    /camera/camera/color/image_raw \
+jetson-vslam-rtabmap  | [rtabmap-2]    /camera/camera/aligned_depth_to_color/image_raw \
+jetson-vslam-rtabmap  | [rtabmap-2]    /camera/camera/color/camera_info \
+jetson-vslam-rtabmap  | [rtabmap-2]    /rtabmap/odom_info[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.383340922] [rtabmap.rgbd_odometry]: Odom: quality=0, std dev=99.995000m|99.995000rad, update time=0.019315s delay=0.100671s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.537248813] [rtabmap.rgbd_odometry]: Odom: quality=477, std dev=0.001101m|0.018867rad, update time=0.108395s delay=0.187879s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.613725852] [rtabmap.rgbd_odometry]: Odom: quality=494, std dev=0.000862m|0.019672rad, update time=0.055410s delay=0.130931s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.679393427] [rtabmap.rgbd_odometry]: Odom: quality=481, std dev=0.001652m|0.020216rad, update time=0.055091s delay=0.129885s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.745262806] [rtabmap.rgbd_odometry]: Odom: quality=473, std dev=0.001317m|0.018649rad, update time=0.055106s delay=0.129039s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.812677812] [rtabmap.rgbd_odometry]: Odom: quality=464, std dev=0.000875m|0.020880rad, update time=0.055382s delay=0.129740s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.880572557] [rtabmap.rgbd_odometry]: Odom: quality=477, std dev=0.000655m|0.017423rad, update time=0.057141s delay=0.130922s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661943.945842701] [rtabmap.rgbd_odometry]: Odom: quality=480, std dev=0.000783m|0.021486rad, update time=0.055363s delay=0.129481s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.011141359] [rtabmap.rgbd_odometry]: Odom: quality=415, std dev=0.001409m|0.022688rad, update time=0.053949s delay=0.128067s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.076959890] [rtabmap.rgbd_odometry]: Odom: quality=408, std dev=0.000918m|0.022308rad, update time=0.053173s delay=0.127171s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.144098017] [rtabmap.rgbd_odometry]: Odom: quality=432, std dev=0.000680m|0.018423rad, update time=0.053205s delay=0.127595s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.209545869] [rtabmap.rgbd_odometry]: Odom: quality=425, std dev=0.000742m|0.019858rad, update time=0.052519s delay=0.126328s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.278014154] [rtabmap.rgbd_odometry]: Odom: quality=442, std dev=0.001724m|0.018867rad, update time=0.053756s delay=0.128080s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.484828051] [rtabmap.rgbd_odometry]: Odom: quality=425, std dev=0.000673m|0.017689rad, update time=0.052059s delay=0.134745s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.619885152] [rtabmap.rgbd_odometry]: Odom: quality=447, std dev=0.000759m|0.020556rad, update time=0.053657s delay=0.136364s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.678186795] [rtabmap.rgbd_odometry]: Odom: quality=443, std dev=0.000636m|0.016851rad, update time=0.053598s delay=0.127948s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.746693226] [rtabmap.rgbd_odometry]: Odom: quality=464, std dev=0.000990m|0.019672rad, update time=0.055741s delay=0.129734s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.886931749] [rtabmap.rgbd_odometry]: Odom: quality=426, std dev=0.001317m|0.020216rad, update time=0.053863s delay=0.136505s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661944.944925918] [rtabmap.rgbd_odometry]: Odom: quality=435, std dev=0.001310m|0.019078rad, update time=0.053510s delay=0.127748s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661945.047880922] [rtabmap.rtabmap]: rtabmap (1): Rate=0.50s, Limit=0.000s, Conversion=0.0096s, RTAB-Map=0.0909s, Maps update=0.0002s pub=0.0001s delay=0.2307s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.086561741] [rtabmap.rgbd_odometry]: Odom: quality=455, std dev=0.000892m|0.018188rad, update time=0.057174s delay=0.135874s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.146986262] [rtabmap.rgbd_odometry]: Odom: quality=450, std dev=0.000835m|0.017144rad, update time=0.055147s delay=0.129541s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.212538955] [rtabmap.rgbd_odometry]: Odom: quality=461, std dev=0.001274m|0.018649rad, update time=0.054712s delay=0.128334s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.282945243] [rtabmap.rgbd_odometry]: Odom: quality=476, std dev=0.000791m|0.017144rad, update time=0.058063s delay=0.131978s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.349059441] [rtabmap.rgbd_odometry]: Odom: quality=440, std dev=0.001047m|0.022437rad, update time=0.056997s delay=0.131328s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.489909395] [rtabmap.rgbd_odometry]: Odom: quality=417, std dev=0.001736m|0.022688rad, update time=0.056308s delay=0.138637s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.546691560] [rtabmap.rgbd_odometry]: Odom: quality=448, std dev=0.000844m|0.016542rad, update time=0.054252s delay=0.128651s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661945.593204484] [rtabmap.rtabmap]: rtabmap (2): Rate=0.50s, Limit=0.000s, Conversion=0.0010s, RTAB-Map=0.0445s, Maps update=0.0001s pub=0.0000s delay=0.1752s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.613089582] [rtabmap.rgbd_odometry]: Odom: quality=459, std dev=0.000830m|0.020720rad, update time=0.054270s delay=0.128277s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.753036860] [rtabmap.rgbd_odometry]: Odom: quality=460, std dev=0.000673m|0.016851rad, update time=0.055063s delay=0.134670s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.812859394] [rtabmap.rgbd_odometry]: Odom: quality=440, std dev=0.000683m|0.016214rad, update time=0.054244s delay=0.127713s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.879364622] [rtabmap.rgbd_odometry]: Odom: quality=458, std dev=0.000901m|0.018867rad, update time=0.053746s delay=0.127491s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661945.946622118] [rtabmap.rgbd_odometry]: Odom: quality=467, std dev=0.000706m|0.016851rad, update time=0.054705s delay=0.128020s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.089124908] [rtabmap.rgbd_odometry]: Odom: quality=422, std dev=0.000573m|0.016214rad, update time=0.055846s delay=0.137066s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.146649294] [rtabmap.rgbd_odometry]: Odom: quality=449, std dev=0.000780m|0.016542rad, update time=0.054254s delay=0.127862s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661946.191850719] [rtabmap.rtabmap]: rtabmap (3): Rate=0.50s, Limit=0.000s, Conversion=0.0010s, RTAB-Map=0.0430s, Maps update=0.0001s pub=0.0000s delay=0.1731s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.213874086] [rtabmap.rgbd_odometry]: Odom: quality=452, std dev=0.001006m|0.020040rad, update time=0.054887s delay=0.128356s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.292076224] [rtabmap.rgbd_odometry]: Odom: quality=449, std dev=0.000929m|0.018423rad, update time=0.057572s delay=0.139826s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.354950682] [rtabmap.rgbd_odometry]: Odom: quality=448, std dev=0.001311m|0.019078rad, update time=0.053746s delay=0.135968s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.423262258] [rtabmap.rgbd_odometry]: Odom: quality=474, std dev=0.001238m|0.018649rad, update time=0.055821s delay=0.137548s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.488240968] [rtabmap.rgbd_odometry]: Odom: quality=440, std dev=0.000723m|0.020388rad, update time=0.054369s delay=0.135792s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.554912736] [rtabmap.rgbd_odometry]: Odom: quality=449, std dev=0.000694m|0.018188rad, update time=0.054125s delay=0.135731s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.755206456] [rtabmap.rgbd_odometry]: Odom: quality=461, std dev=0.000569m|0.015492rad, update time=0.054281s delay=0.135816s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661946.827485272] [rtabmap.rgbd_odometry]: Odom: quality=449, std dev=0.000788m|0.021339rad, update time=0.055387s delay=0.141358s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661946.847794907] [rtabmap.rtabmap]: rtabmap (4): Rate=0.50s, Limit=0.000s, Conversion=0.0009s, RTAB-Map=0.0900s, Maps update=0.0001s pub=0.0000s delay=0.2284s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.022066051] [rtabmap.rgbd_odometry]: Odom: quality=430, std dev=0.000920m|0.017944rad, update time=0.053899s delay=0.135798s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.089120020] [rtabmap.rgbd_odometry]: Odom: quality=424, std dev=0.001172m|0.019672rad, update time=0.054014s delay=0.136137s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.156718372] [rtabmap.rgbd_odometry]: Odom: quality=448, std dev=0.000624m|0.015492rad, update time=0.054935s delay=0.136997s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.288666919] [rtabmap.rgbd_odometry]: Odom: quality=399, std dev=0.001274m|0.018423rad, update time=0.053458s delay=0.135541s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.418383751] [rtabmap.rgbd_odometry]: Odom: quality=346, std dev=0.002675m|0.023049rad, update time=0.050244s delay=0.131830s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661947.465829437] [rtabmap.rtabmap]: rtabmap (5): Rate=0.50s, Limit=0.000s, Conversion=0.0013s, RTAB-Map=0.0453s, Maps update=0.0001s pub=0.0000s delay=0.3127s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.487909224] [rtabmap.rgbd_odometry]: Odom: quality=401, std dev=0.001025m|0.019480rad, update time=0.052998s delay=0.134640s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.615139351] [rtabmap.rgbd_odometry]: Odom: quality=384, std dev=0.000680m|0.016542rad, update time=0.051841s delay=0.128442s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661947.955818310] [rtabmap.rgbd_odometry]: Odom: quality=400, std dev=0.000873m|0.020388rad, update time=0.059078s delay=0.135548s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661948.003912770] [rtabmap.rtabmap]: rtabmap (6): Rate=0.50s, Limit=0.000s, Conversion=0.0009s, RTAB-Map=0.0453s, Maps update=0.0001s pub=0.0000s delay=0.1837s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.088598812] [rtabmap.rgbd_odometry]: Odom: quality=367, std dev=0.000864m|0.021036rad, update time=0.053709s delay=0.134902s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.159201246] [rtabmap.rgbd_odometry]: Odom: quality=385, std dev=0.001005m|0.016214rad, update time=0.056937s delay=0.138791s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.289408095] [rtabmap.rgbd_odometry]: Odom: quality=394, std dev=0.000655m|0.017689rad, update time=0.054255s delay=0.135551s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.420842152] [rtabmap.rgbd_odometry]: Odom: quality=382, std dev=0.000654m|0.015865rad, update time=0.052165s delay=0.133573s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.495206566] [rtabmap.rgbd_odometry]: Odom: quality=361, std dev=0.001636m|0.020388rad, update time=0.066040s delay=0.141226s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.682156670] [rtabmap.rgbd_odometry]: Odom: quality=379, std dev=0.000709m|0.017423rad, update time=0.054607s delay=0.128029s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.751363951] [rtabmap.rgbd_odometry]: Odom: quality=395, std dev=0.000595m|0.016542rad, update time=0.054887s delay=0.130523s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661948.798391310] [rtabmap.rtabmap]: rtabmap (7): Rate=0.50s, Limit=0.000s, Conversion=0.0011s, RTAB-Map=0.0446s, Maps update=0.0001s pub=0.0000s delay=0.1776s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.879188004] [rtabmap.rgbd_odometry]: Odom: quality=363, std dev=0.000775m|0.017423rad, update time=0.050651s delay=0.124920s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661948.943839402] [rtabmap.rgbd_odometry]: Odom: quality=344, std dev=0.000907m|0.015865rad, update time=0.049325s delay=0.122858s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.012081090] [rtabmap.rgbd_odometry]: Odom: quality=364, std dev=0.000633m|0.017144rad, update time=0.050952s delay=0.124384s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.084929738] [rtabmap.rgbd_odometry]: Odom: quality=360, std dev=0.001269m|0.021036rad, update time=0.052616s delay=0.130519s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.144926178] [rtabmap.rgbd_odometry]: Odom: quality=363, std dev=0.001404m|0.019858rad, update time=0.050043s delay=0.123801s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.220161013] [rtabmap.rgbd_odometry]: Odom: quality=371, std dev=0.000818m|0.020388rad, update time=0.050902s delay=0.132322s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.352398065] [rtabmap.rgbd_odometry]: Odom: quality=371, std dev=0.000722m|0.017423rad, update time=0.051498s delay=0.131130s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661949.403347671] [rtabmap.rtabmap]: rtabmap (8): Rate=0.50s, Limit=0.000s, Conversion=0.0013s, RTAB-Map=0.0479s, Maps update=0.0001s pub=0.0000s delay=0.1821s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.413992102] [rtabmap.rgbd_odometry]: Odom: quality=352, std dev=0.000662m|0.018867rad, update time=0.051709s delay=0.126010s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.478310330] [rtabmap.rgbd_odometry]: Odom: quality=340, std dev=0.001710m|0.021339rad, update time=0.050495s delay=0.123614s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.544587137] [rtabmap.rgbd_odometry]: Odom: quality=357, std dev=0.001403m|0.019858rad, update time=0.049601s delay=0.123177s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.689143854] [rtabmap.rgbd_odometry]: Odom: quality=350, std dev=0.000566m|0.016214rad, update time=0.051633s delay=0.134304s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.744237926] [rtabmap.rgbd_odometry]: Odom: quality=362, std dev=0.000981m|0.023049rad, update time=0.048661s delay=0.122684s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.811290075] [rtabmap.rgbd_odometry]: Odom: quality=369, std dev=0.000799m|0.017144rad, update time=0.049498s delay=0.123023s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661949.948675364] [rtabmap.rgbd_odometry]: Odom: quality=326, std dev=0.001520m|0.020216rad, update time=0.052469s delay=0.126980s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.012103524] [rtabmap.rgbd_odometry]: Odom: quality=356, std dev=0.000654m|0.016851rad, update time=0.050177s delay=0.123693s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.155760481] [rtabmap.rgbd_odometry]: Odom: quality=335, std dev=0.000872m|0.021036rad, update time=0.051269s delay=0.133922s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661950.201639200] [rtabmap.rtabmap]: rtabmap (9): Rate=0.50s, Limit=0.000s, Conversion=0.0011s, RTAB-Map=0.0439s, Maps update=0.0001s pub=0.0000s delay=0.3132s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.214088537] [rtabmap.rgbd_odometry]: Odom: quality=356, std dev=0.000572m|0.015492rad, update time=0.050923s delay=0.125538s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.277252107] [rtabmap.rgbd_odometry]: Odom: quality=338, std dev=0.001253m|0.017944rad, update time=0.048998s delay=0.121987s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.344632437] [rtabmap.rgbd_odometry]: Odom: quality=352, std dev=0.001305m|0.020388rad, update time=0.049349s delay=0.122652s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.409538894] [rtabmap.rgbd_odometry]: Odom: quality=348, std dev=0.001138m|0.017944rad, update time=0.047207s delay=0.120844s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.480892256] [rtabmap.rgbd_odometry]: Odom: quality=359, std dev=0.000933m|0.023394rad, update time=0.049397s delay=0.125482s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.549182303] [rtabmap.rgbd_odometry]: Odom: quality=352, std dev=0.000645m|0.017423rad, update time=0.050719s delay=0.127059s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.617073735] [rtabmap.rgbd_odometry]: Odom: quality=337, std dev=0.000624m|0.016851rad, update time=0.051414s delay=0.128236s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661950.680478024] [rtabmap.rtabmap]: rtabmap (10): Rate=0.50s, Limit=0.000s, Conversion=0.0040s, RTAB-Map=0.0579s, Maps update=0.0001s pub=0.0000s delay=0.1916s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.770495839] [rtabmap.rgbd_odometry]: Odom: quality=274, std dev=0.000853m|0.019672rad, update time=0.070072s delay=0.148210s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661950.880359841] [rtabmap.rgbd_odometry]: Odom: quality=297, std dev=0.001035m|0.021909rad, update time=0.048335s delay=0.124644s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.012503899] [rtabmap.rgbd_odometry]: Odom: quality=310, std dev=0.000892m|0.022688rad, update time=0.047276s delay=0.123316s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.314701605] [rtabmap.rgbd_odometry]: Odom: quality=270, std dev=0.000713m|0.017944rad, update time=0.077840s delay=0.158552s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661951.360177965] [rtabmap.rtabmap]: rtabmap (11): Rate=0.50s, Limit=0.000s, Conversion=0.0018s, RTAB-Map=0.0441s, Maps update=0.0001s pub=0.0000s delay=0.2040s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.491342194] [rtabmap.rgbd_odometry]: Odom: quality=283, std dev=0.001010m|0.020040rad, update time=0.053306s delay=0.134968s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.544001599] [rtabmap.rgbd_odometry]: Odom: quality=268, std dev=0.001544m|0.023166rad, update time=0.046762s delay=0.120884s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.611232930] [rtabmap.rgbd_odometry]: Odom: quality=268, std dev=0.001465m|0.018867rad, update time=0.048069s delay=0.121369s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661951.748599282] [rtabmap.rgbd_odometry]: Odom: quality=275, std dev=0.001779m|0.018423rad, update time=0.046430s delay=0.125246s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.009981733] [rtabmap.rgbd_odometry]: Odom: quality=285, std dev=0.001167m|0.022810rad, update time=0.046428s delay=0.119735s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.082274482] [rtabmap.rgbd_odometry]: Odom: quality=291, std dev=0.000777m|0.019672rad, update time=0.050050s delay=0.125312s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.146320925] [rtabmap.rgbd_odometry]: Odom: quality=288, std dev=0.000791m|0.020216rad, update time=0.048054s delay=0.122642s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.211274492] [rtabmap.rgbd_odometry]: Odom: quality=289, std dev=0.001049m|0.021189rad, update time=0.046869s delay=0.120879s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.279652357] [rtabmap.rgbd_odometry]: Odom: quality=255, std dev=0.000618m|0.018423rad, update time=0.047566s delay=0.122542s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661952.281592630] [rtabmap.rtabmap]: rtabmap (12): Rate=0.50s, Limit=0.000s, Conversion=0.0012s, RTAB-Map=0.0449s, Maps update=0.0001s pub=0.0038s delay=0.5248s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.343430335] [rtabmap.rgbd_odometry]: Odom: quality=278, std dev=0.001256m|0.025377rad, update time=0.045012s delay=0.119604s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.411503702] [rtabmap.rgbd_odometry]: Odom: quality=294, std dev=0.001163m|0.027053rad, update time=0.046497s delay=0.120962s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661952.472233662] [rtabmap.rtabmap]: rtabmap (13): Rate=0.50s, Limit=0.000s, Conversion=0.0010s, RTAB-Map=0.0562s, Maps update=0.0001s pub=0.0023s delay=0.1817s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.557428192] [rtabmap.rgbd_odometry]: Odom: quality=283, std dev=0.001063m|0.024041rad, update time=0.051528s delay=0.133453s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.625552601] [rtabmap.rgbd_odometry]: Odom: quality=95, std dev=0.001977m|0.026606rad, update time=0.061668s delay=0.134863s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.684939186] [rtabmap.rgbd_odometry]: Odom: quality=241, std dev=0.002157m|0.021770rad, update time=0.054760s delay=0.127534s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661952.830132529] [rtabmap.rgbd_odometry]: Odom: quality=207, std dev=0.001339m|0.025637rad, update time=0.056251s delay=0.139295s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661953.115886691] [rtabmap.rgbd_odometry]: Odom: quality=375, std dev=0.000827m|0.019078rad, update time=0.076012s delay=0.158184s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661953.181570448] [rtabmap.rtabmap]: rtabmap (14): Rate=0.50s, Limit=0.000s, Conversion=0.0017s, RTAB-Map=0.0600s, Maps update=0.0001s pub=0.0021s delay=0.2239s (local map=1, WM=1)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661953.517282841] [rtabmap.rgbd_odometry]: Odom: quality=340, std dev=0.001071m|0.020556rad, update time=0.075317s delay=0.159283s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661953.980963028] [rtabmap.rgbd_odometry]: Odom: quality=289, std dev=0.001642m|0.025108rad, update time=0.072068s delay=0.155949s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661954.072430986] [rtabmap.rtabmap]: rtabmap (15): Rate=0.50s, Limit=0.000s, Conversion=0.0010s, RTAB-Map=0.0869s, Maps update=0.0000s pub=0.0022s delay=0.2474s (local map=2, WM=2)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661954.177672554] [rtabmap.rgbd_odometry]: Odom: quality=307, std dev=0.000862m|0.021339rad, update time=0.070190s delay=0.152510s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661954.380482246] [rtabmap.rgbd_odometry]: Odom: quality=287, std dev=0.000870m|0.020556rad, update time=0.072541s delay=0.155170s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661954.576346124] [rtabmap.rgbd_odometry]: Odom: quality=276, std dev=0.000889m|0.022810rad, update time=0.068289s delay=0.150887s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661954.714912559] [rtabmap.rgbd_odometry]: Odom: quality=171, std dev=0.001178m|0.026452rad, update time=0.073983s delay=0.156020s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661954.859531669] [rtabmap.rgbd_odometry]: Odom: quality=306, std dev=0.002287m|0.023724rad, update time=0.084405s delay=0.167207s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661954.938379239] [rtabmap.rtabmap]: rtabmap (16): Rate=0.50s, Limit=0.000s, Conversion=0.0024s, RTAB-Map=0.0719s, Maps update=0.0001s pub=0.0023s delay=0.2461s (local map=2, WM=2)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661955.131824611] [rtabmap.rgbd_odometry]: Odom: quality=208, std dev=0.002019m|0.026135rad, update time=0.089896s delay=0.172637s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661955.250515387] [rtabmap.rgbd_odometry]: Odom: quality=339, std dev=0.000913m|0.020880rad, update time=0.079056s delay=0.157894s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [33m[ WARN] (2026-04-20 05:12:36.109) OdometryF2M.cpp:626::computeTransform() Registration failed: "Not enough inliers 0/15 (matches=93) between -1 and 109" (guess=xyz=0.024247,-0.014167,-0.003084 rpy=0.071242,0.189019,-0.068500)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [33m[ WARN] (2026-04-20 05:12:36.109) OdometryF2M.cpp:319::computeTransform() Failed to find a transformation with the provided guess (xyz=0.024247,-0.014167,-0.003084 rpy=0.071242,0.189019,-0.068500), trying again without a guess.[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [33m[ WARN] (2026-04-20 05:12:36.273) OdometryF2M.cpp:636::computeTransform() Trial with no guess succeeded![0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661956.279133192] [rtabmap.rgbd_odometry]: Odom: quality=136, std dev=0.001458m|0.023281rad, update time=0.234703s delay=0.319201s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661956.373818914] [rtabmap.rtabmap]: rtabmap (17): Rate=0.50s, Limit=0.000s, Conversion=0.0011s, RTAB-Map=0.0898s, Maps update=0.0000s pub=0.0023s delay=0.4139s (local map=3, WM=3)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661956.521525638] [rtabmap.rgbd_odometry]: Odom: quality=57, std dev=0.001734m|0.027887rad, update time=0.077860s delay=0.161295s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661956.861705844] [rtabmap.rgbd_odometry]: Odom: quality=169, std dev=0.002136m|0.023049rad, update time=0.084097s delay=0.167894s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661956.961571486] [rtabmap.rtabmap]: rtabmap (18): Rate=0.50s, Limit=0.000s, Conversion=0.0019s, RTAB-Map=0.0933s, Maps update=0.0001s pub=0.0029s delay=0.2678s (local map=3, WM=3)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.049057843] [rtabmap.rgbd_odometry]: Odom: quality=284, std dev=0.001024m|0.022810rad, update time=0.075558s delay=0.155097s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.179422688] [rtabmap.rgbd_odometry]: Odom: quality=303, std dev=0.001464m|0.019672rad, update time=0.070539s delay=0.152029s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.439366957] [rtabmap.rgbd_odometry]: Odom: quality=217, std dev=0.000940m|0.020880rad, update time=0.063417s delay=0.145107s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661957.529847378] [rtabmap.rtabmap]: rtabmap (19): Rate=0.50s, Limit=0.000s, Conversion=0.0018s, RTAB-Map=0.0844s, Maps update=0.0001s pub=0.0026s delay=0.2356s (local map=4, WM=4)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.592492820] [rtabmap.rgbd_odometry]: Odom: quality=112, std dev=0.001175m|0.025637rad, update time=0.081147s delay=0.164800s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.710537357] [rtabmap.rgbd_odometry]: Odom: quality=206, std dev=0.001254m|0.022044rad, update time=0.070151s delay=0.149413s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.839400610] [rtabmap.rgbd_odometry]: Odom: quality=207, std dev=0.000625m|0.018188rad, update time=0.062899s delay=0.144842s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661957.974758709] [rtabmap.rgbd_odometry]: Odom: quality=200, std dev=0.001089m|0.020216rad, update time=0.064620s delay=0.146769s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661958.064141756] [rtabmap.rtabmap]: rtabmap (20): Rate=0.50s, Limit=0.000s, Conversion=0.0023s, RTAB-Map=0.0828s, Maps update=0.0001s pub=0.0017s delay=0.2362s (local map=4, WM=4)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.190809972] [rtabmap.rgbd_odometry]: Odom: quality=132, std dev=0.001288m|0.025199rad, update time=0.078854s delay=0.162388s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.310835141] [rtabmap.rgbd_odometry]: Odom: quality=262, std dev=0.000935m|0.020040rad, update time=0.065500s delay=0.148784s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.450204552] [rtabmap.rgbd_odometry]: Odom: quality=252, std dev=0.000961m|0.021189rad, update time=0.071283s delay=0.154521s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.587386442] [rtabmap.rgbd_odometry]: Odom: quality=73, std dev=0.001713m|0.027953rad, update time=0.076107s delay=0.158065s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.791018000] [rtabmap.rgbd_odometry]: Odom: quality=204, std dev=0.001912m|0.022688rad, update time=0.079346s delay=0.161233s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661958.804500904] [rtabmap.rtabmap]: rtabmap (21): Rate=0.50s, Limit=0.000s, Conversion=0.0020s, RTAB-Map=0.0894s, Maps update=0.0000s pub=0.0019s delay=0.4420s (local map=5, WM=5)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661958.919933100] [rtabmap.rgbd_odometry]: Odom: quality=357, std dev=0.000997m|0.017689rad, update time=0.074660s delay=0.156498s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.122068829] [rtabmap.rgbd_odometry]: Odom: quality=318, std dev=0.001136m|0.019078rad, update time=0.077433s delay=0.158394s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.252092254] [rtabmap.rgbd_odometry]: Odom: quality=290, std dev=0.001519m|0.022688rad, update time=0.073270s delay=0.155003s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661959.338727430] [rtabmap.rtabmap]: rtabmap (22): Rate=0.50s, Limit=0.000s, Conversion=0.0027s, RTAB-Map=0.0807s, Maps update=0.0000s pub=0.0020s delay=0.3751s (local map=6, WM=6)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.384256157] [rtabmap.rgbd_odometry]: Odom: quality=258, std dev=0.001072m|0.021339rad, update time=0.073550s delay=0.153754s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.531449168] [rtabmap.rgbd_odometry]: Odom: quality=235, std dev=0.001151m|0.022930rad, update time=0.085575s delay=0.167534s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.656508461] [rtabmap.rgbd_odometry]: Odom: quality=299, std dev=0.001683m|0.022044rad, update time=0.079026s delay=0.159181s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661959.925874067] [rtabmap.rgbd_odometry]: Odom: quality=255, std dev=0.000794m|0.021189rad, update time=0.080917s delay=0.161723s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661960.062241611] [rtabmap.rtabmap]: rtabmap (23): Rate=0.50s, Limit=0.000s, Conversion=0.0025s, RTAB-Map=0.0859s, Maps update=0.0001s pub=0.0022s delay=0.3648s (local map=7, WM=7)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.124953111] [rtabmap.rgbd_odometry]: Odom: quality=262, std dev=0.000987m|0.021770rad, update time=0.079300s delay=0.160682s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.279339286] [rtabmap.rgbd_odometry]: Odom: quality=202, std dev=0.001360m|0.023166rad, update time=0.098804s delay=0.181655s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.390358460] [rtabmap.rgbd_odometry]: Odom: quality=302, std dev=0.001123m|0.022178rad, update time=0.077289s delay=0.159262s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.518907754] [rtabmap.rgbd_odometry]: Odom: quality=288, std dev=0.001050m|0.021036rad, update time=0.073842s delay=0.154400s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661960.623672128] [rtabmap.rtabmap]: rtabmap (24): Rate=0.50s, Limit=0.000s, Conversion=0.0021s, RTAB-Map=0.0983s, Maps update=0.0001s pub=0.0024s delay=0.3259s (local map=8, WM=8)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.719865054] [rtabmap.rgbd_odometry]: Odom: quality=242, std dev=0.000980m|0.021339rad, update time=0.080568s delay=0.155241s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661960.918199704] [rtabmap.rgbd_odometry]: Odom: quality=275, std dev=0.001128m|0.020556rad, update time=0.073163s delay=0.153459s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.181076494] [rtabmap.rgbd_odometry]: Odom: quality=257, std dev=0.000757m|0.020880rad, update time=0.068490s delay=0.149511s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661961.267644567] [rtabmap.rtabmap]: rtabmap (25): Rate=0.50s, Limit=0.000s, Conversion=0.0011s, RTAB-Map=0.0805s, Maps update=0.0001s pub=0.0033s delay=0.2361s (local map=8, WM=8)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.316722561] [rtabmap.rgbd_odometry]: Odom: quality=251, std dev=0.001303m|0.021189rad, update time=0.069499s delay=0.151744s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.514620231] [rtabmap.rgbd_odometry]: Odom: quality=273, std dev=0.000856m|0.020216rad, update time=0.068120s delay=0.149524s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.652607813] [rtabmap.rgbd_odometry]: Odom: quality=185, std dev=0.000989m|0.025288rad, update time=0.073177s delay=0.154100s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.847040383] [rtabmap.rgbd_odometry]: Odom: quality=174, std dev=0.001194m|0.024144rad, update time=0.067870s delay=0.148417s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661961.899612567] [rtabmap.rtabmap]: rtabmap (26): Rate=0.50s, Limit=0.000s, Conversion=0.0013s, RTAB-Map=0.0468s, Maps update=0.0001s pub=0.0017s delay=0.2677s (local map=9, WM=9)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661961.916652162] [rtabmap.rgbd_odometry]: Odom: quality=259, std dev=0.001130m|0.019480rad, update time=0.067726s delay=0.151323s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.052951710] [rtabmap.rgbd_odometry]: Odom: quality=252, std dev=0.001538m|0.022308rad, update time=0.072333s delay=0.154211s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.188624728] [rtabmap.rgbd_odometry]: Odom: quality=248, std dev=0.001957m|0.021630rad, update time=0.075416s delay=0.156470s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.316193716] [rtabmap.rgbd_odometry]: Odom: quality=233, std dev=0.000726m|0.017944rad, update time=0.068028s delay=0.150626s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661962.370072442] [rtabmap.rtabmap]: rtabmap (27): Rate=0.50s, Limit=0.000s, Conversion=0.0020s, RTAB-Map=0.0481s, Maps update=0.0001s pub=0.0017s delay=0.2045s (local map=9, WM=9)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.521276039] [rtabmap.rgbd_odometry]: Odom: quality=204, std dev=0.000727m|0.019282rad, update time=0.072855s delay=0.155590s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.663262036] [rtabmap.rgbd_odometry]: Odom: quality=222, std dev=0.001951m|0.025108rad, update time=0.082221s delay=0.164164s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.788358366] [rtabmap.rgbd_odometry]: Odom: quality=359, std dev=0.001244m|0.024246rad, update time=0.077853s delay=0.155850s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661962.921940797] [rtabmap.rgbd_odometry]: Odom: quality=298, std dev=0.000952m|0.023394rad, update time=0.076016s delay=0.156023s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661962.992168454] [rtabmap.rtabmap]: rtabmap (28): Rate=0.50s, Limit=0.000s, Conversion=0.0026s, RTAB-Map=0.0637s, Maps update=0.0001s pub=0.0020s delay=0.2263s (local map=10, WM=10)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.122051918] [rtabmap.rgbd_odometry]: Odom: quality=287, std dev=0.001035m|0.023166rad, update time=0.074871s delay=0.156016s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.256404030] [rtabmap.rgbd_odometry]: Odom: quality=270, std dev=0.000942m|0.021630rad, update time=0.076559s delay=0.156956s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.464997542] [rtabmap.rgbd_odometry]: Odom: quality=202, std dev=0.002037m|0.023394rad, update time=0.083719s delay=0.165433s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.590720185] [rtabmap.rgbd_odometry]: Odom: quality=281, std dev=0.001648m|0.020388rad, update time=0.077259s delay=0.157743s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661963.729113719] [rtabmap.rtabmap]: rtabmap (29): Rate=0.50s, Limit=0.000s, Conversion=0.0012s, RTAB-Map=0.1347s, Maps update=0.0001s pub=0.0014s delay=0.2961s (local map=11, WM=11)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.864942430] [rtabmap.rgbd_odometry]: Odom: quality=254, std dev=0.001293m|0.025199rad, update time=0.086501s delay=0.165147s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661963.997810710] [rtabmap.rgbd_odometry]: Odom: quality=265, std dev=0.001206m|0.023724rad, update time=0.087287s delay=0.164607s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.206880448] [rtabmap.rgbd_odometry]: Odom: quality=222, std dev=0.001553m|0.022810rad, update time=0.091483s delay=0.173557s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.332328838] [rtabmap.rgbd_odometry]: Odom: quality=282, std dev=0.001359m|0.024831rad, update time=0.090499s delay=0.165593s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661964.373920379] [rtabmap.rtabmap]: rtabmap (30): Rate=0.50s, Limit=0.000s, Conversion=0.0013s, RTAB-Map=0.1627s, Maps update=0.0003s pub=0.0017s delay=0.3406s (local map=12, WM=12)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.522824841] [rtabmap.rgbd_odometry]: Odom: quality=300, std dev=0.001045m|0.022308rad, update time=0.074342s delay=0.155972s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.722151797] [rtabmap.rgbd_odometry]: Odom: quality=231, std dev=0.001401m|0.023831rad, update time=0.073003s delay=0.155184s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.852542687] [rtabmap.rgbd_odometry]: Odom: quality=337, std dev=0.000910m|0.022178rad, update time=0.069357s delay=0.152165s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661964.979271665] [rtabmap.rgbd_odometry]: Odom: quality=322, std dev=0.000933m|0.020556rad, update time=0.067388s delay=0.145485s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661965.049278931] [rtabmap.rtabmap]: rtabmap (31): Rate=0.50s, Limit=0.000s, Conversion=0.0020s, RTAB-Map=0.1903s, Maps update=0.0001s pub=0.0020s delay=0.3489s (local map=13, WM=13)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661965.193040246] [rtabmap.rgbd_odometry]: Odom: quality=289, std dev=0.001023m|0.019672rad, update time=0.075385s delay=0.159131s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661965.393852639] [rtabmap.rgbd_odometry]: Odom: quality=437, std dev=0.001010m|0.023166rad, update time=0.077366s delay=0.159823s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661965.488927273] [rtabmap.rtabmap]: rtabmap (32): Rate=0.50s, Limit=0.000s, Conversion=0.0022s, RTAB-Map=0.0886s, Maps update=0.0001s pub=0.0022s delay=0.2549s (local map=13, WM=13)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661965.661229440] [rtabmap.rgbd_odometry]: Odom: quality=362, std dev=0.000891m|0.020556rad, update time=0.077190s delay=0.160373s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661965.796568177] [rtabmap.rgbd_odometry]: Odom: quality=251, std dev=0.001001m|0.022810rad, update time=0.079578s delay=0.162301s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661965.924379943] [rtabmap.rgbd_odometry]: Odom: quality=320, std dev=0.001049m|0.023506rad, update time=0.075488s delay=0.156701s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661965.990625100] [rtabmap.rtabmap]: rtabmap (33): Rate=0.50s, Limit=0.000s, Conversion=0.0017s, RTAB-Map=0.0610s, Maps update=0.0001s pub=0.0023s delay=0.2230s (local map=13, WM=13)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661966.191530368] [rtabmap.rgbd_odometry]: Odom: quality=212, std dev=0.000892m|0.022308rad, update time=0.075693s delay=0.157026s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661966.323698107] [rtabmap.rgbd_odometry]: Odom: quality=343, std dev=0.000793m|0.020388rad, update time=0.072394s delay=0.155782s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661966.652489869] [rtabmap.rgbd_odometry]: Odom: quality=295, std dev=0.001280m|0.023937rad, update time=0.070013s delay=0.151044s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661966.842610437] [rtabmap.rtabmap]: rtabmap (34): Rate=0.50s, Limit=0.000s, Conversion=0.0013s, RTAB-Map=0.1858s, Maps update=0.0001s pub=0.0017s delay=0.3412s (local map=14, WM=14)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661966.999906699] [rtabmap.rgbd_odometry]: Odom: quality=174, std dev=0.001265m|0.022178rad, update time=0.082073s delay=0.164937s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661967.263106596] [rtabmap.rgbd_odometry]: Odom: quality=227, std dev=0.001045m|0.024144rad, update time=0.078967s delay=0.161306s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661967.328293295] [rtabmap.rtabmap]: rtabmap (35): Rate=0.50s, Limit=0.000s, Conversion=0.0012s, RTAB-Map=0.0611s, Maps update=0.0001s pub=0.0016s delay=0.2265s (local map=14, WM=14)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661967.390716854] [rtabmap.rgbd_odometry]: Odom: quality=220, std dev=0.000939m|0.020556rad, update time=0.076956s delay=0.155503s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661967.665686663] [rtabmap.rgbd_odometry]: Odom: quality=277, std dev=0.000997m|0.021770rad, update time=0.080944s delay=0.163647s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661967.928732439] [rtabmap.rgbd_odometry]: Odom: quality=261, std dev=0.000986m|0.020040rad, update time=0.078105s delay=0.159867s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661968.065600365] [rtabmap.rgbd_odometry]: Odom: quality=276, std dev=0.000937m|0.020720rad, update time=0.080792s delay=0.163323s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661968.133048255] [rtabmap.rtabmap]: rtabmap (36): Rate=0.50s, Limit=0.000s, Conversion=0.0022s, RTAB-Map=0.1457s, Maps update=0.0001s pub=0.0016s delay=0.4309s (local map=15, WM=15)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661968.196168977] [rtabmap.rgbd_odometry]: Odom: quality=220, std dev=0.001548m|0.021486rad, update time=0.085581s delay=0.160480s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661968.466449493] [rtabmap.rgbd_odometry]: Odom: quality=334, std dev=0.000800m|0.020556rad, update time=0.082765s delay=0.163937s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661968.524234604] [rtabmap.rtabmap]: rtabmap (37): Rate=0.50s, Limit=0.000s, Conversion=0.0012s, RTAB-Map=0.0534s, Maps update=0.0001s pub=0.0017s delay=0.2217s (local map=15, WM=15)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661968.600499238] [rtabmap.rgbd_odometry]: Odom: quality=295, std dev=0.001434m|0.022810rad, update time=0.083140s delay=0.164575s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661968.803153230] [rtabmap.rgbd_odometry]: Odom: quality=259, std dev=0.001159m|0.024924rad, update time=0.085220s delay=0.167115s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.005844248] [rtabmap.rgbd_odometry]: Odom: quality=410, std dev=0.000815m|0.020388rad, update time=0.086508s delay=0.169692s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.205369996] [rtabmap.rgbd_odometry]: Odom: quality=376, std dev=0.000873m|0.021036rad, update time=0.086786s delay=0.169096s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.342174309] [rtabmap.rgbd_odometry]: Odom: quality=375, std dev=0.000963m|0.022930rad, update time=0.094193s delay=0.172487s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661969.358838878] [rtabmap.rtabmap]: rtabmap (38): Rate=0.50s, Limit=0.000s, Conversion=0.0012s, RTAB-Map=0.1493s, Maps update=0.0001s pub=0.0016s delay=0.3226s (local map=16, WM=16)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.464324987] [rtabmap.rgbd_odometry]: Odom: quality=334, std dev=0.001185m|0.020720rad, update time=0.085403s delay=0.161224s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.604500442] [rtabmap.rgbd_odometry]: Odom: quality=359, std dev=0.001125m|0.023616rad, update time=0.085175s delay=0.167986s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.737958765] [rtabmap.rgbd_odometry]: Odom: quality=344, std dev=0.000863m|0.020880rad, update time=0.085385s delay=0.168031s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661969.871900284] [rtabmap.rgbd_odometry]: Odom: quality=324, std dev=0.001371m|0.022178rad, update time=0.085062s delay=0.168561s[0m
+jetson-vslam-rtabmap  | [rtabmap-2] [0m[INFO] [1776661970.024130116] [rtabmap.rtabmap]: rtabmap (39): Rate=0.50s, Limit=0.000s, Conversion=0.0022s, RTAB-Map=0.1459s, Maps update=0.0001s pub=0.0023s delay=0.3208s (local map=16, WM=16)[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661970.141411806] [rtabmap.rgbd_odometry]: Odom: quality=346, std dev=0.001040m|0.021189rad, update time=0.087664s delay=0.171229s[0m
+jetson-vslam-rtabmap  | [rgbd_odometry-1] [0m[INFO] [1776661970.336471664] [rtabmap.rgbd_odometry]: Odom: quality=352, std dev=0.001020m|0.021909rad, update time=0.083495s delay=0.166191s[0m

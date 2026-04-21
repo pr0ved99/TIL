@@ -9,6 +9,8 @@
 
 - `screenshots/`
   - `Jetson` 화면, `RViz`, `rtabmap_viz`, `realsense-viewer` 캡처
+- `videos/`
+  - `Jetson` 작업과 직접 연결된 동영상 증빙, 시각화 참고 영상
 - `logs/`
   - launch 로그, 재시험 로그, 오류 로그
 - `benchmarks/`
@@ -18,3 +20,4 @@
 
 - 파일명은 `날짜 + 도구 + 무엇을 증명하는지`가 드러나게 쓴다.
 - 같은 실험의 캡처와 로그는 가능하면 같은 날짜 하위 폴더로 묶는다.
+- 영상은 원본 파일명을 `README.md`에 남기고, 보관본 이름은 실험 맥락이 드러나게 정리한다.

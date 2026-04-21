@@ -21,17 +21,27 @@ HID Motion Sensor Failure! bad optional access
 - USB 계층에서는 `Human Interface Device` 인터페이스가 `usbhid`로 보였고, 커널 로그에는 `hidraw0` 생성도 확인됐다.
 - 하지만 `/sys/bus/iio/devices`는 비어 있어 IMU용 `IIO` 센서 노드는 생성되지 않았다.
 - 커널 로그에는 `Failed to query (GET_CUR) UVC control 1 on unit 3: -32`와 `Non-zero status (-71)`도 반복 확인됐다.
+- 이후 `udev` 규칙을 추가해 `/dev/hidraw2`를 `root:plugdev 660`까지 정리했고, `sudo`로 `realsense2_camera`를 실행해도 결과는 같았다.
+- 즉, `hidraw` 권한만의 문제는 아니었다.
+- 그리고 `Jetson` 현재 커널 config를 직접 확인했을 때 아래가 나왔다.
+
+```text
+# CONFIG_HID_SENSOR_HUB is not set
+```
+
+- `/lib/modules/$(uname -r)` 아래에도 `hid_sensor_hub`, `hid_sensor_accel_3d`, `hid_sensor_gyro_3d` 관련 모듈이 보이지 않았다.
+- 반면 사용자가 확인한 바에 따르면, 같은 `D435i` IMU는 `노트북`에서는 `yaw / pitch / roll`까지 정상 동작했다.
 
 ## 현재 판단
 
 - 현재 `Jetson` baseline 운영은 우선 `IMU OFF`로 두는 편이 맞다.
 - IMU는 `Jetson` 전용 진단 과제로 별도 분리한다.
-- 현재 1순위 원인 후보는 `USB control` 경로 문제 또는 `HID sensor node / IIO` 노출 문제다.
+- 현재 1순위 원인 후보는 더 구체적으로 `Jetson kernel의 HID sensor hub / IIO support 부재`다.
+- 즉, 이 문제는 `노트북에서는 되고 Jetson에서는 안 되는 환경 차이`로 보는 편이 맞다.
 
 ## 다음에 바로 볼 항목
 
-- 현재 직결 상태를 유지한 채 같은 가이드 재현
 - `04_Jetson_D435i_IMU_Diagnosis_Guide.md` 순서대로 재현
-- `journalctl -k -b --no-pager | grep -iE 'realsense|hid|uvc|iio'`
-- `/sys/bus/iio/devices` 존재 여부
-- launch 중복 실행 또는 `realsense-viewer` 동시 실행 여부
+- `check_d435i_imu_kernel_support.sh` 실행으로 현재 Jetson 커널 지원 상태를 다시 확인
+- 노트북과 Jetson 간 `kernel / librealsense / ROS driver / HID/IIO support` 차이 비교
+- 정말 `D435i IMU`를 Jetson에서 써야 한다면, `CONFIG_HID_SENSOR_HUB`가 켜진 커널 경로를 준비

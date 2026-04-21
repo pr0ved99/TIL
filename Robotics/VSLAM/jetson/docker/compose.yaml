@@ -1,0 +1,96 @@
+x-jetson-vslam-common: &jetson-vslam-common
+  runtime: nvidia
+  privileged: true
+  network_mode: host
+  ipc: host
+  init: true
+  stdin_open: true
+  tty: true
+  working_dir: /workspace/TIL
+  group_add:
+    - "${HOST_I2C_GID:-116}"
+    - "${HOST_VIDEO_GID:-44}"
+    - "${HOST_RENDER_GID:-104}"
+  environment:
+    DISPLAY: ${DISPLAY}
+    ROS_DISTRO: ${ROS_DISTRO}
+    ROS_DOMAIN_ID: ${ROS_DOMAIN_ID}
+    NVIDIA_VISIBLE_DEVICES: all
+    NVIDIA_DRIVER_CAPABILITIES: all
+    QT_X11_NO_MITSHM: "1"
+    MALLOC_ARENA_MAX: "2"
+    ROS_HOME: /tmp/ros
+    ROS_LOG_DIR: /tmp/ros/log
+    RTABMAP_RUNTIME_DIR: /tmp/rtabmap
+    RTABMAP_DATABASE_PATH: /tmp/rtabmap/rtabmap.db
+  volumes:
+    - ${HOST_TIL_ROOT}:/workspace/TIL
+    - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    - /dev:/dev
+    - /run/udev:/run/udev:ro
+  tmpfs:
+    - /tmp:size=${JETSON_TMPFS_TMP_SIZE:-1024m},mode=1777
+    - /var/tmp:size=${JETSON_TMPFS_VAR_SIZE:-256m},mode=1777
+
+services:
+  jetson-vslam-dev:
+    <<: *jetson-vslam-common
+    container_name: jetson-vslam-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_NAME: ${USER_NAME}
+        UID: ${UID}
+        GID: ${GID}
+    image: jetson-vslam-dev:humble
+    command: bash
+
+  jetson-vslam-camera:
+    <<: *jetson-vslam-common
+    container_name: jetson-vslam-camera
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
+      args:
+        USER_NAME: ${USER_NAME}
+        UID: ${UID}
+        GID: ${GID}
+    image: jetson-vslam-runtime:humble
+    command: >
+      bash -lc "
+        source /opt/ros/${ROS_DISTRO}/setup.bash &&
+        mkdir -p /tmp/ros/log /tmp/rtabmap &&
+        echo '[INFO] Starting Docker D435i color/depth service' &&
+        echo '[INFO] preset=${JETSON_ACTIVE_PRESET:-light}' &&
+        echo '[INFO] color_profile=${JETSON_CAMERA_COLOR_PROFILE:-424x240x15}' &&
+        echo '[INFO] depth_profile=${JETSON_CAMERA_DEPTH_PROFILE:-424x240x15}' &&
+        exec ros2 launch realsense2_camera rs_launch.py enable_color:=true enable_depth:=true enable_gyro:=${JETSON_CAMERA_ENABLE_GYRO:-false} enable_accel:=${JETSON_CAMERA_ENABLE_ACCEL:-false} enable_sync:=true align_depth.enable:=true pointcloud.enable:=false rgb_camera.color_profile:=${JETSON_CAMERA_COLOR_PROFILE:-424x240x15} depth_module.depth_profile:=${JETSON_CAMERA_DEPTH_PROFILE:-424x240x15} ${JETSON_CAMERA_EXTRA_ARGS:-}
+      "
+
+  jetson-vslam-rtabmap:
+    <<: *jetson-vslam-common
+    container_name: jetson-vslam-rtabmap
+    build:
+      context: .
+      dockerfile: Dockerfile.runtime
+      args:
+        USER_NAME: ${USER_NAME}
+        UID: ${UID}
+        GID: ${GID}
+    image: jetson-vslam-runtime:humble
+    depends_on:
+      - jetson-vslam-camera
+    command: >
+      bash -lc "
+        source /opt/ros/${ROS_DISTRO}/setup.bash &&
+        mkdir -p /tmp/ros/log /tmp/rtabmap &&
+        echo '[INFO] Starting Docker RTAB-Map service' &&
+        echo '[INFO] preset=${JETSON_ACTIVE_PRESET:-light}' &&
+        echo '[INFO] detection_rate=${JETSON_RTABMAP_DETECTION_RATE:-2}' &&
+        echo '[INFO] odom_profile=${JETSON_RTABMAP_ODOM_PROFILE:-relaxed}' &&
+        echo '[INFO] queue_size=${JETSON_RTABMAP_QUEUE_SIZE:-15}' &&
+        echo '[INFO] imu_topic=${JETSON_RTABMAP_IMU_TOPIC:-/imu/disabled}' &&
+        echo '[INFO] wait_imu_to_init=${JETSON_RTABMAP_WAIT_IMU_TO_INIT:-false}' &&
+        exec ros2 launch rtabmap_launch rtabmap.launch.py rgb_topic:=/camera/camera/color/image_raw depth_topic:=/camera/camera/aligned_depth_to_color/image_raw camera_info_topic:=/camera/camera/color/camera_info frame_id:=camera_link approx_sync:=true approx_sync_max_interval:=${JETSON_RTABMAP_APPROX_SYNC_MAX_INTERVAL:-0.05} qos_image:=2 qos_camera_info:=2 topic_queue_size:=${JETSON_RTABMAP_QUEUE_SIZE:-15} sync_queue_size:=${JETSON_RTABMAP_QUEUE_SIZE:-15} queue_size:=${JETSON_RTABMAP_QUEUE_SIZE:-15} database_path:=/tmp/rtabmap/rtabmap.db imu_topic:=${JETSON_RTABMAP_IMU_TOPIC:-/imu/disabled} wait_imu_to_init:=${JETSON_RTABMAP_WAIT_IMU_TO_INIT:-false} odom_args:='${JETSON_RTABMAP_ODOM_ARGS:-}' rtabmap_viz:=${JETSON_RTABMAP_ENABLE_VIZ:-false} rviz:=false rtabmap_args:='--delete_db_on_start --Rtabmap/DetectionRate ${JETSON_RTABMAP_DETECTION_RATE:-2} ${JETSON_RTABMAP_EXTRA_ARGS:-}'
+      "

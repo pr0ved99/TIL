@@ -1,0 +1,42 @@
+FROM ros:humble-ros-base-jammy
+
+ARG USER_NAME=jetson
+ARG UID=1000
+ARG GID=1000
+
+ENV DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-c"]
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash-completion \
+    less \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    ros-humble-realsense2-camera \
+    ros-humble-rtabmap-ros \
+    usbutils \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN if getent group "${GID}" >/dev/null 2>&1; then \
+      existing_group="$(getent group "${GID}" | cut -d: -f1)"; \
+      if [ "${existing_group}" != "${USER_NAME}" ]; then \
+        groupmod -n "${USER_NAME}" "${existing_group}"; \
+      fi; \
+    elif getent group "${USER_NAME}" >/dev/null 2>&1; then \
+      groupmod -o -g "${GID}" "${USER_NAME}"; \
+    else \
+      groupadd --gid "${GID}" "${USER_NAME}"; \
+    fi \
+ && if id -u "${USER_NAME}" >/dev/null 2>&1; then \
+      usermod -o -u "${UID}" -g "${GID}" "${USER_NAME}"; \
+    else \
+      useradd --uid "${UID}" --gid "${GID}" -m -s /bin/bash "${USER_NAME}"; \
+    fi \
+ && mkdir -p /workspace \
+ && chown -R "${UID}:${GID}" /workspace /home/"${USER_NAME}"
+
+RUN echo "source /opt/ros/humble/setup.bash" >> /home/${USER_NAME}/.bashrc
+
+USER ${USER_NAME}
+WORKDIR /workspace/TIL
+CMD ["bash"]

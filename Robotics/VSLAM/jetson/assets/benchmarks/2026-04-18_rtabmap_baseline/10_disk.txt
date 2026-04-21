@@ -1,0 +1,8 @@
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/nvme0n1p1   233G   24G  197G  11% /
+tmpfs            3.8G   23M  3.7G   1% /dev/shm
+tmpfs            1.5G   92M  1.4G   7% /run
+tmpfs            5.0M  4.0K  5.0M   1% /run/lock
+/dev/nvme0n1p10   63M   78K   63M   1% /boot/efi
+tmpfs            761M  184K  761M   1% /run/user/1000
+/dev/loop0        16M   92K   16M   1% /media/jetson/L4T-README
