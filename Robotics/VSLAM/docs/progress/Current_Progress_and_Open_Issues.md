@@ -12,8 +12,21 @@
 - 현재는 `Jetson`에서 실제로 `VSLAM`을 돌리기 위한 환경으로 작업 범위를 옮기고 있다.
 - `Jetson` 작업은 `SSH` 접속으로 시작했지만, 지금은 `모니터 + 키보드 + 마우스`를 직접 연결한 상태에서 현장형 bring-up을 진행 중이다.
 - `Jetson` native 기준으로는 `D435i color/depth`와 `RTAB-Map` baseline이 실제로 다시 기동하는 데 성공했다.
+- `Jetson`의 `Docker CE`, `Compose`, `NVIDIA Container Toolkit`은 이미 설치돼 있고 `nvidia` runtime도 등록돼 있다.
+- 현재는 `jetson` 사용자의 `docker` 그룹 권한까지 열린 상태고, `jetson-vslam:humble` 개발 이미지 1차 build도 완료했다.
 - 다만 현재 `Jetson`에서는 `D435i` 내장 IMU가 `HID Motion Sensor Failure`로 비활성화되어 있어, 운영 기준은 우선 `IMU OFF`다.
 - `rtabmap_viz`는 GUI display가 있는 직접 연결 세션에서 실제로 확인됐고, non-GUI shell에서는 `xcb` 오류가 날 수 있다.
+- 외부 `GY-BNO08x`는 `Jetson`의 `i2c-1 / 0x4B`에서 실제 인식됐고, host `venv` 기준으로 `accel / gyro / mag / quaternion` raw 값 확인까지 완료했다.
+- 현재는 `BNO08x`를 host에서 `/imu/data`로 publish하고, Docker 컨테이너 안에서는 그 topic을 실제로 읽을 수 있는 상태까지 확인했다.
+- Docker 안에서도 `D435i color/depth` bring-up이 다시 재현됐으므로, 당분간 실전 경로는 `host BNO08x publisher + Docker RTAB-Map`으로 잡는 편이 맞다.
+- 다만 `2026-04-19` 기준으로 가장 먼저 확보한 Docker 기준선은 `IMU OFF image-only RTAB-Map baseline`이다.
+- 실제 재시험에서 Docker 안 `rgbd_odometry`, `rtabmap`은 정상 기동했고 `quality`도 빠르게 회복됐다.
+- `2026-04-20` 후반 재검증에서는 Docker 내부 `rtabmap_viz`의 핵심 blocker가 `video/render` 그룹 누락과 image-only IMU remap 버그였음을 확인했고, 이를 수정한 뒤 parameter/service binding까지 정상 재확인했다.
+- 현재 Jetson에서 가장 실용적인 운영 기준은 여전히 `Docker backend + host rtabmap_viz frontend` 구조지만, 내부 GUI도 다시 시도 가능한 상태로 정리됐다.
+- 같은 날짜 기준으로 `Docker` 구조도 `camera / rtabmap / dev-shell` 서비스 분리, `dev/runtime image` 분리, `tmpfs` DB/log, preset 파일, benchmark 자동 수집 구조까지 1차 정리했다.
+- `2026-04-20` 후반에는 Docker benchmark가 끝날 때 결과 폴더별 `90_summary.env`, `91_summary.md`와 root `docker_benchmark_index.csv`, benchmark `README` 인덱스까지 자동 갱신되게 정리했다.
+- `2026-04-20` preset benchmark 비교 결과, 현재 `Jetson Docker` 기본 baseline은 `light`가 가장 적합하고, `compare`는 후보 비교용, `medium`은 현재 실시간 baseline으로는 무거운 편으로 정리했다.
+- 따라서 다음 `BNO08x IMU ON` 비교도 `light` baseline을 유지한 채 `Docker backend + host rtabmap_viz` 구조에서 반복하는 것이 현재 기준선이다.
 - 앞으로 `Jetson` 전용 진행 기록은 별도 폴더에서 분리 관리한다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
@@ -175,11 +188,45 @@
 - 안정 구간에서는 `120~150` 정도가 반복 관찰됨
 - `rtabmap_viz`는 GUI display 없는 shell에서 `qt.qpa.xcb` 오류로 종료됨
 - `Jetson` 로컬 그래픽 세션에서는 `rtabmap_viz`가 실제로 열리고 `3D Map`과 trajectory가 표시되는 스크린샷도 확보함
+- `2026-04-18` benchmark 기준으로 `quality 0~299`, 평균 `174.2`, `delay 0.099~0.270s`, 평균 `0.150s`가 확인됐다
+- color와 aligned depth는 둘 다 약 `15 Hz` 수준으로 유지됐다
+- `Docker` 쪽은 `daemon.json`에 `nvidia` runtime이 등록돼 있었고, 현재는 `VSLAM` 개발용 `compose` 뼈대와 `jetson-vslam:humble` 이미지 build까지 완료한 상태다
+- `2026-04-20` 기준으로는 `Docker` 안 `rtabmap_viz`가 아니라 host `rtabmap_viz`가 `Docker` topic을 직접 읽는 우회 구조가 실제로 더 잘 맞았다
 
 해석:
 
 - `Jetson`에서도 `D435i + RTAB-Map` baseline은 IMU 없이 1차 동작한다
-- GUI 세션 조건까지 포함한 baseline 확인은 1차 완료됐고, 현재 남은 핵심 이슈는 `Jetson`의 `D435i IMU HID` 문제와 baseline 품질 비교다
+- GUI 세션 조건까지 포함한 baseline 확인은 1차 완료됐다
+- 이제 핵심은 "`되나`"보다 "`이 baseline이 반복 가능하고 실용적인가`"를 더 정량적으로 고정하는 쪽이다
+- 현재 남은 핵심 이슈는 `Jetson`의 `D435i IMU HID` 문제, baseline 품질 비교, 그리고 native 기준선을 Docker 안에서도 다시 재현하는 것이다
+- `Docker` baseline은 이제 "`backend가 도나`" 수준은 넘었고, 현재는 "`Docker backend + host GUI` 구조를 운영 기준으로 고정할지`"를 보는 단계다
+- 다만 `2026-04-19` 기준으로는 `D435i` 내장 IMU를 계속 파는 것보다, 이미 host에서 살아 있는 외부 `BNO08x`를 `ROS 2 /imu/data`로 연결해 실제 비교 실험을 먼저 진행하는 편이 더 우선순위가 높다
+- `2026-04-19` 기준으로 외부 `BNO08x`는 host `venv`에서 `ROS 2` publisher 스모크 테스트까지 통과했고, `/imu/data`, `/imu/mag` topic이 실제로 올라오는 단계까지 왔다
+- 아직 정식 장착 전이므로, 다음 비교 실험은 `BNO08x`를 `D435i` 몸체에 임시로 단단히 고정하고 `camera_link -> imu_link` static TF를 둔 상태에서 진행하는 것이 현재 기준선이다
+
+### 3-6. Jetson 외부 BNO08x IMU bring-up 확인
+
+완료된 것:
+
+- 외부 `GY-BNO08x`를 `Jetson` 40핀 헤더에 `I2C`로 연결
+- `i2c-1 / 0x4B` 인식 확인
+- host `venv`에서 `accel / gyro / mag / quaternion` raw 값 확인
+- host 기준 `live plot`과 `aircraft viewer` 시각화 스크립트/가이드 정리
+- 팀원 재현용 handoff 문서 정리
+
+관찰값:
+
+- `i2cdetect` 기준으로 `i2c-1`에서 `0x4B`가 확인됐다
+- host `venv`에서 센서를 움직였을 때 `gyro`, `accel`, `quat` 변화가 실제로 확인됐다
+- Linux/Jetson 특성상 `I2C frequency is not settable in python` 경고는 보였지만, raw 값 수신 자체는 성공했다
+- Docker 안 첫 재시험에서는 `/dev/i2c-1`에 `Permission denied`가 발생했다
+- 이에 따라 `compose.yaml`에 host `i2c` group(`gid 116`)을 추가해, 컨테이너 재시험 준비까지 마친 상태다
+
+해석:
+
+- 외부 `BNO08x`는 하드웨어/배선 관점에서 일단 살아 있다
+- 현재 병목은 센서 자체보다 `Docker 장치 권한`과 이후 `ROS 2 sensor_msgs/Imu` publish 연결이다
+- 즉, `Jetson`에서는 `D435i` 내장 IMU 대안 후보를 실제로 확보하기 시작한 단계로 볼 수 있다
 
 ---
 
@@ -311,8 +358,18 @@ HID Motion Sensor Failure! bad optional access
 - 기준선 운영은 우선 `IMU OFF`
 - IMU는 별도 진단 과제로 분리
 - 사용자 확인상 물리 연결은 이미 `SS USB` 케이블 직결 상태다
-- 다만 `lsusb -t` 기준 USB 토폴로지상 upstream `USB 3.0 Hub` 장치가 보이고, 커널 로그에는 `GET_CUR -32`, `status -71`가 반복 보인다
-- 따라서 다음 1순위는 외부 허브 가정이 아니라 `IIO/HID sensor node`와 `USB control` 경로를 중심으로 재현하는 것이다
+- `hidraw` 권한과 `udev` 규칙도 실제로 점검했고, `/dev/hidraw2`는 현재 `root:plugdev 660`까지 정리했다
+- 하지만 `sudo`로 `realsense2_camera`를 올려도 동일하게 `No HID info provided, IMU is disabled`, `HID Motion Sensor Failure! bad optional access`가 재현됐고 `/camera/camera/imu`도 뜨지 않았다
+- 따라서 지금은 단순 user permission 문제가 아니라 `Jetson`의 `HID/IIO/kernel path` 쪽이 더 핵심 원인 후보다
+- 추가로 현재 Jetson 커널 config를 직접 확인한 결과 `# CONFIG_HID_SENSOR_HUB is not set`가 확인됐다
+- `/lib/modules/$(uname -r)` 아래에도 `hid_sensor_hub`, `hid_sensor_accel_3d`, `hid_sensor_gyro_3d` 모듈이 보이지 않았다
+- 반면 사용자가 확인한 바에 따르면 같은 `D435i` IMU는 노트북에서 `yaw / pitch / roll`까지 정상 동작했다
+- 따라서 현재 판단은 `D435i` 센서 불량보다 `Jetson kernel/HID/IIO support 부재` 쪽이 훨씬 강하다
+- 다음 1순위는 여전히 `IIO/HID sensor node`와 `USB control` 경로를 중심으로 재현하는 것이다
+
+운영 판단:
+
+- 이 이슈는 계속 기록하되, 현재 실험 우선순위는 외부 `BNO08x` 기준으로 `ROS 2 /imu/data`를 만들고 `RTAB-Map IMU OFF`와 비교하는 쪽으로 이동한다
 
 ### 문제 7. GUI display 없는 shell에서 `rtabmap_viz` 실행 실패
 
@@ -327,6 +384,23 @@ Could not load the Qt platform plugin "xcb"
 
 - `SSH`나 비GUI shell에서는 `rtabmap_viz`를 기준선 확인 도구로 바로 쓰기 어렵다
 - GUI 검증은 직접 연결한 그래픽 세션에서 진행해야 한다
+
+### 문제 8. 외부 `BNO08x`는 host 성공, Docker는 장치 권한 재시험 필요
+
+현재 상태:
+
+- host `venv`에서는 `i2c-1 / 0x4B` 기준 raw 값 확인에 성공
+- Docker 첫 재시험에서는 `/dev/i2c-1` `Permission denied` 발생
+
+영향:
+
+- 외부 IMU를 바로 Docker/ROS 2 노드로 올리기 전에 컨테이너 장치 권한을 한 번 더 확인해야 한다
+- 따라서 지금은 `host에서 센서 동작 확인`과 `Docker에서 운영 경로 확인`을 분리해서 보는 편이 맞다
+
+현재 판단:
+
+- `compose.yaml`에 host `i2c` group(`gid 116`)을 추가해 두었으므로, 다음 재시험에서 먼저 `/dev/i2c-1` 접근성만 다시 확인하면 된다
+- 이 단계가 끝나면 다음은 `sensor_msgs/Imu` publisher 작성으로 넘어가는 흐름이 자연스럽다
 
 ### 문제 6. `flow` 프로필 이름과 실제 동작 불일치
 
@@ -428,10 +502,11 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. 현재 `RTAB-Map` 기준선을 유지한 채, 실내 짧은 구간 맵 누적 안정성을 한 번 더 확인
-2. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
-3. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
-4. 맵이 충분히 쌓이면 실내 3D 맵 성공 증빙 캡처와 요약 정리
+1. 현재 `Jetson` native baseline(`424x240x15 + DetectionRate 2 + IMU OFF`)을 유지한 채, 짧은 실내 경로 반복으로 맵 누적 안정성과 체감 부드러움을 한 번 더 확인
+2. `Jetson` Docker 기준선에서 `hello-world`, `jetson-vslam:humble` 이미지, `realsense2_camera / rtabmap_ros / rviz2` 가용성을 다시 확인
+3. 외부 `BNO08x`는 `host 성공 -> Docker 재시험 -> ROS 2 /imu publish` 순서로 단계적으로 올리기
+4. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
+5. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
 
 관련 문서:
 
@@ -441,7 +516,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 ## 9. 지금 상태 한 줄 요약
 
-지금은 `D435i 센서 bring-up`은 거의 끝났고, **`D435i 단독 3D 맵핑을 실용 속도로 돌리기 위한 경량화/튜닝 단계`**에 있다.
+지금은 `Jetson` native `RTAB-Map` baseline과 외부 `BNO08x` host raw 확인까지 확보됐고, **`이 기준선을 Docker와 ROS 2 통합으로 확장하는 단계`**에 있다.
 
 ---
 

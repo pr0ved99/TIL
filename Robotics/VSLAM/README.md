@@ -69,7 +69,10 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`jetson/README.md`](./jetson/README.md): `Jetson`에서 직접 진행하는 `VSLAM` 실행 기록 관리 기준
 - [`jetson/daily/2026-04-17/README.md`](./jetson/daily/2026-04-17/README.md): `SSH` 시작 이후 `모니터 + 키보드 + 마우스`를 직접 연결한 현재 작업 상태 기록
+- [`jetson/daily/2026-04-20/README.md`](./jetson/daily/2026-04-20/README.md): `Docker backend + host rtabmap_viz` 구조로 누적 map을 확인한 기록
+- [`jetson/docker/README.md`](./jetson/docker/README.md): `Jetson Docker`의 service 분리, runtime/dev image, preset, tmpfs 구조 정리
 - [`jetson/guides/README.md`](./jetson/guides/README.md): `Jetson`에서 바로 따라칠 수 있는 진행 방법 파일 목록
+- [`jetson/handoffs/README.md`](./jetson/handoffs/README.md): 팀원 실행용 핸드오프 문서 목록
 - [`jetson/progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md`](./jetson/progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md): `Jetson`에서의 최종 목표와 단계별 로드맵
 - [`jetson/progress/Jetson_VSLAM_Daily_Execution_Plan.md`](./jetson/progress/Jetson_VSLAM_Daily_Execution_Plan.md): `Jetson` 기준 일일 실행 계획
 

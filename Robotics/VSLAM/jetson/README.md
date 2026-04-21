@@ -29,8 +29,12 @@
   - `Jetson` 화면 캡처, 로그 백업, 증빙 자료
 - `scripts/`
   - `Jetson`에서 직접 실행하는 스크립트와 실행 진입점 정리
+- `docker/`
+  - `Jetson`에서 사용할 `VSLAM` 개발 컨테이너 정의와 compose 파일
 - `guides/`
   - `Jetson`에서 순서대로 따라 입력할 수 있는 실행 가이드 파일
+- `handoffs/`
+  - 팀원이 그대로 이어받아 실행할 수 있게 현재 상태와 실행 문서를 묶은 핸드오프 패키지
 - `notes/`
   - 환경 메모, 자주 쓰는 명령, 짧은 트러블슈팅 메모
 - `progress/`
@@ -44,9 +48,12 @@
 ## 현재 기준 세분화
 
 - [`daily/2026-04-17/README.md`](./daily/2026-04-17/README.md): `Jetson` 전용 진행 기록 시작
+- [`daily/2026-04-20/README.md`](./daily/2026-04-20/README.md): `Docker backend + host GUI` 구조 정리와 현재 운영 기준 업데이트
+- [`docker/README.md`](./docker/README.md): `dev/runtime image`, service 분리, preset, tmpfs 구조 정리
 - [`progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md`](./progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md): `Jetson`에서의 최종 목표와 큰 단계 로드맵
 - [`progress/Jetson_VSLAM_Daily_Execution_Plan.md`](./progress/Jetson_VSLAM_Daily_Execution_Plan.md): 지금 시점 기준 일일 실행 계획
 - [`guides/README.md`](./guides/README.md): `Jetson`에서 바로 따라칠 수 있는 진행 방법 파일 목록
+- [`handoffs/README.md`](./handoffs/README.md): 팀원 실행용 핸드오프 문서 목록
 - [`assets/README.md`](./assets/README.md): 증빙 자료 분류 기준
 - [`scripts/README.md`](./scripts/README.md): `Jetson` 전용 스크립트 관리 기준
 - [`notes/README.md`](./notes/README.md): 환경/명령/트러블슈팅 메모 관리 기준
