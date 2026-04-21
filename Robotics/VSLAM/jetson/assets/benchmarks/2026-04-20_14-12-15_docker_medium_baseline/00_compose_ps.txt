@@ -1,0 +1,3 @@
+NAME                   IMAGE                         COMMAND                  SERVICE                CREATED          STATUS          PORTS
+jetson-vslam-camera    jetson-vslam-runtime:humble   "/ros_entrypoint.sh …"   jetson-vslam-camera    12 seconds ago   Up 11 seconds   
+jetson-vslam-rtabmap   jetson-vslam-runtime:humble   "/ros_entrypoint.sh …"   jetson-vslam-rtabmap   7 seconds ago    Up 6 seconds    
