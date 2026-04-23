@@ -3,6 +3,7 @@
 ## 자동 요약
 
 - preset: `medium`
+- IMU: mode `n/a`, topic `n/a`, hz `n/a`
 - duration: `20s`
 - profiles: `640x360x15` / `640x360x15`
 - detection rate / queue: `2` / `20`

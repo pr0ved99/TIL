@@ -1,19 +1,19 @@
-# 2026-04-20_14-12-51 Docker compare Benchmark Summary
+# 2026-04-21_12-00-54 Docker light Benchmark Summary
 
 ## 자동 요약
 
-- preset: `compare`
-- IMU: mode `n/a`, topic `n/a`, hz `n/a`
+- preset: `light`
+- IMU: mode `off`, topic `/imu/disabled`, hz `n/a`
 - duration: `20s`
 - profiles: `424x240x15` / `424x240x15`
-- detection rate / queue: `3` / `20`
-- image hz: color `14.986`, depth `14.980`
-- odom/mapData hz: `7.783` / `2.490`
-- odom quality: avg `186.9`, min-max `0~312`
-- odom delay: avg `0.1960s`, min-max `0.1013~0.2504s`
-- RTAB-Map delay: avg `0.2021s`
-- VDD_IN: avg `7399mW`, min-max `7210~8820mW`
-- odom_info: matches `425`, inliers `186`, features `545`, local map `1389`
+- detection rate / queue: `2` / `15`
+- image hz: color `14.976`, depth `14.990`
+- odom/mapData hz: `10.410` / `1.828`
+- odom quality: avg `56.4`, min-max `0~86`
+- odom delay: avg `0.1459s`, min-max `0.0889~0.4490s`
+- RTAB-Map delay: avg `0.1488s`
+- VDD_IN: avg `9018mW`, min-max `8805~9437mW`
+- odom_info: matches `111`, inliers `51`, features `111`, local map `360`
 
 ## 참고 파일
 

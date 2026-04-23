@@ -13,11 +13,15 @@ ROOT_README="${BENCH_ROOT}/README.md"
 tmp_index="$(mktemp)"
 trap 'rm -f "${tmp_index}"' EXIT
 
-printf '%s\n' 'stamp,preset,color_profile,depth_profile,detection_rate,queue_size,color_hz,depth_hz,odom_hz,mapdata_hz,odom_quality_avg,odom_quality_min,odom_quality_max,odom_delay_avg_s,rtabmap_delay_avg_s,vdd_in_avg_mw,odom_info_matches,odom_info_inliers,odom_info_features,odom_info_local_map_size,bench_dir' > "${tmp_index}"
+printf '%s\n' 'stamp,preset,imu_mode,imu_topic,imu_hz,color_profile,depth_profile,detection_rate,queue_size,color_hz,depth_hz,odom_hz,mapdata_hz,odom_quality_avg,odom_quality_min,odom_quality_max,odom_delay_avg_s,rtabmap_delay_avg_s,vdd_in_avg_mw,odom_info_matches,odom_info_inliers,odom_info_features,odom_info_local_map_size,bench_dir' > "${tmp_index}"
 
-mapfile -t bench_dirs < <(find "${BENCH_ROOT}" -maxdepth 1 -mindepth 1 -type d -name '*_docker_*_baseline' | sort -r)
+mapfile -t bench_dirs < <(find "${BENCH_ROOT}" -maxdepth 1 -mindepth 1 -type d -name '*_docker_*' | sort -r)
 
 for bench_dir in "${bench_dirs[@]}"; do
+  if [[ ! -f "${bench_dir}/README.md" || ! -f "${bench_dir}/12_rtabmap.log" ]]; then
+    continue
+  fi
+
   summary_env="${bench_dir}/90_summary.env"
   summary_md="${bench_dir}/91_summary.md"
 
@@ -29,9 +33,12 @@ for bench_dir in "${bench_dirs[@]}"; do
     # shellcheck disable=SC1090
     source "${summary_env}"
     set +a
-    printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
+    printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
       "${STAMP}" \
       "${PRESET}" \
+      "${IMU_MODE}" \
+      "${IMU_TOPIC}" \
+      "${IMU_HZ}" \
       "${COLOR_PROFILE}" \
       "${DEPTH_PROFILE}" \
       "${DETECTION_RATE}" \
@@ -101,20 +108,25 @@ mv "${tmp_index}" "${INDEX_FILE}"
 - CSV 인덱스: [`docker_benchmark_index.csv`](./docker_benchmark_index.csv)
 - 각 benchmark 폴더의 `91_summary.md`를 같이 보면 빠르게 비교할 수 있다.
 
-| Timestamp | Preset | Color Hz | Odom Hz | MapData Hz | Odom Quality Avg | Odom Delay Avg | VDD_IN Avg | Summary |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Timestamp | Preset | IMU | Color Hz | Odom Hz | MapData Hz | Odom Quality Avg | Odom Delay Avg | VDD_IN Avg | Summary |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
 EOF
 
   for bench_dir in "${bench_dirs[@]}"; do
+    if [[ ! -f "${bench_dir}/README.md" || ! -f "${bench_dir}/12_rtabmap.log" ]]; then
+      continue
+    fi
+
     summary_env="${bench_dir}/90_summary.env"
     (
       set -a
       # shellcheck disable=SC1090
       source "${summary_env}"
       set +a
-      printf '| `%s` | `%s` | `%s` | `%s` | `%s` | `%s` | `%ss` | `%smW` | [%s](./%s/91_summary.md) |\n' \
+      printf '| `%s` | `%s` | `%s` | `%s` | `%s` | `%s` | `%s` | `%ss` | `%smW` | [%s](./%s/91_summary.md) |\n' \
         "${STAMP}" \
         "${PRESET}" \
+        "${IMU_MODE}" \
         "${COLOR_HZ}" \
         "${ODOM_HZ}" \
         "${MAPDATA_HZ}" \

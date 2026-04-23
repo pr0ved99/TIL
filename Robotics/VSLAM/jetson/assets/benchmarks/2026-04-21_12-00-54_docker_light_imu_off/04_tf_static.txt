@@ -1,0 +1,18 @@
+transforms:
+- header:
+    stamp:
+      sec: 1776740041
+      nanosec: 234629393
+    frame_id: camera_link
+  child_frame_id: imu_link
+  transform:
+    translation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    rotation:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+---

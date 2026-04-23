@@ -34,6 +34,80 @@
 - `odom profile`: `relaxed`
 - queue: `15`
 
+## 빠른 결론
+
+- `2026-04-21` 기준 자동 benchmark에서는 `IMU ON`이 odometry quality를 크게 끌어올리지는 않았다.
+- 같은 `light`, `20s` 조건에서 `IMU OFF` quality avg는 `56.4`, `IMU ON` quality avg는 `57.1`이었다.
+- 대신 사용자가 직접 본 RTAB-Map 화면에서는 IMU를 추가했을 때 맵 자세가 더 안정적으로 느껴졌다.
+- 따라서 현재 결론은 **성능 숫자 개선보다는 회전/기울기 상황에서 자세 안정성 보조 효과가 있는 후보**로 보는 것이 맞다.
+
+결과 문서:
+
+- [`2026-04-21_12-00-54_docker_light_imu_on_off_comparison.md`](../assets/benchmarks/2026-04-21_12-00-54_docker_light_imu_on_off_comparison.md)
+
+## 빠른 실행 명령어
+
+이 섹션은 실제 비교할 때 바로 복붙하는 명령어 모음이다.
+
+### 숫자 benchmark 비교
+
+이 명령은 화면을 보지 않고 `IMU OFF -> IMU ON`을 같은 `light` 조건으로 연속 측정한다.
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/run_docker_rtabmap_imu_comparison.sh both light 20
+```
+
+### 화면 비교 1: IMU OFF
+
+이 명령은 `BNO08x`를 끄고 `D435i color/depth`만으로 Docker RTAB-Map backend를 띄운 뒤 host `rtabmap_viz`로 화면을 본다.
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/stop_docker_rtabmap_stack.sh
+pkill -f '[r]tabmap_viz' || true
+pkill -f '[b]no08x_ros2_imu_publisher.py' || true
+pkill -f '[s]tatic_transform_publisher.*imu_link' || true
+
+./Robotics/VSLAM/jetson/scripts/run_docker_rtabmap_stack.sh light
+DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority}" \
+./Robotics/VSLAM/jetson/scripts/run_rtabmap_viz_from_host_for_docker.sh
+```
+
+### 화면 비교 2: IMU ON
+
+`IMU ON`은 센서값 publisher, `camera_link -> imu_link` TF, Docker RTAB-Map backend가 모두 필요하다. 아래 3개 터미널을 각각 열어 실행한다.
+
+터미널 1:
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/stop_docker_rtabmap_stack.sh
+pkill -f '[r]tabmap_viz' || true
+pkill -f '[b]no08x_ros2_imu_publisher.py' || true
+pkill -f '[s]tatic_transform_publisher.*imu_link' || true
+
+./Robotics/VSLAM/jetson/scripts/run_bno08x_ros2_imu_publisher.sh
+```
+
+터미널 2:
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/run_camera_to_imu_static_tf.sh
+```
+
+터미널 3:
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/run_docker_rtabmap_stack_with_external_imu.sh light 2 relaxed /imu/data 15
+DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority}" \
+./Robotics/VSLAM/jetson/scripts/run_rtabmap_viz_from_host_for_docker.sh
+```
+
+비교할 때는 `IMU OFF`와 `IMU ON`에서 같은 경로, 같은 속도, 같은 회전으로 움직인다.
+
 ## A. IMU OFF run
 
 ### 1. 기존 stack과 viewer 정리
@@ -43,7 +117,7 @@
 ```bash
 cd ~/yh_ws/TIL
 ./Robotics/VSLAM/jetson/scripts/stop_docker_rtabmap_stack.sh
-pkill -f rtabmap_viz || true
+pkill -f '[r]tabmap_viz' || true
 ```
 
 ### 2. 터미널 1: Docker baseline backend 시작
@@ -80,9 +154,9 @@ cd ~/yh_ws/TIL
 ```bash
 cd ~/yh_ws/TIL
 ./Robotics/VSLAM/jetson/scripts/stop_docker_rtabmap_stack.sh
-pkill -f rtabmap_viz || true
-pkill -f bno08x_ros2_imu_publisher || true
-pkill -f static_transform_publisher || true
+pkill -f '[r]tabmap_viz' || true
+pkill -f '[b]no08x_ros2_imu_publisher.py' || true
+pkill -f '[s]tatic_transform_publisher.*imu_link' || true
 ```
 
 ### 2. 터미널 1: host BNO08x publisher
@@ -122,6 +196,24 @@ cd ~/yh_ws/TIL
 ```
 
 ## C. 비교할 것
+
+### 숫자 benchmark를 먼저 남긴다
+
+이 단계는 수동 GUI 비교와 별도로, 같은 preset에서 `IMU OFF`와 `IMU ON`을 연속 측정해 로그를 남기는 단계다.
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/run_docker_rtabmap_imu_comparison.sh both light 20
+```
+
+왜 이 명령을 쓰는가:
+
+- `IMU OFF`와 `IMU ON`이 같은 `light` preset으로 측정된다.
+- `topic hz`, `odom quality`, `delay`, `tegrastats`, Docker logs가 같은 형식으로 저장된다.
+- 결과는 `jetson/assets/benchmarks/` 아래에 `imu_off`, `imu_on`, `imu_on_off_comparison.md`로 남는다.
+- `BNO08x`는 I2C 장치라 동시에 두 publisher가 읽으면 오류가 날 수 있으므로, 실행 전에는 기존 publisher 중복을 정리하는 것이 안전하다.
+
+### GUI에서 체감 비교를 한다
 
 아래만 보면 된다.
 

@@ -92,6 +92,8 @@ cd ~/yh_ws/TIL
 
 - 저장 위치:
   - `jetson/assets/benchmarks/YYYY-MM-DD_HH-MM-SS_docker_<preset>_baseline/`
+  - `jetson/assets/benchmarks/YYYY-MM-DD_HH-MM-SS_docker_<preset>_imu_on/`
+  - `jetson/assets/benchmarks/YYYY-MM-DD_HH-MM-SS_docker_<preset>_imu_off/`
 - 기본 파일:
   - `00_compose_ps.txt`
   - `01_nodes.txt`
@@ -104,10 +106,34 @@ cd ~/yh_ws/TIL
   - `21_aligned_depth_hz.txt`
   - `22_odom_hz.txt`
   - `23_mapdata_hz.txt`
+  - `24_imu_hz.txt`
   - `90_summary.env`
   - `91_summary.md`
 
-## 6. 자동 요약 파일은 어떻게 읽는가
+## 6. BNO08x IMU ON/OFF를 같은 기준으로 비교한다
+
+이 단계는 같은 `light` preset에서 `IMU OFF`와 `IMU ON`을 연속으로 측정해, 체감 안정성과 숫자 로그를 함께 비교하는 단계다.
+
+```bash
+cd ~/yh_ws/TIL
+./Robotics/VSLAM/jetson/scripts/run_docker_rtabmap_imu_comparison.sh both light 20
+```
+
+왜 이 명령을 쓰는가:
+
+- `IMU OFF`와 `IMU ON`을 같은 preset, 같은 duration으로 측정한다.
+- `IMU ON`에서는 `/imu/data`와 `camera_link -> imu_link` static TF를 확인한 뒤 Docker RTAB-Map을 올린다.
+- 결과는 각각 benchmark 폴더로 저장되고, 별도 `*_imu_on_off_comparison.md` 비교 문서도 생긴다.
+- `BNO08x`는 I2C 센서라 여러 프로세스가 동시에 읽으면 오류가 날 수 있다. 따라서 실행 전에는 기존 publisher 중복을 정리하는 편이 안전하다.
+
+정리 명령:
+
+```bash
+pkill -f '[b]no08x_ros2_imu_publisher.py' || true
+pkill -f '[s]tatic_transform_publisher.*imu_link' || true
+```
+
+## 7. 자동 요약 파일은 어떻게 읽는가
 
 이 단계는 benchmark가 끝난 뒤 어디를 먼저 보면 되는지 이해하는 단계다.
 
@@ -119,10 +145,11 @@ cd ~/yh_ws/TIL
   - preset, hz, odom quality/delay, 전력 요약이 같이 들어 있다
 - `docker_benchmark_index.csv`
   - 여러 benchmark를 한 줄씩 비교하는 root 인덱스
+  - `IMU mode/topic/hz`도 함께 기록한다
 - `jetson/assets/benchmarks/README.md`
   - 최근 Docker benchmark를 표로 모아 보여주는 루트 인덱스
 
-## 7. 끝난 뒤 서비스를 정리한다
+## 8. 끝난 뒤 서비스를 정리한다
 
 이 단계는 detached로 띄운 backend를 깔끔하게 내리는 단계다.
 
@@ -136,8 +163,8 @@ cd ~/yh_ws/TIL
 - 다음 실험 전에 남아 있는 서비스가 baseline을 섞지 않게 한다.
 - Docker backend를 foreground/manual 실행으로 다시 바꾸고 싶을 때도 정리 기준이 생긴다.
 
-## 8. 지금 단계에서 기대할 것
+## 9. 지금 단계에서 기대할 것
 
 - `Docker` baseline이 "감"이 아니라 숫자로 비교 가능해진다.
 - 어떤 설정이 더 가벼운지 `tegrastats`, `topic hz`, `quality` 로그로 판단할 수 있다.
-- 이후 `BNO08x IMU ON` 실험도 같은 수집 틀로 확장 가능하다.
+- `BNO08x IMU ON/OFF`도 같은 수집 틀로 비교 가능하다.

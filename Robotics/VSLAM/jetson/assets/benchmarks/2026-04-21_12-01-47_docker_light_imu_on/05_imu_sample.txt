@@ -1,0 +1,49 @@
+header:
+  stamp:
+    sec: 1776740531
+    nanosec: 853299040
+  frame_id: imu_link
+orientation:
+  x: 0.0125732421875
+  y: -0.740478515625
+  z: -0.01055908203125
+  w: 0.671875
+orientation_covariance:
+- 0.01
+- 0.0
+- 0.0
+- 0.0
+- 0.01
+- 0.0
+- 0.0
+- 0.0
+- 0.01
+angular_velocity:
+  x: 0.0
+  y: 0.0
+  z: 0.0
+angular_velocity_covariance:
+- 0.001
+- 0.0
+- 0.0
+- 0.0
+- 0.001
+- 0.0
+- 0.0
+- 0.0
+- 0.001
+linear_acceleration:
+  x: 9.54296875
+  y: 0.30859375
+  z: -0.92578125
+linear_acceleration_covariance:
+- 0.01
+- 0.0
+- 0.0
+- 0.0
+- 0.01
+- 0.0
+- 0.0
+- 0.0
+- 0.01
+---
