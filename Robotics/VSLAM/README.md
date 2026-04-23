@@ -61,15 +61,22 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 ### daily
 
+- [`daily/README.md`](./daily/README.md): `VSLAM 공통 일지`와 `Jetson 현장 일지`를 날짜순으로 모아보는 통합 인덱스
 - [`daily/_template/README.md`](./daily/_template/README.md): 날짜별 작업 일지를 쓸 때 복사해서 사용하는 질문형 회고 템플릿
 - [`daily/2026-04-09/README.md`](./daily/2026-04-09/README.md): 프로젝트 방향, 스프린트 기준, D435i 1차 확인 정리
 - [`daily/2026-04-11/README.md`](./daily/2026-04-11/README.md): D435i 권한 문제, IMU 연속성, depth 저해상도 안정화 트러블슈팅 정리
+- [`daily/2026-04-13/README.md`](./daily/2026-04-13/README.md): Jira 작업 정리와 VSLAM 진행 계획 보강
+- [`daily/2026-04-14/README.md`](./daily/2026-04-14/README.md): RTAB-Map 튜닝 방향과 실험 계획 정리
 
 ### jetson
 
 - [`jetson/README.md`](./jetson/README.md): `Jetson`에서 직접 진행하는 `VSLAM` 실행 기록 관리 기준
 - [`jetson/daily/2026-04-17/README.md`](./jetson/daily/2026-04-17/README.md): `SSH` 시작 이후 `모니터 + 키보드 + 마우스`를 직접 연결한 현재 작업 상태 기록
+- [`jetson/daily/2026-04-18/README.md`](./jetson/daily/2026-04-18/README.md): `Docker`, `BNO08x`, 핸드오프 문서와 영상 증빙 정리
+- [`jetson/daily/2026-04-19/README.md`](./jetson/daily/2026-04-19/README.md): `D435i IMU` 한계 확인과 `BNO08x ROS2 publisher/viewer` 진행 기록
 - [`jetson/daily/2026-04-20/README.md`](./jetson/daily/2026-04-20/README.md): `Docker backend + host rtabmap_viz` 구조로 누적 map을 확인한 기록
+- [`jetson/daily/2026-04-21/README.md`](./jetson/daily/2026-04-21/README.md): `BNO08x` calibration과 Docker `IMU OFF/ON` 비교 benchmark 기록
+- [`jetson/daily/2026-04-22/README.md`](./jetson/daily/2026-04-22/README.md): `trashbot_description` URDF/xacro 초안과 RViz2 확인 구조 추가
 - [`jetson/docker/README.md`](./jetson/docker/README.md): `Jetson Docker`의 service 분리, runtime/dev image, preset, tmpfs 구조 정리
 - [`jetson/guides/README.md`](./jetson/guides/README.md): `Jetson`에서 바로 따라칠 수 있는 진행 방법 파일 목록
 - [`jetson/handoffs/README.md`](./jetson/handoffs/README.md): 팀원 실행용 핸드오프 문서 목록
