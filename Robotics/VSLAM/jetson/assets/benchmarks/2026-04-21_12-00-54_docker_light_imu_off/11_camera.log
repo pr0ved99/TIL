@@ -1,0 +1,39 @@
+jetson-vslam-camera  | [INFO] Starting Docker D435i color/depth service
+jetson-vslam-camera  | [INFO] preset=light
+jetson-vslam-camera  | [INFO] color_profile=424x240x15
+jetson-vslam-camera  | [INFO] depth_profile=424x240x15
+jetson-vslam-camera  | [INFO] [launch]: All log files can be found below /tmp/ros/log/2026-04-21-03-00-57-026669-ubuntu-21
+jetson-vslam-camera  | [INFO] [launch]: Default logging verbosity is set to INFO
+jetson-vslam-camera  | [INFO] [launch.user]: 🚀 Launching as Normal ROS Node
+jetson-vslam-camera  | [INFO] [realsense2_camera_node-1]: process started with pid [38]
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.304062427] [camera.camera]: RealSense ROS v4.57.7[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.305518659] [camera.camera]: Built with LibRealSense v2.57.7[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.305587652] [camera.camera]: Running with LibRealSense v2.57.7[0m
+jetson-vslam-camera  | [realsense2_camera_node-1]  21/04 03:00:57,306 ERROR [281473277028576] (context.cpp:41) No valid configuration file found at : /home/jetson/.realsense-config.json loading defaults
+jetson-vslam-camera  | [realsense2_camera_node-1]  21/04 03:00:57,341 WARNING [281473277028576] (ds-motion-common.cpp:452) No HID info provided, IMU is disabled
+jetson-vslam-camera  | [realsense2_camera_node-1]  21/04 03:00:57,341 ERROR [281473277028576] (d400-motion.cpp:185) Intel RealSense D435I #116622071600 - HID Motion Sensor Failure! bad optional access
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343029266] [camera.camera]: Device with serial number 116622071600 was found.
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343188599] [camera.camera]: Device with physical ID /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.2/2-1.2:1.0/video4linux/video0 was found.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343221944] [camera.camera]: Device with name Intel RealSense D435I was found.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343597954] [camera.camera]: Device with port number 2-1.2 was found.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343639363] [camera.camera]: Device USB type: 3.2[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.343795335] [camera.camera]: getParameters...[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344259059] [camera.camera]: JSON file is not provided[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344300660] [camera.camera]: Device Name: Intel RealSense D435I[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344328245] [camera.camera]: Device Serial No: 116622071600[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344352278] [camera.camera]: Device physical port: /sys/devices/platform/bus@0/3610000.usb/usb2/2-1/2-1.2/2-1.2:1.0/video4linux/video0[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344375094] [camera.camera]: Device FW version: 5.17.0.10[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344398359] [camera.camera]: Device Product ID: 0x0B3A[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.344419576] [camera.camera]: Sync Mode: On[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [33m[WARN] [1776740457.511784296] [camera.camera]: re-enable the stream for the change to take effect.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.513888609] [camera.camera]: Set ROS param depth_module.infra_profile to default: 848x480x30[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [33m[WARN] [1776740457.517793162] [camera.camera]: Could not set param: rgb_camera.power_line_frequency with 3 Range: [0, 2]: parameter 'rgb_camera.power_line_frequency' could not be set: Parameter {rgb_camera.power_line_frequency} doesn't comply with integer range.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [33m[WARN] [1776740457.523314846] [camera.camera]: re-enable the stream for the change to take effect.[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.530475679] [camera.camera]: Stopping Sensor: Depth Module[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.530895466] [camera.camera]: Stopping Sensor: RGB Camera[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.544945763] [camera.camera]: Starting Sensor: Depth Module[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.557170988] [camera.camera]: Open profile: stream_type: Depth(0), Format: Z16, Width: 424, Height: 240, FPS: 15[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.563970211] [camera.camera]: Starting Sensor: RGB Camera[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.573429825] [camera.camera]: Open profile: stream_type: Color(0), Format: RGB8, Width: 424, Height: 240, FPS: 15[0m
+jetson-vslam-camera  | [realsense2_camera_node-1] [0m[INFO] [1776740457.591329826] [camera.camera]: RealSense Node Is Up![0m

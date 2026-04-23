@@ -15,6 +15,7 @@
 - `Docker` 분리 서비스(`camera / rtabmap / dev-shell`) 실행 스크립트
 - `Docker` detached stack 시작/중지 스크립트
 - `Docker` benchmark/monitoring 자동 수집 스크립트
+- `Docker` `IMU OFF/ON` benchmark를 같은 preset으로 연속 측정하는 비교 스크립트
 - `Docker` benchmark 결과를 요약하고 root 인덱스를 갱신하는 정리 스크립트
 - 외부 `IMU` bus scan, 값 확인, 1차 bring-up 스크립트
 - 외부 `IMU` live plot, 축 반응 확인, 정지 bias 점검 스크립트

@@ -40,8 +40,10 @@
 - CSV 인덱스: [`docker_benchmark_index.csv`](./docker_benchmark_index.csv)
 - 각 benchmark 폴더의 `91_summary.md`를 같이 보면 빠르게 비교할 수 있다.
 
-| Timestamp | Preset | Color Hz | Odom Hz | MapData Hz | Odom Quality Avg | Odom Delay Avg | VDD_IN Avg | Summary |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| `2026-04-20_14-12-51` | `compare` | `14.986` | `7.783` | `2.490` | `186.9` | `0.1960s` | `7399mW` | [2026-04-20_14-12-51_docker_compare_baseline](./2026-04-20_14-12-51_docker_compare_baseline/91_summary.md) |
-| `2026-04-20_14-12-15` | `medium` | `14.300` | `5.310` | `1.522` | `325.2` | `0.2020s` | `7103mW` | [2026-04-20_14-12-15_docker_medium_baseline](./2026-04-20_14-12-15_docker_medium_baseline/91_summary.md) |
-| `2026-04-20_14-10-57` | `light` | `14.989` | `14.991` | `1.874` | `198.7` | `0.1270s` | `6777mW` | [2026-04-20_14-10-57_docker_light_baseline](./2026-04-20_14-10-57_docker_light_baseline/91_summary.md) |
+| Timestamp | Preset | IMU | Color Hz | Odom Hz | MapData Hz | Odom Quality Avg | Odom Delay Avg | VDD_IN Avg | Summary |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `2026-04-21_12-01-47` | `light` | `on` | `14.989` | `9.539` | `1.768` | `57.1` | `0.1592s` | `9128mW` | [2026-04-21_12-01-47_docker_light_imu_on](./2026-04-21_12-01-47_docker_light_imu_on/91_summary.md) |
+| `2026-04-21_12-00-54` | `light` | `off` | `14.976` | `10.410` | `1.828` | `56.4` | `0.1459s` | `9018mW` | [2026-04-21_12-00-54_docker_light_imu_off](./2026-04-21_12-00-54_docker_light_imu_off/91_summary.md) |
+| `2026-04-20_14-12-51` | `compare` | `n/a` | `14.986` | `7.783` | `2.490` | `186.9` | `0.1960s` | `7399mW` | [2026-04-20_14-12-51_docker_compare_baseline](./2026-04-20_14-12-51_docker_compare_baseline/91_summary.md) |
+| `2026-04-20_14-12-15` | `medium` | `n/a` | `14.300` | `5.310` | `1.522` | `325.2` | `0.2020s` | `7103mW` | [2026-04-20_14-12-15_docker_medium_baseline](./2026-04-20_14-12-15_docker_medium_baseline/91_summary.md) |
+| `2026-04-20_14-10-57` | `light` | `n/a` | `14.989` | `14.991` | `1.874` | `198.7` | `0.1270s` | `6777mW` | [2026-04-20_14-10-57_docker_light_baseline](./2026-04-20_14-10-57_docker_light_baseline/91_summary.md) |

@@ -234,14 +234,19 @@ benchmark_write_summary_env() {
 
   bench_name="$(basename "${bench_dir}")"
   stamp="${bench_name%%_docker_*}"
-  preset="${bench_name#*_docker_}"
-  preset="${preset%_baseline}"
+  preset="$(benchmark_extract_readme_value "${readme_file}" "preset:")"
+  if [[ "${preset}" == "n/a" ]]; then
+    preset="${bench_name#*_docker_}"
+    preset="${preset%_baseline}"
+  fi
 
   cat <<EOF
 BENCH_NAME=${bench_name}
 BENCH_DIR=${bench_dir}
 STAMP=${stamp}
 PRESET=${preset}
+IMU_MODE=$(benchmark_extract_readme_value "${readme_file}" "imu mode:")
+IMU_TOPIC=$(benchmark_extract_readme_value "${readme_file}" "imu topic:")
 DURATION_SECONDS=$(benchmark_extract_readme_value "${readme_file}" "duration:")
 COLOR_PROFILE=$(benchmark_extract_readme_value "${readme_file}" "color profile:")
 DEPTH_PROFILE=$(benchmark_extract_readme_value "${readme_file}" "depth profile:")
@@ -252,6 +257,7 @@ COLOR_HZ=$(benchmark_last_average_rate "${bench_dir}/20_color_hz.txt")
 DEPTH_HZ=$(benchmark_last_average_rate "${bench_dir}/21_aligned_depth_hz.txt")
 ODOM_HZ=$(benchmark_last_average_rate "${bench_dir}/22_odom_hz.txt")
 MAPDATA_HZ=$(benchmark_last_average_rate "${bench_dir}/23_mapdata_hz.txt")
+IMU_HZ=$(benchmark_last_average_rate "${bench_dir}/24_imu_hz.txt")
 EOF
   benchmark_write_odom_stats_env "${bench_dir}/12_rtabmap.log"
   benchmark_write_rtabmap_stats_env "${bench_dir}/12_rtabmap.log"
@@ -272,6 +278,7 @@ benchmark_render_summary_markdown() {
 ## 자동 요약
 
 - preset: \`${PRESET}\`
+- IMU: mode \`${IMU_MODE}\`, topic \`${IMU_TOPIC}\`, hz \`${IMU_HZ}\`
 - duration: \`${DURATION_SECONDS}\`
 - profiles: \`${COLOR_PROFILE}\` / \`${DEPTH_PROFILE}\`
 - detection rate / queue: \`${DETECTION_RATE}\` / \`${QUEUE_SIZE}\`

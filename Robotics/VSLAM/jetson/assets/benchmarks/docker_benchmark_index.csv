@@ -1,4 +1,6 @@
-stamp,preset,color_profile,depth_profile,detection_rate,queue_size,color_hz,depth_hz,odom_hz,mapdata_hz,odom_quality_avg,odom_quality_min,odom_quality_max,odom_delay_avg_s,rtabmap_delay_avg_s,vdd_in_avg_mw,odom_info_matches,odom_info_inliers,odom_info_features,odom_info_local_map_size,bench_dir
-2026-04-20_14-12-51,compare,424x240x15,424x240x15,3,20,14.986,14.980,7.783,2.490,186.9,0,312,0.1960,0.2021,7399,425,186,545,1389,2026-04-20_14-12-51_docker_compare_baseline
-2026-04-20_14-12-15,medium,640x360x15,640x360x15,2,20,14.300,14.983,5.310,1.522,325.2,0,494,0.2020,0.2749,7103,448,335,801,892,2026-04-20_14-12-15_docker_medium_baseline
-2026-04-20_14-10-57,light,424x240x15,424x240x15,2,15,14.989,14.989,14.991,1.874,198.7,0,254,0.1270,0.1581,6777,245,214,398,394,2026-04-20_14-10-57_docker_light_baseline
+stamp,preset,imu_mode,imu_topic,imu_hz,color_profile,depth_profile,detection_rate,queue_size,color_hz,depth_hz,odom_hz,mapdata_hz,odom_quality_avg,odom_quality_min,odom_quality_max,odom_delay_avg_s,rtabmap_delay_avg_s,vdd_in_avg_mw,odom_info_matches,odom_info_inliers,odom_info_features,odom_info_local_map_size,bench_dir
+2026-04-21_12-01-47,light,on,/imu/data,69.225,424x240x15,424x240x15,2,15,14.989,14.992,9.539,1.768,57.1,0,84,0.1592,0.1680,9128,119,63,119,356,2026-04-21_12-01-47_docker_light_imu_on
+2026-04-21_12-00-54,light,off,/imu/disabled,n/a,424x240x15,424x240x15,2,15,14.976,14.990,10.410,1.828,56.4,0,86,0.1459,0.1488,9018,111,51,111,360,2026-04-21_12-00-54_docker_light_imu_off
+2026-04-20_14-12-51,compare,n/a,n/a,n/a,424x240x15,424x240x15,3,20,14.986,14.980,7.783,2.490,186.9,0,312,0.1960,0.2021,7399,425,186,545,1389,2026-04-20_14-12-51_docker_compare_baseline
+2026-04-20_14-12-15,medium,n/a,n/a,n/a,640x360x15,640x360x15,2,20,14.300,14.983,5.310,1.522,325.2,0,494,0.2020,0.2749,7103,448,335,801,892,2026-04-20_14-12-15_docker_medium_baseline
+2026-04-20_14-10-57,light,n/a,n/a,n/a,424x240x15,424x240x15,2,15,14.989,14.989,14.991,1.874,198.7,0,254,0.1270,0.1581,6777,245,214,398,394,2026-04-20_14-10-57_docker_light_baseline
