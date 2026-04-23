@@ -144,21 +144,21 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 - 예외:
   - 나중에 카메라-IMU 강결합 VIO를 할 계획이면, 그때는 카메라 가까운 별도 IMU를 두는 것이 더 유리하다.
 - 관련 정리 문서:
-  - [BNO08x IMU 배치 가이드](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/BNO08x_IMU_Placement_Guide.md)
+  - [BNO08x IMU 배치 가이드](../../docs/learning/BNO08x_IMU_Placement_Guide.md)
 
 ## 오늘 만든/수정한 파일
 
-- [재시험 로그 폴더 README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-14_rtabmap_retest_logs/README.md)
-- [BNO08x IMU 배치 가이드](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/BNO08x_IMU_Placement_Guide.md)
-- [2026-04-14 일지](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-14/README.md)
-- [2026-04-13 일지](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-13/README.md)
+- [재시험 로그 폴더 README](../../assets/2026-04-14_rtabmap_retest_logs/README.md)
+- [BNO08x IMU 배치 가이드](../../docs/learning/BNO08x_IMU_Placement_Guide.md)
+- [2026-04-14 일지](./README.md)
+- [2026-04-13 일지](../2026-04-13/README.md)
 
 ## 증빙 자료
 
-- [후보 1 재시험 로그](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate1_retest.log)
-- [후보 2 재시험 로그](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate2_retest.log)
-- [후보 3 재시험 로그](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate3_retest.log)
-- [후보 4 재시험 로그](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate4_retest.log)
+- [후보 1 재시험 로그](../../assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate1_retest.log)
+- [후보 2 재시험 로그](../../assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate2_retest.log)
+- [후보 3 재시험 로그](../../assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate3_retest.log)
+- [후보 4 재시험 로그](../../assets/2026-04-14_rtabmap_retest_logs/rtabmap_candidate4_retest.log)
 
 ## 남은 문제
 

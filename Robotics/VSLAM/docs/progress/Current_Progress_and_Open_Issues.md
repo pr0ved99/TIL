@@ -28,9 +28,32 @@
 - `2026-04-20` preset benchmark 비교 결과, 현재 `Jetson Docker` 기본 baseline은 `light`가 가장 적합하고, `compare`는 후보 비교용, `medium`은 현재 실시간 baseline으로는 무거운 편으로 정리했다.
 - 따라서 다음 `BNO08x IMU ON` 비교도 `light` baseline을 유지한 채 `Docker backend + host rtabmap_viz` 구조에서 반복하는 것이 현재 기준선이다.
 - 앞으로 `Jetson` 전용 진행 기록은 별도 폴더에서 분리 관리한다.
+- 추가로 `Jetson + Docker + ROS 2 Humble + D435i` 경로에서는 color/depth 토픽과 depth 약 `30 Hz`까지 확인해, Jetson 실기기 bring-up도 1차 완료했다.
+- 반면 `Jetson publish -> 노트북 RTAB-Map GUI` cross-machine 경로는 현재 학교 Wi-Fi에서 DDS discovery가 막혀 실패했고, 이는 네트워크 계층 이슈로 분리된 상태다.
+- 발표용 3D 맵은 우선 **노트북에 D435i를 직접 연결한 RTAB-Map 경로**로 확보했고, 결과 DB는 `assets/2026-04-16_laptop_rtabmap_demo/rtabmap_demo_map.db`에 저장했다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
+
+---
+
+## 0. 2026-04-16 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **노트북 직결 경로**
+   - `D435i + RTAB-Map`으로 발표용 3D 맵 생성과 `rtabmap.db` 저장까지 완료했다.
+2. **Jetson Docker 경로**
+   - `ROS 2 Humble + realsense2_camera` 환경 고정, color/depth 토픽 확인, `depth/image_rect_raw` 약 `30 Hz` 확인까지 끝냈다.
+3. **Jetson -> 노트북 원격 GUI 경로**
+   - 학교 Wi-Fi에서는 `ROS_DOMAIN_ID`, `ROS_DISCOVERY_SERVER`, `ROS_SUPER_CLIENT`를 맞춰도 discovery 실패였다.
+   - 따라서 현재 병목은 카메라나 RTAB-Map이 아니라 **cross-machine ROS 2 네트워크**다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **발표 자료 확보**: 노트북 직결 경로로 우선 해결 가능
+- **Jetson 실기기 검증**: Docker 기반 RGB-D 경로는 정상
+- **남은 문제**: Jetson publish -> 외부 GUI subscribe 경로 재검증
 
 ---
 
@@ -502,11 +525,13 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. 현재 `Jetson` native baseline(`424x240x15 + DetectionRate 2 + IMU OFF`)을 유지한 채, 짧은 실내 경로 반복으로 맵 누적 안정성과 체감 부드러움을 한 번 더 확인
-2. `Jetson` Docker 기준선에서 `hello-world`, `jetson-vslam:humble` 이미지, `realsense2_camera / rtabmap_ros / rviz2` 가용성을 다시 확인
-3. 외부 `BNO08x`는 `host 성공 -> Docker 재시험 -> ROS 2 /imu publish` 순서로 단계적으로 올리기
-4. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
-5. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
+1. `Jetson Docker light baseline`을 유지한 채 `Docker backend + host rtabmap_viz` 구조에서 짧은 실내 경로를 반복해 맵 누적 안정성과 체감 부드러움을 다시 확인
+2. 외부 `BNO08x`는 이미 확보한 host raw / ROS 2 publish 경로를 기준으로 `Docker RTAB-Map IMU ON` 비교 실험까지 단계적으로 올리기
+3. Jetson에 모니터/마우스를 직접 연결한 상태에서 로컬 GUI 기준 `X11 -> RTAB-Map` 경로도 보조 검증
+4. Jetson과 노트북을 같은 아이폰 핫스팟 또는 다른 네트워크에 붙여 cross-machine ROS 2 discovery를 재검증
+5. 발표 자료에는 이미 확보한 노트북 직결 3D 맵 DB와 캡처를 우선 사용
+6. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
+7. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
 
 관련 문서:
 
@@ -516,7 +541,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 ## 9. 지금 상태 한 줄 요약
 
-지금은 `Jetson` native `RTAB-Map` baseline과 외부 `BNO08x` host raw 확인까지 확보됐고, **`이 기준선을 Docker와 ROS 2 통합으로 확장하는 단계`**에 있다.
+지금은 `Jetson` native `RTAB-Map` baseline, `Jetson Docker light baseline`, 외부 `BNO08x` host/ROS 2 확인, 발표용 노트북 직결 3D 맵까지 확보했고, **현재 기준선을 Docker RTAB-Map + 외부 IMU 통합 실험으로 확장하는 단계**에 있다.
 
 ---
 

@@ -63,3 +63,6 @@ Thumbs.db
 # Python cache
 __pycache__/
 *.pyc
+
+# Large local RTAB-Map database artifact
+Robotics/VSLAM/assets/2026-04-16_laptop_rtabmap_demo/rtabmap_demo_map.db

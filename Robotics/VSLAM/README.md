@@ -32,10 +32,14 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`docs/learning/D435i_RTABMap_VSLAM_Manual.md`](./docs/learning/D435i_RTABMap_VSLAM_Manual.md): D435i RGB-D 입력으로 RTAB-Map VSLAM을 실행하고 확인하는 운영 매뉴얼
 - [`docs/learning/D435i_Jetson_Docker_Prerequisites.md`](./docs/learning/D435i_Jetson_Docker_Prerequisites.md): D435i와 Jetson Docker를 시작하기 전에 알아야 할 선수지식 정리
+- [`docs/learning/Jetson_Docker_Host_Checklist.md`](./docs/learning/Jetson_Docker_Host_Checklist.md): Jetson에서 Docker 작업 시작 전 호스트 상태를 점검하는 체크리스트
+- [`docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md`](./docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md): `25W`, `Balanced`, `nvpmodel`, `jetson_clocks` 관계와 RTAB-Map 관점에서의 점검 순서 정리
+- [`docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`](./docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md): Jetson Docker 컨테이너에서 D435i 토픽을 publish하고 노트북에서 RTAB-Map GUI를 띄우는 절차 정리
 - [`docs/learning/D435i_IMU_Topics_and_Enable_Guide.md`](./docs/learning/D435i_IMU_Topics_and_Enable_Guide.md): D435i IMU 토픽을 켜고 확인하는 방법 정리
 - [`docs/learning/D435i_IMU_Axis_Interpretation.md`](./docs/learning/D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
 - [`docs/learning/D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
 - [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
+- [`docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md): 작은 거북이 URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
 
 ### progress
 
@@ -53,6 +57,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 ### process
 
 - [`docs/process/Jira_Convention_Guide.md`](./docs/process/Jira_Convention_Guide.md): Jira 에픽/스토리/태스크 작성 규칙과 스프린트 운영 컨벤션
+- [`docs/process/Git_Branch_Strategy_Guide.md`](./docs/process/Git_Branch_Strategy_Guide.md): Git Flow 기반 브랜치 전략, 커밋/MR 규칙, GitLab MR 워크플로우 정리
 
 ### troubleshooting
 
@@ -66,8 +71,11 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`daily/_template/README.md`](./daily/_template/README.md): 날짜별 작업 일지를 쓸 때 복사해서 사용하는 질문형 회고 템플릿
 - [`daily/2026-04-09/README.md`](./daily/2026-04-09/README.md): 프로젝트 방향, 스프린트 기준, D435i 1차 확인 정리
 - [`daily/2026-04-11/README.md`](./daily/2026-04-11/README.md): D435i 권한 문제, IMU 연속성, depth 저해상도 안정화 트러블슈팅 정리
-- [`daily/2026-04-13/README.md`](./daily/2026-04-13/README.md): Jira 작업 정리와 VSLAM 진행 계획 보강
-- [`daily/2026-04-14/README.md`](./daily/2026-04-14/README.md): RTAB-Map 튜닝 방향과 실험 계획 정리
+- [`daily/2026-04-13/README.md`](./daily/2026-04-13/README.md): Jira 작업 정리, VSLAM 진행 계획 보강, 발표 자료용 RTAB-Map 3D 맵 구성 정리
+- [`daily/2026-04-14/README.md`](./daily/2026-04-14/README.md): RTAB-Map 튜닝 방향, 재실험 로그, 발표용 3D 맵 생성 시도 정리
+- [`daily/2026-04-15/README.md`](./daily/2026-04-15/README.md): Jetson 호스트, Docker, ROS 2 Humble, D435i color/depth bring-up 정리
+- [`daily/2026-04-16/README.md`](./daily/2026-04-16/README.md): Jetson Docker RTAB-Map/X11, cross-machine ROS 2 실패 원인 분리, 노트북 직결 RTAB-Map 데모 정리
+- [`daily/2026-04-23/README.md`](./daily/2026-04-23/README.md): 로컬 CAD 자료 정리, 궤도형 섀시 후보 분리, URDF/Xacro 준비 방향 정리
 
 ### jetson
 
@@ -88,6 +96,8 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`assets/2026-04-09_task59_d435i_depth_check/README.md`](./assets/2026-04-09_task59_d435i_depth_check/README.md): `S14P31C205-59` D435i depth 토픽 확인 증빙 정리
 - [`assets/2026-04-11_d435i_viewer_and_mapping_check/README.md`](./assets/2026-04-11_d435i_viewer_and_mapping_check/README.md): `realsense-viewer`, IMU 확인, RTAB-Map 3D 맵핑 시도 증빙 정리
+- [`assets/2026-04-15_jetson_docker_ros2_d435i_check/README.md`](./assets/2026-04-15_jetson_docker_ros2_d435i_check/README.md): Jetson 호스트, ROS 2 컨테이너, `realsense2_camera` 토픽/주기 확인 증빙 정리
+- [`assets/2026-04-16_laptop_rtabmap_demo/README.md`](./assets/2026-04-16_laptop_rtabmap_demo/README.md): 노트북 직결 `D435i + RTAB-Map` 발표용 3D 맵 DB 정리
 - [`01_launch_success.png`](./assets/2026-04-09_task59_d435i_depth_check/01_launch_success.png)
 - [`02_device_info_and_usb_type.png`](./assets/2026-04-09_task59_d435i_depth_check/02_device_info_and_usb_type.png)
 - [`03_ros2_topic_list.png`](./assets/2026-04-09_task59_d435i_depth_check/03_ros2_topic_list.png)
@@ -96,6 +106,25 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 ## Templates
 
 - [`templates/sensor_fusion_prebuild/README.md`](./templates/sensor_fusion_prebuild/README.md): `robot_localization`과 `navsat_transform` 연동을 미리 준비해두는 템플릿 모음
+
+## Tools
+
+- [`Tools/check_jetson_host_docker.sh`](./Tools/check_jetson_host_docker.sh): Jetson 호스트에서 `JetPack / Docker / NVIDIA runtime / D435i` 상태를 점검하는 스크립트
+- [`Tools/run_ros2_d435i_container.sh`](./Tools/run_ros2_d435i_container.sh): Jetson에서 `ros2-d435i:humble` 컨테이너를 실행하는 스크립트
+- [`Tools/exec_ros2_d435i_container.sh`](./Tools/exec_ros2_d435i_container.sh): 실행 중인 `ros2-d435i` 컨테이너에 들어가는 스크립트
+- [`Tools/launch_realsense_rgbd.sh`](./Tools/launch_realsense_rgbd.sh): 컨테이너 안에서 D435i color/depth 노드를 실행하는 스크립트
+- [`Tools/check_ros2_graph_in_container.sh`](./Tools/check_ros2_graph_in_container.sh): 컨테이너 안 ROS 2 노드/토픽 상태를 재확인하는 스크립트
+- [`Tools/check_remote_jetson_camera_topics.sh`](./Tools/check_remote_jetson_camera_topics.sh): 노트북에서 Jetson D435i 토픽이 보이는지 확인하는 스크립트
+- [`Tools/launch_rtabmap_remote_from_laptop.sh`](./Tools/launch_rtabmap_remote_from_laptop.sh): 노트북에서 Jetson D435i 토픽을 받아 RTAB-Map GUI를 실행하는 스크립트
+- [`Tools/start_fastdds_discovery_server.sh`](./Tools/start_fastdds_discovery_server.sh): 멀티캐스트가 막힌 네트워크에서 노트북을 Fast DDS Discovery Server로 띄우는 스크립트
+- [`Tools/enable_x11_for_docker.sh`](./Tools/enable_x11_for_docker.sh): Jetson 로컬 GUI 세션에서 Docker 컨테이너가 X11 창을 띄울 수 있게 허용하는 스크립트
+- [`Tools/test_x11_in_container.sh`](./Tools/test_x11_in_container.sh): 컨테이너 안에서 `xeyes`를 실행해 X11 GUI 전달을 확인하는 스크립트
+- [`Tools/launch_rtabmap_light_in_container.sh`](./Tools/launch_rtabmap_light_in_container.sh): 컨테이너 안에서 경량 RTAB-Map launch를 실행하는 스크립트
+
+## Docker
+
+- [`docker/jetson_ros2_d435i/README.md`](./docker/jetson_ros2_d435i/README.md): Jetson에서 `ROS 2 Humble + D435i` 환경을 재현하는 컨테이너 사용 가이드
+- [`docker/jetson_ros2_d435i/Dockerfile`](./docker/jetson_ros2_d435i/Dockerfile): `realsense2_camera`와 장치 확인 도구를 포함한 Jetson용 기본 이미지 정의
 
 ## Description
 
