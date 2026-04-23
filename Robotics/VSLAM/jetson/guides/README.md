@@ -42,3 +42,4 @@
 - [`25_Jetson_BNO08x_All_In_One_Viewer_Guide.md`](./25_Jetson_BNO08x_All_In_One_Viewer_Guide.md): `나침반 + 수평계 + 기울기 + 회전`을 한 화면에서 동시에 확인
 - [`26_Jetson_BNO08x_Motion_Trace_Viewer_Guide.md`](./26_Jetson_BNO08x_Motion_Trace_Viewer_Guide.md): `linear acceleration`을 짧게 적분한 `pseudo-position`을 `X/Y/Z` 축 위 점 이동으로 확인
 - [`27_Jetson_BNO08x_Calibration_Guide.md`](./27_Jetson_BNO08x_Calibration_Guide.md): `BNO08x`의 `accelerometer / gyroscope / magnetometer` 보정 절차를 Jetson에서 직접 수행
+- [`28_Jetson_Trashbot_URDF_RViz_Guide.md`](./28_Jetson_Trashbot_URDF_RViz_Guide.md): `base_link`, 바퀴, `D435i`, `BNO08x`, GPS frame을 가진 `trashbot_description` 모델을 RViz2에서 확인

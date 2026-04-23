@@ -91,5 +91,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 ## Description
 
+- `trashbot_description/urdf/trashbot.urdf.xacro`: 자율주행 로봇 초안 URDF/xacro (`base_link`, 좌우 바퀴, `D435i`, `BNO08x`, GPS frame 포함)
+- `trashbot_description/launch/display.launch.py`: `robot_state_publisher`, `joint_state_publisher`, RViz2 기반 모델 확인 launch
 - `trashbot_description/urdf/turtle_big.urdf.xacro`: 큰 거북이 기준 기본 URDF (센서 링크 포함)
 - `trashbot_description/urdf/turtle_small.urdf.xacro`: 작은 거북이 기준 기본 URDF (센서 링크 포함)

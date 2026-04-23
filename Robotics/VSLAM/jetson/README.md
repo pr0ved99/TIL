@@ -49,6 +49,8 @@
 
 - [`daily/2026-04-17/README.md`](./daily/2026-04-17/README.md): `Jetson` 전용 진행 기록 시작
 - [`daily/2026-04-20/README.md`](./daily/2026-04-20/README.md): `Docker backend + host GUI` 구조 정리와 현재 운영 기준 업데이트
+- [`daily/2026-04-21/README.md`](./daily/2026-04-21/README.md): `BNO08x` calibration과 Docker `IMU OFF/ON` 비교 benchmark 기록
+- [`daily/2026-04-22/README.md`](./daily/2026-04-22/README.md): `trashbot_description` URDF/xacro 초안과 RViz2 확인 구조 추가
 - [`docker/README.md`](./docker/README.md): `dev/runtime image`, service 분리, preset, tmpfs 구조 정리
 - [`progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md`](./progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md): `Jetson`에서의 최종 목표와 큰 단계 로드맵
 - [`progress/Jetson_VSLAM_Daily_Execution_Plan.md`](./progress/Jetson_VSLAM_Daily_Execution_Plan.md): 지금 시점 기준 일일 실행 계획
