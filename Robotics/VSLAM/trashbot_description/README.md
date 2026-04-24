@@ -12,9 +12,19 @@ It is the starting point for Sprint 3 robot-modeling tasks:
 ## Current Main Model
 
 - [`urdf/trashbot.urdf.xacro`](./urdf/trashbot.urdf.xacro)
+- [`urdf/turtle_small.urdf.xacro`](./urdf/turtle_small.urdf.xacro)
 
 The dimensions are placeholders until the real chassis is measured. Keep the frame
 names stable first, then update the numeric offsets later.
+
+`turtle_small.urdf.xacro` currently uses the measured/exported chassis bounds below.
+
+```text
+base_length = 0.1776 m
+base_width  = 0.1580 m
+base_height = 0.0504 m
+base_link_z = 0.0252 m
+```
 
 ## Frame Draft
 
@@ -64,6 +74,13 @@ Open RViz2:
 ros2 launch trashbot_description display.launch.py
 ```
 
+Open the small turtle model in RViz2:
+
+```bash
+ros2 launch trashbot_description display.launch.py \
+  model:=$(pwd)/trashbot_description/urdf/turtle_small.urdf.xacro
+```
+
 If the terminal does not know the local display, run:
 
 ```bash
@@ -71,9 +88,17 @@ DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority
 ros2 launch trashbot_description display.launch.py
 ```
 
+Small turtle variant with explicit display variables:
+
+```bash
+DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority}" \
+ros2 launch trashbot_description display.launch.py \
+  model:=$(pwd)/trashbot_description/urdf/turtle_small.urdf.xacro
+```
+
 ## Next Edits
 
-- Replace placeholder chassis dimensions with measured values.
-- Measure `base_link -> camera_link`.
-- Measure `base_link -> imu_link`.
+- Verify `turtle_small.urdf.xacro` in RViz2 after installing `ros-humble-xacro`.
+- Measure the real `base_link -> camera_link` offset after mounting D435i.
+- Measure the real `base_link -> imu_link` offset after mounting BNO08x.
 - Decide whether `gps_link` represents receiver body or antenna phase center.

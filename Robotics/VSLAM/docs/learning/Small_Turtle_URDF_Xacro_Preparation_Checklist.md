@@ -28,18 +28,33 @@
 - Onshape에서 구매처 제공 `STEP/STP` 모델을 import해 사용한다.
 - 궤도 벨트는 실제로 기어/체인 mate가 걸린 동작 모델이 아니라, 생김새를 표현한 visual 모델에 가깝다.
 - 톱니바퀴와 궤도 mesh는 CAD상에서 겹칠 수 있다.
-- CAD 원점은 지면이 아니라 모델 상부 표면 중심에 있을 수 있다.
+- Onshape assembly에서 보이는 기준점과 별개로, 현재 `turtle_small_visual_mesh.stl` export 결과는 `x/y` 중심 정렬, `z=0` 바닥 기준으로 정리되어 있다.
 - 실제 센서 장착 위치는 아직 확정되지 않았다.
+
+## 현재 STL bounds 확인 결과
+
+`trashbot_description/meshes/turtle_small_visual_mesh.stl` 기준으로 직접 확인한 값은 아래와 같다.
+
+```text
+min_xyz_m = (-0.0888, -0.0790, 0.0000)
+max_xyz_m = ( 0.0888,  0.0790, 0.0504)
+size_xyz_m = (0.1776, 0.1580, 0.0504)
+center_xyz_m = (0.0000, 0.0000, 0.0252)
+```
+
+즉, 현재 STL mesh는 `x/y` 중심이 `0`, 바닥면이 `z=0`으로 export되어 있다.  
+따라서 `base_footprint`를 지면 중심으로 두고 `base_link`를 섀시 중심 높이에 두는 구조가 자연스럽다.
 
 ## 현재 `turtle_small.urdf.xacro` 상태
 
-- `base_link` 하나에 작은 거북이 visual mesh가 바로 붙어 있다.
+- `base_footprint -> base_link -> chassis_link` 구조의 1차 골격이 반영되어 있다.
+- `chassis_link`에는 STL visual mesh와 단순 box collision이 같이 들어가 있다.
 - `camera_link`, `imu_link`, `gps_link`는 fixed joint로 연결되어 있다.
-- `camera_xyz`, `imu_xyz`, `gps_xyz` 값은 아직 `0 0 0` 임시값이다.
-- `base_footprint`는 아직 분리되어 있지 않다.
+- 센서 위치는 scalar xacro property 기반 임시값으로 들어가 있다.
+- `camera_color_optical_frame`, `camera_depth_optical_frame`도 같이 들어가 있다.
 - 궤도, 톱니바퀴, 가상 주행 바퀴는 아직 별도 link/joint로 분리되어 있지 않다.
 
-따라서 다음 단계는 `base_footprint -> base_link -> chassis/track/sensor` 구조로 기준 좌표계를 정리하는 것이다.
+따라서 다음 단계는 **센서 실측값 반영**, **RViz 배치 확인**, **필요 시 궤도/구동축 분리**다.
 
 ## 1. 좌표계 기준 체크리스트
 
@@ -56,7 +71,7 @@
 - [ ] `base_link` 위치를 정한다.
   - 추천: `base_footprint`에서 위로 올라간 섀시 본체 중심 높이
 - [ ] CAD 원점이 어디에 있는지 기록한다.
-  - 현재 추정: 상부 표면 중심
+  - 현재 STL 기준: `x/y` 중심, `z=0` 바닥면
 
 ### 기록할 값
 
@@ -64,9 +79,9 @@
 robot_forward_axis_in_onshape = ?
 robot_left_axis_in_onshape    = ?
 robot_up_axis_in_onshape      = ?
-cad_origin_position           = 상부 표면 중심 / 본체 중심 / 기타
+cad_origin_position           = STL 기준 x/y 중심, z=0 바닥면
 base_footprint_origin         = 지면 기준 로봇 중심
-base_link_z_from_ground       = 0.0252075 m 후보
+base_link_z_from_ground       = 0.0252 m
 ```
 
 ## 2. 섀시 치수 체크리스트
@@ -86,9 +101,9 @@ URDF와 Nav2 footprint를 만들려면 최소 치수가 필요하다.
 기록 형식:
 
 ```text
-overall_length_m              = ?
-overall_width_m               = ?
-overall_height_m              = 0.050415
+overall_length_m              = 0.1776
+overall_width_m               = 0.1580
+overall_height_m              = 0.0504
 track_outer_width_m           = ?
 left_right_track_center_gap_m = ?
 front_rear_sprocket_gap_m     = ?
@@ -99,12 +114,14 @@ ground_contact_width_m        = ?
 ### 현재 확인된 치수
 
 ```text
-overall_height_mm             = 50.415
-overall_height_m              = 0.050415
-base_link_z_from_ground 후보 = 0.0252075 m
+overall_length_mm             = 177.6
+overall_width_mm              = 158.0
+overall_height_mm             = 50.4
+overall_height_m              = 0.0504
+base_link_z_from_ground 후보 = 0.0252 m
 ```
 
-`base_link_z_from_ground` 후보값은 `base_link`를 섀시 높이의 중앙에 둔다고 가정했을 때의 값이다. 실제로 `base_link`를 상판 중심에 둘 경우에는 `0.050415 m`에 가까운 값을 쓰게 된다.
+`base_link_z_from_ground` 후보값은 `base_link`를 섀시 높이의 중앙에 둔다고 가정했을 때의 값이다. STL export 기준으로는 이 값이 현재 1차 URDF 구조와 가장 잘 맞는다.
 
 ## 3. Onshape Assembly 정리 체크리스트
 
@@ -212,19 +229,21 @@ CAD 원점이 상부 표면 중심이어도 모델 전체를 Onshape에서 억�
 기록 형식:
 
 ```text
-cad_origin_to_ground_z_m       = ?
-cad_origin_to_chassis_center_m = ?
-base_link_z_from_ground_m      = 0.0252075 후보
-chassis_mesh_z_offset_m        = ?
+cad_origin_to_ground_z_m       = 0.0
+cad_origin_to_chassis_center_m = 0.0252
+base_link_z_from_ground_m      = 0.0252
+chassis_mesh_z_offset_m        = -0.0252
 ```
 
-현재 측정된 전체 높이는 `50.415 mm`이다. CAD 원점이 상부 표면 중심이라면 지면은 CAD 원점 기준 약 `-0.050415 m` 방향에 있다고 보고, URDF에서는 `base_footprint`와 mesh offset으로 보정한다.
+현재 STL 기준 전체 높이는 `50.4 mm`이고, mesh 바닥이 이미 `z=0`이다.  
+따라서 URDF에서 `base_link`를 중심 높이 `0.0252 m`에 두고, chassis visual/collision origin을 `-0.0252 m` 내리면 바닥이 `z=0`에 맞는다.
 
 예시 xacro 변수:
 
 ```xml
-<xacro:property name="base_link_z" value="0.0252075"/>
-<xacro:property name="chassis_height" value="0.050415"/>
+<xacro:property name="base_link_z" value="0.0252"/>
+<xacro:property name="chassis_height" value="0.0504"/>
+<origin xyz="0 0 -0.0252" rpy="0 0 0"/>
 ```
 
 ## 7. 센서 위치 체크리스트

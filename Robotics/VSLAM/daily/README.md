@@ -20,6 +20,8 @@
 | 2026-04-20 | [`jetson/daily/2026-04-20/README.md`](../jetson/daily/2026-04-20/README.md) | Docker backend + host GUI RTAB-Map 운영 구조 확인 |
 | 2026-04-21 | [`jetson/daily/2026-04-21/README.md`](../jetson/daily/2026-04-21/README.md) | BNO08x calibration, IMU ON/OFF Docker benchmark |
 | 2026-04-22 | [`jetson/daily/2026-04-22/README.md`](../jetson/daily/2026-04-22/README.md) | `trashbot_description` URDF/xacro 초안과 RViz2 확인 |
+| 2026-04-23 | [`daily/2026-04-23/README.md`](./2026-04-23/README.md) | 로컬 CAD 자료 정리, 궤도형 섀시 후보 분리, URDF/Xacro 준비 |
+| 2026-04-24 | [`daily/2026-04-24/README.md`](./2026-04-24/README.md) | 작은 거북이 URDF/Xacro 골격, 센서 배치 준비, 하드웨어/VSLAM 현황 정리 |
 
 ## 템플릿
 

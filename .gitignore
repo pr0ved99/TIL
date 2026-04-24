@@ -66,3 +66,8 @@ __pycache__/
 
 # Large local RTAB-Map database artifact
 Robotics/VSLAM/assets/2026-04-16_laptop_rtabmap_demo/rtabmap_demo_map.db
+
+# ROS2 colcon build artifacts
+Robotics/VSLAM/build/
+Robotics/VSLAM/install/
+Robotics/VSLAM/log/
