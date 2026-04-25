@@ -31,13 +31,39 @@
 - 추가로 `Jetson + Docker + ROS 2 Humble + D435i` 경로에서는 color/depth 토픽과 depth 약 `30 Hz`까지 확인해, Jetson 실기기 bring-up도 1차 완료했다.
 - 반면 `Jetson publish -> 노트북 RTAB-Map GUI` cross-machine 경로는 현재 학교 Wi-Fi에서 DDS discovery가 막혀 실패했고, 이는 네트워크 계층 이슈로 분리된 상태다.
 - 발표용 3D 맵은 우선 **노트북에 D435i를 직접 연결한 RTAB-Map 경로**로 확보했고, 결과 DB는 `assets/2026-04-16_laptop_rtabmap_demo/rtabmap_demo_map.db`에 저장했다.
+- `2026-04-25` 기준으로는 작은 거북이 로봇의 `Onshape -> URDF/Xacro -> Gazebo` 준비 단계로 넘어갔다.
+- 작은 거북이 `base_link`, D435i `camera_link`, BNO08x `imu_link`, GPS `gps_link`, 궤도 중심거리, 실제/가상 구동축 후보값을 1차 측정해 `turtle_small.urdf.xacro`와 준비 문서에 기록했다.
+- 다음 계획은 Onshape에서 URDF export를 시도하고, Gazebo에서는 실제 궤도 물리 대신 virtual wheel 기반 diff-drive 모델을 먼저 구성하는 것이다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-16 최신 업데이트
+## 0. 2026-04-25 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **작은 거북이 URDF/Xacro 준비**
+   - Onshape에서 궤도/구동부 기준 `base_link_mc`를 만들고, ROS 기준 `+X 전방`, `+Y 왼쪽`, `+Z 위쪽` 방향을 정했다.
+   - D435i, BNO08x, GPS의 `base_link` 기준 1차 상대 위치를 측정해 `turtle_small.urdf.xacro` 변수로 기록했다.
+2. **궤도/구동축 파라미터 정리**
+   - 좌우 궤도 중심거리 `0.137553 m`, 가상 구동축 `y=±0.0687765 m`, 유효 궤도 반지름 후보 `0.021 m`를 기록했다.
+   - 실제 구동축은 좌우 앞뒤 위치가 비대칭이므로 CAD 기준 기록으로 남기고, Gazebo/diff-drive에는 `x=0` 가상 바퀴를 쓰는 방향으로 정했다.
+3. **저녁 이후 작업 계획**
+   - Onshape에서 불필요한 `Revolute mate`를 제거하고 구동부 visual을 `Group`으로 고정한다.
+   - Onshape URDF export를 시도한다.
+   - Export 결과를 후처리해 Gazebo용 virtual wheel 기반 diff-drive 모델로 넘어간다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **로봇 모델링**: 센서 frame과 주행 파라미터 1차 측정 완료
+- **시뮬레이션 준비**: Onshape URDF export와 Gazebo virtual wheel 구성이 다음 단계
+- **남은 문제**: IMU 축 방향, GPS 안테나 중심, Xacro 렌더링/RViz2 검증, Gazebo 회전 부호 검증
+
+---
+
+## 0-1. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -62,9 +88,9 @@
 전체 로드맵 기준으로 보면 지금은 아래 위치다.
 
 - `Stage 0`: 센서 입력 확인과 실행 환경 준비
-  - 현재 진행 중
+  - Jetson/D435i/RTAB-Map baseline은 1차 완료, 추가 튜닝과 반복 검증 단계
 - `Stage 1`: 로봇 모델링과 시뮬레이션
-  - 아직 본격 시작 전
+  - Onshape 기준 작은 거북이 `base_link`, 센서 frame, 궤도/구동축 파라미터 측정까지 시작
 
 현재 Stage 0 안에서도 세부적으로는 이렇게 나뉜다.
 
@@ -525,13 +551,13 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. `Jetson Docker light baseline`을 유지한 채 `Docker backend + host rtabmap_viz` 구조에서 짧은 실내 경로를 반복해 맵 누적 안정성과 체감 부드러움을 다시 확인
-2. 외부 `BNO08x`는 이미 확보한 host raw / ROS 2 publish 경로를 기준으로 `Docker RTAB-Map IMU ON` 비교 실험까지 단계적으로 올리기
-3. Jetson에 모니터/마우스를 직접 연결한 상태에서 로컬 GUI 기준 `X11 -> RTAB-Map` 경로도 보조 검증
-4. Jetson과 노트북을 같은 아이폰 핫스팟 또는 다른 네트워크에 붙여 cross-machine ROS 2 discovery를 재검증
-5. 발표 자료에는 이미 확보한 노트북 직결 3D 맵 DB와 캡처를 우선 사용
-6. IMU, wheel encoder, GPS가 도착하기 전까지 ROS2 연동 구조와 토픽/TF/필터 구성을 미리 설계
-7. `AI`를 이용한 알고리즘 전환은 바로 적용하지 않고, 후보 조사와 baseline 비교 절차만 유지
+1. Onshape에서 구동 톱니바퀴/궤도/보조 바퀴 visual을 `Group`으로 고정하고, 불필요한 `Revolute mate`를 제거
+2. Onshape URDF export를 시도하고, export된 link/joint/mesh 경로를 점검
+3. `turtle_small.urdf.xacro`에 `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`와 diff-drive용 joint/plugin 후보를 추가
+4. Gazebo에서 `track_width = 0.137553 m`, `effective_track_radius = 0.021 m` 기준으로 `/cmd_vel` 전진/회전이 되는지 확인
+5. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교해 `imu_roll/pitch/yaw` 보정값 정리
+6. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인
+7. `xacro` 렌더링과 RViz2 표시로 `base_link`, `camera_link`, `imu_link`, `gps_link` 위치와 방향 검증
 
 관련 문서:
 
@@ -541,7 +567,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 ## 9. 지금 상태 한 줄 요약
 
-지금은 `Jetson` native `RTAB-Map` baseline, `Jetson Docker light baseline`, 외부 `BNO08x` host/ROS 2 확인, 발표용 노트북 직결 3D 맵까지 확보했고, **현재 기준선을 Docker RTAB-Map + 외부 IMU 통합 실험으로 확장하는 단계**에 있다.
+지금은 `Jetson` native/Docker RTAB-Map baseline과 외부 `BNO08x` 확인을 바탕으로, **작은 거북이 로봇의 URDF/Xacro 모델링과 Gazebo virtual wheel 주행 검증 단계로 확장하는 상태**에 있다.
 
 ---
 

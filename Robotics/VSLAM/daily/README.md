@@ -22,6 +22,7 @@
 | 2026-04-22 | [`jetson/daily/2026-04-22/README.md`](../jetson/daily/2026-04-22/README.md) | `trashbot_description` URDF/xacro 초안과 RViz2 확인 |
 | 2026-04-23 | [`daily/2026-04-23/README.md`](./2026-04-23/README.md) | 로컬 CAD 자료 정리, 궤도형 섀시 후보 분리, URDF/Xacro 준비 |
 | 2026-04-24 | [`daily/2026-04-24/README.md`](./2026-04-24/README.md) | 작은 거북이 URDF/Xacro 골격, 센서 배치 준비, 하드웨어/VSLAM 현황 정리 |
+| 2026-04-25 | [`daily/2026-04-25/README.md`](./2026-04-25/README.md) | 작은 거북이 `base_link`, 센서 frame, 궤도/구동축 파라미터 측정 |
 
 ## 템플릿
 

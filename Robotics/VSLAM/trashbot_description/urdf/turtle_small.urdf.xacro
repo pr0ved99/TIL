@@ -24,24 +24,45 @@
   <xacro:property name="collision_width" value="${base_width}"/>
   <xacro:property name="collision_height" value="${base_height}"/>
 
-  <!-- Placeholder sensor offsets from base_link until the real mount is measured. -->
-  <xacro:property name="camera_x" value="0.060"/>
-  <xacro:property name="camera_y" value="0.0"/>
-  <xacro:property name="camera_z" value="0.040"/>
+  <!-- Tracked drive geometry first Onshape measurements. -->
+  <xacro:property name="track_width" value="0.137553"/>
+  <xacro:property name="half_track_width" value="${track_width / 2.0}"/>
+  <xacro:property name="effective_track_radius" value="0.021"/>
+
+  <!-- Actual asymmetric drive sprocket centers from base_link, kept as CAD reference. -->
+  <xacro:property name="left_drive_axis_x" value="-0.057871"/>
+  <xacro:property name="left_drive_axis_y" value="0.068776"/>
+  <xacro:property name="left_drive_axis_z" value="-0.000300"/>
+  <xacro:property name="right_drive_axis_x" value="0.058000"/>
+  <xacro:property name="right_drive_axis_y" value="-0.068777"/>
+  <xacro:property name="right_drive_axis_z" value="0.000000"/>
+
+  <!-- Initial diff-drive approximation uses aligned virtual wheels at x=0. -->
+  <xacro:property name="virtual_wheel_x" value="0.0"/>
+  <xacro:property name="left_virtual_wheel_y" value="${half_track_width}"/>
+  <xacro:property name="right_virtual_wheel_y" value="${-half_track_width}"/>
+  <xacro:property name="virtual_wheel_z" value="0.0"/>
+
+  <!-- D435i first Onshape measurement from base_link_mc to camera_link_mc. -->
+  <xacro:property name="camera_x" value="0.127688"/>
+  <xacro:property name="camera_y" value="-0.001695"/>
+  <xacro:property name="camera_z" value="0.107616"/>
   <xacro:property name="camera_roll" value="0.0"/>
   <xacro:property name="camera_pitch" value="0.0"/>
   <xacro:property name="camera_yaw" value="0.0"/>
 
-  <xacro:property name="imu_x" value="0.0"/>
-  <xacro:property name="imu_y" value="0.0"/>
-  <xacro:property name="imu_z" value="0.030"/>
+  <!-- BNO08x first Onshape measurement from base_link_mc to imu_link_mc. -->
+  <xacro:property name="imu_x" value="-0.010844"/>
+  <xacro:property name="imu_y" value="0.022228"/>
+  <xacro:property name="imu_z" value="0.018394"/>
   <xacro:property name="imu_roll" value="0.0"/>
   <xacro:property name="imu_pitch" value="0.0"/>
   <xacro:property name="imu_yaw" value="0.0"/>
 
-  <xacro:property name="gps_x" value="-0.050"/>
-  <xacro:property name="gps_y" value="0.0"/>
-  <xacro:property name="gps_z" value="0.040"/>
+  <!-- GPS first Onshape measurement from base_link_mc to gps_link_mc. -->
+  <xacro:property name="gps_x" value="-0.194160"/>
+  <xacro:property name="gps_y" value="-0.000001"/>
+  <xacro:property name="gps_z" value="0.037943"/>
   <xacro:property name="gps_r" value="0.020"/>
   <xacro:property name="gps_h" value="0.010"/>
 

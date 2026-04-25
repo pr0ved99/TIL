@@ -76,6 +76,8 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`daily/2026-04-15/README.md`](./daily/2026-04-15/README.md): Jetson 호스트, Docker, ROS 2 Humble, D435i color/depth bring-up 정리
 - [`daily/2026-04-16/README.md`](./daily/2026-04-16/README.md): Jetson Docker RTAB-Map/X11, cross-machine ROS 2 실패 원인 분리, 노트북 직결 RTAB-Map 데모 정리
 - [`daily/2026-04-23/README.md`](./daily/2026-04-23/README.md): 로컬 CAD 자료 정리, 궤도형 섀시 후보 분리, URDF/Xacro 준비 방향 정리
+- [`daily/2026-04-24/README.md`](./daily/2026-04-24/README.md): 작은 거북이 URDF/Xacro 골격, 센서 배치 준비, 하드웨어/VSLAM 현황 정리
+- [`daily/2026-04-25/README.md`](./daily/2026-04-25/README.md): 작은 거북이 `base_link`, 센서 frame, 궤도/구동축 파라미터 측정
 
 ### jetson
 

@@ -5,6 +5,7 @@
 - 이 문서는 **작은 거북이 로봇의 URDF/Xacro를 작성하기 전에 반드시 알아야 할 정보**를 정리한 체크리스트다.
 - 현재 작업은 `Onshape`에서 작은 궤도형 섀시 모델을 정리하고, 나중에 `ROS2`, `RViz2`, `Gazebo`, `RTAB-Map`, `Nav2`에서 사용할 수 있는 로봇 모델로 옮기기 위한 준비 단계다.
 - 지금 당장 모든 센서 위치가 확정되어 있지 않아도 된다. 대신 `base_footprint`, `base_link`, 섀시 크기, 궤도 구조, 구동축 후보, mesh offset을 먼저 정리하고, 센서 위치는 xacro 변수로 나중에 보정할 수 있게 만든다.
+- `2026-04-25` 기준으로 Onshape에서 작은 거북이 궤도/구동부 기준 `base_link_mc`를 만들고, D435i, BNO08x, GPS, 궤도 중심거리, 실제/가상 구동축 1차 측정값을 확보했다.
 
 ## 용어 정리
 
@@ -50,50 +51,76 @@ center_xyz_m = (0.0000, 0.0000, 0.0252)
 - `base_footprint -> base_link -> chassis_link` 구조의 1차 골격이 반영되어 있다.
 - `chassis_link`에는 STL visual mesh와 단순 box collision이 같이 들어가 있다.
 - `camera_link`, `imu_link`, `gps_link`는 fixed joint로 연결되어 있다.
-- 센서 위치는 scalar xacro property 기반 임시값으로 들어가 있다.
+- D435i `camera_link`, BNO08x `imu_link`, GPS `gps_link` 위치는 Onshape 1차 측정값으로 갱신했다.
 - `camera_color_optical_frame`, `camera_depth_optical_frame`도 같이 들어가 있다.
+- 궤도 중심거리, 실제 구동축, Gazebo/diff-drive용 가상 구동축 값은 xacro 변수로 기록했다.
 - 궤도, 톱니바퀴, 가상 주행 바퀴는 아직 별도 link/joint로 분리되어 있지 않다.
 
-따라서 다음 단계는 **센서 실측값 반영**, **RViz 배치 확인**, **필요 시 궤도/구동축 분리**다.
+따라서 다음 단계는 **RViz 배치 확인**, **BNO08x 축 방향 검증**, **필요 시 궤도/구동축 link/joint 분리**다.
 
 ## 1. 좌표계 기준 체크리스트
 
 ### 반드시 결정할 것
 
-- [ ] 로봇 전방 방향을 정한다.
+- [x] 로봇 전방 방향을 정한다.
   - ROS 표준 기준: `+x = 전방`
-- [ ] 로봇 왼쪽 방향을 정한다.
+- [x] 로봇 왼쪽 방향을 정한다.
   - ROS 표준 기준: `+y = 왼쪽`
-- [ ] 로봇 위쪽 방향을 정한다.
+- [x] 로봇 위쪽 방향을 정한다.
   - ROS 표준 기준: `+z = 위`
-- [ ] `base_footprint` 위치를 정한다.
+- [x] `base_footprint` 위치를 정한다.
   - 추천: 로봇 중심의 지면 접촉 기준점
-- [ ] `base_link` 위치를 정한다.
+- [x] `base_link` 위치를 정한다.
   - 추천: `base_footprint`에서 위로 올라간 섀시 본체 중심 높이
-- [ ] CAD 원점이 어디에 있는지 기록한다.
+- [x] CAD 원점이 어디에 있는지 기록한다.
   - 현재 STL 기준: `x/y` 중심, `z=0` 바닥면
 
 ### 기록할 값
 
 ```text
-robot_forward_axis_in_onshape = ?
-robot_left_axis_in_onshape    = ?
-robot_up_axis_in_onshape      = ?
-cad_origin_position           = STL 기준 x/y 중심, z=0 바닥면
+robot_forward_axis_in_onshape = base_link_mc +X
+robot_left_axis_in_onshape    = base_link_mc +Y
+robot_up_axis_in_onshape      = base_link_mc +Z
+cad_origin_position           = Onshape assembly 기준 base_link_mc와 Fastened mate
 base_footprint_origin         = 지면 기준 로봇 중심
-base_link_z_from_ground       = 0.0252 m
+base_link_z_from_ground       = 0.021 m 후보, 기존 STL 기준 0.0252 m
 ```
+
+### 2026-04-25 Onshape 기준 좌표계 결정
+
+작은 거북이 Onshape assembly에서는 궤도와 구동부만 남긴 상태에서 `base_link_mc`를 만들고, 이를 `Origin`에 맞추는 방식으로 URDF 기준점을 정리했다.
+
+```text
+base_link 기준 대상        = 궤도 + 구동부
+base_link 기준 위치        = 좌우 궤도 사이 중앙, 앞뒤 중심, 궤도 높이 중심
+base_link_mc +X            = 로봇 전방
+base_link_mc +Y            = 로봇 왼쪽
+base_link_mc +Z            = 위쪽
+Onshape View Cube 방향     = ROS 기준과 다를 수 있으므로 base_link_mc 축을 기준으로 판단
+```
+
+현재 Onshape 측정 기준 치수는 아래와 같다.
+
+```text
+track_outer_width_mm        = 178
+track_center_gap_mm         = 137.553
+track_front_rear_length_mm  = 160
+track_height_mm             = 42
+base_link_height_from_track_bottom_mm = 21
+```
+
+주의할 점은 현재 repository의 `turtle_small_visual_mesh.stl` bounds와 Onshape assembly에서 새로 측정한 궤도/구동부 기준 치수가 완전히 같지는 않다는 것이다. 따라서 mesh 자체를 새로 export하기 전까지는 이 값들을 `센서 상대 위치 측정 기준`으로 우선 사용한다.
 
 ## 2. 섀시 치수 체크리스트
 
 URDF와 Nav2 footprint를 만들려면 최소 치수가 필요하다.
 
-- [ ] 전체 길이 `L`
-- [ ] 전체 폭 `W`
+- [x] 전체 길이 `L`
+- [x] 전체 폭 `W`
 - [x] 전체 높이 `H`
-- [ ] 궤도 바닥면에서 상부 표면까지 높이
-- [ ] 좌우 궤도 바깥쪽 폭
-- [ ] 좌우 궤도 중심 간 거리
+- [x] 궤도 바닥면에서 상부 표면까지 높이
+- [x] 좌우 궤도 바깥쪽 폭
+- [x] 좌우 궤도 중심 간 거리
 - [ ] 전후 톱니바퀴 중심 간 거리
 - [ ] 지면 접촉부 길이
 - [ ] 지면 접촉부 폭
@@ -104,8 +131,11 @@ URDF와 Nav2 footprint를 만들려면 최소 치수가 필요하다.
 overall_length_m              = 0.1776
 overall_width_m               = 0.1580
 overall_height_m              = 0.0504
-track_outer_width_m           = ?
-left_right_track_center_gap_m = ?
+track_outer_width_m           = 0.178
+track_front_rear_length_m     = 0.160
+track_height_m                = 0.042
+base_link_height_from_track_bottom_m = 0.021
+left_right_track_center_gap_m = 0.137553
 front_rear_sprocket_gap_m     = ?
 ground_contact_length_m       = ?
 ground_contact_width_m        = ?
@@ -118,7 +148,14 @@ overall_length_mm             = 177.6
 overall_width_mm              = 158.0
 overall_height_mm             = 50.4
 overall_height_m              = 0.0504
-base_link_z_from_ground 후보 = 0.0252 m
+track_outer_width_mm          = 178
+track_front_rear_length_mm    = 160
+track_height_mm               = 42
+track_center_gap_mm           = 137.553
+track_center_gap_m            = 0.137553
+half_track_center_gap_m       = 0.0687765
+base_link_z_from_track_bottom 후보 = 0.021 m
+base_link_z_from_ground 후보 = 0.021 m, 기존 STL 기준 0.0252 m
 ```
 
 `base_link_z_from_ground` 후보값은 `base_link`를 섀시 높이의 중앙에 둔다고 가정했을 때의 값이다. STL export 기준으로는 이 값이 현재 1차 URDF 구조와 가장 잘 맞는다.
@@ -158,21 +195,57 @@ right_track_fixed_visual_group
 
 ### Onshape에서 확인할 것
 
-- [ ] 왼쪽 구동 톱니바퀴 중심축 위치
-- [ ] 오른쪽 구동 톱니바퀴 중심축 위치
-- [ ] 톱니바퀴 회전축 방향
-- [ ] 모터 축 역할 부품이 고정 기준축인지, 톱니바퀴와 함께 회전하는 샤프트인지 구분
+- [x] 왼쪽 구동 톱니바퀴 중심축 위치
+- [x] 오른쪽 구동 톱니바퀴 중심축 위치
+- [x] 톱니바퀴 회전축 방향
+- [x] 모터 축 역할 부품이 고정 기준축인지, 톱니바퀴와 함께 회전하는 샤프트인지 구분
 - [ ] 구동 톱니바퀴는 `Group`에서 제외
 - [ ] 구동 톱니바퀴는 섀시 또는 모터축 기준으로 `Revolute mate` 적용
 
 기록 형식:
 
 ```text
-left_drive_sprocket_center_xyz_m  = ? ? ?
-right_drive_sprocket_center_xyz_m = ? ? ?
-drive_axis_direction              = x / y / z / custom
-motor_axis_is_fixed_reference     = yes / no
+left_drive_sprocket_center_xyz_m  = -0.057871 0.068776 -0.000300
+right_drive_sprocket_center_xyz_m = 0.058000 -0.068777 0.000000
+drive_axis_direction              = y
+motor_axis_is_fixed_reference     = no, 실제 좌우 모터 구동축은 앞뒤 위치가 다름
 ```
+
+### 2026-04-25 궤도/구동축 Onshape 측정 기록
+
+왼쪽 궤도와 오른쪽 궤도에서 지면 접촉면 중앙선을 각각 `track_left`, `track_right`로 잡고, 두 중앙선 사이 거리를 궤도 중심거리로 기록했다.
+
+```text
+reference_coordinate_system = base_link_mc
+measured_from               = track_left
+measured_to                 = track_right
+track_center_gap_mm         = 137.553
+track_center_gap_m          = 0.137553
+half_track_center_gap_mm    = 68.7765
+half_track_center_gap_m     = 0.0687765
+```
+
+실제 구동 톱니바퀴 중심축은 좌우가 앞뒤로 비대칭이다. 이는 실제 모터 배치가 왼쪽은 뒤쪽, 오른쪽은 앞쪽에 있기 때문이다.
+
+```text
+reference_coordinate_system       = base_link_mc
+left_drive_axis_xyz_mm            = -57.871 68.776 -0.300
+left_drive_axis_xyz_m             = -0.057871 0.068776 -0.000300
+right_drive_axis_xyz_mm           = 58.000 -68.777 0.000
+right_drive_axis_xyz_m            = 0.058000 -0.068777 0.000000
+drive_axis_direction_for_urdf     = 0 1 0
+```
+
+Gazebo `diff_drive`와 encoder odometry는 좌우 바퀴가 같은 앞뒤 위치에 있다고 가정하는 편이 안정적이다. 따라서 실제 CAD 구동축은 기록으로 남기되, 주행 모델에는 아래 가상 구동축을 1차로 사용한다.
+
+```text
+left_virtual_wheel_xyz_m     = 0.000000 0.0687765 0.000000
+right_virtual_wheel_xyz_m    = 0.000000 -0.0687765 0.000000
+virtual_wheel_axis_xyz       = 0 1 0
+effective_track_radius_m     = 0.021
+```
+
+`effective_track_radius_m = 0.021`은 궤도 두께까지 포함한 CAD 기준 후보값이다. 실제 odometry 거리 환산에는 바닥에서 굴러간 거리 기준의 유효 반지름이 필요하므로, 실차 주행거리와 encoder count를 비교해 나중에 보정한다.
 
 ### URDF에서의 초기 권장 표현
 
@@ -198,7 +271,7 @@ motor_axis_is_fixed_reference     = yes / no
 - [ ] 톱니바퀴 collision은 생략하거나 단순 cylinder로 대체
 - [ ] 톱니바퀴의 실제 이빨 mesh를 collision으로 쓰지 않기
 - [ ] 궤도와 톱니바퀴 collision이 서로 겹치지 않도록 확인
-- [ ] Gazebo 주행용 가상 바퀴를 둘지 결정
+- [x] Gazebo 주행용 가상 바퀴를 둘지 결정
 
 추천 구조:
 
@@ -254,28 +327,52 @@ chassis_mesh_z_offset_m        = -0.0252
 
 ### D435i
 
-- [ ] 카메라 장착 위치 후보
-- [ ] 카메라가 보는 방향
-- [ ] 카메라 높이
-- [ ] 카메라 pitch 각도
-- [ ] `camera_link` 위치
+- [x] 카메라 장착 위치 후보
+- [x] 카메라가 보는 방향
+- [x] 카메라 높이
+- [x] 카메라 pitch 각도
+- [x] `camera_link` 위치
 - [ ] `camera_color_optical_frame` 방향
 - [ ] `camera_depth_optical_frame` 방향
 
 기록 형식:
 
 ```text
-camera_x_from_base_link_m = ?
-camera_y_from_base_link_m = ?
-camera_z_from_base_link_m = ?
-camera_roll_rad           = ?
-camera_pitch_rad          = ?
-camera_yaw_rad            = ?
+camera_x_from_base_link_m = 0.127688
+camera_y_from_base_link_m = -0.001695
+camera_z_from_base_link_m = 0.107616
+camera_roll_rad           = 0.0
+camera_pitch_rad          = 0.0
+camera_yaw_rad            = 0.0
 ```
+
+### 2026-04-25 D435i Onshape 측정 기록
+
+D435i는 렌즈 하나가 아니라 카메라 물리 바디 기준 `camera_link`를 잡는 방향으로 정리했다. D435i 공식 외형 치수는 `90 mm x 25 mm x 25 mm`이고, Onshape에서는 본체 중앙/장착 기준에 가까운 위치에 `camera_link_mc`를 만들었다.
+
+```text
+reference_coordinate_system = base_link_mc
+measured_from               = base_link_mc
+measured_to                 = camera_link_mc
+camera_link 기준            = D435i 본체 중심 후보
+camera_link_mc +X           = D435i 렌즈가 바라보는 방향
+camera_link_mc +Y           = 카메라 왼쪽
+camera_link_mc +Z           = 카메라 위쪽
+
+base_link_to_camera_link_x_mm = 127.688
+base_link_to_camera_link_y_mm = -1.695
+base_link_to_camera_link_z_mm = 107.616
+
+base_link_to_camera_link_x_m  = 0.127688
+base_link_to_camera_link_y_m  = -0.001695
+base_link_to_camera_link_z_m  = 0.107616
+```
+
+현재 `rpy`는 카메라가 로봇 전방을 수평으로 바라본다고 보고 `0 0 0`으로 시작한다. 실제 장착 후 카메라가 위/아래로 기울어지면 `camera_pitch_rad`를 다시 측정해 갱신한다.
 
 ### BNO08x IMU
 
-- [ ] IMU 장착 위치 후보
+- [x] IMU 장착 위치 후보
 - [ ] IMU 보드의 x/y/z 방향
 - [ ] 로봇 기준 x/y/z와 IMU 축이 일치하는지
 - [ ] 필요 roll/pitch/yaw 보정값
@@ -283,13 +380,73 @@ camera_yaw_rad            = ?
 기록 형식:
 
 ```text
-imu_x_from_base_link_m = ?
-imu_y_from_base_link_m = ?
-imu_z_from_base_link_m = ?
-imu_roll_rad           = ?
-imu_pitch_rad          = ?
-imu_yaw_rad            = ?
+imu_x_from_base_link_m = -0.010844
+imu_y_from_base_link_m = 0.022228
+imu_z_from_base_link_m = 0.018394
+imu_roll_rad           = 0.0
+imu_pitch_rad          = 0.0
+imu_yaw_rad            = 0.0
 ```
+
+### 2026-04-25 BNO08x IMU Onshape 측정 기록
+
+BNO08x IMU는 보드 중심 후보에 `imu_link_mc`를 만들고, `base_link_mc`를 기준 좌표계로 지정해 1차 상대 위치를 측정했다.
+
+```text
+reference_coordinate_system = base_link_mc
+measured_from               = base_link_mc
+measured_to                 = imu_link_mc
+imu_link 기준               = BNO08x 보드 중심 후보
+
+base_link_to_imu_link_x_mm = -10.844
+base_link_to_imu_link_y_mm = 22.228
+base_link_to_imu_link_z_mm = 18.394
+
+base_link_to_imu_link_x_m  = -0.010844
+base_link_to_imu_link_y_m  = 0.022228
+base_link_to_imu_link_z_m  = 0.018394
+```
+
+현재 `rpy`는 보드 축 방향 검증 전이므로 `0 0 0`으로 둔다. 실제 ROS2 IMU publisher에서 사용하는 frame 방향과 보드 silk 축을 비교한 뒤 `imu_roll_rad`, `imu_pitch_rad`, `imu_yaw_rad`를 갱신한다.
+
+### GPS
+
+- [x] GPS 장착 위치 후보
+- [x] `gps_link` 위치
+- [ ] GPS 안테나 중심과 CAD 기준점 일치 여부
+- [ ] 배선/상부 커버 간섭 여부
+
+기록 형식:
+
+```text
+gps_x_from_base_link_m = -0.194160
+gps_y_from_base_link_m = -0.000001
+gps_z_from_base_link_m = 0.037943
+gps_roll_rad           = 0.0
+gps_pitch_rad          = 0.0
+gps_yaw_rad            = 0.0
+```
+
+### 2026-04-25 GPS Onshape 측정 기록
+
+GPS는 모듈 중심 후보에 `gps_link_mc`를 만들고, `base_link_mc`를 기준 좌표계로 지정해 1차 상대 위치를 측정했다.
+
+```text
+reference_coordinate_system = base_link_mc
+measured_from               = base_link_mc
+measured_to                 = gps_link_mc
+gps_link 기준               = GPS 모듈 중심 후보
+
+base_link_to_gps_link_x_mm = -194.160
+base_link_to_gps_link_y_mm = -0.001
+base_link_to_gps_link_z_mm = 37.943
+
+base_link_to_gps_link_x_m  = -0.194160
+base_link_to_gps_link_y_m  = -0.000001
+base_link_to_gps_link_z_m  = 0.037943
+```
+
+GPS는 카메라나 IMU보다 frame 방향 중요도가 낮다. 다만 실제 위치 정확도를 높이려면 모듈 외형 중심보다 GPS 안테나 중심을 `gps_link` 기준점으로 잡는 편이 더 좋다.
 
 ### Jetson
 
@@ -333,8 +490,11 @@ base_footprint
     ├── chassis_link
     ├── left_track_visual_link
     ├── right_track_visual_link
+    ├── left_virtual_drive_wheel_link
+    ├── right_virtual_drive_wheel_link
     ├── camera_link
-    └── imu_link
+    ├── imu_link
+    └── gps_link
 ```
 
 1차에서는 생략 가능:
@@ -343,14 +503,16 @@ base_footprint
 - idler wheel 회전
 - 실제 궤도 belt 물리
 - 복잡한 collision mesh
-- 정확한 센서 최종 위치
+- 실제 비대칭 구동축을 물리 모델에 그대로 반영하는 것
 
 ## 10. 다음 액션
 
-1. Onshape에서 `chassis_fixed_group`을 정리한다.
-2. 구동 톱니바퀴만 Group에서 제외하고 `Revolute mate`로 축을 정의한다.
-3. 작은 거북이 전체 길이, 폭, 높이를 측정한다.
-4. CAD 원점에서 지면까지의 z offset을 기록한다.
-5. `base_footprint`, `base_link`, `chassis_link`의 기준 위치를 표로 확정한다.
-6. 임시 센서 위치를 xacro 변수로 넣어 `turtle_small.urdf.xacro`를 수정한다.
-7. RViz2에서 `base_footprint`, `base_link`, `camera_link`, `imu_link`가 원하는 위치에 보이는지 확인한다.
+1. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교한다.
+2. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인한다.
+3. Onshape에서 구동 톱니바퀴/궤도/보조 바퀴 visual을 `Group`으로 고정하고 불필요한 `Revolute mate`를 제거한다.
+4. Onshape URDF export를 시도하고, export된 link/joint/mesh 경로를 점검한다.
+5. `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`를 xacro에 추가할지 결정한다.
+6. Gazebo에서 virtual wheel 기반 diff-drive 모델을 구성한다.
+7. `effective_track_radius_m = 0.021`을 실제 encoder 주행거리 테스트로 보정한다.
+8. RViz2에서 `base_footprint`, `base_link`, `camera_link`, `imu_link`, `gps_link`가 원하는 위치에 보이는지 확인한다.
+9. Gazebo에서 `virtual_wheel_axis_xyz = 0 1 0`의 회전 부호가 전진 방향과 맞는지 확인한다.

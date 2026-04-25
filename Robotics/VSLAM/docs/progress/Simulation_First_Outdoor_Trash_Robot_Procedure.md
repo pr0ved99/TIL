@@ -5,6 +5,7 @@
 - 지금 프로젝트는 `바로 실하드웨어부터 붙이는 방식`보다 `URDF/xacro -> RViz2 TF 검증 -> Gazebo 시뮬레이션 -> Nav2/미션 로직 검증 -> 실제 센서 연동` 순서로 가는 것이 가장 안전하다.
 - 공터 환경에서는 `VSLAM 중심 설계`보다 `GPS + 엔코더 + IMU` 중심 설계가 더 현실적이므로, 시뮬레이션에서도 그 구조를 기준으로 먼저 검증하는 것이 맞다.
 - 즉, 이번 개발 절차의 핵심은 `먼저 로봇 구조와 소프트웨어를 가상환경에서 맞추고`, 그 다음 `실제 GPS/D435i/구동부 오차를 현장에서 튜닝`하는 것이다.
+- `2026-04-25` 기준으로 작은 거북이 Onshape 모델에서 `base_link`, 센서 frame, 궤도 중심거리, 가상 구동축 후보를 측정했으므로, 다음 단계는 `Onshape URDF export -> Gazebo virtual wheel diff-drive` 검증이다.
 
 ## 1. 이번 프로젝트에서 먼저 정해야 하는 기준
 
@@ -73,6 +74,30 @@
 12. 실제 D435i 탐지/근거리 접근 검증
 13. 실제 집기 장치 연동
 14. 공터 실험과 반복 튜닝
+
+### 2026-04-25 현재 작은 거북이 적용 계획
+
+현재 작은 거북이 모델은 실제 궤도 belt 물리를 바로 시뮬레이션하지 않는다. 먼저 visual 모델은 Onshape에서 고정하고, Gazebo 주행은 가상 바퀴 기반 차동구동으로 검증한다.
+
+```text
+Onshape 정리
+-> URDF export 시도
+-> export URDF/Xacro 후처리
+-> RViz2 TF 검증
+-> Gazebo virtual wheel diff-drive 검증
+```
+
+현재 기록된 1차 파라미터는 아래다.
+
+```text
+track_width_m              = 0.137553
+left_virtual_wheel_xyz_m   = 0.000000 0.0687765 0.000000
+right_virtual_wheel_xyz_m  = 0.000000 -0.0687765 0.000000
+virtual_wheel_axis_xyz     = 0 1 0
+effective_track_radius_m   = 0.021
+```
+
+주의할 점은 실제 구동 톱니바퀴 중심축이 좌우 앞뒤로 비대칭이라는 것이다. 따라서 실제 CAD 측정값은 기록으로 남기되, Gazebo/diff-drive는 좌우 가상 바퀴를 같은 `x=0` 위치에 둔 단순 모델로 먼저 검증한다.
 
 ## 4. 단계별 상세 절차
 
@@ -185,6 +210,7 @@ base_link
 구현:
 - Gazebo에 로봇 spawn
 - 차동구동 플러그인 또는 제어기 연결
+- 작은 거북이는 실제 궤도 물리 대신 `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`를 사용
 - `/cmd_vel` 입력
 - 전진/후진/회전 테스트
 
