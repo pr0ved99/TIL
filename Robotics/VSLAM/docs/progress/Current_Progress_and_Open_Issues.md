@@ -31,22 +31,49 @@
 - 추가로 `Jetson + Docker + ROS 2 Humble + D435i` 경로에서는 color/depth 토픽과 depth 약 `30 Hz`까지 확인해, Jetson 실기기 bring-up도 1차 완료했다.
 - 반면 `Jetson publish -> 노트북 RTAB-Map GUI` cross-machine 경로는 현재 학교 Wi-Fi에서 DDS discovery가 막혀 실패했고, 이는 네트워크 계층 이슈로 분리된 상태다.
 - 발표용 3D 맵은 우선 **노트북에 D435i를 직접 연결한 RTAB-Map 경로**로 확보했고, 결과 DB는 `assets/2026-04-16_laptop_rtabmap_demo/rtabmap_demo_map.db`에 저장했다.
-- `2026-04-25` 기준으로는 작은 거북이 로봇의 `Onshape -> URDF/Xacro -> Gazebo` 준비 단계로 넘어갔다.
-- 작은 거북이 `base_link`, D435i `camera_link`, BNO08x `imu_link`, GPS `gps_link`, 궤도 중심거리, 실제/가상 구동축 후보값을 1차 측정해 `turtle_small.urdf.xacro`와 준비 문서에 기록했다.
-- 다음 계획은 Onshape에서 URDF export를 시도하고, Gazebo에서는 실제 궤도 물리 대신 virtual wheel 기반 diff-drive 모델을 먼저 구성하는 것이다.
+- `2026-04-25` 기준으로는 Mari 로봇의 `Onshape -> URDF/Xacro -> Gazebo` 준비 단계로 넘어갔다.
+- Mari `base_link`, D435i `camera_link`, BNO08x `imu_link`, GPS `gps_link`, 궤도 중심거리, 실제/가상 구동축 후보값을 1차 측정해 `mari.urdf.xacro`와 준비 문서에 기록했다.
+- `2026-04-26` 기준으로 Onshape URDF/GLTF export 결과와 새 Mari STEP/STL export 결과를 repository asset으로 보관했다.
+- `mari.urdf.xacro`는 `xacro` 렌더링과 `check_urdf` 파싱을 통과했고, Gazebo에는 `mari` entity가 생성되는 단계까지 확인했다.
+- 다만 Gazebo 화면에는 아직 Mari visual mesh가 보이지 않는다. 현재 blocker는 `URDF 파싱 실패`가 아니라 `Gazebo visual mesh 표시/로딩 문제`로 분리됐다.
+- 다음 계획은 Gazebo visual mesh 표시 문제를 해결한 뒤, 실제 궤도 물리 대신 virtual wheel 기반 diff-drive 모델을 구성하는 것이다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-25 최신 업데이트
+## 0. 2026-04-26 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
-1. **작은 거북이 URDF/Xacro 준비**
+1. **Mari/Duri asset 명칭 정리**
+   - `turtle_small`은 `Mari`, `turtle_big`은 `Duri` 기준으로 repository asset과 URDF 파일명을 정리했다.
+   - Mari/Duri 캡처 이미지를 `mari_view`, `duri_view`로 분리했고, Mari는 `with_sensors`, `without_sensors`를 따로 보관했다.
+2. **Onshape export 결과 보관**
+   - Onshape에서 export한 Mari URDF/GLTF zip과 unpacked 결과를 `assets/robot_model_exports/onshape_urdf_exports`에 보관했다.
+   - 새 Mari STEP/STL export 결과도 `assets/robot_model_exports`와 `trashbot_description/meshes`에 반영했다.
+3. **Gazebo spawn 시도와 blocker 분리**
+   - `trashbot_description` 빌드, `mari.urdf.xacro` 렌더링, `check_urdf` 파싱은 통과했다.
+   - Gazebo model tree에 `mari`와 `base_footprint`가 표시되지만, 실제 visual mesh는 화면에 보이지 않는다.
+   - 현재 blocker는 `mesh URI`, `mesh scale/origin`, `Gazebo Classic STL 처리`, `client view`를 순서대로 확인해야 하는 visual 표시 문제다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **로봇 모델링**: Mari frame/sensor 좌표와 visual asset 정리 완료
+- **URDF/Xacro 검증**: Xacro 렌더링과 URDF 파싱은 통과
+- **시뮬레이션 준비**: Gazebo entity spawn은 진행됐지만 visual mesh 표시 blocker 해결 필요
+- **다음 작업**: `gzclient --verbose` 로그 확인, mesh bounds/scale 확인, 단순 visual baseline 비교, 이후 virtual wheel diff-drive 추가
+
+---
+
+## 0-1. 2026-04-25 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Mari URDF/Xacro 준비**
    - Onshape에서 궤도/구동부 기준 `base_link_mc`를 만들고, ROS 기준 `+X 전방`, `+Y 왼쪽`, `+Z 위쪽` 방향을 정했다.
-   - D435i, BNO08x, GPS의 `base_link` 기준 1차 상대 위치를 측정해 `turtle_small.urdf.xacro` 변수로 기록했다.
+   - D435i, BNO08x, GPS의 `base_link` 기준 1차 상대 위치를 측정해 `mari.urdf.xacro` 변수로 기록했다.
 2. **궤도/구동축 파라미터 정리**
    - 좌우 궤도 중심거리 `0.137553 m`, 가상 구동축 `y=±0.0687765 m`, 유효 궤도 반지름 후보 `0.021 m`를 기록했다.
    - 실제 구동축은 좌우 앞뒤 위치가 비대칭이므로 CAD 기준 기록으로 남기고, Gazebo/diff-drive에는 `x=0` 가상 바퀴를 쓰는 방향으로 정했다.
@@ -63,7 +90,7 @@
 
 ---
 
-## 0-1. 2026-04-16 기준 업데이트
+## 0-2. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -90,7 +117,7 @@
 - `Stage 0`: 센서 입력 확인과 실행 환경 준비
   - Jetson/D435i/RTAB-Map baseline은 1차 완료, 추가 튜닝과 반복 검증 단계
 - `Stage 1`: 로봇 모델링과 시뮬레이션
-  - Onshape 기준 작은 거북이 `base_link`, 센서 frame, 궤도/구동축 파라미터 측정까지 시작
+  - Onshape 기준 Mari `base_link`, 센서 frame, 궤도/구동축 파라미터 측정까지 시작
 
 현재 Stage 0 안에서도 세부적으로는 이렇게 나뉜다.
 
@@ -551,9 +578,9 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. Onshape에서 구동 톱니바퀴/궤도/보조 바퀴 visual을 `Group`으로 고정하고, 불필요한 `Revolute mate`를 제거
-2. Onshape URDF export를 시도하고, export된 link/joint/mesh 경로를 점검
-3. `turtle_small.urdf.xacro`에 `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`와 diff-drive용 joint/plugin 후보를 추가
+1. Gazebo에서 `mari_visual_mesh.stl`이 보이지 않는 원인을 `gzclient --verbose`, mesh path, mesh scale/origin 기준으로 분리
+2. 필요하면 STL 대신 DAE/OBJ/GLTF 변환본으로 Gazebo visual 표시를 재시험
+3. `mari.urdf.xacro`에 `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`와 diff-drive용 joint/plugin 후보를 추가
 4. Gazebo에서 `track_width = 0.137553 m`, `effective_track_radius = 0.021 m` 기준으로 `/cmd_vel` 전진/회전이 되는지 확인
 5. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교해 `imu_roll/pitch/yaw` 보정값 정리
 6. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인
@@ -567,7 +594,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 ## 9. 지금 상태 한 줄 요약
 
-지금은 `Jetson` native/Docker RTAB-Map baseline과 외부 `BNO08x` 확인을 바탕으로, **작은 거북이 로봇의 URDF/Xacro 모델링과 Gazebo virtual wheel 주행 검증 단계로 확장하는 상태**에 있다.
+지금은 `Jetson` native/Docker RTAB-Map baseline과 외부 `BNO08x` 확인을 바탕으로, **Mari 로봇의 URDF/Xacro 모델링을 Gazebo spawn 단계까지 확장했고, visual mesh 표시 blocker를 해결한 뒤 virtual wheel 주행 검증으로 넘어가는 상태**에 있다.
 
 ---
 

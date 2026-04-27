@@ -2,14 +2,14 @@
 
 ## 결론
 
-- 오늘 가장 중요한 결과는 작은 거북이 로봇의 URDF/Xacro 구조를 실제 섀시 치수 기준으로 정리하고, 센서 배치를 시작할 수 있는 골격을 만든 것이다.
+- 오늘 가장 중요한 결과는 Mari 로봇의 URDF/Xacro 구조를 실제 섀시 치수 기준으로 정리하고, 센서 배치를 시작할 수 있는 골격을 만든 것이다.
 - 오늘 작업은 Jetson에서 직접 센서를 실행한 것이 아니라, **노트북 로컬에서 CAD, URDF/Xacro, 문서, 프로젝트 현황 작성 방향을 정리한 작업**이다.
 - `base_footprint -> base_link -> chassis_link` 구조를 만들고, D435i 카메라, IMU, GPS를 나중에 실측값으로 교체할 수 있는 placeholder frame으로 분리했다.
 - 다음 작업의 1순위는 D435i, IMU, GPS 3D 모델을 Onshape에 올려 실제 장착 위치 후보를 잡고, 그 값을 Xacro 변수에 반영하는 것이다.
 
 ## 오늘 작업 한 줄 요약
 
-- 작은 거북이 섀시를 기준으로 URDF/Xacro 1차 골격을 정리하고, 하드웨어/VSLAM 관점의 문서와 프로젝트 현황 문구를 보강했다.
+- Mari 섀시를 기준으로 URDF/Xacro 1차 골격을 정리하고, 하드웨어/VSLAM 관점의 문서와 프로젝트 현황 문구를 보강했다.
 - 왜 이 작업을 먼저 했는가?
   - VSLAM과 자율주행에서 카메라, IMU, 구동부 위치는 TF 좌표계의 기준이 되므로 실제 조립 전에 모델 기준을 먼저 잡아야 하기 때문이다.
 
@@ -29,8 +29,8 @@ rm -rf ~/.config/fcitx ~/.config/fcitx5 ~/.local/share/fcitx ~/.local/share/fcit
 
 ### 10:20
 
-- 작은 거북이 URDF/Xacro 작업을 이어서 진행했다.
-- `turtle_small_visual_mesh.stl`의 실제 bounds를 확인했고, mesh가 `x/y` 중심 정렬, `z=0` 바닥 기준으로 export되어 있다는 점을 확인했다.
+- Mari URDF/Xacro 작업을 이어서 진행했다.
+- `mari_visual_mesh.stl`의 실제 bounds를 확인했고, mesh가 `x/y` 중심 정렬, `z=0` 바닥 기준으로 export되어 있다는 점을 확인했다.
 - 전체 치수는 `0.1776 m x 0.1580 m x 0.0504 m`로 정리했다.
 
 ```bash
@@ -41,7 +41,7 @@ PY
 
 ### 11:00
 
-- `turtle_small.urdf.xacro`를 단일 `base_link` 구조에서 `base_footprint -> base_link -> chassis_link` 구조로 정리했다.
+- `mari.urdf.xacro`를 단일 `base_link` 구조에서 `base_footprint -> base_link -> chassis_link` 구조로 정리했다.
 - `base_link`는 섀시 중심 높이인 `0.0252 m`에 두고, visual/collision mesh는 아래로 `0.0252 m` 내려 바닥이 `z=0`에 맞도록 구성했다.
 - D435i, IMU, GPS는 아직 실제 장착 위치가 확정되지 않았으므로 placeholder link와 fixed joint로 분리했다.
 
@@ -63,7 +63,7 @@ base_footprint
 - 현재 노트북 ROS 환경에는 `xacro`, `joint_state_publisher`, `joint_state_publisher_gui`가 없어 RViz 확인 전에 설치가 필요하다는 점을 기록했다.
 
 ```bash
-xmllint --noout Robotics/VSLAM/trashbot_description/urdf/turtle_small.urdf.xacro
+xmllint --noout Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro
 
 cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
 source /opt/ros/humble/setup.bash
@@ -110,7 +110,7 @@ colcon build --symlink-install --packages-select trashbot_description
 
 ## 오늘 관찰한 핵심 현상
 
-- 현재 작은 거북이 STL은 `z=0`이 바닥 기준으로 정리되어 있어 URDF에서 `base_footprint`를 지면 중심으로 두기 좋다.
+- 현재 Mari STL은 `z=0`이 바닥 기준으로 정리되어 있어 URDF에서 `base_footprint`를 지면 중심으로 두기 좋다.
 - `base_link`를 지면이 아니라 섀시 중심 높이에 두면 visual/collision offset을 단순하게 관리할 수 있다.
 - D435i 외형 모델을 붙이는 것보다 중요한 것은 optical frame 방향과 실제 센서 장착 위치다.
 - Onshape에서 센서 CAD를 올리는 작업은 URDF 좌표값을 추정하기 위한 준비 작업이지, 최종 실측을 대체하지 않는다.
@@ -132,7 +132,7 @@ colcon build --symlink-install --packages-select trashbot_description
 
 ## 해결 방법
 
-- 작은 거북이 URDF/Xacro를 `base_footprint`, `base_link`, `chassis_link`, 센서 link 구조로 분리했다.
+- Mari URDF/Xacro를 `base_footprint`, `base_link`, `chassis_link`, 센서 link 구조로 분리했다.
 - 섀시 visual mesh는 실제 STL bounds에 맞춰 `base_link` 기준 아래로 offset했다.
 - 카메라, IMU, GPS 위치는 나중에 실측값으로 교체할 수 있도록 xacro property로 분리했다.
 - colcon 산출물이 git에 섞이지 않도록 `.gitignore`에 VSLAM 빌드 산출물 규칙을 추가했다.
@@ -150,9 +150,9 @@ colcon build --symlink-install --packages-select trashbot_description
 - [2026-04-24 작업 일지](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-24/README.md)
 - [VSLAM Daily Index](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/README.md)
 - [gitignore](/home/ssafy/my_ws/git_hub/.gitignore)
-- [Small Turtle URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md)
+- [Mari URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md)
 - [trashbot_description README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/README.md)
-- [turtle_small.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/turtle_small.urdf.xacro)
+- [mari.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro)
 
 ## 증빙 자료
 
@@ -177,11 +177,11 @@ center_xyz_m = (0.0000, 0.0000, 0.0252)
 
 ## 다음 액션
 
-1. D435i, IMU, GPS 3D 모델을 Onshape에 import하고 작은 거북이 차체 위에 대략 배치한다.
-2. 각 센서의 `base_link` 기준 `x y z rpy` 값을 측정해 `turtle_small.urdf.xacro` property에 반영한다.
+1. D435i, IMU, GPS 3D 모델을 Onshape에 import하고 Mari 차체 위에 대략 배치한다.
+2. 각 센서의 `base_link` 기준 `x y z rpy` 값을 측정해 `mari.urdf.xacro` property에 반영한다.
 3. ROS2 의존성을 설치한 뒤 RViz2에서 URDF 모델과 TF 트리를 확인한다.
 4. 이후 궤도형 구동 구조를 Gazebo용 collision/virtual wheel 기준으로 단순화할지 결정한다.
 
 ## 한 줄 회고
 
-- 오늘 작업을 한 문장으로 요약하면, 작은 거북이 로봇의 센서 장착과 VSLAM 좌표계 정의를 시작할 수 있도록 URDF/Xacro 기반을 정리한 날이었다.
+- 오늘 작업을 한 문장으로 요약하면, Mari 로봇의 센서 장착과 VSLAM 좌표계 정의를 시작할 수 있도록 URDF/Xacro 기반을 정리한 날이었다.

@@ -2,7 +2,7 @@
 
 ## 결론
 
-- 오늘 가장 중요한 결과는 작은 거북이 Onshape assembly에서 `base_link` 기준점을 정하고, D435i의 `base_link -> camera_link` 1차 상대 위치를 측정한 것이다.
+- 오늘 가장 중요한 결과는 Mari Onshape assembly에서 `base_link` 기준점을 정하고, D435i의 `base_link -> camera_link` 1차 상대 위치를 측정한 것이다.
 - 이 작업은 Jetson 실기 실행이 아니라, 노트북/Onshape에서 진행한 URDF/Xacro 센서 배치 준비 작업이다.
 - D435i에 이어 BNO08x IMU와 GPS의 `base_link` 기준 1차 상대 위치도 측정했다.
 - 좌우 궤도 중심거리, 실제 비대칭 구동축, Gazebo/diff-drive용 가상 구동축 후보값도 기록했다.
@@ -10,7 +10,7 @@
 
 ## 오늘 작업 한 줄 요약
 
-- 작은 거북이 궤도/구동부 기준으로 `base_link_mc`를 만들고, D435i, BNO08x, GPS, 궤도 중심거리, 구동축 후보값을 URDF 준비 문서와 xacro에 기록했다.
+- Mari 궤도/구동부 기준으로 `base_link_mc`를 만들고, D435i, BNO08x, GPS, 궤도 중심거리, 구동축 후보값을 URDF 준비 문서와 xacro에 기록했다.
 
 ## 시간순 기록
 
@@ -170,8 +170,8 @@ effective_track_radius = 0.021 m
 
 ## 오늘 만든/수정한 파일
 
-- [Small_Turtle_URDF_Xacro_Preparation_Checklist.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md)
-- [turtle_small.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/turtle_small.urdf.xacro)
+- [Mari_URDF_Xacro_Preparation_Checklist.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md)
+- [mari.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro)
 - [README.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-25/README.md)
 
 ## 남은 문제
@@ -195,4 +195,4 @@ effective_track_radius = 0.021 m
 
 ## 한 줄 회고
 
-- 오늘 작업은 작은 거북이 VSLAM용 URDF에서 `base_link`, 주요 센서 frame, 궤도 중심거리, 구동축 후보값을 처음으로 수치화한 작업이었다.
+- 오늘 작업은 Mari VSLAM용 URDF에서 `base_link`, 주요 센서 frame, 궤도 중심거리, 구동축 후보값을 처음으로 수치화한 작업이었다.

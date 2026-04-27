@@ -16,7 +16,7 @@
 ## 현재 작업 형태
 
 - 기존 `trashbot_description` 패키지를 확장했다.
-- 기존 `turtle_big`, `turtle_small` xacro는 보존했다.
+- 기존 `duri`, `mari` xacro는 보존했다.
 - 실제 치수는 아직 확정되지 않았으므로 새 `trashbot.urdf.xacro`는 placeholder dimension 기준이다.
 
 ## 시간순 기록

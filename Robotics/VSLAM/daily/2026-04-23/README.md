@@ -4,7 +4,7 @@
 
 - 오늘 가장 중요한 결과는 `turtle_CAD` 자료의 중국어 파일명/폴더명을 영어로 정리하고, 구매한 것으로 보이는 `R3` 궤도형 섀시 후보 자료만 따로 분리해 비교 가능한 상태로 만든 것이다.
 - 오늘 작업은 Jetson에서 센서나 Docker를 실행한 것이 아니라, **노트북 로컬에서 CAD 자료 정리, 3D 모델 확인 환경 준비, URDF/Xacro 작성을 위한 사전 준비**를 진행한 것이다.
-- `small_turtle.stl`의 Onshape import 오류는 단위 문제보다 메쉬 결함 가능성이 크다는 점을 확인했고, 발표용/시각화용 STL과 설계용 STEP을 구분해서 써야 한다는 기준을 정리했다.
+- `mari.stl`의 Onshape import 오류는 단위 문제보다 메쉬 결함 가능성이 크다는 점을 확인했고, 발표용/시각화용 STL과 설계용 STEP을 구분해서 써야 한다는 기준을 정리했다.
 - 다음 작업의 1순위는 **분리한 궤도형 섀시 CAD를 기준으로 `base_link`, `camera_link`, `imu_link` 위치 후보를 정리하고 URDF/Xacro 초안을 시작하는 것**이다.
 
 ## 오늘 작업 한 줄 요약
@@ -93,7 +93,7 @@ xdg-open "/home/ssafy/Desktop/R3_Tracked_Chassis_Selected_20260423"
 
 ### 15:00
 
-- `small_turtle.stl`를 Onshape에 import할 때 발생한 오류 원인을 분석했다.
+- `mari.stl`를 Onshape에 import할 때 발생한 오류 원인을 분석했다.
 - 파일 자체를 검사한 결과, 단위 선택 문제가 아니라 `non-manifold edge`, `duplicate face` 같은 메쉬 결함이 주요 원인으로 보였다.
 - 따라서 설계 목적에는 STL보다 STEP을 우선 사용해야 한다는 판단을 정리했다.
 
@@ -101,17 +101,17 @@ xdg-open "/home/ssafy/Desktop/R3_Tracked_Chassis_Selected_20260423"
 python3 - <<'PY'
 # binary STL 구조, triangle 수, non-manifold edge, duplicate face 분석
 PY
-freecadcmd -c "import Mesh; m=Mesh.Mesh('/home/ssafy/Desktop/turtle_CAD/small_turtle.stl'); print(m.CountFacets)"
+freecadcmd -c "import Mesh; m=Mesh.Mesh('/home/ssafy/Desktop/turtle_CAD/mari.stl'); print(m.CountFacets)"
 ```
 
 ### 15:40
 
-- Onshape 업로드 테스트용으로 `small_turtle.stl`의 수리본을 별도로 만들었다.
+- Onshape 업로드 테스트용으로 `mari.stl`의 수리본을 별도로 만들었다.
 - 이 수리본은 시각화 테스트용으로는 의미가 있지만, CAD 편집 기준의 정확한 원본 대체물은 아니라는 점도 같이 정리했다.
 - 메쉬 수리와 CAD 원본 유지의 차이를 구분해서 다루기로 했다.
 
 ```bash
-freecadcmd -c "import Mesh; src='/home/ssafy/Desktop/turtle_CAD/small_turtle.stl'; dst='/home/ssafy/Desktop/turtle_CAD/small_turtle_repaired_for_onshape.stl'; m=Mesh.Mesh(src); m.removeDuplicatedFacets(); m.removeDuplicatedPoints(); m.removeNonManifolds(); m.fixSelfIntersections(); m.write(dst)"
+freecadcmd -c "import Mesh; src='/home/ssafy/Desktop/turtle_CAD/mari.stl'; dst='/home/ssafy/Desktop/turtle_CAD/mari_repaired_for_onshape.stl'; m=Mesh.Mesh(src); m.removeDuplicatedFacets(); m.removeDuplicatedPoints(); m.removeNonManifolds(); m.fixSelfIntersections(); m.write(dst)"
 ```
 
 ### 16:20
@@ -125,7 +125,7 @@ freecadcmd -c "import Mesh; src='/home/ssafy/Desktop/turtle_CAD/small_turtle.stl
 - `turtle_CAD` 자료는 단순히 한 개의 섀시가 아니라 `R1`, `R3`, `R3X`, `TT` 계열 전체가 섞인 대형 벤더 패키지였다.
 - 파일명을 영어로 정리한 뒤 경로 탐색 속도가 크게 좋아졌고, 후보 섀시를 빠르게 좁힐 수 있었다.
 - 궤도형 자료는 `R3_Chassis` 아래 `Tracked` 관련 경로로 모여 있었다.
-- `small_turtle.stl`는 파일 크기나 triangle 수 자체보다 메쉬 위상 문제가 import 오류에 더 큰 영향을 주고 있었다.
+- `mari.stl`는 파일 크기나 triangle 수 자체보다 메쉬 위상 문제가 import 오류에 더 큰 영향을 주고 있었다.
 - 설계용 CAD와 시각화용 mesh는 목적이 다르므로 확장자를 구분해서 써야 한다는 점이 분명해졌다.
 
 ## 원인 가설
@@ -161,7 +161,7 @@ freecadcmd -c "import Mesh; src='/home/ssafy/Desktop/turtle_CAD/small_turtle.stl
 - [rename manifest](/home/ssafy/Desktop/turtle_CAD/rename_manifest_20260423.tsv)
 - [rename final manifest](/home/ssafy/Desktop/turtle_CAD/rename_manifest_final_20260423.tsv)
 - [tracked chassis selected README](/home/ssafy/Desktop/R3_Tracked_Chassis_Selected_20260423/README.md)
-- [small turtle repaired STL](/home/ssafy/Desktop/turtle_CAD/small_turtle_repaired_for_onshape.stl)
+- [Mari repaired STL](/home/ssafy/Desktop/turtle_CAD/mari_repaired_for_onshape.stl)
 
 ## 증빙 자료
 

@@ -39,7 +39,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`docs/learning/D435i_IMU_Axis_Interpretation.md`](./docs/learning/D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
 - [`docs/learning/D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
 - [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
-- [`docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/Small_Turtle_URDF_Xacro_Preparation_Checklist.md): 작은 거북이 URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
+- [`docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md): Mari URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
 
 ### progress
 
@@ -76,8 +76,9 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`daily/2026-04-15/README.md`](./daily/2026-04-15/README.md): Jetson 호스트, Docker, ROS 2 Humble, D435i color/depth bring-up 정리
 - [`daily/2026-04-16/README.md`](./daily/2026-04-16/README.md): Jetson Docker RTAB-Map/X11, cross-machine ROS 2 실패 원인 분리, 노트북 직결 RTAB-Map 데모 정리
 - [`daily/2026-04-23/README.md`](./daily/2026-04-23/README.md): 로컬 CAD 자료 정리, 궤도형 섀시 후보 분리, URDF/Xacro 준비 방향 정리
-- [`daily/2026-04-24/README.md`](./daily/2026-04-24/README.md): 작은 거북이 URDF/Xacro 골격, 센서 배치 준비, 하드웨어/VSLAM 현황 정리
-- [`daily/2026-04-25/README.md`](./daily/2026-04-25/README.md): 작은 거북이 `base_link`, 센서 frame, 궤도/구동축 파라미터 측정
+- [`daily/2026-04-24/README.md`](./daily/2026-04-24/README.md): Mari URDF/Xacro 골격, 센서 배치 준비, 하드웨어/VSLAM 현황 정리
+- [`daily/2026-04-25/README.md`](./daily/2026-04-25/README.md): Mari `base_link`, 센서 frame, 궤도/구동축 파라미터 측정
+- [`daily/2026-04-26/README.md`](./daily/2026-04-26/README.md): Mari/Duri asset 정리, Onshape URDF/GLTF 보관, Gazebo visual mesh blocker 확인
 
 ### jetson
 
@@ -132,5 +133,5 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - `trashbot_description/urdf/trashbot.urdf.xacro`: 자율주행 로봇 초안 URDF/xacro (`base_link`, 좌우 바퀴, `D435i`, `BNO08x`, GPS frame 포함)
 - `trashbot_description/launch/display.launch.py`: `robot_state_publisher`, `joint_state_publisher`, RViz2 기반 모델 확인 launch
-- `trashbot_description/urdf/turtle_big.urdf.xacro`: 큰 거북이 기준 기본 URDF (센서 링크 포함)
-- `trashbot_description/urdf/turtle_small.urdf.xacro`: 작은 거북이 기준 기본 URDF (센서 링크 포함)
+- `trashbot_description/urdf/duri.urdf.xacro`: Duri 기준 기본 URDF (센서 링크 포함)
+- `trashbot_description/urdf/mari.urdf.xacro`: Mari 기준 기본 URDF (센서 링크 포함)

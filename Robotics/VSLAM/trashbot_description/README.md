@@ -12,12 +12,13 @@ It is the starting point for Sprint 3 robot-modeling tasks:
 ## Current Main Model
 
 - [`urdf/trashbot.urdf.xacro`](./urdf/trashbot.urdf.xacro)
-- [`urdf/turtle_small.urdf.xacro`](./urdf/turtle_small.urdf.xacro)
+- [`urdf/mari.urdf.xacro`](./urdf/mari.urdf.xacro)
+- [`urdf/duri.urdf.xacro`](./urdf/duri.urdf.xacro)
 
 The dimensions are placeholders until the real chassis is measured. Keep the frame
 names stable first, then update the numeric offsets later.
 
-`turtle_small.urdf.xacro` currently uses the measured/exported chassis bounds below.
+`mari.urdf.xacro` currently uses the measured/exported chassis bounds below.
 
 ```text
 base_length = 0.1776 m
@@ -25,6 +26,20 @@ base_width  = 0.1580 m
 base_height = 0.0504 m
 base_link_z = 0.0252 m
 ```
+
+Current Mari status:
+
+- `mari.urdf.xacro` renders with `xacro`.
+- `check_urdf` parses the rendered URDF.
+- Gazebo Classic can create the `mari` entity, but the full visual mesh is not visible yet.
+- Treat the current Gazebo issue as a visual mesh loading/display blocker before adding diff-drive plugins.
+
+The latest Mari visual assets are tracked separately:
+
+- `assets/robot_model_exports/Mari.step`
+- `assets/robot_model_exports/mari_visual_mesh.stl`
+- `assets/robot_model_exports/onshape_urdf_exports/`
+- `trashbot_description/meshes/mari_visual_mesh.stl`
 
 ## Frame Draft
 
@@ -74,11 +89,11 @@ Open RViz2:
 ros2 launch trashbot_description display.launch.py
 ```
 
-Open the small turtle model in RViz2:
+Open the Mari model in RViz2:
 
 ```bash
 ros2 launch trashbot_description display.launch.py \
-  model:=$(pwd)/trashbot_description/urdf/turtle_small.urdf.xacro
+  model:=$(pwd)/trashbot_description/urdf/mari.urdf.xacro
 ```
 
 If the terminal does not know the local display, run:
@@ -88,17 +103,18 @@ DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority
 ros2 launch trashbot_description display.launch.py
 ```
 
-Small turtle variant with explicit display variables:
+Mari variant with explicit display variables:
 
 ```bash
 DISPLAY="${DISPLAY:-:1}" XAUTHORITY="${XAUTHORITY:-/run/user/1000/gdm/Xauthority}" \
 ros2 launch trashbot_description display.launch.py \
-  model:=$(pwd)/trashbot_description/urdf/turtle_small.urdf.xacro
+  model:=$(pwd)/trashbot_description/urdf/mari.urdf.xacro
 ```
 
 ## Next Edits
 
-- Verify `turtle_small.urdf.xacro` in RViz2 after installing `ros-humble-xacro`.
-- Measure the real `base_link -> camera_link` offset after mounting D435i.
-- Measure the real `base_link -> imu_link` offset after mounting BNO08x.
-- Decide whether `gps_link` represents receiver body or antenna phase center.
+- Debug why Gazebo Classic does not display `mari_visual_mesh.stl` even though the `mari` entity is created.
+- Check `gzclient --verbose` for mesh URI or resource path errors.
+- Compare the Mari STL with a simple visible test mesh to separate path issues from scale/origin issues.
+- Add virtual wheel links and diff-drive plugin only after the visual baseline is visible.
+- Verify `mari.urdf.xacro` in RViz2 and confirm `base_link`, `camera_link`, `imu_link`, and `gps_link` positions.
