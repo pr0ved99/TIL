@@ -13,4 +13,5 @@
 
 ## 현재 핸드오프
 
+- [`Mari_D435i_Jetson_RTABMap_Handoff.md`](./Mari_D435i_Jetson_RTABMap_Handoff.md): `Mari`에 장착된 `D435i`를 다른 `Jetson`에서 실행해 `RTAB-Map` RGB-D mapping을 재현하는 핸드오프 패키지
 - [`BNO08x_Host_Venv_First_Check_Handoff.md`](./BNO08x_Host_Venv_First_Check_Handoff.md): 외부 `GY-BNO08x`를 Jetson host `venv`에서 먼저 읽어보는 1차 핸드오프 패키지

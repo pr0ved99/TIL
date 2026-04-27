@@ -31,6 +31,9 @@ Current Mari status:
 
 - `mari.urdf.xacro` renders with `xacro`.
 - `check_urdf` parses the rendered URDF.
+- RViz2 displays the Mari visual mesh and sensor frames after the visual mesh yaw/z-offset correction.
+- The TF tree is verified as `base_footprint -> base_link -> chassis_link/camera_link/imu_link/gps_link`.
+- `Tools/test_mari_moving_tf.py` can publish a visual motion check with `map -> odom -> base_footprint` and `/odom`.
 - Gazebo Classic can create the `mari` entity, but the full visual mesh is not visible yet.
 - Treat the current Gazebo issue as a visual mesh loading/display blocker before adding diff-drive plugins.
 
@@ -92,6 +95,10 @@ ros2 launch trashbot_description display.launch.py
 Open the Mari model in RViz2:
 
 ```bash
+cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
 ros2 launch trashbot_description display.launch.py \
   model:=$(pwd)/trashbot_description/urdf/mari.urdf.xacro
 ```
@@ -111,10 +118,62 @@ ros2 launch trashbot_description display.launch.py \
   model:=$(pwd)/trashbot_description/urdf/mari.urdf.xacro
 ```
 
+Check the current TF tree:
+
+```bash
+ros2 run tf2_tools view_frames
+```
+
+Run a simple RViz2 motion check:
+
+```bash
+python3 Tools/test_mari_moving_tf.py
+```
+
+For the motion check, set RViz2 as follows:
+
+```text
+Global Options > Fixed Frame = map
+Views > Current View > Target Frame = map
+```
+
+The script publishes:
+
+```text
+map -> odom -> base_footprint -> base_link
+/odom
+```
+
+Run a `/cmd_vel` based odom check:
+
+```bash
+python3 Tools/test_mari_cmd_vel_odom.py
+```
+
+In another terminal, publish a forward command:
+
+```bash
+source /opt/ros/humble/setup.bash
+ros2 topic pub --rate 10 /cmd_vel geometry_msgs/msg/Twist \
+  "{linear: {x: 0.15}, angular: {z: 0.0}}"
+```
+
+Rotation command:
+
+```bash
+source /opt/ros/humble/setup.bash
+ros2 topic pub --rate 10 /cmd_vel geometry_msgs/msg/Twist \
+  "{linear: {x: 0.0}, angular: {z: 0.5}}"
+```
+
+This test subscribes to `/cmd_vel`, integrates a simple 2D pose, and publishes
+`/odom` plus `odom -> base_footprint`.
+
 ## Next Edits
 
+- Add virtual wheel links after the RViz2 TF baseline is stable.
+- Verify the test path as `/cmd_vel -> /odom -> odom -> base_footprint`.
 - Debug why Gazebo Classic does not display `mari_visual_mesh.stl` even though the `mari` entity is created.
 - Check `gzclient --verbose` for mesh URI or resource path errors.
 - Compare the Mari STL with a simple visible test mesh to separate path issues from scale/origin issues.
-- Add virtual wheel links and diff-drive plugin only after the visual baseline is visible.
-- Verify `mari.urdf.xacro` in RViz2 and confirm `base_link`, `camera_link`, `imu_link`, and `gps_link` positions.
+- Add Gazebo diff-drive plugin only after the visual baseline is visible or a simplified simulation visual is chosen.

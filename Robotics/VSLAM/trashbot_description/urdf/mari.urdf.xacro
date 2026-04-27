@@ -4,19 +4,23 @@
 
   <!--
     Mari tracked chassis first draft.
-    STL bounds check:
-      x = 0.1776 m
-      y = 0.1580 m
-      z = 0.0504 m
-    The exported mesh is centered in x/y and starts at z=0, so base_link is
-    placed at the chassis center height and the mesh/collision are shifted down
-    by half the chassis height.
+    Visual STL bounds check:
+      x = 0.5775 m
+      y = 0.5095 m
+      z = 0.1810 m
+      min_z = -0.021884 m
+    Keep base_footprint on the ground, base_link at the chassis center height,
+    and shift only the visual mesh so the lowest mesh vertex sits on z=0.
   -->
   <xacro:property name="base_length" value="0.1776"/>
   <xacro:property name="base_width" value="0.1580"/>
   <xacro:property name="base_height" value="0.0504"/>
   <xacro:property name="base_mass" value="6.0"/>
   <xacro:property name="base_link_z" value="${base_height / 2.0}"/>
+  <!-- Onshape STL export axis correction: keep ROS links fixed and rotate only the visual mesh. -->
+  <xacro:property name="chassis_mesh_yaw" value="${pi / 2.0}"/>
+  <xacro:property name="chassis_mesh_min_z" value="-0.021884"/>
+  <xacro:property name="chassis_mesh_z" value="${-base_link_z - chassis_mesh_min_z}"/>
 
   <!-- Collision stays simple even if the visual mesh includes tracks/sprockets. -->
   <xacro:property name="collision_length" value="${base_length}"/>
@@ -42,10 +46,11 @@
   <xacro:property name="right_virtual_wheel_y" value="${-half_track_width}"/>
   <xacro:property name="virtual_wheel_z" value="0.0"/>
 
-  <!-- D435i first Onshape measurement from base_link_mc to camera_link_mc. -->
+  <!-- D435i mount measurement from base_link_mc to camera_link_mc.
+       2026-04-27: camera height raised by (80 - 65.44216) mm = 0.01455784 m. -->
   <xacro:property name="camera_x" value="0.127688"/>
   <xacro:property name="camera_y" value="-0.001695"/>
-  <xacro:property name="camera_z" value="0.107616"/>
+  <xacro:property name="camera_z" value="0.122174"/>
   <xacro:property name="camera_roll" value="0.0"/>
   <xacro:property name="camera_pitch" value="0.0"/>
   <xacro:property name="camera_yaw" value="0.0"/>
@@ -115,14 +120,14 @@
 
   <link name="chassis_link">
     <visual>
-      <origin xyz="0 0 ${-base_height / 2.0}" rpy="0 0 0"/>
+      <origin xyz="0 0 ${chassis_mesh_z}" rpy="0 0 ${chassis_mesh_yaw}"/>
       <geometry>
         <mesh filename="${mesh_file}"/>
       </geometry>
       <material name="chassis_gray"/>
     </visual>
     <collision>
-      <origin xyz="0 0 ${-collision_height / 2.0}" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="${collision_length} ${collision_width} ${collision_height}"/>
       </geometry>
@@ -143,16 +148,16 @@
   <link name="camera_link">
     <visual>
       <geometry>
-        <box size="0.09 0.025 0.025"/>
+        <box size="0.025 0.09 0.025"/>
       </geometry>
       <material name="sensor_black"/>
     </visual>
     <collision>
       <geometry>
-        <box size="0.09 0.025 0.025"/>
+        <box size="0.025 0.09 0.025"/>
       </geometry>
     </collision>
-    <xacro:box_inertial mass="0.08" x="0.09" y="0.025" z="0.025"/>
+    <xacro:box_inertial mass="0.08" x="0.025" y="0.09" z="0.025"/>
   </link>
 
   <joint name="base_to_camera" type="fixed">

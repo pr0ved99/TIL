@@ -343,7 +343,7 @@ chassis_mesh_z_offset_m        = -0.0252
 ```text
 camera_x_from_base_link_m = 0.127688
 camera_y_from_base_link_m = -0.001695
-camera_z_from_base_link_m = 0.107616
+camera_z_from_base_link_m = 0.122174
 camera_roll_rad           = 0.0
 camera_pitch_rad          = 0.0
 camera_yaw_rad            = 0.0
@@ -364,12 +364,14 @@ camera_link_mc +Z           = 카메라 위쪽
 
 base_link_to_camera_link_x_mm = 127.688
 base_link_to_camera_link_y_mm = -1.695
-base_link_to_camera_link_z_mm = 107.616
+base_link_to_camera_link_z_mm = 122.174
 
 base_link_to_camera_link_x_m  = 0.127688
 base_link_to_camera_link_y_m  = -0.001695
-base_link_to_camera_link_z_m  = 0.107616
+base_link_to_camera_link_z_m  = 0.122174
 ```
+
+2026-04-27에 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것으로 확인되어, 기존 `z = 107.616 mm`에 보정값을 더한 `z = 122.174 mm`를 현재 xacro 기준값으로 반영했다.
 
 현재 `rpy`는 카메라가 로봇 전방을 수평으로 바라본다고 보고 `0 0 0`으로 시작한다. 실제 장착 후 카메라가 위/아래로 기울어지면 `camera_pitch_rad`를 다시 측정해 갱신한다.
 
@@ -510,15 +512,15 @@ base_footprint
 
 ## 10. 다음 액션
 
-1. Gazebo에서 `mari_visual_mesh.stl`이 보이지 않는 원인을 `gzclient --verbose` 로그로 확인한다.
-2. `package://trashbot_description/meshes/mari_visual_mesh.stl` 경로가 Gazebo Classic에서 올바르게 resolve되는지 확인한다.
-3. `mari_visual_mesh.stl`의 bounds, origin, scale을 확인한다.
-4. 작은 test mesh 또는 box visual을 넣어 Gazebo 표시 baseline을 만든다.
-5. 필요하면 STL 대신 DAE/OBJ/GLTF 변환본으로 visual 표시를 재시험한다.
-6. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교한다.
-7. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인한다.
-8. `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`를 xacro에 추가할지 결정한다.
-9. Gazebo에서 virtual wheel 기반 diff-drive 모델을 구성한다.
-10. `effective_track_radius_m = 0.021`을 실제 encoder 주행거리 테스트로 보정한다.
-11. RViz2에서 `base_footprint`, `base_link`, `camera_link`, `imu_link`, `gps_link`가 원하는 위치에 보이는지 확인한다.
-12. Gazebo에서 `virtual_wheel_axis_xyz = 0 1 0`의 회전 부호가 전진 방향과 맞는지 확인한다.
+1. 완료: RViz2에서 `base_footprint`, `base_link`, `camera_link`, `imu_link`, `gps_link`가 원하는 위치에 보이는지 확인한다.
+2. 완료: `tf2_tools view_frames`로 Mari TF tree를 저장한다.
+3. 완료: `map -> odom -> base_footprint` 동적 TF 테스트로 Mari가 RViz2에서 움직이는지 확인한다.
+4. 다음: `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`를 xacro에 추가한다.
+5. 다음: `/cmd_vel -> /odom -> odom -> base_footprint` 흐름을 테스트용 노드 또는 Gazebo plugin으로 연결한다.
+6. Gazebo에서 `mari_visual_mesh.stl`이 보이지 않는 원인을 `gzclient --verbose` 로그로 확인한다.
+7. `package://trashbot_description/meshes/mari_visual_mesh.stl` 경로가 Gazebo Classic에서 올바르게 resolve되는지 확인한다.
+8. 작은 test mesh 또는 box visual을 넣어 Gazebo 표시 baseline을 만든다.
+9. 필요하면 STL 대신 DAE/OBJ/GLTF 변환본으로 visual 표시를 재시험한다.
+10. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교한다.
+11. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인한다.
+12. `effective_track_radius_m = 0.021`을 실제 encoder 주행거리 테스트로 보정한다.

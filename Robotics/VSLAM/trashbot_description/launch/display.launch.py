@@ -3,6 +3,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -13,7 +14,7 @@ def generate_launch_description():
     rviz_config = LaunchConfiguration("rviz_config")
 
     robot_description = {
-        "robot_description": Command(["xacro ", model]),
+        "robot_description": ParameterValue(Command(["xacro ", model]), value_type=str),
     }
 
     default_model = PathJoinSubstitution(
@@ -32,8 +33,8 @@ def generate_launch_description():
             ),
             DeclareLaunchArgument(
                 "use_gui",
-                default_value="true",
-                description="Start joint_state_publisher_gui for wheel joint inspection.",
+                default_value="false",
+                description="Start joint_state_publisher_gui for joint inspection.",
             ),
             DeclareLaunchArgument(
                 "use_rviz",

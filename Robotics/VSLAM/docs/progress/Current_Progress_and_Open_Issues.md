@@ -36,14 +36,45 @@
 - `2026-04-26` 기준으로 Onshape URDF/GLTF export 결과와 새 Mari STEP/STL export 결과를 repository asset으로 보관했다.
 - `mari.urdf.xacro`는 `xacro` 렌더링과 `check_urdf` 파싱을 통과했고, Gazebo에는 `mari` entity가 생성되는 단계까지 확인했다.
 - 다만 Gazebo 화면에는 아직 Mari visual mesh가 보이지 않는다. 현재 blocker는 `URDF 파싱 실패`가 아니라 `Gazebo visual mesh 표시/로딩 문제`로 분리됐다.
-- 다음 계획은 Gazebo visual mesh 표시 문제를 해결한 뒤, 실제 궤도 물리 대신 virtual wheel 기반 diff-drive 모델을 구성하는 것이다.
+- `2026-04-27` 기준으로 Gazebo blocker와 별개로 RViz2에서 Mari visual mesh, `base_link`, `camera_link`, `imu_link`, `gps_link`가 정상 표시되는 것을 확인했다.
+- `map -> odom -> base_footprint -> base_link` 구조의 동적 TF 테스트와 `/odom` publish 스크립트를 추가해, RViz2에서 Mari가 움직이는 장면까지 확인했다.
+- 다음 계획은 RViz2 기준 TF baseline 위에 virtual wheel link를 추가하고, `/cmd_vel -> /odom -> odom -> base_footprint` 흐름을 구성하는 것이다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-26 최신 업데이트
+## 0. 2026-04-27 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Mari RViz2 모델/TF 검증**
+   - `mari.urdf.xacro`의 visual mesh yaw와 z offset을 보정해 RViz2에서 Mari 외형이 정상적으로 보이는 상태를 확인했다.
+   - `base_footprint -> base_link -> chassis_link/camera_link/imu_link/gps_link` 구조가 끊기지 않는 것을 확인했다.
+2. **TF tree 증빙 보관**
+   - `tf2_tools view_frames` 결과를 `assets/robot_model_exports/mari_view/02_mari_tf_tree_view_frames.pdf`로 보관했다.
+   - RViz2 mesh/TF alignment screenshot을 `01_mari_urdf_rviz_mesh_tf_alignment_check.png`로 보관했다.
+3. **RViz2 동적 이동 테스트 추가**
+   - `Tools/test_mari_moving_tf.py`를 추가해 `map -> odom -> base_footprint` 동적 TF와 `/odom` 토픽을 publish하도록 했다.
+   - RViz2에서 `Fixed Frame=map`, `Target Frame=map` 설정으로 Mari가 원형 경로를 도는 것을 확인했다.
+4. **D435i 장착 높이 보정**
+   - 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것을 반영했다.
+   - `mari.urdf.xacro`의 `camera_z`를 `0.107616 m`에서 `0.122174 m`로 갱신했다.
+5. **`/cmd_vel` 기반 odom 테스트 추가**
+   - `Tools/test_mari_cmd_vel_odom.py`를 추가해 `/cmd_vel`을 받아 `/odom`과 `odom -> base_footprint` TF를 publish하도록 했다.
+   - 이는 실제 엔코더 odom 전 단계의 RViz2 명령-이동 검증용이다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **URDF/Xacro 검증**: RViz2 기준 visual mesh와 sensor TF 확인 완료
+- **TF 구조**: `map -> odom -> base_footprint -> base_link -> sensor frames` 구조의 시각 검증 가능
+- **시뮬레이션 준비**: `/cmd_vel -> /odom` 테스트 노드는 추가됐고, 다음 단계는 virtual wheel link 추가
+- **남은 blocker**: Gazebo Classic visual mesh 표시 문제는 별도로 남아 있음
+
+---
+
+## 0-1. 2026-04-26 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -67,7 +98,7 @@
 
 ---
 
-## 0-1. 2026-04-25 업데이트
+## 0-2. 2026-04-25 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -90,7 +121,7 @@
 
 ---
 
-## 0-2. 2026-04-16 기준 업데이트
+## 0-3. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
