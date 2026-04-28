@@ -38,14 +38,158 @@
 - 다만 Gazebo 화면에는 아직 Mari visual mesh가 보이지 않는다. 현재 blocker는 `URDF 파싱 실패`가 아니라 `Gazebo visual mesh 표시/로딩 문제`로 분리됐다.
 - `2026-04-27` 기준으로 Gazebo blocker와 별개로 RViz2에서 Mari visual mesh, `base_link`, `camera_link`, `imu_link`, `gps_link`가 정상 표시되는 것을 확인했다.
 - `map -> odom -> base_footprint -> base_link` 구조의 동적 TF 테스트와 `/odom` publish 스크립트를 추가해, RViz2에서 Mari가 움직이는 장면까지 확인했다.
-- 다음 계획은 RViz2 기준 TF baseline 위에 virtual wheel link를 추가하고, `/cmd_vel -> /odom -> odom -> base_footprint` 흐름을 구성하는 것이다.
+- `2026-04-28` 기준으로는 Mari를 Gazebo에 띄워야 하는 이유를 별도 문서로 정리했고, Gazebo Classic용 반복 실행 baseline을 추가했다.
+- `mari.urdf.xacro`에 `use_mesh_visual` 옵션을 추가해 full STL visual과 debug box visual을 전환할 수 있게 했다.
+- `gazebo_mari.launch.py`와 `mari_empty.world`를 추가해 온라인 model database에 의존하지 않고 Gazebo server/client, `robot_state_publisher`, `spawn_entity.py`를 실행할 수 있게 했다.
+- headless 검증에서는 `use_mesh_visual:=false`와 `use_mesh_visual:=true` 모두 `SpawnEntity: Successfully spawned entity [mari]`까지 확인했다.
+- `gz model -m mari -i`로 Gazebo world 안에 `mari` entity와 debug box visual geometry가 들어간 것도 확인했다.
+- GUI 확인에서 `use_mesh_visual:=false` debug box visual과 `use_mesh_visual:=true` full STL Mari visual이 Gazebo 화면에 정상 표시되는 것을 확인했다.
+- 앞/뒤 좌우 총 4개 collision-only virtual track wheel로 Gazebo 접지점을 늘렸고, full STL 궤도 외형 아래에서 자세를 지지하게 했다.
+- GUI 직접 조종에서 궤도형 skid-steer 회전이 접촉 마찰에 따라 끊기는 느낌이 있어, Gazebo 제어 plugin을 `libgazebo_ros_planar_move.so`로 전환했다.
+- `planar_move` 기준으로 `/cmd_vel`, `/odom`, `odom -> base_footprint` 흐름을 다시 확인했다.
+- 격리 full STL headless 검증에서 회전 명령 후 yaw가 `-0.002597 -> 0.978302 rad`로 변했고, roll/pitch는 대략 `1e-4 rad` 이하로 유지됐다.
+- 따라서 기존 Gazebo visual mesh 표시 blocker는 해소됐고, 현재는 마찰 의존성이 낮은 `planar_move` 주행 baseline까지 들어간 상태다.
+- `Tools/teleop_mari_keyboard.py`를 추가해 `/cmd_vel`을 직접 보내며 Mari를 키보드로 조종할 수 있게 했다. Gazebo 창은 시각 피드백용이고, 키 입력은 별도 teleop 터미널에서 받는다. Smoke test에서는 `w` 입력 후 `linear.x=0.12`, `x` 입력 후 zero stop publish를 확인했다.
+- Gazebo 가상 IMU/RGB-D sensor plugin을 추가해 `/imu/data`, RGB image, depth image, camera_info topic 수신까지 1차 확인했다.
+- `Tools/check_mari_gazebo_sensor_topics.py`를 추가해 Gazebo 센서 topic 수신 여부를 자동 확인할 수 있게 했다.
+- RViz2 진행 기록을 재확인해 `base_footprint -> base_link`는 `0.0252 m` 기준선을 유지하는 것으로 되돌렸다.
+- 링크가 떠 보이는 문제는 `base_link`를 낮추는 방식이 아니라 `chassis_mesh_z = -base_link_z - chassis_mesh_min_z` visual offset과 개별 sensor visual/joint 위치로 확인해야 한다.
+- RViz2/Gazebo 공통으로 `camera_z`를 `0.122174 m`에서 `0.112174 m`로 낮춰 카메라 박스와 camera TF를 `10 mm` 내렸다.
+- Gazebo 가상 RGB-D/odom topic을 RTAB-Map에 연결하는 Mari 전용 launch wrapper를 추가했다.
+- RTAB-Map 입력 topic과 map output topic을 한 번에 확인하는 smoke check 스크립트를 추가했다.
+- Gazebo + RTAB-Map GUI/topic smoke test 증빙 스크린샷 4개를 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/` 아래에 보관했다.
+- 새 RTAB-Map checker가 live Gazebo/RTAB-Map 상태에서 필수 topic을 `[OK]`로 확인했다.
+- 다음 확인 대상은 RTAB-Map graph optimization/loop closure 경고를 줄이는 튜닝과, 실제 encoder 기반 `/odom`, IMU, D435i RGB/depth image, camera info topic 연결이다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-27 최신 업데이트
+## 0. 2026-04-29 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Mari 전용 RTAB-Map launch wrapper 추가**
+   - `trashbot_description/launch/mari_rtabmap.launch.py`를 추가했다.
+   - 기존에 길게 입력하던 범용 `rtabmap_launch/rtabmap.launch.py` 실행 인자를 Mari Gazebo 기본값으로 감쌌다.
+   - 기본 입력 topic은 `/odom`, `/camera/camera/color/image_raw`, `/camera/camera/aligned_depth_to_color/image_raw`, `/camera/camera/color/camera_info`다.
+   - 기본 frame은 `base_footprint`, simulation time은 `use_sim_time:=true`, sensor QoS는 `2(Best Effort)`, 기본 `DetectionRate`는 `5 Hz`다.
+   - 이제 기본 실행은 아래처럼 짧아졌다.
+
+```bash
+ros2 launch trashbot_description mari_rtabmap.launch.py
+```
+
+2. **RTAB-Map topic smoke check 스크립트 추가**
+   - `Tools/check_mari_rtabmap_topics.py`를 추가했다.
+   - Gazebo 입력 topic과 RTAB-Map output topic을 같은 실행에서 확인한다.
+   - 필수 확인 대상은 `/odom`, RGB image, depth image, camera info, `/rtabmap/info`, `/rtabmap/mapData`, `/rtabmap/cloud_map`이다.
+   - 선택 확인 대상으로 `/rtabmap/mapGraph`, `/rtabmap/mapPath`, `/rtabmap/map`, `/tf`도 함께 출력한다.
+
+```bash
+python3 Tools/check_mari_rtabmap_topics.py
+```
+
+3. **RTAB-Map smoke test 증빙 asset 정리**
+   - Gazebo + RTAB-Map terminal/log 증빙을 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/01_gazebo_rtabmap_runtime_logs_and_teleop.png`로 보관했다.
+   - Gazebo world와 RTAB-Map 3D map GUI 증빙을 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/02_gazebo_world_and_rtabmap_3d_map_view.png`로 보관했다.
+   - `Tools/check_mari_rtabmap_topics.py`의 필수 topic `[OK]` 증빙을 `03_mari_rtabmap_topic_check_ok.png`로 보관했다.
+   - `DetectionRate=5` 기준 live map 증빙을 `04_mari_rtabmap_detectionrate5_live_map.png`로 보관했다.
+   - 스크린샷 기준으로 RTAB-Map은 완전히 죽은 상태가 아니라 3D map output을 만들고 있었지만, `DetectionRate`, GUI 부하, loop closure/graph optimization 경고 때문에 실시간 매핑 품질은 추가 튜닝이 필요하다.
+
+4. **문서와 실행 가이드 업데이트**
+   - `README.md`의 Tools 목록에 `check_mari_gazebo_sensor_topics.py`와 `check_mari_rtabmap_topics.py`를 추가했다.
+   - `trashbot_description/README.md`에 Mari RTAB-Map 실행과 topic 확인 절차를 추가했다.
+   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 RTAB-Map 실행 및 topic 확인 섹션을 추가했다.
+   - `trashbot_description/package.xml`에 `rtabmap_launch` runtime dependency를 추가했다.
+
+5. **검증 결과**
+   - `python3 -m py_compile Tools/check_mari_rtabmap_topics.py trashbot_description/launch/mari_rtabmap.launch.py`가 통과했다.
+   - `colcon build --packages-select trashbot_description`가 통과했다.
+   - `ros2 launch trashbot_description mari_rtabmap.launch.py --show-args`에서 Mari 전용 기본 인자가 정상 노출되는 것을 확인했다.
+   - `rtabmap_viz:=false rviz:=false detection_rate:=3`로 짧게 실행했을 때 RTAB-Map이 `/odom`, RGB image, depth image, camera info를 구독하고 `RTAB-Map detection rate = 3.000000 Hz`로 설정되는 것을 확인했다.
+   - Gazebo GUI에서 teleop 입력으로 Mari가 실제로 움직이는 것도 다시 확인했다.
+   - Gazebo + RTAB-Map을 동시에 켠 상태에서 `Tools/check_mari_rtabmap_topics.py` 필수 항목이 `[OK]`로 통과하는 것을 확인했다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **RTAB-Map 실행 방식**: 긴 범용 launch 명령 대신 Mari 전용 launch로 고정
+- **Smoke test 자동화**: Gazebo 입력 topic과 RTAB-Map output topic을 한 번에 확인하고 live `[OK]` 증빙 확보
+- **Gazebo 조종**: teleop 입력으로 Gazebo GUI에서 Mari 이동 확인
+- **증빙 asset**: Gazebo + RTAB-Map GUI/topic smoke test 스크린샷 4개 보관 완료
+- **남은 확인**: RTAB-Map graph optimization/loop closure 경고 원인 분리와 튜닝
+- **다음 단계**: 실제 encoder raw 값 자체보다 encoder 기반 `/odom` 생성/수신 경로를 준비해 Gazebo `/odom` 자리에 대체할 수 있게 만드는 것
+
+---
+
+## 0-1. 2026-04-28 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Gazebo 필요성 문서화**
+   - `docs/progress/Why_Mari_Gazebo_Baseline_Is_Needed.md`를 추가했다.
+   - Mari를 Gazebo에 띄우는 이유를 `/cmd_vel -> 로봇 이동 -> /odom -> TF -> 센서/Nav2/VSLAM` 흐름 검증 관점에서 정리했다.
+2. **Gazebo visual 전환 옵션 추가**
+   - `mari.urdf.xacro`에 `use_mesh_visual` xacro argument를 추가했다.
+   - 기본값은 기존 RViz2 동작을 유지하기 위해 `true`다.
+   - Gazebo launch에서는 기본값을 `false`로 넘겨 안정적인 debug box visual을 먼저 확인한다.
+3. **Gazebo 실행 baseline 추가**
+   - `trashbot_description/launch/gazebo_mari.launch.py`를 추가했다.
+   - Gazebo server/client, `robot_state_publisher`, `spawn_entity.py`를 한 번에 실행한다.
+   - `spawn_entity.py`에는 `-timeout 90`과 `-package_to_model`을 적용했다.
+4. **로컬 world 추가**
+   - `trashbot_description/worlds/mari_empty.world`를 추가했다.
+   - `sun`과 `ground_plane`을 world 안에 직접 정의해 Gazebo 온라인 model database 의존도를 줄였다.
+5. **검증 결과**
+   - `xacro`와 `check_urdf`는 `use_mesh_visual:=false`, `use_mesh_visual:=true` 모두 통과했다.
+   - `colcon build --symlink-install --packages-select trashbot_description`가 통과했다.
+   - `gui:=false use_mesh_visual:=false`와 `gui:=false use_mesh_visual:=true` 모두 Gazebo headless spawn이 성공했다.
+   - `gz model -m mari -i`에서 `mari` entity와 debug box visual geometry가 들어간 것을 확인했다.
+6. **Gazebo GUI full STL visual 확인**
+   - `ros2 launch trashbot_description gazebo_mari.launch.py`로 debug box visual 표시를 확인했다.
+   - `ros2 launch trashbot_description gazebo_mari.launch.py use_mesh_visual:=true`로 full STL Mari visual 표시를 확인했다.
+   - 증빙 이미지는 `assets/robot_model_exports/mari_gazebo/` 아래에 보관한다.
+7. **Gazebo planar_move 주행 baseline 추가**
+   - `left_front`, `right_front`, `left_rear`, `right_rear` 총 4개 collision-only virtual track wheel을 추가해 full STL 궤도 외형 아래의 접지 지지점을 늘렸다.
+   - 처음에는 `libgazebo_ros_diff_drive.so`의 `num_wheel_pairs=2` 모드로 궤도형 skid-steer를 근사했지만, GUI 직접 조종에서 회전이 접촉 마찰에 따라 끊기는 느낌이 있었다.
+   - 센서/topic 검증 목적을 우선해 제어 plugin을 `libgazebo_ros_planar_move.so`로 전환했다.
+   - `planar_move` 기준으로 `/cmd_vel`, `/odom`, `odom -> base_footprint` TF publish를 확인했다.
+   - 격리 full STL headless 검증에서 회전 명령 후 yaw가 `-0.002597 -> 0.978302 rad`로 변했고, roll/pitch는 대략 `1e-4 rad` 이하로 유지됐다.
+   - 이 구조는 Gazebo 전용 제어 안정화이며, 실제 encoder/IMU/RGB-D topic 수신 검증과 직접 충돌하지 않는다.
+8. **키보드 teleoperation 추가**
+   - `Tools/teleop_mari_keyboard.py`를 추가했다.
+   - `w/s/a/d`, 방향키, `q/e/z/c`로 `/cmd_vel`을 publish해 Gazebo GUI에서 Mari를 직접 조종할 수 있다.
+   - 이동 키 입력이 끊기면 자동으로 zero velocity를 보내는 safety timeout을 넣었다.
+   - 키 입력은 teleop 터미널이 포커스를 가지고 있어야 하며, Gazebo 창은 시각 피드백용으로 사용한다.
+9. **Gazebo 가상 센서 topic baseline 추가**
+   - `imu_link`에 `libgazebo_ros_imu_sensor.so` 기반 IMU sensor를 추가했다.
+   - `camera_link`에 `libgazebo_ros_camera.so` 기반 RGB-D camera sensor를 추가했다.
+   - 기대 topic은 `/imu/data`, `/camera/camera/color/image_raw`, `/camera/camera/aligned_depth_to_color/image_raw`, `/camera/camera/color/camera_info`, `/camera/camera/aligned_depth_to_color/camera_info`다.
+   - `Tools/check_mari_gazebo_sensor_topics.py`를 추가해 topic 수신, type, frame_id, rate를 한 번에 확인할 수 있게 했다.
+   - 격리 full STL headless 검증에서 `/odom` 50.0 Hz, `/imu/data` 99.9 Hz, RGB image 약 9.2 Hz, depth image 약 6.8 Hz 수신을 확인했다.
+   - IMU `frame_id`는 `imu_link`, RGB-D `frame_id`는 `camera_color_optical_frame`으로 확인했다.
+10. **`base_link`/visual mesh offset 기준 재확인**
+   - RViz2 검증 기록 기준으로 `base_link_z=0.0252 m`는 STL chassis-center baseline이다.
+   - `base_link_z=0.021 m`로 낮추는 시도는 링크 전체를 4.2 mm 낮출 뿐, 카메라 박스 visual 위치 문제의 직접 원인이 아니므로 되돌렸다.
+   - `0.021 m` 값은 가상 궤도 접지 반지름 후보로 유지하지만, `base_footprint -> base_link` 높이에는 사용하지 않는다.
+   - visual mesh 최저점은 `chassis_mesh_z = -base_link_z - chassis_mesh_min_z` 계산식으로 계속 `base_footprint` 기준 `z=0`에 맞춘다.
+   - RViz2/Gazebo 공통으로 `camera_z=0.112174 m`를 적용해 camera frame과 카메라 박스를 `10 mm` 낮췄다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **Gazebo spawn**: headless 기준 반복 실행 baseline 확보
+- **Gazebo visual**: debug box visual과 full STL visual 모두 GUI 표시 확인
+- **Full STL visual**: 현재 실행 경로 기준 표시 blocker 해소
+- **Gazebo 주행**: `planar_move` 기준 `/cmd_vel` 전진/회전과 `/odom` publish 확인
+- **직접 조종**: `Tools/teleop_mari_keyboard.py`로 Gazebo GUI에서 수동 주행 가능
+- **Gazebo 가상 센서**: `/odom`, `/imu/data`, RGB image, depth image, camera_info 수신 확인
+- **Frame 높이 기준**: `base_footprint -> base_link`는 RViz2 검증 기준 `0.0252 m` 유지, visual mesh는 `chassis_mesh_z` offset으로 지면 정렬
+- **다음 단계**: Gazebo 가상 RGB-D/IMU topic을 RTAB-Map 또는 VSLAM smoke test에 연결한 뒤 실제 encoder/IMU/RGB-D topic 검증
+
+---
+
+## 0-2. 2026-04-27 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -61,6 +205,7 @@
 4. **D435i 장착 높이 보정**
    - 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것을 반영했다.
    - `mari.urdf.xacro`의 `camera_z`를 `0.107616 m`에서 `0.122174 m`로 갱신했다.
+   - 이후 2026-04-28 기준 RViz2/Gazebo 장착 높이를 맞추기 위해 현재 적용값은 `0.112174 m`로 낮췄다.
 5. **`/cmd_vel` 기반 odom 테스트 추가**
    - `Tools/test_mari_cmd_vel_odom.py`를 추가해 `/cmd_vel`을 받아 `/odom`과 `odom -> base_footprint` TF를 publish하도록 했다.
    - 이는 실제 엔코더 odom 전 단계의 RViz2 명령-이동 검증용이다.
@@ -74,7 +219,7 @@
 
 ---
 
-## 0-1. 2026-04-26 업데이트
+## 0-3. 2026-04-26 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -98,7 +243,7 @@
 
 ---
 
-## 0-2. 2026-04-25 업데이트
+## 0-4. 2026-04-25 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -121,7 +266,7 @@
 
 ---
 
-## 0-3. 2026-04-16 기준 업데이트
+## 0-5. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -609,13 +754,13 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 현재 가장 실용적인 다음 액션은 아래다.
 
-1. Gazebo에서 `mari_visual_mesh.stl`이 보이지 않는 원인을 `gzclient --verbose`, mesh path, mesh scale/origin 기준으로 분리
-2. 필요하면 STL 대신 DAE/OBJ/GLTF 변환본으로 Gazebo visual 표시를 재시험
-3. `mari.urdf.xacro`에 `left_virtual_drive_wheel_link`, `right_virtual_drive_wheel_link`와 diff-drive용 joint/plugin 후보를 추가
-4. Gazebo에서 `track_width = 0.137553 m`, `effective_track_radius = 0.021 m` 기준으로 `/cmd_vel` 전진/회전이 되는지 확인
-5. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교해 `imu_roll/pitch/yaw` 보정값 정리
-6. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인
-7. `xacro` 렌더링과 RViz2 표시로 `base_link`, `camera_link`, `imu_link`, `gps_link` 위치와 방향 검증
+1. `DetectionRate=3`과 `DetectionRate=5`를 비교해 `/rtabmap/mapData`, `/rtabmap/cloud_map` 갱신률과 GUI 체감 부드러움을 기록
+2. RTAB-Map graph optimization/loop closure 경고가 반복되는지 확인하고, 필요하면 loop closure 튜닝과 world feature 배치를 분리해서 조정
+3. 실제 Mari 또는 Jetson bring-up 환경에서 encoder raw 또는 motor driver output이 어떤 topic/format으로 나오는지 확인
+4. encoder 값을 직접 쓰기보다 encoder 기반 `/odom`과 `odom -> base_footprint` TF를 만드는 경로를 설계
+5. 실제 IMU, D435i RGB/depth image, camera info topic을 Gazebo baseline topic과 같은 이름/타입/frame 구조로 맞출 수 있는지 확인
+6. BNO08x 보드 silk의 x/y/z 방향과 ROS `imu_link` 축 방향을 비교해 `imu_roll/pitch/yaw` 보정값 정리
+7. GPS 안테나 중심과 현재 `gps_link_mc` 기준점이 맞는지 확인
 
 관련 문서:
 
@@ -625,7 +770,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 ## 9. 지금 상태 한 줄 요약
 
-지금은 `Jetson` native/Docker RTAB-Map baseline과 외부 `BNO08x` 확인을 바탕으로, **Mari 로봇의 URDF/Xacro 모델링을 Gazebo spawn 단계까지 확장했고, visual mesh 표시 blocker를 해결한 뒤 virtual wheel 주행 검증으로 넘어가는 상태**에 있다.
+지금은 `Jetson` native/Docker RTAB-Map baseline과 외부 `BNO08x` 확인을 바탕으로, **Mari 로봇의 URDF/Xacro 모델링을 Gazebo full STL visual, `planar_move` 주행, 가상 RGB-D/IMU topic baseline, Mari 전용 RTAB-Map launch와 topic smoke check까지 확장한 상태**에 있다.
 
 ---
 

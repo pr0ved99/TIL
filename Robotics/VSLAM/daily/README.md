@@ -25,6 +25,7 @@
 | 2026-04-25 | [`daily/2026-04-25/README.md`](./2026-04-25/README.md) | Mari `base_link`, 센서 frame, 궤도/구동축 파라미터 측정 |
 | 2026-04-26 | [`daily/2026-04-26/README.md`](./2026-04-26/README.md) | Mari/Duri asset 정리, Onshape URDF/GLTF 보관, Gazebo visual mesh blocker 확인 |
 | 2026-04-27 | [`daily/2026-04-27/README.md`](./2026-04-27/README.md) | Mari URDF/Xacro RViz2 표시, TF tree, 동적 TF 이동 검증 |
+| 2026-04-28 | [`daily/2026-04-28/README.md`](./2026-04-28/README.md) | Mari Gazebo 필요성 문서화, Gazebo launch/world 추가, headless spawn baseline 확인 |
 
 ## 템플릿
 

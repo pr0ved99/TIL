@@ -161,7 +161,9 @@ base_link_z_from_track_bottom 후보 = 0.021 m
 base_link_z_from_ground 후보 = 0.021 m, 기존 STL 기준 0.0252 m
 ```
 
-`base_link_z_from_ground` 후보값은 `base_link`를 섀시 높이의 중앙에 둔다고 가정했을 때의 값이다. STL export 기준으로는 이 값이 현재 1차 URDF 구조와 가장 잘 맞는다.
+`base_link_z_from_ground = 0.021 m`는 2026-04-25 Onshape 궤도/구동부 기준 후보값이다.
+이후 RViz2 검증에서는 STL chassis-center 기준인 `0.0252 m`를 `base_footprint -> base_link`
+높이로 유지하고, visual mesh 최저점은 `chassis_mesh_z` offset으로 맞추는 방식이 기준이 됐다.
 
 ## 3. Onshape Assembly 정리 체크리스트
 
@@ -343,7 +345,7 @@ chassis_mesh_z_offset_m        = -0.0252
 ```text
 camera_x_from_base_link_m = 0.127688
 camera_y_from_base_link_m = -0.001695
-camera_z_from_base_link_m = 0.122174
+camera_z_from_base_link_m = 0.112174
 camera_roll_rad           = 0.0
 camera_pitch_rad          = 0.0
 camera_yaw_rad            = 0.0
@@ -371,7 +373,8 @@ base_link_to_camera_link_y_m  = -0.001695
 base_link_to_camera_link_z_m  = 0.122174
 ```
 
-2026-04-27에 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것으로 확인되어, 기존 `z = 107.616 mm`에 보정값을 더한 `z = 122.174 mm`를 현재 xacro 기준값으로 반영했다.
+2026-04-27에 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것으로 확인되어, 기존 `z = 107.616 mm`에 보정값을 더한 `z = 122.174 mm`를 1차 xacro 기준값으로 반영했다.
+2026-04-28에는 RViz2/Gazebo에서 보이는 장착 높이를 맞추기 위해 `camera_z`를 `10 mm` 낮춰 현재 적용값을 `z = 112.174 mm = 0.112174 m`로 조정했다.
 
 현재 `rpy`는 카메라가 로봇 전방을 수평으로 바라본다고 보고 `0 0 0`으로 시작한다. 실제 장착 후 카메라가 위/아래로 기울어지면 `camera_pitch_rad`를 다시 측정해 갱신한다.
 

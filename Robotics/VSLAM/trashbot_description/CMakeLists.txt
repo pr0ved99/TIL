@@ -3,7 +3,7 @@ project(trashbot_description)
 
 find_package(ament_cmake REQUIRED)
 
-install(DIRECTORY launch meshes rviz urdf
+install(DIRECTORY launch meshes rviz urdf worlds
   DESTINATION share/${PROJECT_NAME}
 )
 
