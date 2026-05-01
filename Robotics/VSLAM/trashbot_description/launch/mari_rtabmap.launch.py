@@ -18,6 +18,13 @@ def generate_launch_description():
     topic_queue_size = LaunchConfiguration("topic_queue_size")
     sync_queue_size = LaunchConfiguration("sync_queue_size")
     detection_rate = LaunchConfiguration("detection_rate")
+    optimizer_strategy = LaunchConfiguration("optimizer_strategy")
+    force_3dof = LaunchConfiguration("force_3dof")
+    gravity_sigma = LaunchConfiguration("gravity_sigma")
+    optimize_from_graph_end = LaunchConfiguration("optimize_from_graph_end")
+    optimize_max_error = LaunchConfiguration("optimize_max_error")
+    proximity_by_space = LaunchConfiguration("proximity_by_space")
+    rtabmap_args_extra = LaunchConfiguration("rtabmap_args_extra")
     rtabmap_viz = LaunchConfiguration("rtabmap_viz")
     rviz = LaunchConfiguration("rviz")
     namespace = LaunchConfiguration("namespace")
@@ -54,6 +61,22 @@ def generate_launch_description():
             "rtabmap_args": [
                 "--delete_db_on_start --Rtabmap/DetectionRate ",
                 detection_rate,
+                " --Optimizer/Strategy ",
+                optimizer_strategy,
+                " --Reg/Force3DoF ",
+                force_3dof,
+                " --RGBD/ForceOdom3DoF ",
+                force_3dof,
+                " --Optimizer/GravitySigma ",
+                gravity_sigma,
+                " --RGBD/OptimizeFromGraphEnd ",
+                optimize_from_graph_end,
+                " --RGBD/OptimizeMaxError ",
+                optimize_max_error,
+                " --RGBD/ProximityBySpace ",
+                proximity_by_space,
+                " ",
+                rtabmap_args_extra,
             ],
         }.items(),
     )
@@ -119,6 +142,50 @@ def generate_launch_description():
                 "detection_rate",
                 default_value="5",
                 description="Maximum RTAB-Map processing rate in Hz.",
+            ),
+            DeclareLaunchArgument(
+                "optimizer_strategy",
+                default_value="1",
+                description=(
+                    "RTAB-Map graph optimizer: 1=g2o, 2=GTSAM. "
+                    "g2o is the Mari Gazebo default to avoid GTSAM underconstrained "
+                    "graph warnings in small synthetic worlds."
+                ),
+            ),
+            DeclareLaunchArgument(
+                "force_3dof",
+                default_value="true",
+                description="Force planar x/y/yaw registration for ground robot mapping.",
+            ),
+            DeclareLaunchArgument(
+                "gravity_sigma",
+                default_value="0",
+                description=(
+                    "Disable gravity constraints for this wheel-odom RGB-D baseline. "
+                    "Set a positive value only for gravity-aligned VIO/IMU odometry."
+                ),
+            ),
+            DeclareLaunchArgument(
+                "optimize_from_graph_end",
+                default_value="true",
+                description="Optimize from the newest graph node to reduce teleop map jumps.",
+            ),
+            DeclareLaunchArgument(
+                "optimize_max_error",
+                default_value="3.0",
+                description="Reject loop closures when graph error ratio is too high; 0 disables.",
+            ),
+            DeclareLaunchArgument(
+                "proximity_by_space",
+                default_value="false",
+                description=(
+                    "Disable spatial proximity links by default for the small Mari test world."
+                ),
+            ),
+            DeclareLaunchArgument(
+                "rtabmap_args_extra",
+                default_value="",
+                description="Extra raw RTAB-Map parameters appended to rtabmap_args.",
             ),
             DeclareLaunchArgument(
                 "rtabmap_viz",

@@ -1,0 +1,44 @@
+/**:
+  ros__parameters:
+    input_encoder_topic: /motor/encoder_ticks
+    output_odom_topic: /wheel/odometry
+    frame_id: odom
+    child_frame_id: base_footprint
+
+    # Initial Mari MG513 hypothesis, not a calibrated value.
+    # Evidence so far points to MG513P30: 13-line Hall encoder, 1:30 gear ratio.
+    # If the motor driver publishes x4 quadrature-decoded counts:
+    # 13 lines * 30 gear ratio * 4 edges = 1560 ticks/output-shaft revolution.
+    # If the driver publishes single-channel pulses instead, this may be 390.
+    ticks_per_revolution: 1560.0
+
+    # For a tracked platform this is the effective drive radius, not a free wheel.
+    # Keep this as a measurable hypothesis until the real drive sprocket/track
+    # displacement per revolution is checked.
+    effective_wheel_radius_m: 0.021
+
+    # Effective distance between left/right track contact centers.
+    track_width_m: 0.137553
+
+    left_ticks_sign: 1.0
+    right_ticks_sign: 1.0
+
+    # Distance-scale calibration knobs. Keep both at 1.0 until straight-line
+    # and in-place rotation measurements show a consistent left/right bias.
+    left_distance_scale: 1.0
+    right_distance_scale: 1.0
+
+    # First-pass safety guards for real encoder bring-up. A rejected sample
+    # resets the cumulative tick baseline and publishes zero velocity so one
+    # bad tick jump does not kick the EKF or RTAB-Map trajectory.
+    reject_outlier_samples: true
+    max_tick_delta: 2000
+    max_linear_velocity_mps: 0.8
+    max_angular_velocity_radps: 3.0
+    max_encoder_gap_sec: 0.5
+
+    pose_covariance_x: 0.02
+    pose_covariance_y: 0.02
+    pose_covariance_yaw: 0.05
+    twist_covariance_x: 0.02
+    twist_covariance_yaw: 0.05

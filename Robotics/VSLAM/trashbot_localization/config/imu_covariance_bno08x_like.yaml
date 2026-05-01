@@ -1,0 +1,12 @@
+/**:
+  ros__parameters:
+    input_imu_topic: /imu/data
+    output_imu_topic: /imu/data_bno08x_like
+    frame_id: imu_link
+
+    # Conservative covariance profile based on the existing BNO08x ROS2
+    # publisher defaults. This avoids over-trusting Gazebo's near-zero gyro
+    # covariance while keeping the message shape close to the real IMU path.
+    orientation_covariance: 0.01
+    angular_velocity_covariance: 0.001
+    linear_acceleration_covariance: 0.01

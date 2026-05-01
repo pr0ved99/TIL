@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="mari">
   <xacro:arg name="use_mesh_visual" default="true"/>
+  <xacro:arg name="sim_camera_update_rate" default="15.0"/>
+  <xacro:arg name="sim_camera_width" default="640"/>
+  <xacro:arg name="sim_camera_height" default="480"/>
+  <xacro:arg name="sim_camera_visualize" default="true"/>
   <xacro:property name="mesh_file" value="package://trashbot_description/meshes/mari_visual_mesh.stl"/>
 
   <!--
@@ -66,9 +70,6 @@
   <xacro:property name="camera_roll" value="0.0"/>
   <xacro:property name="camera_pitch" value="0.0"/>
   <xacro:property name="camera_yaw" value="0.0"/>
-  <xacro:property name="sim_camera_update_rate" value="15.0"/>
-  <xacro:property name="sim_camera_width" value="640"/>
-  <xacro:property name="sim_camera_height" value="480"/>
   <xacro:property name="sim_camera_horizontal_fov" value="1.3962634"/>
   <xacro:property name="sim_camera_near_clip" value="0.10"/>
   <xacro:property name="sim_camera_far_clip" value="6.00"/>
@@ -88,6 +89,7 @@
   <xacro:property name="gps_z" value="0.037943"/>
   <xacro:property name="gps_r" value="0.020"/>
   <xacro:property name="gps_h" value="0.010"/>
+  <xacro:property name="sim_gps_update_rate" value="5.0"/>
 
   <material name="chassis_gray">
     <color rgba="0.55 0.55 0.58 1.0"/>
@@ -365,13 +367,13 @@
   <gazebo reference="camera_link">
     <sensor name="mari_rgbd_camera" type="depth">
       <always_on>true</always_on>
-      <update_rate>${sim_camera_update_rate}</update_rate>
-      <visualize>true</visualize>
+      <update_rate>$(arg sim_camera_update_rate)</update_rate>
+      <visualize>$(arg sim_camera_visualize)</visualize>
       <camera name="mari_rgbd_camera_optics">
         <horizontal_fov>${sim_camera_horizontal_fov}</horizontal_fov>
         <image>
-          <width>${sim_camera_width}</width>
-          <height>${sim_camera_height}</height>
+          <width>$(arg sim_camera_width)</width>
+          <height>$(arg sim_camera_height)</height>
           <format>R8G8B8</format>
         </image>
         <depth_camera>
@@ -399,6 +401,37 @@
         <hack_baseline>0.0</hack_baseline>
         <min_depth>${sim_camera_near_clip}</min_depth>
         <max_depth>${sim_camera_far_clip}</max_depth>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <gazebo reference="gps_link">
+    <sensor name="mari_gps" type="gps">
+      <always_on>true</always_on>
+      <update_rate>${sim_gps_update_rate}</update_rate>
+      <visualize>false</visualize>
+      <gps>
+        <position_sensing>
+          <horizontal>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.0002</stddev>
+            </noise>
+          </horizontal>
+          <vertical>
+            <noise type="gaussian">
+              <mean>0.0</mean>
+              <stddev>0.0002</stddev>
+            </noise>
+          </vertical>
+        </position_sensing>
+      </gps>
+      <plugin name="mari_gps_sensor" filename="libgazebo_ros_gps_sensor.so">
+        <ros>
+          <namespace>/gps</namespace>
+          <remapping>~/out:=fix</remapping>
+          <remapping>~/vel:=velocity</remapping>
+        </ros>
       </plugin>
     </sensor>
   </gazebo>

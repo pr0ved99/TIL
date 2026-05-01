@@ -1,0 +1,35 @@
+/**:
+  ros__parameters:
+    input_encoder_topic: /motor/encoder_ticks
+    output_odom_topic: /wheel/odometry
+    frame_id: odom
+    child_frame_id: base_footprint
+
+    # Gazebo-only mock encoder parameters. The kinematic values match the
+    # Mari MG513 initial hypothesis, but covariance is intentionally tighter
+    # than the real-hardware placeholder because this mock path is generated
+    # from Gazebo's own /odom for RTAB-Map comparison.
+    # Use pose deltas, not twist integration, so mock encoder yaw follows the
+    # actual Gazebo pose rotation during teleop smoothing and stop transitions.
+    integration_source: pose
+
+    ticks_per_revolution: 1560.0
+    effective_wheel_radius_m: 0.021
+    track_width_m: 0.137553
+
+    left_ticks_sign: 1.0
+    right_ticks_sign: 1.0
+    left_distance_scale: 1.0
+    right_distance_scale: 1.0
+
+    reject_outlier_samples: true
+    max_tick_delta: 5000
+    max_linear_velocity_mps: 1.2
+    max_angular_velocity_radps: 4.0
+    max_encoder_gap_sec: 0.5
+
+    pose_covariance_x: 0.001
+    pose_covariance_y: 0.001
+    pose_covariance_yaw: 0.01
+    twist_covariance_x: 0.001
+    twist_covariance_yaw: 0.01

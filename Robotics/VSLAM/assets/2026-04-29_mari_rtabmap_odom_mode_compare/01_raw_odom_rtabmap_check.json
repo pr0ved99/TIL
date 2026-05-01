@@ -1,0 +1,325 @@
+{
+  "checked_at": "2026-04-29T13:17:20.926951+00:00",
+  "diagnostics": {
+    "odom": {
+      "child_frame_id": "base_footprint",
+      "frame_id": "odom",
+      "pose_covariance": {
+        "all_zero": false,
+        "pitch": 1000000000000.0,
+        "roll": 1000000000000.0,
+        "x": 0.0001,
+        "y": 0.0001,
+        "yaw": 0.01,
+        "z": 1000000000000.0
+      },
+      "position": {
+        "x": 1.7468333886219127,
+        "y": -0.033259692309635026,
+        "z": -9.734003610234465e-07
+      },
+      "twist": {
+        "angular_z": 0.0,
+        "linear_x": 0.1199999974034176,
+        "linear_y": 0.0
+      },
+      "twist_covariance": {
+        "all_zero": false,
+        "pitch": 1000000000000.0,
+        "roll": 1000000000000.0,
+        "x": 0.0001,
+        "y": 0.0001,
+        "yaw": 0.01,
+        "z": 1000000000000.0
+      }
+    },
+    "rtabmap_info": {
+      "frame_id": "map",
+      "local_path_size": 0,
+      "loop_closure_id": 0,
+      "odom_cache_poses": 0,
+      "proximity_detection_id": 0,
+      "ref_id": 160,
+      "selected_stats": [
+        {
+          "key": "Keypoint/Index_memory_usage/KB",
+          "value": 78952.0
+        },
+        {
+          "key": "Loop/Accepted_hypothesis_id/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Angular_variance/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Distance_since_last_loc/m",
+          "value": 4.294918537139893
+        },
+        {
+          "key": "Loop/Highest_hypothesis_id/",
+          "value": 127.0
+        },
+        {
+          "key": "Loop/Highest_hypothesis_value/",
+          "value": 0.07800346612930298
+        },
+        {
+          "key": "Loop/Hypothesis_ratio/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Hypothesis_reactivated/",
+          "value": 1.0
+        },
+        {
+          "key": "Loop/Id/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Landmark_detected/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Landmark_detected_node_ref/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Last_id/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/Linear_variance/",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/MapToBase_lin_std/m",
+          "value": 0.05916079878807068
+        },
+        {
+          "key": "Loop/MapToBase_lin_var/m2",
+          "value": 0.0035000001080334187
+        },
+        {
+          "key": "Loop/MapToBase_pitch/deg",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/MapToBase_roll/deg",
+          "value": 0.0
+        },
+        {
+          "key": "Loop/MapToBase_x/m",
+          "value": 1.6602033376693726
+        },
+        {
+          "key": "Loop/MapToBase_y/m",
+          "value": -0.03287603706121445
+        },
+        {
+          "key": "Loop/MapToBase_yaw/deg",
+          "value": -0.12217926979064941
+        }
+      ],
+      "stats_count": 106,
+      "working_memory_size": 14
+    }
+  },
+  "duration_sec": 20.0,
+  "helpers": {
+    "/clock": [
+      "rosgraph_msgs/msg/Clock"
+    ],
+    "/cmd_vel": [
+      "geometry_msgs/msg/Twist"
+    ],
+    "/imu/data": [
+      "sensor_msgs/msg/Imu"
+    ],
+    "/tf_static": [
+      "tf2_msgs/msg/TFMessage"
+    ]
+  },
+  "label": "raw_odom",
+  "odom_topic": "/odom",
+  "rtabmap_namespace": "/rtabmap",
+  "topics": [
+    {
+      "count": 998,
+      "count_ok": true,
+      "expected_type": "nav_msgs/msg/Odometry",
+      "label": "odom input",
+      "ok": true,
+      "publisher_types": [
+        "nav_msgs/msg/Odometry"
+      ],
+      "rate_hz": 49.882028020598526,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=odom child=base_footprint x=1.747 y=-0.033",
+      "topic": "/odom",
+      "type_ok": true
+    },
+    {
+      "count": 159,
+      "count_ok": true,
+      "expected_type": "sensor_msgs/msg/Image",
+      "label": "rgb image input",
+      "ok": true,
+      "publisher_types": [
+        "sensor_msgs/msg/Image"
+      ],
+      "rate_hz": 7.947450892542886,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=camera_color_optical_frame size=640x480 encoding=rgb8",
+      "topic": "/camera/camera/color/image_raw",
+      "type_ok": true
+    },
+    {
+      "count": 93,
+      "count_ok": true,
+      "expected_type": "sensor_msgs/msg/Image",
+      "label": "depth image input",
+      "ok": true,
+      "publisher_types": [
+        "sensor_msgs/msg/Image"
+      ],
+      "rate_hz": 4.658796478155111,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=camera_color_optical_frame size=640x480 encoding=32FC1",
+      "topic": "/camera/camera/aligned_depth_to_color/image_raw",
+      "type_ok": true
+    },
+    {
+      "count": 300,
+      "count_ok": true,
+      "expected_type": "sensor_msgs/msg/CameraInfo",
+      "label": "rgb camera info input",
+      "ok": true,
+      "publisher_types": [
+        "sensor_msgs/msg/CameraInfo"
+      ],
+      "rate_hz": 14.995108693087522,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=camera_color_optical_frame size=640x480",
+      "topic": "/camera/camera/color/camera_info",
+      "type_ok": true
+    },
+    {
+      "count": 44,
+      "count_ok": true,
+      "expected_type": "rtabmap_msgs/msg/Info",
+      "label": "rtabmap info output",
+      "ok": true,
+      "publisher_types": [
+        "rtabmap_msgs/msg/Info"
+      ],
+      "rate_hz": 2.219657473396767,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=map ref_id=160 loop=0 wm=14 stats=106",
+      "topic": "/rtabmap/info",
+      "type_ok": true
+    },
+    {
+      "count": 44,
+      "count_ok": true,
+      "expected_type": "rtabmap_msgs/msg/MapData",
+      "label": "rtabmap map data output",
+      "ok": true,
+      "publisher_types": [
+        "rtabmap_msgs/msg/MapData"
+      ],
+      "rate_hz": 2.2193695628373993,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=map nodes=1 poses=14 links=159",
+      "topic": "/rtabmap/mapData",
+      "type_ok": true
+    },
+    {
+      "count": 14,
+      "count_ok": true,
+      "expected_type": "sensor_msgs/msg/PointCloud2",
+      "label": "rtabmap cloud map output",
+      "ok": true,
+      "publisher_types": [
+        "sensor_msgs/msg/PointCloud2"
+      ],
+      "rate_hz": 0.680880915539086,
+      "required": true,
+      "status": "OK",
+      "summary": "frame=map size=3899x1 points=3899",
+      "topic": "/rtabmap/cloud_map",
+      "type_ok": true
+    },
+    {
+      "count": 14,
+      "count_ok": true,
+      "expected_type": "rtabmap_msgs/msg/MapGraph",
+      "label": "rtabmap map graph output",
+      "ok": true,
+      "publisher_types": [
+        "rtabmap_msgs/msg/MapGraph"
+      ],
+      "rate_hz": 0.6807428167106018,
+      "required": false,
+      "status": "OBS",
+      "summary": "frame=map poses=14 links=158",
+      "topic": "/rtabmap/mapGraph",
+      "type_ok": true
+    },
+    {
+      "count": 44,
+      "count_ok": true,
+      "expected_type": "nav_msgs/msg/Path",
+      "label": "rtabmap path output",
+      "ok": true,
+      "publisher_types": [
+        "nav_msgs/msg/Path"
+      ],
+      "rate_hz": 2.219588861389981,
+      "required": false,
+      "status": "OBS",
+      "summary": "frame=map poses=14",
+      "topic": "/rtabmap/mapPath",
+      "type_ok": true
+    },
+    {
+      "count": 14,
+      "count_ok": true,
+      "expected_type": "nav_msgs/msg/OccupancyGrid",
+      "label": "rtabmap occupancy map output",
+      "ok": true,
+      "publisher_types": [
+        "nav_msgs/msg/OccupancyGrid"
+      ],
+      "rate_hz": 0.6807299941617925,
+      "required": false,
+      "status": "OBS",
+      "summary": "frame=map size=132x161 resolution=0.050",
+      "topic": "/rtabmap/map",
+      "type_ok": true
+    },
+    {
+      "count": 1599,
+      "count_ok": true,
+      "expected_type": "tf2_msgs/msg/TFMessage",
+      "label": "tf",
+      "ok": true,
+      "publisher_types": [
+        "tf2_msgs/msg/TFMessage"
+      ],
+      "rate_hz": 79.90028861582967,
+      "required": false,
+      "status": "OBS",
+      "summary": "transforms=1 first=map->odom",
+      "topic": "/tf",
+      "type_ok": true
+    }
+  ]
+}

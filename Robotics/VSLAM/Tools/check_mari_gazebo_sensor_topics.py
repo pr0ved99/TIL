@@ -10,7 +10,7 @@ import rclpy
 from nav_msgs.msg import Odometry
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
-from sensor_msgs.msg import CameraInfo, Image, Imu
+from sensor_msgs.msg import CameraInfo, Image, Imu, NavSatFix, PointCloud2
 
 
 @dataclass(frozen=True)
@@ -82,6 +82,19 @@ def summarize_message(msg):
             f"linear_z={msg.linear_acceleration.z:.5f}"
         )
 
+    if isinstance(msg, NavSatFix):
+        return (
+            f"frame={frame_id or '-'} "
+            f"lat={msg.latitude:.7f} lon={msg.longitude:.7f} "
+            f"alt={msg.altitude:.3f} status={msg.status.status}"
+        )
+
+    if isinstance(msg, PointCloud2):
+        return (
+            f"frame={frame_id or '-'} size={msg.width}x{msg.height} "
+            f"points={msg.width * msg.height} fields={len(msg.fields)}"
+        )
+
     if isinstance(msg, Odometry):
         return (
             f"frame={frame_id or '-'} child={msg.child_frame_id or '-'} "
@@ -105,6 +118,7 @@ def expected_specs(args):
     return [
         TopicSpec("odom", args.odom_topic, Odometry, "nav_msgs/msg/Odometry"),
         TopicSpec("imu", args.imu_topic, Imu, "sensor_msgs/msg/Imu"),
+        TopicSpec("gps", args.gps_topic, NavSatFix, "sensor_msgs/msg/NavSatFix"),
         TopicSpec("rgb image", args.rgb_topic, Image, "sensor_msgs/msg/Image"),
         TopicSpec("depth image", args.depth_topic, Image, "sensor_msgs/msg/Image"),
         TopicSpec(
@@ -118,6 +132,12 @@ def expected_specs(args):
             args.depth_info_topic,
             CameraInfo,
             "sensor_msgs/msg/CameraInfo",
+        ),
+        TopicSpec(
+            "depth point cloud",
+            args.pointcloud_topic,
+            PointCloud2,
+            "sensor_msgs/msg/PointCloud2",
         ),
     ]
 
@@ -141,12 +161,13 @@ def print_result(spec, sample, graph_types, min_count):
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Check Mari Gazebo odom, IMU, RGB image, depth image, and camera_info topics."
+        description="Check Mari Gazebo odom, IMU, GPS, RGB-D, camera_info, and pointcloud topics."
     )
     parser.add_argument("--duration", type=float, default=6.0)
     parser.add_argument("--min-count", type=int, default=1)
     parser.add_argument("--odom-topic", default="/odom")
     parser.add_argument("--imu-topic", default="/imu/data")
+    parser.add_argument("--gps-topic", default="/gps/fix")
     parser.add_argument("--rgb-topic", default="/camera/camera/color/image_raw")
     parser.add_argument(
         "--depth-topic",
@@ -156,6 +177,10 @@ def parse_args():
     parser.add_argument(
         "--depth-info-topic",
         default="/camera/camera/aligned_depth_to_color/camera_info",
+    )
+    parser.add_argument(
+        "--pointcloud-topic",
+        default="/camera/camera/depth/color/points",
     )
     return parser.parse_args()
 
@@ -179,7 +204,7 @@ def main():
         ]
 
         print("Graph helpers:")
-        for helper in ("/tf", "/tf_static", "/clock", "/cmd_vel"):
+        for helper in ("/tf", "/tf_static", "/clock", "/cmd_vel", "/gps/velocity"):
             types = ",".join(graph_types.get(helper, [])) or "not in graph"
             print(f"- {helper}: {types}")
 

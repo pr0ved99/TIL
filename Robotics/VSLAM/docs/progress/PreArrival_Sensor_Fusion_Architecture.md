@@ -41,7 +41,9 @@ D435i                        -> visual odom / perception / local map assist
 추천 구조는 아래다.
 
 ```text
-wheel encoder ----------> /wheel/odometry
+motor encoder ticks ----> /motor/encoder_ticks
+                         -> encoder_ticks_to_wheel_odom
+                         -> /wheel/odometry
 external IMU -----------> /imu/data
 GPS --------------------> /gps/fix
 D435i ------------------> /camera/camera/...
@@ -71,7 +73,8 @@ map -> odom -> base_link -> camera_link
 
 | 센서/노드 | 토픽 | 메시지 타입 | 역할 |
 | --- | --- | --- | --- |
-| wheel encoder driver | `/wheel/odometry` | `nav_msgs/Odometry` | 바퀴 기반 로컬 odom 원본 |
+| motor encoder driver | `/motor/encoder_ticks` | `std_msgs/Int64MultiArray` | 좌/우 모터 누적 encoder tick 원본 |
+| encoder odom adapter | `/wheel/odometry` | `nav_msgs/Odometry` | encoder tick을 거리/yaw로 변환한 wheel odom |
 | external IMU driver | `/imu/data_raw` | `sensor_msgs/Imu` | IMU raw 값 |
 | IMU filter | `/imu/data` | `sensor_msgs/Imu` | 필터링된 IMU |
 | GPS driver | `/gps/fix` | `sensor_msgs/NavSatFix` | GPS 위치 |
@@ -82,6 +85,18 @@ map -> odom -> base_link -> camera_link
 | global EKF | `/odometry/global` | `nav_msgs/Odometry` | 전역 융합 결과 |
 
 지금 단계에서 중요한 것은 **토픽 이름을 나중에 바꾸지 않도록 미리 고정하는 것**이다.
+
+encoder raw topic 계약:
+
+```text
+topic: /motor/encoder_ticks
+type:  std_msgs/msg/Int64MultiArray
+data:  [left_ticks, right_ticks]
+unit:  cumulative signed ticks
+```
+
+이 topic은 motor driver가 직접 publish한다.
+`trashbot_localization`의 adapter는 이 값을 받아 `/wheel/odometry`를 publish한다.
 
 ## 4. TF 구조를 먼저 고정
 
@@ -173,6 +188,23 @@ trashbot_navigation/
 
 - [`templates/sensor_fusion_prebuild/README.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/templates/sensor_fusion_prebuild/README.md)
 
+현재는 템플릿에서 한 단계 더 진행해 실제 패키지 골격도 만들었다.
+
+패키지 위치:
+
+- [`trashbot_localization/README.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_localization/README.md)
+
+현재 패키지 역할:
+
+- Gazebo `/odom`을 mock `/wheel/odometry`로 republish
+- `/wheel/odometry + /imu/data -> /odometry/local` local EKF launch 준비
+- 실제 encoder가 오면 mock bridge를 끄고 실제 encoder adapter로 대체
+
+주의:
+
+- Gazebo에서는 `planar_move` plugin이 이미 `odom -> base_footprint` TF를 publish하므로 local EKF config의 `publish_tf` 기본값은 `false`다.
+- 실제 하드웨어에서 EKF가 `odom -> base_footprint`를 담당하는 단계가 되면 `publish_tf`를 `true`로 바꿔야 한다.
+
 ## 7. D435i만 있는 지금 단계에서 할 수 있는 것
 
 지금은 외부 IMU, encoder, GPS가 없으므로 아래만 먼저 고정하는 것이 맞다.
@@ -239,8 +271,41 @@ trashbot_navigation/
 
 확인:
 
+- `/motor/encoder_ticks`가 뜨는지
 - `/wheel/odometry`가 뜨는지
 - 직진/회전 시 odom이 자연스러운지
+
+하드웨어 없이 먼저 계약을 검증할 때는 mock encoder publisher와 adapter를 같이 실행한다.
+
+```bash
+ros2 launch trashbot_localization mari_encoder_odom_mock.launch.py
+ros2 topic echo /motor/encoder_ticks --once
+ros2 topic echo /wheel/odometry --once
+```
+
+실제 motor driver가 `/motor/encoder_ticks`를 publish하면 adapter만 실행한다.
+
+```bash
+ros2 launch trashbot_localization mari_encoder_odom.launch.py
+```
+
+실제 하드웨어에서 encoder topic 이름을 모를 때는 먼저 후보를 스캔한다.
+
+```bash
+cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+python3 Tools/check_mari_encoder_topics.py
+```
+
+판단 기준:
+
+- `/motor/encoder_ticks`가 `std_msgs/Int64MultiArray`로 보이면 현재 계약에 맞다.
+- `/wheel/odometry`가 `nav_msgs/Odometry`로 보이면 local EKF의 wheel input 후보로 바로 쓸 수 있다.
+- `/joint_states`가 보이면 wheel joint position/velocity를 `/wheel/odometry`로 바꾸는 adapter가 필요하다.
+- raw encoder tick/count topic만 보이면 `ticks_per_rev`, `effective_radius`, `track_width`를 정해서 거리와 yaw 변화량으로 변환해야 한다.
+- 아무 후보도 안 보이면 motor driver node 실행 여부와 ROS_DOMAIN_ID, DDS discovery 상태부터 확인한다.
 
 ### 2단계. external IMU 연결
 

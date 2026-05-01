@@ -26,6 +26,9 @@
 | 2026-04-26 | [`daily/2026-04-26/README.md`](./2026-04-26/README.md) | Mari/Duri asset 정리, Onshape URDF/GLTF 보관, Gazebo visual mesh blocker 확인 |
 | 2026-04-27 | [`daily/2026-04-27/README.md`](./2026-04-27/README.md) | Mari URDF/Xacro RViz2 표시, TF tree, 동적 TF 이동 검증 |
 | 2026-04-28 | [`daily/2026-04-28/README.md`](./2026-04-28/README.md) | Mari Gazebo 필요성 문서화, Gazebo launch/world 추가, headless spawn baseline 확인 |
+| 2026-04-29 | [`daily/2026-04-29/README.md`](./2026-04-29/README.md) | MG513 encoder 초기 가설값 정리, mock encoder topic과 wheel odometry 직진/회전 검증 |
+| 2026-04-30 | [`daily/2026-04-30/README.md`](./2026-04-30/README.md) | Mari 공원형 Gazebo world 추가, `/odom` 기반 RTAB-Map park baseline 확인 |
+| 2026-05-01 | [`daily/2026-05-01/README.md`](./2026-05-01/README.md) | BNO08x-like IMU covariance republisher, encoder+IMU local EKF 후보, 큰 공원형 Gazebo world 추가 |
 
 ## 템플릿
 

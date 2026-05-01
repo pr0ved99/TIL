@@ -20,6 +20,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - `05_Loop_Closure`: 장소 인식, 재방문 검출, 포즈 그래프 보정
 - `06_Debugging`: 좌표계 오류, timestamp sync 문제, scale drift, 추적 실패 점검
 - `07_Evaluation`: ATE, RPE, FPS, latency, 메모리/연산량 평가
+- `trashbot_localization`: Mari wheel odom, EKF, GPS fusion launch/config 구조
 - `jetson`: `Jetson` 현장 실행 기록, GUI 검증, 장치/성능 이슈 분리 관리
 
 ## Note
@@ -55,6 +56,11 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md`](./docs/progress/Sprint_Only_Execution_and_Backlog_Reference.md): 스프린트 실행 기준과 백로그 문서화 정리
 - [`docs/progress/Why_Mari_Gazebo_Baseline_Is_Needed.md`](./docs/progress/Why_Mari_Gazebo_Baseline_Is_Needed.md): Mari를 Gazebo에 띄우는 이유와 오늘 개발 성공 기준 정리
 
+### packages
+
+- [`trashbot_description/README.md`](./trashbot_description/README.md): Mari/Duri URDF, Gazebo, RViz2 실행 패키지
+- [`trashbot_localization/README.md`](./trashbot_localization/README.md): `/motor/encoder_ticks -> /wheel/odometry` 변환, Gazebo mock odom, EKF 입력 구조를 검증하는 localization 패키지
+
 ### process
 
 - [`docs/process/Jira_Convention_Guide.md`](./docs/process/Jira_Convention_Guide.md): Jira 에픽/스토리/태스크 작성 규칙과 스프린트 운영 컨벤션
@@ -81,6 +87,9 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`daily/2026-04-25/README.md`](./daily/2026-04-25/README.md): Mari `base_link`, 센서 frame, 궤도/구동축 파라미터 측정
 - [`daily/2026-04-26/README.md`](./daily/2026-04-26/README.md): Mari/Duri asset 정리, Onshape URDF/GLTF 보관, Gazebo visual mesh blocker 확인
 - [`daily/2026-04-28/README.md`](./daily/2026-04-28/README.md): Mari Gazebo 필요성 문서화와 Gazebo launch/world 기반 headless spawn baseline 확인
+- [`daily/2026-04-29/README.md`](./daily/2026-04-29/README.md): MG513 encoder 초기 가설값, mock encoder topic, `/wheel/odometry`, RTAB-Map odom 입력 비교 정리
+- [`daily/2026-04-30/README.md`](./daily/2026-04-30/README.md): Mari 공원형 Gazebo world 추가와 `/odom` 기반 RTAB-Map park baseline 확인
+- [`daily/2026-05-01/README.md`](./daily/2026-05-01/README.md): BNO08x-like IMU covariance republisher, encoder+IMU local EKF 후보, 큰 공원형 Gazebo world 추가
 
 ### jetson
 
@@ -104,6 +113,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`assets/2026-04-15_jetson_docker_ros2_d435i_check/README.md`](./assets/2026-04-15_jetson_docker_ros2_d435i_check/README.md): Jetson 호스트, ROS 2 컨테이너, `realsense2_camera` 토픽/주기 확인 증빙 정리
 - [`assets/2026-04-16_laptop_rtabmap_demo/README.md`](./assets/2026-04-16_laptop_rtabmap_demo/README.md): 노트북 직결 `D435i + RTAB-Map` 발표용 3D 맵 DB 정리
 - [`assets/robot_model_exports/mari_gazebo/README.md`](./assets/robot_model_exports/mari_gazebo/README.md): Mari Gazebo debug box/full STL visual 확인 증빙 정리
+- [`assets/2026-04-30_mari_park_world_rtabmap_baseline/README.md`](./assets/2026-04-30_mari_park_world_rtabmap_baseline/README.md): 공원형 Gazebo world에서 `/odom` 기반 RTAB-Map 3D map baseline 증빙 정리
 - [`01_launch_success.png`](./assets/2026-04-09_task59_d435i_depth_check/01_launch_success.png)
 - [`02_device_info_and_usb_type.png`](./assets/2026-04-09_task59_d435i_depth_check/02_device_info_and_usb_type.png)
 - [`03_ros2_topic_list.png`](./assets/2026-04-09_task59_d435i_depth_check/03_ros2_topic_list.png)
@@ -127,8 +137,9 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - [`Tools/test_x11_in_container.sh`](./Tools/test_x11_in_container.sh): 컨테이너 안에서 `xeyes`를 실행해 X11 GUI 전달을 확인하는 스크립트
 - [`Tools/launch_rtabmap_light_in_container.sh`](./Tools/launch_rtabmap_light_in_container.sh): 컨테이너 안에서 경량 RTAB-Map launch를 실행하는 스크립트
 - [`Tools/teleop_mari_keyboard.py`](./Tools/teleop_mari_keyboard.py): Gazebo의 Mari를 `/cmd_vel`로 직접 조종하는 키보드 teleoperation 스크립트
-- [`Tools/check_mari_gazebo_sensor_topics.py`](./Tools/check_mari_gazebo_sensor_topics.py): Mari Gazebo의 `/odom`, IMU, RGB-D topic 수신을 확인하는 스크립트
+- [`Tools/check_mari_gazebo_sensor_topics.py`](./Tools/check_mari_gazebo_sensor_topics.py): Mari Gazebo의 `/odom`, IMU, GPS, RGB-D, camera_info, pointcloud topic 수신을 확인하는 스크립트
 - [`Tools/check_mari_rtabmap_topics.py`](./Tools/check_mari_rtabmap_topics.py): Mari Gazebo 입력 topic과 RTAB-Map map output topic을 함께 확인하는 스크립트
+- [`Tools/check_mari_encoder_topics.py`](./Tools/check_mari_encoder_topics.py): 실제 Mari bring-up 시 encoder, wheel, motor, joint, odom 후보 topic을 찾아 type/rate/마지막 값을 요약하는 스크립트
 - [`Tools/test_mari_cmd_vel_odom.py`](./Tools/test_mari_cmd_vel_odom.py): `/cmd_vel`을 받아 `/odom`과 `odom -> base_footprint` TF를 publish하는 Mari RViz2 이동 검증 스크립트
 - [`Tools/test_mari_moving_tf.py`](./Tools/test_mari_moving_tf.py): `map -> odom -> base_footprint` 동적 TF와 `/odom`을 publish하는 Mari RViz2 시각 검증 스크립트
 

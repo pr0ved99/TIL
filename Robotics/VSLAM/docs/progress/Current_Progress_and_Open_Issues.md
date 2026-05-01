@@ -59,14 +59,155 @@
 - RTAB-Map 입력 topic과 map output topic을 한 번에 확인하는 smoke check 스크립트를 추가했다.
 - Gazebo + RTAB-Map GUI/topic smoke test 증빙 스크린샷 4개를 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/` 아래에 보관했다.
 - 새 RTAB-Map checker가 live Gazebo/RTAB-Map 상태에서 필수 topic을 `[OK]`로 확인했다.
-- 다음 확인 대상은 RTAB-Map graph optimization/loop closure 경고를 줄이는 튜닝과, 실제 encoder 기반 `/odom`, IMU, D435i RGB/depth image, camera info topic 연결이다.
+- RTAB-Map graph optimization/loop closure 경고를 줄이기 위해 Mari Gazebo 기본 RTAB-Map profile을 `g2o + planar 3DoF + gravity constraint off + spatial proximity off`로 조정했다.
+- 실제 encoder 단계로 넘어가기 위해 ROS graph에서 encoder/wheel/motor/joint/odom 후보 topic을 자동 탐색하는 `Tools/check_mari_encoder_topics.py`를 추가했다.
+- `trashbot_localization` 패키지를 추가해 실제 motor encoder raw topic 계약인 `/motor/encoder_ticks -> /wheel/odometry` 변환 구조를 먼저 만들었다.
+- Gazebo `/odom`을 mock `/wheel/odometry`로 바꾸는 경로도 유지하지만, 최종 전환 기준은 motor driver가 `/motor/encoder_ticks`를 publish하는 구조다.
+- 다음 확인 대상은 이 안정화 profile을 live Gazebo에서 다시 주행 검증하고, 실제 motor driver가 `/motor/encoder_ticks`를 publish하도록 맞춘 뒤 `/wheel/odometry + /imu/data -> /odometry/local` 구조를 검증하는 것이다.
+- `2026-04-30` 기준으로 단순 카메라 테스트 world보다 실제 공원 주행에 가까운 `mari_park_test.world`를 추가했다.
+- `gazebo_mari_park_realsense_light.launch.py`를 추가해 잔디, 보행로, 나무, 벤치, 표지판, 낮은 벽, 돌이 있는 공원형 world를 RealSense-light 카메라 조건으로 바로 실행할 수 있게 했다.
+- 공원형 world에서 Gazebo 위치 기반 `/odom`을 RTAB-Map 입력으로 사용했을 때 3D map이 풍부하게 생성되는 것을 화면으로 확인했다.
+- 이 결과는 map 품질 확인용 `/odom` baseline이며, 실제 encoder + IMU 기반 odometry 검증 결과는 아니다.
+- 증빙 폴더는 `assets/2026-04-30_mari_park_world_rtabmap_baseline/`로 잡고, 추천 캡처 파일명은 `01_mari_park_world_rtabmap_odom_baseline.png`로 정했다.
+- `encoder_ticks_to_wheel_odom.py`에 좌우 거리 scale, tick jump reject, 최대 선속도/회전속도 제한, encoder gap 감지를 추가했다.
+- `mock_motor_encoder_ticks.py`에 의도적인 tick jump 주입 옵션을 추가해 encoder adapter의 이상치 방어를 검증할 수 있게 했다.
+- 기존 mock 직진/제자리 회전은 그대로 통과했고, `20000 tick` jump 주입 시 adapter가 해당 샘플을 reject하고 zero velocity를 publish하는 것을 확인했다.
+- `2026-05-01` 기준으로 raw Gazebo IMU를 바로 EKF에 넣지 않고, BNO08x-like covariance를 입힌 `/imu/data_bno08x_like`를 쓰는 republisher를 추가했다.
+- `ekf_local_encoder_imu_bno08x_like.yaml`을 추가해 `/wheel/odometry`는 위치/전진속도, `/imu/data_bno08x_like`는 yaw-rate만 담당하도록 역할을 분리했다.
+- `mari_rtabmap_realsense_light_encoder_imu.launch.py`를 추가해 공원형 Gazebo world에서 encoder+IMU local odom 후보를 바로 RTAB-Map으로 비교할 수 있게 했다.
+- 더 긴 주행과 현실적인 landmark 분포를 보기 위해 `mari_large_park_test.world`와 `gazebo_mari_large_park_realsense_light.launch.py`를 추가했다.
+- 큰 공원 world 비교에서 화면상 `/odom`과 `/odometry/local` map은 유사했지만, `/odometry/local`의 `Loop/MapToBase_lin_std`가 `1.737 m`로 `/odom` baseline `0.068 m`보다 컸다.
+- 원인은 yaw-rate-only EKF에서 yaw pose가 직접 관측되지 않아 yaw covariance가 커지는 구조로 보고, `ekf_local_encoder_imu_bno08x_yaw_tuned.yaml`을 추가했다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-29 최신 업데이트
+## 0. 2026-05-01 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **BNO08x-like IMU covariance republisher 추가**
+   - `trashbot_localization/scripts/imu_covariance_republisher.py`를 추가했다.
+   - raw Gazebo `/imu/data`를 그대로 EKF에 넣지 않고, covariance를 보수적으로 다시 지정한 `/imu/data_bno08x_like`로 republish한다.
+   - covariance는 "센서값을 얼마나 믿을지"를 EKF에 알려주는 값이다.
+   - Gazebo IMU의 covariance가 너무 작으면 EKF가 yaw-rate를 과하게 믿을 수 있으므로, 실제 BNO08x 투입 전 1차 비교용 보수값을 둔다.
+
+2. **Encoder + IMU local EKF 후보 추가**
+   - `trashbot_localization/config/ekf_local_encoder_imu_bno08x_like.yaml`을 추가했다.
+   - `/wheel/odometry`는 `x/y position`과 `forward velocity`를 담당한다.
+   - `/imu/data_bno08x_like`는 `angular_velocity.z`, 즉 yaw-rate만 담당한다.
+   - 목표는 encoder가 직진 이동량을 잡고, IMU가 회전 변화량을 보조하는 구조를 먼저 검증하는 것이다.
+
+3. **RTAB-Map encoder+IMU 비교 launch 추가**
+   - `trashbot_description/launch/mari_rtabmap_realsense_light_encoder_imu.launch.py`를 추가했다.
+   - 내부적으로 공원형 RealSense-light RTAB-Map 조건을 유지하면서, EKF config만 encoder+IMU 후보로 바꾼다.
+   - 이 launch는 아래 경로를 실행한다.
+
+```text
+Gazebo /odom
+-> /motor/encoder_ticks
+-> /wheel/odometry
+
+Gazebo /imu/data
+-> /imu/data_bno08x_like
+
+/wheel/odometry + /imu/data_bno08x_like
+-> /odometry/local
+-> RTAB-Map
+```
+
+4. **검증 결과**
+   - `python3 -m py_compile`로 새 republisher와 launch 파일 문법을 확인했다.
+   - `imu_covariance_bno08x_like.yaml`, `ekf_local_encoder_imu_bno08x_like.yaml` YAML parse를 확인했다.
+   - `colcon build --symlink-install --packages-select trashbot_localization trashbot_description`가 통과했다.
+   - `ros2 launch trashbot_description mari_rtabmap_realsense_light_encoder_imu.launch.py --show-args`가 통과했다.
+   - `/test/imu/raw -> /test/imu/bno08x_like` smoke test에서 `frame_id=imu_link`, orientation covariance `0.01`, angular velocity covariance `0.001`, linear acceleration covariance `0.01`이 적용되는 것을 확인했다.
+
+5. **해석 기준**
+   - 이 단계는 실제 BNO08x 하드웨어 입력이 아니라, Gazebo IMU에 BNO08x-like covariance를 입힌 시뮬레이션 후보이다.
+   - 따라서 "실제 센서로 위치추정이 완성됐다"가 아니라, "실제 encoder/IMU 구조로 전환하기 전에 ROS2 topic/EKF/RTAB-Map 연결 형태를 고정했다"로 해석한다.
+   - 다음 비교는 공원형 world에서 `/odom` baseline, encoder-only `/odometry/local`, encoder+IMU `/odometry/local`을 같은 checker report로 나란히 보는 것이다.
+
+6. **큰 공원형 Gazebo world 추가**
+   - `trashbot_description/worlds/mari_large_park_test.world`를 추가했다.
+   - 기존 `mari_park_test.world`는 짧은 데모와 topic/RTAB-Map 확인용 baseline으로 유지한다.
+   - 새 world는 더 넓은 ground plane, 긴 main walkway, 좌우 branch path, far cross path, 작은 plaza, 나무 군집, 벤치, 색상 표지판, 놀이터 블록, 화단, 돌, 경계 wall/fence를 포함한다.
+   - `trashbot_description/launch/gazebo_mari_large_park_realsense_light.launch.py`를 추가해 같은 RealSense-light 저부하 카메라 조건으로 바로 실행할 수 있게 했다.
+   - 검증은 XML parse, `gz sdf -k`, `python3 -m py_compile`, `colcon build --symlink-install --packages-select trashbot_description`, `ros2 launch ... --show-args`까지 통과했다.
+   - `gui:=false` headless smoke에서도 큰 공원 world가 로드되고 `SpawnEntity: Successfully spawned entity [mari]`까지 확인했다.
+
+7. **큰 공원 world `/odom` vs `/odometry/local` 비교 결과**
+   - `/odom` baseline은 odom input `49.96 Hz`, `mapData poses=13`, `links=114`, cloud `5631` points, `Loop/MapToBase_lin_std=0.068 m`로 확인됐다.
+   - encoder+IMU `/odometry/local`은 odom input `29.97 Hz`, `mapData poses=13`, `links=103`, cloud `5659` points로 화면상 map 품질은 유사했다.
+   - 하지만 `Loop/MapToBase_lin_std=1.737 m`로 내부 불확실도는 훨씬 높았다.
+   - `/odometry/local` pose covariance에서 yaw가 `2.48`까지 커졌기 때문에, RTAB-Map이 local odom을 덜 확실하게 보는 것으로 해석했다.
+
+8. **Encoder+IMU yaw-tuned EKF 추가**
+   - `trashbot_localization/config/ekf_local_encoder_imu_bno08x_yaw_tuned.yaml`을 추가했다.
+   - 기존 yaw-rate-only profile은 보존하고, tuned profile은 `/wheel/odometry`의 `x/y/yaw pose`, `forward velocity`, `yaw-rate`와 `/imu/data_bno08x_like`의 `yaw orientation`, `yaw-rate`를 함께 fuse한다.
+   - `trashbot_description/launch/mari_rtabmap_realsense_light_encoder_imu.launch.py` 기본 EKF config를 yaw-tuned profile로 바꿨다.
+   - headless smoke에서 `/odometry/local` echo 기준 yaw pose covariance가 `0.00194`로 확인되어, 기존 report의 yaw covariance `2.48` 문제는 config 수준에서 완화됐다.
+   - `assets/2026-05-01_mari_large_park_rtabmap/03_large_park_encoder_imu_local_odom_yaw_tuned_check.*` report를 저장했다.
+   - 화면 증빙은 `assets/2026-05-01_mari_large_park_rtabmap/03_large_park_encoder_imu_local_odom_yaw_tuned_rtabmap.png`로 보관했다.
+   - yaw-tuned run은 `/odometry/local` `29.95 Hz`, RGB/Depth `14.98 Hz`, RTAB-Map info `2.55 Hz`, `mapData poses=19 links=76`, cloud `7314` points로 확인됐다.
+   - yaw pose covariance는 `2.48 -> 0.00175`로 크게 줄었고, `Loop/MapToBase_lin_std`는 `1.737 m -> 1.253 m`로 개선됐다.
+   - 아직 `/odom` baseline의 `Loop/MapToBase_lin_std=0.068 m`보다는 크므로, 센서 기반 구조는 동작 검증 완료 상태이고 최종 기본값 확정 전 추가 튜닝이 필요하다.
+
+## 0-1. 2026-04-30 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **공원형 Gazebo world 추가**
+   - `trashbot_description/worlds/mari_park_test.world`를 추가했다.
+   - 기존 `mari_camera_test.world`는 RGB-D topic과 RTAB-Map 입출력 확인에는 적합하지만, 실제 공원 주행 환경과는 너무 단순했다.
+   - 새 world는 잔디 바닥, 보행로, 분기 path, 나무, 벤치, 표지판, 낮은 벽, 돌, 화단을 포함한다.
+   - 목표는 RTAB-Map이 평면 하나만 보는 상황을 피하고, RGB-D point cloud에 높이와 색이 다른 landmark를 충분히 주는 것이다.
+
+2. **공원 world 전용 launch 추가**
+   - `trashbot_description/launch/gazebo_mari_park_realsense_light.launch.py`를 추가했다.
+   - 기존 `gazebo_mari_realsense_light.launch.py`와 같은 저부하 RealSense-light 카메라 조건을 유지한다.
+   - 기본값은 `use_mesh_visual=false`, `424x240`, `15 Hz`, `sim_camera_visualize=false`다.
+   - world 기본값만 `mari_park_test.world`로 바꿔, 같은 RTAB-Map profile에서 환경 복잡도만 올려 비교할 수 있게 했다.
+
+3. **공원형 RTAB-Map `/odom` baseline 확인**
+   - 공원 world에서 Gazebo 위치 기반 `/odom`을 RTAB-Map odometry input으로 사용했을 때 3D map이 잘 생성되는 것을 화면으로 확인했다.
+   - Gazebo 화면에는 공원형 object tree와 Mari가 보이고, RTAB-Map 화면에는 보행로/나무/벤치/표지판/낮은 벽이 point cloud로 누적됐다.
+   - 이 결과는 Gazebo `/odom`이 안정적이기 때문에 잘 나온 baseline이다.
+   - 따라서 "공원 world에서 RTAB-Map map 생성 가능" 증빙으로는 유효하지만, "실제 encoder + IMU odometry가 좋다"는 증빙으로 보지는 않는다.
+
+4. **증빙 asset 경로 정리**
+   - 공원 world baseline 증빙 폴더를 `assets/2026-04-30_mari_park_world_rtabmap_baseline/`로 만들었다.
+   - 추천 캡처 파일명은 `01_mari_park_world_rtabmap_odom_baseline.png`다.
+   - 해당 폴더 README에는 `/odom` baseline이라는 점과 다음 비교 대상이 `/odometry/local`이라는 점을 명시했다.
+
+5. **문서 업데이트**
+   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 Park Test World 실행 절차를 추가했다.
+   - `trashbot_description/README.md`에 공원 world 실행 명령과 목적을 추가했다.
+   - `daily/2026-04-30/README.md`에 오늘 작업 일지를 추가했다.
+
+6. **검증 결과**
+   - `python3` XML parse로 `mari_park_test.world`가 정상 XML임을 확인했다.
+   - `gz sdf -k trashbot_description/worlds/mari_park_test.world`가 `Check complete`로 통과했다.
+   - `colcon build --symlink-install --packages-select trashbot_description`가 통과했다.
+   - `ros2 launch trashbot_description gazebo_mari_park_realsense_light.launch.py --show-args`에서 새 launch 인자가 정상 노출되는 것을 확인했다.
+
+7. **다음 비교**
+   - 같은 공원 world에서 `/odometry/local` 입력 RTAB-Map run을 실행한다.
+   - 비교 기준은 map 정렬, 회전량, `Loop/MapToBase_lin_std`, graph poses/links, cloud points다.
+   - local odom 후보가 `/odom` baseline보다 나쁘면 fake encoder `track_width_m`, pose-delta tick 생성, EKF covariance 순서로 조정한다.
+
+8. **Encoder adapter 1차 보정/방어 구조 추가**
+   - `encoder_odom.yaml`과 `encoder_odom_gazebo.yaml`에 `left_distance_scale`, `right_distance_scale`, `reject_outlier_samples`, `max_tick_delta`, `max_linear_velocity_mps`, `max_angular_velocity_radps`, `max_encoder_gap_sec`를 추가했다.
+   - `encoder_ticks_to_wheel_odom.py`는 큰 tick jump, 비현실적인 선속도/회전속도, 긴 encoder gap을 reject한다.
+   - reject 시 현재 pose는 유지하고 zero velocity odom을 한 번 publish한 뒤, 누적 tick baseline을 재설정한다.
+   - `mock_motor_encoder_ticks.py`와 `mari_encoder_odom_mock.launch.py`에 `tick_jump_after_sec`, `tick_jump_left`, `tick_jump_right` 옵션을 추가했다.
+   - 기존 직진 mock은 `/wheel/odometry` `vx=0.102 m/s`, `wz=0.000`으로 통과했다.
+   - 기존 제자리 회전 mock은 `/wheel/odometry` `vx=0.000`, `wz=0.516 rad/s`로 통과했다.
+   - `tick_jump_left:=20000 tick_jump_right:=20000` 주입 시 adapter가 `encoder tick jump exceeded limit` warning을 내고 샘플을 reject하는 것을 확인했다.
+
+## 0-2. 2026-04-29 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -75,6 +216,11 @@
    - 기존에 길게 입력하던 범용 `rtabmap_launch/rtabmap.launch.py` 실행 인자를 Mari Gazebo 기본값으로 감쌌다.
    - 기본 입력 topic은 `/odom`, `/camera/camera/color/image_raw`, `/camera/camera/aligned_depth_to_color/image_raw`, `/camera/camera/color/camera_info`다.
    - 기본 frame은 `base_footprint`, simulation time은 `use_sim_time:=true`, sensor QoS는 `2(Best Effort)`, 기본 `DetectionRate`는 `5 Hz`다.
+   - `2026-04-29`에 RTAB-Map graph optimization 경고 완화를 위해 기본 optimizer를 `Optimizer/Strategy=1(g2o)`로 고정했다.
+   - 지상 로봇 baseline이므로 `Reg/Force3DoF=true`, `RGBD/ForceOdom3DoF=true`로 `x/y/yaw` 평면 이동만 쓰게 했다.
+   - 현재 launch에서는 IMU/VIO gravity constraint를 쓰지 않으므로 `Optimizer/GravitySigma=0`으로 껐다.
+   - 좁은 synthetic world에서 불필요한 근접 loop link를 줄이기 위해 `RGBD/ProximityBySpace=false`를 기본값으로 둔다.
+   - 추가 실험을 위해 `optimizer_strategy`, `force_3dof`, `gravity_sigma`, `optimize_from_graph_end`, `optimize_max_error`, `proximity_by_space`, `rtabmap_args_extra` launch argument를 노출했다.
    - 이제 기본 실행은 아래처럼 짧아졌다.
 
 ```bash
@@ -86,44 +232,135 @@ ros2 launch trashbot_description mari_rtabmap.launch.py
    - Gazebo 입력 topic과 RTAB-Map output topic을 같은 실행에서 확인한다.
    - 필수 확인 대상은 `/odom`, RGB image, depth image, camera info, `/rtabmap/info`, `/rtabmap/mapData`, `/rtabmap/cloud_map`이다.
    - 선택 확인 대상으로 `/rtabmap/mapGraph`, `/rtabmap/mapPath`, `/rtabmap/map`, `/tf`도 함께 출력한다.
+   - `2026-04-29`에 `/odom` pose/twist covariance summary와 `/rtabmap/info`의 `ref_id`, `loop_closure_id`, `proximity_detection_id`, working memory 크기, local path, odom cache, selected stats 출력도 추가했다.
+   - RTAB-Map raw stats를 확인할 때는 `--all-stats --max-stats 80` 옵션을 쓴다.
 
 ```bash
 python3 Tools/check_mari_rtabmap_topics.py
 ```
 
-3. **RTAB-Map smoke test 증빙 asset 정리**
+3. **실제 encoder 후보 topic 탐색 스크립트 추가**
+   - `Tools/check_mari_encoder_topics.py`를 추가했다.
+   - 실제 Mari 또는 Jetson bring-up 환경에서 `encoder`, `wheel`, `motor`, `joint`, `odom`, `tick`, `count`, `rpm` 후보 topic을 찾아 type, count, rate, 마지막 값을 요약한다.
+   - `/wheel/odometry`가 바로 있는지, `/joint_states` 기반 adapter가 필요한지, raw tick/count 변환이 필요한지 빠르게 판단하는 용도다.
+
+```bash
+python3 Tools/check_mari_encoder_topics.py
+python3 Tools/check_mari_encoder_topics.py --all-topics --duration 3
+```
+
+4. **Localization 패키지와 motor encoder odom 구조 추가**
+   - `trashbot_localization` 패키지를 추가했다.
+   - 실제 motor driver의 기본 raw topic 계약을 `/motor/encoder_ticks`(`std_msgs/Int64MultiArray`, `[left_ticks, right_ticks]`, 누적 signed tick)로 고정했다.
+   - `scripts/encoder_ticks_to_wheel_odom.py`로 `/motor/encoder_ticks`를 `/wheel/odometry`(`nav_msgs/Odometry`)로 변환할 수 있게 했다.
+   - `scripts/mock_motor_encoder_ticks.py`와 `launch/mari_encoder_odom_mock.launch.py`를 추가해 하드웨어 없이 encoder raw topic 계약을 테스트할 수 있게 했다.
+   - `launch/mari_encoder_odom.launch.py`를 추가해 실제 motor driver가 `/motor/encoder_ticks`를 publish할 때 adapter만 실행할 수 있게 했다.
+   - `scripts/gazebo_odom_to_encoder_ticks.py`와 `launch/mari_gazebo_encoder_odom.launch.py`를 추가해 Gazebo `/odom`을 fake `/motor/encoder_ticks`로 바꾼 뒤 기존 encoder adapter를 통과시킬 수 있게 했다.
+   - `config/encoder_odom.yaml`에 `ticks_per_revolution`, `effective_wheel_radius_m`, `track_width_m`, 좌우 tick 부호, covariance 기본값을 정리했다.
+   - `scripts/gazebo_odom_to_wheel_odom.py`로 Gazebo `/odom`을 `/wheel/odometry`로 republish할 수 있게 했다.
+   - `launch/mari_wheel_odom_mock.launch.py`를 추가해 bridge만 독립 실행할 수 있게 했다.
+   - `launch/mari_ekf_local.launch.py`를 추가해 mock bridge와 `robot_localization` local EKF를 함께 띄울 수 있게 했다.
+   - `config/ekf_local.yaml`, `config/ekf_global.yaml`, `config/navsat_transform.yaml`를 추가했다.
+   - Gazebo에서는 `planar_move`가 이미 `odom -> base_footprint` TF를 publish하므로 `ekf_local.yaml`의 `publish_tf` 기본값은 `false`로 두었다.
+   - MG513P30/13-line Hall encoder/1:30 gear ratio/x4 quadrature decoding을 초기 가설로 두고 `ticks_per_revolution=1560`을 적용했다.
+   - 이 값은 topic pipeline 검증용이며, 실제 Mari에서는 구동축 1회전 tick과 1m 직진 실측으로 보정해야 한다.
+   - 초기 가설 근거와 보정 절차는 `01_Calibration/mari_mg513_encoder_initial_hypothesis.md`에 정리했다.
+
+```bash
+ros2 launch trashbot_localization mari_encoder_odom_mock.launch.py
+ros2 launch trashbot_localization mari_encoder_odom.launch.py
+ros2 launch trashbot_localization mari_wheel_odom_mock.launch.py
+ros2 launch trashbot_localization mari_ekf_local.launch.py start_ekf:=false
+```
+
+5. **RTAB-Map smoke test 증빙 asset 정리**
    - Gazebo + RTAB-Map terminal/log 증빙을 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/01_gazebo_rtabmap_runtime_logs_and_teleop.png`로 보관했다.
    - Gazebo world와 RTAB-Map 3D map GUI 증빙을 `assets/2026-04-28_mari_gazebo_rtabmap_smoke/02_gazebo_world_and_rtabmap_3d_map_view.png`로 보관했다.
    - `Tools/check_mari_rtabmap_topics.py`의 필수 topic `[OK]` 증빙을 `03_mari_rtabmap_topic_check_ok.png`로 보관했다.
    - `DetectionRate=5` 기준 live map 증빙을 `04_mari_rtabmap_detectionrate5_live_map.png`로 보관했다.
    - 스크린샷 기준으로 RTAB-Map은 완전히 죽은 상태가 아니라 3D map output을 만들고 있었지만, `DetectionRate`, GUI 부하, loop closure/graph optimization 경고 때문에 실시간 매핑 품질은 추가 튜닝이 필요하다.
 
-4. **문서와 실행 가이드 업데이트**
-   - `README.md`의 Tools 목록에 `check_mari_gazebo_sensor_topics.py`와 `check_mari_rtabmap_topics.py`를 추가했다.
+6. **문서와 실행 가이드 업데이트**
+   - `README.md`의 Tools 목록에 `check_mari_gazebo_sensor_topics.py`, `check_mari_rtabmap_topics.py`, `check_mari_encoder_topics.py`를 추가했다.
    - `trashbot_description/README.md`에 Mari RTAB-Map 실행과 topic 확인 절차를 추가했다.
-   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 RTAB-Map 실행 및 topic 확인 섹션을 추가했다.
+   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 RTAB-Map 실행, topic 확인, 실제 encoder 후보 topic 탐색, `/motor/encoder_ticks -> /wheel/odometry` 변환 절차를 추가했다.
+   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 Gazebo `/odom`을 mock `/wheel/odometry`로 쓰는 localization 구조 확인 절차를 추가했다.
+   - `docs/progress/PreArrival_Sensor_Fusion_Architecture.md`에 encoder 후보 topic 탐색, `/wheel/odometry` 판단 기준, `trashbot_localization` 패키지 기준을 추가했다.
+   - `trashbot_localization/README.md`에 motor encoder raw topic 계약, encoder odom adapter, mock encoder publisher, local EKF, 실제 encoder 전환 절차를 정리했다.
    - `trashbot_description/package.xml`에 `rtabmap_launch` runtime dependency를 추가했다.
 
-5. **검증 결과**
+7. **검증 결과**
    - `python3 -m py_compile Tools/check_mari_rtabmap_topics.py trashbot_description/launch/mari_rtabmap.launch.py`가 통과했다.
-   - `colcon build --packages-select trashbot_description`가 통과했다.
+   - `python3 -m py_compile Tools/check_mari_encoder_topics.py`가 통과했다.
+   - `python3 -m py_compile trashbot_localization/scripts/encoder_ticks_to_wheel_odom.py trashbot_localization/scripts/mock_motor_encoder_ticks.py trashbot_localization/scripts/gazebo_odom_to_wheel_odom.py trashbot_localization/launch/mari_encoder_odom.launch.py trashbot_localization/launch/mari_encoder_odom_mock.launch.py trashbot_localization/launch/mari_ekf_local.launch.py trashbot_localization/launch/mari_wheel_odom_mock.launch.py`가 통과했다.
+   - `python3 Tools/check_mari_encoder_topics.py --duration 0.2 --discovery-timeout 0.2`가 현재 ROS graph에서 후보가 없음을 정상 경고로 출력했다.
+   - `colcon build --symlink-install --packages-select trashbot_description trashbot_localization`가 통과했다.
    - `ros2 launch trashbot_description mari_rtabmap.launch.py --show-args`에서 Mari 전용 기본 인자가 정상 노출되는 것을 확인했다.
-   - `rtabmap_viz:=false rviz:=false detection_rate:=3`로 짧게 실행했을 때 RTAB-Map이 `/odom`, RGB image, depth image, camera info를 구독하고 `RTAB-Map detection rate = 3.000000 Hz`로 설정되는 것을 확인했다.
-   - Gazebo GUI에서 teleop 입력으로 Mari가 실제로 움직이는 것도 다시 확인했다.
-   - Gazebo + RTAB-Map을 동시에 켠 상태에서 `Tools/check_mari_rtabmap_topics.py` 필수 항목이 `[OK]`로 통과하는 것을 확인했다.
+   - `ros2 launch trashbot_localization mari_encoder_odom_mock.launch.py --show-args`와 `mari_encoder_odom.launch.py --show-args`에서 encoder launch 인자가 정상 노출되는 것을 확인했다.
+   - `mari_encoder_odom_mock.launch.py` smoke test에서 `/motor/encoder_ticks`가 `[27732, 27732]` 형태의 `std_msgs/Int64MultiArray`로 publish되는 것을 확인했다.
+   - 같은 smoke test에서 `/wheel/odometry`가 `frame=odom`, `child_frame_id=base_footprint`, `linear.x ~= 0.099 m/s`로 publish되는 것을 확인했다.
+   - `2026-04-29` 사용자 실행 기준 직진 mock에서 `/motor/encoder_ticks`가 `30.0 Hz`, `data=[22227, 22227]`로 나오고 `/wheel/odometry`가 `30.0 Hz`, `x=1.867`, `vx=0.101`, `wz=0.000`으로 나오는 것을 확인했다.
+   - `2026-04-29` 사용자 실행 기준 제자리 회전 mock에서 `/motor/encoder_ticks`가 `data=[-5041, 5041]`로 나오고 `/wheel/odometry`가 `x=0.000`, `y=0.000`, `vx=0.000`, `wz=0.519`로 나오는 것을 확인했다.
+   - 따라서 mock 기준 `/motor/encoder_ticks -> /wheel/odometry` pipeline은 직진/회전 모두 통과한 상태다.
+   - `mari_gazebo_encoder_odom.launch.py`를 `/test_odom -> /test_motor/encoder_ticks -> /test_wheel/odometry` 격리 topic으로 smoke test해 fake Gazebo odom도 encoder tick pipeline을 통과하는 것을 확인했다.
+   - `ros2 launch trashbot_localization mari_wheel_odom_mock.launch.py --show-args`와 `mari_ekf_local.launch.py --show-args`에서 localization launch 인자가 정상 노출되는 것을 확인했다.
+   - `ros2 launch trashbot_localization mari_ekf_local.launch.py start_ekf:=false`로 bridge-only 실행이 뜨는 것을 확인했다.
+   - synthetic `/odom` 1회 publish 후 `/wheel/odometry`에서 `frame=odom`, `child_frame_id=base_footprint`, `x=1.23`, `y=0.45`, `linear.x=0.12`, `angular.z=0.34`가 그대로 republish되는 것을 확인했다.
+   - 현재 PC에는 `robot_localization` 패키지가 설치되어 있지 않아 실제 EKF node 실행은 `ros-humble-robot-localization` 설치 후 검증해야 한다.
+   - 새 launch 인자 `optimizer_strategy`, `force_3dof`, `gravity_sigma`, `optimize_from_graph_end`, `optimize_max_error`, `proximity_by_space`, `rtabmap_args_extra`도 `--show-args`에 노출되는 것을 확인했다.
+- `rtabmap_viz:=false rviz:=false detection_rate:=3`로 짧게 실행했을 때 RTAB-Map이 `/odom`, RGB image, depth image, camera info를 구독하고 `RTAB-Map detection rate = 3.000000 Hz`로 설정되는 것을 확인했다.
+- 같은 짧은 실행에서 `Optimizer/Strategy=1`, `Reg/Force3DoF=true`, `RGBD/ForceOdom3DoF=true`, `Optimizer/GravitySigma=0`, `RGBD/ProximityBySpace=false`가 RTAB-Map parameter로 적용되는 것을 확인했다.
+- `rtabmap_args_extra:="--Kp/MaxFeatures 700"`도 RTAB-Map argument로 정상 전달되는 것을 확인했다.
+- Gazebo GUI에서 teleop 입력으로 Mari가 실제로 움직이는 것도 다시 확인했다.
+- Gazebo + RTAB-Map을 동시에 켠 상태에서 `Tools/check_mari_rtabmap_topics.py` 필수 항목이 `[OK]`로 통과하는 것을 확인했다.
+- `trashbot_description/rviz/mari_sensor_debug.rviz`를 추가해 RobotModel, TF, `/odom`, `/wheel/odometry`, RGB image, depth image, depth point cloud를 한 RViz2 화면에서 볼 수 있게 했다.
+- `gazebo_mari.launch.py`에 `joint_state_publisher`를 추가해 네 개의 `*_virtual_track_wheel_link` 접촉 프레임도 RViz2에서 기본 joint state를 받게 했다.
+- RViz2 통합 시각화 증빙은 `assets/2026-04-29_mari_sensor_visualization/01_rviz_mari_rgbd_pointcloud_odom_visualization_ok.png`에 보관했다.
+- `trashbot_description/launch/mari_rtabmap_local_odom.launch.py`를 추가해 Gazebo encoder bridge, local EKF, RTAB-Map을 함께 실행하고 RTAB-Map odom input을 `/odometry/local`로 바꿀 수 있게 했다.
+- `Tools/check_mari_rtabmap_topics.py --odom-topic /odometry/local` 실행에서 `/odometry/local`, RGB-D input, `/rtabmap/info`, `/rtabmap/mapData`, `/rtabmap/cloud_map`, `/rtabmap/map`이 모두 `[OK]` 또는 관측 가능한 output으로 확인됐다.
+- `/odometry/local` 입력 run에서 RTAB-Map graph는 `poses=89`, `links=466`, cloud map은 `27973` points까지 생성됐다.
+- `Tools/check_mari_rtabmap_topics.py`에 `--label`, `--output-json`, `--output-md`를 추가해 `/odom` run과 `/odometry/local` run을 같은 report 형식으로 저장할 수 있게 했다.
+- 비교 결과 저장 폴더는 `assets/2026-04-29_mari_rtabmap_odom_mode_compare/`로 잡았다.
+- 실제 비교 결과, 후보 A(`/odom`)는 RTAB-Map info rate `2.22 Hz`, mapData `poses=14`, `links=159`, cloud `3899` points, `Loop/MapToBase_lin_std=0.059 m`로 확인됐다.
+- 후보 B(`/odometry/local`)는 RTAB-Map info rate `2.12 Hz`, mapData `poses=15`, `links=80`, cloud `3826` points, `Loop/MapToBase_lin_std=1.450 m`로 확인됐다.
+- 따라서 현재 Gazebo RTAB-Map 기본 매핑에는 후보 A(`/odom`)를 유지하고, 후보 B(`/odometry/local`)는 실차 encoder/IMU 구조 검증용 baseline으로 분리한다.
+- 후보 B 개선을 위해 `gazebo_ros.yaml`로 Gazebo `/clock` publish rate를 `100 Hz`로 올리고, Gazebo mock encoder 전용 `encoder_odom_gazebo.yaml`을 추가했다.
+- EKF에서는 Gazebo IMU의 zero orientation covariance를 피하기 위해 IMU yaw orientation은 쓰지 않고 angular velocity z만 쓰도록 `ekf_local.yaml`, `ekf_global.yaml`을 조정했다.
+- RTAB-Map 실시간성 확인을 위해 Gazebo camera 해상도/FPS/visualization을 launch argument로 조절할 수 있게 했고, 저부하 실행 profile을 `Mari_Gazebo_Run_Guide.md`에 추가했다.
+- 실제 D435i Jetson Docker `light` preset(`424x240x15`, `DetectionRate=2`, `queue=15`)과 동일한 Gazebo/RTAB-Map wrapper launch를 추가했고, 데모 가시성을 위해 RTAB-Map GUI는 기본으로 켠다.
+- `mari_rtabmap_realsense_light_local_odom.launch.py`를 추가해 같은 smooth mapping 조건에서 RTAB-Map odom input만 `/odometry/local`로 바꿔 비교할 수 있게 했다.
+- Gazebo IMU의 gyro covariance가 `4e-08` 수준으로 너무 작아 local EKF 회전 보정이 과해질 수 있어, Gazebo local-odom 비교 기본값은 `ekf_local_gazebo_encoder_only.yaml`로 조정했다.
+- local odom이 Gazebo 회전을 덜 반영하는 문제를 줄이기 위해 `gazebo_odom_to_encoder_ticks.py`의 기본 fake encoder 생성 방식을 `/odom.twist` 적분에서 `/odom.pose` delta 기반으로 바꿨다.
 
 현재 실용적인 해석은 다음과 같다.
 
 - **RTAB-Map 실행 방식**: 긴 범용 launch 명령 대신 Mari 전용 launch로 고정
 - **Smoke test 자동화**: Gazebo 입력 topic과 RTAB-Map output topic을 한 번에 확인하고 live `[OK]` 증빙 확보
+- **RTAB-Map 안정화**: GTSAM underconstrained warning을 먼저 줄이기 위해 Mari Gazebo 기본값을 `g2o + 3DoF` 중심으로 조정
+- **Encoder 준비**: `/motor/encoder_ticks -> /wheel/odometry` topic 계약과 변환 adapter 추가, mock 기준 직진/회전 변환 검증 완료
+- **EKF 구조 준비**: `trashbot_localization` 패키지로 `/wheel/odometry`와 `/odometry/local` 구조를 미리 고정
 - **Gazebo 조종**: teleop 입력으로 Gazebo GUI에서 Mari 이동 확인
+- **RViz2 통합 시각화**: RobotModel, TF, Gazebo odom, fake wheel odom, RGB image, depth point cloud를 한 화면에서 확인
 - **증빙 asset**: Gazebo + RTAB-Map GUI/topic smoke test 스크린샷 4개 보관 완료
-- **남은 확인**: RTAB-Map graph optimization/loop closure 경고 원인 분리와 튜닝
-- **다음 단계**: 실제 encoder raw 값 자체보다 encoder 기반 `/odom` 생성/수신 경로를 준비해 Gazebo `/odom` 자리에 대체할 수 있게 만드는 것
+- **증빙 asset**: RViz2 통합 센서 시각화 스크린샷 1개 보관 완료
+- **RTAB-Map 비교 준비**: raw Gazebo `/odom` 입력 run과 EKF `/odometry/local` 입력 run을 같은 checker로 비교할 수 있게 launch 추가
+- **RTAB-Map local odom smoke**: `/odometry/local -> RTAB-Map -> map output` 경로가 통과했으며 증빙 README는 `assets/2026-04-29_mari_rtabmap_local_odom_smoke/`에 보관
+- **RTAB-Map 비교 report**: checker가 JSON/Markdown 저장을 지원하므로 raw/local odom run을 같은 양식으로 비교 가능
+- **RTAB-Map odom 입력 판정**: 현재 Gazebo 매핑 기본값은 `/odom` 유지, `/odometry/local`은 실차 구조 대비용으로 유지
+- **후보 B 1차 조정**: `/clock` rate, IMU yaw orientation 사용 여부, Gazebo mock encoder covariance를 조정
+- **실시간 우선 모드**: STL visual, camera visualization, RGB-D 해상도, RTAB-Map GUI 부하를 줄이는 실행 profile 추가
+- **RealSense light 동일 조건**: 실제 D435i baseline과 비교 가능한 `424x240x15 + DetectionRate 2 + queue 15` launch 추가
+- **Local odom 비교 launch**: `/odom` baseline과 같은 카메라/RTAB-Map 세팅으로 `/odometry/local` 입력 후보를 실행 가능
+- **회전 보정 완화**: Gazebo local-odom 후보는 기본적으로 encoder-only EKF를 사용하고, IMU fusion은 별도 옵션으로 비교
+- **회전량 추종 개선**: fake encoder tick을 Gazebo pose delta 기반으로 생성해 `/wheel/odometry` yaw가 visible Gazebo 회전에 더 가깝게 따라가도록 조정
+- **공원형 world baseline**: `mari_park_test.world`와 `/odom` 기반 RTAB-Map baseline으로 실제 공원형 데모에 가까운 map 확인 가능
+- **증빙 asset**: 공원형 Gazebo + RTAB-Map baseline 증빙 폴더를 `assets/2026-04-30_mari_park_world_rtabmap_baseline/`로 준비
+- **남은 확인**: 같은 공원형 world에서 `/odometry/local` 입력 후보를 실행해 `/odom` baseline과 map 정렬, 회전량, graph 품질을 비교
+- **다음 단계**: 후보 B 재검증 후 GPS까지 포함한 global odometry smoke test로 확장한다.
 
 ---
 
-## 0-1. 2026-04-28 최신 업데이트
+## 0-2. 2026-04-28 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -165,10 +402,15 @@ python3 Tools/check_mari_rtabmap_topics.py
 9. **Gazebo 가상 센서 topic baseline 추가**
    - `imu_link`에 `libgazebo_ros_imu_sensor.so` 기반 IMU sensor를 추가했다.
    - `camera_link`에 `libgazebo_ros_camera.so` 기반 RGB-D camera sensor를 추가했다.
+   - `gps_link`에 `libgazebo_ros_gps_sensor.so` 기반 GPS sensor를 추가했다.
    - 기대 topic은 `/imu/data`, `/camera/camera/color/image_raw`, `/camera/camera/aligned_depth_to_color/image_raw`, `/camera/camera/color/camera_info`, `/camera/camera/aligned_depth_to_color/camera_info`다.
+   - GPS 기대 topic은 `/gps/fix`이고, pointcloud 기대 topic은 `/camera/camera/depth/color/points`다.
    - `Tools/check_mari_gazebo_sensor_topics.py`를 추가해 topic 수신, type, frame_id, rate를 한 번에 확인할 수 있게 했다.
+   - `2026-04-29`에 checker를 확장해 `/gps/fix`(`sensor_msgs/NavSatFix`)와 `/camera/camera/depth/color/points`(`sensor_msgs/PointCloud2`)도 함께 확인하게 했다.
    - 격리 full STL headless 검증에서 `/odom` 50.0 Hz, `/imu/data` 99.9 Hz, RGB image 약 9.2 Hz, depth image 약 6.8 Hz 수신을 확인했다.
    - IMU `frame_id`는 `imu_link`, RGB-D `frame_id`는 `camera_color_optical_frame`으로 확인했다.
+   - `2026-04-29` headless `mari_camera_test.world` 검증에서 `/odom` 50.0 Hz, `/imu/data` 99.9 Hz, `/gps/fix` 5.0 Hz, RGB/depth image 약 13.8 Hz, camera_info 약 15.1 Hz, pointcloud 약 14.6 Hz를 `[OK]`로 확인했다.
+   - Gazebo GPS plugin은 현재 `/gps/fix`의 `frame_id`를 `base_footprint`로 publish한다. 값 수신 검증은 통과했지만, GPS 안테나 lever arm까지 정확히 반영하려면 이후 `gps_link` frame 보정 또는 republish가 필요하다.
 10. **`base_link`/visual mesh offset 기준 재확인**
    - RViz2 검증 기록 기준으로 `base_link_z=0.0252 m`는 STL chassis-center baseline이다.
    - `base_link_z=0.021 m`로 낮추는 시도는 링크 전체를 4.2 mm 낮출 뿐, 카메라 박스 visual 위치 문제의 직접 원인이 아니므로 되돌렸다.
@@ -183,7 +425,7 @@ python3 Tools/check_mari_rtabmap_topics.py
 - **Full STL visual**: 현재 실행 경로 기준 표시 blocker 해소
 - **Gazebo 주행**: `planar_move` 기준 `/cmd_vel` 전진/회전과 `/odom` publish 확인
 - **직접 조종**: `Tools/teleop_mari_keyboard.py`로 Gazebo GUI에서 수동 주행 가능
-- **Gazebo 가상 센서**: `/odom`, `/imu/data`, RGB image, depth image, camera_info 수신 확인
+- **Gazebo 가상 센서**: `/odom`, `/imu/data`, `/gps/fix`, RGB image, depth image, camera_info, pointcloud 수신 확인
 - **Frame 높이 기준**: `base_footprint -> base_link`는 RViz2 검증 기준 `0.0252 m` 유지, visual mesh는 `chassis_mesh_z` offset으로 지면 정렬
 - **다음 단계**: Gazebo 가상 RGB-D/IMU topic을 RTAB-Map 또는 VSLAM smoke test에 연결한 뒤 실제 encoder/IMU/RGB-D topic 검증
 

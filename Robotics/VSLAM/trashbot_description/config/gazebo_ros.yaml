@@ -1,0 +1,6 @@
+gazebo:
+  ros__parameters:
+    # gazebo_ros_init publishes /clock at 10 Hz by default. robot_localization
+    # timers use simulation time, so a 10 Hz /clock caps /odometry/local at
+    # roughly 10 Hz even if ekf_local.yaml asks for 30 Hz.
+    publish_rate: 100.0

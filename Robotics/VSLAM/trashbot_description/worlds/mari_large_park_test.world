@@ -1,0 +1,440 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="mari_large_park_test">
+    <gravity>0 0 -9.80665</gravity>
+
+    <spherical_coordinates>
+      <heading_deg>180</heading_deg>
+    </spherical_coordinates>
+
+    <physics name="default_physics" default="true" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <scene>
+      <ambient>0.58 0.60 0.56 1</ambient>
+      <background>0.67 0.79 0.98 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 14 0 0 0</pose>
+      <diffuse>0.96 0.92 0.82 1</diffuse>
+      <specular>0.22 0.22 0.18 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.32 0.24 -0.92</direction>
+    </light>
+
+    <model name="large_park_ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>34 26</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="grass_visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>34 26</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.20 0.40 0.23 1</ambient>
+            <diffuse>0.20 0.40 0.23 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="park_paths">
+      <static>true</static>
+      <link name="link">
+        <visual name="main_walkway">
+          <pose>6.2 0.0 0.006 0 0 0.02</pose>
+          <geometry>
+            <box>
+              <size>14.5 1.15 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.66 0.62 0.50 1</ambient>
+            <diffuse>0.66 0.62 0.50 1</diffuse>
+          </material>
+        </visual>
+        <visual name="left_curve_path">
+          <pose>8.1 2.85 0.007 0 0 0.72</pose>
+          <geometry>
+            <box>
+              <size>7.2 0.86 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.70 0.66 0.53 1</ambient>
+            <diffuse>0.70 0.66 0.53 1</diffuse>
+          </material>
+        </visual>
+        <visual name="right_curve_path">
+          <pose>8.7 -2.95 0.007 0 0 -0.70</pose>
+          <geometry>
+            <box>
+              <size>7.0 0.86 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.70 0.66 0.53 1</ambient>
+            <diffuse>0.70 0.66 0.53 1</diffuse>
+          </material>
+        </visual>
+        <visual name="far_cross_path">
+          <pose>12.7 0.0 0.008 0 0 1.57</pose>
+          <geometry>
+            <box>
+              <size>9.2 0.90 0.012</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.64 0.60 0.48 1</ambient>
+            <diffuse>0.64 0.60 0.48 1</diffuse>
+          </material>
+        </visual>
+        <visual name="small_plaza">
+          <pose>5.0 0.0 0.009 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>2.2 2.0 0.014</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.61 0.58 0.49 1</ambient>
+            <diffuse>0.61 0.58 0.49 1</diffuse>
+          </material>
+        </visual>
+        <visual name="start_paving">
+          <pose>0.9 0.0 0.010 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>1.0 1.25 0.014</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.58 0.57 0.54 1</ambient>
+            <diffuse>0.58 0.57 0.54 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="path_center_markers">
+      <static>true</static>
+      <link name="link">
+        <visual name="marker_1">
+          <pose>1.8 0.0 0.018 0 0 0.02</pose>
+          <geometry><box><size>0.24 0.07 0.014</size></box></geometry>
+          <material><ambient>0.86 0.82 0.64 1</ambient><diffuse>0.86 0.82 0.64 1</diffuse></material>
+        </visual>
+        <visual name="marker_2">
+          <pose>3.2 0.03 0.018 0 0 0.02</pose>
+          <geometry><box><size>0.24 0.07 0.014</size></box></geometry>
+          <material><ambient>0.86 0.82 0.64 1</ambient><diffuse>0.86 0.82 0.64 1</diffuse></material>
+        </visual>
+        <visual name="marker_3">
+          <pose>4.6 0.05 0.018 0 0 0.02</pose>
+          <geometry><box><size>0.24 0.07 0.014</size></box></geometry>
+          <material><ambient>0.86 0.82 0.64 1</ambient><diffuse>0.86 0.82 0.64 1</diffuse></material>
+        </visual>
+        <visual name="marker_4">
+          <pose>6.2 0.08 0.018 0 0 0.02</pose>
+          <geometry><box><size>0.24 0.07 0.014</size></box></geometry>
+          <material><ambient>0.86 0.82 0.64 1</ambient><diffuse>0.86 0.82 0.64 1</diffuse></material>
+        </visual>
+        <visual name="marker_5">
+          <pose>8.0 0.10 0.018 0 0 0.02</pose>
+          <geometry><box><size>0.24 0.07 0.014</size></box></geometry>
+          <material><ambient>0.86 0.82 0.64 1</ambient><diffuse>0.86 0.82 0.64 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="tree_cluster_near_left">
+      <static>true</static>
+      <pose>2.1 3.15 0 0 0 0</pose>
+      <link name="link">
+        <collision name="trunk_collision">
+          <pose>0 0 0.58 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>1.16</length></cylinder></geometry>
+        </collision>
+        <visual name="trunk_visual">
+          <pose>0 0 0.58 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>1.16</length></cylinder></geometry>
+          <material><ambient>0.33 0.17 0.08 1</ambient><diffuse>0.33 0.17 0.08 1</diffuse></material>
+        </visual>
+        <collision name="crown_collision">
+          <pose>0 0 1.38 0 0 0</pose>
+          <geometry><sphere><radius>0.70</radius></sphere></geometry>
+        </collision>
+        <visual name="crown_visual">
+          <pose>0 0 1.38 0 0 0</pose>
+          <geometry><sphere><radius>0.70</radius></sphere></geometry>
+          <material><ambient>0.06 0.31 0.09 1</ambient><diffuse>0.06 0.31 0.09 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="tree_cluster_near_right">
+      <static>true</static>
+      <pose>2.9 -3.30 0 0 0 0</pose>
+      <link name="link">
+        <collision name="trunk_collision">
+          <pose>0 0 0.55 0 0 0</pose>
+          <geometry><cylinder><radius>0.11</radius><length>1.10</length></cylinder></geometry>
+        </collision>
+        <visual name="trunk_visual">
+          <pose>0 0 0.55 0 0 0</pose>
+          <geometry><cylinder><radius>0.11</radius><length>1.10</length></cylinder></geometry>
+          <material><ambient>0.34 0.16 0.07 1</ambient><diffuse>0.34 0.16 0.07 1</diffuse></material>
+        </visual>
+        <collision name="crown_collision">
+          <pose>0 0 1.30 0 0 0</pose>
+          <geometry><sphere><radius>0.64</radius></sphere></geometry>
+        </collision>
+        <visual name="crown_visual">
+          <pose>0 0 1.30 0 0 0</pose>
+          <geometry><sphere><radius>0.64</radius></sphere></geometry>
+          <material><ambient>0.08 0.34 0.11 1</ambient><diffuse>0.08 0.34 0.11 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="tree_row_and_depth_cues">
+      <static>true</static>
+      <link name="link">
+        <collision name="tree_a_trunk_collision">
+          <pose>7.2 5.2 0.65 0 0 0</pose>
+          <geometry><cylinder><radius>0.11</radius><length>1.30</length></cylinder></geometry>
+        </collision>
+        <visual name="tree_a_trunk_visual">
+          <pose>7.2 5.2 0.65 0 0 0</pose>
+          <geometry><cylinder><radius>0.11</radius><length>1.30</length></cylinder></geometry>
+          <material><ambient>0.34 0.16 0.08 1</ambient><diffuse>0.34 0.16 0.08 1</diffuse></material>
+        </visual>
+        <visual name="tree_a_crown_visual">
+          <pose>7.2 5.2 1.55 0 0 0</pose>
+          <geometry><sphere><radius>0.78</radius></sphere></geometry>
+          <material><ambient>0.05 0.28 0.09 1</ambient><diffuse>0.05 0.28 0.09 1</diffuse></material>
+        </visual>
+
+        <collision name="tree_b_trunk_collision">
+          <pose>10.4 -5.5 0.64 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>1.28</length></cylinder></geometry>
+        </collision>
+        <visual name="tree_b_trunk_visual">
+          <pose>10.4 -5.5 0.64 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>1.28</length></cylinder></geometry>
+          <material><ambient>0.33 0.15 0.07 1</ambient><diffuse>0.33 0.15 0.07 1</diffuse></material>
+        </visual>
+        <visual name="tree_b_crown_visual">
+          <pose>10.4 -5.5 1.50 0 0 0</pose>
+          <geometry><sphere><radius>0.72</radius></sphere></geometry>
+          <material><ambient>0.07 0.31 0.12 1</ambient><diffuse>0.07 0.31 0.12 1</diffuse></material>
+        </visual>
+
+        <collision name="tree_c_trunk_collision">
+          <pose>14.2 4.4 0.70 0 0 0</pose>
+          <geometry><cylinder><radius>0.13</radius><length>1.40</length></cylinder></geometry>
+        </collision>
+        <visual name="tree_c_trunk_visual">
+          <pose>14.2 4.4 0.70 0 0 0</pose>
+          <geometry><cylinder><radius>0.13</radius><length>1.40</length></cylinder></geometry>
+          <material><ambient>0.30 0.15 0.07 1</ambient><diffuse>0.30 0.15 0.07 1</diffuse></material>
+        </visual>
+        <visual name="tree_c_crown_visual">
+          <pose>14.2 4.4 1.68 0 0 0</pose>
+          <geometry><sphere><radius>0.86</radius></sphere></geometry>
+          <material><ambient>0.04 0.26 0.08 1</ambient><diffuse>0.04 0.26 0.08 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="park_furniture_and_landmarks">
+      <static>true</static>
+      <link name="link">
+        <collision name="bench_1_seat_collision">
+          <pose>4.0 -1.85 0.28 0 0 0.12</pose>
+          <geometry><box><size>1.35 0.36 0.12</size></box></geometry>
+        </collision>
+        <visual name="bench_1_seat_visual">
+          <pose>4.0 -1.85 0.28 0 0 0.12</pose>
+          <geometry><box><size>1.35 0.36 0.12</size></box></geometry>
+          <material><ambient>0.50 0.25 0.11 1</ambient><diffuse>0.50 0.25 0.11 1</diffuse></material>
+        </visual>
+        <visual name="bench_1_back_visual">
+          <pose>3.95 -1.58 0.58 0.24 0 0.12</pose>
+          <geometry><box><size>1.35 0.10 0.55</size></box></geometry>
+          <material><ambient>0.45 0.20 0.09 1</ambient><diffuse>0.45 0.20 0.09 1</diffuse></material>
+        </visual>
+        <visual name="bench_1_leg_a_visual">
+          <pose>3.45 -1.86 0.13 0 0 0.12</pose>
+          <geometry><box><size>0.12 0.12 0.26</size></box></geometry>
+          <material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.08 0.08 0.08 1</diffuse></material>
+        </visual>
+        <visual name="bench_1_leg_b_visual">
+          <pose>4.55 -1.86 0.13 0 0 0.12</pose>
+          <geometry><box><size>0.12 0.12 0.26</size></box></geometry>
+          <material><ambient>0.08 0.08 0.08 1</ambient><diffuse>0.08 0.08 0.08 1</diffuse></material>
+        </visual>
+
+        <collision name="sign_red_collision">
+          <pose>5.0 1.75 0.78 0 0 -0.08</pose>
+          <geometry><box><size>0.08 0.86 1.16</size></box></geometry>
+        </collision>
+        <visual name="sign_red_visual">
+          <pose>5.0 1.75 0.78 0 0 -0.08</pose>
+          <geometry><box><size>0.08 0.86 1.16</size></box></geometry>
+          <material><ambient>0.80 0.12 0.10 1</ambient><diffuse>0.80 0.12 0.10 1</diffuse></material>
+        </visual>
+        <collision name="sign_blue_collision">
+          <pose>6.0 1.78 0.70 0 0 0.05</pose>
+          <geometry><box><size>0.08 0.78 1.00</size></box></geometry>
+        </collision>
+        <visual name="sign_blue_visual">
+          <pose>6.0 1.78 0.70 0 0 0.05</pose>
+          <geometry><box><size>0.08 0.78 1.00</size></box></geometry>
+          <material><ambient>0.08 0.19 0.72 1</ambient><diffuse>0.08 0.19 0.72 1</diffuse></material>
+        </visual>
+        <collision name="yellow_bollard_collision">
+          <pose>6.8 -1.25 0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>0.96</length></cylinder></geometry>
+        </collision>
+        <visual name="yellow_bollard_visual">
+          <pose>6.8 -1.25 0.48 0 0 0</pose>
+          <geometry><cylinder><radius>0.12</radius><length>0.96</length></cylinder></geometry>
+          <material><ambient>0.88 0.78 0.08 1</ambient><diffuse>0.88 0.78 0.08 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="playground_corner">
+      <static>true</static>
+      <link name="link">
+        <collision name="low_platform_collision">
+          <pose>9.2 1.2 0.16 0 0 -0.15</pose>
+          <geometry><box><size>1.60 1.00 0.32</size></box></geometry>
+        </collision>
+        <visual name="low_platform_visual">
+          <pose>9.2 1.2 0.16 0 0 -0.15</pose>
+          <geometry><box><size>1.60 1.00 0.32</size></box></geometry>
+          <material><ambient>0.18 0.36 0.72 1</ambient><diffuse>0.18 0.36 0.72 1</diffuse></material>
+        </visual>
+        <collision name="purple_cube_collision">
+          <pose>10.4 1.05 0.40 0 0 0.22</pose>
+          <geometry><box><size>0.70 0.70 0.80</size></box></geometry>
+        </collision>
+        <visual name="purple_cube_visual">
+          <pose>10.4 1.05 0.40 0 0 0.22</pose>
+          <geometry><box><size>0.70 0.70 0.80</size></box></geometry>
+          <material><ambient>0.48 0.10 0.60 1</ambient><diffuse>0.48 0.10 0.60 1</diffuse></material>
+        </visual>
+        <collision name="orange_block_collision">
+          <pose>8.5 -0.95 0.32 0 0 0.10</pose>
+          <geometry><box><size>0.78 0.62 0.64</size></box></geometry>
+        </collision>
+        <visual name="orange_block_visual">
+          <pose>8.5 -0.95 0.32 0 0 0.10</pose>
+          <geometry><box><size>0.78 0.62 0.64</size></box></geometry>
+          <material><ambient>0.74 0.40 0.06 1</ambient><diffuse>0.74 0.40 0.06 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="garden_beds_and_rocks">
+      <static>true</static>
+      <link name="link">
+        <visual name="flower_bed_left">
+          <pose>7.0 3.9 0.07 0 0 0.25</pose>
+          <geometry><box><size>2.2 0.70 0.14</size></box></geometry>
+          <material><ambient>0.25 0.13 0.06 1</ambient><diffuse>0.25 0.13 0.06 1</diffuse></material>
+        </visual>
+        <visual name="flower_bed_left_flower_1">
+          <pose>6.45 3.80 0.23 0 0 0</pose>
+          <geometry><sphere><radius>0.12</radius></sphere></geometry>
+          <material><ambient>0.82 0.08 0.18 1</ambient><diffuse>0.82 0.08 0.18 1</diffuse></material>
+        </visual>
+        <visual name="flower_bed_left_flower_2">
+          <pose>7.05 4.02 0.23 0 0 0</pose>
+          <geometry><sphere><radius>0.12</radius></sphere></geometry>
+          <material><ambient>0.86 0.74 0.06 1</ambient><diffuse>0.86 0.74 0.06 1</diffuse></material>
+        </visual>
+        <visual name="flower_bed_right">
+          <pose>11.8 -3.4 0.07 0 0 -0.35</pose>
+          <geometry><box><size>2.0 0.66 0.14</size></box></geometry>
+          <material><ambient>0.25 0.13 0.06 1</ambient><diffuse>0.25 0.13 0.06 1</diffuse></material>
+        </visual>
+        <collision name="rock_1_collision">
+          <pose>6.2 -3.7 0.17 0 0 0</pose>
+          <geometry><sphere><radius>0.23</radius></sphere></geometry>
+        </collision>
+        <visual name="rock_1_visual">
+          <pose>6.2 -3.7 0.17 0 0 0</pose>
+          <geometry><sphere><radius>0.23</radius></sphere></geometry>
+          <material><ambient>0.42 0.42 0.39 1</ambient><diffuse>0.42 0.42 0.39 1</diffuse></material>
+        </visual>
+        <collision name="rock_2_collision">
+          <pose>12.4 2.6 0.20 0 0 0</pose>
+          <geometry><sphere><radius>0.27</radius></sphere></geometry>
+        </collision>
+        <visual name="rock_2_visual">
+          <pose>12.4 2.6 0.20 0 0 0</pose>
+          <geometry><sphere><radius>0.27</radius></sphere></geometry>
+          <material><ambient>0.37 0.38 0.35 1</ambient><diffuse>0.37 0.38 0.35 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="park_edges_and_fences">
+      <static>true</static>
+      <link name="link">
+        <collision name="left_low_wall_collision">
+          <pose>7.5 6.25 0.18 0 0 0.02</pose>
+          <geometry><box><size>8.0 0.18 0.36</size></box></geometry>
+        </collision>
+        <visual name="left_low_wall_visual">
+          <pose>7.5 6.25 0.18 0 0 0.02</pose>
+          <geometry><box><size>8.0 0.18 0.36</size></box></geometry>
+          <material><ambient>0.72 0.70 0.62 1</ambient><diffuse>0.72 0.70 0.62 1</diffuse></material>
+        </visual>
+        <collision name="right_low_wall_collision">
+          <pose>9.2 -6.05 0.18 0 0 -0.04</pose>
+          <geometry><box><size>8.5 0.18 0.36</size></box></geometry>
+        </collision>
+        <visual name="right_low_wall_visual">
+          <pose>9.2 -6.05 0.18 0 0 -0.04</pose>
+          <geometry><box><size>8.5 0.18 0.36</size></box></geometry>
+          <material><ambient>0.72 0.70 0.62 1</ambient><diffuse>0.72 0.70 0.62 1</diffuse></material>
+        </visual>
+        <visual name="white_fence_left">
+          <pose>13.8 5.65 0.65 0 0 1.52</pose>
+          <geometry><box><size>2.2 0.10 1.30</size></box></geometry>
+          <material><ambient>0.82 0.80 0.72 1</ambient><diffuse>0.82 0.80 0.72 1</diffuse></material>
+        </visual>
+        <visual name="white_fence_right">
+          <pose>14.4 -4.9 0.65 0 0 1.44</pose>
+          <geometry><box><size>2.4 0.10 1.30</size></box></geometry>
+          <material><ambient>0.82 0.80 0.72 1</ambient><diffuse>0.82 0.80 0.72 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

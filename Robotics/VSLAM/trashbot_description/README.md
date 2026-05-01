@@ -43,9 +43,9 @@ Current Mari status:
   real encoder and IMU topic validation should still use the hardware ROS topics
   directly.
 - Gazebo publishes simulated sensor topics for the first VSLAM input baseline:
-  `/imu/data`, `/camera/camera/color/image_raw`,
-  `/camera/camera/aligned_depth_to_color/image_raw`, and matching
-  `camera_info` topics.
+  `/imu/data`, `/gps/fix`, `/camera/camera/color/image_raw`,
+  `/camera/camera/aligned_depth_to_color/image_raw`, matching
+  `camera_info` topics, and `/camera/camera/depth/color/points`.
 - `base_footprint -> base_link` stays at `z=0.0252 m`, the RViz2-verified
   STL chassis-center baseline. Apparent mesh alignment is handled by the
   visual offset formula `chassis_mesh_z = -base_link_z - chassis_mesh_min_z`,
@@ -132,6 +132,19 @@ source install/setup.bash
 ros2 launch trashbot_description gazebo_mari.launch.py
 ```
 
+Open the Gazebo sensor debug view in RViz2:
+
+```bash
+cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
+rviz2 -d trashbot_description/rviz/mari_sensor_debug.rviz
+```
+
+This RViz2 config uses `odom` as the fixed frame. If RViz2 is manually opened
+with `Fixed Frame = map`, RobotModel will show transform errors until a mapping
+or localization node publishes the `map` frame.
+The Gazebo launch also starts `joint_state_publisher` so the four
+`*_virtual_track_wheel_link` contact frames have default joint states in RViz2.
+
 The default Gazebo launch uses `use_mesh_visual:=false`, so `chassis_link` is shown
 as a simple box. This is intentional: it proves that Gazebo, spawn, TF, and the
 model body are visible before debugging the heavy STL visual.
@@ -139,6 +152,11 @@ model body are visible before debugging the heavy STL visual.
 The launch uses `worlds/mari_empty.world`, which keeps the sun and ground plane
 local instead of depending on Gazebo's online model database. It also gives
 `spawn_entity.py` a longer service timeout to reduce startup flakiness.
+
+The Gazebo launch passes `config/gazebo_ros.yaml` to `gzserver`. This raises
+Gazebo's `/clock` publish rate from the default low-rate behavior so
+`robot_localization` timers using `use_sim_time=true` are not capped near
+10 Hz during `/odometry/local` tests.
 
 Gazebo motion is intentionally controlled by `libgazebo_ros_planar_move.so`.
 This makes `/cmd_vel` rotation independent from intermittent skid-steer contact
@@ -159,6 +177,74 @@ ros2 launch trashbot_description gazebo_mari.launch.py \
   use_mesh_visual:=true \
   world:=$(pwd)/trashbot_description/worlds/mari_camera_test.world
 ```
+
+Use the real-time-first Gazebo profile when RTAB-Map processing is stuttering.
+This keeps the camera useful for RGB-D mapping, but reduces render and image
+transport load:
+
+```bash
+ros2 launch trashbot_description gazebo_mari.launch.py \
+  use_mesh_visual:=false \
+  sim_camera_width:=424 \
+  sim_camera_height:=240 \
+  sim_camera_update_rate:=10 \
+  sim_camera_visualize:=false \
+  world:=$(pwd)/trashbot_description/worlds/mari_camera_test.world
+```
+
+Use the RealSense-light matched profile when comparing Gazebo against the
+previous D435i RTAB-Map baseline:
+
+```bash
+ros2 launch trashbot_description gazebo_mari_realsense_light.launch.py
+ros2 launch trashbot_description mari_rtabmap_realsense_light.launch.py
+```
+
+That profile uses `424x240x15`, `DetectionRate=2`, queue size `15`, and
+`rtabmap_viz=true` for visible mapping feedback. Use `rtabmap_viz:=false`
+only for pure backend benchmarking.
+
+Use the park world when the camera test world is too simple for RTAB-Map
+inspection:
+
+```bash
+ros2 launch trashbot_description gazebo_mari_park_realsense_light.launch.py
+ros2 launch trashbot_description mari_rtabmap_realsense_light.launch.py \
+  detection_rate:=3 \
+  queue_size:=20 \
+  approx_sync_max_interval:=0.08 \
+  rtabmap_viz:=true
+```
+
+The park world keeps the low-load RealSense-light camera profile but replaces
+the simple test targets with grass, walking paths, trees, benches, signs, low
+walls, and rocks.
+
+Use the larger park world when checking longer teleop paths, loop-like walking
+routes, and richer landmark coverage:
+
+```bash
+ros2 launch trashbot_description gazebo_mari_large_park_realsense_light.launch.py
+```
+
+The larger world keeps the same low-load camera defaults, but expands the scene
+with a wider ground plane, longer paths, a small plaza, tree rows, benches,
+colored signs, playground blocks, flower beds, rocks, and boundary fences.
+
+Use the local-odom variant when checking the sensor-style odometry path with the
+same real-time mapping profile:
+
+```bash
+ros2 launch trashbot_description gazebo_mari_realsense_light.launch.py
+ros2 launch trashbot_description mari_rtabmap_realsense_light_local_odom.launch.py
+```
+
+This keeps Gazebo `/odom` only as the mock encoder source, then feeds RTAB-Map
+with `/odometry/local`. The default Gazebo local-odom EKF uses
+`ekf_local_gazebo_encoder_only.yaml` to avoid over-trusting the simulated IMU
+gyro covariance during rotation. The mock encoder bridge derives ticks from
+Gazebo pose deltas so yaw follows the visible Gazebo rotation more closely than
+twist-only integration.
 
 Drive Mari directly from the keyboard:
 
@@ -228,16 +314,114 @@ ros2 launch trashbot_description mari_rtabmap.launch.py
 
 This wraps the longer generic `rtabmap_launch` command with Mari's RGB-D,
 `/odom`, `base_footprint`, simulation time, QoS, and `DetectionRate=5`
-defaults. Override values only when a specific experiment needs it:
+defaults. It also uses a Gazebo-stable mapping profile by default:
+`Optimizer/Strategy=1` (`g2o`), planar 3DoF registration, no gravity constraint,
+and no spatial proximity links. Override values only when a specific experiment
+needs it:
 
 ```bash
 ros2 launch trashbot_description mari_rtabmap.launch.py detection_rate:=3
+ros2 launch trashbot_description mari_rtabmap.launch.py optimizer_strategy:=2
 ```
 
 Check RTAB-Map input and output topics:
 
 ```bash
 python3 Tools/check_mari_rtabmap_topics.py
+python3 Tools/check_mari_rtabmap_topics.py --all-stats --max-stats 80
+```
+
+Start RTAB-Map with the local EKF odometry input:
+
+```bash
+ros2 launch trashbot_description mari_rtabmap_local_odom.launch.py
+```
+
+This starts the Gazebo encoder bridge, local EKF, and RTAB-Map together after
+Gazebo is already running. RTAB-Map consumes `/odometry/local` instead of raw
+Gazebo `/odom`.
+
+```bash
+python3 Tools/check_mari_rtabmap_topics.py --odom-topic /odometry/local
+```
+
+Start RTAB-Map with the encoder + BNO08x-like IMU local EKF candidate:
+
+```bash
+ros2 launch trashbot_description mari_rtabmap_realsense_light_encoder_imu.launch.py
+```
+
+This keeps the RealSense-light RTAB-Map profile, but changes the local EKF path:
+
+```text
+Gazebo /odom
+-> /motor/encoder_ticks
+-> /wheel/odometry
+
+Gazebo /imu/data
+-> /imu/data_bno08x_like
+
+/wheel/odometry + /imu/data_bno08x_like
+-> /odometry/local
+-> RTAB-Map
+```
+
+`/imu/data_bno08x_like` is still simulated data. It exists to avoid over-trusting
+Gazebo's near-zero IMU covariance before the real BNO08x is connected.
+
+After EKF/Gazebo clock tuning, save the retest with a new report name instead
+of overwriting the first local-odom baseline:
+
+```bash
+python3 Tools/check_mari_rtabmap_topics.py \
+  --duration 20 \
+  --label local_odom_tuned \
+  --odom-topic /odometry/local \
+  --output-json assets/2026-04-29_mari_rtabmap_odom_mode_compare/03_local_odom_tuned_rtabmap_check.json \
+  --output-md assets/2026-04-29_mari_rtabmap_odom_mode_compare/03_local_odom_tuned_rtabmap_check.md
+```
+
+When real Mari hardware is connected, discover likely encoder, wheel, motor,
+joint, and odom feedback topics before writing an adapter:
+
+```bash
+python3 Tools/check_mari_encoder_topics.py
+python3 Tools/check_mari_encoder_topics.py --all-topics --duration 3
+```
+
+The intended motor encoder contract is:
+
+```text
+/motor/encoder_ticks  std_msgs/Int64MultiArray  [left_ticks, right_ticks]
+```
+
+Test the raw encoder contract and `/wheel/odometry` conversion without hardware:
+
+```bash
+ros2 launch trashbot_localization mari_encoder_odom_mock.launch.py
+ros2 topic echo /motor/encoder_ticks --once
+ros2 topic echo /wheel/odometry --once
+```
+
+When the real motor driver publishes `/motor/encoder_ticks`, run only the
+adapter:
+
+```bash
+ros2 launch trashbot_localization mari_encoder_odom.launch.py
+```
+
+Before the real encoder is connected, use Gazebo `/odom` as mock wheel odom:
+
+```bash
+ros2 launch trashbot_localization mari_wheel_odom_mock.launch.py
+ros2 topic echo /wheel/odometry --once
+```
+
+If `robot_localization` is installed, the local EKF scaffold can also publish
+`/odometry/local`:
+
+```bash
+ros2 launch trashbot_localization mari_ekf_local.launch.py
 ```
 
 Expected first baseline topics:
@@ -245,14 +429,19 @@ Expected first baseline topics:
 ```text
 /odom                                             nav_msgs/Odometry
 /imu/data                                         sensor_msgs/Imu
+/gps/fix                                          sensor_msgs/NavSatFix
 /camera/camera/color/image_raw                    sensor_msgs/Image
 /camera/camera/aligned_depth_to_color/image_raw   sensor_msgs/Image
 /camera/camera/color/camera_info                  sensor_msgs/CameraInfo
 /camera/camera/aligned_depth_to_color/camera_info sensor_msgs/CameraInfo
+/camera/camera/depth/color/points                 sensor_msgs/PointCloud2
 ```
 
 The simulated camera uses `camera_color_optical_frame` as the image frame. The
-simulated IMU uses `imu_link` as the IMU frame.
+simulated IMU uses `imu_link` as the IMU frame. The Gazebo GPS plugin currently
+publishes `/gps/fix` with `frame_id=base_footprint`; this is enough for value
+reception checks, but GPS antenna lever-arm testing needs a later `gps_link`
+frame correction or republish.
 
 If the terminal does not know the local display, run:
 

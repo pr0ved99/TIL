@@ -3,6 +3,11 @@
   <world name="mari_empty">
     <gravity>0 0 -9.80665</gravity>
 
+    <spherical_coordinates>
+      <!-- Keep GPS local ENU behavior aligned with gazebo_ros_gps_sensor demo. -->
+      <heading_deg>180</heading_deg>
+    </spherical_coordinates>
+
     <physics name="default_physics" default="true" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
