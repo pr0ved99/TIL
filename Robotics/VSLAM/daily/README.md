@@ -28,7 +28,8 @@
 | 2026-04-28 | [`daily/2026-04-28/README.md`](./2026-04-28/README.md) | Mari Gazebo 필요성 문서화, Gazebo launch/world 추가, headless spawn baseline 확인 |
 | 2026-04-29 | [`daily/2026-04-29/README.md`](./2026-04-29/README.md) | MG513 encoder 초기 가설값 정리, mock encoder topic과 wheel odometry 직진/회전 검증 |
 | 2026-04-30 | [`daily/2026-04-30/README.md`](./2026-04-30/README.md) | Mari 공원형 Gazebo world 추가, `/odom` 기반 RTAB-Map park baseline 확인 |
-| 2026-05-01 | [`daily/2026-05-01/README.md`](./2026-05-01/README.md) | BNO08x-like IMU covariance republisher, encoder+IMU local EKF 후보, 큰 공원형 Gazebo world 추가 |
+| 2026-05-01 | [`daily/2026-05-01/README.md`](./2026-05-01/README.md) | BNO08x-like IMU covariance republisher, encoder+IMU local EKF 후보, 큰 공원형 Gazebo world, Nav2 1차 smoke-test 구조와 stage troubleshooting |
+| 2026-05-02 | [`daily/2026-05-02/README.md`](./2026-05-02/README.md) | Stage 2 saved-map Nav2 goal reach 확인, Stage 3 safe-clearance 비교, Stage 4 반복주행 world 추가 |
 
 ## 템플릿
 

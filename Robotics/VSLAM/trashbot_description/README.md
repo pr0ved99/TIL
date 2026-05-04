@@ -122,7 +122,7 @@ ros2 launch trashbot_description display.launch.py \
 Open the Mari model in Gazebo Classic with the stable debug visual:
 
 Full Gazebo execution steps are collected in
-[Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_Gazebo_Run_Guide.md).
+[05-02_Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-02_Mari_Gazebo_Run_Guide.md).
 
 ```bash
 cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
@@ -231,6 +231,35 @@ The larger world keeps the same low-load camera defaults, but expands the scene
 with a wider ground plane, longer paths, a small plaza, tree rows, benches,
 colored signs, playground blocks, flower beds, rocks, and boundary fences.
 
+## Nav2 Training Worlds
+
+Use these worlds before running Nav2 in the larger park. They keep the same
+Mari Gazebo base launch and RealSense-light camera profile, but reduce the
+environment complexity so navigation failures can be isolated.
+
+```bash
+# Stage 0: basic /cmd_vel smoke test
+ros2 launch trashbot_description gazebo_mari_nav2_stage0_empty.launch.py
+
+# Stage 1: straight path tracking
+ros2 launch trashbot_description gazebo_mari_nav2_stage1_straight_path.launch.py
+
+# Stage 2: simple obstacle/costmap test
+ros2 launch trashbot_description gazebo_mari_nav2_stage2_obstacles.launch.py
+
+# Stage 3: small loop park integration test
+ros2 launch trashbot_description gazebo_mari_nav2_stage3_small_loop.launch.py
+
+# Stage 4: close-obstacle repeat-course test
+ros2 launch trashbot_description gazebo_mari_nav2_stage4_repeat_course.launch.py
+```
+
+The larger park remains the demo/final validation world:
+
+```bash
+ros2 launch trashbot_description gazebo_mari_large_park_realsense_light.launch.py
+```
+
 Use the local-odom variant when checking the sensor-style odometry path with the
 same real-time mapping profile:
 
@@ -267,10 +296,12 @@ For smoother visual motion, use a higher publish rate with lower acceleration:
 ```bash
 python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
-  --linear-accel 0.15 \
-  --angular-accel 0.45 \
   --key-timeout 1.2
 ```
+
+The keyboard teleop defaults to step command mode, so movement keys publish the
+target velocity immediately. Add `--smooth --linear-accel ... --angular-accel ...`
+only when a ramped command is desired.
 
 Drive Mari in Gazebo with `/cmd_vel`:
 

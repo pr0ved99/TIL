@@ -145,8 +145,6 @@ ros2 launch trashbot_description mari_rtabmap_realsense_light.launch.py
 ```bash
 python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
-  --linear-accel 0.15 \
-  --angular-accel 0.45 \
   --key-timeout 1.2
 ```
 
@@ -224,8 +222,6 @@ python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
   --linear-speed 0.08 \
   --angular-speed 0.45 \
-  --linear-accel 0.12 \
-  --angular-accel 0.35 \
   --key-timeout 1.2
 ```
 
@@ -294,8 +290,6 @@ python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
   --linear-speed 0.08 \
   --angular-speed 0.45 \
-  --linear-accel 0.12 \
-  --angular-accel 0.35 \
   --key-timeout 1.2
 ```
 
@@ -362,8 +356,6 @@ python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
   --linear-speed 0.08 \
   --angular-speed 0.45 \
-  --linear-accel 0.12 \
-  --angular-accel 0.35 \
   --key-timeout 1.2
 ```
 
@@ -417,12 +409,11 @@ python3 Tools/teleop_mari_keyboard.py
 ```bash
 python3 Tools/teleop_mari_keyboard.py \
   --rate 60 \
-  --linear-accel 0.15 \
-  --angular-accel 0.45 \
   --key-timeout 1.2
 ```
 
 키 입력은 이 teleop 터미널에서 한다. Gazebo 창을 클릭한 상태에서는 Gazebo가 키 입력을 가져갈 수 있다.
+teleop 기본값은 즉각 반응하는 step command mode다. 일부러 부드럽게 움직이고 싶을 때만 `--smooth --linear-accel ... --angular-accel ...`를 붙인다.
 
 기본 조작:
 
@@ -720,7 +711,7 @@ right_ticks_sign
 
 현재 Mari MG513 초기 가설값은 `ticks_per_revolution=1560`이다.
 이는 `13-line Hall encoder * 1:30 gear ratio * x4 quadrature decoding`을 가정한 값이며, 실측 전까지는 topic pipeline 검증용으로만 사용한다.
-자세한 근거와 실차 보정 순서는 `01_Calibration/mari_mg513_encoder_initial_hypothesis.md`에 있다.
+자세한 근거와 실차 보정 순서는 [01_Calibration/mari_mg513_encoder_initial_hypothesis.md](../../01_Calibration/mari_mg513_encoder_initial_hypothesis.md)에 있다.
 
 ## 3-5. Gazebo `/odom`을 mock wheel odom으로 사용
 
@@ -907,5 +898,5 @@ ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist \
 - Gazebo가 이미 켜져 있으면 이전 URDF/plugin 상태가 남아 있을 수 있으므로 재시작한다.
 - `base_link_z`는 현재 `0.0252 m` 기준이고, `0.021 m`는 가상 궤도 접지 반지름 후보로만 본다.
 - 기본 `mari_empty.world`는 일부러 비어 있으므로 카메라 화면 확인에는 `mari_camera_test.world`를 쓴다.
-- 로봇 움직임이 튀면 teleop의 `--linear-accel`, `--angular-accel` 값을 낮춘다.
+- 로봇 움직임을 일부러 부드럽게 만들고 싶으면 teleop에 `--smooth`를 붙이고 `--linear-accel`, `--angular-accel` 값을 낮춘다.
 - RTAB-Map 화면이 튀면 teleop보다 camera FPS, Gazebo FPS, `Rtabmap/DetectionRate`, CPU/GPU 부하를 같이 봐야 한다.

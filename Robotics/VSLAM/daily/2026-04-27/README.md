@@ -76,7 +76,7 @@ python3 Tools/test_mari_moving_tf.py
 
 - 리얼센스 장착 높이가 `(80 - 65.44216) mm = 14.55784 mm` 높아진 것을 반영했다.
 - `mari.urdf.xacro`의 `camera_z`를 기존 `0.107616 m`에서 `0.122174 m`로 갱신했다.
-- `Mari_URDF_Xacro_Preparation_Checklist.md`에도 현재 적용 기준값을 동일하게 맞췄다.
+- `05-01_Mari_URDF_Xacro_Preparation_Checklist.md`에도 현재 적용 기준값을 동일하게 맞췄다.
 
 ### 17:30
 

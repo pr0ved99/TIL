@@ -327,7 +327,7 @@ RTAB-Map 화면과 map update가 끊겨 보이는 상황을 줄이기 위해 Gaz
 
 - `mari.urdf.xacro`: `sim_camera_update_rate`, `sim_camera_width`, `sim_camera_height`, `sim_camera_visualize` argument 추가
 - `gazebo_mari.launch.py`: 위 camera argument를 xacro에 전달
-- `Mari_Gazebo_Run_Guide.md`: STL visual과 RTAB-Map GUI 부하를 줄이는 실시간 우선 실행 명령 추가
+- `05-02_Mari_Gazebo_Run_Guide.md`: STL visual과 RTAB-Map GUI 부하를 줄이는 실시간 우선 실행 명령 추가
 
 권장 확인:
 

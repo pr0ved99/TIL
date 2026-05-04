@@ -2,14 +2,17 @@
 
 ## 결론
 
-- 현재 프로젝트는 `센서 bring-up(Stage 0)`의 후반부에 있다.
-- 기존 PC 기준으로는 `D435i depth`와 `IMU`를 ROS2에서 안정적으로 읽는 상태까지 갔다.
-- `D435i IMU`의 축 해석도 직접 관찰로 1차 정리했다.
-- 지금 새로 시도 중인 것은 `D435i 단독 RGB-D 3D 맵핑`이다.
-- 현재 `RTAB-Map rgbd_odometry`는 품질값이 대체로 `130~190` 수준으로 살아나는 상태까지 왔다.
-- 다만 `RTAB-Map` 기반 3D 맵은 아직 "오도메트리는 살아났지만 TF 경고와 체감 부드러움은 더 점검이 필요한 상태"다.
-- 장비 미도착 상태를 고려해, `IMU / wheel encoder / GPS` 연동 방식은 구현 전에 구조 설계를 먼저 정리하는 단계로 넘어갈 준비가 됐다.
-- 현재는 `Jetson`에서 실제로 `VSLAM`을 돌리기 위한 환경으로 작업 범위를 옮기고 있다.
+- 현재 프로젝트의 활성 작업선은 `Mari Gazebo + RTAB-Map + Nav2` 기반 자율주행 검증이다.
+- 센서 bring-up, RTAB-Map baseline, encoder/IMU local odom 구조 검증은 1차로 지나왔고, 지금은 저장된 맵을 기반으로 Nav2가 실제 경로와 속도 명령을 안정적으로 만드는지 확인하는 단계다.
+- Stage 2 장애물 world에서는 평지 오인식 문제를 줄인 clean saved map을 만들었고, `map_server + AMCL + Nav2`에서 `/plan`과 `/cmd_vel`이 발행되는 것을 확인했다.
+- Stage 2 saved map에서 실제 목표 지점까지 만족스럽게 도착하는 것을 확인했다.
+- Stage 3 small loop world에서도 저장 맵 기반 Nav2 검증을 진행했고, safe-clearance profile 적용 전후 costmap 비교 자료를 남겼다.
+- 속도 상향 후 Mari의 이동 속도는 체감상 만족스러운 수준이었고, safe-clearance 적용 후 costmap 적색 위험 영역이 넓어져 더 안전한 주행 가능성을 확인했다.
+- Stage 3는 장애물 간격이 넓어 반복 회피 테스트에 제한이 있어, 촘촘한 장애물 기반 `mari_nav2_stage4_repeat_course.world`를 추가했다.
+- 현재 남은 핵심 검증은 Stage 4 반복주행 코스에서 safe-clearance profile이 좁은 통로나 장애물 밀집 구간에서도 경로를 과하게 막지 않는지 반복 goal로 확인하는 것이다.
+- 실제 encoder/BNO08x 하드웨어가 아직 연결되지 않았기 때문에, 현재 자율주행 검증은 Gazebo `/odom` 기준 baseline과 fake encoder/IMU 구조 검증을 분리해서 해석한다.
+- 기존 PC 기준 `D435i depth`, `IMU`, RTAB-Map baseline, Jetson/Docker bring-up 기록은 과거 진행 이력으로 유지한다.
+- 실제 하드웨어 전환 전까지는 simulation-first로 Gazebo world, saved map, Nav2 profile, sensor topic 계약을 먼저 고정한다.
 - `Jetson` 작업은 `SSH` 접속으로 시작했지만, 지금은 `모니터 + 키보드 + 마우스`를 직접 연결한 상태에서 현장형 bring-up을 진행 중이다.
 - `Jetson` native 기준으로는 `D435i color/depth`와 `RTAB-Map` baseline이 실제로 다시 기동하는 데 성공했다.
 - `Jetson`의 `Docker CE`, `Compose`, `NVIDIA Container Toolkit`은 이미 설치돼 있고 `nvidia` runtime도 등록돼 있다.
@@ -78,9 +81,17 @@
 - 더 긴 주행과 현실적인 landmark 분포를 보기 위해 `mari_large_park_test.world`와 `gazebo_mari_large_park_realsense_light.launch.py`를 추가했다.
 - 큰 공원 world 비교에서 화면상 `/odom`과 `/odometry/local` map은 유사했지만, `/odometry/local`의 `Loop/MapToBase_lin_std`가 `1.737 m`로 `/odom` baseline `0.068 m`보다 컸다.
 - 원인은 yaw-rate-only EKF에서 yaw pose가 직접 관측되지 않아 yaw covariance가 커지는 구조로 보고, `ekf_local_encoder_imu_bno08x_yaw_tuned.yaml`을 추가했다.
+- 자율주행 1차 목표는 Nav2를 붙여 RViz `2D Goal Pose` 입력이 `/cmd_vel`로 이어지고 Gazebo Mari가 실제로 움직이는지 확인하는 것이다.
+- 첫 Nav2 smoke test는 안정적인 Gazebo `/odom`과 RTAB-Map `map->odom` TF를 기준으로 진행하고, RGB-D depth image는 `depthimage_to_laserscan`으로 `/scan`으로 바꿔 Nav2 obstacle layer에 넣는다. RTAB-Map `/rtabmap/map`은 초기 훈련에서는 시각화 대상으로 두고, Nav2 global costmap의 static map 입력으로는 아직 쓰지 않는다.
+- 큰 공원 world는 데모/최종 통합 검증용으로 유지하고, Nav2 초기 디버깅은 Stage 0~3 훈련 world에서 진행하도록 분리했다.
+- Stage 2 장애물 world에서는 저장 맵 기반 Nav2 검증까지 진입했다.
+- `mari_nav2_map_builder.launch.py`와 `filter_nav2_saved_map.py`로 평지 노이즈가 적은 저장 맵을 만들었고, `map_server + AMCL + Nav2`가 해당 맵을 기준으로 실행되는 것을 확인했다.
+- 저장 맵 기반 주행에서 `/scan`, global/local costmap, `/plan`, `/cmd_vel`이 모두 살아 있었고, RViz 기준 `Navigation`, `Localization`, `Feedback`이 active인 상태까지 확인했다.
+- 같은 실행 조건에서 목표 지점까지 실제로 만족스럽게 도착하는 것을 사용자 주행으로 확인했다.
+- 현재 다음 검증은 Stage 3 small loop world에서 safe-clearance profile을 기준으로 여러 goal을 반복 실행하고, 경로 생성/회피/recovery 빈도를 비교하는 것이다.
 
-즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
-`실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
+즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`과 `맵이 만들어지는지 확인하는 수준`은 넘었고,
+`저장된 맵을 기반으로 Nav2가 안정적으로 계획하고 주행하는지 검증하는 단계`로 들어간 상태다.
 
 ---
 
@@ -155,6 +166,120 @@ Gazebo /imu/data
    - yaw pose covariance는 `2.48 -> 0.00175`로 크게 줄었고, `Loop/MapToBase_lin_std`는 `1.737 m -> 1.253 m`로 개선됐다.
    - 아직 `/odom` baseline의 `Loop/MapToBase_lin_std=0.068 m`보다는 크므로, 센서 기반 구조는 동작 검증 완료 상태이고 최종 기본값 확정 전 추가 튜닝이 필요하다.
 
+9. **Nav2 1차 자율주행 smoke-test 구조 추가**
+   - `trashbot_navigation` 패키지를 추가했다.
+   - `trashbot_navigation/config/mari_nav2_rtabmap_params.yaml`은 `/odom`, `map`, `base_footprint`, `/scan` 기준으로 Nav2 controller/planner/costmap을 설정한다.
+   - 초기 훈련 profile은 RTAB-Map static occupancy map을 global costmap에 직접 넣지 않고, scan-only rolling global/local costmap을 사용한다.
+   - `trashbot_navigation/launch/mari_nav2_rtabmap.launch.py`는 `depthimage_to_laserscan`, Nav2 navigation stack, RViz를 함께 실행한다.
+   - `Tools/check_mari_nav2_topics.py`를 추가해 `/scan`, `/rtabmap/map`, global/local costmap, `/cmd_vel` topic을 한 번에 확인할 수 있게 했다.
+   - 1차 성공 기준은 RViz `2D Goal Pose` 입력 후 `/cmd_vel`이 발행되고 Gazebo에서 Mari가 움직이는 것이다.
+   - `/odom` 기준 smoke test가 성공한 뒤 같은 구조에서 `/odometry/local`로 전환해 센서 기반 odom의 자율주행 품질을 비교한다.
+
+10. **Nav2 단계별 훈련 world 추가**
+   - `mari_nav2_stage0_empty.world`: 장애물 없는 기본 `/cmd_vel` smoke test용 world다.
+   - `mari_nav2_stage1_straight_path.world`: 직선 목표 추종과 속도/가속도 튜닝용 world다.
+   - `mari_nav2_stage2_obstacles.world`: depth-to-scan, costmap, 장애물 회피 확인용 world다.
+   - `mari_nav2_stage3_small_loop.world`: 작은 loop형 공원에서 RTAB-Map + Nav2 통합을 확인하는 world다.
+   - `mari_nav2_stage4_repeat_course.world`: 장애물이 촘촘한 반복주행/safe-clearance 검증용 world다.
+   - 각 world는 `gazebo_mari_nav2_stage*.launch.py`로 바로 실행할 수 있다.
+   - `mari_large_park_test.world`는 데모/최종 검증 world로 유지한다.
+   - Stage 0~3 world는 XML parse와 `gz sdf -k`를 통과했다.
+   - Stage 0 headless smoke에서 world load, Mari spawn, `/cmd_vel` subscribe, `/odom` advertise까지 확인했다.
+
+11. **Nav2 평지 장애물 오인 1차 완화**
+   - 아무것도 없는 평지 구간이 장애물처럼 인식되어 RViz/Nav2 map이 지저분하게 따지는 문제를 확인했다.
+   - 원인 후보는 낮은 카메라에서 `depthimage_to_laserscan`이 너무 두꺼운 depth band를 LaserScan으로 압축하면서 바닥면 또는 차체 근접 포인트를 장애물로 넣는 것이다.
+   - `mari_nav2_rtabmap.launch.py` 기본값을 `scan_height=24 -> 8`, `range_min=0.20 -> 0.30`으로 조정했다.
+   - Nav2 local/global obstacle layer의 `raytrace_min_range`, `obstacle_min_range`도 `0.30 m`로 맞췄다.
+   - `Tools/check_mari_nav2_topics.py`는 `/scan`의 `min_finite`, `lt0.30`, `lt0.45`를 출력해 가까운 자기 장애물성 포인트를 확인할 수 있게 했다.
+   - 추가 확인 결과 `/scan` frame이 `camera_color_optical_frame`이면 LaserScan 2D 평면 해석과 맞지 않아 물체 위치가 costmap에 이상하게 투영될 수 있다.
+   - `mari_nav2_rtabmap.launch.py` 기본 `scan_frame`을 `camera_color_optical_frame -> camera_link`로 바꿔 Nav2가 x-forward/y-left 평면의 LaserScan으로 해석하게 했다.
+   - RViz에서 map이 지나치게 빽빽하게 보이는 문제는 해상도 부족이 아니라 평지 오인식과 early costmap 구성 문제가 섞인 것으로 판단했다.
+   - 1차 Nav2 훈련 profile에서는 `global_costmap`의 `static_layer`를 제외하고, `rolling_window=true`, `track_unknown_space=false`, `plugins=[obstacle_layer, inflation_layer]`로 바꿨다.
+   - `Tools/check_mari_nav2_topics.py`에서 `/rtabmap/map`은 기본 관측 대상이지만 필수 조건은 아니며, 필요할 때 `--require-rtabmap-map`으로 강제 확인한다.
+   - 결과적으로 `assets/2026-05-01_mari_nav2_stage_troubleshooting/04_nav2_scan_only_costmap_obstacle_detection_ok.png`처럼 평지 오인식은 줄고 실제 물체 근처에만 장애물 trace가 남는 상태까지 개선했다.
+
+   ![평지 오인식으로 map/costmap이 지저분하게 생성된 상태](../../assets/2026-05-01_mari_nav2_stage_troubleshooting/03_nav2_goal_outside_small_global_costmap.png)
+
+   ![평지 오인식이 줄고 실제 물체 근처에만 장애물 trace가 남는 해결 후 상태](../../assets/2026-05-01_mari_nav2_stage_troubleshooting/04_nav2_scan_only_costmap_obstacle_detection_ok.png)
+
+12. **Nav2 장애물 우회 1차 튜닝**
+   - RViz 기준 장애물 감지는 정상화됐지만, 장애물을 우회하지 못하는 상태를 확인했다.
+   - 원인 후보는 차체 대비 과하게 큰 `robot_radius=0.18`, 좁은 global rolling costmap, 보수적인 inflation/controller 설정이다.
+   - Mari 차체 크기 기준으로 `robot_radius=0.12`로 낮추고, local/global `inflation_radius=0.18`로 줄였다.
+   - global rolling costmap은 `5 m x 5 m -> 16 m x 16 m`로 넓혀 stage world 안에서 먼 goal도 경로 생성 대상에 들어오게 했다.
+   - planner는 Navfn `use_astar=true`로 바꿨고, controller yaw 탐색을 늘리기 위해 `max_vel_theta=0.70`, `vtheta_samples=24`, `sim_time=2.0`으로 조정했다.
+   - `colcon build --symlink-install --packages-select trashbot_navigation` 통과.
+   - 평지 오인식 트러블슈팅 캡처는 `assets/2026-05-01_mari_nav2_stage_troubleshooting/`에 정리했다.
+   - 현재 상태는 장애물 감지까지는 개선됐고, 다음 작업은 우회 주행 반응성 개선이다.
+
+13. **저장된 맵 기반 Nav2 profile 추가**
+   - scan-only rolling global costmap은 가까운 goal과 장애물 회피 확인에는 적합하지만, 넓은 구역의 먼 goal에는 한계가 있다.
+   - 이를 보완하기 위해 `mari_nav2_saved_map.launch.py`와 `mari_nav2_saved_map_params.yaml`을 추가했다.
+   - 절차는 RTAB-Map `/rtabmap/map`을 `nav2_map_server map_saver_cli`로 YAML/PGM 파일로 저장한 뒤, RTAB-Map을 끄고 `map_server + AMCL + Nav2`로 주행하는 방식이다.
+   - global costmap은 저장된 `/map`을 `static_layer`로 사용하고, live `/scan`은 `obstacle_layer`로 유지한다.
+   - 저장된 맵 기반 주행에서는 RViz `2D Pose Estimate`로 초기 위치를 먼저 맞춘 뒤 `Nav2 Goal`을 찍어야 한다.
+   - 이 단계의 첫 목표는 Stage 2 장애물 world에서 `stage2_obstacles_rtabmap.yaml/.pgm`을 저장하고, 저장 맵 위에서 장애물 회피 경로가 생성되는지 확인하는 것이다.
+
+14. **Nav2 저장 맵 노이즈 대응 map-builder 추가**
+   - 저장된 `/map`이 점 형태로 지저분하게 생성되는 현상을 확인했다.
+   - 원인 후보는 전체 RGB-D depth cloud 기반 occupancy map에 바닥/원거리 depth noise가 장애물처럼 섞이는 것이다.
+   - `mari_nav2_map_builder.launch.py`를 추가해 depth image를 얇은 `/scan`으로 변환하고, RTAB-Map occupancy grid는 `Grid/Sensor=0`으로 `/scan` 기준 생성하게 했다.
+   - 기본값은 `scan_height=4`, `range_min=0.35`, `grid_range_max=3.0`, `Grid/3D=false`, `Grid/RayTracing=true`, `Grid/Scan2dUnknownSpaceFilled=true`다.
+   - 지저분한 점이 계속 많으면 `scan_height:=2`, `range_min:=0.45`, `range_max:=2.50`, `grid_range_min:=0.45`, `grid_range_max:=2.50`, `linear_update:=0.15`, `angular_update:=0.15`로 더 보수적으로 다시 생성한다.
+   - 저장 후에도 작은 검은 점이 남는 경우를 위해 `Tools/filter_nav2_saved_map.py`를 추가했다.
+   - 이 스크립트는 PGM map에서 주변 occupied neighbor가 부족한 점과 작은 occupied connected component를 제거해 `*_filtered.yaml/.pgm`을 만든다.
+
+15. **저장 맵 기반 Nav2 경로/제어 smoke test 통과**
+   - Stage 2 장애물 world에서 보수적인 scan 기반 map-builder 설정으로 맵을 다시 생성했고, 평지 오인식이 크게 줄어든 clean map을 확인했다.
+   - 생성된 맵은 `assets/2026-05-01_mari_nav2_saved_map_smoke/stage2_obstacles_rtabmap*.yaml/.pgm`에 보관했다.
+   - `stage2_obstacles_rtabmap_filtered.yaml` 기준으로 `map_server + AMCL + Nav2`를 실행했다.
+   - RViz에서 `2D Pose Estimate` 후 `Nav2 Goal`을 찍었을 때 `Navigation`, `Localization`, `Feedback`이 active 상태로 들어갔다.
+   - `Tools/check_mari_nav2_topics.py --duration 8 --map-topic /map --expect-cmd-vel`에서 `/scan`, global costmap, local costmap, `/plan`, `/cmd_vel`이 확인됐다.
+   - 확인값은 `/scan 15.0 Hz`, global costmap `0.7 Hz`, local costmap `2.7 Hz`, `/plan 1.0 Hz`, `/cmd_vel 137.8 Hz` 수준이었다.
+   - `/plan`은 `frame_id=map` 기준 연속 pose를 publish했고, `/cmd_vel`은 예시로 `linear.x=0.111`, `angular.z=0.396`까지 확인됐다.
+   - 이 결과는 "저장 맵 기반 Nav2가 경로를 만들고 Mari에 속도 명령을 내는 단계"가 연결됐다는 의미다.
+   - 이후 사용자 실행에서 목표 지점까지 만족스럽게 도착하는 것을 확인했다.
+   - Stage 2 saved-map Nav2는 1차 성공으로 보고, 다음 검증은 Stage 3 small loop saved-map 주행으로 올린다.
+
+16. **다음 목표: Stage 3 small loop saved-map Nav2 검증**
+   - Stage 3는 단순 직선/장애물 world보다 작은 loop형 공원에 가깝다.
+   - 목표는 `mari_nav2_stage3_small_loop.world`에서 clean map을 만들고, `stage3_small_loop_rtabmap_filtered.yaml`을 기준으로 AMCL/Nav2가 목표까지 주행하는지 확인하는 것이다.
+   - Stage 2에서 확인한 보수적 map-builder 설정(`scan_height=2`, `range_min=0.45`, `range_max=2.50`, `linear_update=0.15`, `angular_update=0.15`)을 우선 재사용한다.
+   - 증빙 폴더는 `assets/2026-05-02_mari_nav2_stage3_saved_map_smoke/`로 둔다.
+   - 성공 기준은 RViz `Navigation/Localization/Feedback active`, `/plan` 생성, `/cmd_vel` 발행, Gazebo Mari goal reach, recovery 최소화다.
+
+17. **Stage 3 safe-clearance profile 및 속도 튜닝**
+   - 저장 맵 기반 Nav2에서 기존 profile과 safe-clearance profile의 costmap 표시를 비교했다.
+   - safe-clearance profile은 저장된 `/map`을 다시 만드는 설정이 아니라, Nav2 costmap에서 장애물 주변 위험 영역을 더 넓게 잡아 경로가 장애물에서 더 떨어지도록 유도하는 주행 profile이다.
+   - `trashbot_navigation/config/mari_nav2_saved_map_safe_clearance_params.yaml`을 추가해 safe-clearance profile을 분리했다.
+   - saved-map profile의 속도는 1차로 `max_vel_x=0.18 m/s`, `max_vel_theta=0.90 rad/s` 기준으로 올렸고, 사용자 주행 기준 이동 속도는 만족스럽게 확인됐다.
+   - safe-clearance 적용 후 costmap의 적색 위험 영역이 넓어져 장애물 주변을 더 보수적으로 보는 것을 확인했다.
+   - 비교 캡처와 설명은 `assets/2026-05-02_mari_nav2_safe_clearance_compare/`에 정리했다.
+   - 다음 확인 대상은 좁은 통로 또는 장애물 밀집 구간에서 safe-clearance가 경로를 과하게 막지 않는지 여부다.
+
+18. **Stage 4 반복주행 테스트 world 추가**
+   - Stage 3 small loop world는 공원형 구조라 장애물 간격이 넓어, safe-clearance 반복 테스트에는 제한이 있었다.
+   - `trashbot_description/worlds/mari_nav2_stage4_repeat_course.world`를 추가했다.
+   - `trashbot_description/launch/gazebo_mari_nav2_stage4_repeat_course.launch.py`로 바로 실행할 수 있다.
+   - 이 world는 S자 회피, 중앙 기둥, 양쪽 근접 장애물, 좁은 gate, 장애물 옆 goal 후보가 보이도록 구성했다.
+   - 목표는 baseline profile과 safe-clearance profile을 같은 saved map에서 반복 비교하는 것이다.
+   - `assets/2026-05-02_mari_nav2_stage4_repeat_course/README.md`에 맵 목적, 구성 요소, 권장 테스트 순서, 성공 기준을 정리했다.
+   - 권장 검증 순서는 `가까운 goal -> S자 통과 goal -> 장애물 옆 goal -> 먼 goal -> 반대 방향 복귀 goal`이다.
+
+19. **Stage 4 gate 통과 대응 safe-clearance 재조정**
+   - Stage 4 반복주행 코스의 gate 통과 테스트에서 costmap 적색 영역이 너무 넓어 통로를 잘 인식하지 못하는 현상을 확인했다.
+   - 원인은 safe-clearance profile의 `inflation_radius=0.28`, `cost_scaling_factor=3.0`, `BaseObstacle.scale=0.35`가 좁은 통로에서는 과하게 보수적으로 작동한 것으로 본다.
+   - safe-clearance profile을 balanced 값으로 낮췄다. 현재 기준은 `inflation_radius=0.22`, `cost_scaling_factor=4.5`, `BaseObstacle.scale=0.18`이다.
+   - 자율주행 속도도 `max_vel_x=0.40 m/s`, `max_vel_theta=1.60 rad/s`, `acc_lim_x=1.00`, `acc_lim_theta=2.40`으로 올렸다.
+   - 다음 확인은 같은 원본 Stage 4 saved map에서 Nav2만 재시작한 뒤 gate 통과 goal을 다시 찍는 것이다.
+
+20. **Stage 4 반복주행 영상 증빙 정리**
+   - `assets/2026-05-02_mari_nav2_stage4_repeat_course/videos/` 아래에 튜닝 전후 주행 영상 8개를 정리했다.
+   - 튜닝 전 영상은 `before_speed_clearance_tuning/`에 두고, 가까운 goal 성공, 기본 장애물 goal 양호, S자 계획 실패, gate 통과 실패를 구분했다.
+   - 튜닝 후 영상은 `after_speed_clearance_tuning/`에 두고, 가까운 goal 수월, S자 통과 수월, 방향 정렬 지연, gate 통과 중 벽 충돌 실패를 구분했다.
+   - 1차 판단은 가까운 goal과 S자 통과는 개선됐지만, 좁은 gate 통과는 아직 실패 사례가 남아 추가 튜닝이 필요하다는 것이다.
+
 ## 0-1. 2026-04-30 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
@@ -183,7 +308,7 @@ Gazebo /imu/data
    - 해당 폴더 README에는 `/odom` baseline이라는 점과 다음 비교 대상이 `/odometry/local`이라는 점을 명시했다.
 
 5. **문서 업데이트**
-   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 Park Test World 실행 절차를 추가했다.
+   - `docs/learning/05-02_Mari_Gazebo_Run_Guide.md`에 Park Test World 실행 절차를 추가했다.
    - `trashbot_description/README.md`에 공원 world 실행 명령과 목적을 추가했다.
    - `daily/2026-04-30/README.md`에 오늘 작업 일지를 추가했다.
 
@@ -283,8 +408,8 @@ ros2 launch trashbot_localization mari_ekf_local.launch.py start_ekf:=false
 6. **문서와 실행 가이드 업데이트**
    - `README.md`의 Tools 목록에 `check_mari_gazebo_sensor_topics.py`, `check_mari_rtabmap_topics.py`, `check_mari_encoder_topics.py`를 추가했다.
    - `trashbot_description/README.md`에 Mari RTAB-Map 실행과 topic 확인 절차를 추가했다.
-   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 RTAB-Map 실행, topic 확인, 실제 encoder 후보 topic 탐색, `/motor/encoder_ticks -> /wheel/odometry` 변환 절차를 추가했다.
-   - `docs/learning/Mari_Gazebo_Run_Guide.md`에 Gazebo `/odom`을 mock `/wheel/odometry`로 쓰는 localization 구조 확인 절차를 추가했다.
+   - `docs/learning/05-02_Mari_Gazebo_Run_Guide.md`에 RTAB-Map 실행, topic 확인, 실제 encoder 후보 topic 탐색, `/motor/encoder_ticks -> /wheel/odometry` 변환 절차를 추가했다.
+   - `docs/learning/05-02_Mari_Gazebo_Run_Guide.md`에 Gazebo `/odom`을 mock `/wheel/odometry`로 쓰는 localization 구조 확인 절차를 추가했다.
    - `docs/progress/PreArrival_Sensor_Fusion_Architecture.md`에 encoder 후보 topic 탐색, `/wheel/odometry` 판단 기준, `trashbot_localization` 패키지 기준을 추가했다.
    - `trashbot_localization/README.md`에 motor encoder raw topic 계약, encoder odom adapter, mock encoder publisher, local EKF, 실제 encoder 전환 절차를 정리했다.
    - `trashbot_description/package.xml`에 `rtabmap_launch` runtime dependency를 추가했다.
@@ -326,7 +451,7 @@ ros2 launch trashbot_localization mari_ekf_local.launch.py start_ekf:=false
 - 따라서 현재 Gazebo RTAB-Map 기본 매핑에는 후보 A(`/odom`)를 유지하고, 후보 B(`/odometry/local`)는 실차 encoder/IMU 구조 검증용 baseline으로 분리한다.
 - 후보 B 개선을 위해 `gazebo_ros.yaml`로 Gazebo `/clock` publish rate를 `100 Hz`로 올리고, Gazebo mock encoder 전용 `encoder_odom_gazebo.yaml`을 추가했다.
 - EKF에서는 Gazebo IMU의 zero orientation covariance를 피하기 위해 IMU yaw orientation은 쓰지 않고 angular velocity z만 쓰도록 `ekf_local.yaml`, `ekf_global.yaml`을 조정했다.
-- RTAB-Map 실시간성 확인을 위해 Gazebo camera 해상도/FPS/visualization을 launch argument로 조절할 수 있게 했고, 저부하 실행 profile을 `Mari_Gazebo_Run_Guide.md`에 추가했다.
+- RTAB-Map 실시간성 확인을 위해 Gazebo camera 해상도/FPS/visualization을 launch argument로 조절할 수 있게 했고, 저부하 실행 profile을 `05-02_Mari_Gazebo_Run_Guide.md`에 추가했다.
 - 실제 D435i Jetson Docker `light` preset(`424x240x15`, `DetectionRate=2`, `queue=15`)과 동일한 Gazebo/RTAB-Map wrapper launch를 추가했고, 데모 가시성을 위해 RTAB-Map GUI는 기본으로 켠다.
 - `mari_rtabmap_realsense_light_local_odom.launch.py`를 추가해 같은 smooth mapping 조건에서 RTAB-Map odom input만 `/odometry/local`로 바꿔 비교할 수 있게 했다.
 - Gazebo IMU의 gyro covariance가 `4e-08` 수준으로 너무 작아 local EKF 회전 보정이 과해질 수 있어, Gazebo local-odom 비교 기본값은 `ekf_local_gazebo_encoder_only.yaml`로 조정했다.
@@ -638,7 +763,7 @@ ros2 launch trashbot_localization mari_ekf_local.launch.py start_ekf:=false
 
 관련 문서:
 
-- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/D435i_IMU_Axis_Interpretation.md)
+- [`docs/learning/02-04_D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/02-04_D435i_IMU_Axis_Interpretation.md)
 
 ### 3-3. D435i 실시간성/연속성 문제 1차 해결
 

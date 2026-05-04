@@ -338,7 +338,7 @@ bash /home/ssafy/my_ws/git_hub/Robotics/VSLAM/06_Debugging/run_d435i_rtabmap_lig
 
 관련 문서:
 
-- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/D435i_IMU_Axis_Interpretation.md)
+- [`docs/learning/02-04_D435i_IMU_Axis_Interpretation.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/02-04_D435i_IMU_Axis_Interpretation.md)
 
 ### 18:15
 
@@ -409,8 +409,8 @@ RTAB-Map detection rate = 3.000000 Hz
 
 ### learning
 
-- [`docs/learning/D435i_IMU_Topics_and_Enable_Guide.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/D435i_IMU_Topics_and_Enable_Guide.md)
-- [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md)
+- [`docs/learning/02-03_D435i_IMU_Topics_and_Enable_Guide.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/02-03_D435i_IMU_Topics_and_Enable_Guide.md)
+- [`docs/learning/02-02_How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/02-02_How_realsense2_camera_converts_D435i_to_ROS2_Topics.md)
 
 ### evidence
 

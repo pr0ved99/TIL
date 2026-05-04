@@ -348,7 +348,7 @@ ros2 topic list
 ## 오늘 만든/수정한 파일
 
 - [2026-04-15 일지](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-15/README.md)
-- [Jetson Docker 호스트 점검 체크리스트](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Jetson_Docker_Host_Checklist.md)
+- [Jetson Docker 호스트 점검 체크리스트](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/03-02_Jetson_Docker_Host_Checklist.md)
 - [Jetson 호스트 점검 스크립트](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/Tools/check_jetson_host_docker.sh)
 - [Jetson ROS 2 D435i Dockerfile](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docker/jetson_ros2_d435i/Dockerfile)
 - [Jetson ROS 2 D435i Docker README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docker/jetson_ros2_d435i/README.md)

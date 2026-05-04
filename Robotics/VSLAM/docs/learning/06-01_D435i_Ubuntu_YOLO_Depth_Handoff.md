@@ -427,8 +427,8 @@ D435i IMU는 추가 권한/드라이버 이슈가 생길 수 있다.
 - [2026-04-11 D435i 트러블슈팅 일지](../../daily/2026-04-11/README.md)
 - [D435i RealSense Viewer Triage Checklist](../troubleshooting/D435i_RealSense_Viewer_Triage_Checklist.md)
 - [D435i RealTime Troubleshooting History](../troubleshooting/D435i_RealTime_Troubleshooting_History.md)
-- [How realsense2_camera converts D435i to ROS2 Topics](./How_realsense2_camera_converts_D435i_to_ROS2_Topics.md)
-- [D435i RTAB-Map VSLAM Manual](./D435i_RTABMap_VSLAM_Manual.md)
+- [How realsense2_camera converts D435i to ROS2 Topics](./02-02_How_realsense2_camera_converts_D435i_to_ROS2_Topics.md)
+- [D435i RTAB-Map VSLAM Manual](./02-01_D435i_RTABMap_VSLAM_Manual.md)
 - [D435i Depth Check Evidence](../../assets/2026-04-09_task59_d435i_depth_check/README.md)
 
 실행 스크립트:

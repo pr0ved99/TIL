@@ -150,7 +150,7 @@ colcon build --symlink-install --packages-select trashbot_description
 - [2026-04-24 작업 일지](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-24/README.md)
 - [VSLAM Daily Index](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/README.md)
 - [gitignore](/home/ssafy/my_ws/git_hub/.gitignore)
-- [Mari URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md)
+- [Mari URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-01_Mari_URDF_Xacro_Preparation_Checklist.md)
 - [trashbot_description README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/README.md)
 - [mari.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro)
 

@@ -315,8 +315,8 @@ D435i baseline이 안정적으로 확인되면 다음 순서로 확장한다.
 ## 관련 문서
 
 - [`D435i 기반 VSLAM 구현 A to Z 계획`](../progress/D435i_VSLAM_A_to_Z_Plan.md)
-- [`D435i와 Jetson Docker 선수지식`](./D435i_Jetson_Docker_Prerequisites.md)
-- [`D435i odometry 정확도 비교`](./D435i_Odometry_Accuracy_Comparison.md)
+- [`D435i와 Jetson Docker 선수지식`](./03-01_D435i_Jetson_Docker_Prerequisites.md)
+- [`D435i odometry 정확도 비교`](./02-05_D435i_Odometry_Accuracy_Comparison.md)
 - [`RTAB-Map tuning experiment plan`](../progress/RTABMap_Tuning_Experiment_Plan.md)
 - [`Jetson Docker RTAB-Map baseline`](../../jetson/guides/21_Jetson_Docker_RTABMap_Baseline_Guide.md)
 - [`Jetson Docker preset and benchmark`](../../jetson/guides/23_Jetson_Docker_Preset_and_Benchmark_Guide.md)

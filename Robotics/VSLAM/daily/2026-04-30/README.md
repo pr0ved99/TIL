@@ -24,7 +24,7 @@
 
 - [mari_park_test.world](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/worlds/mari_park_test.world)
 - [gazebo_mari_park_realsense_light.launch.py](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/launch/gazebo_mari_park_realsense_light.launch.py)
-- [Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_Gazebo_Run_Guide.md)
+- [05-02_Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-02_Mari_Gazebo_Run_Guide.md)
 - [trashbot_description README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/README.md)
 - [park world RTAB-Map baseline README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-30_mari_park_world_rtabmap_baseline/README.md)
 - [encoder_ticks_to_wheel_odom.py](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_localization/scripts/encoder_ticks_to_wheel_odom.py)

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <world name="mari_nav2_stage0_empty">
+    <gravity>0 0 -9.80665</gravity>
+
+    <spherical_coordinates>
+      <heading_deg>180</heading_deg>
+    </spherical_coordinates>
+
+    <physics name="default_physics" default="true" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+
+    <scene>
+      <ambient>0.62 0.62 0.62 1</ambient>
+      <background>0.68 0.80 0.98 1</background>
+      <shadows>false</shadows>
+    </scene>
+
+    <light name="sun" type="directional">
+      <cast_shadows>false</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.95 0.92 0.84 1</diffuse>
+      <specular>0.2 0.2 0.18 1</specular>
+      <direction>-0.25 0.20 -0.94</direction>
+    </light>
+
+    <model name="stage0_ground">
+      <static>true</static>
+      <link name="link">
+        <collision name="ground_collision">
+          <geometry><plane><normal>0 0 1</normal><size>10 7</size></plane></geometry>
+        </collision>
+        <visual name="ground_visual">
+          <geometry><plane><normal>0 0 1</normal><size>10 7</size></plane></geometry>
+          <material>
+            <ambient>0.34 0.43 0.35 1</ambient>
+            <diffuse>0.34 0.43 0.35 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="stage0_start_pad">
+      <static>true</static>
+      <link name="link">
+        <visual name="start_pad">
+          <pose>0.7 0 0.012 0 0 0</pose>
+          <geometry><box><size>1.4 1.2 0.02</size></box></geometry>
+          <material><ambient>0.58 0.58 0.55 1</ambient><diffuse>0.58 0.58 0.55 1</diffuse></material>
+        </visual>
+        <visual name="goal_band">
+          <pose>3.0 0 0.014 0 0 0</pose>
+          <geometry><box><size>0.16 1.2 0.02</size></box></geometry>
+          <material><ambient>0.20 0.68 0.28 1</ambient><diffuse>0.20 0.68 0.28 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="stage0_far_landmarks">
+      <static>true</static>
+      <link name="link">
+        <visual name="left_red_panel">
+          <pose>3.8 2.2 0.75 0 0 -0.15</pose>
+          <geometry><box><size>0.12 0.95 1.50</size></box></geometry>
+          <material><ambient>0.75 0.10 0.08 1</ambient><diffuse>0.75 0.10 0.08 1</diffuse></material>
+        </visual>
+        <visual name="right_blue_panel">
+          <pose>3.8 -2.2 0.75 0 0 0.15</pose>
+          <geometry><box><size>0.12 0.95 1.50</size></box></geometry>
+          <material><ambient>0.08 0.18 0.75 1</ambient><diffuse>0.08 0.18 0.75 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

@@ -17,7 +17,7 @@
 
 ## 실행 기준
 
-자세한 실행 절차는 [Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_Gazebo_Run_Guide.md)를 기준으로 한다.
+자세한 실행 절차는 [05-02_Mari_Gazebo_Run_Guide.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-02_Mari_Gazebo_Run_Guide.md)를 기준으로 한다.
 
 ```bash
 cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM

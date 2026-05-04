@@ -89,8 +89,7 @@ class MariKeyboardTeleop(Node):
         self.get_logger().info(
             f"Publishing Twist to {args.cmd_vel_topic} at {args.rate:.1f} Hz "
             f"(linear={self.linear_speed:.2f} m/s, angular={self.angular_speed:.2f} rad/s, "
-            f"linear_accel={self.args.linear_accel:.2f} m/s^2, "
-            f"angular_accel={self.args.angular_accel:.2f} rad/s^2)"
+            f"mode={'smooth' if self.args.smoothing else 'step'})"
         )
 
     def set_motion(self, linear_scale: float, angular_scale: float):
@@ -179,10 +178,7 @@ class MariKeyboardTeleop(Node):
         target_linear_x = self.target_linear_scale * self.linear_speed
         target_angular_z = self.target_angular_scale * self.angular_speed
 
-        if self.args.no_smoothing:
-            self.current_linear_x = target_linear_x
-            self.current_angular_z = target_angular_z
-        else:
+        if self.args.smoothing:
             self.current_linear_x = ramp_toward(
                 self.current_linear_x,
                 target_linear_x,
@@ -193,6 +189,9 @@ class MariKeyboardTeleop(Node):
                 target_angular_z,
                 self.args.angular_accel * dt,
             )
+        else:
+            self.current_linear_x = target_linear_x
+            self.current_angular_z = target_angular_z
 
         return make_twist(self.current_linear_x, self.current_angular_z)
 
@@ -234,9 +233,11 @@ Topic:
 Safety:
   If no movement key is received for {args.key_timeout:.2f}s, the command is reset to zero.
 
-Smoothing:
-  Velocity commands are ramped with linear_accel={args.linear_accel:.2f} m/s^2 and
-  angular_accel={args.angular_accel:.2f} rad/s^2. Use --no-smoothing for step commands.
+Motion mode:
+  {'smooth ramp' if args.smoothing else 'step command'} mode is active.
+  Default is step command mode, so movement keys publish the target speed immediately.
+  Use --smooth to ramp velocity with linear_accel={args.linear_accel:.2f} m/s^2 and
+  angular_accel={args.angular_accel:.2f} rad/s^2.
 """
     )
 
@@ -256,7 +257,19 @@ def parse_args():
     parser.add_argument("--rate", type=float, default=50.0)
     parser.add_argument("--linear-accel", type=float, default=0.30)
     parser.add_argument("--angular-accel", type=float, default=1.00)
-    parser.add_argument("--no-smoothing", action="store_true")
+    parser.add_argument(
+        "--smooth",
+        dest="smoothing",
+        action="store_true",
+        help="Ramp velocity commands instead of applying step commands immediately.",
+    )
+    parser.add_argument(
+        "--no-smoothing",
+        dest="smoothing",
+        action="store_false",
+        help="Use immediate step commands. This is now the default.",
+    )
+    parser.set_defaults(smoothing=False)
     return parser.parse_args()
 
 

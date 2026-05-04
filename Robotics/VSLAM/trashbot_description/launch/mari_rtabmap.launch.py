@@ -15,8 +15,11 @@ def generate_launch_description():
     approx_sync = LaunchConfiguration("approx_sync")
     approx_sync_max_interval = LaunchConfiguration("approx_sync_max_interval")
     qos = LaunchConfiguration("qos")
+    qos_scan = LaunchConfiguration("qos_scan")
     topic_queue_size = LaunchConfiguration("topic_queue_size")
     sync_queue_size = LaunchConfiguration("sync_queue_size")
+    subscribe_scan = LaunchConfiguration("subscribe_scan")
+    scan_topic = LaunchConfiguration("scan_topic")
     detection_rate = LaunchConfiguration("detection_rate")
     optimizer_strategy = LaunchConfiguration("optimizer_strategy")
     force_3dof = LaunchConfiguration("force_3dof")
@@ -50,9 +53,12 @@ def generate_launch_description():
             "qos": qos,
             "qos_image": qos,
             "qos_camera_info": qos,
+            "qos_scan": qos_scan,
             "topic_queue_size": topic_queue_size,
             "sync_queue_size": sync_queue_size,
             "queue_size": sync_queue_size,
+            "subscribe_scan": subscribe_scan,
+            "scan_topic": scan_topic,
             "rtabmap_viz": rtabmap_viz,
             "rviz": rviz,
             "namespace": namespace,
@@ -129,6 +135,11 @@ def generate_launch_description():
                 description="Sensor QoS: 0=system default, 1=reliable, 2=best effort.",
             ),
             DeclareLaunchArgument(
+                "qos_scan",
+                default_value="2",
+                description="LaserScan QoS: 0=system default, 1=reliable, 2=best effort.",
+            ),
+            DeclareLaunchArgument(
                 "topic_queue_size",
                 default_value="30",
                 description="Individual subscriber queue size.",
@@ -137,6 +148,16 @@ def generate_launch_description():
                 "sync_queue_size",
                 default_value="30",
                 description="RGB-D synchronizer queue size.",
+            ),
+            DeclareLaunchArgument(
+                "subscribe_scan",
+                default_value="false",
+                description="Subscribe to LaserScan and attach it to RTAB-Map sensor data.",
+            ),
+            DeclareLaunchArgument(
+                "scan_topic",
+                default_value="/scan",
+                description="LaserScan topic consumed by RTAB-Map when subscribe_scan is true.",
             ),
             DeclareLaunchArgument(
                 "detection_rate",

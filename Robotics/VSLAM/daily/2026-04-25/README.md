@@ -173,7 +173,7 @@ effective_track_radius = 0.021 m
 
 ## 오늘 만든/수정한 파일
 
-- [Mari_URDF_Xacro_Preparation_Checklist.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md)
+- [05-01_Mari_URDF_Xacro_Preparation_Checklist.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-01_Mari_URDF_Xacro_Preparation_Checklist.md)
 - [mari.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro)
 - [README.md](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/2026-04-25/README.md)
 

@@ -73,7 +73,7 @@ bash Tools/test_x11_in_container.sh
 - 노트북에서 Jetson 토픽을 확인하고 RTAB-Map을 실행하는 스크립트를 추가했다.
 - `check_remote_jetson_camera_topics.sh`는 노트북에서 `/camera/camera/*` 토픽이 보이는지 확인하는 용도다.
 - `launch_rtabmap_remote_from_laptop.sh`는 노트북에서 Jetson 카메라 토픽을 구독해 `rtabmap_viz`를 띄우는 용도다.
-- `Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`도 같이 정리했다.
+- `03-04_Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`도 같이 정리했다.
 
 ### 13:00
 
@@ -241,7 +241,7 @@ cp ~/.ros/rtabmap.db /home/ssafy/my_ws/git_hub/Robotics/VSLAM/assets/2026-04-16_
 - `Tools/launch_rtabmap_light_in_container.sh`
 - `Tools/launch_realsense_rgbd.sh`
 - `docker/jetson_ros2_d435i/Dockerfile`
-- `docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`
+- `docs/learning/03-04_Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`
 
 ## 증빙 자료
 

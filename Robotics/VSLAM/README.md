@@ -21,6 +21,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 - `06_Debugging`: 좌표계 오류, timestamp sync 문제, scale drift, 추적 실패 점검
 - `07_Evaluation`: ATE, RPE, FPS, latency, 메모리/연산량 평가
 - `trashbot_localization`: Mari wheel odom, EKF, GPS fusion launch/config 구조
+- `trashbot_navigation`: Mari Nav2, depth-to-scan, RTAB-Map live map 기반 자율주행 smoke test
 - `jetson`: `Jetson` 현장 실행 기록, GUI 검증, 장치/성능 이슈 분리 관리
 
 ## Note
@@ -31,16 +32,30 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 ### learning
 
-- [`docs/learning/D435i_RTABMap_VSLAM_Manual.md`](./docs/learning/D435i_RTABMap_VSLAM_Manual.md): D435i RGB-D 입력으로 RTAB-Map VSLAM을 실행하고 확인하는 운영 매뉴얼
-- [`docs/learning/D435i_Jetson_Docker_Prerequisites.md`](./docs/learning/D435i_Jetson_Docker_Prerequisites.md): D435i와 Jetson Docker를 시작하기 전에 알아야 할 선수지식 정리
-- [`docs/learning/Jetson_Docker_Host_Checklist.md`](./docs/learning/Jetson_Docker_Host_Checklist.md): Jetson에서 Docker 작업 시작 전 호스트 상태를 점검하는 체크리스트
-- [`docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md`](./docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md): `25W`, `Balanced`, `nvpmodel`, `jetson_clocks` 관계와 RTAB-Map 관점에서의 점검 순서 정리
-- [`docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`](./docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md): Jetson Docker 컨테이너에서 D435i 토픽을 publish하고 노트북에서 RTAB-Map GUI를 띄우는 절차 정리
-- [`docs/learning/D435i_IMU_Topics_and_Enable_Guide.md`](./docs/learning/D435i_IMU_Topics_and_Enable_Guide.md): D435i IMU 토픽을 켜고 확인하는 방법 정리
-- [`docs/learning/D435i_IMU_Axis_Interpretation.md`](./docs/learning/D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
-- [`docs/learning/D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
-- [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
-- [`docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md): Mari URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
+- [`docs/learning/00_LEARNING_INDEX.md`](./docs/learning/00_LEARNING_INDEX.md): 번호가 붙은 학습 문서를 대단원/소단원 순서로 보는 인덱스
+- `01 VSLAM 기초와 용어`
+  - [`docs/learning/01-01_VSLAM_Document_Study_Guide.md`](./docs/learning/01-01_VSLAM_Document_Study_Guide.md): VSLAM 문서 안의 핵심 개념과 읽는 순서를 교과서형 학습서로 정리
+  - [`docs/learning/01-02_VSLAM_Terms_Level1_Guide.md`](./docs/learning/01-02_VSLAM_Terms_Level1_Guide.md): VSLAM 학습 자료에 등장하는 핵심 용어를 한 단계 더 깊게 설명하는 용어 학습서
+- `02 D435i RGB-D VSLAM Baseline`
+  - [`docs/learning/02-01_D435i_RTABMap_VSLAM_Manual.md`](./docs/learning/02-01_D435i_RTABMap_VSLAM_Manual.md): D435i RGB-D 입력으로 RTAB-Map VSLAM을 실행하고 확인하는 운영 매뉴얼
+  - [`docs/learning/02-02_How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/02-02_How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
+  - [`docs/learning/02-03_D435i_IMU_Topics_and_Enable_Guide.md`](./docs/learning/02-03_D435i_IMU_Topics_and_Enable_Guide.md): D435i IMU 토픽을 켜고 확인하는 방법 정리
+  - [`docs/learning/02-04_D435i_IMU_Axis_Interpretation.md`](./docs/learning/02-04_D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
+  - [`docs/learning/02-05_D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/02-05_D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
+- `03 Jetson 실행 환경과 RTAB-Map 운영`
+  - [`docs/learning/03-01_D435i_Jetson_Docker_Prerequisites.md`](./docs/learning/03-01_D435i_Jetson_Docker_Prerequisites.md): D435i와 Jetson Docker를 시작하기 전에 알아야 할 선수지식 정리
+  - [`docs/learning/03-02_Jetson_Docker_Host_Checklist.md`](./docs/learning/03-02_Jetson_Docker_Host_Checklist.md): Jetson에서 Docker 작업 시작 전 호스트 상태를 점검하는 체크리스트
+  - [`docs/learning/03-03_Jetson_Orin_Nano_Power_Mode_Guide.md`](./docs/learning/03-03_Jetson_Orin_Nano_Power_Mode_Guide.md): `25W`, `Balanced`, `nvpmodel`, `jetson_clocks` 관계와 RTAB-Map 관점에서의 점검 순서 정리
+  - [`docs/learning/03-04_Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`](./docs/learning/03-04_Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md): Jetson Docker 컨테이너에서 D435i 토픽을 publish하고 노트북에서 RTAB-Map GUI를 띄우는 절차 정리
+- `04 외부 IMU와 센서 장착`
+  - [`docs/learning/04-01_BNO08x_IMU_Placement_Guide.md`](./docs/learning/04-01_BNO08x_IMU_Placement_Guide.md): 외부 BNO08x IMU 장착 위치와 방향 정리
+- `05 로봇 통합과 야외 자율주행 준비`
+  - [`docs/learning/05-01_Mari_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/05-01_Mari_URDF_Xacro_Preparation_Checklist.md): Mari URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
+  - [`docs/learning/05-02_Mari_Gazebo_Run_Guide.md`](./docs/learning/05-02_Mari_Gazebo_Run_Guide.md): Mari Gazebo에서 VSLAM 입력을 확인하는 실행 가이드
+  - [`docs/learning/05-03_Mari_Nav2_Map_Filtering_Design.md`](./docs/learning/05-03_Mari_Nav2_Map_Filtering_Design.md): Nav2가 쓸 저장 맵 필터링 설계 정리
+  - [`docs/learning/05-04_Mari_Nav2_Run_Guide.md`](./docs/learning/05-04_Mari_Nav2_Run_Guide.md): Mari Gazebo + RTAB-Map 결과를 Nav2 1차 자율주행 smoke test로 연결하는 실행 가이드
+- `06 응용과 핸드오프`
+  - [`docs/learning/06-01_D435i_Ubuntu_YOLO_Depth_Handoff.md`](./docs/learning/06-01_D435i_Ubuntu_YOLO_Depth_Handoff.md): D435i depth와 인식 결과를 응용 작업으로 넘기는 기준 정리
 
 ### progress
 
@@ -60,6 +75,7 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 - [`trashbot_description/README.md`](./trashbot_description/README.md): Mari/Duri URDF, Gazebo, RViz2 실행 패키지
 - [`trashbot_localization/README.md`](./trashbot_localization/README.md): `/motor/encoder_ticks -> /wheel/odometry` 변환, Gazebo mock odom, EKF 입력 구조를 검증하는 localization 패키지
+- [`trashbot_navigation/README.md`](./trashbot_navigation/README.md): RTAB-Map live map, depth-to-scan, Nav2를 연결하는 Mari 자율주행 1차 smoke-test 패키지
 
 ### process
 

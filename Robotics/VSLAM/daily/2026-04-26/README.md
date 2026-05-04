@@ -129,7 +129,7 @@ visual mesh 표시 여부    = 표시 안 됨
 - [VSLAM Daily Index](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/daily/README.md)
 - [Current Progress and Open Issues](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/progress/Current_Progress_and_Open_Issues.md)
 - [Simulation First Procedure](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/progress/Simulation_First_Outdoor_Trash_Robot_Procedure.md)
-- [Mari URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md)
+- [Mari URDF/Xacro Preparation Checklist](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/docs/learning/05-01_Mari_URDF_Xacro_Preparation_Checklist.md)
 - [trashbot_description README](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/README.md)
 - [mari.urdf.xacro](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/urdf/mari.urdf.xacro)
 - [mari_visual_mesh.stl](/home/ssafy/my_ws/git_hub/Robotics/VSLAM/trashbot_description/meshes/mari_visual_mesh.stl)
