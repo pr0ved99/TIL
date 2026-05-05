@@ -31,6 +31,7 @@
 - Docker detached stack을 `external IMU ON` 상태로 바로 띄우는 wrapper 스크립트
 - Docker backend topic을 host `rtabmap_viz`에서 바로 보는 viewer wrapper 스크립트
 - `ROS 2 sensor_msgs/Imu` topic을 직접 받아 시각화하는 orientation viewer 스크립트
+- `Jetson Linux R36.5` 내장 UART PIO 우회 적용/검증 스크립트
 
 ## 원칙
 
@@ -38,3 +39,9 @@
 - `Jetson`에서만 필요한 옵션이나 경로가 있을 때만 이 폴더에 둔다.
 - `Docker` 관련 wrapper는 가능하면 `.env`와 `preset` 파일을 읽어서 동작하게 만든다.
 - 반복 실험은 실행과 측정을 분리하지 말고, 로그 수집 스크립트까지 같이 둔다.
+
+## 현재 스크립트
+
+- [`apply_uarta_pio_dtb.sh`](./apply_uarta_pio_dtb.sh): `serial@3100000`의 DMA 속성을 제거한 PIO 테스트용 DTB를 `/boot`에 설치하고 새 extlinux boot entry를 추가
+- [`verify_uarta_pio_loopback.sh`](./verify_uarta_pio_loopback.sh): 재부팅 후 `pin 8 <-> pin 10` loopback과 SMMU/UART kernel log를 확인
+- [`restore_jetsonio_default_boot.sh`](./restore_jetsonio_default_boot.sh): PIO 테스트 후 기본 부팅 entry를 기존 `JetsonIO`로 되돌림

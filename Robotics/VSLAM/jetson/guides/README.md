@@ -43,3 +43,4 @@
 - [`26_Jetson_BNO08x_Motion_Trace_Viewer_Guide.md`](./26_Jetson_BNO08x_Motion_Trace_Viewer_Guide.md): `linear acceleration`을 짧게 적분한 `pseudo-position`을 `X/Y/Z` 축 위 점 이동으로 확인
 - [`27_Jetson_BNO08x_Calibration_Guide.md`](./27_Jetson_BNO08x_Calibration_Guide.md): `BNO08x`의 `accelerometer / gyroscope / magnetometer` 보정 절차를 Jetson에서 직접 수행
 - [`28_Jetson_Trashbot_URDF_RViz_Guide.md`](./28_Jetson_Trashbot_URDF_RViz_Guide.md): `base_link`, 바퀴, `D435i`, `BNO08x`, GPS frame을 가진 `trashbot_description` 모델을 RViz2에서 확인
+- [`29_Jetson_GPS_ROS2_Bringup_Guide.md`](./29_Jetson_GPS_ROS2_Bringup_Guide.md): GPS raw 값 확인부터 `/gps/fix` ROS 2 topic publish까지 진행

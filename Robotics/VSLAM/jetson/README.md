@@ -51,6 +51,8 @@
 - [`daily/2026-04-20/README.md`](./daily/2026-04-20/README.md): `Docker backend + host GUI` 구조 정리와 현재 운영 기준 업데이트
 - [`daily/2026-04-21/README.md`](./daily/2026-04-21/README.md): `BNO08x` calibration과 Docker `IMU OFF/ON` 비교 benchmark 기록
 - [`daily/2026-04-22/README.md`](./daily/2026-04-22/README.md): `trashbot_description` URDF/xacro 초안과 RViz2 확인 구조 추가
+- [`daily/2026-05-05/README.md`](./daily/2026-05-05/README.md): `GY-GPS6MV2 / NEO-6M` GPS 직접 UART 연결 준비와 serial 권한 확인
+- [`daily/2026-05-06/README.md`](./daily/2026-05-06/README.md): `R36.5` 내장 UART loopback 실패와 USB-UART 우회 판단
 - [`docker/README.md`](./docker/README.md): `dev/runtime image`, service 분리, preset, tmpfs 구조 정리
 - [`progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md`](./progress/Jetson_VSLAM_Project_Goal_and_Roadmap.md): `Jetson`에서의 최종 목표와 큰 단계 로드맵
 - [`progress/Jetson_VSLAM_Daily_Execution_Plan.md`](./progress/Jetson_VSLAM_Daily_Execution_Plan.md): 지금 시점 기준 일일 실행 계획
@@ -59,3 +61,5 @@
 - [`assets/README.md`](./assets/README.md): 증빙 자료 분류 기준
 - [`scripts/README.md`](./scripts/README.md): `Jetson` 전용 스크립트 관리 기준
 - [`notes/README.md`](./notes/README.md): 환경/명령/트러블슈팅 메모 관리 기준
+- [`notes/troubleshooting/2026-05-06_Jetson_R36_5_UART_DMA_DTB_Issue.md`](./notes/troubleshooting/2026-05-06_Jetson_R36_5_UART_DMA_DTB_Issue.md): `ttyTHS1` loopback NUL byte와 SMMU fault 기록
+- [`notes/troubleshooting/2026-05-06_Jetson_Unexpected_Shutdown_During_UART_Debug.md`](./notes/troubleshooting/2026-05-06_Jetson_Unexpected_Shutdown_During_UART_Debug.md): GPS/UART 디버깅 중 갑작스러운 shutdown 현상 기록
