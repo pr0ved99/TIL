@@ -19,6 +19,7 @@ Jetson에서 RTAB-Map을 안정적으로 볼 때는 한 터미널에서 전부 �
 - [21_Jetson_Docker_RTABMap_Baseline_Guide.md](../../jetson/guides/21_Jetson_Docker_RTABMap_Baseline_Guide.md)
 - [22_Jetson_Docker_Backend_Host_RTABMapViz_Guide.md](../../jetson/guides/22_Jetson_Docker_Backend_Host_RTABMapViz_Guide.md)
 - [23_Jetson_Docker_Preset_and_Benchmark_Guide.md](../../jetson/guides/23_Jetson_Docker_Preset_and_Benchmark_Guide.md)
+- [GitLab edge 36_Jetson_RTABMap_MultiSession_DB_Reuse_Guide.md](/home/ssafy/my_ws/git_lab/S14P31C205/edge/jetson/docs/guides/36_Jetson_RTABMap_MultiSession_DB_Reuse_Guide.md)
 
 ## 1. 멀티세션이란 무엇인가
 
@@ -236,8 +237,9 @@ cd ~/yh_ws/TIL
 
 멀티세션 구조가 이해되면 다음 순서로 보면 된다.
 
-1. [BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md](./BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md)
-2. [Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md](./Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md)
+1. [RTABMap_MultiSession_DB_Reuse_Learning_Guide.md](./RTABMap_MultiSession_DB_Reuse_Learning_Guide.md)
+2. [BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md](./BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md)
+3. [Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md](./Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md)
 
 ## 10. RTAB-Map DB 세션 재사용 검증
 
@@ -269,3 +271,5 @@ cd ~/yh_ws/TIL
 - 이 결과는 같은 DB 파일을 다시 여는 재사용 검증이다.
 - 서로 다른 로봇 또는 서로 다른 독립 DB를 합치는 map merge 검증은 별도 단계로 남긴다.
 - YOLO로 검출한 쓰레기 위치는 RTAB-Map DB 안에 직접 넣기보다, `map` frame 좌표를 가진 별도 trash registry/API 데이터로 관리하는 편이 명확하다.
+
+자세한 학습 정리는 [RTABMap_MultiSession_DB_Reuse_Learning_Guide.md](./RTABMap_MultiSession_DB_Reuse_Learning_Guide.md)에 따로 분리했다.

@@ -30,16 +30,21 @@ Visual SLAM(VSLAM)은 카메라 영상으로 자신의 위치를 추정하고 �
 
 ### learning
 
+- [`docs/learning/00_LEARNING_INDEX.md`](./docs/learning/00_LEARNING_INDEX.md): VSLAM 학습 문서를 읽을 순서대로 묶은 인덱스
 - [`docs/learning/D435i_RTABMap_VSLAM_Manual.md`](./docs/learning/D435i_RTABMap_VSLAM_Manual.md): D435i RGB-D 입력으로 RTAB-Map VSLAM을 실행하고 확인하는 운영 매뉴얼
 - [`docs/learning/D435i_Jetson_Docker_Prerequisites.md`](./docs/learning/D435i_Jetson_Docker_Prerequisites.md): D435i와 Jetson Docker를 시작하기 전에 알아야 할 선수지식 정리
 - [`docs/learning/Jetson_Docker_Host_Checklist.md`](./docs/learning/Jetson_Docker_Host_Checklist.md): Jetson에서 Docker 작업 시작 전 호스트 상태를 점검하는 체크리스트
 - [`docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md`](./docs/learning/Jetson_Orin_Nano_Power_Mode_Guide.md): `25W`, `Balanced`, `nvpmodel`, `jetson_clocks` 관계와 RTAB-Map 관점에서의 점검 순서 정리
 - [`docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md`](./docs/learning/Jetson_Docker_Camera_to_Laptop_RTABMap_Guide.md): Jetson Docker 컨테이너에서 D435i 토픽을 publish하고 노트북에서 RTAB-Map GUI를 띄우는 절차 정리
+- [`docs/learning/Jetson_RTABMap_Multi_Session_Workflow_Guide.md`](./docs/learning/Jetson_RTABMap_Multi_Session_Workflow_Guide.md): Jetson에서 `camera`, `RTAB-Map backend`, `topic 확인`, `host GUI`를 세션별로 나누는 이유와 확인 순서 정리
+- [`docs/learning/RTABMap_MultiSession_DB_Reuse_Learning_Guide.md`](./docs/learning/RTABMap_MultiSession_DB_Reuse_Learning_Guide.md): RTAB-Map DB를 새로 만들고 같은 DB를 삭제하지 않고 다시 여는 multi-session reuse 학습 정리
 - [`docs/learning/D435i_IMU_Topics_and_Enable_Guide.md`](./docs/learning/D435i_IMU_Topics_and_Enable_Guide.md): D435i IMU 토픽을 켜고 확인하는 방법 정리
 - [`docs/learning/D435i_IMU_Axis_Interpretation.md`](./docs/learning/D435i_IMU_Axis_Interpretation.md): D435i IMU의 `x/y/z` 축이 실제 회전 동작과 어떻게 대응되는지 정리
 - [`docs/learning/D435i_Odometry_Accuracy_Comparison.md`](./docs/learning/D435i_Odometry_Accuracy_Comparison.md): `D435i 단독`, `D435i + IMU`, `wheel encoder + 외부 IMU` 조합의 odom 정확도 비교표
+- [`docs/learning/BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md`](./docs/learning/BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md): `BNO08x IMU OFF/ON` 비교를 어떤 조건으로 보고 어떻게 해석할지 정리
 - [`docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md`](./docs/learning/How_realsense2_camera_converts_D435i_to_ROS2_Topics.md): `realsense2_camera`가 D435i 데이터를 ROS2 토픽으로 바꾸는 과정 정리
 - [`docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md`](./docs/learning/Mari_URDF_Xacro_Preparation_Checklist.md): Mari URDF/Xacro 작성을 위한 좌표계, 궤도, 구동축, collision, 센서 위치 체크리스트
+- [`docs/learning/Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md`](./docs/learning/Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md): Jetson GPS UART raw NMEA 확인부터 ROS 2 `/gps/fix` publish 전 단계까지의 학습 흐름 정리
 
 ### progress
 

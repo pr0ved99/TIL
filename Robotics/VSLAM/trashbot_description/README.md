@@ -177,3 +177,83 @@ This test subscribes to `/cmd_vel`, integrates a simple 2D pose, and publishes
 - Check `gzclient --verbose` for mesh URI or resource path errors.
 - Compare the Mari STL with a simple visible test mesh to separate path issues from scale/origin issues.
 - Add Gazebo diff-drive plugin only after the visual baseline is visible or a simplified simulation visual is chosen.
+
+## Duri Gazebo Check
+
+`duri.urdf.xacro` uses measured Onshape mate connector offsets for `base_link`,
+`camera_link`, `imu_link`, `gps_link`, and track contact reference links.
+
+Current Duri reference values:
+
+```text
+base_link_z = 0.038536 m
+camera_link = +0.245385, +0.000000, +0.120895 m
+imu_link    = +0.010724, -0.001608, +0.089039 m
+gps_link    = -0.276881, +0.000000, +0.005984 m
+track_left  = +0.000000, +0.109858, -0.038536 m
+track_right = +0.000000, -0.109858, -0.038536 m
+```
+
+Install Gazebo runtime dependencies if needed:
+
+```bash
+sudo apt update
+sudo apt install -y \
+  ros-humble-gazebo-ros-pkgs \
+  ros-humble-gazebo-plugins
+```
+
+Build and source:
+
+```bash
+cd /home/ssafy/my_ws/git_hub/Robotics/VSLAM
+source /opt/ros/humble/setup.bash
+colcon build --packages-select trashbot_description
+source install/setup.bash
+```
+
+Open Duri in Gazebo with a stable low-load visual baseline:
+
+```bash
+ros2 launch trashbot_description gazebo_duri.launch.py \
+  gui:=true \
+  use_mesh_visual:=false
+```
+
+Open the camera test world with RealSense-like low-load RGB-D settings:
+
+```bash
+ros2 launch trashbot_description gazebo_duri_realsense_light.launch.py \
+  gui:=true \
+  use_mesh_visual:=false \
+  sim_camera_width:=424 \
+  sim_camera_height:=240 \
+  sim_camera_update_rate:=15 \
+  sim_camera_visualize:=false
+```
+
+Check Gazebo topics:
+
+```bash
+ros2 topic list | grep -E '^/camera/camera|^/odom|^/cmd_vel|^/imu/data'
+ros2 topic echo --once /odom
+ros2 topic hz /camera/camera/color/image_raw
+```
+
+Move Duri in Gazebo:
+
+```bash
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist \
+  "{linear: {x: 0.10, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.20}}" \
+  -r 10
+```
+
+Stop Duri:
+
+```bash
+ros2 topic pub --once /cmd_vel geometry_msgs/msg/Twist \
+  "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+```
+
+Use `use_mesh_visual:=true` only for appearance checks. The full STL is heavier,
+so `use_mesh_visual:=false` is the default for Gazebo motion and RGB-D smoke tests.
