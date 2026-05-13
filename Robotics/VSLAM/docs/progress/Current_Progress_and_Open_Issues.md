@@ -39,13 +39,116 @@
 - `2026-04-27` 기준으로 Gazebo blocker와 별개로 RViz2에서 Mari visual mesh, `base_link`, `camera_link`, `imu_link`, `gps_link`가 정상 표시되는 것을 확인했다.
 - `map -> odom -> base_footprint -> base_link` 구조의 동적 TF 테스트와 `/odom` publish 스크립트를 추가해, RViz2에서 Mari가 움직이는 장면까지 확인했다.
 - 다음 계획은 RViz2 기준 TF baseline 위에 virtual wheel link를 추가하고, `/cmd_vel -> /odom -> odom -> base_footprint` 흐름을 구성하는 것이다.
+- `2026-05-12` 기준으로 Duri는 Gazebo에서 Nav2 bringup, RTAB-Map 기반 map 생성, saved-map Nav2 goal 주행까지 이어지는 시뮬레이션 경로를 구성했다.
+- Duri RTAB-Map map에서 바닥 영역이 벽처럼 누적되는 문제가 있었고, 원인은 depth image 한 줄을 `/scan`으로 변환하는 방식이 카메라 pitch와 바닥 반사에 민감하기 때문으로 분리했다.
+- 최종 방향은 `/scan`을 RTAB-Map map 생성의 주 입력으로 쓰지 않고, RTAB-Map은 RGB-D 3D grid와 ground segmentation을 사용하며, Nav2 obstacle layer는 높이 필터링된 PointCloud2(`/duri/filtered_depth_points`)를 쓰는 구조로 잡았다.
+- 현재 `1264-feat-duri-rtabmap-nav2-map-driving` 브랜치에는 Duri RTAB-Map/Nav2용 launch, RViz, filtered point cloud node, saved-map 실행 절차가 반영된 상태다.
 
 즉, 지금 단계는 `센서가 들어오는지 확인하는 수준`은 넘었고,
 `실제로 3D 맵을 만들되 속도와 안정성을 맞추는 단계`로 들어간 상태다.
 
 ---
 
-## 0. 2026-04-27 최신 업데이트
+## 0. 2026-05-13 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Duri trash pose map frame 변환 mock 노드 구현 및 Gazebo 검증**
+   - `S14P31C205-1279-feat-duri-trash-suctionability` Story 브랜치에서 `S14P31C205-1282` 범위를 시작했다.
+   - 실제 AI 인식 전 단계로, 카메라 중앙 전방 `1.2 m`에 mock 쓰레기 점이 있다고 가정하는 projector 노드를 추가했다.
+   - 노드 위치는 `edge/jetson/ros2_ws/src/trashbot_navigation/scripts/trash_pose_projector_mock.py`다.
+   - Gazebo + RTAB-Map + RViz 환경에서 `/trash/map_point`와 `/trash/markers`가 `map` frame 기준으로 publish되는 것을 확인했다.
+2. **쓰레기 인식과 자율주행 연결용 live/locked topic 구성**
+   - `/trash/mock_point_camera`: camera frame 기준 mock 쓰레기 위치
+   - `/trash/map_point`: map frame 기준 변환 결과
+   - `/trash/markers`: RViz 표시용 live detection marker
+   - `/trash/locked_point`: 첫 detection을 `map` frame에 고정한 쓰레기 위치
+   - `/trash/locked_markers`: RViz 표시용 locked landmark marker
+   - 이 구조는 나중에 실제 detector bbox/depth 결과를 같은 입력 형태로 바꿔 끼우고, 확정 쓰레기 위치를 Nav2 goal/협업 메시지로 넘기기 위한 최소 파이프라인이다.
+3. **RTAB-Map/TF 기반 변환 전제 정리**
+   - 노드는 `camera_color_optical_frame -> map` TF가 준비되면 map 좌표로 변환한다.
+   - TF가 없으면 종료하지 않고 warning을 출력하며 대기한다.
+   - Gazebo + RTAB-Map 실행 후 `map -> odom -> base_link -> camera_color_optical_frame` 체인을 확인해야 한다.
+4. **실행 가이드 및 증빙 정리**
+   - `edge/jetson/docs/guides/38_Trash_Pose_Projector_Mock_Guide.md`를 추가했다.
+   - 실행 명령, RViz marker 확인 방법, topic/TF 증빙 저장 명령을 정리했다.
+   - 증빙 폴더는 `edge/jetson/assets/2026-05-13_trash_pose_projector_mock/`이다.
+   - Gazebo teleop 후 live marker와 locked marker를 각각 RViz screenshot과 topic echo로 남겼다.
+5. **검증 상태**
+   - `trash_pose_projector_mock.py` Python 문법 검사를 통과했다.
+   - `colcon build --symlink-install --packages-select trashbot_navigation --allow-overriding trashbot_navigation` 빌드를 통과했다.
+   - TF 없는 단독 실행에서는 `/trash` 노드가 정상 기동하고 `map` TF 대기 warning만 출력되는 것을 확인했다.
+   - Gazebo + RTAB-Map 실행 후 `/trash/map_point`의 `header.frame_id=map`을 확인했다.
+   - `lock_first_detection:=true` 실행 후 `/trash/locked_point`와 `/trash/locked_markers`가 `map` frame에서 publish되는 것을 확인했다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **완료된 것**: mock 쓰레기 위치를 camera frame에서 map frame으로 변환하고, live marker와 locked landmark marker를 RViz에 표시하는 최소 파이프라인.
+- **아직 필요한 것**: 실제 detector bbox/depth 결과를 mock point 대신 입력하는 adapter와, locked trash landmark를 Nav2 goal 또는 Duri-to-Mari 전달 메시지로 바꾸는 bridge.
+- **다음 작업**: `/trash/events` 형태의 쓰레기 이벤트 메시지를 정의하고 `suctionable`, `confidence`, `map_session_id`, `status` 같은 필드를 포함해 실제 AI 인식 결과와 자율주행 goal 사이의 계약을 만든다.
+
+---
+
+## 0-1. 2026-05-12 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Duri RTAB-Map/Nav2 지도 생성 방향 수정**
+   - depth image의 특정 가로줄을 `LaserScan`처럼 변환해 `/scan`으로 쓰는 방식은 Duri 카메라 pitch와 바닥 반사에 민감했다.
+   - 이 방식으로 만든 map은 바닥이 장애물 벽처럼 누적되어 Nav2 costmap과 경로 계획이 지저분해지는 문제가 있었다.
+   - 따라서 `/scan` 한 줄 변환은 RTAB-Map map 생성의 최종 입력에서 제외하고, AMCL 같은 2D localization 보조 입력으로만 남기는 방향으로 정리했다.
+2. **RTAB-Map은 3D 기반으로 유지**
+   - RTAB-Map mapping은 RGB-D 입력 기반의 3D grid와 ground segmentation을 사용하도록 조정했다.
+   - 쉬운 말로, 카메라가 본 3D 점들 중 바닥과 장애물을 구분해 2D occupancy map으로 내려보내는 구조다.
+   - 관련 핵심 설정은 `Grid/3D`, `Grid/NormalsSegmentation`, `Grid/GroundIsObstacle=false`, `Grid/MaxGroundHeight`, `Grid/MaxObstacleHeight` 계열이다.
+3. **Nav2 obstacle layer 입력 분리**
+   - Nav2 local/global costmap의 장애물 입력은 `/scan` 대신 `/duri/filtered_depth_points`를 사용하도록 바꿨다.
+   - `/duri/filtered_depth_points`는 `base_footprint` 기준으로 너무 낮은 바닥점, 너무 높은 점, 로봇 자기 몸체 근처 점을 제거한 PointCloud2다.
+   - 이 구조는 depth row 한 줄보다 정보량이 많고, 카메라 각도 변화에도 상대적으로 튼튼하다.
+4. **RViz 확인 포인트 추가**
+   - Duri RTAB-Map/Nav2 RViz 설정에 `Height Filtered PointCloud` display를 추가했다.
+   - 이제 `/duri/filtered_depth_points`가 실제 장애물 높이만 남기는지 RViz에서 바로 확인할 수 있다.
+5. **검증 상태**
+   - `trashbot_navigation` 패키지의 Python launch/script 문법 검사를 통과했다.
+   - `colcon build --symlink-install --packages-select trashbot_navigation --allow-overriding trashbot_navigation` 빌드를 통과했다.
+   - `duri_nav2_map_builder.launch.py`와 `duri_nav2_saved_map.launch.py`의 launch argument에 filtered cloud 옵션이 노출되는 것까지 확인했다.
+
+현재 실용적인 해석은 다음과 같다.
+
+- **지도 생성 기준**: Duri는 `/scan` 단일 라인 기반이 아니라 RTAB-Map RGB-D 3D grid 기반으로 map을 만든다.
+- **Nav2 장애물 기준**: costmap은 `/duri/filtered_depth_points`를 장애물 입력으로 사용한다.
+- **남은 blocker**: Gazebo/RViz에서 필터링된 point cloud가 기대한 높이 범위만 남는지 실제 화면으로 확인하고, `cloud_filter_min_z`, `cloud_filter_max_z`, self-filter box를 튜닝해야 한다.
+
+다음 실행 기준은 아래와 같다.
+
+```bash
+cd /home/ssafy/my_ws/git_lab/S14P31C205/edge/jetson/ros2_ws
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+
+ros2 launch trashbot_navigation duri_nav2_map_builder.launch.py \
+  gui:=true \
+  launch_rviz:=true \
+  rtabmap_viz:=true \
+  camera_pitch:=0.1745 \
+  start_depth_scan:=false \
+  start_cloud_filter:=true \
+  cloud_filter_min_z:=0.06 \
+  cloud_filter_max_z:=0.60 \
+  verbose:=false
+```
+
+확인 명령은 아래와 같다.
+
+```bash
+ros2 topic list -t | grep -E 'filtered_depth_points|rtabmap/map|camera/.+points'
+ros2 topic hz /duri/filtered_depth_points
+ros2 topic echo /duri/filtered_depth_points --once
+```
+
+---
+
+## 0-2. 2026-04-27 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -74,7 +177,7 @@
 
 ---
 
-## 0-1. 2026-04-26 업데이트
+## 0-3. 2026-04-26 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -98,7 +201,7 @@
 
 ---
 
-## 0-2. 2026-04-25 업데이트
+## 0-4. 2026-04-25 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -121,7 +224,7 @@
 
 ---
 
-## 0-3. 2026-04-16 기준 업데이트
+## 0-5. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
