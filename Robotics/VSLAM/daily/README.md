@@ -27,6 +27,8 @@
 | 2026-04-27 | [`daily/2026-04-27/README.md`](./2026-04-27/README.md) | Mari URDF/Xacro RViz2 표시, TF tree, 동적 TF 이동 검증 |
 | 2026-05-05 | [`jetson/daily/2026-05-05/README.md`](../jetson/daily/2026-05-05/README.md) | GY-GPS6MV2 GPS 모듈 직접 UART 연결 준비와 serial 권한 확인 |
 | 2026-05-06 | [`jetson/daily/2026-05-06/README.md`](../jetson/daily/2026-05-06/README.md) | R36.5 내장 UART loopback 실패와 USB-UART 우회 판단 |
+| 2026-05-12 | [`daily/2026-05-12/README.md`](./2026-05-12/README.md) | Duri RTAB-Map/Nav2 map distortion 원인 분리와 filtered PointCloud 기반 costmap 전환 |
+| 2026-05-16 | [`daily/2026-05-16/README.md`](./2026-05-16/README.md) | Duri 모터 드라이버 교체 후 수동 주행 확인, RTAB-Map 실시간 맵 생성, Nav2용 map 저장 |
 
 ## 템플릿
 

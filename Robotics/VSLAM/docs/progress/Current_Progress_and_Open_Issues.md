@@ -49,7 +49,57 @@
 
 ---
 
-## 0. 2026-05-13 최신 업데이트
+## 0. 2026-05-16 최신 업데이트
+
+최근 상태를 짧게 정리하면 아래와 같다.
+
+1. **Duri 모터 드라이버 문제 분리 및 수동 주행 확인**
+   - Duri가 keyboard teleop이나 ROS 2 `/cmd_vel` 명령에서 움직이지 않던 주원인은 소프트웨어가 아니라 모터 드라이버 하드웨어 문제로 분리됐다.
+   - 정상 동작하는 드라이버로 교체한 뒤 웹 조종과 `/cmd_vel` 기반 직진/회전 동작을 확인했다.
+   - 맵핑 중에는 회전 속도가 너무 빠르면 RTAB-Map feature matching이 흔들릴 수 있어, teleop 회전 속도는 낮게 시작하는 것이 맞다.
+2. **Jetson ROS 2 환경 자동화**
+   - Jetson `~/.bashrc`에는 `cd` 없이 ROS 2 환경만 자동 source하도록 정리했다.
+   - 새 터미널에서 `ROS_DOMAIN_ID=14`, `ROS_LOCALHOST_ONLY=0`, `trashbot_*` 패키지 인식까지 확인했다.
+   - 다만 `sudo -E bash -lc '...'` 안에서 실행하는 모터 브릿지는 별도 shell이므로 내부 source를 유지하는 편이 안전하다.
+3. **Duri RTAB-Map 실시간 맵 노트북 RViz 확인**
+   - Jetson에서 Duri real mapping stack을 실행하고, 노트북의 `duri_real_laptop_monitor.launch.py` RViz 설정으로 `/rtabmap/map`, `/rtabmap/odom`, `/rtabmap/mapPath`, RGB image를 확인했다.
+   - 실시간 맵은 RViz에서 정상 표시됐고, 수동 조종으로 새 공간을 더 넓히는 흐름까지 확인했다.
+4. **새 RTAB-Map map 저장 완료**
+   - Nav2용 2D occupancy map을 `yaml/pgm`으로 저장했다.
+   - 저장된 map은 아래 경로에 있다.
+
+```text
+Jetson:
+/home/jetson/S14P31C205/edge/jetson/maps/duri_rtabmap_20260516_222106.yaml
+/home/jetson/S14P31C205/edge/jetson/maps/duri_rtabmap_20260516_222106.pgm
+
+Laptop GitLab checkout:
+/home/ssafy/my_ws/git_lab/S14P31C205/edge/jetson/maps/duri_rtabmap_20260516_222106.yaml
+/home/ssafy/my_ws/git_lab/S14P31C205/edge/jetson/maps/duri_rtabmap_20260516_222106.pgm
+```
+
+5. **map 저장 실패 원인 확인**
+   - 처음 `map_saver_cli`가 `Failed to spin map subscription`으로 실패했다.
+   - 원인은 `/rtabmap/map` publisher가 `TRANSIENT_LOCAL` QoS인데 저장 명령에서 `map_subscribe_transient_local:=false`를 줬기 때문이다.
+   - transient local 구독을 기본값으로 두고 `save_map_timeout:=30.0`을 사용하자 저장에 성공했다.
+6. **RTAB-Map DB 백업 완료**
+   - `/rtabmap/rtabmap/backup` service를 호출해 현재 DB 백업을 만들었다.
+   - 백업 결과는 아래 경로다.
+
+```text
+/home/jetson/.ros/rtabmap/duri_mapping_20260516_220443.db
+/home/jetson/.ros/rtabmap/duri_mapping_20260516_220443.db.back
+```
+
+현재 실용적인 해석은 다음과 같다.
+
+- **완료된 것**: Duri 실물 모터 경로 정상화, RTAB-Map 실시간 맵 생성/시각화, 새 Nav2용 saved map 저장, DB 백업.
+- **아직 필요한 것**: 저장한 최신 map으로 RTAB-Map localization과 Nav2 goal 주행을 다시 검증한다.
+- **다음 작업**: `duri_rtabmap_20260516_222106.yaml`을 map으로 지정하고, RViz `2D Pose Estimate` 이후 짧은 직선 goal에서 `/plan`, `/local_plan`, `/cmd_vel_nav`, `/cmd_vel`, `map -> base_footprint` 변화를 동시에 확인한다.
+
+---
+
+## 0-1. 2026-05-13 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -89,7 +139,7 @@
 
 ---
 
-## 0-1. 2026-05-12 최신 업데이트
+## 0-2. 2026-05-12 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -148,7 +198,7 @@ ros2 topic echo /duri/filtered_depth_points --once
 
 ---
 
-## 0-2. 2026-04-27 최신 업데이트
+## 0-3. 2026-04-27 최신 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -177,7 +227,7 @@ ros2 topic echo /duri/filtered_depth_points --once
 
 ---
 
-## 0-3. 2026-04-26 업데이트
+## 0-4. 2026-04-26 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -201,7 +251,7 @@ ros2 topic echo /duri/filtered_depth_points --once
 
 ---
 
-## 0-4. 2026-04-25 업데이트
+## 0-5. 2026-04-25 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 
@@ -224,7 +274,7 @@ ros2 topic echo /duri/filtered_depth_points --once
 
 ---
 
-## 0-5. 2026-04-16 기준 업데이트
+## 0-6. 2026-04-16 기준 업데이트
 
 최근 상태를 짧게 정리하면 아래와 같다.
 

@@ -48,6 +48,7 @@
 | 순서 | 문서 | 목적 |
 | --- | --- | --- |
 | 6-1 | [Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md](./Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md) | GPS UART raw NMEA 확인부터 ROS 2 `/gps/fix` 전 단계까지 이해한다. |
+| 6-2 | [Sensor_Fusion_Priority_for_VSLAM.md](./Sensor_Fusion_Priority_for_VSLAM.md) | depth, encoder, IMU, GPS를 어떤 역할과 우선순위로 VSLAM/Nav2에 연결할지 정리한다. |
 
 ## 7. 로봇 모델과 응용 연결
 
@@ -55,6 +56,7 @@
 | --- | --- | --- |
 | 7-1 | [Mari_URDF_Xacro_Preparation_Checklist.md](./Mari_URDF_Xacro_Preparation_Checklist.md) | Mari URDF/Xacro 작성을 위한 좌표계와 센서 frame 준비 기준을 잡는다. |
 | 7-2 | [D435i_Ubuntu_YOLO_Depth_Handoff.md](./D435i_Ubuntu_YOLO_Depth_Handoff.md) | D435i depth와 인식 결과를 응용 작업으로 넘기는 기준을 정리한다. |
+| 7-3 | [Duri_RTABMap_Nav2_Learning_Guide.md](./Duri_RTABMap_Nav2_Learning_Guide.md) | Duri Gazebo, RTAB-Map, Nav2, 실제 센서/모터 연결 흐름을 한 번에 복습한다. |
 
 ## 8. 현재 추천 학습 순서
 
@@ -66,4 +68,6 @@ VSLAM과 야외 자율주행을 처음부터 이어서 공부한다면 아래 �
 4. [RTABMap_MultiSession_DB_Reuse_Learning_Guide.md](./RTABMap_MultiSession_DB_Reuse_Learning_Guide.md)
 5. [BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md](./BNO08x_RTABMap_IMU_Comparison_Learning_Guide.md)
 6. [Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md](./Jetson_GPS_UART_ROS2_Bringup_Learning_Guide.md)
-7. [Mari_URDF_Xacro_Preparation_Checklist.md](./Mari_URDF_Xacro_Preparation_Checklist.md)
+7. [Sensor_Fusion_Priority_for_VSLAM.md](./Sensor_Fusion_Priority_for_VSLAM.md)
+8. [Mari_URDF_Xacro_Preparation_Checklist.md](./Mari_URDF_Xacro_Preparation_Checklist.md)
+9. [Duri_RTABMap_Nav2_Learning_Guide.md](./Duri_RTABMap_Nav2_Learning_Guide.md)
