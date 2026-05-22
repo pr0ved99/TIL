@@ -254,7 +254,7 @@ sudo usermod -aG dialout $USER
 ## 다음 실습 순서
 
 1. `hello_world` flash/monitor 성공 확인 - 완료
-2. 내장 RGB LED 색상 제어
+2. 내장 RGB LED 색상 제어 - 완료 (`GPIO38`)
 3. BOOT 버튼 입력 처리
 4. FreeRTOS task 분리
 5. NVS에 설정 저장

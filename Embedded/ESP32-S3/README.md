@@ -18,17 +18,19 @@ ESP32-S3 DevKitC-1 기반 임베디드 실습을 정리하는 공간이다.
 - Detected device: `Espressif USB JTAG/serial debug unit`
 - Serial port: `/dev/ttyACM0`
 - Stable path: `/dev/serial/by-id/usb-Espressif_USB_JTAG_serial_debug_unit_20:6E:F1:B4:B5:5C-if00`
-- Flash: 실제 감지 `16MB`, 현재 `hello_world` 설정 `2MB`
+- Flash: 실제 감지 `16MB`
 
 ## Current Status
 
 - 2026-05-22: ESP-IDF `v5.4.4` 설치 완료
 - 2026-05-22: `~/esp/hello_world` build/flash/monitor 성공
-- 2026-05-22: 다음 실습 후보는 내장 RGB LED 제어
+- 2026-05-22: `~/esp/esp32s3_rgb_led` build/flash 성공 및 내장 RGB LED 점멸 확인
+- 2026-05-22: 다음 실습 후보는 BOOT 버튼 입력 처리
 
 ## Practice Index
 
 - `Practice/00_ESP32S3_DevKitC1_Setup.md`: 보드 연결 확인과 ESP-IDF 첫 실습 준비
+- `Practice/01_ESP32S3_RGB_LED.md`: 내장 RGB LED 제어와 `GPIO38` 확인
 
 ## First Goal
 
