@@ -3,7 +3,8 @@
 ## Current Decision
 
 - BMS is not used in the initial power architecture.
-- CAN communication is deferred.
+- CAN communication is deferred from first power and motor bring-up, but remains
+  a required later project phase.
 - UART / USB Serial is used first.
 - LiPo battery is charged only with a balance charger.
 - Main power line uses a fuse and a manual switch.
@@ -54,8 +55,15 @@ higher-load test: 30A only after current measurements
 
 ## Deferred Items
 
-- CAN bus
+- CAN bus during first power and motor bring-up
 - LiDAR
 - ROS2 navigation
 - custom PCB
 - custom battery pack BMS
+
+## Required Later Learning Items
+
+- FreeRTOS task architecture
+- CAN transceiver and CAN bus validation
+- USB-CAN based bus inspection
+- HAL to LL Driver migration for timing-critical firmware paths

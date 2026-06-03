@@ -8,6 +8,9 @@
 |---|---|---|---|
 | MCU | NUCLEO-F446RE | low-level motor controller | STM32 firmware main target |
 | MCU | ESP32-S3 DevKitC | support controller | wireless/UI/sensor test candidate |
+| Firmware | STM32 HAL / CubeMX | initial bring-up | validate PWM, encoder, ADC, UART first |
+| Firmware | FreeRTOS | required later firmware architecture | task, queue, timing, safety separation |
+| Firmware | STM32 LL Driver | advanced migration target | timing-critical paths after HAL validation |
 | Sensor | BNO08x IMU | yaw rate and attitude sensing | odometry validation candidate |
 | Power | 3S LiPo battery | main power source | BMS not used |
 | Power | LiPo charger | balance charge / storage mode | iMAX B6 class charger |
@@ -18,6 +21,7 @@
 | Protection | 3S low-voltage alarm | LiPo over-discharge warning | required in operation |
 | Motor | encoder DC motors x2 types | drivetrain candidates | JGB37-520 encoder status must be checked |
 | Driver | motor driver | DC motor drive | voltage/current rating must be verified |
+| Driver | BTS7960 x2 | first motor driver path | one H-bridge module per DC motor |
 | Mechanical | tracked chassis | robot base | low-speed test platform |
 | Wiring | AWG14/16/18 wires | power wiring | high-current and auxiliary power |
 | Wiring | 24AWG wires | signal wiring | encoder/UART/I2C/PWM |
@@ -28,8 +32,8 @@
 | Component | Reason |
 |---|---|
 | BMS | not used with finished RC LiPo pack in this project phase |
-| CAN transceiver | UART first, CAN later |
-| USB-CAN adapter | CAN deferred |
+| CAN transceiver | UART first, required later CAN phase |
+| USB-CAN adapter | required later for CAN debugging |
 | LiDAR | drivetrain and odometry first |
 | large 5000mAh battery | current 3S LiPo is enough for initial validation |
 

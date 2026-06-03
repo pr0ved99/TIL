@@ -2,7 +2,7 @@
 
 ## 1. Project Summary
 
-STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바일 로봇 플랫폼을 만들고, 이후 IMU, ROS2, LiDAR, CAN으로 확장 가능한 구조로 발전시킨다.
+STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바일 로봇 플랫폼을 만들고, 이후 IMU, FreeRTOS, CAN, LL Driver 전환, ROS2, LiDAR로 확장 가능한 구조로 발전시킨다.
 
 이 프로젝트는 처음부터 완성형 자율주행 로봇을 만드는 것이 아니라, 자율주행으로 확장 가능한 안정적인 하위 구동 플랫폼을 만드는 것을 1차 목표로 한다.
 
@@ -10,6 +10,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 - 단순 RC카가 아니라 검증 가능한 모바일 로봇 플랫폼을 만든다.
 - 모터 제어, 엔코더, 전원 안전, 센서 통합을 직접 구현한다.
+- CAN 통신, RTOS 기반 task 설계, HAL에서 LL Driver로의 점진적 전환 경험을 확보한다.
 - 부품 선택과 아키텍처 구성의 공학적 근거를 문서와 코드에 남긴다.
 - 추후 포트폴리오에서 설계 근거, 실패 기록, 검증 결과를 함께 보여줄 수 있게 한다.
 
@@ -28,7 +29,9 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## 5. Out of Scope for MVP
 
-- CAN 통신
+- CAN 통신의 로봇 구동 통합
+- FreeRTOS 기반 전체 firmware 구조
+- LL Driver 기반 최적화
 - LiDAR 기반 SLAM
 - Nav2 자율주행
 - 직접 제작 BMS
@@ -52,10 +55,13 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 초기 시스템에서 제외한다.
 
-- CAN bus
+- CAN bus 기반 제어 통합
 - LiDAR
 - ROS2 navigation stack
 - 자체 제작 배터리팩용 BMS
+
+단, CAN 통신과 FreeRTOS, LL Driver 전환은 프로젝트 학습 목표에 포함한다. 첫 구동
+MVP를 막지 않기 위해 초기 시스템에서 제외할 뿐, 후속 phase에서 반드시 다룬다.
 
 ## 7. Key Engineering Questions
 
@@ -65,6 +71,9 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 궤도 미끄러짐 때문에 odometry 오차가 얼마나 발생하는가?
 - BNO08x IMU의 yaw rate가 회전 추정 검증에 도움이 되는가?
 - UART 기반 명령 프로토콜이 초기 제어에 충분한가?
+- FreeRTOS task 구조가 motor control, communication, telemetry, safety를 명확히 분리하는가?
+- CAN bus를 통해 command와 telemetry를 안정적으로 주고받을 수 있는가?
+- HAL 기반 구현에서 어떤 부분을 LL Driver로 전환할 때 실질적인 이점이 있는가?
 
 ## 8. Success Criteria
 
@@ -83,17 +92,22 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 4. 좌/우 모터 제어
 5. 속도 제어 및 PID 검토
 6. 궤도 섀시 저속 주행 테스트
-7. BNO08x IMU 통합
-8. PC Serial 제어
-9. ROS2 연동
-10. CAN / LiDAR 확장 검토
+7. PC Serial / UART 제어
+8. FreeRTOS task 구조 전환
+9. BNO08x IMU 통합
+10. CAN 단독 실습 및 bus 검증
+11. CAN command / telemetry 통합
+12. HAL 핵심 경로의 LL Driver 전환
+13. ROS2 / LiDAR 확장 검토
 
 ## 10. Design Principles
 
 - 기능 추가보다 검증을 우선한다.
 - 고전류 라인과 신호 라인을 분리한다.
 - BMS 대신 퓨즈, 저전압 감지, 밸런스 충전을 사용한다.
-- 초기 통신은 UART / USB Serial로 단순하게 시작한다.
+- 초기 통신은 UART / USB Serial로 단순하게 시작하되, CAN은 필수 후속 학습 단계로 둔다.
+- HAL로 먼저 동작을 검증하고, 검증된 핵심 경로부터 LL Driver로 전환한다.
+- FreeRTOS는 모터/엔코더 기본 검증 후 task 구조화 단계에서 도입한다.
 - 각 설계 결정에는 이유와 테스트 결과를 남긴다.
 
 ## 11. Open Questions
@@ -102,4 +116,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 모터 드라이버의 실제 연속 전류 여유는 충분한가?
 - 궤도 섀시의 실제 평균 전류는 얼마인가?
 - IMU를 STM32에 직접 붙일지, ESP32-S3에서 먼저 검증할지?
+- FreeRTOS 도입 시 motor control task의 주기와 우선순위는 어떻게 둘 것인가?
+- CAN transceiver와 USB-CAN adapter를 언제 구매하고 검증할 것인가?
+- LL Driver 전환 대상은 timer, encoder, GPIO, ADC, UART, CAN 중 어디부터 시작할 것인가?
 - ROS2 연동은 어느 단계에서 시작하는 것이 적절한가?

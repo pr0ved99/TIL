@@ -1,0 +1,68 @@
+# Hardware Validation
+
+이 폴더는 궤도형 모바일 로봇의 전원, 배선, 모터 드라이버, 엔코더, 초기 구동을 실제로 검증한 기록을 남기는 공간이다.
+
+시스템 아키텍처 문서가 "어떻게 설계할 것인가"를 다룬다면, 이 폴더는 "실제로 안전하게 동작하는지 어떻게 확인했는가"를 다룬다.
+
+## Validation Principle
+
+핵심 원칙:
+
+```text
+전원 검증 -> logic 검증 -> motor power 검증 -> encoder 검증 -> 한쪽 모터 -> 좌우 구동
+```
+
+Firmware보다 먼저 확인할 것:
+
+- Battery polarity
+- Fuse and switch path
+- Buck converter output voltage
+- Common ground
+- Motor driver enable default state
+- PWM output zero at boot
+- Encoder signal voltage
+
+## Document Order
+
+| Step | Document | Purpose |
+| --- | --- | --- |
+| 1 | `01_Power_Bringup_Checklist.md` | Battery, fuse, switch, wiring, no-load power checks |
+| 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015/XL4016 calibration and load validation |
+| 3 | `03_BTS7960_Logic_Input_Test.md` | BTS7960 logic input behavior before motor power |
+| 4 | `04_Encoder_Signal_Safety_Test.md` | Encoder voltage and STM32-safe signal validation |
+| 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
+| 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
+
+## Evidence Policy
+
+각 test는 다음 중 가능한 증거를 남긴다.
+
+- Multimeter measurement
+- Wiring photo
+- Fuse rating used
+- Oscilloscope or logic analyzer capture if available
+- Serial log
+- Short video or photo of test state
+- Observed heat, smell, noise, vibration
+- Pass/fail decision and next action
+
+## Safety Rules
+
+- LiPo battery는 테스트가 끝나면 즉시 분리한다.
+- Buck converter output은 MCU/ESP32/sensor 연결 전에 반드시 측정한다.
+- 첫 motor test는 track을 띄운 상태에서 low duty로만 진행한다.
+- Fuse rating은 테스트 단계에 맞게 낮은 값부터 시작한다.
+- Motor current는 perfboard copper trace로 흘리지 않는다.
+- Unknown encoder output은 STM32에 바로 연결하지 않는다.
+- Motor driver enable은 reset 중 disabled가 기본이어야 한다.
+
+## Current Validation Status
+
+| Area | Status | Evidence |
+| --- | --- | --- |
+| Power path | Not started | TBD |
+| Buck converter output | Not started | TBD |
+| BTS7960 logic input | Not started | TBD |
+| Encoder signal voltage | Not started | TBD |
+| First motor no-load | Not started | TBD |
+| Left/right drivetrain | Not started | TBD |
