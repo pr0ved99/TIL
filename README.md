@@ -24,7 +24,7 @@
 | 카테고리 | 상세 내용 |
 | :--- | :--- |
 | **💻 Language** | C, C++, Python 핵심 문법 및 고급 기법 |
-| **🔌 Embedded** | STM32(NUCLEO-F446RE), Raspberry Pi 5, Linux 환경 설정 |
+| **🔌 Embedded** | [STM32(NUCLEO-F446RE)](./Embedded/STM32), [CAN](./Embedded/STM32/CAN), [FreeRTOS](./Embedded/STM32/RTOS), Raspberry Pi 5, Linux 환경 설정 |
 | **🤖 Robotics** | [ROS 2 Humble](./Robotics/ROS2), [VSLAM](./Robotics/VSLAM), SLAM, Kinematics, URDF 모델링 |
 | **🧠 CS 기초** | Git 컨벤션, 네트워크, OS 원리 |
 
