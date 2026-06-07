@@ -13,7 +13,7 @@ deterministic하고 safe하게 만드는 것이다.
 - 어떤 event가 state transition을 일으키는가
 - 언제 motor output이 허용되는가
 - Command timeout, low voltage, emergency stop이 motion에 어떤 영향을 주는가
-- Motor control loop가 command를 BTS7960 driver에 어떻게 적용하는가
+- Motor control loop가 command를 MDD10A driver에 어떻게 적용하는가
 
 ## Architecture Decision
 
@@ -150,7 +150,7 @@ Arm request는 다음 조건에서만 accept된다.
 - Battery voltage가 stop threshold보다 높다.
 - E-stop이 latch되어 있지 않다.
 - Active fault가 latch되어 있지 않다.
-- Driver enable output이 현재 disabled.
+- Motor PWM output이 현재 zero.
 - PWM compare 값이 zero.
 - Command source가 known이거나 command timeout이 inactive.
 - Optional: 현재 test stage에서 robot이 물리적으로 safe.
@@ -188,16 +188,16 @@ convert command to left/right motor request
     v
 apply safety gate
     |
-    +-- unsafe -> PWM = 0, enable = disabled
+    +-- unsafe -> PWM = 0, motor output disabled
     |
-    +-- safe   -> apply limited BTS7960 dual-PWM output
+    +-- safe   -> apply limited MDD10A PWM + DIR output
 ```
 
 Rules:
 
 - Loop는 UART, CAN, IMU, telemetry를 기다리며 block하면 안 된다.
-- Loop는 active channel을 설정하기 전에 inactive BTS7960 PWM channel을 zero로 설정해야 한다.
-- Loop는 `RPWM`과 `LPWM`을 동시에 active로 command하면 안 된다.
+- Loop는 방향 전환 전에 해당 motor PWM을 0까지 낮춰야 한다.
+- Loop는 PWM duty와 DIR state를 같은 control-loop ownership 안에서 갱신해야 한다.
 
 ## 7. Command Model
 
@@ -228,26 +228,28 @@ Invalid command behavior:
 - Telemetry가 지원하면 invalid command count를 report한다.
 - Parser code가 motor output을 직접 바꾸지 않는다.
 
-## 8. BTS7960 Output Mapping
+## 8. MDD10A Output Mapping
 
-각 motor는 dual PWM을 사용한다.
+각 motor는 sign-magnitude 방식의 `PWM + DIR`을 사용한다.
 
-| Signed command | `RPWM` | `LPWM` | Enable |
+| Signed command | `PWMx` | `DIRx` | Motor output |
 | --- | --- | --- | --- |
-| Unsafe state | 0 | 0 | 0 |
-| Zero command | 0 | 0 | armed면 1, 아니면 0 |
-| Positive command | duty | 0 | 1 |
-| Negative command | 0 | duty | 1 |
-| Forbidden | duty | duty | 허용 안 됨 |
+| Unsafe state | 0 | don't care | disabled by zero PWM |
+| Zero command | 0 | keep last or default | stop |
+| Positive command | duty | forward mapping | forward |
+| Negative command | duty | reverse mapping | reverse |
 
 Safe update order:
 
 ```text
-set RPWM = 0
-set LPWM = 0
-set enable according to safety state
-if safe:
-    set only the selected direction PWM
+if unsafe:
+    set PWM = 0
+else if direction must change:
+    ramp PWM to 0
+    set DIR
+    set limited PWM
+else:
+    set limited PWM
 ```
 
 ## 9. Fault Codes
@@ -342,12 +344,12 @@ loop_dt_max_us
 
 Controller는 explicit safety state machine을 사용한다.
 
-`SAFETY_ARMED_IDLE`과 `SAFETY_ARMED_ACTIVE`만 motor enable을 허용할 수 있고,
+`SAFETY_ARMED_IDLE`과 `SAFETY_ARMED_ACTIVE`만 motor output permission을 허용할 수 있고,
 nonzero PWM은 `SAFETY_ARMED_ACTIVE`에서만 적용된다.
 
 다른 모든 state는 다음을 강제한다.
 
 ```text
 PWM = 0
-driver enable = disabled
+motor output disabled
 ```

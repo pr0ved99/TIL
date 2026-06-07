@@ -17,6 +17,23 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - Advanced firmware goal: HAL to LL Driver migration
 - Deferred autonomy stack: ROS2, LiDAR, SLAM, Nav2
 
+## Current Architecture Status
+
+2026-06-08 기준 시스템 아키텍처 문서의 핵심 결정은 유지한다.
+
+- STM32가 motor output, command timeout, safety gate의 최종 authority다.
+- 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
+- UART/USB serial은 첫 command/telemetry path다.
+- CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
+- ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
+- CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
+
+최신 학습 지도:
+
+- [`ROS 2 Project A-to-Z`](../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md)
+- [`NUCLEO-F446RE CAN A-to-Z`](../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md)
+- [`NUCLEO-F446RE FreeRTOS A-to-Z`](../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md)
+
 ## Structure
 
 - `00_Project_Charter`: project goal, scope, requirements, inventory
@@ -50,7 +67,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`05_MCU_Communication_and_IO_Peripherals_ko.md`](01_System_Architecture/05_MCU_Communication_and_IO_Peripherals_ko.md) | UART, I2C, SPI, bxCAN, GPIO, ADC analysis |
 | [`06_MCU_Pin_Allocation_Candidate_ko.md`](01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md) | First STM32 pin allocation candidate |
 | [`07_ESP32S3_Features_and_Project_Role_ko.md`](01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md) | ESP32-S3 features and support-controller role |
-| [`08_Motor_Driver_and_HBridge_Control_ko.md`](01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md) | BTS7960 decision and H-bridge control model |
+| [`08_Motor_Driver_and_HBridge_Control_ko.md`](01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md) | MDD10A decision and PWM+DIR control model |
 | [`09_STM32_ESP32_UART_Interface_Contract_ko.md`](01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md) | UART command/telemetry contract |
 | [`10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md`](01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md) | CAN, FreeRTOS, LL Driver roadmap |
 | [`11_System_Block_Diagram_and_Interface_Map_ko.md`](01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md) | Hardware/software interface map |
@@ -70,7 +87,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`README.md`](02_Hardware_Validation/README.md) | Hardware validation sequence and evidence policy |
 | [`01_Power_Bringup_Checklist.md`](02_Hardware_Validation/01_Power_Bringup_Checklist.md) | Battery, fuse, switch, wiring, and no-load power checks |
 | [`02_Buck_Converter_Calibration_Log.md`](02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md) | XL4015/XL4016 output calibration and load checks |
-| [`03_BTS7960_Logic_Input_Test.md`](02_Hardware_Validation/03_BTS7960_Logic_Input_Test.md) | BTS7960 logic input and safe PWM behavior test |
+| [`03_MDD10A_Logic_Input_Test.md`](02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md) | MDD10A PWM/DIR logic input and safe output behavior test |
 | [`04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) | Encoder voltage, pull-up, direction, and STM32-safe input checks |
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
 | [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |

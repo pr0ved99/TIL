@@ -265,7 +265,7 @@ apply acceleration/ramp limits
 open-loop PWM or speed controller
         |
         v
-BTS7960 dual-PWM output
+MDD10A PWM + DIR output
 ```
 
 Initial control mode:

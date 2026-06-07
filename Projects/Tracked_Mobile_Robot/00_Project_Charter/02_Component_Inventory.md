@@ -21,7 +21,7 @@
 | Protection | 3S low-voltage alarm | LiPo over-discharge warning | required in operation |
 | Motor | encoder DC motors x2 types | drivetrain candidates | JGB37-520 encoder status must be checked |
 | Driver | motor driver | DC motor drive | voltage/current rating must be verified |
-| Driver | BTS7960 x2 | first motor driver path | one H-bridge module per DC motor |
+| Driver | MDD10A | first motor driver path | dual-channel PWM+DIR driver for left/right DC motors |
 | Mechanical | tracked chassis | robot base | low-speed test platform |
 | Wiring | AWG14/16/18 wires | power wiring | high-current and auxiliary power |
 | Wiring | 24AWG wires | signal wiring | encoder/UART/I2C/PWM |

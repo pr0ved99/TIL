@@ -87,7 +87,7 @@ timing-critical인지 알고, 그 변경을 검증할 수 있음을 보여주는
 LL migration은 다음 조건 이후에 시작한다.
 
 - Motor 1개가 HAL 제어로 forward/reverse 동작한다.
-- Left/right BTS7960 PWM output이 low duty에서 검증된다.
+- Left/right MDD10A PWM/DIR output이 low duty에서 검증된다.
 - Encoder counting이 HAL 설정으로 동작한다.
 - Command timeout이 motor output을 정지시킨다.
 - Safety gate가 PWM zero와 driver disable을 강제한다.
@@ -115,7 +115,8 @@ void motor_pwm_set_left(int16_t duty);
 void motor_pwm_set_right(int16_t duty);
 int32_t encoder_get_left_count(void);
 int32_t encoder_get_right_count(void);
-void driver_enable_set(bool enabled);
+void motor_dir_set_left(bool forward);
+void motor_dir_set_right(bool forward);
 uint16_t battery_adc_read_raw(void);
 ```
 
@@ -125,7 +126,7 @@ Application code는 HAL 또는 LL을 직접 호출하지 않고 이 wrapper를 �
 
 | Target | Initial HAL path | LL migration reason | Priority |
 | --- | --- | --- | --- |
-| BTS7960 enable GPIO | `HAL_GPIO_WritePin()` | 작고 쉬운 첫 LL migration, safety output clarity | High |
+| MDD10A DIR GPIO | `HAL_GPIO_WritePin()` | 작고 쉬운 첫 LL migration, motor direction output clarity | High |
 | PWM compare update | `__HAL_TIM_SET_COMPARE()` 또는 HAL PWM helper | High-rate motor duty update path | High |
 | Encoder count read | `__HAL_TIM_GET_COUNTER()` | Frequent control-loop read path | High |
 | Control-loop timer interrupt | HAL timer callback | Loop timing과 ISR ownership clarity | Medium |
@@ -205,23 +206,23 @@ Exit criteria:
 
 - `motor_pwm_set_*()`
 - `encoder_get_*()`
-- `driver_enable_set()`
+- `motor_dir_set_*()`
 - `battery_adc_read_raw()`
 
 Exit criteria:
 
 - Firmware behavior는 그대로이고 HAL call 위치만 localized된다.
 
-### Step 2: Driver Enable GPIO 전환
+### Step 2: Motor DIR GPIO 전환
 
-Enable GPIO write를 먼저 전환한다. 작고 테스트가 쉽기 때문이다.
+DIR GPIO write를 먼저 전환한다. 작고 테스트가 쉽기 때문이다.
 
 Validation:
 
-- Boot에서 enable disabled.
-- Disarm이 driver를 disable.
-- E-stop이 driver를 disable.
-- Arm은 safety state가 허용할 때만 driver를 enable.
+- Boot에서 PWM zero.
+- DIR 변경 전 해당 motor PWM이 zero.
+- Forward/reverse command에서 DIR mapping이 기대 방향과 일치.
+- Disarm과 E-stop은 PWM zero를 강제.
 
 ### Step 3: PWM Compare Update 전환
 
@@ -230,9 +231,9 @@ PWM compare update path를 LL로 교체한다.
 Validation:
 
 - Boot에서 PWM duty zero.
-- Forward command는 motor당 BTS7960 PWM input 하나만 active.
-- Reverse command는 반대 PWM input만 active.
-- `RPWM`과 `LPWM`이 동시에 active되지 않는다.
+- Forward command는 motor당 MDD10A DIR forward mapping과 PWM duty를 적용한다.
+- Reverse command는 DIR reverse mapping과 PWM duty를 적용한다.
+- 방향 전환 시 PWM을 먼저 0으로 낮춘다.
 - Duty clamp가 유지된다.
 
 ### Step 4: Encoder Count Read 전환
@@ -305,7 +306,7 @@ LL migration마다 실행한다.
 - Firmware가 clean build된다.
 - Board flashing이 성공한다.
 - Boot state에서 PWM zero.
-- Driver enable은 arm 조건 전까지 disabled.
+- Motor PWM은 arm 조건 전까지 zero.
 - Stop command가 PWM zero를 강제한다.
 - Command timeout이 PWM zero를 강제한다.
 - Simulated low-voltage condition이 motor output을 block한다.
@@ -351,7 +352,7 @@ safety behavior와 motor output timing이 regression되지 않았음을 확인�
 먼저 동작하는 HAL baseline을 만들고, 이후 다음 순서로 선택적 LL migration을 진행한다.
 
 ```text
-GPIO enable
+GPIO DIR
 -> PWM compare update
 -> encoder count read
 -> control-loop timer path

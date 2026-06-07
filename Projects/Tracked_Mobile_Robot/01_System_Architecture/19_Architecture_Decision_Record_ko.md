@@ -167,26 +167,29 @@ Reason:
 
 Consequence:
 
-- LL migration target은 GPIO enable, PWM compare update, encoder read, control-loop timer, optional ADC/CAN이다.
+- LL migration target은 motor DIR GPIO, PWM compare update, encoder read, control-loop timer, optional ADC/CAN이다.
 
-## ADR-008: BTS7960-Class H-Bridge Driver를 먼저 사용
+## ADR-008: MDD10A Dual-Channel Motor Driver를 먼저 사용
 
 Status: Accepted
 
 Decision:
 
-- DC motor당 BTS7960-class module 1개를 사용한다.
-- 각 motor는 `RPWM`, `LPWM` dual PWM으로 제어한다.
+- MDD10A 1개로 left/right brushed DC motor 2개를 구동한다.
+- 각 motor는 sign-magnitude 방식의 `PWM + DIR`로 제어한다.
 
 Reason:
 
 - Small TB6612FNG-class module보다 current margin이 크다.
-- Local robot reference material에서 확인한 dual-PWM H-bridge learning path와 잘 맞는다.
+- 두 motor를 한 보드에서 제어하므로 배선과 power distribution이 단순하다.
+- STM32F446RE의 기존 pin 후보인 PWM x2, DIR GPIO x2 구조와 잘 맞는다.
+- MDD10A는 3.3 V logic input을 지원하므로 NUCLEO-F446RE와 직접 interface하기 쉽다.
 
 Consequence:
 
-- Pin allocation은 두 motor용 4개 PWM output을 지원해야 한다.
-- Firmware는 `RPWM`과 `LPWM`이 동시에 active되지 않음을 보장해야 한다.
+- Pin allocation은 두 motor용 PWM output 2개와 DIR GPIO 2개를 지원해야 한다.
+- Firmware는 방향 전환 전에 PWM을 0으로 낮춘 뒤 `DIR`을 바꿔야 한다.
+- BTS7960 dual-PWM 검증 문서는 현재 architecture에서는 superseded 기록으로 취급한다.
 
 ## ADR-009: Fuse, Main Switch, LiPo Alarm 사용
 
@@ -261,12 +264,34 @@ Consequence:
 
 - 모든 command path는 command validation, timeout, state machine, safety gate를 통과한다.
 
+## ADR-013: A-to-Z 학습 문서는 실습 경로이고 시스템 아키텍처가 canonical contract
+
+Status: Accepted
+
+Decision:
+
+- ROS 2, CAN, FreeRTOS 학습은 별도 A-to-Z 문서와 Practice 경로로 진행한다.
+- Project-specific interface contract, owner, safety rule, CAN frame definition은 `01_System_Architecture` 문서를 canonical source로 둔다.
+
+Reason:
+
+- 학습 문서는 따라 하기와 개념 이해를 위한 경로다.
+- 실제 robot integration에서는 command ownership, safety gate, frame byte layout이 흔들리면 안 된다.
+- 학습 예시와 프로젝트 contract가 충돌하면 디버깅 비용이 커진다.
+
+Consequence:
+
+- CAN 실습 payload는 `14_CAN_Bus_Integration_Plan_ko.md`의 frame table과 맞춰야 한다.
+- FreeRTOS 실습 task 구조는 `13_FreeRTOS_Task_Architecture_ko.md`의 owner rule과 맞춰야 한다.
+- ROS 2 bridge 실습은 `11_System_Block_Diagram_and_Interface_Map_ko.md`의 STM32 safety authority를 우회하면 안 된다.
+
 ## Rejected or Deferred Alternatives
 
 | Alternative | Status | Reason |
 | --- | --- | --- |
 | MCU GPIO 직접 motor drive | Rejected | MCU는 motor current를 공급할 수 없다 |
 | TB6612FNG as main drivetrain driver | Main drivetrain에서는 rejected | Tracked platform current risk에 작다 |
+| BTS7960 as first drivetrain driver | Superseded | 동작 가능하지만 MDD10A보다 배선, PWM channel, 검증 복잡도가 크다 |
 | ESP32 as primary motor controller | Rejected | STM32가 deterministic low-level control에 더 적합 |
 | CAN in first bring-up | Deferred | Wiring/debug complexity가 너무 이르다 |
 | FreeRTOS from day one | Deferred | Peripheral bring-up 문제를 가릴 수 있다 |
@@ -278,13 +303,13 @@ Consequence:
 
 | Topic | Open question |
 | --- | --- |
-| Final PWM timer channels | CubeMX validation 이후 NUCLEO-F446RE에서 어떤 4개 PWM-capable pin이 최선인가? |
+| Final PWM/DIR pins | CubeMX validation 이후 NUCLEO-F446RE에서 PB6/PB7 PWM과 PC8/PC9 DIR 후보가 충돌 없이 동작하는가? |
 | Encoder source quality | 어떤 motor encoder가 동작하고 counts per revolution은 얼마인가? |
 | CAN hardware | 어떤 CAN transceiver와 USB-CAN adapter를 구매할 것인가? |
 | Battery voltage divider | 정확한 resistor value와 ADC calibration |
-| PWM frequency | BTS7960과 motor에 적합한 final frequency |
+| PWM frequency | MDD10A와 motor에 적합한 final frequency |
 | Motor current measurement | Current sensor를 추가할지 외부 측정으로 진행할지 |
-| ROS2 bridge path | Future ROS2 command를 UART, CAN, ESP32, PC bridge 중 무엇으로 연결할지 |
+| ROS2 bridge path | 학습/시뮬레이션은 ROS 2 Humble에서 시작한다. 실제 command transport는 UART first, CAN later 중 무엇으로 연결할지 |
 | Odometry calibration | Effective track width와 distance-per-count 값 |
 
 ## Evidence Roadmap
@@ -299,6 +324,7 @@ Consequence:
 | CAN | Loopback log, `candump`, heartbeat timeout |
 | LL migration | Before/after timing and regression checklist |
 | Odometry | Straight and rotation test plots |
+| ROS 2 simulation | RViz2 TF screenshot, Gazebo diff-drive test, `/cmd_vel` to `/odom` flow |
 
 ## Final Architecture Summary
 
@@ -307,7 +333,7 @@ Current architecture direction:
 ```text
 3S LiPo + fuse + switch
         |
-        +-- BTS7960 motor power
+        +-- MDD10A motor power
         |
         +-- buck converters
                 |
@@ -316,7 +342,7 @@ Current architecture direction:
                 +-- sensors
 
 STM32
-    +-- PWM -> BTS7960
+    +-- PWM/DIR -> MDD10A
     +-- timer encoder mode -> motor encoders
     +-- ADC -> battery monitor
     +-- UART -> PC/ESP32 first command path

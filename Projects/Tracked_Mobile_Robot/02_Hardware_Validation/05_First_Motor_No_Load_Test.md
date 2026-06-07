@@ -2,9 +2,9 @@
 
 ## 목적
 
-이 문서는 motor 1개와 BTS7960 1개를 사용해 첫 low-duty no-load motor test를 수행하는 절차를 정의한다.
+이 문서는 motor 1개와 MDD10A 1개 channel을 사용해 첫 low-duty no-load motor test를 수행하는 절차를 정의한다.
 
-목표는 chassis 전체를 움직이기 전에 한쪽 motor path에서 power, driver, PWM, enable, direction, encoder behavior를 안전하게 확인하는 것이다.
+목표는 chassis 전체를 움직이기 전에 한쪽 motor path에서 power, driver, PWM, direction, encoder behavior를 안전하게 확인하는 것이다.
 
 ## Test Scope
 
@@ -23,7 +23,7 @@
 - High duty test
 - Fuse rating을 원인 분석 없이 올리기
 - Encoder sign 모르는 상태로 closed-loop 제어
-- `RPWM`/`LPWM` 동시 active
+- PWM이 0이 아닌 상태에서 DIR 전환
 
 ## Required Preconditions
 
@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | Power path checked | `01_Power_Bringup_Checklist.md` | TBD |
 | Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | TBD |
-| BTS7960 logic input safe | `03_BTS7960_Logic_Input_Test.md` | TBD |
+| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | TBD |
 | Encoder signal voltage checked | `04_Encoder_Signal_Safety_Test.md` | TBD |
 | Motor fixed or lifted safely | Physical setup | TBD |
 | 10 A or 15 A fuse selected | Test stage | TBD |
@@ -42,16 +42,15 @@
 3S LiPo +
     -> fuse
     -> switch
-    -> BTS7960 B+
+    -> MDD10A POWER+
 
 3S LiPo -
-    -> BTS7960 B-
+    -> MDD10A POWER-
     -> common logic GND
 
-STM32 PWM_A -> BTS7960 RPWM
-STM32 PWM_B -> BTS7960 LPWM
-STM32 GPIO  -> BTS7960 enable
-Motor leads -> BTS7960 M+ / M-
+STM32 PWM -> MDD10A PWM1 or PWM2
+STM32 DIR -> MDD10A DIR1 or DIR2
+Motor leads -> MDD10A selected channel output
 Encoder A/B -> STM32 timer encoder inputs if validated safe
 ```
 
@@ -60,7 +59,7 @@ Encoder A/B -> STM32 timer encoder inputs if validated safe
 | Item | Value |
 | --- | --- |
 | Motor under test | TBD |
-| BTS7960 module | TBD |
+| MDD10A channel | TBD |
 | Fuse rating | TBD |
 | Battery voltage before test | TBD |
 | PWM frequency | TBD |
@@ -82,16 +81,15 @@ Motor load: lifted/no-load
 Procedure:
 
 1. Keep STM32 in disarmed state.
-2. Connect motor to BTS7960.
+2. Connect motor to selected MDD10A channel.
 3. Switch ON.
 4. Confirm motor does not move.
-5. Confirm enable disabled and PWM zero.
+5. Confirm PWM zero.
 6. Check heat/noise/smell.
 
 | Check | Expected | Observed |
 | --- | --- | --- |
 | Motor movement at boot | None | TBD |
-| Enable state | Disabled | TBD |
 | PWM state | Zero | TBD |
 | Heat/smell/noise | None | TBD |
 
@@ -107,8 +105,8 @@ Procedure:
 
 | Item | Expected | Observed |
 | --- | --- | --- |
-| RPWM | Low duty | TBD |
-| LPWM | 0 | TBD |
+| PWMx | Low duty | TBD |
+| DIRx | Forward mapping | TBD |
 | Motor direction | Forward candidate | TBD |
 | Encoder count sign | Expected positive after mapping | TBD |
 | Stop behavior | PWM zero | TBD |
@@ -124,8 +122,8 @@ Procedure:
 
 | Item | Expected | Observed |
 | --- | --- | --- |
-| RPWM | 0 | TBD |
-| LPWM | Low duty | TBD |
+| PWMx | Low duty | TBD |
+| DIRx | Reverse mapping | TBD |
 | Motor direction | Reverse candidate | TBD |
 | Encoder count sign | Opposite of forward | TBD |
 | Stop behavior | PWM zero | TBD |
@@ -142,7 +140,7 @@ Procedure:
 | --- | --- | --- |
 | Command age exceeds timeout | Yes | TBD |
 | PWM after timeout | 0 | TBD |
-| Enable after timeout | Disabled or safe idle | TBD |
+| Motor output permission after timeout | Disabled or safe idle | TBD |
 | Motor movement | Stops | TBD |
 
 ## Test 5: Heat and Current Observation
@@ -152,7 +150,7 @@ If current measurement is available, record it. If not, record qualitative obser
 | Item | Before | After | Notes |
 | --- | --- | --- | --- |
 | Battery voltage | TBD | TBD | TBD |
-| BTS7960 temperature | TBD | TBD | TBD |
+| MDD10A temperature | TBD | TBD | TBD |
 | Motor temperature | TBD | TBD | TBD |
 | Wire/connector temperature | TBD | TBD | TBD |
 | Fuse condition | TBD | TBD | TBD |
@@ -164,11 +162,11 @@ Stop immediately if:
 - Motor moves at boot or disarmed state
 - Motor does not stop on command stop
 - Command timeout does not stop output
-- BTS7960 heats quickly
+- MDD10A heats quickly
 - Motor or wire heats
 - Fuse blows
 - Encoder count behaves impossibly
-- RPWM and LPWM are active together
+- DIR changes while PWM is nonzero
 - Battery voltage sags abnormally
 
 ## Result Summary

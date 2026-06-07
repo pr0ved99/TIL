@@ -2,7 +2,7 @@
 
 ## 목적
 
-이 문서는 left/right motor와 BTS7960 2개를 모두 사용해 궤도차량 drivetrain을 저속으로 검증하는 절차를 정의한다.
+이 문서는 left/right motor와 MDD10A dual-channel driver를 사용해 궤도차량 drivetrain을 저속으로 검증하는 절차를 정의한다.
 
 목표는 한쪽 motor 단독 검증 이후, 좌우 방향, encoder sign, straight motion, rotation, timeout stop, heat behavior를 chassis 수준에서 확인하는 것이다.
 
@@ -12,7 +12,7 @@
 | --- | --- |
 | Power bring-up | Passed |
 | Buck calibration | Passed if buck-powered electronics used |
-| BTS7960 logic input | Passed |
+| MDD10A logic input | Passed |
 | Encoder signal safety | Passed or encoder disconnected intentionally |
 | Left motor no-load | Passed |
 | Right motor no-load | Passed |
@@ -49,7 +49,7 @@ Configuration:
 
 Procedure:
 
-1. Connect both BTS7960 modules and motors.
+1. Connect MDD10A and both motors.
 2. Keep robot lifted.
 3. Power ON.
 4. Confirm no motor moves at boot.
@@ -59,8 +59,6 @@ Procedure:
 | --- | --- | --- |
 | Left motor movement at boot | None | TBD |
 | Right motor movement at boot | None | TBD |
-| Left enable | Disabled | TBD |
-| Right enable | Disabled | TBD |
 | PWM outputs | Zero | TBD |
 
 ## Test 2: Left/Right Independent Direction
@@ -171,8 +169,7 @@ Procedure:
 | Item | Before | After | Notes |
 | --- | --- | --- | --- |
 | Battery voltage | TBD | TBD | TBD |
-| Left BTS7960 temp | TBD | TBD | TBD |
-| Right BTS7960 temp | TBD | TBD | TBD |
+| MDD10A temp | TBD | TBD | TBD |
 | Left motor temp | TBD | TBD | TBD |
 | Right motor temp | TBD | TBD | TBD |
 | Main wire/connector temp | TBD | TBD | TBD |

@@ -82,8 +82,7 @@ CAN은 motor control owner가 아니다. CAN은 command transport다.
 
 STM32가 계속 소유해야 하는 것:
 
-- PWM output
-- BTS7960 enable
+- MDD10A PWM/DIR output
 - encoder counting
 - battery voltage safety
 - command timeout
@@ -331,7 +330,7 @@ Ubuntu에서 CAN을 다루려면 SocketCAN-compatible USB-CAN adapter가 가장 
 ip link
 sudo ip link set can0 up type can bitrate 500000
 candump can0
-cansend can0 110#6400000001000000
+cansend can0 110#0100640000002C01
 ```
 
 필요 도구:
@@ -419,10 +418,9 @@ CAN은 물리 계층 문제가 software bug처럼 보이기 쉽다.
 ```text
 ID: 0x110 MOTION_CMD
 DLC: 8
-byte 0-1: vx_mmps, int16 little-endian
-byte 2-3: wz_mradps, int16 little-endian
-byte 4: enable_flags
-byte 5: sequence
+byte 0-1: seq, uint16 little-endian
+byte 2-3: vx_mmps, int16 little-endian
+byte 4-5: wz_mradps, int16 little-endian
 byte 6-7: timeout_ms, uint16 little-endian
 ```
 
@@ -433,13 +431,11 @@ byte 6-7: timeout_ms, uint16 little-endian
 ```text
 ID: 0x200 STATUS
 DLC: 8
-byte 0: firmware_state
-byte 1: fault_flags_low
-byte 2: fault_flags_high
-byte 3: command_age_10ms
-byte 4-5: battery_mv, uint16 little-endian
-byte 6: heartbeat_counter
-byte 7: reserved
+byte 0: safety_state
+byte 1: fault_code
+byte 2-3: battery_mv, uint16 little-endian
+byte 4-5: cmd_age_ms, uint16 little-endian
+byte 6-7: uptime_100ms, uint16 little-endian
 ```
 
 ### 10.3 안전 규칙

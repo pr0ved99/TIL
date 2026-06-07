@@ -9,18 +9,17 @@ Tracked mobile robot 하부제어기에 사용할 CAN command/telemetry frame을
 ```text
 ID: 0x110
 DLC: 8
-byte 0-1: vx_mmps, int16 little-endian
-byte 2-3: wz_mradps, int16 little-endian
-byte 4: enable_flags
-byte 5: sequence
+byte 0-1: seq, uint16 little-endian
+byte 2-3: vx_mmps, int16 little-endian
+byte 4-5: wz_mradps, int16 little-endian
 byte 6-7: timeout_ms, uint16 little-endian
 ```
 
 예시:
 
 ```bash
-# vx=100 mm/s, wz=0 mrad/s, enable=1, seq=1, timeout=300 ms
-cansend can0 110#6400000001012C01
+# seq=1, vx=100 mm/s, wz=0 mrad/s, timeout=300 ms
+cansend can0 110#0100640000002C01
 ```
 
 ## Status telemetry frame
@@ -28,12 +27,11 @@ cansend can0 110#6400000001012C01
 ```text
 ID: 0x200
 DLC: 8
-byte 0: firmware_state
-byte 1-2: fault_flags
-byte 3: command_age_10ms
-byte 4-5: battery_mv
-byte 6: heartbeat_counter
-byte 7: reserved
+byte 0: safety_state
+byte 1: fault_code
+byte 2-3: battery_mv
+byte 4-5: cmd_age_ms
+byte 6-7: uptime_100ms
 ```
 
 ## 안전 규칙

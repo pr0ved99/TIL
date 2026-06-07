@@ -164,7 +164,7 @@ NUCLEO-F446RE는 STM32F446RE 계열로 보면 된다. Table 2 기준으로 F446R
 
 - 좌/우 모터 PWM 출력
 - 방향 제어 GPIO
-- enable 또는 brake 제어 GPIO
+- direction GPIO와 선택적 power gate/brake 제어 GPIO
 
 Table 2 기준 판단:
 

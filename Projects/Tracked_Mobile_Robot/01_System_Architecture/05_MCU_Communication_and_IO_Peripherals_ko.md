@@ -27,7 +27,7 @@
 | PC 명령과 debug log | USART/UART 또는 ST-LINK virtual COM port 경로 |
 | ESP32-S3 보조 컨트롤러 연결 | USART/UART |
 | BNO08x IMU | I2C 우선, SPI/UART 대안 |
-| 모터 드라이버 방향/enable/brake | GPIO |
+| 모터 드라이버 방향과 선택적 power gate/brake | GPIO |
 | 모터 속도 명령 | Timer PWM, 타이머 문서에서 배정 |
 | 엔코더 입력 | Timer encoder mode, 타이머 문서에서 배정 |
 | 3S LiPo 전압 감시 | 저항 분배 후 ADC |
@@ -242,7 +242,7 @@ GPIO는 General-Purpose Input/Output의 약자다. 디지털 입력, 디지털 �
 GPIO는 다음에 필요하다.
 
 - 모터 드라이버 direction pin
-- 모터 드라이버 enable 또는 brake pin
+- 선택적 motor power gate 또는 brake pin
 - 가능하다면 driver fault input
 - User button 또는 emergency-stop signal
 - Status LED
@@ -261,10 +261,10 @@ GPIO는 다음에 필요하다.
 
 권장 접근:
 
-- Motor enable pin은 reset 중 기본적으로 disabled가 되도록 한다.
+- Motor PWM pin은 reset 중 기본적으로 zero가 되도록 한다.
 - 필요에 따라 pull-down 또는 pull-up 저항을 사용한다.
-- 펌웨어는 startup 중 motor output을 명시적으로 disable해야 한다.
-- PWM은 direction과 enable pin이 알려진 상태가 된 뒤 시작한다.
+- 펌웨어는 startup 중 motor output을 명시적으로 zero로 유지해야 한다.
+- PWM은 direction pin이 알려진 상태가 된 뒤 시작한다.
 
 ## 7. ADC
 
@@ -379,7 +379,7 @@ interface에 의존한다.
 | ESP32-S3 link | USART/UART | PC serial control이 동작한 뒤 추가. |
 | BNO08x IMU | I2C 우선, SPI/UART fallback | I2C로 단순하게 시작. |
 | Motor driver direction | GPIO | 안전한 기본 상태 사용. |
-| Motor driver enable/brake | GPIO | Reset 시 disabled가 기본. |
+| Optional motor power gate/brake | GPIO | 별도 회로를 추가할 때만 사용, reset 시 off가 기본. |
 | Battery voltage monitor | ADC | 저항 분배와 software threshold부터 사용. |
 | Future CAN bus | bxCAN + transceiver | UART MVP 이후로 연기. |
 | Firmware debug | ST-LINK를 통한 SWD | 개발 중 보존. |
@@ -424,7 +424,7 @@ STM32F446RE는 초기 궤도 로봇 MVP에 필요한 통신 및 I/O 자원이 �
 
 1. PC command와 debug에는 USART/UART 경로 하나를 먼저 사용한다.
 2. BNO08x IMU의 첫 interface 후보는 I2C로 둔다.
-3. Motor direction과 enable/brake는 안전한 기본 상태를 가진 GPIO로 제어한다.
+3. Motor direction은 안전한 기본 상태를 가진 GPIO로 제어하고, power gate/brake는 별도 회로가 생길 때만 추가한다.
 4. LiPo 전압 감시는 저항 분배 후 ADC로 수행한다.
 5. SWD는 debugging을 위해 보존한다.
 6. CAN은 UART 기반 MVP가 검증될 때까지 미룬다.
@@ -444,7 +444,7 @@ Pin allocation은 다음을 포함해야 한다.
 
 - 좌/우 motor PWM
 - 좌/우 encoder A/B
-- Motor direction과 enable GPIO
+- Motor direction GPIO와 optional power gate/brake GPIO
 - PC용 UART
 - ESP32-S3용 optional UART
 - IMU용 I2C

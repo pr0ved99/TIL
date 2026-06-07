@@ -49,7 +49,7 @@ CAN은 motor-control owner나 safety owner를 바꾸지 않는다.
 STM32는 계속 다음 책임을 가진다.
 
 - Motor PWM output
-- BTS7960 enable control
+- MDD10A PWM/DIR output control
 - Encoder counting
 - Battery voltage safety
 - Command timeout
@@ -57,6 +57,15 @@ STM32는 계속 다음 책임을 가진다.
 - Final motor output gating
 
 CAN은 motion을 요청할 수 있지만, motion 허용 여부는 STM32가 결정한다.
+
+### 최신 학습 경로와 canonical contract
+
+이 문서는 프로젝트 CAN interface의 canonical ID map과 frame definition을 정의한다.
+
+- [`../../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md`](../../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md): NUCLEO-F446RE CAN A-to-Z 학습 지도
+- [`../../../Embedded/STM32/CAN/Practice/README.md`](../../../Embedded/STM32/CAN/Practice/README.md): `[C00]`부터 `[C06]`까지의 CAN 실습 경로
+
+학습 문서의 예시 payload나 실습 명령은 이 문서의 `## 8. 초기 CAN ID Map`과 `## 9. Frame Definitions`를 따라야 한다.
 
 ## 1. 이 프로젝트에서 쓰는 CAN 용어
 
@@ -450,7 +459,7 @@ CAN-related fault cases:
 | Invalid DLC | DLC가 frame definition과 다름 | Frame reject |
 | Invalid value | Command가 limit 초과 | Clamp 또는 reject |
 | Bus-off | CAN controller error state | Safe stop, fault report |
-| Wrong bitrate | Frame 없음 또는 error counter 증가 | Motor enable 금지 |
+| Wrong bitrate | Frame 없음 또는 error counter 증가 | Nonzero motor output 금지 |
 | Reversed CANH/CANL | Communication 없음 또는 error 다수 | Test 중지 후 wiring 수정 |
 | Missing termination | Communication 불안정 | Physical bus 수정 |
 | Transceiver mismatch | Logic 또는 power incompatibility | Test 중지, module 교체 |

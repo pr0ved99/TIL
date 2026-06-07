@@ -18,7 +18,7 @@ Firmware보다 먼저 확인할 것:
 - Fuse and switch path
 - Buck converter output voltage
 - Common ground
-- Motor driver enable default state
+- Motor PWM zero default state
 - PWM output zero at boot
 - Encoder signal voltage
 
@@ -28,7 +28,7 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | 1 | `01_Power_Bringup_Checklist.md` | Battery, fuse, switch, wiring, no-load power checks |
 | 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015/XL4016 calibration and load validation |
-| 3 | `03_BTS7960_Logic_Input_Test.md` | BTS7960 logic input behavior before motor power |
+| 3 | `03_MDD10A_Logic_Input_Test.md` | MDD10A PWM/DIR logic behavior before motor power |
 | 4 | `04_Encoder_Signal_Safety_Test.md` | Encoder voltage and STM32-safe signal validation |
 | 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
@@ -54,7 +54,7 @@ Firmware보다 먼저 확인할 것:
 - Fuse rating은 테스트 단계에 맞게 낮은 값부터 시작한다.
 - Motor current는 perfboard copper trace로 흘리지 않는다.
 - Unknown encoder output은 STM32에 바로 연결하지 않는다.
-- Motor driver enable은 reset 중 disabled가 기본이어야 한다.
+- Motor PWM은 reset 중 zero가 기본이어야 한다.
 
 ## Current Validation Status
 
@@ -62,7 +62,7 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | Power path | Not started | TBD |
 | Buck converter output | Not started | TBD |
-| BTS7960 logic input | Not started | TBD |
+| MDD10A logic input | Not started | TBD |
 | Encoder signal voltage | Not started | TBD |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |

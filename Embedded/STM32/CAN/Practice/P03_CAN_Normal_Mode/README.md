@@ -51,7 +51,7 @@ candump can0
 ## PC -> STM32 확인
 
 ```bash
-cansend can0 110#6400000001000000
+cansend can0 110#0100640000002C01
 ```
 
 STM32 수신 callback에서 ID `0x110`과 data를 확인한다.

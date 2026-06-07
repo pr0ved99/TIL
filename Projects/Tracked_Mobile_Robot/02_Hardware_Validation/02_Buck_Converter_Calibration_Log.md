@@ -138,5 +138,5 @@ Stop immediately if:
 Buck converter가 안전하게 조정되면 다음 문서로 진행한다.
 
 ```text
-03_BTS7960_Logic_Input_Test.md
+03_MDD10A_Logic_Input_Test.md
 ```

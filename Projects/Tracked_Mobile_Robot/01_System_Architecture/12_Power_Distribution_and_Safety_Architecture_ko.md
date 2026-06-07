@@ -43,7 +43,7 @@ Robot은 초기 기준으로 세 개의 power domain을 가진다.
 | Domain | Source | Loads | Notes |
 | --- | --- | --- | --- |
 | Battery domain | 3S LiPo | fuse, switch, buck input, motor rail | 에너지가 크고 위험도가 가장 높음 |
-| Motor domain | switched battery rail | BTS7960 `B+`/`B-`, DC motor | noise와 high current가 큼 |
+| Motor domain | switched battery rail | MDD10A `POWER+`/`POWER-`, DC motor | noise와 high current가 큼 |
 | Logic domain | buck converter output | STM32, ESP32, sensor, driver logic | regulated low-voltage electronics |
 
 신호가 domain을 넘나드는 지점에서는 기준 ground를 공유해야 하지만, 실제 current path는 가능한 한
@@ -68,9 +68,7 @@ Robot은 초기 기준으로 세 개의 power domain을 가진다.
     |
     +-- switched battery rail
             |
-            +-- BTS7960 left motor driver B+
-            |
-            +-- BTS7960 right motor driver B+
+            +-- MDD10A motor driver POWER+
             |
             +-- XL4015 #1 input
             |
@@ -173,8 +171,8 @@ Requirements:
 Main switch 하나만으로 emergency-stop 설계가 완성되는 것은 아니다.
 ```
 
-Firmware는 fault, timeout, disarm, startup 상황에서 여전히 PWM을 0으로 만들고 BTS7960 enable pin을
-disable해야 한다.
+Firmware는 fault, timeout, disarm, startup 상황에서 여전히 MDD10A PWM을 0으로 만들고
+nonzero motor output을 차단해야 한다.
 
 ## 7. Buck Converter Architecture
 
@@ -211,7 +209,7 @@ Ground model:
 ```text
 Battery negative
     |
-    +-- motor current return path to BTS7960 modules
+    +-- motor current return path to MDD10A
     |
     +-- buck converter negative input
             |
@@ -220,12 +218,12 @@ Battery negative
                     +-- STM32 GND
                     +-- ESP32 GND
                     +-- sensor GND
-                    +-- BTS7960 logic GND
+                    +-- MDD10A logic GND
 ```
 
 Rules:
 
-- PWM/enable signal이 동작하려면 STM32와 BTS7960 logic GND가 common이어야 한다.
+- PWM/DIR signal이 동작하려면 STM32와 MDD10A logic GND가 common이어야 한다.
 - UART가 동작하려면 ESP32와 STM32 GND가 common이어야 한다.
 - I2C/ADC signal이 동작하려면 sensor GND와 STM32 GND가 common이어야 한다.
 - Thin signal ground wire로 high motor current가 흐르지 않게 한다.
@@ -233,22 +231,22 @@ Rules:
 
 ## 9. Motor Power Safety
 
-BTS7960 module은 motor power rail과 motor 사이에 위치한다.
+MDD10A module은 motor power rail과 motor 사이에 위치한다.
 
 Rules:
 
 - Logic output behavior를 검증한 뒤 motor power를 연결한다.
 - STM32 PWM pin은 zero duty로 시작해야 한다.
-- BTS7960 enable pin은 STM32 reset 중 disabled가 기본이어야 한다.
-- Reset behavior가 불확실하면 enable에 external pull-down을 추가한다.
-- 한 motor에서 `RPWM`과 `LPWM`은 동시에 active가 되면 안 된다.
+- STM32 PWM pin은 reset 중 zero 또는 input-safe 상태가 기본이어야 한다.
+- Reset behavior가 불확실하면 PWM line에 external pull-down 또는 별도 power gate를 추가한다.
+- 방향 전환 전에는 해당 motor PWM을 0으로 낮춘다.
 - 첫 motor test는 robot을 들어 올리거나 track load를 제거한 상태에서 low duty로 진행한다.
 
 Recommended staged motor tests:
 
 | Stage | Motor power | Motor load | Goal |
 | --- | --- | --- | --- |
-| M0 | disconnected | none | STM32 PWM과 enable pin 확인 |
+| M0 | disconnected | none | STM32 PWM/DIR pin 확인 |
 | M1 | connected | 가능하면 motor를 track에서 분리 | Driver output behavior 확인 |
 | M2 | connected | wheels/tracks lifted | Direction과 low-duty response 확인 |
 | M3 | connected | chassis on ground | Low-speed motion only |
@@ -259,10 +257,10 @@ Recommended staged motor tests:
 
 | Signal | Protection candidate | Reason |
 | --- | --- | --- |
-| STM32 PWM to BTS7960 | 100-330 ohm series resistor | Wiring mistake 시 fault current 제한 |
+| STM32 PWM/DIR to MDD10A | 100-330 ohm series resistor | Wiring mistake 시 fault current 제한 |
 | UART TX lines | 100-330 ohm series resistor | 초기 cross-board test risk 감소 |
 | Encoder outputs | 필요 시 level shifter 또는 divider | Output이 STM32 input limit을 넘으면 필요 |
-| Enable lines | pull-down resistor | Reset 중 motor driver disabled 유지 |
+| PWM lines | pull-down resistor | Reset 중 PWM zero 유지 |
 
 STM32에 직접 연결하기 전에 encoder voltage를 측정해야 한다.
 
@@ -333,11 +331,10 @@ Checklist:
 
 Checklist:
 
-- BTS7960 logic side를 연결한다.
+- MDD10A logic side를 연결한다.
 - 가능하면 motor power를 disable하거나 motor를 분리한다.
-- Enable pin이 boot 시 disabled인지 확인한다.
 - PWM pin이 boot 시 zero인지 확인한다.
-- Direction logic 확인 후에만 low-duty output을 명령한다.
+- DIR logic 확인 후에만 low-duty output을 명령한다.
 
 ### Stage E: Low-Power Motor Test
 
@@ -356,7 +353,7 @@ Normal shutdown:
 
 1. `DISARM` 또는 stop command를 보낸다.
 2. PWM output이 zero인지 확인한다.
-3. Motor driver enable pin을 disable한다.
+3. Nonzero motor output이 차단됐는지 확인한다.
 4. Main switch를 끈다.
 5. LiPo battery를 분리한다.
 6. Motor driver와 buck converter가 따뜻하면 식힌다.
@@ -380,7 +377,7 @@ Emergency shutdown:
 | Buck output | 별도 지정 없으면 5.0 V target | MCU 연결 전 |
 | STM32 5 V/3.3 V rails | Board-allowed range 안에 있음 | Logic-only power |
 | ESP32 power rail | Board-allowed range 안에 있음 | Logic-only power |
-| BTS7960 logic VCC | Module-required logic voltage | Driver logic test |
+| MDD10A logic input | 3.3 V PWM/DIR signal | Driver logic test |
 | STM32 GND와 driver GND 사이 전압 | 0 V에 가까움 | Signal test 전 |
 | Low duty 중 motor rail voltage | 심한 collapse 없음 | Low-speed motor test |
 
@@ -403,7 +400,7 @@ Decision:
 | Fault | Detection | Required response |
 | --- | --- | --- |
 | Low battery alarm sounds | Audible alarm | Test stop, disarm, LiPo disconnect |
-| STM32 ADC below stop threshold | Firmware | PWM zero, driver disable, fault report |
+| STM32 ADC below stop threshold | Firmware | PWM zero, fault report |
 | UART/CAN command timeout | Firmware | PWM zero, safe/disarmed state 유지 |
 | Buck output over target | Multimeter | MCU 연결 금지, converter 재조정 |
 | Reverse polarity found | Visual/multimeter | Power 금지, wiring 수정 |
@@ -436,9 +433,9 @@ motor의 기본 동작을 검증하는 단계다.
 - Main battery path가 fused and switched 상태다.
 - Buck converter output을 MCU 연결 전에 측정했다.
 - STM32/ESP32/sensor power가 raw battery voltage와 분리되어 있다.
-- BTS7960 motor current가 perfboard trace로 흐르지 않는다.
+- MDD10A motor current가 perfboard trace로 흐르지 않는다.
 - Common ground가 의도적으로 설계되고 문서화되어 있다.
-- Motor driver enable은 disabled가 기본이다.
+- Motor PWM은 zero가 기본이다.
 - LiPo test 중 low-voltage alarm을 사용한다.
 - 첫 powered test의 measurement log가 존재한다.
 

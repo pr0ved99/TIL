@@ -4,7 +4,7 @@
 
 이 문서는 궤도형 모바일 로봇에서 예상되는 fault case와 각 case의 required safe response를 정의한다.
 
-프로젝트는 3S LiPo battery, high-current DC motor, BTS7960 H-bridge driver, STM32 firmware, ESP32 support
+프로젝트는 3S LiPo battery, high-current DC motor, MDD10A motor driver, STM32 firmware, ESP32 support
 logic, 그리고 향후 CAN/ROS2 integration을 사용한다. 따라서 fault handling은 electrical failure와
 software failure를 모두 다뤄야 한다.
 
@@ -22,7 +22,7 @@ Robot은 fault가 발생하면 no motion 방향으로 실패해야 한다.
 핵심 규칙:
 
 ```text
-Controller가 확신할 수 없으면 motor output은 zero가 되고 driver enable은 disabled가 된다.
+Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor output은 차단된다.
 ```
 
 이 규칙은 UART, CAN, ESP32, ROS2, encoder, battery, firmware fault에 모두 적용된다.
@@ -42,7 +42,7 @@ Controller가 확신할 수 없으면 motor output은 zero가 되고 driver enab
 | Category | Examples |
 | --- | --- |
 | Power faults | Low voltage, buck overvoltage, reverse polarity, fuse trip |
-| Motor driver faults | BTS7960 heat, enable stuck, wrong PWM combination |
+| Motor driver faults | MDD10A heat, wrong PWM/DIR mapping, unsafe direction reversal |
 | Command faults | UART timeout, CAN heartbeat timeout, invalid command |
 | Sensor faults | Encoder stuck, encoder sign mismatch, IMU missing |
 | Firmware faults | Assertion failure, loop timing overrun, watchdog reset |
@@ -54,7 +54,7 @@ Controller가 확신할 수 없으면 motor output은 zero가 되고 driver enab
 
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
-| Boot not complete | Startup state | PWM zero, enable disabled 유지 | Init 완료 후 disarmed |
+| Boot not complete | Startup state | PWM zero 유지 | Init 완료 후 disarmed |
 | Command timeout | Command age가 timeout 초과 | Motor stop | Disarm/arm flow 이후 새 valid command |
 | CAN heartbeat timeout | Heartbeat missing | Motor stop | Bus reconnect, disarm/arm |
 | E-stop request | Command 또는 physical input | Stop latch | Explicit operator reset |
@@ -63,10 +63,9 @@ Controller가 확신할 수 없으면 motor output은 zero가 되고 driver enab
 | Buck output wrong | Multimeter check | Electronics 연결 금지 | Converter 조정/교체 |
 | Encoder stuck | Commanded motion but count change 없음 | Stop 또는 motion limit | Wiring/mechanics 점검 |
 | Encoder direction mismatch | Sign check 실패 | Closed-loop mode 진입 금지 | Sign mapping 수정 |
-| Driver enable unexpected | 가능하면 readback/test mismatch | Test stop | Wiring/pull-down 점검 |
-| RPWM and LPWM both active | Firmware assertion 또는 output audit | 둘 다 zero 강제 | Motor output code 수정 |
+| PWM active during direction change | Firmware assertion 또는 output audit | PWM zero 강제 | Motor output code 수정 |
 | Motor overheat | Operator touch/IR thermometer | Test stop | Cool down, load 감소 |
-| BTS7960 overheat | Operator check | Test stop | Cool down, mounting 개선 |
+| MDD10A overheat | Operator check | Test stop | Cool down, load 감소, 전류 여유 재검토 |
 | Fuse blows | Motor/robot power loss | Test stop | 원인 찾기 전 fuse 교체 금지 |
 | Watchdog reset | Reset cause register/log | Reboot 후 disarmed 유지 | Loop blocking 점검 |
 | CAN bus-off | CAN error state | Motor stop, fault report | Bus 수정, CAN reset |
@@ -137,11 +136,11 @@ Evidence:
 
 ## 5. Motor Driver Safety Cases
 
-### Case M1: Both Direction PWM Inputs Active
+### Case M1: Direction Change While PWM Is Active
 
 Risk:
 
-- Module design에 따라 undefined driver behavior, heating, shoot-through-like stress.
+- 정역 전환 순간 motor와 driver에 큰 stress가 걸릴 수 있다.
 
 Detection:
 
@@ -150,13 +149,13 @@ Detection:
 
 Required response:
 
-- 두 PWM channel을 zero로 설정.
-- 감지되면 driver enable disable.
+- 해당 channel PWM을 zero로 설정.
+- 감지되면 motor output을 차단하고 mapping을 수정한다.
 
 Rule:
 
 ```text
-Active channel을 적용하기 전에 inactive PWM channel을 zero로 설정한다.
+DIR을 변경하기 전에 해당 channel PWM을 zero로 설정한다.
 ```
 
 ### Case M2: Track Jam or Stall
@@ -176,7 +175,7 @@ Required response:
 - Motor output stop.
 - Operator inspection 요구.
 
-### Case M3: Driver Enable Unsafe During Reset
+### Case M3: PWM Active During Reset
 
 Risk:
 
@@ -188,7 +187,8 @@ Detection:
 
 Required response:
 
-- External pull-down 추가 또는 wiring 수정.
+- PWM pin의 reset/default 상태 수정.
+- 필요 시 external pull-down 또는 별도 power gate 추가.
 - Safe reset behavior 확인 전 motor power 연결 금지.
 
 ## 6. Communication Safety Cases
@@ -298,7 +298,7 @@ Detection:
 Required response:
 
 - PWM zero 강제.
-- Driver enable disable.
+- Motor output disabled.
 - Fault latch.
 
 ## 9. Operator Safety Cases
@@ -342,7 +342,7 @@ Fault log에는 다음이 포함되어야 한다.
 
 | Validation | Method | Pass condition |
 | --- | --- | --- |
-| Boot safe output | Logic only, motor disconnected | PWM zero, enable disabled |
+| Boot safe output | Logic only, motor disconnected | PWM zero |
 | Command timeout | Command 전송 중단 | Motor output stop |
 | E-stop | E-stop frame 또는 command 전송 | Fault latched, output disabled |
 | Low voltage simulated | Low ADC equivalent injection | Output disabled |

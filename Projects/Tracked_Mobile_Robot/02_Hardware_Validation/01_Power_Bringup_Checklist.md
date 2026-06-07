@@ -16,7 +16,7 @@
 - Main switch ON/OFF 동작 확인
 - Switched battery rail 전압 확인
 - Buck converter input 전압 확인
-- Motor driver power input 전압 확인
+- MDD10A motor power input 전압 확인
 
 이 단계에서 금지되는 것:
 
@@ -164,26 +164,25 @@ If buck output is not already known safe, do not connect it to STM32, ESP32, sen
 Condition:
 
 ```text
-BTS7960 motor output disconnected
-BTS7960 logic input may remain disconnected
+MDD10A motor output disconnected
+MDD10A logic input may remain disconnected
 Motor disconnected
 STM32 disconnected
 ```
 
 Procedure:
 
-1. Verify BTS7960 B+ and B- polarity.
+1. Verify MDD10A POWER+ and POWER- polarity.
 2. Switch ON briefly.
-3. Measure BTS7960 B+ to B- voltage.
+3. Measure MDD10A POWER+ to POWER- voltage.
 4. Check for heat, smell, smoke, abnormal sound.
 5. Switch OFF immediately after measurement.
 
 Measurements:
 
-| Driver | B+ to B- voltage | Heat/smell/noise | Result |
+| Driver | POWER+ to POWER- voltage | Heat/smell/noise | Result |
 | --- | --- | --- | --- |
-| Left BTS7960 | TBD | TBD | TBD |
-| Right BTS7960 | TBD | TBD | TBD |
+| MDD10A | TBD | TBD | TBD |
 
 ## Stop Conditions
 
@@ -212,7 +211,7 @@ Recovery rule:
 | Main switch | TBD | TBD |
 | Switched battery rail | TBD | TBD |
 | Buck input path | TBD | TBD |
-| BTS7960 motor power input | TBD | TBD |
+| MDD10A motor power input | TBD | TBD |
 
 ## Next Step
 

@@ -20,7 +20,8 @@
 핀 배정은 다음 기능을 지원해야 한다.
 
 - 좌/우 모터 PWM
-- 좌/우 모터 direction 및 enable/brake GPIO
+- 좌/우 모터 direction GPIO
+- 선택적 motor power gate 또는 brake GPIO 후보
 - 좌/우 quadrature encoder A/B 입력
 - PC command/debug serial link
 - 선택적 ESP32-S3 serial link
@@ -74,8 +75,8 @@ UM1724에서 사용한 중요한 사실:
 | 배터리 전압 ADC | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Candidate |
 | 왼쪽 모터 direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
 | 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
-| 왼쪽 모터 enable/brake | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate |
-| 오른쪽 모터 enable/brake | PC5 | GPIO output | ST morpho CN10 pin 6 | Candidate |
+| 왼쪽 선택적 power gate/brake | PC6 | GPIO output | ST morpho CN10 pin 4 | Optional |
+| 오른쪽 선택적 power gate/brake | PC5 | GPIO output | ST morpho CN10 pin 6 | Optional |
 | 선택적 ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
 | 선택적 ESP32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
 | 향후 CAN RX | PA11 | CAN1_RX | ST morpho CN10 pin 14 | Reserve |
@@ -186,24 +187,28 @@ PA4는 ADC12_IN4에 배정한다.
 - 최대 배터리 전압에서도 ADC 입력 범위 아래가 되도록 divider 값을 정한다.
 - STM32에 연결하기 전에 멀티미터로 분압 전압을 측정한다.
 
-### Motor Direction and Enable GPIO
+### Motor Direction and Optional Power Gate GPIO
 
-PC8, PC9, PC6, PC5를 GPIO output으로 배정한다.
+PC8, PC9를 MDD10A direction GPIO output으로 배정한다. PC6, PC5는 MDD10A 기본
+logic input에는 필요하지 않지만, 나중에 별도 motor power gate, brake, relay, interlock 회로를
+추가할 때를 위한 optional GPIO 후보로 남긴다.
 
 이유:
 
 - 이 핀들은 ST morpho에서 접근 가능하다.
 - 첫 serial, I2C, encoder, PWM, ADC, SWD 배정과 충돌하지 않는다.
+- MDD10A는 motor당 `PWM + DIR` 구조이므로 첫 MVP에는 PWM 2개와 DIR GPIO 2개면 충분하다.
 
 안전 요구사항:
 
-- Motor enable/brake pin은 reset 중 안전하게 disabled 상태가 되어야 한다.
-- 모터 드라이버 요구사항에 맞춰 외부 pull-down 또는 pull-up 저항을 사용한다.
+- Motor DIR pin은 PWM이 0인 상태에서만 방향 전환되도록 firmware에서 강제한다.
+- Optional power gate/brake pin을 실제 회로에 연결한다면 reset 중 안전한 off 상태가 되어야 한다.
+- 회로 요구사항에 맞춰 외부 pull-down 또는 pull-up 저항을 사용한다.
 
 확인:
 
 - Motor driver input logic level 확인
-- STM32 reset 또는 boot 중 motor output이 disabled 상태인지 확인
+- STM32 reset 또는 boot 중 PWM output이 0 상태인지 확인
 
 ### Optional ESP32 Serial
 
@@ -255,10 +260,11 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 5. TIM3 encoder mode를 PB4/PB5에 활성화한다.
 6. TIM5 encoder mode를 PA0/PA1에 활성화한다.
 7. PA4 ADC를 활성화한다.
-8. PC8, PC9, PC6, PC5를 GPIO output으로 설정한다.
-9. PA13/PA14의 SWD를 유지한다.
-10. 모든 warning과 pin conflict를 확인한다.
-11. 검증 후 `.ioc` 파일을 생성하고 commit한다.
+8. PC8, PC9를 MDD10A DIR GPIO output으로 설정한다.
+9. 필요 시 PC6, PC5를 optional power gate/brake GPIO로만 설정한다.
+10. PA13/PA14의 SWD를 유지한다.
+11. 모든 warning과 pin conflict를 확인한다.
+12. 검증 후 `.ioc` 파일을 생성하고 commit한다.
 
 벤치 검증 순서:
 
@@ -268,7 +274,7 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 4. PWM output 측정
 5. 손으로 모터를 돌리며 encoder count test
 6. 배터리 대신 bench voltage로 ADC divider 측정
-7. 모터 전원은 분리한 상태에서 motor driver enable safety test
+7. 모터 전원은 분리한 상태에서 MDD10A PWM/DIR logic safety test
 
 ## 1차 결정
 

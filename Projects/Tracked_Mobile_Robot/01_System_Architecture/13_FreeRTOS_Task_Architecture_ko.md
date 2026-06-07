@@ -45,6 +45,13 @@ Motor output 허용/차단은 safety logic이 결정한다.
 Communication task는 motion을 요청할 수 있지만 motor를 직접 구동하지 않는다.
 ```
 
+### 최신 학습 경로
+
+이 문서는 프로젝트의 task ownership과 architecture contract를 정의한다. 실제 학습과 실습은 아래 문서를 기준으로 진행한다.
+
+- [`../../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md`](../../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md): NUCLEO-F446RE FreeRTOS A-to-Z
+- [`../../../Embedded/STM32/RTOS/Practice/README.md`](../../../Embedded/STM32/RTOS/Practice/README.md): `[R00]`부터 `[R06]`까지의 실습 경로
+
 ## 1. 이 프로젝트에서 쓰는 FreeRTOS 용어
 
 | Term | Project meaning |
@@ -70,7 +77,7 @@ FreeRTOS는 HAL bare-metal baseline이 다음 조건을 만족하기 전에는 �
 - Battery voltage ADC path가 최소한 안전하게 정의되어 있다.
 - UART 또는 USB command input으로 stop과 low-speed motion을 요청할 수 있다.
 - Command timeout으로 motor output을 stop할 수 있다.
-- BTS7960 enable pin을 STM32가 제어한다.
+- MDD10A PWM/DIR output을 STM32가 제어한다.
 - Boot behavior에서 motor output이 disabled 상태다.
 
 이유:
@@ -83,10 +90,10 @@ FreeRTOS는 이미 동작하는 firmware를 구조화하는 도구다. 기본 �
 초기 task architecture:
 
 ```text
-                 UART / future CAN RX
+                 UART / CAN RX after standalone validation
                          |
                          v
-                    comm_task
+              comm_task or can_parser_task
                          |
                          v
                     command_queue
@@ -95,7 +102,7 @@ FreeRTOS는 이미 동작하는 firmware를 구조화하는 도구다. 기본 �
                  motor_control_task
                          |
                          v
-                PWM + BTS7960 enable
+                MDD10A PWM + DIR
 
 encoder timer counters ----+
                            |
@@ -120,7 +127,7 @@ Safety state는 output 허용 여부를 결정한다.
 | Task | Initial period | Priority | Responsibility |
 | --- | --- | --- | --- |
 | `motor_control_task` | 100 Hz | High | 최신 command/state 읽기, speed estimate, PWM update |
-| `safety_task` | 50-100 Hz | High | Fault check, low-voltage stop, timeout stop, enable gating |
+| `safety_task` | 50-100 Hz | High | Fault check, low-voltage stop, timeout stop, motor output gating |
 | `comm_task` | Event-driven 또는 100 Hz | Medium | UART receive, command parsing, 나중에 CAN receive |
 | `battery_task` | 10 Hz | Medium | ADC sampling, voltage filtering, low-voltage input to safety |
 | `imu_task` | 50-100 Hz | Medium | BNO08x sampling, yaw/attitude update |
@@ -257,7 +264,7 @@ compute left/right motor request
     v
 check safety state
     |
-    +-- unsafe -> PWM = 0, driver enable = disabled
+    +-- unsafe -> PWM = 0, motor output disabled
     |
     +-- safe   -> apply limited PWM command
 ```
@@ -335,7 +342,7 @@ Deferred responsibilities:
 중요 규칙:
 
 ```text
-comm_task는 PWM 또는 driver enable pin을 직접 쓰지 않는다.
+comm_task는 PWM 또는 DIR pin을 직접 쓰지 않는다.
 ```
 
 ## 12. Motor Control Task
@@ -352,7 +359,7 @@ Responsibilities:
 - 초기 open-loop 또는 closed-loop control 적용.
 - Motion request를 left/right motor command로 변환.
 - Safety gate result 적용.
-- BTS7960 PWM과 enable output update.
+- MDD10A PWM과 DIR output update.
 
 초기 control mode:
 
@@ -470,6 +477,7 @@ Future options:
 - CAN은 이후 standalone으로 검증한다.
 - CAN 통합 시 `comm_task` 확장 또는 `can_task` 추가 중 하나를 선택하되, 같은 `command_queue`와
   safety gate를 유지한다.
+- CAN RX ISR에서 queue로 parser task에 넘기는 실습은 [`../../../Embedded/STM32/RTOS/Practice/P06_CAN_RX_Queue_Integration/README.md`](../../../Embedded/STM32/RTOS/Practice/P06_CAN_RX_Queue_Integration/README.md)에 둔다.
 
 규칙:
 

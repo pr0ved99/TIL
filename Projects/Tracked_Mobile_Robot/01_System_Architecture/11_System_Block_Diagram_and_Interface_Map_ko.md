@@ -7,11 +7,12 @@
 이전 아키텍처 문서들을 하나의 시스템 관점으로 연결한다.
 
 - STM32는 하위 구동 제어와 safety를 담당한다.
-- BTS7960 motor driver는 STM32 logic command를 motor power로 변환한다.
+- MDD10A motor driver는 STM32 logic command를 motor power로 변환한다.
 - Encoder, IMU, battery sensing은 STM32에 feedback을 제공한다.
 - ESP32-S3는 telemetry, wireless UI, 추후 bridge를 위한 support controller다.
 - UART는 첫 STM32-ESP32 interface다.
 - CAN, FreeRTOS, LL Driver 전환, ROS2, LiDAR, SLAM은 후속 확장 phase다.
+- ROS 2 Humble, RViz2, Gazebo classic 11은 현재 노트북 학습/시뮬레이션 baseline으로 준비되어 있다.
 
 이 문서는 상세 wiring diagram이 아니다. 이후 배선, firmware, test 문서가 참조할 interface
 boundary 문서다.
@@ -26,7 +27,7 @@ boundary 문서다.
 - fuse와 main switch
 - logic power용 buck converter
 - STM32 NUCLEO-F446RE low-level controller
-- BTS7960 H-bridge motor driver module 2개
+- MDD10A dual-channel motor driver 1개
 - encoder가 달린 DC geared motor 2개
 - BNO08x IMU
 - ESP32-S3 DevKitC support controller
@@ -35,7 +36,7 @@ boundary 문서다.
 첫 MVP 밖에 있는 것:
 
 - CAN bus robot command interface
-- ROS2 bridge
+- ROS2 bridge implementation
 - LiDAR
 - SLAM/Nav2
 - 전체 autonomy stack
@@ -48,16 +49,33 @@ boundary 문서다.
 아직 자율주행일 필요는 없다.
 ```
 
+### 현재 Upper-Layer Baseline
+
+상위 계층은 아직 첫 drivetrain MVP에 연결하지 않지만, 학습과 시뮬레이션 환경은 준비됐다.
+
+| Layer | Current status | Architecture role |
+| --- | --- | --- |
+| ROS 2 Humble | 노트북 설치 및 기본 통신 확인 | future `/cmd_vel`, `/odom`, `/tf` bridge 학습 |
+| RViz2 | 실행 확인 | TF, robot model, odometry, sensor visualization |
+| Gazebo classic 11 | 실행 확인 | URDF/Gazebo diff-drive simulation 학습 |
+| ROS 2 A-to-Z | [`../../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md`](../../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md) | STM32 base bridge로 넘어가기 전 학습 순서 |
+
+규칙:
+
+```text
+ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM32 safety gate를 통과해야 한다.
+```
+
 ## 2. 상위 블록 다이어그램
 
 ```text
-                       Future expansion
-        +---------------------------------------------+
-        | PC / Jetson / ROS2 / LiDAR / SLAM / Nav2    |
-        | 첫 drivetrain MVP에서는 deferred             |
-        +----------------------+----------------------+
+                       Upper layer / future expansion
+        +------------------------------------------------------+
+        | Ubuntu ROS 2 Humble / RViz2 / Gazebo / Nav2 / LiDAR |
+        | 학습과 simulation은 준비됨, drivetrain MVP 연결은 후속 |
+        +----------------------+-------------------------------+
                                |
-                         future bridge
+                  future ROS2 bridge or operator bridge
                                |
 +------------------------------v-------------------------------+
 |                         ESP32-S3                              |
@@ -73,7 +91,7 @@ boundary 문서다.
 |  Low-level controller and safety owner                         |
 |                                                               |
 |  - command validation                                          |
-|  - motor enable gating                                         |
+|  - motor output gating                                         |
 |  - PWM generation                                              |
 |  - encoder counting                                            |
 |  - speed estimation                                            |
@@ -82,11 +100,11 @@ boundary 문서다.
 |  - timeout stop and fault state                                |
 +------+----------+----------+----------+----------+-------------+
        |          |          |          |          |
-   PWM/EN L   PWM/EN R   Encoder L  Encoder R    I2C / ADC
+   PWM/DIR L PWM/DIR R   Encoder L  Encoder R    I2C / ADC
        |          |          |          |          |
 +------v---+ +----v-----+ +--v-----+ +--v-----+ +--v------------+
-| BTS7960 L | | BTS7960 R| | Left   | | Right  | | BNO08x IMU / |
-| H-bridge  | | H-bridge | | encoder| | encoder| | battery ADC  |
+| MDD10A    | | MDD10A   | | Left   | | Right  | | BNO08x IMU / |
+| channel 1 | | channel 2| | encoder| | encoder| | battery ADC  |
 +-----+----+ +----+-----+ +--------+ +--------+ +---------------+
       |           |
       v           v
@@ -110,7 +128,7 @@ boundary 문서다.
     |
     +-- motor power rail --------------------+
     |                                        |
-    |                                  BTS7960 L/R B+
+    |                                  MDD10A POWER+
     |
     +-- buck converter input
              |
@@ -133,8 +151,8 @@ boundary 문서다.
 
 | Function | Owner | Notes |
 | --- | --- | --- |
-| Motor PWM output | STM32 | BTS7960 module 2개를 위해 PWM-capable output 4개 필요 |
-| Motor driver enable | STM32 | reset 중에는 disabled가 기본이어야 함 |
+| Motor PWM output | STM32 | MDD10A 좌/우 channel을 위해 PWM-capable output 2개 필요 |
+| Motor direction output | STM32 | MDD10A 좌/우 channel을 위해 DIR GPIO 2개 필요 |
 | Encoder counting | STM32 | RPM과 odometry에 필요 |
 | Battery voltage safety | STM32 | ESP32는 값을 표시할 수 있지만 safety 판단은 하지 않음 |
 | Command timeout | STM32 | valid command가 끊기면 motion stop |
@@ -158,8 +176,9 @@ Motion 허용 여부는 STM32가 결정한다.
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| Timer PWM x4 | STM32 -> BTS7960 | Left/right motor drivers | Forward/reverse duty control | Required |
-| GPIO enable x2 | STM32 -> BTS7960 | Left/right motor drivers | Driver enable gating | Required |
+| Timer PWM x2 | STM32 -> MDD10A | Left/right motor channels | Speed duty control | Required |
+| GPIO DIR x2 | STM32 -> MDD10A | Left/right motor channels | Forward/reverse direction control | Required |
+| GPIO power gate/brake x2 | STM32 -> optional external circuit | Motor power or brake circuit | 별도 회로가 생길 때만 사용 | Optional |
 | Timer encoder input | Motor encoder -> STM32 | Left encoder A/B | Count and direction | Required |
 | Timer encoder input | Motor encoder -> STM32 | Right encoder A/B | Count and direction | Required |
 | ADC input | Battery divider -> STM32 | Main battery monitor | Low-voltage decision | Required |
@@ -170,8 +189,8 @@ Motion 허용 여부는 STM32가 결정한다.
 
 이 문서에서 pin allocation은 확정하지 않는다.
 
-현재 아키텍처는 BTS7960 경로가 motor 2개에 대해 PWM output 4개를 요구하므로 이전 pin plan을
-수정해야 한다.
+현재 아키텍처는 MDD10A 경로가 motor 2개에 대해 PWM output 2개와 DIR GPIO 2개를 요구한다.
+따라서 기존 PB6/PB7 PWM, PC8/PC9 direction 후보를 유지할 수 있다.
 
 ## 6. ESP32-S3 Interface Map
 
@@ -188,25 +207,22 @@ ESP32-S3 후보 책임:
 
 ## 7. Motor Driver Interface Map
 
-Motor 하나당 BTS7960-class module 하나를 사용한다.
+MDD10A 1개로 left/right motor channel을 모두 제어한다.
 
-각 motor driver 기준:
+각 motor channel 기준:
 
 | Signal | Direction | Owner | Purpose |
 | --- | --- | --- | --- |
-| `RPWM` | STM32 -> BTS7960 | STM32 PWM timer | 한쪽 회전 방향 |
-| `LPWM` | STM32 -> BTS7960 | STM32 PWM timer | 반대쪽 회전 방향 |
-| `R_EN` | STM32 -> BTS7960 | STM32 GPIO | Driver 한쪽 enable |
-| `L_EN` | STM32 -> BTS7960 | STM32 GPIO | Driver 반대쪽 enable |
-| `VCC` | logic power -> BTS7960 | power system | Driver logic supply |
+| `PWM1`, `PWM2` | STM32 -> MDD10A | STM32 PWM timer | 좌/우 motor speed duty |
+| `DIR1`, `DIR2` | STM32 -> MDD10A | STM32 GPIO | 좌/우 motor direction |
 | `GND` | common ground | power system | Signal reference |
-| `B+`, `B-` | battery rail -> BTS7960 | power system | Motor power input |
-| `M+`, `M-` | BTS7960 -> motor | BTS7960 | Motor output |
+| `POWER+`, `POWER-` | battery rail -> MDD10A | power system | Motor power input |
+| `M1A/M1B`, `M2A/M2B` | MDD10A -> motor | MDD10A | Motor output |
 
 Firmware safety rule:
 
 ```text
-한 motor에서 RPWM과 LPWM을 동시에 active로 명령하면 안 된다.
+방향 전환 전에는 해당 channel의 PWM을 0으로 낮춘 뒤 DIR을 변경한다.
 ```
 
 ## 8. Sensor Interface Map
@@ -283,6 +299,45 @@ same STM32 safety gate
 
 CAN은 UART와 동일한 safety ownership model을 재사용해야 한다.
 
+### Future ROS2 Bridge Path
+
+ROS 2 bridge는 상위 계층에서 `/cmd_vel`을 받아 STM32가 이해하는 command transport로 변환한다.
+
+```text
+ROS 2 teleop / Nav2
+        |
+        v
+/cmd_vel
+        |
+        v
+base_bridge_node
+        |
+        +-- UART transport candidate
+        |
+        +-- CAN transport candidate
+        |
+        v
+STM32 command queue
+        |
+        v
+same STM32 safety gate
+```
+
+STM32에서 올라오는 encoder/safety/telemetry는 bridge node가 `/odom`, `/tf`, diagnostics 후보로 변환한다.
+
+```text
+STM32 telemetry
+        |
+        v
+base_bridge_node
+        |
+        +-- /odom
+        +-- /tf: odom -> base_footprint
+        +-- diagnostics/status
+```
+
+초기 ROS 2 검증은 실제 motor 없이 Gazebo/RViz에서 먼저 진행한다. 실제 robot 연결은 UART timeout, safety gate, low-speed motor test가 검증된 뒤 진행한다.
+
 ## 10. Software Block Map
 
 ### Phase 1: Bare-Metal HAL MVP
@@ -336,7 +391,7 @@ UART/CAN status publishing
 | Risk | Affected interface | Mitigation |
 | --- | --- | --- |
 | Motor noise가 MCU reset을 유발 | power/GND/PWM | power routing 분리, common ground, 짧은 signal wire, staged test |
-| BTS7960이 3.3 V input을 안정적으로 인식하지 못함 | STM32 -> BTS7960 logic | logic threshold bench-test, 필요 시 buffer/level shifter 추가 |
+| MDD10A PWM/DIR input wiring 오류 | STM32 -> MDD10A logic | logic-only PWM/DIR bench-test, channel mapping 기록 |
 | Encoder output이 STM32 input tolerance를 초과 | encoder -> STM32 | 연결 전 encoder output 측정, 필요 시 level shifting |
 | UART wire가 motor noise를 받음 | STM32 <-> ESP32 | 짧은 wire, GND reference, motor power 전 test |
 | Buck converter 설정 오류 | logic power | MCU 연결 전 조정, multimeter로 확인 |

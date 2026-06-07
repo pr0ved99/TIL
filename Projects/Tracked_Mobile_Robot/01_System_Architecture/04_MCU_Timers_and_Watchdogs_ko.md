@@ -93,7 +93,7 @@ TIM1과 TIM8은 모터 PWM 생성의 강한 후보군이다.
 - 오른쪽 모터 PWM
 - 왼쪽 방향 제어 GPIO
 - 오른쪽 방향 제어 GPIO
-- 선택적으로 enable 또는 brake GPIO
+- 선택적으로 별도 power gate 또는 brake GPIO
 
 모터 드라이버가 모터 하나당 PWM 하나만 요구한다면 TIM1 또는 TIM8은 충분히
 여유 있는 PWM channel을 제공한다.
@@ -234,7 +234,7 @@ Independent watchdog은 다음을 기반으로 한다.
 중요한 안전 주의:
 
 - MCU reset은 로봇을 능동적으로 제동하는 것과 같지 않다.
-- Motor driver enable pin은 reset 중에도 출력이 꺼지도록 pull-down 같은 안전 기본 상태를 가져야 한다.
+- MDD10A PWM pin은 reset 중에도 zero가 되도록 pull-down 같은 안전 기본 상태를 가져야 한다.
 - MCU가 reboot되는 동안 motor power stage가 계속 모터를 구동하면 안 된다.
 
 초기 결정:
@@ -346,9 +346,9 @@ Watchdog reset은 안전한 모터 상태로 이어져야 한다.
 
 필수 확인:
 
-- Motor driver enable pin의 기본 상태가 안전한가?
+- Motor PWM pin의 기본 상태가 zero인가?
 - PWM pin reset state가 모터를 의도치 않게 구동하지 않는가?
-- Firmware initialization 단계에서 control을 켜기 전에 motor를 disable하는가?
+- Firmware initialization 단계에서 control을 켜기 전에 motor output을 zero로 유지하는가?
 
 ## 11. 1차 설계 결정
 

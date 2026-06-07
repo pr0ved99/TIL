@@ -35,7 +35,7 @@ candump can0
 송신:
 
 ```bash
-cansend can0 110#6400000001000000
+cansend can0 110#0100640000002C01
 ```
 
 ## 확인 기준

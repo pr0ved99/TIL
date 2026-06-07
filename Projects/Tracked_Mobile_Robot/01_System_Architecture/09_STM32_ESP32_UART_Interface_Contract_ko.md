@@ -10,7 +10,7 @@ interface를 만드는 것이다.
 
 UART link는 safety authority가 아니다. UART는 command request와 telemetry를
 전달하는 통로다. 모터 제어, 모터 safety, encoder counting, battery voltage 판단,
-driver enable 동작은 STM32가 계속 소유한다.
+MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 
 ## 결정 요약
 
@@ -56,7 +56,7 @@ UART link는 역할이 다른 두 컨트롤러를 연결한다.
 | 책임 | STM32 NUCLEO-F446RE | ESP32-S3 DevKitC-1 |
 | --- | --- | --- |
 | Motor PWM | 소유 | 소유하지 않음 |
-| BTS7960 enable | 소유 | 소유하지 않음 |
+| MDD10A PWM/DIR output | 소유 | 소유하지 않음 |
 | Encoder counting | 소유 | 소유하지 않음 |
 | Motor speed estimation | 소유 | 표시 또는 전달 |
 | Battery voltage safety | 소유 | Telemetry 표시 |
@@ -226,7 +226,7 @@ ARM,seq=43\n
 STM32는 다음 상황에서 요청을 거부할 수 있다.
 
 - Battery voltage가 너무 낮다.
-- Driver enable self-check가 실패했다.
+- Motor output safety check가 실패했다.
 - Encoder test가 필요하지만 완료되지 않았다.
 - Emergency stop 또는 fault state가 active다.
 - Firmware가 아직 startup delay 중이다.
@@ -244,7 +244,7 @@ DISARM,seq=44\n
 규칙:
 
 - Frame이 valid라면 `DISARM`은 항상 accept하는 방향으로 구현한다.
-- Disarm 이후 PWM output은 0이 되고 driver enable은 low가 된다.
+- Disarm 이후 PWM output은 0이 되고 nonzero motor command는 차단된다.
 
 ### PING
 
@@ -287,7 +287,7 @@ TEL,t_ms=123456,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=
 | `left_pwm` | timer counts 또는 percent-scaled value | 왼쪽 motor command output |
 | `right_pwm` | timer counts 또는 percent-scaled value | 오른쪽 motor command output |
 | `armed` | 0/1 | STM32가 motor output을 허용하는지 여부 |
-| `driver_en` | 0/1 | Motor driver enable 활성 여부 |
+| `motor_out` | 0/1 | STM32 safety gate가 motor output을 허용하는지 여부 |
 | `fault` | bitmask | Active fault flags |
 
 ESP32 dashboard parsing이 시작된 뒤에는 telemetry field를 안정적으로 유지한다.
@@ -382,12 +382,12 @@ ERR,seq=42,type=CMD,code=NOT_ARMED\n
 STM32가 강제해야 하는 것:
 
 - Boot 중 motor output disabled
-- Boot 중 driver enable disabled
+- Boot 중 motor PWM zero
 - Command timeout stop
 - Low-voltage stop
 - PWM clamp
 - Acceleration/deceleration limit
-- BTS7960 `RPWM`과 `LPWM` mutual exclusion
+- MDD10A direction change 전 PWM zero
 - Emergency disarm
 
 ESP32가 강제해야 하는 것:
@@ -404,7 +404,7 @@ ESP32가 강제해야 하는 것:
 Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제한다.
 ```
 
-이 프로젝트에서 그 layer는 STM32와 motor driver enable control이다.
+이 프로젝트에서 그 layer는 STM32와 MDD10A PWM/DIR output control이다.
 
 ## 11. Bring-Up Plan
 
@@ -433,11 +433,11 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 - ESP32가 `CMD`를 보낸다.
 - STM32가 parsing하고 acknowledgement를 보낸다.
 - STM32는 internal target variable만 갱신한다.
-- Motor PWM과 driver enable은 계속 disabled로 둔다.
+- Motor PWM은 계속 0으로 둔다.
 
 ### Stage 5: Low-Power Motor Command Test
 
-- BTS7960 단일 모터 검증 이후에만 motor output을 enable한다.
+- MDD10A 단일 channel motor 검증 이후에만 nonzero motor output을 허용한다.
 - 낮은 PWM limit으로 command를 제한한다.
 - ESP32 TX를 뽑거나 command를 멈춰 timeout stop을 확인한다.
 
@@ -479,7 +479,7 @@ ESP32:
 최종 배선 전에 답해야 할 항목:
 
 - 최종 ESP32-S3 UART GPIO pair
-- BTS7960 pin revision 이후에도 STM32 USART1 PA9/PA10이 conflict-free인지
+- MDD10A PWM/DIR pin 확정 이후에도 STM32 USART1 PA9/PA10이 conflict-free인지
 - 실제 module에서 level shifting 또는 buffering이 필요한지
 - 최종 command/telemetry rate
 - 최종 fault bitmask definition
@@ -492,7 +492,7 @@ ESP32:
 STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
 request source, telemetry bridge로 동작한다.
 
-다음 실무 작업은 모터 전원 없이 양쪽 보드에서 UART를 검증하고, 이후 BTS7960 PWM
+다음 실무 작업은 모터 전원 없이 양쪽 보드에서 UART를 검증하고, 이후 MDD10A PWM/DIR
 output, encoder, ADC, I2C, USART2 debug, USART1 ESP32 link가 공존하도록 STM32 pin
 allocation을 수정하는 것이다.
 

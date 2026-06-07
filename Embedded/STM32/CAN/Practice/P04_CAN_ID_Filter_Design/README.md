@@ -27,7 +27,7 @@ robot command/telemetry용 CAN ID map을 만들고, STM32 filter가 원하는 fr
 ## PC 송신 예시
 
 ```bash
-cansend can0 110#6400000001000000
+cansend can0 110#0100640000002C01
 cansend can0 555#0102030405060708
 ```
 

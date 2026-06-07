@@ -34,6 +34,18 @@ HAL bare-metal drivetrain
 - CAN은 command와 telemetry model이 명확해진 뒤 적용하는 편이 안전하다.
 - LL Driver 전환은 비교할 수 있는 HAL baseline이 있어야 의미가 있다.
 
+### 2026-06-08 최신 반영
+
+아키텍처 결정은 유지하되, 학습과 실습 경로는 별도 A-to-Z 문서로 분리했다.
+
+| Area | Learning map |
+| --- | --- |
+| ROS 2 upper layer | [`../../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md`](../../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md) |
+| NUCLEO-F446RE CAN | [`../../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md`](../../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md) |
+| NUCLEO-F446RE FreeRTOS | [`../../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md`](../../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md) |
+
+학습 문서는 따라 하기 위한 경로이고, 이 `01_System_Architecture` 문서들은 프로젝트의 canonical architecture decision과 interface contract를 정의한다.
+
 ## 1. 필수 학습 목표
 
 ### 목표 1: CAN 통신
@@ -76,7 +88,7 @@ FreeRTOS는 bare-metal motor/encoder 검증 이후 도입한다.
 | Task | Period | Priority | Responsibility |
 | --- | --- | --- | --- |
 | `motor_control_task` | 100 Hz | High | Speed control, PWM update, ramp limiting |
-| `safety_task` | 50-100 Hz | High | Fault check, low-voltage stop, enable gating |
+| `safety_task` | 50-100 Hz | High | Fault check, low-voltage stop, motor output gating |
 | `comm_task` | Event-driven 또는 100 Hz | Medium | UART/CAN receive와 command parsing |
 | `telemetry_task` | 10 Hz | Low | 상태 publish |
 | `battery_task` | 10 Hz | Medium | ADC sampling과 voltage filtering |
@@ -101,7 +113,7 @@ timing-critical path를 LL로 옮긴다.
 | --- | --- |
 | Timer PWM compare update | 고주기 duty update 경로 |
 | Encoder counter read/reset | Control loop에서 자주 읽는 경로 |
-| Driver enable GPIO | Safety-critical output 경로 |
+| Motor DIR GPIO | Safety-relevant direction output 경로 |
 | Control-loop timer interrupt | Timing determinism과 jitter 확인 |
 | CAN RX/TX handling | 후속 최적화 후보 |
 | ADC sampling trigger/read | Voltage monitoring 안정화 후 후보 |
@@ -131,7 +143,7 @@ Exit criteria:
 
 - 첫 배선 계획이 존재한다.
 - Power safety rule이 존재한다.
-- BTS7960 control model이 문서화되어 있다.
+- MDD10A PWM+DIR control model이 문서화되어 있다.
 - CAN/RTOS/LL이 필수 후속 결과물로 기록되어 있다.
 
 ### Phase 1: HAL Bare-Metal Drivetrain MVP
@@ -142,7 +154,7 @@ RTOS나 CAN 복잡도 없이 물리 구동계와 기본 MCU peripheral 사용을
 
 범위:
 
-- BTS7960으로 PWM output
+- MDD10A로 PWM+DIR output
 - Encoder A/B input counting
 - Resistor divider를 통한 battery voltage ADC
 - 기본 UART/USB command
@@ -231,7 +243,7 @@ Engineering depth를 높이고 STM32 peripheral을 register에 더 가까운 수
 
 - PWM duty update path를 LL로 전환한다.
 - 유용하다면 encoder read/reset path를 LL로 전환한다.
-- Driver enable GPIO path를 LL로 전환한다.
+- Motor DIR GPIO path를 LL로 전환한다.
 - Migration 전후 latency와 jitter를 측정하거나 근거를 분석한다.
 
 Exit criteria:
@@ -277,15 +289,18 @@ PC USB/UART command
 
 | Document | Purpose |
 | --- | --- |
-| `11_System_Block_Diagram_and_Interface_Map.md` | 전체 hardware/software interface map |
-| `12_Power_Distribution_and_Safety_Architecture.md` | Power path, fuse, switch, buck converter, GND, low-voltage safety |
-| `13_FreeRTOS_Task_Architecture.md` | Task model, priority, timing, shared state |
-| `14_CAN_Bus_Integration_Plan.md` | CAN hardware, ID, frame, validation |
-| `15_HAL_to_LL_Driver_Migration_Strategy.md` | Migration target과 검증 규칙 |
-| `16_Control_Loop_and_State_Machine.md` | Boot, disarmed, armed, fault, timeout stop |
-| `17_Drivetrain_Kinematics_and_Odometry_Plan.md` | 궤도 구동 수식과 encoder/IMU odometry plan |
-| `18_Fault_Model_and_Safety_Cases.md` | Fault scenario와 response |
-| `19_Architecture_Decision_Record.md` | 최종 설계 결정과 rejected alternatives |
+| `11_System_Block_Diagram_and_Interface_Map_ko.md` | 전체 hardware/software interface map |
+| `12_Power_Distribution_and_Safety_Architecture_ko.md` | Power path, fuse, switch, buck converter, GND, low-voltage safety |
+| `13_FreeRTOS_Task_Architecture_ko.md` | Task model, priority, timing, shared state |
+| `14_CAN_Bus_Integration_Plan_ko.md` | CAN hardware, ID, frame, validation |
+| `15_HAL_to_LL_Driver_Migration_Strategy_ko.md` | Migration target과 검증 규칙 |
+| `16_Control_Loop_and_State_Machine_ko.md` | Boot, disarmed, armed, fault, timeout stop |
+| `17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md` | 궤도 구동 수식과 encoder/IMU odometry plan |
+| `18_Fault_Model_and_Safety_Cases_ko.md` | Fault scenario와 response |
+| `19_Architecture_Decision_Record_ko.md` | 최종 설계 결정과 rejected alternatives |
+| `../../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md` | ROS 2 upper layer 학습/실습 경로 |
+| `../../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md` | CAN 학습/실습 경로 |
+| `../../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md` | FreeRTOS 학습/실습 경로 |
 
 ## 5. Portfolio Evidence Targets
 
@@ -309,15 +324,19 @@ PC USB/UART command
 - STM32 MCU feature analysis가 존재한다.
 - Timer, communication, pin allocation note가 존재한다.
 - ESP32-S3 role decision이 존재한다.
-- BTS7960 H-Bridge decision이 존재한다.
+- MDD10A motor driver decision이 존재한다.
 - STM32-ESP32 UART contract가 존재한다.
+- System block diagram, power safety, FreeRTOS, CAN, LL migration, control state machine, odometry, fault model, ADR 문서가 존재한다.
+- ROS 2 Humble, RViz2, Gazebo classic 11이 노트북에서 실행 검증됐다.
+- ROS 2, CAN, FreeRTOS A-to-Z 학습 지도와 실습 경로가 추가됐다.
 
 즉시 다음 action:
 
-1. BTS7960 4-PWM output 기준으로 STM32 pin allocation을 수정한다.
-2. System block diagram과 interface map을 만든다.
-3. Power distribution과 safety architecture를 만든다.
-4. 이후 HAL bare-metal firmware bring-up plan을 준비한다.
+1. MDD10A PWM x2 + DIR x2 기준으로 STM32 final pin allocation을 CubeMX에서 검증한다.
+2. HAL bare-metal drivetrain firmware bring-up을 시작한다.
+3. UART command/telemetry와 timeout stop을 먼저 검증한다.
+4. CAN transceiver와 USB-CAN adapter 후보를 확정한다.
+5. FreeRTOS는 bare-metal baseline 증거가 생긴 뒤 task 구조로 전환한다.
 
 ## Final Roadmap Decision
 

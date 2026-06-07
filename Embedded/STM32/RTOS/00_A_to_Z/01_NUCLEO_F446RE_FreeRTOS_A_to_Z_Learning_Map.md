@@ -75,9 +75,9 @@ FreeRTOS는 다음 조건이 만족된 뒤 도입한다.
 - PWM 출력이 정상이다.
 - encoder count를 읽을 수 있다.
 - battery ADC path가 정의되어 있다.
-- motor enable pin을 안전하게 제어할 수 있다.
+- MDD10A PWM/DIR output을 안전하게 제어할 수 있다.
 - command timeout으로 motor output을 0으로 만들 수 있다.
-- boot 직후 motor output이 disabled 상태다.
+- boot 직후 motor PWM이 zero 상태다.
 
 이 전제가 없으면 RTOS 문제가 아니라 전기, peripheral, pin 설정 문제를 디버깅하게 된다.
 
@@ -170,7 +170,7 @@ void MotorControlTask(void *argument)
 | Loop | Target | 이유 |
 | --- | --- | --- |
 | Motor control | 100 Hz | 저속 motor control과 encoder speed estimate |
-| Safety check | 50-100 Hz | timeout, voltage, enable gate |
+| Safety check | 50-100 Hz | timeout, voltage, motor output gate |
 | Battery sample | 10 Hz | voltage 변화는 상대적으로 느림 |
 | Telemetry | 10 Hz | 사람이 보기 쉽고 serial/CAN 부담이 낮음 |
 | IMU sample | 50-100 Hz | yaw-rate 보정 후보 |
@@ -334,7 +334,7 @@ motor_control_task
 safety gate
     |
     v
-PWM + BTS7960 enable
+MDD10A PWM + DIR
 
 battery_task -> safety_task
 encoder read -> motor_control_task
@@ -421,7 +421,7 @@ void MotorControlTask(void *argument)
 - heartbeat timeout
 - low battery
 - overcurrent 후보
-- motor enable state
+- motor output permission state
 - emergency stop latch
 - fault code update
 
