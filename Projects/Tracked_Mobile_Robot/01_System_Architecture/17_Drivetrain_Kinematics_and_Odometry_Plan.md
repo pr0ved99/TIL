@@ -1,5 +1,10 @@
 # Drivetrain Kinematics and Odometry Plan
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md` as the canonical drivetrain
+> and odometry plan. Do not use stale BTS7960 output references in this file for
+> new firmware work.
+
 ## Purpose
 
 This document defines the first kinematics and odometry plan for the tracked

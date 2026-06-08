@@ -9,7 +9,7 @@
 핵심 원칙:
 
 ```text
-전원 검증 -> logic 검증 -> motor power 검증 -> encoder 검증 -> 한쪽 모터 -> 좌우 구동
+무전원 검사 -> 전원 검증 -> logic 검증 -> motor power 검증 -> encoder 검증 -> 한쪽 모터 -> 좌우 구동
 ```
 
 Firmware보다 먼저 확인할 것:
@@ -26,6 +26,7 @@ Firmware보다 먼저 확인할 것:
 
 | Step | Document | Purpose |
 | --- | --- | --- |
+| 0 | `00_MDD10A_Visual_and_Multimeter_Inspection.md` | MDD10A unpowered visual and hard-short inspection |
 | 1 | `01_Power_Bringup_Checklist.md` | Battery, fuse, switch, wiring, no-load power checks |
 | 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015/XL4016 calibration and load validation |
 | 3 | `03_MDD10A_Logic_Input_Test.md` | MDD10A PWM/DIR logic behavior before motor power |
@@ -60,6 +61,7 @@ Firmware보다 먼저 확인할 것:
 
 | Area | Status | Evidence |
 | --- | --- | --- |
+| MDD10A visual/DMM pre-check | Not started | TBD |
 | Power path | Not started | TBD |
 | Buck converter output | Not started | TBD |
 | MDD10A logic input | Not started | TBD |

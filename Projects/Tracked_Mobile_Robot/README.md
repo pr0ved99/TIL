@@ -28,6 +28,12 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
 - CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
 
+작업을 이어가기 전에 먼저 읽을 기준 파일:
+
+- [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md): 반복 질문을 줄이기 위한 고정 프로젝트 정보
+- [`AGENTS.md`](AGENTS.md): 이 프로젝트에서 Codex가 따라야 할 작업 지침
+- [`docs/progress/README.md`](docs/progress/README.md): 진행 로그 사용 방법과 날짜별 index
+
 최신 학습 지도:
 
 - [`ROS 2 Project A-to-Z`](../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md)
@@ -45,6 +51,8 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - `06_Test_Report`: bench, load, chassis, and field test reports
 - `assets`: photos, wiring diagrams, screenshots, plots
 - `docs/handoff`: continuation notes for future work
+- `docs/plans`: short-term execution plans for hardware sessions
+- `docs/progress`: dated project progress logs
 
 ## Document Index
 
@@ -52,6 +60,8 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 | Document | Purpose |
 | --- | --- |
+| [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md) | Stable project memory, fixed decisions, open decisions, next actions |
+| [`AGENTS.md`](AGENTS.md) | Project-specific Codex instructions |
 | [`01_Goal_and_Scope.md`](00_Project_Charter/01_Goal_and_Scope.md) | Project goal, scope, MVP boundary, learning goals |
 | [`02_Component_Inventory.md`](00_Project_Charter/02_Component_Inventory.md) | Available components, missing items, purchase status |
 | [`03_Initial_Purchase_and_Safety.md`](00_Project_Charter/03_Initial_Purchase_and_Safety.md) | Initial purchase list, LiPo safety, fuse/switch decisions |
@@ -85,12 +95,22 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | Document | Purpose |
 | --- | --- |
 | [`README.md`](02_Hardware_Validation/README.md) | Hardware validation sequence and evidence policy |
+| [`00_MDD10A_Visual_and_Multimeter_Inspection.md`](02_Hardware_Validation/00_MDD10A_Visual_and_Multimeter_Inspection.md) | MDD10A unpowered visual inspection and hard-short check |
 | [`01_Power_Bringup_Checklist.md`](02_Hardware_Validation/01_Power_Bringup_Checklist.md) | Battery, fuse, switch, wiring, and no-load power checks |
 | [`02_Buck_Converter_Calibration_Log.md`](02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md) | XL4015/XL4016 output calibration and load checks |
 | [`03_MDD10A_Logic_Input_Test.md`](02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md) | MDD10A PWM/DIR logic input and safe output behavior test |
 | [`04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) | Encoder voltage, pull-up, direction, and STM32-safe input checks |
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
 | [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |
+
+### docs
+
+| Document | Purpose |
+| --- | --- |
+| [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
+| [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
+| [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
+| [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 
 ## Initial MVP
 

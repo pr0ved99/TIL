@@ -82,7 +82,7 @@ Battery negative path:
 ```text
 3S LiPo negative
     |
-    +-- motor driver B-
+    +-- MDD10A POWER-
     |
     +-- buck converter input negative
     |

@@ -1,5 +1,10 @@
 # System Block Diagram and Interface Map
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `11_System_Block_Diagram_and_Interface_Map_ko.md` as the canonical system
+> architecture map. Do not use stale BTS7960/RPWM/LPWM details in this file for
+> new wiring or firmware work.
+
 ## Purpose
 
 This document defines the first complete hardware/software interface map for

@@ -1,5 +1,10 @@
 # STM32-ESP32 UART Interface Contract
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `09_STM32_ESP32_UART_Interface_Contract_ko.md` as the canonical interface
+> contract. Do not use stale BTS7960 enable/RPWM/LPWM references in this file
+> for new wiring or firmware work.
+
 ## Purpose
 
 This document defines the first communication contract between the STM32

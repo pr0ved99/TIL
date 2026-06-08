@@ -226,16 +226,19 @@ typedef struct {
 } motion_command_t;
 ```
 
-Minimal safety state:
+FreeRTOS version에서도 safety state는 `16_Control_Loop_and_State_Machine_ko.md`의 enum을 재사용한다.
 
 ```c
 typedef enum {
     SAFETY_BOOT = 0,
     SAFETY_DISARMED,
-    SAFETY_ARMED,
-    SAFETY_TIMEOUT,
-    SAFETY_LOW_VOLTAGE,
-    SAFETY_FAULT
+    SAFETY_ARMING_CHECK,
+    SAFETY_ARMED_IDLE,
+    SAFETY_ARMED_ACTIVE,
+    SAFETY_TIMEOUT_STOP,
+    SAFETY_LOW_VOLTAGE_STOP,
+    SAFETY_ESTOP_LATCHED,
+    SAFETY_FAULT_LATCHED
 } safety_state_t;
 ```
 
@@ -264,7 +267,7 @@ compute left/right motor request
     v
 check safety state
     |
-    +-- unsafe -> PWM = 0, motor output disabled
+    +-- unsafe -> PWM = 0, nonzero motor output blocked
     |
     +-- safe   -> apply limited PWM command
 ```

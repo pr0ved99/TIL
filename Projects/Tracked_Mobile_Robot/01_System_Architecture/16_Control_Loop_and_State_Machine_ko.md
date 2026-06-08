@@ -294,7 +294,7 @@ Rules:
 Startup requirements:
 
 - PWM output을 zero로 설정한다.
-- Enable GPIO를 disabled로 설정한다.
+- MDD10A에는 별도 enable pin이 없으므로 기본 차단 수단은 PWM zero다.
 - State를 `SAFETY_BOOT`로 초기화한다.
 - 기본 initialization을 확인한다.
 - `SAFETY_DISARMED`로 transition한다.
@@ -302,7 +302,7 @@ Startup requirements:
 Watchdog 또는 reset behavior:
 
 - Hardware reset은 motor output safe 상태를 만들어야 한다.
-- Enable pin external pull-down을 권장한다.
+- PWM line external pull-down 또는 별도 power gate 회로를 검토한다.
 - Firmware는 reset 이후 자동 arm하면 안 된다.
 
 ## 12. Telemetry Fields
@@ -335,10 +335,10 @@ loop_dt_max_us
 | Arm with safe conditions | State가 `SAFETY_ARMED_IDLE` |
 | Motion command while armed | State가 `SAFETY_ARMED_ACTIVE`, limited PWM output |
 | Stop command | PWM zero, state가 idle 또는 disarmed로 복귀 |
-| Command timeout | State가 `SAFETY_TIMEOUT_STOP`, output disabled |
-| E-stop command | State가 `SAFETY_ESTOP_LATCHED`, output disabled |
-| Low-voltage simulated | State가 `SAFETY_LOW_VOLTAGE_STOP`, output disabled |
-| Fault injected | State가 `SAFETY_FAULT_LATCHED`, output disabled |
+| Command timeout | State가 `SAFETY_TIMEOUT_STOP`, PWM zero |
+| E-stop command | State가 `SAFETY_ESTOP_LATCHED`, PWM zero |
+| Low-voltage simulated | State가 `SAFETY_LOW_VOLTAGE_STOP`, PWM zero |
+| Fault injected | State가 `SAFETY_FAULT_LATCHED`, PWM zero |
 
 ## Final Decision
 
@@ -351,5 +351,5 @@ nonzero PWM은 `SAFETY_ARMED_ACTIVE`에서만 적용된다.
 
 ```text
 PWM = 0
-motor output disabled
+nonzero motor output blocked
 ```

@@ -1,5 +1,10 @@
 # FreeRTOS Task Architecture
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `13_FreeRTOS_Task_Architecture_ko.md` as the canonical RTOS architecture
+> contract. Do not use stale BTS7960 enable-pin references in this file for new
+> firmware work.
+
 ## Purpose
 
 This document defines the FreeRTOS task architecture for the tracked mobile

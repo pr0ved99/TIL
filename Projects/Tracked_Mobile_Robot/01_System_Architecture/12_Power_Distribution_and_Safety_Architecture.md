@@ -1,5 +1,10 @@
 # Power Distribution and Safety Architecture
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `12_Power_Distribution_and_Safety_Architecture_ko.md` as the canonical power
+> architecture. Do not use stale BTS7960 terminal or enable-pin references in
+> this file for new wiring work.
+
 ## Purpose
 
 This document defines the first power distribution and safety architecture for

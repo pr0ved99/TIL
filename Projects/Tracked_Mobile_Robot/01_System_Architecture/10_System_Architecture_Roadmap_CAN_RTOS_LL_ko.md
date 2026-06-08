@@ -333,10 +333,12 @@ PC USB/UART command
 즉시 다음 action:
 
 1. MDD10A PWM x2 + DIR x2 기준으로 STM32 final pin allocation을 CubeMX에서 검증한다.
-2. HAL bare-metal drivetrain firmware bring-up을 시작한다.
-3. UART command/telemetry와 timeout stop을 먼저 검증한다.
-4. CAN transceiver와 USB-CAN adapter 후보를 확정한다.
-5. FreeRTOS는 bare-metal baseline 증거가 생긴 뒤 task 구조로 전환한다.
+2. DC-rated main switch와 fuse path를 확정하고 no-load power bring-up을 검증한다.
+3. Buck converter 출력 전압을 측정한 뒤 logic rail 연결 여부를 결정한다.
+4. MDD10A PWM/DIR logic-only test와 one-channel no-load motor test를 진행한다.
+5. UART command/telemetry와 timeout stop을 먼저 검증한다.
+6. CAN transceiver와 USB-CAN adapter 후보는 drivetrain baseline 이후 확정한다.
+7. FreeRTOS는 bare-metal baseline 증거가 생긴 뒤 task 구조로 전환한다.
 
 ## Final Roadmap Decision
 

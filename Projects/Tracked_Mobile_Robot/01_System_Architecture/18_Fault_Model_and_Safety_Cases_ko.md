@@ -33,8 +33,8 @@ Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor 
 | --- | --- | --- |
 | Info | 유용한 diagnostic condition | Automatic stop 없음 |
 | Warning | 비정상이지만 즉시 위험하지 않음 | Limit 또는 prepare stop |
-| Stop | Motion을 멈춰야 함, recovery는 비교적 단순 | PWM zero, driver disabled |
-| Latched fault | Explicit reset 전까지 motion 금지 | PWM zero, driver disabled |
+| Stop | Motion을 멈춰야 함, recovery는 비교적 단순 | PWM zero, nonzero output blocked |
+| Latched fault | Explicit reset 전까지 motion 금지 | PWM zero, nonzero output blocked |
 | Hardware emergency | Operator가 power를 제거해야 함 | Switch 사용, 안전하면 battery disconnect |
 
 ## 2. Fault Categories
@@ -202,7 +202,7 @@ Detection:
 Required response:
 
 - PWM zero.
-- State-machine decision에 따라 driver disabled 또는 armed idle.
+- State-machine decision에 따라 timeout stop 또는 armed idle로 전환.
 - Telemetry로 timeout report.
 
 ### Case C2: CAN Heartbeat Timeout
@@ -298,7 +298,7 @@ Detection:
 Required response:
 
 - PWM zero 강제.
-- Motor output disabled.
+- Nonzero motor output 차단.
 - Fault latch.
 
 ## 9. Operator Safety Cases
@@ -358,7 +358,7 @@ Fault model은 architecture의 일부이지 나중에 붙이는 부가기능이 
 모든 command path는 같은 fail-safe behavior를 공유해야 한다.
 
 ```text
-invalid, stale, missing, or unsafe input -> PWM zero and driver disabled
+invalid, stale, missing, or unsafe input -> PWM zero and nonzero motor output blocked
 ```
 
 Latched safety fault에서 회복하려면 explicit operator action이 필요하다.

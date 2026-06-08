@@ -1,5 +1,10 @@
 # HAL to LL Driver Migration Strategy
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `15_HAL_to_LL_Driver_Migration_Strategy_ko.md` as the canonical migration
+> strategy. Do not use stale BTS7960/RPWM/LPWM references in this file for new
+> firmware work.
+
 ## Purpose
 
 This document defines how the STM32 firmware can migrate selected paths from

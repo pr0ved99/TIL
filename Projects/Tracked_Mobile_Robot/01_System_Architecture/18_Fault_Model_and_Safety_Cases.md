@@ -1,5 +1,10 @@
 # Fault Model and Safety Cases
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `18_Fault_Model_and_Safety_Cases_ko.md` as the canonical fault model. Do not
+> use stale BTS7960/RPWM/LPWM or enable-pin references in this file for new
+> firmware or validation work.
+
 ## Purpose
 
 This document defines the expected fault cases for the tracked mobile robot and

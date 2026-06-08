@@ -1,5 +1,10 @@
 # Motor Driver and H-Bridge Control Decision
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `08_Motor_Driver_and_HBridge_Control_ko.md` as the canonical architecture
+> contract. Do not use the BTS7960/RPWM/LPWM details in this file for new wiring
+> or firmware work.
+
 ## Purpose
 
 This document defines the first motor-driver decision for the tracked mobile

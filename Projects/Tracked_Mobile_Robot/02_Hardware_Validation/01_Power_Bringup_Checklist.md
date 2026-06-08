@@ -36,9 +36,17 @@
 | Blade fuse holder | Main positive path protection |
 | 10 A blade fuse | First low-energy validation fuse |
 | DC-rated main switch | Manual power isolation |
-| AWG14 red/black wire | Main battery path |
+| AWG14 red/black wire | Preferred minimum for main battery path |
 | LiPo low-voltage alarm | Independent battery warning |
 | Heat shrink / insulation | Exposed conductor protection |
+
+Note:
+
+```text
+AWG16 can be used only as a short early bench harness with a 10 A or 15 A fuse.
+Do not treat AWG16 as the final drivetrain main power harness.
+Use at least AWG14, preferably AWG12, before real driving load tests.
+```
 
 ## Pre-Power Checklist
 
@@ -68,6 +76,7 @@ Operator:
 | --- | --- | --- |
 | Fuse holder placed near battery positive | Yes | TBD |
 | Initial fuse rating | 10 A | TBD |
+| Wire gauge matches fuse/test stage | Yes | TBD |
 | Switch placed after fuse | Yes | TBD |
 | Switch OFF continuity | Open circuit | TBD |
 | Switch ON continuity | Closed circuit | TBD |

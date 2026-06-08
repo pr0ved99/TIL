@@ -1,5 +1,10 @@
 # Architecture Decision Record
 
+> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
+> `19_Architecture_Decision_Record_ko.md` as the canonical decision record. Do
+> not use stale BTS7960/RPWM/LPWM decisions in this file for new architecture,
+> wiring, or firmware work.
+
 ## Purpose
 
 This document summarizes the major architecture decisions made for the tracked
