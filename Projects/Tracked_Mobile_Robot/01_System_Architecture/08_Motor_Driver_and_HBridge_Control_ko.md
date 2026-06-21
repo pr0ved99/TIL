@@ -42,6 +42,7 @@ contract로 연결하는 것이다.
 - `01_System_Architecture/04_MCU_Timers_and_Watchdogs.md`
 - `01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md`
 - `01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md`
+- `01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md`
 
 제조사 자료:
 
@@ -187,15 +188,32 @@ Motor/power terminal:
 | 드라이버 | 인터페이스 방식 | 프로젝트 판단 |
 | --- | --- | --- |
 | TB6612FNG | PWM + direction pins, 소형 DC motor driver | 학습 자료로는 좋지만 주 궤도 구동계에는 작다 |
-| BTS7960 module | 모터당 dual PWM H-Bridge style | 동작 가능하지만 보드 2개, PWM 4개, 배선 복잡도가 크다 |
+| BTS7960 module | 모터당 dual PWM H-Bridge style | 자연스러운 초기 후보였지만 first MVP에서는 MDD10A보다 복잡하다 |
 | MDD10A | 모터 2개를 한 보드에서 PWM + DIR로 제어 | 첫 drivetrain MVP에서 선택 |
 | MDD20A | PWM + DIR, 더 큰 전류의 dual-channel driver | MDD10A 전류 여유가 부족하다고 실측되면 후속 후보 |
+
+BTS7960을 먼저 검토했던 이유:
+
+- H-Bridge와 dual-PWM 제어를 학습하기 좋은 구조다.
+- TB6612FNG급 소형 driver보다 current margin을 크게 잡을 수 있다.
+- WHEELTEC 참고 코드의 motor당 dual-PWM 출력 구조와 개념적으로 연결된다.
+- 모터 1개당 driver module 1개를 두면 좌/우 power stage를 물리적으로 분리할 수 있다.
+
+MDD10A로 전환한 이유:
+
+- MDD10A 1개로 좌/우 모터 2개를 모두 구동할 수 있다.
+- STM32 PWM 요구량이 4개에서 2개로 줄고, 나머지는 DIR GPIO 2개로 처리된다.
+- 기존 pin 후보인 PB6/PB7 PWM, PC8/PC9 DIR 구조와 맞는다.
+- BTS7960의 `RPWM/LPWM` mutual exclusion과 enable reset-safe 설계보다 first bring-up 검증면이 작다.
+- MDD10A는 3.3 V logic input을 지원하므로 NUCLEO-F446RE와 직접 interface하기 쉽다.
 
 결정:
 
 - MDD10A를 첫 drivetrain MVP의 motor driver로 사용한다.
-- BTS7960 문서는 기존 검토 기록으로 남길 수 있지만, 현재 canonical architecture decision은 MDD10A다.
+- BTS7960 문서는 기존 검토 기록과 비교 대상으로 남기지만, 현재 canonical architecture decision은 MDD10A다.
 - 실측 전류, 발열, stall behavior가 MDD10A 한계를 넘으면 MDD20A급으로 상향한다.
+
+상세 비교는 `20_Motor_Driver_Selection_Comparison_ko.md`에 따로 기록한다.
 
 ## 6. 전기적 인터페이스 후보
 

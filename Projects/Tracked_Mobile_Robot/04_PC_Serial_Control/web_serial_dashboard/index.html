@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UART MVP Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>UART MVP Dashboard</h1>
+          <p id="supportText" class="support-text">Checking browser serial support</p>
+        </div>
+        <div class="topbar-actions">
+          <label class="field compact">
+            <span>Baud</span>
+            <select id="baudRate">
+              <option value="115200" selected>115200</option>
+              <option value="230400">230400</option>
+              <option value="921600">921600</option>
+            </select>
+          </label>
+          <button id="connectBtn" class="primary" type="button" title="Open serial port">Connect</button>
+          <button id="disconnectBtn" type="button" title="Close serial port" disabled>Disconnect</button>
+        </div>
+      </header>
+
+      <section class="status-strip" aria-label="Connection status">
+        <div class="status-item">
+          <span>Connection</span>
+          <strong id="connectionState">DISCONNECTED</strong>
+        </div>
+        <div class="status-item">
+          <span>Robot</span>
+          <strong id="robotState">UNKNOWN</strong>
+        </div>
+        <div class="status-item">
+          <span>Last TEL</span>
+          <strong id="lastTelAge">-</strong>
+        </div>
+        <div class="status-item">
+          <span>Seq</span>
+          <strong id="lastSeq">0</strong>
+        </div>
+        <div class="status-item">
+          <span>ACK / ERR</span>
+          <strong><span id="ackCount">0</span> / <span id="errCount">0</span></strong>
+        </div>
+        <div class="status-item">
+          <span>Parse Err</span>
+          <strong id="parseErrorCount">0</strong>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <section class="panel telemetry-panel">
+          <div class="panel-head">
+            <h2>Telemetry</h2>
+            <div class="segmented">
+              <button id="fakeToggleBtn" type="button" title="Start or stop fake telemetry">Fake TEL</button>
+              <button id="clearLogBtn" type="button" title="Clear in-memory logs">Clear</button>
+              <button id="downloadCsvBtn" type="button" title="Download parsed CSV">CSV</button>
+            </div>
+          </div>
+          <div class="telemetry-grid">
+            <div class="metric">
+              <span>t_ms</span>
+              <strong id="telTime">0</strong>
+            </div>
+            <div class="metric">
+              <span>batt_mv</span>
+              <strong id="telBattery">0</strong>
+            </div>
+            <div class="metric">
+              <span>left_cps</span>
+              <strong id="telLeftCps">0</strong>
+            </div>
+            <div class="metric">
+              <span>right_cps</span>
+              <strong id="telRightCps">0</strong>
+            </div>
+            <div class="metric">
+              <span>left_pwm</span>
+              <strong id="telLeftPwm">0</strong>
+            </div>
+            <div class="metric">
+              <span>right_pwm</span>
+              <strong id="telRightPwm">0</strong>
+            </div>
+            <div class="metric">
+              <span>fault</span>
+              <strong id="telFault">0</strong>
+            </div>
+            <div class="metric">
+              <span>last code</span>
+              <strong id="lastCode">-</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel command-panel">
+          <div class="panel-head">
+            <h2>Command</h2>
+            <label class="toggle">
+              <input id="autoSeq" type="checkbox" checked />
+              <span>Auto seq</span>
+            </label>
+          </div>
+          <div class="command-grid">
+            <label class="field">
+              <span>seq</span>
+              <input id="seqInput" type="number" min="0" max="4294967295" value="1" />
+            </label>
+            <label class="field">
+              <span>vx_mmps</span>
+              <input id="vxInput" type="number" min="-100" max="100" value="0" />
+            </label>
+            <label class="field">
+              <span>w_mradps</span>
+              <input id="wInput" type="number" min="-500" max="500" value="0" />
+            </label>
+            <label class="field">
+              <span>timeout_ms</span>
+              <input id="timeoutInput" type="number" min="50" max="500" value="300" />
+            </label>
+          </div>
+          <div class="button-grid">
+            <button id="pingBtn" type="button">PING</button>
+            <button id="armBtn" type="button">ARM</button>
+            <button id="disarmBtn" type="button">DISARM</button>
+            <button id="cmdBtn" class="primary" type="button">CMD</button>
+            <button id="stopBtn" type="button">Zero CMD</button>
+            <button id="forwardBtn" type="button">Forward Low</button>
+            <button id="turnBtn" type="button">Turn Low</button>
+            <button id="badRangeBtn" type="button">Bad Range</button>
+            <button id="keepaliveBtn" type="button">Keepalive</button>
+            <button id="scriptedBtn" type="button">Scripted</button>
+          </div>
+          <label class="field raw-field">
+            <span>Raw frame</span>
+            <textarea id="rawInput" rows="3">CMD,seq=99,vx_mmps=80,w_mradps=0,timeout_ms=300</textarea>
+          </label>
+          <div class="raw-actions">
+            <button id="sendRawBtn" type="button">Send Raw</button>
+            <button id="parseRawBtn" type="button">Parse As RX</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="lower-grid">
+        <section class="panel">
+          <div class="panel-head">
+            <h2>Response</h2>
+          </div>
+          <table class="response-table">
+            <tbody>
+              <tr>
+                <th>Last TX</th>
+                <td id="lastTx">-</td>
+              </tr>
+              <tr>
+                <th>Last RX</th>
+                <td id="lastRx">-</td>
+              </tr>
+              <tr>
+                <th>Last ACK</th>
+                <td id="lastAck">-</td>
+              </tr>
+              <tr>
+                <th>Last ERR</th>
+                <td id="lastErr">-</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-head">
+            <h2>Raw Log</h2>
+            <span id="logCount" class="count-label">0 lines</span>
+          </div>
+          <pre id="rawLog" class="raw-log"></pre>
+        </section>
+      </section>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

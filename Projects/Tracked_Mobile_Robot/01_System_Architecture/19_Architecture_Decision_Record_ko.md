@@ -190,6 +190,7 @@ Consequence:
 - Pin allocation은 두 motor용 PWM output 2개와 DIR GPIO 2개를 지원해야 한다.
 - Firmware는 방향 전환 전에 PWM을 0으로 낮춘 뒤 `DIR`을 바꿔야 한다.
 - BTS7960 dual-PWM 검증 문서는 현재 architecture에서는 superseded 기록으로 취급한다.
+- 상세 비교와 전환 이유는 `20_Motor_Driver_Selection_Comparison_ko.md`에 기록한다.
 
 ## ADR-009: Fuse, Main Switch, LiPo Alarm 사용
 

@@ -51,7 +51,7 @@ CAN does not change the motor-control or safety owner.
 STM32 remains responsible for:
 
 - Motor PWM output
-- BTS7960 enable control
+- MDD10A PWM/DIR output control
 - Encoder counting
 - Battery voltage safety
 - Command timeout

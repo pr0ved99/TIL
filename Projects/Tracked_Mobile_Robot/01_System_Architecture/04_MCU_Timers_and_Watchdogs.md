@@ -238,8 +238,8 @@ Project meaning:
 Important safety note:
 
 - Resetting the MCU is not the same as actively braking the robot.
-- Motor driver enable pins should have safe default states, such as pull-down to
-  disable output during reset.
+- MDD10A PWM pins should have safe default states, such as pull-down to keep
+  duty at zero during reset.
 - The motor power stage should not keep driving motors while the MCU is
   rebooting.
 
@@ -357,7 +357,7 @@ Watchdog reset must lead to a safe motor state.
 
 Required checks:
 
-- Motor driver enable pin has a safe default level.
+- MDD10A PWM output has a safe default zero state.
 - PWM pin reset state does not accidentally drive the motor.
 - Firmware initialization disables motors before enabling control.
 

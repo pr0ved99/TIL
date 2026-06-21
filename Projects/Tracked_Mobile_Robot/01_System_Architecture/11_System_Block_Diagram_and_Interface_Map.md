@@ -1,10 +1,5 @@
 # System Block Diagram and Interface Map
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `11_System_Block_Diagram_and_Interface_Map_ko.md` as the canonical system
-> architecture map. Do not use stale BTS7960/RPWM/LPWM details in this file for
-> new wiring or firmware work.
-
 ## Purpose
 
 This document defines the first complete hardware/software interface map for
@@ -13,7 +8,7 @@ the tracked mobile robot project.
 It connects the previous architecture documents into one system view:
 
 - STM32 owns low-level drivetrain control and safety.
-- BTS7960 motor drivers convert STM32 logic commands into motor power.
+- MDD10A converts STM32 PWM/DIR commands into motor power.
 - Encoders, IMU, and battery sensing provide feedback to STM32.
 - ESP32-S3 is a support controller for telemetry, wireless UI, and later
   bridging.
@@ -34,7 +29,7 @@ Inside the first MVP:
 - fuse and main switch
 - buck converters for logic power
 - STM32 NUCLEO-F446RE low-level controller
-- two BTS7960 H-bridge motor driver modules
+- one MDD10A dual-channel motor driver
 - two DC geared motors with encoders
 - BNO08x IMU
 - ESP32-S3 DevKitC support controller
@@ -81,7 +76,7 @@ It does not need to be autonomous yet.
 |  Low-level controller and safety owner                         |
 |                                                               |
 |  - command validation                                          |
-|  - motor enable gating                                         |
+|  - motor output safety gate                                    |
 |  - PWM generation                                              |
 |  - encoder counting                                            |
 |  - speed estimation                                            |
@@ -90,12 +85,12 @@ It does not need to be autonomous yet.
 |  - timeout stop and fault state                                |
 +------+----------+----------+----------+----------+-------------+
        |          |          |          |          |
-   PWM/EN L   PWM/EN R   Encoder L  Encoder R    I2C / ADC
+   PWM/DIR L  PWM/DIR R  Encoder L  Encoder R    I2C / ADC
        |          |          |          |          |
-+------v---+ +----v-----+ +--v-----+ +--v-----+ +--v------------+
-| BTS7960 L | | BTS7960 R| | Left   | | Right  | | BNO08x IMU / |
-| H-bridge  | | H-bridge | | encoder| | encoder| | battery ADC  |
-+-----+----+ +----+-----+ +--------+ +--------+ +---------------+
++------v----------------+ +--v-----+ +--v-----+ +--v------------+
+| MDD10A dual-channel   | | Left   | | Right  | | BNO08x IMU / |
+| motor driver          | | encoder| | encoder| | battery ADC  |
++-----+-----------+-----+ +--------+ +--------+ +---------------+
       |           |
       v           v
  Left DC     Right DC
@@ -119,7 +114,7 @@ the interface-level power model.
     |
     +-- motor power rail --------------------+
     |                                        |
-    |                                  BTS7960 L/R B+
+    |                                  MDD10A POWER+
     |
     +-- buck converter input
              |
@@ -144,8 +139,8 @@ Common rules:
 
 | Function | Owner | Notes |
 | --- | --- | --- |
-| Motor PWM output | STM32 | Four PWM-capable outputs for two BTS7960 modules |
-| Motor driver enable | STM32 | Must default to disabled during reset |
+| Motor PWM/DIR output | STM32 | Two PWM outputs and two DIR GPIO outputs for MDD10A |
+| Motor output safety gate | STM32 | Must force PWM zero during boot, disarm, timeout, and fault |
 | Encoder counting | STM32 | Required for RPM and odometry |
 | Battery voltage safety | STM32 | ESP32 may display the value but does not decide safety |
 | Command timeout | STM32 | Motion stops if valid commands stop arriving |
@@ -169,8 +164,8 @@ Candidate STM32 interfaces for the first MVP:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| Timer PWM x4 | STM32 -> BTS7960 | Left/right motor drivers | Forward/reverse duty control | Required |
-| GPIO enable x2 | STM32 -> BTS7960 | Left/right motor drivers | Driver enable gating | Required |
+| Timer PWM x2 | STM32 -> MDD10A | Left/right motor driver channels | Motor duty control | Required |
+| GPIO DIR x2 | STM32 -> MDD10A | Left/right motor driver channels | Motor direction control | Required |
 | Timer encoder input | Motor encoder -> STM32 | Left encoder A/B | Count and direction | Required |
 | Timer encoder input | Motor encoder -> STM32 | Right encoder A/B | Count and direction | Required |
 | ADC input | Battery divider -> STM32 | Main battery monitor | Low-voltage decision | Required |
@@ -181,8 +176,8 @@ Candidate STM32 interfaces for the first MVP:
 
 Pin allocation is not finalized in this document.
 
-The current architecture requires revising the earlier pin plan because the
-BTS7960 path needs four PWM outputs for two motors.
+The current architecture keeps the pin plan close to PB6/PB7 PWM plus PC8/PC9
+DIR, pending CubeMX and header-access validation.
 
 ## 6. ESP32-S3 Interface Map
 
@@ -200,25 +195,22 @@ architecture.
 
 ## 7. Motor Driver Interface Map
 
-Use one BTS7960-class module per motor.
+Use one MDD10A board for both motors.
 
-For each motor driver:
+For each MDD10A channel:
 
 | Signal | Direction | Owner | Purpose |
 | --- | --- | --- | --- |
-| `RPWM` | STM32 -> BTS7960 | STM32 PWM timer | One rotation direction |
-| `LPWM` | STM32 -> BTS7960 | STM32 PWM timer | Opposite rotation direction |
-| `R_EN` | STM32 -> BTS7960 | STM32 GPIO | Enable one half of the driver |
-| `L_EN` | STM32 -> BTS7960 | STM32 GPIO | Enable the other half of the driver |
-| `VCC` | logic power -> BTS7960 | power system | Driver logic supply |
+| `PWMx` | STM32 -> MDD10A | STM32 PWM timer | Motor speed duty control |
+| `DIRx` | STM32 -> MDD10A | STM32 GPIO | Motor direction selection |
 | `GND` | common ground | power system | Signal reference |
-| `B+`, `B-` | battery rail -> BTS7960 | power system | Motor power input |
-| `M+`, `M-` | BTS7960 -> motor | BTS7960 | Motor output |
+| `POWER+`, `POWER-` | battery rail -> MDD10A | power system | Motor power input |
+| `M1A/M1B`, `M2A/M2B` | MDD10A -> motor | MDD10A | Motor output |
 
 Firmware safety rule:
 
 ```text
-For one motor, RPWM and LPWM must not be active at the same time.
+Before changing direction, ramp PWM to zero, change DIR, then raise PWM again.
 ```
 
 ## 8. Sensor Interface Map
@@ -348,7 +340,7 @@ Rule:
 | Risk | Affected interface | Mitigation |
 | --- | --- | --- |
 | Motor noise resets MCU | power/GND/PWM | separate power routing, common ground, short signal wires, staged tests |
-| BTS7960 does not accept 3.3 V input reliably | STM32 -> BTS7960 logic | bench-test logic threshold, add buffer/level shifter if needed |
+| MDD10A PWM/DIR input wiring error | STM32 -> MDD10A logic | logic-only PWM/DIR bench test, record channel mapping |
 | Encoder output exceeds STM32 input tolerance | encoder -> STM32 | measure encoder output before connection, use level shifting if needed |
 | UART wires pick up motor noise | STM32 <-> ESP32 | short wires, GND reference, test before motor power |
 | Buck converter misadjusted | logic power | adjust without MCU connected, verify with multimeter |

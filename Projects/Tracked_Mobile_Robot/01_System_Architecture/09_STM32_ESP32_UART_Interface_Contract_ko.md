@@ -3,7 +3,8 @@
 ## 목적
 
 이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조
-컨트롤러 사이의 첫 통신 계약을 정의한다.
+컨트롤러 사이의 첫 통신 계약을 정의한다. 초기 실습에서는 PC serial terminal
+또는 Python script도 ESP32와 같은 command source로 취급한다.
 
 목표는 첫 궤도형 drivetrain MVP에 맞게 안전하고, 테스트 가능하고, 단순한
 interface를 만드는 것이다.
@@ -39,6 +40,144 @@ MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 
 - CAN은 초기 UART bring-up에서만 미룬다.
 - CAN은 후속 필수 학습 및 통합 phase로 남긴다.
+
+## MVP Rule Set
+
+이 섹션은 PC 또는 ESP32 제어부와 STM32 구동부 사이의 첫 UART MVP에서 반드시
+지켜야 할 규칙이다.
+
+### 역할
+
+```text
+PC/ESP32 = command source, logger, dashboard
+STM32    = parser, safety gate, drivetrain authority
+```
+
+규칙:
+
+- PC와 ESP32는 같은 application frame을 사용한다.
+- PC는 첫 실습에서 ESP32를 대체하는 test source로 사용할 수 있다.
+- ESP32, PC, Wi-Fi, dashboard는 motor output을 직접 소유하지 않는다.
+- STM32만 MDD10A PWM/DIR output과 command timeout을 최종 결정한다.
+
+### MVP link
+
+초기 PC 실습:
+
+```text
+PC serial terminal / Python script
+<-> ST-LINK Virtual COM Port
+<-> STM32 USART2 후보 PA2/PA3
+```
+
+초기 ESP32 연동:
+
+```text
+ESP32 UART
+<-> STM32 USART1 후보 PA9/PA10
+```
+
+두 경우 모두 application protocol은 동일하게 유지한다.
+
+### MVP UART 설정
+
+| 항목 | 값 |
+| --- | --- |
+| Baud rate | 115200 |
+| Data bits | 8 |
+| Parity | None |
+| Stop bits | 1 |
+| Flow control | None |
+| Frame delimiter | `\n` |
+| Encoding | ASCII text |
+
+### MVP frame set
+
+| Direction | Frame | Purpose |
+| --- | --- | --- |
+| PC/ESP32 -> STM32 | `PING,seq=<u32>` | Link 확인 |
+| STM32 -> PC/ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link 응답 |
+| PC/ESP32 -> STM32 | `ARM,seq=<u32>` | Motion command 허용 요청 |
+| PC/ESP32 -> STM32 | `DISARM,seq=<u32>` | Motor output 차단 요청 |
+| PC/ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command 요청 |
+| STM32 -> PC/ESP32 | `ACK,seq=<u32>,type=<text>` | Command 수락 |
+| STM32 -> PC/ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command 거부 또는 parse error |
+| STM32 -> PC/ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | 주기 telemetry |
+
+`NACK` frame은 첫 MVP에서 별도로 만들지 않는다. 거부 응답은 `ERR`로 통일한다.
+
+### MVP command range
+
+| Field | Range | MVP rule |
+| --- | --- | --- |
+| `seq` | `0` to `4294967295` | ACK/ERR matching과 log 분석용 |
+| `vx_mmps` | `-100` to `100` | 초기 저속 주행 범위 |
+| `w_mradps` | `-500` to `500` | 초기 저속 회전 범위 |
+| `timeout_ms` | `50` to `500` | 기본값 `300` |
+
+범위를 벗어난 `CMD`는 clamp하지 않고 `ERR,code=OUT_OF_RANGE`로 거부한다.
+실제 motor 출력 범위는 MDD10A no-load test와 chassis test 이후 다시 조정한다.
+
+### MVP parser and response rule
+
+- UART RX ISR은 byte를 ring buffer에 넣고 즉시 빠져나온다.
+- Parser는 main loop 또는 task context에서 `\n` 기준으로 frame을 조립한다.
+- 너무 긴 frame은 버리고 parse error count를 증가시킨다.
+- 알 수 없는 frame type은 `ERR,code=UNKNOWN_TYPE` 또는 ignore 중 하나로 처리한다.
+- `CMD`의 required field가 없으면 `ERR,code=MISSING_FIELD`를 보낸다.
+- 숫자 변환 실패는 `ERR,code=BAD_VALUE`로 처리한다.
+- 범위 초과는 `ERR,code=OUT_OF_RANGE`로 처리한다.
+- `DISARMED` 상태에서 nonzero `CMD`는 `ERR,code=NOT_ARMED`로 거부한다.
+- Invalid `CMD`는 현재 active command를 바꾸면 안 된다.
+
+### MVP safety and timeout rule
+
+초기 상태:
+
+```text
+Boot -> DISARMED
+PWM output -> 0
+```
+
+`ARM`이 수락된 뒤:
+
+- `CMD`가 20 Hz 정도로 반복해서 들어오는 동안에만 active command를 유지한다.
+- 멈춰 있는 상태도 `CMD,seq=N,vx_mmps=0,w_mradps=0,timeout_ms=300`처럼 zero command를 반복한다.
+- valid `CMD`가 `timeout_ms` 안에 새로 들어오지 않으면 STM32는 즉시 motor output을 0으로 만든다.
+- Timeout 직후에는 바로 `DISARMED`로 내리지 않고, 우선 `ARMED` 상태에서 output zero를 유지하는 방향으로 둔다.
+- 추가 idle 시간이 지나도 valid command가 없으면 `DISARMED`로 전환하는 auto-disarm 정책은 MVP 확정 필요 항목으로 남긴다.
+
+Timeout은 새 command frame이 들어와서 거부되는 상황이 아니므로 `ERR` 응답 대상이 아니다.
+대신 `TEL`의 `state`, `left_pwm`, `right_pwm`, `fault` 또는 추후 `warn` field로 관찰한다.
+
+### MVP telemetry rule
+
+첫 MVP telemetry는 다음 field를 유지한다.
+
+```text
+TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pwm=0,fault=0\n
+```
+
+규칙:
+
+- `state`는 최소 `BOOT`, `DISARMED`, `ARMED`, `FAULT`를 사용한다.
+- PC-only parser 실습에서는 `batt_mv`, `left_cps`, `right_cps`를 0으로 보낼 수 있다.
+- Motor power가 없는 UART 실습에서는 `left_pwm`, `right_pwm`도 0으로 유지한다.
+- Telemetry는 safety 판단을 대신하지 않는다. Safety 판단은 STM32 내부 state machine이 수행한다.
+- Telemetry rate 초기값은 10 Hz다.
+
+### MVP evidence
+
+첫 UART MVP는 다음 log가 확보되면 통과로 본다.
+
+- `PING` -> `PONG`
+- `ARM` -> `ACK`
+- valid `CMD` -> `ACK`
+- missing field `CMD` -> `ERR,code=MISSING_FIELD`
+- out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
+- `DISARMED` 상태 nonzero `CMD` -> `ERR,code=NOT_ARMED`
+- command timeout 후 `TEL`에서 output zero 확인
+- `DISARM` -> `ACK` 및 이후 `TEL,state=DISARMED`
 
 ## 출처
 
@@ -271,7 +410,7 @@ PONG,seq=45,uptime_ms=123456\n
 예:
 
 ```text
-TEL,t_ms=123456,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=415,armed=0,fault=0\n
+TEL,t_ms=123456,state=ARMED,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=415,fault=0\n
 ```
 
 추천 초기 telemetry fields:
@@ -286,8 +425,8 @@ TEL,t_ms=123456,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=
 | `right_mmps` | mm/s | Calibration 후 선택 가능한 오른쪽 track speed estimate |
 | `left_pwm` | timer counts 또는 percent-scaled value | 왼쪽 motor command output |
 | `right_pwm` | timer counts 또는 percent-scaled value | 오른쪽 motor command output |
-| `armed` | 0/1 | STM32가 motor output을 허용하는지 여부 |
-| `motor_out` | 0/1 | STM32 safety gate가 motor output을 허용하는지 여부 |
+| `state` | text | `BOOT`, `DISARMED`, `ARMED`, `FAULT` 같은 safety state |
+| `motor_out` | 0/1 | STM32 safety gate가 motor output을 허용하는지 여부. MVP에서는 optional |
 | `fault` | bitmask | Active fault flags |
 
 ESP32 dashboard parsing이 시작된 뒤에는 telemetry field를 안정적으로 유지한다.
@@ -344,7 +483,9 @@ ERR,seq=42,type=CMD,code=NOT_ARMED\n
 | Code | Meaning |
 | --- | --- |
 | `BAD_FRAME` | Message parsing 실패 |
+| `UNKNOWN_TYPE` | 지원하지 않는 frame type |
 | `MISSING_FIELD` | Required field 누락 |
+| `BAD_VALUE` | 숫자 변환 실패 또는 field 값 문법 오류 |
 | `OUT_OF_RANGE` | Field가 허용 범위 밖 |
 | `NOT_ARMED` | Robot이 disarmed 상태라 motion command 거부 |
 | `LOW_BATTERY` | Battery safety로 motion command 거부 |
@@ -478,10 +619,14 @@ ESP32:
 
 최종 배선 전에 답해야 할 항목:
 
+- PC-first 실습에서 사용할 UART: ST-LINK VCP USART2만 사용할지, 외부 USB-UART도 허용할지
 - 최종 ESP32-S3 UART GPIO pair
 - MDD10A PWM/DIR pin 확정 이후에도 STM32 USART1 PA9/PA10이 conflict-free인지
 - 실제 module에서 level shifting 또는 buffering이 필요한지
-- 최종 command/telemetry rate
+- 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
+- Timeout 후 output zero 상태를 유지하다가 자동 `DISARMED`로 전환할 `auto_disarm_ms`
+- 최대 application frame length와 ring buffer size
+- Unknown frame type을 `ERR,code=UNKNOWN_TYPE`로 답할지 조용히 ignore할지
 - 최종 fault bitmask definition
 - Wi-Fi command forwarding 전에 checksum을 추가할지
 

@@ -19,7 +19,7 @@ NUCLEO-F446RE schematic before firmware implementation.
 The pin allocation must support:
 
 - Left/right motor PWM
-- Left/right motor direction and enable/brake GPIO
+- Left/right motor direction GPIO and optional power gate/brake GPIO
 - Left/right quadrature encoder A/B inputs
 - PC command/debug serial link
 - Optional ESP32-S3 serial link
@@ -75,8 +75,8 @@ The first allocation uses these principles:
 | Battery voltage ADC | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Candidate |
 | Left motor direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
 | Right motor direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
-| Left motor enable/brake | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate |
-| Right motor enable/brake | PC5 | GPIO output | ST morpho CN10 pin 6 | Candidate |
+| Optional power gate/brake 1 | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate only if separate circuit is added |
+| Optional power gate/brake 2 | PC5 | GPIO output | ST morpho CN10 pin 6 | Candidate only if separate circuit is added |
 | Optional ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
 | Optional ESP32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
 | Future CAN RX | PA11 | CAN1_RX | ST morpho CN10 pin 14 | Reserve |
@@ -201,8 +201,9 @@ Reason:
 
 Safety requirement:
 
-- Motor enable/brake pins must default to a safe disabled state during reset.
-- Use external pull-down or pull-up resistors as required by the motor driver.
+- MDD10A PWM pins must default to zero during reset.
+- Optional power gate or brake pins must default to a safe disabled state if a separate circuit is added.
+- Use external pull-down or pull-up resistors as required by the actual circuit.
 
 Check:
 
@@ -273,7 +274,7 @@ Bench validation order:
 4. PWM output measurement.
 5. Encoder count test by hand rotation.
 6. ADC divider measurement with bench voltage first, battery later.
-7. Motor driver enable safety test with motor power disconnected first.
+7. MDD10A PWM/DIR logic safety test with motor power disconnected first.
 
 ## First Decision
 

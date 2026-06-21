@@ -1,39 +1,38 @@
 # Motor Driver and H-Bridge Control Decision
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `08_Motor_Driver_and_HBridge_Control_ko.md` as the canonical architecture
-> contract. Do not use the BTS7960/RPWM/LPWM details in this file for new wiring
-> or firmware work.
-
 ## Purpose
 
 This document defines the first motor-driver decision for the tracked mobile
 robot project and explains how the selected driver should be controlled from
 STM32.
 
-The goal is to connect the drivetrain decision to the previous MCU analysis:
+The goal is to connect the drivetrain decision to the previous MCU analysis,
+pin-allocation work, power-safety design, and control-loop plan:
 
 - STM32 owns deterministic low-level motor control.
-- The motor driver must handle high-current DC motor power.
-- Firmware must enforce safe H-bridge control rules.
-- The initial pin allocation must be revised for the selected driver interface.
+- The motor driver handles high-current DC motor power.
+- Firmware enforces safe H-bridge control rules.
+- The selected driver interface drives the first pin allocation and validation
+  sequence.
 
 ## Decision Summary
 
-Use BTS7960-class H-bridge motor driver modules for the first drivetrain MVP.
+Use one Cytron MDD10A dual-channel DC motor driver for the first drivetrain
+MVP.
 
 Initial decision:
 
-- Use one BTS7960 module per DC motor.
-- Use two modules for left/right tracked drivetrain.
-- Control each motor with dual PWM inputs: `RPWM` and `LPWM`.
-- Keep enable lines under STM32 control instead of tying them permanently high.
-- Start with low-duty bench tests before chassis testing.
+- One MDD10A board drives the left and right brushed DC motors.
+- Each motor uses one `PWM` signal and one `DIR` signal.
+- The initial control mode is sign-magnitude PWM.
+- STM32 keeps ownership of motor output, command timeout, and the safety gate.
+- Logic-only tests and low-duty no-load motor tests come before chassis motion.
 
-Rejected for the first MVP:
+Excluded from the first MVP:
 
-- TB6612FNG as the main drivetrain driver.
-- Direct motor drive from MCU GPIO.
+- Using BTS7960 dual-PWM modules as the first drivetrain driver.
+- Using TB6612FNG as the main tracked-drivetrain driver.
+- Driving motors directly from MCU GPIO.
 - CAN-based motor control.
 - ESP32-S3 as the primary motor controller.
 
@@ -44,8 +43,14 @@ Project sources:
 - `00_Project_Charter/02_Component_Inventory.md`
 - `00_Project_Charter/03_Initial_Purchase_and_Safety.md`
 - `01_System_Architecture/04_MCU_Timers_and_Watchdogs.md`
-- `01_System_Architecture/06_MCU_Pin_Allocation_Candidate.md`
-- `01_System_Architecture/07_ESP32S3_Features_and_Project_Role.md`
+- `01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md`
+- `01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md`
+- `01_System_Architecture/20_Motor_Driver_Selection_Comparison.md`
+
+Manufacturer references:
+
+- Cytron MDD10A product page: `https://www.cytron.io/p-10amp-5v-30v-dc-motor-driver-2-channels`
+- Cytron MDD10A user's manual V2.0 mirror: `https://cdn.robotshop.com/media/c/cyt/rb-cyt-153/pdf/rb-cyt-153_-_mdd10a_users_manual_v2.0_-_2017-06.pdf`
 
 Local WHEELTEC reference material:
 
@@ -56,21 +61,21 @@ Local WHEELTEC reference material:
 
 ## 1. Motor Driver Requirement
 
-The motor driver must bridge the gap between logic-level MCU signals and
-high-current motor power.
+The motor driver bridges logic-level MCU signals and high-current motor power.
 
 STM32 can provide:
 
 - PWM logic signals
-- Enable or disable GPIO signals
 - Direction logic
 - Control-loop timing
+- Command timeout and safety-gate decisions
+- Encoder feedback processing
 
 STM32 cannot provide:
 
 - Motor current
 - Motor voltage directly from GPIO
-- Inductive load protection by itself
+- Inductive-load protection by itself
 - Power-stage heat dissipation
 
 The driver must therefore handle:
@@ -78,8 +83,8 @@ The driver must therefore handle:
 - 3S LiPo motor voltage range
 - Motor start-up current
 - Load spikes from tracked drivetrain friction
-- Motor stall or near-stall conditions long enough for fuse/safety behavior
-- Logic-level interface from STM32
+- Stall or near-stall events long enough for fuse and safety behavior to act
+- A logic-level interface that works with STM32 3.3 V GPIO
 
 ## 2. H-Bridge Control Concept
 
@@ -92,25 +97,27 @@ Project meaning:
 - Reverse rotation is made by driving current through the motor the opposite
   way.
 - Speed is controlled by PWM duty ratio.
-- The MCU does not drive the motor directly; it only commands the H-bridge.
+- The MCU does not drive the motor directly; it commands the H-bridge.
 
-For a dual-PWM H-bridge interface, each motor is controlled by two PWM-capable
-logic inputs.
+MDD10A uses a sign-magnitude interface for the first MVP:
+
+| Signal | Role |
+| --- | --- |
+| `PWM` | Speed duty control |
+| `DIR` | Direction selection |
 
 Generic model:
 
-| Motor command | Input A | Input B | Meaning |
+| Motor command | `PWM` | `DIR` | Meaning |
 | --- | --- | --- | --- |
-| Stop/coast candidate | 0 | 0 | No active drive |
-| Forward | PWM duty | 0 | Drive in one direction |
-| Reverse | 0 | PWM duty | Drive in opposite direction |
-| Forbidden for MVP | PWM duty | PWM duty | Avoid simultaneous drive commands |
+| Stop/coast candidate | 0 | don't care | No active drive |
+| Forward | duty | forward polarity | Drive one direction |
+| Reverse | duty | reverse polarity | Drive the opposite direction |
 
-The final electrical behavior depends on the driver module, but the firmware
-rule for this project is simple:
+Firmware rule:
 
 ```text
-Never command both direction PWM inputs active at the same time.
+Before changing direction, ramp PWM to zero, change DIR, then raise PWM again.
 ```
 
 ## 3. WHEELTEC Reference Finding
@@ -128,165 +135,173 @@ Relevant findings:
   motors.
 - The L150Pro standard-library source uses two PWM outputs per motor.
 
-The L150Pro motor source defines four motors, each with two PWM channels:
-
-| Motor | PWM input 1 | PWM input 2 |
-| --- | --- | --- |
-| A | `PB8 / TIM10_CH1` | `PB9 / TIM11_CH1` |
-| B | `PE5 / TIM9_CH1` | `PE6 / TIM9_CH2` |
-| C | `PE11 / TIM1_CH2` | `PE9 / TIM1_CH1` |
-| D | `PE14 / TIM1_CH4` | `PE13 / TIM1_CH3` |
-
-The source code applies opposite-side PWM depending on motor command sign.
-
 Project interpretation:
 
-- The WHEELTEC architecture is close to a dual-PWM H-bridge control model.
-- It is useful as a control architecture reference.
-- It does not prove that the user's R3 chassis uses MG540 motors.
-- It does not prove the exact driver IC on the WHEELTEC main board from source
-  alone.
-- TB6612FNG material exists, but TB6612FNG is not suitable as the main driver
-  for this project's heavier tracked drivetrain.
+- WHEELTEC is useful as a drivetrain, encoder, and control-loop reference.
+- The user's first board and driver do not need to follow the WHEELTEC
+  dual-PWM output topology.
+- With MDD10A, the high-level signed motor abstraction remains useful while the
+  low-level output mapping becomes `PWM + DIR`.
+- TB6612FNG is useful learning material, but it is too small to be the main
+  driver for this tracked platform.
 
-## 4. BTS7960 Fit
+## 4. MDD10A Fit
 
-BTS7960-class modules are a practical fit for the current project direction.
+MDD10A is the most practical first-driver choice for this project.
 
-Typical BTS7960 module interface:
+Key manufacturer-facing characteristics:
+
+| Item | Value |
+| --- | --- |
+| Motor type | Two brushed DC motors |
+| Motor voltage | 5 V to 30 V DC, Rev2.0 reference |
+| Current | 10 A continuous per channel, 30 A peak for up to 10 seconds |
+| Logic input | 3.3 V / 5 V logic input support |
+| PWM mode | Sign-magnitude and locked-antiphase support |
+| PWM frequency | Up to 20 kHz |
+
+MDD10A input connector:
 
 | Pin | Role |
 | --- | --- |
-| `RPWM` | PWM input for one motor direction |
-| `LPWM` | PWM input for the opposite motor direction |
-| `R_EN` | Enable input for one side |
-| `L_EN` | Enable input for the other side |
-| `VCC` | Logic supply |
-| `GND` | Logic and power reference |
-| `B+`, `B-` | Motor power input |
-| `M+`, `M-` | Motor output |
+| `GND` | Logic signal ground |
+| `PWM2` | Motor 2 speed control |
+| `DIR2` | Motor 2 direction |
+| `PWM1` | Motor 1 speed control |
+| `DIR1` | Motor 1 direction |
+
+Motor and power terminal:
+
+| Pin | Role |
+| --- | --- |
+| `M1A`, `M1B` | Motor 1 output |
+| `POWER+`, `POWER-` | Motor power input |
+| `M2A`, `M2B` | Motor 2 output |
 
 Control mapping:
 
-| Motion state | `RPWM` | `LPWM` | `R_EN` / `L_EN` |
-| --- | --- | --- | --- |
-| Disabled | 0 | 0 | 0 |
-| Stop/coast candidate | 0 | 0 | 1 |
-| Forward | duty | 0 | 1 |
-| Reverse | 0 | duty | 1 |
-| Emergency stop | 0 | 0 | 0 |
+| State | `PWMx` | `DIRx` |
+| --- | --- | --- |
+| Unsafe / disarmed | 0 | don't care |
+| Stop command | 0 | keep last or default |
+| Forward | duty | forward mapping |
+| Reverse | duty | reverse mapping |
 
-This is similar to the WHEELTEC dual-PWM idea:
+Notes:
 
-```text
-positive command -> PWM channel A active, PWM channel B off
-negative command -> PWM channel A off, PWM channel B active
-zero command     -> both PWM channels off
-```
+- MDD10A `PWM` is not RC receiver servo PWM.
+- For inductive motor loads, design around battery operation.
+- A switching power supply alone can be unsafe with regenerative current.
+- MDD10A does not provide reverse-polarity protection on the motor supply, so
+  power polarity must be checked before every early test.
 
 ## 5. Driver Option Comparison
 
 | Driver | Interface style | Project fit |
 | --- | --- | --- |
 | TB6612FNG | PWM + direction pins, small DC motor driver | Good learning reference, too small for the main tracked drivetrain |
-| BTS7960 module | Dual PWM H-bridge style | Selected for first drivetrain MVP |
-| MDD10A | PWM + DIR, integrated dual-channel driver | Clean option, but interface differs from WHEELTEC dual-PWM style |
-| MDD20A | PWM + DIR, higher-current dual-channel driver | Strong option if cost/space are acceptable, but not selected for the first BTS-based path |
+| BTS7960 module | Dual-PWM H-bridge style, usually one module per motor | Reasonable early candidate, now superseded by MDD10A for the first MVP |
+| MDD10A | Two motors on one board, `PWM + DIR` per motor | Selected for the first drivetrain MVP |
+| MDD20A | `PWM + DIR`, higher-current dual-channel driver | Follow-up candidate if measured MDD10A margin is not enough |
 
-Decision:
+Why BTS7960 was considered:
 
-- Use BTS7960 first because it matches the dual-PWM H-bridge learning path and
-  provides more practical current margin than TB6612FNG-class modules.
-- Keep MDD20A as a future replacement option if BTS7960 module quality, heat,
-  or wiring complexity becomes a problem.
+- It is useful for H-bridge and dual-PWM learning.
+- It offers more margin than a small TB6612FNG-class driver.
+- It resembles the dual-PWM structure in the local WHEELTEC reference code.
+
+Why MDD10A is selected:
+
+- One board drives both motors.
+- Two PWM outputs are enough for a two-motor drivetrain.
+- The existing PB6/PB7 PWM and PC8/PC9 DIR candidate map stays practical.
+- The validation path is simpler: MDD10A inspection, power bring-up,
+  PWM/DIR logic test, then no-load motor test.
+- The official logic input support fits STM32 3.3 V GPIO more directly.
+
+Detailed comparison is recorded in
+`20_Motor_Driver_Selection_Comparison.md`.
 
 ## 6. Electrical Interface Candidate
 
-For each motor:
+MDD10A first wiring contract:
 
 ```text
-STM32 PWM_CH_A -> BTS7960 RPWM
-STM32 PWM_CH_B -> BTS7960 LPWM
-STM32 GPIO     -> BTS7960 R_EN and L_EN
-STM32 GND      -> BTS7960 GND
-3S LiPo +      -> fuse -> switch -> BTS7960 B+
-3S LiPo -      -> BTS7960 B-
-Motor leads    -> BTS7960 M+ / M-
+STM32 PWM_L -> MDD10A PWM1
+STM32 DIR_L -> MDD10A DIR1
+STM32 PWM_R -> MDD10A PWM2
+STM32 DIR_R -> MDD10A DIR2
+STM32 GND   -> MDD10A GND
+
+3S LiPo +   -> fuse -> switch -> MDD10A POWER+
+3S LiPo -   -> MDD10A POWER-
+
+Left motor  -> MDD10A M1A / M1B
+Right motor -> MDD10A M2A / M2B
 ```
 
-Recommended initial wiring rule:
+Initial wiring rules:
 
-- Use one enable GPIO per BTS7960 module.
-- Tie `R_EN` and `L_EN` together only if the module documentation and bench
-  test confirm this is acceptable.
-- Add an external pull-down on enable so the driver remains disabled while STM32
-  resets.
-- Keep motor current wiring off perfboard copper traces.
-- Use common ground between STM32 and BTS7960 logic ground.
+- STM32 and MDD10A logic GND share a common reference.
+- Motor current must not flow through perfboard copper traces.
+- STM32 PWM pins must default to low or zero-duty during reset.
+- DIR state alone must not create motor output while PWM is zero.
+- If a separate hardware power gate or brake is added later, design it in the
+  power path or external gate circuit rather than assuming an MDD10A enable pin.
 
-Voltage compatibility check:
+Voltage compatibility:
 
-- STM32 GPIO outputs are 3.3 V logic.
-- Confirm the actual BTS7960 module recognizes 3.3 V logic reliably.
-- If not, add a level shifter or transistor buffer.
+- STM32 GPIO output is 3.3 V logic.
+- MDD10A supports 3.3 V logic input.
+- Still run a logic-only PWM/DIR test before connecting motor power.
 
 ## 7. Pin Allocation Impact
 
-The previous pin allocation candidate assumed one PWM signal plus direction and
-enable GPIO per motor.
+The first `06_MCU_Pin_Allocation_Candidate_ko.md` map fits MDD10A well.
 
-BTS7960 changes the requirement:
+MDD10A requirements:
 
-- Left motor needs `RPWM` and `LPWM`.
-- Right motor needs `RPWM` and `LPWM`.
-- Therefore the two-motor drivetrain needs four PWM-capable outputs.
-
-Preferred STM32 timer direction:
-
-- Use four channels from one timer if practical.
-- A strong candidate is `TIM8_CH1` through `TIM8_CH4`, if CubeMX and board pin
-  access confirm availability.
+- Left motor: `PWM1` + `DIR1`
+- Right motor: `PWM2` + `DIR2`
+- Two-motor drivetrain: two PWM-capable outputs plus two GPIO outputs
 
 Candidate concept:
 
 | Robot function | Candidate peripheral |
 | --- | --- |
-| Left motor RPWM | `TIM8_CH1` |
-| Left motor LPWM | `TIM8_CH2` |
-| Right motor RPWM | `TIM8_CH3` |
-| Right motor LPWM | `TIM8_CH4` |
-| Left BTS7960 enable | GPIO with external pull-down |
-| Right BTS7960 enable | GPIO with external pull-down |
+| Left motor PWM | `TIM4_CH1` / PB6 |
+| Right motor PWM | `TIM4_CH2` / PB7 |
+| Left motor DIR | GPIO / PC8 |
+| Right motor DIR | GPIO / PC9 |
+| Optional power gate or brake | Only if a separate circuit is added, candidate GPIO PC6/PC5 |
 
-This is not final pinout.
+This is not the final pinout. Required checks:
 
-Checks required:
-
-- Confirm NUCLEO-F446RE board header access.
-- Confirm CubeMX alternate-function mapping.
-- Preserve SWD pins.
-- Preserve encoder timers.
-- Preserve I2C pins for BNO08x if possible.
-- Confirm reset default states are safe.
+- NUCLEO-F446RE header access
+- CubeMX alternate-function mapping
+- SWD pin preservation
+- Encoder timer preservation
+- I2C pins for BNO08x if practical
+- Reset-safe output defaults
 
 ## 8. Firmware Control Rules
 
-The firmware must treat the motor driver as a safety-critical output.
+Firmware must treat motor-driver output as safety-critical.
 
 Required rules:
 
 1. Initialize all motor PWM compare values to zero.
-2. Keep driver enable low during startup.
-3. Enable the driver only after firmware initialization passes.
-4. Clamp motor command to a configured PWM limit.
+2. Keep motor output at PWM zero during startup.
+3. Allow nonzero PWM only after firmware initialization and arm checks pass.
+4. Clamp motor commands to the configured PWM limit.
 5. Apply acceleration and deceleration ramp limits.
-6. Never make `RPWM` and `LPWM` active at the same time.
-7. Stop motors if command timeout occurs.
-8. Stop motors if low-voltage condition is detected.
+6. Before changing direction, ramp PWM to zero, change `DIR`, then raise PWM.
+7. Stop motors on command timeout.
+8. Stop motors on low-voltage stop.
 9. Stop motors before watchdog reset or fault handling if possible.
-10. Disable driver enable on emergency stop.
+10. Force PWM zero and disarmed state on emergency stop.
 
-Recommended motor command function:
+Recommended motor command shape:
 
 ```c
 void motor_set(int command)
@@ -294,35 +309,34 @@ void motor_set(int command)
     int duty = clamp_abs(command, PWM_LIMIT);
 
     if (!motor_output_allowed()) {
-        rpwm_set(0);
-        lpwm_set(0);
-        enable_set(0);
+        pwm_set(0);
         return;
     }
 
-    enable_set(1);
-
-    if (command > 0) {
-        rpwm_set(duty);
-        lpwm_set(0);
-    } else if (command < 0) {
-        rpwm_set(0);
-        lpwm_set(duty);
-    } else {
-        rpwm_set(0);
-        lpwm_set(0);
+    if (command == 0) {
+        pwm_set(0);
+        return;
     }
+
+    if (direction_change_required(command)) {
+        pwm_set(0);
+        dir_set(command > 0 ? MOTOR_FORWARD : MOTOR_REVERSE);
+    }
+
+    pwm_set(duty);
 }
 ```
 
-Implementation note:
+Implementation notes:
 
-- Set the inactive PWM channel to zero before increasing the active PWM channel.
-- For direction changes, ramp to zero first, then switch direction.
+- Change `DIR` only after PWM reaches zero.
+- Handle sudden forward/reverse requests through a ramp-to-zero sequence.
+- Final `DIR` mapping is confirmed after actual motor wiring and encoder sign
+  tests.
 
 ## 9. Power and Safety Rules
 
-The BTS7960 decision does not remove the need for power protection.
+Choosing MDD10A does not remove the need for power protection.
 
 Required power path:
 
@@ -333,25 +347,26 @@ Required power path:
 -> blade fuse
 -> DC-rated main switch
 -> power distribution
-   -> BTS7960 motor power
+   -> MDD10A motor power
    -> buck converters
 ```
 
 Safety rules:
 
-- Start bench tests with 10A or 15A fuse.
+- Start bench tests with a 10 A or 15 A fuse.
 - Increase fuse rating only after current measurements.
-- Keep low-voltage alarm connected during LiPo operation.
-- Disconnect battery after every test.
-- Do not run high-current motor power through perfboard traces.
-- Keep motor power wires away from encoder, I2C, and UART signal wires.
-- Check BTS7960 heat during every early test.
+- Keep the 3S LiPo low-voltage alarm connected during LiPo operation.
+- Disconnect the battery after every test.
+- Do not route high-current motor power through perfboard traces.
+- Keep motor power wiring away from encoder, I2C, and UART signal wires.
+- Check MDD10A and motor temperature during every early test.
+- Verify MDD10A POWER polarity before applying power.
 
 Main switch requirement:
 
-- The main power switch should be DC-rated.
-- Its current rating should be at least equal to the planned fuse rating.
-- A 12 V or 24 V DC switch rated around 30 A is the minimum practical target.
+- The main switch must be DC-rated.
+- Its current rating should be at least the planned fuse rating.
+- A 12 V or 24 V DC switch around 30 A is the minimum practical target.
 - A 40 A to 50 A DC-rated switch gives better margin for this tracked platform.
 
 ## 10. Validation Plan
@@ -359,33 +374,33 @@ Main switch requirement:
 ### Stage 1: Logic-Only Test
 
 - Disconnect motor power.
-- Power only STM32 and BTS7960 logic side if needed.
-- Confirm enable defaults to disabled.
-- Confirm PWM pins output expected duty.
-- Confirm `RPWM` and `LPWM` are never active together.
+- Connect STM32 and MDD10A logic GND.
+- Confirm PWM pins output the intended duty.
+- Confirm DIR pins change for forward/reverse requests.
+- Confirm DIR changes alone create no motor output while PWM is zero.
 
 ### Stage 2: No-Load Motor Test
 
-- Connect one motor and one BTS7960.
-- Use low bench duty, such as 5% to 10%.
-- Test forward, stop, reverse.
+- Connect one motor to one MDD10A channel.
+- Start with low duty, such as 5% to 10%.
+- Test forward, stop, and reverse.
 - Confirm motor direction and encoder sign.
-- Check module temperature.
+- Check board and motor temperature.
 
 ### Stage 3: Dual-Motor Bench Test
 
 - Test left and right motors with wheels or tracks lifted.
-- Confirm both motor directions match robot convention.
+- Confirm motor directions match robot convention.
 - Confirm encoder signs match command signs.
-- Test emergency stop.
+- Test timeout stop and emergency stop.
 
 ### Stage 4: Low-Speed Chassis Test
 
 - Place the robot on the floor.
-- Use low PWM limits.
-- Test forward/backward.
-- Test turn-in-place last because tracked vehicles can draw high current during
-  rotation.
+- Use a low PWM limit.
+- Test forward and backward first.
+- Test turn-in-place last because tracked vehicles can draw high current while
+  rotating.
 
 ### Stage 5: Closed-Loop Test
 
@@ -399,21 +414,25 @@ Main switch requirement:
 
 These items must be checked before final firmware implementation:
 
-- Exact BTS7960 module logic input threshold.
-- Whether `R_EN` and `L_EN` should be tied or controlled separately.
+- Actual MDD10A revision and terminal labeling.
+- Whether `PWM1/DIR1` maps to left or right.
 - Final STM32 timer channel selection.
 - Final PWM frequency.
 - Motor stall current or measured worst-case current.
 - Encoder voltage and signal quality.
-- Whether MG540 or JGB37-520 becomes the first drivetrain motor.
+- Whether MG540, JGB37-520, or another motor becomes the first drivetrain motor.
+- Whether measured MDD10A current and heat margin are enough, or whether an
+  MDD20A-class upgrade is needed.
 
 ## Architecture Decision
 
-For the first drivetrain MVP, BTS7960 is selected as the motor driver path.
+For the first drivetrain MVP, MDD10A is the active motor-driver path.
 
-This decision changes the motor control interface from the earlier one-PWM plus
-direction assumption to a dual-PWM H-bridge interface.
+This decision replaces the earlier BTS7960 dual-PWM assumption with a
+per-motor `PWM + DIR` interface. BTS7960 remains in the documentation as a
+superseded alternative and design-evolution record, not as the current wiring
+or firmware contract.
 
-The next architecture task is to revise the STM32 pin allocation and then build
-the hardware validation plan around one BTS7960 module and one motor before
-testing the full tracked chassis.
+The next practical tasks are to validate the STM32 pin allocation in CubeMX,
+run the MDD10A logic-only test, and complete the one-motor hardware validation
+before testing the full tracked chassis.

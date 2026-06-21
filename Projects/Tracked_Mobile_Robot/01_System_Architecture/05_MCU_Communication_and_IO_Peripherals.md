@@ -27,7 +27,7 @@ The initial tracked robot MVP needs the following MCU interfaces:
 | PC command and debug log | USART/UART, or ST-LINK virtual COM port path |
 | ESP32-S3 support controller link | USART/UART |
 | BNO08x IMU | I2C first, SPI/UART as alternatives |
-| Motor driver direction/enable/brake | GPIO |
+| Motor driver direction and optional gate/brake | GPIO |
 | Motor speed command | Timer PWM, assigned in the timer document |
 | Encoder input | Timer encoder mode, assigned in the timer document |
 | 3S LiPo voltage monitoring | ADC through resistor divider |
@@ -252,7 +252,7 @@ Datasheet points:
 GPIO is needed for:
 
 - Motor driver direction pins
-- Motor driver enable or brake pins
+- Optional motor power gate or brake pins
 - Fault input from driver, if available
 - User button or emergency-stop signal
 - Status LED
@@ -271,10 +271,10 @@ Motor-related GPIO should be designed with safe default states.
 
 Recommended approach:
 
-- Motor enable pin defaults to disabled during reset.
+- MDD10A PWM output defaults to zero during reset.
 - Use pull-down or pull-up resistors as needed.
 - Firmware should explicitly disable motor outputs during startup.
-- PWM should be started only after direction and enable pins are in known states.
+- PWM should be started only after direction pins and safety state are known.
 
 ## 7. ADC
 
@@ -392,7 +392,7 @@ This is not a final pinout. It is a functional allocation before checking Table
 | ESP32-S3 link | USART/UART | Add after PC serial control works. |
 | BNO08x IMU | I2C first, SPI/UART fallback | Start simple with I2C. |
 | Motor driver direction | GPIO | Use safe default states. |
-| Motor driver enable/brake | GPIO | Default to disabled on reset. |
+| Optional motor gate/brake | GPIO | Add only if a separate power-gate or brake circuit exists. |
 | Battery voltage monitor | ADC | Use resistor divider and software threshold first. |
 | Future CAN bus | bxCAN + transceiver | Defer until UART MVP works. |
 | Firmware debug | SWD through ST-LINK | Preserve during development. |
@@ -438,7 +438,7 @@ Recommended direction:
 
 1. Use one USART/UART path for PC command and debug.
 2. Use I2C as the first BNO08x IMU interface candidate.
-3. Use GPIO for motor direction and enable/brake with safe default states.
+3. Use GPIO for MDD10A motor direction, and reserve optional gate/brake GPIO only if a separate circuit exists.
 4. Use ADC for LiPo voltage monitoring through a resistor divider.
 5. Preserve SWD for debugging.
 6. Defer CAN until the UART-based MVP is validated.

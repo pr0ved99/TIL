@@ -49,6 +49,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - `04_PC_Serial_Control`: PC-side serial test scripts and protocol notes
 - `05_ROS2_Integration`: ROS2 bridge, topic mapping, RViz validation
 - `06_Test_Report`: bench, load, chassis, and field test reports
+- `07_Embedded_Learning_Notes`: concept notes, STM32/ESP32 practice logs, protocol labs, measurement notes
 - `assets`: photos, wiring diagrams, screenshots, plots
 - `docs/handoff`: continuation notes for future work
 - `docs/plans`: short-term execution plans for hardware sessions
@@ -89,6 +90,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md`](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) | Tracked drivetrain kinematics and odometry |
 | [`18_Fault_Model_and_Safety_Cases_ko.md`](01_System_Architecture/18_Fault_Model_and_Safety_Cases_ko.md) | Fault cases, detection, safe responses |
 | [`19_Architecture_Decision_Record_ko.md`](01_System_Architecture/19_Architecture_Decision_Record_ko.md) | Accepted, deferred, rejected architecture decisions |
+| [`20_Motor_Driver_Selection_Comparison_ko.md`](01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md) | BTS7960 to MDD10A decision history and driver comparison |
 
 ### 02_Hardware_Validation
 
@@ -103,6 +105,44 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
 | [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |
 
+### 04_PC_Serial_Control
+
+| Document | Purpose |
+| --- | --- |
+| [`README.md`](04_PC_Serial_Control/README.md) | PC-side UART command, telemetry logging, and dashboard mock direction |
+| [`tools/UartMvpTool.ps1`](04_PC_Serial_Control/tools/UartMvpTool.ps1) | Windows PowerShell UART MVP frame builder, sender, monitor, and logger |
+| [`tools/uart_mvp_tool.sh`](04_PC_Serial_Control/tools/uart_mvp_tool.sh) | Ubuntu/Linux Bash UART MVP frame builder, sender, monitor, and logger |
+| [`tools/uart_mvp_tool.py`](04_PC_Serial_Control/tools/uart_mvp_tool.py) | PC-side UART MVP frame builder, sender, monitor, and logger |
+| [`tools/ServeWebDashboard.ps1`](04_PC_Serial_Control/tools/ServeWebDashboard.ps1) | Windows localhost server for the browser Web Serial dashboard |
+| [`tools/serve_web_dashboard.sh`](04_PC_Serial_Control/tools/serve_web_dashboard.sh) | Ubuntu/Linux localhost server for the browser Web Serial dashboard |
+| [`web_serial_dashboard`](04_PC_Serial_Control/web_serial_dashboard/README.md) | Browser-based Web Serial UART MVP dashboard |
+| [`docs/01_PC_UART_MVP_Test_Tool_ko.md`](04_PC_Serial_Control/docs/01_PC_UART_MVP_Test_Tool_ko.md) | PC-side UART MVP test tool usage guide |
+| [`docs/02_STM32_UART_MVP_Firmware_Guide_ko.md`](04_PC_Serial_Control/docs/02_STM32_UART_MVP_Firmware_Guide_ko.md) | STM32 USART2/ring-buffer/parser firmware guide for the PC-first UART MVP |
+| [`docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md`](04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md) | Ubuntu PC-side UART MVP test tool usage guide |
+| [`docs/04_Web_Serial_Dashboard_ko.md`](04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md) | Web Serial UART MVP dashboard usage guide |
+| [`docs/05_UART_MVP_Runbook_ko.md`](04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md) | End-to-end UART MVP execution guide |
+| [`docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md) | Detailed CubeIDE firmware implementation guide for UART MVP |
+
+### 07_Embedded_Learning_Notes
+
+| Document | Purpose |
+| --- | --- |
+| [`README.md`](07_Embedded_Learning_Notes/README.md) | Embedded learning note policy and folder map |
+| [`01_Concept_Notes/README.md`](07_Embedded_Learning_Notes/01_Concept_Notes/README.md) | Concept note index |
+| [`01_GPIO_Alternate_Function_and_CubeMX_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md) | GPIO alternate function and CubeMX-generated initialization |
+| [`02_UART_Interrupt_Ring_Buffer_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/02_UART_Interrupt_Ring_Buffer_ko.md) | UART RX interrupt, ISR, ring buffer, parser split |
+| [`03_Timer_Encoder_Mode_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/03_Timer_Encoder_Mode_ko.md) | Timer encoder mode and A/B quadrature counting |
+| [`04_DMA_Interrupt_Timer_Comparison_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/04_DMA_Interrupt_Timer_Comparison_ko.md) | DMA, interrupt, and timer role comparison |
+| [`05_HAL_LL_Direct_Register_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md) | HAL, LL, direct-register development strategy |
+| [`06_I2C_SPI_IMU_Interface_Choice_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md) | I2C-first and SPI-fallback IMU interface rationale |
+| [`02_STM32_Board_Practice/README.md`](07_Embedded_Learning_Notes/02_STM32_Board_Practice/README.md) | NUCLEO-F446RE practice log index |
+| [`03_ESP32_Board_Practice/README.md`](07_Embedded_Learning_Notes/03_ESP32_Board_Practice/README.md) | ESP32-S3 practice log index |
+| [`04_Interface_Protocol_Practice/README.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/README.md) | UART/CAN command and telemetry protocol practice |
+| [`001_UART_Command_Telemetry_Protocol_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/001_UART_Command_Telemetry_Protocol_ko.md) | UART command/telemetry frame, required fields, ACK/ERR, safety-state behavior |
+| [`002_PC_Telemetry_Dashboard_Mock_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/002_PC_Telemetry_Dashboard_Mock_ko.md) | PC-side telemetry dashboard mock plan |
+| [`003_Optional_WebSocket_AI_Log_Diagnosis_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/003_Optional_WebSocket_AI_Log_Diagnosis_ko.md) | Optional WebSocket dashboard and AI-assisted log diagnosis extension |
+| [`05_Debugging_Measurement/README.md`](07_Embedded_Learning_Notes/05_Debugging_Measurement/README.md) | Measurement and debugging evidence index |
+
 ### docs
 
 | Document | Purpose |
@@ -111,6 +151,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
+| [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
 
 ## Initial MVP
 

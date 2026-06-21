@@ -1,10 +1,5 @@
 # HAL to LL Driver Migration Strategy
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `15_HAL_to_LL_Driver_Migration_Strategy_ko.md` as the canonical migration
-> strategy. Do not use stale BTS7960/RPWM/LPWM references in this file for new
-> firmware work.
-
 ## Purpose
 
 This document defines how the STM32 firmware can migrate selected paths from
@@ -97,10 +92,10 @@ and can validate the change.
 Start LL migration only after:
 
 - One motor can run forward and reverse under HAL control.
-- Left and right BTS7960 PWM outputs are validated at low duty.
+- Left and right MDD10A PWM/DIR outputs are validated at low duty.
 - Encoder counting works in HAL configuration.
 - Command timeout stops motor output.
-- Safety gate sets PWM zero and disables driver enable.
+- Safety gate sets PWM zero and blocks nonzero motor output.
 - A known-good HAL firmware commit or branch exists.
 - Basic telemetry can show loop timing, command age, PWM, and encoder values.
 
@@ -126,7 +121,8 @@ void motor_pwm_set_left(int16_t duty);
 void motor_pwm_set_right(int16_t duty);
 int32_t encoder_get_left_count(void);
 int32_t encoder_get_right_count(void);
-void driver_enable_set(bool enabled);
+void motor_dir_set_left(bool forward);
+void motor_dir_set_right(bool forward);
 uint16_t battery_adc_read_raw(void);
 ```
 
@@ -136,7 +132,7 @@ Application code should call these wrappers, not HAL or LL directly.
 
 | Target | Initial HAL path | LL migration reason | Priority |
 | --- | --- | --- | --- |
-| BTS7960 enable GPIO | `HAL_GPIO_WritePin()` | Simple first LL migration, safety output clarity | High |
+| MDD10A DIR GPIO | `HAL_GPIO_WritePin()` | Small first LL migration, motor direction output clarity | High |
 | PWM compare update | `__HAL_TIM_SET_COMPARE()` or HAL PWM helpers | High-rate motor duty update path | High |
 | Encoder count read | `__HAL_TIM_GET_COUNTER()` | Frequent control-loop read path | High |
 | Control-loop timer interrupt | HAL timer callback | Loop timing and ISR ownership clarity | Medium |
@@ -216,23 +212,23 @@ Examples:
 
 - `motor_pwm_set_*()`
 - `encoder_get_*()`
-- `driver_enable_set()`
+- `motor_dir_set_*()`
 - `battery_adc_read_raw()`
 
 Exit criteria:
 
 - Firmware behavior is unchanged, but HAL calls are localized.
 
-### Step 2: Migrate Driver Enable GPIO
+### Step 2: Migrate MDD10A DIR GPIO
 
-Migrate enable GPIO write first because it is small and easy to test.
+Migrate DIR GPIO writes first because they are small and easy to test.
 
 Validation:
 
-- Boot leaves enable disabled.
-- Disarm disables driver.
-- E-stop disables driver.
-- Arm enables driver only if safety state allows it.
+- Boot leaves PWM at zero regardless of DIR state.
+- Disarm keeps PWM zero.
+- E-stop keeps PWM zero.
+- DIR changes only after the relevant PWM channel is zero.
 
 ### Step 3: Migrate PWM Compare Update
 
@@ -241,9 +237,9 @@ Replace the PWM compare update path with LL.
 Validation:
 
 - PWM duty zero at boot.
-- Forward command activates only one BTS7960 PWM input per motor.
-- Reverse command activates the opposite PWM input.
-- `RPWM` and `LPWM` are never active together.
+- Forward command applies the forward DIR mapping and limited PWM duty.
+- Reverse command applies the reverse DIR mapping and limited PWM duty.
+- Direction changes ramp PWM to zero before toggling DIR.
 - Duty clamp still works.
 
 ### Step 4: Migrate Encoder Count Read
@@ -317,7 +313,7 @@ Run this after every LL migration:
 - Firmware builds cleanly.
 - Board flashes successfully.
 - Boot state keeps PWM zero.
-- Driver enable remains disabled until arm condition is met.
+- PWM remains zero until arm condition is met.
 - Stop command forces PWM zero.
 - Command timeout forces PWM zero.
 - Low-voltage simulated condition blocks motor output.
@@ -365,7 +361,7 @@ The project will first build a working HAL baseline, then migrate selected
 paths to LL in this order:
 
 ```text
-GPIO enable
+MDD10A DIR GPIO
 -> PWM compare update
 -> encoder count read
 -> control-loop timer path

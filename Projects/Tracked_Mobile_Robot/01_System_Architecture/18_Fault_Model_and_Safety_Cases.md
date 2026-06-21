@@ -1,17 +1,12 @@
 # Fault Model and Safety Cases
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `18_Fault_Model_and_Safety_Cases_ko.md` as the canonical fault model. Do not
-> use stale BTS7960/RPWM/LPWM or enable-pin references in this file for new
-> firmware or validation work.
-
 ## Purpose
 
 This document defines the expected fault cases for the tracked mobile robot and
 the required safe response for each case.
 
-The project uses a 3S LiPo battery, high-current DC motors, BTS7960 H-bridge
-drivers, STM32 firmware, ESP32 support logic, and later CAN/ROS2 integration.
+The project uses a 3S LiPo battery, high-current DC motors, an MDD10A motor
+driver, STM32 firmware, ESP32 support logic, and later CAN/ROS2 integration.
 Fault handling must therefore cover both electrical and software failures.
 
 This document answers:
@@ -28,7 +23,7 @@ The robot must fail toward no motion.
 Core rule:
 
 ```text
-When the controller is uncertain, motor output goes to zero and driver enable is disabled.
+When the controller is uncertain, motor output goes to zero and nonzero output is blocked.
 ```
 
 This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
@@ -48,7 +43,7 @@ This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
 | Category | Examples |
 | --- | --- |
 | Power faults | Low voltage, buck overvoltage, reverse polarity, fuse trip |
-| Motor driver faults | BTS7960 heat, enable stuck, wrong PWM combination |
+| Motor driver faults | MDD10A heat, wrong PWM/DIR mapping, unsafe direction reversal |
 | Command faults | UART timeout, CAN heartbeat timeout, invalid command |
 | Sensor faults | Encoder stuck, encoder sign mismatch, IMU missing |
 | Firmware faults | Assertion failure, loop timing overrun, watchdog reset |
@@ -60,7 +55,7 @@ This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
 
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
-| Boot not complete | Startup state | Keep PWM zero, enable disabled | Complete init then disarmed |
+| Boot not complete | Startup state | Keep PWM zero | Complete init then disarmed |
 | Command timeout | Command age exceeds timeout | Stop motors | New valid command after disarm/arm flow |
 | CAN heartbeat timeout | Missing heartbeat | Stop motors | Reconnect bus, disarm/arm |
 | E-stop request | Command or physical input | Latch stop | Explicit operator reset |
@@ -69,10 +64,9 @@ This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
 | Buck output wrong | Multimeter check | Do not connect electronics | Adjust/replace converter |
 | Encoder stuck | Commanded motion but no count change | Stop or limit motion | Inspect wiring/mechanics |
 | Encoder direction mismatch | Sign check fails | Do not enter closed-loop mode | Fix sign mapping |
-| Driver enable unexpected | Readback/test mismatch if available | Stop test | Inspect wiring/pull-downs |
-| RPWM and LPWM both active | Firmware assertion or output audit | Force both zero | Fix motor output code |
+| Direction change while PWM active | Firmware assertion or output audit | Force PWM zero | Fix motor output code |
 | Motor overheat | Operator touch/IR thermometer | Stop test | Cool down, reduce load |
-| BTS7960 overheat | Operator check | Stop test | Cool down, improve mounting |
+| MDD10A overheat | Operator check | Stop test | Cool down, reduce load, recheck current margin |
 | Fuse blows | Loss of motor/robot power | Stop test | Find root cause before replacing |
 | Watchdog reset | Reset cause register/log | Remain disarmed after reboot | Inspect loop blocking |
 | CAN bus-off | CAN error state | Stop motors, report fault | Fix bus, reset CAN |
@@ -157,8 +151,8 @@ Detection:
 
 Required response:
 
-- Set both PWM channels to zero.
-- Disable driver enable if detected.
+- Set PWM to zero.
+- Keep motor output disarmed.
 
 Rule:
 
@@ -305,7 +299,7 @@ Detection:
 Required response:
 
 - Force PWM zero.
-- Disable driver enable.
+- Keep motor output disarmed.
 - Latch fault.
 
 ## 9. Operator Safety Cases
@@ -349,7 +343,7 @@ Fault logs should include:
 
 | Validation | Method | Pass condition |
 | --- | --- | --- |
-| Boot safe output | Power logic only, motor disconnected | PWM zero, enable disabled |
+| Boot safe output | Power logic only, motor disconnected | PWM zero |
 | Command timeout | Stop sending commands | Motor output stops |
 | E-stop | Send E-stop frame or command | Fault latched, output disabled |
 | Low voltage simulated | Inject low ADC equivalent | Output disabled |

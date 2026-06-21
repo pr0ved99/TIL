@@ -1,10 +1,5 @@
 # Power Distribution and Safety Architecture
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `12_Power_Distribution_and_Safety_Architecture_ko.md` as the canonical power
-> architecture. Do not use stale BTS7960 terminal or enable-pin references in
-> this file for new wiring work.
-
 ## Purpose
 
 This document defines the first power distribution and safety architecture for
@@ -52,7 +47,7 @@ The robot has three initial power domains.
 | Domain | Source | Loads | Notes |
 | --- | --- | --- | --- |
 | Battery domain | 3S LiPo | fuse, switch, buck inputs, motor rail | High energy, highest risk |
-| Motor domain | switched battery rail | BTS7960 `B+`/`B-`, DC motors | Noisy and high current |
+| Motor domain | switched battery rail | MDD10A `POWER+`/`POWER-`, DC motors | Noisy and high current |
 | Logic domain | buck converter output | STM32, ESP32, sensors, driver logic | Regulated low-voltage electronics |
 
 The domains share a reference ground where signals cross domains, but their
@@ -77,9 +72,7 @@ Initial power path:
     |
     +-- switched battery rail
             |
-            +-- BTS7960 left motor driver B+
-            |
-            +-- BTS7960 right motor driver B+
+            +-- MDD10A motor driver POWER+
             |
             +-- XL4015 #1 input
             |
@@ -183,8 +176,8 @@ Important limitation:
 The main switch is not an emergency-stop design by itself.
 ```
 
-The firmware must still set PWM to zero and disable BTS7960 enable pins during
-faults, timeout, disarm, and startup.
+The firmware must still set MDD10A PWM outputs to zero during faults, timeout,
+disarm, and startup.
 
 ## 7. Buck Converter Architecture
 
@@ -225,7 +218,7 @@ Ground model:
 ```text
 Battery negative
     |
-    +-- motor current return path to BTS7960 modules
+    +-- motor current return path to MDD10A
     |
     +-- buck converter negative input
             |
@@ -234,12 +227,12 @@ Battery negative
                     +-- STM32 GND
                     +-- ESP32 GND
                     +-- sensor GND
-                    +-- BTS7960 logic GND
+                    +-- MDD10A logic GND
 ```
 
 Rules:
 
-- STM32 and BTS7960 logic GND must be common for PWM/enable signals to work.
+- STM32 and MDD10A logic GND must be common for PWM/DIR signals to work.
 - ESP32 and STM32 GND must be common for UART to work.
 - Sensor GND and STM32 GND must be common for I2C/ADC signals to work.
 - Avoid routing high motor current through thin signal ground wires.
@@ -248,23 +241,23 @@ Rules:
 
 ## 9. Motor Power Safety
 
-BTS7960 modules sit between the motor power rail and the motors.
+MDD10A sits between the motor power rail and the motors.
 
 Rules:
 
 - Motor power is connected only after logic output behavior is verified.
 - STM32 PWM pins must start at zero duty.
-- BTS7960 enable pins must default to disabled during STM32 reset.
-- Use an external pull-down on enable if the bench test shows uncertain reset
-  behavior.
-- For one motor, `RPWM` and `LPWM` must not be active at the same time.
+- MDD10A PWM pins must default to zero during STM32 reset.
+- Use external pull-downs on PWM lines or a separate power gate if reset
+  behavior is uncertain.
+- For one motor, PWM must be ramped to zero before changing `DIR`.
 - First motor test must be low duty with the robot lifted or tracks unloaded.
 
 Recommended staged motor tests:
 
 | Stage | Motor power | Motor load | Goal |
 | --- | --- | --- | --- |
-| M0 | disconnected | none | Verify STM32 PWM and enable pins |
+| M0 | disconnected | none | Verify STM32 PWM/DIR pins |
 | M1 | connected | motor disconnected from track if possible | Verify driver output behavior |
 | M2 | connected | wheels/tracks lifted | Verify direction and low-duty response |
 | M3 | connected | chassis on ground | Low-speed motion only |
@@ -275,10 +268,10 @@ Early prototype protection candidates:
 
 | Signal | Protection candidate | Reason |
 | --- | --- | --- |
-| STM32 PWM to BTS7960 | 100-330 ohm series resistor | Limits fault current during wiring mistakes |
+| STM32 PWM/DIR to MDD10A | 100-330 ohm series resistor | Limits fault current during wiring mistakes |
 | UART TX lines | 100-330 ohm series resistor | Reduces risk during early cross-board tests |
 | Encoder outputs | level shifter or divider if needed | Required if output exceeds STM32 input limits |
-| Enable lines | pull-down resistor | Keeps motor driver disabled during reset |
+| PWM lines | pull-down resistor | Keeps MDD10A command at zero during reset |
 
 The encoder voltage must be measured before direct STM32 connection.
 
@@ -350,9 +343,9 @@ Checklist:
 
 Checklist:
 
-- Connect BTS7960 logic side.
+- Connect MDD10A logic side.
 - Keep motor power disabled or motors disconnected where practical.
-- Verify enable pins are disabled at boot.
+- Verify PWM outputs are zero at boot.
 - Verify PWM pins are zero at boot.
 - Command low-duty output only after confirming direction logic.
 
@@ -373,7 +366,7 @@ Normal shutdown:
 
 1. Send `DISARM` or stop command.
 2. Confirm PWM output is zero.
-3. Disable motor driver enable pins.
+3. Keep MDD10A PWM outputs at zero.
 4. Turn off main switch.
 5. Disconnect LiPo battery.
 6. Let motor drivers and buck converters cool if warm.
@@ -397,7 +390,7 @@ Initial measurements to record:
 | Buck output | 5.0 V target unless otherwise specified | Before MCU connection |
 | STM32 5 V/3.3 V rails | Within board-allowed range | Logic-only power |
 | ESP32 power rail | Within board-allowed range | Logic-only power |
-| BTS7960 logic VCC | Module-required logic voltage | Driver logic test |
+| MDD10A logic input | 3.3 V PWM/DIR signal | Driver logic test |
 | Voltage between STM32 GND and driver GND | Near 0 V | Before signal test |
 | Motor rail voltage during low duty | No severe collapse | Low-speed motor test |
 
@@ -453,9 +446,9 @@ This architecture is ready for HAL bare-metal drivetrain bring-up when:
 - The main battery path is fused and switched.
 - Buck converter outputs are measured before MCU connection.
 - STM32/ESP32/sensor power is separated from raw battery voltage.
-- BTS7960 motor current does not pass through perfboard traces.
+- MDD10A motor current does not pass through perfboard traces.
 - Common ground is intentional and documented.
-- Motor driver enable defaults to disabled.
+- MDD10A PWM output defaults to zero.
 - Low-voltage alarm is used during LiPo tests.
 - A measurement log exists for the first powered test.
 

@@ -10,9 +10,13 @@ Before asking the user for project facts, read:
 2. `docs/progress/README.md`
 3. The latest dated file under `docs/progress/`
 4. `README.md`
-5. Korean canonical architecture docs under `01_System_Architecture/*_ko.md`
+5. `01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md`
+6. Korean canonical architecture docs under `01_System_Architecture/*_ko.md`
+7. For learning-oriented work, `07_Embedded_Learning_Notes/README.md`
 
 The Korean `_ko.md` architecture files are the current canonical project contract. English mirror files may be older and should not override the Korean files unless they are intentionally updated.
+
+`07_Embedded_Learning_Notes` is for concept notes and practice logs. Do not treat those notes as canonical architecture decisions until the decision is reflected in `01_System_Architecture`, `PROJECT_MEMORY.md`, or a progress log.
 
 ## Do Not Ask Again
 
@@ -23,7 +27,7 @@ Current fixed project decisions:
 - Main low-level controller: NUCLEO-F446RE.
 - Support controller: ESP32-S3 DevKitC.
 - First motor driver path: MDD10A dual-channel PWM+DIR driver.
-- BTS7960 is superseded for the first drivetrain path.
+- BTS7960 is superseded for the first drivetrain path and remains only as design-history/comparison context.
 - STM32 owns motor output, command timeout, battery safety, encoder reading, and final safety gate.
 - UART/USB serial is the first command and telemetry path.
 - CAN is a required later phase, not the first bring-up path.

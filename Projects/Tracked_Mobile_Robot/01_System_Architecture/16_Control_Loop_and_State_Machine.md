@@ -14,7 +14,7 @@ This document answers:
 - Which events cause state transitions
 - When motor output is allowed
 - How command timeout, low voltage, and emergency stop affect motion
-- How the motor control loop applies commands to BTS7960 drivers
+- How the motor control loop applies commands to the MDD10A driver
 
 ## Architecture Decision
 
@@ -151,7 +151,7 @@ Arm request is accepted only if:
 - Battery voltage is above stop threshold.
 - No E-stop is latched.
 - No active fault is latched.
-- Driver enable output is currently disabled.
+- Motor PWM output is currently zero.
 - PWM compare values are zero.
 - Command source is known, or command timeout is inactive.
 - Optional: robot is physically safe for the current test stage.
@@ -190,17 +190,17 @@ convert command to left/right motor request
     v
 apply safety gate
     |
-    +-- unsafe -> PWM = 0, enable = disabled
+    +-- unsafe -> PWM = 0, motor output blocked
     |
-    +-- safe   -> apply limited BTS7960 dual-PWM output
+    +-- safe   -> apply limited MDD10A PWM + DIR output
 ```
 
 Rules:
 
 - The loop must not block waiting for UART, CAN, IMU, or telemetry.
-- The loop must set inactive BTS7960 PWM channel to zero before setting the
-  active channel.
-- The loop must never command `RPWM` and `LPWM` active at the same time.
+- The loop must ramp PWM to zero before changing motor direction.
+- The loop must update PWM duty and DIR state inside the same control-loop
+  ownership boundary.
 
 ## 7. Command Model
 
@@ -231,26 +231,29 @@ Invalid command behavior:
 - Report invalid command count if telemetry supports it.
 - Do not change motor output directly from parser code.
 
-## 8. BTS7960 Output Mapping
+## 8. MDD10A Output Mapping
 
-Each motor uses dual PWM:
+Each motor uses sign-magnitude `PWM + DIR`.
 
-| Signed command | `RPWM` | `LPWM` | Enable |
+| Signed command | `PWMx` | `DIRx` | Motor output |
 | --- | --- | --- | --- |
-| Unsafe state | 0 | 0 | 0 |
-| Zero command | 0 | 0 | 1 if armed, else 0 |
-| Positive command | duty | 0 | 1 |
-| Negative command | 0 | duty | 1 |
+| Unsafe state | 0 | don't care | blocked by zero PWM |
+| Zero command | 0 | keep last or default | stop |
+| Positive command | duty | forward mapping | forward |
+| Negative command | duty | reverse mapping | reverse |
 | Forbidden | duty | duty | Not allowed |
 
 Safe update order:
 
 ```text
-set RPWM = 0
-set LPWM = 0
-set enable according to safety state
-if safe:
-    set only the selected direction PWM
+if unsafe:
+    set PWM = 0
+else if direction must change:
+    ramp PWM to 0
+    set DIR
+    set limited PWM
+else:
+    set limited PWM
 ```
 
 ## 9. Fault Codes
@@ -266,7 +269,7 @@ typedef enum {
     FAULT_ESTOP,
     FAULT_ENCODER_STUCK,
     FAULT_ENCODER_DIRECTION,
-    FAULT_DRIVER_ENABLE,
+    FAULT_MOTOR_OUTPUT,
     FAULT_CAN_BUS_OFF,
     FAULT_INTERNAL_ASSERT
 } fault_code_t;
@@ -296,7 +299,7 @@ Rules:
 Startup requirements:
 
 - Configure PWM outputs to zero.
-- Configure enable GPIO to disabled.
+- MDD10A has no separate enable pin, so PWM zero is the basic output block.
 - Initialize state to `SAFETY_BOOT`.
 - Verify basic initialization.
 - Transition to `SAFETY_DISARMED`.
@@ -304,7 +307,8 @@ Startup requirements:
 Watchdog or reset behavior:
 
 - Hardware reset must leave motor output safe.
-- External pull-downs on enable pins are recommended.
+- External pull-downs on PWM lines or a separate power gate circuit should be
+  considered.
 - Firmware should not arm automatically after reset.
 
 ## 12. Telemetry Fields
@@ -346,12 +350,12 @@ These fields make timeout, safety, and output behavior testable.
 
 The controller uses an explicit safety state machine.
 
-Only `SAFETY_ARMED_IDLE` and `SAFETY_ARMED_ACTIVE` can allow motor enable, and
-only `SAFETY_ARMED_ACTIVE` can apply nonzero PWM.
+Only `SAFETY_ARMED_IDLE` and `SAFETY_ARMED_ACTIVE` can allow motor output
+permission, and only `SAFETY_ARMED_ACTIVE` can apply nonzero PWM.
 
 All other states force:
 
 ```text
 PWM = 0
-driver enable = disabled
+nonzero motor output blocked
 ```

@@ -1,10 +1,5 @@
 # Architecture Decision Record
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `19_Architecture_Decision_Record_ko.md` as the canonical decision record. Do
-> not use stale BTS7960/RPWM/LPWM decisions in this file for new architecture,
-> wiring, or firmware work.
-
 ## Purpose
 
 This document summarizes the major architecture decisions made for the tracked
@@ -180,28 +175,35 @@ Reason:
 
 Consequence:
 
-- LL migration targets are GPIO enable, PWM compare update, encoder read,
+- LL migration targets are MDD10A DIR GPIO, PWM compare update, encoder read,
   control-loop timer, and optional ADC/CAN.
 
-## ADR-008: Use BTS7960-Class H-Bridge Drivers First
+## ADR-008: Use MDD10A Dual-Channel Motor Driver First
 
 Status: Accepted
 
 Decision:
 
-- Use one BTS7960-class module per DC motor.
-- Control each motor using dual PWM: `RPWM` and `LPWM`.
+- Use one MDD10A board to drive the left and right brushed DC motors.
+- Control each motor using sign-magnitude `PWM + DIR`.
 
 Reason:
 
 - Better current margin than small TB6612FNG-class modules.
-- Matches the dual-PWM H-bridge learning path found in local robot reference
-  material.
+- One board handles both drivetrain motors, reducing wiring and bench setup.
+- The interface matches the current STM32 pin candidate: two PWM outputs and
+  two DIR GPIO outputs.
+- MDD10A supports 3.3 V logic input, so it fits NUCLEO-F446RE GPIO better for
+  first bring-up.
+- Compared with a two-module BTS7960 path, it reduces PWM-channel pressure and
+  removes the need for BTS7960-style `RPWM`/`LPWM` mutual exclusion.
 
 Consequence:
 
-- The pin allocation must support four PWM outputs for two motors.
-- Firmware must guarantee `RPWM` and `LPWM` are never active together.
+- The pin allocation must support two PWM outputs and two DIR GPIO outputs.
+- Firmware must ramp PWM to zero before changing `DIR`.
+- BTS7960 remains documented as a superseded alternative and design-history
+  comparison, not as the active wiring or firmware contract.
 
 ## ADR-009: Use Fuse, Main Switch, and LiPo Alarm
 
@@ -287,6 +289,7 @@ Consequence:
 | --- | --- | --- |
 | Direct motor drive from MCU GPIO | Rejected | MCU cannot supply motor current |
 | TB6612FNG as main drivetrain driver | Rejected for main drivetrain | Too small for tracked platform current risk |
+| BTS7960 as first drivetrain driver | Superseded | Reasonable early dual-PWM candidate, but MDD10A reduces board count, PWM-channel demand, and validation complexity |
 | ESP32 as primary motor controller | Rejected | STM32 is better for deterministic low-level control |
 | CAN in first bring-up | Deferred | Adds wiring and debug complexity too early |
 | FreeRTOS from day one | Deferred | Can hide peripheral bring-up problems |
@@ -298,11 +301,11 @@ Consequence:
 
 | Topic | Open question |
 | --- | --- |
-| Final PWM timer channels | Which four PWM-capable pins are best on NUCLEO-F446RE after CubeMX validation? |
+| Final PWM/DIR pins | Do PB6/PB7 PWM and PC8/PC9 DIR work without conflict after CubeMX validation? |
 | Encoder source quality | Which motors have working encoders and correct counts per revolution? |
 | CAN hardware | Which CAN transceiver and USB-CAN adapter will be purchased? |
 | Battery voltage divider | Exact resistor values and ADC calibration |
-| PWM frequency | Final BTS7960-safe and motor-friendly frequency |
+| PWM frequency | Final MDD10A-safe and motor-friendly frequency |
 | Motor current measurement | Whether a current sensor is added or current is measured externally |
 | ROS2 bridge path | UART, CAN, ESP32, or PC bridge for future ROS2 commands |
 | Odometry calibration | Effective track width and distance-per-count values |
@@ -327,7 +330,7 @@ Current architecture direction:
 ```text
 3S LiPo + fuse + switch
         |
-        +-- BTS7960 motor power
+        +-- MDD10A motor power
         |
         +-- buck converters
                 |
@@ -336,7 +339,7 @@ Current architecture direction:
                 +-- sensors
 
 STM32
-    +-- PWM -> BTS7960
+    +-- PWM/DIR -> MDD10A
     +-- timer encoder mode -> motor encoders
     +-- ADC -> battery monitor
     +-- UART -> PC/ESP32 first command path

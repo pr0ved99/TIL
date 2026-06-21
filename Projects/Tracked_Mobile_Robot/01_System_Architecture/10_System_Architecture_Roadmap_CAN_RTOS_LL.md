@@ -79,7 +79,7 @@ Initial task candidates:
 | Task | Period | Priority | Responsibility |
 | --- | --- | --- | --- |
 | `motor_control_task` | 100 Hz | High | Speed control, PWM update, ramp limiting |
-| `safety_task` | 50-100 Hz | High | Fault checks, low-voltage stop, enable gating |
+| `safety_task` | 50-100 Hz | High | Fault checks, low-voltage stop, output gating |
 | `comm_task` | Event-driven or 100 Hz | Medium | UART/CAN receive and command parsing |
 | `telemetry_task` | 10 Hz | Low | Status publishing |
 | `battery_task` | 10 Hz | Medium | ADC sampling and voltage filtering |
@@ -104,7 +104,7 @@ Recommended migration targets:
 | --- | --- |
 | Timer PWM compare update | High-frequency duty update path |
 | Encoder counter read/reset | Frequent control-loop read path |
-| Driver enable GPIO | Safety-critical output path |
+| MDD10A DIR GPIO | Direction output path; migrate after HAL baseline |
 | Control-loop timer interrupt | Timing determinism and jitter inspection |
 | CAN RX/TX handling | Optional later optimization |
 | ADC sampling trigger/read | Optional after voltage monitoring is stable |
@@ -134,7 +134,7 @@ Exit criteria:
 
 - First wiring plan exists.
 - Power safety rules exist.
-- BTS7960 control model is documented.
+- MDD10A PWM/DIR control model is documented.
 - CAN/RTOS/LL are recorded as required later outcomes.
 
 ### Phase 1: HAL Bare-Metal Drivetrain MVP
@@ -146,7 +146,7 @@ CAN complexity.
 
 Scope:
 
-- PWM output to BTS7960
+- PWM/DIR output to MDD10A
 - Encoder A/B input counting
 - Battery voltage ADC through resistor divider
 - Basic UART/USB command
@@ -236,7 +236,7 @@ Scope:
 
 - Convert PWM duty update path to LL.
 - Convert encoder read/reset path to LL if useful.
-- Convert driver enable GPIO path to LL.
+- Convert MDD10A DIR GPIO path to LL if useful.
 - Measure or reason about latency and jitter before and after migration.
 
 Exit criteria:
@@ -314,12 +314,12 @@ Current state:
 - STM32 MCU feature analysis exists.
 - Timer, communication, and pin allocation notes exist.
 - ESP32-S3 role decision exists.
-- BTS7960 H-bridge decision exists.
+- MDD10A motor-driver decision exists.
 - STM32-ESP32 UART contract exists.
 
 Immediate next action:
 
-1. Revise the STM32 pin allocation for BTS7960 four-PWM output.
+1. Verify the STM32 pin allocation for MDD10A PWM/DIR output.
 2. Create the system block diagram and interface map.
 3. Create the power distribution and safety architecture.
 4. Then prepare the HAL bare-metal firmware bring-up plan.

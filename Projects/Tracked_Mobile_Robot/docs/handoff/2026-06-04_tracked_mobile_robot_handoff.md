@@ -1,5 +1,13 @@
 # Tracked Mobile Robot Handoff - 2026-06-04
 
+> Historical note, updated 2026-06-21:
+> This handoff records the pre-MDD10A BTS7960 planning state.
+> The current first drivetrain path is MDD10A. Use
+> `../../01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md`,
+> `../../01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md`, and
+> `../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md` for active wiring
+> and firmware work.
+
 ## 목적
 
 이 문서는 노트북 교체 후 `Tracked_Mobile_Robot` 프로젝트를 끊기지 않고 이어가기 위한 핸드오프 문서다.

@@ -1,10 +1,5 @@
 # FreeRTOS Task Architecture
 
-> Status: Superseded English draft. After the 2026-06-08 MDD10A decision, use
-> `13_FreeRTOS_Task_Architecture_ko.md` as the canonical RTOS architecture
-> contract. Do not use stale BTS7960 enable-pin references in this file for new
-> firmware work.
-
 ## Purpose
 
 This document defines the FreeRTOS task architecture for the tracked mobile
@@ -79,7 +74,7 @@ these conditions:
 - Battery voltage ADC path is at least defined and safe.
 - UART or USB command input can request stop and low-speed motion.
 - Command timeout can stop motor output.
-- BTS7960 enable pins are controlled by STM32.
+- MDD10A PWM/DIR outputs are controlled by STM32.
 - Boot behavior leaves motor outputs disabled.
 
 Reason:
@@ -104,7 +99,7 @@ Initial task architecture:
                  motor_control_task
                          |
                          v
-                PWM + BTS7960 enable
+                MDD10A PWM + DIR
 
 encoder timer counters ----+
                            |
@@ -129,7 +124,7 @@ The safety state decides whether output is allowed.
 | Task | Initial period | Priority | Responsibility |
 | --- | --- | --- | --- |
 | `motor_control_task` | 100 Hz | High | Read latest command/state, estimate speed, update PWM |
-| `safety_task` | 50-100 Hz | High | Fault checks, low-voltage stop, timeout stop, enable gating |
+| `safety_task` | 50-100 Hz | High | Fault checks, low-voltage stop, timeout stop, output gating |
 | `comm_task` | Event-driven or 100 Hz | Medium | UART receive, command parsing, later CAN receive |
 | `battery_task` | 10 Hz | Medium | ADC sampling, voltage filtering, low-voltage input to safety |
 | `imu_task` | 50-100 Hz | Medium | BNO08x sampling, yaw/attitude update |
@@ -268,7 +263,7 @@ compute left/right motor request
     v
 check safety state
     |
-    +-- unsafe -> PWM = 0, driver enable = disabled
+    +-- unsafe -> PWM = 0, motor output blocked
     |
     +-- safe   -> apply limited PWM command
 ```
@@ -346,7 +341,7 @@ Deferred responsibilities:
 Important rule:
 
 ```text
-comm_task never writes PWM or driver enable pins directly.
+comm_task never writes PWM or DIR pins directly.
 ```
 
 ## 12. Motor Control Task
@@ -363,7 +358,7 @@ Responsibilities:
 - Apply initial open-loop or closed-loop control.
 - Convert motion request to left/right motor command.
 - Apply safety gate result.
-- Update BTS7960 PWM and enable outputs.
+- Update MDD10A PWM and DIR outputs.
 
 Initial control mode:
 
