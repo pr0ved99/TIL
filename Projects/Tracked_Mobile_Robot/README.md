@@ -4,6 +4,37 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 초기 목표는 자율주행 전체 시스템이 아니라, 자율주행으로 확장 가능한 안정적인 하위 구동 플랫폼을 만드는 것이다. 먼저 전원계, 모터 제어, 엔코더, IMU, UART 통신을 검증하고, 이후 FreeRTOS, CAN, LL Driver 전환, ROS2, LiDAR로 확장한다.
 
+## Current Handoff Snapshot
+
+Last updated: 2026-06-22
+
+작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
+
+1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
+2. [`AGENTS.md`](AGENTS.md)
+3. [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md)
+4. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
+5. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+
+현재 바로 이어갈 작업:
+
+```text
+STM32CubeMX 설치/실행
+-> Board Selector에서 NUCLEO-F446RE 선택
+-> USART2 PA2/PA3, 115200 8N1, USART2 global interrupt 설정
+-> 03_Firmware/stm32_uart_mvp 아래로 code generation
+-> STM32CubeIDE에서 open/import
+-> ring_buffer.* / uart_mvp_protocol.* 추가
+-> Web Serial dashboard 또는 terminal tool로 PING/ACK/ERR/TEL 검증
+```
+
+주의:
+
+- 현재 CubeIDE 환경에서는 예전 `File -> New -> STM32 Project` 흐름이 보이지 않을 수 있다.
+- 이 경우 `STM32CubeIDE Empty Project`로 시작하지 않는다.
+- 이번 UART MVP firmware project는 standalone STM32CubeMX에서 `.ioc`와 HAL baseline code를 먼저 생성한다.
+- MDD10A, DC motor, LiPo main power는 UART MVP firmware 검증 전에는 연결하지 않는다.
+
 ## Project Direction
 
 - Start point: STM32 motor control and encoder validation
@@ -19,11 +50,13 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Architecture Status
 
-2026-06-08 기준 시스템 아키텍처 문서의 핵심 결정은 유지한다.
+2026-06-22 기준 시스템 아키텍처 문서의 핵심 결정은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
 - UART/USB serial은 첫 command/telemetry path다.
+- PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
+- STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
 - CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
@@ -121,7 +154,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md`](04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md) | Ubuntu PC-side UART MVP test tool usage guide |
 | [`docs/04_Web_Serial_Dashboard_ko.md`](04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md) | Web Serial UART MVP dashboard usage guide |
 | [`docs/05_UART_MVP_Runbook_ko.md`](04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md) | End-to-end UART MVP execution guide |
-| [`docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md) | Detailed CubeIDE firmware implementation guide for UART MVP |
+| [`docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md) | STM32CubeMX-first detailed firmware implementation guide for UART MVP |
 
 ### 07_Embedded_Learning_Notes
 
@@ -152,6 +185,8 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
+| [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md) | STM32CubeMX-first UART MVP firmware implementation guide update |
+| [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Current continuation handoff for Codex and future work |
 
 ## Initial MVP
 

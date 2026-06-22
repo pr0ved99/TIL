@@ -2,11 +2,12 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-06-21
+Last updated: 2026-06-22
 
 ## Project Identity
 
-- Project path: `/home/proved/my_ws/github/pr0ved99/TIL/Projects/Tracked_Mobile_Robot`
+- Current local project path on this machine: `C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot`
+- Repository-relative project path: `Projects/Tracked_Mobile_Robot`
 - Goal: build a reliable STM32-based tracked mobile robot lower-control platform that can later expand to CAN, FreeRTOS, LL Driver, ROS 2, LiDAR, SLAM, and Nav2.
 - First MVP is not full autonomy. The first MVP is safe low-speed drivetrain control with encoder feedback and command timeout.
 
@@ -97,7 +98,9 @@ Important docs:
 - `04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md`: Ubuntu PC-side UART MVP test guide with `/dev/ttyACM0`, `dialout`, and `stty` notes
 - `04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md`: browser Web Serial dashboard guide
 - `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md`: end-to-end UART MVP execution guide for Web dashboard and terminal tools
-- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: detailed CubeIDE implementation guide for USART2, ring buffer, parser, state machine, timeout, and telemetry
+- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
+- `docs/progress/2026-06-22_progress.md`: latest progress note for STM32CubeMX-first UART MVP firmware guide updates
+- `docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`: current handoff entry for future Codex sessions
 
 ## Current Progress Snapshot
 
@@ -118,14 +121,16 @@ Important docs:
 - PC-first UART MVP tooling was added under `04_PC_Serial_Control`. The PowerShell tool is the current Windows-first path because this machine does not currently expose a working Python launcher. The Bash tool is the Ubuntu/Linux path for `/dev/ttyACM0` or `/dev/ttyUSB0`. The tools can build frames, send frames over a serial port, run an interactive console, run a scripted MVP smoke test, monitor RX lines, and save raw/parsed logs.
 - A browser-based Web Serial dashboard was added under `04_PC_Serial_Control/web_serial_dashboard`. This is not a backend WebSocket bridge; Chrome/Edge directly opens the serial port from `localhost`, keeping the first web UI simple.
 - `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md` is the primary execution guide for running the Web dashboard, Windows terminal tool, Ubuntu terminal tool, and collecting MVP evidence.
-- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md` is the detailed STM32 firmware build guide for the UART MVP.
-- STM32-side UART MVP firmware guide was added for USART2, RX interrupt, ring buffer, parser, ACK/ERR/TEL responses, timeout handling, and telemetry generation.
+- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md` is the current detailed STM32 firmware build guide for the UART MVP.
+- The STM32 firmware workflow is now STM32CubeMX-first: install/run standalone STM32CubeMX, select `NUCLEO-F446RE` through Board Selector, configure USART2 and NVIC, generate code under `03_Firmware/stm32_uart_mvp`, then open/import in STM32CubeIDE.
+- `STM32CubeIDE Empty Project` is not the starting point for the current MVP because the project depends on CubeMX `.ioc` and generated HAL initialization code.
+- STM32-side UART MVP firmware guide covers USART2, RX interrupt, ring buffer, parser, ACK/ERR/TEL responses, timeout handling, and telemetry generation.
 - WebSocket dashboard and AI-assisted log diagnosis are optional extensions, not MVP scope.
 - AI must not be the primary motor safety authority; STM32 deterministic safety remains authoritative.
 - MDD10A board is available.
 - A dated execution plan exists for 2026-06-08 to 2026-06-10 hardware work.
-- Today's allowed hardware work is fuse soldering and unpowered MDD10A visual/DMM inspection only.
-- Latest pushed commit at the time this memory was created: `bc50ec7 docs(robot): update tracked robot architecture`.
+- The immediate next work is the PC-first STM32 UART MVP firmware project, not motor power testing.
+- Latest pushed commit before this handoff cleanup: `9f32220 feat: add tracked robot UART MVP tooling`.
 
 ## Open Decisions
 
@@ -148,16 +153,14 @@ Ask the user or verify from hardware only for these:
 
 ## Next Concrete Actions
 
-1. Execute `docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`.
-2. Solder and insulate only the fuse-holder path with LiPo disconnected.
-3. Run `02_Hardware_Validation/00_MDD10A_Visual_and_Multimeter_Inspection.md`.
-4. After the DC-rated main switch arrives, install the switch/fuse path and run `02_Hardware_Validation/01_Power_Bringup_Checklist.md`.
-5. Run `02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md` before connecting STM32, ESP32, or sensors to buck output.
-6. Run `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md`.
-7. Check encoder voltage before connecting encoder signals to STM32.
-8. Do one-channel MDD10A no-load motor test at low duty.
-9. Later, confirm or purchase CAN transceiver, USB-CAN adapter, 120 ohm resistors, and CAN wiring.
-10. For the PC-first UART MVP, run `tools/UartMvpTool.ps1 -Mode ListPorts`, then run `Interactive` or `ScriptedTest` against the ST-LINK Virtual COM Port.
-11. On Ubuntu, run `bash tools/uart_mvp_tool.sh list-ports`, then use `/dev/ttyACM0` with `interactive` or `scripted-test`. If permission is denied, add the user to the `dialout` group and log in again.
-12. For the browser dashboard on Windows, run `tools/ServeWebDashboard.ps1` and open `http://localhost:8765/` in Chrome or Edge.
-13. For the browser dashboard on Ubuntu, run `bash tools/serve_web_dashboard.sh` and open `http://localhost:8765/` in Chrome or Edge.
+1. Use STM32CubeMX Board Selector to create `03_Firmware/stm32_uart_mvp` for `NUCLEO-F446RE`.
+2. Configure USART2 PA2/PA3 at 115200 8N1 and enable `USART2 global interrupt`.
+3. Generate code and open/import the project in STM32CubeIDE without using `STM32CubeIDE Empty Project`.
+4. Add `Core/Inc/ring_buffer.h`, `Core/Src/ring_buffer.c`, `Core/Inc/uart_mvp_protocol.h`, and `Core/Src/uart_mvp_protocol.c`.
+5. Build and flash the STM32 UART MVP firmware with no MDD10A, motor, or LiPo main power connected.
+6. For the browser dashboard on Windows, run `04_PC_Serial_Control/tools/ServeWebDashboard.ps1` and open `http://localhost:8765/` in Chrome or Edge.
+7. For the terminal path on Windows, run `04_PC_Serial_Control/tools/UartMvpTool.ps1 -Mode ListPorts`, then run `Interactive` or `ScriptedTest` against the ST-LINK Virtual COM Port.
+8. Verify `PING/PONG`, `CMD before ARM -> ERR NOT_ARMED`, `ARM -> ACK`, valid `CMD -> ACK`, bad range -> `ERR`, timeout zero-output telemetry, and `DISARM -> ACK`.
+9. Save raw/parsed logs under `04_PC_Serial_Control/logs` and record evidence in `docs/progress/YYYY-MM-DD_progress.md`.
+10. After the UART MVP is validated, return to hardware validation: unpowered MDD10A inspection, power bring-up checklist, buck calibration, logic input test, encoder voltage safety test, then low-duty motor tests.
+11. Later, confirm or purchase CAN transceiver, USB-CAN adapter, 120 ohm resistors, and CAN wiring.

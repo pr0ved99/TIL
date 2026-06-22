@@ -9,10 +9,11 @@ Before asking the user for project facts, read:
 1. `PROJECT_MEMORY.md`
 2. `docs/progress/README.md`
 3. The latest dated file under `docs/progress/`
-4. `README.md`
-5. `01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md`
-6. Korean canonical architecture docs under `01_System_Architecture/*_ko.md`
-7. For learning-oriented work, `07_Embedded_Learning_Notes/README.md`
+4. The latest dated file under `docs/handoff/`
+5. `README.md`
+6. `01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md`
+7. Korean canonical architecture docs under `01_System_Architecture/*_ko.md`
+8. For learning-oriented work, `07_Embedded_Learning_Notes/README.md`
 
 The Korean `_ko.md` architecture files are the current canonical project contract. English mirror files may be older and should not override the Korean files unless they are intentionally updated.
 

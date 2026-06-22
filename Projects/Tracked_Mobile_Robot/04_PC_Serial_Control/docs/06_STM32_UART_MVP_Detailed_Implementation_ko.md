@@ -2,14 +2,48 @@
 
 ## 목적
 
-이 문서는 STM32CubeIDE에서 NUCLEO-F446RE firmware를 실제로 작성해 PC Web Serial Dashboard 또는 terminal tool과 UART MVP protocol을 검증하기 위한 상세 구현 가이드다.
+이 문서는 `NUCLEO-F446RE` 보드에서 PC Web Serial Dashboard 또는 terminal tool과 UART MVP protocol을 검증하기 위한 STM32 firmware 상세 구현 가이드다.
+
+현재 개발 흐름은 다음을 기준으로 한다.
+
+```text
+STM32CubeMX
+-> NUCLEO-F446RE board selection
+-> USART2 / NVIC / code generation
+-> STM32CubeIDE import or open
+-> user firmware files 추가
+-> build / flash / UART 검증
+```
+
+예전 STM32CubeIDE 버전처럼 `File -> New -> STM32 Project`가 보이지 않는 환경에서는 `STM32CubeIDE Empty Project`를 선택하지 않는다. 이 프로젝트는 `.ioc`, HAL initialization, pin mapping 자동 생성을 활용해야 하므로 standalone `STM32CubeMX`에서 먼저 project를 생성한다.
 
 기준 목표:
 
 ```text
-PC -> USART2 RX interrupt -> ring buffer -> line parser -> state machine
-STM32 -> PONG / ACK / ERR / TEL
+PC
+-> ST-LINK Virtual COM Port
+-> STM32 USART2 RX interrupt
+-> ring buffer
+-> line parser
+-> command/state machine
+-> STM32 PONG / ACK / ERR / TEL
 ```
+
+## 이번 단계의 범위
+
+이번 단계에서 하는 것:
+
+- STM32CubeMX에서 `NUCLEO-F446RE` board 기반 project 생성
+- USART2 115200 8N1 설정
+- USART2 global interrupt enable
+- RX interrupt 기반 byte 수신
+- ring buffer 저장
+- `\n` 기준 line 조립
+- UART MVP frame parsing
+- `PING`, `ARM`, `DISARM`, `CMD` 처리
+- `PONG`, `ACK`, `ERR`, `TEL` 송신
+- `DISARMED`, `ARMED`, `FAULT` 상태 관리
+- command timeout 후 output zero 상태 확인
 
 이번 단계에서 하지 않는 것:
 
@@ -20,17 +54,6 @@ STM32 -> PONG / ACK / ERR / TEL
 - IMU 연결
 - FreeRTOS 도입
 - LL/direct register 전환
-
-이번 단계에서 하는 것:
-
-- USART2 115200 8N1 설정
-- RX interrupt 기반 byte 수신
-- ring buffer 저장
-- `\n` 기준 line 조립
-- MVP frame parsing
-- `ACK`, `ERR`, `PONG`, `TEL` 송신
-- `DISARMED`, `ARMED`, `FAULT` 상태 관리
-- command timeout 후 output zero 상태 확인
 
 ## 완료 기준
 
@@ -47,66 +70,179 @@ PC dashboard 또는 terminal tool에서 다음이 확인되면 완료로 본다.
 | no valid CMD after timeout | output zero | periodic `TEL`에서 `left_pwm=0,right_pwm=0` |
 | `DISARM,seq=8` | state transition | `ACK,seq=8,type=DISARM` and later `TEL,state=DISARMED` |
 
-## 0. 작업 폴더 권장
+## 0. 준비: STM32CubeMX 설치와 폴더 구조
 
-CubeIDE project는 다음 위치를 권장한다.
+### 0.1 왜 STM32CubeMX를 따로 쓰는가
 
-```text
-Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/
-```
-
-아직 실제 firmware project가 없다면 CubeIDE에서 새 STM32 project를 만들 때 위 경로를 workspace 또는 project location으로 사용할 수 있다.
-
-문서와 PC 도구 위치:
-
-```text
-Projects/Tracked_Mobile_Robot/04_PC_Serial_Control/
-```
-
-## 1. CubeIDE 프로젝트 생성
-
-### 1.1 Board 선택
-
-STM32CubeIDE:
+현재 설치된 STM32CubeIDE 환경에서는 예전 튜토리얼에서 보던 다음 메뉴가 보이지 않을 수 있다.
 
 ```text
 File
 -> New
 -> STM32 Project
--> Board Selector
--> NUCLEO-F446RE
 ```
 
-Project name 예:
+대신 다음 항목만 보일 수 있다.
 
 ```text
-stm32_uart_mvp
+STM32CubeIDE Empty Project
+C Project
+C++ Project
+STM32 CMake Project
+Import STM32 Project
 ```
 
-### 1.2 초기 peripheral 설정
+이 경우 `STM32CubeIDE Empty Project`로 시작하지 않는다.
+Empty Project는 `.ioc`, board preset, GPIO alternate function, USART init code를 자동 생성하는 흐름이 아니기 때문이다.
 
-이번 MVP에서 필요한 peripheral:
+이번 실습에서는 다음 흐름을 사용한다.
 
-| Peripheral | Purpose |
+```text
+STM32CubeMX 설치/실행
+-> Board Selector에서 NUCLEO-F446RE 선택
+-> USART2 / NVIC 설정
+-> code generation
+-> STM32CubeIDE에서 open 또는 import
+```
+
+### 0.2 설치해야 할 도구
+
+필요 도구:
+
+| Tool | Purpose |
 | --- | --- |
-| USART2 | ST-LINK Virtual COM Port over USB |
-| SysTick | `HAL_GetTick()` time base |
-| GPIO | 기본 board init |
+| STM32CubeMX | board selection, `.ioc`, pin/peripheral 설정, HAL code generation |
+| STM32CubeIDE | generated firmware project build, flash, debug |
+| ST-LINK driver | NUCLEO-F446RE flash/debug and Virtual COM Port |
 
-필요 없는 것:
+권장:
 
-- TIM PWM
-- encoder timer
-- ADC
-- I2C
-- CAN
-- FreeRTOS
+- STM32CubeIDE는 이미 설치되어 있어도 된다.
+- STM32CubeMX는 standalone application으로 따로 설치한다.
+- STM32CubeIDE 안에 `STM32 Project` 메뉴가 없으면 CubeMX-first workflow를 사용한다.
 
-## 2. CubeMX 설정
+설치 후 Windows 시작 메뉴에서 다음을 찾는다.
 
-### 2.1 USART2 설정
+```text
+STM32CubeMX
+STM32CubeIDE
+```
 
-CubeMX `.ioc` 화면에서 USART2를 설정한다.
+### 0.3 CubeIDE workspace
+
+권장 firmware project 위치:
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
+```
+
+PC test tool 위치:
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\04_PC_Serial_Control
+```
+
+CubeIDE workspace는 기본 경로를 써도 된다.
+
+```text
+C:\Users\eyh12\STM32CubeIDE\workspace_2.1.1
+```
+
+CubeIDE workspace는 IDE metadata와 cache 성격이 강하다. Git으로 관리할 실제 firmware source는 `03_Firmware/stm32_uart_mvp` 아래에 둔다.
+
+### 0.4 Git으로 관리할 위치
+
+실제 firmware source는 다음 경로 아래에 만든다.
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
+```
+
+CubeMX가 code generation을 하면 이 project 안에 다음 파일들이 생긴다.
+
+```text
+stm32_uart_mvp.ioc
+Core/
+Drivers/
+STM32F446RETX_FLASH.ld
+startup_stm32f446retx.s
+```
+
+이 파일들이 나중에 Git으로 관리할 실제 firmware 산출물이다.
+
+## 1. STM32CubeMX에서 Project 생성
+
+### 1.1 STM32CubeMX 실행
+
+Windows 시작 메뉴에서 `STM32CubeMX`를 실행한다.
+
+시작 화면에서 다음을 선택한다.
+
+```text
+ACCESS TO BOARD SELECTOR
+```
+
+이번 프로젝트는 ST Nucleo 개발보드를 사용하므로 `MCU Selector`보다 `Board Selector`를 사용한다.
+
+| Selector | 언제 쓰는가 |
+| --- | --- |
+| Board Selector | NUCLEO-F446RE처럼 ST board 전체를 사용할 때 |
+| MCU Selector | 직접 만든 PCB 또는 칩 단품 기준으로 설정할 때 |
+
+`Board Selector`를 쓰는 이유:
+
+- 보드의 MCU가 `STM32F446RE`임을 자동으로 잡는다.
+- ST-LINK와 Virtual COM Port 연결 전제를 반영하기 쉽다.
+- Nucleo board의 LED, button, debug 관련 기본 pin 정보를 함께 볼 수 있다.
+- 이번 실습의 핵심인 `USART2 PA2/PA3` 기반 PC USB serial 검증에 적합하다.
+
+### 1.2 Board 선택
+
+검색창에 입력:
+
+```text
+NUCLEO-F446RE
+```
+
+`Board Selector` 결과에서 `NUCLEO-F446RE`를 선택한다.
+
+확인할 것:
+
+| Item | Expected |
+| --- | --- |
+| Board | `NUCLEO-F446RE` |
+| MCU | `STM32F446RE` |
+| Package | `LQFP64` 계열 |
+| Vendor | STMicroelectronics |
+
+선택 후 `Start Project`를 누른다.
+
+`Initialize all peripherals with their default Mode?` 질문이 나오면 기본 peripheral 초기화를 허용해도 된다.
+
+다만 이번 MVP에서 실제로 사용할 peripheral은 USART2와 SysTick 중심이다.
+
+### 1.3 Board 선택 후 바로 확인할 것
+
+project가 열리면 먼저 다음을 확인한다.
+
+```text
+Pinout & Configuration
+```
+
+확인 포인트:
+
+- board가 `NUCLEO-F446RE`로 열렸는가
+- MCU가 `STM32F446RE`로 잡혔는가
+- PA2/PA3를 USART2로 설정할 수 있는가
+- ST-LINK Virtual COM Port 용도로 USART2를 사용할 계획인지 문서와 일치하는가
+
+이 단계에서 board를 잘못 고르면 나중에 `USART2`, pin mapping, linker script, startup file이 모두 달라질 수 있으므로 여기서 바로 잡는다.
+
+## 2. CubeMX Peripheral 설정
+
+### 2.1 USART2 확인
+
+`Pinout & Configuration` 화면에서 다음을 확인한다.
 
 ```text
 Connectivity
@@ -114,7 +250,9 @@ Connectivity
 -> Mode: Asynchronous
 ```
 
-Parameter settings:
+NUCLEO-F446RE의 ST-LINK Virtual COM Port는 일반적으로 USART2와 연결된다.
+
+설정값:
 
 | Item | Value |
 | --- | --- |
@@ -133,9 +271,15 @@ Pin:
 | USART2_TX | PA2 |
 | USART2_RX | PA3 |
 
-NUCLEO-F446RE에서는 USART2가 ST-LINK Virtual COM Port와 연결되어 PC에서 COM port로 보인다.
+주의:
+
+- PA2/PA3가 다른 peripheral로 잡혀 있으면 USART2로 다시 지정한다.
+- USB cable은 Nucleo board의 ST-LINK USB port에 연결한다.
+- Windows에서는 ST-LINK Virtual COM Port가 `COMx`로 보인다.
 
 ### 2.2 NVIC 설정
+
+다음 설정을 켠다.
 
 ```text
 System Core
@@ -144,28 +288,168 @@ System Core
 -> Enabled
 ```
 
-우선순위는 기본값이어도 된다. 나중에 motor control timer가 들어오면 interrupt priority를 다시 정리한다.
+초기 MVP에서는 interrupt priority 기본값을 사용해도 된다. 나중에 motor control timer, encoder, watchdog이 들어오면 priority를 다시 정리한다.
 
-### 2.3 Code generation
+### 2.3 Clock 설정
+
+이번 UART MVP는 고속 clock tuning이 핵심이 아니다.
+
+우선 다음 중 하나로 진행한다.
+
+| 선택 | 설명 |
+| --- | --- |
+| CubeMX default clock | 가장 단순한 시작점 |
+| Nucleo board default clock | CubeMX가 board preset으로 잡아주는 설정 |
+
+중요한 것은 USART2 baudrate가 `115200`으로 생성되는지 확인하는 것이다.
+
+## 3. Project Manager 설정
+
+### 3.1 Project
+
+`Project Manager -> Project`에서 다음처럼 설정한다.
+
+| Item | Value |
+| --- | --- |
+| Project Name | `stm32_uart_mvp` |
+| Project Location | `C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware` |
+| Application Structure | `Basic` |
+| Toolchain / IDE | `STM32CubeIDE` 우선 |
+
+생성 후 예상 경로:
 
 ```text
-Project
--> Generate Code
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
 ```
 
-생성 후 확인할 것:
+만약 `Toolchain / IDE`에 `STM32CubeIDE`가 보이지 않고 `CMake` 중심으로만 보이면, `CMake`로 생성해도 된다. 다만 이 문서의 코드 배치는 HAL/CubeMX 생성 구조를 기준으로 설명한다.
+
+### 3.2 Code Generator
+
+`Project Manager -> Code Generator`에서 다음을 권장한다.
+
+| Option | Recommendation |
+| --- | --- |
+| Generate peripheral initialization as a pair of `.c/.h` files per peripheral | Enable |
+| Keep User Code when re-generating | Enable |
+| Delete previously generated files when not re-generated | Disable |
+
+이렇게 하면 `usart.c/usart.h`, `gpio.c/gpio.h`처럼 peripheral별 파일이 나뉘어 관리된다.
+
+권장 생성 구조:
+
+```text
+Core/Inc/main.h
+Core/Inc/usart.h
+Core/Inc/gpio.h
+Core/Src/main.c
+Core/Src/usart.c
+Core/Src/gpio.c
+Core/Src/stm32f4xx_it.c
+```
+
+### 3.3 Code Generate
+
+CubeMX 상단의 다음 버튼을 누른다.
+
+```text
+GENERATE CODE
+```
+
+생성 후 확인할 파일:
 
 | File | Check |
 | --- | --- |
-| `Core/Src/main.c` | `MX_USART2_UART_Init()` 존재 |
+| `stm32_uart_mvp.ioc` | CubeMX 설정 파일 |
+| `Core/Src/main.c` | `MX_USART2_UART_Init()` 호출 |
+| `Core/Src/usart.c` | `UART_HandleTypeDef huart2` 정의 |
+| `Core/Inc/usart.h` | `extern UART_HandleTypeDef huart2` 선언 |
 | `Core/Src/stm32f4xx_it.c` | `USART2_IRQHandler()` 존재 |
-| `Core/Src/usart.c` 또는 `main.c` | `UART_HandleTypeDef huart2` 존재 |
 
-프로젝트 구조는 CubeIDE 설정에 따라 `usart.c`가 생길 수도 있고, `main.c` 안에 init 함수가 있을 수도 있다.
+`stm32f4xx_it.c` 안에는 다음 흐름이 있어야 한다.
 
-## 3. 추가할 파일
+```c
+void USART2_IRQHandler(void)
+{
+  HAL_UART_IRQHandler(&huart2);
+}
+```
 
-권장 파일:
+## 4. STM32CubeIDE로 열기
+
+### 4.1 자동 open
+
+CubeMX에서 code generation 후 다음과 같은 버튼이 보이면 사용한다.
+
+```text
+Open Project
+```
+
+### 4.2 CubeIDE에서 import
+
+자동으로 열리지 않으면 STM32CubeIDE에서 가져온다.
+
+```text
+File
+-> Import...
+-> General
+-> Existing Projects into Workspace
+-> Select root directory
+-> C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
+-> Finish
+```
+
+또는 설치 버전에 따라 다음 import 항목을 사용할 수 있다.
+
+```text
+File
+-> New
+-> Other...
+-> Import STM32 Project
+-> STM32CubeMX/STM32CubeIDE Project
+```
+
+중요:
+
+- `STM32CubeIDE Empty Project`로 새로 만들지 않는다.
+- CubeMX가 생성한 `.ioc`, `Core`, `Drivers`, startup, linker script가 들어있는 project를 import한다.
+- import 시 `Copy projects into workspace`는 체크하지 않는 편이 낫다. 실제 source가 `03_Firmware/stm32_uart_mvp`에 그대로 남아야 Git 관리가 명확하다.
+
+## 5. 생성 직후 Build 확인
+
+사용자 코드를 추가하기 전에 한 번 build한다.
+
+```text
+Project
+-> Build Project
+```
+
+이 단계가 통과해야 이후 UART MVP code 문제와 CubeMX 생성 문제를 분리해서 볼 수 있다.
+
+Build가 실패하면 먼저 다음을 확인한다.
+
+- `STM32Cube_FW_F4` package가 설치되어 있는가
+- project path에 한글 또는 특수문자가 들어가지 않았는가
+- `Drivers/`, `Core/`, `.ioc`가 같은 project 아래에 있는가
+- CubeIDE가 project root를 제대로 import했는가
+
+## 6. 추가할 User 파일
+
+CubeMX가 생성한 파일과 사용자가 직접 관리할 파일을 나눈다.
+
+CubeMX 관리 파일:
+
+```text
+Core/Src/main.c
+Core/Src/usart.c
+Core/Src/gpio.c
+Core/Src/stm32f4xx_it.c
+Core/Inc/main.h
+Core/Inc/usart.h
+Core/Inc/gpio.h
+```
+
+사용자 추가 파일:
 
 ```text
 Core/Inc/ring_buffer.h
@@ -174,28 +458,38 @@ Core/Inc/uart_mvp_protocol.h
 Core/Src/uart_mvp_protocol.c
 ```
 
-CubeIDE에서:
+CubeIDE에서 추가:
 
 ```text
 Core/Inc 우클릭 -> New -> Header File
 Core/Src 우클릭 -> New -> Source File
 ```
 
-## 4. Ring Buffer 구현
+주의:
 
-### 4.1 역할
+- CubeMX 재생성 시 `USER CODE BEGIN/END` 밖의 generated file 수정은 사라질 수 있다.
+- 새로 추가한 `ring_buffer.*`, `uart_mvp_protocol.*` 파일은 CubeMX가 덮어쓰지 않는다.
+- `main.c` 수정은 반드시 `USER CODE BEGIN/END` 영역 안에 넣는다.
 
-UART RX interrupt는 byte 단위로 들어온다.
-Application frame은 한 줄 단위다.
+## 7. Ring Buffer 구현
 
-따라서 ISR에서는 byte만 빠르게 저장하고, main loop에서 줄 단위 parser를 실행한다.
+### 7.1 역할
+
+UART RX interrupt는 byte 단위로 발생한다.
+MVP command frame은 line 단위로 처리한다.
+
+따라서 ISR 또는 HAL RX callback에서는 byte만 빠르게 저장하고, main loop에서 parser를 실행한다.
 
 ```text
-ISR: rx_byte -> ring buffer
-main loop: ring buffer -> line buffer -> parser
+USART2 RX interrupt
+-> HAL_UART_RxCpltCallback
+-> ring buffer push
+-> main loop poll
+-> line assembly
+-> frame parser
 ```
 
-### 4.2 `ring_buffer.h`
+### 7.2 `ring_buffer.h`
 
 ```c
 #ifndef RING_BUFFER_H
@@ -220,7 +514,7 @@ uint16_t rb_count(const ring_buffer_t *rb);
 #endif
 ```
 
-### 4.3 `ring_buffer.c`
+### 7.3 `ring_buffer.c`
 
 ```c
 #include "ring_buffer.h"
@@ -270,7 +564,7 @@ uint16_t rb_count(const ring_buffer_t *rb)
 }
 ```
 
-### 4.4 왜 interrupt disable 없이 동작하는가
+### 7.4 Lock-free로 충분한 이유
 
 이번 구조는 single producer / single consumer 구조다.
 
@@ -279,18 +573,17 @@ producer: USART2 RX callback
 consumer: main loop
 ```
 
-ISR은 `head`를 전진시키고, main loop는 `tail`을 전진시킨다.
-각자가 주로 다른 index를 쓰기 때문에 짧은 byte queue 용도로는 간단하게 사용할 수 있다.
+RX callback은 `head`를 전진시키고, main loop는 `tail`을 전진시킨다.
+STM32F4에서 16-bit index read/write는 이 용도에 충분히 단순하다.
 
 주의:
 
-- 16-bit index read/write는 STM32F4에서 자연스럽게 처리 가능하다.
-- 복잡한 multi-producer 구조가 되면 critical section이 필요하다.
-- DMA circular buffer로 바꾸면 설계가 달라진다.
+- 여러 interrupt나 task가 동시에 같은 buffer를 만지는 구조가 되면 critical section을 검토한다.
+- FreeRTOS queue나 DMA circular buffer를 도입하면 설계가 달라진다.
 
-## 5. Protocol Header 작성
+## 8. Protocol Header 작성
 
-### 5.1 `uart_mvp_protocol.h`
+`Core/Inc/uart_mvp_protocol.h`:
 
 ```c
 #ifndef UART_MVP_PROTOCOL_H
@@ -350,11 +643,9 @@ void uart_mvp_send_telemetry_periodic(void);
 #endif
 ```
 
-## 6. Protocol Source 기본 구조
+## 9. Protocol Source 기본 구조
 
-### 6.1 include와 static 변수
-
-`uart_mvp_protocol.c`:
+`Core/Src/uart_mvp_protocol.c`:
 
 ```c
 #include "uart_mvp_protocol.h"
@@ -376,9 +667,15 @@ static uart_mvp_stats_t s_stats;
 static int32_t s_left_pwm;
 static int32_t s_right_pwm;
 static uint32_t s_fault;
+
+static void handle_frame(const char *frame);
+static void handle_ping(const char *frame);
+static void handle_arm(const char *frame);
+static void handle_disarm(const char *frame);
+static void handle_cmd(const char *frame);
 ```
 
-### 6.2 초기화
+초기화:
 
 ```c
 void uart_mvp_init(UART_HandleTypeDef *huart)
@@ -397,7 +694,7 @@ void uart_mvp_init(UART_HandleTypeDef *huart)
 }
 ```
 
-### 6.3 RX 시작
+RX 시작:
 
 ```c
 void uart_mvp_start_rx(void)
@@ -406,7 +703,7 @@ void uart_mvp_start_rx(void)
 }
 ```
 
-### 6.4 RX byte callback에서 호출할 함수
+RX byte 저장:
 
 ```c
 void uart_mvp_on_rx_byte(uint8_t b)
@@ -417,67 +714,7 @@ void uart_mvp_on_rx_byte(uint8_t b)
 }
 ```
 
-## 7. `main.c` 연결
-
-### 7.1 include 추가
-
-`main.c`의 USER CODE include 영역:
-
-```c
-/* USER CODE BEGIN Includes */
-#include "uart_mvp_protocol.h"
-/* USER CODE END Includes */
-```
-
-### 7.2 초기화 위치
-
-`MX_USART2_UART_Init();` 이후:
-
-```c
-/* USER CODE BEGIN 2 */
-uart_mvp_init(&huart2);
-uart_mvp_start_rx();
-/* USER CODE END 2 */
-```
-
-만약 `huart2`가 `usart.c`에 있고 `main.c`에서 보이지 않는다면 `usart.h`가 include되어 있는지 확인한다.
-
-### 7.3 while loop
-
-```c
-/* Infinite loop */
-/* USER CODE BEGIN WHILE */
-while (1)
-{
-    uart_mvp_poll();
-    uart_mvp_update_safety();
-    uart_mvp_send_telemetry_periodic();
-
-    /* USER CODE END WHILE */
-    /* USER CODE BEGIN 3 */
-}
-/* USER CODE END 3 */
-```
-
-주의:
-
-- `HAL_Delay(1000)` 같은 긴 delay를 while loop에 넣지 않는다.
-- delay가 길면 ring buffer는 쌓이지만 parser와 timeout 반응이 늦어진다.
-
-## 8. RX callback 연결
-
-`main.c` 또는 별도 source file에 HAL callback을 추가한다.
-
-핵심은 `s_rx_byte`를 `main.c`에서 직접 만지지 않는 것이다.
-`s_rx_byte`는 `uart_mvp_protocol.c` 내부 static 변수로 유지하고, HAL callback은 protocol module에 완료 이벤트만 전달한다.
-
-`uart_mvp_protocol.h`:
-
-```c
-void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart);
-```
-
-`uart_mvp_protocol.c`:
+HAL callback 완료 처리:
 
 ```c
 void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart)
@@ -489,20 +726,88 @@ void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart)
 }
 ```
 
-`main.c`:
+## 10. `main.c` 연결
+
+CubeMX가 생성한 `main.c`에서는 `USER CODE` 영역만 수정한다.
+
+### 10.1 Include 추가
 
 ```c
+/* USER CODE BEGIN Includes */
+#include "uart_mvp_protocol.h"
+/* USER CODE END Includes */
+```
+
+`main.c` 상단에 `usart.h`가 없고 `huart2`를 찾지 못하면 다음도 확인한다.
+
+```c
+#include "usart.h"
+```
+
+CubeMX에서 peripheral별 `.c/.h` 생성을 켰다면 보통 `main.c`에 이미 포함되어 있다.
+
+### 10.2 초기화 추가
+
+`MX_USART2_UART_Init();` 호출 이후 `USER CODE BEGIN 2`에 넣는다.
+
+```c
+/* USER CODE BEGIN 2 */
+uart_mvp_init(&huart2);
+uart_mvp_start_rx();
+/* USER CODE END 2 */
+```
+
+초기화 순서:
+
+```text
+HAL_Init()
+SystemClock_Config()
+MX_GPIO_Init()
+MX_USART2_UART_Init()
+uart_mvp_init(&huart2)
+uart_mvp_start_rx()
+```
+
+### 10.3 Main loop 추가
+
+```c
+/* USER CODE BEGIN WHILE */
+while (1)
+{
+    uart_mvp_poll();
+    uart_mvp_update_safety();
+    uart_mvp_send_telemetry_periodic();
+
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
+}
+/* USER CODE END 3 */
+```
+
+주의:
+
+- `while (1)` 안에 긴 `HAL_Delay(1000)`를 넣지 않는다.
+- delay가 길면 parser, timeout, telemetry 반응이 늦어진다.
+
+### 10.4 UART RX callback 추가
+
+`main.c`의 `USER CODE BEGIN 4` 영역에 넣는다.
+
+```c
+/* USER CODE BEGIN 4 */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     uart_mvp_on_rx_complete(huart);
 }
+/* USER CODE END 4 */
 ```
 
-이렇게 하면 `rx_byte` 저장 위치가 protocol module 안에 유지된다.
+`s_rx_byte`는 `uart_mvp_protocol.c` 안의 static 변수이므로 `main.c`에서 직접 접근하지 않는다.
 
-## 9. TX helper
+## 11. TX Helper
 
-`uart_mvp_protocol.c`:
+`uart_mvp_protocol.c`에 추가한다.
 
 ```c
 static void send_line(const char *line)
@@ -513,19 +818,22 @@ static void send_line(const char *line)
 
 초기 MVP에서는 blocking transmit으로 충분하다.
 
-주의:
+규칙:
 
-- response 문자열은 항상 `\n`으로 끝낸다.
-- 너무 큰 TX buffer를 만들지 않는다.
-- ISR 안에서 `send_line()`을 호출하지 않는다.
+- 모든 response는 `\n`으로 끝낸다.
+- ISR 또는 HAL RX callback 안에서 `send_line()`을 호출하지 않는다.
+- RX callback은 byte 저장과 receive 재등록만 한다.
 
-## 10. Response helper
+Response helper:
 
 ```c
 static void send_ack(uint32_t seq, const char *type)
 {
     char tx[64];
-    snprintf(tx, sizeof(tx), "ACK,seq=%lu,type=%s\n", seq, type);
+    snprintf(tx, sizeof(tx),
+             "ACK,seq=%lu,type=%s\n",
+             (unsigned long)seq,
+             type);
     send_line(tx);
     s_stats.ack_count++;
 }
@@ -533,7 +841,11 @@ static void send_ack(uint32_t seq, const char *type)
 static void send_err(uint32_t seq, const char *type, const char *code)
 {
     char tx[96];
-    snprintf(tx, sizeof(tx), "ERR,seq=%lu,type=%s,code=%s\n", seq, type, code);
+    snprintf(tx, sizeof(tx),
+             "ERR,seq=%lu,type=%s,code=%s\n",
+             (unsigned long)seq,
+             type,
+             code);
     send_line(tx);
     s_stats.err_count++;
 }
@@ -541,22 +853,15 @@ static void send_err(uint32_t seq, const char *type, const char *code)
 static void send_pong(uint32_t seq)
 {
     char tx[64];
-    snprintf(tx, sizeof(tx), "PONG,seq=%lu,t_ms=%lu\n", seq, HAL_GetTick());
+    snprintf(tx, sizeof(tx),
+             "PONG,seq=%lu,t_ms=%lu\n",
+             (unsigned long)seq,
+             (unsigned long)HAL_GetTick());
     send_line(tx);
 }
 ```
 
-`%lu` warning이 나면 cast를 명시한다.
-
-```c
-(unsigned long)seq
-```
-
-STM32 GCC에서 `uint32_t`가 `unsigned long` 또는 `unsigned int`로 잡히는 경우가 있어 format warning이 날 수 있다.
-
-## 11. Line 조립
-
-`uart_mvp_poll()`:
+## 12. Line 조립
 
 ```c
 void uart_mvp_poll(void)
@@ -589,15 +894,14 @@ void uart_mvp_poll(void)
 }
 ```
 
-주의:
+처리 정책:
 
-- `\r\n`으로 들어와도 처리되도록 `\r`은 무시한다.
-- line overflow가 나면 기존 line을 버린다.
-- overflow frame의 seq는 알 수 없으므로 `seq=0` 또는 생략 정책을 선택해야 한다. 현재 MVP에서는 `seq=0`으로 충분하다.
+- `\r\n` 입력을 고려해 `\r`은 무시한다.
+- `\n`이 들어오면 한 frame으로 처리한다.
+- line overflow가 나면 해당 line을 버리고 `ERR BAD_FRAME`을 보낸다.
+- overflow frame의 `seq`를 알 수 없으므로 MVP에서는 `seq=0`을 사용한다.
 
-## 12. 간단한 key-value parser
-
-처음에는 복잡한 일반 parser보다 MVP field만 찾는 helper가 낫다.
+## 13. Key-value Parser
 
 ```c
 static uint8_t find_field(const char *frame, const char *key, char *out, size_t out_len)
@@ -658,23 +962,27 @@ static uint8_t parse_u32(const char *text, uint32_t *out)
 }
 ```
 
-주의:
+`atoi()`는 실패 여부를 알기 어렵기 때문에 쓰지 않는다.
 
-- `atoi()`는 실패 여부를 알기 어렵다.
-- `strtol()`, `strtoul()`로 변환 실패를 확인한다.
-
-## 13. Frame type 분기
+## 14. Frame Type 분기
 
 ```c
+static uint8_t is_type(const char *frame, const char *type)
+{
+    size_t n = strlen(type);
+    return (strncmp(frame, type, n) == 0 &&
+            (frame[n] == ',' || frame[n] == '\0'));
+}
+
 static void handle_frame(const char *frame)
 {
-    if (strncmp(frame, "PING", 4) == 0) {
+    if (is_type(frame, "PING")) {
         handle_ping(frame);
-    } else if (strncmp(frame, "ARM", 3) == 0) {
+    } else if (is_type(frame, "ARM")) {
         handle_arm(frame);
-    } else if (strncmp(frame, "DISARM", 6) == 0) {
+    } else if (is_type(frame, "DISARM")) {
         handle_disarm(frame);
-    } else if (strncmp(frame, "CMD", 3) == 0) {
+    } else if (is_type(frame, "CMD")) {
         handle_cmd(frame);
     } else {
         s_stats.parse_error_count++;
@@ -683,17 +991,9 @@ static void handle_frame(const char *frame)
 }
 ```
 
-더 엄밀히 하려면 `frame type` 다음 문자가 `,` 또는 `\0`인지 확인한다.
+`strncmp(frame, "ARM", 3)`만 사용하면 `ARMED...` 같은 문자열도 `ARM`으로 오인할 수 있으므로 `is_type()`으로 frame type 경계를 확인한다.
 
-```c
-static uint8_t is_type(const char *frame, const char *type)
-{
-    size_t n = strlen(type);
-    return strncmp(frame, type, n) == 0 && (frame[n] == ',' || frame[n] == '\0');
-}
-```
-
-## 14. PING 구현
+## 15. PING 구현
 
 ```c
 static void handle_ping(const char *frame)
@@ -715,7 +1015,7 @@ static void handle_ping(const char *frame)
 }
 ```
 
-## 15. ARM 구현
+## 16. ARM 구현
 
 ```c
 static void handle_arm(const char *frame)
@@ -740,11 +1040,12 @@ static void handle_arm(const char *frame)
     s_state = ROBOT_ARMED;
     s_cmd.valid = 0u;
     s_stats.timeout_started_ms = 0u;
+
     send_ack(seq, "ARM");
 }
 ```
 
-## 16. DISARM 구현
+## 17. DISARM 구현
 
 ```c
 static void handle_disarm(const char *frame)
@@ -771,9 +1072,9 @@ static void handle_disarm(const char *frame)
 }
 ```
 
-## 17. CMD 구현
+## 18. CMD 구현
 
-### 17.1 parsing
+### 18.1 Parsing
 
 ```c
 static void handle_cmd(const char *frame)
@@ -805,7 +1106,7 @@ static void handle_cmd(const char *frame)
     }
 ```
 
-### 17.2 range check
+### 18.2 Range check
 
 ```c
     if (vx < VX_MIN_MMPS || vx > VX_MAX_MMPS ||
@@ -816,12 +1117,12 @@ static void handle_cmd(const char *frame)
 
     if (timeout_ms < CMD_TIMEOUT_MIN_MS ||
         timeout_ms > CMD_TIMEOUT_MAX_MS) {
-        send_err(seq, "CMD", "TIMEOUT_TOO_LONG");
+        send_err(seq, "CMD", "TIMEOUT_OUT_OF_RANGE");
         return;
     }
 ```
 
-### 17.3 state check
+### 18.3 State check
 
 ```c
     if (s_state == ROBOT_FAULT) {
@@ -830,24 +1131,14 @@ static void handle_cmd(const char *frame)
     }
 
     if (s_state != ROBOT_ARMED) {
-        if (vx != 0 || w != 0) {
-            send_err(seq, "CMD", "NOT_ARMED");
-            return;
-        }
+        send_err(seq, "CMD", "NOT_ARMED");
+        return;
     }
 ```
 
-여기서 정책 선택지가 있다.
+첫 MVP에서는 `DISARMED` 상태의 모든 `CMD`를 `NOT_ARMED`로 거부한다. `zero CMD`만 예외 허용하는 정책은 나중에 필요해지면 추가한다.
 
-| 상황 | 추천 |
-| --- | --- |
-| `DISARMED` + nonzero CMD | `NOT_ARMED` |
-| `DISARMED` + zero CMD | ignore 또는 `NOT_ARMED` |
-
-첫 MVP에서는 단순하게 `DISARMED`에서 모든 `CMD`를 `NOT_ARMED`로 거부해도 된다.
-대시보드 검증이 더 명확해진다.
-
-### 17.4 active command update
+### 18.4 Active command update
 
 ```c
     s_cmd.seq = seq;
@@ -867,13 +1158,10 @@ static void handle_cmd(const char *frame)
 }
 ```
 
-중요:
+이번 단계에서는 valid `CMD`가 들어와도 실제 PWM을 내보내지 않는다.
+`left_pwm/right_pwm`은 telemetry field로만 둔다.
 
-- 이번 단계에서는 valid CMD가 들어와도 실제 PWM을 내보내지 않는다.
-- `left_pwm/right_pwm`은 telemetry field로만 둔다.
-- MDD10A 연결 전까지 motor output은 0이다.
-
-## 18. Timeout 구현
+## 19. Timeout 구현
 
 ```c
 void uart_mvp_update_safety(void)
@@ -909,11 +1197,10 @@ valid CMD 끊김
 ```
 
 현재 `AUTO_DISARM_MS=3000`은 lab default다.
-나중에 공식 정책으로 확정되면 architecture contract에도 반영한다.
 
-## 19. Telemetry 구현
+## 20. Telemetry 구현
 
-### 19.1 state string
+State string:
 
 ```c
 static const char *state_to_str(robot_state_t state)
@@ -933,7 +1220,7 @@ static const char *state_to_str(robot_state_t state)
 }
 ```
 
-### 19.2 periodic telemetry
+Periodic telemetry:
 
 ```c
 void uart_mvp_send_telemetry_periodic(void)
@@ -956,38 +1243,44 @@ void uart_mvp_send_telemetry_periodic(void)
 }
 ```
 
-MVP에서는 `batt_mv`, `left_cps`, `right_cps`를 0으로 둔다.
+MVP에서는 다음 값들을 0으로 둔다.
 
-나중에 연결:
+| Field | MVP value | Later source |
+| --- | --- | --- |
+| `batt_mv` | `0` | ADC voltage divider |
+| `left_cps` | `0` | left encoder timer delta |
+| `right_cps` | `0` | right encoder timer delta |
+| `left_pwm` | `0` | MDD10A PWM output |
+| `right_pwm` | `0` | MDD10A PWM output |
 
-| Field | Later source |
-| --- | --- |
-| `batt_mv` | ADC voltage divider |
-| `left_cps` | TIM3 encoder count delta |
-| `right_cps` | TIM5 encoder count delta |
-| `left_pwm` | motor command output |
-| `right_pwm` | motor command output |
+## 21. CubeMX 재생성 규칙
 
-## 20. Build error 대응
+나중에 `.ioc`에서 peripheral 설정을 바꾸고 `GENERATE CODE`를 다시 누를 수 있다.
 
-### 20.1 `huart2` undeclared
+안전 규칙:
+
+- `main.c` 수정은 `USER CODE BEGIN/END` 안에만 둔다.
+- `stm32f4xx_it.c`를 직접 수정하지 않는다.
+- `usart.c`의 generated init 코드를 직접 수정하지 않는다.
+- `ring_buffer.*`, `uart_mvp_protocol.*`는 사용자 파일이라 재생성으로 덮이지 않는다.
+- 새 사용자 source가 build에서 빠지면 CubeIDE Project Explorer에서 excluded 상태를 확인한다.
+
+## 22. Build Error 대응
+
+### 22.1 `huart2` undeclared
 
 원인:
 
-- `usart.h` include 누락
-- CubeMX 설정에서 peripheral source split 여부 차이
+- `main.c`에서 `usart.h` include 누락
+- CubeMX가 peripheral별 `.c/.h` 생성을 하지 않았고 `huart2` 선언 위치가 다른 경우
 
-해결:
-
-`main.c`:
+확인:
 
 ```c
 #include "usart.h"
 ```
 
-또는 `huart2`가 선언된 파일 위치를 확인한다.
-
-### 20.2 `undefined reference to rb_put`
+### 22.2 `undefined reference to rb_put`
 
 원인:
 
@@ -996,45 +1289,30 @@ MVP에서는 `batt_mv`, `left_cps`, `right_cps`를 0으로 둔다.
 해결:
 
 - `Core/Src/ring_buffer.c`가 실제 source folder에 있는지 확인
-- CubeIDE Project Explorer에서 excluded 상태가 아닌지 확인
+- CubeIDE에서 해당 파일이 `Exclude from Build` 상태인지 확인
 
-### 20.3 format warning
-
-예:
-
-```text
-format '%lu' expects argument of type 'long unsigned int'
-```
-
-해결:
-
-```c
-(unsigned long)seq
-```
-
-처럼 cast한다.
-
-### 20.4 UART interrupt callback이 안 불림
+### 22.3 UART RX callback이 안 불림
 
 확인:
 
-- NVIC에서 USART2 global interrupt enable
-- `HAL_UART_Receive_IT()`를 init 이후 한 번 호출했는지
-- callback에서 다시 `HAL_UART_Receive_IT()`를 재등록했는지
-- `USART2_IRQHandler()` 안에 `HAL_UART_IRQHandler(&huart2)`가 있는지
+- CubeMX NVIC에서 `USART2 global interrupt`를 enable 했는가
+- `uart_mvp_start_rx()`가 init 이후 호출되는가
+- `HAL_UART_RxCpltCallback()` 안에서 `uart_mvp_on_rx_complete()`가 호출되는가
+- `uart_mvp_on_rx_complete()`에서 다시 `HAL_UART_Receive_IT()`를 재등록하는가
+- `stm32f4xx_it.c`의 `USART2_IRQHandler()`가 `HAL_UART_IRQHandler(&huart2)`를 호출하는가
 
-`stm32f4xx_it.c` 예:
+### 22.4 PC에서 COM port가 안 보임
 
-```c
-void USART2_IRQHandler(void)
-{
-    HAL_UART_IRQHandler(&huart2);
-}
-```
+확인:
 
-## 21. PC Web Dashboard 검증
+- Nucleo board의 ST-LINK USB port에 연결했는가
+- Windows 장치 관리자에서 ST-LINK Virtual COM Port가 보이는가
+- ST-LINK driver가 설치되어 있는가
+- 다른 serial terminal이 COM port를 점유하고 있지 않은가
 
-### 21.1 서버 실행
+## 23. PC Web Dashboard 검증
+
+### 23.1 서버 실행
 
 ```powershell
 cd C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\04_PC_Serial_Control
@@ -1047,7 +1325,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\ServeWebDashboard.ps
 http://localhost:8765/
 ```
 
-### 21.2 테스트 순서
+### 23.2 테스트 순서
 
 1. `Connect`
 2. `PING`
@@ -1058,7 +1336,7 @@ http://localhost:8765/
 7. `Keepalive`
 8. `DISARM`
 
-### 21.3 기대 로그
+### 23.3 기대 로그
 
 ```text
 TX PING,seq=1
@@ -1082,7 +1360,7 @@ RX ACK,seq=6,type=DISARM
 RX TEL,t_ms=...,state=DISARMED,...
 ```
 
-## 22. Terminal scripted test
+## 24. Terminal Scripted Test
 
 Windows:
 
@@ -1098,7 +1376,7 @@ cd ~/workspace/TIL/Projects/Tracked_Mobile_Robot/04_PC_Serial_Control
 bash tools/uart_mvp_tool.sh scripted-test --port /dev/ttyACM0
 ```
 
-## 23. Evidence 정리
+## 25. Evidence 정리
 
 검증 후 남길 것:
 
@@ -1106,17 +1384,19 @@ bash tools/uart_mvp_tool.sh scripted-test --port /dev/ttyACM0
 04_PC_Serial_Control/logs/*_raw.log
 04_PC_Serial_Control/logs/*_parsed.csv
 web dashboard screenshot
+CubeMX Board Selector screenshot
 CubeMX USART2 setting screenshot
+CubeMX NVIC setting screenshot
 STM32 parser code snippet
 ```
 
 진행 로그에 적을 요약 예:
 
 ```text
-USART2 RX interrupt stores incoming bytes into a ring buffer. The main-loop parser reconstructs newline-delimited UART MVP frames, validates required fields and ranges, and returns PONG/ACK/ERR/TEL. PC Web Serial dashboard confirmed PING/PONG, NOT_ARMED rejection, valid CMD ACK, OUT_OF_RANGE rejection, timeout zero-output telemetry, and DISARMED telemetry.
+STM32CubeMX generated a NUCLEO-F446RE HAL project with USART2 PA2/PA3 at 115200 8N1 and USART2 global interrupt enabled. The STM32 firmware stores RX bytes into a ring buffer, reconstructs newline-delimited UART MVP frames in the main loop, validates required fields and ranges, and returns PONG/ACK/ERR/TEL. PC Web Serial dashboard confirmed PING/PONG, NOT_ARMED rejection, valid CMD ACK, OUT_OF_RANGE rejection, timeout zero-output telemetry, and DISARMED telemetry.
 ```
 
-## 24. 다음 단계
+## 26. 다음 단계
 
 이 MVP가 통과하면 다음 순서로 확장한다.
 

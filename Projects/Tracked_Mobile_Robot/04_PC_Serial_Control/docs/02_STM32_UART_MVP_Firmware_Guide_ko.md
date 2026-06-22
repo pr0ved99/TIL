@@ -4,7 +4,7 @@
 
 이 문서는 PC에서 보내는 UART MVP frame을 STM32 NUCLEO-F446RE가 받아 `ACK`, `ERR`, `TEL`로 응답하도록 만드는 단계별 firmware guide다.
 
-더 세부적인 CubeIDE 구현 절차와 file-by-file code skeleton은
+더 세부적인 STM32CubeMX project 생성, CubeIDE import, file-by-file code skeleton은
 `06_STM32_UART_MVP_Detailed_Implementation_ko.md`를 기준으로 한다.
 
 초기 목표는 motor control이 아니다.
@@ -39,13 +39,17 @@ PC USB <-> NUCLEO-F446RE ST-LINK USB
 
 이번 단계에서 `left_pwm`, `right_pwm`, `left_cps`, `right_cps`, `batt_mv`는 0으로 보낼 수 있다.
 
-## CubeIDE Configuration
+## STM32CubeMX / CubeIDE Configuration
 
 ### 1. Project
 
 - Board: `NUCLEO-F446RE`
-- Toolchain: STM32CubeIDE
+- Project creation: standalone STM32CubeMX 설치/실행 후 Board Selector에서 `NUCLEO-F446RE` 선택, code generation
+- Toolchain: STM32CubeIDE 또는 CMake
 - Firmware style: HAL baseline
+
+현재 CubeIDE에서 `File -> New -> STM32 Project`가 보이지 않으면 `STM32CubeIDE Empty Project`로 시작하지 않는다.
+이 경우 standalone STM32CubeMX에서 `.ioc`와 HAL baseline code를 먼저 생성한 뒤 CubeIDE에서 open/import한다.
 
 ### 2. USART2
 
@@ -481,6 +485,6 @@ STM32 USART2 interrupt receives UART bytes into a ring buffer, main-loop parser 
 
 ## Detailed Implementation
 
-실제 CubeIDE에서 파일을 추가하고 코드를 나눠 넣는 상세 절차는 다음 문서를 따른다.
+실제 STM32CubeMX에서 project를 생성하고 CubeIDE에서 파일을 추가해 코드를 나눠 넣는 상세 절차는 다음 문서를 따른다.
 
 - `06_STM32_UART_MVP_Detailed_Implementation_ko.md`
