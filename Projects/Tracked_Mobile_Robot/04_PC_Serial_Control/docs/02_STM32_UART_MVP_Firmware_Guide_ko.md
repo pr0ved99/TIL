@@ -4,8 +4,9 @@
 
 이 문서는 PC에서 보내는 UART MVP frame을 STM32 NUCLEO-F446RE가 받아 `ACK`, `ERR`, `TEL`로 응답하도록 만드는 단계별 firmware guide다.
 
-더 세부적인 STM32CubeMX project 생성, CubeIDE import, file-by-file code skeleton은
+더 세부적인 STM32CubeMX/CubeIDE 클릭 절차, project 생성, CubeIDE import, file-by-file code skeleton은
 `06_STM32_UART_MVP_Detailed_Implementation_ko.md`를 기준으로 한다.
+CubeMX/CubeIDE 설정 스크린샷과 Web Serial 검증 스크린샷은 `assets/screenshots/uart_mvp/`에 저장하고, 상세 가이드의 `0.5 스크린샷 증거 반영 방식`에 따라 해당 절차 아래에 이미지로 반영한다.
 
 초기 목표는 motor control이 아니다.
 이번 firmware는 USB serial 기반 protocol 검증용이다.

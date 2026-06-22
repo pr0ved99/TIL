@@ -40,6 +40,15 @@ MVP UART rule:
 | `docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md` | Detailed CubeIDE implementation guide with file-by-file firmware skeleton |
 | `requirements.txt` | Python dependency list |
 
+## Validation Evidence
+
+| Artifact | Path | Notes |
+| --- | --- | --- |
+| Web Serial CSV log | `logs/2026-06-22_uart_mvp_web_serial_validation.csv` | Real STM32 validation log captured through ST-LINK VCP `COM3` at `115200` baud |
+| Local demo recording | `../assets/videos/uart_mvp/2026-06-22_uart_mvp_web_serial_demo.mp4` | Local-only video evidence; ignored by git because the current file is larger than typical GitHub limits |
+
+The 2026-06-22 CSV log includes `PING/PONG`, `ARM`, `DISARM`, accepted `CMD`, rejected `CMD` before `ARM` with `NOT_ARMED`, rejected out-of-range command with `OUT_OF_RANGE`, and periodic `TEL` telemetry.
+
 ## Quick Start On Windows
 
 ```powershell

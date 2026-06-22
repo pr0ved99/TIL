@@ -17,6 +17,15 @@ STM32CubeMX
 
 예전 STM32CubeIDE 버전처럼 `File -> New -> STM32 Project`가 보이지 않는 환경에서는 `STM32CubeIDE Empty Project`를 선택하지 않는다. 이 프로젝트는 `.ioc`, HAL initialization, pin mapping 자동 생성을 활용해야 하므로 standalone `STM32CubeMX`에서 먼저 project를 생성한다.
 
+이 문서는 실제 화면에서 따라 할 수 있도록 메뉴 클릭 기준으로 작성한다.
+
+```text
+무엇을 여는지
+-> 어떤 메뉴/탭을 누르는지
+-> 어떤 값을 선택하는지
+-> 생성 후 어떤 파일이 생겨야 하는지
+```
+
 기준 목표:
 
 ```text
@@ -170,17 +179,74 @@ startup_stm32f446retx.s
 
 이 파일들이 나중에 Git으로 관리할 실제 firmware 산출물이다.
 
+### 0.5 스크린샷 증거 반영 방식
+
+CubeMX/CubeIDE 설정 화면과 UART 검증 화면은 다음 폴더에 저장한다.
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\assets\screenshots\uart_mvp
+```
+
+스크린샷을 찍은 뒤에는 이 폴더 안의 파일을 확인하고, 화면 성격에 맞춰 이 문서의 해당 단계에 이미지를 추가한다.
+
+원칙:
+
+- 실제 이미지 파일이 존재할 때만 Markdown 이미지 링크를 추가한다.
+- 파일명만으로 애매하면 화면 내용을 확인한 뒤 배치한다.
+- CubeMX/CubeIDE 설정 화면은 설정 절차 바로 아래에 배치한다.
+- UART 송수신 검증 화면은 `23. PC Web Dashboard 검증` 또는 `25. Evidence 정리`에 배치한다.
+- Windows가 자동 생성한 `desktop.ini`는 문서화 대상이 아니며 Git에 포함하지 않는다.
+
+`06` 문서에서 screenshot folder를 참조할 때는 다음 상대 경로를 사용한다.
+
+```text
+../../assets/screenshots/uart_mvp/<actual-screenshot-file-name>.png
+```
+
+실제 Markdown 이미지 링크는 파일이 존재할 때만 추가한다.
+
+배치 기준:
+
+| Screenshot keyword | Insert near |
+| --- | --- |
+| `cubemx_board_selector` | `1.2 Board 선택` |
+| `usart2_mode_async` | `2.1 USART2 Mode 선택` |
+| `usart2_parameter_settings` | `2.2 USART2 Parameter Settings` |
+| `usart2_pinout` or `pa2_pa3` | `2.3 USART2 Pin 확인` |
+| `usart2_nvic_settings` | `2.4 USART2 NVIC 설정` |
+| `project_manager` or `toolchain` | `3.1 Project` / `3.2 Code Generator` |
+| `generate_code_success` | `3.3 Code Generate` |
+| `cubeide_import_project` | `4.2 CubeIDE에서 import` |
+| `cubeide_build_success` | `5. 생성 직후 Build 확인` |
+| `device_manager_com_port` | `22.4 PC에서 COM port가 안 보임` 또는 `25. Evidence 정리` |
+| `web_serial` | `23. PC Web Dashboard 검증` |
+
 ## 1. STM32CubeMX에서 Project 생성
 
 ### 1.1 STM32CubeMX 실행
 
 Windows 시작 메뉴에서 `STM32CubeMX`를 실행한다.
 
-시작 화면에서 다음을 선택한다.
+실행 후 Home 화면에서 다음 중 하나의 진입 경로를 사용한다.
+
+권장 경로:
 
 ```text
 ACCESS TO BOARD SELECTOR
 ```
+
+다른 UI로 보일 경우:
+
+```text
+New Project
+-> Board Selector tab
+```
+
+주의:
+
+- `MCU Selector`가 아니라 `Board Selector`를 고른다.
+- `Board Selector`는 Nucleo board 전체를 기준으로 project를 시작한다.
+- `MCU Selector`는 `STM32F446RE` 칩만 직접 고르는 방식이라 board-level ST-LINK/VCP 전제를 놓치기 쉽다.
 
 이번 프로젝트는 ST Nucleo 개발보드를 사용하므로 `MCU Selector`보다 `Board Selector`를 사용한다.
 
@@ -198,13 +264,18 @@ ACCESS TO BOARD SELECTOR
 
 ### 1.2 Board 선택
 
-검색창에 입력:
+`Board Selector` 화면에서 다음 순서로 선택한다.
+
+1. 상단 또는 좌측 검색창을 클릭한다.
+2. 다음 문자열을 입력한다.
 
 ```text
 NUCLEO-F446RE
 ```
 
-`Board Selector` 결과에서 `NUCLEO-F446RE`를 선택한다.
+3. 검색 결과 table에서 `NUCLEO-F446RE` row를 클릭한다.
+4. 우측 또는 하단 preview에서 board 정보가 맞는지 확인한다.
+5. `Start Project` 버튼을 누른다.
 
 확인할 것:
 
@@ -215,15 +286,20 @@ NUCLEO-F446RE
 | Package | `LQFP64` 계열 |
 | Vendor | STMicroelectronics |
 
-선택 후 `Start Project`를 누른다.
+`Start Project`를 누른 뒤 질문이 나오면 다음처럼 처리한다.
 
-`Initialize all peripherals with their default Mode?` 질문이 나오면 기본 peripheral 초기화를 허용해도 된다.
+| Popup / Question | 선택 |
+| --- | --- |
+| `Initialize all peripherals with their default Mode?` | `Yes` |
+| firmware package download/install 요청 | `Install` 또는 `Download` |
+| license agreement | 동의 후 계속 |
+| project initialization 대기 | 완료될 때까지 기다림 |
 
 다만 이번 MVP에서 실제로 사용할 peripheral은 USART2와 SysTick 중심이다.
 
 ### 1.3 Board 선택 후 바로 확인할 것
 
-project가 열리면 먼저 다음을 확인한다.
+project가 열리면 상단 탭 또는 좌측 navigation에서 다음 화면을 연다.
 
 ```text
 Pinout & Configuration
@@ -238,19 +314,38 @@ Pinout & Configuration
 
 이 단계에서 board를 잘못 고르면 나중에 `USART2`, pin mapping, linker script, startup file이 모두 달라질 수 있으므로 여기서 바로 잡는다.
 
+검증 화면:
+
+![CubeMX initial pinout after NUCLEO-F446RE selection](../../assets/screenshots/uart_mvp/2026-06-22_01_cubemx_initial_pinout_nucleo_f446re.png)
+
 ## 2. CubeMX Peripheral 설정
 
-### 2.1 USART2 확인
+### 2.1 USART2 Mode 선택
 
-`Pinout & Configuration` 화면에서 다음을 확인한다.
+`Pinout & Configuration` 화면에서 왼쪽 tree를 따라간다.
 
 ```text
 Connectivity
 -> USART2
--> Mode: Asynchronous
 ```
 
+`USART2`를 클릭한 뒤 `Mode` 영역에서 다음을 선택한다.
+
+```text
+Mode: Asynchronous
+```
+
+또는 UI에 `Activated` / `Asynchronous` 선택 항목이 있으면 `Asynchronous`를 고른다.
+
 NUCLEO-F446RE의 ST-LINK Virtual COM Port는 일반적으로 USART2와 연결된다.
+
+### 2.2 USART2 Parameter Settings
+
+`USART2` 설정 화면 안에서 다음 탭을 클릭한다.
+
+```text
+Parameter Settings
+```
 
 설정값:
 
@@ -264,6 +359,16 @@ NUCLEO-F446RE의 ST-LINK Virtual COM Port는 일반적으로 USART2와 연결된
 | Hardware Flow Control | `None` |
 | Oversampling | `16 Samples` |
 
+검증 화면:
+
+![CubeMX USART2 asynchronous mode and 115200 8N1 parameter settings](../../assets/screenshots/uart_mvp/2026-06-22_03_usart2_parameter_settings.png)
+
+값이 다르면 해당 row의 value cell을 클릭해 위 값으로 바꾼다.
+
+### 2.3 USART2 Pin 확인
+
+`Pinout view` 또는 `GPIO Settings`에서 다음 pin이 USART2로 잡혔는지 확인한다.
+
 Pin:
 
 | Signal | Pin |
@@ -271,26 +376,87 @@ Pin:
 | USART2_TX | PA2 |
 | USART2_RX | PA3 |
 
+검증 화면:
+
+![CubeMX USART2 PA2 TX and PA3 RX pin mapping](../../assets/screenshots/uart_mvp/2026-06-22_04_usart2_pinout_pa2_pa3.png)
+
+확인 방법:
+
+1. chip 그림에서 `PA2`를 찾는다.
+2. `PA2` label이 `USART2_TX` 또는 USART2 기능으로 표시되는지 확인한다.
+3. chip 그림에서 `PA3`를 찾는다.
+4. `PA3` label이 `USART2_RX` 또는 USART2 기능으로 표시되는지 확인한다.
+
+만약 PA2/PA3가 USART2로 잡히지 않았다면:
+
+```text
+PA2 pin 클릭 -> USART2_TX 선택
+PA3 pin 클릭 -> USART2_RX 선택
+```
+
 주의:
 
 - PA2/PA3가 다른 peripheral로 잡혀 있으면 USART2로 다시 지정한다.
 - USB cable은 Nucleo board의 ST-LINK USB port에 연결한다.
 - Windows에서는 ST-LINK Virtual COM Port가 `COMx`로 보인다.
 
-### 2.2 NVIC 설정
+### 2.4 USART2 NVIC 설정
 
-다음 설정을 켠다.
+`USART2` 설정 화면에서 다음 탭을 클릭한다.
+
+```text
+NVIC Settings
+```
+
+다음 항목을 체크한다.
+
+```text
+USART2 global interrupt
+-> Enabled 체크
+```
+
+설치 버전이나 화면 구성에 따라 USART2 안에서 보이지 않으면 왼쪽 tree에서 다음 경로로 들어간다.
 
 ```text
 System Core
 -> NVIC
 -> USART2 global interrupt
--> Enabled
+-> Enabled 체크
 ```
 
 초기 MVP에서는 interrupt priority 기본값을 사용해도 된다. 나중에 motor control timer, encoder, watchdog이 들어오면 priority를 다시 정리한다.
 
-### 2.3 Clock 설정
+검증 화면:
+
+![CubeMX USART2 global interrupt enabled in NVIC settings](../../assets/screenshots/uart_mvp/2026-06-22_05_usart2_nvic_settings.png)
+
+### 2.5 GPIO 설정 확인
+
+이번 MVP에서는 GPIO를 직접 많이 만지지 않는다. 다만 USART2 pin이 alternate function으로 잡혔는지 확인한다.
+
+확인 경로:
+
+```text
+System Core
+-> GPIO
+```
+
+확인할 것:
+
+| Pin | Mode |
+| --- | --- |
+| PA2 | Alternate Function Push Pull |
+| PA3 | Alternate Function Push Pull |
+
+CubeMX가 USART2를 제대로 설정했다면 이 값은 자동으로 잡힌다.
+
+### 2.6 Clock 설정
+
+상단 탭에서 다음을 클릭한다.
+
+```text
+Clock Configuration
+```
 
 이번 UART MVP는 고속 clock tuning이 핵심이 아니다.
 
@@ -303,18 +469,46 @@ System Core
 
 중요한 것은 USART2 baudrate가 `115200`으로 생성되는지 확인하는 것이다.
 
+초기에는 clock tree를 억지로 수정하지 않는다. CubeMX가 conflict를 표시하지 않는 기본 설정으로 진행한다.
+
 ## 3. Project Manager 설정
 
 ### 3.1 Project
 
-`Project Manager -> Project`에서 다음처럼 설정한다.
+상단 탭에서 다음을 클릭한다.
+
+```text
+Project Manager
+```
+
+그 다음 좌측 또는 상단 sub-tab에서 다음을 클릭한다.
+
+```text
+Project
+```
+
+다음처럼 설정한다.
 
 | Item | Value |
 | --- | --- |
 | Project Name | `stm32_uart_mvp` |
 | Project Location | `C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware` |
-| Application Structure | `Basic` |
+| Application Structure | `Advanced` |
 | Toolchain / IDE | `STM32CubeIDE` 우선 |
+
+입력 순서:
+
+1. `Project Name` 입력칸 클릭
+2. `stm32_uart_mvp` 입력
+3. `Project Location`의 `Browse` 버튼 클릭
+4. 다음 폴더 선택
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware
+```
+
+5. `Application Structure`가 있으면 `Advanced` 유지
+6. `Toolchain / IDE` dropdown에서 `STM32CubeIDE` 선택
 
 생성 후 예상 경로:
 
@@ -324,17 +518,39 @@ C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uar
 
 만약 `Toolchain / IDE`에 `STM32CubeIDE`가 보이지 않고 `CMake` 중심으로만 보이면, `CMake`로 생성해도 된다. 다만 이 문서의 코드 배치는 HAL/CubeMX 생성 구조를 기준으로 설명한다.
 
+검증 화면:
+
+![CubeMX Project Manager STM32CubeIDE toolchain settings](../../assets/screenshots/uart_mvp/2026-06-22_06_project_manager_toolchain.png)
+
 ### 3.2 Code Generator
 
-`Project Manager -> Code Generator`에서 다음을 권장한다.
+`Project Manager` 화면에서 다음 sub-tab을 클릭한다.
+
+```text
+Code Generator
+```
+
+다음 항목을 설정한다.
 
 | Option | Recommendation |
 | --- | --- |
 | Generate peripheral initialization as a pair of `.c/.h` files per peripheral | Enable |
 | Keep User Code when re-generating | Enable |
-| Delete previously generated files when not re-generated | Disable |
+| Delete previously generated files when not re-generated | Enable |
+
+체크 위치가 보이면 다음처럼 한다.
+
+```text
+[x] Generate peripheral initialization as a pair of '.c/.h' files per peripheral
+[x] Keep User Code when re-generating
+[x] Delete previously generated files when not re-generated
+```
 
 이렇게 하면 `usart.c/usart.h`, `gpio.c/gpio.h`처럼 peripheral별 파일이 나뉘어 관리된다.
+
+검증 화면:
+
+![CubeMX Code Generator peripheral file split settings](../../assets/screenshots/uart_mvp/2026-06-22_07_code_generator_peripheral_files.png)
 
 권장 생성 구조:
 
@@ -350,11 +566,19 @@ Core/Src/stm32f4xx_it.c
 
 ### 3.3 Code Generate
 
-CubeMX 상단의 다음 버튼을 누른다.
+CubeMX 상단 오른쪽 또는 toolbar의 다음 버튼을 누른다.
 
 ```text
 GENERATE CODE
 ```
+
+popup이 나오면 다음처럼 처리한다.
+
+| Popup | 선택 |
+| --- | --- |
+| firmware package 설치 필요 | `Install` 또는 `Download` |
+| code generation 확인 | `Generate Code` 계속 |
+| open project 질문 | 우선 `Open Project` 가능, 안 되면 수동 import |
 
 생성 후 확인할 파일:
 
@@ -375,19 +599,53 @@ void USART2_IRQHandler(void)
 }
 ```
 
+### 3.4 생성 실패 시 확인
+
+`GENERATE CODE`가 실패하면 다음을 확인한다.
+
+- `Project Name`에 공백이나 특수문자가 과도하게 들어가지 않았는가
+- `Project Location`이 실제 존재하는가
+- `STM32Cube_FW_F4` package가 설치되어 있는가
+- 인터넷 연결 또는 package download 권한 문제가 없는가
+- 경로에 한글/공백이 많은 위치를 쓰고 있지 않은가
+
+현재 권장 경로는 ASCII 기반이라 안전하다.
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware
+```
+
 ## 4. STM32CubeIDE로 열기
 
 ### 4.1 자동 open
 
-CubeMX에서 code generation 후 다음과 같은 버튼이 보이면 사용한다.
+CubeMX에서 code generation 후 다음과 같은 버튼이 보이면 클릭한다.
 
 ```text
 Open Project
 ```
 
+이 버튼을 누르면 STM32CubeIDE가 실행되고 생성된 firmware project가 열린다.
+
 ### 4.2 CubeIDE에서 import
 
 자동으로 열리지 않으면 STM32CubeIDE에서 가져온다.
+
+먼저 STM32CubeIDE를 실행한다.
+
+workspace 선택 창이 나오면 기본값을 사용해도 된다.
+
+```text
+C:\Users\eyh12\STM32CubeIDE\workspace_2.1.1
+```
+
+주의:
+
+- 이 workspace는 IDE metadata 위치다.
+- 실제 firmware source는 `03_Firmware/stm32_uart_mvp` 아래에 둔다.
+- import할 때 source를 workspace로 복사하지 않는 쪽이 Git 관리에 좋다.
+
+CubeIDE에서 다음을 클릭한다.
 
 ```text
 File
@@ -396,6 +654,8 @@ File
 -> Existing Projects into Workspace
 -> Select root directory
 -> C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
+-> Projects 목록에서 stm32_uart_mvp 체크
+-> Copy projects into workspace 체크 해제
 -> Finish
 ```
 
@@ -409,6 +669,12 @@ File
 -> STM32CubeMX/STM32CubeIDE Project
 ```
 
+이 경우에도 root 또는 `.ioc` 위치는 다음 project 폴더를 가리킨다.
+
+```text
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\stm32_uart_mvp
+```
+
 중요:
 
 - `STM32CubeIDE Empty Project`로 새로 만들지 않는다.
@@ -419,10 +685,33 @@ File
 
 사용자 코드를 추가하기 전에 한 번 build한다.
 
+CubeIDE 왼쪽 `Project Explorer`에서 `stm32_uart_mvp` project를 클릭한다.
+
+그 다음 상단 메뉴에서 다음을 클릭한다.
+
 ```text
 Project
 -> Build Project
 ```
+
+또는 project 우클릭:
+
+```text
+stm32_uart_mvp 우클릭
+-> Build Project
+```
+
+Console 창에서 build log를 확인한다.
+
+성공 기준:
+
+```text
+Build Finished. 0 errors
+```
+
+검증 화면:
+
+![STM32CubeIDE baseline build success with zero errors](../../assets/screenshots/uart_mvp/2026-06-22_09_cubeide_build_success.png)
 
 이 단계가 통과해야 이후 UART MVP code 문제와 CubeMX 생성 문제를 분리해서 볼 수 있다.
 
@@ -463,6 +752,31 @@ CubeIDE에서 추가:
 ```text
 Core/Inc 우클릭 -> New -> Header File
 Core/Src 우클릭 -> New -> Source File
+```
+
+구체적인 생성 순서:
+
+1. `Project Explorer`에서 `stm32_uart_mvp` 펼치기
+2. `Core` 폴더 펼치기
+3. `Inc` 폴더 우클릭
+4. `New -> Header File` 클릭
+5. `Header file` 이름에 `ring_buffer.h` 입력
+6. `Finish`
+7. 같은 방식으로 `uart_mvp_protocol.h` 생성
+8. `Src` 폴더 우클릭
+9. `New -> Source File` 클릭
+10. `Source file` 이름에 `ring_buffer.c` 입력
+11. `Finish`
+12. 같은 방식으로 `uart_mvp_protocol.c` 생성
+
+만약 `Header File` 또는 `Source File` 항목이 바로 보이지 않으면:
+
+```text
+Core/Inc 또는 Core/Src 우클릭
+-> New
+-> Other...
+-> C/C++
+-> Header File 또는 Source File
 ```
 
 주의:
@@ -1360,6 +1674,43 @@ RX ACK,seq=6,type=DISARM
 RX TEL,t_ms=...,state=DISARMED,...
 ```
 
+### 23.4 실제 검증 결과
+
+2026-06-22 실습에서는 Web Serial dashboard를 `ST-LINK Virtual COM Port(COM3)`에 `115200` baud로 연결해 실제 STM32 firmware 응답을 확인했다.
+
+보관한 CSV 로그:
+
+```text
+../logs/2026-06-22_uart_mvp_web_serial_validation.csv
+```
+
+로그 요약:
+
+- 총 row 수: `1303`
+- `RX TEL`: `1261`
+- `RX ACK`: `10`
+- `RX ERR`: `8`
+- `TX CMD`: `9`
+- `TX ARM`: `3`
+- `TX DISARM`: `6`
+- `TX PING`: `2`
+- `RX PONG`: `2`
+
+확인된 동작:
+
+1. `PING` 전송 후 `PONG` 수신
+2. `DISARMED` 상태에서 `CMD` 전송 시 `ERR,code=NOT_ARMED` 수신
+3. `ARM` 전송 후 `ACK,type=ARM` 수신 및 `TEL,state=ARMED` 확인
+4. `ARMED` 상태에서 정상 `CMD` 전송 시 `ACK,type=CMD` 수신
+5. 범위 초과 명령 전송 시 `ERR,code=OUT_OF_RANGE` 수신
+6. 주기적인 `TEL` frame으로 상태, 마지막 seq, PWM placeholder, drop/error count 확인
+
+데모 녹화 파일은 다음 위치에 로컬 보관했다. 현재 파일이 약 `186 MB`라서 git 추적 대상에서는 제외한다.
+
+```text
+../../assets/videos/uart_mvp/2026-06-22_uart_mvp_web_serial_demo.mp4
+```
+
 ## 24. Terminal Scripted Test
 
 Windows:
@@ -1383,12 +1734,36 @@ bash tools/uart_mvp_tool.sh scripted-test --port /dev/ttyACM0
 ```text
 04_PC_Serial_Control/logs/*_raw.log
 04_PC_Serial_Control/logs/*_parsed.csv
+04_PC_Serial_Control/logs/2026-06-22_uart_mvp_web_serial_validation.csv
 web dashboard screenshot
+local web dashboard demo video
 CubeMX Board Selector screenshot
 CubeMX USART2 setting screenshot
 CubeMX NVIC setting screenshot
 STM32 parser code snippet
 ```
+
+스크린샷 저장 위치:
+
+```text
+assets/screenshots/uart_mvp/
+```
+
+이 문서에서 사용할 상대 경로:
+
+```text
+../../assets/screenshots/uart_mvp/<screenshot-file-name>.png
+```
+
+실제 캡처 파일이 생기면 `0.5 스크린샷 증거 반영 방식`의 mapping에 따라 관련 단계 바로 아래에 이미지를 추가한다.
+
+영상 저장 위치:
+
+```text
+assets/videos/uart_mvp/
+```
+
+단, 긴 원본 영상은 GitHub push 제한에 걸릴 수 있으므로 `*.mp4`는 기본적으로 git에서 제외한다. 포트폴리오 공개용으로는 짧게 압축한 clip 또는 외부 demo link를 별도로 준비한다.
 
 진행 로그에 적을 요약 예:
 
