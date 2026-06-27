@@ -50,3 +50,4 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 | DMA, interrupt, timer role split | `01_Concept_Notes/04_DMA_Interrupt_Timer_Comparison_ko.md` |
 | HAL, LL, direct register | `01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md` |
 | I2C vs SPI for IMU | `01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md` |
+| CubeMX generated code boundary | `01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` |

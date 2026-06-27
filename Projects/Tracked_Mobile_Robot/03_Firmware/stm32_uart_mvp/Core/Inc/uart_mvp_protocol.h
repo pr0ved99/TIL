@@ -9,4 +9,4 @@ void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart);
 void uart_mvp_on_uart_error(UART_HandleTypeDef *huart);
 void uart_mvp_process(void);
 
-#endif /* UART_MVP_PROTOCOL_H */
+#endif // UART_MVP_PROTOCOL_H

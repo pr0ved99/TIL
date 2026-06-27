@@ -24,7 +24,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "uart_mvp_protocol.h"
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -92,7 +91,6 @@ int main(void)
   /* USER CODE BEGIN 2 */
   uart_mvp_init(&huart2);
   uart_mvp_start_rx();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,16 +153,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_rx_complete(huart);
 }
 
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
-{
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_uart_error(huart);
 }
-
 /* USER CODE END 4 */
 
 /**
