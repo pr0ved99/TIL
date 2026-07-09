@@ -21,6 +21,7 @@ Firmware보다 먼저 확인할 것:
 - Motor PWM zero default state
 - PWM output zero at boot
 - Encoder signal voltage
+- STM32/ESP32 UART wiring polarity and common ground when doing board-only bridge tests
 
 ## Document Order
 
@@ -33,6 +34,7 @@ Firmware보다 먼저 확인할 것:
 | 4 | `04_Encoder_Signal_Safety_Test.md` | Encoder voltage and STM32-safe signal validation |
 | 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
+| 7 | `07_STM32_ESP32_UART_Wiring_Checklist.md` | Board-only STM32/ESP32 UART wiring and bring-up checklist |
 
 ## Evidence Policy
 
@@ -68,3 +70,4 @@ Firmware보다 먼저 확인할 것:
 | Encoder signal voltage | Not started | TBD |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
+| STM32/ESP32 UART bridge wiring | Planned | `07_STM32_ESP32_UART_Wiring_Checklist.md` |

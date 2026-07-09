@@ -13,15 +13,19 @@ Last updated: 2026-07-09
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
 2. [`AGENTS.md`](AGENTS.md)
 3. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
-4. [`docs/verification/README.md`](docs/verification/README.md)
-5. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
-6. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
-7. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
+4. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+5. [`docs/verification/README.md`](docs/verification/README.md)
+6. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
+7. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+8. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
 
 현재 바로 이어갈 작업:
 
 ```text
-UART MVP evidence commit
+Board-only ESP32 -> STM32 UART bridge planning
+-> ESP32 UART loopback
+-> ESP32 -> STM32 PING/PONG
+-> ESP32 scripted ARM/CMD/DISARM command source
 -> MDD10A visual and multimeter inspection
 -> buck converter output calibration
 -> MDD10A PWM/DIR logic input test
@@ -33,6 +37,7 @@ UART MVP evidence commit
 
 - STM32 UART MVP는 2026-07-09에 실제 NUCLEO-F446RE + Web Serial dashboard로 검증했다.
 - 검증 증거는 `docs/verification`과 `04_PC_Serial_Control/logs`에 있다.
+- 모터 하드웨어 투입 전, ESP32-S3와 NUCLEO-F446RE만으로 UART command bridge를 먼저 검증할 수 있다.
 - MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
 - 다음 hardware 단계는 전원 인가 전 visual/multimeter inspection부터 진행한다.
 
@@ -141,6 +146,7 @@ UART MVP evidence commit
 | [`04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) | Encoder voltage, pull-up, direction, and STM32-safe input checks |
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
 | [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |
+| [`07_STM32_ESP32_UART_Wiring_Checklist.md`](02_Hardware_Validation/07_STM32_ESP32_UART_Wiring_Checklist.md) | STM32 + ESP32 board-only UART wiring checklist |
 
 ### 04_PC_Serial_Control
 
@@ -174,6 +180,7 @@ UART MVP evidence commit
 | [`06_I2C_SPI_IMU_Interface_Choice_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md) | I2C-first and SPI-fallback IMU interface rationale |
 | [`02_STM32_Board_Practice/README.md`](07_Embedded_Learning_Notes/02_STM32_Board_Practice/README.md) | NUCLEO-F446RE practice log index |
 | [`03_ESP32_Board_Practice/README.md`](07_Embedded_Learning_Notes/03_ESP32_Board_Practice/README.md) | ESP32-S3 practice log index |
+| [`03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`](07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md) | ESP32 UART command source and telemetry relay practice |
 | [`04_Interface_Protocol_Practice/README.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/README.md) | UART/CAN command and telemetry protocol practice |
 | [`001_UART_Command_Telemetry_Protocol_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/001_UART_Command_Telemetry_Protocol_ko.md) | UART command/telemetry frame, required fields, ACK/ERR, safety-state behavior |
 | [`002_PC_Telemetry_Dashboard_Mock_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/002_PC_Telemetry_Dashboard_Mock_ko.md) | PC-side telemetry dashboard mock plan |
@@ -185,7 +192,9 @@ UART MVP evidence commit
 | Document | Purpose |
 | --- | --- |
 | [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
+| [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | Project-wide phase plan to portfolio-ready final MVP |
 | [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
+| [`docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md) | STM32 + ESP32 board-only UART bridge plan |
 | [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
 | [`docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md`](docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md) | Robotics system-integration engineer strengths to emphasize |
 | [`docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | Current project portfolio strengths, gaps, and next additions |
@@ -193,6 +202,7 @@ UART MVP evidence commit
 | [`docs/verification/01_UART_MVP_Requirements_ko.md`](docs/verification/01_UART_MVP_Requirements_ko.md) | UART MVP requirements and acceptance criteria |
 | [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
 | [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 STM32 + Web Serial UART MVP test report |
+| [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32 -> STM32 UART bridge verification plan |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |

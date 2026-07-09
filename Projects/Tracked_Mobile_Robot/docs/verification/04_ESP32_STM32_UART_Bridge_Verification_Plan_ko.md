@@ -1,0 +1,166 @@
+# ESP32-STM32 UART Bridge Verification Plan
+
+## 목적
+
+이 문서는 ESP32-S3 DevKitC가 STM32 UART MVP의 command source / telemetry relay로 동작하는지 검증하기 위한 계획이다.
+
+이 검증은 PC-first UART MVP 다음 단계다.
+
+```text
+PC-first UART MVP:
+PC Web Serial Dashboard
+<-> STM32 USART2
+
+ESP32 bridge MVP:
+PC Serial Monitor
+<-> ESP32 USB Serial
+<-> ESP32 UART
+<-> STM32 USART1
+```
+
+## 검증 범위
+
+검증 포함:
+
+- ESP32 UART loopback
+- ESP32 -> STM32 `PING/PONG`
+- ESP32 -> STM32 `ARM/CMD/DISARM`
+- STM32 -> ESP32 `ACK/ERR/TEL`
+- ESP32 USB Serial logging
+- command timeout 이후 telemetry zero 확인
+
+검증 제외:
+
+- Wi-Fi dashboard
+- WebSocket bridge
+- MDD10A motor output
+- actual drivetrain motion
+- encoder feedback
+
+## Assumptions
+
+- STM32 UART MVP rule은 2026-07-09 PC-first 검증에서 PASS했다.
+- STM32는 ESP32 bridge용 UART로 USART1 PA9/PA10을 사용할 예정이다.
+- ESP32와 STM32는 3.3 V UART logic을 사용한다.
+- ESP32와 STM32는 common GND를 공유한다.
+- STM32가 최종 safety authority다.
+
+## Requirements
+
+### REQ-BRIDGE-001: ESP32 UART loopback
+
+ESP32는 외부 UART TX/RX loopback에서 line-based frame을 송수신할 수 있어야 한다.
+
+Acceptance criteria:
+
+- ESP32 TX: `PING,seq=1`
+- ESP32 RX: `PING,seq=1`
+- PC USB Serial Monitor에 TX/RX log가 출력된다.
+
+### REQ-BRIDGE-002: ESP32 to STM32 link health check
+
+ESP32는 STM32로 `PING`을 보내고 `PONG`을 수신해야 한다.
+
+Acceptance criteria:
+
+- ESP32 TX: `PING,seq=1`
+- ESP32 RX: `PONG,seq=1,t_ms=...`
+
+### REQ-BRIDGE-003: command sequence forwarding
+
+ESP32는 STM32 UART MVP command frame을 생성하거나 forwarding할 수 있어야 한다.
+
+Acceptance criteria:
+
+- `CMD` before `ARM` -> `ERR,code=NOT_ARMED`
+- `ARM` -> `ACK,type=ARM`
+- valid `CMD` -> `ACK,type=CMD`
+- invalid range `CMD` -> `ERR,code=OUT_OF_RANGE`
+- `DISARM` -> `ACK,type=DISARM`
+
+### REQ-BRIDGE-004: telemetry relay
+
+ESP32는 STM32가 송신하는 `TEL` frame을 PC USB Serial Monitor로 relay해야 한다.
+
+Acceptance criteria:
+
+- `TEL,state=DISARMED` 관찰
+- `TEL,state=ARMED` 관찰
+- valid `CMD` 이후 `TEL,last_seq=N,vx_mmps=50` 관찰
+- timeout 이후 `TEL,last_seq=N,vx_mmps=0` 관찰
+
+### REQ-BRIDGE-005: STM32 safety authority preserved
+
+ESP32가 command source가 되어도 STM32가 safety gate와 timeout을 계속 소유해야 한다.
+
+Acceptance criteria:
+
+- ESP32는 `CMD`를 요청할 뿐 PWM/DIR output을 직접 소유하지 않는다.
+- `DISARMED` 상태의 `CMD`는 STM32가 거부한다.
+- out-of-range command는 STM32가 거부한다.
+- command timeout output zero는 STM32 telemetry에서 확인된다.
+
+## Test Matrix
+
+| Test ID | Requirement | Procedure | Expected | Evidence | Status |
+| --- | --- | --- | --- | --- | --- |
+| T-BRIDGE-001 | REQ-BRIDGE-001 | ESP32 UART TX/RX loopback 연결 후 `PING,seq=1` 송신 | RX에서 동일 frame 수신 | Serial monitor screenshot/log | PLANNED |
+| T-BRIDGE-002 | REQ-BRIDGE-002 | ESP32 UART와 STM32 USART1 연결 후 `PING,seq=1` 송신 | `PONG,seq=1` 수신 | Serial monitor screenshot/log | PLANNED |
+| T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | scripted log | PLANNED |
+| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay | PC monitor에서 `TEL` 반복 확인 | telemetry log | PLANNED |
+| T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0` | telemetry log | PLANNED |
+
+## Suggested Test Sequence
+
+```text
+1. ESP32 UART loopback
+2. STM32 USART1 firmware bring-up
+3. ESP32 -> STM32 PING/PONG
+4. ESP32 scripted command sequence
+5. ESP32 telemetry relay
+6. timeout zero 확인
+7. evidence 저장
+8. verification matrix 업데이트
+```
+
+## Evidence Naming
+
+추천 스크린샷:
+
+```text
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_01_esp32_uart_loopback.png
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_02_esp32_stm32_ping_pong.png
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_03_esp32_cmd_before_arm_not_armed.png
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_04_esp32_arm_cmd_ack.png
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_05_esp32_timeout_zero_telemetry.png
+assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_06_esp32_disarm_state_disarmed.png
+```
+
+추천 로그:
+
+```text
+04_PC_Serial_Control/logs/YYYY-MM-DD_esp32_stm32_uart_bridge_session.log
+04_PC_Serial_Control/logs/YYYY-MM-DD_esp32_stm32_uart_bridge_summary.csv
+```
+
+## Pass Criteria
+
+ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
+
+- ESP32 loopback PASS
+- ESP32가 STM32 `PONG` 수신
+- ESP32 command sequence에서 기대 `ACK/ERR` 수신
+- STM32 telemetry가 ESP32를 통해 PC에 표시
+- command timeout 이후 zero telemetry 확인
+- STM32 safety authority 원칙 유지
+
+## Follow-up
+
+이 검증이 PASS되면 다음 확장을 고려한다.
+
+1. ESP32 Wi-Fi dashboard mock
+2. ESP32 WebSocket telemetry relay
+3. ESP32 command filter / rate limiter
+4. STM32 encoder telemetry forwarding
+5. ROS 2 bridge와의 연결 설계
+

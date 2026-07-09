@@ -10,3 +10,4 @@ Wi-Fi, dashboard, telemetry forwarding, STM32 UART link 검증 같은 support ro
 | File | Status | Purpose |
 | --- | --- | --- |
 | `000_Practice_Log_Index.md` | Active | ESP32 실습 목록과 진행 상태 |
+| `001_ESP32_UART_Command_Bridge_ko.md` | Planned | ESP32를 STM32 UART command source / telemetry relay로 사용하는 보드 단독 실습 |

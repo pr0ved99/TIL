@@ -40,6 +40,7 @@ PC Web Serial Dashboard
 | [`01_UART_MVP_Requirements_ko.md`](01_UART_MVP_Requirements_ko.md) | UART MVP 요구사항과 acceptance criteria |
 | [`02_UART_MVP_Verification_Matrix_ko.md`](02_UART_MVP_Verification_Matrix_ko.md) | 요구사항, 테스트 방법, 증거 파일, 결과 연결 |
 | [`03_UART_MVP_Test_Report_2026-07-09_ko.md`](03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 실제 STM32 + Web Serial 검증 리포트 |
+| [`04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32를 command source / telemetry relay로 붙이는 보드 단독 검증 계획 |
 
 ## Evidence Files
 
@@ -87,11 +88,12 @@ PC Web Serial Dashboard
 
 ## Next Verification Areas
 
-다음 단계 검증은 hardware bring-up으로 넘어간다.
+다음 단계 검증은 두 갈래로 진행할 수 있다.
 
-1. MDD10A 무전원 visual/multimeter inspection
-2. buck converter output calibration
-3. MDD10A logic input test
-4. motor no-load low-duty test
-5. encoder signal validation
-6. closed-loop speed telemetry validation
+1. Board-only integration: ESP32 -> STM32 UART command bridge
+2. MDD10A 무전원 visual/multimeter inspection
+3. buck converter output calibration
+4. MDD10A logic input test
+5. motor no-load low-duty test
+6. encoder signal validation
+7. closed-loop speed telemetry validation

@@ -49,3 +49,4 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 Related execution plans:
 
 - [`../plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](../plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md)
+- [`../plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](../plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md)
