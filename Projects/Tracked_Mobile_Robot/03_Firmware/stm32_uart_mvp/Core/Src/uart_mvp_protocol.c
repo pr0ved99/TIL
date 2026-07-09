@@ -113,6 +113,7 @@ static int parse_i32_field(const char *line, const char *key, int32_t *value){
     p += strlen(key);
 
     *value = (int32_t)strtol(p, NULL, 10);
+
     return 1;
 }
 
@@ -229,18 +230,6 @@ static void handle_line(const char *line){
         return;
     }
 
-    if(strncmp(line, "ARM", 3) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "ARM", "MISSING_SEQ");
-            return;
-        }
-
-        s_state = ROBOT_ARMED;
-        s_last_seq = seq;
-        send_ack(seq, "ARM");
-        return;
-    }
-
     if(strncmp(line, "DISARM", 6) == 0){
         if(!parse_seq(line, &seq)){
             send_err(0, "DISARM", "MISSING_SEQ");
@@ -250,6 +239,18 @@ static void handle_line(const char *line){
         s_state = ROBOT_DISARMED;
         s_last_seq = seq;
         send_ack(seq, "DISARM");
+        return;
+    }
+
+    if(strncmp(line, "ARM", 3) == 0){
+        if(!parse_seq(line, &seq)){
+            send_err(0, "ARM", "MISSING_SEQ");
+            return;
+        }
+
+        s_state = ROBOT_ARMED;
+        s_last_seq = seq;
+        send_ack(seq, "ARM");
         return;
     }
 
@@ -340,6 +341,13 @@ void uart_mvp_process(void){
         else{
             s_line_overflow = 1u;
         }
+    }
+
+    /* Force command velocity to zero when no fresh CMD arrives in time. */
+    if(s_state == ROBOT_ARMED &&
+       (HAL_GetTick() - s_last_cmd_ms) >= s_cmd_timeout_ms){
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
     }
 
     if((HAL_GetTick() - s_last_tel_ms) >= TEL_PERIOD_MS){

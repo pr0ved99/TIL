@@ -50,7 +50,7 @@
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+static void Board_Hardware_Init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -86,8 +86,7 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
+  Board_Hardware_Init();
   /* USER CODE BEGIN 2 */
   uart_mvp_init(&huart2);
   uart_mvp_start_rx();
@@ -153,6 +152,12 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+static void Board_Hardware_Init(void)
+{
+  MX_GPIO_Init();
+  MX_USART2_UART_Init();
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_rx_complete(huart);
 }
