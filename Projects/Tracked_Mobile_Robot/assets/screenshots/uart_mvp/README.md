@@ -65,6 +65,14 @@ YYYY-MM-DD_11_web_serial_ping_ack_tel.png
 | `2026-06-22_06_project_manager_toolchain.png` | Project name/location과 STM32CubeIDE toolchain 설정 화면 | `3.1 Project` |
 | `2026-06-22_07_code_generator_peripheral_files.png` | peripheral별 `.c/.h` 분리 생성과 user code 보존 설정 화면 | `3.2 Code Generator` |
 | `2026-06-22_09_cubeide_build_success.png` | STM32CubeIDE 기본 생성 코드 build success 화면 | `5. 생성 직후 Build 확인` |
+| `2026-07-09_01_web_dashboard_connected_idle.png` | Web Serial dashboard가 ST-LINK VCP에 연결되고 periodic telemetry를 수신하는 상태 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_02_ping_pong_response.png` | `PING` 송신 후 `PONG` 응답 확인 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_03_cmd_before_arm_not_armed_error.png` | `DISARMED` 상태에서 `CMD`가 `NOT_ARMED`로 거부되는 상태 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_04_arm_ack_state_armed.png` | `ARM` 명령에 대한 `ACK`와 `ROBOT=ARMED` 확인 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_05_valid_cmd_ack_armed.png` | `ARMED` 상태에서 valid `CMD`가 ACK되고 velocity가 telemetry에 반영되는 상태 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_06_cmd_timeout_output_zero.png` | command timeout 이후 `vx_mmps=0`, `w_mradps=0`으로 떨어지는 상태 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_07_bad_range_out_of_range_error.png` | `vx_mmps=9999` command가 `OUT_OF_RANGE`로 거부되는 상태 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
+| `2026-07-09_08_disarm_ack_state_disarmed.png` | `DISARM` 명령에 대한 `ACK`와 `ROBOT=DISARMED` 확인 | `docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md` |
 
 `06` 가이드에서 이 폴더의 이미지를 참조할 때는 다음 상대 경로를 사용한다.
 

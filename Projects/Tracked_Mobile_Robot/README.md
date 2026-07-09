@@ -6,34 +6,35 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-06-22
+Last updated: 2026-07-09
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
 2. [`AGENTS.md`](AGENTS.md)
-3. [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md)
-4. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
-5. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+3. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
+4. [`docs/verification/README.md`](docs/verification/README.md)
+5. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
+6. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+7. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
 
 현재 바로 이어갈 작업:
 
 ```text
-STM32CubeMX 설치/실행
--> Board Selector에서 NUCLEO-F446RE 선택
--> USART2 PA2/PA3, 115200 8N1, USART2 global interrupt 설정
--> 03_Firmware/stm32_uart_mvp 아래로 code generation
--> STM32CubeIDE에서 open/import
--> ring_buffer.* / uart_mvp_protocol.* 추가
--> Web Serial dashboard 또는 terminal tool로 PING/ACK/ERR/TEL 검증
+UART MVP evidence commit
+-> MDD10A visual and multimeter inspection
+-> buck converter output calibration
+-> MDD10A PWM/DIR logic input test
+-> STM32 UART CMD path를 PWM/DIR output path와 연결
+-> encoder signal validation
 ```
 
 주의:
 
-- 현재 CubeIDE 환경에서는 예전 `File -> New -> STM32 Project` 흐름이 보이지 않을 수 있다.
-- 이 경우 `STM32CubeIDE Empty Project`로 시작하지 않는다.
-- 이번 UART MVP firmware project는 standalone STM32CubeMX에서 `.ioc`와 HAL baseline code를 먼저 생성한다.
-- MDD10A, DC motor, LiPo main power는 UART MVP firmware 검증 전에는 연결하지 않는다.
+- STM32 UART MVP는 2026-07-09에 실제 NUCLEO-F446RE + Web Serial dashboard로 검증했다.
+- 검증 증거는 `docs/verification`과 `04_PC_Serial_Control/logs`에 있다.
+- MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
+- 다음 hardware 단계는 전원 인가 전 visual/multimeter inspection부터 진행한다.
 
 ## Project Direction
 
@@ -50,12 +51,13 @@ STM32CubeMX 설치/실행
 
 ## Current Architecture Status
 
-2026-06-22 기준 시스템 아키텍처 문서의 핵심 결정은 다음과 같다.
+2026-07-09 기준 시스템 아키텍처 문서의 핵심 결정은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
 - UART/USB serial은 첫 command/telemetry path다.
 - PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
+- PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
@@ -86,7 +88,9 @@ STM32CubeMX 설치/실행
 - `assets`: photos, wiring diagrams, screenshots, plots
 - `docs/handoff`: continuation notes for future work
 - `docs/plans`: short-term execution plans for hardware sessions
+- `docs/portfolio`: portfolio positioning, system-integration strengths, and evidence gaps
 - `docs/progress`: dated project progress logs
+- `docs/verification`: lightweight V-model requirements, verification matrix, and test evidence
 
 ## Document Index
 
@@ -182,6 +186,13 @@ STM32CubeMX 설치/실행
 | --- | --- |
 | [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
 | [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
+| [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
+| [`docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md`](docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md) | Robotics system-integration engineer strengths to emphasize |
+| [`docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | Current project portfolio strengths, gaps, and next additions |
+| [`docs/verification/README.md`](docs/verification/README.md) | Lightweight V-model verification index |
+| [`docs/verification/01_UART_MVP_Requirements_ko.md`](docs/verification/01_UART_MVP_Requirements_ko.md) | UART MVP requirements and acceptance criteria |
+| [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
+| [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 STM32 + Web Serial UART MVP test report |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
