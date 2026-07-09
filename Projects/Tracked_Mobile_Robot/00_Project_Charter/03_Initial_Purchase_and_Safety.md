@@ -22,7 +22,6 @@
    -> motor driver
    -> XL4015 #1
    -> XL4015 #2
-   -> XL4016
 ```
 
 ## First Test Fuse Plan
@@ -47,7 +46,7 @@ higher-load test: 30A only after current measurements
 
 ## Buck Converter Rules
 
-- Adjust XL4015/XL4016 output with a multimeter before connecting any board.
+- Adjust XL4015 output with a multimeter before connecting any board.
 - Use 5.0V for STM32/ESP32/sensor rails unless a module requires otherwise.
 - Do not power STM32/ESP32 directly from 3S LiPo.
 - Keep motor power wiring separate from signal wiring.

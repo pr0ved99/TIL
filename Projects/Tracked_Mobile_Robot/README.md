@@ -6,18 +6,19 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-09
+Last updated: 2026-07-10
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
 2. [`AGENTS.md`](AGENTS.md)
-3. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
-4. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-5. [`docs/verification/README.md`](docs/verification/README.md)
-6. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
-7. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
-8. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
+3. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
+4. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
+5. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+6. [`docs/verification/README.md`](docs/verification/README.md)
+7. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
+8. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+9. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
 
 현재 바로 이어갈 작업:
 
@@ -26,8 +27,8 @@ Board-only ESP32 -> STM32 UART bridge planning
 -> ESP32 UART loopback
 -> ESP32 -> STM32 PING/PONG
 -> ESP32 scripted ARM/CMD/DISARM command source
--> MDD10A visual and multimeter inspection
--> buck converter output calibration
+-> STM32/ESP32 buck-powered input path and back-powering policy check
+-> XL4015 light-load check
 -> MDD10A PWM/DIR logic input test
 -> STM32 UART CMD path를 PWM/DIR output path와 연결
 -> encoder signal validation
@@ -39,7 +40,8 @@ Board-only ESP32 -> STM32 UART bridge planning
 - 검증 증거는 `docs/verification`과 `04_PC_Serial_Control/logs`에 있다.
 - 모터 하드웨어 투입 전, ESP32-S3와 NUCLEO-F446RE만으로 UART command bridge를 먼저 검증할 수 있다.
 - MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
-- 다음 hardware 단계는 전원 인가 전 visual/multimeter inspection부터 진행한다.
+- MDD10A 무전원 inspection과 XL4015 #1/#2 무부하 5 V 보정은 2026-07-10에 완료했다.
+- 다음 hardware 단계는 buck-powered board input policy, XL4015 light-load check, MDD10A logic input test다.
 
 ## Project Direction
 
@@ -141,7 +143,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`README.md`](02_Hardware_Validation/README.md) | Hardware validation sequence and evidence policy |
 | [`00_MDD10A_Visual_and_Multimeter_Inspection.md`](02_Hardware_Validation/00_MDD10A_Visual_and_Multimeter_Inspection.md) | MDD10A unpowered visual inspection and hard-short check |
 | [`01_Power_Bringup_Checklist.md`](02_Hardware_Validation/01_Power_Bringup_Checklist.md) | Battery, fuse, switch, wiring, and no-load power checks |
-| [`02_Buck_Converter_Calibration_Log.md`](02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md) | XL4015/XL4016 output calibration and load checks |
+| [`02_Buck_Converter_Calibration_Log.md`](02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md) | XL4015 output calibration and load checks |
 | [`03_MDD10A_Logic_Input_Test.md`](02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md) | MDD10A PWM/DIR logic input and safe output behavior test |
 | [`04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) | Encoder voltage, pull-up, direction, and STM32-safe input checks |
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |

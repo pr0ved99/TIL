@@ -7,6 +7,11 @@
 > `../../01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md`, and
 > `../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md` for active wiring
 > and firmware work.
+>
+> Historical inventory correction, updated 2026-07-10:
+> This handoff previously listed an XL4016 buck converter as owned. The current
+> verified inventory has XL4015 x2 only; XL4016 is not part of the active power
+> architecture.
 
 ## 목적
 
@@ -135,7 +140,6 @@ JGB37-520 motor set, encoder 상태 확인 필요
 tracked chassis
 BTS7960 motor drivers
 XL4015 buck converter x2
-XL4016 buck converter x1
 3S LiPo battery
 LiPo balance charger
 3S LiPo low-voltage alarm
@@ -208,7 +212,6 @@ Important gap:
         -> right BTS7960 branch fuse
         -> XL4015 #1 branch fuse
         -> XL4015 #2 branch fuse
-        -> XL4016 branch fuse, if used
 
 3S LiPo -
     -> GND bus
@@ -216,7 +219,6 @@ Important gap:
         -> right BTS7960 negative
         -> XL4015 #1 negative
         -> XL4015 #2 negative
-        -> XL4016 negative
         -> later common logic ground reference
 ```
 
@@ -226,7 +228,6 @@ Recommended initial fuse sizing:
 Main fuse: start with 10A or 15A for bring-up
 BTS7960 branch fuse: 10A each for early low-speed tests
 Buck branch fuse: 3A to 5A each
-XL4016 branch fuse: 5A to 10A only if needed
 ```
 
 Do not increase fuse size just because a fuse blows. Find the short, overload, or wiring mistake first.
@@ -351,7 +352,6 @@ Expected early setting:
 ```text
 XL4015 #1: 5.00 V candidate
 XL4015 #2: 5.00 V or sensor rail candidate
-XL4016: high-current auxiliary only if needed
 ```
 
 ## 검증 순서

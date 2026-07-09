@@ -29,7 +29,7 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | 0 | `00_MDD10A_Visual_and_Multimeter_Inspection.md` | MDD10A unpowered visual and hard-short inspection |
 | 1 | `01_Power_Bringup_Checklist.md` | Battery, fuse, switch, wiring, no-load power checks |
-| 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015/XL4016 calibration and load validation |
+| 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015 calibration and load validation |
 | 3 | `03_MDD10A_Logic_Input_Test.md` | MDD10A PWM/DIR logic behavior before motor power |
 | 4 | `04_Encoder_Signal_Safety_Test.md` | Encoder voltage and STM32-safe signal validation |
 | 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
@@ -63,9 +63,9 @@ Firmware보다 먼저 확인할 것:
 
 | Area | Status | Evidence |
 | --- | --- | --- |
-| MDD10A visual/DMM pre-check | Not started | TBD |
-| Power path | Not started | TBD |
-| Buck converter output | Not started | TBD |
+| MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
+| Power path | PASS | `01_Power_Bringup_Checklist.md`, `../assets/photos/power_bringup/2026-07-10_01_power_path_switch_off_0v.jpg`, `../assets/photos/power_bringup/2026-07-10_02_power_path_switch_on_12v49.jpg` |
+| Buck converter output | Partial PASS | XL4015 #1/#2 no-load outputs calibrated to 5.03 V; load check and board connection policy still TBD |
 | MDD10A logic input | Not started | TBD |
 | Encoder signal voltage | Not started | TBD |
 | First motor no-load | Not started | TBD |

@@ -9,7 +9,7 @@
 - 3S LiPo battery를 main energy source로 사용한다.
 - Main fuse와 DC-rated switch를 battery 가까이에 둔다.
 - Motor power와 logic power를 별도의 power domain으로 취급한다.
-- XL4015/XL4016 buck converter는 MCU를 연결하기 전에 조정하고 측정한다.
+- XL4015 buck converter는 MCU를 연결하기 전에 조정하고 측정한다.
 - Voltage sensing 구현 이후 저전압 판단은 STM32가 담당한다.
 - 3S LiPo alarm은 독립적인 operator warning으로 유지한다.
 - 완제품 RC LiPo pack을 사용하는 이 phase에서는 BMS를 사용하지 않는다.
@@ -73,8 +73,6 @@ Robot은 초기 기준으로 세 개의 power domain을 가진다.
             +-- XL4015 #1 input
             |
             +-- XL4015 #2 input
-            |
-            +-- XL4016 input candidate
 ```
 
 Battery negative path:
@@ -182,7 +180,13 @@ nonzero motor output을 차단해야 한다.
 | --- | --- | --- |
 | XL4015 #1 | STM32/ESP32 logic 5 V candidate | 연결 전 output 확인 |
 | XL4015 #2 | sensor 또는 auxiliary 5 V candidate | noise/aux load를 분리 |
-| XL4016 | higher-current auxiliary candidate | 해당 load가 필요할 때까지 deferred |
+
+Current inventory note:
+
+```text
+XL4016은 현재 보유 부품이 아니므로 active power architecture에서 제외한다.
+추후 고전류 보조 5 V rail이 실제로 필요해지면 별도 부품 선정과 검증 절차를 다시 작성한다.
+```
 
 Rules:
 

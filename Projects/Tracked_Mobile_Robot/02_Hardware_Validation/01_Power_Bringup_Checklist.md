@@ -50,37 +50,43 @@ Use at least AWG14, preferably AWG12, before real driving load tests.
 
 ## Pre-Power Checklist
 
+Evidence photos:
+
+![Switch OFF rail 0 V](../assets/photos/power_bringup/2026-07-10_01_power_path_switch_off_0v.jpg)
+
+![Switch ON rail 12.49 V](../assets/photos/power_bringup/2026-07-10_02_power_path_switch_on_12v49.jpg)
+
 ### Battery and Connector
 
 | Check | Expected | Result |
 | --- | --- | --- |
-| Battery pack voltage measured | 3S safe range, below 12.6 V full charge | TBD |
-| XT60 polarity checked | Red = positive, black = negative | TBD |
-| Connector solder joints inspected | No cold joint, no exposed strand | TBD |
-| Balance connector not damaged | No bent or loose pins | TBD |
-| LiPo pack condition inspected | No swelling, puncture, heat, smell | TBD |
+| Battery pack voltage measured | 3S safe range, below 12.6 V full charge | 12.49 V, PASS |
+| XT60 polarity checked | Red = positive, black = negative | Red positive path and black negative path confirmed by positive voltage reading, PASS |
+| Connector solder joints inspected | No cold joint, no exposed strand | No exposed conductor visible in photos; detailed connector disassembly not performed, PASS for visible inspection |
+| Balance connector not damaged | No bent or loose pins | No obvious visible damage in photo, PASS for visual inspection |
+| LiPo pack condition inspected | No swelling, puncture, heat, smell | No obvious swelling or puncture visible; no heat/smell reported, PASS |
 
 Measured battery voltage:
 
 ```text
-Date:
-Battery:
-Pack voltage:
-Cell voltages if measured:
-Operator:
+Date: 2026-07-10
+Battery: 3S LiPo 2200 mAh 55C pack
+Pack voltage: 12.49 V
+Cell voltages if measured: Not measured
+Operator: eyh12
 ```
 
 ### Fuse and Switch Path
 
 | Check | Expected | Result |
 | --- | --- | --- |
-| Fuse holder placed near battery positive | Yes | TBD |
-| Initial fuse rating | 10 A | TBD |
-| Wire gauge matches fuse/test stage | Yes | TBD |
-| Switch placed after fuse | Yes | TBD |
-| Switch OFF continuity | Open circuit | TBD |
-| Switch ON continuity | Closed circuit | TBD |
-| Positive path insulation | No exposed conductor | TBD |
+| Fuse holder placed near battery positive | Yes | Fuse holder placed in positive path before switch, PASS |
+| Initial fuse rating | 10 A | Red blade fuse, interpreted as 10 A, PASS |
+| Wire gauge matches fuse/test stage | Yes | Short early bench harness with 10 A fuse and no load, PASS for no-load validation |
+| Switch placed after fuse | Yes | Switch placed after fuse in positive path, PASS |
+| Switch OFF continuity | Open circuit | Output rail measured 0.00 V with switch OFF, PASS |
+| Switch ON continuity | Closed circuit | Output rail measured 12.49 V with switch ON, PASS |
+| Positive path insulation | No exposed conductor | No obvious exposed positive conductor visible in photos, PASS for visual inspection |
 
 Power path:
 
@@ -97,10 +103,10 @@ Power path:
 
 | Check | Expected | Result |
 | --- | --- | --- |
-| Battery negative path identified | Clear black wire path | TBD |
-| Motor driver ground path planned | Heavy return path, not signal wire | TBD |
-| Buck converter negative tied to battery negative | Yes | TBD |
-| Logic ground reference planned | Common GND where signals cross domains | TBD |
+| Battery negative path identified | Clear black wire path | Black negative path visible and used as measurement reference, PASS |
+| Motor driver ground path planned | Heavy return path, not signal wire | Not connected in this no-load test; heavy return path still required later |
+| Buck converter negative tied to battery negative | Yes | Not connected in this no-load test |
+| Logic ground reference planned | Common GND where signals cross domains | Not connected in this no-load test; common GND required later |
 
 ## First Power-On: No Load
 
@@ -129,11 +135,19 @@ Measurements:
 
 | Measurement | Expected | Actual |
 | --- | --- | --- |
-| Battery + to battery - | Pack voltage | TBD |
-| Before switch + to GND | Pack voltage | TBD |
-| Switch OFF rail + to GND | 0 V or disconnected | TBD |
-| Switch ON rail + to GND | Pack voltage | TBD |
-| Fuse voltage drop | Near 0 V under no load | TBD |
+| Battery + to battery - | Pack voltage | 12.49 V observed |
+| Before switch + to GND | Pack voltage | Not separately photographed |
+| Switch OFF rail + to GND | 0 V or disconnected | 0.00 V |
+| Switch ON rail + to GND | Pack voltage | 12.49 V |
+| Fuse voltage drop | Near 0 V under no load | Not measured |
+
+No-load power path decision:
+
+```text
+PASS.
+The switched positive rail measured 0.00 V when OFF and 12.49 V when ON.
+No heat, smell, spark, or fuse issue was reported during the no-load check.
+```
 
 ## First Power-On: Buck Inputs Only
 
@@ -160,7 +174,6 @@ Measurements:
 | --- | --- | --- | --- |
 | XL4015 #1 | TBD | TBD | TBD |
 | XL4015 #2 | TBD | TBD | TBD |
-| XL4016 | TBD | TBD | TBD |
 
 Important:
 
@@ -215,12 +228,12 @@ Recovery rule:
 
 | Item | Pass/Fail | Notes |
 | --- | --- | --- |
-| Battery polarity | TBD | TBD |
-| Fuse path | TBD | TBD |
-| Main switch | TBD | TBD |
-| Switched battery rail | TBD | TBD |
-| Buck input path | TBD | TBD |
-| MDD10A motor power input | TBD | TBD |
+| Battery polarity | PASS | 12.49 V positive reading confirmed the red/black polarity path |
+| Fuse path | PASS | Red 10 A blade fuse installed in positive path before switch |
+| Main switch | PASS | OFF rail measured 0.00 V; ON rail measured 12.49 V |
+| Switched battery rail | PASS | No-load switched rail behaves as expected |
+| Buck input path | TBD | Not connected yet |
+| MDD10A motor power input | TBD | Not connected yet |
 
 ## Next Step
 

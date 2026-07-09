@@ -10,7 +10,7 @@ It expands the project safety decisions into a practical power plan:
 - 3S LiPo battery is the main energy source.
 - A main fuse and DC-rated switch are placed near the battery.
 - Motor power and logic power are treated as separate power domains.
-- XL4015/XL4016 buck converters are adjusted and verified before any MCU is
+- XL4015 buck converters are adjusted and verified before any MCU is
   connected.
 - STM32 owns low-voltage decision logic after voltage sensing is implemented.
 - A 3S LiPo alarm remains an independent operator warning.
@@ -77,8 +77,6 @@ Initial power path:
             +-- XL4015 #1 input
             |
             +-- XL4015 #2 input
-            |
-            +-- XL4016 input candidate
 ```
 
 Battery negative path:
@@ -187,7 +185,13 @@ Initial converter roles:
 | --- | --- | --- |
 | XL4015 #1 | STM32/ESP32 logic 5 V candidate | Verify output before connection |
 | XL4015 #2 | sensor or auxiliary 5 V candidate | Keeps noisy/aux load separate |
-| XL4016 | higher-current auxiliary candidate | Deferred unless a load requires it |
+
+Current inventory note:
+
+```text
+XL4016 is not currently owned, so it is removed from the active power architecture.
+If a higher-current auxiliary 5 V rail is actually needed later, select and validate a separate converter at that time.
+```
 
 Rules:
 

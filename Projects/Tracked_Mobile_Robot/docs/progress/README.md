@@ -41,6 +41,7 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-07-10 | [`2026-07-10_progress.md`](2026-07-10_progress.md) | MDD10A inspection, fused power path validation, XL4015 #1/#2 no-load calibration, XL4016 scope correction |
 | 2026-07-09 | [`2026-07-09_progress.md`](2026-07-09_progress.md) | STM32 UART MVP Web Serial validation, evidence capture, and verification docs |
 | 2026-06-22 | [`2026-06-22_progress.md`](2026-06-22_progress.md) | STM32CubeMX-first UART MVP firmware guide and handoff cleanup |
 | 2026-06-21 | [`2026-06-21_progress.md`](2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |

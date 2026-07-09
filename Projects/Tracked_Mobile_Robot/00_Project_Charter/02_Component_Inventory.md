@@ -15,7 +15,6 @@
 | Power | 3S LiPo battery | main power source | BMS not used |
 | Power | LiPo charger | balance charge / storage mode | iMAX B6 class charger |
 | Power | XL4015 x2 | 5V buck converter | MCU/sensor power |
-| Power | XL4016 | higher-current buck converter | servo/high-current auxiliary candidate |
 | Protection | AWG14 fuse holder | main power protection | use blade fuses |
 | Protection | main power switch | manual power control | DC 20A-30A class target |
 | Protection | 3S low-voltage alarm | LiPo over-discharge warning | required in operation |

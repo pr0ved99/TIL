@@ -49,14 +49,18 @@ Cytron MDD10A는 brushed DC motor 2개를 구동하는 dual-channel motor driver
 
 ## Visual Inspection
 
+Evidence photo:
+
+![MDD10A unpowered overview](../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg)
+
 | Check | Expected | Observed | Result |
 | --- | --- | --- | --- |
-| PCB surface | No crack, burn mark, lifted trace | TBD | TBD |
-| Screw terminals | Not broken, screws hold wire when tightened | TBD | TBD |
-| Logic header | Pins not bent into each other | TBD | TBD |
-| Components | No loose, missing, or visibly burnt component | TBD | TBD |
-| Terminal labels | Readable and matched to board silkscreen | TBD | TBD |
-| Metal debris | No loose solder blob or wire strand | TBD | TBD |
+| PCB surface | No crack, burn mark, lifted trace | No obvious crack, burn mark, or lifted trace visible in overview photo | PASS |
+| Screw terminals | Not broken, screws hold wire when tightened | No visible terminal breakage; wire-hold test not performed yet | PASS for visual check |
+| Logic header | Pins not bent into each other | No obvious bent or shorted logic header pins visible | PASS |
+| Components | No loose, missing, or visibly burnt component | No loose, missing, or visibly burnt component visible in overview photo | PASS |
+| Terminal labels | Readable and matched to board silkscreen | `POWER+`, `POWER-`, `M1A`, `M1B`, `M2A`, `M2B`, `DIR/PWM/GND` labels readable | PASS |
+| Metal debris | No loose solder blob or wire strand | No loose solder blob or wire strand visible in overview photo | PASS |
 
 ## Multimeter Setup
 
@@ -75,9 +79,9 @@ Continuity mode can beep briefly while capacitors charge through the meter. Trea
 
 | Measurement | Expected | Observed | Result |
 | --- | --- | --- | --- |
-| `POWER+` to `POWER-` continuity | No persistent hard short | TBD | TBD |
-| `POWER+` to logic `GND` continuity | No persistent hard short; same risk as `POWER+` to `POWER-` if grounds are common | TBD | TBD |
-| `POWER-` to logic `GND` continuity | Common ground expected or very low resistance if tied | TBD | TBD |
+| `POWER+` to `POWER-` continuity | No persistent hard short | No beep | PASS |
+| `POWER+` to logic `GND` continuity | No persistent hard short; same risk as `POWER+` to `POWER-` if grounds are common | No beep | PASS |
+| `POWER-` to logic `GND` continuity | Common ground expected or very low resistance if tied | Beep; interpreted as motor power ground and logic ground being common | PASS |
 
 Pass condition:
 
@@ -89,16 +93,16 @@ POWER+ and POWER- must not look like a direct short before power is applied.
 
 | Measurement | Expected | Observed | Result |
 | --- | --- | --- | --- |
-| `M1A` to `M1B` | No persistent hard short | TBD | TBD |
-| `M2A` to `M2B` | No persistent hard short | TBD | TBD |
-| `M1A` to `POWER+` | No persistent hard short | TBD | TBD |
-| `M1B` to `POWER+` | No persistent hard short | TBD | TBD |
-| `M2A` to `POWER+` | No persistent hard short | TBD | TBD |
-| `M2B` to `POWER+` | No persistent hard short | TBD | TBD |
-| `M1A` to `POWER-` | No persistent hard short | TBD | TBD |
-| `M1B` to `POWER-` | No persistent hard short | TBD | TBD |
-| `M2A` to `POWER-` | No persistent hard short | TBD | TBD |
-| `M2B` to `POWER-` | No persistent hard short | TBD | TBD |
+| `M1A` to `M1B` | No persistent hard short | No beep | PASS |
+| `M2A` to `M2B` | No persistent hard short | No beep | PASS |
+| `M1A` to `POWER+` | No persistent hard short | No beep | PASS |
+| `M1B` to `POWER+` | No persistent hard short | No beep | PASS |
+| `M2A` to `POWER+` | No persistent hard short | No beep | PASS |
+| `M2B` to `POWER+` | No persistent hard short | No beep | PASS |
+| `M1A` to `POWER-` | No persistent hard short | No beep | PASS |
+| `M1B` to `POWER-` | No persistent hard short | No beep | PASS |
+| `M2A` to `POWER-` | No persistent hard short | No beep | PASS |
+| `M2B` to `POWER-` | No persistent hard short | No beep | PASS |
 
 Pass condition:
 
@@ -110,12 +114,12 @@ No motor output terminal should be permanently shorted to a power rail on an unp
 
 | Measurement | Expected | Observed | Result |
 | --- | --- | --- | --- |
-| `PWM1` to `GND` | No hard short | TBD | TBD |
-| `DIR1` to `GND` | No hard short | TBD | TBD |
-| `PWM2` to `GND` | No hard short | TBD | TBD |
-| `DIR2` to `GND` | No hard short | TBD | TBD |
-| `PWM1` to `PWM2` | No hard short | TBD | TBD |
-| `DIR1` to `DIR2` | No hard short | TBD | TBD |
+| `PWM1` to `GND` | No hard short | No beep | PASS |
+| `DIR1` to `GND` | No hard short | No beep | PASS |
+| `PWM2` to `GND` | No hard short | No beep | PASS |
+| `DIR2` to `GND` | No hard short | No beep | PASS |
+| `PWM1` to `PWM2` | No hard short | No beep | PASS |
+| `DIR1` to `DIR2` | No hard short | No beep | PASS |
 
 Pass condition:
 
@@ -129,11 +133,11 @@ Measure both channels in the same meter mode and compare them.
 
 | Pair | Channel 1 observed | Channel 2 observed | Result |
 | --- | --- | --- | --- |
-| Output A/B pair | TBD | TBD | TBD |
-| Output A to `POWER+` | TBD | TBD | TBD |
-| Output B to `POWER+` | TBD | TBD | TBD |
-| Output A to `POWER-` | TBD | TBD | TBD |
-| Output B to `POWER-` | TBD | TBD | TBD |
+| Output A/B pair | `M1A` to `M1B`: no beep | `M2A` to `M2B`: no beep | PASS |
+| Output A to `POWER+` | `M1A` to `POWER+`: no beep | `M2A` to `POWER+`: no beep | PASS |
+| Output B to `POWER+` | `M1B` to `POWER+`: no beep | `M2B` to `POWER+`: no beep | PASS |
+| Output A to `POWER-` | `M1A` to `POWER-`: no beep | `M2A` to `POWER-`: no beep | PASS |
+| Output B to `POWER-` | `M1B` to `POWER-`: no beep | `M2B` to `POWER-`: no beep | PASS |
 
 Pass condition:
 
@@ -155,11 +159,19 @@ Stop and do not power the board if:
 
 | Item | Pass/Fail | Notes |
 | --- | --- | --- |
-| Visual inspection | TBD | TBD |
-| Power input hard-short check | TBD | TBD |
-| Motor output hard-short check | TBD | TBD |
-| Logic pin short check | TBD | TBD |
-| Channel comparison | TBD | TBD |
+| Visual inspection | PASS | No obvious visual damage from overview photo; terminal wire-hold not mechanically tested yet |
+| Power input hard-short check | PASS | `POWER+` did not beep to `POWER-` or logic `GND`; `POWER-` to logic `GND` beep treated as expected common ground |
+| Motor output hard-short check | PASS | All checked motor output pairs and output-to-rail pairs showed no beep |
+| Logic pin short check | PASS | PWM/DIR pins showed no beep to GND or each other |
+| Channel comparison | PASS | Channel 1 and Channel 2 showed matching no-hard-short behavior |
+
+Inspection decision:
+
+```text
+MDD10A unpowered visual and continuity inspection passed.
+Do not connect a motor yet.
+Proceed to power path and buck converter checks before powered driver tests.
+```
 
 ## Next Step
 
