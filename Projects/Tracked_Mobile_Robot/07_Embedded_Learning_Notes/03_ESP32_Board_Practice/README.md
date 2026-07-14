@@ -11,3 +11,4 @@ Wi-Fi, dashboard, telemetry forwarding, STM32 UART link 검증 같은 support ro
 | --- | --- | --- |
 | `000_Practice_Log_Index.md` | Active | ESP32 실습 목록과 진행 상태 |
 | `001_ESP32_UART_Command_Bridge_ko.md` | Planned | ESP32를 STM32 UART command source / telemetry relay로 사용하는 보드 단독 실습 |
+| `002_ESP32_IDF_Environment_Bringup_ko.md` | Done | ESP-IDF v6.0.2, ESP32-S3 build/flash/monitor bring-up 기록 |

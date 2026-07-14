@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-06-22
+Last updated: 2026-07-14
 
 ## Project Identity
 
@@ -44,7 +44,8 @@ Last updated: 2026-06-22
 | Function | Candidate |
 | --- | --- |
 | PC serial TX/RX | PA2 / PA3, USART2 |
-| ESP32 UART TX/RX | PA9 / PA10, USART1 |
+| STM32 ESP bridge UART TX/RX | PA9 / PA10, USART1 |
+| ESP32 UART TX/RX candidate | GPIO17 / GPIO18 |
 | Left motor PWM | PB6, TIM4_CH1 |
 | Right motor PWM | PB7, TIM4_CH2 |
 | Left motor DIR | PC8 |
@@ -99,8 +100,11 @@ Important docs:
 - `04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md`: browser Web Serial dashboard guide
 - `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md`: end-to-end UART MVP execution guide for Web dashboard and terminal tools
 - `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
-- `docs/progress/2026-06-22_progress.md`: latest progress note for STM32CubeMX-first UART MVP firmware guide updates
-- `docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`: current handoff entry for future Codex sessions
+- `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
+- `docs/progress/2026-07-14_progress.md`: latest progress note for ESP32-S3 build/flash/monitor bring-up
+- `docs/handoff/README.md`: handoff folder index and reading order
+- `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
+- `docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`: current handoff entry for future Codex sessions
 
 ## Current Progress Snapshot
 
@@ -129,8 +133,13 @@ Important docs:
 - AI must not be the primary motor safety authority; STM32 deterministic safety remains authoritative.
 - MDD10A board is available.
 - A dated execution plan exists for 2026-06-08 to 2026-06-10 hardware work.
-- The immediate next work is the PC-first STM32 UART MVP firmware project, not motor power testing.
-- Latest pushed commit before this handoff cleanup: `9f32220 feat: add tracked robot UART MVP tooling`.
+- PC-first STM32 UART MVP was validated on 2026-07-09 with the Web Serial dashboard, screenshots, CSV log, requirements, verification matrix, and test report.
+- MDD10A unpowered inspection and XL4015 #1/#2 no-load 5 V calibration were recorded on 2026-07-10.
+- STM32 project now has an ESP bridge path through USART1 `PA9 TX` / `PA10 RX`; verify the `huart1` protocol path before bridge testing.
+- ESP32-S3 ESP-IDF v6.0.2 environment bring-up was completed on 2026-07-14 with `hello_world` build, flash, and monitor on `COM4`.
+- Current COM map: STM32 ST-LINK VCP is `COM3`; ESP32-S3 serial port is `COM4`.
+- ESP32 bring-up screenshots are under `assets/screenshots/esp32_uart_bridge`.
+- The immediate next work is ESP32 UART loopback, then ESP32 -> STM32 USART1 `PING/PONG`.
 
 ## Open Decisions
 
@@ -153,14 +162,15 @@ Ask the user or verify from hardware only for these:
 
 ## Next Concrete Actions
 
-1. Use STM32CubeMX Board Selector to create `03_Firmware/stm32_uart_mvp` for `NUCLEO-F446RE`.
-2. Configure USART2 PA2/PA3 at 115200 8N1 and enable `USART2 global interrupt`.
-3. Generate code and open/import the project in STM32CubeIDE without using `STM32CubeIDE Empty Project`.
-4. Add `Core/Inc/ring_buffer.h`, `Core/Src/ring_buffer.c`, `Core/Inc/uart_mvp_protocol.h`, and `Core/Src/uart_mvp_protocol.c`.
-5. Build and flash the STM32 UART MVP firmware with no MDD10A, motor, or LiPo main power connected.
-6. For the browser dashboard on Windows, run `04_PC_Serial_Control/tools/ServeWebDashboard.ps1` and open `http://localhost:8765/` in Chrome or Edge.
-7. For the terminal path on Windows, run `04_PC_Serial_Control/tools/UartMvpTool.ps1 -Mode ListPorts`, then run `Interactive` or `ScriptedTest` against the ST-LINK Virtual COM Port.
-8. Verify `PING/PONG`, `CMD before ARM -> ERR NOT_ARMED`, `ARM -> ACK`, valid `CMD -> ACK`, bad range -> `ERR`, timeout zero-output telemetry, and `DISARM -> ACK`.
-9. Save raw/parsed logs under `04_PC_Serial_Control/logs` and record evidence in `docs/progress/YYYY-MM-DD_progress.md`.
-10. After the UART MVP is validated, return to hardware validation: unpowered MDD10A inspection, power bring-up checklist, buck calibration, logic input test, encoder voltage safety test, then low-duty motor tests.
-11. Later, confirm or purchase CAN transceiver, USB-CAN adapter, 120 ohm resistors, and CAN wiring.
+1. Start every new session with `git status --short Projects/Tracked_Mobile_Robot`.
+2. Read `docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md` before editing firmware.
+3. Confirm STM32 USART1 files and `huart1` protocol initialization after CubeMX regeneration.
+4. Build and flash the STM32 firmware without MDD10A, motors, or 3S LiPo main power connected.
+5. Confirm ESP32 `03_Firmware/esp32_uart_bridge` still builds, flashes, and monitors on `COM4`.
+6. Implement and verify ESP32 UART loopback on `GPIO17/GPIO18` or the confirmed board pin pair.
+7. Connect ESP32 `TX/RX/GND` to STM32 `PA10/PA9/GND` with TX/RX crossed and common GND.
+8. Verify ESP32 -> STM32 `PING` and STM32 -> ESP32 `PONG`.
+9. Extend ESP32 to send scripted `ARM -> CMD -> DISARM` frames and log STM32 responses.
+10. Save screenshots/logs under the appropriate `assets/screenshots/esp32_uart_bridge` and log folders.
+11. Update `docs/progress/YYYY-MM-DD_progress.md` and verification docs after each bench validation.
+12. After board-only bridge validation, continue hardware validation: buck-powered board input policy, XL4015 light-load check, MDD10A logic input test, encoder voltage safety test, then low-duty motor tests.

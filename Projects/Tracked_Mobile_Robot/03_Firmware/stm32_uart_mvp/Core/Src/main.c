@@ -86,9 +86,11 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  Board_Hardware_Init();
+  MX_GPIO_Init();
+  MX_USART2_UART_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  uart_mvp_init(&huart2);
+  uart_mvp_init(&huart1);
   uart_mvp_start_rx();
   /* USER CODE END 2 */
 

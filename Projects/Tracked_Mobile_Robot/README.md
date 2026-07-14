@@ -6,24 +6,28 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-10
+Last updated: 2026-07-14
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
 2. [`AGENTS.md`](AGENTS.md)
-3. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
-4. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
-5. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-6. [`docs/verification/README.md`](docs/verification/README.md)
-7. [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md)
-8. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
-9. [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md)
+3. [`docs/handoff/README.md`](docs/handoff/README.md)
+4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
+5. [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md)
+6. [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md)
+7. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
+8. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
+9. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+10. [`docs/verification/README.md`](docs/verification/README.md)
+11. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
+12. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
 
 현재 바로 이어갈 작업:
 
 ```text
 Board-only ESP32 -> STM32 UART bridge planning
+-> ESP32-S3 ESP-IDF bring-up completed
 -> ESP32 UART loopback
 -> ESP32 -> STM32 PING/PONG
 -> ESP32 scripted ARM/CMD/DISARM command source
@@ -41,6 +45,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 - 모터 하드웨어 투입 전, ESP32-S3와 NUCLEO-F446RE만으로 UART command bridge를 먼저 검증할 수 있다.
 - MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
 - MDD10A 무전원 inspection과 XL4015 #1/#2 무부하 5 V 보정은 2026-07-10에 완료했다.
+- ESP32-S3 ESP-IDF v6.0.2 환경 bring-up, `COM4` build/flash/monitor 검증은 2026-07-14에 완료했다.
 - 다음 hardware 단계는 buck-powered board input policy, XL4015 light-load check, MDD10A logic input test다.
 
 ## Project Direction
@@ -209,7 +214,13 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
 | [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md) | STM32CubeMX-first UART MVP firmware implementation guide update |
-| [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Current continuation handoff for Codex and future work |
+| [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md) | STM32 UART MVP Web Serial validation, evidence capture, and verification docs |
+| [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md) | MDD10A inspection, fused power path validation, XL4015 #1/#2 no-load calibration |
+| [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md) | ESP-IDF v6.0.2 setup, ESP32-S3 hello_world build/flash/monitor bring-up |
+| [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
+| [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
+| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Current continuation handoff for ESP32-S3 to STM32 USART1 bridge work |
+| [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Historical STM32CubeMX-first UART MVP handoff |
 
 ## Initial MVP
 
