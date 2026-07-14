@@ -13,7 +13,9 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
 5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md
 6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-14_progress.md
-7. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md
+7. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
+8. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md
+9. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
 
 현재 상태:
 
@@ -22,10 +24,17 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - ESP32 target은 esp32s3, serial port는 COM4, OpenOCD config는 board/esp32s3-builtin.cfg 이다.
 - ESP32 hello_world build, flash, monitor는 성공했다.
 - ESP32 bring-up evidence는 assets/screenshots/esp32_uart_bridge 와 002_ESP32_IDF_Environment_Bringup_ko.md 에 있다.
+- ESP32 UART1은 GPIO17 TX / GPIO18 RX / 115200 8N1이다.
+- GPIO17-GPIO18 loopback은 PASS했다.
+- ESP32 GPIO17 TX -> STM32 PA10 RX, ESP32 GPIO18 RX <- STM32 PA9 TX, GND 공통으로 연결했다.
+- ESP32가 PING을 보내고 STM32 PONG을 받는 왕복 통신은 PASS했다.
+- ESP32가 STM32 TEL telemetry를 수신하는 경로도 PASS했다.
+- ESP32 parser는 TEL, PONG, ACK, ERR, UNKNOWN을 구분한다.
+- 현재 TEL은 t_ms만, PONG은 seq만 구조화하며 tel_count와 pong_count를 추적한다.
 - STM32 project는 Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp 이다.
 - STM32 NUCLEO-F446RE는 ESP bridge용으로 USART1 PA9 TX / PA10 RX를 사용한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
-- STM32 protocol path는 huart1 사용 상태를 확인해야 한다.
+- STM32 protocol path는 uart_mvp_init(&huart1) 사용과 실제 PING/PONG/TEL runtime을 확인했다.
 
 중요 규칙:
 
@@ -35,17 +44,21 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - ESP32는 command source, relay, logger, future wireless bridge 후보이다.
 - UART 연결은 TX/RX 교차, GND 공통이다.
 - USB로 두 보드를 각각 전원 공급 중이면 5V/VBUS/VIN끼리는 연결하지 않는다.
-- board-only UART bridge 검증 전에는 MDD10A, DC motor, 3S LiPo main power를 연결하지 않는다.
+- ESP-IDF monitor가 COM4를 점유하면 flash 전에 Ctrl+]로 monitor를 종료한다.
+- main/hello_world_main.c는 사용자가 직접 학습하며 작성 중이므로 요청 없이 대신 완성하지 않는다.
+- scripted command와 timeout 검증 전에는 MDD10A, DC motor, 3S LiPo main power를 연결하지 않는다.
 
 다음 목표:
 
-1. STM32 USART1/huart1 경로 확인
-2. ESP32 UART loopback 구현 및 검증
-3. ESP32 GPIO17 TX / GPIO18 RX 후보와 STM32 PA10 RX / PA9 TX 교차 연결
-4. ESP32 -> STM32 PING 전송
-5. STM32 -> ESP32 PONG 응답 확인
-6. ARM -> CMD -> DISARM scripted command source로 확장
-7. 스크린샷, 로그, progress, verification 문서 갱신
+1. 현재 hello_world_main.c의 parse_u32_field와 RX frame 분류 흐름을 점검한다.
+2. parse_i32_field를 추가해 음수 vx_mmps/w_mradps를 처리한다.
+3. TEL의 state, last_seq, vx_mmps, w_mradps, err를 ESP32 상태 변수로 저장한다.
+4. structured TEL summary와 parse error count를 monitor에서 검증한다.
+5. 그 다음 PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM script를 구현한다.
+6. ACK/ERR/TEL과 timeout-zero를 검증한다.
+7. 새 스크린샷, 로그, progress, verification, handoff 문서를 갱신한다.
+
+완료된 loopback과 PING/PONG 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```
 
 ## Minimal First Command
@@ -55,4 +68,3 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 ```powershell
 git status --short Projects/Tracked_Mobile_Robot
 ```
-

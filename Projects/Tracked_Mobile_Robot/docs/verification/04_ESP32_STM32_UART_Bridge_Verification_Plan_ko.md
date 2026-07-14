@@ -40,7 +40,7 @@ PC Serial Monitor
 ## Assumptions
 
 - STM32 UART MVP rule은 2026-07-09 PC-first 검증에서 PASS했다.
-- STM32는 ESP32 bridge용 UART로 USART1 PA9/PA10을 사용할 예정이다.
+- STM32는 ESP32 bridge용 UART로 USART1 PA9/PA10을 사용한다.
 - ESP32와 STM32는 3.3 V UART logic을 사용한다.
 - ESP32와 STM32는 common GND를 공유한다.
 - STM32가 최종 safety authority다.
@@ -104,23 +104,46 @@ Acceptance criteria:
 
 | Test ID | Requirement | Procedure | Expected | Evidence | Status |
 | --- | --- | --- | --- | --- | --- |
-| T-BRIDGE-001 | REQ-BRIDGE-001 | ESP32 UART TX/RX loopback 연결 후 `PING,seq=1` 송신 | RX에서 동일 frame 수신 | Serial monitor screenshot/log | PLANNED |
-| T-BRIDGE-002 | REQ-BRIDGE-002 | ESP32 UART와 STM32 USART1 연결 후 `PING,seq=1` 송신 | `PONG,seq=1` 수신 | Serial monitor screenshot/log | PLANNED |
+| T-BRIDGE-001 | REQ-BRIDGE-001 | ESP32 UART TX/RX loopback 연결 후 `PING,seq=1` 송신 | RX에서 동일 frame 수신 | `2026-07-14_09_esp32_uart1_loopback_ping_rx.png` | PASS |
+| T-BRIDGE-002 | REQ-BRIDGE-002 | ESP32 UART와 STM32 USART1 연결 후 `PING,seq=1` 송신 | `PONG,seq=1` 수신 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | PASS |
 | T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | scripted log | PLANNED |
-| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay | PC monitor에서 `TEL` 반복 확인 | telemetry log | PLANNED |
+| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay | PC monitor에서 `TEL` 반복 확인 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | PARTIAL PASS |
 | T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0` | telemetry log | PLANNED |
+
+`T-BRIDGE-004`는 `DISARMED` 상태의 반복 `TEL` 수신과 ESP32 parser의 `TEL` 분류까지 확인했다. `ARMED`, valid `CMD`, timeout-zero telemetry는 scripted command 이후 추가 검증해야 하므로 최종 PASS가 아니라 `PARTIAL PASS`다.
+
+## 2026-07-14 Execution Snapshot
+
+확인 완료:
+
+- ESP32 UART1: `GPIO17 TX`, `GPIO18 RX`, `115200 8N1`
+- STM32 USART1: `PA9 TX`, `PA10 RX`, `115200 8N1`
+- wiring: ESP32 TX -> STM32 RX, ESP32 RX <- STM32 TX, common GND
+- loopback: `TX PING`과 동일한 `RX PING`
+- integration: ESP32 `PING` -> STM32 `PONG`
+- relay: STM32 `TEL` -> ESP32 USB monitor
+- parser: ESP32가 `TEL`과 `PONG`을 구분하고 counter 증가
+
+아직 확인하지 않음:
+
+- ESP32 scripted `CMD before ARM`
+- `ARM`, valid `CMD`, invalid range `CMD`, `DISARM`
+- `ARMED` telemetry와 valid command 값 반영
+- command 중단 후 timeout-zero telemetry
+
+관련 evidence는 `../../assets/screenshots/esp32_uart_bridge/README.md`의 09-12 항목을 참조한다.
 
 ## Suggested Test Sequence
 
 ```text
-1. ESP32 UART loopback
-2. STM32 USART1 firmware bring-up
-3. ESP32 -> STM32 PING/PONG
-4. ESP32 scripted command sequence
-5. ESP32 telemetry relay
-6. timeout zero 확인
-7. evidence 저장
-8. verification matrix 업데이트
+1. ESP32 UART loopback - PASS
+2. STM32 USART1 firmware bring-up - PASS
+3. ESP32 -> STM32 PING/PONG - PASS
+4. ESP32 telemetry relay in DISARMED state - PASS
+5. ESP32 detailed TEL parser - NEXT
+6. ESP32 scripted command sequence - PLANNED
+7. ARMED/CMD/timeout telemetry 확인 - PLANNED
+8. evidence 저장 및 verification matrix 최종 업데이트 - PLANNED
 ```
 
 ## Evidence Naming
@@ -163,4 +186,3 @@ ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
 3. ESP32 command filter / rate limiter
 4. STM32 encoder telemetry forwarding
 5. ROS 2 bridge와의 연결 설계
-

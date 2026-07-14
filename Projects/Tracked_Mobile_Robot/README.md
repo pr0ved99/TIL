@@ -28,8 +28,10 @@ Last updated: 2026-07-14
 ```text
 Board-only ESP32 -> STM32 UART bridge planning
 -> ESP32-S3 ESP-IDF bring-up completed
--> ESP32 UART loopback
--> ESP32 -> STM32 PING/PONG
+-> ESP32 UART loopback completed
+-> ESP32 -> STM32 PING/PONG and STM32 TEL relay completed
+-> ESP32 TEL/PONG frame classification completed
+-> ESP32 structured TEL field parsing
 -> ESP32 scripted ARM/CMD/DISARM command source
 -> STM32/ESP32 buck-powered input path and back-powering policy check
 -> XL4015 light-load check
@@ -46,6 +48,9 @@ Board-only ESP32 -> STM32 UART bridge planning
 - MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
 - MDD10A 무전원 inspection과 XL4015 #1/#2 무부하 5 V 보정은 2026-07-10에 완료했다.
 - ESP32-S3 ESP-IDF v6.0.2 환경 bring-up, `COM4` build/flash/monitor 검증은 2026-07-14에 완료했다.
+- ESP32 UART1 GPIO17/GPIO18 loopback과 STM32 USART1 PA9/PA10 `TEL/PING/PONG` bridge 검증은 2026-07-14에 완료했다.
+- ESP32 parser는 `TEL`, `PONG`, `ACK`, `ERR`, `UNKNOWN`을 분류하며, 현재 `TEL t_ms`와 `PONG seq`를 저장한다.
+- 다음 firmware 단계는 `TEL` 세부 field 구조화와 ESP32 scripted `ARM/CMD/DISARM` 검증이다.
 - 다음 hardware 단계는 buck-powered board input policy, XL4015 light-load check, MDD10A logic input test다.
 
 ## Project Direction
@@ -63,13 +68,14 @@ Board-only ESP32 -> STM32 UART bridge planning
 
 ## Current Architecture Status
 
-2026-07-09 기준 시스템 아키텍처 문서의 핵심 결정은 다음과 같다.
+2026-07-14 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
 - UART/USB serial은 첫 command/telemetry path다.
 - PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
 - PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
+- ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
@@ -216,10 +222,10 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md) | STM32CubeMX-first UART MVP firmware implementation guide update |
 | [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md) | STM32 UART MVP Web Serial validation, evidence capture, and verification docs |
 | [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md) | MDD10A inspection, fused power path validation, XL4015 #1/#2 no-load calibration |
-| [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md) | ESP-IDF v6.0.2 setup, ESP32-S3 hello_world build/flash/monitor bring-up |
+| [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md) | ESP-IDF setup, ESP32 UART loopback, STM32 `TEL/PING/PONG`, ESP32 frame classification |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
-| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Current continuation handoff for ESP32-S3 to STM32 USART1 bridge work |
+| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Current continuation handoff from validated bridge link to structured TEL parser and scripted commands |
 | [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Historical STM32CubeMX-first UART MVP handoff |
 
 ## Initial MVP

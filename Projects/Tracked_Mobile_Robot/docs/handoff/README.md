@@ -19,7 +19,7 @@
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-07-14 | [`2026-07-14_esp32_stm32_uart_bridge_handoff.md`](2026-07-14_esp32_stm32_uart_bridge_handoff.md) | ESP32-S3 ESP-IDF bring-up 이후 STM32 USART1 bridge 작업을 이어가기 위한 최신 인수인계 |
+| 2026-07-14 | [`2026-07-14_esp32_stm32_uart_bridge_handoff.md`](2026-07-14_esp32_stm32_uart_bridge_handoff.md) | ESP32-S3 loopback, STM32 `TEL/PING/PONG`, ESP32 frame 분류 완료 후 structured TEL parser부터 이어가기 위한 최신 인수인계 |
 
 ## Historical Handoff
 
@@ -41,4 +41,3 @@
   - evidence 위치
   - 첫 번째로 실행할 확인 명령
 - 새 세션은 `git status --short Projects/Tracked_Mobile_Robot`를 먼저 실행한 뒤 작업한다.
-

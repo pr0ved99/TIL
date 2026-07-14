@@ -14,14 +14,21 @@
 
 ## Current Verification Scope
 
-현재 검증 완료 범위는 PC-first UART MVP다.
+현재 검증 완료 범위는 PC-first UART MVP와 ESP32 board-only bridge의 link-health 단계다.
 
 ```text
 PC Web Serial Dashboard
 <-> ST-LINK Virtual COM Port
 <-> STM32 USART2
 <-> UART MVP parser / safety state machine
+
+ESP32 USB Monitor
+<-> ESP32-S3 UART1 GPIO17/GPIO18
+<-> STM32 USART1 PA10/PA9
+<-> PING/PONG/TEL
 ```
+
+ESP32 bridge는 loopback, `PING/PONG`, `DISARMED TEL` relay, ESP32의 `TEL/PONG` 분류까지 PASS했다. Scripted `ARM/CMD/DISARM`과 timeout-zero는 아직 남아 있으므로 bridge 전체는 진행 중이다.
 
 아직 이 검증에 포함하지 않은 것:
 
@@ -50,6 +57,7 @@ PC Web Serial Dashboard
 | --- | --- |
 | Web Serial screenshots | [`../../assets/screenshots/uart_mvp`](../../assets/screenshots/uart_mvp) |
 | UART validation CSV | [`../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv`](../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv) |
+| ESP32-STM32 UART bridge screenshots | [`../../assets/screenshots/esp32_uart_bridge`](../../assets/screenshots/esp32_uart_bridge) |
 
 ## Result Summary
 
@@ -88,12 +96,13 @@ PC Web Serial Dashboard
 
 ## Next Verification Areas
 
-다음 단계 검증은 두 갈래로 진행할 수 있다.
+다음 단계 검증 순서:
 
-1. Board-only integration: ESP32 -> STM32 UART command bridge
-2. MDD10A 무전원 visual/multimeter inspection
-3. buck converter output calibration
+1. ESP32 detailed `TEL` field parsing
+2. ESP32 scripted `ARM/CMD/DISARM` and STM32 `ACK/ERR/TEL`
+3. ESP32 command 중단 후 STM32 timeout-zero
 4. MDD10A logic input test
-5. motor no-load low-duty test
-6. encoder signal validation
-7. closed-loop speed telemetry validation
+5. buck converter light-load validation
+6. motor no-load low-duty test
+7. encoder signal validation
+8. closed-loop speed telemetry validation

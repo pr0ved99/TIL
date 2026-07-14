@@ -100,6 +100,7 @@ Important docs:
 - `04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md`: browser Web Serial dashboard guide
 - `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md`: end-to-end UART MVP execution guide for Web dashboard and terminal tools
 - `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
+- `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`: ESP32 UART1 loopback, STM32 PING/PONG/TEL integration, parser evidence, and next scripted-command practice
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
 - `docs/progress/2026-07-14_progress.md`: latest progress note for ESP32-S3 build/flash/monitor bring-up
 - `docs/handoff/README.md`: handoff folder index and reading order
@@ -139,7 +140,12 @@ Important docs:
 - ESP32-S3 ESP-IDF v6.0.2 environment bring-up was completed on 2026-07-14 with `hello_world` build, flash, and monitor on `COM4`.
 - Current COM map: STM32 ST-LINK VCP is `COM3`; ESP32-S3 serial port is `COM4`.
 - ESP32 bring-up screenshots are under `assets/screenshots/esp32_uart_bridge`.
-- The immediate next work is ESP32 UART loopback, then ESP32 -> STM32 USART1 `PING/PONG`.
+- ESP32 UART1 is fixed for this practice at `GPIO17 TX`, `GPIO18 RX`, `115200 8N1`.
+- ESP32 GPIO17/GPIO18 loopback passed on 2026-07-14.
+- ESP32 UART1 to STM32 USART1 board-to-board `PING/PONG` passed on 2026-07-14 with TX/RX crossed and common GND.
+- STM32 `TEL` telemetry reached the ESP32 monitor, and the ESP32 parser classified `TEL` and `PONG` while tracking `tel_count` and `pong_count`.
+- The failed pre-flash symptom was broken RX data and line overflow; running the latest STM32 USART1 firmware resolved it.
+- The immediate next work is structured parsing of `TEL` fields (`state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`), followed by the ESP32 scripted `ARM/CMD/DISARM` sequence and timeout-zero verification.
 
 ## Open Decisions
 
@@ -164,13 +170,13 @@ Ask the user or verify from hardware only for these:
 
 1. Start every new session with `git status --short Projects/Tracked_Mobile_Robot`.
 2. Read `docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md` before editing firmware.
-3. Confirm STM32 USART1 files and `huart1` protocol initialization after CubeMX regeneration.
-4. Build and flash the STM32 firmware without MDD10A, motors, or 3S LiPo main power connected.
-5. Confirm ESP32 `03_Firmware/esp32_uart_bridge` still builds, flashes, and monitors on `COM4`.
-6. Implement and verify ESP32 UART loopback on `GPIO17/GPIO18` or the confirmed board pin pair.
-7. Connect ESP32 `TX/RX/GND` to STM32 `PA10/PA9/GND` with TX/RX crossed and common GND.
-8. Verify ESP32 -> STM32 `PING` and STM32 -> ESP32 `PONG`.
-9. Extend ESP32 to send scripted `ARM -> CMD -> DISARM` frames and log STM32 responses.
-10. Save screenshots/logs under the appropriate `assets/screenshots/esp32_uart_bridge` and log folders.
-11. Update `docs/progress/YYYY-MM-DD_progress.md` and verification docs after each bench validation.
-12. After board-only bridge validation, continue hardware validation: buck-powered board input policy, XL4015 light-load check, MDD10A logic input test, encoder voltage safety test, then low-duty motor tests.
+3. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
+4. Read and explain the current `parse_u32_field` and RX line classification before adding code.
+5. Add signed integer parsing for `vx_mmps` and `w_mradps`.
+6. Store `TEL` fields `state`, `last_seq`, `vx_mmps`, `w_mradps`, and `err` as ESP32-side structured state.
+7. Verify summary logging and malformed-field error handling with the real STM32 link.
+8. Extend ESP32 to send scripted `PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` frames.
+9. Verify STM32 `ACK/ERR/TEL` responses and command timeout zero-output behavior.
+10. Save screenshots/logs under `assets/screenshots/esp32_uart_bridge` and the appropriate log folder.
+11. Update progress, verification, and handoff documents after each bench validation.
+12. After the full board-only bridge MVP passes, continue hardware validation: buck-powered board input policy, XL4015 light-load check, MDD10A logic input test, encoder voltage safety test, then low-duty motor tests.
