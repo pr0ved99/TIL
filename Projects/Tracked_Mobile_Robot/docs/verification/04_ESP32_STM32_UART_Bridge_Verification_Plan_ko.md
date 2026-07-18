@@ -107,10 +107,29 @@ Acceptance criteria:
 | T-BRIDGE-001 | REQ-BRIDGE-001 | ESP32 UART TX/RX loopback 연결 후 `PING,seq=1` 송신 | RX에서 동일 frame 수신 | `2026-07-14_09_esp32_uart1_loopback_ping_rx.png` | PASS |
 | T-BRIDGE-002 | REQ-BRIDGE-002 | ESP32 UART와 STM32 USART1 연결 후 `PING,seq=1` 송신 | `PONG,seq=1` 수신 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | PASS |
 | T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | scripted log | PLANNED |
-| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay | PC monitor에서 `TEL` 반복 확인 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | PARTIAL PASS |
+| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | PC monitor에서 structured `TEL` 반복 확인 | `2026-07-18_13_esp32_structured_tel_parser_success.png` | PARTIAL PASS |
 | T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0` | telemetry log | PLANNED |
 
-`T-BRIDGE-004`는 `DISARMED` 상태의 반복 `TEL` 수신과 ESP32 parser의 `TEL` 분류까지 확인했다. `ARMED`, valid `CMD`, timeout-zero telemetry는 scripted command 이후 추가 검증해야 하므로 최종 PASS가 아니라 `PARTIAL PASS`다.
+`T-BRIDGE-004`는 `DISARMED` 상태의 반복 `TEL` 수신과 `t_ms`, `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화를 확인했다. `ARMED`, valid `CMD`, timeout-zero telemetry는 scripted command 이후 추가 검증해야 하므로 최종 PASS가 아니라 `PARTIAL PASS`다.
+
+## 2026-07-18 Execution Snapshot
+
+확인 완료:
+
+- ESP32 structured `TEL` parser build / flash / monitor
+- `state=DISARMED`, `vx=0`, `w=0` 반복 출력
+- ESP32 `PING seq`에 따른 STM32 `PONG`과 `TEL last_seq` 갱신
+- `tel_count` 연속 증가 및 parse error 미발생
+
+Evidence:
+
+- `../../assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png`
+
+다음 검증:
+
+- `T-BRIDGE-003` scripted command sequence
+- `T-BRIDGE-004`의 `ARMED` 및 valid `CMD` telemetry 항목
+- `T-BRIDGE-005` timeout-zero telemetry
 
 ## 2026-07-14 Execution Snapshot
 
@@ -140,7 +159,7 @@ Acceptance criteria:
 2. STM32 USART1 firmware bring-up - PASS
 3. ESP32 -> STM32 PING/PONG - PASS
 4. ESP32 telemetry relay in DISARMED state - PASS
-5. ESP32 detailed TEL parser - NEXT
+5. ESP32 detailed TEL parser - PASS
 6. ESP32 scripted command sequence - PLANNED
 7. ARMED/CMD/timeout telemetry 확인 - PLANNED
 8. evidence 저장 및 verification matrix 최종 업데이트 - PLANNED

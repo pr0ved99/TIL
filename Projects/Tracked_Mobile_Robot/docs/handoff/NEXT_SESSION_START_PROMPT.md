@@ -12,7 +12,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
 5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-14_progress.md
+6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-18_progress.md
 7. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
 8. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md
 9. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
@@ -30,7 +30,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - ESP32가 PING을 보내고 STM32 PONG을 받는 왕복 통신은 PASS했다.
 - ESP32가 STM32 TEL telemetry를 수신하는 경로도 PASS했다.
 - ESP32 parser는 TEL, PONG, ACK, ERR, UNKNOWN을 구분한다.
-- 현재 TEL은 t_ms만, PONG은 seq만 구조화하며 tel_count와 pong_count를 추적한다.
+- TEL의 t_ms, state, last_seq, vx_mmps, w_mradps, err 구조화는 실제 STM32 link에서 PASS했다.
+- structured TEL parser evidence는 assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png 이다.
 - STM32 project는 Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp 이다.
 - STM32 NUCLEO-F446RE는 ESP bridge용으로 USART1 PA9 TX / PA10 RX를 사용한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
@@ -50,13 +51,12 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 
 다음 목표:
 
-1. 현재 hello_world_main.c의 parse_u32_field와 RX frame 분류 흐름을 점검한다.
-2. parse_i32_field를 추가해 음수 vx_mmps/w_mradps를 처리한다.
-3. TEL의 state, last_seq, vx_mmps, w_mradps, err를 ESP32 상태 변수로 저장한다.
-4. structured TEL summary와 parse error count를 monitor에서 검증한다.
-5. 그 다음 PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM script를 구현한다.
-6. ACK/ERR/TEL과 timeout-zero를 검증한다.
-7. 새 스크린샷, 로그, progress, verification, handoff 문서를 갱신한다.
+1. 현재 structured TEL parser baseline을 보존한다.
+2. 일반 UART command frame 송신 helper를 추가한다.
+3. PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM script를 구현한다.
+4. STM32 ACK/ERR/TEL 응답과 sequence 대응을 검증한다.
+5. valid CMD 이후 송신을 중단하고 timeout-zero telemetry를 검증한다.
+6. 새 스크린샷, 로그, progress, verification, handoff 문서를 갱신한다.
 
 완료된 loopback과 PING/PONG 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

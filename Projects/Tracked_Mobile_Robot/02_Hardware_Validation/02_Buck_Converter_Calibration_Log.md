@@ -105,6 +105,12 @@ Heat/smell/noise: none reported
 Decision: PASS for no-load 5 V calibration, but not yet approved for board connection until board power path and back-powering policy are confirmed.
 ```
 
+2026-07-18 identification note:
+
+```text
+The converter called candidate B during the load-test conversation is the historical XL4015 #1.
+```
+
 XL4015 #2 notes:
 
 ```text
@@ -118,6 +124,13 @@ Heat/smell/noise: none reported
 Decision: PASS for no-load 5 V calibration, but not yet approved for board connection until board power path and back-powering policy are confirmed.
 ```
 
+2026-07-18 identification note:
+
+```text
+The converter called candidate A during the load-test conversation is the historical XL4015 #2.
+An additional observed capacitor marking was CS 220 35 V.
+```
+
 ## Light-Load Check
 
 Procedure:
@@ -127,10 +140,25 @@ Procedure:
 3. Converter heat를 관찰한다.
 4. Voltage가 크게 sag하거나 oscillate하지 않는지 확인한다.
 
-| Converter | Load | No-load output | Loaded output | Heat | Result |
-| --- | --- | --- | --- | --- | --- |
-| XL4015 #1 | TBD | TBD | TBD | TBD | TBD |
-| XL4015 #2 | TBD | TBD | TBD | TBD | TBD |
+| Converter | Load | Duration | No-load output | Converter terminal | USB-side | Heat / abnormal symptom | Result |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| XL4015 #1 | Nominal 1 A | 5 min | 5.03 V historical | 4.91 V initially; 4.93 V from 3 min | Not readable in captured frame | Current and terminal voltage remained stable; no issue reported | PASS for nominal 1 A load |
+| XL4015 #1 | Nominal 2 A; measured 1.76-1.80 A | 3 min | 5.03 V historical | 4.88 V | Not readable in captured frame | 1.76-1.80 A remained stable; electronic load became hot | Conditional PASS for 3 min high-load operation; electronic-load heat and USB path remain cautions |
+| XL4015 #1 | Load removed | After test | 5.03 V historical | 5.02 V | N/A | No permanent output drift observed | PASS for output recovery |
+| XL4015 #2 | 0.96 A initial observation | Approximately 2 min | 5.03 V | 4.92 V | 4.81-4.82 V | No issue reported | Initial approximately 1 A observation PASS |
+| XL4015 #2 | 0.94 A sustained test | 5 min | 5.03 V | 4.91 V initially; 4.90-4.89 V from 3 min | 4.90 V | Current and terminal voltage remained stable | PASS for approximately 1 A sustained load |
+| XL4015 #2 | 1.72-1.80 A initial observation | Approximately 1 min | 5.03 V | 4.84 V | 4.64 V | Thermal detail not recorded | Initial high-load observation; USB path drop observed |
+| XL4015 #2 | 1.78-1.80 A sustained test | 3 min | 5.03 V | Not measured simultaneously | 4.73 V | Current remained stable | Conditional PASS for 3 min high-load operation |
+| XL4015 #2 | Load removed | After test | 5.03 V | 5.03 V | N/A | No permanent output drift observed | PASS for output recovery |
+
+Interpretation:
+
+```text
+XL4015 #1 is candidate B.
+XL4015 #2 is candidate A.
+The terminal voltage and USB-side voltage are kept separate because the USB adapter, wire, connector,
+and USB meter add measurable downstream voltage drop.
+```
 
 ## Logic Board Connection Plan
 
@@ -171,8 +199,8 @@ Stop immediately if:
 
 | Converter | Approved role | Approved output | Approved for board connection? | Notes |
 | --- | --- | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V candidate | 5.03 V no-load | Not yet | Need board 5 V input path and USB/buck simultaneous power policy before connection |
-| XL4015 #2 | Sensor/auxiliary 5 V candidate | 5.03 V no-load | Not yet | Need target load assignment and board/sensor power path policy before connection |
+| XL4015 #1 | STM32/ESP32 logic 5 V candidate | 5.03 V no-load; terminal stabilized from 4.91 V to 4.93 V at nominal 1 A | Not yet | Nominal 1 A for 5 min PASS; measured 1.76-1.80 A held for 3 min with electronic-load heat; USB/buck simultaneous power policy remains open |
+| XL4015 #2 | Sensor/auxiliary 5 V candidate | 5.03 V no-load; terminal stabilized at 4.90-4.89 V and USB-side 4.90 V at 0.94 A | Not yet | Approximately 1 A sustained load PASS; 1.78-1.80 A held for 3 min at USB-side 4.73 V; need final load assignment and board/sensor power path policy |
 
 ## Next Step
 

@@ -6,7 +6,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-14
+Last updated: 2026-07-18
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
@@ -15,13 +15,14 @@ Last updated: 2026-07-14
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
 4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
 5. [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md)
-6. [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md)
-7. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
-8. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
-9. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-10. [`docs/verification/README.md`](docs/verification/README.md)
-11. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
-12. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+6. [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md)
+7. [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md)
+8. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
+9. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
+10. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+11. [`docs/verification/README.md`](docs/verification/README.md)
+12. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
+13. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
 
 현재 바로 이어갈 작업:
 
@@ -31,7 +32,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 -> ESP32 UART loopback completed
 -> ESP32 -> STM32 PING/PONG and STM32 TEL relay completed
 -> ESP32 TEL/PONG frame classification completed
--> ESP32 structured TEL field parsing
+-> ESP32 structured TEL field parsing completed
 -> ESP32 scripted ARM/CMD/DISARM command source
 -> STM32/ESP32 buck-powered input path and back-powering policy check
 -> XL4015 light-load check
@@ -49,8 +50,8 @@ Board-only ESP32 -> STM32 UART bridge planning
 - MDD10A 무전원 inspection과 XL4015 #1/#2 무부하 5 V 보정은 2026-07-10에 완료했다.
 - ESP32-S3 ESP-IDF v6.0.2 환경 bring-up, `COM4` build/flash/monitor 검증은 2026-07-14에 완료했다.
 - ESP32 UART1 GPIO17/GPIO18 loopback과 STM32 USART1 PA9/PA10 `TEL/PING/PONG` bridge 검증은 2026-07-14에 완료했다.
-- ESP32 parser는 `TEL`, `PONG`, `ACK`, `ERR`, `UNKNOWN`을 분류하며, 현재 `TEL t_ms`와 `PONG seq`를 저장한다.
-- 다음 firmware 단계는 `TEL` 세부 field 구조화와 ESP32 scripted `ARM/CMD/DISARM` 검증이다.
+- ESP32 parser는 `TEL`, `PONG`, `ACK`, `ERR`, `UNKNOWN`을 분류하며, `TEL`의 전체 핵심 field와 `PONG seq`를 저장한다.
+- `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다. 다음 firmware 단계는 ESP32 scripted `ARM/CMD/DISARM` 및 timeout-zero 검증이다.
 - 다음 hardware 단계는 buck-powered board input policy, XL4015 light-load check, MDD10A logic input test다.
 
 ## Project Direction

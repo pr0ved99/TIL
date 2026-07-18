@@ -9,6 +9,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "driver/gpio.h"
 #include "driver/uart.h"
@@ -28,6 +29,16 @@
 
 
 static const char *TAG = "esp32_uart_bridge";
+
+typedef struct {
+    uint32_t t_ms;
+    char state[16];
+    uint32_t last_seq;
+    int32_t vx_mmps;
+    int32_t w_mradps;
+    uint32_t err;
+    bool valid;
+} bridge_telemetry_t;
 static uint32_t s_rx_line_count;
 static uint32_t s_pong_count;
 static uint32_t s_tel_count;
@@ -36,7 +47,7 @@ static uint32_t s_err_count;
 static uint32_t s_parse_error_count;
 static uint32_t s_last_pong_seq;
 static uint32_t s_last_tel_ms;
-
+static bridge_telemetry_t s_telemetry;
 
 static void bridge_uart_init(void){
     const uart_config_t uart_config = {
@@ -92,6 +103,60 @@ static int parse_u32_field(const char *line, const char *key, uint32_t  *out_val
     return 1;
 }
 
+static int parse_i32_field(
+    const char *line,
+    const char *key,
+    int32_t *out_value
+){
+    const char *pos = strstr(line, key);
+
+    if(pos == NULL || out_value == NULL){
+        return 0;
+    }
+
+    pos += strlen(key);
+
+    char *end_ptr = NULL;
+    long value = strtol(pos, &end_ptr, 10);
+
+    if(end_ptr == pos){
+        return 0;
+    }
+
+    *out_value = (int32_t)value;
+    return 1;
+}
+
+static int parse_string_field(
+    const char *line,
+    const char *key,
+    char *out_value,
+    size_t out_size
+){
+    const char *pos = strstr(line, key);
+
+    if(pos == NULL || out_value == NULL || out_size == 0){
+        return 0;
+    }
+
+    pos += strlen(key);
+
+    const char *end = strchr(pos, ',');
+    if(end == NULL){
+        end = pos + strlen(pos);
+    }
+
+    size_t value_len = (size_t)(end - pos);
+
+    if(value_len == 0 || value_len >= out_size){
+        return 0;
+    }
+
+    memcpy(out_value, pos, value_len);
+    out_value[value_len] = '\0';
+    return 1;
+}
+
 static void bridge_uart_handle_rx_line(const char *line){
     s_rx_line_count++;
 
@@ -114,16 +179,45 @@ static void bridge_uart_handle_rx_line(const char *line){
     }
 
     if(strncmp(line, "TEL", 3) == 0){
-        uint32_t t_ms = 0;
+        bridge_telemetry_t parsed = {0};
 
-        if(parse_u32_field(line, "t_ms=", &t_ms)){
+        int parse_ok =
+            parse_u32_field(line, "t_ms=", &parsed.t_ms) &&
+            parse_string_field(
+                line,
+                "state=",
+                parsed.state,
+                sizeof(parsed.state)) &&
+            parse_u32_field(line, "last_seq=", &parsed.last_seq) &&
+            parse_i32_field(line, "vx_mmps=", &parsed.vx_mmps) &&
+            parse_i32_field(line, "w_mradps=", &parsed.w_mradps) &&
+            parse_u32_field(line, "err=", &parsed.err);
+
+        if(parse_ok){
+            parsed.valid = true;
+            s_telemetry = parsed;
             s_tel_count++;
-            s_last_tel_ms = t_ms;
-            ESP_LOGI(TAG, "RX TEL: t_ms=%" PRIu32 " tel_count=%" PRIu32,
-            t_ms,
-            s_tel_count);
+            s_last_tel_ms = parsed.t_ms;
+
+            ESP_LOGI(
+                TAG,
+                "RX TEL: t_ms=%" PRIu32
+                " state=%s"
+                " last_seq=%" PRIu32
+                " vx=%" PRIi32
+                " w=%" PRIi32
+                " err=%" PRIu32
+                " tel_count=%" PRIu32,
+                s_telemetry.t_ms,
+                s_telemetry.state,
+                s_telemetry.last_seq,
+                s_telemetry.vx_mmps,
+                s_telemetry.w_mradps,
+                s_telemetry.err,
+                s_tel_count
+            );
         }
-        else{
+        else {
             s_parse_error_count++;
             ESP_LOGW(TAG, "RX TEL parse error: %s", line);
         }

@@ -49,7 +49,7 @@ ESP32는 명령을 요청한다.
 STM32는 명령을 허용하거나 거부한다.
 ```
 
-## 2026-07-14 현재 상태
+## 2026-07-18 현재 상태
 
 | Practice | Status |
 | --- | --- |
@@ -59,11 +59,11 @@ STM32는 명령을 허용하거나 거부한다.
 | ESP32 `PING` -> STM32 `PONG` | PASS |
 | STM32 `TEL` -> ESP32 monitor | PASS |
 | ESP32 `TEL/PONG` frame classification | PASS |
-| `TEL` detailed field parsing | NEXT |
+| `TEL` detailed field parsing | PASS |
 | Scripted `ARM/CMD/DISARM` | PLANNED |
 | Timeout-zero through ESP32 | PLANNED |
 
-다음 실습은 `TEL` frame에서 `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`를 구조화하는 것이다. 이미 끝난 loopback과 PING/PONG은 회귀 문제가 있을 때만 다시 수행한다.
+`TEL` frame의 `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화는 실제 STM32 link에서 검증했다. 다음 실습은 scripted `ARM/CMD/DISARM` command source와 timeout-zero 검증이다. 이미 끝난 loopback과 PING/PONG은 회귀 문제가 있을 때만 다시 수행한다.
 
 ## 실습 단계
 
@@ -300,6 +300,10 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 
 이 단계의 의미는 ESP32가 단순 UART relay에서 command/telemetry bridge로 발전하기 위한 최소 parser layer를 갖췄다는 것이다. 아직 `TEL` 내부의 `state`, `last_seq`, `err` 같은 세부 field까지 상태 변수로 저장하지는 않았지만, `TEL`과 `PONG`을 분리해 처리하는 기준점은 확보했다.
 
+![ESP32 structured TEL parser success](../../../assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png)
+
+2026-07-18에는 `TEL`의 `t_ms`, `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`를 `bridge_telemetry_t`에 저장하도록 확장했다. ESP-IDF build/flash 후 실제 STM32 USART1 link에서 `DISARMED`, sequence 갱신, zero velocity, error field, 연속 telemetry count를 확인했으며 parse error는 발생하지 않았다.
+
 ## 성공 기준
 
 이 실습은 다음을 만족하면 완료로 본다.
@@ -312,4 +316,4 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 - ESP32가 STM32 telemetry를 PC Serial Monitor로 relay
 - STM32 safety authority 원칙이 유지됨
 
-현재는 앞의 세 항목과 `DISARMED` telemetry relay까지 완료했다. 전체 실습 완료 판정은 scripted command와 timeout-zero 검증 이후에 내린다.
+현재는 structured `TEL` parsing과 `DISARMED` telemetry relay까지 완료했다. 전체 실습 완료 판정은 scripted command와 timeout-zero 검증 이후에 내린다.

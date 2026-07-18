@@ -18,6 +18,7 @@
 | 10 | `2026-07-14_10_esp32_stm32_uart_overflow_before_stm32_flash.png` | STM32가 최신 USART1 firmware로 실행되지 않았을 때 나타난 RX overflow/깨진 수신 증상 |
 | 11 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | STM32 USART1과 ESP32 UART1 연결 후 `TEL`, `PING`, `PONG`이 정상 왕복된 최종 성공 로그 |
 | 12 | `2026-07-14_12_esp32_uart_parser_tel_pong_classification_success.png` | ESP32 수신 파서가 STM32 `TEL`과 `PONG` frame을 구분하고 count를 증가시키는 로그 |
+| 13 | `2026-07-18_13_esp32_structured_tel_parser_success.png` | ESP32가 `TEL`의 `state`, `last_seq`, `vx`, `w`, `err`를 구조화하고 실제 STM32 link에서 반복 출력한 로그 |
 
 이미지는 검증 리포트에서 바로 렌더링될 수 있도록 Markdown 상대 경로로 링크한다.
 
@@ -25,6 +26,5 @@
 
 | No. | Filename | Content |
 | --- | --- | --- |
-| 13 | `YYYY-MM-DD_13_esp32_structured_tel_parser_success.png` | `state`, `last_seq`, `vx`, `w`, `err` parsing summary |
 | 14 | `YYYY-MM-DD_14_esp32_scripted_command_ack_err.png` | `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` ACK/ERR |
 | 15 | `YYYY-MM-DD_15_esp32_timeout_zero_telemetry.png` | command 중단 후 STM32 timeout-zero telemetry |

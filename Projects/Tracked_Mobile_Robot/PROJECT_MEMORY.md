@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-07-14
+Last updated: 2026-07-18
 
 ## Project Identity
 
@@ -102,7 +102,7 @@ Important docs:
 - `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`: ESP32 UART1 loopback, STM32 PING/PONG/TEL integration, parser evidence, and next scripted-command practice
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
-- `docs/progress/2026-07-14_progress.md`: latest progress note for ESP32-S3 build/flash/monitor bring-up
+- `docs/progress/2026-07-18_progress.md`: latest progress note for ESP32 structured `TEL` parser implementation and real-link validation
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
 - `docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`: current handoff entry for future Codex sessions
@@ -145,7 +145,8 @@ Important docs:
 - ESP32 UART1 to STM32 USART1 board-to-board `PING/PONG` passed on 2026-07-14 with TX/RX crossed and common GND.
 - STM32 `TEL` telemetry reached the ESP32 monitor, and the ESP32 parser classified `TEL` and `PONG` while tracking `tel_count` and `pong_count`.
 - The failed pre-flash symptom was broken RX data and line overflow; running the latest STM32 USART1 firmware resolved it.
-- The immediate next work is structured parsing of `TEL` fields (`state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`), followed by the ESP32 scripted `ARM/CMD/DISARM` sequence and timeout-zero verification.
+- ESP32 structured parsing of `TEL` fields (`state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`) passed on 2026-07-18 with ESP-IDF build/flash and the real STM32 USART1 link.
+- The immediate next work is the ESP32 scripted `ARM/CMD/DISARM` sequence, followed by timeout-zero verification.
 
 ## Open Decisions
 
@@ -172,11 +173,9 @@ Ask the user or verify from hardware only for these:
 2. Read `docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md` before editing firmware.
 3. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
 4. Read and explain the current `parse_u32_field` and RX line classification before adding code.
-5. Add signed integer parsing for `vx_mmps` and `w_mradps`.
-6. Store `TEL` fields `state`, `last_seq`, `vx_mmps`, `w_mradps`, and `err` as ESP32-side structured state.
-7. Verify summary logging and malformed-field error handling with the real STM32 link.
-8. Extend ESP32 to send scripted `PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` frames.
-9. Verify STM32 `ACK/ERR/TEL` responses and command timeout zero-output behavior.
-10. Save screenshots/logs under `assets/screenshots/esp32_uart_bridge` and the appropriate log folder.
-11. Update progress, verification, and handoff documents after each bench validation.
-12. After the full board-only bridge MVP passes, continue hardware validation: buck-powered board input policy, XL4015 light-load check, MDD10A logic input test, encoder voltage safety test, then low-duty motor tests.
+5. Preserve the validated structured `TEL` parser baseline and evidence 13.
+6. Extend ESP32 to send scripted `PING -> CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` frames.
+7. Verify STM32 `ACK/ERR/TEL` responses and command timeout zero-output behavior.
+8. Save screenshots/logs under `assets/screenshots/esp32_uart_bridge` and the appropriate log folder.
+9. Update progress, verification, and handoff documents after each bench validation.
+10. After the full board-only bridge MVP passes, continue hardware validation: buck-powered board input policy, XL4015 light-load check, MDD10A logic input test, encoder voltage safety test, then low-duty motor tests.
