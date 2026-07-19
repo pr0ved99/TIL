@@ -14,7 +14,7 @@
 
 ## Current Verification Scope
 
-현재 검증 완료 범위는 PC-first UART MVP와 ESP32 board-only bridge의 link-health 단계다.
+현재 검증 완료 범위는 PC-first UART MVP와 ESP32 board-only UART bridge MVP다.
 
 ```text
 PC Web Serial Dashboard
@@ -25,10 +25,10 @@ PC Web Serial Dashboard
 ESP32 USB Monitor
 <-> ESP32-S3 UART1 GPIO17/GPIO18
 <-> STM32 USART1 PA10/PA9
-<-> PING/PONG/TEL
+<-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-ESP32 bridge는 loopback, `PING/PONG`, `DISARMED TEL` relay, ESP32의 `TEL/PONG` 분류까지 PASS했다. Scripted `ARM/CMD/DISARM`과 timeout-zero는 아직 남아 있으므로 bridge 전체는 진행 중이다.
+ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. STM32가 parser, safety gate, timeout owner 역할을 유지하는 것도 실제 `ACK/ERR/TEL`로 확인했다.
 
 아직 이 검증에 포함하지 않은 것:
 
@@ -60,6 +60,16 @@ ESP32 bridge는 loopback, `PING/PONG`, `DISARMED TEL` relay, ESP32의 `TEL/PONG`
 | ESP32-STM32 UART bridge screenshots | [`../../assets/screenshots/esp32_uart_bridge`](../../assets/screenshots/esp32_uart_bridge) |
 
 ## Result Summary
+
+2026-07-20 기준 ESP32-STM32 board-only UART bridge MVP는 다음 항목을 실제 보드에서 확인했다.
+
+- `CMD before ARM` -> `ERR,code=NOT_ARMED`
+- `ARM` -> `ACK,type=ARM`, `TEL,state=ARMED`
+- valid `CMD` -> `ACK,type=CMD`, `TEL,vx_mmps=50`
+- command timeout 이후 `vx_mmps=0`, `w_mradps=0`
+- invalid range command -> `ERR,code=OUT_OF_RANGE`, 이전 `last_seq` 유지
+- `DISARM` -> `ACK,type=DISARM`, `TEL,state=DISARMED`
+- evidence: [`screenshot`](../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png), [`raw log`](../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt)
 
 2026-07-09 기준 PC-first UART MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -98,11 +108,8 @@ ESP32 bridge는 loopback, `PING/PONG`, `DISARMED TEL` relay, ESP32의 `TEL/PONG`
 
 다음 단계 검증 순서:
 
-1. ESP32 detailed `TEL` field parsing
-2. ESP32 scripted `ARM/CMD/DISARM` and STM32 `ACK/ERR/TEL`
-3. ESP32 command 중단 후 STM32 timeout-zero
-4. MDD10A logic input test
-5. buck converter light-load validation
-6. motor no-load low-duty test
-7. encoder signal validation
-8. closed-loop speed telemetry validation
+1. MDD10A logic input test
+2. STM32 UART command state와 PWM/DIR output path 연결
+3. encoder signal voltage 및 count validation
+4. motor no-load low-duty test
+5. closed-loop speed telemetry validation

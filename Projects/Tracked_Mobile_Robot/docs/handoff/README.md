@@ -10,8 +10,8 @@
 2. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 3. [`../../AGENTS.md`](../../AGENTS.md)
 4. [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)
-5. [`2026-07-14_esp32_stm32_uart_bridge_handoff.md`](2026-07-14_esp32_stm32_uart_bridge_handoff.md)
-6. [`../progress/2026-07-14_progress.md`](../progress/2026-07-14_progress.md)
+5. [`2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
+6. [`../progress/2026-07-20_progress.md`](../progress/2026-07-20_progress.md)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -19,12 +19,13 @@
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-07-14 | [`2026-07-14_esp32_stm32_uart_bridge_handoff.md`](2026-07-14_esp32_stm32_uart_bridge_handoff.md) | ESP32-S3 loopback, STM32 `TEL/PING/PONG`, ESP32 frame 분류 완료 후 structured TEL parser부터 이어가기 위한 최신 인수인계 |
+| 2026-07-20 | [`2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | ESP32 scripted command와 timeout-zero까지 PASS한 bridge closeout 및 MDD10A logic test 시작점 |
 
 ## Historical Handoff
 
 | Date | File | Note |
 | --- | --- | --- |
+| 2026-07-14 | [`2026-07-14_esp32_stm32_uart_bridge_handoff.md`](2026-07-14_esp32_stm32_uart_bridge_handoff.md) | structured TEL parser 이전의 UART bridge handoff |
 | 2026-06-22 | [`2026-06-22_tracked_mobile_robot_handoff.md`](2026-06-22_tracked_mobile_robot_handoff.md) | STM32CubeMX-first UART MVP 구현 전후 상태 |
 | 2026-06-04 | [`2026-06-04_tracked_mobile_robot_handoff.md`](2026-06-04_tracked_mobile_robot_handoff.md) | 초기 프로젝트 상태, 현재와 다른 결정이 포함될 수 있음 |
 

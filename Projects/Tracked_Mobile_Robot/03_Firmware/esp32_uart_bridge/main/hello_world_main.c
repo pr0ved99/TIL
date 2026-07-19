@@ -23,7 +23,7 @@
 #define BRIDGE_UART_RX_GPIO GPIO_NUM_18
 #define BRIDGE_UART_BAUD    115200
 #define BRIDGE_RX_BUF_SIZE  1024
-#define PING_PERIOD_MS      1000
+#define TEST_STEP_PERIOD_MS 1000
 #define LINE_BUF_SIZE       256
 #define RX_POLL_MS          20
 
@@ -39,6 +39,16 @@ typedef struct {
     uint32_t err;
     bool valid;
 } bridge_telemetry_t;
+
+typedef enum {
+    BRIDGE_TEST_CMD_BEFORE_ARM = 0,
+    BRIDGE_TEST_ARM,
+    BRIDGE_TEST_VALID_CMD,
+    BRIDGE_TEST_INVALID_CMD,
+    BRIDGE_TEST_DISARM,
+    BRIDGE_TEST_DONE
+} bridge_test_step_t;
+
 static uint32_t s_rx_line_count;
 static uint32_t s_pong_count;
 static uint32_t s_tel_count;
@@ -69,17 +79,147 @@ static void bridge_uart_init(void){
         UART_PIN_NO_CHANGE));
 }
 
+static int bridge_uart_send_frame(const char *frame){
+    if(frame == NULL || frame[0] == '\0'){
+        ESP_LOGW(TAG, "Cannot send empty UART frame");
+        return 0;
+    }
+
+    size_t frame_len = strlen(frame);
+
+    if(frame_len >= LINE_BUF_SIZE - 1){
+        ESP_LOGW(TAG, "UART TX frame too long");
+        return 0;
+    }
+
+    int frame_written = uart_write_bytes(
+        BRIDGE_UART_NUM,
+        frame,
+        frame_len
+    );
+
+    int newline_written = uart_write_bytes(
+        BRIDGE_UART_NUM,
+        "\n",
+        1
+    );
+
+    if(frame_written != (int)frame_len || newline_written != 1){
+        ESP_LOGW(TAG, "UART TX write failed: %s", frame);
+        return 0;
+    }
+
+    ESP_LOGI(TAG, "TX UART1: %s", frame);
+    return 1;
+}
+
 static void bridge_uart_send_ping(uint32_t seq){
     char frame[64];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "PING,seq=%" PRIu32,
+        seq
+    );
 
-    int len = snprintf(frame, sizeof(frame), "PING,seq=%" PRIu32 "\n", seq);
-
-    if(len > 0 && len < (int)sizeof(frame)){
-        uart_write_bytes(BRIDGE_UART_NUM, frame, len);
-        ESP_LOGI(TAG, "TX UART1: PING,seq=%" PRIu32, seq);
-    }
-    else {
+    if(len <= 0 || len >= (int)sizeof(frame)){
         ESP_LOGW(TAG, "Failed to build PING frame");
+        return;
+    }
+
+    bridge_uart_send_frame(frame);
+}
+
+static void bridge_uart_send_arm(uint32_t seq){
+    char frame[64];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "ARM,seq=%" PRIu32,
+        seq
+    );
+
+    if(len <= 0 || len >= (int)sizeof(frame)){
+        ESP_LOGW(TAG, "Failed to build ARM frame");
+        return;
+    }
+
+    bridge_uart_send_frame(frame);
+}
+
+static void bridge_uart_send_disarm(uint32_t seq){
+    char frame[64];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "DISARM,seq=%" PRIu32,
+        seq
+    );
+
+    if(len <= 0 || len >= (int)sizeof(frame)){
+        ESP_LOGW(TAG, "Failed to build DISARM frame");
+        return;
+    }
+
+    bridge_uart_send_frame(frame);
+}
+
+static void bridge_uart_send_cmd(
+    uint32_t seq,
+    int32_t vx_mmps,
+    int32_t w_mradps,
+    uint32_t timeout_ms
+){
+    char frame[128];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "CMD,seq=%" PRIu32
+        ",vx_mmps=%" PRId32
+        ",w_mradps=%" PRId32
+        ",timeout_ms=%" PRIu32,
+        seq,
+        vx_mmps,
+        w_mradps,
+        timeout_ms
+    );
+
+    if(len <= 0 || len >= (int)sizeof(frame)){
+        ESP_LOGW(TAG, "Failed to build CMD frame");
+        return;
+    }
+
+    bridge_uart_send_frame(frame);
+}
+
+static bridge_test_step_t bridge_uart_run_test_step(
+    bridge_test_step_t step,
+    uint32_t *seq
+){
+    if(seq == NULL){
+        ESP_LOGW(TAG, "Test sequence pointer is NULL");
+        return BRIDGE_TEST_DONE;
+    }
+
+    switch(step){
+        case BRIDGE_TEST_CMD_BEFORE_ARM:
+            bridge_uart_send_cmd((*seq)++, 50, 0, 300);
+            return BRIDGE_TEST_ARM;
+        case BRIDGE_TEST_ARM:
+            bridge_uart_send_arm((*seq)++);
+            return BRIDGE_TEST_VALID_CMD;
+        case BRIDGE_TEST_VALID_CMD:
+            bridge_uart_send_cmd((*seq)++, 50, 0, 300);
+            return BRIDGE_TEST_INVALID_CMD;
+        case BRIDGE_TEST_INVALID_CMD:
+            bridge_uart_send_cmd((*seq)++, 9999, 0, 300);
+            return BRIDGE_TEST_DISARM;
+        case BRIDGE_TEST_DISARM:
+            bridge_uart_send_disarm((*seq)++);
+            return BRIDGE_TEST_DONE;
+        case BRIDGE_TEST_DONE:
+        default:
+            return BRIDGE_TEST_DONE;
     }
 }
 
@@ -279,16 +419,21 @@ void app_main(void){
         BRIDGE_UART_RX_GPIO,
         BRIDGE_UART_BAUD);
 
-    uint32_t seq = 1;
-    TickType_t last_ping_tick = 0;
+    uint32_t test_seq = 2;
+    bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
+
+    bridge_uart_send_ping(1);
+    TickType_t last_test_tick = xTaskGetTickCount();
 
     while(1){
         TickType_t now = xTaskGetTickCount();
 
-        if(now - last_ping_tick >= PING_PERIOD_MS / portTICK_PERIOD_MS){
-            bridge_uart_send_ping(seq);
-            last_ping_tick = now;
-            seq++;
+        if(
+            test_step != BRIDGE_TEST_DONE &&
+            now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
+        ){
+            test_step = bridge_uart_run_test_step(test_step, &test_seq);
+            last_test_tick = now;
         }
 
         uint8_t rx_byte;

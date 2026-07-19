@@ -49,7 +49,7 @@ ESP32는 명령을 요청한다.
 STM32는 명령을 허용하거나 거부한다.
 ```
 
-## 2026-07-18 현재 상태
+## 2026-07-20 현재 상태
 
 | Practice | Status |
 | --- | --- |
@@ -60,10 +60,11 @@ STM32는 명령을 허용하거나 거부한다.
 | STM32 `TEL` -> ESP32 monitor | PASS |
 | ESP32 `TEL/PONG` frame classification | PASS |
 | `TEL` detailed field parsing | PASS |
-| Scripted `ARM/CMD/DISARM` | PLANNED |
+| Scripted `ARM/CMD/DISARM` | PASS |
+| STM32 command timeout zero-output | PASS |
 | Timeout-zero through ESP32 | PLANNED |
 
-`TEL` frame의 `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화는 실제 STM32 link에서 검증했다. 다음 실습은 scripted `ARM/CMD/DISARM` command source와 timeout-zero 검증이다. 이미 끝난 loopback과 PING/PONG은 회귀 문제가 있을 때만 다시 수행한다.
+`TEL` frame의 `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화에 이어 scripted command source와 timeout-zero까지 실제 STM32 link에서 검증했다. ESP32-STM32 board-only UART bridge 실습은 완료했고, 다음 하드웨어 단계는 MDD10A PWM/DIR logic input test다.
 
 ## 실습 단계
 
@@ -300,9 +301,26 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 
 이 단계의 의미는 ESP32가 단순 UART relay에서 command/telemetry bridge로 발전하기 위한 최소 parser layer를 갖췄다는 것이다. 아직 `TEL` 내부의 `state`, `last_seq`, `err` 같은 세부 field까지 상태 변수로 저장하지는 않았지만, `TEL`과 `PONG`을 분리해 처리하는 기준점은 확보했다.
 
-![ESP32 structured TEL parser success](../../../assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png)
+![ESP32 structured TEL parser success](../../assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png)
 
 2026-07-18에는 `TEL`의 `t_ms`, `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`를 `bridge_telemetry_t`에 저장하도록 확장했다. ESP-IDF build/flash 후 실제 STM32 USART1 link에서 `DISARMED`, sequence 갱신, zero velocity, error field, 연속 telemetry count를 확인했으며 parse error는 발생하지 않았다.
+
+![ESP32 STM32 scripted safety sequence PASS](../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png)
+
+2026-07-20에는 공통 frame 송신 helper와 `PING`, `ARM`, `CMD`, `DISARM` frame builder를 추가하고, 1초 간격의 scripted test state machine을 실행했다. 최종 재시험은 STM32가 `DISARMED`인 상태에서 시작했으며 다음 결과를 확인했다.
+
+- `CMD,seq=2` -> `ERR,code=NOT_ARMED`
+- `ARM,seq=3` -> `ACK,type=ARM`, 이후 `state=ARMED`
+- valid `CMD,seq=4` -> `ACK,type=CMD`, 이후 `vx=50`
+- 약 300 ms 뒤 `vx=0`, `w=0`으로 복귀
+- invalid `CMD,seq=5` -> `ERR,code=OUT_OF_RANGE`, `last_seq=4` 유지
+- `DISARM,seq=6` -> `ACK,type=DISARM`, 이후 `state=DISARMED`
+
+원본 monitor 로그:
+
+- [`2026-07-20_scripted_safety_sequence_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt)
+
+첫 실행에서는 STM32가 이전 실행의 `ARMED` 상태였기 때문에 `CMD before ARM`이 정상 명령으로 수락됐다. 이는 protocol 오류가 아니라 test precondition 오류였으며, `DISARMED` 상태를 확인한 뒤 ESP32 script를 다시 실행해 최종 PASS를 얻었다.
 
 ## 성공 기준
 
@@ -316,4 +334,4 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 - ESP32가 STM32 telemetry를 PC Serial Monitor로 relay
 - STM32 safety authority 원칙이 유지됨
 
-현재는 structured `TEL` parsing과 `DISARMED` telemetry relay까지 완료했다. 전체 실습 완료 판정은 scripted command와 timeout-zero 검증 이후에 내린다.
+2026-07-20 기준 모든 성공 기준을 만족했다. ESP32는 command source / relay / logger 역할을 수행했고, STM32는 `NOT_ARMED`, range check, timeout-zero, `DISARM`을 통해 최종 safety authority를 유지했다. 따라서 ESP32-STM32 board-only UART bridge 실습은 PASS다.

@@ -106,11 +106,29 @@ Acceptance criteria:
 | --- | --- | --- | --- | --- | --- |
 | T-BRIDGE-001 | REQ-BRIDGE-001 | ESP32 UART TX/RX loopback 연결 후 `PING,seq=1` 송신 | RX에서 동일 frame 수신 | `2026-07-14_09_esp32_uart1_loopback_ping_rx.png` | PASS |
 | T-BRIDGE-002 | REQ-BRIDGE-002 | ESP32 UART와 STM32 USART1 연결 후 `PING,seq=1` 송신 | `PONG,seq=1` 수신 | `2026-07-14_11_esp32_stm32_uart_ping_pong_tel_success.png` | PASS |
-| T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | scripted log | PLANNED |
-| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | PC monitor에서 structured `TEL` 반복 확인 | `2026-07-18_13_esp32_structured_tel_parser_success.png` | PARTIAL PASS |
-| T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0` | telemetry log | PLANNED |
+| T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | 2026-07-20 screenshot / raw log | PASS |
+| T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | `DISARMED`, `ARMED`, valid CMD, timeout-zero `TEL` 확인 | 2026-07-18 / 2026-07-20 screenshots | PASS |
+| T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0`, `w_mradps=0` | 2026-07-20 screenshot / raw log | PASS |
 
-`T-BRIDGE-004`는 `DISARMED` 상태의 반복 `TEL` 수신과 `t_ms`, `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화를 확인했다. `ARMED`, valid `CMD`, timeout-zero telemetry는 scripted command 이후 추가 검증해야 하므로 최종 PASS가 아니라 `PARTIAL PASS`다.
+`T-BRIDGE-003`부터 `T-BRIDGE-005`까지는 2026-07-20 실제 ESP32-S3와 STM32 USART1 연결에서 검증했다. 첫 실행은 STM32가 이전 세션의 `ARMED` 상태였기 때문에 precondition이 맞지 않아 재시험했고, 최종 실행은 `DISARMED` 상태에서 시작해 전체 acceptance criteria를 만족했다.
+
+## 2026-07-20 Execution Snapshot
+
+확인 완료:
+
+- `CMD,seq=2` before ARM -> `ERR,code=NOT_ARMED`
+- `ARM,seq=3` -> `ACK,type=ARM`, 이후 `TEL,state=ARMED`
+- valid `CMD,seq=4` -> `ACK,type=CMD`, `TEL,vx_mmps=50`
+- 약 300 ms command timeout 이후 `TEL,vx_mmps=0,w_mradps=0`
+- invalid `CMD,seq=5` -> `ERR,code=OUT_OF_RANGE`, `last_seq=4` 유지
+- `DISARM,seq=6` -> `ACK,type=DISARM`, 이후 `TEL,state=DISARMED`
+
+Evidence:
+
+- `../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`
+- `../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`
+
+판정: ESP32-STM32 board-only UART bridge MVP PASS.
 
 ## 2026-07-18 Execution Snapshot
 
@@ -160,9 +178,9 @@ Evidence:
 3. ESP32 -> STM32 PING/PONG - PASS
 4. ESP32 telemetry relay in DISARMED state - PASS
 5. ESP32 detailed TEL parser - PASS
-6. ESP32 scripted command sequence - PLANNED
-7. ARMED/CMD/timeout telemetry 확인 - PLANNED
-8. evidence 저장 및 verification matrix 최종 업데이트 - PLANNED
+6. ESP32 scripted command sequence - PASS
+7. ARMED/CMD/timeout telemetry 확인 - PASS
+8. evidence 저장 및 verification matrix 최종 업데이트 - PASS
 ```
 
 ## Evidence Naming
@@ -181,8 +199,7 @@ assets/screenshots/esp32_uart_bridge/YYYY-MM-DD_06_esp32_disarm_state_disarmed.p
 추천 로그:
 
 ```text
-04_PC_Serial_Control/logs/YYYY-MM-DD_esp32_stm32_uart_bridge_session.log
-04_PC_Serial_Control/logs/YYYY-MM-DD_esp32_stm32_uart_bridge_summary.csv
+assets/logs/esp32_uart_bridge/YYYY-MM-DD_scripted_safety_sequence_pass.txt
 ```
 
 ## Pass Criteria
@@ -200,8 +217,8 @@ ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
 
 이 검증이 PASS되면 다음 확장을 고려한다.
 
-1. ESP32 Wi-Fi dashboard mock
-2. ESP32 WebSocket telemetry relay
-3. ESP32 command filter / rate limiter
-4. STM32 encoder telemetry forwarding
-5. ROS 2 bridge와의 연결 설계
+1. MDD10A PWM/DIR logic input test
+2. STM32 UART command state를 PWM/DIR output path와 연결
+3. encoder signal voltage 및 count validation
+4. low-duty motor no-load test
+5. ESP32 Wi-Fi/WebSocket relay는 drivetrain baseline 이후 선택적으로 확장
