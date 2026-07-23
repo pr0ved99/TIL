@@ -35,6 +35,7 @@ Firmware보다 먼저 확인할 것:
 | 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
 | 7 | `07_STM32_ESP32_UART_Wiring_Checklist.md` | Board-only STM32/ESP32 UART wiring and bring-up checklist |
+| 8 | `08_Adapter_Plate_Fit_Check.md` | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
 
 ## Evidence Policy
 
@@ -71,3 +72,4 @@ Firmware보다 먼저 확인할 것:
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | Planned | `07_STM32_ESP32_UART_Wiring_Checklist.md` |
+| Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |

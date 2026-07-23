@@ -12,10 +12,14 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
 5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-20_progress.md
-7. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
-8. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md
-9. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
+6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-24_progress.md
+7. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md
+8. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md
+9. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/releases/revA/README.md
+10. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-23_progress.md
+11. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-20_progress.md
+12. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
+13. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
 
 현재 상태:
 
@@ -41,6 +45,22 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 NUCLEO-F446RE는 ESP bridge용으로 USART1 PA9 TX / PA10 RX를 사용한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
 - STM32 protocol path는 uart_mvp_init(&huart1) 사용과 실제 PING/PONG/TEL runtime을 확인했다.
+- 어댑터 플레이트 Rev A 외곽은 174 x 208.93379 mm이고, 제작 후보 재료는 아크릴 3T로 결정했다.
+- 소형 체결 홀은 M3 여유 홀 후보인 지름 3.3 mm로 설계했다.
+- 만능기판은 150 x 100 mm, 홀 배열은 55 x 37이다.
+- XL4015 x2와 MDD10A는 상단 전력부, NUCLEO-F446RE와 ESP32-S3 및 GY-BNO085는 만능기판 영역에 배치했다.
+- ESP32-S3는 USB 접근성을 위해 가로 방향을 유지하고, GY-BNO085는 차량 중심에 가깝게 배치했다.
+- Rev A 2D 형상을 DXF, DWG, PDF로 내보내 release 폴더에 보존했다.
+- A4 1:1 출력물을 실물 셰시와 대조했고 사용자가 적합 판정을 내렸다(USER-CONFIRMED PASS).
+- 멀티메이커 450 x 300 mm 양식에 Rev A 벡터를 중앙 배치했다.
+- 최종 주문용 PDF는 1페이지, 벡터 경로 39개, 래스터 이미지 0개, 텍스트 0개이다.
+- 원본 Onshape PDF 대비 최종 주문 PDF의 형상 크기 차이는 X -0.001055 mm, Y -0.000840 mm로 검증됐다.
+- 최종 주문 파일은 08_Mechanical_Design/releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 이다.
+- 멀티메이커 사이트 업로드는 서버의 wp-content/uploads/2026/07 디렉터리 쓰기 권한 오류로 0%에서 실패했다.
+- 따라서 현재 상태는 RELEASE FILES PREPARED / ORDER NOT SUBMITTED 이다.
+- 캡처의 Assembly 트리에 남은 빨간 참조 표시는 사용자 지시에 따라 이번 Rev A 2D 발주 범위에서 제외했다.
+- mechanical-layout 증거는 assets/screenshots/mechanical_layout 에 있다.
+- 체결 나사·스페이서의 최종 규격과 제작품 수령 후 실물 fit은 아직 검증하지 않았다.
 
 중요 규칙:
 
@@ -57,10 +77,15 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 다음 목표:
 
 1. 완료된 UART bridge baseline과 evidence를 보존한다.
-2. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md 를 읽는다.
-3. STM32 PWM/DIR 후보 핀과 MDD10A channel mapping을 확인한다.
-4. motor와 3S LiPo main power 없이 MDD10A logic input test를 준비한다.
-5. logic test가 PASS한 뒤 UART command state와 PWM/DIR output path 연결 계획을 세운다.
+2. 멀티메이커에 서버 업로드 오류를 알리고 대체 제출 방법 또는 복구 여부를 확인한다.
+3. 아크릴 3T, 외곽 174 x 208.93379 mm, 지름 3.3 mm 홀, 1개 제작 조건으로 견적을 확인한다.
+4. 업로드가 복구되면 releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 로 주문하고 주문번호와 제작 조건을 기록한다.
+5. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 셰시 홀, 만능기판, XL4015 x2, MDD10A의 실물 fit을 검증한다.
+6. 체결 나사와 스페이서 규격은 실물 fit 결과에 맞춰 확정한다.
+7. 제작 대기 중에는 Projects/Tracked_Mobile_Robot/02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md 를 읽는다.
+8. STM32 PWM/DIR 후보 핀과 MDD10A channel mapping을 확인한다.
+9. motor와 3S LiPo main power 없이 MDD10A logic input test를 준비한다.
+10. logic test가 PASS한 뒤 UART command state와 PWM/DIR output path 연결 계획을 세운다.
 
 완료된 UART bridge 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-07-20
+Last updated: 2026-07-24
 
 ## Project Identity
 
@@ -22,6 +22,8 @@ Last updated: 2026-07-20
 | Battery | 3S LiPo |
 | Power safety | Fuse, DC-rated main switch, LiPo alarm, measured buck converter output |
 | IMU candidate | BNO08x |
+| Adapter plate Rev A | 174 x 208.93379 mm, acrylic 3T candidate, small mounting holes nominal 3.3 mm |
+| Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
 | CAN transceiver | Not selected yet |
 | USB-CAN adapter | Not selected yet |
@@ -102,7 +104,13 @@ Important docs:
 - `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`: ESP32 UART1 loopback, STM32 PING/PONG/TEL integration, scripted safety sequence, timeout-zero, and final evidence
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
-- `docs/progress/2026-07-20_progress.md`: latest progress note for ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
+- `08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`: adapter plate and electronics placement baseline, Rev A state, and remaining physical checks
+- `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`: Rev A dimension, A4 1:1, vendor-template PDF, vector-scale, and order-attempt record
+- `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
+- `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
+- `docs/progress/2026-07-24_progress.md`: latest progress note for Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
+- `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
+- `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
 - `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: current handoff entry and MDD10A logic-test continuation point
@@ -150,6 +158,15 @@ Important docs:
 - STM32 returned the expected `NOT_ARMED`, command `ACK`, `OUT_OF_RANGE`, and `DISARM` responses through the ESP32 bridge.
 - A one-shot valid CMD produced `vx=50`, then STM32 timeout returned `vx=0`, `w=0` after about 300 ms while remaining `ARMED` until explicit `DISARM`.
 - ESP32-STM32 board-only UART bridge MVP is complete. The next hardware step is MDD10A PWM/DIR logic input validation without motor or 3S LiPo main power.
+- A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
+- A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
+- XL4015 x2 and MDD10A are placed in the upper power area; ESP32 stays horizontal for USB access and the IMU stays near the vehicle center.
+- The CAD checkpoint is preserved under the displayed Onshape Version name `dapter-layout_draft01_2026-07-23`; the intended name starts with `adapter-`.
+- Rev A 2D manufacturing baseline is 174 x 208.93379 mm with nominal 3.3 mm small mounting holes; the first fabrication candidate is acrylic 3T.
+- The A4 1:1 print was physically compared with the chassis and recorded as `USER-CONFIRMED PASS`.
+- The final Multimaker PDF passed a one-page, 39-vector-path, zero-raster, zero-text and source-scale comparison.
+- The Multimaker order is not submitted because its WordPress server could not create or write `wp-content/uploads/2026/07`.
+- Red reference-instance badges remain in the 3D Assembly Draft, but they are outside the user-approved Rev A 2D order scope; fabricated-plate fit remains `NOT TESTED`.
 
 ## Open Decisions
 
@@ -169,6 +186,10 @@ Ask the user or verify from hardware only for these:
 - UART maximum application frame length and ring buffer size
 - UART unknown frame type handling: return `ERR,code=UNKNOWN_TYPE` or ignore
 - Whether checksum/CRC stays deferred until Wi-Fi forwarding
+- Acrylic color and cast/extruded material choice
+- Vendor kerf compensation, minimum hole capability, and manufacturing tolerance
+- Mounting screw, nut, washer, and insulating-spacer specifications
+- Vehicle-forward direction and CAD coordinate origin for the manufacturing drawing
 
 ## Next Concrete Actions
 
@@ -176,8 +197,12 @@ Ask the user or verify from hardware only for these:
 2. Read `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md` before starting hardware validation.
 3. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
 4. Preserve the completed UART bridge baseline and 2026-07-20 screenshot/raw log evidence.
-5. Read `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md`.
-6. Confirm STM32 PWM/DIR candidate pins and decide MDD10A channel mapping before wiring.
-7. Perform MDD10A logic input validation without motor or 3S LiPo main power.
-8. Connect the validated STM32 UART command state to the PWM/DIR output path only after logic validation.
-9. Continue with encoder voltage safety, low-duty motor, and closed-loop telemetry tests in that order.
+5. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the order.
+6. Contact Multimaker about the server upload error and request KakaoTalk or email file submission.
+7. Confirm acrylic 3T material details, kerf, minimum hole capability, tolerance, total quote, and order ID.
+8. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
+9. Read `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md` while the plate order is pending.
+10. Confirm STM32 PWM/DIR candidate pins and decide MDD10A channel mapping before wiring.
+11. Perform MDD10A logic input validation without motor or 3S LiPo main power.
+12. Connect the validated STM32 UART command state to the PWM/DIR output path only after logic validation.
+13. Continue with encoder voltage safety, low-duty motor, and closed-loop telemetry tests in that order.

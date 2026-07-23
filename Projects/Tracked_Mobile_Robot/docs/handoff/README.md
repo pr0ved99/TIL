@@ -10,15 +10,20 @@
 2. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 3. [`../../AGENTS.md`](../../AGENTS.md)
 4. [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)
-5. [`2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
-6. [`../progress/2026-07-20_progress.md`](../progress/2026-07-20_progress.md)
+5. [`../progress/2026-07-24_progress.md`](../progress/2026-07-24_progress.md)
+6. [`../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+7. [`../../08_Mechanical_Design/releases/revA/README.md`](../../08_Mechanical_Design/releases/revA/README.md)
+8. [`2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
+9. [`../progress/2026-07-20_progress.md`](../progress/2026-07-20_progress.md)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
-## Current Handoff
+## Current Continuation Sources
 
 | Date | File | Use |
 | --- | --- | --- |
+| 2026-07-24 | [`../progress/2026-07-24_progress.md`](../progress/2026-07-24_progress.md) | 아크릴 3T 어댑터 플레이트 Rev A 제조 파일 검증, 업체 서버 업로드 차단 상태와 다음 주문 작업 |
+| 2026-07-24 | [`../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md) | 주문 정본, 치수·벡터 검증 결과와 제작 전 확인 항목 |
 | 2026-07-20 | [`2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | ESP32 scripted command와 timeout-zero까지 PASS한 bridge closeout 및 MDD10A logic test 시작점 |
 
 ## Historical Handoff

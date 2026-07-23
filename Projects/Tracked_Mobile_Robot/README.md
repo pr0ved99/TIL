@@ -6,7 +6,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-20
+Last updated: 2026-07-24
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
@@ -14,16 +14,21 @@ Last updated: 2026-07-20
 2. [`AGENTS.md`](AGENTS.md)
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
 4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
-5. [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
-6. [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md)
-7. [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md)
-8. [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md)
-9. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
-10. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
-11. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-12. [`docs/verification/README.md`](docs/verification/README.md)
-13. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
-14. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+5. [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md)
+6. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+7. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
+8. [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
+9. [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md)
+10. [`08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`](08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md)
+11. [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md)
+12. [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md)
+13. [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md)
+14. [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md)
+15. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
+16. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+17. [`docs/verification/README.md`](docs/verification/README.md)
+18. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
+19. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
 
 현재 바로 이어갈 작업:
 
@@ -41,6 +46,20 @@ Board-only ESP32 -> STM32 UART bridge planning
 -> encoder signal validation
 ```
 
+병행 중인 mechanical integration:
+
+```text
+tracked chassis hole-pattern DWG import
+-> 174 x 208.93379 mm adapter plate geometry captured
+-> XL4015 x2 / MDD10A / universal PCB / MCU / IMU placement Draft captured
+-> acrylic 3T and nominal 3.3 mm small mounting holes selected for Rev A
+-> Rev A DWG/DXF/PDF/SVG release files preserved
+-> A4 1:1 chassis comparison and final vector PDF validation passed
+-> Multimaker upload blocked by vendor server directory permission error
+-> contact vendor and submit order through repaired upload or alternate channel
+-> fabricated plate fit check
+```
+
 주의:
 
 - STM32 UART MVP는 2026-07-09에 실제 NUCLEO-F446RE + Web Serial dashboard로 검증했다.
@@ -55,6 +74,8 @@ Board-only ESP32 -> STM32 UART bridge planning
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
 - 다음 hardware 단계는 motor와 3S LiPo main power를 제외한 MDD10A PWM/DIR logic input test다.
+- Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
+- 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 
 ## Project Direction
 
@@ -71,7 +92,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 
 ## Current Architecture Status
 
-2026-07-14 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-07-24 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -83,6 +104,10 @@ Board-only ESP32 -> STM32 UART bridge planning
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
 - CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
+- Rev A 어댑터 플레이트 기준은 174 x 208.93379 mm, 아크릴 3T, 소형 체결 홀 nominal 3.3 mm다.
+- A4 1:1 셰시 대조와 주문 PDF의 39개 벡터 경로 및 원본 대비 배율 검증을 완료했다.
+- 3D 전장 Assembly Draft의 참조 오류 표시는 사용자 지시에 따라 이번 2D 플레이트 release 범위에서 제외했다.
+- 멀티메이커 서버가 업로드 폴더를 만들지 못해 주문 상태는 `NOT SUBMITTED`다.
 
 작업을 이어가기 전에 먼저 읽을 기준 파일:
 
@@ -106,6 +131,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 - `05_ROS2_Integration`: ROS2 bridge, topic mapping, RViz validation
 - `06_Test_Report`: bench, load, chassis, and field test reports
 - `07_Embedded_Learning_Notes`: concept notes, STM32/ESP32 practice logs, protocol labs, measurement notes
+- `08_Mechanical_Design`: adapter plate, electronics layout, manufacturing-release rules
 - `assets`: photos, wiring diagrams, screenshots, plots
 - `docs/handoff`: continuation notes for future work
 - `docs/plans`: short-term execution plans for hardware sessions
@@ -163,6 +189,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
 | [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |
 | [`07_STM32_ESP32_UART_Wiring_Checklist.md`](02_Hardware_Validation/07_STM32_ESP32_UART_Wiring_Checklist.md) | STM32 + ESP32 board-only UART wiring checklist |
+| [`08_Adapter_Plate_Fit_Check.md`](02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md) | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
 
 ### 04_PC_Serial_Control
 
@@ -203,6 +230,15 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`003_Optional_WebSocket_AI_Log_Diagnosis_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/003_Optional_WebSocket_AI_Log_Diagnosis_ko.md) | Optional WebSocket dashboard and AI-assisted log diagnosis extension |
 | [`05_Debugging_Measurement/README.md`](07_Embedded_Learning_Notes/05_Debugging_Measurement/README.md) | Measurement and debugging evidence index |
 
+### 08_Mechanical_Design
+
+| Document | Purpose |
+| --- | --- |
+| [`README.md`](08_Mechanical_Design/README.md) | Mechanical design index, revision policy, and current release gate |
+| [`01_Adapter_Plate_and_Electronics_Layout_ko.md`](08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md) | Adapter plate geometry, electronics placement, Draft history, and Rev A state |
+| [`02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md) | Rev A dimension, A4 1:1, vector PDF, and vendor-order preflight report |
+| [`releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md) | Rev A DWG, DXF, SVG, PDF release artifacts and SHA-256 index |
+
 ### docs
 
 | Document | Purpose |
@@ -226,9 +262,14 @@ Board-only ESP32 -> STM32 UART bridge planning
 | [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md) | STM32 UART MVP Web Serial validation, evidence capture, and verification docs |
 | [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md) | MDD10A inspection, fused power path validation, XL4015 #1/#2 no-load calibration |
 | [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md) | ESP-IDF setup, ESP32 UART loopback, STM32 `TEL/PING/PONG`, ESP32 frame classification |
+| [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md) | ESP32 structured telemetry parser and XL4015 load validation |
+| [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md) | ESP32 scripted safety sequence, timeout-zero, and UART bridge closeout |
+| [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md) | Adapter plate Draft, electronics placement, Onshape Version, and mechanical-layout evidence |
+| [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Acrylic 3T Rev A files, 1:1/vector validation, and vendor upload blocker |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
-| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Current continuation handoff from validated bridge link to structured TEL parser and scripted commands |
+| [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Current bridge closeout handoff and MDD10A logic-test continuation point |
+| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Historical handoff from the validated bridge link to structured TEL parsing |
 | [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Historical STM32CubeMX-first UART MVP handoff |
 
 ## Initial MVP
