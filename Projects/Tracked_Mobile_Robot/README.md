@@ -27,8 +27,9 @@ Last updated: 2026-07-24
 15. [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md)
 16. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 17. [`docs/verification/README.md`](docs/verification/README.md)
-18. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
-19. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+18. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+19. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
+20. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
 
 현재 바로 이어갈 작업:
 
@@ -41,6 +42,7 @@ Board-only ESP32 -> STM32 UART bridge planning
 -> ESP32 structured TEL field parsing completed
 -> ESP32 scripted ARM/CMD/DISARM and timeout-zero completed
 -> XL4015 #1/#2 load validation completed
+-> STM32 PWM/DIR safe output module and MCU pin-only verification
 -> MDD10A PWM/DIR logic input test
 -> STM32 UART CMD path를 PWM/DIR output path와 연결
 -> encoder signal validation
@@ -73,7 +75,7 @@ tracked chassis hole-pattern DWG import
 - `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- 다음 hardware 단계는 motor와 3S LiPo main power를 제외한 MDD10A PWM/DIR logic input test다.
+- 다음 hardware 단계는 motor, MDD10A main power와 3S LiPo를 제외한 STM32 PWM/DIR 핀 단독 검증이며, PASS 후 MDD10A logic input test로 진행한다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
 - 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 
@@ -246,7 +248,7 @@ tracked chassis hole-pattern DWG import
 | Document | Purpose |
 | --- | --- |
 | [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
-| [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | Project-wide phase plan to portfolio-ready final MVP |
+| [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | Current V-model gate roadmap to the portfolio-ready final MVP |
 | [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
 | [`docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md) | STM32 + ESP32 board-only UART bridge plan |
 | [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
@@ -257,6 +259,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
 | [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 STM32 + Web Serial UART MVP test report |
 | [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32 -> STM32 UART bridge verification plan |
+| [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | Project-wide power, mechanical, motor, encoder, drivetrain, and acceptance traceability matrix |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
@@ -267,7 +270,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md) | ESP32 structured telemetry parser and XL4015 load validation |
 | [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md) | ESP32 scripted safety sequence, timeout-zero, and UART bridge closeout |
 | [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md) | Adapter plate Draft, electronics placement, Onshape Version, and mechanical-layout evidence |
-| [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Acrylic 3T Rev A files, 1:1/vector validation, and vendor upload blocker |
+| [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Rev A preflight/vendor blocker and project-wide V-model roadmap refresh |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
 | [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Current bridge closeout handoff and MDD10A logic-test continuation point |

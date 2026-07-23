@@ -154,13 +154,15 @@ MDD10A visual/DMM inspection
 
 | Requirement ID | 요구사항 | 설계 | 구현 위치 | 검증 증거 |
 | --- | --- | --- | --- | --- |
-| REQ-UART-001 | STM32는 PING에 PONG으로 응답해야 한다 | line-based command parser | `handle_line()` | Web Serial raw log |
-| REQ-UART-002 | 명령 응답은 seq로 추적 가능해야 한다 | `seq` field and ACK/ERR | `parse_seq()`, `send_ack()`, `send_err()` | TX/RX CSV |
+| REQ-UART-001 | STM32는 주기적으로 상태와 command 값을 포함한 TEL을 송신해야 한다 | periodic telemetry | `send_tel()` | dashboard screenshot, TX/RX CSV |
+| REQ-UART-002 | STM32는 PING의 seq와 같은 PONG을 반환해야 한다 | line-based command parser | `handle_line()` | Web Serial raw log |
+| REQ-UART-003 / 004 | ACK/ERR는 seq, command type과 error code로 추적 가능해야 한다 | `seq` field and ACK/ERR | `parse_seq()`, `send_ack()`, `send_err()` | TX/RX CSV |
 | REQ-SAFE-001 | DISARMED 상태에서 CMD는 거절되어야 한다 | state gate | `handle_cmd()` | `ERR,code=NOT_ARMED` |
-| REQ-SAFE-002 | CMD timeout 시 속도 명령은 0이 되어야 한다 | timeout zero command | `uart_mvp_process()` | TEL `vx_mmps=0,w_mradps=0` |
-| REQ-OBS-001 | 현재 상태는 PC에서 관찰 가능해야 한다 | periodic telemetry | `send_tel()` | dashboard screenshot |
+| REQ-SAFE-004 | CMD timeout 시 command velocity는 0이 되어야 한다 | timeout zero command | `uart_mvp_process()` | TEL `vx_mmps=0,w_mradps=0` |
 
-이 표는 앞으로 `Verification_Matrix.md`로 독립시키면 좋다.
+UART 정본은 [`../verification/01_UART_MVP_Requirements_ko.md`](../verification/01_UART_MVP_Requirements_ko.md)와
+[`../verification/02_UART_MVP_Verification_Matrix_ko.md`](../verification/02_UART_MVP_Verification_Matrix_ko.md)이며,
+프로젝트 전체 추적성은 [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에서 관리한다.
 
 ## 아직 포트폴리오에서 약한 부분
 
@@ -323,4 +325,3 @@ drivetrain integration: 초기 전
 전체 최종 MVP 기준으로는 약 30% 수준이다.
 
 하지만 통신, 안전 상태머신, 검증 구조는 이미 포트폴리오의 뼈대로 사용할 수 있다. 다음 진척률을 크게 올리는 지점은 `MDD10A + PWM + first motor no-load test`다.
-

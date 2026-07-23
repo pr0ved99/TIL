@@ -16,13 +16,13 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## 3. Primary Goal
 
-로봇이 PC 또는 상위 제어기로부터 속도 명령을 받아 전진, 후진, 회전하고, 엔코더 기반 속도와 이동량을 계산하며, BNO08x IMU를 통해 회전 상태를 검증할 수 있게 한다.
+1차 MVP에서는 로봇이 PC 또는 ESP32 상위 제어기로부터 속도 명령을 받아 안전하게 전진, 후진, 회전하고, 엔코더 기반 속도와 이동량을 계산하게 한다. BNO08x IMU 기반 회전 검증은 하위 구동계와 엔코더 telemetry가 안정된 뒤의 후속 V-cycle로 진행한다.
 
 ## 4. MVP Scope
 
 - STM32가 좌/우 DC 모터를 PWM으로 제어한다.
 - 엔코더로 좌/우 모터 속도를 측정한다.
-- 기본 속도 제어 구조를 만든다.
+- open-loop PWM command와 엔코더 속도 추정·telemetry 구조를 만든다.
 - UART 또는 USB Serial로 명령을 수신한다.
 - 3S LiPo 전원계를 퓨즈, 스위치, 저전압 알람과 함께 운용한다.
 - 궤도 섀시에서 저속 전진, 후진, 제자리 회전을 검증한다.
@@ -38,6 +38,8 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 복잡한 PCB 설계
 - 고속 주행
 - 실외 주행
+- BNO08x firmware integration
+- closed-loop PID speed control 고도화
 
 ## 6. System Boundary
 
@@ -50,7 +52,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 모터 드라이버
 - 엔코더 DC 모터
 - 궤도차량 섀시
-- BNO08x IMU
+- BNO08x IMU hardware placement candidate; firmware integration은 첫 MVP에서 제외
 - UART / USB Serial 통신
 
 초기 시스템에서 제외한다.
@@ -86,19 +88,19 @@ MVP를 막지 않기 위해 초기 시스템에서 제외할 뿐, 후속 phase�
 
 ## 9. Development Phases
 
-1. 전원계 안전 검증
-2. 모터 1개 PWM 구동
-3. 엔코더 신호 검증
-4. 좌/우 모터 제어
-5. 속도 제어 및 PID 검토
-6. 궤도 섀시 저속 주행 테스트
-7. PC Serial / UART 제어
-8. FreeRTOS task 구조 전환
-9. BNO08x IMU 통합
-10. CAN 단독 실습 및 bus 검증
-11. CAN command / telemetry 통합
-12. HAL 핵심 경로의 LL Driver 전환
-13. ROS2 / LiDAR 확장 검토
+1. PC/ESP32 UART command와 safety baseline
+2. 전원·MDD10A 무전원·buck load 검증
+3. 어댑터 플레이트 release와 fabricated fit
+4. STM32 PWM/DIR 구현과 pin signal 검증
+5. MDD10A logic input 검증
+6. encoder 전압 안전성과 한쪽 motor no-load
+7. encoder count와 speed telemetry
+8. 좌우 drivetrain과 저속 chassis 주행
+9. fault stop와 1 m system acceptance
+10. requirement-to-evidence audit와 portfolio release
+11. 후속 V-cycle: PID, IMU, FreeRTOS, CAN, LL, ROS2와 LiDAR
+
+상세 Gate와 현재 상태는 [`../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)를 따른다.
 
 ## 10. Design Principles
 
@@ -109,6 +111,7 @@ MVP를 막지 않기 위해 초기 시스템에서 제외할 뿐, 후속 phase�
 - HAL로 먼저 동작을 검증하고, 검증된 핵심 경로부터 LL Driver로 전환한다.
 - FreeRTOS는 모터/엔코더 기본 검증 후 task 구조화 단계에서 도입한다.
 - 각 설계 결정에는 이유와 테스트 결과를 남긴다.
+- 요구사항, 설계, 구현, 시험과 실제 증거를 경량 V-model traceability로 연결한다.
 
 ## 11. Open Questions
 

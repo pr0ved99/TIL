@@ -48,6 +48,7 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 | [`02_UART_MVP_Verification_Matrix_ko.md`](02_UART_MVP_Verification_Matrix_ko.md) | 요구사항, 테스트 방법, 증거 파일, 결과 연결 |
 | [`03_UART_MVP_Test_Report_2026-07-09_ko.md`](03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 실제 STM32 + Web Serial 검증 리포트 |
 | [`04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32를 command source / telemetry relay로 붙이는 보드 단독 검증 계획 |
+| [`05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | 전원·기구·모터·엔코더·주행까지 확장한 최종 MVP 요구사항과 V-model 추적 매트릭스 |
 
 ## Evidence Files
 
@@ -108,8 +109,10 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 
 다음 단계 검증 순서:
 
-1. MDD10A logic input test
-2. STM32 UART command state와 PWM/DIR output path 연결
-3. encoder signal voltage 및 count validation
-4. motor no-load low-duty test
-5. closed-loop speed telemetry validation
+1. STM32 PWM/DIR safe output 구현과 MCU 핀 단독 검증
+2. MDD10A logic input test
+3. board power/back-power와 fabricated plate fit 검증
+4. encoder signal voltage safety validation
+5. motor no-load low-duty test
+6. encoder count 및 speed telemetry validation
+7. left/right drivetrain과 final fault/odometry acceptance

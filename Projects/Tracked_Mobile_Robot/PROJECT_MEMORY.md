@@ -112,6 +112,8 @@ Important docs:
 - `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
 - `docs/progress/2026-07-24_progress.md`: latest progress note for Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
+- `docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`: 2026-07-24 V-model gate roadmap and current execution order
+- `docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`: project-wide requirement, design, test, evidence, and result traceability
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
@@ -160,7 +162,7 @@ Important docs:
 - ESP32 scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` sequence passed on 2026-07-20.
 - STM32 returned the expected `NOT_ARMED`, command `ACK`, `OUT_OF_RANGE`, and `DISARM` responses through the ESP32 bridge.
 - A one-shot valid CMD produced `vx=50`, then STM32 timeout returned `vx=0`, `w=0` after about 300 ms while remaining `ARMED` until explicit `DISARM`.
-- ESP32-STM32 board-only UART bridge MVP is complete. The next hardware step is MDD10A PWM/DIR logic input validation without motor or 3S LiPo main power.
+- ESP32-STM32 board-only UART bridge MVP is complete. The next hardware step is STM32 PWM/DIR safe output implementation and MCU pin-only validation without motor, MDD10A main power, or 3S LiPo; MDD10A logic input validation follows only after that PASS.
 - A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
 - A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
 - XL4015 x2 and MDD10A are placed in the upper power area; ESP32 stays horizontal for USB access and the IMU stays near the vehicle center.
@@ -205,8 +207,9 @@ Ask the user or verify from hardware only for these:
 6. Contact Multimaker about the server upload error and request KakaoTalk or email file submission.
 7. Confirm acrylic 3T material details, kerf, minimum hole capability, tolerance, total quote, and order ID.
 8. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
-9. Read `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md` while the plate order is pending.
-10. Confirm STM32 PWM/DIR candidate pins and decide MDD10A channel mapping before wiring.
-11. Perform MDD10A logic input validation without motor or 3S LiPo main power.
-12. Connect the validated STM32 UART command state to the PWM/DIR output path only after logic validation.
-13. Continue with encoder voltage safety, low-duty motor, and closed-loop telemetry tests in that order.
+9. Read the refreshed V-model roadmap and project-wide verification matrix while the plate order is pending.
+10. Confirm STM32 PWM/DIR candidate pins, PWM frequency, direction polarity, first motor, and MDD10A channel mapping.
+11. Implement the safe PWM/DIR output path and validate STM32 pins with motor, MDD10A main power, and 3S LiPo disconnected.
+12. Perform MDD10A logic input validation only after the MCU pin-only test passes.
+13. Connect the validated UART command state to the safe PWM/DIR output interface.
+14. Continue with board power/back-power, fabricated plate fit, encoder voltage safety, low-duty motor, encoder telemetry, and drivetrain tests according to the Gate roadmap.

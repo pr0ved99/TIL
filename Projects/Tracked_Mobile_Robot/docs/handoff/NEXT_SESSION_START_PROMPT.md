@@ -20,6 +20,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 11. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-20_progress.md
 12. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
 13. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
+14. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+15. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
 
 현재 상태:
 
@@ -84,10 +86,11 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 4. 업로드가 복구되면 releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 로 주문하고 주문번호와 제작 조건을 기록한다.
 5. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 셰시 홀, 만능기판, XL4015 x2, MDD10A의 실물 fit을 검증한다.
 6. 체결 나사와 스페이서 규격은 실물 fit 결과에 맞춰 확정한다.
-7. 제작 대기 중에는 Projects/Tracked_Mobile_Robot/02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md 를 읽는다.
-8. STM32 PWM/DIR 후보 핀과 MDD10A channel mapping을 확인한다.
-9. motor와 3S LiPo main power 없이 MDD10A logic input test를 준비한다.
-10. logic test가 PASS한 뒤 UART command state와 PWM/DIR output path 연결 계획을 세운다.
+7. 제작 대기 중에는 V-model master plan과 final MVP verification matrix를 기준으로 진행한다.
+8. STM32 PWM/DIR 후보 핀, PWM frequency, DIR polarity, 첫 motor와 MDD10A channel mapping을 확인한다.
+9. motor, MDD10A main power와 3S LiPo를 분리한 상태에서 STM32 PWM/DIR safe output을 구현하고 MCU 핀 단독 검증을 한다.
+10. MCU 핀 단독 시험이 PASS한 뒤 `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md`에 따라 MDD10A logic input을 검증한다.
+11. logic test가 PASS한 뒤 UART command state를 검증된 safe PWM/DIR output interface에 연결한다.
 
 완료된 UART bridge 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

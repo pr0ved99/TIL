@@ -66,10 +66,21 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`, `../assets/photos/power_bringup/2026-07-10_01_power_path_switch_off_0v.jpg`, `../assets/photos/power_bringup/2026-07-10_02_power_path_switch_on_12v49.jpg` |
-| Buck converter output | Partial PASS | XL4015 #1/#2 no-load outputs calibrated to 5.03 V; load check and board connection policy still TBD |
+| Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
 | MDD10A logic input | Not started | TBD |
 | Encoder signal voltage | Not started | TBD |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
-| STM32/ESP32 UART bridge wiring | Planned | `07_STM32_ESP32_UART_Wiring_Checklist.md` |
+| STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
 | Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
+
+현재 실행 순서는 다음과 같다.
+
+```text
+STM32 PWM/DIR safe output 구현
+-> MCU 핀 단독 signal-only 검증
+-> MDD10A logic input 검증
+-> encoder voltage safety
+-> first motor no-load
+-> left/right drivetrain
+```

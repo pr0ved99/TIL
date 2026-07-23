@@ -341,9 +341,10 @@ Fields:
 
 초기 제한:
 
-- `vx_mmps`는 STM32가 clamp한다.
-- `w_mradps`는 STM32가 clamp한다.
-- `timeout_ms`는 STM32가 clamp한다.
+- `vx_mmps` 범위 초과는 STM32가 clamp하지 않고 `ERR,code=OUT_OF_RANGE`로 거부한다.
+- `w_mradps` 범위 초과는 STM32가 clamp하지 않고 `ERR,code=OUT_OF_RANGE`로 거부한다.
+- `timeout_ms` 범위 초과는 STM32가 clamp하지 않고 `ERR,code=TIMEOUT_OUT_OF_RANGE`로 거부한다.
+- 거부된 `CMD`는 마지막 정상 command와 output state를 변경하지 않는다.
 - ESP32가 command를 정상 전송해도 STM32는 command를 거부할 수 있다.
 
 Integer unit을 쓰는 이유:
