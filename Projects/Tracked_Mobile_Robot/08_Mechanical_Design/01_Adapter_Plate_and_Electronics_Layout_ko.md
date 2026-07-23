@@ -22,7 +22,7 @@
 
 | 항목 | 값 | 상태 |
 | --- | --- | --- |
-| 기준 셰시 도면 | `R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` | CAD 입력에 사용 |
+| 기준 셰시 도면 | [`source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg`](source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg) | 원본 보존 / CAD 입력에 사용 |
 | 어댑터 플레이트 외곽 | 174 x 208.93379 mm | Rev A 반영 |
 | 프로젝트 반올림 표기 | 174 x 209 mm | 정보용 |
 | 재질 | 아크릴 | 제작 후보 결정 |

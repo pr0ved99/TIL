@@ -22,6 +22,7 @@ Last updated: 2026-07-24
 | Battery | 3S LiPo |
 | Power safety | Fuse, DC-rated main switch, LiPo alarm, measured buck converter output |
 | IMU candidate | BNO08x |
+| Chassis source drawing | `08_Mechanical_Design/source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` |
 | Adapter plate Rev A | 174 x 208.93379 mm, acrylic 3T candidate, small mounting holes nominal 3.3 mm |
 | Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
@@ -106,6 +107,7 @@ Important docs:
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
 - `08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`: adapter plate and electronics placement baseline, Rev A state, and remaining physical checks
 - `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`: Rev A dimension, A4 1:1, vendor-template PDF, vector-scale, and order-attempt record
+- `08_Mechanical_Design/source/chassis/README.md`: preserved original R3 tracked-chassis hole-pattern DWG and SHA-256
 - `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
 - `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
@@ -167,7 +169,7 @@ Important docs:
 - The A4 1:1 print was physically compared with the chassis and recorded as `USER-CONFIRMED PASS`.
 - The final Multimaker PDF passed a one-page, 39-vector-path, zero-raster, zero-text and source-scale comparison.
 - The Multimaker order is not submitted because its WordPress server could not create or write `wp-content/uploads/2026/07`.
-- The original chassis input file `R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` is not currently present on Desktop or in the repository; reacquire it before any Rev B rebase against the raw hole pattern.
+- The original chassis input file is preserved at `08_Mechanical_Design/source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg`; verify its SHA-256 against the source README before a Rev B rebase.
 - Red reference-instance badges remain in the 3D Assembly Draft, but they are outside the user-approved Rev A 2D order scope; fabricated-plate fit remains `NOT TESTED`.
 
 ## Open Decisions

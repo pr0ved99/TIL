@@ -13,6 +13,7 @@ Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, �
 | Onshape 문서 | `01_어댑트_설계도면` |
 | Workspace | `Main` |
 | Historical Draft Version | 화면 표기 `dapter-layout_draft01_2026-07-23` |
+| 기준 셰시 원본 | `source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` |
 | 어댑터 플레이트 | 174 x 208.93379 mm |
 | 제작 후보 | 아크릴 3T |
 | 소형 체결 홀 | nominal diameter 3.3 mm |
@@ -31,6 +32,7 @@ Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, �
 | --- | --- |
 | [`01_Adapter_Plate_and_Electronics_Layout_ko.md`](01_Adapter_Plate_and_Electronics_Layout_ko.md) | 어댑터 플레이트 입력 조건, 모듈 배치, 설계 결정, CAD Version 및 검토 항목 |
 | [`02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md) | Rev A 치수, A4 1:1 대조, 벡터 PDF와 주문 시도 결과 |
+| [`source/chassis/README.md`](source/chassis/README.md) | 원본 R3 궤도 셰시 홀 패턴 DWG와 SHA-256 |
 | [`releases/revA/README.md`](releases/revA/README.md) | Rev A DXF, DWG, SVG, PDF 정본과 SHA-256 색인 |
 | [`references/vendor_templates/README.md`](references/vendor_templates/README.md) | 멀티메이커 원본 작업 양식과 파일 해시 |
 | [`../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md`](../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md) | 제작품 수령 후 셰시 체결, 기판 조립, 간섭과 접근성 검증 |

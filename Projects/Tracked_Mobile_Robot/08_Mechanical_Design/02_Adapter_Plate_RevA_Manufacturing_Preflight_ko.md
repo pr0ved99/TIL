@@ -19,6 +19,7 @@
 
 | 항목 | Rev A 기준 | 상태 |
 | --- | --- | --- |
+| 기준 셰시 도면 | [`source/chassis/README.md`](source/chassis/README.md) | 원본·SHA-256 보존 |
 | 외곽 크기 | 174 x 208.93379 mm | `PASS` |
 | 프로젝트 반올림 표기 | 174 x 209 mm | 정보용 |
 | 소형 체결 홀 | nominal diameter 3.3 mm | `PASS` |
