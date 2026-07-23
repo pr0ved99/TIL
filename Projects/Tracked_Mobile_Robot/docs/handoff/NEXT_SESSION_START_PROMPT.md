@@ -56,8 +56,10 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - 최종 주문용 PDF는 1페이지, 벡터 경로 39개, 래스터 이미지 0개, 텍스트 0개이다.
 - 원본 Onshape PDF 대비 최종 주문 PDF의 형상 크기 차이는 X -0.001055 mm, Y -0.000840 mm로 검증됐다.
 - 최종 주문 파일은 08_Mechanical_Design/releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 이다.
+- 멀티메이커 원본 작업 양식은 08_Mechanical_Design/references/vendor_templates 에 보존했다.
 - 멀티메이커 사이트 업로드는 서버의 wp-content/uploads/2026/07 디렉터리 쓰기 권한 오류로 0%에서 실패했다.
 - 따라서 현재 상태는 RELEASE FILES PREPARED / ORDER NOT SUBMITTED 이다.
+- 최초 입력으로 사용한 R3 셰시 홀 패턴 DWG 원본은 현재 Desktop과 저장소에서 찾지 못했으므로 Rev B 원본 대조가 필요하면 재확보한다.
 - 캡처의 Assembly 트리에 남은 빨간 참조 표시는 사용자 지시에 따라 이번 Rev A 2D 발주 범위에서 제외했다.
 - mechanical-layout 증거는 assets/screenshots/mechanical_layout 에 있다.
 - 체결 나사·스페이서의 최종 규격과 제작품 수령 후 실물 fit은 아직 검증하지 않았다.

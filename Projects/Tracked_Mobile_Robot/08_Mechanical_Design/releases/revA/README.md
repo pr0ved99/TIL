@@ -65,5 +65,6 @@ Is its parent directory writable by the server?
 
 - [`../../01_Adapter_Plate_and_Electronics_Layout_ko.md`](../../01_Adapter_Plate_and_Electronics_Layout_ko.md)
 - [`../../02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../../02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+- [`../../references/vendor_templates/README.md`](../../references/vendor_templates/README.md)
 - [`../../../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md`](../../../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md)
 - [`../../../docs/progress/2026-07-24_progress.md`](../../../docs/progress/2026-07-24_progress.md)

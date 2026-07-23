@@ -51,6 +51,9 @@
 
 ### 3. Vendor template placement
 
+업체 원본 작업 양식은 [`references/vendor_templates/README.md`](references/vendor_templates/README.md)에
+원본 파일명과 SHA-256을 함께 보존했다.
+
 - 멀티메이커 작업 양식 중 첫 번째 `450 x 300 mm` 페이지를 사용했다.
 - 양식의 크기 표기 문자를 제거하고 Onshape PDF의 39개 벡터 경로를 그룹으로 가져왔다.
 - 화면 선택 영역에는 0.381 mm 선 굵기가 포함되므로 제조 중심선 크기와 구분했다.

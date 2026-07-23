@@ -32,6 +32,7 @@ Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, �
 | [`01_Adapter_Plate_and_Electronics_Layout_ko.md`](01_Adapter_Plate_and_Electronics_Layout_ko.md) | 어댑터 플레이트 입력 조건, 모듈 배치, 설계 결정, CAD Version 및 검토 항목 |
 | [`02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md) | Rev A 치수, A4 1:1 대조, 벡터 PDF와 주문 시도 결과 |
 | [`releases/revA/README.md`](releases/revA/README.md) | Rev A DXF, DWG, SVG, PDF 정본과 SHA-256 색인 |
+| [`references/vendor_templates/README.md`](references/vendor_templates/README.md) | 멀티메이커 원본 작업 양식과 파일 해시 |
 | [`../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md`](../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md) | 제작품 수령 후 셰시 체결, 기판 조립, 간섭과 접근성 검증 |
 | [`../assets/screenshots/mechanical_layout/README.md`](../assets/screenshots/mechanical_layout/README.md) | 구멍 배치와 전장 어셈블리 스크린샷 색인 |
 

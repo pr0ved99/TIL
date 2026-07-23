@@ -107,6 +107,7 @@ Important docs:
 - `08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`: adapter plate and electronics placement baseline, Rev A state, and remaining physical checks
 - `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`: Rev A dimension, A4 1:1, vendor-template PDF, vector-scale, and order-attempt record
 - `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
+- `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
 - `docs/progress/2026-07-24_progress.md`: latest progress note for Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
@@ -166,6 +167,7 @@ Important docs:
 - The A4 1:1 print was physically compared with the chassis and recorded as `USER-CONFIRMED PASS`.
 - The final Multimaker PDF passed a one-page, 39-vector-path, zero-raster, zero-text and source-scale comparison.
 - The Multimaker order is not submitted because its WordPress server could not create or write `wp-content/uploads/2026/07`.
+- The original chassis input file `R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` is not currently present on Desktop or in the repository; reacquire it before any Rev B rebase against the raw hole pattern.
 - Red reference-instance badges remain in the 3D Assembly Draft, but they are outside the user-approved Rev A 2D order scope; fabricated-plate fit remains `NOT TESTED`.
 
 ## Open Decisions
