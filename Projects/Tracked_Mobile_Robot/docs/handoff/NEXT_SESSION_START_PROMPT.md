@@ -12,16 +12,16 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
 5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-24_progress.md
-7. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md
-8. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md
-9. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/releases/revA/README.md
-10. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-23_progress.md
-11. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-20_progress.md
-12. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
-13. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
-14. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
-15. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
+6. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-26_progress.md
+7. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md
+8. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+9. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
+10. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-24_progress.md
+11. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md
+12. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md
+13. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/releases/revA/README.md
+14. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
+15. Projects/Tracked_Mobile_Robot/docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md
 
 현재 상태:
 
@@ -47,6 +47,12 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 NUCLEO-F446RE는 ESP bridge용으로 USART1 PA9 TX / PA10 RX를 사용한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
 - STM32 protocol path는 uart_mvp_init(&huart1) 사용과 실제 PING/PONG/TEL runtime을 확인했다.
+- STM32 motor bench mapping은 PB6/TIM4_CH1 -> PWM1, PC8 -> DIR1, PB7/TIM4_CH2 -> PWM2, PC9 -> DIR2, common GND다.
+- STM32 pin-only DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Test macro는 다시 0U이고 final all-off를 확인했다.
+- 현재 motor-output source는 PWM zero -> 1 ms wait -> DIR -> 즉시 PWM 순서다. 실제 motor 활성화 전에 의도한 post-DIR settle로 수정해야 한다.
+- 두 encoder motor는 MG540-A/B로 임시 식별하며 실제 차량 left/right는 아직 미정이다.
+- MG540-A raw encoder A/B는 shaft 위치에 따라 약 0/5 V였다. MG540-A/B의 A/B에 15 kΩ signal-to-GND load를 적용한 exact-recorded HIGH는 2.96~2.98 V다.
+- Encoder loaded-voltage gate는 CONDITIONAL PASS지만 LOW, 위상, count, 방향과 CPR은 아직 미검증이다.
 - 어댑터 플레이트 Rev A 외곽은 174 x 208.93379 mm이고, 제작 후보 재료는 아크릴 3T로 결정했다.
 - 소형 체결 홀은 M3 여유 홀 후보인 지름 3.3 mm로 설계했다.
 - 만능기판은 150 x 100 mm, 홀 배열은 55 x 37이다.
@@ -76,7 +82,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - USB로 두 보드를 각각 전원 공급 중이면 5V/VBUS/VIN끼리는 연결하지 않는다.
 - ESP-IDF monitor가 COM4를 점유하면 flash 전에 Ctrl+]로 monitor를 종료한다.
 - main/hello_world_main.c는 사용자가 직접 학습하며 작성 중이므로 요청 없이 대신 완성하지 않는다.
-- MDD10A logic input test 전에는 motor와 3S LiPo main power를 연결하지 않는다.
+- Raw encoder A/B를 STM32에 직접 연결하지 않는다. 첫 count 시험은 15 kΩ/channel, common GND, motor power disconnected 조건이다.
+- 실제 motor test 전에는 의도한 post-DIR settle과 active timeout/DISARM actual-output zero를 확인한다.
 
 다음 목표:
 
@@ -87,10 +94,11 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 5. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 셰시 홀, 만능기판, XL4015 x2, MDD10A의 실물 fit을 검증한다.
 6. 체결 나사와 스페이서 규격은 실물 fit 결과에 맞춰 확정한다.
 7. 제작 대기 중에는 V-model master plan과 final MVP verification matrix를 기준으로 진행한다.
-8. STM32 PWM/DIR 후보 핀, PWM frequency, DIR polarity, 첫 motor와 MDD10A channel mapping을 확인한다.
-9. motor, MDD10A main power와 3S LiPo를 분리한 상태에서 STM32 PWM/DIR safe output을 구현하고 MCU 핀 단독 검증을 한다.
-10. MCU 핀 단독 시험이 PASS한 뒤 `02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md`에 따라 MDD10A logic input을 검증한다.
-11. logic test가 PASS한 뒤 UART command state를 검증된 safe PWM/DIR output interface에 연결한다.
+8. 현재 CubeMX/firmware와 encoder evidence를 Git 기준점으로 보존한다.
+9. TIM3 PB4/PB5를 첫 encoder channel 후보로 설정하고 15 kΩ/channel, common GND, motor-power-off 조건에서 hand-rotation count/sign을 확인한다.
+10. TIM3가 통과하면 TIM5 PA0/PA1에서 두 번째 channel을 반복한다.
+11. 실제 motor 활성화 전에 direction-change code를 post-DIR settle 순서로 수정한다.
+12. UART command state를 검증된 10%-limited PWM/DIR interface에 연결하고 active timeout/DISARM/fault actual-output zero를 검증한다.
 
 완료된 UART bridge 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

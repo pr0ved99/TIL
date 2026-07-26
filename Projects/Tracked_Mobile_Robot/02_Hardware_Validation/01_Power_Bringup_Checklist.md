@@ -76,6 +76,15 @@ Cell voltages if measured: Not measured
 Operator: eyh12
 ```
 
+추가 측정 이력:
+
+```text
+Date: 2026-07-26
+Battery pack voltage: 12.36 V
+Test context: MDD10A power-input and powered/no-motor validation
+Operator: eyh12
+```
+
 ### Fuse and Switch Path
 
 | Check | Expected | Result |
@@ -104,7 +113,7 @@ Power path:
 | Check | Expected | Result |
 | --- | --- | --- |
 | Battery negative path identified | Clear black wire path | Black negative path visible and used as measurement reference, PASS |
-| Motor driver ground path planned | Heavy return path, not signal wire | Not connected in this no-load test; heavy return path still required later |
+| Motor driver ground path planned | Heavy return path, not signal wire | Bench test에서 공통 GND 연결 확인; 최종 대전류 return 배선 굵기와 경로는 TBD |
 | Buck converter negative tied to battery negative | Yes | Not connected in this no-load test |
 | Logic ground reference planned | Common GND where signals cross domains | Not connected in this no-load test; common GND required later |
 
@@ -187,9 +196,9 @@ Condition:
 
 ```text
 MDD10A motor output disconnected
-MDD10A logic input may remain disconnected
 Motor disconnected
-STM32 disconnected
+Initial standalone power check: MDD10A logic input may remain disconnected
+Powered-no-motor follow-up: only the previously validated STM32 signal harness may be connected
 ```
 
 Procedure:
@@ -204,7 +213,25 @@ Measurements:
 
 | Driver | POWER+ to POWER- voltage | Heat/smell/noise | Result |
 | --- | --- | --- | --- |
-| MDD10A | TBD | TBD | TBD |
+| MDD10A | 12.35 V (battery 12.36 V) | Heat, smell, smoke, abnormal noise 없음 | PASS |
+
+2026-07-26 test record:
+
+```text
+Battery pack: 12.36 V
+MDD10A POWER+ to POWER-: 12.35 V
+Observed path difference: 0.01 V
+Motor: disconnected
+Powered-no-motor logic check: performed after the standalone input check
+Abnormal heat/smell/noise/fuse behavior: none observed
+Decision: PASS for MDD10A power-input and powered/no-motor input check
+```
+
+주의:
+
+- `0.01 V`는 이 시험 상태에서 battery와 MDD10A 입력 사이의 전체 경로 차이다. 별도의 fuse voltage-drop 측정값으로 해석하지 않는다.
+- Switch OFF 직후 MDD10A 측에서 `-0.24 V`가 관측됐고 `-0.14 V`를 거쳐 천천히 0 V 방향으로 감소했다. 극성과 ON 전압은 정상이었다. 저장 커패시터 또는 부유 측정점의 영향으로 추정하지만 원인을 확정하지 않았으며, 이 관측만으로 역전원 여부를 판정하지 않는다.
+- 최종 대전류 motor return 배선과 실제 motor 부하에서의 전압 강하는 별도 시험 대상이다.
 
 ## Stop Conditions
 
@@ -233,7 +260,7 @@ Recovery rule:
 | Main switch | PASS | OFF rail measured 0.00 V; ON rail measured 12.49 V |
 | Switched battery rail | PASS | No-load switched rail behaves as expected |
 | Buck input path | TBD | Not connected yet |
-| MDD10A motor power input | TBD | Not connected yet |
+| MDD10A motor power input | PASS | 2026-07-26: battery 12.36 V, driver input 12.35 V, motor disconnected, abnormal symptom 없음 |
 
 ## Next Step
 

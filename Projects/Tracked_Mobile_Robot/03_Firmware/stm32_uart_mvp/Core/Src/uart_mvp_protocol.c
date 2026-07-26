@@ -1,5 +1,6 @@
 #include "uart_mvp_protocol.h"
 
+#include "motor_output.h"
 #include "ring_buffer.h"
 
 #include <stdarg.h>
@@ -236,6 +237,9 @@ static void handle_line(const char *line){
             return;
         }
 
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
         s_state = ROBOT_DISARMED;
         s_last_seq = seq;
         send_ack(seq, "DISARM");
@@ -248,6 +252,9 @@ static void handle_line(const char *line){
             return;
         }
 
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
         s_state = ROBOT_ARMED;
         s_last_seq = seq;
         send_ack(seq, "ARM");
@@ -346,6 +353,7 @@ void uart_mvp_process(void){
     /* Force command velocity to zero when no fresh CMD arrives in time. */
     if(s_state == ROBOT_ARMED &&
        (HAL_GetTick() - s_last_cmd_ms) >= s_cmd_timeout_ms){
+        motor_output_stop_all();
         s_vx_mmps = 0;
         s_w_mradps = 0;
     }

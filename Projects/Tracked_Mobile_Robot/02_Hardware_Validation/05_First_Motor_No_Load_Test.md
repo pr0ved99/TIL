@@ -29,12 +29,16 @@
 
 | Precondition | Source document | Result |
 | --- | --- | --- |
-| Power path checked | `01_Power_Bringup_Checklist.md` | TBD |
-| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | TBD |
-| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | TBD |
-| Encoder signal voltage checked | `04_Encoder_Signal_Safety_Test.md` | TBD |
+| Power path checked | `01_Power_Bringup_Checklist.md` | PASS through MDD10A powered/no-motor input |
+| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
+| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; active timeout/DISARM and timing closure required |
+| Encoder signal voltage checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 15 kΩ load 유지, count/sign TBD |
 | Motor fixed or lifted safely | Physical setup | TBD |
 | 10 A or 15 A fuse selected | Test stage | TBD |
+
+Current gate decision: `NOT READY`
+
+Encoder loaded-voltage gate는 통과했지만 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero, 의도한 post-DIR settle과 hand-rotation count/sign을 확인해야 한다.
 
 ## Wiring Under Test
 

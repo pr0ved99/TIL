@@ -30,7 +30,7 @@ Firmware보다 먼저 확인할 것:
 | 0 | `00_MDD10A_Visual_and_Multimeter_Inspection.md` | MDD10A unpowered visual and hard-short inspection |
 | 1 | `01_Power_Bringup_Checklist.md` | Battery, fuse, switch, wiring, no-load power checks |
 | 2 | `02_Buck_Converter_Calibration_Log.md` | XL4015 calibration and load validation |
-| 3 | `03_MDD10A_Logic_Input_Test.md` | MDD10A PWM/DIR logic behavior before motor power |
+| 3 | `03_MDD10A_Logic_Input_Test.md` | STM32 pin-only 및 MDD10A powered/no-motor PWM/DIR 검증 |
 | 4 | `04_Encoder_Signal_Safety_Test.md` | Encoder voltage and STM32-safe signal validation |
 | 5 | `05_First_Motor_No_Load_Test.md` | One motor, lifted/no-load, low-duty test |
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
@@ -65,10 +65,10 @@ Firmware보다 먼저 확인할 것:
 | Area | Status | Evidence |
 | --- | --- | --- |
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
-| Power path | PASS | `01_Power_Bringup_Checklist.md`, `../assets/photos/power_bringup/2026-07-10_01_power_path_switch_off_0v.jpg`, `../assets/photos/power_bringup/2026-07-10_02_power_path_switch_on_12v49.jpg` |
+| Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
 | Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
-| MDD10A logic input | Not started | TBD |
-| Encoder signal voltage | Not started | TBD |
+| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`, 교정 후 6-step LED 및 final safe-state PASS; exact PWM/deadtime와 active timeout/DISARM은 미검증 |
+| Encoder signal voltage | CONDITIONAL PASS | `04_Encoder_Signal_Safety_Test.md`; MG540-A raw 약 0/5 V, MG540-A/B 15 kΩ signal-to-GND 조건의 exact-recorded HIGH 2.96~2.98 V; LOW·위상·count·방향은 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
@@ -77,10 +77,12 @@ Firmware보다 먼저 확인할 것:
 현재 실행 순서는 다음과 같다.
 
 ```text
-STM32 PWM/DIR safe output 구현
--> MCU 핀 단독 signal-only 검증
--> MDD10A logic input 검증
--> encoder voltage safety
+STM32 PWM/DIR safe output 구현 완료
+-> MCU 핀 단독 static/DMM PASS
+-> MDD10A powered-no-motor static/LED PASS
+-> encoder loaded-voltage safety CONDITIONAL PASS
+-> TIM3 PB4/PB5 hand-rotation count/sign
+-> exact PWM/direction timing 및 active timeout/DISARM 검증
 -> first motor no-load
 -> left/right drivetrain
 ```

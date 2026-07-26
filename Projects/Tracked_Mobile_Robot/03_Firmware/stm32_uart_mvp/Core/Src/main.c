@@ -18,12 +18,14 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "uart_mvp_protocol.h"
+#include "motor_output.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -33,7 +35,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define MOTOR_OUTPUT_PIN_TEST_ENABLED       0U
+#define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
+#define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,18 +48,132 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+static uint8_t s_motor_output_test_step;
 
+static GPIO_PinState s_motor_output_test_button_raw = GPIO_PIN_SET;
+static GPIO_PinState s_motor_output_test_button_stable = GPIO_PIN_SET;
+
+static uint32_t s_motor_output_test_button_change_ms;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 static void Board_Hardware_Init(void);
+static void motor_output_pin_test_process(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+static void motor_output_pin_test_process(void){
+    GPIO_PinState button_now;
+    uint32_t now_ms;
+    HAL_StatusTypeDef status = HAL_OK;
 
+    if (MOTOR_OUTPUT_PIN_TEST_ENABLED == 0U){
+        return;
+    }
+
+    button_now = HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin);
+    now_ms = HAL_GetTick();
+
+    if (button_now != s_motor_output_test_button_raw){
+        s_motor_output_test_button_raw = button_now;
+        s_motor_output_test_button_change_ms = now_ms;
+        return;
+    }
+
+    if (button_now == s_motor_output_test_button_stable){
+        return;
+    }
+
+    if (
+        (now_ms - s_motor_output_test_button_change_ms) <
+        MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS
+    ){
+        return;
+    }
+
+    s_motor_output_test_button_stable = button_now;
+
+    if (button_now != GPIO_PIN_RESET){
+        return;
+    }
+
+    s_motor_output_test_step++;
+
+    switch (s_motor_output_test_step){
+        case 1U:
+            status = motor_output_set_raw(
+                MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET,
+                0U,
+                GPIO_PIN_RESET
+            );
+            HAL_GPIO_WritePin(
+                LD2_GPIO_Port,
+                LD2_Pin,
+                GPIO_PIN_SET
+            );
+            break;
+
+        case 2U:
+            status = motor_output_set_raw(
+                MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
+                GPIO_PIN_SET,
+                0U,
+                GPIO_PIN_RESET
+            );
+            break;
+
+        case 3U:
+            motor_output_stop_all();
+            HAL_GPIO_WritePin(
+                LD2_GPIO_Port,
+                LD2_Pin,
+                GPIO_PIN_RESET
+            );
+            break;
+
+        case 4U:
+            status = motor_output_set_raw(
+                0U,
+                GPIO_PIN_RESET,
+                MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET
+            );
+            HAL_GPIO_WritePin(
+                LD2_GPIO_Port,
+                LD2_Pin,
+                GPIO_PIN_SET
+            );
+            break;
+
+        case 5U:
+            status = motor_output_set_raw(
+                0U,
+                GPIO_PIN_RESET,
+                MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
+                GPIO_PIN_SET
+            );
+            break;
+
+        case 6U:
+        default:
+            motor_output_stop_all();
+            HAL_GPIO_WritePin(
+                LD2_GPIO_Port,
+                LD2_Pin,
+                GPIO_PIN_RESET
+            );
+            s_motor_output_test_step = 0U;
+            break;
+    }
+
+    if (status != HAL_OK){
+        Error_Handler();
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -89,7 +207,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  if (motor_output_init(&htim4) != HAL_OK){
+    Error_Handler();
+  }
   uart_mvp_init(&huart1);
   uart_mvp_start_rx();
   /* USER CODE END 2 */
@@ -101,6 +223,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    motor_output_pin_test_process();
     uart_mvp_process();
   }
   /* USER CODE END 3 */
@@ -177,6 +300,7 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+  motor_output_stop_all();
   __disable_irq();
   while (1)
   {

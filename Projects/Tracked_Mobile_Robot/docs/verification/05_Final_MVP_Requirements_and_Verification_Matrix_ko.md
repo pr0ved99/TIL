@@ -12,7 +12,7 @@
 요구사항 -> 설계/인터페이스 -> 구현 -> 시험 -> 증거 -> 판정 -> 다음 조치
 ```
 
-기준일: 2026-07-24
+기준일: 2026-07-26
 
 ## 판정 용어
 
@@ -68,17 +68,19 @@
 | `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PASS` |
 | `MVP-002` | ESP32 또는 PC가 동일한 protocol의 command source로 동작한다. | MUST | `PASS` |
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` |
-| `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PLANNED` |
+| `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PLANNED` |
 | `MVP-006` | 좌우 모터를 개별 제어하고 방향·채널 mapping을 확인한다. | MUST | `PLANNED` |
-| `MVP-007` | 좌우 엔코더 A/B를 안전한 전압으로 입력하고 signed count를 얻는다. | MUST | `PLANNED` |
+| `MVP-007` | 좌우 엔코더 A/B를 안전한 전압으로 입력하고 signed count를 얻는다. | MUST | `PARTIAL` |
 | `MVP-008` | TEL에 좌우 count 또는 speed estimate가 포함된다. | MUST | `PLANNED` |
 | `MVP-009` | boot/reset/DISARM/timeout/fault에서 실제 motor PWM output이 0이 된다. | MUST | `PARTIAL` |
 | `MVP-010` | 궤도 섀시가 저속 전진, 후진과 제자리 회전을 수행한다. | MUST | `PLANNED` |
 | `MVP-011` | 1 m 직진에서 실제 거리와 엔코더 추정 거리의 오차를 기록한다. | MUST | `PLANNED` |
 | `MVP-012` | README에서 구조, 사용자 역할, 검증 증거, 한계와 다음 단계를 찾을 수 있다. | MUST | `PARTIAL` |
 
-`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero가 검증됐다는 뜻이다. 실제 PWM 핀과 MDD10A 출력이 0이 되는 검증은 아직 남아 있다.
+`MVP-003`의 현재 `PARTIAL`에는 2026-07-26 battery 12.36 V, MDD10A input 12.35 V powered/no-motor power check `PASS`가 포함된다. 실제 board power/back-power와 low-voltage stop policy는 아직 남아 있다.
+
+`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero와 실제 PWM/DIR 핀의 boot/idle/test-disabled zero가 검증됐다는 뜻이다. Active PWM 상태에서 timeout/DISARM/fault가 실제 PWM 핀과 MDD10A 출력을 0으로 만드는 검증은 아직 남아 있다.
 
 ## 하위 요구사항
 
@@ -117,21 +119,28 @@
 
 | ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
 | --- | --- | --- | --- |
-| `REQ-MOTOR-001` | STM32는 좌우 채널별 PWM과 DIR을 생성하고 channel mapping을 문서화해야 한다. | MUST | `PLANNED` |
-| `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PLANNED` |
-| `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PLANNED` |
-| `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `PLANNED` |
+| `REQ-MOTOR-001` | STM32는 좌우 채널별 PWM과 DIR을 생성하고 channel mapping을 문서화해야 한다. | MUST | `PASS` |
+| `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PARTIAL` |
+| `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PARTIAL` |
+| `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `CONDITIONAL PASS` |
 | `REQ-MOTOR-005` | 한쪽 모터 no-load에서 전진·후진, timeout/DISARM stop, 전류·열·소음 관찰이 모두 통과해야 한다. | MUST | `PLANNED` |
 
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
+
+- `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다. 실제 차량 left/right와 forward/reverse 의미는 motor 장착 후 확정한다.
+- `REQ-MOTOR-002 PARTIAL`: boot/idle/test-disabled zero는 확인했지만 active timeout/DISARM/fault output zero는 미검증이다.
+- `REQ-MOTOR-003 PARTIAL`: 현재 코드는 `PWM 0 -> 1 ms wait -> DIR -> 즉시 PWM` 순서다. Test path는 비활성화돼 있지만 실제 motor 활성화 전에 의도한 post-DIR settle 순서로 수정하고 timing을 검증해야 한다.
+- `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw test는 10% 제한으로 완료했고 매크로를 `0U`로 복귀했다. 정확한 duty 파형과 실제 motor 단계의 제한 해제 조건은 남아 있다.
 
 ### 엔코더와 telemetry
 
 | ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
 | --- | --- | --- | --- |
-| `REQ-ENC-001` | STM32 연결 전에 encoder 전원, A/B high voltage와 output type을 측정해 3.3 V input 안전성을 판정해야 한다. | MUST | `PLANNED` |
+| `REQ-ENC-001` | STM32 연결 전에 encoder 전원, A/B high voltage와 output type을 측정해 3.3 V input 안전성을 판정해야 한다. | MUST | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | 좌우 encoder를 timer encoder mode로 읽고 방향에 따라 signed count가 일관돼야 한다. | MUST | `PLANNED` |
 | `REQ-ENC-003` | 일정 주기 count delta를 CPS 또는 wheel speed로 변환해 TEL에 포함해야 한다. | MUST | `PLANNED` |
+
+`REQ-ENC-001 CONDITIONAL PASS`는 MG540-A에서 관찰한 raw 약 0/5 V A/B를 직접 연결해도 된다는 뜻이 아니다. MG540-A/B의 A/B 각각에 15 kΩ signal-to-GND load를 적용했을 때 exact-recorded HIGH가 2.96~2.98 V였다는 제한 조건에서만 첫 hand-rotation STM32 시험으로 진행한다. 정확한 LOW, pulse shape, A/B phase와 회로형식은 아직 계측하지 않았다.
 
 ### 주행과 odometry
 
@@ -156,9 +165,9 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | `REQ-POWER-004` | fault model | alarm/ADC and stop policy | `T-PWR-004` low-voltage behavior | TBD | `PLANNED` |
 | `REQ-MECH-001` | adapter layout, Rev A preflight | Rev A release | `T-MECH-001` 1:1/vector preflight | release hashes, PDF analysis, user comparison | `PASS` |
 | `REQ-MECH-002~003` | adapter layout | fabricated plate and spacers | `T-MECH-002` adapter fit check | measurements, assembly photos | `BLOCKED` |
-| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | scope/logic/DMM capture, log | `PLANNED` |
+| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), DMM 관측, [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
 | `REQ-MOTOR-005` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | video, current/heat log | `PLANNED` |
-| `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | DMM/scope log | `PLANNED` |
+| `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
 | `REQ-ENC-002~003` | timer encoder and odometry design | TIM3/TIM5, telemetry | `T-ENC-002` count/sign/speed telemetry | serial log, count table | `PLANNED` |
 | `REQ-DRIVE-001~003` | state machine, kinematics | dual motor path | `T-DRIVE-001` left/right drivetrain | video, mapping and fault log | `PLANNED` |
 | `REQ-ODO-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
@@ -173,19 +182,19 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | 3 | `T-PWR-001` | fused/switched power path | 무전원 검사 | `PASS` |
 | 4 | `T-PWR-002` | XL4015 bench load | `T-PWR-001` | `CONDITIONAL PASS` |
 | 5 | `T-MECH-001` | Rev A 1:1/vector preflight | CAD release | `PASS` |
-| 6 | `T-MOTOR-001` | STM32 PWM/DIR 핀 단독 시험 | pin/frequency/channel 결정, motor와 driver power 분리 | `NEXT` |
-| 7 | `T-MOTOR-002` | MDD10A logic input 시험 | `T-MOTOR-001 PASS` | `PLANNED` |
+| 6 | `T-MOTOR-001` | STM32 PWM/DIR 핀 단독 시험 | pin/frequency/channel 결정, motor와 driver power 분리 | `PARTIAL` |
+| 7 | `T-MOTOR-002` | MDD10A logic input 시험 | `T-MOTOR-001` static routing 확인 | `PARTIAL` |
 | 8 | `T-PWR-003` | 실제 보드 power/back-power 시험 | board power policy 확정 | `PLANNED` |
 | 9 | `T-MECH-002` | 제작품 fit check | Rev A 입고 | `BLOCKED` |
-| 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `PLANNED` |
+| 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `CONDITIONAL PASS` |
 | 11 | `T-MOTOR-003` | 한쪽 motor lifted/no-load | `T-MOTOR-002`, 전원/비상정지, 기구 안전 | `PLANNED` |
-| 12 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`, motor 회전 검증 | `PLANNED` |
+| 12 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `NEXT` |
 | 13 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | single motor와 양 encoder PASS | `PLANNED` |
 | 14 | `T-PWR-004` | 저전압 경고·정지 | voltage rule과 measurement path | `PLANNED` |
 | 15 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
 | 16 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
 
-제작품 입고 대기 중에는 `T-MOTOR-001`, `T-MOTOR-002` 준비와 `T-ENC-001`의 encoder 식별·측정 계획을 병행할 수 있다. 실제 motor power 투입은 관련 선행 gate가 모두 통과한 뒤에만 한다.
+`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED 범위는 통과했지만 정확한 PWM 파형, direction timing과 active timeout/DISARM shutdown이 남아 있어 `PARTIAL`이다. `T-ENC-001`은 15 kΩ/channel 조건에서 `CONDITIONAL PASS`했으므로 다음 bench 작업은 TIM3 PB4/PB5의 motor-power-off hand-rotation count다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
 
 ## 최종 인수 규칙
 

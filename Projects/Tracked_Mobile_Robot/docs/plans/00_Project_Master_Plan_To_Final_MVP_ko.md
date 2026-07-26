@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-07-24 V-model refresh
-- 현재 실행 위치: `G3 STM32 PWM/DIR signal-only verification` 준비
+- Revision: 2026-07-26 motor-output and encoder-safety checkpoint
+- 현재 실행 위치: `G3/G4A static validation PARTIAL`, `G5 encoder loaded-voltage CONDITIONAL PASS`; TIM3 hand-count와 active-output safety closure가 다음 작업
 - 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -84,7 +84,7 @@ PC 또는 ESP32의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 2026-07-24 현재 기준선
+## 2026-07-26 현재 기준선
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
@@ -95,13 +95,13 @@ PC 또는 ESP32의 속도 명령을 받아
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
 | Adapter plate Rev A release | `PASS` | A4 1:1 user comparison, vector/scale preflight, release hash | 업체 주문 접수 |
 | Adapter plate fabricated fit | `BLOCKED` | 제작품 미입고 | 입고 후 fit check |
-| STM32 PWM/DIR | `PLANNED / NEXT` | TIM4/PB6/PB7와 PC8/PC9는 후보일 뿐 실사용 설정·코드 없음 | CubeMX와 핀 단독 시험 |
-| MDD10A logic input | `NOT TESTED` | 시험표의 모든 결과 TBD | PWM/DIR 핀 PASS 후 연결 |
-| Encoder | `NOT TESTED` | output voltage, type, CPR 미확정 | STM32 연결 전 계측 |
+| STM32 PWM/DIR | `PARTIAL` | PB6/PB7 PWM, PC8/PC9 DIR 구현과 pin-only DMM/static routing PASS | 실제 20 kHz/10%, 1 ms deadtime와 active shutdown 계측 |
+| MDD10A logic input | `PARTIAL` | powered/no-motor 6-step LED, 교정 후 channel routing과 final all-off PASS | active timeout/DISARM 및 timing closure |
+| Encoder | `PARTIAL` | MG540-A/B rail 및 15 kΩ loaded HIGH 2.96~2.98 V; exact LOW·위상·count·부호·CPR 미확정 | TIM3 PB4/PB5 hand-rotation count |
 | First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | 좌우 mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
-전체 설계·통신 준비도는 높지만 실제 구동계 통합은 아직 시작 전이다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
+정적 motor-output 및 powered/no-motor 통합은 시작됐지만 실제 motor 회전과 timing/active safety 검증은 아직 시작하지 않았다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
 
 ## Gate 로드맵
 
@@ -217,23 +217,23 @@ RELEASE PASS / ORDER NOT SUBMITTED / FABRICATED FIT BLOCKED
 
 - MDD10A와 motor power를 연결하기 전에 STM32 자체 motor-output contract를 구현·계측한다.
 
-이 단계가 현재 바로 이어갈 작업이다.
+정적/DMM 범위는 2026-07-26에 완료했으며 timing과 active safety 항목이 남아 있다.
 
 먼저 확정할 결정:
 
-- left/right MDD10A channel mapping
+- MDD10A channel 1/2의 차량 left/right mapping
 - 첫 motor 후보
 - PWM frequency
 - direction polarity와 vehicle-forward 정의
 
-현재 pin candidate:
+Bench-confirmed pin mapping:
 
-| Function | Candidate |
+| Function | Mapping |
 | --- | --- |
-| Left PWM | `PB6 / TIM4_CH1` |
-| Right PWM | `PB7 / TIM4_CH2` |
-| Left DIR | `PC8` |
-| Right DIR | `PC9` |
+| Channel 1 PWM | `PB6 / TIM4_CH1` |
+| Channel 2 PWM | `PB7 / TIM4_CH2` |
+| Channel 1 DIR | `PC8` |
+| Channel 2 DIR | `PC9` |
 
 구현 순서:
 
@@ -243,6 +243,8 @@ RELEASE PASS / ORDER NOT SUBMITTED / FABRICATED FIT BLOCKED
 4. 5~10% test duty cap을 적용한다.
 5. `PWM 0 -> DIR 변경 -> PWM 재개` 순서를 구현한다.
 6. DISARMED, timeout와 fault path가 실제 compare value를 0으로 만드는 함수를 공유하게 한다.
+
+현재 checkpoint의 구현은 `PWM 0 -> 1 ms wait -> DIR 변경 -> 즉시 PWM 재개` 순서다. Test macro가 꺼져 있고 UART CMD가 active motor output에 연결되지 않아 기준점으로는 보존하지만, 실제 motor를 활성화하기 전에 의도한 post-DIR settle 순서로 수정한다.
 
 시험 조건:
 
@@ -262,7 +264,7 @@ Exit criteria:
 상태:
 
 ```text
-NEXT
+PARTIAL - static/DMM routing PASS; exact waveform, deadtime and active shutdown pending
 ```
 
 ### G4. Driver, power and mechanical interface integration
@@ -277,6 +279,9 @@ NEXT
 - PWM1/DIR1, PWM2/DIR2 mapping을 확인한다.
 - motor terminal은 비운 상태로 boot, low-duty, direction, timeout/DISARM을 시험한다.
 - 예상 밖 back-power, 발열 또는 boot active PWM이 보이면 즉시 중단한다.
+- 2026-07-26 battery 12.36 V, MDD10A input 12.35 V에서 powered/no-motor 6-step LED sequence를 통과했다.
+- 양 채널 PWM/DIR swap을 진단·교정하고 `PB6->PWM1`, `PC8->DIR1`, `PB7->PWM2`, `PC9->DIR2`를 bench mapping으로 고정했다.
+- Final test macro `0U`에서 all-off를 확인했지만 active timeout/DISARM는 아직 실행하지 않았다.
 
 #### G4B. Board power integration
 
@@ -291,7 +296,7 @@ NEXT
 
 Exit criteria:
 
-- MDD10A logic test PASS
+- MDD10A logic test의 active safety와 timing 항목까지 PASS
 - board power/back-power policy와 측정 PASS
 - fabricated plate fit와 insulation PASS
 - final wiring diagram 또는 사진 기반 connection map 작성
@@ -299,7 +304,7 @@ Exit criteria:
 상태:
 
 ```text
-PLANNED - G3와 제작품 입고에 의존
+PARTIAL - G4A static powered/no-motor PASS; G4A active safety, G4B와 G4C pending
 ```
 
 ### G5. Encoder safety and first motor no-load
@@ -310,14 +315,15 @@ PLANNED - G3와 제작품 입고에 의존
 
 실행 순서:
 
-1. 사용할 motor와 encoder wire를 식별한다.
-2. STM32를 연결하지 않고 encoder supply, A/B high voltage와 output type을 측정한다.
-3. 필요 시 level shifting 또는 pull-up 방식을 정한다.
-4. 한쪽 motor만 MDD10A에 연결하고 track/wheel을 완전히 띄운다.
-5. output disabled 상태부터 확인한다.
-6. 5~10% forward pulse, zero, reverse pulse를 짧게 시험한다.
-7. timeout과 DISARM stop을 실제 회전 상태에서 확인한다.
-8. current, heat, smell, noise와 vibration을 기록한다.
+1. 사용할 motor와 encoder wire를 식별한다. `MG540-A/B`와 six-pad map은 완료했다.
+2. STM32를 연결하지 않고 encoder supply와 A/B voltage를 측정한다. 15 kΩ loaded-voltage 범위는 완료했다.
+3. 각 A/B에 15 kΩ signal-to-GND load와 입력 series resistor를 적용한다.
+4. Motor power 없이 TIM3 PB4/PB5 hand-rotation count/sign을 확인하고, 이후 TIM5 PA0/PA1을 반복한다.
+5. 한쪽 motor만 MDD10A에 연결하고 track/wheel을 완전히 띄운다.
+6. output disabled 상태부터 확인한다.
+7. 5~10% forward pulse, zero, reverse pulse를 짧게 시험한다.
+8. timeout과 DISARM stop을 실제 회전 상태에서 확인한다.
+9. current, heat, smell, noise와 vibration을 기록한다.
 
 Exit criteria:
 
@@ -329,7 +335,7 @@ Exit criteria:
 상태:
 
 ```text
-PLANNED
+PARTIAL - encoder loaded-voltage gate CONDITIONAL PASS; timer count/sign and motor no-load pending
 ```
 
 ### G6. Encoder telemetry and dual drivetrain integration
@@ -433,21 +439,23 @@ Mechanical branch
 Rev A order -> vendor confirmation -> fabrication -> fit check -----+
                                                                |
 Control branch                                                 v
-pin/frequency freeze -> PWM/DIR implementation -> pin test -> MDD logic
+pin/frequency config -> static pin PASS -> MDD static PASS -> timing/active safety
                                                                |
 Power/encoder branch                                           v
 board power policy -> encoder identification/safe voltage -> final integration
 ```
 
-발주가 끝난 직후 우선순위:
+2026-07-26 이후 우선순위:
 
-1. order ID, 실제 제출 revision, 재질·공차와 납기를 기록한다.
-2. PWM frequency, channel mapping과 첫 motor를 확정한다.
-3. CubeMX TIM4 CH1/CH2, PC8/PC9 설정을 시작한다.
-4. 사용자가 직접 타이핑해 `motor_output`의 최소 safe interface를 만든다.
-5. motor와 main power 없이 actual PWM/DIR 핀을 계측한다.
-6. G3 PASS 후 MDD10A logic test를 한다.
-7. 제작품 입고 시 control 작업을 폐기하지 않고 별도 fit-check branch를 수행한다.
+1. 현재 CubeMX/firmware와 encoder loaded-voltage evidence를 Git 기준점으로 보존한다.
+2. TIM3 PB4/PB5를 첫 encoder channel로 설정하고 15 kΩ/channel, common GND, motor-power-off 조건에서 hand-rotation count/sign을 확인한다.
+3. TIM3가 통과하면 TIM5 PA0/PA1에서 두 번째 channel을 반복한다.
+4. 실제 motor 활성화 전에 direction-change code를 의도한 post-DIR settle 순서로 고치고, 계측 장비가 준비되면 actual 20 kHz/10% PWM과 timing을 확인한다.
+5. UART command state를 10%-limited `motor_output` interface에 연결한다.
+6. Active PWM 상태에서 timeout/DISARM/fault actual output zero를 pin과 MDD10A LED로 확인한다.
+7. 업체 주문이 가능해지면 order ID, 실제 제출 revision, 재질·공차와 납기를 기록한다.
+8. 제작품 입고 시 control 작업과 별도로 fit-check branch를 수행한다.
+9. 위 safety gate를 모두 통과한 뒤 first motor lifted/no-load로 진행한다.
 
 ## 사용자 직접 타이핑 학습 방식
 
@@ -542,8 +550,9 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [x] XL4015 x2 bench load evidence
 - [x] Adapter plate Rev A release와 preflight evidence
 - [ ] Adapter plate fabricated fit evidence
-- [ ] PWM/DIR actual pin evidence
-- [ ] MDD10A logic input evidence
+- [x] PWM/DIR actual pin static/DMM evidence
+- [x] MDD10A logic input static/LED evidence
+- [ ] PWM frequency/duty와 direction deadtime instrument evidence
 - [ ] board power/back-power rule와 measurement
 - [ ] first motor no-load report
 - [ ] encoder voltage, count와 speed telemetry evidence
