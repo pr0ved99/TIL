@@ -5,15 +5,15 @@
 이 문서는 NUCLEO-F446RE 기반 궤도형 모바일 로봇 MVP를 위한 첫 번째 핀 배정
 후보를 제안한다.
 
-이 문서는 최종 핀맵이 아니다. 다음 자료를 기반으로 만든 CubeMX 검증 전
-후보안이다.
+이 문서는 전체 최종 핀맵이 아니다. 후보안에서 시작했으며, 현재 CubeMX와 bench에서
+확인된 항목은 표와 각 절에 `validated`로 구분해 표시한다.
 
 - STM32F446xC/E 데이터시트
 - UM1724 STM32 Nucleo-64 boards user manual
 - 이전 MCU 주변장치 분석 문서
 
-최종 핀맵은 펌웨어 구현 전에 반드시 CubeMX와 실제 NUCLEO-F446RE 회로도를
-기준으로 검증해야 한다.
+아직 `Candidate`인 항목은 해당 펌웨어 구현 전에 CubeMX와 실제 NUCLEO-F446RE
+회로도를 기준으로 검증해야 한다.
 
 ## 설계 목표
 
@@ -68,10 +68,10 @@ UM1724에서 사용한 중요한 사실:
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
 | 왼쪽 모터 PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
 | 오른쪽 모터 PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
-| 왼쪽 엔코더 A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Candidate |
-| 왼쪽 엔코더 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Candidate |
-| 오른쪽 엔코더 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Candidate |
-| 오른쪽 엔코더 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Candidate |
+| Encoder channel 1 A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Motor-power-off validated |
+| Encoder channel 1 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Motor-power-off validated |
+| Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Candidate; TIM5 pending |
+| Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Candidate; TIM5 pending |
 | 배터리 전압 ADC | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Candidate |
 | 왼쪽 모터 direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
 | 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
@@ -145,9 +145,21 @@ PB6/PB7은 TIM4_CH1/TIM4_CH2에 배정한다.
 
 ### Encoders
 
-왼쪽 엔코더는 PB4/PB5의 TIM3_CH1/TIM3_CH2를 사용한다.
+첫 번째 encoder input은 PB4/PB5의 TIM3_CH1/TIM3_CH2를 사용한다.
 
-오른쪽 엔코더는 PA0/PA1의 TIM5_CH1/TIM5_CH2를 사용한다.
+두 번째 encoder input 후보는 PA0/PA1의 TIM5_CH1/TIM5_CH2다.
+
+2026-07-26 motor-power-off hand-rotation 시험에서 `PB4 = TIM3_CH1/A`,
+`PB5 = TIM3_CH2/B`, `TIM_ENCODERMODE_TI12` x4 quadrature 구성을
+MG540-A/B에 순차 적용해 count 증감과 정지 안정성을 확인했다. 이 결과는
+TIM3 bench input을 검증한 것이며 차량 left/right assignment를 확정하지 않는다.
+
+시험한 각 A/B 입력은 다음 조건을 사용했다.
+
+```text
+encoder signal -> 1 kΩ series -> MCU input node
+MCU input node -> 15 kΩ -> common GND
+```
 
 이유:
 
@@ -164,8 +176,8 @@ PB6/PB7은 TIM4_CH1/TIM4_CH2에 배정한다.
 
 확인:
 
-- PB4/PB5에서 TIM3 encoder mode 확인
-- PA0/PA1에서 TIM5 encoder mode 확인
+- `PASS`: PB4/PB5에서 TIM3 TI12 x4 encoder mode motor-power-off 확인
+- `PENDING`: PA0/PA1에서 TIM5 encoder mode 확인
 - STM32에 연결하기 전에 encoder signal voltage 확인
 
 ### Battery Voltage ADC
@@ -244,27 +256,27 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 | USART2 PA2/PA3 | TIM2/TIM5 CH3/CH4 대체 기능과 겹치지만 이번 배정에서는 사용하지 않는다. |
 | I2C1 PB8/PB9 | TIM4_CH3/CH4 대체 기능과 겹치지만 PWM은 TIM4_CH1/CH2를 사용한다. |
 | TIM4 PB6/PB7 PWM | PB6은 I2C1_SCL 또는 USART1_TX 후보이기도 하지만 이번 배정에서는 사용하지 않는다. |
-| TIM3 PB4/PB5 encoder | CubeMX 확인 필요. SWD를 PA13/PA14에 유지하면 사용 가능할 가능성이 높다. |
-| TIM5 PA0/PA1 encoder | A0/A1 ADC 가능 핀을 사용한다. |
+| TIM3 PB4/PB5 encoder | CubeMX 구성과 motor-power-off hand rotation에서 TI12 x4 동작을 확인했다. SWD는 PA13/PA14에 유지한다. |
+| TIM5 PA0/PA1 encoder | A0/A1 ADC 가능 핀을 사용한다. 실제 TIM5 시험은 pending이다. |
 | PA4 ADC | USART2_CK/SPI 기능도 있지만 이번 배정에서는 필요 없다. |
 | PA13/PA14 | SWD용으로 보존하고 로봇 기능에 배정하지 않는다. |
 
 ## 검증 체크리스트
 
-펌웨어 구현 전에 수행할 것:
+현재 검증 상태:
 
-1. STM32F446RETx 기준 CubeMX project를 만든다.
-2. USART2를 PA2/PA3에 활성화한다.
-3. I2C1을 PB8/PB9에 활성화한다.
-4. TIM4 PWM을 PB6/PB7에 활성화한다.
-5. TIM3 encoder mode를 PB4/PB5에 활성화한다.
-6. TIM5 encoder mode를 PA0/PA1에 활성화한다.
-7. PA4 ADC를 활성화한다.
-8. PC8, PC9를 MDD10A DIR GPIO output으로 설정한다.
-9. 필요 시 PC6, PC5를 optional power gate/brake GPIO로만 설정한다.
-10. PA13/PA14의 SWD를 유지한다.
-11. 모든 warning과 pin conflict를 확인한다.
-12. 검증 후 `.ioc` 파일을 생성하고 commit한다.
+1. `[x]` STM32F446RETx 기준 CubeMX project 생성
+2. `[x]` USART2 PA2/PA3 활성화와 PC UART 사용
+3. `[ ]` I2C1 PB8/PB9 활성화와 BNO08x 확인
+4. `[x]` TIM4 PWM PB6/PB7 활성화와 static motor-output 시험
+5. `[x]` TIM3 encoder mode PB4/PB5 활성화와 motor-off hand-count
+6. `[ ]` TIM5 encoder mode PA0/PA1 활성화와 두 번째 channel 시험
+7. `[ ]` PA4 ADC 활성화와 divider 시험
+8. `[x]` PC8/PC9 MDD10A DIR GPIO 설정과 static routing 시험
+9. `[ ]` 필요 시 PC6/PC5 optional power gate/brake 회로 결정
+10. `[x]` PA13/PA14 SWD 유지
+11. `[ ]` 남은 후보까지 포함한 최종 warning/pin-conflict review
+12. `[x]` 현재 검증 범위의 `.ioc` 생성 및 Git 추적
 
 벤치 검증 순서:
 
@@ -278,7 +290,8 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 
 ## 1차 결정
 
-이 후보안은 첫 CubeMX 검증 단계에 적합하다.
+이 후보안의 USART/PWM/DIR/TIM3 범위는 CubeMX와 제한 bench 시험까지 진행했고,
+I2C1/TIM5/ADC와 차량 최종 mapping은 아직 후보 상태다.
 
 가장 중요한 설계 선택:
 
@@ -291,9 +304,10 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 
 ## 다음 단계
 
-다음 단계는 데이터시트를 더 읽는 것이 아니라 검증이다.
+다음 단계는 남은 후보를 순서대로 검증하는 것이다.
 
-1. 이 후보안 기반으로 CubeMX `.ioc` pinout을 만든다.
-2. CubeMX 화면 또는 설정 내용을 증거로 남긴다.
-3. 검증된 pinout으로 이 문서를 업데이트한다.
-4. 탈락한 후보는 decision log에 남긴다.
+1. TIM5 `PA0/PA1` encoder mode와 motor-off hand-count를 확인한다.
+2. I2C1 `PB8/PB9`와 PA4 ADC가 기존 확정 핀과 충돌하지 않는지 CubeMX에서 확인한다.
+3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
+4. 차량 장착 후 encoder channel left/right와 vehicle-forward sign을 확정한다.
+5. 탈락한 후보는 decision log에 남긴다.

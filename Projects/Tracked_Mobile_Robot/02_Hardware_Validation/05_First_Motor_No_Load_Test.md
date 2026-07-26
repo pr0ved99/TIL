@@ -32,13 +32,14 @@
 | Power path checked | `01_Power_Bringup_Checklist.md` | PASS through MDD10A powered/no-motor input |
 | Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
 | MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; active timeout/DISARM and timing closure required |
-| Encoder signal voltage checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 15 kΩ load 유지, count/sign TBD |
+| Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
+| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3 PB4/PB5 TI12 x4에서 두 bench motor 순차 PASS; TIM5와 vehicle sign은 pending |
 | Motor fixed or lifted safely | Physical setup | TBD |
 | 10 A or 15 A fuse selected | Test stage | TBD |
 
 Current gate decision: `NOT READY`
 
-Encoder loaded-voltage gate는 통과했지만 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero, 의도한 post-DIR settle과 hand-rotation count/sign을 확인해야 한다.
+Encoder loaded-voltage gate와 TIM3 motor-power-off hand-rotation count/sign은 통과했다. 그러나 이 결과는 powered-motor noise 또는 vehicle-forward sign을 입증하지 않는다. 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero와 의도한 post-DIR settle을 확인해야 한다.
 
 ## Wiring Under Test
 
@@ -55,7 +56,8 @@ Encoder loaded-voltage gate는 통과했지만 실제 motor 연결 전 active PW
 STM32 PWM -> MDD10A PWM1 or PWM2
 STM32 DIR -> MDD10A DIR1 or DIR2
 Motor leads -> MDD10A selected channel output
-Encoder A/B -> STM32 timer encoder inputs if validated safe
+Encoder A/B -> 1 kΩ series -> STM32 timer input node
+Each STM32 input node -> 15 kΩ -> common GND
 ```
 
 ## Test Configuration
@@ -106,6 +108,7 @@ Procedure:
 3. Stop command.
 4. Confirm motor stops.
 5. Record encoder sign if connected.
+6. Compare count change with physical motion and record false counts/noise during and immediately after the pulse.
 
 | Item | Expected | Observed |
 | --- | --- | --- |
@@ -113,6 +116,7 @@ Procedure:
 | DIRx | Forward mapping | TBD |
 | Motor direction | Forward candidate | TBD |
 | Encoder count sign | Expected positive after mapping | TBD |
+| Encoder false count/noise | No unexplained jump while stationary | TBD |
 | Stop behavior | PWM zero | TBD |
 
 ## Test 3: Low-Duty Reverse Pulse
@@ -123,6 +127,7 @@ Procedure:
 2. Stop command.
 3. Confirm motor stops.
 4. Record encoder sign if connected.
+5. Compare count change with physical motion and record false counts/noise during and immediately after the pulse.
 
 | Item | Expected | Observed |
 | --- | --- | --- |
@@ -130,6 +135,7 @@ Procedure:
 | DIRx | Reverse mapping | TBD |
 | Motor direction | Reverse candidate | TBD |
 | Encoder count sign | Opposite of forward | TBD |
+| Encoder false count/noise | No unexplained jump while stationary | TBD |
 | Stop behavior | PWM zero | TBD |
 
 ## Test 4: Timeout Stop

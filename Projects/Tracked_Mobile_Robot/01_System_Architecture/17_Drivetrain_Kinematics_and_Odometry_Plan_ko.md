@@ -84,6 +84,13 @@ positive w  -> robot turns left
 
 Encoder sign은 이 convention이 성립하도록 조정해야 한다.
 
+### Bench encoder sign convention
+
+2026-07-26 motor-power-off 시험에서는 output shaft end를 정면에서 본 기준으로
+clockwise 회전 시 TIM3 count가 증가하고 counter-clockwise 회전 시 감소했다.
+이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench wiring 결과일 뿐이며,
+차량 forward와 left/right encoder sign은 motor 장착 후 별도로 확정한다.
+
 ## 3. Differential Drive Approximation
 
 정의:
@@ -135,13 +142,27 @@ distance = delta_count * distance_per_count
 
 | Parameter | How to obtain |
 | --- | --- |
-| Encoder counts per motor revolution | Motor/encoder datasheet 또는 bench measurement |
+| Encoder counts per output revolution | Motor/encoder datasheet와 반복 bench/주행 measurement |
 | Gear ratio | Motor model datasheet 또는 manual count test |
 | Output sprocket circumference | 직접 측정 또는 track movement로 추정 |
 | Effective track width | Chassis 측정, rotation test로 tune |
-| Encoder sign | Low-speed forward command로 확인 |
+| Encoder sign | Bench sign과 별개로 low-speed vehicle-forward command에서 확인 |
 
 Motor label의 nominal 정보만으로 정확한 odometry가 가능하다고 가정하지 않는다.
+
+2026-07-26 TIM3 TI12 x4 hand-rotation에서 얻은 provisional 값은 다음과 같다.
+
+| Bench motor | Shaft-end-view CW | Shaft-end-view CCW | Provisional counts/output rev |
+| --- | ---: | ---: | ---: |
+| MG540-A | 약 +1560 | 약 -(1560~1570) | 약 1560 |
+| MG540-B | +1562 | -1560 | 약 1560 |
+
+`1560 counts/output rev`는 motor-power-off 1회전 수동 측정의 provisional scale이다.
+Powered/noise 조건, 반복 측정, TIM5와 실제 drivetrain scale 검증 전에는 final
+odometry constant로 고정하지 않는다. Raw serial log는 MG540-A의 정지 안정성과
+방향별 count 증감만 직접 보여 주며, 위 1회전 수치와 MG540-B 결과는 같은 bench
+session의 별도 측정 보고다. Evidence는
+[`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)에 정리한다.
 
 ## 5. Speed Estimation
 

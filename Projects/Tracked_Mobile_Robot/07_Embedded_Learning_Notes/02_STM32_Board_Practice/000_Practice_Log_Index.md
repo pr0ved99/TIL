@@ -15,7 +15,7 @@
 | No. | Practice | Board | Status | Notes |
 | --- | --- | --- | --- | --- |
 | 001 | USART2 RX interrupt + ring buffer | NUCLEO-F446RE | Planned | PA2/PA3, 115200 8N1 |
-| 002 | TIM encoder mode bring-up | NUCLEO-F446RE | Planned | PB4/PB5 TIM3, PA0/PA1 TIM5 |
+| 002 | TIM encoder mode bring-up | NUCLEO-F446RE | Partial | PB4/PB5 TIM3 motor-power-off PASS; PA0/PA1 TIM5와 powered-noise pending |
 | 003 | TIM4 PWM output measurement | NUCLEO-F446RE | Planned | PB6/PB7, MDD10A PWM input before motor power |
 | 004 | GPIO DIR output with BSRR | NUCLEO-F446RE | Planned | PC8/PC9, PWM zero before DIR change |
 | 005 | I2C IMU bus scan and BNO08x read | NUCLEO-F446RE | Planned | PB8/PB9 I2C1 |

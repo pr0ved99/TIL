@@ -34,8 +34,9 @@ Last updated: 2026-07-26
 [PASS] ESP32-STM32 UART bridge and scripted command safety
 [PASS] XL4015 #1/#2 bench load validation
 [PARTIAL] STM32 PWM/DIR + MDD10A powered/no-motor static validation
-[CONDITIONAL PASS] MG540-A/B encoder loaded-voltage gate
--> CURRENT NEXT: TIM3 PB4/PB5 motor-power-off hand-rotation count
+[PARTIAL] MG540-A/B encoder conditioning + TIM3 motor-off hand-count
+-> CURRENT NEXT: TIM5 PA0/PA1 motor-power-off hand-count
+-> wrap-safe count delta / accumulator / speed telemetry module
 -> direction-change sequence correction and active timeout/DISARM output-zero
 -> STM32 UART CMD path를 PWM/DIR output path와 연결
 ```
@@ -68,7 +69,7 @@ tracked chassis hole-pattern DWG import
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
 - STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Exact PWM/timing과 active timeout/DISARM output-zero는 아직 `PARTIAL`이다.
-- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. MG540-A/B의 15 kΩ/channel loaded HIGH 2.96~2.98 V 조건에서 다음 단계는 TIM3 PB4/PB5 hand-rotation count다.
+- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V와 TIM3 PB4/PB5의 두 motor 순차 hand-count를 통과했다. 출력축 1회전당 1560 count는 잠정값이며 TIM5, powered-noise와 차량 sign은 미검증이다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
 - 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 
@@ -264,7 +265,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md) | ESP32 scripted safety sequence, timeout-zero, and UART bridge closeout |
 | [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md) | Adapter plate Draft, electronics placement, Onshape Version, and mechanical-layout evidence |
 | [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Rev A preflight/vendor blocker and project-wide V-model roadmap refresh |
-| [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md) | STM32/MDD10A static routing and MG540 encoder loaded-voltage safety checkpoint |
+| [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md) | STM32/MDD10A static routing, encoder conditioning, and TIM3 hand-count checkpoint |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
 | [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Current bridge closeout handoff and MDD10A logic-test continuation point |

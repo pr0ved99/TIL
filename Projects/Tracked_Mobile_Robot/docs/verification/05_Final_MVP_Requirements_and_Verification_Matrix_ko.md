@@ -137,10 +137,12 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
 | --- | --- | --- | --- |
 | `REQ-ENC-001` | STM32 연결 전에 encoder 전원, A/B high voltage와 output type을 측정해 3.3 V input 안전성을 판정해야 한다. | MUST | `CONDITIONAL PASS` |
-| `REQ-ENC-002` | 좌우 encoder를 timer encoder mode로 읽고 방향에 따라 signed count가 일관돼야 한다. | MUST | `PLANNED` |
+| `REQ-ENC-002` | 좌우 encoder를 timer encoder mode로 읽고 방향에 따라 signed count가 일관돼야 한다. | MUST | `PARTIAL` |
 | `REQ-ENC-003` | 일정 주기 count delta를 CPS 또는 wheel speed로 변환해 TEL에 포함해야 한다. | MUST | `PLANNED` |
 
-`REQ-ENC-001 CONDITIONAL PASS`는 MG540-A에서 관찰한 raw 약 0/5 V A/B를 직접 연결해도 된다는 뜻이 아니다. MG540-A/B의 A/B 각각에 15 kΩ signal-to-GND load를 적용했을 때 exact-recorded HIGH가 2.96~2.98 V였다는 제한 조건에서만 첫 hand-rotation STM32 시험으로 진행한다. 정확한 LOW, pulse shape, A/B phase와 회로형식은 아직 계측하지 않았다.
+`REQ-ENC-001 CONDITIONAL PASS`는 MG540-A에서 관찰한 raw 약 0/5 V A/B를 직접 연결해도 된다는 뜻이 아니다. 최종 motor-off 시험은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND 조건에서 수행했고 PB4/PB5 분리 상태의 HIGH는 MG540-A/B A/B 모두 3.06~3.07 V였다. 정확한 LOW, pulse shape, A/B phase timing, powered-motor noise와 회로형식은 아직 계측하지 않았다.
+
+`REQ-ENC-002 PARTIAL`은 TIM3 `PB4/PB5`에서 두 motor를 순차 연결해 정지 count, 양방향 부호와 출력축 1회전당 잠정 약 1560 count를 확인한 범위다. TIM5 `PA0/PA1`, 두 encoder 동시 동작과 차량 forward/left-right sign은 미확정이다.
 
 ### 주행과 odometry
 
@@ -168,7 +170,8 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), DMM 관측, [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
 | `REQ-MOTOR-005` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | video, current/heat log | `PLANNED` |
 | `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
-| `REQ-ENC-002~003` | timer encoder and odometry design | TIM3/TIM5, telemetry | `T-ENC-002` count/sign/speed telemetry | serial log, count table | `PLANNED` |
+| `REQ-ENC-002` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), MG540-A partial raw log | `PARTIAL` |
+| `REQ-ENC-003` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | serial log, count/speed table | `PLANNED` |
 | `REQ-DRIVE-001~003` | state machine, kinematics | dual motor path | `T-DRIVE-001` left/right drivetrain | video, mapping and fault log | `PLANNED` |
 | `REQ-ODO-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
 | `MVP-012` | master plan and README | documentation package | `T-DOC-001` evidence audit | README, linked evidence matrix | `PARTIAL` |
@@ -187,14 +190,14 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | 8 | `T-PWR-003` | 실제 보드 power/back-power 시험 | board power policy 확정 | `PLANNED` |
 | 9 | `T-MECH-002` | 제작품 fit check | Rev A 입고 | `BLOCKED` |
 | 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `CONDITIONAL PASS` |
-| 11 | `T-MOTOR-003` | 한쪽 motor lifted/no-load | `T-MOTOR-002`, 전원/비상정지, 기구 안전 | `PLANNED` |
-| 12 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `NEXT` |
+| 11 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `PARTIAL` |
+| 12 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, TIM5 motor-off count, 전원/비상정지, 기구 안전 | `PLANNED` |
 | 13 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | single motor와 양 encoder PASS | `PLANNED` |
 | 14 | `T-PWR-004` | 저전압 경고·정지 | voltage rule과 measurement path | `PLANNED` |
 | 15 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
 | 16 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
 
-`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED 범위는 통과했지만 정확한 PWM 파형, direction timing과 active timeout/DISARM shutdown이 남아 있어 `PARTIAL`이다. `T-ENC-001`은 15 kΩ/channel 조건에서 `CONDITIONAL PASS`했으므로 다음 bench 작업은 TIM3 PB4/PB5의 motor-power-off hand-rotation count다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
+`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED 범위는 통과했지만 정확한 PWM 파형, direction timing과 active timeout/DISARM shutdown이 남아 있어 `PARTIAL`이다. `T-ENC-002`의 TIM3 motor-off hand-count 범위는 통과했지만 TIM5, wrap-safe delta와 speed telemetry가 남아 있어 전체 Test ID는 `PARTIAL`이다. 다음 encoder bench 작업은 TIM5 PA0/PA1 반복이며, 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
 
 ## 최종 인수 규칙
 

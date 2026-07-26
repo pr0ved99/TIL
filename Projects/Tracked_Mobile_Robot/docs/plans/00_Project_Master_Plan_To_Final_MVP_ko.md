@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-07-26 motor-output and encoder-safety checkpoint
-- 현재 실행 위치: `G3/G4A static validation PARTIAL`, `G5 encoder loaded-voltage CONDITIONAL PASS`; TIM3 hand-count와 active-output safety closure가 다음 작업
+- Revision: 2026-07-26 TIM3 motor-off encoder hand-count checkpoint
+- 현재 실행 위치: `G3/G4A static validation PARTIAL`, `G5 encoder conditioning + TIM3 hand-count PARTIAL (TIM3 subtest PASS)`; TIM5 hand-count와 active-output safety closure가 다음 작업
 - 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -97,7 +97,7 @@ PC 또는 ESP32의 속도 명령을 받아
 | Adapter plate fabricated fit | `BLOCKED` | 제작품 미입고 | 입고 후 fit check |
 | STM32 PWM/DIR | `PARTIAL` | PB6/PB7 PWM, PC8/PC9 DIR 구현과 pin-only DMM/static routing PASS | 실제 20 kHz/10%, 1 ms deadtime와 active shutdown 계측 |
 | MDD10A logic input | `PARTIAL` | powered/no-motor 6-step LED, 교정 후 channel routing과 final all-off PASS | active timeout/DISARM 및 timing closure |
-| Encoder | `PARTIAL` | MG540-A/B rail 및 15 kΩ loaded HIGH 2.96~2.98 V; exact LOW·위상·count·부호·CPR 미확정 | TIM3 PB4/PB5 hand-rotation count |
+| Encoder | `PARTIAL` | 채널별 1 kΩ series + MCU-side 15 kΩ pull-down HIGH 3.06~3.07 V; TIM3에서 두 motor 순차 count/sign 및 잠정 1560 count/rev 확인 | TIM5 PA0/PA1 반복, wrap-safe delta/speed, powered-noise 검증 |
 | First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | 좌우 mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
@@ -317,8 +317,8 @@ PARTIAL - G4A static powered/no-motor PASS; G4A active safety, G4B와 G4C pendin
 
 1. 사용할 motor와 encoder wire를 식별한다. `MG540-A/B`와 six-pad map은 완료했다.
 2. STM32를 연결하지 않고 encoder supply와 A/B voltage를 측정한다. 15 kΩ loaded-voltage 범위는 완료했다.
-3. 각 A/B에 15 kΩ signal-to-GND load와 입력 series resistor를 적용한다.
-4. Motor power 없이 TIM3 PB4/PB5 hand-rotation count/sign을 확인하고, 이후 TIM5 PA0/PA1을 반복한다.
+3. 각 A/B에 `1 kΩ series + MCU-side 15 kΩ pull-down`을 적용한다. 두 motor 모두 conditioning node HIGH 3.06~3.07 V를 확인했다.
+4. Motor power 없이 TIM3 PB4/PB5 hand-rotation count/sign을 확인한다. 두 motor 순차 시험과 잠정 1560 count/output rev까지 완료했고 TIM5 PA0/PA1 반복은 남아 있다.
 5. 한쪽 motor만 MDD10A에 연결하고 track/wheel을 완전히 띄운다.
 6. output disabled 상태부터 확인한다.
 7. 5~10% forward pulse, zero, reverse pulse를 짧게 시험한다.
@@ -335,7 +335,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - encoder loaded-voltage gate CONDITIONAL PASS; timer count/sign and motor no-load pending
+PARTIAL - encoder conditioning과 TIM3 motor-off count/sign PASS; TIM5, powered-noise와 motor no-load pending
 ```
 
 ### G6. Encoder telemetry and dual drivetrain integration
@@ -447,15 +447,15 @@ board power policy -> encoder identification/safe voltage -> final integration
 
 2026-07-26 이후 우선순위:
 
-1. 현재 CubeMX/firmware와 encoder loaded-voltage evidence를 Git 기준점으로 보존한다.
-2. TIM3 PB4/PB5를 첫 encoder channel로 설정하고 15 kΩ/channel, common GND, motor-power-off 조건에서 hand-rotation count/sign을 확인한다.
-3. TIM3가 통과하면 TIM5 PA0/PA1에서 두 번째 channel을 반복한다.
+1. 현재 TIM3 CubeMX/firmware, conditioning measurement와 encoder raw log를 Git 기준점으로 보존한다.
+2. TIM5 PA0/PA1에서 두 번째 MCU encoder channel의 motor-power-off hand-count를 반복한다.
+3. 16-bit modular delta, 누적 count와 fixed-period speed 계산을 production encoder module로 분리한다.
 4. 실제 motor 활성화 전에 direction-change code를 의도한 post-DIR settle 순서로 고치고, 계측 장비가 준비되면 actual 20 kHz/10% PWM과 timing을 확인한다.
 5. UART command state를 10%-limited `motor_output` interface에 연결한다.
 6. Active PWM 상태에서 timeout/DISARM/fault actual output zero를 pin과 MDD10A LED로 확인한다.
 7. 업체 주문이 가능해지면 order ID, 실제 제출 revision, 재질·공차와 납기를 기록한다.
 8. 제작품 입고 시 control 작업과 별도로 fit-check branch를 수행한다.
-9. 위 safety gate를 모두 통과한 뒤 first motor lifted/no-load로 진행한다.
+9. 위 active-output safety gate를 통과한 뒤 first motor lifted/no-load를 진행하고, 첫 제한 pulse 안에서 encoder noise와 input filter를 함께 확인한다.
 
 ## 사용자 직접 타이핑 학습 방식
 

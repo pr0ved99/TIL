@@ -1,0 +1,177 @@
+C:\Users\eyh12\workspace\TIL> $sp = [System.IO.Ports.SerialPort]::new(
+>>     "COM3",
+>>     115200,
+>>     [System.IO.Ports.Parity]::None,
+>>     8,
+>>     [System.IO.Ports.StopBits]::One
+>> )
+>> $sp.Handshake = [System.IO.Ports.Handshake]::None
+>> $sp.ReadTimeout = 1000
+>> $sp.Open()
+>> 
+>> try {
+>>     while ($true) {
+>>         try {
+>>             $sp.ReadLine()
+>>         }
+>>         catch [System.TimeoutException] {
+>>         }
+>>     }
+>> }
+>> finally {
+>>     $sp.Close()
+>> }
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32767,count=-1,dir=DOWN
+ENC3,raw=32773,count=5,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32802,count=34,dir=UP
+ENC3,raw=32829,count=61,dir=UP
+ENC3,raw=32843,count=75,dir=UP
+ENC3,raw=32843,count=75,dir=UP
+ENC3,raw=32865,count=97,dir=UP
+ENC3,raw=32871,count=103,dir=UP
+ENC3,raw=32897,count=129,dir=UP
+ENC3,raw=32916,count=148,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32932,count=164,dir=UP
+ENC3,raw=32929,count=161,dir=DOWN
+ENC3,raw=32929,count=161,dir=DOWN
+ENC3,raw=32929,count=161,dir=DOWN
+ENC3,raw=32926,count=158,dir=DOWN
+ENC3,raw=32923,count=155,dir=DOWN
+ENC3,raw=32896,count=128,dir=DOWN
+ENC3,raw=32891,count=123,dir=DOWN
+ENC3,raw=32866,count=98,dir=DOWN
+ENC3,raw=32835,count=67,dir=DOWN
+ENC3,raw=32820,count=52,dir=DOWN
+ENC3,raw=32803,count=35,dir=DOWN
+ENC3,raw=32786,count=18,dir=DOWN
+ENC3,raw=32770,count=2,dir=DOWN
+ENC3,raw=32770,count=2,dir=DOWN
+ENC3,raw=32736,count=-32,dir=DOWN
+ENC3,raw=32735,count=-33,dir=DOWN
+ENC3,raw=32709,count=-59,dir=DOWN
+ENC3,raw=32693,count=-75,dir=DOWN
+ENC3,raw=32684,count=-84,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN
+ENC3,raw=32674,count=-94,dir=DOWN

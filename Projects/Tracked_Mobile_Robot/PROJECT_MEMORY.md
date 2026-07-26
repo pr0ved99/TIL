@@ -54,7 +54,7 @@ Last updated: 2026-07-26
 | Firmware motor channel 1 DIR, bench-confirmed | PC8 -> MDD10A DIR1 |
 | Firmware motor channel 2 DIR, bench-confirmed | PC9 -> MDD10A DIR2 |
 | Optional power gate/brake | PC6 / PC5 only if a separate circuit is added |
-| Encoder channel 1 A/B candidate | PB4 / PB5, TIM3 |
+| Encoder channel 1 A/B, motor-off bench-confirmed | PB4 / PB5, TIM3 |
 | Encoder channel 2 A/B candidate | PA0 / PA1, TIM5 |
 | Battery ADC | PA4 |
 | IMU I2C | PB8 / PB9, I2C1 |
@@ -111,7 +111,8 @@ Important docs:
 - `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
 - `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
-- `docs/progress/2026-07-26_progress.md`: latest progress note for STM32 PWM/DIR, MDD10A powered/no-motor and MG540 encoder loaded-voltage validation
+- `docs/progress/2026-07-26_progress.md`: latest progress note for STM32 PWM/DIR, MDD10A powered/no-motor, encoder conditioning and TIM3 hand-count validation
+- `assets/logs/encoder/README.md`: encoder bench-log conditions, separately reported one-revolution results and remaining limitations
 - `docs/progress/2026-07-24_progress.md`: Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
 - `docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`: 2026-07-26 V-model gate roadmap and current execution order
 - `docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`: project-wide requirement, design, test, evidence, and result traceability
@@ -173,9 +174,12 @@ Important docs:
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
 - XL4015 #2 encoder rail measured 5.06 V before MG540-A and 5.03 V connected; MG540-B connected rail also measured 5.03 V.
 - MG540-A raw encoder A/B can idle near 0 V or 5 V depending on shaft position; raw encoder outputs must not be connected directly to STM32.
-- A 15 kΩ signal-to-GND load produced exact-recorded HIGH values of 2.96~2.98 V on MG540-A A and MG540-B A/B; MG540-A B behaved similarly but its exact value was not recorded. This load is required for the first limited STM32 hand-rotation count test.
+- The final motor-off input conditioning is per channel: encoder A/B -> 1 kΩ series -> STM32 input node, with 15 kΩ from that MCU-side node to common GND. STM32 GND, encoder GND and XL4015 OUT- are common.
+- With PB4/PB5 disconnected, conditioned HIGH measured 3.06 V on MG540-A A/B and 3.06~3.07 V on MG540-B A/B.
 - Loaded measurements are consistent with an approximately 10.3~10.5 kΩ internal 5 V pull-up, but do not prove the exact open-collector/open-drain topology.
-- Encoder LOW voltage, pulse shape, A/B phase, count, direction sign and CPR are not yet verified. `PB4/PB5 TIM3` is the first hand-count candidate; `PA0/PA1 TIM5` is the second.
+- `PB4/PB5 TIM3` encoder mode passed the motor-off hand-rotation test with both motors connected sequentially. Output-shaft-end view signs were CW positive and CCW negative; vehicle-forward sign is still TBD.
+- Separately reported one-output-shaft-turn results were MG540-A `+1560 / -1560~-1570` and MG540-B `+1562 / -1560`; use `1560 counts/output rev` only as a provisional scale.
+- The preserved raw log contains only a partial bidirectional capture assigned to MG540-A, not the full-turn results or MG540-B trace. TIM5, wrap-safe accumulation, speed telemetry, powered-motor noise, exact LOW and A/B phase timing remain unverified.
 - A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
 - A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
 - XL4015 x2 and MDD10A are placed in the upper power area; ESP32 stays horizontal for USB access and the IMU stays near the vehicle center.
@@ -197,7 +201,7 @@ Ask the user or verify from hardware only for these:
 - Final CAN transceiver model
 - Final USB-CAN adapter model
 - Battery voltage divider resistor values
-- Encoder counts-per-revolution, count direction and vehicle left/right assignment
+- Final encoder counts-per-revolution after TIM5/powered validation, vehicle-forward sign and left/right assignment
 - Actual fuse rating after current measurement
 - Whether a separate power gate, brake, or emergency-stop circuit will be added
 - PC-first UART path: ST-LINK VCP USART2 only, or also external USB-UART
@@ -222,10 +226,10 @@ Ask the user or verify from hardware only for these:
 8. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
 9. Read the refreshed V-model roadmap and project-wide verification matrix while the plate order is pending.
 10. Preserve the bench-confirmed motor signal mapping and keep `MOTOR_OUTPUT_PIN_TEST_ENABLED 0U` outside an explicit test session.
-11. Preserve the 2026-07-26 encoder loaded-voltage evidence; raw A/B direct STM32 connection is prohibited.
-12. Configure `PB4/PB5 TIM3` for the first bench encoder and verify hand-rotation count/sign with 15 kΩ signal-to-GND on each channel, common GND and no motor power.
-13. After TIM3 passes, repeat the limited hand-count test on `PA0/PA1 TIM5` for the second channel.
+11. Preserve the 2026-07-26 encoder conditioning, TIM3 firmware and raw-log evidence; raw A/B direct STM32 connection is prohibited.
+12. Repeat the limited motor-off hand-count test on `PA0/PA1 TIM5` using the same `1 kΩ series + MCU-side 15 kΩ pull-down` and common-GND condition.
+13. Replace the temporary centered display with a production encoder module using modular delta, wrap-safe accumulation and fixed-period speed telemetry.
 14. Before active motor use, correct the current `PWM zero -> 1 ms wait -> DIR -> PWM` code to provide the intended post-DIR settle, then measure actual PWM frequency/duty and timing when equipment is available.
 15. Connect the validated UART command state to the 10%-limited motor-output interface.
 16. With no motor connected, verify active timeout, DISARM and fault paths at the actual PWM pins and MDD10A LEDs.
-17. Continue with board power/back-power, fabricated plate fit and the first lifted/no-load motor only after their safety gates pass.
+17. After the active-output safety gates pass, run the first lifted/no-load motor test and validate powered encoder false counts/noise and input filtering during its first limited pulse; keep board power/back-power and fabricated fit on their own gates.

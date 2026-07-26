@@ -243,5 +243,5 @@ Overall result: `PARTIAL`
 2. Oscilloscope 또는 logic analyzer를 사용할 수 있을 때 실제 20 kHz/10% PWM과 direction timing을 계측한다.
 3. UART command state를 제한된 motor-output interface에 연결한다.
 4. Active 10% output에서 timeout과 DISARM가 실제 PWM 핀과 MDD10A 출력 LED를 0으로 만드는지 확인한다.
-5. Encoder loaded-voltage gate는 [`04_Encoder_Signal_Safety_Test.md`](04_Encoder_Signal_Safety_Test.md)에서 `CONDITIONAL PASS`했다. 다음 encoder 단계는 TIM3 PB4/PB5 motor-power-off hand-rotation count다.
+5. Encoder loaded-voltage gate와 TIM3 PB4/PB5 TI12 x4 motor-power-off hand-rotation count/sign은 [`04_Encoder_Signal_Safety_Test.md`](04_Encoder_Signal_Safety_Test.md)에서 통과했다. 다음 encoder 단계는 TIM5 PA0/PA1 반복과 powered-noise 확인이다.
 6. 위 motor safety gate와 encoder count/sign gate를 통과한 뒤에만 [`05_First_Motor_No_Load_Test.md`](05_First_Motor_No_Load_Test.md)로 진행한다.
