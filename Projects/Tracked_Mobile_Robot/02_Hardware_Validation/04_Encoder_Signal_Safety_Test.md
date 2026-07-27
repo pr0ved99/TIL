@@ -4,7 +4,10 @@
 
 이 문서는 MG540P30_12V motor encoder를 STM32에 연결하기 전에 전원, A/B 신호 전압과 입력 보호 조건을 검증한 기록이다.
 
-2026-07-26 시험은 motor를 구동하지 않고 shaft를 손으로 돌리며 DMM으로 수행했다. Oscilloscope 또는 logic analyzer는 사용하지 않았다.
+2026-07-26 시험은 motor를 구동하지 않고 shaft를 손으로 돌리며 DMM으로 수행했다.
+2026-07-27에는 같은 signal-conditioning 조건에서 TIM3와 TIM5에 encoder 두 개를
+동시에 연결하고 독립 count/sign을 USART raw log로 확인했다. Oscilloscope 또는
+logic analyzer는 사용하지 않았다.
 
 ## Core Rule
 
@@ -29,8 +32,8 @@ STM32의 일부 핀은 5 V tolerant이지만, unpowered board, power sequencing�
 
 | Bench ID | Model | Encoder status | Vehicle side | Notes |
 | --- | --- | --- | --- | --- |
-| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 motor-off hand-count PASS | TBD | 첫 번째 측정 motor |
-| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 motor-off hand-count PASS | TBD | 두 번째 측정 motor |
+| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | TBD | Dual raw log의 ENC3/ENC5 mapping 미기록 |
+| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | TBD | Dual raw log의 ENC3/ENC5 mapping 미기록 |
 | JGB37-520 candidates | TBD | Previous fault suspicion | TBD | 이번 시험 범위에서 제외 |
 
 PCB의 자석/실크 면을 정면으로 보고 connector가 위쪽일 때, connector pad의 왼쪽부터 오른쪽 순서는 다음과 같다.
@@ -151,7 +154,7 @@ Encoder GND -------- STM32 GND -------- XL4015 OUT-
 - 1 kΩ 뒤 STM32 input node에서 15 kΩ을 common GND로 연결했다.
 - PB4/PB5를 분리한 사전 측정에서 MG540-A의 A/B HIGH는 모두 3.06 V, MG540-B의 A/B HIGH는 3.06~3.07 V였다.
 - 첫 timer 입력은 `PB4/TIM3_CH1 = A`, `PB5/TIM3_CH2 = B`로 검증했다.
-- 두 번째 후보는 `PA0/TIM5_CH1`, `PA1/TIM5_CH2`다.
+- 두 번째 timer 입력은 `PA0/TIM5_CH1 = A`, `PA1/TIM5_CH2 = B`로 검증했다.
 - 이 단계에서는 motor power를 넣지 않고 shaft를 손으로만 돌린다.
 
 ## Test 6: Direction Sign and Count
@@ -178,12 +181,39 @@ Raw serial log는 MG540-A에서 정지 count와 양방향 증감만 담은 부�
 1회전 수치와 MG540-B 결과는 같은 bench session에서 별도로 관찰·보고한 값이며,
 raw log 하나가 표 전체를 증명하는 것으로 해석하지 않는다.
 
+### 2026-07-27 TIM3/TIM5 dual-input retest
+
+TIM3는 16-bit counter를 `32768`에서, TIM5는 32-bit counter를 `0x80000000`에서
+시작했다. 두 encoder를 동시에 연결하고 한 encoder씩 손으로 회전·복귀시켜
+반대쪽 counter가 고정되는지 확인했다.
+
+| Phase | Active path | Raw-log centered count | Inactive path | Result |
+| --- | --- | ---: | --- | --- |
+| First rotation and return | ENC5 / TIM5 PA0/PA1 | `0 -> +1557 -> -6` | ENC3 remained `0` | PASS |
+| Second rotation and return | ENC3 / TIM3 PB4/PB5 | `0 -> +1561 -> +7` | ENC5 remained `-6` | PASS |
+
+사용자가 같은 bench session에서 별도로 보고한 새 경로 출력축 1회전 값은
+`+1555 / -1566`이고, 기존 시험 encoder도 이전의 약 1560 count/rev를
+재현했다. 이 숫자는 별도 관찰값이며 raw log의 isolated endpoint로 기록된
+값은 아니다.
+
+손회전 시험에는 정확한 360° 시작·종료를 고정하는 jig가 없었다. 기준선 정렬,
+미세한 초과 회전과 gearbox backlash가 포함될 수 있으므로 이 값은 정확한
+encoder CPR calibration이 아니라 `약 1560 counts/output rev`의 기능시험
+잠정값이다. 최종 보정은 축 기준선을 표시하고 여러 바퀴의 총 count를 회전수로
+나누는 방식으로 반복 측정한다.
+
+Dual evidence:
+
+- [`../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt`](../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt)
+- [`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)
+
 제한:
 
-- `centered_count = raw - 32768`은 제한적인 손회전 표시값이며 16-bit wrap을 처리하는 production 누적 count가 아니다.
+- TIM3의 `raw - 32768`과 TIM5의 `raw - 0x80000000`은 제한적인 손회전 표시값이며 production wrap-safe delta/누적 count가 아니다.
 - Filter 0과 DMM 측정은 motor-off 조건만 검증한다. Powered motor noise, overshoot와 적절한 input filter는 미검증이다.
 - Oscilloscope/logic analyzer로 LOW, pulse width와 A/B phase timing을 계측하지 않았다.
-- TIM5 PA0/PA1 두 번째 MCU channel과 동시 dual-encoder 동작은 미검증이다.
+- 실제 vehicle left/right와 forward-positive sign은 미확정이다.
 
 MG540-A/B를 left/right로 부르지 않는다. 실제 장착 방향과 forward 기준이 정해진 뒤 channel assignment와 sign inversion을 확정한다.
 
@@ -205,16 +235,17 @@ MG540-A/B를 left/right로 부르지 않는다. 실제 장착 방향과 forward 
 | Output structure | `PROBABLE` | 약 10 kΩ internal 5 V pull-up과 일치하지만 회로형식 미확정 |
 | Quadrature behavior | `FUNCTIONALLY OBSERVED` | TIM3 x4 count와 direction reversal PASS; scope phase timing 미계측 |
 | STM32 input protection | `BENCH-CONFIRMED / POWERED-NOISE TBD` | 채널별 1 kΩ series + 15 kΩ pull-down, common GND |
-| Direction sign and count | `PASS ON TIM3` | Shaft-end view CW positive, CCW negative; 양 motor 순차 시험 |
+| Direction sign and count | `PASS ON TIM3/TIM5 (MOTOR-OFF)` | Sequential TIM3 result와 dual independent hand rotation |
 | Counts per output revolution | `PROVISIONAL PASS` | 두 motor 모두 약 1560 count/rev |
-| Limited hand-rotation STM32 test | `PASS` | Motor power disconnected, stationary count stable |
-| Powered closed-loop operation | `NOT READY` | TIM5, motor-on noise, active motor safety와 no-load 시험 필요 |
+| Dual input independence | `PASS` | TIM5 active 동안 TIM3 fixed, TIM3 active 동안 TIM5 fixed |
+| Limited hand-rotation STM32 test | `PASS` | Motor power disconnected, both encoders concurrently connected |
+| Powered closed-loop operation | `NOT READY` | Speed module, motor-on noise, active motor safety와 no-load 시험 필요 |
 
 ## Next Step
 
-1. 현재 TIM3 CubeMX/firmware와 raw log를 Git 기준점으로 보존한다.
-2. TIM5 `PA0/PA1`을 두 번째 encoder channel로 설정하고 동일한 motor-off hand-count 시험을 반복한다.
-3. 16-bit/32-bit modular delta와 누적 count를 production encoder module로 분리하고 speed telemetry를 추가한다.
+1. 현재 TIM3/TIM5 CubeMX/firmware와 dual raw log를 Git 기준점으로 보존한다.
+2. 16-bit/32-bit modular delta와 누적 count를 production encoder module로 분리하고 speed telemetry를 추가한다.
+3. Vehicle left/right assignment와 forward-positive sign을 실제 장착 뒤 확정한다.
 4. Powered motor noise와 input filter는 계측 장비 또는 제한된 lifted test에서 별도 검증한다.
 5. 실제 motor no-load 시험은 direction timing과 active timeout/DISARM output-zero gate까지 통과한 뒤 진행한다.
 

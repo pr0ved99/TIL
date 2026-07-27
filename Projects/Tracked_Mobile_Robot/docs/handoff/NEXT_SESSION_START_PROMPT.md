@@ -58,7 +58,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - TIM3 `PB4/CH1=A`, `PB5/CH2=B`, encoder TI12 x4 조건에서 두 motor의 motor-off hand-count를 순차 검증했다.
 - Output-shaft-end view 기준 MG540-A는 CW +1560, CCW -1560~-1570, MG540-B는 CW +1562, CCW -1560이었다. `1560 counts/output rev`는 잠정값이다.
 - 저장 raw log는 MG540-A의 부분 양방향 증감만 담고 있으며, 전체 1회전 수치와 MG540-B 결과는 같은 session의 별도 작업자 기록이다.
-- TIM5 PA0/PA1, wrap-safe 누적 count, speed telemetry, exact LOW/A-B phase timing, powered-motor noise와 차량 forward/left-right sign은 아직 미검증이다.
+- TIM5 PA0/PA1과 TIM3 PB4/PB5에 두 encoder를 동시에 연결한 motor-off 독립 count/sign은 통과했다. Wrap-safe 누적 count, speed telemetry, exact LOW/A-B phase timing, powered-motor noise와 차량 forward/left-right sign은 아직 미검증이다.
 - 어댑터 플레이트 Rev A 외곽은 174 x 208.93379 mm이고, 제작 후보 재료는 아크릴 3T로 결정했다.
 - 소형 체결 홀은 M3 여유 홀 후보인 지름 3.3 mm로 설계했다.
 - 만능기판은 150 x 100 mm, 홀 배열은 55 x 37이다.
@@ -101,12 +101,11 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 5. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 셰시 홀, 만능기판, XL4015 x2, MDD10A의 실물 fit을 검증한다.
 6. 체결 나사와 스페이서 규격은 실물 fit 결과에 맞춰 확정한다.
 7. 제작 대기 중에는 V-model master plan과 final MVP verification matrix를 기준으로 진행한다.
-8. 현재 TIM3 CubeMX/firmware, conditioning measurement와 encoder raw log를 Git 기준점으로 보존한다.
-9. TIM5 PA0/PA1에서 동일한 motor-off hand-count 시험을 반복한다.
-10. 16-bit modular delta, wrap-safe accumulator와 fixed-period speed telemetry를 production encoder module로 분리한다.
-11. 실제 motor 활성화 전에 direction-change code를 post-DIR settle 순서로 수정한다.
-12. UART command state를 검증된 10%-limited PWM/DIR interface에 연결하고 active timeout/DISARM/fault actual-output zero를 검증한다.
-13. Active-output safety gate를 통과한 뒤 first lifted/no-load motor test를 시작하고, 첫 1~2초 제한 pulse 안에서 encoder false count/noise와 input filter를 함께 확인한다.
+8. 현재 TIM3/TIM5 CubeMX/firmware, conditioning measurement와 dual encoder raw log를 Git 기준점으로 보존한다.
+9. 16-bit/32-bit modular delta, wrap-safe accumulator와 fixed-period speed telemetry를 production encoder module로 분리한다.
+10. 실제 motor 활성화 전에 direction-change code를 post-DIR settle 순서로 수정한다.
+11. UART command state를 검증된 10%-limited PWM/DIR interface에 연결하고 active timeout/DISARM/fault actual-output zero를 검증한다.
+12. Active-output safety gate를 통과한 뒤 first lifted/no-load motor test를 시작하고, 첫 1~2초 제한 pulse 안에서 encoder false count/noise와 input filter를 함께 확인한다.
 
 완료된 UART bridge 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

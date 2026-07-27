@@ -70,8 +70,8 @@ UM1724에서 사용한 중요한 사실:
 | 오른쪽 모터 PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
 | Encoder channel 1 A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Motor-power-off validated |
 | Encoder channel 1 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Motor-power-off validated |
-| Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Candidate; TIM5 pending |
-| Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Candidate; TIM5 pending |
+| Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Motor-power-off validated |
+| Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Motor-power-off validated |
 | 배터리 전압 ADC | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Candidate |
 | 왼쪽 모터 direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
 | 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
@@ -257,7 +257,7 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 | I2C1 PB8/PB9 | TIM4_CH3/CH4 대체 기능과 겹치지만 PWM은 TIM4_CH1/CH2를 사용한다. |
 | TIM4 PB6/PB7 PWM | PB6은 I2C1_SCL 또는 USART1_TX 후보이기도 하지만 이번 배정에서는 사용하지 않는다. |
 | TIM3 PB4/PB5 encoder | CubeMX 구성과 motor-power-off hand rotation에서 TI12 x4 동작을 확인했다. SWD는 PA13/PA14에 유지한다. |
-| TIM5 PA0/PA1 encoder | A0/A1 ADC 가능 핀을 사용한다. 실제 TIM5 시험은 pending이다. |
+| TIM5 PA0/PA1 encoder | A0/A1 ADC 가능 핀을 사용한다. TI12 motor-off hand-count와 TIM3 동시 독립 동작을 확인했다. |
 | PA4 ADC | USART2_CK/SPI 기능도 있지만 이번 배정에서는 필요 없다. |
 | PA13/PA14 | SWD용으로 보존하고 로봇 기능에 배정하지 않는다. |
 
@@ -270,7 +270,7 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 3. `[ ]` I2C1 PB8/PB9 활성화와 BNO08x 확인
 4. `[x]` TIM4 PWM PB6/PB7 활성화와 static motor-output 시험
 5. `[x]` TIM3 encoder mode PB4/PB5 활성화와 motor-off hand-count
-6. `[ ]` TIM5 encoder mode PA0/PA1 활성화와 두 번째 channel 시험
+6. `[x]` TIM5 encoder mode PA0/PA1 활성화와 두 번째 channel 시험
 7. `[ ]` PA4 ADC 활성화와 divider 시험
 8. `[x]` PC8/PC9 MDD10A DIR GPIO 설정과 static routing 시험
 9. `[ ]` 필요 시 PC6/PC5 optional power gate/brake 회로 결정
@@ -290,8 +290,8 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 
 ## 1차 결정
 
-이 후보안의 USART/PWM/DIR/TIM3 범위는 CubeMX와 제한 bench 시험까지 진행했고,
-I2C1/TIM5/ADC와 차량 최종 mapping은 아직 후보 상태다.
+이 후보안의 USART/PWM/DIR/TIM3/TIM5 범위는 CubeMX와 제한 bench 시험까지 진행했고,
+I2C1/ADC와 차량 최종 mapping은 아직 후보 상태다.
 
 가장 중요한 설계 선택:
 
@@ -306,7 +306,7 @@ I2C1/TIM5/ADC와 차량 최종 mapping은 아직 후보 상태다.
 
 다음 단계는 남은 후보를 순서대로 검증하는 것이다.
 
-1. TIM5 `PA0/PA1` encoder mode와 motor-off hand-count를 확인한다.
+1. TIM3/TIM5 count sampling을 wrap-safe delta와 speed module로 분리한다.
 2. I2C1 `PB8/PB9`와 PA4 ADC가 기존 확정 핀과 충돌하지 않는지 CubeMX에서 확인한다.
 3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
 4. 차량 장착 후 encoder channel left/right와 vehicle-forward sign을 확정한다.

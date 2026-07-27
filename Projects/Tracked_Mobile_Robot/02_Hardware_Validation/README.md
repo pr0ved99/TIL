@@ -68,7 +68,7 @@ Firmware보다 먼저 확인할 것:
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
 | Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
 | MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`, 교정 후 6-step LED 및 final safe-state PASS; exact PWM/deadtime와 active timeout/DISARM은 미검증 |
-| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 조건에서 MG540-A/B를 TIM3 PB4/PB5 TI12 x4로 순차 hand-rotation PASS; TIM5, powered-noise와 vehicle sign은 미검증 |
+| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 조건에서 TIM3 PB4/PB5와 TIM5 PA0/PA1 dual motor-off 독립 hand-rotation PASS; speed, powered-noise와 vehicle sign은 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
@@ -82,7 +82,8 @@ STM32 PWM/DIR safe output 구현 완료
 -> MDD10A powered-no-motor static/LED PASS
 -> encoder loaded-voltage safety CONDITIONAL PASS
 -> TIM3 PB4/PB5 TI12 x4 motor-power-off count/sign PASS
--> TIM5 PA0/PA1 motor-power-off 반복 및 powered-noise 확인
+-> TIM5 PA0/PA1 및 dual independent motor-power-off count/sign PASS
+-> wrap-safe delta와 speed telemetry 구현
 -> exact PWM/direction timing 및 active timeout/DISARM 검증
 -> first motor no-load
 -> left/right drivetrain

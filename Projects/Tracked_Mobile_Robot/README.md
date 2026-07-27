@@ -6,7 +6,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-26
+Last updated: 2026-07-27
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
@@ -34,9 +34,8 @@ Last updated: 2026-07-26
 [PASS] ESP32-STM32 UART bridge and scripted command safety
 [PASS] XL4015 #1/#2 bench load validation
 [PARTIAL] STM32 PWM/DIR + MDD10A powered/no-motor static validation
-[PARTIAL] MG540-A/B encoder conditioning + TIM3 motor-off hand-count
--> CURRENT NEXT: TIM5 PA0/PA1 motor-power-off hand-count
--> wrap-safe count delta / accumulator / speed telemetry module
+[PARTIAL] MG540-A/B conditioning + TIM3/TIM5 dual motor-off independent hand-count
+-> CURRENT NEXT: wrap-safe count delta / accumulator / speed telemetry module
 -> direction-change sequence correction and active timeout/DISARM output-zero
 -> STM32 UART CMD path를 PWM/DIR output path와 연결
 ```
@@ -69,7 +68,7 @@ tracked chassis hole-pattern DWG import
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
 - STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Exact PWM/timing과 active timeout/DISARM output-zero는 아직 `PARTIAL`이다.
-- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V와 TIM3 PB4/PB5의 두 motor 순차 hand-count를 통과했다. 출력축 1회전당 1560 count는 잠정값이며 TIM5, powered-noise와 차량 sign은 미검증이다.
+- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V와 TIM3 PB4/PB5·TIM5 PA0/PA1 dual motor-off 독립 hand-count를 통과했다. 출력축 1회전당 1560 count는 잠정값이며 speed, powered-noise와 차량 sign은 미검증이다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
 - 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 

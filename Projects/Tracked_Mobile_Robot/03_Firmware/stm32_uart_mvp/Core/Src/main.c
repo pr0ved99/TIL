@@ -68,10 +68,12 @@ static void motor_output_pin_test_process(void);
 /* USER CODE BEGIN 0 */
 static void encoder_hand_test_log_process(void){
   static uint32_t last_log_ms;
-  char tx[80];
+  char tx[160];
   uint32_t now_ms;
-  uint16_t raw_count;
-  int32_t centered_count;
+  uint16_t raw3_count;
+  uint32_t raw5_count;
+  int32_t centered3_count;
+  int32_t centered5_count;
   int len;
 
   now_ms = HAL_GetTick();
@@ -81,16 +83,21 @@ static void encoder_hand_test_log_process(void){
   }
 
   last_log_ms = now_ms;
-  raw_count = (uint16_t)__HAL_TIM_GET_COUNTER(&htim3);
-  centered_count = (int32_t)raw_count - 32768L;
+  raw3_count = (uint16_t)__HAL_TIM_GET_COUNTER(&htim3);
+  raw5_count = __HAL_TIM_GET_COUNTER(&htim5);
+  centered3_count = (int32_t)raw3_count - 32768L;
+  centered5_count = (int32_t)((int64_t)raw5_count - 2147483648LL);
 
   len = snprintf(
     tx,
     sizeof(tx),
-    "ENC3,raw=%u,count=%ld,dir=%s\r\n",
-    (unsigned int)raw_count,
-    (long)centered_count,
-    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3) ? "DOWN" : "UP"
+    "ENC3,raw=%u,count=%ld,dir=%s;ENC5,raw=%lu,count=%ld,dir=%s\r\n",
+    (unsigned int)raw3_count,
+    (long)centered3_count,
+    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3) ? "DOWN" : "UP",
+    (unsigned long)raw5_count,
+    (long)centered5_count,
+    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim5) ? "DOWN" : "UP"
   );
 
   if ((len > 0) && (len < (int)sizeof(tx))){
@@ -246,14 +253,20 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   MX_TIM3_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   if (motor_output_init(&htim4) != HAL_OK){
     Error_Handler();
   }
 
   __HAL_TIM_SET_COUNTER(&htim3, 32768U);
+  __HAL_TIM_SET_COUNTER(&htim5, 0x80000000U);
 
   if (HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL) != HAL_OK){
+    Error_Handler();
+  }
+
+  if (HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL) != HAL_OK){
     Error_Handler();
   }
   uart_mvp_init(&huart1);
