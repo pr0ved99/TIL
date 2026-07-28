@@ -6,7 +6,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
@@ -14,16 +14,16 @@ Last updated: 2026-07-27
 2. [`AGENTS.md`](AGENTS.md)
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
 4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
-5. [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md)
-6. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-7. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-8. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-9. [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md)
-10. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
-11. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
-12. [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
-13. [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md)
-14. [`08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`](08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md)
+5. [`docs/progress/2026-07-28_progress.md`](docs/progress/2026-07-28_progress.md)
+6. [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md)
+7. [`09_Electrical_Design/README.md`](09_Electrical_Design/README.md)
+8. [`docs/progress/2026-07-27_progress.md`](docs/progress/2026-07-27_progress.md)
+9. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+10. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+11. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+12. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+13. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
+14. [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
 15. [`docs/verification/README.md`](docs/verification/README.md)
 16. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
 17. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
@@ -35,6 +35,7 @@ Last updated: 2026-07-27
 [PASS] XL4015 #1/#2 bench load validation
 [PARTIAL] STM32 PWM/DIR + MDD10A powered/no-motor static validation
 [PARTIAL] MG540-A/B conditioning + TIM3/TIM5 dual motor-off independent hand-count
+[DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> CURRENT NEXT: wrap-safe count delta / accumulator / speed telemetry module
 -> direction-change sequence correction and active timeout/DISARM output-zero
 -> STM32 UART CMD path를 PWM/DIR output path와 연결
@@ -69,6 +70,7 @@ tracked chassis hole-pattern DWG import
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
 - STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Exact PWM/timing과 active timeout/DISARM output-zero는 아직 `PARTIAL`이다.
 - MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V와 TIM3 PB4/PB5·TIM5 PA0/PA1 dual motor-off 독립 hand-count를 통과했다. 출력축 1회전당 1560 count는 잠정값이며 speed, powered-noise와 차량 sign은 미검증이다.
+- KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, 차량 방향, BNO085, 실제 하네스·footprint는 TBD다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
 - 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 
@@ -87,7 +89,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-07-26 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-07-28 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -103,6 +105,7 @@ tracked chassis hole-pattern DWG import
 - A4 1:1 셰시 대조와 주문 PDF의 39개 벡터 경로 및 원본 대비 배율 검증을 완료했다.
 - 3D 전장 Assembly Draft의 참조 오류 표시는 사용자 지시에 따라 이번 2D 플레이트 release 범위에서 제외했다.
 - 멀티메이커 서버가 업로드 폴더를 만들지 못해 주문 상태는 `NOT SUBMITTED`다.
+- KiCad RevA functional wiring draft와 dated ERC/PDF evidence를 `09_Electrical_Design`에 보존했다. 이 baseline은 PCB 또는 영구 배선 release가 아니다.
 
 작업을 이어가기 전에 먼저 읽을 기준 파일:
 
@@ -127,6 +130,7 @@ tracked chassis hole-pattern DWG import
 - `06_Test_Report`: bench, load, chassis, and field test reports
 - `07_Embedded_Learning_Notes`: concept notes, STM32/ESP32 practice logs, protocol labs, measurement notes
 - `08_Mechanical_Design`: adapter plate, electronics layout, manufacturing-release rules
+- `09_Electrical_Design`: KiCad functional wiring sources, ERC reports, and review exports
 - `assets`: photos, wiring diagrams, screenshots, plots
 - `docs/handoff`: continuation notes for future work
 - `docs/plans`: short-term execution plans for hardware sessions
@@ -236,6 +240,15 @@ tracked chassis hole-pattern DWG import
 | [`releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md) | Rev A DWG, DXF, SVG, PDF release artifacts and SHA-256 index |
 | [`references/vendor_templates/README.md`](08_Mechanical_Design/references/vendor_templates/README.md) | Preserved Multimaker source template and SHA-256 |
 
+### 09_Electrical_Design
+
+| Document | Purpose |
+| --- | --- |
+| [`README.md`](09_Electrical_Design/README.md) | Electrical design scope, RevA status, verified/TBD boundary and artifact index |
+| [`Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`](09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch) | RevA KiCad functional wiring source |
+| [`2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`](09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt) | Dated ERC evidence, 0 errors / 0 warnings |
+| [`2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`](09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf) | Human-readable RevA draft review export |
+
 ### docs
 
 | Document | Purpose |
@@ -265,9 +278,12 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md) | Adapter plate Draft, electronics placement, Onshape Version, and mechanical-layout evidence |
 | [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Rev A preflight/vendor blocker and project-wide V-model roadmap refresh |
 | [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md) | STM32/MDD10A static routing, encoder conditioning, and TIM3 hand-count checkpoint |
+| [`docs/progress/2026-07-27_progress.md`](docs/progress/2026-07-27_progress.md) | TIM3/TIM5 dual encoder independent motor-off hand-count validation |
+| [`docs/progress/2026-07-28_progress.md`](docs/progress/2026-07-28_progress.md) | KiCad RevA functional wiring draft, dated ERC and PDF evidence |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
-| [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Current bridge closeout handoff and MDD10A logic-test continuation point |
+| [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md) | KiCad RevA draft baseline, safety boundary and next firmware/hardware gate |
+| [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Historical UART bridge closeout and MDD10A logic-test continuation point |
 | [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Historical handoff from the validated bridge link to structured TEL parsing |
 | [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Historical STM32CubeMX-first UART MVP handoff |
 

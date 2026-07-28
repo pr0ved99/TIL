@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-07-27
+Last updated: 2026-07-28
 
 ## Project Identity
 
@@ -111,7 +111,12 @@ Important docs:
 - `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
 - `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
-- `docs/progress/2026-07-27_progress.md`: latest progress note for TIM5 configuration and TIM3/TIM5 dual motor-off independent hand-count validation
+- `09_Electrical_Design/README.md`: RevA functional wiring scope, verified/TBD boundary and source/evidence index
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
+- `docs/progress/2026-07-28_progress.md`: latest progress note for the KiCad RevA functional wiring baseline
+- `docs/progress/2026-07-27_progress.md`: TIM5 configuration and TIM3/TIM5 dual motor-off independent hand-count validation
 - `assets/logs/encoder/README.md`: encoder bench-log conditions, separately reported one-revolution results and remaining limitations
 - `docs/progress/2026-07-24_progress.md`: Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
 - `docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`: refreshed V-model gate roadmap and current execution order
@@ -120,6 +125,7 @@ Important docs:
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
+- `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: latest wiring baseline, safety boundary and next firmware/hardware gate
 - `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation is `NEXT_SESSION_START_PROMPT.md` plus the latest progress note
 
 ## Current Progress Snapshot
@@ -183,6 +189,9 @@ Important docs:
 - The 2026-07-26 preserved raw log contains only a partial bidirectional capture assigned to MG540-A, not the full-turn results or MG540-B trace.
 - On 2026-07-27, both encoders were connected concurrently to `PB4/PB5 TIM3` and `PA0/PA1 TIM5`. The dual raw log shows ENC5 `0 -> +1557 -> -6` while ENC3 stayed `0`, then ENC3 `0 -> +1561 -> +7` while ENC5 stayed `-6`. Motor ID to ENC3/ENC5 mapping was not recorded, so keep timer names until physical left/right assignment.
 - TIM3/TIM5 dual motor-off independent count/sign is `PASS`. Wrap-safe accumulation, speed telemetry, powered-motor noise, exact LOW and A/B phase timing remain unverified.
+- On 2026-07-28, a KiCad 10.0 `RevA DRAFT` functional wiring schematic captured the battery/fuse/switch distribution, MDD10A power/logic/output, dual encoder 1 kΩ + 15 kΩ conditioning, XL4015 #2 encoder rail and STM32–ESP32 UART.
+- XL4015 #1 output remains a candidate and is not connected to STM32 or ESP32 until its destination and USB backfeed policy are verified.
+- The dated ERC report records 0 errors and 0 warnings under its listed ignored-check policy. This does not verify physical wiring, current capacity, noise, footprints, perfboard layout or manufacturing readiness.
 - A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
 - A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
 - XL4015 x2 and MDD10A are placed in the upper power area; ESP32 stays horizontal for USB access and the IMU stays near the vehicle center.
@@ -206,6 +215,9 @@ Ask the user or verify from hardware only for these:
 - Battery voltage divider resistor values
 - Final encoder counts-per-revolution after speed/powered validation, vehicle-forward sign and left/right assignment
 - Actual fuse rating after current measurement
+- XL4015 #1 final 5 V destination and STM32/ESP32 USB backfeed policy
+- BNO085 power and I2C final wiring
+- Physical connector, footprint, perfboard and harness release
 - Whether a separate power gate, brake, or emergency-stop circuit will be added
 - PC-first UART path: ST-LINK VCP USART2 only, or also external USB-UART
 - UART auto-disarm delay after timeout-zero-output state
@@ -220,18 +232,16 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short Projects/Tracked_Mobile_Robot`.
-2. Read `docs/progress/2026-07-26_progress.md` and `02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md` before continuing hardware validation.
-3. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
-4. Preserve the completed UART bridge baseline and 2026-07-20 screenshot/raw log evidence.
-5. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the order.
-6. Contact Multimaker about the server upload error and request KakaoTalk or email file submission.
-7. Confirm acrylic 3T material details, kerf, minimum hole capability, tolerance, total quote, and order ID.
-8. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
-9. Read the refreshed V-model roadmap and project-wide verification matrix while the plate order is pending.
-10. Preserve the bench-confirmed motor signal mapping and keep `MOTOR_OUTPUT_PIN_TEST_ENABLED 0U` outside an explicit test session.
-11. Preserve the encoder conditioning, TIM3/TIM5 firmware and 2026-07-27 dual raw-log evidence; raw A/B direct STM32 connection is prohibited.
-12. Replace the temporary centered display with a production encoder module using 16-bit/32-bit modular delta, wrap-safe accumulation and fixed-period speed telemetry.
-13. Before active motor use, correct the current `PWM zero -> 1 ms wait -> DIR -> PWM` code to provide the intended post-DIR settle, then measure actual PWM frequency/duty and timing when equipment is available.
-14. Connect the validated UART command state to the 10%-limited motor-output interface.
-15. With no motor connected, verify active timeout, DISARM and fault paths at the actual PWM pins and MDD10A LEDs.
-16. After the active-output safety gates pass, run the first lifted/no-load motor test and validate powered encoder false counts/noise and input filtering during its first limited pulse; keep board power/back-power and fabricated fit on their own gates.
+2. Read `docs/progress/2026-07-28_progress.md`, `09_Electrical_Design/README.md` and `02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md` before continuing.
+3. Preserve the KiCad `RevA DRAFT` verified/TBD boundary. Do not connect XL4015 #1 candidate output to either MCU before the USB backfeed policy is decided.
+4. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
+5. Preserve the encoder conditioning, TIM3/TIM5 firmware and 2026-07-27 dual raw-log evidence; raw A/B direct STM32 connection is prohibited.
+6. Replace the temporary centered display with a production encoder module using 16-bit/32-bit modular delta, wrap-safe accumulation and fixed-period speed telemetry.
+7. Before active motor use, correct the current `PWM zero -> 1 ms wait -> DIR -> PWM` code to provide the intended post-DIR settle.
+8. Connect the validated UART command state to the 10%-limited motor-output interface.
+9. With no motor connected, verify active timeout, DISARM and fault paths at the actual PWM pins and MDD10A LEDs.
+10. After the active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
+11. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
+12. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
+13. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.
+14. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.

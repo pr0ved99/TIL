@@ -41,6 +41,7 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-07-28 | [`2026-07-28_progress.md`](2026-07-28_progress.md) | KiCad RevA functional wiring draft, PDF export와 ERC 0/0; XL4015 #1 backfeed·fuse rating·vehicle mapping·BNO085는 TBD |
 | 2026-07-27 | [`2026-07-27_progress.md`](2026-07-27_progress.md) | TIM5 PA0/PA1 추가, TIM3/TIM5 dual motor-off 독립 count/sign 및 약 1560 count/rev 재현 PASS; speed·vehicle sign·powered-noise는 PARTIAL |
 | 2026-07-26 | [`2026-07-26_progress.md`](2026-07-26_progress.md) | STM32 PWM/DIR·MDD10A 6-step 검증과 swap 교정, MG540-A/B conditioned TIM3 TI12 x4 motor-power-off count/sign PASS; TIM5, powered-noise와 active safety는 PARTIAL |
 | 2026-07-24 | [`2026-07-24_progress.md`](2026-07-24_progress.md) | Rev A 제조 사전검증과 주문 blocker, 최신 V-model master plan 및 final MVP traceability matrix 작성 |
