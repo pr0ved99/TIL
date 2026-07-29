@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "uart_mvp_protocol.h"
 #include "motor_output.h"
+#include "encoder_speed.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -36,9 +37,12 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Output-shaft count, calibrated with STM32 quadrature x4 decoding. */
+#define ENCODER_COUNTS_PER_OUTPUT_REV       1560U
 #define MOTOR_OUTPUT_PIN_TEST_ENABLED       0U
 #define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
 #define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
+#define ENCODER_SPEED_SAMPLE_PERIOD_MS      100U
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,49 +59,241 @@ static GPIO_PinState s_motor_output_test_button_raw = GPIO_PIN_SET;
 static GPIO_PinState s_motor_output_test_button_stable = GPIO_PIN_SET;
 
 static uint32_t s_motor_output_test_button_change_ms;
+
+static encoder_speed_t s_encoder_tim3;
+static encoder_speed_t s_encoder_tim5;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-static void Board_Hardware_Init(void);
 static void motor_output_pin_test_process(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static void encoder_hand_test_log_process(void){
-  static uint32_t last_log_ms;
-  char tx[160];
+static bool encoder_speed_self_test_case(
+  encoder_counter_width_t counter_width,
+  uint32_t previous_raw,
+  uint32_t current_raw,
+  int64_t expected_delta
+){
+  encoder_speed_t test_state;
+
+  if (!encoder_speed_init(
+      &test_state,
+      counter_width,
+      previous_raw,
+      0U,
+      100U
+  )){
+    return false;
+  }
+
+  if (!encoder_speed_update(
+      &test_state,
+      current_raw,
+      100U
+  )){
+    return false;
+  }
+
+  return (
+    test_state.delta_count == expected_delta &&
+    test_state.accumulated_count == expected_delta &&
+    test_state.counts_per_second == expected_delta * 10LL
+  );
+}
+
+static bool encoder_speed_wrap_self_test(void){
+  return (
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_16,
+      65530U,
+      5U,
+      11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_16,
+      5U,
+      65530U,
+      -11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_32,
+      0xFFFFFFFAUL,
+      5U,
+      11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_32,
+      5U,
+      0xFFFFFFFAUL,
+      -11LL
+    )
+  );
+}
+
+static bool encoder_millirpm_self_test_case(
+  int64_t counts_per_second,
+  int32_t expected_millirpm
+){
+  int32_t actual_millirpm;
+
+  if (!encoder_speed_cps_to_millirpm(
+    counts_per_second,
+    ENCODER_COUNTS_PER_OUTPUT_REV,
+    &actual_millirpm
+  )){
+    return false;
+  }
+
+  return actual_millirpm == expected_millirpm;
+}
+
+static bool encoder_millirpm_self_test(void){
+  int32_t ignored_millirpm;
+
+  return (
+    encoder_millirpm_self_test_case(
+      0LL,
+      0
+    ) &&
+    encoder_millirpm_self_test_case(
+      780LL,
+      30000
+    ) &&
+    encoder_millirpm_self_test_case(
+      -780LL,
+      -30000
+    ) &&
+    encoder_millirpm_self_test_case(
+      1560LL,
+      60000
+    ) &&
+    encoder_millirpm_self_test_case(
+      -1560LL,
+      -60000
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      0LL,
+      0U,
+      &ignored_millirpm
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      0LL,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      NULL
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      INT64_MAX,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &ignored_millirpm
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      INT64_MIN,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &ignored_millirpm
+    )
+  );
+}
+
+static const char *encoder_delta_direction(
+  int64_t delta_count
+){
+  if (delta_count > 0){
+    return "POS";
+  }
+
+  if (delta_count < 0){
+    return "NEG";
+  }
+
+  return "STOP";
+}
+
+static int32_t encoder_cps_to_i32(int64_t cps){
+  if (cps > (int64_t)INT32_MAX){
+    return INT32_MAX;
+  }
+
+  if (cps < (int64_t)INT32_MIN){
+    return INT32_MIN;
+  }
+
+  return (int32_t)cps;
+}
+
+static void encoder_speed_log_process(void){
+  char tx[256];
   uint32_t now_ms;
-  uint16_t raw3_count;
+  uint32_t raw3_count;
   uint32_t raw5_count;
-  int32_t centered3_count;
-  int32_t centered5_count;
+  bool tim3_updated;
+  bool tim5_updated;
+  int32_t tim3_millirpm;
+  int32_t tim5_millirpm;
   int len;
 
   now_ms = HAL_GetTick();
 
-  if ((now_ms - last_log_ms) < 250U){
-    return;
+  raw3_count = __HAL_TIM_GET_COUNTER(&htim3);
+  raw5_count = __HAL_TIM_GET_COUNTER(&htim5);
+
+  tim3_updated = encoder_speed_update(
+    &s_encoder_tim3,
+    raw3_count,
+    now_ms
+  );
+
+  tim5_updated = encoder_speed_update(
+    &s_encoder_tim5,
+    raw5_count,
+    now_ms
+  );
+
+  if (!tim3_updated || !tim5_updated){
+      return;
   }
 
-  last_log_ms = now_ms;
-  raw3_count = (uint16_t)__HAL_TIM_GET_COUNTER(&htim3);
-  raw5_count = __HAL_TIM_GET_COUNTER(&htim5);
-  centered3_count = (int32_t)raw3_count - 32768L;
-  centered5_count = (int32_t)((int64_t)raw5_count - 2147483648LL);
+  if (
+    !encoder_speed_cps_to_millirpm(
+      s_encoder_tim3.counts_per_second,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &tim3_millirpm
+    ) ||
+    !encoder_speed_cps_to_millirpm(
+      s_encoder_tim5.counts_per_second,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &tim5_millirpm
+    )
+  ){
+    Error_Handler();
+  }
+
+  /* Provisional mapping: TIM3 -> left, TIM5 -> right. */
+  uart_mvp_set_encoder_cps(
+    encoder_cps_to_i32(s_encoder_tim3.counts_per_second),
+    encoder_cps_to_i32(s_encoder_tim5.counts_per_second)
+  );
 
   len = snprintf(
     tx,
     sizeof(tx),
-    "ENC3,raw=%u,count=%ld,dir=%s;ENC5,raw=%lu,count=%ld,dir=%s\r\n",
-    (unsigned int)raw3_count,
-    (long)centered3_count,
-    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3) ? "DOWN" : "UP",
+    "ENC3,raw=%lu,delta=%ld,total=%ld,cps=%ld,mrpm=%ld,dir=%s;"
+    "ENC5,raw=%lu,delta=%ld,total=%ld,cps=%ld,mrpm=%ld,dir=%s\r\n",
+    (unsigned long)raw3_count,
+    (long)s_encoder_tim3.delta_count,
+    (long)s_encoder_tim3.accumulated_count,
+    (long)s_encoder_tim3.counts_per_second,
+    (long)tim3_millirpm,
+    encoder_delta_direction(s_encoder_tim3.delta_count),
     (unsigned long)raw5_count,
-    (long)centered5_count,
-    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim5) ? "DOWN" : "UP"
+    (long)s_encoder_tim5.delta_count,
+    (long)s_encoder_tim5.accumulated_count,
+    (long)s_encoder_tim5.counts_per_second,
+    (long)tim5_millirpm,
+    encoder_delta_direction(s_encoder_tim5.delta_count)
   );
 
   if ((len > 0) && (len < (int)sizeof(tx))){
@@ -228,7 +424,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  uint32_t encoder_init_ms;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -269,6 +465,55 @@ int main(void)
   if (HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL) != HAL_OK){
     Error_Handler();
   }
+
+  encoder_init_ms = HAL_GetTick();
+
+  if (!encoder_speed_init(
+      &s_encoder_tim3,
+      ENCODER_COUNTER_WIDTH_16,
+      __HAL_TIM_GET_COUNTER(&htim3),
+      encoder_init_ms,
+      ENCODER_SPEED_SAMPLE_PERIOD_MS
+  )){
+    Error_Handler();
+  }
+
+  if (!encoder_speed_init(
+      &s_encoder_tim5,
+      ENCODER_COUNTER_WIDTH_32,
+      __HAL_TIM_GET_COUNTER(&htim5),
+      encoder_init_ms,
+      ENCODER_SPEED_SAMPLE_PERIOD_MS
+  )){
+    Error_Handler();
+  }
+
+  if (
+    encoder_speed_wrap_self_test() &&
+    encoder_millirpm_self_test()
+  ){
+    static uint8_t pass_message[] =
+      "ENC_SELF_TEST,wrap=PASS,millirpm=PASS\r\n";
+
+    (void)HAL_UART_Transmit(
+      &huart2,
+      pass_message,
+      (uint16_t)(sizeof(pass_message) - 1U),
+      50U
+    );
+  } else {
+    static uint8_t fail_message[] =
+      "ENC_SELF_TEST,wrap_or_millirpm=FAIL\r\n";
+
+    (void)HAL_UART_Transmit(
+      &huart2,
+      fail_message,
+      (uint16_t)(sizeof(fail_message) - 1U),
+      50U
+    );
+
+    Error_Handler();
+  }
   uart_mvp_init(&huart1);
   uart_mvp_start_rx();
   /* USER CODE END 2 */
@@ -280,7 +525,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    encoder_hand_test_log_process();
+    encoder_speed_log_process();
     motor_output_pin_test_process();
     uart_mvp_process();
   }
@@ -335,12 +580,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-static void Board_Hardware_Init(void)
-{
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_rx_complete(huart);
 }

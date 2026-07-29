@@ -2,6 +2,7 @@
 
 #define MOTOR_OUTPUT_DUTY_SCALE_PERMILLE 1000U
 #define MOTOR_OUTPUT_MAX_DUTY_PERMILLE   100U
+#define MOTOR_OUTPUT_PWM_ZERO_SETTLE_MS  1U
 #define MOTOR_OUTPUT_DIR_SETTLE_MS       1U
 
 static TIM_HandleTypeDef *motor_timer = NULL;
@@ -57,7 +58,7 @@ HAL_StatusTypeDef motor_output_set_raw(
 ){
     uint32_t left_compare;
     uint32_t right_compare;
-    uint8_t direction_change_while_active;
+    uint8_t direction_changed;
 
 
     if (motor_timer == NULL) {
@@ -89,17 +90,11 @@ HAL_StatusTypeDef motor_output_set_raw(
     left_compare = motor_output_permille_to_compare(left_duty_permille);
     right_compare = motor_output_permille_to_compare(right_duty_permille);
 
-    direction_change_while_active =
-    (
-        motor_left_duty_permille > 0U &&
-        left_dir_level != motor_left_dir_level
-    ) ||
-    (
-        motor_right_duty_permille > 0U &&
-        right_dir_level != motor_right_dir_level
-    );
+    direction_changed =
+        (left_dir_level != motor_left_dir_level) ||
+        (right_dir_level != motor_right_dir_level);
 
-    if (direction_change_while_active != 0U){
+    if (direction_changed != 0U){
         __HAL_TIM_SET_COMPARE(
             motor_timer,
             TIM_CHANNEL_1,
@@ -111,7 +106,7 @@ HAL_StatusTypeDef motor_output_set_raw(
             0U
         );
 
-        HAL_Delay(MOTOR_OUTPUT_DIR_SETTLE_MS);
+        HAL_Delay(MOTOR_OUTPUT_PWM_ZERO_SETTLE_MS);
     }
     HAL_GPIO_WritePin(
         MOTOR_LEFT_DIR_GPIO_Port,
@@ -123,6 +118,10 @@ HAL_StatusTypeDef motor_output_set_raw(
         MOTOR_RIGHT_DIR_Pin,
         right_dir_level
     );
+
+    if (direction_changed != 0U){
+        HAL_Delay(MOTOR_OUTPUT_DIR_SETTLE_MS);
+    }
 
     __HAL_TIM_SET_COMPARE(
         motor_timer,

@@ -36,6 +36,8 @@ typedef struct {
     uint32_t last_seq;
     int32_t vx_mmps;
     int32_t w_mradps;
+    int32_t left_cps;
+    int32_t right_cps;
     uint32_t err;
     bool valid;
 } bridge_telemetry_t;
@@ -330,6 +332,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 sizeof(parsed.state)) &&
             parse_u32_field(line, "last_seq=", &parsed.last_seq) &&
             parse_i32_field(line, "vx_mmps=", &parsed.vx_mmps) &&
+            parse_i32_field(line, "left_cps=", &parsed.left_cps) &&
+            parse_i32_field(line, "right_cps=", &parsed.right_cps) &&
             parse_i32_field(line, "w_mradps=", &parsed.w_mradps) &&
             parse_u32_field(line, "err=", &parsed.err);
 
@@ -346,6 +350,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 " last_seq=%" PRIu32
                 " vx=%" PRIi32
                 " w=%" PRIi32
+                " left_cps=%" PRIi32
+                " right_cps=%" PRIi32
                 " err=%" PRIu32
                 " tel_count=%" PRIu32,
                 s_telemetry.t_ms,
@@ -353,6 +359,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 s_telemetry.last_seq,
                 s_telemetry.vx_mmps,
                 s_telemetry.w_mradps,
+                s_telemetry.left_cps,
+                s_telemetry.right_cps,
                 s_telemetry.err,
                 s_tel_count
             );

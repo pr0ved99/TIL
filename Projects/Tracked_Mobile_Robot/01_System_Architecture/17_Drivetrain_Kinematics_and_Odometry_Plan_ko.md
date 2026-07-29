@@ -164,6 +164,28 @@ odometry constant로 고정하지 않는다. Raw serial log는 MG540-A의 정지
 session의 별도 측정 보고다. Evidence는
 [`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)에 정리한다.
 
+### 2026-07-30 50-Revolution Calibration
+
+위 2026-07-26 provisional scale을 보완하기 위해 표시한 출력축을 motor별·방향별
+50회전시켰다.
+
+| Bench motor | Direction | Absolute total count | Counts/output rev |
+| --- | --- | ---: | ---: |
+| MG540-A | CW | 77,998 | 1559.96 |
+| MG540-A | CCW | 78,001 | 1560.02 |
+| MG540-B | CW | 78,000 | 1560.00 |
+| MG540-B | CCW | 78,000 | 1560.00 |
+
+현재 STM32 quadrature x4 기준 firmware 변환 상수는 `1560 counts/output rev`로
+확정한다. Signed CPS -> mRPM은 `trunc(CPS * 60000 / 1560)`으로 계산하며 boot
+self-test와 305-row dual hand-rotation log에서 계산·방향·정지 복귀가 통과했다.
+
+이 결정은 count-to-output-revolution scale을 닫은 것이다. Track odometry의
+`distance_per_count`는 effective sprocket/track travel, track slip과 실제 차량
+forward sign을 측정하기 전까지 확정하지 않는다. External tachometer 기반 절대
+RPM 정확도와 powered-motor noise도 별도 시험 대상이다. 상세 evidence는
+[`../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`](../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)에 있다.
+
 ## 5. Speed Estimation
 
 각 control period마다:

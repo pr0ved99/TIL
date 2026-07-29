@@ -20,6 +20,9 @@
 #define UART_LINE_MAX 128u
 #define TEL_PERIOD_MS 100u
 
+#define UART_MVP_OUTPUT_TEST_ENABLED       0U
+#define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE 100U
+
 typedef enum{
     ROBOT_DISARMED = 0,
     ROBOT_ARMED,
@@ -42,6 +45,8 @@ static uint32_t s_cmd_timeout_ms;
 static uint32_t s_last_cmd_ms;
 static uint32_t s_last_tel_ms;
 static uint32_t s_error_count;
+static int32_t s_left_cps;
+static int32_t s_right_cps;
 
 static const char *state_name(robot_state_t state){
     switch (state){
@@ -57,7 +62,7 @@ static const char *state_name(robot_state_t state){
 }
 
 static void uart_sendf(const char *fmt, ...){
-    char tx[160];
+    char tx[256];
     va_list args;
     int len;
 
@@ -155,17 +160,19 @@ static void send_err(int32_t seq, const char *type, const char *code){
 
 static void send_tel(void){
     uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%ld,"
-                "vx_mmps=%ld,w_mradps=%ld,"
-                "left_pwm=0,right_pwm=0,"
-                "left_cps=0,right_cps=0,"
-                "batt_mv=0,drop=%lu,err=%lu\n",
-                (unsigned long)HAL_GetTick(),
-                state_name(s_state),
-                (long)s_last_seq,
-                (long)s_vx_mmps,
-                (long)s_w_mradps,
-                (unsigned long)ring_buffer_dropped(&s_rx_rb),
-                (unsigned long)s_error_count);
+               "vx_mmps=%ld,w_mradps=%ld,"
+               "left_pwm=0,right_pwm=0,"
+               "left_cps=%ld,right_cps=%ld,"
+               "batt_mv=0,drop=%lu,err=%lu\n",
+               (unsigned long)HAL_GetTick(),
+               state_name(s_state),
+               (long)s_last_seq,
+               (long)s_vx_mmps,
+               (long)s_w_mradps,
+               (long)s_left_cps,
+               (long)s_right_cps,
+               (unsigned long)ring_buffer_dropped(&s_rx_rb),
+               (unsigned long)s_error_count);
 }
 
 static void handle_cmd(const char *line){
@@ -200,6 +207,24 @@ static void handle_cmd(const char *line){
     if(s_state != ROBOT_ARMED){
         send_err(seq, "CMD", "NOT_ARMED");
         return;
+    }
+
+    if(UART_MVP_OUTPUT_TEST_ENABLED != 0U){
+        if((vx_mmps == 50) && (w_mradps == 0)){
+            if(motor_output_set_raw(
+                UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET,
+                UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET
+            ) != HAL_OK){
+                motor_output_stop_all();
+                send_err(seq, "CMD", "MOTOR_OUTPUT_FAILED");
+                return;
+            }
+        }
+        else{
+            motor_output_stop_all();
+        }
     }
 
     s_last_seq = seq;
@@ -282,11 +307,21 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_last_seq = 0;
     s_last_tel_ms = 0u;
     s_error_count = 0u;
+    s_left_cps = 0;
+    s_right_cps = 0;
 
     s_vx_mmps = 0;
     s_w_mradps = 0;
     s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
     s_last_cmd_ms = 0u;
+}
+
+void uart_mvp_set_encoder_cps(
+    int32_t left_cps,
+    int32_t right_cps
+){
+    s_left_cps = left_cps;
+    s_right_cps = right_cps;
 }
 
 void uart_mvp_start_rx(void){

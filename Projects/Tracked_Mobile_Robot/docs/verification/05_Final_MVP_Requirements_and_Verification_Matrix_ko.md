@@ -12,7 +12,7 @@
 요구사항 -> 설계/인터페이스 -> 구현 -> 시험 -> 증거 -> 판정 -> 다음 조치
 ```
 
-기준일: 2026-07-26
+기준일: 2026-07-30
 
 ## 판정 용어
 
@@ -72,7 +72,7 @@
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PLANNED` |
 | `MVP-006` | 좌우 모터를 개별 제어하고 방향·채널 mapping을 확인한다. | MUST | `PLANNED` |
 | `MVP-007` | 좌우 엔코더 A/B를 안전한 전압으로 입력하고 signed count를 얻는다. | MUST | `PARTIAL` |
-| `MVP-008` | TEL에 좌우 count 또는 speed estimate가 포함된다. | MUST | `PLANNED` |
+| `MVP-008` | TEL에 좌우 count 또는 speed estimate가 포함된다. | MUST | `PASS` |
 | `MVP-009` | boot/reset/DISARM/timeout/fault에서 실제 motor PWM output이 0이 된다. | MUST | `PARTIAL` |
 | `MVP-010` | 궤도 섀시가 저속 전진, 후진과 제자리 회전을 수행한다. | MUST | `PLANNED` |
 | `MVP-011` | 1 m 직진에서 실제 거리와 엔코더 추정 거리의 오차를 기록한다. | MUST | `PLANNED` |
@@ -80,7 +80,7 @@
 
 `MVP-003`의 현재 `PARTIAL`에는 2026-07-26 battery 12.36 V, MDD10A input 12.35 V powered/no-motor power check `PASS`가 포함된다. 실제 board power/back-power와 low-voltage stop policy는 아직 남아 있다.
 
-`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero와 실제 PWM/DIR 핀의 boot/idle/test-disabled zero가 검증됐다는 뜻이다. Active PWM 상태에서 timeout/DISARM/fault가 실제 PWM 핀과 MDD10A 출력을 0으로 만드는 검증은 아직 남아 있다.
+`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero, 실제 PWM/DIR 핀의 boot/idle/test-disabled zero와 powered/no-motor MDD10A LED 수준의 active timeout/DISARM functional all-off가 검증됐다는 뜻이다. Actual PWM pin/waveform, fault/E-stop과 motor-connected stop 검증은 아직 남아 있다.
 
 ## 하위 요구사항
 
@@ -128,8 +128,8 @@
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 
 - `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다. 실제 차량 left/right와 forward/reverse 의미는 motor 장착 후 확정한다.
-- `REQ-MOTOR-002 PARTIAL`: boot/idle/test-disabled zero는 확인했지만 active timeout/DISARM/fault output zero는 미검증이다.
-- `REQ-MOTOR-003 PARTIAL`: 현재 코드는 `PWM 0 -> 1 ms wait -> DIR -> 즉시 PWM` 순서다. Test path는 비활성화돼 있지만 실제 motor 활성화 전에 의도한 post-DIR settle 순서로 수정하고 timing을 검증해야 한다.
+- `REQ-MOTOR-002 PARTIAL`: boot/idle/test-disabled zero와 motor-disconnected 10% bench hook의 timeout/DISARM MDD10A LED all-off는 확인했다. Actual PB6/PB7 zero-duty 파형, 정확한 latency, fault/E-stop과 실제 motor stop은 미검증이다.
+- `REQ-MOTOR-003 PARTIAL`: 현재 코드는 `PWM 0 -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 2026-07-29 powered/no-motor 6-step LED 기능 회귀시험은 통과했지만 실제 PWM-zero 구간, 두 1 ms 간격과 PWM 파형을 계측하지 않았다.
 - `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw test는 10% 제한으로 완료했고 매크로를 `0U`로 복귀했다. 정확한 duty 파형과 실제 motor 단계의 제한 해제 조건은 남아 있다.
 
 ### 엔코더와 telemetry
@@ -138,14 +138,28 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | --- | --- | --- | --- |
 | `REQ-ENC-001` | STM32 연결 전에 encoder 전원, A/B high voltage와 output type을 측정해 3.3 V input 안전성을 판정해야 한다. | MUST | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | 좌우 encoder를 timer encoder mode로 읽고 방향에 따라 signed count가 일관돼야 한다. | MUST | `PARTIAL` |
-| `REQ-ENC-003` | 일정 주기 count delta를 CPS 또는 wheel speed로 변환해 TEL에 포함해야 한다. | MUST | `PLANNED` |
+| `REQ-ENC-003` | 일정 주기 count delta를 CPS 또는 wheel speed로 변환해 TEL에 포함해야 한다. | MUST | `PASS` |
 
 `REQ-ENC-001 CONDITIONAL PASS`는 MG540-A에서 관찰한 raw 약 0/5 V A/B를 직접 연결해도 된다는 뜻이 아니다. 최종 motor-off 시험은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND 조건에서 수행했고 PB4/PB5 분리 상태의 HIGH는 MG540-A/B A/B 모두 3.06~3.07 V였다. 정확한 LOW, pulse shape, A/B phase timing, powered-motor noise와 회로형식은 아직 계측하지 않았다.
 
 `REQ-ENC-002 PARTIAL`은 TIM3 `PB4/PB5`와 TIM5 `PA0/PA1`에 두 encoder를
 동시에 연결한 motor-off 시험에서 독립 count, 양방향 부호와 출력축 1회전당
-잠정 약 1560 count를 확인한 범위다. Wrap-safe delta, speed telemetry와 차량
-forward/left-right sign은 미확정이다.
+약 1560 count를 확인하고, 2026-07-29에는 16-bit/32-bit modular delta와
+wrap-safe 누적 count를 runtime에서 확인한 범위다. 2026-07-30 방향별 50회전
+보정은 `1559.96~1560.02 counts/output rev`로 수렴해 firmware 상수를 `1560`으로
+확정했다. 차량 forward/left-right sign과 powered-motor noise는 미확정이므로
+요구사항 전체 상태는 계속 `PARTIAL`이다.
+
+`REQ-ENC-003 PASS`는 nominal 100 ms 주기의 wrap-safe counts/s가 STM32 production
+UART `TEL`의 `left_cps/right_cps`에 포함되고 ESP32 structured parser까지 도달한
+범위다. Main power ON, output hook `0U`, commanded output zero의 독립 손회전에서 A -> TIM5/`right_cps`, B ->
+TIM3/`left_cps`, clockwise positive, counter-clockwise negative, inactive field zero와
+stop-to-zero를 확인했다. 이 PASS는 실제 vehicle left/right·forward sign, encoder
+datasheet PPR/gear-ratio 분리 검증, wheel-speed calibration 또는 active
+PWM/motor-current noise를 의미하지 않는다.
+2026-07-30에는 `mRPM = trunc(CPS * 60000 / 1560)` self-test가 통과했고, 305개
+dynamic dual row의 610 channel sample에서 formula와 direction mismatch가 0이었다.
+External tachometer 기준 절대 RPM 정확도는 아직 검증하지 않았다.
 
 ### 주행과 odometry
 
@@ -170,11 +184,11 @@ forward/left-right sign은 미확정이다.
 | `REQ-POWER-004` | fault model | alarm/ADC and stop policy | `T-PWR-004` low-voltage behavior | TBD | `PLANNED` |
 | `REQ-MECH-001` | adapter layout, Rev A preflight | Rev A release | `T-MECH-001` 1:1/vector preflight | release hashes, PDF analysis, user comparison | `PASS` |
 | `REQ-MECH-002~003` | adapter layout | fabricated plate and spacers | `T-MECH-002` adapter fit check | measurements, assembly photos | `BLOCKED` |
-| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), DMM 관측, [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
+| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), DMM 관측, [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
 | `REQ-MOTOR-005` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | video, current/heat log | `PLANNED` |
 | `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
-| `REQ-ENC-002` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt) | `PARTIAL` |
-| `REQ-ENC-003` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | serial log, count/speed table | `PLANNED` |
+| `REQ-ENC-002` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt), [50-rev calibration summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md) | `PARTIAL` |
+| `REQ-ENC-003` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | [2026-07-29 stationary log](../../assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt), [production CPS TEL verification](../../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md), [50-rev/mRPM summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [mRPM dynamic raw log](../../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt) | `PASS` |
 | `REQ-DRIVE-001~003` | state machine, kinematics | dual motor path | `T-DRIVE-001` left/right drivetrain | video, mapping and fault log | `PLANNED` |
 | `REQ-ODO-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
 | `MVP-012` | master plan and README | documentation package | `T-DOC-001` evidence audit | README, linked evidence matrix | `PARTIAL` |
@@ -200,7 +214,7 @@ forward/left-right sign은 미확정이다.
 | 15 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
 | 16 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
 
-`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED 범위는 통과했지만 정확한 PWM 파형, direction timing과 active timeout/DISARM shutdown이 남아 있어 `PARTIAL`이다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count 범위는 통과했지만 wrap-safe delta, speed telemetry와 차량 sign mapping이 남아 있어 전체 Test ID는 `PARTIAL`이다. 다음 encoder 작업은 production delta/speed module이며, 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
+`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED, direction functional regression 및 motor-disconnected active timeout/DISARM LED shutdown 범위는 통과했다. 정확한 PWM 파형, direction timing, actual shutdown pin zero와 fault/E-stop이 남아 있어 전체 Test ID는 `PARTIAL`이다. 2026-07-29 safety evidence는 [`../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md`](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md)에 있다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count, modular delta/counts/s, 50회전 `1560 counts/output rev`, mRPM 계산과 production `TEL` -> ESP32 parse subtest는 통과했지만 차량의 physical side/forward sign, external tachometer/wheel-speed calibration과 powered-motor noise가 남아 있어 전체 Test ID는 `PARTIAL`이다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
 
 ## 최종 인수 규칙
 

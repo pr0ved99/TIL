@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-07-28
+Last updated: 2026-07-30
 
 ## Project Identity
 
@@ -115,7 +115,15 @@ Important docs:
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-07-28_progress.md`: latest progress note for the KiCad RevA functional wiring baseline
+- `docs/progress/2026-07-30_progress.md`: latest progress note for 50-revolution output-shaft calibration and CPS-to-mRPM validation
+- `03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h`, `Core/Src/encoder_speed.c`: TIM3/TIM5 modular delta, int64 accumulation and counts/s module
+- `assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt`: stationary dual-encoder speed-log evidence
+- `assets/logs/encoder/2026-07-29_dual_encoder_speed_hand_rotation_pass.txt`: dynamic dual hand-rotation delta/counts/s evidence
+- `assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md`: STM32 production TEL -> ESP32 dual-CPS end-to-end verification summary
+- `assets/logs/encoder/2026-07-29_dual_encoder_cps_tel_cw_pass.txt`, `2026-07-29_dual_encoder_cps_tel_ccw_pass.txt`: independent clockwise/counter-clockwise raw TEL evidence
+- `assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`: direction-by-direction 50-revolution calibration and mRPM audit summary
+- `assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt`: dual hand-rotation CPS/mRPM raw evidence
+- `docs/progress/2026-07-28_progress.md`: KiCad RevA functional wiring baseline progress note
 - `docs/progress/2026-07-27_progress.md`: TIM5 configuration and TIM3/TIM5 dual motor-off independent hand-count validation
 - `assets/logs/encoder/README.md`: encoder bench-log conditions, separately reported one-revolution results and remaining limitations
 - `docs/progress/2026-07-24_progress.md`: Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
@@ -167,6 +175,7 @@ Important docs:
 - STM32 `TEL` telemetry reached the ESP32 monitor, and the ESP32 parser classified `TEL` and `PONG` while tracking `tel_count` and `pong_count`.
 - The failed pre-flash symptom was broken RX data and line overflow; running the latest STM32 USART1 firmware resolved it.
 - ESP32 structured parsing of `TEL` fields (`state`, `last_seq`, `vx_mmps`, `w_mradps`, `err`) passed on 2026-07-18 with ESP-IDF build/flash and the real STM32 USART1 link.
+- ESP32 structured parsing of production `left_cps/right_cps` passed on 2026-07-29 with real STM32 USART1 telemetry and independent dual-encoder clockwise/counter-clockwise hand rotation.
 - ESP32 scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` sequence passed on 2026-07-20.
 - STM32 returned the expected `NOT_ARMED`, command `ACK`, `OUT_OF_RANGE`, and `DISARM` responses through the ESP32 bridge.
 - A one-shot valid CMD produced `vx=50`, then STM32 timeout returned `vx=0`, `w=0` after about 300 ms while remaining `ARMED` until explicit `DISARM`.
@@ -175,7 +184,7 @@ Important docs:
 - STM32 pin-only DMM and MDD10A powered/no-motor static LED sequence passed on 2026-07-26. An initial two-channel PWM/DIR swap was diagnosed from the LED pattern, corrected, and the full sequence was repeated successfully.
 - The 2026-07-26 MDD10A power check measured battery 12.36 V and driver input 12.35 V with the motor disconnected and no abnormal heat, smell, noise, or fuse behavior.
 - The temporary 10% raw output test was disabled again with `MOTOR_OUTPUT_PIN_TEST_ENABLED 0U`; all MDD10A output LEDs remained off after rebuild/flash.
-- Motor-output verification remains `PARTIAL`: actual 20 kHz/10% waveform and active timeout/DISARM/fault output zero have not been instrumented or physically exercised. The current source order is `PWM zero -> 1 ms wait -> DIR write -> immediate PWM restore`; intended post-DIR settle must be corrected before active motor use.
+- Motor-output direction logic now uses `PWM zero -> 1 ms PWM-zero settle -> DIR write -> 1 ms post-DIR settle -> PWM restore`. The 2026-07-29 powered/no-motor 6-step MDD10A LED regression passed. A temporary default-off 10% UART hook also produced active M1A/M2A indication and both command timeout and a separate active `DISARM` made the output LEDs all-off. The hook was restored to `0U`, both boards were rebuilt/flashed and the default script remained all-off. Verification remains `PARTIAL` because actual 20 kHz/10% waveform, both 1 ms intervals, PB6/PB7 shutdown waveform, fault/E-stop and actual motor stop have not been measured or tested.
 - Two available encoder motors are WHEELTEC `MG540P30_12V`; use bench IDs `MG540-A` and `MG540-B` until physical vehicle left/right assignment is known.
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
 - XL4015 #2 encoder rail measured 5.06 V before MG540-A and 5.03 V connected; MG540-B connected rail also measured 5.03 V.
@@ -186,9 +195,14 @@ Important docs:
 - `PB4/PB5 TIM3` encoder mode passed the motor-off hand-rotation test with both motors connected sequentially. Output-shaft-end view signs were CW positive and CCW negative; vehicle-forward sign is still TBD.
 - Separately reported one-output-shaft-turn results were MG540-A `+1560 / -1560~-1570` and MG540-B `+1562 / -1560`; use `1560 counts/output rev` only as a provisional scale.
 - Exact 360-degree hand rotation was not mechanically indexed. Manual start/end alignment and gearbox backlash limit single-revolution accuracy; final calibration requires a marked reference and a repeated multi-revolution average.
+- On 2026-07-30, the marked output shaft was hand-rotated 50 revolutions per direction. Operator-reported absolute totals were MG540-A `77,998 / 78,001` and MG540-B `78,000 / 78,000`, yielding `1559.96~1560.02 counts/output rev`. This supersedes the provisional-scale gap and fixes the current firmware constant at `1560 counts/output rev`.
 - The 2026-07-26 preserved raw log contains only a partial bidirectional capture assigned to MG540-A, not the full-turn results or MG540-B trace.
 - On 2026-07-27, both encoders were connected concurrently to `PB4/PB5 TIM3` and `PA0/PA1 TIM5`. The dual raw log shows ENC5 `0 -> +1557 -> -6` while ENC3 stayed `0`, then ENC3 `0 -> +1561 -> +7` while ENC5 stayed `-6`. Motor ID to ENC3/ENC5 mapping was not recorded, so keep timer names until physical left/right assignment.
-- TIM3/TIM5 dual motor-off independent count/sign is `PASS`. Wrap-safe accumulation, speed telemetry, powered-motor noise, exact LOW and A/B phase timing remain unverified.
+- TIM3/TIM5 dual motor-off independent count/sign is `PASS`.
+- On 2026-07-29, `encoder_speed` implemented TIM3 16-bit and TIM5 32-bit modular delta, int64 accumulated count and nominal 100 ms counts/s. Synthetic forward/reverse wrap cases, stationary logging and dual hand-rotation logging passed.
+- A later 2026-07-29 operator-identified end-to-end retest established MG540-A -> TIM5 -> `right_cps` and MG540-B -> TIM3 -> `left_cps`; both were clockwise positive and counter-clockwise negative in output-shaft-end view. These are logical telemetry fields, not final vehicle-side assignments.
+- On 2026-07-30, signed CPS-to-mRPM conversion, invalid-input/range checks and boot self-test were added. `ENC_SELF_TEST,wrap=PASS,millirpm=PASS` and a 305-row dual hand-rotation log passed with 0/610 formula mismatch, direction mismatch 0 and stop-to-zero.
+- USART2 remains a parallel bench logger and carries mRPM diagnostics. CPS is fed into production UART `TEL` and parsed by ESP32; the production contract intentionally remains `left_cps/right_cps`. Physical vehicle side/forward sign, powered-motor noise, exact LOW, A/B phase timing, external-tachometer RPM accuracy and wheel-speed scale remain unverified.
 - On 2026-07-28, a KiCad 10.0 `RevA DRAFT` functional wiring schematic captured the battery/fuse/switch distribution, MDD10A power/logic/output, dual encoder 1 kΩ + 15 kΩ conditioning, XL4015 #2 encoder rail and STM32–ESP32 UART.
 - XL4015 #1 output remains a candidate and is not connected to STM32 or ESP32 until its destination and USB backfeed policy are verified.
 - The dated ERC report records 0 errors and 0 warnings under its listed ignored-check policy. This does not verify physical wiring, current capacity, noise, footprints, perfboard layout or manufacturing readiness.
@@ -213,7 +227,7 @@ Ask the user or verify from hardware only for these:
 - Final CAN transceiver model
 - Final USB-CAN adapter model
 - Battery voltage divider resistor values
-- Final encoder counts-per-revolution after speed/powered validation, vehicle-forward sign and left/right assignment
+- External-tachometer RPM accuracy, wheel-speed scale, vehicle-forward sign and left/right assignment; the current firmware output-shaft count constant is 1560
 - Actual fuse rating after current measurement
 - XL4015 #1 final 5 V destination and STM32/ESP32 USB backfeed policy
 - BNO085 power and I2C final wiring
@@ -232,15 +246,15 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short Projects/Tracked_Mobile_Robot`.
-2. Read `docs/progress/2026-07-28_progress.md`, `09_Electrical_Design/README.md` and `02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md` before continuing.
+2. Read `docs/progress/2026-07-30_progress.md`, `09_Electrical_Design/README.md` and `02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md` before continuing.
 3. Preserve the KiCad `RevA DRAFT` verified/TBD boundary. Do not connect XL4015 #1 candidate output to either MCU before the USB backfeed policy is decided.
 4. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
-5. Preserve the encoder conditioning, TIM3/TIM5 firmware and 2026-07-27 dual raw-log evidence; raw A/B direct STM32 connection is prohibited.
-6. Replace the temporary centered display with a production encoder module using 16-bit/32-bit modular delta, wrap-safe accumulation and fixed-period speed telemetry.
-7. Before active motor use, correct the current `PWM zero -> 1 ms wait -> DIR -> PWM` code to provide the intended post-DIR settle.
-8. Connect the validated UART command state to the 10%-limited motor-output interface.
-9. With no motor connected, verify active timeout, DISARM and fault paths at the actual PWM pins and MDD10A LEDs.
-10. After the active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
+5. Preserve the encoder conditioning, TIM3/TIM5 firmware, modular-delta module and dated raw-log evidence; raw A/B direct STM32 connection is prohibited.
+6. Preserve the 2026-07-29 powered/no-motor timeout/DISARM MDD10A LED functional PASS and final hook `0U` all-off evidence. Do not treat it as actual PB6/PB7 waveform, fault/E-stop or motor-stop proof.
+7. Preserve the production `left_cps/right_cps` and ESP32 parse evidence as the logical mapping regression baseline; do not call it final vehicle left/right mapping.
+8. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
+9. When instrumentation is available, verify exact PWM/direction timing and active shutdown at PB6/PB7; define and test fault/E-stop behavior.
+10. After the remaining active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
 11. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
 12. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
 13. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.

@@ -11,7 +11,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 2. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
-5. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-28_progress.md
+5. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-30_progress.md
 6. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md
 7. Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md
 8. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-27_progress.md
@@ -36,7 +36,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - ESP32가 PING을 보내고 STM32 PONG을 받는 왕복 통신은 PASS했다.
 - ESP32가 STM32 TEL telemetry를 수신하는 경로도 PASS했다.
 - ESP32 parser는 TEL, PONG, ACK, ERR, UNKNOWN을 구분한다.
-- TEL의 t_ms, state, last_seq, vx_mmps, w_mradps, err 구조화는 실제 STM32 link에서 PASS했다.
+- TEL의 t_ms, state, last_seq, vx_mmps, w_mradps, left_cps, right_cps, err 구조화는 실제 STM32 link에서 PASS했다.
 - structured TEL parser evidence는 assets/screenshots/esp32_uart_bridge/2026-07-18_13_esp32_structured_tel_parser_success.png 이다.
 - ESP32 scripted CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM sequence는 PASS했다.
 - STM32 NOT_ARMED, ARM/CMD ACK, OUT_OF_RANGE, DISARM ACK와 최종 DISARMED telemetry를 확인했다.
@@ -48,16 +48,23 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
 - STM32 protocol path는 uart_mvp_init(&huart1) 사용과 실제 PING/PONG/TEL runtime을 확인했다.
 - STM32 motor bench mapping은 PB6/TIM4_CH1 -> PWM1, PC8 -> DIR1, PB7/TIM4_CH2 -> PWM2, PC9 -> DIR2, common GND다.
-- STM32 pin-only DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Test macro는 다시 0U이고 final all-off를 확인했다.
-- 현재 motor-output source는 PWM zero -> 1 ms wait -> DIR -> 즉시 PWM 순서다. 실제 motor 활성화 전에 의도한 post-DIR settle로 수정해야 한다.
+- STM32 pin-only DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했고, 2026-07-29 direction-change 수정 뒤 같은 sequence와 final all-off를 재통과했다. Test macro는 다시 0U다.
+- 현재 motor-output source는 `PWM zero -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 기능 회귀는 통과했지만 실제 PWM 파형과 두 1 ms 간격은 미계측이다.
+- 2026-07-29 motor-disconnected 10%-limited UART hook에서 active timeout과 별도 active `DISARM`이 MDD10A M1A/M2A LED를 all-off로 만드는 기능 시험을 통과했다. Hook은 `0U`로 복구했고 default scripted sequence 전체 all-off도 확인했다.
+- 위 PASS는 actual PB6/PB7 zero-duty 파형, 정확한 shutdown latency, fault/E-stop, production velocity-to-PWM mapping 또는 실제 motor stop 증거가 아니다.
 - 두 encoder motor는 MG540-A/B로 임시 식별하며 실제 차량 left/right는 아직 미정이다.
 - MG540-A raw encoder A/B는 shaft 위치에 따라 약 0/5 V였다. Raw direct STM32 연결은 금지한다.
 - 최종 motor-off conditioning은 각 A/B에서 `1 kΩ series -> STM32 input node`, 그 node에서 `15 kΩ -> common GND`다. STM32 GND, encoder GND와 XL4015 OUT-를 공통으로 묶는다.
 - PB4/PB5 분리 상태의 conditioned HIGH는 MG540-A A/B 3.06 V, MG540-B A/B 3.06~3.07 V였다.
 - TIM3 `PB4/CH1=A`, `PB5/CH2=B`, encoder TI12 x4 조건에서 두 motor의 motor-off hand-count를 순차 검증했다.
-- Output-shaft-end view 기준 MG540-A는 CW +1560, CCW -1560~-1570, MG540-B는 CW +1562, CCW -1560이었다. `1560 counts/output rev`는 잠정값이다.
+- 2026-07-26 1회전 시험 당시 output-shaft-end view 기준 MG540-A는 CW +1560, CCW -1560~-1570, MG540-B는 CW +1562, CCW -1560이었고 `1560 counts/output rev`를 잠정값으로 사용했다.
 - 저장 raw log는 MG540-A의 부분 양방향 증감만 담고 있으며, 전체 1회전 수치와 MG540-B 결과는 같은 session의 별도 작업자 기록이다.
-- TIM5 PA0/PA1과 TIM3 PB4/PB5에 두 encoder를 동시에 연결한 motor-off 독립 count/sign은 통과했다. Wrap-safe 누적 count, speed telemetry, exact LOW/A-B phase timing, powered-motor noise와 차량 forward/left-right sign은 아직 미검증이다.
+- 2026-07-30 방향별 50회전 손보정에서 MG540-A absolute count는 `77,998 / 78,001`, MG540-B는 `78,000 / 78,000`이었다. `1559.96~1560.02 counts/output rev`로 수렴했으므로 현재 firmware 상수는 `1560`으로 확정했다. 이 작업자 측정은 아래 mRPM raw log와 별도 증거다.
+- TIM5 PA0/PA1과 TIM3 PB4/PB5에 두 encoder를 동시에 연결한 motor-off 독립 count/sign은 통과했다.
+- 2026-07-29 production `encoder_speed` module에서 TIM3 16-bit/TIM5 32-bit modular delta, wrap-safe int64 누적 count와 nominal 100 ms counts/s를 구현했다. Synthetic wrap, stationary와 dual hand-rotation bench log를 통과했다.
+- 2026-07-30 signed CPS -> mRPM conversion과 invalid/range self-test를 추가했다. `ENC_SELF_TEST,wrap=PASS,millirpm=PASS`와 305-row dual hand-rotation log에서 610 sample formula mismatch 0, direction mismatch 0과 stop-to-zero를 확인했다. mRPM은 USART2 bench field이고 production `TEL`은 CPS를 유지한다.
+- 2026-07-29 end-to-end retest에서 MG540-A -> TIM5 -> `right_cps`, MG540-B -> TIM3 -> `left_cps`, output-shaft-end CW `+` / CCW `-`, inactive field zero를 production `TEL`과 ESP32 parser에서 확인했다.
+- 위 mapping은 logical field map이다. Exact LOW/A-B phase timing, powered-motor noise, external tachometer 기준 RPM 정확도, wheel-speed scale과 차량 physical left/right/forward sign은 아직 미검증이다.
 - KiCad 10.0 `Tracked_Mobile_Robot_Wiring_RevA` 기능 회로도 초안을 09_Electrical_Design에 보존했다.
 - RevA에는 battery -> FUSE_TBD -> switch -> MDD10A/XL4015 x2 병렬 분배, MDD10A logic/output, dual encoder 1 kΩ + MCU-side 15 kΩ conditioning, XL4015 #2 encoder 5 V와 STM32–ESP32 UART를 기록했다.
 - Dated ERC는 0 errors / 0 warnings이고 review PDF도 보존했다. 이는 물리 배선, 전류 용량, noise, footprint 또는 제조 적합성 검증이 아니다.
@@ -92,8 +99,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - ESP-IDF monitor가 COM4를 점유하면 flash 전에 Ctrl+]로 monitor를 종료한다.
 - main/hello_world_main.c는 사용자가 직접 학습하며 작성 중이므로 요청 없이 대신 완성하지 않는다.
 - Raw encoder A/B를 STM32에 직접 연결하지 않는다. 제한 시험 조건은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND와 motor power disconnected다.
-- 현재 USART2 250 ms `ENC3` logger와 `raw - 32768` 표시는 bench-only다. Blocking logger를 production path로 사용하지 않고 modular delta/wrap-safe accumulator로 교체한다.
-- 실제 motor test 전에는 의도한 post-DIR settle과 active timeout/DISARM actual-output zero를 확인한다.
+- USART2 encoder 출력은 병행 검증용 bench logger이며 mRPM도 여기에서만 출력한다. 내부 count는 int64지만 newlib-nano `%lld` 제약 때문에 현재 짧은 bench log는 `(long)`/`%ld`를 사용한다. CPS는 production UART `TEL`에도 연결되어 ESP32 parser까지 PASS했다.
+- 실제 motor test 전에는 actual PB6/PB7 shutdown waveform, exact PWM/direction timing과 fault/E-stop gate를 확인한다. Timeout/DISARM MDD LED functional gate는 통과했다.
 - XL4015 #1 candidate 5 V는 USB backfeed 정책이 확정되기 전 STM32/ESP32에 연결하지 않는다.
 - KiCad의 `FUNCTIONAL` connector block은 관련 신호를 묶은 표기이며 물리적으로 연속된 header를 뜻하지 않는다.
 - ERC PASS를 실물 배선, 전류 용량, noise, footprint 또는 제조 검증으로 확대 해석하지 않는다.
@@ -101,10 +108,10 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 다음 목표:
 
 1. 완료된 UART bridge, dual encoder bench evidence와 KiCad RevA DRAFT baseline을 보존한다.
-2. 16-bit/32-bit modular delta, wrap-safe accumulator와 fixed-period speed telemetry를 production encoder module로 분리한다.
-3. 실제 motor 활성화 전에 direction-change code를 post-DIR settle 순서로 수정한다.
-4. UART command state를 검증된 10%-limited PWM/DIR interface에 연결하고 active timeout/DISARM/fault actual-output zero를 검증한다.
-5. Active-output safety gate를 통과한 뒤 first lifted/no-load motor test에서 encoder false count/noise와 input filter를 확인한다.
+2. Production `left_cps/right_cps`와 ESP32 parse raw evidence를 logical mapping 회귀 기준으로 보존한다.
+3. 50회전 `1560 counts/output rev`와 mRPM evidence를 보존한다. 실제 장착 뒤 vehicle physical left/right와 forward-positive sign을 확정하고 external tachometer 및 sprocket/track travel로 RPM·wheel-speed를 별도 검증한다.
+4. 계측 장비가 준비되면 actual PB6/PB7 shutdown waveform, exact PWM/direction timing과 fault/E-stop을 검증한다.
+5. 남은 active-output safety gate를 통과한 뒤 first lifted/no-load motor test에서 encoder false count/noise와 input filter를 확인한다.
 6. 영구 만능기판·하네스는 KiCad schematic-to-hardware continuity review 후 조성한다.
 7. 멀티메이커에 서버 업로드 오류를 알리고 대체 제출 방법 또는 복구 여부를 확인한다.
 8. 아크릴 3T, 외곽 174 x 208.93379 mm, 지름 3.3 mm 홀, 1개 제작 조건으로 견적을 확인한다.

@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | Power path checked | `01_Power_Bringup_Checklist.md` | PASS through MDD10A powered/no-motor input |
 | Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
-| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; active timeout/DISARM and timing closure required |
+| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; timeout/DISARM LED functional PASS, actual PWM pin/timing과 fault closure required |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
 | Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3 PB4/PB5와 TIM5 PA0/PA1 dual independent hand rotation PASS; vehicle sign은 pending |
 | Motor fixed or lifted safely | Physical setup | TBD |
@@ -39,7 +39,7 @@
 
 Current gate decision: `NOT READY`
 
-Encoder loaded-voltage gate와 TIM3/TIM5 dual motor-power-off independent count/sign은 통과했다. 그러나 이 결과는 powered-motor noise 또는 vehicle-forward sign을 입증하지 않는다. 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero와 의도한 post-DIR settle을 확인해야 한다.
+Encoder loaded-voltage gate와 TIM3/TIM5 dual motor-power-off independent count/sign은 통과했다. 그러나 이 결과는 powered-motor noise 또는 vehicle-forward sign을 입증하지 않는다. Powered/no-motor timeout/DISARM MDD10A LED functional gate는 통과했지만, 실제 motor 연결 전 actual PWM pin shutdown waveform, exact PWM/direction timing과 fault/E-stop gate를 확인해야 한다.
 
 ## Wiring Under Test
 
