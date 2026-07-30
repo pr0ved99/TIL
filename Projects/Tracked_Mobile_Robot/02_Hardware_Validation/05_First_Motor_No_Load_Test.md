@@ -33,11 +33,11 @@
 | Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
 | MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; timeout/DISARM와 software fault output-zero/latch functional PASS, actual PWM waveform/timing과 physical E-stop required |
 | Actual PWM/DIR timing measured | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | NOT TESTED; logic analyzer pending |
-| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; motor-disconnected gates first |
+| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; `T-ESTOP-001~006` must pass first |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
 | Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3/TIM5 dual independent hand rotation와 encoder-side A=right/TIM5, B=left/TIM3 forward-positive sign PASS |
 | Motor fixed or lifted safely | Physical setup | TBD |
-| 10 A or 15 A fuse selected | Test stage | TBD |
+| Bench fuse selected from validated current envelope | Test stage | TBD; 10 A candidate, no rating increase without root-cause/design review |
 
 Current gate decision: `NOT READY`
 
@@ -48,7 +48,8 @@ Encoder loaded-voltage gate, TIM3/TIM5 dual motor-power-off independent count/si
 ```text
 3S LiPo +
     -> fuse
-    -> switch
+    -> verified Physical E-stop motor-power disconnect
+       (selected T-ESTOP variant, including its main-switch topology)
     -> MDD10A POWER+
 
 3S LiPo -

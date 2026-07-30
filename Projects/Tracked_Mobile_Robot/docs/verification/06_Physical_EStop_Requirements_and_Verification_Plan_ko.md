@@ -49,7 +49,7 @@ Software claim
 
 | Requirement | Design / implementation | Test ID | Required evidence | Status |
 | --- | --- | --- | --- | --- |
-| `REQ-ESTOP-001~004` | Physical E-stop architecture, power schematic, selected-device datasheet | `T-ESTOP-001`, `T-ESTOP-002` | Datasheet, schematic export/ERC, continuity/DMM log | `PLANNED` |
+| `REQ-ESTOP-001~004` | Physical E-stop architecture, power schematic, selected-device datasheet | `T-ESTOP-001`, `T-ESTOP-002` | Datasheet, schematic export/ERC, continuity/DMM log | `PLANNED/BLOCKED` |
 | `REQ-ESTOP-005` | STM32 sense circuit and pin allocation | `T-ESTOP-003` | DMM voltage table, pin configuration, wiring photo | `PLANNED` |
 | `REQ-ESTOP-006~008` | Safety state/latch, common motor safe-output path | `T-ESTOP-004`, `T-ESTOP-005` | UART log, GPIO/PWM capture, reset regression log | `PLANNED` |
 | `REQ-ESTOP-009` | Physical disconnect + MDD10A + lifted motor | `T-ESTOP-006`, `T-ESTOP-007` | Logic capture, rail waveform, video, stop-time/distance table | `BLOCKED` |
@@ -172,8 +172,8 @@ all test hooks restored to 0U after test
 
 상태: `BLOCKED` — `T-ESTOP-001~004 PASS` 필요
 
-- 10 A bench fuse와 검증된 switch path를 사용한다.
-- MDD10A에 motor는 연결하지 않는다.
+- 검증된 current envelope에 맞는 bench fuse와 switch path를 사용한다. 현재 10 A는 candidate이며 nuisance trip의 원인을 규명하지 않은 채 rating을 높이지 않는다.
+- Motor는 MDD10A에서 분리한 상태로 유지한다.
 - Logic analyzer로 `ESTOP_SENSE`, `PB6/PWM1`, `PB7/PWM2`를 관찰한다.
 - DMM 또는 적절한 probe로 MDD10A motor-power rail을 확인한다.
 
@@ -205,7 +205,7 @@ t3: motor rail decays below defined threshold
 - Peak/undershoot/overshoot on motor rail
 - Contact bounce and sense debounce behavior
 
-24 MHz, 5 V-class logic analyzer는 STM32 digital signals 관찰용이다. 3S LiPo/MDD10A power rail에 직접 연결하지 않는다. Motor rail은 적절한 voltage rating과 grounding을 가진 oscilloscope/probe 또는 DMM 절차로 측정한다.
+24 MHz, 5 V-class logic analyzer는 STM32 digital signals 관찰용이다. 3S LiPo/MDD10A power rail에 직접 연결하지 않는다. Motor rail의 차단 지연, 감쇠와 overshoot/undershoot는 적절한 voltage rating과 grounding을 가진 oscilloscope/probe로 측정한다. DMM은 steady-state 또는 정적 rail 존재 여부 확인에만 사용하며 transient timing evidence를 대체하지 않는다.
 
 수치 acceptance threshold는 계측 baseline과 hazard review 후 확정한다. 측정 전 임의 숫자를 `PASS` 기준으로 만들지 않는다.
 
@@ -277,5 +277,4 @@ Bench verification: NOT TESTED
 Overall result: PLANNED
 ```
 
-Physical E-stop 전체가 `PASS`되기 전에는 [`T-MOTOR-003`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)의 powered single-motor test를 시작하지 않는다.
-
+Motor-disconnected 단계인 `T-ESTOP-001~006`이 모두 `PASS`되기 전에는 [`T-MOTOR-003`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)의 powered single-motor test를 시작하지 않는다. 마지막 `T-ESTOP-007`은 그 선행 gate를 통과한 lifted single-motor setup에서 실행한다.

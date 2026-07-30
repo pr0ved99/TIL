@@ -265,8 +265,10 @@ Commands:
 
 ```powershell
 python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_firmware_contract.py
-pwsh -File Projects/Tracked_Mobile_Robot/03_Firmware/tools/Build-Firmware.ps1 -Target All -RequireClean
+pwsh -File Projects/Tracked_Mobile_Robot/03_Firmware/tools/Build-Firmware.ps1 -Target All
 ```
+
+Capture evidence를 저장하고 검토한 뒤 먼저 커밋한다. 그 다음 동일 build를 `-RequireClean`으로 한 번 더 실행해 최종 tracked state가 clean인지 확인한다. 미추적 `.sr/.csv/.png`가 있는 상태에서 `-RequireClean`을 먼저 사용하지 않는다.
 
 ## Result table
 
@@ -292,4 +294,3 @@ First powered motor test: NOT READY
 ```
 
 Physical E-stop은 별도 hardware-energy-cut requirement다. 이 문서의 software PWM shutdown capture로 [`../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)를 대체하지 않는다.
-
