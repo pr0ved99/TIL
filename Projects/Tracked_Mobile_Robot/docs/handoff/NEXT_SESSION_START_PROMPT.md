@@ -24,6 +24,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 15. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
 16. Projects/Tracked_Mobile_Robot/assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md
 17. Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md
+18. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
+19. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
 
 현재 상태:
 
@@ -45,6 +47,9 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - valid CMD 이후 약 300 ms 뒤 vx=0, w=0으로 복귀하는 STM32 timeout-zero를 확인했다.
 - bridge 최종 evidence는 assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png 와 assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt 이다.
 - ESP32-STM32 board-only UART bridge MVP는 완료됐다.
+- 2026-07-20 scripted sequence PASS는 historical controlled-bench evidence다. 현재 ESP32 source의 `BRIDGE_SCRIPTED_TEST_ENABLED`는 `0U`이며 정상 boot에서는 `PING/ARM/CMD/DISARM`을 자동 전송하지 않는다.
+- STM32 `.ioc` init list는 `MX_TIM5_Init`를 명시적으로 보존한다.
+- 2026-07-30 laptop-only preflight에서 firmware safety contract `12/12`와 isolated STM32 Debug + ESP32-S3 clean build가 통과했다. 이 결과는 board flash/runtime 또는 전기 파형 검증이 아니다.
 - STM32 project는 Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp 이다.
 - STM32 NUCLEO-F446RE는 ESP bridge용으로 USART1 PA9 TX / PA10 RX를 사용한다.
 - STM32 ST-LINK VCP는 COM3, ESP32-S3 serial port는 COM4로 구분한다.
@@ -102,6 +107,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - USB로 두 보드를 각각 전원 공급 중이면 5V/VBUS/VIN끼리는 연결하지 않는다.
 - ESP-IDF monitor가 COM4를 점유하면 flash 전에 Ctrl+]로 monitor를 종료한다.
 - main/hello_world_main.c는 사용자가 직접 학습하며 작성 중이므로 요청 없이 대신 완성하지 않는다.
+- `BRIDGE_SCRIPTED_TEST_ENABLED`는 기본 `0U`다. Motor-disconnected controlled bench 외에는 활성화하지 않는다.
+- CubeMX 재생성 뒤 TIM5 init 보존 여부와 static contract test를 먼저 확인한다.
 - Raw encoder A/B를 STM32에 직접 연결하지 않는다. 제한 시험 조건은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND와 motor power disconnected다.
 - USART2 encoder 출력은 병행 검증용 bench logger이며 mRPM도 여기에서만 출력한다. 내부 count는 int64지만 newlib-nano `%lld` 제약 때문에 현재 짧은 bench log는 `(long)`/`%ld`를 사용한다. CPS는 production UART `TEL`에도 연결되어 ESP32 parser까지 PASS했다.
 - 실제 motor test 전에는 actual PB6/PB7 waveform/shutdown latency, exact PWM/direction timing과 physical E-stop gate를 확인한다. Timeout/DISARM와 software fault functional gate는 통과했다.
@@ -131,4 +138,19 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 
 ```powershell
 git status --short Projects/Tracked_Mobile_Robot
+```
+
+## Firmware Preflight Commands
+
+저장소 루트 `TIL`에서 실행한다.
+
+```powershell
+python -m unittest discover `
+  -s Projects/Tracked_Mobile_Robot/03_Firmware/tests `
+  -p "test_*.py" `
+  -v
+
+Push-Location Projects/Tracked_Mobile_Robot/03_Firmware/tools
+.\Build-Firmware.ps1
+Pop-Location
 ```

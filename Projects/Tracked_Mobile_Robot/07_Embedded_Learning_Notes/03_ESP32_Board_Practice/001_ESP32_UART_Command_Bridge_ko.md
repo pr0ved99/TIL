@@ -60,7 +60,7 @@ STM32는 명령을 허용하거나 거부한다.
 | STM32 `TEL` -> ESP32 monitor | PASS |
 | ESP32 `TEL/PONG` frame classification | PASS |
 | `TEL` detailed field parsing | PASS |
-| Scripted `ARM/CMD/DISARM` | PASS |
+| Scripted `ARM/CMD/DISARM` | PASS — historical controlled bench, normal boot default OFF |
 | STM32 command timeout zero-output | PASS |
 | Timeout-zero through ESP32 | PLANNED |
 
@@ -124,6 +124,8 @@ ESP32 GND     <-> STM32 GND
 
 - PC dashboard에서 수행한 UART MVP test를 ESP32가 재현한다.
 
+> 이 sequence는 정상 운용 boot 동작이 아니라 motor-disconnected controlled bench 전용이다. 현재 `BRIDGE_SCRIPTED_TEST_ENABLED` 기본값은 `0U`이며, `1U`로 시험할 때는 STM32 `DISARMED`, motor 분리와 작업자 대기를 먼저 확인하고 시험 직후 다시 `0U`로 복구한다.
+
 보낼 순서:
 
 ```text
@@ -181,7 +183,8 @@ setup()
 loop()
   - STM32 UART RX line 읽기
   - PC USB Serial로 STM32 RX line 출력
-  - scripted test 상태에 따라 command 전송
+  - BRIDGE_SCRIPTED_TEST_ENABLED == 1U인 controlled bench에서만 scripted command 전송
+  - 정상 boot에서는 RX parser/telemetry logging만 수행하고 command를 자동 전송하지 않음
   - 필요시 PC Serial input을 STM32 UART로 forwarding
 ```
 
@@ -322,6 +325,8 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 
 첫 실행에서는 STM32가 이전 실행의 `ARMED` 상태였기 때문에 `CMD before ARM`이 정상 명령으로 수락됐다. 이는 protocol 오류가 아니라 test precondition 오류였으며, `DISARMED` 상태를 확인한 뒤 ESP32 script를 다시 실행해 최종 PASS를 얻었다.
 
+2026-07-30에는 향후 velocity-to-PWM 연결 시 부팅 직후 의도치 않은 동작을 막기 위해 `BRIDGE_SCRIPTED_TEST_ENABLED`를 추가하고 기본값을 `0U`로 고정했다. 초기 `PING`과 scripted `ARM/CMD/DISARM`은 guard가 명시적으로 활성화된 controlled bench에서만 송신된다. 정적 firmware contract test가 이 default-off 조건을 회귀 검사한다.
+
 ## 성공 기준
 
 이 실습은 다음을 만족하면 완료로 본다.
@@ -335,3 +340,5 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 - STM32 safety authority 원칙이 유지됨
 
 2026-07-20 기준 모든 성공 기준을 만족했다. ESP32는 command source / relay / logger 역할을 수행했고, STM32는 `NOT_ARMED`, range check, timeout-zero, `DISARM`을 통해 최종 safety authority를 유지했다. 따라서 ESP32-STM32 board-only UART bridge 실습은 PASS다.
+
+이 PASS는 scripted sequence를 정상 부팅 때 항상 실행한다는 의미가 아니다. 현재 운영 기준은 자동 송신 default-off이며, 과거 로그는 protocol/safety 동작을 입증하는 controlled-bench evidence로 보존한다.

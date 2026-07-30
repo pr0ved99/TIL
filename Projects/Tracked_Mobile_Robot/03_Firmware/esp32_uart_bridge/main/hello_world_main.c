@@ -23,6 +23,8 @@
 #define BRIDGE_UART_RX_GPIO GPIO_NUM_18
 #define BRIDGE_UART_BAUD    115200
 #define BRIDGE_RX_BUF_SIZE  1024
+/* Safety default: never transmit the scripted motion test at bridge boot. */
+#define BRIDGE_SCRIPTED_TEST_ENABLED 0U
 #define TEST_STEP_PERIOD_MS 1000
 #define LINE_BUF_SIZE       256
 #define RX_POLL_MS          20
@@ -430,13 +432,19 @@ void app_main(void){
     uint32_t test_seq = 2;
     bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
 
-    bridge_uart_send_ping(1);
+    if (BRIDGE_SCRIPTED_TEST_ENABLED != 0U){
+        bridge_uart_send_ping(1);
+    }
+    else {
+        ESP_LOGI(TAG, "Scripted UART safety sequence disabled");
+    }
     TickType_t last_test_tick = xTaskGetTickCount();
 
     while(1){
         TickType_t now = xTaskGetTickCount();
 
         if(
+            BRIDGE_SCRIPTED_TEST_ENABLED != 0U &&
             test_step != BRIDGE_TEST_DONE &&
             now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
         ){

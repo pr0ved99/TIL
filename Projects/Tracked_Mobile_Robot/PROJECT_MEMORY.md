@@ -116,6 +116,9 @@ Important docs:
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
 - `docs/progress/2026-07-30_progress.md`: latest progress note for output-shaft calibration/mRPM, vehicle-frame sign and software fault output-zero/latch validation
+- `03_Firmware/tests/test_firmware_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, encoder sign and default-off safety contract preflight
+- `03_Firmware/tools/Build-Firmware.ps1`, `README.md`: repository build trees를 건드리지 않는 isolated STM32/ESP32 build workflow
+- `assets/logs/firmware_build/2026-07-30_laptop_firmware_preflight.md`: contract test, isolated clean-build result, artifact hashes and laptop-only evidence boundary
 - `03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h`, `Core/Src/encoder_speed.c`: TIM3/TIM5 modular delta, int64 accumulation and counts/s module
 - `assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt`: stationary dual-encoder speed-log evidence
 - `assets/logs/encoder/2026-07-29_dual_encoder_speed_hand_rotation_pass.txt`: dynamic dual hand-rotation delta/counts/s evidence
@@ -182,6 +185,9 @@ Important docs:
 - STM32 returned the expected `NOT_ARMED`, command `ACK`, `OUT_OF_RANGE`, and `DISARM` responses through the ESP32 bridge.
 - A one-shot valid CMD produced `vx=50`, then STM32 timeout returned `vx=0`, `w=0` after about 300 ms while remaining `ARMED` until explicit `DISARM`.
 - ESP32-STM32 board-only UART bridge MVP is complete.
+- On 2026-07-30, ESP32 automatic boot traffic was disabled by default with `BRIDGE_SCRIPTED_TEST_ENABLED 0U`. The 2026-07-20 scripted sequence remains historical controlled-bench evidence, not normal boot behavior.
+- The STM32 CubeMX `.ioc` init ordering explicitly retains `MX_TIM5_Init` so TIM5 encoder initialization is not silently lost after regeneration.
+- Twelve static firmware safety contract tests passed, followed by isolated clean STM32 Debug and ESP32-S3 builds. This laptop-only gate did not flash or run either board.
 - STM32 motor-output uses `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` with common GND for the bench mapping.
 - STM32 pin-only DMM and MDD10A powered/no-motor static LED sequence passed on 2026-07-26. An initial two-channel PWM/DIR swap was diagnosed from the LED pattern, corrected, and the full sequence was repeated successfully.
 - The 2026-07-26 MDD10A power check measured battery 12.36 V and driver input 12.35 V with the motor disconnected and no abnormal heat, smell, noise, or fuse behavior.
@@ -255,11 +261,12 @@ Ask the user or verify from hardware only for these:
 4. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
 5. Preserve the encoder conditioning, TIM3/TIM5 firmware, modular-delta module and dated raw-log evidence; raw A/B direct STM32 connection is prohibited.
 6. Preserve the 2026-07-29 timeout/DISARM and 2026-07-30 software fault output-zero/latch functional PASS evidence. Do not treat them as exact PWM transition/shutdown-latency, physical E-stop or motor-stop proof. Keep both button-test macros and the UART output hook at `0U` by default.
-7. Preserve A=right/TIM5, B=left/TIM3 and forward-positive production `left_cps/right_cps` as the encoder-side vehicle mapping regression baseline; USART2 `ENC3/ENC5` remains raw-sign diagnostics. Verify MDD10A powered channel-to-side mapping separately.
-8. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
-9. When instrumentation is available, verify exact PWM/direction timing and shutdown latency at PB6/PB7; define and test the physical E-stop behavior.
-10. After the remaining active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
-11. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
-12. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
-13. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.
-14. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
+7. Keep `BRIDGE_SCRIPTED_TEST_ENABLED 0U` during normal operation. After CubeMX regeneration, run the firmware contract tests and isolated build before flashing, and confirm that TIM5 init remains present.
+8. Preserve A=right/TIM5, B=left/TIM3 and forward-positive production `left_cps/right_cps` as the encoder-side vehicle mapping regression baseline; USART2 `ENC3/ENC5` remains raw-sign diagnostics. Verify MDD10A powered channel-to-side mapping separately.
+9. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
+10. When instrumentation is available, verify exact PWM/direction timing and shutdown latency at PB6/PB7; define and test the physical E-stop behavior.
+11. After the remaining active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
+12. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
+13. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
+14. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.
+15. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
