@@ -36,6 +36,7 @@ Firmware보다 먼저 확인할 것:
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
 | 7 | `07_STM32_ESP32_UART_Wiring_Checklist.md` | Board-only STM32/ESP32 UART wiring and bring-up checklist |
 | 8 | `08_Adapter_Plate_Fit_Check.md` | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
+| Safety gate | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | Logic analyzer 기반 20 kHz/duty, direction settle, boot/DISARM/timeout/fault actual pin timing 검증 |
 
 ## Evidence Policy
 
@@ -73,6 +74,7 @@ Firmware보다 먼저 확인할 것:
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
 | Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
+| Motor output waveform/timing | Planned / Not tested | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; logic analyzer 도착 후 실행 |
 
 현재 실행 순서는 다음과 같다.
 
@@ -89,6 +91,7 @@ STM32 PWM/DIR safe output 구현 완료
 -> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
 -> A=right/TIM5, B=left/TIM3 encoder-side vehicle forward-positive sign PASS
 -> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
+-> `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` 실행계획 작성
 -> 계측 장비 확보 시 exact PWM/direction timing·active shutdown pin zero 확인
 -> physical E-stop gate 뒤 first motor no-load + powered encoder noise
 -> left/right drivetrain

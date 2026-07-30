@@ -56,6 +56,7 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 | [`03_UART_MVP_Test_Report_2026-07-09_ko.md`](03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 실제 STM32 + Web Serial 검증 리포트 |
 | [`04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32를 command source / telemetry relay로 붙이는 보드 단독 검증 계획 |
 | [`05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | 전원·기구·모터·엔코더·주행까지 확장한 최종 MVP 요구사항과 V-model 추적 매트릭스 |
+| [`06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](06_Physical_EStop_Requirements_and_Verification_Plan_ko.md) | MCU와 독립적인 motor-energy 차단, fail-safe sense, latch/reset과 단계별 E-stop 검증 계획 |
 
 ## Evidence Files
 
@@ -128,7 +129,7 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 다음 단계 검증 순서:
 
 1. Actual 20 kHz/10% PWM, direction-change 두 1 ms 구간과 shutdown latency 계측
-2. Physical E-stop 요구사항·입력·latch·reset 구현 및 motor-disconnected 검증
+2. Physical E-stop architecture/component review 뒤 입력·latch·reset 구현 및 motor-disconnected 검증
 3. Board power/back-power와 fabricated plate fit 검증
 4. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
 5. Left/right drivetrain과 wheel travel/odometry 검증

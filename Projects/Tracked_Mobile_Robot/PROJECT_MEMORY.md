@@ -119,6 +119,7 @@ Important docs:
 - `03_Firmware/tests/test_firmware_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, encoder sign and default-off safety contract preflight
 - `03_Firmware/tools/Build-Firmware.ps1`, `README.md`: repository build trees를 건드리지 않는 isolated STM32/ESP32 build workflow
 - `assets/logs/firmware_build/2026-07-30_laptop_firmware_preflight.md`: contract test, isolated clean-build result, artifact hashes and laptop-only evidence boundary
+- `02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`: logic-analyzer channel map and exact PWM/direction/shutdown timing procedure
 - `03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h`, `Core/Src/encoder_speed.c`: TIM3/TIM5 modular delta, int64 accumulation and counts/s module
 - `assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt`: stationary dual-encoder speed-log evidence
 - `assets/logs/encoder/2026-07-29_dual_encoder_speed_hand_rotation_pass.txt`: dynamic dual hand-rotation delta/counts/s evidence
@@ -134,6 +135,8 @@ Important docs:
 - `docs/progress/2026-07-24_progress.md`: Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
 - `docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`: refreshed V-model gate roadmap and current execution order
 - `docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`: project-wide requirement, design, test, evidence, and result traceability
+- `docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`: NC hardware motor-energy cut, auxiliary sense, latch/reset requirements and staged E-stop verification
+- `01_System_Architecture/21_Physical_EStop_Architecture_ko.md`: two-path Physical E-stop architecture and component-selection boundary
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
@@ -265,6 +268,7 @@ Ask the user or verify from hardware only for these:
 8. Preserve A=right/TIM5, B=left/TIM3 and forward-positive production `left_cps/right_cps` as the encoder-side vehicle mapping regression baseline; USART2 `ENC3/ENC5` remains raw-sign diagnostics. Verify MDD10A powered channel-to-side mapping separately.
 9. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
 10. When instrumentation is available, verify exact PWM/direction timing and shutdown latency at PB6/PB7; define and test the physical E-stop behavior.
+   Use `21_Physical_EStop_Architecture_ko.md` and verification plan `06` as the baseline: NC hardware motor-energy cut and 3.3 V auxiliary sense remain separate, and release never auto-rearms.
 11. After the remaining active-output safety gates pass, run the first lifted/no-load motor test and check powered encoder false counts/noise during its first limited pulse.
 12. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
 13. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.

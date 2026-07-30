@@ -24,8 +24,11 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 15. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
 16. Projects/Tracked_Mobile_Robot/assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md
 17. Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md
-18. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
-19. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
+18. Projects/Tracked_Mobile_Robot/01_System_Architecture/21_Physical_EStop_Architecture_ko.md
+19. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
+20. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md
+21. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
+22. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
 
 현재 상태:
 
@@ -115,6 +118,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - XL4015 #1 candidate 5 V는 USB backfeed 정책이 확정되기 전 STM32/ESP32에 연결하지 않는다.
 - KiCad의 `FUNCTIONAL` connector block은 관련 신호를 묶은 표기이며 물리적으로 연속된 header를 뜻하지 않는다.
 - ERC PASS를 실물 배선, 전류 용량, noise, footprint 또는 제조 검증으로 확대 해석하지 않는다.
+- Physical E-stop은 NC hardware motor-energy cut와 독립 3.3 V auxiliary sense의 두 경로로 설계한다. Release만으로 auto-arm/restart하지 않으며 direct-contact/contactor 선택, DC interrupt rating, sense pin, KiCad와 firmware는 아직 TBD다.
 
 다음 목표:
 

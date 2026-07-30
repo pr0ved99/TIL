@@ -28,6 +28,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | Area | Captured design | Status |
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
+| Physical E-stop | NC hardware motor-energy cut + independent 3.3 V fail-safe sense | Architecture/verification baseline drafted; part, topology and schematic TBD |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, common GND | Bench static mapping captured |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |
@@ -46,6 +47,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - BNO085 power and I2C wiring
 - Actual high-current distribution, wire gauge, connector and harness plan
 - Powered-motor encoder noise and input-filter validation
+- Physical E-stop direct-contact/contactor variant, DC interrupt rating, auxiliary sense pin and no-auto-restart verification
 - Physical continuity review from schematic to perfboard and harness
 
 ## Revision Rule

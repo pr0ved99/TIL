@@ -77,6 +77,7 @@
 | `MVP-010` | 궤도 섀시가 저속 전진, 후진과 제자리 회전을 수행한다. | MUST | `PLANNED` |
 | `MVP-011` | 1 m 직진에서 실제 거리와 엔코더 추정 거리의 오차를 기록한다. | MUST | `PLANNED` |
 | `MVP-012` | README에서 구조, 사용자 역할, 검증 증거, 한계와 다음 단계를 찾을 수 있다. | MUST | `PARTIAL` |
+| `MVP-013` | MCU/software와 독립적인 Physical E-stop이 motor energy를 차단하고 release 후에도 explicit reset과 new ARM 전까지 재시작을 막는다. | MUST | `PLANNED` |
 
 `MVP-003`의 현재 `PARTIAL`에는 2026-07-26 battery 12.36 V, MDD10A input 12.35 V powered/no-motor power check `PASS`가 포함된다. 실제 board power/back-power와 low-voltage stop policy는 아직 남아 있다.
 
@@ -131,6 +132,19 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 - `REQ-MOTOR-002 PARTIAL`: boot/idle/test-disabled zero, motor-disconnected 10% bench hook의 timeout/DISARM MDD10A LED all-off와 software fault 뒤 `PB6/PB7/PC8/PC9=0 V` 및 reset 전 latch는 확인했다. Actual transition waveform, 정확한 shutdown latency, physical E-stop과 실제 motor stop은 미검증이다.
 - `REQ-MOTOR-003 PARTIAL`: 현재 코드는 `PWM 0 -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 2026-07-29 powered/no-motor 6-step LED 기능 회귀시험은 통과했지만 실제 PWM-zero 구간, 두 1 ms 간격과 PWM 파형을 계측하지 않았다.
 - `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw test는 10% 제한으로 완료했고 매크로를 `0U`로 복귀했다. 정확한 duty 파형과 실제 motor 단계의 제한 해제 조건은 남아 있다.
+
+### Physical E-stop
+
+설계 정본은 [`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md), 요구사항과 단계별 시험 정본은 [`06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)다.
+
+| ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
+| --- | --- | --- | --- |
+| `REQ-ESTOP-001~004` | Mechanical-latching NC E-stop이 MCU와 독립적으로 정격에 맞는 motor-energy path를 차단해야 한다. | MUST | `PLANNED/BLOCKED` |
+| `REQ-ESTOP-005~008` | 독립 auxiliary NC sense, software latch, boot-safe와 explicit-reset/no-auto-restart를 만족해야 한다. | MUST | `PLANNED` |
+| `REQ-ESTOP-009` | Electrical shutdown latency와 mechanical stop time/distance를 분리해 계측해야 한다. | MUST | `BLOCKED` |
+| `REQ-ESTOP-010` | E-stop asserted/latch/reset-reject 상태를 log 또는 telemetry에서 식별할 수 있어야 한다. | SHOULD | `PLANNED` |
+
+`MVP-013`과 모든 `REQ-ESTOP`은 아직 구현 또는 시험 결과가 아니다. 2026-07-30에는 hardware/software 이중 경로, NC fail-safe loop, explicit reset과 단계별 수용 기준만 설계했다. DC interrupt 부품 정격, schematic, STM32 sense pin, firmware와 실제 stop evidence는 남아 있다.
 
 ### 엔코더와 telemetry
 
@@ -194,6 +208,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | `REQ-MECH-002~003` | adapter layout | fabricated plate and spacers | `T-MECH-002` adapter fit check | measurements, assembly photos | `BLOCKED` |
 | `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), [fault output-zero/latch evidence](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md), [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
 | `REQ-MOTOR-005` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | video, current/heat log | `PLANNED` |
+| `MVP-013`, `REQ-ESTOP-001~010` | [`21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md) | NC power disconnect, auxiliary sense, safety latch/reset | `T-ESTOP-001~007` staged E-stop verification | Datasheet/schematic/ERC, DMM, UART log, timing capture, stop video/table | `PLANNED/BLOCKED` |
 | `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt), [50-rev calibration summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [vehicle sign record](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md) | `PARTIAL` |
 | `REQ-ENC-003` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | [2026-07-29 stationary log](../../assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt), [production CPS TEL verification](../../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md), [50-rev/mRPM summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [mRPM dynamic raw log](../../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt) | `PASS` |
@@ -217,11 +232,13 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | 9 | `T-MECH-002` | 제작품 fit check | Rev A 입고 | `BLOCKED` |
 | 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `CONDITIONAL PASS` |
 | 11 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `PARTIAL` |
-| 12 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, dual motor-off count, 전원/비상정지, 기구 안전 | `PLANNED` |
-| 13 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | single motor와 양 encoder PASS | `PLANNED` |
-| 14 | `T-PWR-004` | 저전압 경고·정지 | voltage rule과 measurement path | `PLANNED` |
-| 15 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
-| 16 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
+| 12 | `T-ESTOP-001~006` | component/schematic, continuity, 3.3 V sense, latch/no-auto-restart와 timing | 부품 정격, power/back-power policy, logic analyzer | `PLANNED/BLOCKED` |
+| 13 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, `T-ESTOP-001~006`, dual motor-off count, 전원, 기구 안전 | `PLANNED` |
+| 14 | `T-ESTOP-007` | lifted single-motor Physical E-stop time/distance | `T-MOTOR-003`, 모든 motor-disconnected E-stop test | `BLOCKED` |
+| 15 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | single motor와 양 encoder PASS | `PLANNED` |
+| 16 | `T-PWR-004` | 저전압 경고·정지 | voltage rule과 measurement path | `PLANNED` |
+| 17 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
+| 18 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
 
 `T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED, direction functional regression, motor-disconnected active timeout/DISARM LED shutdown과 software fault output-zero/latch 범위는 통과했다. 정확한 PWM 파형, direction timing과 shutdown latency, physical E-stop이 남아 있어 전체 Test ID는 `PARTIAL`이다. 2026-07-29 safety evidence는 [`../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md`](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), 2026-07-30 fault evidence는 [`../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md`](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md)에 있다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count, modular delta/counts/s, 50회전 `1560 counts/output rev`, mRPM 계산, production `TEL` -> ESP32 parse와 encoder-side vehicle/forward-positive sign subtest는 통과했지만 external tachometer/wheel-speed calibration과 powered-motor noise가 남아 있어 전체 Test ID는 `PARTIAL`이다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
 
