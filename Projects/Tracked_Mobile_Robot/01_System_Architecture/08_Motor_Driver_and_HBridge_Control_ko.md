@@ -220,17 +220,17 @@ MDD10A로 전환한 이유:
 MDD10A 1개 기준:
 
 ```text
-STM32 PWM_L -> MDD10A PWM1
-STM32 DIR_L -> MDD10A DIR1
-STM32 PWM_R -> MDD10A PWM2
-STM32 DIR_R -> MDD10A DIR2
-STM32 GND   -> MDD10A GND
+STM32 PB6/TIM4_CH1 -> MDD10A PWM1
+STM32 PC8          -> MDD10A DIR1
+STM32 PB7/TIM4_CH2 -> MDD10A PWM2
+STM32 PC9          -> MDD10A DIR2
+STM32 GND          -> MDD10A GND
 
 3S LiPo +   -> fuse -> switch -> MDD10A POWER +
 3S LiPo -   -> MDD10A POWER -
 
-Left motor  -> MDD10A M1A / M1B
-Right motor -> MDD10A M2A / M2B
+Output channel 1 -> MDD10A M1A / M1B -> physical side TBD
+Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
 ```
 
 초기 배선 규칙:
@@ -261,13 +261,15 @@ MDD10A 요구사항:
 
 | 로봇 기능 | 후보 peripheral |
 | --- | --- |
-| Left motor PWM | `TIM4_CH1` / PB6 |
-| Right motor PWM | `TIM4_CH2` / PB7 |
-| Left motor DIR | GPIO / PC8 |
-| Right motor DIR | GPIO / PC9 |
+| MDD10A channel 1 PWM | `TIM4_CH1` / PB6 |
+| MDD10A channel 2 PWM | `TIM4_CH2` / PB7 |
+| MDD10A channel 1 DIR | GPIO / PC8 |
+| MDD10A channel 2 DIR | GPIO / PC9 |
 | Optional motor power gate or brake | 별도 회로가 생길 때만 GPIO / PC6, PC5 후보 |
 
-이는 최종 pinout이 아니다.
+이 MCU-to-driver routing은 static/no-motor bench에서 확인했다. 다만 MDD10A
+channel 1/2를 실제 vehicle left/right 중 어느 쪽에 연결할지는 powered motor
+mapping 시험 전까지 확정하지 않는다.
 
 확인 필요:
 
@@ -404,12 +406,11 @@ MDD10A를 선택해도 전원 보호가 없어지는 것은 아니다.
 
 ## 11. 열린 결정 사항
 
-최종 firmware 구현 전에 다음을 확인해야 한다.
+powered drivetrain 시험 전에 다음을 확인해야 한다.
 
 - 실제 MDD10A Rev과 terminal labeling
-- `PWM1/DIR1`을 left로 둘지 right로 둘지
-- 최종 STM32 timer channel 선택
-- 최종 PWM frequency
+- MDD10A channel 1/2를 실제 vehicle left/right 중 어느 쪽에 연결할지
+- 실제 20 kHz PWM frequency/duty와 direction 전환 timing
 - 모터 stall current 또는 실측 worst-case current
 - Encoder voltage와 signal quality
 - MG540과 JGB37-520 중 첫 drivetrain motor로 무엇을 쓸지

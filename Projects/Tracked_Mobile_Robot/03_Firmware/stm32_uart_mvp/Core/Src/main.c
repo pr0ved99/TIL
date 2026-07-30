@@ -40,6 +40,7 @@
 /* Output-shaft count, calibrated with STM32 quadrature x4 decoding. */
 #define ENCODER_COUNTS_PER_OUTPUT_REV       1560U
 #define MOTOR_OUTPUT_PIN_TEST_ENABLED       0U
+#define MOTOR_FAULT_INJECTION_TEST_ENABLED  0U
 #define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
 #define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
 #define ENCODER_SPEED_SAMPLE_PERIOD_MS      100U
@@ -271,9 +272,12 @@ static void encoder_speed_log_process(void){
     Error_Handler();
   }
 
-  /* Provisional mapping: TIM3 -> left, TIM5 -> right. */
+  /* Confirmed vehicle-frame mapping: forward motion is positive.
+   * Motor B/left uses TIM3 and requires sign inversion.
+   * Motor A/right uses TIM5 and keeps its raw sign.
+  */
   uart_mvp_set_encoder_cps(
-    encoder_cps_to_i32(s_encoder_tim3.counts_per_second),
+    encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
     encoder_cps_to_i32(s_encoder_tim5.counts_per_second)
   );
 
@@ -347,7 +351,9 @@ static void motor_output_pin_test_process(void){
             status = motor_output_set_raw(
                 MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
                 GPIO_PIN_RESET,
-                0U,
+                (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U)
+                ? MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE
+                : 0U,
                 GPIO_PIN_RESET
             );
             HAL_GPIO_WritePin(
@@ -358,6 +364,9 @@ static void motor_output_pin_test_process(void){
             break;
 
         case 2U:
+            if (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U){
+              Error_Handler();
+            }
             status = motor_output_set_raw(
                 MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
                 GPIO_PIN_SET,

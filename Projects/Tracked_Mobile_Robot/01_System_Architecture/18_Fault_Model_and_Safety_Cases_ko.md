@@ -344,12 +344,18 @@ Fault log에는 다음이 포함되어야 한다.
 | --- | --- | --- |
 | Boot safe output | Logic only, motor disconnected | PWM zero |
 | Command timeout | Command 전송 중단 | Motor output stop |
+| Software fault injection | Motor disconnected, limited active output 뒤 fault handler 호출 | PWM/DIR zero, reset 전 output 재활성화 차단 |
 | E-stop | E-stop frame 또는 command 전송 | Fault latched, output disabled |
 | Low voltage simulated | Low ADC equivalent injection | Output disabled |
 | Encoder sign | Lifted motor test | Forward command produces expected signs |
 | CAN timeout | Heartbeat 중단 | Output disabled |
 | Watchdog recovery | Safe test 중 reset 강제 | Reboot remains disarmed |
 | Fuse stage | Low fuse first | Fuse choice documented |
+
+2026-07-30 software fault-injection subtest는 MDD10A LED all-off,
+`PB6/PB7/PC8/PC9=0 V`와 reset 전 latch로 기능 PASS했다. 이는
+[`../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md`](../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md)에 기록했으며,
+정확한 shutdown latency나 physical E-stop PASS를 의미하지 않는다.
 
 ## Final Decision
 

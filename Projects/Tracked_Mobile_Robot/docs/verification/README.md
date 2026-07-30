@@ -14,7 +14,8 @@
 
 ## Current Verification Scope
 
-현재 검증 완료 범위는 PC-first UART MVP와 ESP32 board-only UART bridge MVP다.
+현재 검증 완료 범위는 PC-first UART MVP, ESP32 board-only UART bridge MVP와
+motor-disconnected MDD10A/dual-encoder 하위 시험까지 확장됐다.
 
 ```text
 PC Web Serial Dashboard
@@ -30,12 +31,18 @@ ESP32 USB Monitor
 
 ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. STM32가 parser, safety gate, timeout owner 역할을 유지하는 것도 실제 `ACK/ERR/TEL`로 확인했다.
 
-아직 이 검증에 포함하지 않은 것:
+2026-07-30 현재 부분 검증된 추가 범위:
 
-- MDD10A motor driver 출력
+- MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
+- Dual encoder conditioned input, TIM3/TIM5 count, CPS/mRPM와 vehicle-frame sign
+- Fused/switched LiPo input과 XL4015 bench load
+
+아직 최종 검증에 포함하지 않은 것:
+
 - 실제 DC motor 구동
-- encoder feedback
-- LiPo main power
+- 실제 PWM transition waveform와 shutdown latency
+- Physical E-stop과 motor-connected stop
+- Powered-motor encoder noise와 wheel-speed/odometry
 - ROS 2 bridge
 
 따라서 이 검증의 의미는 "로봇 전체가 움직였다"가 아니라, "STM32 하위 제어기가 command/telemetry protocol과 safety gate를 실제 보드에서 수행했다"이다.
@@ -59,8 +66,19 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 | Web Serial screenshots | [`../../assets/screenshots/uart_mvp`](../../assets/screenshots/uart_mvp) |
 | UART validation CSV | [`../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv`](../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv) |
 | ESP32-STM32 UART bridge screenshots | [`../../assets/screenshots/esp32_uart_bridge`](../../assets/screenshots/esp32_uart_bridge) |
+| Encoder calibration, CPS/mRPM and vehicle-sign evidence | [`../../assets/logs/encoder`](../../assets/logs/encoder) |
+| Motor-output fault evidence | [`../../assets/logs/motor_output`](../../assets/logs/motor_output) |
 
 ## Result Summary
+
+2026-07-30 기준 추가 하드웨어/firmware subtest:
+
+- A=right/TIM5, B=left/TIM3 encoder-side vehicle mapping과 forward-positive production CPS subtest PASS
+- 방향별 50회전 `1560 counts/output rev`, CPS-to-mRPM self-test와 dynamic calculation PASS
+- Motor-disconnected software fault injection 뒤 MDD10A all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch PASS
+- Button output/fault test macro를 모두 `0U`로 복구한 뒤 B1 no-output regression PASS
+- Exact PWM/direction timing, shutdown latency, physical E-stop과 motor-connected stop은 계속 `PARTIAL/NOT TESTED`
+- MDD10A powered channel 1/2와 실제 좌우 motor 대응은 아직 `PARTIAL`
 
 2026-07-20 기준 ESP32-STM32 board-only UART bridge MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -109,10 +127,9 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 
 다음 단계 검증 순서:
 
-1. STM32 PWM/DIR safe output 구현과 MCU 핀 단독 검증
-2. MDD10A logic input test
-3. board power/back-power와 fabricated plate fit 검증
-4. encoder signal voltage safety validation
-5. motor no-load low-duty test
-6. encoder count 및 speed telemetry validation
-7. left/right drivetrain과 final fault/odometry acceptance
+1. Actual 20 kHz/10% PWM, direction-change 두 1 ms 구간과 shutdown latency 계측
+2. Physical E-stop 요구사항·입력·latch·reset 구현 및 motor-disconnected 검증
+3. Board power/back-power와 fabricated plate fit 검증
+4. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
+5. Left/right drivetrain과 wheel travel/odometry 검증
+6. Final fault/stop acceptance와 traceability audit

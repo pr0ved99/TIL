@@ -67,8 +67,8 @@ Firmware보다 먼저 확인할 것:
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
 | Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
-| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`; direction 6-step 회귀, powered/no-motor active timeout/DISARM LED all-off와 final hook-off PASS; actual pin/PWM/two-settle timing, fault/E-stop은 미검증 |
-| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 50회전 1560 counts/output-rev, wrap-safe CPS/mRPM와 production TEL -> ESP32 parse PASS; powered-noise, external RPM/wheel scale와 vehicle physical sign은 미검증 |
+| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`; direction 6-step, timeout/DISARM, software fault output-zero/latch와 final test-off PASS; actual PWM/two-settle/shutdown timing과 physical E-stop은 미검증 |
+| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 1560 counts/rev, CPS/mRPM, production TEL과 A=right/TIM5·B=left/TIM3 forward-positive PASS; powered-noise와 external RPM/wheel scale 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
@@ -87,7 +87,9 @@ STM32 PWM/DIR safe output 구현 완료
 -> active timeout/DISARM powered/no-motor LED functional PASS, hook `0U` 복구 PASS
 -> production TEL -> ESP32 dual CPS independent CW/CCW PASS
 -> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
+-> A=right/TIM5, B=left/TIM3 encoder-side vehicle forward-positive sign PASS
+-> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
 -> 계측 장비 확보 시 exact PWM/direction timing·active shutdown pin zero 확인
--> fault/E-stop gate 뒤 first motor no-load + powered encoder noise
+-> physical E-stop gate 뒤 first motor no-load + powered encoder noise
 -> left/right drivetrain
 ```

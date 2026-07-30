@@ -1,5 +1,16 @@
 # Encoder Logs
 
+## 2026-07-30 encoder-side vehicle-frame mapping and sign normalization
+
+- Verification record: [`2026-07-30_vehicle_frame_encoder_sign_verification.md`](2026-07-30_vehicle_frame_encoder_sign_verification.md)
+- Confirmed mapping: motor A -> right/TIM5/`right_cps`; motor B -> left/TIM3/`left_cps`
+- Physical forward: right motor A clockwise, left motor B counter-clockwise when viewed from each output-shaft end
+- Production convention: forward positive; TIM3/left sign inverted, TIM5/right sign retained
+- Boundary: MDD10A powered channel 1/2 to physical left/right mapping remains unverified
+- USART2 `ENC3/ENC5` diagnostics remain raw-sign views
+- Operator-reported manual forward-sign regression: `PASS`
+- Exact run is an operator observation without a newly saved raw serial file; powered-motor noise and wheel-speed calibration remain unverified
+
 ## 2026-07-30 output-shaft calibration and mRPM validation
 
 - Verification summary: [`2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`](2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)
@@ -21,8 +32,8 @@ Decision:
 - Dual hand-rotation CPS -> mRPM functional conversion: `PASS`
 - Production `TEL` intentionally remains signed `left_cps/right_cps`; mRPM is a
   USART2 bench diagnostic field
-- Powered-motor noise, vehicle left/right/forward sign, external physical-RPM
-  reference and wheel-speed conversion: `NOT TESTED`
+- Powered-motor noise, external physical-RPM reference and wheel-speed conversion:
+  `NOT TESTED`; encoder-side vehicle assignment/forward sign is closed by the section above
 - This section supersedes only the provisional scale gap in the dated 2026-07-26
   through 2026-07-29 sections below; their historical test conclusions remain intact.
 - The 50-revolution record is reconstructed from operator reports and is explicitly
@@ -41,14 +52,14 @@ Decision:
   counter-clockwise produced negative CPS.
 - The inactive field remained zero while the other motor was moved, and both
   fields returned to zero after motion.
-- Vehicle left/right and forward-positive mapping remains TBD. The production
-  field mapping is therefore provisional and must not be treated as the final
-  installed drivetrain assignment.
+- At this 2026-07-29 checkpoint the encoder-side vehicle assignment was provisional. The
+  2026-07-30 encoder-side vehicle-frame section above supersedes that open item.
 
 Decision:
 
 - Main-power-on, output-hook-disabled manual-rotation production CPS telemetry end-to-end: `PASS`
-- Vehicle mapping, exact speed calibration and powered-motor noise: `NOT TESTED`
+- Encoder-side vehicle mapping was `NOT TESTED` at this checkpoint and was closed on
+  2026-07-30; powered MDD10A channel mapping, exact physical speed and powered-motor noise remain `NOT TESTED`
 
 ## 2026-07-29 wrap-safe delta and counts/s validation
 
@@ -104,7 +115,9 @@ Decision:
 - Stationary false-count subtest: `PASS`
 - Production UART `TEL` integration: `PASS` in the later end-to-end subtest
   documented at the top of this index
-- Exact CPR, wheel speed conversion, vehicle sign and powered-motor noise: `NOT TESTED`
+- At this 2026-07-29 checkpoint, exact CPR, wheel speed conversion, encoder-side vehicle sign
+  and powered-motor noise were `NOT TESTED`; the encoder-side sign item was closed by
+  the 2026-07-30 section at the top of this index
 
 The firmware keeps delta, accumulated count and counts/s as `int64_t`. The
 current newlib-nano USART2 bench logger prints values through `(long)`/`%ld` only
@@ -157,7 +170,7 @@ Decision:
 - TIM3/TIM5 dual motor-off independent count/sign subtest: `PASS`
 - Provisional scale: `1560 counts/output rev`
 - As of the 2026-07-27 checkpoint, overall encoder verification remained
-  `PARTIAL` because vehicle physical left/right/forward sign, exact output-shaft
+  `PARTIAL` because encoder-side physical left/right/forward sign, exact output-shaft
   calibration and powered-motor noise were still unverified. The 2026-07-30
   section above closes the output-shaft calibration gap only.
 

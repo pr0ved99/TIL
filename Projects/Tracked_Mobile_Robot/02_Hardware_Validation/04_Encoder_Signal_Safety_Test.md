@@ -15,6 +15,8 @@ end-to-end로 확인했으며 active PWM/motor-current noise 시험은 아니다
 2026-07-30에는 출력축을 motor별·방향별 50회전시켜 `1560 counts/output rev`를
 firmware 변환 상수로 확정하고, signed CPS -> mRPM self-test와 dual hand-rotation
 동적 계산 일치를 확인했다.
+같은 날 encoder-side 실제 장착 기준 motor A=right/TIM5, motor B=left/TIM3를 확정하고,
+vehicle forward-positive 규칙에 맞게 production TIM3/left CPS만 부호 반전했다.
 
 ## Core Rule
 
@@ -33,14 +35,14 @@ STM32의 일부 핀은 5 V tolerant이지만, unpowered board, power sequencing�
 - 정지 상태는 shaft 위치에 따라 약 0 V 또는 HIGH가 될 수 있다.
 - 정확한 LOW 전압과 pulse shape는 별도 계측하지 않았다.
 - A/B quadrature 동작, count sign과 출력축 1회전 count는 TIM3 손회전 시험으로 기능 확인했다.
-- `MG540-A`, `MG540-B`는 bench 식별명이다. 차량 left/right는 아직 확정하지 않는다.
+- `MG540-A`, `MG540-B`는 bench 식별명이며 2026-07-30부터 encoder-side vehicle right와 left로 확정한다. MDD10A powered channel mapping은 이 판정에 포함하지 않는다.
 
 ## Encoder Identification
 
 | Bench ID | Model | Encoder status | Vehicle side | Notes |
 | --- | --- | --- | --- | --- |
-| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | TBD | 2026-07-27 raw log mapping은 미기록; 2026-07-29 operator sequence에서 TIM5/`right_cps`로 확인 |
-| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | TBD | 2026-07-27 raw log mapping은 미기록; 2026-07-29 operator sequence에서 TIM3/`left_cps`로 확인 |
+| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | Right | TIM5/`right_cps`; physical forward is shaft-end clockwise |
+| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | Left | TIM3/`left_cps`; physical forward is shaft-end counter-clockwise |
 | JGB37-520 candidates | TBD | Previous fault suspicion | TBD | 이번 시험 범위에서 제외 |
 
 PCB의 자석/실크 면을 정면으로 보고 connector가 위쪽일 때, connector pad의 왼쪽부터 오른쪽 순서는 다음과 같다.
@@ -172,8 +174,8 @@ rising/direct input, filter 0, no NVIC로 설정했다. Firmware는 counter를 3
 
 | Bench motor | Bench timer path | Clockwise 1 rev | Counter-clockwise 1 rev | Provisional counts/output rev | Vehicle side |
 | --- | --- | ---: | ---: | ---: | --- |
-| MG540-A | TIM3 PB4/PB5 | +1560 | -1560~-1570 | 1560 | TBD |
-| MG540-B | TIM3 PB4/PB5 | +1562 | -1560 | 1560 | TBD |
+| MG540-A | TIM3 PB4/PB5 | +1560 | -1560~-1570 | 1560 | Right, later production path TIM5 |
+| MG540-B | TIM3 PB4/PB5 | +1562 | -1560 | 1560 | Left, production path TIM3 |
 
 Clockwise/counter-clockwise는 output shaft 끝을 정면으로 바라본 기준이다. 두 motor는
 같은 TIM3 bench input에 순차 연결해 시험했으며, 정지 시 count가 고정되고 방향을
@@ -220,11 +222,11 @@ Dual evidence:
 - TIM3의 `raw - 32768`과 TIM5의 `raw - 0x80000000`은 제한적인 손회전 표시값이며 production wrap-safe delta/누적 count가 아니다.
 - Filter 0과 DMM 측정은 motor-off 조건만 검증한다. Powered motor noise, overshoot와 적절한 input filter는 미검증이다.
 - Oscilloscope/logic analyzer로 LOW, pulse width와 A/B phase timing을 계측하지 않았다.
-- 실제 vehicle left/right와 forward-positive sign은 미확정이다.
+- 이 제한은 2026-07-27 당시 상태다. Vehicle side와 forward-positive production sign은 2026-07-30 Test 9에서 확정했다.
 
-MG540-A/B를 실제 차량 left/right로 부르지 않는다. `left_cps/right_cps`는 현재
-firmware의 논리 field 이름이며 vehicle-side 증거가 아니다. 실제 장착 방향과
-forward 기준이 정해진 뒤 channel assignment와 sign inversion을 확정한다.
+2026-07-27 당시에는 MG540-A/B를 실제 차량 left/right로 부르지 않았다. 이후
+실제 장착 방향을 확인해 2026-07-30 Test 9에서 channel assignment와 sign
+normalization을 확정했다.
 
 ## Test 7: STM32 TEL -> ESP32 End-to-End CPS
 
@@ -295,6 +297,30 @@ Evidence:
 left/right·forward sign 또는 powered-motor noise를 포함하지 않는다. mRPM은 현재
 USART2 bench diagnostic field이며 production `TEL`은 signed CPS 계약을 유지한다.
 
+## Test 9: Encoder-Side Vehicle Mapping and Forward-Positive Sign
+
+실제 장착 기준 motor A는 right/TIM5, motor B는 left/TIM3다. 출력축 끝을 바라본
+기준에서 right/A의 clockwise가 차량 전진이고, left/B의 counter-clockwise가 차량
+전진이다. 두 timer의 raw bench sign은 clockwise positive였으므로 production
+vehicle-frame CPS에는 TIM3/left만 부호를 반전한다.
+
+| Production field | Physical path | Vehicle forward direction | Raw sign on forward | Normalization | Result |
+| --- | --- | --- | --- | --- | --- |
+| `right_cps` | Motor A / TIM5 | Clockwise | Positive | Keep | PASS |
+| `left_cps` | Motor B / TIM3 | Counter-clockwise | Negative | Invert | PASS |
+
+작업자는 변경 후 두 motor를 각각 physical forward로 손회전해 해당 production CPS가
+양수로 바뀌는 것을 확인했다. USART2 `ENC3/ENC5` diagnostic은 bench 분석을 위해 raw
+sign을 유지한다.
+
+Evidence:
+
+- [`../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md`](../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md)
+
+이 결과는 operator-controlled manual-rotation 기능 확인이며 exact run의 새 raw
+serial capture는 없다. MDD10A powered channel-to-side mapping, command-driven
+motor polarity, powered-motor noise와 wheel-speed scale은 포함하지 않는다.
+
 ## Stop Conditions
 
 - Encoder rail이 크게 sag하거나 encoder가 뜨거워진다.
@@ -320,14 +346,15 @@ USART2 bench diagnostic field이며 production `TEL`은 signed CPS 계약을 유
 | Production TEL CPS | `PASS` | Both signed CPS fields reached ESP32 at 100 ms TEL interval |
 | ESP32 structured CPS parse | `PASS` | Independent CW/CCW sign, inactive-channel zero와 stop-to-zero 확인 |
 | CPS to mRPM calculation | `PASS` | wrap/millirpm self-test와 610 sample formula/sign 일치, stop-to-zero |
+| Encoder-side vehicle mapping / forward-positive sign | `PASS` | A=right/TIM5 keep sign, B=left/TIM3 invert sign; operator manual regression |
 | Powered closed-loop operation | `NOT READY` | Motor-on noise, active motor safety와 no-load 시험 필요 |
 
 ## Next Step
 
 1. 현재 TIM3/TIM5 firmware, production TEL/ESP32 parser, 50회전 상수와 dated raw evidence를 Git 기준점으로 보존한다.
-2. Vehicle left/right assignment와 forward-positive sign을 실제 장착 뒤 확정한다.
+2. 확정된 A=right/TIM5, B=left/TIM3와 forward-positive production sign을 회귀 기준으로 유지한다.
 3. External tachometer 기준 절대 RPM 정확도와 sprocket/track 이동거리로 wheel-speed 변환값을 검증한다.
 4. Powered motor noise와 input filter는 계측 장비 또는 제한된 lifted test에서 별도 검증한다.
-5. Powered/no-motor timeout/DISARM LED functional gate는 통과했다. 실제 motor no-load 시험은 actual PB6/PB7 shutdown waveform, direction timing과 fault/E-stop gate까지 통과한 뒤 진행한다.
+5. Powered/no-motor timeout/DISARM 및 software fault functional gate는 통과했다. 실제 motor no-load 시험은 actual PB6/PB7 waveform/timing과 physical E-stop gate까지 통과한 뒤 진행한다.
 
 관련 절차: [`05_First_Motor_No_Load_Test.md`](05_First_Motor_No_Load_Test.md)

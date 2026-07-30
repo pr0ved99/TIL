@@ -22,6 +22,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 13. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md
 14. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/releases/revA/README.md
 15. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
+16. Projects/Tracked_Mobile_Robot/assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md
+17. Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md
 
 현재 상태:
 
@@ -51,8 +53,9 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 pin-only DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했고, 2026-07-29 direction-change 수정 뒤 같은 sequence와 final all-off를 재통과했다. Test macro는 다시 0U다.
 - 현재 motor-output source는 `PWM zero -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 기능 회귀는 통과했지만 실제 PWM 파형과 두 1 ms 간격은 미계측이다.
 - 2026-07-29 motor-disconnected 10%-limited UART hook에서 active timeout과 별도 active `DISARM`이 MDD10A M1A/M2A LED를 all-off로 만드는 기능 시험을 통과했다. Hook은 `0U`로 복구했고 default scripted sequence 전체 all-off도 확인했다.
-- 위 PASS는 actual PB6/PB7 zero-duty 파형, 정확한 shutdown latency, fault/E-stop, production velocity-to-PWM mapping 또는 실제 motor stop 증거가 아니다.
-- 두 encoder motor는 MG540-A/B로 임시 식별하며 실제 차량 left/right는 아직 미정이다.
+- 2026-07-30 motor-disconnected software fault-injection에서 M1A/M2A limited active 뒤 `Error_Handler()`를 주입했다. All motor LEDs off, `PB6/PB7/PC8/PC9=0 V`, reset 전 B1 재활성화 차단을 확인했다. 두 test macro는 `0U`로 복구했고 B1 무출력을 재확인했다.
+- 위 PASS는 actual PWM transition 파형, 정확한 shutdown latency, physical E-stop, production velocity-to-PWM mapping 또는 실제 motor stop 증거가 아니다.
+- 두 encoder motor는 MG540-A/B로 식별하며 encoder-side mapping은 MG540-A=motor A=vehicle right/TIM5, MG540-B=motor B=vehicle left/TIM3로 확정했다. MDD10A powered channel-to-side mapping은 아직 미확정이다.
 - MG540-A raw encoder A/B는 shaft 위치에 따라 약 0/5 V였다. Raw direct STM32 연결은 금지한다.
 - 최종 motor-off conditioning은 각 A/B에서 `1 kΩ series -> STM32 input node`, 그 node에서 `15 kΩ -> common GND`다. STM32 GND, encoder GND와 XL4015 OUT-를 공통으로 묶는다.
 - PB4/PB5 분리 상태의 conditioned HIGH는 MG540-A A/B 3.06 V, MG540-B A/B 3.06~3.07 V였다.
@@ -63,12 +66,13 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - TIM5 PA0/PA1과 TIM3 PB4/PB5에 두 encoder를 동시에 연결한 motor-off 독립 count/sign은 통과했다.
 - 2026-07-29 production `encoder_speed` module에서 TIM3 16-bit/TIM5 32-bit modular delta, wrap-safe int64 누적 count와 nominal 100 ms counts/s를 구현했다. Synthetic wrap, stationary와 dual hand-rotation bench log를 통과했다.
 - 2026-07-30 signed CPS -> mRPM conversion과 invalid/range self-test를 추가했다. `ENC_SELF_TEST,wrap=PASS,millirpm=PASS`와 305-row dual hand-rotation log에서 610 sample formula mismatch 0, direction mismatch 0과 stop-to-zero를 확인했다. mRPM은 USART2 bench field이고 production `TEL`은 CPS를 유지한다.
-- 2026-07-29 end-to-end retest에서 MG540-A -> TIM5 -> `right_cps`, MG540-B -> TIM3 -> `left_cps`, output-shaft-end CW `+` / CCW `-`, inactive field zero를 production `TEL`과 ESP32 parser에서 확인했다.
-- 위 mapping은 logical field map이다. Exact LOW/A-B phase timing, powered-motor noise, external tachometer 기준 RPM 정확도, wheel-speed scale과 차량 physical left/right/forward sign은 아직 미검증이다.
+- 2026-07-29 end-to-end retest에서 MG540-A -> TIM5 -> `right_cps`, MG540-B -> TIM3 -> `left_cps`, output-shaft-end raw CW `+` / CCW `-`, inactive field zero를 production `TEL`과 ESP32 parser에서 확인했다.
+- 2026-07-30 encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3로 확정했다. Right/A의 CW와 left/B의 CCW가 physical forward이므로 production CPS에서 TIM3/left만 부호 반전하고 TIM5/right는 유지한다. USART2 `ENC3/ENC5` bench log는 raw sign을 유지한다.
+- Exact LOW/A-B phase timing, powered-motor noise, external tachometer 기준 RPM 정확도와 wheel-speed scale은 아직 미검증이다.
 - KiCad 10.0 `Tracked_Mobile_Robot_Wiring_RevA` 기능 회로도 초안을 09_Electrical_Design에 보존했다.
 - RevA에는 battery -> FUSE_TBD -> switch -> MDD10A/XL4015 x2 병렬 분배, MDD10A logic/output, dual encoder 1 kΩ + MCU-side 15 kΩ conditioning, XL4015 #2 encoder 5 V와 STM32–ESP32 UART를 기록했다.
 - Dated ERC는 0 errors / 0 warnings이고 review PDF도 보존했다. 이는 물리 배선, 전류 용량, noise, footprint 또는 제조 적합성 검증이 아니다.
-- XL4015 #1 출력 destination/USB backfeed, fuse rating, vehicle left/right·forward polarity, BNO085 power/I2C와 physical harness는 TBD다.
+- XL4015 #1 출력 destination/USB backfeed, fuse rating, BNO085 power/I2C와 physical harness는 TBD다.
 - 어댑터 플레이트 Rev A 외곽은 174 x 208.93379 mm이고, 제작 후보 재료는 아크릴 3T로 결정했다.
 - 소형 체결 홀은 M3 여유 홀 후보인 지름 3.3 mm로 설계했다.
 - 만능기판은 150 x 100 mm, 홀 배열은 55 x 37이다.
@@ -100,7 +104,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - main/hello_world_main.c는 사용자가 직접 학습하며 작성 중이므로 요청 없이 대신 완성하지 않는다.
 - Raw encoder A/B를 STM32에 직접 연결하지 않는다. 제한 시험 조건은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND와 motor power disconnected다.
 - USART2 encoder 출력은 병행 검증용 bench logger이며 mRPM도 여기에서만 출력한다. 내부 count는 int64지만 newlib-nano `%lld` 제약 때문에 현재 짧은 bench log는 `(long)`/`%ld`를 사용한다. CPS는 production UART `TEL`에도 연결되어 ESP32 parser까지 PASS했다.
-- 실제 motor test 전에는 actual PB6/PB7 shutdown waveform, exact PWM/direction timing과 fault/E-stop gate를 확인한다. Timeout/DISARM MDD LED functional gate는 통과했다.
+- 실제 motor test 전에는 actual PB6/PB7 waveform/shutdown latency, exact PWM/direction timing과 physical E-stop gate를 확인한다. Timeout/DISARM와 software fault functional gate는 통과했다.
 - XL4015 #1 candidate 5 V는 USB backfeed 정책이 확정되기 전 STM32/ESP32에 연결하지 않는다.
 - KiCad의 `FUNCTIONAL` connector block은 관련 신호를 묶은 표기이며 물리적으로 연속된 header를 뜻하지 않는다.
 - ERC PASS를 실물 배선, 전류 용량, noise, footprint 또는 제조 검증으로 확대 해석하지 않는다.
@@ -109,8 +113,8 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 
 1. 완료된 UART bridge, dual encoder bench evidence와 KiCad RevA DRAFT baseline을 보존한다.
 2. Production `left_cps/right_cps`와 ESP32 parse raw evidence를 logical mapping 회귀 기준으로 보존한다.
-3. 50회전 `1560 counts/output rev`와 mRPM evidence를 보존한다. 실제 장착 뒤 vehicle physical left/right와 forward-positive sign을 확정하고 external tachometer 및 sprocket/track travel로 RPM·wheel-speed를 별도 검증한다.
-4. 계측 장비가 준비되면 actual PB6/PB7 shutdown waveform, exact PWM/direction timing과 fault/E-stop을 검증한다.
+3. 50회전 `1560 counts/output rev`, encoder-side A=right/TIM5·B=left/TIM3 forward-positive mapping과 mRPM evidence를 보존한다. MDD10A powered channel-to-side mapping, external tachometer 및 sprocket/track travel은 별도 검증한다.
+4. 계측 장비가 준비되면 actual PB6/PB7 waveform, shutdown latency와 exact PWM/direction timing을 검증하고 physical E-stop 설계·시험을 닫는다.
 5. 남은 active-output safety gate를 통과한 뒤 first lifted/no-load motor test에서 encoder false count/noise와 input filter를 확인한다.
 6. 영구 만능기판·하네스는 KiCad schematic-to-hardware continuity review 후 조성한다.
 7. 멀티메이커에 서버 업로드 오류를 알리고 대체 제출 방법 또는 복구 여부를 확인한다.

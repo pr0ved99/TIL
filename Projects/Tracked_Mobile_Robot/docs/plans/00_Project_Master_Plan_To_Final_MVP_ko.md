@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-07-30 50-revolution encoder calibration + CPS-to-mRPM checkpoint
-- 현재 실행 위치: `G3/G4A PARTIAL`, `G5/G6 encoder PARTIAL`; powered/no-motor active timeout/DISARM LED shutdown, hook-off 복구, encoder production `TEL` -> ESP32 CW/CCW, 50회전 `1560 counts/output rev`와 mRPM 계산까지 통과했고 physical mapping/powered-noise와 motor safety 계측이 다음 작업
+- Revision: 2026-07-30 encoder-side vehicle-frame sign + software fault output-zero/latch checkpoint
+- 현재 실행 위치: `G3/G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`; powered/no-motor timeout/DISARM, software fault output-zero/latch, A=right/TIM5·B=left/TIM3 전진 양수, 50회전 `1560 counts/output rev`와 mRPM 계산까지 통과했다. MDD10A powered channel-to-side mapping, waveform/timing, physical E-stop과 powered-noise가 다음 safety 작업이다.
 - 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -95,13 +95,13 @@ PC 또는 ESP32의 속도 명령을 받아
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
 | Adapter plate Rev A release | `PASS` | A4 1:1 user comparison, vector/scale preflight, release hash | 업체 주문 접수 |
 | Adapter plate fabricated fit | `BLOCKED` | 제작품 미입고 | 입고 후 fit check |
-| STM32 PWM/DIR | `PARTIAL` | PB6/PB7 PWM, PC8/PC9 DIR 구현; direction 6-step과 active timeout/DISARM LED 기능 PASS | 실제 20 kHz/10%, 두 1 ms 구간, shutdown pin zero와 fault 계측 |
-| MDD10A logic input | `PARTIAL` | powered/no-motor 6-step, active timeout/DISARM LED all-off와 final hook-off PASS | actual PB6/PB7 waveform/timing, fault/E-stop closure |
-| Encoder | `PARTIAL` | conditioning, TIM3/TIM5 dual count/sign, wrap-safe CPS, production TEL -> ESP32, 50회전 1560 counts/output-rev와 mRPM 계산 PASS | vehicle physical sign, powered-noise, external tachometer/wheel-speed 검증 |
+| STM32 PWM/DIR | `PARTIAL` | PB6/PB7 PWM, PC8/PC9 DIR 구현; direction 6-step, timeout/DISARM와 software fault 기능 PASS | 실제 20 kHz/10%, 두 1 ms 구간과 shutdown latency 계측; physical E-stop |
+| MDD10A logic input | `PARTIAL` | powered/no-motor 6-step, timeout/DISARM LED all-off, fault latch 네 pin 0 V와 final test-off PASS | actual waveform/timing, physical E-stop closure |
+| Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
 | First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
-| Dual drivetrain / chassis | `NOT TESTED` | 좌우 mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
+| Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
-정적 motor-output, powered/no-motor direction 회귀, timeout/DISARM LED shutdown과 encoder speed bench는 진행됐지만 실제 motor 회전, PWM pin/timing 및 fault safety 검증은 아직 시작하지 않았다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
+정적 motor-output, powered/no-motor direction 회귀, timeout/DISARM LED shutdown, software fault output-zero/latch와 encoder-side vehicle-frame sign까지 진행됐지만 MDD10A의 실제 좌우 motor 대응, 실제 motor 회전, PWM transition timing과 physical E-stop은 아직 검증하지 않았다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
 
 ## Gate 로드맵
 
@@ -282,8 +282,10 @@ PARTIAL - static/DMM routing PASS; exact waveform, deadtime and active shutdown 
 - 2026-07-26 battery 12.36 V, MDD10A input 12.35 V에서 powered/no-motor 6-step LED sequence를 통과했다.
 - 양 채널 PWM/DIR swap을 진단·교정하고 `PB6->PWM1`, `PC8->DIR1`, `PB7->PWM2`, `PC9->DIR2`를 bench mapping으로 고정했다.
 - 2026-07-29 수정된 direction-change 순서로 같은 6-step LED sequence와 final all-off를 다시 통과했다.
-- 2026-07-29 임시 10%-limited UART hook으로 active timeout과 `DISARM`에서 MDD10A LED all-off를 확인했다. 이는 powered/no-motor functional scope PASS이며 actual PWM pin/waveform, fault/E-stop과 motor stop은 미검증이다.
+- 2026-07-29 임시 10%-limited UART hook으로 active timeout과 `DISARM`에서 MDD10A LED all-off를 확인했다. 당시 범위는 powered/no-motor functional scope PASS였고 actual PWM pin/waveform, fault/E-stop과 motor stop은 미검증이었다.
 - 시험 뒤 UART hook을 `0U`로 복구하고 default scripted sequence 전체 all-off를 재확인했다.
+- 2026-07-30 임시 dual-channel 10% button hook으로 `Error_Handler()` fault를 주입했다. MDD10A all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch를 확인했다.
+- 시험 뒤 `MOTOR_OUTPUT_PIN_TEST_ENABLED`와 `MOTOR_FAULT_INJECTION_TEST_ENABLED`를 모두 `0U`로 복구하고 B1 무출력을 재확인했다. Exact shutdown latency와 physical E-stop은 포함하지 않는다.
 
 #### G4B. Board power integration
 
@@ -306,7 +308,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - G4A static/direction/timeout-DISARM LED functional PASS; actual pin/timing/fault, G4B와 G4C pending
+PARTIAL - G4A static/direction/timeout-DISARM/software-fault functional PASS; actual waveform/timing, physical E-stop, G4B와 G4C pending
 ```
 
 ### G5. Encoder safety and first motor no-load
@@ -339,7 +341,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - encoder conditioning, dual count/sign, 50-rev 1560 scale, wrap-safe CPS/mRPM와 production TEL -> ESP32 PASS; vehicle sign, external tachometer/wheel-speed, powered-noise와 motor no-load pending
+PARTIAL - encoder conditioning, dual count/sign, 50-rev 1560 scale, wrap-safe CPS/mRPM, production TEL -> ESP32와 encoder-side vehicle forward-positive mapping PASS; external tachometer/wheel-speed, powered-noise와 motor no-load pending
 ```
 
 ### G6. Encoder telemetry and dual drivetrain integration
@@ -351,10 +353,11 @@ PARTIAL - encoder conditioning, dual count/sign, 50-rev 1560 scale, wrap-safe CP
 구현·시험:
 
 - TIM3와 TIM5 encoder mode 설정
-- 좌우 signed count와 forward sign 확인
+- [x] encoder-side 좌우 signed count와 forward sign 확인
 - fixed interval count delta와 CPS 또는 wheel speed 계산
 - TEL에 left/right measurement 반영
-- 좌우 motor/encoder channel map 고정
+- [x] A=right/TIM5, B=left/TIM3 encoder-side map 고정
+- [ ] MDD10A powered channel 1/2와 실제 좌우 motor map 고정
 - lifted straight, backward와 rotation
 - 저속 ground straight와 rotation
 - UART disconnect, timeout과 DISARM actual stop
@@ -369,7 +372,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - production CPS TEL logical path PASS; physical left/right/forward map and drivetrain tests pending
+PARTIAL - production CPS TEL과 encoder-side A=right/TIM5, B=left/TIM3 forward-positive map PASS; MDD10A powered channel-to-side mapping과 drivetrain tests pending
 ```
 
 ### G7. Final MVP system acceptance
@@ -459,7 +462,7 @@ board power policy -> encoder identification/safe voltage -> final integration
 6. 방향별 50회전 `1560 counts/output rev`, wrap/mRPM self-test와 dynamic calculation evidence를 회귀 기준으로 보존한다. External tachometer와 sprocket/track travel scale은 별도 시험으로 남긴다.
 7. 업체 주문이 가능해지면 order ID, 실제 제출 revision, 재질·공차와 납기를 기록한다.
 8. 제작품 입고 시 control 작업과 별도로 fit-check branch를 수행한다.
-9. Actual PB6/PB7 shutdown waveform/timing과 fault/E-stop gate를 닫은 뒤 first motor lifted/no-load를 진행하고, 첫 제한 pulse 안에서 encoder noise와 input filter를 함께 확인한다.
+9. Actual PB6/PB7 waveform/direction timing과 shutdown latency를 계측하고 physical E-stop gate를 닫은 뒤 first motor lifted/no-load를 진행한다. Software fault 기능시험은 이미 PASS이며 첫 제한 pulse에서 encoder noise와 input filter를 함께 확인한다.
 
 ## 사용자 직접 타이핑 학습 방식
 
@@ -559,9 +562,11 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [ ] PWM frequency/duty와 direction deadtime instrument evidence
 - [ ] board power/back-power rule와 measurement
 - [ ] first motor no-load report
-- [ ] encoder voltage, count와 speed telemetry evidence
+- [x] motor-off encoder voltage, dual count와 speed telemetry evidence
+- [ ] powered encoder noise와 external speed evidence
 - [ ] dual drivetrain low-speed report
-- [ ] actual-output safety/fault report
+- [x] motor-disconnected timeout/DISARM/software-fault output-zero functional evidence
+- [ ] actual PWM waveform, shutdown latency, physical E-stop와 motor-stop report
 - [ ] 1 m distance/odometry report
 - [ ] portfolio-ready README와 short demo
 

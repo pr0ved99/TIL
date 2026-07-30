@@ -84,12 +84,24 @@ positive w  -> robot turns left
 
 Encoder sign은 이 convention이 성립하도록 조정해야 한다.
 
-### Bench encoder sign convention
+### Bench와 vehicle-frame encoder sign convention
 
 2026-07-26 motor-power-off 시험에서는 output shaft end를 정면에서 본 기준으로
 clockwise 회전 시 TIM3 count가 증가하고 counter-clockwise 회전 시 감소했다.
-이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench wiring 결과일 뿐이며,
-차량 forward와 left/right encoder sign은 motor 장착 후 별도로 확정한다.
+이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench raw-sign 결과다.
+
+2026-07-30 motor-off 수동 회귀에서는 encoder-side 장착 관계를 다음과 같이
+확정했다.
+
+| Vehicle side | Motor / timer | Output-shaft forward rotation | Raw sign on forward | Production normalization |
+| --- | --- | --- | --- | --- |
+| Right | MG540-A / TIM5 | Clockwise | Positive | Keep |
+| Left | MG540-B / TIM3 | Counter-clockwise | Negative | Invert TIM3/left CPS |
+
+따라서 production `left_cps/right_cps`는 모두 차량 전진에서 양수가 된다. 이
+결정은 **encoder-side vehicle-frame mapping과 부호**만 닫는다. MDD10A powered
+channel 1/2가 실제 좌·우 motor로 이어지는 관계와 command-driven forward
+polarity는 첫 powered drivetrain 시험에서 별도로 확인한다.
 
 ## 3. Differential Drive Approximation
 
@@ -146,7 +158,7 @@ distance = delta_count * distance_per_count
 | Gear ratio | Motor model datasheet 또는 manual count test |
 | Output sprocket circumference | 직접 측정 또는 track movement로 추정 |
 | Effective track width | Chassis 측정, rotation test로 tune |
-| Encoder sign | Bench sign과 별개로 low-speed vehicle-forward command에서 확인 |
+| Encoder sign | Encoder-side 수동 회귀는 완료; powered vehicle-forward command에서 재확인 |
 
 Motor label의 nominal 정보만으로 정확한 odometry가 가능하다고 가정하지 않는다.
 
@@ -157,9 +169,9 @@ Motor label의 nominal 정보만으로 정확한 odometry가 가능하다고 가
 | MG540-A | 약 +1560 | 약 -(1560~1570) | 약 1560 |
 | MG540-B | +1562 | -1560 | 약 1560 |
 
-`1560 counts/output rev`는 motor-power-off 1회전 수동 측정의 provisional scale이다.
-Powered/noise 조건, 반복 측정, TIM5와 실제 drivetrain scale 검증 전에는 final
-odometry constant로 고정하지 않는다. Raw serial log는 MG540-A의 정지 안정성과
+`1560 counts/output rev`는 이 시점의 motor-power-off 1회전 수동 측정에서 얻은
+provisional scale이었다. Powered/noise 조건과 반복 측정 전에는 final odometry
+constant로 고정하지 않았다. Raw serial log는 MG540-A의 정지 안정성과
 방향별 count 증감만 직접 보여 주며, 위 1회전 수치와 MG540-B 결과는 같은 bench
 session의 별도 측정 보고다. Evidence는
 [`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)에 정리한다.
@@ -181,8 +193,8 @@ session의 별도 측정 보고다. Evidence는
 self-test와 305-row dual hand-rotation log에서 계산·방향·정지 복귀가 통과했다.
 
 이 결정은 count-to-output-revolution scale을 닫은 것이다. Track odometry의
-`distance_per_count`는 effective sprocket/track travel, track slip과 실제 차량
-forward sign을 측정하기 전까지 확정하지 않는다. External tachometer 기반 절대
+`distance_per_count`는 effective sprocket/track travel, track slip과 powered
+vehicle-forward command regression을 측정하기 전까지 확정하지 않는다. External tachometer 기반 절대
 RPM 정확도와 powered-motor noise도 별도 시험 대상이다. 상세 evidence는
 [`../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`](../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)에 있다.
 

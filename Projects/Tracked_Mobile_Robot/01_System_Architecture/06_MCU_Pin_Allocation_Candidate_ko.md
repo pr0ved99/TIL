@@ -177,7 +177,7 @@ MCU input node -> 15 kΩ -> common GND
 확인:
 
 - `PASS`: PB4/PB5에서 TIM3 TI12 x4 encoder mode motor-power-off 확인
-- `PENDING`: PA0/PA1에서 TIM5 encoder mode 확인
+- `PASS`: PA0/PA1에서 TIM5 TI12 x4 encoder mode와 TIM3 동시 독립 count 확인
 - STM32에 연결하기 전에 encoder signal voltage 확인
 
 ### Battery Voltage ADC
@@ -290,8 +290,9 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 
 ## 1차 결정
 
-이 후보안의 USART/PWM/DIR/TIM3/TIM5 범위는 CubeMX와 제한 bench 시험까지 진행했고,
-I2C1/ADC와 차량 최종 mapping은 아직 후보 상태다.
+이 후보안의 USART/PWM/DIR/TIM3/TIM5 범위는 CubeMX와 제한 bench 시험까지 진행했다.
+Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3로 확인했지만 I2C1/ADC와
+MDD10A powered channel 1/2의 실제 vehicle-side mapping은 아직 후보 상태다.
 
 가장 중요한 설계 선택:
 
@@ -306,8 +307,8 @@ I2C1/ADC와 차량 최종 mapping은 아직 후보 상태다.
 
 다음 단계는 남은 후보를 순서대로 검증하는 것이다.
 
-1. TIM3/TIM5 count sampling을 wrap-safe delta와 speed module로 분리한다.
+1. 완료된 TIM3/TIM5 wrap-safe delta와 speed module을 회귀 기준으로 유지한다.
 2. I2C1 `PB8/PB9`와 PA4 ADC가 기존 확정 핀과 충돌하지 않는지 CubeMX에서 확인한다.
 3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
-4. 차량 장착 후 encoder channel left/right와 vehicle-forward sign을 확정한다.
+4. 확정된 encoder-side A=right/TIM5, B=left/TIM3와 forward-positive sign을 유지하고, MDD10A powered channel의 실제 left/right mapping을 별도 확인한다.
 5. 탈락한 후보는 decision log에 남긴다.

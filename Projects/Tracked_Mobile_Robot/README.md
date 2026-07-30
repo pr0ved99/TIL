@@ -33,12 +33,12 @@ Last updated: 2026-07-30
 ```text
 [PASS] ESP32-STM32 UART bridge and scripted command safety
 [PASS] XL4015 #1/#2 bench load validation
-[PARTIAL] STM32 PWM/DIR + MDD10A direction regression; timeout/DISARM LED functional PASS, actual pin/timing/fault pending
-[PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM math PASS; vehicle mapping/powered noise pending
+[PARTIAL] STM32 PWM/DIR + MDD10A direction regression; timeout/DISARM/software-fault functional PASS, actual waveform/latency/E-stop pending
+[PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
--> CURRENT NEXT: actual PB6/PB7 waveform/timing + fault/E-stop gate; then lifted/no-load powered-noise test
--> 계측 장비 확보 시 actual PB6/PB7 waveform/timing 및 fault/E-stop 검증
+-> CURRENT NEXT: actual PB6/PB7 waveform/timing + shutdown latency + physical E-stop gate
+-> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test
 ```
 
 병행 중인 mechanical integration:
@@ -68,9 +68,9 @@ tracked chassis hole-pattern DWG import
 - `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 `PWM 0 -> 1 ms -> DIR -> 1 ms -> PWM` 수정 뒤 같은 기능 회귀를 재통과했고, 임시 10% UART hook의 active timeout/DISARM LED all-off와 final hook-disabled all-off도 확인했다. Exact PWM/timing, actual PB6/PB7 shutdown waveform, fault/E-stop과 실제 motor stop은 아직 `PARTIAL` 또는 미검증이다.
-- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. STM32 production `TEL` -> ESP32 parser의 독립 CW/CCW도 PASS했고 logical map은 A -> TIM5/`right_cps`, B -> TIM3/`left_cps`다. 2026-07-30 방향별 50회전 손보정 결과로 `1560 counts/output rev`를 firmware 상수로 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산 일치도 PASS했다. Powered-noise, external tachometer 기준 RPM 정확도와 차량 physical side/forward sign은 미검증이다.
-- KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, 차량 방향, BNO085, 실제 하네스·footprint는 TBD다.
+- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 `PWM 0 -> 1 ms -> DIR -> 1 ms -> PWM` 기능 회귀와 timeout/DISARM LED all-off를, 2026-07-30에는 software fault 뒤 all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch를 확인했다. 시험 macro는 모두 `0U`로 복구했다. Exact PWM/direction timing, shutdown latency, physical E-stop과 실제 motor stop은 아직 `PARTIAL` 또는 미검증이다.
+- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. 2026-07-30 방향별 50회전 결과로 `1560 counts/output rev`를 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산도 PASS했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 forward-positive로 정규화했다. MDD10A powered channel-to-side mapping, powered-noise와 external tachometer/wheel-speed 검증은 남아 있다.
+- KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, BNO085, 실제 하네스·footprint는 TBD다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
 - 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
 
@@ -89,7 +89,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-07-29 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-07-30 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -106,6 +106,8 @@ tracked chassis hole-pattern DWG import
 - 3D 전장 Assembly Draft의 참조 오류 표시는 사용자 지시에 따라 이번 2D 플레이트 release 범위에서 제외했다.
 - 멀티메이커 서버가 업로드 폴더를 만들지 못해 주문 상태는 `NOT SUBMITTED`다.
 - KiCad RevA functional wiring draft와 dated ERC/PDF evidence를 `09_Electrical_Design`에 보존했다. 이 baseline은 PCB 또는 영구 배선 release가 아니다.
+- Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 전진 양수다. MDD10A powered channel 1/2의 실제 좌우 대응은 아직 미확정이다.
+- Software fault output-zero/latch는 motor-disconnected DMM/LED 범위에서 PASS했지만 precise waveform/latency와 physical E-stop은 남아 있다.
 
 작업을 이어가기 전에 먼저 읽을 기준 파일:
 
