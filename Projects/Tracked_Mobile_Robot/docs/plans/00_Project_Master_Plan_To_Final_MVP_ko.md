@@ -3,7 +3,7 @@
 ## 문서 기준
 
 - Revision: 2026-08-03 logic-analyzer PWM/direction timing sub-gate checkpoint
-- 현재 실행 위치: `G3/G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`; 양 채널 actual PWM `20.1005 kHz`, duty 약 `10.05%`와 DIR 전·후 PWM-zero 여유 `1 ms 이상`을 확인해 파형·방향 timing 하위 게이트는 `PASS`했다. 전체 motor-output gate는 active DISARM/timeout/software-fault shutdown latency, hook-off safe image board 재플래시와 reset-marker boot 회귀, Physical E-stop 및 실제 motor 시험이 남아 `PARTIAL`이다.
+- 현재 실행 위치: `G3/G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`; 양 채널 actual PWM `20.1005 kHz`, duty 약 `10.05%`와 DIR 전·후 PWM-zero 여유 `1 ms 이상`을 확인해 파형·방향 timing 하위 게이트는 `PASS`했다. STM32 safe image flash/run과 B1 no-output regression은 완료했다. 전체 motor-output gate는 active DISARM/timeout/software-fault shutdown latency, latency 시험 후 final hook-off safe reflash와 external reset-marker boot 회귀, Physical E-stop 및 실제 motor 시험이 남아 `PARTIAL`이다.
 - 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -89,7 +89,7 @@ PC 또는 ESP32의 속도 명령을 받아
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
 | PC-first STM32 UART MVP | `PASS` | requirements, matrix, CSV, screenshots, test report | baseline 보존 |
-| ESP32-STM32 UART bridge | `PASS` | loopback, PING/PONG, structured TEL, scripted safety, timeout-zero raw log | baseline 보존 |
+| ESP32-STM32 UART bridge | `PARTIAL` | historical baseline PASS + 2026-08-03 current controlled normal sequence PASS | response-gated startup, malformed recovery, ESP32 safe `0U` reflash |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
@@ -101,7 +101,7 @@ PC 또는 ESP32의 속도 명령을 받아
 | First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
-정적 motor-output, powered/no-motor direction 회귀, timeout/DISARM LED shutdown, software fault output-zero/latch, actual PWM frequency/duty·direction settle과 encoder-side vehicle-frame sign까지 진행됐지만 MDD10A의 실제 좌우 motor 대응, active shutdown exact latency, reset-marker boot, Physical E-stop과 실제 motor 회전은 아직 검증하지 않았다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
+Current strict-parser UART의 정상 시퀀스는 재통과했지만 response-gated startup과 malformed recovery는 남아 있다. 정적 motor-output, powered/no-motor direction 회귀, timeout/DISARM LED shutdown, software fault output-zero/latch, actual PWM frequency/duty·direction settle과 encoder-side vehicle-frame sign까지 진행됐지만 MDD10A의 실제 좌우 motor 대응, active shutdown exact latency, reset-marker boot, Physical E-stop과 실제 motor 회전은 아직 검증하지 않았다. 따라서 진행률 숫자보다 Gate 상태를 기준으로 판단한다.
 
 ## Gate 로드맵
 
@@ -287,7 +287,7 @@ PARTIAL - static/DMM routing + 20.1005 kHz/약 10.05% PWM + direction pre/post z
 - 2026-07-30 임시 dual-channel 10% button hook으로 `Error_Handler()` fault를 주입했다. MDD10A all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch를 확인했다.
 - 시험 뒤 `MOTOR_OUTPUT_PIN_TEST_ENABLED`와 `MOTOR_FAULT_INJECTION_TEST_ENABLED`를 모두 `0U`로 복구하고 B1 무출력을 재확인했다. Exact shutdown latency와 physical E-stop은 포함하지 않는다.
 - 2026-08-03 motor-disconnected B1 six-step logic-analyzer capture에서 양 채널 `20.1005 kHz`, 약 `10.05%` PWM과 direction 전·후 PWM-zero `1 ms 이상`을 확인해 waveform/direction timing 하위 게이트를 `PASS`했다.
-- 모든 temporary hook이 `0U`인 source와 STM32 Debug build 확인은 통과했지만, 2026-08-03에 ESP32 clean build를 새로 실행한 것은 아니다. Controlled latency 시험 후 STM32/ESP32 양쪽 clean build·safe image 재플래시와 reset marker를 포함한 post-flash boot no-output capture가 남아 있다.
+- 모든 temporary hook이 `0U`인 source와 STM32 Debug build 확인을 통과했고, STM32 safe source flash/run과 no-output 회귀도 완료했다. 2026-08-03에 ESP32 clean build를 새로 실행한 것은 아니며 마지막 ESP32 board flash는 test `1U` image일 수 있다. ESP32 safe `0U` clean build·재플래시, controlled latency 시험과 reset marker를 포함한 STM32 post-flash boot no-output capture가 남아 있다.
 
 #### G4B. Board power integration
 
@@ -456,17 +456,20 @@ board power policy -> encoder identification/safe voltage -> final integration
 
 2026-08-03 이후 우선순위:
 
-아래 2~7은 실제 motor 활성화 전 직렬 safety chain이다. 앞 단계가 통과하기 전에는 다음 단계로 넘어가지 않는다.
+아래 2~5는 MDD10A/battery power OFF에서 current UART release를 닫는 순서다. 아래 6~10은 실제 motor 활성화 전 직렬 safety chain이며, 앞 단계가 통과하기 전에는 다음 단계로 넘어가지 않는다.
 
-1. 2026-08-03 actual `20.1005 kHz`/약 `10.05%` PWM과 direction pre/post zero `>= 1 ms` evidence, TIM3/TIM5 encoder conditioning·`1560 counts/output rev`·forward-positive mapping evidence를 회귀 기준으로 보존한다.
-2. 다음 세션에서 MDD10A/motor 전원 인가 전, 현재 네 test hook `0U` source를 기준으로 STM32 safe image를 먼저 flash/run해 임시 B1 six-step image 가능성을 제거한다. 이 시작 전 복구는 발행 게이트가 아니라 벤치 안전 선행조건이다.
-3. Motor-disconnected 10%-limited output에서 valid active `DISARM` frame 완료 시점부터 PB6/PB7 last active edge까지 shutdown latency를 동시 capture한다.
-4. 같은 조건에서 마지막 valid CMD 완료 시점부터 configured timeout 뒤 PB6/PB7 last active edge까지 command-timeout shutdown latency를 capture한다.
-5. Dedicated marker 또는 debounced event와 PB6/PB7을 함께 capture해 software-fault shutdown latency를 측정하고, button debounce와 firmware latency를 분리해 기록한다.
-6. `MOTOR_OUTPUT_PIN_TEST_ENABLED`, `MOTOR_FAULT_INJECTION_TEST_ENABLED`, `UART_MVP_OUTPUT_TEST_ENABLED`, `BRIDGE_SCRIPTED_TEST_ENABLED`를 모두 `0U`로 복구한다. Contract test와 clean build 뒤 STM32/ESP32 safe image를 두 board에 재플래시하고, reset reference marker를 포함해 PB6/PC8/PB7/PC9 boot no-output 회귀를 capture한다.
-7. Board power/back-power 선행 조건을 닫고 `T-ESTOP-001~006`의 component/schematic, continuity, 3.3 V sense, latch/reset reject, no-auto-restart와 motor-disconnected timing을 통과시켜 Physical E-stop gate를 닫는다.
-8. 위 active-output safety chain이 모두 `PASS`한 뒤에만 `T-MOTOR-003` first lifted/no-load 실제 motor 시험을 5~10% 제한으로 수행하고, current/heat/smell/noise, timeout/DISARM actual stop과 powered encoder false count/noise를 기록한다.
-9. 업체 주문이 가능해지면 order ID, 실제 제출 revision, 재질·공차와 납기를 기록하고, 제작품 입고 시 control 작업과 별도로 fit-check branch를 수행한다.
+1. 2026-08-03 actual `20.1005 kHz`/약 `10.05%` PWM과 direction pre/post zero `>= 1 ms` evidence, TIM3/TIM5 encoder conditioning·`1560 counts/output rev`·forward-positive mapping, current UART normal-sequence evidence를 회귀 기준으로 보존한다.
+2. MDD10A/battery power OFF와 네 test hook source `0U`를 확인한다. STM32 safe flash/run은 완료됐지만 ESP32 board에는 test `1U` image가 남았을 수 있음을 전제로 한다.
+3. ESP32에 `500 ms settle -> newline sync -> DISARM/matching ACK bounded retry -> PING/matching PONG bounded retry -> READY` startup state machine을 구현하고 READY 전 ARM/CMD를 차단한다.
+4. Motor power OFF에서 정상 safety sequence를 재검증한 뒤, malformed PING·field-order-invalid CMD·unknown frame의 fail-closed 거부와 정상 PING/PONG 복구를 검증한다.
+5. ESP32 test macro를 `0U`로 복구하고 contract test와 clean build 뒤 safe image를 재플래시/run한다.
+6. Motor-disconnected 10%-limited output에서 valid active `DISARM` frame 완료 시점부터 PB6/PB7 last active edge까지 shutdown latency를 동시 capture한다.
+7. 같은 조건에서 마지막 valid CMD 완료 시점부터 configured timeout 뒤 PB6/PB7 last active edge까지 command-timeout shutdown latency를 capture한다.
+8. Dedicated marker 또는 debounced event와 PB6/PB7을 함께 capture해 software-fault shutdown latency를 측정하고, button debounce와 firmware latency를 분리해 기록한다.
+9. Latency 시험 뒤 STM32 test hook을 모두 `0U`로 복구하고 contract test/clean build/safe reflash를 수행한 다음, 외부 reset marker를 포함한 PB6/PC8/PB7/PC9 boot no-output 회귀를 capture한다.
+10. Board power/back-power 선행 조건을 닫고 `T-ESTOP-001~006`의 component/schematic, continuity, 3.3 V sense, latch/reset reject, no-auto-restart와 motor-disconnected timing을 통과시켜 Physical E-stop gate를 닫는다.
+11. 위 active-output safety chain이 모두 `PASS`한 뒤에만 `T-MOTOR-003` first lifted/no-load 실제 motor 시험을 5~10% 제한으로 수행하고, current/heat/smell/noise, timeout/DISARM actual stop과 powered encoder false count/noise를 기록한다.
+12. 업체 주문이 가능해지면 order ID, 실제 제출 revision, 재질·공차와 납기를 기록하고, 제작품 입고 시 control 작업과 별도로 fit-check branch를 수행한다.
 
 ## 사용자 직접 타이핑 학습 방식
 

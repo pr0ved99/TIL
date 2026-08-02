@@ -433,6 +433,9 @@ void app_main(void){
     bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
 
     if (BRIDGE_SCRIPTED_TEST_ENABLED != 0U){
+        vTaskDelay(pdMS_TO_TICKS(500));
+        uart_write_bytes(BRIDGE_UART_NUM, "\n", 1);
+        vTaskDelay(pdMS_TO_TICKS(100));
         bridge_uart_send_ping(1);
     }
     else {

@@ -115,7 +115,10 @@ Important docs:
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-08-03_progress.md`: latest progress note for logic-analyzer PWM/direction timing evidence, safe-source restoration and remaining safety gates
+- `docs/progress/2026-08-03_progress.md`: latest progress note for logic-analyzer PWM/direction timing, strict-parser controlled normal sequence, safe-source state and remaining gates
+- `docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md`: exact next-session startup-handshake and malformed-frame regression handoff
+- `docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`: current strict-parser controlled normal-sequence result and scope limit
+- `assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt`: raw ESP32 monitor evidence for the 2026-08-03 controlled normal sequence
 - `03_Firmware/tests/test_firmware_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, encoder sign and default-off safety contract preflight
 - `03_Firmware/tools/Build-Firmware.ps1`, `README.md`: repository build trees를 건드리지 않는 isolated STM32/ESP32 build workflow
 - `assets/logs/firmware_build/2026-07-30_laptop_firmware_preflight.md`: contract test, isolated clean-build result, artifact hashes and laptop-only evidence boundary
@@ -187,8 +190,9 @@ Important docs:
 - ESP32 scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM` sequence passed on 2026-07-20.
 - STM32 returned the expected `NOT_ARMED`, command `ACK`, `OUT_OF_RANGE`, and `DISARM` responses through the ESP32 bridge.
 - A one-shot valid CMD produced `vx=50`, then STM32 timeout returned `vx=0`, `w=0` after about 300 ms while remaining `ARMED` until explicit `DISARM`.
-- The 2026-07-20 historical ESP32-STM32 board-only UART bridge baseline is complete. The current strict-parser release still requires startup-handshake and malformed-frame board regression.
-- On 2026-07-30, ESP32 automatic boot traffic was disabled by default with `BRIDGE_SCRIPTED_TEST_ENABLED 0U`. The 2026-07-20 scripted sequence remains historical controlled-bench evidence, not normal boot behavior.
+- The 2026-07-20 historical ESP32-STM32 board-only UART bridge baseline is complete. On 2026-08-03, a controlled `500 ms settle -> LF -> 100 ms -> PING` preamble and the current strict-parser normal safety sequence passed again, including PING/PONG, NOT_ARMED, ARM/valid CMD, timeout-zero, OUT_OF_RANGE and final DISARMED.
+- The 2026-08-03 result is a normal-sequence subtest `PASS`, not a full current release. Matching `DISARM ACK`, bounded-retry `PING/PONG`, fail-closed startup failure behavior and malformed-frame recovery injection remain, so the current strict-parser release is `PARTIAL`.
+- ESP32 source has `BRIDGE_SCRIPTED_TEST_ENABLED 0U`, but the last board flash may still contain the controlled-test `1U` image. Until the next safe ESP32 reflash, keep both board USB connections and MDD10A/battery power disconnected when unattended. The 2026-07-20 and 2026-08-03 scripted sequences are controlled-bench evidence, not normal boot behavior.
 - The STM32 CubeMX `.ioc` init ordering explicitly retains `MX_TIM5_Init` so TIM5 encoder initialization is not silently lost after regeneration.
 - Twelve static firmware safety contract tests passed, followed by isolated clean STM32 Debug and ESP32-S3 builds. This laptop-only gate did not flash or run either board.
 - STM32 motor-output uses `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` with common GND for the bench mapping.
@@ -198,7 +202,7 @@ Important docs:
 - Motor-output direction logic now uses `PWM zero -> 1 ms PWM-zero settle -> DIR write -> 1 ms post-DIR settle -> PWM restore`. The 2026-07-29 powered/no-motor 6-step MDD10A LED regression passed. A temporary default-off 10% UART hook also produced active M1A/M2A indication and both command timeout and a separate active `DISARM` made the output LEDs all-off. The hook was restored to `0U`, both boards were rebuilt/flashed and the default script remained all-off.
 - On 2026-07-30 a temporary dual-channel 10% button hook injected `Error_Handler()` after M1A/M2A became active. All motor LEDs turned off, PB6/PB7/PC8/PC9 measured 0 V to STM32 GND, and further B1 input could not reactivate output before reset. Both button-test macros were restored to `0U` and B1 no-output regression passed.
 - On 2026-08-03 the motor-disconnected B1 six-step logic-analyzer capture measured both PWM channels at `49.75 us = 20.1005 kHz`, high time `5.00 us` and duty about `10.05%`. Direction-change PWM-zero intervals were channel 1 pre/post `1.994/2.03875 ms` and channel 2 pre/post `1.54725/about 2.040 ms`, so the waveform/direction timing sub-gate is `PASS`.
-- Overall motor-output verification remains `PARTIAL`. The sampled initial inactive interval is scoped evidence only because it has no external reset marker. Active DISARM, command-timeout and software-fault event-to-PWM-zero latency, safe-image board reflash plus reset-marker boot regression, Physical E-stop and actual motor stop remain unverified.
+- Overall motor-output verification remains `PARTIAL`. The sampled initial inactive interval is scoped evidence only because it has no external reset marker. STM32 safe source flash/run and no-output regression are complete; active DISARM, command-timeout and software-fault event-to-PWM-zero latency, an external-reset-marker boot capture, ESP32 safe `0U` reflash, Physical E-stop and actual motor stop remain unverified.
 - Two available encoder motors are WHEELTEC `MG540P30_12V`; the encoder-side mapping is MG540-A/motor A = vehicle right/TIM5 and MG540-B/motor B = vehicle left/TIM3. MDD10A powered channel 1/2 to physical side remains TBD.
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
 - XL4015 #2 encoder rail measured 5.06 V before MG540-A and 5.03 V connected; MG540-B connected rail also measured 5.03 V.
@@ -261,23 +265,27 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short Projects/Tracked_Mobile_Robot`.
-2. Read `docs/progress/2026-08-03_progress.md`, `docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md` and `02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` before continuing.
-3. Preserve the KiCad `RevA DRAFT` verified/TBD boundary. Do not connect XL4015 #1 candidate output to either MCU before the USB backfeed policy is decided.
-4. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
-5. Preserve the encoder conditioning, TIM3/TIM5 firmware, modular-delta module and dated raw-log evidence; raw A/B direct STM32 connection is prohibited.
-6. Preserve the 2026-07-29 timeout/DISARM and 2026-07-30 software fault output-zero/latch functional PASS evidence. Do not treat them as exact PWM transition/shutdown-latency, physical E-stop or motor-stop proof. Keep both button-test macros and the UART output hook at `0U` by default.
-7. Keep `BRIDGE_SCRIPTED_TEST_ENABLED 0U` during normal operation. After CubeMX regeneration, run the firmware contract tests and isolated build before flashing, and confirm that TIM5 init remains present.
-8. Preserve A=right/TIM5, B=left/TIM3 and forward-positive production `left_cps/right_cps` as the encoder-side vehicle mapping regression baseline; USART2 `ENC3/ENC5` remains raw-sign diagnostics. Verify MDD10A powered channel-to-side mapping separately.
-9. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
-10. Preserve the 2026-08-03 actual `20.1005 kHz`/about `10.05%` PWM and direction pre/post zero `>= 1 ms` evidence as a passed sub-gate; do not repeat it unless firmware, timer configuration or wiring changes.
-11. Before applying MDD10A or motor power in the next session, confirm the four test-hook macros are `0U` and flash/run the current STM32 safe source to remove the possibility that the temporary B1 six-step image remains on the board. This is a bench-safety prerequisite, not the final release regression.
-12. With the motor disconnected and output limited to 10%, capture active `DISARM` frame-completion to PB6/PB7 last-active-edge shutdown latency.
-13. Under the same limit, capture last valid CMD completion through configured command timeout to PB6/PB7 last-active-edge shutdown latency.
-14. Capture software-fault event-to-PWM-zero latency with a dedicated marker or debounced event, recording button debounce separately from firmware latency.
-15. Restore STM32 `MOTOR_OUTPUT_PIN_TEST_ENABLED`, `MOTOR_FAULT_INJECTION_TEST_ENABLED`, `UART_MVP_OUTPUT_TEST_ENABLED` and ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED` to `0U`. Run contract tests and clean builds, reflash both safe images, and capture PB6/PC8/PB7/PC9 boot no-output with an external reset reference marker.
-16. Close board power/back-power prerequisites, then execute `T-ESTOP-001~006` from the Physical E-stop architecture and verification plan: NC hardware motor-energy cut and 3.3 V auxiliary sense remain separate, release never auto-rearms, and continuity/sense/latch/reset-reject/no-auto-restart/motor-disconnected timing must pass.
-17. Only after actions 12~16 pass, run the first lifted/no-load actual motor test at 5~10% and record current, heat, smell, noise, timeout/DISARM actual stop and powered encoder false counts/noise.
-18. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
-19. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
-20. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.
-20. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.
+2. Read `docs/progress/2026-08-03_progress.md`, `docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md` and `docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md` before continuing UART work.
+3. Keep MDD10A/battery power OFF and both boards disconnected when unattended until the ESP32 safe `0U` image is reflashed. If both boards are USB-powered, never connect their 5 V/VBUS/VIN rails.
+4. Preserve the KiCad `RevA DRAFT` verified/TBD boundary. Do not connect XL4015 #1 candidate output to either MCU before the USB backfeed policy is decided.
+5. Preserve the validated UART baseline: ESP32 `GPIO17 TX` / `GPIO18 RX`, STM32 `PA10 RX` / `PA9 TX`, common GND, 115200 8N1.
+6. Preserve the encoder conditioning, TIM3/TIM5 firmware, modular-delta module and dated raw-log evidence; raw A/B direct STM32 connection is prohibited.
+7. Preserve the 2026-07-29 timeout/DISARM and 2026-07-30 software fault output-zero/latch functional PASS evidence. Do not treat them as exact shutdown-latency, Physical E-stop or motor-stop proof. Keep all temporary STM32 hooks at `0U`.
+8. Preserve the completed STM32 safe source flash/run and no-output regression. ESP32 source is `BRIDGE_SCRIPTED_TEST_ENABLED 0U`, but the last ESP32 board image may still be the controlled-test `1U` image.
+9. Implement the response-gated ESP32 startup sequence: 500 ms settle, newline boundary sync, `DISARM,seq=1` with matching ACK and bounded retry, then `PING,seq=2` with matching PONG and bounded retry. Block ARM/CMD until READY.
+10. With motor power OFF, rerun the normal safety sequence and preserve the raw log.
+11. While DISARMED, inject malformed PING, field-order-invalid CMD and unknown frame, then prove fail-closed rejection and recovery with a final valid PING/PONG.
+12. Restore `BRIDGE_SCRIPTED_TEST_ENABLED 0U`, run contract tests and clean builds, then reflash/run the ESP32 safe image. After any CubeMX regeneration, confirm TIM5 init remains present.
+13. Preserve A=right/TIM5, B=left/TIM3 and forward-positive production `left_cps/right_cps` as the encoder-side vehicle mapping regression baseline; USART2 `ENC3/ENC5` remains raw-sign diagnostics. Verify MDD10A powered channel-to-side mapping separately.
+14. Preserve the 50-revolution `1560 counts/output rev` evidence and mRPM regression baseline; separately validate absolute RPM with an external tachometer and measure the sprocket/track travel scale before wheel-speed conversion.
+15. Preserve the 2026-08-03 actual `20.1005 kHz`/about `10.05%` PWM and direction pre/post zero `>= 1 ms` evidence as a passed sub-gate; do not repeat it unless firmware, timer configuration or wiring changes.
+16. With the motor disconnected and output limited to 10%, capture active `DISARM` frame-completion to PB6/PB7 last-active-edge shutdown latency.
+17. Under the same limit, capture last valid CMD completion through configured command timeout to PB6/PB7 last-active-edge shutdown latency.
+18. Capture software-fault event-to-PWM-zero latency with a dedicated marker or debounced event, recording button debounce separately from firmware latency.
+19. Capture PB6/PC8/PB7/PC9 boot no-output with an external STM32 reset reference marker; the safe STM32 image itself is already flashed and run.
+20. Close board power/back-power prerequisites, then execute `T-ESTOP-001~006`: NC hardware motor-energy cut and 3.3 V auxiliary sense remain separate, release never auto-rearms, and continuity/sense/latch/reset-reject/no-auto-restart/motor-disconnected timing must pass.
+21. Only after actions 16~20 pass, run the first lifted/no-load actual motor test at 5~10% and record current, heat, smell, noise, timeout/DISARM actual stop and powered encoder false counts/noise.
+22. Perform a schematic-to-hardware continuity review before permanent perfboard or harness construction.
+23. Read `08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md` before continuing the plate order.
+24. Contact Multimaker about the server upload error and confirm material, kerf, minimum hole capability, tolerance, total quote and order ID.
+25. After delivery, run `02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md` before powered assembly.

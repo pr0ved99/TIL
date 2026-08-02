@@ -18,10 +18,11 @@ Overall motor safety gate PARTIAL
 - 10% 시험 명령에서 두 PWM의 high time은 5.000 µs, 계산 duty는 약 10.05%였다.
 - 두 채널 모두 방향 전환 전·후 PWM 비활성 구간이 1.0 ms 이상이었다.
 - 임시 B1 출력 시험 hook과 fault-injection hook은 source에서 다시 `0U`로 복구되었고, 복구된 STM32 source의 Debug build는 `0 errors / 0 warnings`로 성공했다.
+- 복구된 safe STM32 image를 보드에 다시 flash/run한 뒤 B1을 눌러도 `DIR1`, `PWM1`, `DIR2`, `PWM2`에 출력이 생기지 않는 hook-off regression을 확인했다.
 
 아직 검증되지 않은 사항:
 
-- 복구된 safe binary의 STM32 실기 flash 및 flash 후 최종 hook-off boot/runtime capture
+- 외부 reset marker와 함께 reset 순간부터 기록한 최종 hook-off boot capture
 - UART `DISARM`, command timeout, software fault 발생 시점부터 실제 PWM edge가 멈출 때까지의 latency
 - MDD10A 전력단에 전원을 인가한 상태의 출력과 실제 모터 정지
 - Physical E-stop
@@ -162,9 +163,9 @@ Evidence indexes:
 - STM32 [`main.c`](../../03_Firmware/stm32_uart_mvp/Core/Src/main.c): `MOTOR_FAULT_INJECTION_TEST_ENABLED 0U`
 - ESP32 [`hello_world_main.c`](../../03_Firmware/esp32_uart_bridge/main/hello_world_main.c): `BRIDGE_SCRIPTED_TEST_ENABLED 0U`
 
-복구된 STM32 source의 Debug build는 `0 errors / 0 warnings`로 성공했다. 그러나 이 복구 build를 STM32 보드에 물리적으로 flash하고, flash 후 B1이 output을 만들지 않는지와 boot/runtime output이 inactive인지 다시 캡처하는 단계는 아직 수행하지 않았다.
+복구된 STM32 source의 Debug build는 `0 errors / 0 warnings`로 성공했다. 이어서 safe image를 STM32 보드에 물리적으로 flash/run했고, B1을 눌러도 네 motor-control signal에 출력이 생기지 않는 것을 로직 분석기로 확인했다.
 
-따라서 source restore는 `PASS`, 최종 hook-off physical regression은 `PENDING`으로 구분한다.
+따라서 source restore와 safe-image physical no-output regression은 `PASS`다. 다만 당시 캡처에는 외부 reset marker가 없었으므로 reset edge부터의 전체 boot 구간을 독립적으로 입증하는 최종 capture는 `PENDING`으로 구분한다.
 
 ## Result
 
@@ -175,8 +176,9 @@ Evidence indexes:
 | PWM2 frequency / duty | PASS | 20.1005 kHz / 약 10.05% |
 | PWM1 direction settle | PASS | 1.994 ms / 2.03875 ms |
 | PWM2 direction settle | PASS | 1.54725 ms / 약 2.040 ms edge-to-edge |
-| Temporary hook source restore | PASS | STM32/ESP32 macro `0U`; STM32 restored-source build 성공 |
-| Post-restore STM32 flash and final capture | PENDING | Safe binary physical flash 미수행 |
+| Temporary hook source restore | PASS | STM32/ESP32 source macro `0U`; STM32 restored-source build 성공 |
+| Post-restore STM32 flash/run and B1 no-output regression | PASS | Safe image 실기 flash/run 후 로직 분석기에서 네 signal 무출력 확인 |
+| External-reset-marker final boot capture | PENDING | reset edge 기준 전체 boot 구간의 독립 증거가 없음 |
 | DISARM shutdown latency | NOT TESTED | UART reference와 PWM 동시 캡처 필요 |
 | Command-timeout shutdown latency | NOT TESTED | 마지막 valid CMD와 PWM 동시 캡처 필요 |
 | Software-fault latency / latch | NOT TESTED | fault marker와 PWM 동시 캡처 필요 |
@@ -195,10 +197,10 @@ Evidence indexes:
 
 ## Remaining Tests / Next Actions
 
-1. 복구된 safe STM32 binary를 실제 보드에 flash한다.
-2. B1을 눌러도 출력이 발생하지 않는지 확인하고 D0~D3 hook-off boot/runtime capture를 저장한다.
-3. PA10 UART RX 또는 dedicated marker를 추가해 `DISARM` frame과 PWM 종료 edge를 동시에 캡처한다.
-4. command timeout의 마지막 valid CMD와 PWM 종료 edge를 동시에 캡처한다.
-5. software fault injection event, PWM 종료, fault latch 유지 상태를 함께 캡처한다.
+1. PA10 UART RX 또는 dedicated marker를 추가해 `DISARM` frame과 PWM 종료 edge를 동시에 캡처한다.
+2. command timeout의 마지막 valid CMD와 PWM 종료 edge를 동시에 캡처한다.
+3. software fault injection event, PWM 종료, fault latch 유지 상태를 함께 캡처한다.
+4. 위 latency 측정을 마친 뒤 test hook을 다시 `0U`로 복구하고 STM32 safe image를 재flash한다.
+5. 외부 reset marker와 D0~D3를 함께 기록해 reset 순간부터의 최종 hook-off boot capture를 저장한다.
 6. 위 MCU-side 안전 시험과 최종 safe-image 회귀를 마친 뒤 MDD10A powered/no-motor active edge-latency를 재검증한다.
 7. Physical E-stop은 별도 회로와 acceptance criteria로 검증하고, 그 뒤 lifted/no-load actual-motor 시험으로 진행한다.

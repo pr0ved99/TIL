@@ -41,7 +41,7 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-03 | [`2026-08-03_progress.md`](2026-08-03_progress.md) | USART1 TX decode와 STM32 dual PWM/DIR 6-step 파형·방향 전환 여유시간 로직 분석기 검증; 시험 hook 기본 OFF 복구와 안전 빌드 PASS |
+| 2026-08-03 | [`2026-08-03_progress.md`](2026-08-03_progress.md) | USART1/PWM/DIR 로직 분석기 검증, safe STM32 runtime 복구와 strict-parser controlled normal sequence PASS; response-gated startup/malformed 회귀는 PARTIAL |
 | 2026-07-31 | [`2026-07-31_progress.md`](2026-07-31_progress.md) | Strict UART frame parser fail-closed/recovery board-only 시험과 startup PING/desynchronization 한계 확인 |
 | 2026-07-30 | [`2026-07-30_progress.md`](2026-07-30_progress.md) | 1560 counts/rev·mRPM, vehicle-frame sign, software fault latch 검증과 default-off 회귀; firmware safety contract 12/12 및 격리 STM32+ESP32 build PASS |
 | 2026-07-29 | [`2026-07-29_progress.md`](2026-07-29_progress.md) | Dual encoder modular delta/CPS와 production TEL -> ESP32 independent CW/CCW PASS, direction 6-step 회귀, timeout/DISARM LED shutdown, Plus 전환 인수인계 |

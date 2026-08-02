@@ -29,7 +29,7 @@ ESP32 USB Monitor
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. STM32가 parser, safety gate, timeout owner 역할을 유지하는 것도 실제 `ACK/ERR/TEL`로 확인했다. 다만 2026-07-31 strict-parser/RX-resync 변경 후 current firmware의 startup handshake와 malformed-frame board injection은 회귀 대기 상태이므로, historical PASS를 current release 전체 PASS로 확대하지 않는다.
+ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03에는 current strict parser에서 `500 ms settle -> LF -> 100 ms -> PING` preamble을 사용한 controlled normal sequence도 다시 PASS했다. 다만 응답 확인형 startup handshake와 malformed-frame board injection은 아직 남아 있으므로, current strict-parser release 전체 판정은 `PARTIAL`이다.
 
 2026-08-03 현재 부분 검증된 추가 범위:
 
@@ -59,6 +59,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 | [`05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | 전원·기구·모터·엔코더·주행까지 확장한 최종 MVP 요구사항과 V-model 추적 매트릭스 |
 | [`06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](06_Physical_EStop_Requirements_and_Verification_Plan_ko.md) | MCU와 독립적인 motor-energy 차단, fail-safe sense, latch/reset과 단계별 E-stop 검증 계획 |
 | [`07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md) | Logic analyzer로 확인한 boot inactive sampled interval, 양 채널 PWM frequency/duty와 direction settle 결과·한계 |
+| [`08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md) | Current strict parser의 controlled normal sequence PASS 결과와 startup/malformed 잔여 release gate |
 
 ## Evidence Files
 
@@ -69,6 +70,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 | Web Serial screenshots | [`../../assets/screenshots/uart_mvp`](../../assets/screenshots/uart_mvp) |
 | UART validation CSV | [`../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv`](../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv) |
 | ESP32-STM32 UART bridge screenshots | [`../../assets/screenshots/esp32_uart_bridge`](../../assets/screenshots/esp32_uart_bridge) |
+| ESP32-STM32 UART bridge raw logs | [`../../assets/logs/esp32_uart_bridge`](../../assets/logs/esp32_uart_bridge) |
 | Encoder calibration, CPS/mRPM and vehicle-sign evidence | [`../../assets/logs/encoder`](../../assets/logs/encoder) |
 | Motor-output fault evidence | [`../../assets/logs/motor_output`](../../assets/logs/motor_output) |
 | Logic-analyzer raw/session captures | [`../../assets/captures/logic_analyzer`](../../assets/captures/logic_analyzer) |
@@ -84,6 +86,8 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - Button output/fault test macro를 모두 `0U`로 복구한 뒤 B1 no-output regression PASS
 - D0=DIR1, D1=PWM1, D2=DIR2, D3=PWM2 실제 mapping에서 양 PWM 20.1005 kHz, high 5.00 us, 약 10.05% PASS
 - Direction-change PWM-zero interval은 CH1 pre/post 1.994/2.03875 ms, CH2 pre/post 1.54725/~2.040 ms로 모두 최소 1 ms PASS
+- Current strict parser의 controlled normal sequence는 startup `PING/PONG`, `NOT_ARMED`, ARM/CMD ACK, timeout-zero, `OUT_OF_RANGE`, final DISARMED까지 PASS
+- UART current release는 response-gated `DISARM/ACK -> PING/PONG` bounded-retry startup과 malformed-frame fail-closed/recovery injection이 남아 `PARTIAL`
 - Active shutdown edge latency, reset-marker를 포함한 final hook-off boot capture, physical E-stop과 motor-connected stop은 계속 `PARTIAL/NOT TESTED`
 - MDD10A powered channel 1/2와 실제 좌우 motor 대응은 아직 `PARTIAL`
 
@@ -97,7 +101,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - `DISARM` -> `ACK,type=DISARM`, `TEL,state=DISARMED`
 - evidence: [`screenshot`](../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png), [`raw log`](../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt)
 
-Current strict-parser release에서는 startup settle/newline synchronization/DISARM-ACK/PING retry-PONG과 malformed-frame hardware injection이 남아 있다. RX desync는 오염 frame을 버리고 다음 line boundary에서 복구하지만 즉시 motor stop을 실행하지 않으며, 현재 최대 500 ms command timeout이 fallback이다.
+2026-08-03 current strict-parser controlled run은 [`raw log`](../../assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt)와 [test report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)로 보존했다. 이 시험의 fixed-delay preamble은 startup reliability의 최종 구현이 아니다. Release gate에는 explicit `DISARM`의 matching ACK, bounded-retry `PING/PONG`, handshake 실패 시 ARM/CMD 차단과 malformed-frame hardware injection이 남아 있다. RX desync는 오염 frame을 버리고 다음 line boundary에서 복구하지만 즉시 motor stop을 실행하지 않으며, 현재 최대 500 ms command timeout이 fallback이다.
 
 2026-07-09 기준 PC-first UART MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -136,10 +140,13 @@ Current strict-parser release에서는 startup settle/newline synchronization/DI
 
 다음 단계 검증 순서:
 
-1. Active DISARM/timeout/software-fault event와 PWM edge를 함께 캡처해 실제 shutdown latency 계측
-2. 모든 temporary hook `0U` safe image를 board에 flash하고 reset marker 포함 boot no-output 회귀 캡처
-3. Physical E-stop architecture/component review 뒤 입력·latch·reset 구현 및 motor-disconnected 검증
-4. Board power/back-power와 fabricated plate fit 검증
-5. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
-6. Left/right drivetrain과 wheel travel/odometry 검증
-7. Final fault/stop acceptance와 traceability audit
+1. MDD10A/Battery power OFF에서 matching `DISARM ACK`와 bounded-retry `PING/PONG` startup state machine 검증
+2. Malformed PING/CMD/unknown frame의 fail-closed 거부와 마지막 정상 PING/PONG 복구 검증
+3. ESP test macro `0U`, contract test/clean build와 safe ESP32 image reflash/run
+4. Active DISARM/timeout/software-fault event와 PWM edge를 함께 캡처해 실제 shutdown latency 계측
+5. STM32 temporary hook `0U` 복구, tests/build/safe reflash와 external reset marker 포함 boot no-output 회귀 캡처
+6. Physical E-stop architecture/component review 뒤 입력·latch·reset 구현 및 motor-disconnected 검증
+7. Board power/back-power와 fabricated plate fit 검증
+8. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
+9. Left/right drivetrain과 wheel travel/odometry 검증
+10. Final fault/stop acceptance와 traceability audit

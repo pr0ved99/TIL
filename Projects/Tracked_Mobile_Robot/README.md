@@ -15,28 +15,30 @@ Last updated: 2026-08-03
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
 4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
 5. [`docs/progress/2026-08-03_progress.md`](docs/progress/2026-08-03_progress.md)
-6. [`docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
-7. [`02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
-8. [`docs/progress/2026-07-31_progress.md`](docs/progress/2026-07-31_progress.md)
-9. [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md)
-10. [`09_Electrical_Design/README.md`](09_Electrical_Design/README.md)
-11. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-12. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-13. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-14. [`docs/verification/README.md`](docs/verification/README.md)
-15. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
-16. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
+6. [`docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md`](docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md)
+7. [`docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
+8. [`docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
+9. [`02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
+10. [`docs/progress/2026-07-31_progress.md`](docs/progress/2026-07-31_progress.md)
+11. [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md)
+12. [`09_Electrical_Design/README.md`](09_Electrical_Design/README.md)
+13. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+14. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+15. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+16. [`docs/verification/README.md`](docs/verification/README.md)
+17. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+18. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
 
 현재 바로 이어갈 작업:
 
 ```text
-[PASS: 2026-07-20 baseline / CURRENT REGRESSION PENDING] ESP32-STM32 UART bridge and scripted command safety after strict-parser changes
+[PARTIAL: current controlled normal sequence PASS / response-gated startup and malformed recovery pending] ESP32-STM32 UART bridge after strict-parser changes
 [CONDITIONAL PASS] XL4015 #1/#2 bench load validation; final board-load wiring/back-power check pending
 [PARTIAL] STM32 motor output; dual 20.1005 kHz/~10.05% PWM and DIR pre/post zero >=1 ms PASS, active shutdown latency/reset-marked boot/E-stop pending
 [PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
--> CURRENT NEXT: STM32 safe baseline restore before any power -> active DISARM -> timeout -> software-fault latency -> all four hooks `0U` + both-board final safe reflash/reset-marked boot -> board power/back-power closure + Physical E-stop `T-ESTOP-001~006`
+-> CURRENT NEXT: motor/battery power OFF -> response-gated UART startup -> malformed recovery injection -> ESP32 safe `0U` reflash -> active DISARM/timeout/software-fault latency -> STM32 safe 복구와 reset-marked boot -> board power/back-power closure + Physical E-stop `T-ESTOP-001~006`
 -> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test
 ```
 
@@ -67,8 +69,8 @@ tracked chassis hole-pattern DWG import
 - `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-07-31 strict-parser/RX-resync 변경 후 current firmware는 `UART settle -> newline sync -> explicit DISARM/ACK -> PING retry/PONG`과 malformed-frame board injection 회귀가 남아 있으며, RX desync 발생 시 즉시 motor stop 대신 최대 500 ms command timeout을 fallback으로 사용한다.
-- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 `PWM 0 -> 1 ms -> DIR -> 1 ms -> PWM` 기능 회귀와 timeout/DISARM LED all-off를, 2026-07-30에는 software fault 뒤 all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch를 확인했다. 2026-08-03 로직 분석기에서 두 PWM의 `20.1005 kHz`, duty 약 `10.05%`와 DIR 전후 PWM-zero `>=1 ms`를 확인했다. 네 시험 macro는 source에서 모두 `0U`이고 STM32 Debug build도 통과했지만, 임시 B1 image 후 safe STM32 runtime 복구, active shutdown latency 3종, 이후 STM32/ESP32 두 보드의 최종 safe reflash·reset-marked boot 회귀, Physical E-stop과 실제 motor stop은 남아 있다.
+- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03에는 current strict parser에서 `500 ms settle -> LF -> 100 ms -> PING` controlled preamble과 정상 safety sequence를 다시 통과했다. 원시 로그와 [시험 보고서](docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)를 보존했지만, production `DISARM/ACK -> PING/PONG` bounded-retry startup과 malformed-frame board injection은 남아 있어 current release 판정은 `PARTIAL`이다. RX desync 발생 시 즉시 motor stop 대신 최대 500 ms command timeout을 fallback으로 사용한다.
+- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 `PWM 0 -> 1 ms -> DIR -> 1 ms -> PWM` 기능 회귀와 timeout/DISARM LED all-off를, 2026-07-30에는 software fault 뒤 all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch를 확인했다. 2026-08-03 로직 분석기에서 두 PWM의 `20.1005 kHz`, duty 약 `10.05%`와 DIR 전후 PWM-zero `>=1 ms`를 확인했다. 네 시험 macro는 source에서 모두 `0U`이고 STM32 safe source의 flash/run과 no-output 회귀도 완료했다. Active shutdown latency 3종, 외부 reset marker를 포함한 boot capture, ESP32 safe `0U` image 재플래시, Physical E-stop과 실제 motor stop은 남아 있다.
 - MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. 2026-07-30 방향별 50회전 결과로 `1560 counts/output rev`를 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산도 PASS했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 forward-positive로 정규화했다. MDD10A powered channel-to-side mapping, powered-noise와 external tachometer/wheel-speed 검증은 남아 있다.
 - KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, BNO085, 실제 하네스·footprint는 TBD다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
@@ -97,6 +99,7 @@ tracked chassis hole-pattern DWG import
 - PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
 - PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
 - ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
+- Current strict-parser UART는 2026-08-03 controlled normal sequence를 통과했지만 response-gated startup handshake와 malformed-frame recovery가 남아 있어 release 상태는 `PARTIAL`이다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.

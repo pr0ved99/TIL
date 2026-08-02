@@ -633,7 +633,11 @@ class FirmwareContractTest(unittest.TestCase):
 
         app_main = compact_c(extract_function(self.source["esp_c"], "app_main"))
         self.assertIn(
-            "if(BRIDGE_SCRIPTED_TEST_ENABLED!=0U){bridge_uart_send_ping(1);}",
+            "if(BRIDGE_SCRIPTED_TEST_ENABLED!=0U){"
+            "vTaskDelay(pdMS_TO_TICKS(500));"
+            'uart_write_bytes(BRIDGE_UART_NUM,"\\n",1);'
+            "vTaskDelay(pdMS_TO_TICKS(100));"
+            "bridge_uart_send_ping(1);}",
             app_main,
         )
         self.assertIn(
