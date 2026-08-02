@@ -196,6 +196,8 @@ class FirmwareContractTest(unittest.TestCase):
             "tim_c": STM32_ROOT / "Core" / "Src" / "tim.c",
             "usart_c": STM32_ROOT / "Core" / "Src" / "usart.c",
             "motor_output_c": STM32_ROOT / "Core" / "Src" / "motor_output.c",
+            "parser_h": STM32_ROOT / "Core" / "Inc" / "uart_frame_parser.h",
+            "parser_c": STM32_ROOT / "Core" / "Src" / "uart_frame_parser.c",
             "protocol_c": STM32_ROOT / "Core" / "Src" / "uart_mvp_protocol.c",
             "esp_c": ESP32_ROOT / "main" / "hello_world_main.c",
         }
@@ -528,31 +530,68 @@ class FirmwareContractTest(unittest.TestCase):
         self.assertIn(output_hook, handle_cmd)
         self.assertLess(handle_cmd.index(not_armed), handle_cmd.index(output_hook))
 
-        handle_line = strip_c_comments(
+        handle_line = compact_c(
             extract_function(self.source["protocol_c"], "handle_line")
         )
-        self.assertRegex(
+        self.assertIn(
+            "parse_result=uart_frame_parse(line,line_len,&frame);",
             handle_line,
-            re.compile(
-                r'if\s*\(\s*strncmp\s*\(\s*line\s*,\s*"DISARM".*?\)\s*==\s*0\s*\)'
-                r"\s*\{.*?motor_output_stop_all\s*\(\s*\)\s*;.*?"
-                r"s_state\s*=\s*ROBOT_DISARMED\s*;.*?return\s*;",
-                re.DOTALL,
-            ),
         )
-        self.assertRegex(
+        self.assertIn(
+            "if(parse_result!=UART_FRAME_PARSE_OK){"
+            "send_err(frame.seq,uart_frame_type_name(frame.type),"
+            "parse_error_code(parse_result));return;}",
             handle_line,
-            re.compile(
-                r'if\s*\(\s*strncmp\s*\(\s*line\s*,\s*"ARM".*?\)\s*==\s*0\s*\)'
-                r"\s*\{.*?motor_output_stop_all\s*\(\s*\)\s*;.*?"
-                r"s_state\s*=\s*ROBOT_ARMED\s*;.*?return\s*;",
-                re.DOTALL,
-            ),
         )
+        self.assertIn(
+            "caseUART_FRAME_TYPE_DISARM:motor_output_stop_all();"
+            "s_vx_mmps=0;s_w_mradps=0;s_state=ROBOT_DISARMED;"
+            "s_last_seq=frame.seq;send_ack(frame.seq,\"DISARM\");return;",
+            handle_line,
+        )
+        self.assertIn(
+            "caseUART_FRAME_TYPE_ARM:motor_output_stop_all();"
+            "s_vx_mmps=0;s_w_mradps=0;s_state=ROBOT_ARMED;"
+            "s_last_seq=frame.seq;send_ack(frame.seq,\"ARM\");return;",
+            handle_line,
+        )
+
+        protocol_source = self.source["protocol_c"]
+        parser_source = self.source["parser_c"]
+        for forbidden in ("strtol", "strtoul", "strstr", "strncmp", "sscanf"):
+            with self.subTest(forbidden=forbidden):
+                self.assertNotIn(forbidden, protocol_source)
+                self.assertNotIn(forbidden, parser_source)
+
+        compact_parser = compact_c(parser_source)
+        parser_literals = (
+            'consume_literal(&cursor,",seq=")',
+            'consume_literal(&cursor,",vx_mmps=")',
+            'consume_literal(&cursor,",w_mradps=")',
+            'consume_literal(&cursor,",timeout_ms=")',
+        )
+        parser_offsets = [compact_parser.index(token) for token in parser_literals]
+        self.assertEqual(parser_offsets, sorted(parser_offsets))
+        for token in (
+            "parsed>(UINT32_MAX-digit)/10u",
+            "limit=2147483648u",
+            "if(magnitude==2147483648u)",
+            "if(cursor.position!=cursor.length){"
+            "returnUART_FRAME_PARSE_EXTRA_DATA;}",
+        ):
+            self.assertIn(token, compact_parser)
+
+        compact_protocol = compact_c(protocol_source)
+        self.assertIn("staticuint32_ts_last_seq;", compact_protocol)
 
         process = compact_c(
             extract_function(self.source["protocol_c"], "uart_mvp_process")
         )
+        self.assertIn(
+            "if(s_line_len>0u&&s_line[s_line_len-1u]=='\\r'){s_line_len--;}",
+            process,
+        )
+        self.assertNotIn("if(byte=='\\r'){continue;}", process)
         timeout_guard = (
             "if(s_state==ROBOT_ARMED&&"
             "(HAL_GetTick()-s_last_cmd_ms)>=s_cmd_timeout_ms)"

@@ -12,7 +12,7 @@
 요구사항 -> 설계/인터페이스 -> 구현 -> 시험 -> 증거 -> 판정 -> 다음 조치
 ```
 
-기준일: 2026-07-30
+기준일: 2026-08-03
 
 ## 판정 용어
 
@@ -65,8 +65,8 @@
 
 | ID | 수용 기준 | 우선순위 | 현재 상태 |
 | --- | --- | --- | --- |
-| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PASS` |
-| `MVP-002` | ESP32 또는 PC가 동일한 protocol의 command source로 동작한다. | MUST | `PASS` |
+| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` — historical PASS, current strict-parser board regression pending |
+| `MVP-002` | ESP32 또는 PC가 동일한 protocol의 command source로 동작한다. | MUST | `PARTIAL` — historical PASS, current strict-parser board regression pending |
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PLANNED` |
@@ -81,7 +81,7 @@
 
 `MVP-003`의 현재 `PARTIAL`에는 2026-07-26 battery 12.36 V, MDD10A input 12.35 V powered/no-motor power check `PASS`가 포함된다. 실제 board power/back-power와 low-voltage stop policy는 아직 남아 있다.
 
-`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero, 실제 PWM/DIR 핀의 boot/idle/test-disabled zero, powered/no-motor MDD10A LED 수준의 active timeout/DISARM functional all-off와 software fault-injection 뒤 네 output pin의 정적 0 V/latch가 검증됐다는 뜻이다. Actual PWM transition waveform와 shutdown latency, physical E-stop과 motor-connected stop 검증은 아직 남아 있다.
+`MVP-009`의 현재 `PARTIAL`은 command 변수의 timeout-zero, PWM/DIR의 sampled initial inactive interval, powered/no-motor MDD10A LED 수준의 active timeout/DISARM functional all-off와 software fault-injection 뒤 네 output pin의 정적 0 V/latch가 검증됐다는 뜻이다. Actual 20.1005 kHz/약 10.05% PWM과 direction-change 양쪽 zero interval도 통과했다. 그러나 reset marker를 포함한 hook-off boot capture, active DISARM/timeout/fault shutdown edge latency, physical E-stop과 motor-connected stop은 아직 남아 있다.
 
 ## 하위 요구사항
 
@@ -91,9 +91,9 @@
 
 | 범위 | 요구사항 | 상태 | 근거 |
 | --- | --- | --- | --- |
-| UART | `REQ-UART-001` ~ `REQ-UART-004` | `PASS` | PC-first UART verification matrix와 2026-07-09 report |
-| Command safety | `REQ-SAFE-001` ~ `REQ-SAFE-007` | `PASS` | NOT_ARMED, ARM, valid CMD, range error, timeout-zero, DISARM |
-| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `PASS` | 2026-07-20 scripted bridge log와 screenshot |
+| UART | `REQ-UART-001` ~ `REQ-UART-004` | `HISTORICAL PASS / CURRENT REGRESSION PENDING` | 2026-07-09 PC-first baseline; strict-parser current build는 board 회귀 대기 |
+| Command safety | `REQ-SAFE-001` ~ `REQ-SAFE-007` | `HISTORICAL PASS / CURRENT REGRESSION PENDING` | NOT_ARMED, ARM, valid CMD, range error, timeout-zero, DISARM baseline; malformed/desync current-board 회귀 대기 |
+| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `HISTORICAL PASS / CURRENT REGRESSION PENDING` | 2026-07-20 scripted bridge PASS; startup handshake 및 strict-parser board 회귀 대기 |
 
 ### 전원
 
@@ -122,16 +122,16 @@
 | --- | --- | --- | --- |
 | `REQ-MOTOR-001` | STM32는 MDD10A channel 1/2별 PWM과 DIR을 생성하고 MCU-to-driver routing을 문서화해야 한다. | MUST | `PASS` |
 | `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PARTIAL` |
-| `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PARTIAL` |
+| `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PASS` |
 | `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `CONDITIONAL PASS` |
 | `REQ-MOTOR-005` | 한쪽 모터 no-load에서 전진·후진, timeout/DISARM stop, 전류·열·소음 관찰이 모두 통과해야 한다. | MUST | `PLANNED` |
 
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 
 - `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3로 확인했지만 MDD10A channel 1/2와 물리 motor side의 powered 연결은 첫 motor 시험에서 최종 확인한다.
-- `REQ-MOTOR-002 PARTIAL`: boot/idle/test-disabled zero, motor-disconnected 10% bench hook의 timeout/DISARM MDD10A LED all-off와 software fault 뒤 `PB6/PB7/PC8/PC9=0 V` 및 reset 전 latch는 확인했다. Actual transition waveform, 정확한 shutdown latency, physical E-stop과 실제 motor stop은 미검증이다.
-- `REQ-MOTOR-003 PARTIAL`: 현재 코드는 `PWM 0 -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 2026-07-29 powered/no-motor 6-step LED 기능 회귀시험은 통과했지만 실제 PWM-zero 구간, 두 1 ms 간격과 PWM 파형을 계측하지 않았다.
-- `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw test는 10% 제한으로 완료했고 매크로를 `0U`로 복귀했다. 정확한 duty 파형과 실제 motor 단계의 제한 해제 조건은 남아 있다.
+- `REQ-MOTOR-002 PARTIAL`: motor-disconnected sampled initial inactive interval, timeout/DISARM MDD10A LED all-off와 software fault 뒤 `PB6/PB7/PC8/PC9=0 V` 및 reset 전 latch는 확인했다. Reset marker를 포함한 hook-off boot capture, active event-to-PWM-zero latency, physical E-stop과 실제 motor stop은 미검증이다.
+- `REQ-MOTOR-003 PASS`: 현재 코드는 `PWM 0 -> 최소 1 ms PWM-zero settle -> DIR -> 최소 1 ms post-DIR settle -> PWM` 순서다. 2026-08-03 actual capture에서 CH1 pre/post `1.994/2.03875 ms`, CH2 pre/post `1.54725/~2.040 ms`로 모두 최소 1 ms를 만족했다.
+- `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw test는 양 채널 20.1005 kHz, high 5.00 us, 약 10.05%로 계측됐고 매크로를 `0U`로 복귀했다. 실제 motor 단계의 제한 해제 조건과 current/thermal gate는 남아 있다.
 
 ### Physical E-stop
 
@@ -197,16 +197,16 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 
 | Requirement | 설계/인터페이스 정본 | 구현 대상 | Test ID / 절차 | 증거 | 결과 |
 | --- | --- | --- | --- | --- | --- |
-| `REQ-UART-001~004` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, PC tools | `T-COM-001` PC-first UART MVP | CSV, screenshots, test report | `PASS` |
-| `REQ-SAFE-001~007` | `16_Control_Loop_and_State_Machine_ko.md` | parser, safety state, timeout | `T-SAFE-001` scripted UART safety sequence | PC CSV, ESP32 raw log/screenshot | `PASS` |
-| `MVP-002` ESP32 source | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | 2026-07-20 raw log/screenshot | `PASS` |
+| `REQ-UART-001~004` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, PC tools | `T-COM-001` PC-first UART MVP | 2026-07-09 CSV/screenshots/report; current strict-parser board regression TBD | `PARTIAL` |
+| `REQ-SAFE-001~007` | `16_Control_Loop_and_State_Machine_ko.md` | parser, safety state, timeout | `T-SAFE-001` scripted UART safety sequence | Historical PC/ESP32 evidence; malformed/desync board injection TBD | `PARTIAL` |
+| `MVP-002` ESP32 source | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | 2026-07-20 raw log/screenshot; current startup handshake regression TBD | `PARTIAL` |
 | `REQ-POWER-001` | `12_Power_Distribution_and_Safety_Architecture_ko.md` | fuse/switch harness | `T-PWR-001` power bring-up | DMM log, wiring photos | `PASS` |
 | `REQ-POWER-002` | power architecture | XL4015 #1/#2 | `T-PWR-002` buck load test | calibration log, load photos | `CONDITIONAL PASS` |
 | `REQ-POWER-003` | power architecture | final board power harness | `T-PWR-003` USB/buck back-power check | TBD | `PLANNED` |
 | `REQ-POWER-004` | fault model | alarm/ADC and stop policy | `T-PWR-004` low-voltage behavior | TBD | `PLANNED` |
 | `REQ-MECH-001` | adapter layout, Rev A preflight | Rev A release | `T-MECH-001` 1:1/vector preflight | release hashes, PDF analysis, user comparison | `PASS` |
 | `REQ-MECH-002~003` | adapter layout | fabricated plate and spacers | `T-MECH-002` adapter fit check | measurements, assembly photos | `BLOCKED` |
-| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [waveform/shutdown timing plan](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), [fault output-zero/latch evidence](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md), [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
+| `REQ-MOTOR-001~004` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [waveform/shutdown timing procedure](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md), [2026-08-03 logic-analyzer report](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md), [raw captures](../../assets/captures/logic_analyzer/README.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), [fault output-zero/latch evidence](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md), [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md) | `PARTIAL` |
 | `REQ-MOTOR-005` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | video, current/heat log | `PLANNED` |
 | `MVP-013`, `REQ-ESTOP-001~010` | [`21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md) | NC power disconnect, auxiliary sense, safety latch/reset | `T-ESTOP-001~007` staged E-stop verification | Datasheet/schematic/ERC, DMM, UART log, timing capture, stop video/table | `PLANNED/BLOCKED` |
 | `REQ-ENC-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
@@ -221,8 +221,8 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 
 | 순서 | Test ID | 시험 | 선행 조건 | 상태 |
 | --- | --- | --- | --- | --- |
-| 1 | `T-COM-001` | PC-first UART MVP | STM32 UART firmware | `PASS` |
-| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `PASS` |
+| 1 | `T-COM-001` | PC-first UART MVP | STM32 UART firmware | `HISTORICAL PASS / CURRENT REGRESSION PENDING` |
+| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `HISTORICAL PASS / CURRENT REGRESSION PENDING` |
 | 3 | `T-PWR-001` | fused/switched power path | 무전원 검사 | `PASS` |
 | 4 | `T-PWR-002` | XL4015 bench load | `T-PWR-001` | `CONDITIONAL PASS` |
 | 5 | `T-MECH-001` | Rev A 1:1/vector preflight | CAD release | `PASS` |
@@ -240,7 +240,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | 17 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
 | 18 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
 
-`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED, direction functional regression, motor-disconnected active timeout/DISARM LED shutdown과 software fault output-zero/latch 범위는 통과했다. 정확한 PWM 파형, direction timing과 shutdown latency, physical E-stop이 남아 있어 전체 Test ID는 `PARTIAL`이다. 2026-07-29 safety evidence는 [`../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md`](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), 2026-07-30 fault evidence는 [`../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md`](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md)에 있다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count, modular delta/counts/s, 50회전 `1560 counts/output rev`, mRPM 계산, production `TEL` -> ESP32 parse와 encoder-side vehicle/forward-positive sign subtest는 통과했지만 external tachometer/wheel-speed calibration과 powered-motor noise가 남아 있어 전체 Test ID는 `PARTIAL`이다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
+`T-MOTOR-001`과 `T-MOTOR-002`의 정적/DMM/LED, 20.1005 kHz/약 10.05% actual PWM, direction pre/post zero ≥1 ms, motor-disconnected active timeout/DISARM LED shutdown과 software fault output-zero/latch 범위는 통과했다. Active shutdown edge latency, reset-marker를 포함한 final hook-off boot capture와 physical E-stop이 남아 있어 전체 Test ID는 `PARTIAL`이다. 2026-08-03 waveform evidence는 [`07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md), 2026-07-29 safety evidence는 [`../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md`](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), 2026-07-30 fault evidence는 [`../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md`](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md)에 있다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count, modular delta/counts/s, 50회전 `1560 counts/output rev`, mRPM 계산, production `TEL` -> ESP32 parse와 encoder-side vehicle/forward-positive sign subtest는 통과했지만 external tachometer/wheel-speed calibration과 powered-motor noise가 남아 있어 전체 Test ID는 `PARTIAL`이다. 실제 powered motor 회전은 관련 선행 gate가 모두 통과한 뒤에만 한다.
 
 ## 최종 인수 규칙
 

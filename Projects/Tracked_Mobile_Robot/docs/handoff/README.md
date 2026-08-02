@@ -10,14 +10,15 @@
 2. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 3. [`../../AGENTS.md`](../../AGENTS.md)
 4. [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)
-5. [`../progress/2026-07-30_progress.md`](../progress/2026-07-30_progress.md)
-6. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
-7. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
-8. [`../progress/2026-07-27_progress.md`](../progress/2026-07-27_progress.md)
-9. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-10. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-11. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-12. [`../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+5. [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md)
+6. [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
+7. [`../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
+8. [`../progress/2026-07-31_progress.md`](../progress/2026-07-31_progress.md)
+9. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
+10. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
+11. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+12. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+13. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -27,6 +28,9 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
+| 2026-08-03 | [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md) | USART1 decode, dual 20.1005 kHz PWM/duty와 direction-settle logic-analyzer PASS; safe source/build와 남은 보드 reflash·shutdown-latency gate |
+| 2026-08-03 | [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md) | Raw capture에 연결된 PWM/DIR 측정 보고서, 계측 범위와 안전 gate 판정 |
+| 2026-07-31 | [`../progress/2026-07-31_progress.md`](../progress/2026-07-31_progress.md) | Strict UART parser fail-closed/recovery와 startup PING/desynchronization 한계 |
 | 2026-07-30 | [`../progress/2026-07-30_progress.md`](../progress/2026-07-30_progress.md) | 50회전 `1560 counts/output rev` 확정과 signed CPS-to-mRPM self-test·dynamic log PASS; next physical sign/powered-noise/safety gates |
 | 2026-07-29 | [`../progress/2026-07-29_progress.md`](../progress/2026-07-29_progress.md) | Dual encoder production TEL -> ESP32 CW/CCW PASS, direction regression와 active timeout/DISARM LED functional PASS; next physical sign/powered-noise/safety gates |
 | 2026-07-29 | [`2026-07-29_codex_plus_transition_handoff.md`](2026-07-29_codex_plus_transition_handoff.md) | Pro 종료 후 Plus용 Codex 설정, 사용량 절약 규칙, smoke test와 rollback 절차 |

@@ -2,11 +2,10 @@
 
 #include "motor_output.h"
 #include "ring_buffer.h"
+#include "uart_frame_parser.h"
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 #define CMD_TIMEOUT_DEFAULT_MS 300u
 #define CMD_TIMEOUT_MIN_MS      50u
@@ -17,7 +16,8 @@
 #define W_MIN_MRADPS -500
 #define W_MAX_MRADPS  500
 
-#define UART_LINE_MAX 128u
+#define UART_FRAME_MAX_LEN    127u
+#define UART_LINE_BUFFER_SIZE (UART_FRAME_MAX_LEN + 2u)
 #define TEL_PERIOD_MS 100u
 
 #define UART_MVP_OUTPUT_TEST_ENABLED       0U
@@ -33,12 +33,14 @@ static UART_HandleTypeDef *s_uart;
 static uint8_t s_rx_byte;
 static ring_buffer_t s_rx_rb;
 
-static char s_line[UART_LINE_MAX];
+static char s_line[UART_LINE_BUFFER_SIZE];
 static uint16_t s_line_len;
 static uint8_t s_line_overflow;
+static volatile uint8_t s_rx_desync_pending;
+static uint8_t s_rx_discard_until_lf;
 
 static robot_state_t s_state = ROBOT_DISARMED;
-static int32_t s_last_seq;
+static uint32_t s_last_seq;
 static int32_t s_vx_mmps;
 static int32_t s_w_mradps;
 static uint32_t s_cmd_timeout_ms;
@@ -85,88 +87,32 @@ static void uart_sendf(const char *fmt, ...){
     HAL_UART_Transmit(s_uart, (uint8_t *)tx, (uint16_t)len, 100);
 }
 
-static int parse_seq(const char *line, int32_t *seq){
-    const char *p;
-
-    if(line == NULL || seq == NULL){
-        return 0;
-    }
-
-    p = strstr(line, "seq=");
-    if(p == NULL){
-        return 0;
-    }
-
-    p += 4;
-
-    *seq = (int32_t)strtol(p, NULL, 10);
-
-    return 1;
-}
-
-static int parse_i32_field(const char *line, const char *key, int32_t *value){
-    const char *p;
-
-    if(line == NULL || key == NULL || value == NULL){
-        return 0;
-    }
-
-    p = strstr(line, key);
-    if(p == NULL){
-        return 0;
-    }
-
-    p += strlen(key);
-
-    *value = (int32_t)strtol(p, NULL, 10);
-
-    return 1;
-}
-
-static int parse_u32_field(const char *line, const char *key, uint32_t *value){
-    const char *p;
-
-    if(line == NULL || key == NULL || value == NULL){
-        return 0;
-    }
-
-    p = strstr(line, key);
-    if(p == NULL){
-        return 0;
-    }
-
-    p += strlen(key);
-
-    *value = (uint32_t)strtoul(p, NULL, 10);
-    return 1;
-}
-
-static void send_ack(int32_t seq, const char *type){
-    uart_sendf("ACK,seq=%ld,type=%s,t_ms=%lu\n",
-                (long)seq,
+static void send_ack(uint32_t seq, const char *type){
+    uart_sendf("ACK,seq=%lu,type=%s,t_ms=%lu\n",
+                (unsigned long)seq,
                 type,
                 (unsigned long)HAL_GetTick());
 }
 
-static void send_err(int32_t seq, const char *type, const char *code){
+static void send_err(uint32_t seq, const char *type, const char *code){
     s_error_count++;
 
-    uart_sendf("ERR,seq=%ld,type=%s,code=%s,t_ms=%lu\n",
-                (long)seq,
+    uart_sendf("ERR,seq=%lu,type=%s,code=%s,t_ms=%lu\n",
+                (unsigned long)seq,
                 type,
                 code,
                 (unsigned long)HAL_GetTick());
 }
 
 static void send_tel(void){
-    uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%ld,"
+    uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%lu,"
                "vx_mmps=%ld,w_mradps=%ld,"
                "left_pwm=0,right_pwm=0,"
                "left_cps=%ld,right_cps=%ld,"
                "batt_mv=0,drop=%lu,err=%lu\n",
                (unsigned long)HAL_GetTick(),
                state_name(s_state),
-               (long)s_last_seq,
+               (unsigned long)s_last_seq,
                (long)s_vx_mmps,
                (long)s_w_mradps,
                (long)s_left_cps,
@@ -175,42 +121,66 @@ static void send_tel(void){
                (unsigned long)s_error_count);
 }
 
-static void handle_cmd(const char *line){
-    int32_t seq = 0;
-    int32_t vx_mmps = 0;
-    int32_t w_mradps = 0;
-    uint32_t timeout_ms = 0u;
+static const char *parse_error_code(uart_frame_parse_result_t result){
+    switch(result){
+        case UART_FRAME_PARSE_MISSING_SEQ:
+        case UART_FRAME_PARSE_INVALID_SEQ:
+            return "MISSING_SEQ";
 
-    if(!parse_seq(line, &seq)){
-        send_err(0, "CMD", "MISSING_SEQ");
+        case UART_FRAME_PARSE_MISSING_FIELD:
+        case UART_FRAME_PARSE_BAD_FIELD_ORDER:
+        case UART_FRAME_PARSE_INVALID_NUMBER:
+        case UART_FRAME_PARSE_EXTRA_DATA:
+            return "MISSING_FIELD";
+
+        case UART_FRAME_PARSE_VELOCITY_OUT_OF_RANGE:
+            return "OUT_OF_RANGE";
+
+        case UART_FRAME_PARSE_TIMEOUT_OUT_OF_RANGE:
+            return "TIMEOUT_OUT_OF_RANGE";
+
+        case UART_FRAME_PARSE_NULL_ARGUMENT:
+        case UART_FRAME_PARSE_EMPTY:
+        case UART_FRAME_PARSE_BAD_TYPE:
+        case UART_FRAME_PARSE_OK:
+        default:
+            return "BAD_TYPE";
+    }
+}
+
+static void begin_rx_resynchronization(void){
+    uint32_t primask = __get_PRIMASK();
+
+    __disable_irq();
+    s_rx_desync_pending = 0u;
+    ring_buffer_discard_all(&s_rx_rb);
+    __set_PRIMASK(primask);
+
+    s_line_len = 0u;
+    s_line_overflow = 0u;
+    s_rx_discard_until_lf = 1u;
+}
+
+static void handle_cmd(const uart_frame_t *frame){
+    if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
+       frame->w_mradps < W_MIN_MRADPS || frame->w_mradps > W_MAX_MRADPS){
+        send_err(frame->seq, "CMD", "OUT_OF_RANGE");
         return;
     }
 
-    if(!parse_i32_field(line, "vx_mmps=", &vx_mmps) ||
-       !parse_i32_field(line, "w_mradps=", &w_mradps) ||
-       !parse_u32_field(line, "timeout_ms=", &timeout_ms)){
-        send_err(seq, "CMD", "MISSING_FIELD");
-        return;
-    }
-
-    if(vx_mmps < VX_MIN_MMPS || vx_mmps > VX_MAX_MMPS ||
-       w_mradps < W_MIN_MRADPS || w_mradps > W_MAX_MRADPS){
-        send_err(seq, "CMD", "OUT_OF_RANGE");
-        return;
-    }
-
-    if(timeout_ms < CMD_TIMEOUT_MIN_MS || timeout_ms > CMD_TIMEOUT_MAX_MS){
-        send_err(seq, "CMD", "TIMEOUT_OUT_OF_RANGE");
+    if(frame->timeout_ms < CMD_TIMEOUT_MIN_MS ||
+       frame->timeout_ms > CMD_TIMEOUT_MAX_MS){
+        send_err(frame->seq, "CMD", "TIMEOUT_OUT_OF_RANGE");
         return;
     }
 
     if(s_state != ROBOT_ARMED){
-        send_err(seq, "CMD", "NOT_ARMED");
+        send_err(frame->seq, "CMD", "NOT_ARMED");
         return;
     }
 
     if(UART_MVP_OUTPUT_TEST_ENABLED != 0U){
-        if((vx_mmps == 50) && (w_mradps == 0)){
+        if((frame->vx_mmps == 50) && (frame->w_mradps == 0)){
             if(motor_output_set_raw(
                 UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,
                 GPIO_PIN_RESET,
@@ -218,7 +188,7 @@ static void handle_cmd(const char *line){
                 GPIO_PIN_RESET
             ) != HAL_OK){
                 motor_output_stop_all();
-                send_err(seq, "CMD", "MOTOR_OUTPUT_FAILED");
+                send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
                 return;
             }
         }
@@ -227,71 +197,64 @@ static void handle_cmd(const char *line){
         }
     }
 
-    s_last_seq = seq;
-    s_vx_mmps = vx_mmps;
-    s_w_mradps = w_mradps;
-    s_cmd_timeout_ms = timeout_ms;
+    s_last_seq = frame->seq;
+    s_vx_mmps = frame->vx_mmps;
+    s_w_mradps = frame->w_mradps;
+    s_cmd_timeout_ms = frame->timeout_ms;
     s_last_cmd_ms = HAL_GetTick();
 
-    send_ack(seq, "CMD");
+    send_ack(frame->seq, "CMD");
 }
 
-static void handle_line(const char *line){
-    int32_t seq = 0;
+static void handle_line(const char *line, size_t line_len){
+    uart_frame_t frame;
+    uart_frame_parse_result_t parse_result;
 
-    if(line == NULL){
+    parse_result = uart_frame_parse(line, line_len, &frame);
+    if(parse_result != UART_FRAME_PARSE_OK){
+        send_err(
+            frame.seq,
+            uart_frame_type_name(frame.type),
+            parse_error_code(parse_result)
+        );
         return;
     }
 
-    if(strncmp(line, "PING", 4) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "PING", "MISSING_SEQ");
-            return;
-        }
-
-        s_last_seq = seq;
-        uart_sendf("PONG,seq=%ld,t_ms=%lu\n",
-                    (long)seq,
+    switch(frame.type){
+        case UART_FRAME_TYPE_PING:
+            s_last_seq = frame.seq;
+            uart_sendf("PONG,seq=%lu,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
                     (unsigned long)HAL_GetTick());
-        return;
-    }
-
-    if(strncmp(line, "DISARM", 6) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "DISARM", "MISSING_SEQ");
             return;
-        }
 
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
-        s_state = ROBOT_DISARMED;
-        s_last_seq = seq;
-        send_ack(seq, "DISARM");
-        return;
-    }
-
-    if(strncmp(line, "ARM", 3) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "ARM", "MISSING_SEQ");
+        case UART_FRAME_TYPE_DISARM:
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            s_state = ROBOT_DISARMED;
+            s_last_seq = frame.seq;
+            send_ack(frame.seq, "DISARM");
             return;
-        }
 
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
-        s_state = ROBOT_ARMED;
-        s_last_seq = seq;
-        send_ack(seq, "ARM");
-        return;
+        case UART_FRAME_TYPE_ARM:
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            s_state = ROBOT_ARMED;
+            s_last_seq = frame.seq;
+            send_ack(frame.seq, "ARM");
+            return;
+
+        case UART_FRAME_TYPE_CMD:
+            handle_cmd(&frame);
+            return;
+
+        case UART_FRAME_TYPE_UNKNOWN:
+        default:
+            send_err(0u, "UNKNOWN", "BAD_TYPE");
+            return;
     }
-
-    if(strncmp(line, "CMD", 3) == 0){
-        handle_cmd(line);
-        return;
-    }
-
-    send_err(0, "UNKNOWN", "BAD_TYPE");
 }
 
 void uart_mvp_init(UART_HandleTypeDef *huart){
@@ -302,6 +265,8 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
 
     s_line_len = 0u;
     s_line_overflow = 0u;
+    s_rx_desync_pending = 0u;
+    s_rx_discard_until_lf = 0u;
 
     s_state = ROBOT_DISARMED;
     s_last_seq = 0;
@@ -338,6 +303,7 @@ void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart){
     }
     if(!ring_buffer_push(&s_rx_rb, s_rx_byte)){
         s_error_count++;
+        s_rx_desync_pending = 1u;
     }
     HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);
 }
@@ -348,6 +314,7 @@ void uart_mvp_on_uart_error(UART_HandleTypeDef *huart){
     }
 
     s_error_count++;
+    s_rx_desync_pending = 1u;
 
     HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);
 }
@@ -355,12 +322,35 @@ void uart_mvp_on_uart_error(UART_HandleTypeDef *huart){
 void uart_mvp_process(void){
     uint8_t byte;
 
-    while(ring_buffer_pop(&s_rx_rb, &byte)){
-        if(byte == '\r'){
+    for(;;){
+        if(s_rx_desync_pending != 0u){
+            begin_rx_resynchronization();
+        }
+
+        if(!ring_buffer_pop(&s_rx_rb, &byte)){
+            break;
+        }
+
+        if(s_rx_desync_pending != 0u){
+            begin_rx_resynchronization();
+            continue;
+        }
+
+        if(s_rx_discard_until_lf != 0u){
+            if(byte == '\n'){
+                s_rx_discard_until_lf = 0u;
+                uart_sendf("ERR,seq=0,type=RX,code=RX_DESYNC\n");
+            }
             continue;
         }
 
         if(byte == '\n'){
+            if(s_line_len > 0u && s_line[s_line_len - 1u] == '\r'){
+                s_line_len--;
+            }
+            if(s_line_len > UART_FRAME_MAX_LEN){
+                s_line_overflow = 1u;
+            }
             s_line[s_line_len] = '\0';
 
             if(s_line_overflow){
@@ -368,7 +358,7 @@ void uart_mvp_process(void){
                 uart_sendf("ERR,seq=0,type=RX,code=LINE_OVERFLOW\n");
             }
             else if(s_line_len > 0u){
-                handle_line(s_line);
+                handle_line(s_line, (size_t)s_line_len);
             }
 
             s_line_len = 0u;
@@ -376,7 +366,7 @@ void uart_mvp_process(void){
             continue;
         }
 
-        if(s_line_len < (UART_LINE_MAX - 1u)){
+        if(s_line_len < (UART_LINE_BUFFER_SIZE - 1u)){
             s_line[s_line_len] = (char)byte;
             s_line_len++;
         }

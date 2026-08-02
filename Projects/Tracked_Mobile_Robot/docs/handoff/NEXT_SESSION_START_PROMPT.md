@@ -11,24 +11,20 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 2. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
-5. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-30_progress.md
-6. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md
-7. Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md
-8. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-27_progress.md
-9. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md
-10. Projects/Tracked_Mobile_Robot/assets/logs/encoder/README.md
-11. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
-12. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
-13. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md
-14. Projects/Tracked_Mobile_Robot/08_Mechanical_Design/releases/revA/README.md
-15. Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md
-16. Projects/Tracked_Mobile_Robot/assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md
-17. Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md
-18. Projects/Tracked_Mobile_Robot/01_System_Architecture/21_Physical_EStop_Architecture_ko.md
-19. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
-20. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md
-21. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
-22. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
+5. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-03_progress.md
+6. Projects/Tracked_Mobile_Robot/docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md
+7. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md
+8. Projects/Tracked_Mobile_Robot/docs/progress/2026-07-31_progress.md
+9. Projects/Tracked_Mobile_Robot/docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md
+10. Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md
+11. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md
+12. Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/README.md
+13. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+14. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
+15. Projects/Tracked_Mobile_Robot/01_System_Architecture/21_Physical_EStop_Architecture_ko.md
+16. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
+17. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
+18. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
 
 현재 상태:
 
@@ -49,8 +45,11 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 NOT_ARMED, ARM/CMD ACK, OUT_OF_RANGE, DISARM ACK와 최종 DISARMED telemetry를 확인했다.
 - valid CMD 이후 약 300 ms 뒤 vx=0, w=0으로 복귀하는 STM32 timeout-zero를 확인했다.
 - bridge 최종 evidence는 assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png 와 assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt 이다.
-- ESP32-STM32 board-only UART bridge MVP는 완료됐다.
-- 2026-07-20 scripted sequence PASS는 historical controlled-bench evidence다. 현재 ESP32 source의 `BRIDGE_SCRIPTED_TEST_ENABLED`는 `0U`이며 정상 boot에서는 `PING/ARM/CMD/DISARM`을 자동 전송하지 않는다.
+- ESP32-STM32 board-only UART bridge의 2026-07-20 historical baseline은 완료됐다. Current strict-parser release 완료를 뜻하지 않는다.
+- 2026-07-20 scripted sequence PASS는 historical controlled-bench evidence다.
+- 2026-07-31 strict parser board-only 회귀에서 stale ARMED session, startup PING 유실과 ESP reset 중 UART desync를 관찰했다. Parser는 오염 frame을 fail-closed로 버리고 다음 frame부터 복구했으며, NOT_ARMED/ARM/valid CMD/timeout-zero/OUT_OF_RANGE/DISARM은 clean run에서 정상 동작했다.
+- Current firmware의 PING/PONG은 startup handshake를 보강한 뒤 다시 검증해야 한다. Immediate one-shot PING을 current PASS로 판정하지 않는다.
+- 현재 ESP32 source의 `BRIDGE_SCRIPTED_TEST_ENABLED`는 `0U`다. 2026-07-31 controlled bench 뒤 소스 기본값은 복구됐지만 startup handshake 회귀는 별도로 남아 있다.
 - STM32 `.ioc` init list는 `MX_TIM5_Init`를 명시적으로 보존한다.
 - 2026-07-30 laptop-only preflight에서 firmware safety contract `12/12`와 isolated STM32 Debug + ESP32-S3 clean build가 통과했다. 이 결과는 board flash/runtime 또는 전기 파형 검증이 아니다.
 - STM32 project는 Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp 이다.
@@ -59,10 +58,10 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - STM32 protocol path는 uart_mvp_init(&huart1) 사용과 실제 PING/PONG/TEL runtime을 확인했다.
 - STM32 motor bench mapping은 PB6/TIM4_CH1 -> PWM1, PC8 -> DIR1, PB7/TIM4_CH2 -> PWM2, PC9 -> DIR2, common GND다.
 - STM32 pin-only DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했고, 2026-07-29 direction-change 수정 뒤 같은 sequence와 final all-off를 재통과했다. Test macro는 다시 0U다.
-- 현재 motor-output source는 `PWM zero -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 기능 회귀는 통과했지만 실제 PWM 파형과 두 1 ms 간격은 미계측이다.
+- 현재 motor-output source는 `PWM zero -> 1 ms PWM-zero settle -> DIR -> 1 ms post-DIR settle -> PWM` 순서다. 2026-08-03 로직 분석기에서 두 PWM은 각각 약 `20.1005 kHz`, duty 약 `10.05%`였고, DIR 변경 전후 PWM-zero 간격은 채널별 모두 `1 ms` 이상으로 PASS했다.
 - 2026-07-29 motor-disconnected 10%-limited UART hook에서 active timeout과 별도 active `DISARM`이 MDD10A M1A/M2A LED를 all-off로 만드는 기능 시험을 통과했다. Hook은 `0U`로 복구했고 default scripted sequence 전체 all-off도 확인했다.
 - 2026-07-30 motor-disconnected software fault-injection에서 M1A/M2A limited active 뒤 `Error_Handler()`를 주입했다. All motor LEDs off, `PB6/PB7/PC8/PC9=0 V`, reset 전 B1 재활성화 차단을 확인했다. 두 test macro는 `0U`로 복구했고 B1 무출력을 재확인했다.
-- 위 PASS는 actual PWM transition 파형, 정확한 shutdown latency, physical E-stop, production velocity-to-PWM mapping 또는 실제 motor stop 증거가 아니다.
+- 2026-08-03 raw `.sr`/`.pvs`와 측정 screenshot은 STM32 핀 파형과 방향 전환 timing 증거다. Active DISARM/timeout/software-fault shutdown latency, physical E-stop, production velocity-to-PWM mapping과 실제 motor stop은 아직 증명하지 않는다.
 - 두 encoder motor는 MG540-A/B로 식별하며 encoder-side mapping은 MG540-A=motor A=vehicle right/TIM5, MG540-B=motor B=vehicle left/TIM3로 확정했다. MDD10A powered channel-to-side mapping은 아직 미확정이다.
 - MG540-A raw encoder A/B는 shaft 위치에 따라 약 0/5 V였다. Raw direct STM32 연결은 금지한다.
 - 최종 motor-off conditioning은 각 A/B에서 `1 kΩ series -> STM32 input node`, 그 node에서 `15 kΩ -> common GND`다. STM32 GND, encoder GND와 XL4015 OUT-를 공통으로 묶는다.
@@ -114,7 +113,7 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 - CubeMX 재생성 뒤 TIM5 init 보존 여부와 static contract test를 먼저 확인한다.
 - Raw encoder A/B를 STM32에 직접 연결하지 않는다. 제한 시험 조건은 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down`, common GND와 motor power disconnected다.
 - USART2 encoder 출력은 병행 검증용 bench logger이며 mRPM도 여기에서만 출력한다. 내부 count는 int64지만 newlib-nano `%lld` 제약 때문에 현재 짧은 bench log는 `(long)`/`%ld`를 사용한다. CPS는 production UART `TEL`에도 연결되어 ESP32 parser까지 PASS했다.
-- 실제 motor test 전에는 actual PB6/PB7 waveform/shutdown latency, exact PWM/direction timing과 physical E-stop gate를 확인한다. Timeout/DISARM와 software fault functional gate는 통과했다.
+- 실제 motor test 전에는 active DISARM/timeout/software-fault shutdown latency와 physical E-stop gate를 확인한다. PB6/PB7 PWM과 exact direction timing 하위 게이트는 2026-08-03 PASS했다.
 - XL4015 #1 candidate 5 V는 USB backfeed 정책이 확정되기 전 STM32/ESP32에 연결하지 않는다.
 - KiCad의 `FUNCTIONAL` connector block은 관련 신호를 묶은 표기이며 물리적으로 연속된 header를 뜻하지 않는다.
 - ERC PASS를 실물 배선, 전류 용량, noise, footprint 또는 제조 검증으로 확대 해석하지 않는다.
@@ -122,16 +121,20 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행한다.
 
 다음 목표:
 
-1. 완료된 UART bridge, dual encoder bench evidence와 KiCad RevA DRAFT baseline을 보존한다.
-2. Production `left_cps/right_cps`와 ESP32 parse raw evidence를 logical mapping 회귀 기준으로 보존한다.
-3. 50회전 `1560 counts/output rev`, encoder-side A=right/TIM5·B=left/TIM3 forward-positive mapping과 mRPM evidence를 보존한다. MDD10A powered channel-to-side mapping, external tachometer 및 sprocket/track travel은 별도 검증한다.
-4. 계측 장비가 준비되면 actual PB6/PB7 waveform, shutdown latency와 exact PWM/direction timing을 검증하고 physical E-stop 설계·시험을 닫는다.
-5. 남은 active-output safety gate를 통과한 뒤 first lifted/no-load motor test에서 encoder false count/noise와 input filter를 확인한다.
-6. 영구 만능기판·하네스는 KiCad schematic-to-hardware continuity review 후 조성한다.
-7. 멀티메이커에 서버 업로드 오류를 알리고 대체 제출 방법 또는 복구 여부를 확인한다.
-8. 아크릴 3T, 외곽 174 x 208.93379 mm, 지름 3.3 mm 홀, 1개 제작 조건으로 견적을 확인한다.
-9. 업로드가 복구되면 releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 로 주문하고 주문번호와 제작 조건을 기록한다.
-10. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 실물 fit을 검증한다.
+1. MDD10A/motor 전원을 인가하기 전에 현재 STM32 source의 `MOTOR_OUTPUT_PIN_TEST_ENABLED`, `MOTOR_FAULT_INJECTION_TEST_ENABLED`, `UART_MVP_OUTPUT_TEST_ENABLED`가 모두 `0U`인지 확인하고 flash/run한다. 이는 보드에 임시 B1 six-step image가 남아 있을 가능성에 대한 시작 전 안전 복구다.
+2. Motor-disconnected 10%-limited 조건에서 active `DISARM` frame 완료 -> PWM inactive 지연을 먼저 측정한다.
+3. 같은 조건에서 마지막 valid CMD -> command timeout -> PWM inactive 지연을 측정한다.
+4. Dedicated marker 또는 debounced event를 사용해 software-fault -> PWM inactive 지연을 측정하고 button debounce와 firmware latency를 분리한다.
+5. Controlled latency 시험 뒤 STM32의 세 test hook과 ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED`를 모두 `0U`로 복구한다. Contract test와 clean build 뒤 두 safe image를 각각 재플래시하고, 외부 reset marker를 포함한 PB6/PC8/PB7/PC9 all-inactive boot 회귀를 캡처한다.
+6. Board power/back-power 선행 조건을 닫고 Physical E-stop `T-ESTOP-001~006` continuity, 3.3 V sense, latch/reset-reject, no-auto-restart와 motor-disconnected timing을 통과시킨다.
+7. 남은 active-output safety gate를 통과한 뒤 first lifted/no-load motor test에서 MDD10A channel-to-side mapping, encoder false count/noise와 input filter를 확인한다.
+8. `UART settle -> newline synchronization -> explicit DISARM/ACK -> PING retry/PONG` startup handshake를 구현하고 motor-disconnected 상태에서 검증한다.
+9. Strict malformed-frame reject/recovery vector를 추가 보드 주입 증거와 함께 닫는다. 현재 contract test는 `14/14 PASS`지만 모든 malformed vector의 hardware injection을 뜻하지 않는다.
+10. 영구 만능기판·하네스는 KiCad schematic-to-hardware continuity review 후 조성한다.
+11. 멀티메이커에 서버 업로드 오류를 알리고 대체 제출 방법 또는 복구 여부를 확인한다.
+9. 아크릴 3T, 외곽 174 x 208.93379 mm, 지름 3.3 mm 홀, 1개 제작 조건으로 견적을 확인한다.
+10. 업로드가 복구되면 releases/revA/2026-07-24_adapter_plate_revA_multimaker_order.pdf 로 주문하고 주문번호와 제작 조건을 기록한다.
+11. 제작품 수령 후 02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md 절차로 실물 fit을 검증한다.
 
 완료된 UART bridge 단계는 문제가 재발하지 않는 한 다시 구현하지 말고 evidence만 참조한다.
 ```

@@ -68,13 +68,13 @@ Firmware보다 먼저 확인할 것:
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
 | Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
-| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`; direction 6-step, timeout/DISARM, software fault output-zero/latch와 final test-off PASS; actual PWM/two-settle/shutdown timing과 physical E-stop은 미검증 |
+| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`; direction 6-step, 20.1005 kHz/약 10.05% PWM, pre/post-DIR zero ≥1 ms, timeout/DISARM 기능, software fault output-zero/latch PASS; active shutdown edge latency와 physical E-stop은 미검증 |
 | Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 1560 counts/rev, CPS/mRPM, production TEL과 A=right/TIM5·B=left/TIM3 forward-positive PASS; powered-noise와 external RPM/wheel scale 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
 | Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
-| Motor output waveform/timing | Planned / Not tested | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; logic analyzer 도착 후 실행 |
+| Motor output waveform/timing | PARTIAL | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; 2026-08-03 boot inactive sampled interval, 양 채널 20.1005 kHz/약 10.05%, direction pre/post zero ≥1 ms PASS. DISARM/timeout/fault edge latency와 final safe-image flash 회귀는 pending |
 
 현재 실행 순서는 다음과 같다.
 
@@ -91,8 +91,9 @@ STM32 PWM/DIR safe output 구현 완료
 -> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
 -> A=right/TIM5, B=left/TIM3 encoder-side vehicle forward-positive sign PASS
 -> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
--> `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` 실행계획 작성
--> 계측 장비 확보 시 exact PWM/direction timing·active shutdown pin zero 확인
+-> logic analyzer D0=DIR1/D1=PWM1/D2=DIR2/D3=PWM2에서 initial inactive, 20.1005 kHz/약 10.05%, direction settle ≥1 ms PASS
+-> temporary motor-output hook 전부 `0U` 복구와 safe STM32 Debug build PASS; board flash/post-flash capture pending
+-> active DISARM/timeout/software-fault shutdown edge latency 확인
 -> physical E-stop gate 뒤 first motor no-load + powered encoder noise
 -> left/right drivetrain
 ```

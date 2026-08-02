@@ -12,7 +12,7 @@
 - boot/reset에서 unintended PWM pulse가 없는지
 - DISARM, command timeout, software fault의 actual shutdown timing
 
-이 문서는 계측 전 실행 계획이다. 측정값이 기록되기 전에는 `PASS`가 아니다.
+이 문서는 계측 절차와 2026-08-03 실행 결과를 함께 기록한다. 현재 파형·방향 전환 timing subtest는 통과했지만, active DISARM/timeout/software-fault shutdown latency와 physical E-stop은 아직 완료되지 않았다.
 
 ## Safety scope
 
@@ -50,28 +50,28 @@ Firmware source:
 
 ## Channel map
 
-권장 8-channel connection:
+2026-08-03 실제 캡처 connection:
 
 | Analyzer channel | STM32 signal | Purpose |
 | --- | --- | --- |
-| `CH0` | `PB6 / TIM4_CH1 / PWM1` | MDD10A channel 1 PWM |
-| `CH1` | `PC8 / DIR1` | MDD10A channel 1 direction |
-| `CH2` | `PB7 / TIM4_CH2 / PWM2` | MDD10A channel 2 PWM |
-| `CH3` | `PC9 / DIR2` | MDD10A channel 2 direction |
-| `CH4` | `PA10 / USART1_RX` | CMD/DISARM frame boundary decode |
-| `CH5` | `PC13 / B1` | Temporary button/fault-injection event reference |
-| `CH6` | Future `ESTOP_SENSE` | E-stop timing; pin TBD, do not connect yet |
-| `CH7` | Reserved test marker | Internal event marker if later required |
+| `D0` | `PC8 / DIR1` | MDD10A channel 1 direction |
+| `D1` | `PB6 / TIM4_CH1 / PWM1` | MDD10A channel 1 PWM |
+| `D2` | `PC9 / DIR2` | MDD10A channel 2 direction |
+| `D3` | `PB7 / TIM4_CH2 / PWM2` | MDD10A channel 2 PWM |
+| `D4` | Not connected | Reserved |
+| `D5` | Not connected | Reserved |
+| `D6` | Not connected | Future `ESTOP_SENSE`; pin TBD |
+| `D7` | Not connected | Reserved test marker |
 | Analyzer `GND` | STM32 GND | Sole digital capture reference |
 
-CH4/CH5는 해당 test에서 필요할 때만 연결한다. STM32 pin header 위치는 NUCLEO pin map과 CubeMX label을 함께 대조한다.
+향후 shutdown latency 시험에서는 빈 channel에 `PA10 / USART1_RX` 또는 dedicated marker를 추가한다. 저장된 PulseView session의 channel label은 `D0`~`D7`이므로 위 표와 evidence README를 canonical mapping으로 사용한다.
 
 ## Capture settings
 
 | Setting | Initial value |
 | --- | --- |
 | Software | PulseView / sigrok-compatible capture |
-| Sample rate | 12 MHz or 24 MHz recommended; minimum 2 MHz |
+| Sample rate | 12 MHz or 24 MHz recommended; minimum 2 MHz; 2026-08-03 actual 4 MHz |
 | Digital threshold | Device default compatible with 3.3 V logic |
 | Capture duration | Steady/direction: 100 ms 이상; timeout: command timeout + 500 ms 이상 |
 | UART decoder | 115200 baud, 8 data, no parity, 1 stop, idle high |
@@ -84,10 +84,12 @@ CH4/CH5는 해당 test에서 필요할 때만 연결한다. STM32 pin header 위
 각 capture는 다음 위치에 저장한다.
 
 ```text
-assets/logs/motor_output/YYYY-MM-DD_<test>_<result>.sr
-assets/logs/motor_output/YYYY-MM-DD_<test>_<result>.csv
-assets/logs/motor_output/YYYY-MM-DD_<test>_<result>.png
+assets/captures/logic_analyzer/YYYY-MM-DD_<test>_<result>.sr
+assets/captures/logic_analyzer/YYYY-MM-DD_<test>_<result>.pvs
+assets/screenshots/logic_analyzer/YYYY-MM-DD_<measurement>_<result>.png
 ```
+
+`.sr`은 raw sample, `.pvs`는 PulseView session 설정, `.png`는 판정에 사용한 view/cursor 증거다. 이번 interactive cursor 측정에서는 CSV를 필수 산출물로 만들지 않았다. 파일별 관계와 실제 channel map은 각 evidence 디렉터리의 `README.md`에 기록한다.
 
 각 evidence summary에는 다음을 기록한다.
 
@@ -274,22 +276,25 @@ Capture evidence를 저장하고 검토한 뒤 먼저 커밋한다. 그 다음 �
 
 | Test | Result | Evidence | Notes |
 | --- | --- | --- | --- |
-| Boot/reset no pulse | `NOT TESTED` | TBD | Logic analyzer pending |
-| CH1 20 kHz / 10% | `NOT TESTED` | TBD |  |
-| CH2 20 kHz / 10% | `NOT TESTED` | TBD |  |
-| CH1 direction settle | `NOT TESTED` | TBD |  |
-| CH2 direction settle | `NOT TESTED` | TBD |  |
+| Sampled initial inactive interval | `PASS — scoped` | [`PNG`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_boot_inactive_pass.png), [`SR/PVS`](../assets/captures/logic_analyzer/README.md) | D0~D3 transition 없음. 외부 reset marker가 없어 reset 순간 전체를 독립 입증한 결과로 확대하지 않음 |
+| CH1 20 kHz / 10% | `PASS` | [`period`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_period_20khz_pass.png), [`high time`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_high_time_5us_pass.png) | 49.75 us = 20.1005 kHz, high 5.00 us, duty 약 10.05% |
+| CH2 20 kHz / 10% | `PASS` | [`period`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_period_20khz_pass.png), [`high time`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_high_time_5us_pass.png) | 49.75 us = 20.1005 kHz, high 5.00 us, duty 약 10.05% |
+| CH1 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_post_dir_zero_ge1ms_pass.png) | 1.994 ms / 2.03875 ms, 모두 최소 1 ms 이상 |
+| CH2 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_post_dir_zero_ge1ms_pass.png) | 1.54725 ms / screenshot 약 2.05832 ms; raw edge review 약 2.040 ms, 모두 최소 1 ms 이상 |
 | DISARM latency | `NOT TESTED` | TBD | Numeric bound TBD after baseline |
 | Timeout latency | `NOT TESTED` | TBD | Safety-state semantics must match architecture |
 | Software fault latency/latch | `NOT TESTED` | TBD |  |
-| Final hook-off boot regression | `NOT TESTED` | TBD |  |
+| Final hook-off source/build regression | `PARTIAL` | Source macro audit and STM32 Debug build | 모든 temporary hook `0U`, 0 errors / 0 warnings build PASS. 이 safe image의 board flash와 post-flash capture는 pending |
+
+상세 수치, 판정 범위와 증거 연결은 [`../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)를 따른다. High-time 화면의 약 200 kHz 표시는 `1 / 5 us`이며 PWM 반복 주파수가 아니다. PWM 주파수 판정은 rising-to-rising 49.75 us 측정만 사용했다.
 
 ## Current gate decision
 
 ```text
-Execution plan: READY
-Logic analyzer: ORDERED / NOT YET AVAILABLE
-Actual waveform evidence: NOT TESTED
+Logic analyzer: AVAILABLE / CAPTURED
+Boot inactive + 20 kHz/10% + direction settle subtests: PASS
+DISARM/timeout/software-fault pin-edge latency: NOT TESTED
+Final safe image board flash/post-flash regression: PENDING
 First powered motor test: NOT READY
 ```
 

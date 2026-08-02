@@ -355,6 +355,6 @@ motor polarity, powered-motor noise와 wheel-speed scale은 포함하지 않는�
 2. 확정된 A=right/TIM5, B=left/TIM3와 forward-positive production sign을 회귀 기준으로 유지한다.
 3. External tachometer 기준 절대 RPM 정확도와 sprocket/track 이동거리로 wheel-speed 변환값을 검증한다.
 4. Powered motor noise와 input filter는 계측 장비 또는 제한된 lifted test에서 별도 검증한다.
-5. Powered/no-motor timeout/DISARM 및 software fault functional gate는 통과했다. 실제 motor no-load 시험은 actual PB6/PB7 waveform/timing과 physical E-stop gate까지 통과한 뒤 진행한다.
+5. Powered/no-motor timeout/DISARM 및 software fault functional gate와 actual PB6/PB7 PWM/direction timing 하위 게이트는 통과했다. 실제 motor no-load 시험은 active shutdown edge latency, final safe-image board 회귀와 Physical E-stop gate까지 통과한 뒤 진행한다.
 
 관련 절차: [`05_First_Motor_No_Load_Test.md`](05_First_Motor_No_Load_Test.md)
