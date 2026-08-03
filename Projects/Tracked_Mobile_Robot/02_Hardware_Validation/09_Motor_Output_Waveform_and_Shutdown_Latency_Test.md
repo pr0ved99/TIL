@@ -12,7 +12,7 @@
 - boot/reset에서 unintended PWM pulse가 없는지
 - DISARM, command timeout, software fault의 actual shutdown timing
 
-이 문서는 계측 절차와 2026-08-03 실행 결과를 함께 기록한다. 현재 파형·방향 전환 timing subtest는 통과했지만, active DISARM/timeout/software-fault shutdown latency와 physical E-stop은 아직 완료되지 않았다.
+이 문서는 계측 절차와 2026-08-03~08-04 실행 결과를 함께 기록한다. 파형·방향 전환 timing subtest와 active DISARM MCU-pin first baseline은 통과했다. Command-timeout/software-fault shutdown latency와 physical E-stop은 아직 완료되지 않았다.
 
 ## Safety scope
 
@@ -66,6 +66,16 @@ Firmware source:
 
 향후 shutdown latency 시험에서는 빈 channel에 `PA10 / USART1_RX` 또는 dedicated marker를 추가한다. 저장된 PulseView session의 channel label은 `D0`~`D7`이므로 위 표와 evidence README를 canonical mapping으로 사용한다.
 
+2026-08-04 active DISARM capture에서는 다음 channel을 추가했다.
+
+| Analyzer channel | STM32 signal | Purpose |
+| --- | --- | --- |
+| `D4` | `PA10 / USART1 RX` | ESP32 -> STM32 DISARM frame reference |
+| `D5` | `PA9 / USART1 TX` | STM32 -> ESP32 ACK reference |
+
+D0~D3와 GND는 2026-08-03 map을 그대로 사용했다. 실제 물리 배선과 motor-energy
+분리 조건은 작업자 확인 전까지 `operator confirmation pending`이다.
+
 ## Capture settings
 
 | Setting | Initial value |
@@ -90,6 +100,11 @@ assets/screenshots/logic_analyzer/YYYY-MM-DD_<measurement>_<result>.png
 ```
 
 `.sr`은 raw sample, `.pvs`는 PulseView session 설정, `.png`는 판정에 사용한 view/cursor 증거다. 이번 interactive cursor 측정에서는 CSV를 필수 산출물로 만들지 않았다. 파일별 관계와 실제 channel map은 각 evidence 디렉터리의 `README.md`에 기록한다.
+
+기본 PNG 위치는 `assets/screenshots/logic_analyzer`다. 다만 2026-08-04처럼 하나의
+`.sr/.pvs` capture bundle에서 직접 만든 overview/detail PNG는 raw 파일과의 관계를
+명확히 하기 위해 `assets/captures/logic_analyzer`에 함께 둘 수 있으며, 이 예외는 해당
+디렉터리 `README.md`에 색인한다.
 
 각 evidence summary에는 다음을 기록한다.
 
@@ -206,6 +221,19 @@ Acceptance:
 
 100 ms TEL timestamp나 ESP32 console 출력 시각을 shutdown edge로 사용하지 않는다.
 
+2026-08-04 result:
+
+- DISARM target: `DISARM,seq=72192971\n`
+- `t0`, final LF stop-bit end: `2,287,888.50 us`
+- `t1`, PB6/PB7 last active falling edge: `2,287,912.00 us`
+- first baseline `t1 - t0`: `23.50 us`
+- STM32 ACK start: `2,287,974.75 us`; PWM stop은 ACK보다 `62.75 us` 선행
+- 이후 남은 약 2.712088 s 동안 두 PWM HIGH sample 0, 두 DIR LOW
+
+판정은 `PASS — scoped first baseline`이다. Numeric release limit은 아직 고정되지
+않았고 MCU logic pin만 측정했으므로 MDD10A/motor/E-stop PASS가 아니다. 상세 결과는
+[`../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)를 따른다.
+
 ## Test 5: Command-timeout shutdown timing
 
 1. Known `timeout_ms`의 valid CMD로 controlled 10% output을 시작한다.
@@ -231,6 +259,10 @@ Acceptance:
 현재 firmware가 timeout 뒤 state를 별도 latched stop으로 전환하는지 source/runtime을 함께 확인한다. Architecture contract와 다르면 `PASS`하지 않는다.
 
 ## Test 6: Software fault shutdown timing
+
+2026-07-30 작업자/DMM·LED 기능시험에서는 software fault 뒤 output-zero와 reset 전
+latch가 PASS했다. 이 Test 6은 그 기능 판정을 대체하는 것이 아니라 아직 없는
+fault-event-to-PWM-edge latency를 계측하고 latch를 파형과 함께 회귀 확인한다.
 
 Setup:
 
@@ -270,7 +302,11 @@ python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_firmware_contract.py
 pwsh -File Projects/Tracked_Mobile_Robot/03_Firmware/tools/Build-Firmware.ps1 -Target All
 ```
 
-Capture evidence를 저장하고 검토한 뒤 먼저 커밋한다. 그 다음 동일 build를 `-RequireClean`으로 한 번 더 실행해 최종 tracked state가 clean인지 확인한다. 미추적 `.sr/.csv/.png`가 있는 상태에서 `-RequireClean`을 먼저 사용하지 않는다.
+Capture evidence를 저장하고 검토한다. 사용자가 커밋을 요청한 경우에만 범위를 확인해
+커밋한 뒤 동일 build를 `-RequireClean`으로 한 번 더 실행해 최종 tracked state가
+clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completion 조건으로 삼지
+않고 현재 worktree 상태와 일반 build 결과를 별도로 기록한다. 미추적 `.sr/.csv/.png`가
+있는 상태에서 `-RequireClean`을 먼저 사용하지 않는다.
 
 ## Result table
 
@@ -281,10 +317,12 @@ Capture evidence를 저장하고 검토한 뒤 먼저 커밋한다. 그 다음 �
 | CH2 20 kHz / 10% | `PASS` | [`period`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_period_20khz_pass.png), [`high time`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_high_time_5us_pass.png) | 49.75 us = 20.1005 kHz, high 5.00 us, duty 약 10.05% |
 | CH1 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_post_dir_zero_ge1ms_pass.png) | 1.994 ms / 2.03875 ms, 모두 최소 1 ms 이상 |
 | CH2 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_post_dir_zero_ge1ms_pass.png) | 1.54725 ms / screenshot 약 2.05832 ms; raw edge review 약 2.040 ms, 모두 최소 1 ms 이상 |
-| DISARM latency | `NOT TESTED` | TBD | Numeric bound TBD after baseline |
+| DISARM latency | `PASS — scoped first baseline` | [2026-08-04 report](../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md), [SR/PVS/PNG](../assets/captures/logic_analyzer/README.md) | UART RX end -> both PWM last edge 23.50 us; numeric release bound TBD |
 | Timeout latency | `NOT TESTED` | TBD | Safety-state semantics must match architecture |
-| Software fault latency/latch | `NOT TESTED` | TBD |  |
-| Final hook-off source/build regression | `PARTIAL` | Source macro audit and STM32 Debug build | 모든 temporary hook `0U`, 0 errors / 0 warnings build PASS. 이 safe image의 board flash와 post-flash capture는 pending |
+| Software fault output-zero/latch function | `PASS — functional DMM/LED scope` | [2026-07-30 operator record](../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md) | 정확한 edge latency 증거는 아님 |
+| Software fault event-to-PWM latency | `NOT TESTED` | TBD | fault marker와 PWM edge 동시 capture 필요 |
+| Final hook-off source/static/build regression | `PASS` | Current source audit + build run `20260804043010-26408-7918` | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15`, isolated clean STM32/ESP32 build PASS |
+| Restored safe-image board regression | `PENDING` | TBD | 양쪽 board reflash/run과 ARM/CMD 0 runtime evidence 필요 |
 
 상세 수치, 판정 범위와 증거 연결은 [`../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)를 따른다. High-time 화면의 약 200 kHz 표시는 `1 / 5 us`이며 PWM 반복 주파수가 아니다. PWM 주파수 판정은 rising-to-rising 49.75 us 측정만 사용했다.
 
@@ -293,7 +331,8 @@ Capture evidence를 저장하고 검토한 뒤 먼저 커밋한다. 그 다음 �
 ```text
 Logic analyzer: AVAILABLE / CAPTURED
 Boot inactive + 20 kHz/10% + direction settle subtests: PASS
-DISARM/timeout/software-fault pin-edge latency: NOT TESTED
+DISARM pin-edge latency: PASS — scoped first baseline, 23.50 us
+Timeout/software-fault pin-edge latency: NOT TESTED
 Final safe image board flash/post-flash regression: PENDING
 First powered motor test: NOT READY
 ```

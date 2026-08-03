@@ -18,10 +18,13 @@
 
 #define UART_FRAME_MAX_LEN    127u
 #define UART_LINE_BUFFER_SIZE (UART_FRAME_MAX_LEN + 2u)
-#define TEL_PERIOD_MS 100u
+#define TEL_PERIOD_MS         100u
 
 #define UART_MVP_OUTPUT_TEST_ENABLED       0U
 #define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE 100U
+#define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED       0U
+#define UART_MVP_SUPPRESS_PONG_TEST_ENABLED         0U
 
 typedef enum{
     ROBOT_DISARMED = 0,
@@ -41,6 +44,8 @@ static uint8_t s_rx_discard_until_lf;
 
 static robot_state_t s_state = ROBOT_DISARMED;
 static uint32_t s_last_seq;
+static uint8_t s_stale_disarm_ack_sent;
+static uint8_t s_stale_pong_sent;
 static int32_t s_vx_mmps;
 static int32_t s_w_mradps;
 static uint32_t s_cmd_timeout_ms;
@@ -223,6 +228,21 @@ static void handle_line(const char *line, size_t line_len){
     switch(frame.type){
         case UART_FRAME_TYPE_PING:
             s_last_seq = frame.seq;
+
+#if UART_MVP_SUPPRESS_PONG_TEST_ENABLED
+            return;
+#endif
+
+#if UART_MVP_STALE_PONG_ONCE_TEST_ENABLED
+            if(s_stale_pong_sent == 0u){
+                s_stale_pong_sent = 1u;
+                uart_sendf("PONG,seq=%lu,t_ms=%lu\n",
+                        (unsigned long)(frame.seq - 1u),
+                        (unsigned long)HAL_GetTick());
+                return;
+            }
+#endif
+
             uart_sendf("PONG,seq=%lu,t_ms=%lu\n",
                     (unsigned long)frame.seq,
                     (unsigned long)HAL_GetTick());
@@ -234,6 +254,13 @@ static void handle_line(const char *line, size_t line_len){
             s_w_mradps = 0;
             s_state = ROBOT_DISARMED;
             s_last_seq = frame.seq;
+#if UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_stale_disarm_ack_sent == 0u){
+                s_stale_disarm_ack_sent = 1u;
+                send_ack(frame.seq - 1u, "DISARM");
+                return;
+            }
+#endif
             send_ack(frame.seq, "DISARM");
             return;
 
@@ -270,6 +297,8 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
 
     s_state = ROBOT_DISARMED;
     s_last_seq = 0;
+    s_stale_disarm_ack_sent = 0u;
+    s_stale_pong_sent = 0u;
     s_last_tel_ms = 0u;
     s_error_count = 0u;
     s_left_cps = 0;

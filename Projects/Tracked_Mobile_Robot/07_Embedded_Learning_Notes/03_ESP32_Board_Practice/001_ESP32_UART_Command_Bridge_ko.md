@@ -62,9 +62,91 @@ STM32는 명령을 허용하거나 거부한다.
 | `TEL` detailed field parsing | PASS |
 | Scripted `ARM/CMD/DISARM` | PASS — historical controlled bench, normal boot default OFF |
 | STM32 command timeout zero-output | PASS |
-| Timeout-zero through ESP32 | PLANNED |
+| Timeout-zero through ESP32 | PASS — historical controlled bench |
 
 `TEL` frame의 `state`, `last_seq`, `vx_mmps`, `w_mradps`, `err` 구조화에 이어 scripted command source와 timeout-zero까지 실제 STM32 link에서 검증했다. ESP32-STM32 board-only UART bridge 실습은 완료했고, 다음 하드웨어 단계는 MDD10A PWM/DIR logic input test다.
+
+## 2026-08-03~08-04 안전 부팅 FSM 업데이트와 Runtime 결과
+
+2026-07-20의 실제 보드 PASS 이후, 부팅 직후 일정 시간이 지나면 다음
+명령을 보내는 구조를 **STM32 응답 확인 기반** 상태 머신으로 바꿘다.
+
+이 변경의 목적은 "충분히 기다렸으니 상대 보드가 준비됐을 것"이라고
+가정하지 않고, 정확한 응답을 받았을 때만 진행하도록 하는 것이다.
+
+### 상태와 전이
+
+| 현재 상태 | 수행 내용 | 다음 상태 조건 |
+| --- | --- | --- |
+| `SETTLE` | 부팅 후 500 ms 대기, LF 한 바이트로 line sync | LF 송신 후 `SYNC_WAIT` |
+| `SYNC_WAIT` | 100 ms 뒤 RX input/assembler를 비우고 `DISARM,seq=S` 송신 | 송신 성공 후 `WAIT_DISARM_ACK` |
+| `WAIT_DISARM_ACK` | `ACK` 대기 | 현재 상태에서 `seq=S`, `type=DISARM`인 valid ACK만 통과 |
+| `WAIT_PONG` | `PING,seq=S+1` 응답 대기 | 현재 상태에서 valid `PONG,seq=S+1`만 `READY` 진입 |
+| `READY` | startup handshake 완료 | terminal state |
+| `FAILED` | retry 소진, motion 스크립트 미실행 | terminal state |
+
+응답 대기 시간은 단계당 500 ms이고 `DISARM`, `PING`은 각각 최대
+3회까지 시도한다. 해당 횟수 안에 matching response를 받지 못하면
+`FAILED`에 머물며 `ARM`/`CMD`를 자동 송신하지 않는다.
+
+### 매크로의 정확한 의미
+
+`BRIDGE_SCRIPTED_TEST_ENABLED == 0U`는 모터 움직임을 요청하는 scripted
+`ARM/CMD/DISARM` sequence를 끄는 설정이다. 이 매크로가 `0U`여도
+다음 두 frame은 startup safety handshake이므로 송신된다. 여기서 `S`는
+`esp_random()`으로 매 부팅 새로 정해 이전 세션 응답을 재사용하기 어렵게 한다.
+
+```text
+DISARM,seq=S
+PING,seq=S+1
+```
+
+즉 `0U`는 "ESP32가 UART에 아무것도 송신하지 않음"이 아니라, "startup
+안전 동기화 후에도 `ARM`/`CMD` motion test는 실행하지 않음"을 뜻한다.
+
+2026-08-04 current worktree는 active-DISARM capture 뒤 안전 목표값으로 복구됐다.
+실제 source는 ESP script `0U/1000 ms`, STM32 UART output hook `0U`이고 contract
+`15/15`와 isolated clean STM32/ESP32 build run `20260804043010-26408-7918`이 PASS다.
+다만 restored safe images의 board reflash/run과 ARM/CMD 0 evidence는 다음 단계다.
+
+### Exact field parser
+
+기존 `strstr()`만으로 field를 찾으면 `badseq=1`안에 있는 `seq=1`도 잘못
+인정할 수 있다. Startup gate에서 이런 오탐지는 상태 전이 오류로
+이어질 수 있어 parser를 다음과 같이 강화했다.
+
+- key는 comma로 나뉘 field의 시작에서만 일치해야 한다.
+- 숫자는 최소 한 자리 이상이어야 한다.
+- 숫자 뒤에는 comma 또는 문자열 끝만 허용한다.
+- `uint32_t`/`int32_t` 범위 overflow를 거부한다.
+- 같은 required field가 두 번 나오면 ambiguous frame으로 거부한다.
+- overlong frame 또는 embedded CR/NUL/control byte가 나오면 다음 LF까지 frame 전체를 버린다.
+- ACK의 `seq` 및 `type`을 모두 parsing한 후에만 valid event로 저장한다.
+
+따라서 `ACK,badseq=7,badtype=DISARM`, `ACK,seq=7x,type=DISARM`,
+`ACK,seq=7,seq=7,type=DISARM`, `PONG,badseq=8`은 startup gate의
+matching response가 아니다.
+
+### 현재 검증 결과와 한계
+
+| 검증 | 결과 |
+| --- | --- |
+| 2026-08-03 safe-source preflight | **15/15 PASS** (역사 checkpoint) |
+| 2026-08-03 ESP-IDF build | **PASS**, `0x2b210`, partition `83%` free |
+| Gate A exact ACK/PONG/READY | **PASS — raw runtime behavior** |
+| Gate B DISARM ACK/PONG loss | **PASS — 각 최대 3회 뒤 FAILED** |
+| Stale ACK/PONG seq rejection | **PASS** |
+| Controlled reset recovery | **PASS** |
+| Wrong ACK type | **미검증** |
+| Gate C ESP response/STM32 command parser recovery | **미검증** |
+| Current safe-source/static/build restore | **PASS** — `0U/1000 ms`, contract `15/15`, isolated clean dual build PASS |
+| Restored safe-image board regression | **미완료** — reflash/run과 ARM/CMD 0 evidence 필요 |
+
+정적 계약 테스트는 상태 순서, retry/failure 경로, parser boundary, motion 가드가
+소스에 있음을 확인하고 build는 바이너리 생성 가능성을 확인한다. 이후 raw board
+log가 exact response와 bounded failure를 별도로 확인했다. Raw log만으로 physical
+power state와 flashed binary hash를 증명하지 못하는 한계, wrong ACK type과 malformed
+recovery가 남은 범위는 [response-gated report](../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에 기록한다.
 
 ## 실습 단계
 
@@ -124,7 +206,10 @@ ESP32 GND     <-> STM32 GND
 
 - PC dashboard에서 수행한 UART MVP test를 ESP32가 재현한다.
 
-> 이 sequence는 정상 운용 boot 동작이 아니라 motor-disconnected controlled bench 전용이다. 현재 `BRIDGE_SCRIPTED_TEST_ENABLED` 기본값은 `0U`이며, `1U`로 시험할 때는 STM32 `DISARMED`, motor 분리와 작업자 대기를 먼저 확인하고 시험 직후 다시 `0U`로 복구한다.
+> 이 sequence는 정상 운용 boot 동작이 아니라 motor-disconnected controlled bench
+> 전용이다. Release target/default는 `BRIDGE_SCRIPTED_TEST_ENABLED=0U`이고 2026-08-04
+> current worktree도 `0U/1000 ms`로 복구됐다. 향후 `1U` 시험 전에는 STM32
+> `DISARMED`, motor 분리와 작업자 대기를 확인하고 시험 직후 다시 `0U`로 복구한다.
 
 보낼 순서:
 
@@ -170,32 +255,35 @@ ACK,seq=6,type=DISARM
 - ESP32가 `TEL`을 누락 없이 일정 시간 출력한다.
 - timeout 이후 zero command telemetry가 관찰된다.
 
-## ESP32 firmware 구조 초안
+## 현재 ESP32 firmware 구조
 
-초기에는 복잡한 task 구조 없이 loop 기반으로 작성한다.
+초기 초안의 Arduino `setup()/loop()` 표현은 현재 구현과 다르다. 실제 코드는
+ESP-IDF C project의 `app_main()`과 polling loop를 사용한다.
 
 ```text
-setup()
-  - USB Serial begin
-  - UART-to-STM32 begin
-  - boot log 출력
-
-loop()
-  - STM32 UART RX line 읽기
-  - PC USB Serial로 STM32 RX line 출력
-  - BRIDGE_SCRIPTED_TEST_ENABLED == 1U인 controlled bench에서만 scripted command 전송
-  - 정상 boot에서는 RX parser/telemetry logging만 수행하고 command를 자동 전송하지 않음
-  - 필요시 PC Serial input을 STM32 UART로 forwarding
+app_main()
+  - ESP-IDF UART1 driver 초기화
+  - startup FSM 상태/타이머 초기화
+  - UART RX byte polling
+      -> newline 기준 line 조립
+      -> PONG / ACK / ERR / TEL 분류
+      -> exact field parser로 구조화
+  - bridge_uart_startup_step(now)
+      -> DISARM ACK와 PONG 응답으로 READY gate 제어
+  - BRIDGE_SCRIPTED_TEST_ENABLED != 0U && startup == READY일 때만
+      -> controlled-bench scripted motion sequence
 ```
 
-추천 모듈:
+주요 함수 역할:
 
 ```text
-uart_bridge.ino
-  - send_frame()
-  - read_stm32_line()
-  - run_scripted_test()
-  - forward_pc_to_stm32()
+bridge_uart_send_frame()       공통 newline frame 송신
+bridge_uart_send_disarm()      DISARM frame 생성
+bridge_uart_send_ping()        PING frame 생성
+bridge_uart_handle_rx_byte()   byte-to-line 조립
+bridge_uart_handle_rx_line()   frame 분류 및 response event 저장
+bridge_uart_startup_step()     response-gated 안전 부팅 FSM
+bridge_uart_run_test_step()    명시적으로 활성한 bench script만 수행
 ```
 
 ## Command forwarding policy
@@ -325,7 +413,7 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 
 첫 실행에서는 STM32가 이전 실행의 `ARMED` 상태였기 때문에 `CMD before ARM`이 정상 명령으로 수락됐다. 이는 protocol 오류가 아니라 test precondition 오류였으며, `DISARMED` 상태를 확인한 뒤 ESP32 script를 다시 실행해 최종 PASS를 얻었다.
 
-2026-07-30에는 향후 velocity-to-PWM 연결 시 부팅 직후 의도치 않은 동작을 막기 위해 `BRIDGE_SCRIPTED_TEST_ENABLED`를 추가하고 기본값을 `0U`로 고정했다. 초기 `PING`과 scripted `ARM/CMD/DISARM`은 guard가 명시적으로 활성화된 controlled bench에서만 송신된다. 정적 firmware contract test가 이 default-off 조건을 회귀 검사한다.
+2026-07-30에는 향후 velocity-to-PWM 연결 시 부팅 직후 의도치 않은 동작을 막기 위해 `BRIDGE_SCRIPTED_TEST_ENABLED`를 추가하고 기본값을 `0U`로 고정했다. 당시에는 초기 `PING`까지 guard 대상으로 기록했지만, 2026-08-03 response-gated FSM에서는 이 정책을 더 명확히 나뉘었다. Safe startup `DISARM/PING`은 매크로와 무관하게 실행하고, scripted `ARM/CMD`를 포함한 motion test만 default-off guard 뒤에 둔다. 정적 firmware contract test가 이 분리를 회귀 검사한다.
 
 ## 성공 기준
 
@@ -339,6 +427,10 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 - ESP32가 STM32 telemetry를 PC Serial Monitor로 relay
 - STM32 safety authority 원칙이 유지됨
 
-2026-07-20 기준 모든 성공 기준을 만족했다. ESP32는 command source / relay / logger 역할을 수행했고, STM32는 `NOT_ARMED`, range check, timeout-zero, `DISARM`을 통해 최종 safety authority를 유지했다. 따라서 ESP32-STM32 board-only UART bridge 실습은 PASS다.
+2026-07-20 기준 모든 성공 기준을 만족했다. ESP32는 command source / relay / logger 역할을 수행했고, STM32는 `NOT_ARMED`, range check, timeout-zero, `DISARM`을 통해 최종 safety authority를 유지했다. 따라서 해당 시점의 ESP32-STM32 board-only UART bridge 실습은 PASS다.
 
-이 PASS는 scripted sequence를 정상 부팅 때 항상 실행한다는 의미가 아니다. 현재 운영 기준은 자동 송신 default-off이며, 과거 로그는 protocol/safety 동작을 입증하는 controlled-bench evidence로 보존한다.
+이 PASS는 scripted sequence를 정상 부팅 때 항상 실행한다는 의미가 아니다. 운영
+기준은 motion script default-off이며, 과거 로그는 controlled-bench evidence로
+보존한다. 2026-08-03 response-gated FSM은 이후 actual Gate A/B runtime까지
+확인됐지만 Gate C two-parser recovery와 current test hook의 safe `0U` restore가
+남아 release 전체는 `PARTIAL`이다.

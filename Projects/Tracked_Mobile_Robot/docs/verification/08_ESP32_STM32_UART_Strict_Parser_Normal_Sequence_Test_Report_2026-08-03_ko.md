@@ -1,5 +1,9 @@
 # ESP32-STM32 UART Strict-Parser Normal-Sequence Test Report - 2026-08-03
 
+> 이 문서는 fixed-delay controlled run의 역사적 보고서다. 후속 response-gated
+> Gate A/B 결과는 [`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md),
+> active DISARM pin timing은 [`10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)를 따른다.
+
 ## 판정
 
 - Controlled normal sequence: `PASS`
@@ -24,6 +28,11 @@
 | Startup preamble | 500 ms settle, one LF, 100 ms delay, `PING,seq=1` |
 
 시험 종료 후 source 기본값은 `BRIDGE_SCRIPTED_TEST_ENABLED=0U`로 복구했다. 시험에 사용한 ESP32 board image는 다음 세션의 safe reflash 전까지 controlled-test image일 수 있으므로, overnight에는 두 board USB와 motor/battery power를 분리한다.
+
+위 문장은 이 fixed-delay 시험 종료 당시 상태다. 후속 active-DISARM capture 때 ESP
+script `1U/100 ms`, STM32 UART output hook `1U`를 사용했지만 2026-08-04 current
+worktree는 `0U/1000 ms`와 STM output hook `0U`로 복구됐다. Contract `15/15`와
+isolated clean dual build도 PASS했고 safe-image board reflash/run은 pending이다.
 
 ## 실제 결과
 
@@ -50,20 +59,27 @@ The final telemetry remained `DISARMED` with `vx=0`, `w=0`, `left_cps=0`, and `r
 
 ## 남은 release gate
 
-다음 startup sequence를 ESP32 상태머신으로 구현하고 실제 응답을 확인한 뒤에만 current startup handshake를 PASS 처리한다.
+아래 startup sequence는 이후 ESP32 상태머신에 source 구현되어 정적 contract test와
+build를 통과했고, 별도 raw log에서 Gate A exact response와 Gate B bounded failure까지
+실행됐다. 이 fixed-delay 보고서 자체를 그 runtime 증거로 재해석하지 않으며 후속
+판정은 report 09를 따른다.
 
 ```text
 UART initialize
 -> 500 ms settle
 -> newline boundary synchronization
--> explicit DISARM,seq=1
--> matching ACK(seq=1,type=DISARM), with bounded retry
--> PING,seq=2
--> matching PONG(seq=2), with bounded retry
--> scripted safety sequence
+-> RX buffer/line-state reset
+-> explicit DISARM,seq=S, where S is generated per boot
+-> matching ACK(seq=S,type=DISARM), with bounded retry
+-> PING,seq=S+1
+-> matching PONG(seq=S+1), with bounded retry
+-> READY; scripted safety sequence only when its test macro is enabled
 ```
 
-그 다음 motor power OFF 상태에서 malformed frame을 주입하고, 각 frame이 fail-closed로 거부된 뒤 정상 `PING/PONG`으로 복구되는지 확인한다. 두 시험이 끝난 후 ESP test macro를 `0U`로 복구하고 safe image를 다시 flash/run해야 current strict-parser board regression을 닫을 수 있다.
+Gate A와 Gate B 핵심 runtime behavior는 PASS다. 남은 current release gate는 matching
+seq + wrong ACK type의 required runtime coverage, ESP response/STM32 command parser의
+malformed reject/recovery, 그리고 restored safe-image board reflash/run이다. ESP/STM
+test hook `0U`, contract `15/15`와 isolated clean dual build는 이미 PASS했다.
 
 ## 범위 제한
 

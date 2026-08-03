@@ -8,13 +8,13 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <string.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
 #include "driver/gpio.h"
 #include "driver/uart.h"
 #include "esp_err.h"
 #include "esp_log.h"
+#include "esp_random.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -28,6 +28,11 @@
 #define TEST_STEP_PERIOD_MS 1000
 #define LINE_BUF_SIZE       256
 #define RX_POLL_MS          20
+
+#define STARTUP_SETTLE_MS           500U
+#define STARTUP_SYNC_WAIT_MS        100U
+#define STARTUP_RESPONSE_TIMEOUT_MS 500U
+#define STARTUP_MAX_ATTEMPTS        3U
 
 
 static const char *TAG = "esp32_uart_bridge";
@@ -45,6 +50,15 @@ typedef struct {
 } bridge_telemetry_t;
 
 typedef enum {
+    BRIDGE_STARTUP_SETTLE = 0,
+    BRIDGE_STARTUP_SYNC_WAIT,
+    BRIDGE_STARTUP_WAIT_DISARM_ACK,
+    BRIDGE_STARTUP_WAIT_PONG,
+    BRIDGE_STARTUP_READY,
+    BRIDGE_STARTUP_FAILED
+} bridge_startup_state_t;
+
+typedef enum {
     BRIDGE_TEST_CMD_BEFORE_ARM = 0,
     BRIDGE_TEST_ARM,
     BRIDGE_TEST_VALID_CMD,
@@ -60,8 +74,22 @@ static uint32_t s_ack_count;
 static uint32_t s_err_count;
 static uint32_t s_parse_error_count;
 static uint32_t s_last_pong_seq;
+static bool s_last_pong_valid;
+static bool s_last_ack_valid;
+static uint32_t s_last_ack_seq;
+static char s_last_ack_type[16];
+
+static bridge_startup_state_t s_startup_state = BRIDGE_STARTUP_SETTLE;
+static TickType_t s_startup_state_tick;
+static uint32_t s_startup_attempt_count;
+static uint32_t s_startup_disarm_seq;
+static uint32_t s_startup_ping_seq;
 static uint32_t s_last_tel_ms;
 static bridge_telemetry_t s_telemetry;
+
+static char s_rx_line_buf[LINE_BUF_SIZE];
+static size_t s_rx_line_len;
+static bool s_rx_discard_until_lf;
 
 static void bridge_uart_init(void){
     const uart_config_t uart_config = {
@@ -96,19 +124,17 @@ static int bridge_uart_send_frame(const char *frame){
         return 0;
     }
 
-    int frame_written = uart_write_bytes(
-        BRIDGE_UART_NUM,
-        frame,
-        frame_len
-    );
+    char tx_buf[LINE_BUF_SIZE];
+    int tx_len = snprintf(tx_buf, sizeof(tx_buf), "%s\n", frame);
 
-    int newline_written = uart_write_bytes(
-        BRIDGE_UART_NUM,
-        "\n",
-        1
-    );
+    if(tx_len <= 0 || tx_len >= (int)sizeof(tx_buf)){
+        ESP_LOGW(TAG, "Failed to terminate UART TX frame");
+        return 0;
+    }
 
-    if(frame_written != (int)frame_len || newline_written != 1){
+    int written = uart_write_bytes(BRIDGE_UART_NUM, tx_buf, tx_len);
+
+    if(written != tx_len){
         ESP_LOGW(TAG, "UART TX write failed: %s", frame);
         return 0;
     }
@@ -117,7 +143,7 @@ static int bridge_uart_send_frame(const char *frame){
     return 1;
 }
 
-static void bridge_uart_send_ping(uint32_t seq){
+static int bridge_uart_send_ping(uint32_t seq){
     char frame[64];
     int len = snprintf(
         frame,
@@ -128,13 +154,13 @@ static void bridge_uart_send_ping(uint32_t seq){
 
     if(len <= 0 || len >= (int)sizeof(frame)){
         ESP_LOGW(TAG, "Failed to build PING frame");
-        return;
+        return 0;
     }
 
-    bridge_uart_send_frame(frame);
+    return bridge_uart_send_frame(frame);
 }
 
-static void bridge_uart_send_arm(uint32_t seq){
+static int bridge_uart_send_arm(uint32_t seq){
     char frame[64];
     int len = snprintf(
         frame,
@@ -145,13 +171,13 @@ static void bridge_uart_send_arm(uint32_t seq){
 
     if(len <= 0 || len >= (int)sizeof(frame)){
         ESP_LOGW(TAG, "Failed to build ARM frame");
-        return;
+        return 0;
     }
 
-    bridge_uart_send_frame(frame);
+    return bridge_uart_send_frame(frame);
 }
 
-static void bridge_uart_send_disarm(uint32_t seq){
+static int bridge_uart_send_disarm(uint32_t seq){
     char frame[64];
     int len = snprintf(
         frame,
@@ -162,13 +188,13 @@ static void bridge_uart_send_disarm(uint32_t seq){
 
     if(len <= 0 || len >= (int)sizeof(frame)){
         ESP_LOGW(TAG, "Failed to build DISARM frame");
-        return;
+        return 0;
     }
 
-    bridge_uart_send_frame(frame);
+    return bridge_uart_send_frame(frame);
 }
 
-static void bridge_uart_send_cmd(
+static int bridge_uart_send_cmd(
     uint32_t seq,
     int32_t vx_mmps,
     int32_t w_mradps,
@@ -190,10 +216,10 @@ static void bridge_uart_send_cmd(
 
     if(len <= 0 || len >= (int)sizeof(frame)){
         ESP_LOGW(TAG, "Failed to build CMD frame");
-        return;
+        return 0;
     }
 
-    bridge_uart_send_frame(frame);
+    return bridge_uart_send_frame(frame);
 }
 
 static bridge_test_step_t bridge_uart_run_test_step(
@@ -207,43 +233,104 @@ static bridge_test_step_t bridge_uart_run_test_step(
 
     switch(step){
         case BRIDGE_TEST_CMD_BEFORE_ARM:
-            bridge_uart_send_cmd((*seq)++, 50, 0, 300);
-            return BRIDGE_TEST_ARM;
+            if(bridge_uart_send_cmd(*seq, 50, 0, 300)){
+                (*seq)++;
+                return BRIDGE_TEST_ARM;
+            }
+            return step;
         case BRIDGE_TEST_ARM:
-            bridge_uart_send_arm((*seq)++);
-            return BRIDGE_TEST_VALID_CMD;
+            if(bridge_uart_send_arm(*seq)){
+                (*seq)++;
+                return BRIDGE_TEST_VALID_CMD;
+            }
+            return step;
         case BRIDGE_TEST_VALID_CMD:
-            bridge_uart_send_cmd((*seq)++, 50, 0, 300);
-            return BRIDGE_TEST_INVALID_CMD;
+            if(bridge_uart_send_cmd(*seq, 50, 0, 300)){
+                (*seq)++;
+                return BRIDGE_TEST_INVALID_CMD;
+            }
+            return step;
         case BRIDGE_TEST_INVALID_CMD:
-            bridge_uart_send_cmd((*seq)++, 9999, 0, 300);
-            return BRIDGE_TEST_DISARM;
+            if(bridge_uart_send_cmd(*seq, 9999, 0, 300)){
+                (*seq)++;
+                return BRIDGE_TEST_DISARM;
+            }
+            return step;
         case BRIDGE_TEST_DISARM:
-            bridge_uart_send_disarm((*seq)++);
-            return BRIDGE_TEST_DONE;
+            if(bridge_uart_send_disarm(*seq)){
+                (*seq)++;
+                return BRIDGE_TEST_DONE;
+            }
+            return step;
         case BRIDGE_TEST_DONE:
         default:
             return BRIDGE_TEST_DONE;
     }
 }
 
-static int parse_u32_field(const char *line, const char *key, uint32_t  *out_value){
-    const char *pos = strstr(line, key);
+static const char *find_field_value(const char *line, const char *key){
+    if(line == NULL || key == NULL || key[0] == '\0'){
+        return NULL;
+    }
 
-    if(pos == NULL || out_value == NULL){
+    size_t key_len = strlen(key);
+    const char *field = line;
+    const char *value = NULL;
+
+    while(field[0] != '\0'){
+        if(strncmp(field, key, key_len) == 0){
+            if(value != NULL){
+                return NULL;
+            }
+
+            value = field + key_len;
+        }
+
+        const char *comma = strchr(field, ',');
+
+        if(comma == NULL){
+            break;
+        }
+
+        field = comma + 1;
+    }
+
+    return value;
+}
+
+static int parse_u32_field(
+    const char *line,
+    const char *key,
+    uint32_t *out_value
+){
+    if(out_value == NULL){
         return 0;
     }
 
-    pos += strlen(key);
+    const char *pos = find_field_value(line, key);
 
-    char *end_ptr = NULL;
-    unsigned long value = strtoul(pos, &end_ptr, 10);
-
-    if(end_ptr == pos){
+    if(pos == NULL || pos[0] < '0' || pos[0] > '9'){
         return 0;
     }
 
-    *out_value = (uint32_t)value;
+    uint32_t value = 0U;
+
+    while(pos[0] >= '0' && pos[0] <= '9'){
+        uint32_t digit = (uint32_t)(pos[0] - '0');
+
+        if(value > (UINT32_MAX - digit) / 10U){
+            return 0;
+        }
+
+        value = (value * 10U) + digit;
+        pos++;
+    }
+
+    if(pos[0] != ',' && pos[0] != '\0'){
+        return 0;
+    }
+
+    *out_value = value;
     return 1;
 }
 
@@ -252,22 +339,54 @@ static int parse_i32_field(
     const char *key,
     int32_t *out_value
 ){
-    const char *pos = strstr(line, key);
-
-    if(pos == NULL || out_value == NULL){
+    if(out_value == NULL){
         return 0;
     }
 
-    pos += strlen(key);
+    const char *pos = find_field_value(line, key);
 
-    char *end_ptr = NULL;
-    long value = strtol(pos, &end_ptr, 10);
-
-    if(end_ptr == pos){
+    if(pos == NULL){
         return 0;
     }
 
-    *out_value = (int32_t)value;
+    bool negative = false;
+
+    if(pos[0] == '-'){
+        negative = true;
+        pos++;
+    }
+
+    if(pos[0] < '0' || pos[0] > '9'){
+        return 0;
+    }
+
+    const uint32_t limit = negative ? 2147483648U : 2147483647U;
+    uint32_t magnitude = 0U;
+
+    while(pos[0] >= '0' && pos[0] <= '9'){
+        uint32_t digit = (uint32_t)(pos[0] - '0');
+
+        if(magnitude > (limit - digit) / 10U){
+            return 0;
+        }
+
+        magnitude = (magnitude * 10U) + digit;
+        pos++;
+    }
+
+    if(pos[0] != ',' && pos[0] != '\0'){
+        return 0;
+    }
+
+    if(negative){
+        *out_value = magnitude == 2147483648U
+            ? INT32_MIN
+            : -(int32_t)magnitude;
+    }
+    else {
+        *out_value = (int32_t)magnitude;
+    }
+
     return 1;
 }
 
@@ -277,13 +396,15 @@ static int parse_string_field(
     char *out_value,
     size_t out_size
 ){
-    const char *pos = strstr(line, key);
-
-    if(pos == NULL || out_value == NULL || out_size == 0){
+    if(out_value == NULL || out_size == 0){
         return 0;
     }
 
-    pos += strlen(key);
+    const char *pos = find_field_value(line, key);
+
+    if(pos == NULL){
+        return 0;
+    }
 
     const char *end = strchr(pos, ',');
     if(end == NULL){
@@ -304,15 +425,41 @@ static int parse_string_field(
 static void bridge_uart_handle_rx_line(const char *line){
     s_rx_line_count++;
 
-    if(strncmp(line, "PONG", 4) == 0){
+    size_t line_length = strlen(line);
+
+    if(line_length == 0U || line[line_length - 1U] == ','){
+        s_parse_error_count++;
+        ESP_LOGW(TAG, "RX malformed field list: %s", line);
+        return;
+    }
+
+    if(strncmp(line, "PONG,", 5) == 0){
         uint32_t seq = 0;
 
         if(parse_u32_field(line, "seq=", &seq)){
             s_pong_count++;
-            s_last_pong_seq = seq;
-            ESP_LOGI(TAG, "RX PONG: seq=%" PRIu32 " pong_count=%" PRIu32,
-            seq,
-            s_pong_count);
+
+            ESP_LOGI(
+                TAG,
+                "RX PONG: seq=%" PRIu32 " pong_count=%" PRIu32,
+                seq,
+                s_pong_count
+            );
+
+            if(
+                s_startup_state == BRIDGE_STARTUP_WAIT_PONG &&
+                seq == s_startup_ping_seq
+            ){
+                s_last_pong_seq = seq;
+                s_last_pong_valid = true;
+            }
+            else if(s_startup_state != BRIDGE_STARTUP_READY){
+                ESP_LOGW(
+                    TAG,
+                    "STARTUP: ignored non-matching PONG seq=%" PRIu32,
+                    seq
+                );
+            }
         }
         else{
             s_parse_error_count++;
@@ -322,7 +469,7 @@ static void bridge_uart_handle_rx_line(const char *line){
         return;
     }
 
-    if(strncmp(line, "TEL", 3) == 0){
+    if(strncmp(line, "TEL,", 4) == 0){
         bridge_telemetry_t parsed = {0};
 
         int parse_ok =
@@ -375,13 +522,59 @@ static void bridge_uart_handle_rx_line(const char *line){
         return;
     }
 
-    if(strncmp(line, "ACK", 3) == 0){
-        s_ack_count++;
-        ESP_LOGI(TAG, "RX ACK: %s", line);
+    if(strncmp(line, "ACK,", 4) == 0){
+        uint32_t seq = 0;
+        char type[16] = {0};
+
+        int parse_ok =
+            parse_u32_field(line, "seq=", &seq) &&
+            parse_string_field(line, "type=", type, sizeof(type));
+
+        if(parse_ok){
+            s_ack_count++;
+            ESP_LOGI(
+                TAG,
+                "RX ACK: seq=%" PRIu32
+                " type=%s"
+                " ack_count=%" PRIu32,
+                seq,
+                type,
+                s_ack_count
+            );
+
+            if(
+                s_startup_state == BRIDGE_STARTUP_WAIT_DISARM_ACK &&
+                seq == s_startup_disarm_seq &&
+                strcmp(type, "DISARM") == 0
+            ){
+                s_last_ack_seq = seq;
+                snprintf(
+                    s_last_ack_type,
+                    sizeof(s_last_ack_type),
+                    "%s",
+                    type
+                );
+                s_last_ack_valid = true;
+            }
+            else if(s_startup_state != BRIDGE_STARTUP_READY){
+                ESP_LOGW(
+                    TAG,
+                    "STARTUP: ignored non-matching ACK seq=%" PRIu32
+                    " type=%s",
+                    seq,
+                    type
+                );
+            }
+        }
+        else {
+            s_parse_error_count++;
+            ESP_LOGW(TAG, "RX ACK parse error: %s", line);
+        }
+
         return;
     }
 
-    if(strncmp(line, "ERR", 3) == 0){
+    if(strncmp(line, "ERR,", 4) == 0){
         s_err_count++;
         ESP_LOGW(TAG, "RX ERR: %s", line);
         return;
@@ -392,31 +585,228 @@ static void bridge_uart_handle_rx_line(const char *line){
 }
 
 static void bridge_uart_handle_rx_byte(uint8_t byte){
-    static char line_buf[LINE_BUF_SIZE];
-    static size_t line_len;
-
-    if(byte == '\r'){
-        return;
-    }
-
     if(byte == '\n'){
-        line_buf[line_len] = '\0';
-
-        if(line_len > 0){
-            bridge_uart_handle_rx_line(line_buf);
+        if(s_rx_discard_until_lf){
+            s_rx_discard_until_lf = false;
+            s_rx_line_len = 0U;
+            return;
         }
 
-        line_len = 0;
+        if(
+            s_rx_line_len > 0U &&
+            s_rx_line_buf[s_rx_line_len - 1U] == '\r'
+        ){
+            s_rx_line_len--;
+        }
+
+        s_rx_line_buf[s_rx_line_len] = '\0';
+
+        if(s_rx_line_len > 0U){
+            bridge_uart_handle_rx_line(s_rx_line_buf);
+        }
+
+        s_rx_line_len = 0U;
         return;
     }
 
-    if(line_len < (LINE_BUF_SIZE- 1)){
-        line_buf[line_len] = (char)byte;
-        line_len++;
+    if(s_rx_discard_until_lf){
+        return;
+    }
+
+    if(
+        s_rx_line_len > 0U &&
+        s_rx_line_buf[s_rx_line_len - 1U] == '\r'
+    ){
+        ESP_LOGW(TAG, "RX embedded CR rejected");
+        s_parse_error_count++;
+        s_rx_line_len = 0U;
+        s_rx_discard_until_lf = true;
+        return;
+    }
+
+    if((byte < 0x20U && byte != '\r') || byte == 0x7fU){
+        ESP_LOGW(TAG, "RX control byte rejected: 0x%02x", byte);
+        s_parse_error_count++;
+        s_rx_line_len = 0U;
+        s_rx_discard_until_lf = true;
+        return;
+    }
+
+    if(s_rx_line_len < (LINE_BUF_SIZE - 1U)){
+        s_rx_line_buf[s_rx_line_len] = (char)byte;
+        s_rx_line_len++;
     }
     else {
         ESP_LOGW(TAG, "RX line overflow");
-        line_len =0;
+        s_parse_error_count++;
+        s_rx_line_len = 0U;
+        s_rx_discard_until_lf = true;
+    }
+}
+
+static void bridge_uart_startup_step(TickType_t now){
+    switch(s_startup_state){
+        case BRIDGE_STARTUP_SETTLE:
+            if(
+                now - s_startup_state_tick >=
+                pdMS_TO_TICKS(STARTUP_SETTLE_MS)
+            ){
+                int sync_written = uart_write_bytes(
+                    BRIDGE_UART_NUM,
+                    "\n",
+                    1
+                );
+
+                if(sync_written != 1){
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(TAG, "STARTUP FAILED: line sync TX failed");
+                    break;
+                }
+
+                ESP_LOGI(TAG, "STARTUP: line sync sent");
+
+                s_startup_state = BRIDGE_STARTUP_SYNC_WAIT;
+                s_startup_state_tick = now;
+            }
+            break;
+
+        case BRIDGE_STARTUP_SYNC_WAIT:
+            if(
+                now - s_startup_state_tick >=
+                pdMS_TO_TICKS(STARTUP_SYNC_WAIT_MS)
+            ){
+                esp_err_t flush_result = uart_flush_input(BRIDGE_UART_NUM);
+
+                if(flush_result != ESP_OK){
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(TAG, "STARTUP FAILED: RX flush failed");
+                    break;
+                }
+
+                s_rx_line_len = 0U;
+                s_rx_discard_until_lf = false;
+                s_last_ack_valid = false;
+                s_startup_attempt_count = 1U;
+
+                if(!bridge_uart_send_disarm(s_startup_disarm_seq)){
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(TAG, "STARTUP FAILED: DISARM TX failed");
+                    break;
+                }
+
+                s_startup_state = BRIDGE_STARTUP_WAIT_DISARM_ACK;
+                s_startup_state_tick = now;
+            }
+            break;
+
+        case BRIDGE_STARTUP_WAIT_DISARM_ACK:
+            if(
+                s_last_ack_valid &&
+                s_last_ack_seq == s_startup_disarm_seq &&
+                strcmp(s_last_ack_type, "DISARM") == 0
+            ){
+                ESP_LOGI(TAG, "STARTUP: DISARM acknowledged");
+
+                s_last_pong_valid = false;
+                s_startup_attempt_count = 1U;
+
+                if(!bridge_uart_send_ping(s_startup_ping_seq)){
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(TAG, "STARTUP FAILED: PING TX failed");
+                    break;
+                }
+
+                s_startup_state = BRIDGE_STARTUP_WAIT_PONG;
+                s_startup_state_tick = now;
+                break;
+            }
+
+            if(
+                now - s_startup_state_tick >=
+                pdMS_TO_TICKS(STARTUP_RESPONSE_TIMEOUT_MS)
+            ){
+                if(s_startup_attempt_count < STARTUP_MAX_ATTEMPTS){
+                    s_startup_attempt_count++;
+                    s_last_ack_valid = false;
+
+                    ESP_LOGW(
+                        TAG,
+                        "STARTUP: retry DISARM attempt=%" PRIu32,
+                        s_startup_attempt_count
+                    );
+
+                    if(!bridge_uart_send_disarm(s_startup_disarm_seq)){
+                        s_startup_state = BRIDGE_STARTUP_FAILED;
+                        ESP_LOGE(
+                            TAG,
+                            "STARTUP FAILED: DISARM retry TX failed"
+                        );
+                        break;
+                    }
+                    s_startup_state_tick = now;
+                }
+                else {
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(
+                        TAG,
+                        "STARTUP FAILED: no matching DISARM ACK"
+                    );
+                }
+            }
+            break;
+
+        case BRIDGE_STARTUP_WAIT_PONG:
+            if(
+                s_last_pong_valid &&
+                s_last_pong_seq == s_startup_ping_seq
+            ){
+                s_startup_state = BRIDGE_STARTUP_READY;
+
+                ESP_LOGI(
+                    TAG,
+                    "STARTUP READY: DISARM ACK and PONG verified"
+                );
+                break;
+            }
+
+            if(
+                now - s_startup_state_tick >=
+                pdMS_TO_TICKS(STARTUP_RESPONSE_TIMEOUT_MS)
+            ){
+                if(s_startup_attempt_count < STARTUP_MAX_ATTEMPTS){
+                    s_startup_attempt_count++;
+                    s_last_pong_valid = false;
+
+                    ESP_LOGW(
+                        TAG,
+                        "STARTUP: retry PING attempt=%" PRIu32,
+                        s_startup_attempt_count
+                    );
+
+                    if(!bridge_uart_send_ping(s_startup_ping_seq)){
+                        s_startup_state = BRIDGE_STARTUP_FAILED;
+                        ESP_LOGE(
+                            TAG,
+                            "STARTUP FAILED: PING retry TX failed"
+                        );
+                        break;
+                    }
+                    s_startup_state_tick = now;
+                }
+                else {
+                    s_startup_state = BRIDGE_STARTUP_FAILED;
+                    ESP_LOGE(
+                        TAG,
+                        "STARTUP FAILED: no matching PONG"
+                    );
+                }
+            }
+            break;
+
+        case BRIDGE_STARTUP_READY:
+        case BRIDGE_STARTUP_FAILED:
+        default:
+            break;
     }
 }
 
@@ -429,41 +819,55 @@ void app_main(void){
         BRIDGE_UART_RX_GPIO,
         BRIDGE_UART_BAUD);
 
-    uint32_t test_seq = 2;
+    s_startup_disarm_seq = esp_random();
+    s_startup_ping_seq = s_startup_disarm_seq + 1U;
+
+    uint32_t test_seq = s_startup_ping_seq + 1U;
     bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
 
-    if (BRIDGE_SCRIPTED_TEST_ENABLED != 0U){
-        vTaskDelay(pdMS_TO_TICKS(500));
-        uart_write_bytes(BRIDGE_UART_NUM, "\n", 1);
-        vTaskDelay(pdMS_TO_TICKS(100));
-        bridge_uart_send_ping(1);
-    }
-    else {
+    s_startup_state = BRIDGE_STARTUP_SETTLE;
+    s_startup_state_tick = xTaskGetTickCount();
+    s_startup_attempt_count = 0U;
+
+    if (BRIDGE_SCRIPTED_TEST_ENABLED == 0U){
         ESP_LOGI(TAG, "Scripted UART safety sequence disabled");
     }
-    TickType_t last_test_tick = xTaskGetTickCount();
+
+    TickType_t last_test_tick = s_startup_state_tick;
+    bool startup_ready_seen = false;
 
     while(1){
-        TickType_t now = xTaskGetTickCount();
-
-        if(
-            BRIDGE_SCRIPTED_TEST_ENABLED != 0U &&
-            test_step != BRIDGE_TEST_DONE &&
-            now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
-        ){
-            test_step = bridge_uart_run_test_step(test_step, &test_seq);
-            last_test_tick = now;
-        }
-
         uint8_t rx_byte;
         int rx_len = uart_read_bytes(
             BRIDGE_UART_NUM,
             &rx_byte,
             1,
-            pdMS_TO_TICKS(RX_POLL_MS));
+            pdMS_TO_TICKS(RX_POLL_MS)
+        );
 
-        if (rx_len == 1){
+        if(rx_len == 1){
             bridge_uart_handle_rx_byte(rx_byte);
+        }
+
+        TickType_t now = xTaskGetTickCount();
+        bridge_uart_startup_step(now);
+
+        if(
+            s_startup_state == BRIDGE_STARTUP_READY &&
+            !startup_ready_seen
+        ){
+            startup_ready_seen = true;
+            last_test_tick = now;
+        }
+
+        if(
+            BRIDGE_SCRIPTED_TEST_ENABLED != 0U &&
+            s_startup_state == BRIDGE_STARTUP_READY &&
+            test_step != BRIDGE_TEST_DONE &&
+            now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
+        ){
+            test_step = bridge_uart_run_test_step(test_step, &test_seq);
+            last_test_tick = now;
         }
     }
 }

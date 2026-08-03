@@ -543,12 +543,25 @@ class FirmwareContractTest(unittest.TestCase):
             "parse_error_code(parse_result));return;}",
             handle_line,
         )
-        self.assertIn(
-            "caseUART_FRAME_TYPE_DISARM:motor_output_stop_all();"
-            "s_vx_mmps=0;s_w_mradps=0;s_state=ROBOT_DISARMED;"
-            "s_last_seq=frame.seq;send_ack(frame.seq,\"DISARM\");return;",
-            handle_line,
+
+        disarm_case_start = handle_line.index("caseUART_FRAME_TYPE_DISARM:")
+        disarm_case_end = handle_line.index(
+            "caseUART_FRAME_TYPE_ARM:", disarm_case_start
         )
+        disarm_case = handle_line[disarm_case_start:disarm_case_end]
+
+        self.assert_tokens_in_order(
+            disarm_case,
+            "case UART_FRAME_TYPE_DISARM:",
+            "motor_output_stop_all();",
+            "s_vx_mmps = 0;",
+            "s_w_mradps = 0;",
+            "s_state = ROBOT_DISARMED;",
+            "s_last_seq = frame.seq;",
+            'send_ack(frame.seq, "DISARM");',
+            "return;",
+        )
+
         self.assertIn(
             "caseUART_FRAME_TYPE_ARM:motor_output_stop_all();"
             "s_vx_mmps=0;s_w_mradps=0;s_state=ROBOT_ARMED;"
@@ -618,6 +631,16 @@ class FirmwareContractTest(unittest.TestCase):
         self.assertEqual(integer_define(definitions, "BRIDGE_UART_BAUD"), 115200)
         self.assertEqual(integer_define(definitions, "BRIDGE_SCRIPTED_TEST_ENABLED"), 0)
 
+        expected_startup_defines = {
+            "STARTUP_SETTLE_MS": 500,
+            "STARTUP_SYNC_WAIT_MS": 100,
+            "STARTUP_RESPONSE_TIMEOUT_MS": 500,
+            "STARTUP_MAX_ATTEMPTS": 3,
+        }
+        for name, value in expected_startup_defines.items():
+            with self.subTest(name=name):
+                self.assertEqual(integer_define(definitions, name), value)
+
         init = compact_c(extract_function(self.source["esp_c"], "bridge_uart_init"))
         for token in (
             ".baud_rate=BRIDGE_UART_BAUD,",
@@ -631,23 +654,152 @@ class FirmwareContractTest(unittest.TestCase):
         ):
             self.assertIn(token, init)
 
-        app_main = compact_c(extract_function(self.source["esp_c"], "app_main"))
+        rx_handler = compact_c(
+            extract_function(self.source["esp_c"], "bridge_uart_handle_rx_line")
+        )
+        for token in (
+            'if(strncmp(line,"PONG,",5)==0)',
+            "s_last_pong_seq=seq;",
+            "s_last_pong_valid=true;",
+            "s_startup_state==BRIDGE_STARTUP_WAIT_PONG",
+            "seq==s_startup_ping_seq",
+            'if(strncmp(line,"TEL,",4)==0)',
+            'if(strncmp(line,"ACK,",4)==0)',
+            'parse_u32_field(line,"seq=",&seq)',
+            'parse_string_field(line,"type=",type,sizeof(type))',
+            "s_last_ack_seq=seq;",
+            'snprintf(s_last_ack_type,sizeof(s_last_ack_type),"%s",type);',
+            "s_last_ack_valid=true;",
+            "s_startup_state==BRIDGE_STARTUP_WAIT_DISARM_ACK",
+            "seq==s_startup_disarm_seq",
+            'strcmp(type,"DISARM")==0',
+            'if(strncmp(line,"ERR,",4)==0)',
+        ):
+            self.assertIn(token, rx_handler)
+
+        startup = compact_c(
+            extract_function(self.source["esp_c"], "bridge_uart_startup_step")
+        )
+        for token in (
+            "caseBRIDGE_STARTUP_SETTLE:",
+            "pdMS_TO_TICKS(STARTUP_SETTLE_MS)",
+            'uart_write_bytes(BRIDGE_UART_NUM,"\\n",1)',
+            "caseBRIDGE_STARTUP_SYNC_WAIT:",
+            "pdMS_TO_TICKS(STARTUP_SYNC_WAIT_MS)",
+            "uart_flush_input(BRIDGE_UART_NUM)",
+            "if(!bridge_uart_send_disarm(s_startup_disarm_seq))",
+            "caseBRIDGE_STARTUP_WAIT_DISARM_ACK:",
+            "s_last_ack_seq==s_startup_disarm_seq",
+            'strcmp(s_last_ack_type,"DISARM")==0',
+            "if(!bridge_uart_send_ping(s_startup_ping_seq))",
+            "caseBRIDGE_STARTUP_WAIT_PONG:",
+            "s_last_pong_seq==s_startup_ping_seq",
+            "s_startup_attempt_count<STARTUP_MAX_ATTEMPTS",
+            "s_startup_state=BRIDGE_STARTUP_READY;",
+            "s_startup_state=BRIDGE_STARTUP_FAILED;",
+        ):
+            self.assertIn(token, startup)
         self.assertIn(
-            "if(BRIDGE_SCRIPTED_TEST_ENABLED!=0U){"
-            "vTaskDelay(pdMS_TO_TICKS(500));"
-            'uart_write_bytes(BRIDGE_UART_NUM,"\\n",1);'
-            "vTaskDelay(pdMS_TO_TICKS(100));"
-            "bridge_uart_send_ping(1);}",
-            app_main,
+            "if(s_last_ack_valid&&"
+            "s_last_ack_seq==s_startup_disarm_seq&&"
+            'strcmp(s_last_ack_type,"DISARM")==0)',
+            startup,
         )
         self.assertIn(
+            "if(s_last_pong_valid&&s_last_pong_seq==s_startup_ping_seq)",
+            startup,
+        )
+        self.assertEqual(
+            startup.count("pdMS_TO_TICKS(STARTUP_RESPONSE_TIMEOUT_MS)"),
+            2,
+        )
+        self.assertEqual(
+            startup.count("if(s_startup_attempt_count<STARTUP_MAX_ATTEMPTS)"),
+            2,
+        )
+        self.assertEqual(startup.count("s_startup_attempt_count++;"), 2)
+        self.assertEqual(
+            startup.count("bridge_uart_send_disarm(s_startup_disarm_seq)"),
+            2,
+        )
+        self.assertEqual(
+            startup.count("bridge_uart_send_ping(s_startup_ping_seq)"),
+            2,
+        )
+        self.assertGreaterEqual(
+            startup.count("s_startup_state=BRIDGE_STARTUP_FAILED;"),
+            6,
+        )
+        self.assertEqual(
+            startup.count("s_startup_state=BRIDGE_STARTUP_READY;"),
+            1,
+        )
+        self.assertNotIn("bridge_uart_send_arm(", startup)
+        self.assertNotIn("bridge_uart_send_cmd(", startup)
+        self.assertNotIn("bridge_uart_run_test_step(", startup)
+
+        app_main = compact_c(extract_function(self.source["esp_c"], "app_main"))
+        for token in (
+            "s_startup_disarm_seq=esp_random();",
+            "s_startup_ping_seq=s_startup_disarm_seq+1U;",
+            "uint32_ttest_seq=s_startup_ping_seq+1U;",
+            "s_startup_state=BRIDGE_STARTUP_SETTLE;",
+            "s_startup_state_tick=xTaskGetTickCount();",
+            "s_startup_attempt_count=0U;",
+            "boolstartup_ready_seen=false;",
+            "startup_ready_seen=true;",
+            "last_test_tick=now;",
+        ):
+            self.assertIn(token, app_main)
+        self.assertEqual(app_main.count("bridge_uart_startup_step(now);"), 1)
+        self.assertIn(
             "if(BRIDGE_SCRIPTED_TEST_ENABLED!=0U&&"
+            "s_startup_state==BRIDGE_STARTUP_READY&&"
             "test_step!=BRIDGE_TEST_DONE&&",
             app_main,
         )
+        self.assertNotIn("vTaskDelay(", app_main)
+        self.assertNotIn('uart_write_bytes(BRIDGE_UART_NUM,"\\n",1)', app_main)
         self.assertEqual(app_main.count("bridge_uart_run_test_step("), 1)
         self.assertNotIn("bridge_uart_send_arm(", app_main)
         self.assertNotIn("bridge_uart_send_cmd(", app_main)
+
+    def test_esp32_field_parser_requires_exact_field_boundaries(self) -> None:
+        esp_source = compact_c(self.source["esp_c"])
+        self.assertNotIn("strstr(", esp_source)
+        for token in (
+            "constchar*field=line;",
+            "constchar*value=NULL;",
+            "if(strncmp(field,key,key_len)==0)",
+            "if(value!=NULL){returnNULL;}",
+            "value=field+key_len;",
+            "constchar*comma=strchr(field,',');",
+            "field=comma+1;",
+            "returnvalue;",
+        ):
+            self.assertIn(token, esp_source)
+
+        self.assertGreaterEqual(esp_source.count("find_field_value(line,key)"), 3)
+        self.assertEqual(esp_source.count("if(pos[0]!=','&&pos[0]!='\\0')"), 2)
+        self.assertIn("value>(UINT32_MAX-digit)/10U", esp_source)
+        self.assertIn("magnitude>(limit-digit)/10U", esp_source)
+
+        rx_bytes = compact_c(
+            extract_function(self.source["esp_c"], "bridge_uart_handle_rx_byte")
+        )
+        for token in (
+            "if(s_rx_discard_until_lf)",
+            "s_rx_discard_until_lf=false;",
+            "s_rx_discard_until_lf=true;",
+            "s_rx_line_buf[s_rx_line_len-1U]=='\\r'",
+            "s_rx_line_len--;",
+            "RXembeddedCRrejected",
+            "RXcontrolbyterejected",
+            "RXlineoverflow",
+            "s_parse_error_count++;",
+        ):
+            self.assertIn(token, rx_bytes)
+        self.assertNotIn("if(byte=='\\r'){return;}", rx_bytes)
 
 
 if __name__ == "__main__":

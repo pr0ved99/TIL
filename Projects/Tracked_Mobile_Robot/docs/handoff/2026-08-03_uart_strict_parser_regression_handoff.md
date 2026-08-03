@@ -1,5 +1,7 @@
 # 2026-08-03 UART Strict-Parser Regression Handoff
 
+> 이 문서는 response-gated startup 구현 전 상태를 남긴 역사 기록이다. 현재 이어서 작업할 때는 최신 후속 문서인 [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md)를 기준으로 사용한다.
+
 ## 현재 목표
 
 ESP32-S3와 NUCLEO-F446RE 사이의 current strict-parser release를 다음 두 단계로 닫는다.

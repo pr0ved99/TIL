@@ -10,17 +10,21 @@
 2. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 3. [`../../AGENTS.md`](../../AGENTS.md)
 4. [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)
-5. [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md)
-6. [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md)
-7. [`../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
-8. [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
-9. [`../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
-10. [`../progress/2026-07-31_progress.md`](../progress/2026-07-31_progress.md)
-11. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
-12. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
-13. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-14. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-15. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+5. [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md)
+6. [`../progress/2026-08-04_progress.md`](../progress/2026-08-04_progress.md)
+7. [`../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)
+8. [`../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
+9. [`2026-08-03_uart_response_gated_startup_implementation_handoff.md`](2026-08-03_uart_response_gated_startup_implementation_handoff.md) (구현 직후 역사 checkpoint)
+10. [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md)
+11. [`../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
+12. [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
+13. [`../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
+14. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
+15. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
+16. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+17. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+18. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+19. [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md) (구현 전 역사 문맥이 필요할 때만)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -30,7 +34,12 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-08-03 | [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md) | Current strict-parser normal-sequence PASS 이후 response-gated startup, malformed recovery와 safe-image 복구 시작점 |
+| 2026-08-04 | [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Current continuation: Gate A/B와 active DISARM, safe source/static/build restore 뒤 board reflash/run, wrong ACK type와 Gate C two-parser recovery 시작점 |
+| 2026-08-04 | [`../progress/2026-08-04_progress.md`](../progress/2026-08-04_progress.md) | Gate A/B runtime, stale response/reset recovery, active DISARM 23.50 us, safe source/static/build restore와 pending board regression |
+| 2026-08-04 | [`../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) | UART RX end to PWM last-edge MCU-pin first baseline과 scope limit |
+| 2026-08-03 | [`../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | Gate A/B raw runtime 판정, wrong ACK type와 physical provenance gap |
+| 2026-08-03 | [`2026-08-03_uart_response_gated_startup_implementation_handoff.md`](2026-08-03_uart_response_gated_startup_implementation_handoff.md) | Historical implementation checkpoint; current 작업 지시로 사용하지 않음 |
+| 2026-08-03 | [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md) | 구현 전 strict-parser 정상 시퀀스 PASS와 startup 문제를 남긴 역사 baseline; 현재 작업 지시로 사용하지 않음 |
 | 2026-08-03 | [`../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md) | PING/PONG부터 final DISARMED까지 current parser controlled-run 결과, 근거와 release 범위 제한 |
 | 2026-08-03 | [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md) | USART1 decode, dual PWM/direction timing PASS와 current UART normal-sequence PASS; 남은 startup/malformed·active safety gate |
 | 2026-08-03 | [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md) | Raw capture에 연결된 PWM/DIR 측정 보고서, 계측 범위와 안전 gate 판정 |
@@ -59,7 +68,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 ## Rules For Future Handoff
 
 - 새 handoff는 날짜 prefix를 붙인다: `YYYY-MM-DD_topic_handoff.md`.
-- 최신 handoff는 이 README의 `Current Handoff`에 추가한다.
+- 최신 handoff는 이 README의 `Current Continuation Sources`에 추가한다.
 - handoff에는 반드시 다음을 포함한다.
   - 현재 목표
   - 완료된 것

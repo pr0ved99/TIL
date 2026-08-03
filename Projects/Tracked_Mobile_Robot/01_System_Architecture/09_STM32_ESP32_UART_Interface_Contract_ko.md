@@ -20,8 +20,9 @@ MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 초기 결정:
 
 - 물리 interface: 3.3 V UART
-- STM32 후보 peripheral: USART1
-- STM32 후보 pin: PA9/PA10
+- STM32 peripheral: USART1
+- STM32 pin: PA9/PA10
+- ESP32 UART1 pin: GPIO17/GPIO18
 - Frame format: 115200 baud, 8 data bits, no parity, 1 stop bit
 - 초기 protocol: newline으로 끝나는 ASCII text message
 - 초기 command timeout: 300 ms
@@ -73,8 +74,8 @@ PC serial terminal / Python script
 초기 ESP32 연동:
 
 ```text
-ESP32 UART
-<-> STM32 USART1 후보 PA9/PA10
+ESP32 UART1 GPIO17/GPIO18
+<-> STM32 USART1 PA9/PA10
 ```
 
 두 경우 모두 application protocol은 동일하게 유지한다.
@@ -122,13 +123,64 @@ ESP32 UART
 
 - UART RX ISR은 byte를 ring buffer에 넣고 즉시 빠져나온다.
 - Parser는 main loop 또는 task context에서 `\n` 기준으로 frame을 조립한다.
-- 너무 긴 frame은 버리고 parse error count를 증가시킨다.
+- 너무 긴 frame 또는 LF 앞의 embedded control/CR을 발견하면 parse error count를 한 번 증가시키고 다음 LF까지 frame 전체를 버린다. Overflow tail을 새 frame으로 재해석하면 안 된다.
+- Field key는 comma로 나뉘 token의 시작 지점에서 정확히 일치해야 한다.
+- Startup 응답에 필요한 동일 field key가 두 번 나오면 ambiguous frame으로 거부한다.
+- Integer field는 최소 한 자리의 숫자를 포함하고 comma 또는 frame 끝에서
+  종료되어야 한다.
+- `uint32_t`/`int32_t` 범위를 넘는 숫자는 parse failure로 처리한다.
 - 알 수 없는 frame type은 `ERR,code=UNKNOWN_TYPE` 또는 ignore 중 하나로 처리한다.
 - `CMD`의 required field가 없으면 `ERR,code=MISSING_FIELD`를 보낸다.
 - 숫자 변환 실패는 `ERR,code=BAD_VALUE`로 처리한다.
 - 범위 초과는 `ERR,code=OUT_OF_RANGE`로 처리한다.
 - `DISARMED` 상태에서 nonzero `CMD`는 `ERR,code=NOT_ARMED`로 거부한다.
 - Invalid `CMD`는 현재 active command를 바꾸면 안 된다.
+
+Startup gate에 사용하는 response parser의 추가 규칙:
+
+- `PONG` response는 `PONG,`으로 시작하고 exact `seq` field parsing에
+  성공해야 valid event다.
+- `ACK` response는 `ACK,`으로 시작하고 exact `seq`, `type` field parsing에
+  모두 성공해야 valid event다.
+- `badseq=1`, `badtype=DISARM`, `seq=1x` 같은 substring 또는 미완성 값을
+  정상 field로 오인하면 안 된다.
+- `ACK,seq=7,seq=7,type=DISARM` 같은 duplicate required field와 trailing comma를 정상 응답으로 인정하면 안 된다.
+- 정상 line ending은 LF 또는 terminal CRLF이며 frame 중간의 CR/NUL/control byte는 해당 frame 전체를 무효화한다.
+
+### MVP startup synchronization rule
+
+ESP32는 STM32가 준비되었다고 시간만으로 가정하지 않는다. 부팅 중
+다음 response-gated sequence를 사용한다.
+
+```text
+SETTLE 500 ms
+-> line sync LF
+-> SYNC_WAIT 100 ms
+-> RX input/assembler reset
+-> DISARM,seq=S                 # S는 매 부팅 esp_random()으로 생성
+-> matching ACK,seq=S,type=DISARM
+-> PING,seq=S+1
+-> matching PONG,seq=S+1
+-> READY
+```
+
+계약:
+
+- `DISARM` 및 `PING` response timeout은 각각 500 ms다.
+- 각 요청은 첫 송신을 포함해 최대 3회 시도한다.
+- `ACK`는 `WAIT_DISARM_ACK` 상태에서만 latch하며 `valid && seq == S && type == DISARM`을 모두 만족해야 한다.
+- `PONG`은 `WAIT_PONG` 상태에서만 latch하며 `valid && seq == S+1`을 만족해야 한다.
+- Mismatched, malformed, stale response는 다음 상태로 이동시키지 않는다.
+- Startup TX 또는 RX input flush가 실패하면 재시도를 성공으로 간주하지 않고 즉시 `FAILED`로 닫는다.
+- 시도를 소진하면 `FAILED`에 머물고 자동 motion sequence를 실행하지
+  않는다.
+- Startup FSM은 `DISARM`, `PING`만 송신하며 `ARM`, `CMD`를 송신하지
+  않는다.
+
+`BRIDGE_SCRIPTED_TEST_ENABLED == 0U`여도 위 startup `DISARM/PING`은 수행한다.
+이 매크로가 금지하는 것은 `ARM/CMD`를 포함한 controlled-bench motion
+script다. 매크로를 활성화해도 startup이 `READY`가 아니면 script는
+시작할 수 없다.
 
 ### MVP safety and timeout rule
 
@@ -215,11 +267,11 @@ STM32는 motion 허용 여부를 결정한다.
 
 ## 2. 물리 배선
 
-후보 배선:
+현재 검증 배선:
 
 ```text
-STM32 PA9  / USART1_TX -> ESP32 UART_RX
-STM32 PA10 / USART1_RX <- ESP32 UART_TX
+STM32 PA9  / USART1_TX -> ESP32 GPIO18 / UART1_RX
+STM32 PA10 / USART1_RX <- ESP32 GPIO17 / UART1_TX
 STM32 GND              <-> ESP32 GND
 ```
 
@@ -231,14 +283,16 @@ STM32 GND              <-> ESP32 GND
 - UART wire는 모터 전원선과 떨어뜨린다.
 - 모터 전원을 연결하기 전에 UART를 먼저 테스트한다.
 
-현재 pin allocation 문서 기준 STM32 후보 pin:
+현재 pin allocation 및 bench link 기준:
 
 | Signal | STM32 pin | Function | Board access | Status |
 | --- | --- | --- | --- | --- |
-| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
-| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
+| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Bench tested |
+| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Bench tested |
 
-ESP32-S3 pin assignment는 이 문서에서 최종 확정하지 않는다.
+ESP32-S3 DevKitC-1은 현재 펌웨어와 bench 검증에서 GPIO17 TX, GPIO18 RX를
+사용한다. 영구 배선 제작 전에는 보드 revision, connector 방향, 다른 신호와의
+충돌을 다시 확인한다.
 
 ESP32 pin 선택 규칙:
 
@@ -246,8 +300,8 @@ ESP32 pin 선택 규칙:
 - USB Serial/JTAG pin은 피한다.
 - 보드 매뉴얼에서 안전하다고 확인되지 않은 BOOT/strapping-sensitive pin은 피한다.
 - 현재 프로젝트 테스트에서 RGB LED로 확인된 GPIO38은 피한다.
-- 정확한 DevKitC-1 보드 pinout과 ESP-IDF UART mapping을 확인한 뒤 최종 ESP32 pin
-  번호를 기록한다.
+- 현재 GPIO17/18 mapping을 유지하되, 영구 harness 제작 전 DevKitC-1
+  board revision과 connector 접근성을 다시 확인한다.
 
 ## 3. 전기적 규칙
 
@@ -399,7 +453,7 @@ PING,seq=45\n
 STM32 response:
 
 ```text
-PONG,seq=45,uptime_ms=123456\n
+PONG,seq=45,t_ms=123456\n
 ```
 
 ## 7. Telemetry Message
@@ -511,6 +565,10 @@ ERR,seq=42,type=CMD,code=NOT_ARMED\n
 | Command timeout | 300 ms |
 | PING interval | Idle 상태에서 1 s |
 | Startup motor-disabled delay | STM32가 정의 |
+| ESP32 startup settle | 500 ms |
+| ESP32 line-sync wait | 100 ms |
+| Startup response timeout | `DISARM`, `PING` 각 500 ms |
+| Startup maximum attempts | 각 request당 3회, 첫 송신 포함 |
 
 규칙:
 
@@ -539,6 +597,11 @@ ESP32가 강제해야 하는 것:
 - STM32 fault 또는 reset 이후 자동 re-arm하지 않는다.
 - UI command source가 끊기면 `CMD` 전송을 중단한다.
 - 사용자가 stop을 누르면 `DISARM`을 보낸다.
+- 부팅 중 matching `DISARM ACK`를 받기 전에 `PING` 단계로 진행하지 않는다.
+- Matching `PONG`을 받기 전에 startup `READY`를 선언하지 않는다.
+- Startup 실패를 `ARM`/`CMD` 자동 송신으로 복구하지 않는다.
+- Motion bench script는 compile-time default-off와 startup `READY` 두 gate를 모두
+  통과해야만 실행한다.
 
 공통 규칙:
 
@@ -558,11 +621,13 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 
 ### Stage 2: 모터 전원 없는 Cross-Board Link
 
-- STM32 PA9를 ESP32 RX에 연결한다.
-- ESP32 TX를 STM32 PA10에 연결한다.
+- STM32 PA9를 ESP32 GPIO18 RX에 연결한다.
+- ESP32 GPIO17 TX를 STM32 PA10에 연결한다.
 - Common GND를 연결한다.
 - Motor battery는 연결하지 않는다.
-- `PING`을 보내고 `PONG`을 확인한다.
+- `DISARM -> ACK -> PING -> PONG -> READY` 순서를 확인한다.
+- 응답 누락과 mismatched response 주입 시 `FAILED`에 머물고 `ARM/CMD`가
+  없음을 확인한다.
 
 ### Stage 3: Telemetry Only
 
@@ -589,7 +654,40 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 - ESP32가 UI에서 low-speed command request를 보낸다.
 - STM32는 계속 최종 safety gate로 남는다.
 
-## 12. Logging과 Debugging
+## 12. 현재 구현 및 검증 상태
+
+2026-08-04 현재 구현·runtime과 source 상태:
+
+| 항목 | 결과 | 판정 범위 |
+| --- | --- | --- |
+| Response-gated startup FSM 구현 | DONE | settle, sync, DISARM ACK, PONG, READY/FAILED 경로 |
+| Exact frame/parser hardening | DONE | exact prefix, field boundary/duplicate, integer terminator/overflow, overlong/control frame discard |
+| 2026-08-03 safe-source preflight | **15/15 PASS** | 당시 정적 source/configuration contract + 기존 host parser test |
+| 2026-08-03 ESP-IDF build | **PASS** | binary `0x2b210`, smallest app partition `83%` free; board identity 증거 아님 |
+| Gate A startup runtime | **PASS — behavior** | exact DISARM ACK/PONG 뒤 READY, ARM/CMD 없음 |
+| Gate B bounded failure | **PASS** | DISARM ACK 및 PONG loss 각각 3회 뒤 FAILED |
+| Stale response/reset recovery | **PASS — executed vectors** | stale ACK/PONG seq 무시, controlled reset 뒤 새 startup |
+| Wrong ACK type | **NOT TESTED** | matching seq + wrong type 별도 runtime vector 없음 |
+| Gate C parser recovery | **NOT TESTED** | ESP malformed response -> exact response와 STM32 malformed command -> valid PING/PONG 두 방향 모두 증거 없음 |
+| Current source restore | **PASS — source/static/build** | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`) |
+| Restored safe-image board regression | **PENDING** | 양쪽 board reflash/run, matching startup과 ARM/CMD 0 raw evidence 필요 |
+
+2026-07-20 PING/PONG, telemetry relay와 scripted sequence는 역사적 baseline이다.
+새 response-gated runtime은 별도 raw log와
+[`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에
+기록했다. Raw log는 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지
+않으므로 그 provenance는 작업자 확인 대기다.
+
+현재 revision의 verification gate는 다음과 같다.
+
+1. Restored `0U/1000 ms` source, contract `15/15`와 isolated clean dual-build checkpoint 보존
+2. Safe images를 양쪽 board에 flash/run
+3. Safe image에서 matching response 뒤 READY 및 전 구간 `ARM/CMD` 미송신
+4. ESP startup-response parser와 STM32 command parser 각각의 malformed
+   fail-closed/recovery runtime capture
+5. Matching seq + wrong ACK type rejection 별도 runtime capture로 T-BRIDGE-007 종료
+
+## 13. Logging과 Debugging
 
 초기 개발 중에는 다음을 유지한다.
 
@@ -615,14 +713,17 @@ ESP32:
 - Last telemetry time
 - Wi-Fi client state
 - Last command sent
+- Startup state transition
+- `DISARM`/`PING` attempt number
+- Matching ACK/PONG 확인
+- Retry 소진 시 `FAILED` reason
 
-## 13. 열린 결정 사항
+## 14. 열린 결정 사항
 
-최종 배선 전에 답해야 할 항목:
+영구 배선과 후속 통합 전에 답해야 할 항목:
 
 - PC-first 실습에서 사용할 UART: ST-LINK VCP USART2만 사용할지, 외부 USB-UART도 허용할지
-- 최종 ESP32-S3 UART GPIO pair
-- MDD10A PWM/DIR pin 확정 이후에도 STM32 USART1 PA9/PA10이 conflict-free인지
+- Bench-validated GPIO17/18과 PA9/PA10을 영구 harness에도 그대로 사용할지
 - 실제 module에서 level shifting 또는 buffering이 필요한지
 - 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
 - Timeout 후 output zero 상태를 유지하다가 자동 `DISARMED`로 전환할 `auto_disarm_ms`
@@ -630,6 +731,8 @@ ESP32:
 - Unknown frame type을 `ERR,code=UNKNOWN_TYPE`로 답할지 조용히 ignore할지
 - 최종 fault bitmask definition
 - Wi-Fi command forwarding 전에 checksum을 추가할지
+- Runtime에서 startup `FAILED` 후 수동 reset만 허용할지, 제한된 재시작
+  절차를 추가할지
 
 ## Architecture Decision
 
@@ -638,9 +741,14 @@ ESP32:
 STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
 request source, telemetry bridge로 동작한다.
 
-다음 실무 작업은 모터 전원 없이 양쪽 보드에서 UART를 검증하고, 이후 MDD10A PWM/DIR
-output, encoder, ADC, I2C, USART2 debug, USART1 ESP32 link가 공존하도록 STM32 pin
-allocation을 수정하는 것이다.
+현재 다음 실무 작업은 motor-energy source를 분리한 상태에서 restored safe images를
+양쪽 board에 flash/run하고 ARM/CMD 0 회귀를 수행하는 것이다. Source `0U/1000 ms`,
+contract `15/15`와 isolated clean STM32/ESP32 build는 이미 통과했다. 그 뒤
+Gate C의 ESP response/STM32 command parser recovery를 각각 닫는다. Gate A
+exact startup, Gate B bounded no-response와 stale-sequence rejection은 raw behavior
+기준 이미 통과했지만 current release는 wrong ACK type, safe-image board regression과 두 parser
+recovery가 남아
+`PARTIAL`이다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.
