@@ -386,6 +386,7 @@ class FirmwareContractTest(unittest.TestCase):
             "MOTOR_OUTPUT_PIN_TEST_ENABLED",
             "MOTOR_FAULT_INJECTION_TEST_ENABLED",
             "UART_MVP_OUTPUT_TEST_ENABLED",
+            "UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED",
             "BRIDGE_SCRIPTED_TEST_ENABLED",
         }
         self.assertTrue(
@@ -558,6 +559,10 @@ class FirmwareContractTest(unittest.TestCase):
             "s_w_mradps = 0;",
             "s_state = ROBOT_DISARMED;",
             "s_last_seq = frame.seq;",
+            "if(s_wrong_disarm_ack_type_sent == 0u)",
+            "s_wrong_disarm_ack_type_sent = 1u;",
+            'send_ack(frame.seq, "ARM");',
+            "return;",
             'send_ack(frame.seq, "DISARM");',
             "return;",
         )
@@ -616,6 +621,10 @@ class FirmwareContractTest(unittest.TestCase):
             extract_function(self.source["protocol_c"], "uart_mvp_init")
         )
         self.assertIn("s_state=ROBOT_DISARMED;", protocol_init)
+        self.assertIn(
+            "s_wrong_disarm_ack_type_sent=0u;",
+            protocol_init,
+        )
         self.assertIn("s_cmd_timeout_ms=CMD_TIMEOUT_DEFAULT_MS;", protocol_init)
 
     def test_esp32_uart_and_script_guard_contract(self) -> None:

@@ -6,21 +6,23 @@ as the current UART/motor-output continuation source.
 
 ## 현재 목표
 
-현재 safe-restored source로 만든 images를 양쪽 board에 reflash/run하고 ARM/CMD 0
-회귀를 보존한 뒤 required wrong ACK type과 Gate C의 ESP-response/STM32-command
-parser recovery를 닫는다. Source restore, contract와 isolated clean build는 완료됐다.
+Matching-seq/wrong-ACK-type rejection과 same-seq retry를 캡처해 T-BRIDGE-007의
+required UART runtime vector를 닫았다. 현재 controlled hook을 `0U`로 복구하고
+safe-image 회귀를 다시 보존한 뒤 Gate C의 two-parser recovery를 닫는다.
 
 ```text
 Gate A runtime behavior: PASS
 Gate B bounded failure: PASS
 Gate B stale-sequence rejection/reset-new-startup recovery: PASS behavior;
 post-failure linkage pending
+T-BRIDGE-007 wrong ACK type rejection/retry: PASS behavior
 Gate C controlled normal sequence: PASS
 Gate C ESP-response/STM32-command parser recovery: NOT TESTED
 Active DISARM MCU-pin baseline: PASS, 23.50 us
 Current release: PARTIAL
-Current source/static/build restore: PASS
-Safe-image board reflash/run: PENDING
+Safe-image UART runtime behavior: PASS; image/setup provenance pending
+Current source: wrong-ACK-type controlled hook 1U
+Current controlled STM32 build: PASS
 ```
 
 ## 완료된 Runtime Evidence
@@ -40,7 +42,9 @@ Safe-image board reflash/run: PENDING
 - FAILED 실행에서 READY/ARM/CMD 없음
 - controlled reset 뒤 새 `S/S+1` startup recovery
 - stale ACK seq와 stale PONG seq 무시 뒤 exact response만 통과
-- matching seq + wrong ACK type은 별도 runtime vector가 없어 open
+- matching seq의 wrong `type=ARM` ACK 무시
+- 정확히 500 ms 뒤 동일 DISARM seq 재시도
+- exact DISARM ACK와 PONG 뒤에만 READY; TEL 97/97 DISARMED/zero, ARM/CMD TX 0
 
 원본 파일명 `gate_c1/c2`는 바꾸지 않는다. 두 파일은 의미상 Gate B의
 stale-response rejection evidence다.
@@ -65,45 +69,51 @@ mechanical stop, Physical E-stop을 통과시킨 것이 아니다.
 | ESP `TEST_STEP_PERIOD_MS` | `1000` |
 | STM `UART_MVP_OUTPUT_TEST_ENABLED` | `0U` |
 | STM stale ACK injection | `0U` |
+| STM wrong DISARM ACK type once injection | `1U` |
 | STM stale PONG injection | `0U` |
 | STM suppress PONG injection | `0U` |
 | STM button output/fault hooks | `0U` |
 
-현재 firmware contract suite는 `15/15 PASS`다. Isolated clean STM32/ESP32 build도
-run `20260804043010-26408-7918`에서 모두 PASS했다. 이 결과는 source/configuration과
-build artifact까지만 검증하며, restored images가 board에 실행 중이라는 증거는 아니다.
+새 훅을 `0U`로 둔 structural checkpoint는 contract `15/15 PASS`, isolated STM32
+build `20260804144612-32776-5226` PASS다. 현재 `1U` controlled source는 default-off
+guard 한 건만 의도적으로 실패하며, STM32 test build `20260804144706-1756-bc19`은
+`0 errors / 0 warnings`로 PASS했다.
 
-## 완료된 단계: Safe Source/Static/Build Restore
+Restored safe-image UART runtime은 exact ACK/PONG/READY 뒤 11.24 s, TEL 118/118
+DISARMED/zero/error 0과 ARM/CMD 0으로 PASS했다. Raw log는 flash identity와 physical
+power setup을 독립 증명하지 않는다.
+
+## 완료된 단계: Safe Source/Static/Build/Runtime Regression
 
 - ESP `BRIDGE_SCRIPTED_TEST_ENABLED=0U`
 - ESP `TEST_STEP_PERIOD_MS=1000`
 - STM `UART_MVP_OUTPUT_TEST_ENABLED=0U`
 - firmware contract `15/15 PASS`
 - isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`)
+- exact ACK/PONG/READY
+- READY 뒤 약 11.24 s 동안 ARM/CMD 0
+- TEL 118/118 DISARMED/zero/error 0
 
-Board에는 이전 controlled-test image가 남아 있을 수 있다. Safe-image board
-reflash/run과 ARM/CMD 0 raw evidence 전까지 board 상태는 복구 완료로 판정하지 않는다.
+Runtime behavior는 PASS지만 raw log에 flash transcript/hash와 physical setup metadata가
+없으므로 exact image identity와 무전원 조건은 operator/provenance gap으로 유지한다.
 
-## Safe Build/Flash Regression
+## Safe Build/Flash Regression Result
 
-Source restore와 필요한 STM32/ESP32 isolated clean build는 PASS했다. Build PASS는
-board runtime 증거가 아니므로, 이어서 사용자가 safe images를 flash/run하고 다음을
-새 raw log로 확인한다.
+Restored safe images 실행에서 다음을 새 raw log로 확인했다.
 
 - matching DISARM ACK와 PONG 뒤 READY
 - READY 이전 및 이후 scripted ARM/CMD TX 0회
 - telemetry DISARMED/zero
 - 반복 reset, 과열, 냄새, USB 불안정 없음
 
-Flash transcript와 binary hash를 함께 보존하면 현재 raw evidence의 image-identity
-gap을 줄일 수 있다.
+UART behavior 판정은 PASS다. Flash transcript와 binary hash가 raw log에 없어
+image-identity gap은 별도로 남는다.
 
-## 다음 Open Gate: T-BRIDGE-007 completion과 Gate C parser recovery
+## 다음 Open Gate: Safe Restore와 Gate C Parser Recovery
 
-Safe restore와 safe-image 회귀 뒤, motor power가 없는 controlled 환경에서 실행한다.
-
-먼저 matching seq + wrong ACK type을 주입하고 DISARM ACK wait state가 열리지 않는지
-확인해 T-BRIDGE-007의 required gap을 닫는다.
+T-BRIDGE-007의 required UART runtime behavior는 PASS했다. 현재 STM32 source와 board는
+wrong-ACK-type controlled 상태이므로, 먼저 hook을 `0U`로 복구하고 contract `15/15`,
+safe STM32 build/reflash와 ARM/CMD 0 회귀를 완료한다.
 
 ### Gate C1: ESP32 startup-response parser
 
@@ -151,6 +161,8 @@ C2 PASS 기준:
 - [Active DISARM latency report](../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
 - [2026-08-04 progress](../progress/2026-08-04_progress.md)
 - [UART raw logs](../../assets/logs/esp32_uart_bridge/README.md)
+- [Safe-image UART runtime regression](../../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt)
+- [Wrong DISARM ACK type rejection](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)
 - [Logic-analyzer capture index](../../assets/captures/logic_analyzer/README.md)
 
 ## Evidence Boundary Pending Operator Confirmation
@@ -161,17 +173,17 @@ Gate A/B와 active DISARM raw files에는 LiPo/MDD10A/motor power 분리, UART �
 
 ## 다음 안전 시험 순서
 
-Completed: safe source restore, contract `15/15`, isolated clean dual build.
+Completed: safe source restore, contract `15/15`, isolated clean dual build, safe-image
+UART runtime behavior, matching-seq/wrong-ACK-type rejection and same-seq retry.
 
-1. Safe images flash/run and no-ARM/CMD evidence
-2. Required matching-seq/wrong-ACK-type rejection
-3. Gate C ESP-response and STM32-command parser recovery
-4. Final safe restore regression if another controlled hook was used
-5. Command-timeout shutdown latency
-6. Software-fault shutdown latency/latch
-7. External-reset-marker boot no-output
-8. Board power/back-power and Physical E-stop gates
-9. Only then lifted/no-load actual motor test
+1. Restore the wrong-ACK-type hook to `0U`, contract `15/15`, rebuild/reflash safe STM32 image
+2. Gate C ESP-response and STM32-command parser recovery
+3. Final safe restore regression if another controlled hook is used
+4. Command-timeout shutdown latency
+5. Software-fault shutdown latency/latch
+6. External-reset-marker boot no-output
+7. Board power/back-power and Physical E-stop gates
+8. Only then lifted/no-load actual motor test
 
 ## 절대 유지할 규칙
 

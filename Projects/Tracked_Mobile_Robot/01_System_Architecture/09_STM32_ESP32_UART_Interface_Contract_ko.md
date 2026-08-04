@@ -667,25 +667,31 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 | Gate A startup runtime | **PASS — behavior** | exact DISARM ACK/PONG 뒤 READY, ARM/CMD 없음 |
 | Gate B bounded failure | **PASS** | DISARM ACK 및 PONG loss 각각 3회 뒤 FAILED |
 | Stale response/reset recovery | **PASS — executed vectors** | stale ACK/PONG seq 무시, controlled reset 뒤 새 startup |
-| Wrong ACK type | **NOT TESTED** | matching seq + wrong type 별도 runtime vector 없음 |
+| T-BRIDGE-007 wrong-response runtime | **PASS — required UART behavior** | stale seq 거부에 더해 matching seq의 `type=ARM` ACK를 무시하고 정확히 500 ms 뒤 동일 DISARM seq 재시도; exact DISARM ACK/PONG 뒤에만 READY, TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0 |
 | Gate C parser recovery | **NOT TESTED** | ESP malformed response -> exact response와 STM32 malformed command -> valid PING/PONG 두 방향 모두 증거 없음 |
-| Current source restore | **PASS — source/static/build** | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`) |
-| Restored safe-image board regression | **PENDING** | 양쪽 board reflash/run, matching startup과 ARM/CMD 0 raw evidence 필요 |
+| Safe-source restore checkpoint (wrong-ACK 주입 전) | **PASS — source/static/build** | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`) |
+| Earlier safe-image UART runtime | **PASS — behavior** | exact ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0; image/setup provenance는 pending |
+| Current controlled-test source | **ACTIVE — NOT RELEASE** | ESP script와 motor-output hook은 `0U`; `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U` |
+| Final restored safe-image regression | **PENDING** | wrong-ACK hook `0U` 복구, contract `15/15`, build/reflash 뒤 matching startup과 ARM/CMD 0 회귀 필요 |
 
 2026-07-20 PING/PONG, telemetry relay와 scripted sequence는 역사적 baseline이다.
 새 response-gated runtime은 별도 raw log와
 [`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에
-기록했다. Raw log는 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지
-않으므로 그 provenance는 작업자 확인 대기다.
+기록했다. Safe-image 동작 증거는
+[`2026-08-04_safe_image_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt),
+matching-seq/wrong-type 거부 증거는
+[`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
+두 raw log는 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지 않으므로
+그 image/physical provenance는 작업자 확인 대기다.
 
 현재 revision의 verification gate는 다음과 같다.
 
-1. Restored `0U/1000 ms` source, contract `15/15`와 isolated clean dual-build checkpoint 보존
-2. Safe images를 양쪽 board에 flash/run
-3. Safe image에서 matching response 뒤 READY 및 전 구간 `ARM/CMD` 미송신
+1. 완료된 T-BRIDGE-007 raw evidence를 보존하고 STM32 wrong-ACK hook을 `0U`로 복구
+2. ESP `0U/1000 ms`와 모든 STM32 test hook `0U`에서 contract `15/15` 및 build 재확인
+3. Safe images를 양쪽 board에 flash/run하고 matching response 뒤 READY 및 전 구간
+   `ARM/CMD` 미송신 회귀
 4. ESP startup-response parser와 STM32 command parser 각각의 malformed
    fail-closed/recovery runtime capture
-5. Matching seq + wrong ACK type rejection 별도 runtime capture로 T-BRIDGE-007 종료
 
 ## 13. Logging과 Debugging
 
@@ -741,14 +747,14 @@ ESP32:
 STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
 request source, telemetry bridge로 동작한다.
 
-현재 다음 실무 작업은 motor-energy source를 분리한 상태에서 restored safe images를
-양쪽 board에 flash/run하고 ARM/CMD 0 회귀를 수행하는 것이다. Source `0U/1000 ms`,
-contract `15/15`와 isolated clean STM32/ESP32 build는 이미 통과했다. 그 뒤
-Gate C의 ESP response/STM32 command parser recovery를 각각 닫는다. Gate A
-exact startup, Gate B bounded no-response와 stale-sequence rejection은 raw behavior
-기준 이미 통과했지만 current release는 wrong ACK type, safe-image board regression과 두 parser
-recovery가 남아
-`PARTIAL`이다.
+Earlier restored safe-image UART behavior는 exact startup, TEL 118/118
+`DISARMED/zero/error 0`, ARM/CMD TX 0으로 PASS했다. T-BRIDGE-007도 wrong seq와
+matching-seq/wrong-type rejection을 포함해 required UART runtime behavior가 PASS했다.
+현재 다음 실무 작업은 motor-energy source를 분리한 상태에서 wrong-ACK hook을 `0U`로
+복구하고 contract `15/15`, build, safe-image reflash와 ARM/CMD 0 회귀를 다시 수행하는
+것이다. 그 뒤 Gate C의 ESP response/STM32 command parser recovery를 각각 닫는다.
+Current release는 final safe-image regression, image/physical provenance와 두 parser
+recovery가 남아 `PARTIAL`이다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

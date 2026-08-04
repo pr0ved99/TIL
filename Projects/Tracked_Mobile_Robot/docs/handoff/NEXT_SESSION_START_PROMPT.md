@@ -70,7 +70,9 @@ git status --short -- Projects/Tracked_Mobile_Robot
   DISARM ACK loss와 PONG loss 각각 동일 request 3회 뒤 FAILED, ARM/CMD 0회
 - Stale ACK seq와 stale PONG seq rejection PASS
 - Controlled reset 뒤 새 S/S+1 startup recovery PASS
-- matching seq + wrong ACK type runtime vector는 NOT TESTED
+- matching seq + wrong ACK type runtime vector PASS:
+  `ACK,type=ARM` 무시 -> 500 ms -> 같은 DISARM seq 재시도 -> exact ACK/PONG 뒤에만 READY
+- `T-BRIDGE-007` required UART runtime behavior PASS
 - Gate C READY 이후 controlled normal sequence는 PASS
 - Gate C의 ESP malformed-response recovery와 STM32 malformed-command recovery는
   모두 NOT TESTED
@@ -88,20 +90,24 @@ Active DISARM result:
 - 이후 약 2.712088 s 동안 두 PWM HIGH sample 0, 두 DIR LOW
 - 이 결과는 MCU pin-only PASS다. MDD10A, actual motor와 Physical E-stop 증거가 아니다.
 
-현재 실제 source/static/build checkpoint는 안전값으로 복구됐다.
+현재 실제 source/build 상태:
 
 - ESP32 BRIDGE_SCRIPTED_TEST_ENABLED=0U
 - ESP32 TEST_STEP_PERIOD_MS=1000
 - STM32 UART_MVP_OUTPUT_TEST_ENABLED=0U
 - STM32 stale ACK/PONG/suppress PONG hooks=0U
 - STM32 button output/fault hooks=0U
-- Current contract run: 15/15 PASS
-- Isolated clean STM32/ESP32 build: PASS, run 20260804043010-26408-7918
-- Restored safe images의 board reflash/run과 ARM/CMD 0 runtime evidence는 pending이다.
+- STM32 UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U
+- Current source/test image는 controlled wrong-ACK 상태이며 safe release image가 아니다.
+- Controlled STM32 build: PASS, run 20260804144706-1756-bc19
+- 직전 safe-source checkpoint의 contract run은 15/15 PASS, isolated clean STM32/ESP32 build도 PASS였다.
+- Restored safe-image UART runtime behavior는 exact ACK/PONG/READY, READY 뒤 약 11.24 s,
+  TEL 118/118 DISARMED/zero/error 0과 ARM/CMD 0으로 PASS했다.
+- 다만 exact flashed image identity와 physical no-power setup provenance는 pending이다.
 
 중요 evidence boundary:
 
-- Gate A/B/stale/reset/active-DISARM raw files에는 LiPo, MDD10A B+/B-, actual motor
+- Gate A/B/stale/reset/wrong-ACK/active-DISARM raw files에는 LiPo, MDD10A B+/B-, actual motor
   power 분리 상태가 text metadata로 들어 있지 않다.
 - UART 변경 시 양 board power OFF 여부, exact flashed binary hash와 flash transcript도 없다.
 - 작업자가 확인하기 전까지 이 항목은 operator confirmation pending이다.
@@ -115,54 +121,56 @@ Active DISARM result:
 - common GND
 - 115200 baud, 8-N-1, flow control 없음
 - 두 board를 각각 USB로 전원 공급할 때 5 V/VBUS/VIN rail은 연결하지 않는다.
-- Source는 safe-restored지만 board image는 이전 test 상태일 수 있으므로 LiPo,
+- Source와 board image는 wrong-ACK controlled-test 상태일 수 있으므로 LiPo,
   MDD10A B+/B-와 actual motor power를 절대 연결하지 않는다.
 - STM32가 parser, command timeout, motor output, encoder와 최종 safety authority다.
 
 다음 작업은 순서를 바꾸지 않는다.
 
-완료 checkpoint - safe source/static/build restore
+완료 checkpoint - UART runtime behavior
 
-- ESP32 BRIDGE_SCRIPTED_TEST_ENABLED=0U
-- ESP32 TEST_STEP_PERIOD_MS=1000
-- STM32 UART_MVP_OUTPUT_TEST_ENABLED=0U
-- Contract 15/15 PASS
-- Isolated clean STM32/ESP32 build PASS (`20260804043010-26408-7918`)
+- Gate A/B runtime PASS
+- T-BRIDGE-007 wrong-ACK rejection와 same-seq retry PASS
+- Safe-image UART runtime behavior PASS; exact image/setup provenance pending
+- Gate C two-parser recovery NOT TESTED
 
-Step 1 - 첫 번째 실행 단계: safe-image board regression
+Step 1 - 첫 번째 실행 단계: wrong-ACK hook 복구와 safe-image regression
 
 사전 조건:
 
 - LiPo 분리
 - MDD10A B+/B- 분리
 - actual motor power 분리
-- flash 전까지 board USB 분리
 - 기존 raw evidence와 다른 사용자 변경 보존
 
 예상 결과:
 
-- restored safe images가 양쪽 board에 flash/run됨
+- STM32 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=0U`
+- ESP/STM controlled hooks가 모두 `0U`
+- Contract `15/15`, STM32/ESP32 clean build PASS
+- restored safe images가 양쪽 board에 reflash/run됨
 - matching DISARM ACK/PONG 뒤 READY
 - 전체 실행에서 scripted ARM/CMD 0회
 
 즉시 중지 조건:
 
 - motor-energy source가 연결돼 있음
-- 예상하지 않은 macro/source 또는 flash target 발견
+- wrong-ACK hook 또는 다른 controlled hook이 `1U`인 채 flash하려 함
+- 예상하지 않은 source 또는 flash target 발견
 - flash/monitor 오류, 반복 reset, 과열, 냄새 또는 USB 불안정
 - ARM/CMD 송신 또는 nonzero output 관찰
 
 PASS 기준:
 
-- 양쪽 safe-image flash transcript와 가능하면 binary hash 보존
+- 양쪽 safe-image flash transcript와 binary hash 보존
+- LiPo/MDD10A B+/B-/actual motor power 분리 상태를 text metadata로 보존
 - exact startup 뒤 READY와 ARM/CMD 0 raw log
 - telemetry DISARMED/zero
 
-Step 2 - T-BRIDGE-007 completion과 Gate C parser recovery
+Step 2 - Gate C parser recovery
 
-- Safe restore와 safe-image 회귀 뒤에만 실행한다.
-- Matching seq + wrong ACK type을 별도 주입해 gate가 열리지 않음을 확인한다. 이는
-  T-BRIDGE-007을 닫기 위한 required vector다.
+- T-BRIDGE-007 wrong-ACK runtime vector는 이미 PASS다. 원본 로그를 보존하고 반복하지 않는다.
+- Safe restore와 safe-image 회귀 뒤에 Gate C를 실행한다.
 - ESP32 startup response parser와 STM32 command parser의 규칙을 섞지 않는다. ESP
   response parser는 unknown extra field를 허용하지만 current STM32 command parser는
   non-CMD extra data를 거부하고 CMD field order를 강제한다.
@@ -201,9 +209,9 @@ Step 2 - T-BRIDGE-007 completion과 Gate C parser recovery
 첫 답변에서는 다음 네 가지만 보고해라.
 
 1. 실제 git status에서 확인한 변경 파일
-2. Gate A/B, Gate C와 active DISARM의 현재 판정
-3. Current source/static/build가 safe-restored이고 board reflash/run은 pending인 점
-4. 사용자가 바로 수행할 safe-image board regression 한 단계의 사전 조건, 예상 결과,
+2. Gate A/B, T-BRIDGE-007 wrong ACK, Gate C와 active DISARM의 현재 판정
+3. Current wrong-ACK hook `1U`, safe-image behavior PASS와 image/setup provenance pending인 점
+4. 사용자가 바로 수행할 hook `0U` restore + safe-image board regression 한 단계의 사전 조건, 예상 결과,
    중지 조건과 PASS 기준
 
 프롬프트의 상태와 실제 source/diff가 다르면 실제 파일을 우선하고 차이를 먼저

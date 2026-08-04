@@ -23,6 +23,7 @@
 #define UART_MVP_OUTPUT_TEST_ENABLED       0U
 #define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE 100U
 #define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED 1U
 #define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED       0U
 #define UART_MVP_SUPPRESS_PONG_TEST_ENABLED         0U
 
@@ -45,6 +46,7 @@ static uint8_t s_rx_discard_until_lf;
 static robot_state_t s_state = ROBOT_DISARMED;
 static uint32_t s_last_seq;
 static uint8_t s_stale_disarm_ack_sent;
+static uint8_t s_wrong_disarm_ack_type_sent;
 static uint8_t s_stale_pong_sent;
 static int32_t s_vx_mmps;
 static int32_t s_w_mradps;
@@ -261,6 +263,13 @@ static void handle_line(const char *line, size_t line_len){
                 return;
             }
 #endif
+#if UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED
+            if(s_wrong_disarm_ack_type_sent == 0u){
+                s_wrong_disarm_ack_type_sent = 1u;
+                send_ack(frame.seq, "ARM");
+                return;
+            }
+#endif
             send_ack(frame.seq, "DISARM");
             return;
 
@@ -298,6 +307,7 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_state = ROBOT_DISARMED;
     s_last_seq = 0;
     s_stale_disarm_ack_sent = 0u;
+    s_wrong_disarm_ack_type_sent = 0u;
     s_stale_pong_sent = 0u;
     s_last_tel_ms = 0u;
     s_error_count = 0u;

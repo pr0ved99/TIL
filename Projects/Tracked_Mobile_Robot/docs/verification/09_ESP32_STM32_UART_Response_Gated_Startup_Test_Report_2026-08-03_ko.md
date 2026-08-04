@@ -7,13 +7,14 @@ Gate A response-gated happy path: PASS — raw runtime behavior
 Gate B bounded no-response failure: PASS — DISARM ACK loss and PONG loss
 Gate B stale-sequence rejection: PASS — stale ACK seq and stale PONG seq
 Gate B controlled reset/new-startup recovery: PASS — post-failure linkage pending
-T-BRIDGE-007 full vector coverage: PARTIAL — wrong ACK type was not separately injected
+T-BRIDGE-007 required UART runtime vectors: PASS — wrong seq and matching-seq/wrong-type rejection
 Gate C controlled normal sequence after READY: PASS
 Gate C ESP-response/STM32-command parser recovery: NOT TESTED
 Current UART release: PARTIAL
 ```
 
-이 보고서는 2026-08-03에 저장된 ESP32 monitor 원본 로그를 다시 읽어
+이 보고서는 2026-08-03에 저장된 ESP32 monitor 원본 로그와 2026-08-04의
+matching-seq/wrong-ACK-type 후속 원본 로그를 읽어
 response-gated startup의 실제 제어 흐름을 판정한 결과다. 과거 fixed-delay
 정상 시퀀스가 아니라 현재 FSM의 `DISARM/ACK -> PING/PONG -> READY`와
 bounded retry를 대상으로 한다.
@@ -157,20 +158,27 @@ rejection이다. 원본 증거 파일명은 변경하지 않고 의미를 이 �
 | --- | --- | --- | --- |
 | Stale DISARM ACK seq | `S=1516921324`; `S-1`은 무시 | `1516921323` ACK 무시, 같은 DISARM retry 뒤 exact ACK와 READY | PASS |
 | Stale PONG seq | expected `2914858155`; 이전 seq 무시 | `2914858154` PONG 무시, 같은 PING retry 뒤 exact PONG과 READY | PASS |
-| Wrong ACK type | matching seq지만 `type != DISARM` 거부 | 별도 runtime 주입 로그 없음 | NOT TESTED |
+| Wrong ACK type | matching seq지만 `type != DISARM` 거부 | `type=ARM` 무시, 500 ms 뒤 같은 DISARM seq 재시도, exact ACK/PONG 뒤에만 READY | PASS |
 
 Evidence:
 
 - [Stale DISARM ACK raw log](../../assets/logs/esp32_uart_bridge/2026-08-03_response_gated_startup_gate_c1_stale_disarm_ack_rejection_pass.txt)
 - [Stale PONG raw log](../../assets/logs/esp32_uart_bridge/2026-08-03_response_gated_startup_gate_c2_stale_pong_rejection_pass.txt)
+- [Wrong DISARM ACK type raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)
 
 두 stale-response 실행 모두 최종 matching response 전까지 READY에 진입하지
 않았고 ARM/CMD를 송신하지 않았다. 전체 telemetry 43개는 모두
 DISARMED/zero였다. Stale ACK 실행의 `BAD_TYPE`/`RX UNKNOWN`은 수신 정렬 과정의
 오류로 기록돼 있으며 이후 정상 frame으로 복구됐다.
 
-판정: wrong-sequence rejection `PASS`; `wrong seq/type` 전체 조합을 요구하는
-T-BRIDGE-007 coverage는 wrong ACK type이 남아 `PARTIAL`.
+2026-08-04 후속 실행에서는 `DISARM,seq=1552695929`에 대한 matching-seq
+`ACK,type=ARM`을 gate가 무시했다. 정확히 500 ms 뒤 같은 DISARM seq를 재시도했고,
+`type=DISARM` ACK와 `PONG,seq=1552695930` 뒤에만 READY가 됐다. TEL 97/97은
+DISARMED/zero였고 ARM/CMD TX와 `STARTUP FAILED`는 없었다.
+
+판정: wrong-sequence와 matching-seq/wrong-type rejection을 포함한 T-BRIDGE-007
+required UART runtime behavior `PASS`. Binary identity와 물리 setup provenance는
+계속 별도 pending이다.
 
 ## Gate C 상태
 
@@ -194,19 +202,22 @@ DISARM -> ACK / DISARMED / zero
 
 ## 현재 Source/Test 상태
 
-2026-08-04 safe restore 뒤 실제 파일을 다시 읽은 current worktree 상태는 다음과 같다.
+2026-08-04 wrong-ACK-type 시험 뒤 실제 파일을 다시 읽은 current worktree 상태는 다음과 같다.
 
 | Source setting | Current value |
 | --- | ---: |
 | ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED` | `0U` |
 | ESP32 `TEST_STEP_PERIOD_MS` | `1000` |
 | STM32 `UART_MVP_OUTPUT_TEST_ENABLED` | `0U` |
+| STM32 wrong DISARM ACK type once hook | `1U` |
 | STM32 stale/suppress startup injection hooks | 모두 `0U` |
 | STM32 button output/fault hooks | 모두 `0U` |
 
-현재 worktree의 contract test는 `15/15 PASS`이고 isolated clean STM32/ESP32 build도
-run `20260804043010-26408-7918`에서 PASS했다. 다만 restored images의 board
-reflash/run과 ARM/CMD 0 raw evidence는 아직 없어 board를 release-ready로 판정하지 않는다.
+Wrong-type hook을 `0U`로 둔 structural checkpoint는 contract `15/15 PASS`, isolated
+STM32 build `20260804144612-32776-5226` PASS다. 현재 controlled `1U` source는
+default-off guard 한 건만 의도적으로 실패하며, STM32 test build
+`20260804144706-1756-bc19`은 `0 errors / 0 warnings`로 PASS했다. Safe release 전에는
+hook을 다시 `0U`로 복구하고 contract/build/reflash/runtime 회귀를 반복해야 한다.
 
 ## Evidence Integrity
 
@@ -218,19 +229,19 @@ reflash/run과 ARM/CMD 0 raw evidence는 아직 없어 board를 release-ready로
 | Stale DISARM ACK | `851e1821a54d22a3bdd2056008292d5a06bcc06019278f3523e9db9205c1a846` |
 | Stale PONG | `a4e1e7e15881473dfc54618c388f0e91fab8fb7270ae18f802bffa935615d8f3` |
 | Reset recovery | `83215d340f18fe2b43052122866622fe81446e33848bb4d62d4e503a828f5d29` |
+| Wrong DISARM ACK type | `43d15b95427db5e46423a8138bd0f6017f7e9b152b623cddcd2401625415cbc8` |
 
 ## 결론과 다음 Gate
 
 Gate A의 exact response sequence와 Gate B의 두 no-response bounded failure,
-stale sequence 거부 및 reset recovery는 raw runtime behavior 기준으로 통과했다.
+stale sequence 및 matching-seq/wrong-type 거부, reset recovery는 raw runtime behavior
+기준으로 통과했다.
 그러나 current UART release는 다음 항목 때문에 계속 `PARTIAL`이다.
 
-1. 완료된 safe source, contract `15/15`와 isolated clean dual-build checkpoint를 보존한다.
-2. Restored safe images를 양쪽 board에 flash/run한다.
-3. Safe `0U` image에서 READY 뒤 ARM/CMD 무송신을 새 로그로 확인한다.
+1. Wrong-ACK-type hook을 `0U`로 복구하고 contract `15/15`와 safe STM32 build를 재확인한다.
+2. Safe STM32 image를 board에 reflash/run한다.
+3. Safe `0U` image에서 READY 뒤 ARM/CMD 무송신 회귀를 다시 확인한다.
 4. Gate C에서 ESP startup-response parser와 STM32 command parser의 malformed
    reject/recovery를 각각 실행한다.
-5. Matching seq + wrong ACK type vector를 별도 실행해 T-BRIDGE-007의 마지막
-   required coverage gap을 닫는다.
-6. 작업자가 Gate A/B 당시 무전원 및 power-off rewiring 조건을 확인하면 시험
+5. 작업자가 Gate A/B 당시 무전원 및 power-off rewiring 조건을 확인하면 시험
    provenance에 추가한다.

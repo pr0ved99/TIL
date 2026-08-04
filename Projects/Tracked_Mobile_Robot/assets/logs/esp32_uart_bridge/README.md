@@ -18,6 +18,8 @@ ESP32-S3와 NUCLEO-F446RE의 board-only UART bridge 검증에서 저장한 원�
 | 2026-08-03 | [`2026-08-03_response_gated_startup_gate_c2_stale_pong_rejection_pass.txt`](2026-08-03_response_gated_startup_gate_c2_stale_pong_rejection_pass.txt) | Stale PONG seq 무시 뒤 exact PONG만 통과하는 wrong-response vector PASS |
 | 2026-08-03 | [`2026-08-03_response_gated_startup_post_failure_reset_recovery_pass.txt`](2026-08-03_response_gated_startup_post_failure_reset_recovery_pass.txt) | Controlled reset 뒤 새 S/S+1 startup recovery PASS |
 | 2026-08-04 | [`2026-08-04_uart_disarm_active_pwm_stop_pass.txt`](2026-08-04_uart_disarm_active_pwm_stop_pass.txt) | READY 이후 controlled normal sequence와 active DISARM UART correlation log |
+| 2026-08-04 | [`2026-08-04_safe_image_uart_runtime_regression_pass.txt`](2026-08-04_safe_image_uart_runtime_regression_pass.txt) | Restored safe image에서 exact startup, READY 후 11.24 s, TEL 118/118 DISARMED/zero/error 0과 ARM/CMD 0 PASS |
+| 2026-08-04 | [`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt) | Matching seq의 wrong `type=ARM` ACK를 무시하고 500 ms 뒤 동일 DISARM seq를 재시도해 exact DISARM ACK/PONG 뒤에만 READY인 T-BRIDGE-007 runtime PASS |
 
 2026-07-29 powered/no-motor MDD10A LED 관찰, active `DISARM` run과 판정 범위는 [`2026-07-29_active_motor_output_safety_verification.md`](2026-07-29_active_motor_output_safety_verification.md)에 함께 기록했다.
 
@@ -34,9 +36,7 @@ response 증거다.
 
 아직 없는 runtime evidence:
 
-- matching seq이지만 wrong ACK `type`인 별도 주입
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
-- restored safe images의 board flash/run transcript와 no-ARM/CMD 최종 회귀
 
 세부 판정은 [response-gated startup report](../../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md),
 active DISARM correlation과 MCU-pin timing은 [active DISARM report](../../../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)에 있다.
@@ -50,11 +50,12 @@ Raw monitor log는 UART text와 순서를 보존하지만 다음 물리 조건�
 - UART 신호 변경 시 양쪽 board power OFF
 - 실제 flash transcript, build profile와 binary hash
 
-작업자 확인 전까지 이 항목은 `operator confirmation pending`이다. 현재 실제 source는
-ESP32 scripted test `0U/1000 ms`, STM32 UART output hook `0U`로 복구됐다. Contract
-`15/15`와 isolated clean STM32/ESP32 build run `20260804043010-26408-7918`도 PASS다.
-Restored safe images의 board reflash/run과 ARM/CMD 0 evidence가 끝나기 전에는 battery,
-MDD10A 또는 motor power를 연결하지 않는다.
+작업자 확인 전까지 이 항목은 `operator confirmation pending`이다. Restored safe-image
+UART runtime behavior는 exact ACK/PONG/READY, READY 뒤 11.24 s, TEL 118/118
+DISARMED/zero/error 0과 ARM/CMD 0으로 PASS했다. Flash transcript/hash와 무전원 setup은
+로그 자체가 증명하지 않는다. 현재 source는 다음 required vector를 위해
+`UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`인 controlled-test 상태다.
+Battery, MDD10A 또는 motor power를 연결하지 않는다.
 
 관련 스크린샷:
 

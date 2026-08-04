@@ -65,8 +65,8 @@
 
 | ID | 수용 기준 | 우선순위 | 현재 상태 |
 | --- | --- | --- | --- |
-| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` — current normal sequence와 response-gated Gate A/B runtime, source/static/build restore PASS; STM32 command-parser recovery와 safe-image board regression pending |
-| `MVP-002` | ESP32 또는 PC가 동일한 protocol의 command source로 동작한다. | MUST | `PARTIAL` — exact startup, bounded loss, stale-seq/reset recovery와 source/static/build restore PASS; wrong ACK type, two-parser recovery와 safe-image board regression pending |
+| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` — current normal sequence, response-gated Gate A/B와 wrong-ACK runtime PASS; safe-image behavior PASS지만 provenance pending, current hook `1U` restore/regression과 STM32 command-parser recovery pending |
+| `MVP-002` | ESP32 또는 PC가 동일한 protocol의 command source로 동작한다. | MUST | `PARTIAL` — exact startup, bounded loss, stale-seq/reset recovery와 `T-BRIDGE-007` required runtime behavior PASS; safe-image behavior PASS지만 provenance pending, current hook `1U` restore/regression과 Gate C two-parser recovery pending |
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PLANNED` |
@@ -91,9 +91,11 @@
 
 | 범위 | 요구사항 | 상태 | 근거 |
 | --- | --- | --- | --- |
-| UART | `REQ-UART-001` ~ `REQ-UART-004` | `PARTIAL` | PC-first baseline, current normal sequence, response-gated Gate A/B runtime과 source/static/build restore PASS; two-parser recovery와 safe-image board regression 대기 |
+| UART | `REQ-UART-001` ~ `REQ-UART-004` | `PARTIAL` | PC-first baseline, current normal sequence, response-gated Gate A/B와 wrong-ACK runtime PASS; safe-image behavior PASS/provenance pending, current hook restore/regression과 two-parser recovery 대기 |
 | Command safety | `REQ-SAFE-001` ~ `REQ-SAFE-007` | `PARTIAL` | Normal sequence, no-response bounded failure, stale seq rejection은 current board PASS; malformed/desync recovery vector 대기 |
-| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `PARTIAL` | Exact startup, DISARM ACK/PONG loss bounded failure, stale response/reset recovery와 source/static/build restore PASS; wrong ACK type·two-parser recovery·safe-image board regression 대기 |
+| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `PARTIAL` | Exact startup, DISARM ACK/PONG loss bounded failure, stale response/reset recovery와 matching-seq wrong-ACK rejection/same-seq retry PASS; safe-image behavior PASS/provenance pending, current hook restore/regression·two-parser recovery 대기 |
+
+`T-BRIDGE-007` required UART runtime behavior는 [wrong-ACK raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)에서 PASS다. Matching DISARM seq의 `ACK,type=ARM`은 gate를 열지 않았고, 500 ms 뒤 같은 DISARM seq를 재시도해 exact `ACK,type=DISARM`과 다음-seq PONG 뒤에만 READY가 됐다.
 
 ### 전원
 
@@ -133,9 +135,10 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 - `REQ-MOTOR-003 PASS`: 현재 코드는 `PWM 0 -> 최소 1 ms PWM-zero settle -> DIR -> 최소 1 ms post-DIR settle -> PWM` 순서다. 2026-08-03 actual capture에서 CH1 pre/post `1.994/2.03875 ms`, CH2 pre/post `1.54725/~2.040 ms`로 모두 최소 1 ms를 만족했다.
 - `REQ-MOTOR-004 CONDITIONAL PASS`: 임시 raw waveform test는 양 채널 20.1005 kHz,
   high 5.00 us, 약 10.05%로 계측됐고 당시 `MOTOR_OUTPUT_PIN_TEST_ENABLED`를 `0U`로
-  복귀했다. 별도 active-DISARM 시험 때 `UART_MVP_OUTPUT_TEST_ENABLED=1U`였지만
-  current source는 `0U`로 복구됐고 contract/build도 통과했다. Safe-image board
-  regression, 실제 motor 단계의 제한 해제 조건과 current/thermal
+  복귀했다. 별도 active-DISARM 시험의 `UART_MVP_OUTPUT_TEST_ENABLED`도 현재 `0U`다.
+  다만 current source/test image에는 통신용 wrong-ACK one-shot hook만 `1U`로 남아
+  있으므로 이를 `0U`로 복구하고 contract/build/safe reflash regression을 수행해야 한다.
+  실제 motor 단계의 제한 해제 조건과 current/thermal
   gate도 남아 있다.
 
 ### Physical E-stop
@@ -202,9 +205,9 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 
 | Requirement | 설계/인터페이스 정본 | 구현 대상 | Test ID / 절차 | 증거 | 결과 |
 | --- | --- | --- | --- | --- | --- |
-| `REQ-UART-001~004` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, PC tools | `T-COM-001` PC-first UART MVP | 2026-07-09 CSV/screenshots/report; [strict-parser normal report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md); [response-gated Gate A/B report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | `PARTIAL` |
+| `REQ-UART-001~004` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, PC tools | `T-COM-001` PC-first UART MVP | 2026-07-09 CSV/screenshots/report; [strict-parser normal report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md); [response-gated Gate A/B/wrong-ACK report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | `PARTIAL` |
 | `REQ-SAFE-001~007` | `16_Control_Loop_and_State_Machine_ko.md` | parser, safety state, timeout | `T-SAFE-001` scripted UART safety sequence | Current normal sequence와 startup loss/stale-response fail-closed PASS; malformed/desync recovery TBD | `PARTIAL` |
-| `MVP-002` ESP32 source | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | Historical baseline + current Gate A/B raw runtime report; wrong ACK type, two-parser recovery와 current safe `0U` restore TBD | `PARTIAL` |
+| `MVP-002` ESP32 source | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | Historical baseline + current Gate A/B and [wrong-ACK raw runtime](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt); safe-image behavior PASS/provenance pending, current hook `0U` restore/regression과 two-parser recovery TBD | `PARTIAL` |
 | `REQ-POWER-001` | `12_Power_Distribution_and_Safety_Architecture_ko.md` | fuse/switch harness | `T-PWR-001` power bring-up | DMM log, wiring photos | `PASS` |
 | `REQ-POWER-002` | power architecture | XL4015 #1/#2 | `T-PWR-002` buck load test | calibration log, load photos | `CONDITIONAL PASS` |
 | `REQ-POWER-003` | power architecture | final board power harness | `T-PWR-003` USB/buck back-power check | TBD | `PLANNED` |
@@ -227,7 +230,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | 순서 | Test ID | 시험 | 선행 조건 | 상태 |
 | --- | --- | --- | --- | --- |
 | 1 | `T-COM-001` | PC-first UART MVP | STM32 UART firmware | `HISTORICAL FULL PASS / CURRENT RESPONSE SUBSET PASS` |
-| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `PARTIAL` — Gate A/B runtime과 source/static/build restore PASS; safe-image board regression, wrong ACK type과 two-parser recovery pending |
+| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `PARTIAL` — Gate A/B와 `T-BRIDGE-007` runtime PASS, safe-image behavior PASS/provenance pending; current hook `0U` restore/regression과 Gate C two-parser recovery pending |
 | 3 | `T-PWR-001` | fused/switched power path | 무전원 검사 | `PASS` |
 | 4 | `T-PWR-002` | XL4015 bench load | `T-PWR-001` | `CONDITIONAL PASS` |
 | 5 | `T-MECH-001` | Rev A 1:1/vector preflight | CAD release | `PASS` |

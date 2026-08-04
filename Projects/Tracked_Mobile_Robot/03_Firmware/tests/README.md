@@ -56,16 +56,31 @@ flash되었는지나 실제 UART 응답 시간을 만족하는지를 증명하�
 
 위 결과는 active-DISARM capture 당시의 의도된 controlled-test 상태 기록이다.
 
-2026-08-04 current safe-restored source checkpoint:
+2026-08-04 safe-restored source checkpoint (wrong-ACK 주입 전 historical checkpoint):
 
 - ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED=0U`, `TEST_STEP_PERIOD_MS=1000`
 - STM32 `UART_MVP_OUTPUT_TEST_ENABLED=0U`
 - `python -m unittest discover ...`: **15/15 PASS**
 - isolated STM32+ESP32 build: **PASS**
-- safe-image board reflash/run 및 전 구간 `ARM/CMD` 무송신 증거: **PENDING**
+- safe-image UART runtime behavior: **PASS** — exact ACK/PONG/READY, READY 뒤 약
+  11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0
+- flash identity와 physical no-power setup provenance: **PENDING**
 
-따라서 source-level default-off contract와 build는 복구됐다. 실제 board가 같은
-safe image를 실행하는지는 reflash/run evidence로 별도 확인해야 한다.
+위 checkpoint에서 source-level default-off contract와 build가 복구됐고, 이어진
+safe-image UART 동작도 PASS했다. 다만 raw log만으로 실제 flash identity와 물리 setup을
+확정할 수는 없다.
+
+2026-08-04 current controlled-test checkpoint:
+
+- ESP32 scripted-motion과 STM32 motor-output hook: `0U`
+- STM32 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`
+- matching seq의 `ACK,type=ARM` 무시: **PASS**
+- 정확히 500 ms 뒤 동일 DISARM seq 재시도, exact DISARM ACK/PONG 뒤 READY: **PASS**
+- TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0: **PASS**
+
+따라서 T-BRIDGE-007 required UART runtime behavior는 PASS다. 현재 source는 release
+default가 아니므로 wrong-ACK hook을 `0U`로 복구하고 contract `15/15`, build/reflash와
+safe-image ARM/CMD 0 회귀를 다시 수행해야 한다.
 
 ## 범위와 한계
 
@@ -80,7 +95,9 @@ safe image를 실행하는지는 reflash/run evidence로 별도 확인해야 한
 - 잘못된 필드명, 중복 required field, 숫자 뒤 쓰레기 문자, overflow 값을 parser가 거부함
 - RX overflow 또는 embedded control/CR 뒤의 tail을 다음 LF까지 폐기함
 - startup TX 또는 RX flush 실패가 `FAILED`로 닫힘
-- `BRIDGE_SCRIPTED_TEST_ENABLED == 0U`에서 `ARM/CMD` 스크립트가 실행되지 않음. Current source는 이 default-off 계약을 복구한 `0U` 상태
+- `BRIDGE_SCRIPTED_TEST_ENABLED == 0U`에서 `ARM/CMD` 스크립트가 실행되지 않음.
+  Current ESP source는 `0U`지만 STM32 wrong-ACK-once hook은 controlled vector 때문에
+  `1U`이며 release 전 반드시 `0U`로 복구해야 함
 
 ### 매크로와 부팅 handshake의 관계
 
@@ -101,10 +118,15 @@ parser/FSM을 host에서 직접 실행하는 단위시험은 아니다. 또한 �
 로직 분석기 PWM·direction·shutdown latency 측정, E-stop 및 powered-motor 검증은
 별도 verification gate로 계속 수행해야 한다.
 
-2026-08-03 raw runtime log로 matching-response 순서, DISARM ACK/PONG 누락의
+2026-08-03/04 raw runtime log로 matching-response 순서, DISARM ACK/PONG 누락의
 최대 3회 bounded failure, stale ACK/PONG seq 무시와 FAILED/ARM/CMD 차단은
-확인됐다. 다음 hardware-in-the-loop 범위는 남아 있다.
+확인됐다. Matching-seq wrong ACK `type=ARM`도 gate가 무시하고 정확히 500 ms 뒤
+같은 DISARM seq를 재시도해 exact DISARM ACK/PONG 뒤에만 READY가 됐다. 이 run의
+TEL 97/97은 `DISARMED/zero`, ARM/CMD TX는 0이었다. 원본은
+[`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
 
-- matching seq + wrong ACK `type` 거부의 별도 runtime vector
+다음 hardware-in-the-loop 범위는 남아 있다.
+
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
-- safe-restored `0U` source의 exact flash/run identity와 no-ARM/CMD 회귀
+- wrong-ACK hook `0U` 복구 뒤 contract `15/15`, build/reflash한 safe image의
+  exact identity, no-ARM/CMD 회귀와 physical setup provenance

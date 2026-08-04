@@ -33,14 +33,14 @@ Last updated: 2026-08-04
 현재 바로 이어갈 작업:
 
 ```text
-[PARTIAL: Gate A/B runtime PASS / source·contract·isolated build restored / safe-image board regression, wrong ACK type and Gate C two-parser recovery pending] ESP32-STM32 UART bridge
+[PARTIAL: Gate A/B + T-BRIDGE-007 wrong-ACK runtime PASS / safe-image runtime behavior PASS with provenance pending / current wrong-ACK hook `1U` / Gate C two-parser recovery pending] ESP32-STM32 UART bridge
 [CONDITIONAL PASS] XL4015 #1/#2 bench load validation; final board-load wiring/back-power check pending
 [PARTIAL] STM32 motor output; waveform/direction and active DISARM MCU-pin 23.50 us baseline PASS, timeout/fault latency/reset-marked boot/E-stop pending
 [PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
--> CURRENT SOURCE: ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`)
--> CURRENT NEXT: motor/battery power OFF -> safe images reflash/run + ARM/CMD 0 evidence -> wrong ACK type + Gate C two-parser recovery -> timeout/software-fault latency -> reset-marked boot -> board power/back-power + Physical E-stop `T-ESTOP-001~006`
+-> CURRENT SOURCE/IMAGE: ESP script와 motor-output hook은 `0U`, STM wrong-ACK-type one-shot hook만 `1U`; controlled STM32 test build `PASS` (`20260804144706-1756-bc19`)
+-> CURRENT NEXT: motor/battery power OFF -> wrong-ACK hook `0U` 복구 -> contract `15/15` + build -> safe images reflash/run regression과 provenance 보존 -> Gate C two-parser recovery -> timeout/software-fault latency -> reset-marked boot -> board power/back-power + Physical E-stop `T-ESTOP-001~006`
 -> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test
 ```
 
@@ -71,8 +71,8 @@ tracked chassis hole-pattern DWG import
 - `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03 current strict parser의 fixed-delay normal sequence 뒤 response-gated FSM을 실제 board에서 실행했다. Exact DISARM ACK/PONG 뒤 READY인 Gate A, DISARM-ACK/PONG loss의 각 3회 bounded FAILED, stale ACK/PONG seq 무시와 controlled reset/new-startup recovery는 raw runtime behavior 기준 PASS다. Reset raw segment에는 직전 failure가 없어 post-failure session linkage는 작업자 확인 대기다. Matching seq + wrong ACK type과 Gate C의 ESP response/STM32 command parser recovery는 미실행이고, raw logs에는 flash hash와 무전원 setup metadata가 없어 해당 provenance도 작업자 확인 대기다. Current source는 ESP script `0U/1000 ms`, STM UART output hook `0U`로 복구됐고 contract `15/15`와 isolated clean STM32/ESP32 build가 통과했다. 다만 safe images의 board reflash/run과 ARM/CMD 0 runtime evidence는 아직 없어 release 판정은 `PARTIAL`이다.
-- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 direction/timeout/DISARM LED all-off를, 2026-07-30에는 software fault output-zero/latch를 확인했다. 2026-08-03에는 두 PWM `20.1005 kHz`, 약 `10.05%`, DIR 전후 PWM-zero `>=1 ms`를 확인했고, 2026-08-04에는 active DISARM UART RX end부터 PB6/PB7 last edge까지 `23.50 us` MCU-pin baseline을 측정했다. Timeout/fault latency, restored safe-image board reflash/run, reset-marker boot, MDD10A power stage, Physical E-stop과 actual motor stop은 남아 있다.
+- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03 current strict parser의 fixed-delay normal sequence 뒤 response-gated FSM을 실제 board에서 실행했다. Exact DISARM ACK/PONG 뒤 READY인 Gate A, DISARM-ACK/PONG loss의 각 3회 bounded FAILED, stale ACK/PONG seq 무시와 controlled reset/new-startup recovery는 raw runtime behavior 기준 PASS다. Reset raw segment에는 직전 failure가 없어 post-failure linkage는 작업자 확인 대기다. 2026-08-04에는 matching seq의 wrong `ACK,type=ARM`을 무시하고 정확히 500 ms 뒤 같은 DISARM seq를 재시도해 exact DISARM ACK/PONG 뒤에만 READY로 진행했다. 따라서 `T-BRIDGE-007` required UART runtime behavior는 PASS다. Restored safe-image UART 동작도 exact ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 DISARMED/zero/error 0과 ARM/CMD 0으로 PASS했지만, flash identity와 물리적 무전원 setup provenance는 로그만으로 확인되지 않는다. 현재 소스/보드는 다음 controlled vector 뒤 상태로 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`이며, 이를 `0U`로 복구한 뒤 contract `15/15`, build, safe reflash/runtime regression을 다시 수행해야 한다. Gate C의 ESP response/STM32 command parser recovery는 미실행이므로 release 판정은 `PARTIAL`이다.
+- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 direction/timeout/DISARM LED all-off를, 2026-07-30에는 software fault output-zero/latch를 확인했다. 2026-08-03에는 두 PWM `20.1005 kHz`, 약 `10.05%`, DIR 전후 PWM-zero `>=1 ms`를 확인했고, 2026-08-04에는 active DISARM UART RX end부터 PB6/PB7 last edge까지 `23.50 us` MCU-pin baseline을 측정했다. Timeout/fault latency, current wrong-ACK hook 복구 뒤 safe-image reflash/regression과 provenance, reset-marker boot, MDD10A power stage, Physical E-stop과 actual motor stop은 남아 있다.
 - MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. 2026-07-30 방향별 50회전 결과로 `1560 counts/output rev`를 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산도 PASS했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 forward-positive로 정규화했다. MDD10A powered channel-to-side mapping, powered-noise와 external tachometer/wheel-speed 검증은 남아 있다.
 - KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, BNO085, 실제 하네스·footprint는 TBD다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
@@ -101,7 +101,7 @@ tracked chassis hole-pattern DWG import
 - PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
 - PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
 - ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
-- Current strict-parser UART는 Gate A exact startup, Gate B bounded loss와 stale-sequence/reset-new-startup recovery actual runtime까지 통과했다. Source restore, contract `15/15`와 isolated clean dual build도 통과했다. Safe-image board reflash/run, wrong ACK type과 Gate C two-parser recovery가 남아 release 상태는 `PARTIAL`이다.
+- Current strict-parser UART는 Gate A exact startup, Gate B bounded loss와 stale-sequence/reset-new-startup recovery, matching-seq wrong-ACK rejection/same-seq retry까지 actual runtime에서 통과해 `T-BRIDGE-007` required behavior가 PASS다. Safe-image runtime behavior도 PASS지만 exact flashed image와 physical setup provenance는 pending이다. 현재 wrong-ACK hook이 `1U`이므로 `0U` 복구, contract `15/15`, build, safe reflash/runtime regression이 필요하고 Gate C two-parser recovery도 남아 release 상태는 `PARTIAL`이다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
@@ -281,7 +281,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md) | Physical E-stop requirements and staged verification plan |
 | [`docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md) | Logic-analyzer PWM/duty/direction-settle test report and open safety gates |
 | [`docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md) | Historical fixed-delay strict-parser normal-sequence report |
-| [`docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | Gate A/B response-gated runtime report and evidence limits |
+| [`docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | Gate A/B and wrong-ACK response-gated runtime report with evidence limits |
 | [`docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) | Active DISARM UART-to-PWM MCU-pin first baseline report |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
@@ -301,8 +301,8 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-07-30_progress.md`](docs/progress/2026-07-30_progress.md) | 50-revolution output-shaft calibration and signed CPS-to-mRPM validation |
 | [`docs/progress/2026-07-31_progress.md`](docs/progress/2026-07-31_progress.md) | Strict UART parser fail-closed/recovery test and startup-session weakness discovery |
 | [`docs/progress/2026-08-03_progress.md`](docs/progress/2026-08-03_progress.md) | USART1/PWM/DIR logic-analyzer verification, strict-parser normal sequence와 response-gated ESP32 startup source/static/build checkpoint |
-| [`docs/progress/2026-08-04_progress.md`](docs/progress/2026-08-04_progress.md) | Gate A/B runtime, active DISARM 23.50 us, safe source/contract/build restore와 pending board regression |
-| [`docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`](docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Current continuation for safe-image board regression, wrong ACK type, Gate C two-parser recovery and remaining safety latency |
+| [`docs/progress/2026-08-04_progress.md`](docs/progress/2026-08-04_progress.md) | Gate A/B and wrong-ACK runtime, active DISARM 23.50 us, safe-image behavior/provenance boundary and current test-hook state |
+| [`docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`](docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Current continuation for wrong-ACK hook restore, safe-image regression/provenance, Gate C recovery and remaining safety latency |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
 | [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md) | KiCad RevA draft baseline, safety boundary and next firmware/hardware gate |

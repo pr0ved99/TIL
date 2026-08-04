@@ -158,8 +158,8 @@ Acceptance criteria:
 | T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | 2026-07-20 screenshot / raw log | PASS |
 | T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | `DISARMED`, `ARMED`, valid CMD, timeout-zero `TEL` 확인 | 2026-07-18 / 2026-07-20 screenshots | PASS |
 | T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0`, `w_mradps=0` | 2026-07-20 screenshot / raw log | PASS |
-| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A raw log/report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | PARTIAL — visible runtime transaction PASS; cold-start marker와 physical/macro provenance operator confirmation pending |
-| T-BRIDGE-007 | REQ-BRIDGE-006 | DISARM ACK 또는 PONG 단절·wrong seq/type 주입 | 단계별 최대 3회 시도 후 FAILED, ARM/CMD 없음 | [Loss/stale/reset raw logs and report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | PARTIAL — loss, stale seq, reset recovery PASS; wrong ACK type NOT TESTED |
+| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [safe-image raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt) | PARTIAL — required runtime behavior PASS; cold-start marker와 image/physical provenance operator confirmation pending |
+| T-BRIDGE-007 | REQ-BRIDGE-006 | DISARM ACK 또는 PONG 단절·wrong seq/type 주입 | loss는 단계별 최대 3회 뒤 FAILED; mismatch는 무시·재시도하고 exact response만 통과; ARM/CMD 없음 | [Loss/stale/reset report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [wrong-type raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt) | PASS — required UART runtime behavior; binary identity와 physical setup provenance pending |
 | T-BRIDGE-008A | REQ-BRIDGE-007 | ESP32가 ACK/PONG을 기다릴 때 malformed/unknown response 뒤 exact response 주입 | invalid response는 gate를 열지 않고 exact response에서 recovery | Evidence 없음 | NOT TESTED |
 | T-BRIDGE-008B | REQ-BRIDGE-008 | STM32에 malformed PING/CMD/unknown frame 뒤 valid PING 주입 | motion 실행 없는 fail-closed 거부 후 PONG recovery | Evidence 없음 | NOT TESTED |
 
@@ -203,20 +203,31 @@ FSM/parser의 모든 분기를 실행하는 host test는 아니다. 이 source/b
 - Gate B2: PONG 누락, 동일 request 최대 3회 뒤 FAILED — PASS
 - stale ACK/PONG sequence: 무시 뒤 exact response만 통과 — PASS
 - controlled reset: 새 S/S+1 startup recovery — PASS
-- wrong ACK type: 별도 runtime vector 없음 — NOT TESTED
+- matching-seq wrong ACK type: `type=ARM` 무시, 정확히 500 ms 뒤 동일 DISARM seq
+  재시도, exact DISARM ACK와 PONG 뒤에만 READY — PASS
+- wrong-type run safety: TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0 — PASS
 - ESP32 malformed response reject 뒤 exact response recovery — NOT TESTED
 - STM32 malformed command reject 뒤 valid PING/PONG recovery — NOT TESTED
 
 Raw log는 실제 flash hash와 LiPo/MDD10A/motor power 분리 상태를 자체 기록하지 않는다.
 따라서 T-BRIDGE-006의 visible runtime transaction은 PASS지만 cold-start marker와
 physical/macro provenance는 작업자 확인 대기이므로 Test ID 전체는 PARTIAL이다.
-T-BRIDGE-007 전체는 wrong ACK type coverage가 남아 PARTIAL, T-BRIDGE-008A/B는
-NOT TESTED다.
+T-BRIDGE-007 required UART runtime behavior는 loss, stale seq, reset recovery와
+matching-seq/wrong-type rejection까지 PASS했다. 다만 binary identity와 physical setup
+provenance는 별도 pending이며 T-BRIDGE-008A/B는 NOT TESTED다.
 
-2026-08-04 current source는 ESP script `0U/1000 ms`, STM32 UART output hook `0U`로
-복구됐다. Current contract `15/15`와 isolated clean STM32/ESP32 build run
-`20260804043010-26408-7918`은 PASS다. Safe-image board reflash/run과 ARM/CMD 0
-evidence가 남아 current release 전체 판정은 계속 `PARTIAL`이다.
+2026-08-04 earlier safe-source checkpoint의 ESP script `0U/1000 ms`, STM32 UART
+output hook `0U`, contract `15/15`와 isolated clean STM32/ESP32 build run
+`20260804043010-26408-7918`은 PASS다. 이어진 safe-image runtime도 exact
+ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD
+TX 0으로 behavior PASS했다. 로그 자체는 flash identity와 물리 무전원 setup을 증명하지
+않는다.
+
+현재 source는 wrong-type vector를 위한 controlled-test 상태로
+`UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`이며 ESP scripted-motion과
+STM32 motor-output hook은 `0U`다. 이 hook을 `0U`로 복구한 뒤 contract `15/15`, build,
+safe-image reflash와 ARM/CMD 0 회귀가 필요하다. 두 parser recovery도 남아 있어 current
+release 전체 판정은 계속 `PARTIAL`이다.
 
 ## 2026-07-18 Execution Snapshot
 
@@ -270,9 +281,9 @@ Evidence:
 7. ARMED/CMD/timeout telemetry 확인 - PASS
 8. evidence 저장 및 verification matrix 최종 업데이트 - PASS
 9. response-gated startup board run - PASS behavior / provenance confirmation pending
-10. response-loss bounded retry, stale-seq rejection and reset recovery - PASS; wrong ACK type open
+10. response-loss bounded retry, stale-seq rejection, reset recovery와 wrong ACK type - PASS behavior / provenance pending
 11. ESP response와 STM command parser의 malformed reject/recovery injection - NOT TESTED
-12. safe `0U` source/test/build/reflash 복구 - PENDING
+12. earlier safe-image UART behavior - PASS / post-wrong-ACK `0U` source·15/15·build·reflash 회귀 - PENDING
 ```
 
 ## Evidence Naming
@@ -297,6 +308,10 @@ assets/logs/esp32_uart_bridge/YYYY-MM-DD_startup_wrong_or_missing_response_fail_
 assets/logs/esp32_uart_bridge/YYYY-MM-DD_malformed_frame_recovery_pass.txt
 ```
 
+2026-08-04 실제 보존 파일은
+`2026-08-04_safe_image_uart_runtime_regression_pass.txt`와
+`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`다.
+
 ## Pass Criteria
 
 ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
@@ -317,9 +332,9 @@ ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
 - malformed STM32 command의 fail-closed 거부와 정상 PING/PONG recovery
 - 시험 종료 후 macro `0U` source/test/build와 safe board flash/run 복구
 
-현재는 첫 세 항목 중 exact response, bounded loss와 stale-sequence vectors가 통과했다.
-Wrong ACK type, 두 parser recovery와 restored safe-image board regression이 남아 있으므로 strict-parser
-release는 아직 PASS가 아니다.
+현재 exact response, bounded loss, stale-sequence와 wrong ACK type vector까지 통과했다.
+두 parser recovery, controlled hook의 `0U` 복구·`15/15`·build·safe-image reflash 회귀와
+image/physical provenance가 남아 있으므로 strict-parser release는 아직 PASS가 아니다.
 
 ## Follow-up
 

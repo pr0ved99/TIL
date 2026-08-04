@@ -29,7 +29,7 @@ ESP32 USB Monitor
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03에는 current strict parser의 fixed-delay controlled normal sequence와 response-gated actual board runtime을 차례로 확인했다. Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG bounded failure, stale-sequence rejection과 controlled reset/new-startup recovery는 raw runtime behavior 기준 PASS다. 다만 reset raw segment에는 직전 failure가 없어 post-failure linkage는 작업자 확인 대기다. Wrong ACK type, Gate C two-parser recovery와 최종 safe `0U` restore도 남아 current release 전체 판정은 `PARTIAL`이다.
+ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03에는 current strict parser의 fixed-delay controlled normal sequence와 response-gated actual board runtime을 차례로 확인했다. Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG bounded failure, stale-sequence rejection과 controlled reset/new-startup recovery는 raw runtime behavior 기준 PASS다. 다만 reset raw segment에는 직전 failure가 없어 post-failure linkage는 작업자 확인 대기다. 2026-08-04 matching-seq wrong `ACK,type=ARM` rejection, 500 ms same-seq DISARM retry와 exact-response-only READY도 PASS해 `T-BRIDGE-007` required UART runtime behavior를 닫았다. Safe-image runtime behavior는 PASS지만 exact image/physical setup provenance가 남고, current source/test image의 wrong-ACK hook을 `1U`에서 `0U`로 복구한 뒤 `15/15`/build/reflash/regression이 필요하다. Gate C two-parser recovery는 `NOT TESTED`이므로 current release 전체 판정은 `PARTIAL`이다.
 
 2026-08-04 현재 부분 검증된 추가 범위:
 
@@ -91,9 +91,11 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - Current strict parser의 controlled normal sequence는 startup `PING/PONG`, `NOT_ARMED`, ARM/CMD ACK, timeout-zero, `OUT_OF_RANGE`, final DISARMED까지 PASS
 - Response-gated `DISARM/ACK -> PING/PONG` Gate A actual runtime behavior PASS
 - DISARM ACK/PONG 누락의 최대 3회 bounded failure, stale ACK/PONG seq rejection과 controlled reset recovery PASS
-- T-BRIDGE-007은 wrong ACK type이 남아 PARTIAL, Gate C의 ESP response/STM32 command
-  parser recovery는 모두 NOT TESTED
-- READY 이후 controlled normal sequence와 active DISARM은 PASS; current source/static/build restore도 PASS, safe-image board regression pending
+- T-BRIDGE-007 required UART runtime behavior PASS: matching seq `type=ARM` ACK를 무시하고
+  500 ms 뒤 같은 DISARM seq를 재시도해 exact ACK/PONG에서만 READY
+- Gate C의 ESP response/STM32 command parser recovery는 모두 NOT TESTED
+- READY 이후 controlled normal sequence와 active DISARM PASS; safe-image runtime behavior도 PASS지만 exact image/physical setup provenance pending
+- Current source/test image는 wrong-ACK one-shot hook `1U`; `0U` 복구 뒤 contract `15/15`, build, safe reflash/runtime regression 필요
 - Active DISARM UART-to-PWM MCU-pin baseline 23.50 us PASS; timeout/fault latency, reset-marker boot, physical E-stop과 motor-connected stop은 계속 `PARTIAL/NOT TESTED`
 - MDD10A powered channel 1/2와 실제 좌우 motor 대응은 아직 `PARTIAL`
 
@@ -107,7 +109,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - `DISARM` -> `ACK,type=DISARM`, `TEL,state=DISARMED`
 - evidence: [`screenshot`](../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png), [`raw log`](../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt)
 
-2026-08-03 fixed-delay controlled run은 [`raw log`](../../assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt)와 [historical test report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)로 보존했다. 이후 response-gated 실행은 [separate report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에 기록했다. Exact matching Gate A, 두 응답 누락의 bounded failure, stale seq ignore와 reset/new-startup recovery는 actual raw log로 통과했다. Raw files가 physical power state와 flashed binary hash를 독립 증명하지 않는 한계, reset segment에 직전 failure가 없는 한계, wrong ACK type과 두 parser recovery 미실행, safe source/static/build PASS 뒤 board reflash/run pending을 분리해 기록한다. RX desync는 오염 frame을 LF까지 버리고 다음 line boundary에서 복구하지만 즉시 motor stop을 실행하지 않으며, 현재 최대 500 ms command timeout이 fallback이다.
+2026-08-03 fixed-delay controlled run은 [`raw log`](../../assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt)와 [historical test report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)로 보존했다. 이후 response-gated 실행은 [separate report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에 기록했다. Exact matching Gate A, 두 응답 누락의 bounded failure, stale seq ignore와 reset/new-startup recovery는 actual raw log로 통과했다. [Wrong-ACK raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)는 matching seq의 `type=ARM`을 무시하고 500 ms 뒤 동일 DISARM seq를 재시도한 뒤 exact ACK/PONG에서만 READY가 됨을 보여준다. [Safe-image runtime log](../../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt)는 exact startup, ARM/CMD 0과 TEL 118/118 DISARMED/zero/error 0을 보여주지만 physical power state와 flashed binary hash를 독립 증명하지 않는다. Reset segment의 post-failure linkage와 safe-image provenance 한계, Gate C 두 parser recovery 미실행, current wrong-ACK hook `1U`의 최종 `0U` 복구 필요성을 분리해 기록한다. RX desync는 오염 frame을 LF까지 버리고 다음 line boundary에서 복구하지만 즉시 motor stop을 실행하지 않으며, 현재 최대 500 ms command timeout이 fallback이다.
 
 2026-07-09 기준 PC-first UART MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -146,15 +148,15 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 
 다음 단계 검증 순서:
 
-1. 완료된 ESP/STM hook `0U`, contract `15/15`와 isolated clean dual-build checkpoint를 보존
-2. Restored safe images를 flash/run하고 exact startup과 no-ARM/CMD 회귀를 보존
-3. ESP startup-response parser와 STM32 command parser의 malformed reject/recovery를
-   각각 검증
-4. Matching seq + wrong ACK type rejection vector를 별도 캡처해 T-BRIDGE-007을 종료
-5. Command-timeout/software-fault event와 PWM edge를 함께 캡처해 shutdown latency 계측
-6. STM32 temporary hook `0U` 복구, tests/build/safe reflash와 external reset marker 포함 boot no-output 회귀 캡처
-7. Physical E-stop architecture/component review 뒤 입력·latch·reset 구현 및 motor-disconnected 검증
-8. Board power/back-power와 fabricated plate fit 검증
-9. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
-10. Left/right drivetrain과 wheel travel/odometry 검증
-11. Final fault/stop acceptance와 traceability audit
+1. 완료된 wrong-ACK raw log와 `T-BRIDGE-007` runtime PASS를 보존
+2. STM32 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED`를 `0U`로 복구하고 모든 controlled hook `0U`, contract `15/15`와 clean build를 확인
+3. Safe images를 양쪽 board에 reflash/run하고 exact startup, no-ARM/CMD와 DISARMED/zero 회귀를 flash transcript/hash 및 physical setup metadata와 함께 보존
+4. ESP startup-response parser와 STM32 command parser의 malformed reject/recovery를 각각 검증
+5. Gate C에 controlled hook을 사용했다면 다시 모든 hook `0U`, tests/build/safe reflash를 반복
+6. Command-timeout/software-fault event와 PWM edge를 함께 캡처해 shutdown latency 계측
+7. External reset marker 포함 boot no-output 회귀 캡처
+8. Physical E-stop architecture/component review 뒤 입력·latch·reset 구현 및 motor-disconnected 검증
+9. Board power/back-power와 fabricated plate fit 검증
+10. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
+11. Left/right drivetrain과 wheel travel/odometry 검증
+12. Final fault/stop acceptance와 traceability audit

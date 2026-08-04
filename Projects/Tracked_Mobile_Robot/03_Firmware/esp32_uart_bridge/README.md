@@ -97,13 +97,16 @@ sequence는 시작하지 않는다.
 모터를 분리한 통제된 Gate C에서만 임시로 사용하며, production 명령 경로로
 간주하지 않는다.
 
-> **Current source status — 2026-08-04:** active-DISARM controlled capture에서는
-> `BRIDGE_SCRIPTED_TEST_ENABLED=1U`, `TEST_STEP_PERIOD_MS=100`과 STM32 UART
-> output hook `1U`를 사용했다. 현재 source는 ESP32 `0U/1000 ms`, STM32 output
-> hook `0U`로 안전 복구됐고 contract test `15/15`와 isolated STM32+ESP32 build가
-> PASS했다. 다만 safe image의 board reflash/run 및 `ARM/CMD` 무송신 증거는
-> 아직 pending이다. 이를 확인하기 전에는 LiPo, MDD10A B+/B- 또는 actual motor
-> power를 연결하지 않는다.
+> **Current source status — 2026-08-04:** earlier safe-source checkpoint는 ESP32
+> `0U/1000 ms`, STM32 motor-output hook `0U`, contract `15/15`와 isolated
+> STM32+ESP32 build를 PASS했다. Safe-image UART runtime도 exact ACK/PONG/READY,
+> TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0으로 behavior PASS했다. 현재
+> source는 wrong-ACK 검증 뒤
+> `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`인 controlled-test 상태다.
+> 이 hook을 `0U`로 되돌리고 15/15, build/reflash와 safe regression을 다시 통과하기
+> 전에는 release image가 아니다. LiPo, MDD10A B+/B- 또는 actual motor power를
+> 연결하지 않는다. 과거 safe-image와 현재 controlled run 모두 flash identity와
+> 물리 setup provenance는 별도 확인이 필요하다.
 
 ### 안전 invariant
 
@@ -191,19 +194,22 @@ python -m unittest discover `
 | Gate A current FSM runtime | **PASS — behavior** | exact ACK/PONG 뒤 READY, ARM/CMD 없음. Physical/macro provenance는 operator confirmation pending |
 | Gate B bounded failure | **PASS** | DISARM ACK loss와 PONG loss 각각 3회 뒤 FAILED, ARM/CMD 없음 |
 | Stale response / reset recovery | **PASS — executed vectors** | stale ACK/PONG seq 무시, controlled reset 뒤 새 startup recovery |
-| Wrong ACK type | **NOT TESTED** | matching seq + wrong `type` 별도 runtime vector 없음 |
+| T-BRIDGE-007 wrong ACK type | **PASS — required UART behavior** | matching seq `type=ARM` 무시, 정확히 500 ms 뒤 동일 DISARM seq 재시도, exact ACK/PONG 뒤에만 READY; TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0 |
 | Gate C controlled normal sequence | **PASS** | READY 이후 timing-driven script; motor-power-off 전용 |
 | Gate C parser recovery | **NOT TESTED** | ESP malformed response와 STM32 malformed command의 두 recovery 방향 모두 evidence 없음 |
-| Current safe-source contract run | **15/15 PASS** | ESP script `0U/1000 ms`, STM UART output hook `0U`; default-off contract 복구 확인 |
-| Current isolated STM32+ESP32 build | **PASS** | Safe-restored source의 두 firmware build 성공; flash identity 증거는 아님 |
-| Safe-image board reflash/run | **PENDING** | 현재 board image identity와 전 구간 `ARM/CMD` 무송신 증거가 아직 없음 |
+| Safe-source checkpoint before wrong-ACK injection | **15/15 + build PASS** | ESP script `0U/1000 ms`, STM motor-output hook `0U`; 당시 default-off contract와 두 firmware build 성공 |
+| Earlier safe-image UART runtime | **PASS — behavior** | exact startup, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0; image/setup provenance pending |
+| Current controlled-test source | **ACTIVE — NOT RELEASE** | ESP scripted-motion과 STM motor-output hook `0U`; wrong-ACK-once hook `1U` |
+| Final restored safe-image regression | **PENDING** | wrong-ACK hook `0U`, contract `15/15`, build/reflash와 ARM/CMD 0 재확인 필요 |
 
 2026-07-20과 fixed-delay 2026-08-03 로그는 역사적 baseline이다. 새
 response-gated runtime의 별도 원본과 판정은
 [`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에
 기록했다. Raw log는 flash hash와 무전원 setup을 독립 증명하지 않으므로 current
-release는 wrong ACK type, Gate C의 두 parser malformed recovery와 safe-image
-board reflash/run 회귀가 끝날 때까지 `PARTIAL`이다.
+release는 Gate C의 두 parser malformed recovery, controlled hook의 최종 `0U`
+복구·15/15·build·safe-image reflash 회귀와 image/physical provenance가 끝날 때까지
+`PARTIAL`이다. T-BRIDGE-007 wrong-type 원본은
+[`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
 
 ## 보드 회귀시험 체크리스트
 
@@ -213,15 +219,19 @@ board reflash/run 회귀가 끝날 때까지 `PARTIAL`이다.
 - DISARM ACK 및 PONG 누락의 단계별 3회 bounded failure
 - stale ACK/PONG sequence 무시
 - controlled reset/new startup recovery
+- matching seq의 wrong `type=ARM` ACK 무시, 정확히 500 ms 뒤 동일 DISARM seq
+  재시도와 exact ACK/PONG 뒤 READY
+- earlier safe image에서 READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`,
+  ARM/CMD TX 0
 
 남은 순서:
 
-1. Contract `15/15`와 isolated build를 통과한 safe image를 두 board에 reflash하고,
-   startup 전 구간의 `ARM/CMD` 무송신을 확인한다.
-2. ESP startup-response parser의 malformed response 거부 뒤 exact response recovery와
+1. STM32 wrong-ACK-once hook을 `0U`로 복구하고 모든 hook의 release-default를 확인한다.
+2. Contract `15/15`와 build를 다시 통과한 safe image를 두 board에 reflash하고,
+   startup 전 구간의 `ARM/CMD` 무송신을 재확인하며 flash/setup provenance를 보존한다.
+3. ESP startup-response parser의 malformed response 거부 뒤 exact response recovery와
    STM32 command parser의 malformed PING/CMD/unknown 거부 뒤 valid PING/PONG
    recovery를 각각 검증한다.
-3. Matching seq + wrong ACK type vector를 별도 캡처해 T-BRIDGE-007을 닫는다.
 
 ## 프로젝트 구조
 
