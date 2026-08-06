@@ -32,7 +32,10 @@
 위 문장은 이 fixed-delay 시험 종료 당시 상태다. 후속 active-DISARM capture 때 ESP
 script `1U/100 ms`, STM32 UART output hook `1U`를 사용했지만 2026-08-04 current
 worktree는 `0U/1000 ms`와 STM output hook `0U`로 복구됐다. Contract `15/15`와
-isolated clean dual build도 PASS했고 safe-image board reflash/run은 pending이다.
+isolated clean dual build도 PASS했다. 2026-08-06 follow-up에서 wrong-ACK hook까지
+`0U`로 복구하고 current `15/15`와 STM32 build를 PASS했다. 별도 board log의 observed
+safe UART behavior도 PASS했다. Exact source-to-board/setup provenance와 reset-marked pin
+capture는 pending이다.
 
 ## 실제 결과
 
@@ -76,10 +79,11 @@ UART initialize
 -> READY; scripted safety sequence only when its test macro is enabled
 ```
 
-Gate A와 Gate B 핵심 runtime behavior는 PASS다. 남은 current release gate는 matching
-seq + wrong ACK type의 required runtime coverage, ESP response/STM32 command parser의
-malformed reject/recovery, 그리고 restored safe-image board reflash/run이다. ESP/STM
-test hook `0U`, contract `15/15`와 isolated clean dual build는 이미 PASS했다.
+Gate A/B와 후속 matching-seq/wrong-ACK-type required runtime behavior는 PASS다.
+2026-08-06 current safe source의 all-hooks-`0U`, contract `15/15`와 STM32 build도
+PASS했다. 별도 board log의 observed safe UART behavior도 PASS했다. 남은 current
+release gate는 ESP response/STM32 command parser의 malformed reject/recovery와 exact
+source-to-board/physical setup provenance다.
 
 ## 범위 제한
 

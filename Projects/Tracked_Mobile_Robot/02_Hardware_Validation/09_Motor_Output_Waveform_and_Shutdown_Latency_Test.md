@@ -321,8 +321,8 @@ clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completi
 | Timeout latency | `NOT TESTED` | TBD | Safety-state semantics must match architecture |
 | Software fault output-zero/latch function | `PASS — functional DMM/LED scope` | [2026-07-30 operator record](../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md) | 정확한 edge latency 증거는 아님 |
 | Software fault event-to-PWM latency | `NOT TESTED` | TBD | fault marker와 PWM edge 동시 capture 필요 |
-| Final hook-off source/static/build regression | `PASS` | Current source audit + build run `20260804043010-26408-7918` | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15`, isolated clean STM32/ESP32 build PASS |
-| Restored safe-image board regression | `PENDING` | TBD | 양쪽 board reflash/run과 ARM/CMD 0 runtime evidence 필요 |
+| Final hook-off source/static/build regression | `PASS` | [2026-08-06 progress](../docs/progress/2026-08-06_progress.md) | ESP/STM 모든 controlled hook `0U`; contract `15/15`, STM32CubeIDE build PASS; ELF hash recorded |
+| Restored safe-image board regression | `PASS — UART behavior / provenance pending` | [2026-08-06 final raw log](../assets/logs/esp32_uart_bridge/2026-08-06_safe_image_uart_runtime_regression_pass.txt) | Exact ACK/PONG/READY, READY 후 11.35 s, TEL 120/120 safe, ARM/CMD/error 0; flash identity/physical setup와 reset-marker boot는 별도 pending |
 
 상세 수치, 판정 범위와 증거 연결은 [`../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)를 따른다. High-time 화면의 약 200 kHz 표시는 `1 / 5 us`이며 PWM 반복 주파수가 아니다. PWM 주파수 판정은 rising-to-rising 49.75 us 측정만 사용했다.
 
@@ -333,7 +333,8 @@ Logic analyzer: AVAILABLE / CAPTURED
 Boot inactive + 20 kHz/10% + direction settle subtests: PASS
 DISARM pin-edge latency: PASS — scoped first baseline, 23.50 us
 Timeout/software-fault pin-edge latency: NOT TESTED
-Final safe image board flash/post-flash regression: PENDING
+Safe-image UART board runtime: PASS — exact image/setup provenance pending
+External-reset-marker motor-pin capture: PENDING
 First powered motor test: NOT READY
 ```
 

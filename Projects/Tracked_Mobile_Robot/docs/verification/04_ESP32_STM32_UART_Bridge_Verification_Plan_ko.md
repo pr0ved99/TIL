@@ -158,7 +158,7 @@ Acceptance criteria:
 | T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | 2026-07-20 screenshot / raw log | PASS |
 | T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | `DISARMED`, `ARMED`, valid CMD, timeout-zero `TEL` 확인 | 2026-07-18 / 2026-07-20 screenshots | PASS |
 | T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0`, `w_mradps=0` | 2026-07-20 screenshot / raw log | PASS |
-| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [safe-image raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt) | PARTIAL — required runtime behavior PASS; cold-start marker와 image/physical provenance operator confirmation pending |
+| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [2026-08-04 safe log](../../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt), [2026-08-06 final safe log](../../assets/logs/esp32_uart_bridge/2026-08-06_safe_image_uart_runtime_regression_pass.txt) | PARTIAL — current safe source/static/build PASS; observed UART behavior PASS; cold-start marker, exact source-to-board linkage와 physical provenance pending |
 | T-BRIDGE-007 | REQ-BRIDGE-006 | DISARM ACK 또는 PONG 단절·wrong seq/type 주입 | loss는 단계별 최대 3회 뒤 FAILED; mismatch는 무시·재시도하고 exact response만 통과; ARM/CMD 없음 | [Loss/stale/reset report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [wrong-type raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt) | PASS — required UART runtime behavior; binary identity와 physical setup provenance pending |
 | T-BRIDGE-008A | REQ-BRIDGE-007 | ESP32가 ACK/PONG을 기다릴 때 malformed/unknown response 뒤 exact response 주입 | invalid response는 gate를 열지 않고 exact response에서 recovery | Evidence 없음 | NOT TESTED |
 | T-BRIDGE-008B | REQ-BRIDGE-008 | STM32에 malformed PING/CMD/unknown frame 뒤 valid PING 주입 | motion 실행 없는 fail-closed 거부 후 PONG recovery | Evidence 없음 | NOT TESTED |
@@ -223,11 +223,13 @@ ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/
 TX 0으로 behavior PASS했다. 로그 자체는 flash identity와 물리 무전원 setup을 증명하지
 않는다.
 
-현재 source는 wrong-type vector를 위한 controlled-test 상태로
-`UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`이며 ESP scripted-motion과
-STM32 motor-output hook은 `0U`다. 이 hook을 `0U`로 복구한 뒤 contract `15/15`, build,
-safe-image reflash와 ARM/CMD 0 회귀가 필요하다. 두 parser recovery도 남아 있어 current
-release 전체 판정은 계속 `PARTIAL`이다.
+2026-08-06에는 wrong-ACK hook을 `0U`로 복구해 ESP/STM의 모든 controlled hook이
+`0U`다. Current source의 contract `15/15`와 STM32CubeIDE build가 PASS했다. 이와
+별도로 final board log에서 observed UART runtime behavior도 PASS했다. Log는 exact
+ACK/PONG/READY, READY 후 11.35 s, TEL 120/120
+`DISARMED/zero/error 0`, ARM/CMD와 parser/startup error 0이다. Exact ELF-to-board
+linkage와 physical setup provenance, 두 parser recovery가 남아 current release 전체
+판정은 계속 `PARTIAL`이다.
 
 ## 2026-07-18 Execution Snapshot
 
@@ -283,7 +285,7 @@ Evidence:
 9. response-gated startup board run - PASS behavior / provenance confirmation pending
 10. response-loss bounded retry, stale-seq rejection, reset recovery와 wrong ACK type - PASS behavior / provenance pending
 11. ESP response와 STM command parser의 malformed reject/recovery injection - NOT TESTED
-12. earlier safe-image UART behavior - PASS / post-wrong-ACK `0U` source·15/15·build·reflash 회귀 - PENDING
+12. post-wrong-ACK safe source·15/15·build PASS + observed UART runtime behavior PASS / exact linkage·physical provenance PENDING
 ```
 
 ## Evidence Naming
@@ -332,9 +334,10 @@ ESP32-STM32 UART bridge MVP는 다음을 만족하면 PASS로 본다.
 - malformed STM32 command의 fail-closed 거부와 정상 PING/PONG recovery
 - 시험 종료 후 macro `0U` source/test/build와 safe board flash/run 복구
 
-현재 exact response, bounded loss, stale-sequence와 wrong ACK type vector까지 통과했다.
-두 parser recovery, controlled hook의 `0U` 복구·`15/15`·build·safe-image reflash 회귀와
-image/physical provenance가 남아 있으므로 strict-parser release는 아직 PASS가 아니다.
+현재 exact response, bounded loss, stale-sequence와 wrong ACK type runtime이 통과했다.
+Post-test current safe source/static/build도 PASS했고, 별도 board log의 observed safe UART
+behavior도 PASS했다. 두 parser recovery와 exact source-to-board/physical provenance가
+남아 있으므로 strict-parser release는 아직 PASS가 아니다.
 
 ## Follow-up
 

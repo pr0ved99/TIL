@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-08-04
+Last updated: 2026-08-06
 
 ## Project Identity
 
@@ -115,8 +115,10 @@ Important docs:
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-08-04_progress.md`: latest progress for Gate A/B runtime including wrong-ACK-type PASS, active DISARM 23.50 us and current controlled-test restore state
-- `docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`: current continuation for final safe restore, Gate C two-parser recovery and remaining latency gates
+- `docs/progress/2026-08-06_progress.md`: latest progress for the all-hooks-`0U` restore, contract/build evidence, final 11.35 s safe UART regression and provenance limits
+- `docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`: current continuation from the restored safe baseline into Gate C two-parser recovery
+- `docs/progress/2026-08-04_progress.md`: historical Gate A/B, wrong-ACK and active DISARM 23.50 us checkpoint
+- `docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`: historical controlled-test handoff superseded by the 2026-08-06 handoff
 - `docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`: Gate A exact startup, Gate B bounded loss/stale response/reset recovery and evidence limits
 - `docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`: active DISARM UART RX end to PWM last-edge MCU-pin first baseline
 - `docs/progress/2026-08-03_progress.md`: historical logic-analyzer PWM/direction, fixed-delay normal sequence and response-gated source/build checkpoint
@@ -150,7 +152,7 @@ Important docs:
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
 - `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: latest wiring baseline, safety boundary and next firmware/hardware gate
-- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation is `NEXT_SESSION_START_PROMPT.md` plus `2026-08-04_uart_runtime_and_active_disarm_handoff.md`
+- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation is `NEXT_SESSION_START_PROMPT.md` plus `2026-08-06_safe_uart_baseline_handoff.md`
 
 ## Current Progress Snapshot
 
@@ -199,7 +201,9 @@ Important docs:
 - ESP32 source now contains a non-blocking response-gated startup state machine: `500 ms settle -> LF boundary sync -> per-boot DISARM/matching ACK -> next-seq PING/matching PONG -> READY`, with a 500 ms response timeout, at most three attempts per response stage and `FAILED` fail-closed state. Startup sequence is seeded with `esp_random()` on every boot; responses latch only in the matching wait state. ACK `seq/type` and PONG `seq` are parsed and matched explicitly, and scripted ARM/CMD steps are gated on `READY`.
 - TX is emitted as one newline-terminated write and any TX or startup RX-flush failure enters `FAILED`. Duplicate required fields, integer overflow, trailing commas and non-exact frame prefixes are rejected. RX overflow or embedded control/CR marks the whole frame invalid and discards bytes through the next LF, preventing an overflow tail from being reparsed as a command.
 - The 2026-08-03 safe-source contract passed `15/15` and ESP32-S3 build passed with binary `0x2b210`, `83%` partition free. Actual response-gated board logs then passed Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG loss bounded failure, stale ACK/PONG sequence rejection and controlled reset/new-startup recovery. The reset segment does not contain the preceding failure, so post-failure session linkage remains operator-labeled. A 2026-08-04 controlled run also passed matching-seq/wrong-ACK-type rejection, exact 500 ms same-seq DISARM retry and exact-response-only READY. Both Gate C parser-recovery directions remain unverified, so the release remains `PARTIAL`.
-- Restored safe-image UART runtime behavior passed: exact ACK/PONG/READY, about 11.24 s after READY, TEL 118/118 DISARMED/zero/error 0 and ARM/CMD 0. Flash identity and physical no-power setup remain operator/provenance gaps. Current source is controlled-test state with only `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`; all motor-output and ESP scripted-motion hooks remain `0U`. The expected default-off contract failure count is one, and STM32 test build `20260804144706-1756-bc19` passed. No battery, MDD10A B+/B- or actual motor power may be connected.
+- The 2026-08-04 safe-image UART runtime behavior passed with about 11.24 s after READY and TEL 118/118 safe; the following wrong-ACK controlled run also passed and is historical evidence.
+- On 2026-08-06 the wrong-ACK hook was restored to `0U`; every ESP32/STM32 test hook is now `0U`. Firmware contract discovery passed `15/15`, and the user-observed STM32CubeIDE build reported `0 errors / 0 warnings`. The generated `1,239,972-byte` STM32 ELF has SHA-256 `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`.
+- The final 2026-08-06 board log passed exact ACK/PONG/READY and then 11.35 s with TEL 120/120 `DISARMED/zero/error 0`, ARM/CMD 0 and parser/startup errors 0. Flash transcript/build identity and physical no-power setup are not present in the raw log, so exact ELF-to-board linkage and setup provenance remain pending. Gate C parser recovery remains unverified; no battery, MDD10A B+/B- or actual motor power may be connected for that gate.
 - The STM32 CubeMX `.ioc` init ordering explicitly retains `MX_TIM5_Init` so TIM5 encoder initialization is not silently lost after regeneration.
 - Fifteen firmware preflight tests passed again after the 2026-08-04 safe-source restore. The suite combines source/configuration checks with host parser vectors; it does not replace target runtime or electrical evidence. Isolated clean build PASS likewise does not prove the restored images are running on either board.
 - STM32 motor-output uses `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` with common GND for the bench mapping.
@@ -210,7 +214,7 @@ Important docs:
 - On 2026-07-30 a temporary dual-channel 10% button hook injected `Error_Handler()` after M1A/M2A became active. All motor LEDs turned off, PB6/PB7/PC8/PC9 measured 0 V to STM32 GND, and further B1 input could not reactivate output before reset. Both button-test macros were restored to `0U` and B1 no-output regression passed.
 - On 2026-08-03 the motor-disconnected B1 six-step logic-analyzer capture measured both PWM channels at `49.75 us = 20.1005 kHz`, high time `5.00 us` and duty about `10.05%`. Direction-change PWM-zero intervals were channel 1 pre/post `1.994/2.03875 ms` and channel 2 pre/post `1.54725/about 2.040 ms`, so the waveform/direction timing sub-gate is `PASS`.
 - On 2026-08-04 the 4 MHz raw capture measured active DISARM final LF stop-bit end to both PWM last-active falling edges at `23.50 us`; PWM stopped `62.75 us` before ACK and did not restart for the remaining about 2.712088 s. This is an MCU-pin first baseline only.
-- Overall motor-output verification remains `PARTIAL`. The sampled initial inactive interval lacks an external reset marker. Active command-timeout/software-fault latency, restored safe-image board reflash/run, reset-marker boot, MDD10A power stage, Physical E-stop and actual motor stop remain unverified.
+- Overall motor-output verification remains `PARTIAL`. The sampled initial inactive interval lacks an external reset marker. The safe-image UART behavior regression is PASS, but active command-timeout/software-fault latency, reset-marker boot, MDD10A power stage, Physical E-stop and actual motor stop remain unverified.
 - Two available encoder motors are WHEELTEC `MG540P30_12V`; the encoder-side mapping is MG540-A/motor A = vehicle right/TIM5 and MG540-B/motor B = vehicle left/TIM3. MDD10A powered channel 1/2 to physical side remains TBD.
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
 - XL4015 #2 encoder rail measured 5.06 V before MG540-A and 5.03 V connected; MG540-B connected rail also measured 5.03 V.
@@ -273,17 +277,16 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short -- Projects/Tracked_Mobile_Robot`.
-2. Read `docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`, `docs/progress/2026-08-04_progress.md` and verification reports 09/10 before UART or motor-output work.
+2. Read `docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`, `docs/progress/2026-08-06_progress.md` and verification reports 09/10 before UART or motor-output work.
 3. Keep LiPo, MDD10A B+/B- and actual motor power disconnected. If both boards are USB-powered, never connect their 5 V/VBUS/VIN rails.
-4. Preserve the restored ESP `BRIDGE_SCRIPTED_TEST_ENABLED=0U`, `TEST_STEP_PERIOD_MS=1000` and STM `UART_MVP_OUTPUT_TEST_ENABLED=0U`; current contract `15/15` and isolated clean build run `20260804043010-26408-7918` are PASS.
-5. Flash/run the restored safe images on both boards. Preserve flash transcript/hash and confirm exact startup with ARM/CMD 0.
-6. Execute Gate C for both parser directions: malformed startup responses must not open the ESP gate and must recover on the exact response; malformed/unknown STM32 commands must be rejected and recover on a final valid PING/PONG. The ESP response parser allows unknown extras, while the STM32 command parser rejects non-CMD extra data and enforces CMD field order.
-7. Preserve the completed matching-seq/wrong-ACK-type rejection raw log, restore its hook to `0U`, rerun contract `15/15`, rebuild/reflash the safe STM32 image and repeat the ARM/CMD 0 regression.
-8. Preserve Gate A/B raw logs and active DISARM 23.50 us capture. Physical no-power and channel-map conditions remain operator confirmation pending until recorded.
-9. Capture command-timeout shutdown latency, then software-fault event-to-edge latency and latch waveform regression under the motor-disconnected 10% limit. Historical functional output-zero/latch is already PASS.
-10. Restore all hooks to `0U`, rerun tests/build, reflash safe images and capture external-reset-marker boot no-output.
-11. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`, 20.1005 kHz/about 10.05% PWM and direction settle evidence.
-12. Close board power/back-power prerequisites and execute `T-ESTOP-001~006` before any actual motor test.
-13. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10% and record current, heat, smell, noise, actual stop and powered encoder noise.
-14. Preserve the KiCad `RevA DRAFT` verified/TBD boundary and perform schematic-to-hardware continuity review before permanent wiring.
-15. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.
+4. Preserve the restored all-hooks-`0U` source, contract `15/15` and STM32 ELF hash as current source/build evidence; preserve the separate final 11.35 s/TEL 120 observed safe UART regression as the Gate C behavior baseline. Exact source-to-board/setup provenance remains pending.
+5. Execute Gate C for both parser directions: malformed startup responses must not open the ESP gate and must recover on the exact response; malformed/unknown STM32 commands must be rejected and recover on a final valid PING/PONG. Start T-BRIDGE-008A with duplicate required `seq` in a DISARM ACK. The ESP response parser allows unknown extras, while the STM32 command parser rejects non-CMD extra data and enforces CMD field order.
+6. After each controlled Gate C cycle, restore every hook to `0U`, rerun contract `15/15`, rebuild/reflash and repeat the ARM/CMD 0 safe regression. Preserve flash transcript/hash and physical no-power metadata in the next evidence bundle.
+7. Preserve Gate A/B, wrong-ACK and final safe raw logs plus the active DISARM 23.50 us capture. Physical no-power and channel-map conditions remain operator confirmation pending until recorded.
+8. Capture command-timeout shutdown latency, then software-fault event-to-edge latency and latch waveform regression under the motor-disconnected 10% limit. Historical functional output-zero/latch is already PASS.
+9. Restore all hooks to `0U`, rerun tests/build, reflash safe images and capture external-reset-marker boot no-output.
+10. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`, 20.1005 kHz/about 10.05% PWM and direction settle evidence.
+11. Close board power/back-power prerequisites and execute `T-ESTOP-001~006` before any actual motor test.
+12. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10% and record current, heat, smell, noise, actual stop and powered encoder noise.
+13. Preserve the KiCad `RevA DRAFT` verified/TBD boundary and perform schematic-to-hardware continuity review before permanent wiring.
+14. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.

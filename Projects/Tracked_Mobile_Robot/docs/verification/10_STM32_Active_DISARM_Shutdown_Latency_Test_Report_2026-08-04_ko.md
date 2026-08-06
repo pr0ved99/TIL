@@ -50,7 +50,9 @@ valid DISARM frame 수신 완료
 
 위 표의 `1U/100 ms`는 active-DISARM capture 당시 시험 조건이다. 현재 worktree는
 ESP `0U/1000 ms`, STM output hook `0U`로 복구됐고 contract `15/15`와 isolated clean
-dual build run `20260804043010-26408-7918`이 PASS다. Safe-image board reflash/run은 pending이다.
+dual build run `20260804043010-26408-7918`이 PASS다. 2026-08-06 follow-up에서는
+wrong-ACK hook까지 `0U`로 복구하고 current `15/15`, STM32 build와 safe-image UART
+runtime behavior를 PASS했다. Exact image/setup provenance와 reset-marker boot는 pending이다.
 
 ## Channel Map
 
@@ -177,8 +179,8 @@ common motor-output stop path가 두 PWM compare output과 두 DIR을 safe level
 
 ## 남은 검증과 PASS 기준
 
-1. 완료된 hook `0U`, contract `15/15`와 isolated clean dual-build checkpoint를 보존한다.
-2. Restored safe images의 board flash/run과 no-output/ARM-CMD-zero regression을 확인한다.
+1. 완료된 all-hooks-`0U` source, contract `15/15`, build와 별도 observed safe UART runtime evidence를 보존한다.
+2. Exact image/setup provenance와 external-reset-marker motor-pin capture를 별도 evidence로 닫는다.
 3. 마지막 valid CMD frame과 PWM을 함께 캡처해 configured timeout 이후 bounded
    loop delay 안에 PWM이 멈추고 old command가 재적용되지 않음을 확인한다.
 4. Dedicated marker 또는 분리된 debounced event로 software-fault latency와 latch를

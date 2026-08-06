@@ -104,10 +104,12 @@ PING,seq=S+1
 즉 `0U`는 "ESP32가 UART에 아무것도 송신하지 않음"이 아니라, "startup
 안전 동기화 후에도 `ARM`/`CMD` motion test는 실행하지 않음"을 뜻한다.
 
-2026-08-04 current worktree는 active-DISARM capture 뒤 안전 목표값으로 복구됐다.
-실제 source는 ESP script `0U/1000 ms`, STM32 UART output hook `0U`이고 contract
-`15/15`와 isolated clean STM32/ESP32 build run `20260804043010-26408-7918`이 PASS다.
-다만 restored safe images의 board reflash/run과 ARM/CMD 0 evidence는 다음 단계다.
+2026-08-04 checkpoint에서는 ESP script `0U/1000 ms`, STM32 UART output hook `0U`,
+contract `15/15`와 isolated clean STM32/ESP32 build가 PASS했다. 당시 safe board
+regression은 pending이었다. 2026-08-06에는 wrong-ACK hook까지 포함한 모든 controlled
+hook을 `0U`로 복구했고 current `15/15`, STM32 build와 observed safe UART board
+behavior도 각각 PASS했다. Exact source-to-board linkage와 physical setup provenance는
+pending이다.
 
 ### Exact field parser
 
@@ -137,16 +139,17 @@ matching response가 아니다.
 | Gate B DISARM ACK/PONG loss | **PASS — 각 최대 3회 뒤 FAILED** |
 | Stale ACK/PONG seq rejection | **PASS** |
 | Controlled reset recovery | **PASS** |
-| Wrong ACK type | **미검증** |
+| Wrong ACK type | **PASS** — matching seq/wrong type 무시, same-seq retry, exact response 뒤 READY |
 | Gate C ESP response/STM32 command parser recovery | **미검증** |
-| Current safe-source/static/build restore | **PASS** — `0U/1000 ms`, contract `15/15`, isolated clean dual build PASS |
-| Restored safe-image board regression | **미완료** — reflash/run과 ARM/CMD 0 evidence 필요 |
+| Current safe-source/static/build restore | **PASS** — 모든 hook `0U`, contract `15/15`, STM32 build PASS |
+| Restored safe-image board regression | **PASS behavior** — READY 후 11.35 s, TEL 120/120 safe, ARM/CMD/error 0; image/setup provenance pending |
 
 정적 계약 테스트는 상태 순서, retry/failure 경로, parser boundary, motion 가드가
 소스에 있음을 확인하고 build는 바이너리 생성 가능성을 확인한다. 이후 raw board
 log가 exact response와 bounded failure를 별도로 확인했다. Raw log만으로 physical
-power state와 flashed binary hash를 증명하지 못하는 한계, wrong ACK type과 malformed
-recovery가 남은 범위는 [response-gated report](../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에 기록한다.
+power state와 flashed binary hash를 증명하지 못하는 한계와 malformed recovery가 남은
+범위는 [response-gated report](../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)와
+[2026-08-06 progress](../../docs/progress/2026-08-06_progress.md)에 기록한다.
 
 ## 실습 단계
 
@@ -432,5 +435,6 @@ ESP32 수신 처리 로직이 raw line 출력 단계에서 한 단계 올라가,
 이 PASS는 scripted sequence를 정상 부팅 때 항상 실행한다는 의미가 아니다. 운영
 기준은 motion script default-off이며, 과거 로그는 controlled-bench evidence로
 보존한다. 2026-08-03 response-gated FSM은 이후 actual Gate A/B runtime까지
-확인됐지만 Gate C two-parser recovery와 current test hook의 safe `0U` restore가
-남아 release 전체는 `PARTIAL`이다.
+확인됐고 2026-08-04 wrong-ACK vector도 PASS했다. 2026-08-06 current all-hooks-`0U`
+source/static/build와 별도 observed safe UART behavior도 각각 PASS했다. Gate C two-parser
+recovery와 exact source-to-board/setup provenance가 남아 release 전체는 `PARTIAL`이다.

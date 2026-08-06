@@ -1,5 +1,9 @@
 # 2026-08-04 UART Runtime And Active DISARM Handoff
 
+> Historical checkpoint: current continuation moved to
+> [`2026-08-06_safe_uart_baseline_handoff.md`](2026-08-06_safe_uart_baseline_handoff.md)
+> after the all-hooks-`0U` restore and final safe runtime regression.
+
 This handoff supersedes
 [`2026-08-03_uart_response_gated_startup_implementation_handoff.md`](2026-08-03_uart_response_gated_startup_implementation_handoff.md)
 as the current UART/motor-output continuation source.
@@ -21,8 +25,8 @@ Gate C ESP-response/STM32-command parser recovery: NOT TESTED
 Active DISARM MCU-pin baseline: PASS, 23.50 us
 Current release: PARTIAL
 Safe-image UART runtime behavior: PASS; image/setup provenance pending
-Current source: wrong-ACK-type controlled hook 1U
-Current controlled STM32 build: PASS
+Handoff-time source: wrong-ACK-type controlled hook 1U
+Handoff-time controlled STM32 build: PASS
 ```
 
 ## 완료된 Runtime Evidence

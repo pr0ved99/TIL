@@ -22,8 +22,8 @@ git status --short -- Projects/Tracked_Mobile_Robot
 2. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
-5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-04_progress.md
+5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-06_safe_uart_baseline_handoff.md
+6. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-06_progress.md
 7. Projects/Tracked_Mobile_Robot/docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md
 8. Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md
 9. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
@@ -76,7 +76,8 @@ git status --short -- Projects/Tracked_Mobile_Robot
 - Gate C READY 이후 controlled normal sequence는 PASS
 - Gate C의 ESP malformed-response recovery와 STM32 malformed-command recovery는
   모두 NOT TESTED
-- Current UART release는 PARTIAL
+- 2026-08-06 all-hooks-`0U` safe source/static/build PASS; 별도 observed UART behavior PASS
+- Current UART release는 exact source-to-board/setup provenance와 Gate C 때문에 PARTIAL
 
 Active DISARM result:
 
@@ -97,12 +98,14 @@ Active DISARM result:
 - STM32 UART_MVP_OUTPUT_TEST_ENABLED=0U
 - STM32 stale ACK/PONG/suppress PONG hooks=0U
 - STM32 button output/fault hooks=0U
-- STM32 UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U
-- Current source/test image는 controlled wrong-ACK 상태이며 safe release image가 아니다.
-- Controlled STM32 build: PASS, run 20260804144706-1756-bc19
-- 직전 safe-source checkpoint의 contract run은 15/15 PASS, isolated clean STM32/ESP32 build도 PASS였다.
-- Restored safe-image UART runtime behavior는 exact ACK/PONG/READY, READY 뒤 약 11.24 s,
-  TEL 118/118 DISARMED/zero/error 0과 ARM/CMD 0으로 PASS했다.
+- STM32 UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=0U
+- Current ESP/STM source의 모든 controlled test hook은 `0U`다.
+- Canonical firmware contract discovery는 15/15 PASS다.
+- STM32CubeIDE build는 session에서 `0 errors / 0 warnings`로 관찰됐다.
+- STM32 ELF: 1,239,972 bytes, SHA-256
+  `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`.
+- Final safe-image UART runtime behavior는 exact ACK/PONG/READY, READY 뒤 11.35 s,
+  TEL 120/120 DISARMED/zero/error 0과 ARM/CMD/error 0으로 PASS했다.
 - 다만 exact flashed image identity와 physical no-power setup provenance는 pending이다.
 
 중요 evidence boundary:
@@ -121,7 +124,7 @@ Active DISARM result:
 - common GND
 - 115200 baud, 8-N-1, flow control 없음
 - 두 board를 각각 USB로 전원 공급할 때 5 V/VBUS/VIN rail은 연결하지 않는다.
-- Source와 board image는 wrong-ACK controlled-test 상태일 수 있으므로 LiPo,
+- Current source는 all-hooks-`0U` safe checkpoint지만 Gate C는 controlled test이므로 LiPo,
   MDD10A B+/B-와 actual motor power를 절대 연결하지 않는다.
 - STM32가 parser, command timeout, motor output, encoder와 최종 safety authority다.
 
@@ -134,40 +137,14 @@ Active DISARM result:
 - Safe-image UART runtime behavior PASS; exact image/setup provenance pending
 - Gate C two-parser recovery NOT TESTED
 
-Step 1 - 첫 번째 실행 단계: wrong-ACK hook 복구와 safe-image regression
+Completed checkpoint - 2026-08-06 safe restore
 
-사전 조건:
+- Wrong-ACK hook 포함 모든 controlled hook `0U`
+- Contract `15/15`와 STM32 build PASS; 별도 observed UART runtime behavior PASS
+- Exact ACK/PONG/READY 뒤 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD 0
+- Flash transcript와 physical no-power metadata가 없어 exact image/setup provenance는 pending
 
-- LiPo 분리
-- MDD10A B+/B- 분리
-- actual motor power 분리
-- 기존 raw evidence와 다른 사용자 변경 보존
-
-예상 결과:
-
-- STM32 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=0U`
-- ESP/STM controlled hooks가 모두 `0U`
-- Contract `15/15`, STM32/ESP32 clean build PASS
-- restored safe images가 양쪽 board에 reflash/run됨
-- matching DISARM ACK/PONG 뒤 READY
-- 전체 실행에서 scripted ARM/CMD 0회
-
-즉시 중지 조건:
-
-- motor-energy source가 연결돼 있음
-- wrong-ACK hook 또는 다른 controlled hook이 `1U`인 채 flash하려 함
-- 예상하지 않은 source 또는 flash target 발견
-- flash/monitor 오류, 반복 reset, 과열, 냄새 또는 USB 불안정
-- ARM/CMD 송신 또는 nonzero output 관찰
-
-PASS 기준:
-
-- 양쪽 safe-image flash transcript와 binary hash 보존
-- LiPo/MDD10A B+/B-/actual motor power 분리 상태를 text metadata로 보존
-- exact startup 뒤 READY와 ARM/CMD 0 raw log
-- telemetry DISARMED/zero
-
-Step 2 - Gate C parser recovery
+Step 1 - Gate C parser recovery
 
 - T-BRIDGE-007 wrong-ACK runtime vector는 이미 PASS다. 원본 로그를 보존하고 반복하지 않는다.
 - Safe restore와 safe-image 회귀 뒤에 Gate C를 실행한다.
@@ -210,8 +187,8 @@ Step 2 - Gate C parser recovery
 
 1. 실제 git status에서 확인한 변경 파일
 2. Gate A/B, T-BRIDGE-007 wrong ACK, Gate C와 active DISARM의 현재 판정
-3. Current wrong-ACK hook `1U`, safe-image behavior PASS와 image/setup provenance pending인 점
-4. 사용자가 바로 수행할 hook `0U` restore + safe-image board regression 한 단계의 사전 조건, 예상 결과,
+3. Current all-hooks-`0U` source/static/build와 별도 observed safe UART behavior는 PASS지만 exact source-to-board/setup provenance는 pending인 점
+4. 사용자가 바로 수행할 T-BRIDGE-008A 첫 duplicate-`seq` ACK vector의 사전 조건, 예상 결과,
    중지 조건과 PASS 기준
 
 프롬프트의 상태와 실제 source/diff가 다르면 실제 파일을 우선하고 차이를 먼저

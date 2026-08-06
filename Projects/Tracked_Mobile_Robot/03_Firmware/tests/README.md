@@ -70,7 +70,7 @@ flash되었는지나 실제 UART 응답 시간을 만족하는지를 증명하�
 safe-image UART 동작도 PASS했다. 다만 raw log만으로 실제 flash identity와 물리 setup을
 확정할 수는 없다.
 
-2026-08-04 current controlled-test checkpoint:
+2026-08-04 controlled-test checkpoint (historical):
 
 - ESP32 scripted-motion과 STM32 motor-output hook: `0U`
 - STM32 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`
@@ -78,9 +78,18 @@ safe-image UART 동작도 PASS했다. 다만 raw log만으로 실제 flash ident
 - 정확히 500 ms 뒤 동일 DISARM seq 재시도, exact DISARM ACK/PONG 뒤 READY: **PASS**
 - TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0: **PASS**
 
-따라서 T-BRIDGE-007 required UART runtime behavior는 PASS다. 현재 source는 release
-default가 아니므로 wrong-ACK hook을 `0U`로 복구하고 contract `15/15`, build/reflash와
-safe-image ARM/CMD 0 회귀를 다시 수행해야 한다.
+따라서 T-BRIDGE-007 required UART runtime behavior는 PASS다. 이 `1U` 상태는 당시의
+controlled-test 기록이며 현재 source 상태가 아니다.
+
+2026-08-06 current safe checkpoint:
+
+- ESP32 scripted-motion과 STM32 UART/motor/fault controlled hook: 모두 `0U`
+- Canonical discovery: **15/15 PASS**, `OK`
+- STM32CubeIDE build: session-observed **0 errors / 0 warnings**
+- STM32 ELF SHA-256: `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`
+- Final runtime: exact ACK/PONG/READY, READY 후 11.35 s, TEL 120/120
+  `DISARMED/zero/error 0`, ARM/CMD와 parser/startup error 0 — **PASS**
+- Exact ELF-to-board linkage와 physical no-power setup provenance: **PENDING**
 
 ## 범위와 한계
 
@@ -96,8 +105,8 @@ safe-image ARM/CMD 0 회귀를 다시 수행해야 한다.
 - RX overflow 또는 embedded control/CR 뒤의 tail을 다음 LF까지 폐기함
 - startup TX 또는 RX flush 실패가 `FAILED`로 닫힘
 - `BRIDGE_SCRIPTED_TEST_ENABLED == 0U`에서 `ARM/CMD` 스크립트가 실행되지 않음.
-  Current ESP source는 `0U`지만 STM32 wrong-ACK-once hook은 controlled vector 때문에
-  `1U`이며 release 전 반드시 `0U`로 복구해야 함
+  Current ESP/STM source의 controlled hook은 모두 `0U`다. Gate C에서 controlled hook을
+  사용하면 실행 직후 다시 전부 `0U`로 복구해야 한다.
 
 ### 매크로와 부팅 handshake의 관계
 
@@ -128,5 +137,4 @@ TEL 97/97은 `DISARMED/zero`, ARM/CMD TX는 0이었다. 원본은
 다음 hardware-in-the-loop 범위는 남아 있다.
 
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
-- wrong-ACK hook `0U` 복구 뒤 contract `15/15`, build/reflash한 safe image의
-  exact identity, no-ARM/CMD 회귀와 physical setup provenance
+- 다음 controlled cycle의 flash transcript/build identity와 physical setup provenance

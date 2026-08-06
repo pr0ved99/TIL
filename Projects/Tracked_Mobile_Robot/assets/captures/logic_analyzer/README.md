@@ -108,4 +108,4 @@ release limit은 아직 고정되지 않았다.
 - `.pvs`만으로 sample data가 보존된다고 가정하지 않는다.
 - 파일명을 바꾸면 report와 screenshot index의 상대 링크도 함께 갱신한다.
 - 이 자료는 MCU logic pin 측정이며 MDD10A power terminal, motor current, 실제 motor stop 또는 Physical E-stop을 입증하지 않는다.
-- Active-DISARM capture 당시 ESP scripted hook과 STM32 UART output hook은 `1U`였다. 현재 worktree는 ESP `0U/1000 ms`, STM32 output hook `0U`로 복구됐고 contract `15/15`와 isolated clean STM32/ESP32 build run `20260804043010-26408-7918`이 PASS다. Restored safe images의 board reflash/run과 ARM/CMD 0 runtime evidence는 pending이다.
+- Active-DISARM capture 당시 ESP scripted hook과 STM32 UART output hook은 `1U`였다. 2026-08-06 current worktree는 ESP/STM controlled hook이 모두 `0U`이고 contract `15/15`, STM32 build와 safe-image UART behavior 회귀가 PASS다. Exact image/setup provenance와 external-reset-marker pin capture는 pending이다.

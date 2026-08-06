@@ -200,11 +200,11 @@ DISARM -> ACK / DISARMED / zero
 따라서 Gate C normal half는 `PASS`, 두 parser의 malformed/recovery half는
 `NOT TESTED`, Gate C 전체는 `PARTIAL`이다.
 
-## 현재 Source/Test 상태
+## 2026-08-04 시험 직후 Source/Test 상태 (역사 기록)
 
-2026-08-04 wrong-ACK-type 시험 뒤 실제 파일을 다시 읽은 current worktree 상태는 다음과 같다.
+2026-08-04 wrong-ACK-type 시험 직후 실제 파일을 다시 읽은 당시 worktree 상태는 다음과 같다.
 
-| Source setting | Current value |
+| Source setting | 2026-08-04 시험 직후 값 |
 | --- | ---: |
 | ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED` | `0U` |
 | ESP32 `TEST_STEP_PERIOD_MS` | `1000` |
@@ -214,10 +214,15 @@ DISARM -> ACK / DISARMED / zero
 | STM32 button output/fault hooks | 모두 `0U` |
 
 Wrong-type hook을 `0U`로 둔 structural checkpoint는 contract `15/15 PASS`, isolated
-STM32 build `20260804144612-32776-5226` PASS다. 현재 controlled `1U` source는
+STM32 build `20260804144612-32776-5226` PASS다. 2026-08-04 당시 controlled `1U` source는
 default-off guard 한 건만 의도적으로 실패하며, STM32 test build
 `20260804144706-1756-bc19`은 `0 errors / 0 warnings`로 PASS했다. Safe release 전에는
 hook을 다시 `0U`로 복구하고 contract/build/reflash/runtime 회귀를 반복해야 한다.
+
+2026-08-06 follow-up에서 이 hook을 `0U`로 복구해 모든 hook `0U`인 current source의
+contract `15/15`와 STM32 build를 PASS했다. 별도 final board log의 observed safe UART
+behavior도 PASS했다. Current continuation은
+[`2026-08-06_safe_uart_baseline_handoff.md`](../handoff/2026-08-06_safe_uart_baseline_handoff.md)를 따른다.
 
 ## Evidence Integrity
 
@@ -236,12 +241,15 @@ hook을 다시 `0U`로 복구하고 contract/build/reflash/runtime 회귀를 반
 Gate A의 exact response sequence와 Gate B의 두 no-response bounded failure,
 stale sequence 및 matching-seq/wrong-type 거부, reset recovery는 raw runtime behavior
 기준으로 통과했다.
-그러나 current UART release는 다음 항목 때문에 계속 `PARTIAL`이다.
+이 보고서 작성 당시에는 wrong-ACK hook restore와 safe regression이 남아 release가
+`PARTIAL`이었다. 2026-08-06 follow-up에서 모든 hook `0U`인 current source의 contract
+`15/15`와 STM32 build를 PASS했다. 별도 final board log의 observed safe UART behavior도
+PASS해 그 동작 항목을 닫았다.
+현재 남은 release 항목은 다음과 같다.
 
-1. Wrong-ACK-type hook을 `0U`로 복구하고 contract `15/15`와 safe STM32 build를 재확인한다.
-2. Safe STM32 image를 board에 reflash/run한다.
-3. Safe `0U` image에서 READY 뒤 ARM/CMD 무송신 회귀를 다시 확인한다.
-4. Gate C에서 ESP startup-response parser와 STM32 command parser의 malformed
+1. Gate C에서 ESP startup-response parser와 STM32 command parser의 malformed
    reject/recovery를 각각 실행한다.
-5. 작업자가 Gate A/B 당시 무전원 및 power-off rewiring 조건을 확인하면 시험
+2. 다음 controlled evidence에 flash transcript/build identity와 physical no-power
+   setup metadata를 함께 보존한다.
+3. 작업자가 Gate A/B 당시 무전원 및 power-off rewiring 조건을 확인하면 시험
    provenance에 추가한다.
