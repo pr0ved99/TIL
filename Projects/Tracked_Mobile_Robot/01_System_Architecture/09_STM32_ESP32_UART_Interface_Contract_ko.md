@@ -668,12 +668,18 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 | Gate B bounded failure | **PASS** | DISARM ACK 및 PONG loss 각각 3회 뒤 FAILED |
 | Stale response/reset recovery | **PASS — executed vectors** | stale ACK/PONG seq 무시, controlled reset 뒤 새 startup |
 | T-BRIDGE-007 wrong-response runtime | **PASS — required UART behavior** | stale seq 거부에 더해 matching seq의 `type=ARM` ACK를 무시하고 정확히 500 ms 뒤 동일 DISARM seq 재시도; exact DISARM ACK/PONG 뒤에만 READY, TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0 |
-| Gate C parser recovery | **NOT TESTED** | ESP malformed response -> exact response와 STM32 malformed command -> valid PING/PONG 두 방향 모두 증거 없음 |
+| T-BRIDGE-008A ESP response parser recovery | **PARTIAL** | Duplicate required `seq`, trailing-comma와 required-`seq` uint32 overflow ACK를 각각 거부하고 정확히 500 ms 뒤 same-seq retry, exact ACK/PONG 뒤 READY — 세 subvector PASS; remaining vectors pending |
+| T-BRIDGE-008B STM32 command parser recovery | **NOT TESTED** | malformed PING/CMD/unknown command -> valid PING/PONG evidence 없음 |
 | Safe-source restore checkpoint (wrong-ACK 주입 전) | **PASS — source/static/build** | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`) |
 | Earlier safe-image UART runtime | **PASS — behavior** | exact ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0; image/setup provenance는 pending |
 | 2026-08-04 wrong-ACK controlled source | **HISTORICAL** | 당시 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`; required vector PASS 뒤 복구됨 |
-| Current safe source/static/build | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; STM32CubeIDE build session-observed `0 errors / 0 warnings`; ELF SHA-256 `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF` |
-| Final restored safe-image regression | **PASS — behavior** | exact ACK/PONG/READY, READY 뒤 11.35 s, TEL 120/120 `DISARMED/zero/error 0`, ARM/CMD와 parser/startup error 0; exact image/setup provenance pending |
+| T-BRIDGE-008A duplicate-seq controlled runtime | **PASS — subvector** | malformed ACK parse reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; TEL 150/150 safe, ARM/CMD/failure 0 |
+| Post-duplicate safe source/build/flash | **PASS — historical checkpoint** | 모든 hook `0U`; contract `15/15`; ELF SHA-256 `25885322BD28B19456498A37C14B87D039984A96F2E2EA30CC1764A36E086A2A`; flash verify PASS |
+| T-BRIDGE-008A trailing-comma controlled runtime | **PASS — subvector** | malformed field-list reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; TEL 150/150 safe, ARM/CMD/failure 0 |
+| Post-trailing-comma safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 exact ACK/PONG/READY, READY 뒤 15.51 s, TEL 160/160 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
+| T-BRIDGE-008A required-`seq` uint32 overflow controlled runtime | **PASS — subvector** | overflow parse reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; post-READY TEL 140/140 safe, ARM/CMD/failure 0 |
+| Current post-test safe source/static/build/artifact/flash | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; restored protocol source recompile/link `0 errors / 0 warnings`; safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; controlled string absent from object/ELF/map/list; flash verify PASS |
+| Post-overflow safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 exact ACK/PONG/READY, READY 뒤 14.43 s, post-READY TEL 145/145 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
 
 2026-07-20 PING/PONG, telemetry relay와 scripted sequence는 역사적 baseline이다.
 새 response-gated runtime은 별도 raw log와
@@ -682,18 +688,31 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 [`2026-08-04_safe_image_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt),
 matching-seq/wrong-type 거부 증거는
 [`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
-Current safe regression은
+Pre-008A safe regression은
 [`2026-08-06_safe_image_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_safe_image_uart_runtime_regression_pass.txt)에 보존했다.
+Duplicate-required-`seq` controlled evidence와 post-test safe regression은 각각
+[`2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt),
+[`2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Trailing-comma controlled evidence와 post-trailing safe regression은 각각
+[`2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt),
+[`2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Required-`seq` uint32-overflow controlled evidence와 current safe regression은 각각
+[`2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt),
+[`2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Historical post-trailing safe full-build console은
+[`2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt`](../assets/logs/firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt)에 보존했다.
+Current overflow controlled/safe build와 flash 요약은
+[`2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md`](../assets/logs/firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md)에 보존했다.
 이 raw log들은 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지 않으므로
 그 image/physical provenance는 작업자 확인 대기다.
 
 현재 revision의 verification gate는 다음과 같다.
 
-1. 완료된 T-BRIDGE-007와 2026-08-06 all-hooks-`0U` safe baseline evidence를 보존
-2. ESP startup-response parser와 STM32 command parser 각각의 malformed
-   fail-closed/recovery runtime capture
-3. 각 controlled cycle 뒤 모든 hook `0U`, contract `15/15`, build/reflash와 safe runtime 회귀
-4. 다음 evidence부터 flash transcript/hash와 physical no-power setup metadata를 함께 보존
+1. 완료된 T-BRIDGE-007, T-BRIDGE-008A duplicate-seq/trailing-comma/required-`seq` uint32-overflow와 post-test safe evidence를 보존
+2. T-BRIDGE-008A partial-frame-name response부터 invalid terminator/embedded-control, overlong-line/RX-line-buffer-overflow vectors를 닫는다.
+3. T-BRIDGE-008B STM32 malformed command fail-closed/recovery runtime을 닫는다.
+4. 각 controlled cycle 뒤 모든 hook `0U`, contract `15/15`, build/reflash와 safe runtime 회귀
+5. 다음 evidence부터 flash transcript/hash와 physical no-power setup metadata를 함께 보존
 
 ## 13. Logging과 Debugging
 
@@ -749,14 +768,17 @@ ESP32:
 STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
 request source, telemetry bridge로 동작한다.
 
-Earlier observed safe UART behavior와 T-BRIDGE-007 wrong-seq/wrong-type rejection은
-required runtime behavior를 통과했다. 2026-08-06 current source는 모든 hook `0U`이며
-contract `15/15`와 STM32 build가 PASS했다. 별도 final board log의 observed UART
-behavior도 PASS했다. Log는 exact startup 뒤 11.35 s, TEL 120/120
-`DISARMED/zero/error 0`, ARM/CMD/error 0이다.
-현재 다음 실무 작업은 motor-energy source를 분리한 상태에서 Gate C의 ESP response와
-STM32 command parser recovery를 각각 닫는 것이다. Current release는 exact
-source-to-board/physical provenance와 두 parser recovery가 남아 `PARTIAL`이다.
+Earlier safe UART behavior와 T-BRIDGE-007 wrong-seq/wrong-type rejection은 required runtime
+behavior를 통과했다. T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와
+required-`seq` uint32-overflow rejection/recovery도 각각 subvector PASS다. 2026-08-07
+current source는 모든 hook `0U`이며 contract `15/15`, restored protocol source build
+`0 errors / 0 warnings`, safe artifact 검사와 reflash가 PASS했다. Post-test board log도
+warning/retry/parser error 없는 exact startup, READY 뒤 14.43 s와 post-READY TEL 145/145
+`DISARMED/zero/error 0`, ARM/CMD/error 0으로 PASS했다. 현재 다음 실무 작업은
+motor-energy source를 분리한 상태에서 partial-frame-name, invalid
+terminator/embedded-control과 overlong-line/RX-line-buffer-overflow vectors를 닫은 뒤
+T-BRIDGE-008B를 실행하는 것이다. Current
+release는 exact runtime-to-ELF linkage, remaining parser recovery와 physical setup provenance가 남아 `PARTIAL`이다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

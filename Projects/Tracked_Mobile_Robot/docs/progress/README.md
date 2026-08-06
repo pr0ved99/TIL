@@ -41,7 +41,8 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-06 | [`2026-08-06_progress.md`](2026-08-06_progress.md) | Wrong-ACK hook 포함 모든 test hook `0U` 복구와 contract `15/15`/STM32 build PASS; 별도 READY 후 11.35 s/TEL 120 observed UART behavior PASS; Gate C two-parser recovery next |
+| 2026-08-07 | [`2026-08-07_progress.md`](2026-08-07_progress.md) | T-BRIDGE-008A required-`seq` uint32-overflow까지 3개 subvector PASS; all-hooks-`0U`, contract `15/15`, protocol recompile+relink `0/0`, safe flash와 READY 후 14.43 s/TEL 145 회귀 PASS; partial frame-name vector next |
+| 2026-08-06 | [`2026-08-06_progress.md`](2026-08-06_progress.md) | Safe baseline 뒤 T-BRIDGE-008A duplicate-required-seq subvector PASS; all-hooks-`0U`, contract `15/15`, safe build/reflash와 READY 후 14.42 s/TEL 150 회귀 PASS; remaining 008A와 008B next |
 | 2026-08-04 | [`2026-08-04_progress.md`](2026-08-04_progress.md) | Gate A/B response-gated runtime과 active DISARM 23.50 us PASS; safe source/contract/isolated build PASS, board reflash/run·wrong ACK type·Gate C two-parser recovery pending |
 | 2026-08-03 | [`2026-08-03_progress.md`](2026-08-03_progress.md) | USART1/PWM/DIR 로직 분석기 검증, safe STM32 runtime과 strict-parser controlled normal sequence PASS, response-gated startup source·contract `15/15`·ESP build PASS; actual board retry/wrong-response/malformed 회귀는 PARTIAL |
 | 2026-07-31 | [`2026-07-31_progress.md`](2026-07-31_progress.md) | Strict UART frame parser fail-closed/recovery board-only 시험과 startup PING/desynchronization 한계 확인 |

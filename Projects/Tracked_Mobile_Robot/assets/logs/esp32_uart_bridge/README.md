@@ -21,7 +21,13 @@ ESP32-S3와 NUCLEO-F446RE의 board-only UART bridge 검증에서 저장한 원�
 | 2026-08-04 | [`2026-08-04_safe_image_uart_runtime_regression_pass.txt`](2026-08-04_safe_image_uart_runtime_regression_pass.txt) | Restored safe image에서 exact startup, READY 후 11.24 s, TEL 118/118 DISARMED/zero/error 0과 ARM/CMD 0 PASS |
 | 2026-08-04 | [`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt) | Matching seq의 wrong `type=ARM` ACK를 무시하고 500 ms 뒤 동일 DISARM seq를 재시도해 exact DISARM ACK/PONG 뒤에만 READY인 T-BRIDGE-007 runtime PASS |
 | 2026-08-06 | [`2026-08-06_safe_image_uart_runtime_regression_run1_10s_total.txt`](2026-08-06_safe_image_uart_runtime_regression_run1_10s_total.txt) | Safe restore 첫 관찰: TEL 100/100 안전, 오류 0이지만 READY 후 9.45 s라 10 s dwell 기준에는 0.55 s 부족 |
-| 2026-08-06 | [`2026-08-06_safe_image_uart_runtime_regression_pass.txt`](2026-08-06_safe_image_uart_runtime_regression_pass.txt) | Safe restore 최종 회귀: exact startup, READY 후 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD와 오류 0 PASS |
+| 2026-08-06 | [`2026-08-06_safe_image_uart_runtime_regression_pass.txt`](2026-08-06_safe_image_uart_runtime_regression_pass.txt) | Pre-008A safe baseline 최종 회귀: exact startup, READY 후 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD와 오류 0 PASS |
+| 2026-08-06 | [`2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt`](2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt) | T-BRIDGE-008A duplicate-required-`seq` ACK를 1회 거부하고 500 ms 뒤 같은 DISARM seq 재시도, exact ACK/PONG 뒤 READY, TEL 150/150 safe — 하위 벡터 PASS |
+| 2026-08-06 | [`2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt`](2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt) | Duplicate-seq hook `0U` 복구·safe reflash 뒤 retry/parser error 없이 exact startup, READY 후 14.42 s, TEL 150/150 safe — PASS |
+| 2026-08-06 | [`2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt`](2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt) | T-BRIDGE-008A trailing-comma ACK를 1회 거부하고 500 ms 뒤 같은 DISARM seq 재시도, exact ACK/PONG 뒤 READY, TEL 150/150 safe — 하위 벡터 PASS |
+| 2026-08-07 | [`2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt`](2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt) | Trailing-comma hook `0U` 복구·safe reflash 뒤 warning/retry/parser error 없이 exact startup, READY 후 15.51 s, TEL 160/160 safe — PASS |
+| 2026-08-07 | [`2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt`](2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt) | T-BRIDGE-008A required-`seq` uint32 overflow ACK를 parse error로 1회 거부하고 500 ms same-seq retry, exact ACK/PONG 뒤 READY, post-READY TEL 140/140 safe — 하위 벡터 PASS |
+| 2026-08-07 | [`2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt`](2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt) | Overflow hook `0U` 복구·safe reflash 뒤 warning/retry/parser error 없이 exact startup, READY 후 14.43 s, post-READY TEL 145/145 safe — PASS |
 
 2026-07-29 powered/no-motor MDD10A LED 관찰, active `DISARM` run과 판정 범위는 [`2026-07-29_active_motor_output_safety_verification.md`](2026-07-29_active_motor_output_safety_verification.md)에 함께 기록했다.
 
@@ -38,21 +44,56 @@ response 증거다.
 
 아직 없는 runtime evidence:
 
+- T-BRIDGE-008A의 나머지 ESP malformed-response 벡터: partial frame name, invalid
+  terminator/control과 overlong/line-overflow 뒤 exact response recovery
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
 
-## 2026-08-06 Safe-Restore Evidence Integrity
+## 2026-08-06~07 Safe-Restore Evidence Integrity
 
-두 첨부 로그는 log line과 순서를 바꾸지 않고 저장했으며 저장소의 text line ending은
-`LF`로 정규화했다.
+앞선 여섯 첨부 로그는 log line과 순서를 바꾸지 않고 저장했으며 저장소의 text line
+ending을 `CRLF/no-final-LF`에서 `LF/final-LF`로 정규화했다. 뒤의 overflow controlled/safe
+두 로그는 attachment를 byte-for-byte 복사해 line ending도 그대로 보존했다.
 
 | Evidence | Attachment SHA-256 | Repository SHA-256 |
 | --- | --- | --- |
 | 10 s total observation | `C6263035FC62C091891D7B32FA4722260CCDFB9BD16B801B318551D700E403CC` | `FEC647D6EF189427DEF9869752FFB8A2F52B808EEF1706EE7335FFD3EC72235D` |
-| Final 12 s / post-READY PASS | `15819193F4F01B6C838CFE29B6BE290051838E60BEE8D505A3168700FCF4523F` | `4F279CFE1F48A667BC624E80951D8E742878ADCDA0F3FE9EFCC0D9CAD16B2493` |
+| Pre-008A final 12 s / post-READY PASS | `15819193F4F01B6C838CFE29B6BE290051838E60BEE8D505A3168700FCF4523F` | `4F279CFE1F48A667BC624E80951D8E742878ADCDA0F3FE9EFCC0D9CAD16B2493` |
+| Duplicate required `seq` controlled PASS | `BD45C92AB990633362ED67E75ADE8E6BD5C40DAC8AA0BF92D586526D1C001A87` | `2F88CB28372A9A3F70175461C1AA0BBE886FD8D4E36F6CD7DC58B517DBF8F892` |
+| Post-duplicate safe regression PASS | `11CCB5CBEC378832DEBC7EEDBAB92321764EFCEAB8999B744341AFD5566D42C8` | `E704F9D4DDAA774B6638570A1D42BE77B2B197992C1964D0B10BFE0D70355048` |
+| Trailing-comma controlled PASS | `64683B40F6FF652FA3A4B286F7B30762682C84CA1C8BAB8EBC1AE33C811F57F2` | `6806D617C462072CBF3D34B5614034C9FF3727734B350BEA24762DFFE25D3D56` |
+| Post-trailing-comma safe regression PASS | `D53EC349FD26F5ED13ACC3589E90FA4BDE339345541A40FCA47E2AA3E39AC6B9` | `701DC5ADBBEBC8F496B8CC5637592A27BE51E8C9CDDA58FF66D48AF51BFFE0ED` |
+| Required-`seq` uint32 overflow controlled PASS | `529B2DC518061E085876467E83A3BDFD58C485A25074AAD1DDB33AF6D8949A76` | `529B2DC518061E085876467E83A3BDFD58C485A25074AAD1DDB33AF6D8949A76` |
+| Post-overflow safe regression PASS | `5A16FADE59DC0D53C8D644262FD523BC9F9BE8450D05942B7BD7432C0854434A` | `5A16FADE59DC0D53C8D644262FD523BC9F9BE8450D05942B7BD7432C0854434A` |
 
-최종 PASS 실행은 `STARTUP READY` at ESP log `887 ms`부터 마지막 TEL at `12237 ms`까지
+Pre-008A 최종 PASS 실행은 `STARTUP READY` at ESP log `887 ms`부터 마지막 TEL at `12237 ms`까지
 11.35 s다. TEL 120개는 모두 `DISARMED`, `vx/w/left_cps/right_cps=0`, `err=0`이며
 `TX ARM`, `TX CMD`, startup failure와 parser error는 0건이다.
+
+Duplicate-required-`seq` 실행은 첫 `DISARM seq=1313693021`에 대한 malformed ACK를
+parser error로 1회 거부하고 정확히 500 ms 뒤 같은 seq를 재시도했다. 첫 정상 ACK가
+`ack_count=1`이고 `PONG seq=1313693022` 뒤에만 READY가 열렸다. TEL 150개는 모두
+`DISARMED/zero/error 0`이며 ARM/CMD, attempt 3와 startup failure는 0건이다. 이 결과는
+T-BRIDGE-008A 전체가 아니라 duplicate-required-`seq` 하위 벡터만 닫는다.
+
+시험 뒤 safe image 실행은 retry와 parser error 없이 exact ACK/PONG/READY로 진행했고,
+READY `887 ms`부터 마지막 TEL `15307 ms`까지 14.42 s였다. TEL 150/150은 모두
+`DISARMED/zero/error 0`이고 ARM/CMD/startup failure는 0건이다. 두 신규 저장본은 원본
+line content를 보존하고 `CRLF/no-final-LF`를 `LF/final-LF`로 정규화했다.
+
+Trailing-comma 실행은 first `DISARM seq=951827278`에 대한 otherwise-valid ACK의 terminal
+comma를 `RX malformed field list`로 정확히 1회 거부했다. 500 ms 뒤 같은 DISARM seq를
+재시도했고 first exact ACK가 `ack_count=1`, `PONG seq=951827279` 뒤에만 READY가 열렸다.
+TEL 150/150은 safe이며 ARM/CMD, attempt 3와 startup failure는 0건이다. 시험 뒤 모든 hook
+`0U` safe image에서는 warning/retry/parser error 없이 exact startup이 1회 진행됐고 READY
+뒤 15.51 s, TEL 160/160 `DISARMED/zero/error 0`, ARM/CMD/failure 0으로 회귀 PASS했다.
+
+Required-`seq` uint32 overflow 실행은 first `DISARM seq=545713623`에 대해
+`ACK,seq=4294967296,type=DISARM`을 `RX ACK parse error`로 정확히 1회 거부했다. 500 ms 뒤
+같은 DISARM seq를 재시도했고 first exact ACK가 `ack_count=1`, `PONG seq=545713624` 뒤에만
+READY가 열렸다. READY 뒤 TEL 140/140은 safe이며 ARM/CMD, attempt 3와 startup failure는
+0건이다. 시험 뒤 모든 hook `0U` safe image에서는 warning/retry/parser error 없이 exact
+startup이 1회 진행됐고 READY 뒤 14.43 s, TEL 145/145 `DISARMED/zero/error 0`,
+ARM/CMD/failure 0으로 회귀 PASS했다.
 
 세부 판정은 [response-gated startup report](../../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md),
 active DISARM correlation과 MCU-pin timing은 [active DISARM report](../../../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)에 있다.
@@ -67,16 +108,44 @@ Raw monitor log는 UART text와 순서를 보존하지만 다음 물리 조건�
 - 실제 flash transcript, build profile와 binary hash
 
 작업자 확인 전까지 이 항목은 `operator confirmation pending`이다. 2026-08-04 earlier
-safe-image run은 READY 뒤 11.24 s, TEL 118/118 safe로 PASS했다. 2026-08-06 current
-safe-image run은 READY 뒤 11.35 s, TEL 120/120 safe, ARM/CMD/error 0으로 PASS했다.
+safe-image run은 READY 뒤 11.24 s, TEL 118/118 safe로 PASS했다. 2026-08-06
+pre-008A safe-image run은 READY 뒤 11.35 s, TEL 120/120 safe, ARM/CMD/error 0으로 PASS했다.
 Flash transcript/hash와 무전원 setup은 로그 자체가 증명하지 않는다. 2026-08-06에는
 wrong-ACK hook을 포함한 모든 test hook을
 `0U`로 복구했고 contract `15/15`, CubeIDE build `0 errors / 0 warnings`와 위 최종
 runtime 회귀를 확인했다. 생성된 STM32 ELF의 SHA-256은
 `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`지만,
 flash transcript가 raw log에 포함되지 않아 이 ELF와 실행 board의 exact linkage는
-여전히 pending이다. 다음 Gate C controlled vector에서도 Battery, MDD10A 또는 motor
-power를 연결하지 않는다.
+여전히 pending이다. 남은 controlled vectors에서도 Battery, MDD10A 또는 motor power를
+연결하지 않는다.
+
+이후 duplicate-required-`seq` controlled build는 `0 errors / 0 warnings`, ELF SHA-256
+`9565A1405FF97BE75BC1D30F87DEBD1CE32ED05D8E16525D2205231AD74CCA61`였고 malformed
+ACK format string이 ELF에 존재함을 확인한 뒤 STM32CubeProgrammer가 download verify를
+완료했다. 시험 후 모든 hook을 `0U`로 복구한 safe build도 `0 errors / 0 warnings`, ELF
+SHA-256 `25885322BD28B19456498A37C14B87D039984A96F2E2EA30CC1764A36E086A2A`였으며 같은
+format string이 object/ELF에서 사라졌고 safe flash verify도 완료됐다. 세부 기록은
+[`../firmware_build/2026-08-06_t_bridge_008a_duplicate_seq_ack_controlled_and_safe_build_flash.md`](../firmware_build/2026-08-06_t_bridge_008a_duplicate_seq_ack_controlled_and_safe_build_flash.md)에 있다. 다만 물리적 무전원 setup은 raw UART 로그나 flash transcript 안에 내장되지 않아
+계속 operator confirmation pending이다.
+
+Trailing-comma controlled build도 `0 errors / 0 warnings`, ELF SHA-256
+`5791C9B1E5A8F2ED942B8A8A0BDD8599C2A775EDB5D59022E60CE900C52B406E`였고 branch
+string 존재와 flash verify를 확인했다. 시험 뒤 all-hooks-`0U` safe artifact의 ELF SHA-256은
+`3526206C7E2043634029B15B7D41F9C80B136904FCA72FB46D8CA24F4119DEE4`이며 controlled
+string은 object/ELF/map/list에 없다. Safe flash verify와 위 15.51 s 회귀가 PASS했고,
+post-Clean full build도 31개 object 전체를 재컴파일·링크해 `0 errors / 0 warnings`와 같은
+safe artifact hashes를 재현했다. Raw build console은
+[`../firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt`](../firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt)에 보존했다. 상세 기록은
+[`../firmware_build/2026-08-07_t_bridge_008a_trailing_comma_ack_controlled_and_safe_build_flash.md`](../firmware_build/2026-08-07_t_bridge_008a_trailing_comma_ack_controlled_and_safe_build_flash.md)에 있다.
+
+Required-`seq` uint32 overflow controlled build도 `0 errors / 0 warnings`, ELF SHA-256
+`747F32E3BDFBF0D4130E2F136145806AE88FF4F94BBC8948C7FFB554BE0A3701`였고 exact overflow
+format string이 object/ELF에 존재함을 확인한 뒤 flash verify를 완료했다. 시험 뒤 all-hooks-
+`0U` safe ELF SHA-256은
+`244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`이며 controlled
+string은 object/ELF/map/list에 없다. Safe flash verify와 위 14.43 s 회귀가 PASS했다. 상세
+기록은
+[`../firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md`](../firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md)에 있다.
 
 관련 스크린샷:
 

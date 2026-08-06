@@ -23,12 +23,16 @@ git status --short -- Projects/Tracked_Mobile_Robot
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
 5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-06_safe_uart_baseline_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-06_progress.md
-7. Projects/Tracked_Mobile_Robot/docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md
-8. Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md
-9. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
-10. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
-11. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+6. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-07_progress.md
+7. Projects/Tracked_Mobile_Robot/docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md
+8. Projects/Tracked_Mobile_Robot/docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md
+9. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-06_progress.md
+10. Projects/Tracked_Mobile_Robot/docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md
+11. Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md
+12. Projects/Tracked_Mobile_Robot/docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md
+13. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
+14. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
+15. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
 
 현재 작업과 직접 관련된 firmware source, raw log와 verification 문서는 그 다음
 필요한 것만 추가로 읽어라. 과거 handoff를 현재 지시보다 우선하지 마라.
@@ -74,10 +78,11 @@ git status --short -- Projects/Tracked_Mobile_Robot
   `ACK,type=ARM` 무시 -> 500 ms -> 같은 DISARM seq 재시도 -> exact ACK/PONG 뒤에만 READY
 - `T-BRIDGE-007` required UART runtime behavior PASS
 - Gate C READY 이후 controlled normal sequence는 PASS
-- Gate C의 ESP malformed-response recovery와 STM32 malformed-command recovery는
-  모두 NOT TESTED
-- 2026-08-06 all-hooks-`0U` safe source/static/build PASS; 별도 observed UART behavior PASS
-- Current UART release는 exact source-to-board/setup provenance와 Gate C 때문에 PARTIAL
+- Gate C ESP malformed-response recovery는 PARTIAL: duplicate required `seq`, trailing-comma와
+  required-`seq` uint32-overflow ACK rejection, 각 500 ms same-seq retry와 exact ACK/PONG recovery subvector PASS
+- Gate C의 partial frame-name, invalid terminator/control, overlong-line/RX-line-overflow vectors와 STM32 malformed-command recovery는 NOT TESTED
+- 2026-08-07 post-overflow all-hooks-`0U` safe source/static/protocol recompile+relink `0/0`/reflash PASS; 별도 observed UART behavior PASS
+- Current UART release는 exact runtime-to-ELF linkage, remaining 008A vectors, 008B와 physical setup provenance 때문에 PARTIAL
 
 Active DISARM result:
 
@@ -99,14 +104,18 @@ Active DISARM result:
 - STM32 stale ACK/PONG/suppress PONG hooks=0U
 - STM32 button output/fault hooks=0U
 - STM32 UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=0U
+- STM32 UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U
+- STM32 UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED=0U
+- STM32 UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U
 - Current ESP/STM source의 모든 controlled test hook은 `0U`다.
 - Canonical firmware contract discovery는 15/15 PASS다.
-- STM32CubeIDE build는 session에서 `0 errors / 0 warnings`로 관찰됐다.
-- STM32 ELF: 1,239,972 bytes, SHA-256
-  `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`.
-- Final safe-image UART runtime behavior는 exact ACK/PONG/READY, READY 뒤 11.35 s,
-  TEL 120/120 DISARMED/zero/error 0과 ARM/CMD/error 0으로 PASS했다.
-- 다만 exact flashed image identity와 physical no-power setup provenance는 pending이다.
+- Current safe artifact가 source restore 뒤 재생성됐고 controlled string은 object/ELF/map/list에 없다. Incremental build가 `uart_mvp_protocol.c`를 재컴파일하고 ELF를 relink해 `0 errors / 0 warnings`였다. 이 latest build는 post-Clean full build가 아니다.
+- Current safe STM32 ELF: 1,240,504 bytes, SHA-256
+  `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`.
+- Controlled/safe image 모두 CubeProgrammer download verify를 통과했다.
+- Post-overflow safe UART runtime behavior는 warning/retry/parser error 없이 exact ACK/PONG/READY,
+  READY 뒤 14.43 s, 완전한 post-READY TEL 145/145 DISARMED/zero/error 0과 ARM/CMD/error 0으로 PASS했다.
+- 다만 UART log에 binary hash가 내장되지 않고 physical no-power setup provenance도 pending이다.
 
 중요 evidence boundary:
 
@@ -134,26 +143,30 @@ Active DISARM result:
 
 - Gate A/B runtime PASS
 - T-BRIDGE-007 wrong-ACK rejection와 same-seq retry PASS
-- Safe-image UART runtime behavior PASS; exact image/setup provenance pending
-- Gate C two-parser recovery NOT TESTED
+- Safe-image UART runtime behavior PASS; exact runtime-to-ELF linkage와 physical setup provenance pending
+- T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow subvector PASS; remaining 008A vectors pending
+- T-BRIDGE-008B command-parser recovery NOT TESTED
 
-Completed checkpoint - 2026-08-06 safe restore
+Completed checkpoint - 2026-08-06~07 duplicate-seq/trailing-comma/required-seq-uint32-overflow vectors and safe restore
 
 - Wrong-ACK hook 포함 모든 controlled hook `0U`
-- Contract `15/15`와 STM32 build PASS; 별도 observed UART runtime behavior PASS
-- Exact ACK/PONG/READY 뒤 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD 0
-- Flash transcript와 physical no-power metadata가 없어 exact image/setup provenance는 pending
+- Duplicate required `seq` ACK rejection, 500 ms same-seq retry, exact response recovery PASS
+- Trailing-comma ACK rejection, 500 ms same-seq retry, exact response recovery PASS
+- Required-`seq` uint32-overflow ACK rejection, 500 ms same-seq retry, exact response recovery PASS
+- Contract `15/15`, protocol recompile+relink `0 errors / 0 warnings`, safe reflash PASS; 별도 observed UART runtime behavior PASS
+- Exact ACK/PONG/READY 뒤 14.43 s, 완전한 post-READY TEL 145/145 DISARMED/zero/error 0, ARM/CMD 0
+- UART log 내 binary hash와 physical no-power metadata가 없어 setup provenance는 pending
 
 Step 1 - Gate C parser recovery
 
 - T-BRIDGE-007 wrong-ACK runtime vector는 이미 PASS다. 원본 로그를 보존하고 반복하지 않는다.
-- Safe restore와 safe-image 회귀 뒤에 Gate C를 실행한다.
+- Duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow vectors는 완료됐으므로 반복하지 않고 partial frame-name response부터 진행한다.
 - ESP32 startup response parser와 STM32 command parser의 규칙을 섞지 않는다. ESP
   response parser는 unknown extra field를 허용하지만 current STM32 command parser는
   non-CMD extra data를 거부하고 CMD field order를 강제한다.
-- ESP32 response 방향에는 duplicate required field, overflow, trailing comma, partial
-  frame name, invalid terminator, embedded control/overlong line 뒤 exact ACK/PONG
-  recovery를 시험한다. Unknown extra field는 reject vector로 사용하지 않는다.
+- ESP32 response 방향에는 partial frame name을 먼저 실행하고 invalid terminator,
+  embedded control과 overlong-line/RX-line-overflow 뒤 exact ACK/PONG recovery를 시험한다.
+  Duplicate required field, trailing comma와 required-`seq` uint32 overflow는 이미 PASS했고 unknown extra field는 reject vector로 사용하지 않는다.
 - STM32 command 방향에는 PING extra data, CMD bad field order, duplicate/overflow,
   invalid terminator, embedded control/overlong line 뒤 valid PING/PONG recovery를
   시험한다.
@@ -186,9 +199,9 @@ Step 1 - Gate C parser recovery
 첫 답변에서는 다음 네 가지만 보고해라.
 
 1. 실제 git status에서 확인한 변경 파일
-2. Gate A/B, T-BRIDGE-007 wrong ACK, Gate C와 active DISARM의 현재 판정
-3. Current all-hooks-`0U` source/static/build와 별도 observed safe UART behavior는 PASS지만 exact source-to-board/setup provenance는 pending인 점
-4. 사용자가 바로 수행할 T-BRIDGE-008A 첫 duplicate-`seq` ACK vector의 사전 조건, 예상 결과,
+2. Gate A/B, T-BRIDGE-007, T-BRIDGE-008A duplicate-seq/trailing-comma/required-seq-uint32-overflow subvectors와 active DISARM의 현재 판정
+3. Current all-hooks-`0U` source/static/protocol recompile+relink `0/0`, session-observed reflash verify와 별도 safe UART behavior는 PASS지만 exact linkage와 physical setup provenance는 pending인 점
+4. 사용자가 바로 수행할 T-BRIDGE-008A partial frame-name response vector의 사전 조건, 예상 결과,
    중지 조건과 PASS 기준
 
 프롬프트의 상태와 실제 source/diff가 다르면 실제 파일을 우선하고 차이를 먼저

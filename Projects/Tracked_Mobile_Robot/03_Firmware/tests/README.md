@@ -81,7 +81,7 @@ safe-image UART 동작도 PASS했다. 다만 raw log만으로 실제 flash ident
 따라서 T-BRIDGE-007 required UART runtime behavior는 PASS다. 이 `1U` 상태는 당시의
 controlled-test 기록이며 현재 source 상태가 아니다.
 
-2026-08-06 current safe checkpoint:
+2026-08-06 pre-008A safe checkpoint (historical):
 
 - ESP32 scripted-motion과 STM32 UART/motor/fault controlled hook: 모두 `0U`
 - Canonical discovery: **15/15 PASS**, `OK`
@@ -90,6 +90,63 @@ controlled-test 기록이며 현재 source 상태가 아니다.
 - Final runtime: exact ACK/PONG/READY, READY 후 11.35 s, TEL 120/120
   `DISARMED/zero/error 0`, ARM/CMD와 parser/startup error 0 — **PASS**
 - Exact ELF-to-board linkage와 physical no-power setup provenance: **PENDING**
+
+2026-08-06 T-BRIDGE-008A duplicate-required-`seq` cycle:
+
+- Added dormant STM32 hook:
+  `UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U` in the restored safe source.
+- With this hook temporarily `1U`, canonical discovery produced 14 PASS plus exactly one expected
+  `test_all_bench_hooks_are_present_and_disabled` failure. The guard was not bypassed.
+- The first draft used a mismatched identifier in `#if`; GCC treated the undefined identifier as
+  zero, so build `0 errors / 0 warnings` did not prove the branch was included. The missing malformed
+  ACK format string in the object/ELF exposed the error. After correcting the identifier, the string
+  was present in both artifacts before flash.
+- Controlled runtime rejected one duplicate-`seq` ACK, retried the same DISARM seq after exactly
+  500 ms and reached READY only after exact ACK/PONG. TEL 150/150 remained safe; ARM/CMD 0.
+- After restore, all hooks were `0U`, canonical discovery returned **15/15 PASS**, safe build and
+  flash verification passed, and the malformed format string was absent from object/ELF.
+- Post-duplicate safe ELF SHA-256 (historical checkpoint):
+  `25885322BD28B19456498A37C14B87D039984A96F2E2EA30CC1764A36E086A2A`.
+- Post-test runtime: no retry/parser error, READY 후 14.42 s, TEL 150/150
+  `DISARMED/zero/error 0`, ARM/CMD/failure 0 — **PASS**.
+
+2026-08-06~07 T-BRIDGE-008A trailing-comma cycle:
+
+- Added dormant STM32 hook:
+  `UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED=0U` in the restored safe source.
+- With only this hook `1U`, canonical discovery produced 14 PASS plus exactly one expected
+  default-off guard failure; controlled build was `0 errors / 0 warnings` and the branch string
+  was present in object/ELF/list.
+- Controlled runtime rejected one terminal-comma ACK, retried the same DISARM seq after exactly
+  500 ms and reached READY only after exact ACK/PONG. TEL 150/150 remained safe; ARM/CMD 0.
+- After restore, all hooks were `0U`, canonical discovery returned **15/15 PASS**, the controlled
+  string was absent from safe object/ELF/map/list, and safe flash verification passed. A later
+  post-Clean full build recompiled all 31 objects and linked with **0 errors / 0 warnings** while
+  reproducing the same object/ELF/map/list hashes.
+- Post-trailing safe ELF (historical checkpoint): `1,240,328 bytes`, SHA-256
+  `3526206C7E2043634029B15B7D41F9C80B136904FCA72FB46D8CA24F4119DEE4`.
+- Post-trailing safe runtime: no warning/retry/parser error, READY 후 15.51 s, TEL 160/160
+  `DISARMED/zero/error 0`, ARM/CMD/failure 0 — **PASS**.
+
+2026-08-07 T-BRIDGE-008A required-`seq` uint32-overflow cycle:
+
+- Added dormant STM32 hook:
+  `UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U` in the restored safe source.
+- With only this hook `1U`, canonical discovery produced 14 PASS plus exactly one expected
+  default-off guard failure; controlled build recompiled the protocol source and linked with
+  **0 errors / 0 warnings**. The exact overflow frame string was present in object/ELF.
+- Controlled runtime rejected `seq=4294967296` once as an ACK parse error, kept the gate closed,
+  retried the same DISARM seq after exactly 500 ms and reached READY only after exact ACK/PONG.
+  Post-READY TEL 140/140 remained safe; ARM/CMD/failure 0.
+- After restore, all hooks were `0U`, canonical discovery returned **15/15 PASS**, the restored
+  protocol source recompiled and linked with **0 errors / 0 warnings**, and the controlled string
+  was absent from safe object/ELF/map/list. Safe flash verification passed.
+- Current safe ELF: `1,240,504 bytes`, SHA-256
+  `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`.
+- Current safe runtime: no warning/retry/parser error, READY 후 14.43 s, post-READY TEL 145/145
+  `DISARMED/zero/error 0`, ARM/CMD/failure 0 — **PASS**.
+- The current safe build was incremental but explicitly recompiled the changed protocol source
+  and relinked the ELF; it is not recorded as a full Clean Build.
 
 ## 범위와 한계
 
@@ -134,7 +191,27 @@ parser/FSM을 host에서 직접 실행하는 단위시험은 아니다. 또한 �
 TEL 97/97은 `DISARMED/zero`, ARM/CMD TX는 0이었다. 원본은
 [`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
 
+2026-08-06 duplicate-required-`seq` raw runtime은 malformed ACK가 gate를 열지 않고 같은
+DISARM seq를 500 ms 뒤 재시도해 exact ACK/PONG에서만 recovery함을 확인했다. 원본은
+[`2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt)이며,
+safe restore 원본은
+[`2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt)다.
+
+2026-08-06~07 trailing-comma raw runtime도 malformed ACK가 gate를 열지 않고 같은 DISARM
+seq를 500 ms 뒤 재시도해 exact ACK/PONG에서만 recovery함을 확인했다. 원본은
+[`2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt),
+post-trailing safe restore 원본은
+[`2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt)다.
+
+2026-08-07 required-`seq` uint32-overflow raw runtime은 최소 초과값 ACK가 gate를 열지 않고
+같은 DISARM seq를 500 ms 뒤 재시도해 exact ACK/PONG에서만 recovery함을 확인했다. 원본은
+[`2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt),
+current safe restore 원본은
+[`2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt`](../../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt)다.
+
 다음 hardware-in-the-loop 범위는 남아 있다.
 
+- T-BRIDGE-008A의 partial-frame-name, invalid terminator/embedded-control과
+  overlong-line/RX-line-buffer-overflow response recovery
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
 - 다음 controlled cycle의 flash transcript/build identity와 physical setup provenance

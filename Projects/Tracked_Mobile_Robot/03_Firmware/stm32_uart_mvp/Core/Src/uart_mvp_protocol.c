@@ -24,6 +24,9 @@
 #define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE 100U
 #define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED 0U
 #define UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED 0U
+#define UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
+#define UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
 #define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED       0U
 #define UART_MVP_SUPPRESS_PONG_TEST_ENABLED         0U
 
@@ -46,6 +49,9 @@ static uint8_t s_rx_discard_until_lf;
 static robot_state_t s_state = ROBOT_DISARMED;
 static uint32_t s_last_seq;
 static uint8_t s_stale_disarm_ack_sent;
+static uint8_t s_duplicate_disarm_ack_seq_sent;
+static uint8_t s_trailing_comma_disarm_ack_sent;
+static uint8_t s_overflow_disarm_ack_seq_sent;
 static uint8_t s_wrong_disarm_ack_type_sent;
 static uint8_t s_stale_pong_sent;
 static int32_t s_vx_mmps;
@@ -256,6 +262,39 @@ static void handle_line(const char *line, size_t line_len){
             s_w_mradps = 0;
             s_state = ROBOT_DISARMED;
             s_last_seq = frame.seq;
+#if UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
+            if(s_duplicate_disarm_ack_seq_sent == 0u){
+                s_duplicate_disarm_ack_seq_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,seq=%lu,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_trailing_comma_disarm_ack_sent == 0u){
+                s_trailing_comma_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,type=DISARM,t_ms=%lu,\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
+            if(s_overflow_disarm_ack_seq_sent == 0u){
+                s_overflow_disarm_ack_seq_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=4294967296,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
 #if UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED
             if(s_stale_disarm_ack_sent == 0u){
                 s_stale_disarm_ack_sent = 1u;
@@ -307,6 +346,9 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_state = ROBOT_DISARMED;
     s_last_seq = 0;
     s_stale_disarm_ack_sent = 0u;
+    s_duplicate_disarm_ack_seq_sent = 0u;
+    s_trailing_comma_disarm_ack_sent = 0u;
+    s_overflow_disarm_ack_seq_sent = 0u;
     s_wrong_disarm_ack_type_sent = 0u;
     s_stale_pong_sent = 0u;
     s_last_tel_ms = 0u;

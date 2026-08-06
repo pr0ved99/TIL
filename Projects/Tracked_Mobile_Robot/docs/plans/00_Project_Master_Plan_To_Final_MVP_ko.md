@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-06 all-hooks-`0U` safe UART baseline + response-gated Gate A/B/wrong-ACK runtime + active DISARM 23.50 us MCU-pin baseline
-- 현재 실행 위치: `G3/G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`; PWM/direction timing과 active DISARM MCU-pin first baseline은 PASS했다. ESP32 response-gated Gate A exact startup, Gate B bounded loss/stale-sequence/reset recovery와 matching-seq wrong-ACK rejection/same-seq retry도 runtime behavior 기준 PASS해 `T-BRIDGE-007` required behavior를 닫았다. 2026-08-06 current source의 모든 hook `0U`, contract `15/15`와 STM32 build가 PASS했고, 별도 board log의 READY 후 11.35 s/TEL 120 safe UART behavior도 PASS했다. Exact source-to-board/physical setup provenance와 Gate C ESP-response/STM32-command parser recovery, timeout/fault latency, reset-marker boot, Physical E-stop과 actual motor가 남아 전체 release는 `PARTIAL`이다.
+- Revision: 2026-08-07 T-BRIDGE-008A duplicate-required-seq/trailing-comma/required-seq-uint32-overflow subvectors + post-test all-hooks-`0U` safe restore + active DISARM 23.50 us MCU-pin baseline
+- 현재 실행 위치: `G3/G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`; PWM/direction timing과 active DISARM MCU-pin first baseline은 PASS했다. ESP32 response-gated Gate A/B와 `T-BRIDGE-007` required behavior가 PASS했고, T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow rejection/recovery도 subvector PASS다. 2026-08-07 current source의 모든 hook `0U`, contract `15/15`, protocol source 재컴파일과 ELF relink `0 errors / 0 warnings`, controlled string 부재와 session-observed flash verify가 PASS했으며, 별도 board log의 READY 후 14.43 s/TEL 145 safe UART behavior도 PASS했다. Exact runtime-to-ELF linkage, physical setup provenance, remaining 008A/008B, timeout/fault latency, reset-marker boot, Physical E-stop과 actual motor가 남아 전체 release는 `PARTIAL`이다.
 - 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -84,12 +84,12 @@ PC 또는 ESP32의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 2026-08-06 현재 기준선
+## 2026-08-07 현재 기준선
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
 | PC-first STM32 UART MVP | `PASS` | requirements, matrix, CSV, screenshots, test report | baseline 보존 |
-| ESP32-STM32 UART bridge | `PARTIAL` | Gate A/B와 T-BRIDGE-007 runtime PASS; current all-hooks-`0U` source/static/build PASS; 별도 READY 후 11.35 s/TEL 120 observed UART behavior PASS, exact linkage/setup provenance pending | Gate C T-BRIDGE-008A/B two-parser recovery |
+| ESP32-STM32 UART bridge | `PARTIAL` | Gate A/B, T-BRIDGE-007와 T-BRIDGE-008A duplicate-seq/trailing-comma/required-seq-uint32-overflow subvectors PASS; post-test all-hooks-`0U` source/static/protocol recompile+relink `0/0`, flash verify와 READY 후 14.43 s/TEL 145 회귀는 session-observed PASS; exact linkage와 physical setup provenance pending | partial frame name부터 invalid terminator/control, overlong-line/RX-line-overflow vectors 뒤 T-BRIDGE-008B |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
@@ -101,7 +101,7 @@ PC 또는 ESP32의 속도 명령을 받아
 | First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
-Current strict-parser UART의 Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG loss 3회 bounded failure, stale response ignore와 controlled reset/new-startup recovery는 actual board log로 통과했다. Matching seq의 wrong `ACK,type=ARM`도 무시하고 500 ms 뒤 같은 DISARM seq를 재시도해 exact ACK/PONG 뒤에만 READY로 진행했으므로 `T-BRIDGE-007` required behavior는 PASS다. 2026-08-06에는 wrong-ACK hook을 `0U`로 복구해 모든 hook `0U`인 current source의 contract `15/15`와 STM32 build를 완료했다. 별도 final board log는 READY 후 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD와 parser/startup error 0인 observed UART behavior를 PASS했다. Flash transcript와 physical no-power metadata가 없어 exact source-to-board/setup provenance는 pending이며 Gate C 두 parser recovery는 `NOT TESTED`다. Reset raw segment는 직전 failure를 포함하지 않아 post-failure session linkage도 operator confirmation pending이다. Motor-output은 waveform/direction, active DISARM 23.50 us MCU-pin baseline까지 진행됐지만 timeout/fault latency, MDD10A power stage, reset-marker boot, Physical E-stop과 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다 Gate 상태와 evidence boundary를 기준으로 판단한다.
+Current strict-parser UART의 Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG loss 3회 bounded failure, stale response ignore와 controlled reset/new-startup recovery는 actual board log로 통과했다. Matching seq의 wrong `ACK,type=ARM`도 무시하고 500 ms 뒤 같은 DISARM seq를 재시도해 exact ACK/PONG 뒤에만 READY로 진행했으므로 `T-BRIDGE-007` required behavior는 PASS다. 2026-08-06~07에는 T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow ACK도 각각 거부하고 500 ms same-seq retry 뒤 exact response에서만 recovery해 세 subvector PASS했다. 이후 모든 hook `0U`, contract `15/15`, protocol source 재컴파일과 ELF relink `0 errors / 0 warnings`, safe reflash와 READY 후 14.43 s/TEL 145 safe 회귀를 완료했다. Latest safe build는 post-Clean full build가 아니라 `uart_mvp_protocol.c`가 실제 재컴파일된 incremental build다. Physical no-power metadata가 없어 setup provenance는 pending이며 remaining 008A vectors와 008B는 미검증이다. Reset raw segment는 직전 failure를 포함하지 않아 post-failure session linkage도 operator confirmation pending이다. Motor-output은 waveform/direction, active DISARM 23.50 us MCU-pin baseline까지 진행됐지만 timeout/fault latency, MDD10A power stage, reset-marker boot, Physical E-stop과 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다 Gate 상태와 evidence boundary를 기준으로 판단한다.
 
 ## Gate 로드맵
 
@@ -290,7 +290,9 @@ PARTIAL - static/DMM routing + 20.1005 kHz/약 10.05% PWM + direction settle + a
 - 2026-08-03 safe-source checkpoint에서 temporary hook `0U`, contract `15/15`, STM32 Debug/ESP isolated build와 STM32 safe flash/no-output 회귀를 확인했다. 이후 response-gated Gate A/B runtime과 2026-08-04 active DISARM capture를 수행했다.
 - 2026-08-04 active DISARM은 UART RX frame end부터 PB6/PB7 last edge까지 `23.50 us`, PWM stop부터 ACK start까지 `62.75 us`였다. MCU-pin first baseline만 PASS하며 MDD10A/motor/E-stop을 포함하지 않는다.
 - 2026-08-04 safe-image UART runtime behavior는 exact startup, ARM/CMD 0과 TEL 118/118 DISARMED/zero/error 0으로 PASS했고, 이어서 wrong-ACK vector도 PASS해 `T-BRIDGE-007` required behavior를 닫았다. 당시 worktree/test image의 wrong-ACK hook `1U`는 historical controlled state다.
-- 2026-08-06 wrong-ACK hook을 `0U`로 복구해 모든 test hook `0U`인 current source의 contract `15/15`와 STM32CubeIDE build `0 errors / 0 warnings`를 완료했다. 별도 final board log는 READY 후 11.35 s, TEL 120/120 DISARMED/zero/error 0, ARM/CMD와 error 0인 observed UART behavior를 PASS했다. Local ELF SHA-256은 `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`지만 exact source-to-board/setup provenance는 pending이다. 다음 단계는 Gate C two-parser recovery다.
+- 2026-08-06 T-BRIDGE-008A duplicate-required-`seq` ACK rejection/recovery subvector를 PASS했다. 시험 뒤 모든 test hook `0U`, contract `15/15`, STM32CubeIDE build/reflash와 post-READY 14.42 s/TEL 150 safe UART regression을 완료했다. 당시 safe ELF SHA-256은 `25885322BD28B19456498A37C14B87D039984A96F2E2EA30CC1764A36E086A2A`였고, trailing-comma vector 직전의 historical checkpoint로 보존한다.
+- 2026-08-06~07 T-BRIDGE-008A trailing-comma ACK rejection/recovery subvector도 PASS했다. 시험 뒤 모든 test hook `0U`, contract `15/15`, controlled string 부재, safe reflash와 post-READY 15.51 s/TEL 160 safe UART regression을 완료했다. Post-Clean full build도 31개 object 전체를 재컴파일·링크해 `0 errors / 0 warnings`였고 retained safe artifact hashes를 재현했다. 당시 safe ELF SHA-256은 `3526206C7E2043634029B15B7D41F9C80B136904FCA72FB46D8CA24F4119DEE4`이며 required-`seq` uint32-overflow vector 직전의 historical checkpoint로 보존한다.
+- 2026-08-07 T-BRIDGE-008A required-`seq` uint32-overflow ACK rejection/recovery subvector도 PASS했다. `seq=4294967296`을 1회 거부하고 500 ms same-seq retry 뒤 exact ACK/PONG에서만 READY가 열렸으며 post-READY TEL 140/140은 safe였다. 시험 뒤 모든 hook `0U`, contract `15/15`, protocol source 재컴파일과 ELF relink `0 errors / 0 warnings`, controlled string 부재, safe reflash와 post-READY 14.43 s/TEL 145 safe UART regression을 완료했다. Current safe ELF SHA-256은 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`다. Physical setup provenance는 pending이며 다음 단계는 partial frame name부터 remaining 008A vectors와 008B다.
 
 #### G4B. Board power integration
 
@@ -313,7 +315,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - G4A static routing, timeout-DISARM/software-fault functional, waveform/direction과 active DISARM MCU-pin sub-gates PASS; current all-hooks-`0U` safe source/build PASS와 별도 observed UART behavior PASS, exact source-to-board/setup provenance pending; Gate C two-parser recovery, timeout/fault edge latency, reset-marker boot, physical E-stop, G4B와 G4C pending
+PARTIAL - G4A static routing, timeout-DISARM/software-fault functional, waveform/direction과 active DISARM MCU-pin sub-gates PASS; T-BRIDGE-008A duplicate-seq/trailing-comma/required-seq-uint32-overflow subvectors와 post-test all-hooks-`0U` safe source/protocol recompile+relink `0/0` PASS, flash verify/runtime은 session-observed PASS; exact linkage와 physical setup provenance, remaining 008A/008B, timeout/fault edge latency, reset-marker boot, physical E-stop, G4B와 G4C pending
 ```
 
 ### G5. Encoder safety and first motor no-load
@@ -457,12 +459,12 @@ Power/encoder branch                                           v
 board power policy -> encoder identification/safe voltage -> final integration
 ```
 
-2026-08-06 이후 우선순위:
+2026-08-07 이후 우선순위:
 
 아래 2~5는 MDD10A/battery power OFF에서 current UART release를 닫는 순서다. 아래 6~9는 actual motor 활성화 전 직렬 safety chain이며, 앞 단계가 통과하기 전에는 다음 단계로 넘어가지 않는다.
 
 1. 2026-08-03 waveform/direction, 2026-08-04 active DISARM 23.50 us, Gate A/B와 wrong-ACK raw logs, encoder `1560 counts/output rev`와 forward-positive mapping을 회귀 기준으로 보존한다.
-2. 2026-08-06 all-hooks-`0U` source, contract `15/15`, STM32 build와 별도 observed safe UART behavior evidence를 Gate C 시작 기준선으로 보존한다. 다음 controlled evidence부터 flash transcript/hash와 physical no-power setup metadata를 함께 기록한다.
+2. 2026-08-07 post-overflow all-hooks-`0U` source, contract `15/15`, protocol recompile+relink `0 errors / 0 warnings`, safe artifact/flash와 별도 observed safe UART behavior를 remaining Gate C vectors의 기준선으로 보존한다. 다음 controlled evidence부터 raw flash transcript, retained binary hash와 physical no-power setup metadata를 함께 기록한다.
 3. Gate C의 ESP response/STM32 command parser malformed vector를 각각 fail-closed로
    거부하고 exact response 또는 final valid PING/PONG으로 복구되는지 확인한다.
 4. Gate C에 controlled hook을 사용했다면 최종 `0U` restore/test/build/safe reflash를 반복한다.
