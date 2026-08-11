@@ -22,17 +22,14 @@ git status --short -- Projects/Tracked_Mobile_Robot
 2. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
 3. Projects/Tracked_Mobile_Robot/AGENTS.md
 4. Projects/Tracked_Mobile_Robot/docs/handoff/README.md
-5. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-06_safe_uart_baseline_handoff.md
-6. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-07_progress.md
-7. Projects/Tracked_Mobile_Robot/docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md
-8. Projects/Tracked_Mobile_Robot/docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md
-9. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-06_progress.md
-10. Projects/Tracked_Mobile_Robot/docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md
-11. Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md
-12. Projects/Tracked_Mobile_Robot/docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md
-13. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
-14. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
-15. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+5. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-12_progress.md
+6. Projects/Tracked_Mobile_Robot/docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md
+7. Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md
+8. Projects/Tracked_Mobile_Robot/02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md
+9. Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md
+10. Projects/Tracked_Mobile_Robot/03_Firmware/tools/README.md
+11. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+12. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
 
 현재 작업과 직접 관련된 firmware source, raw log와 verification 문서는 그 다음
 필요한 것만 추가로 읽어라. 과거 handoff를 현재 지시보다 우선하지 마라.
@@ -78,11 +75,10 @@ git status --short -- Projects/Tracked_Mobile_Robot
   `ACK,type=ARM` 무시 -> 500 ms -> 같은 DISARM seq 재시도 -> exact ACK/PONG 뒤에만 READY
 - `T-BRIDGE-007` required UART runtime behavior PASS
 - Gate C READY 이후 controlled normal sequence는 PASS
-- Gate C ESP malformed-response recovery는 PARTIAL: duplicate required `seq`, trailing-comma와
-  required-`seq` uint32-overflow ACK rejection, 각 500 ms same-seq retry와 exact ACK/PONG recovery subvector PASS
-- Gate C의 partial frame-name, invalid terminator/control, overlong-line/RX-line-overflow vectors와 STM32 malformed-command recovery는 NOT TESTED
-- 2026-08-07 post-overflow all-hooks-`0U` safe source/static/protocol recompile+relink `0/0`/reflash PASS; 별도 observed UART behavior PASS
-- Current UART release는 exact runtime-to-ELF linkage, remaining 008A vectors, 008B와 physical setup provenance 때문에 PARTIAL
+- T-BRIDGE-008A required response vectors PASS: 기존 4개와 embedded CR, control byte `0x01`, overlong response 거부/recovery
+- T-BRIDGE-008B PASS: STM32 malformed/unknown command 8/8 거부, TEL 200/200 safe, final matching PING/PONG recovery
+- 2026-08-12 all-hooks-`0U`, contract `15/15`, final exact startup과 post-READY TEL 123/123 over 약 12.2 s UART 회귀 PASS
+- Gate C required runtime scope는 PASS; current strict-parser release는 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance 때문에 PARTIAL
 
 Active DISARM result:
 
@@ -106,23 +102,26 @@ Active DISARM result:
 - STM32 UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=0U
 - STM32 UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U
 - STM32 UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED=0U
-- STM32 UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED=0U
+- STM32 UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED=0U
+- STM32 embedded-CR/control-byte/overlong DISARM ACK hooks=0U
+- ESP BRIDGE_SCRIPTED_TEST_ENABLED=0U
+- ESP BRIDGE_MALFORMED_COMMAND_TEST_ENABLED=0U
 - Current ESP/STM source의 모든 controlled test hook은 `0U`다.
 - Canonical firmware contract discovery는 15/15 PASS다.
-- Current safe artifact가 source restore 뒤 재생성됐고 controlled string은 object/ELF/map/list에 없다. Incremental build가 `uart_mvp_protocol.c`를 재컴파일하고 ELF를 relink해 `0 errors / 0 warnings`였다. 이 latest build는 post-Clean full build가 아니다.
-- Current safe STM32 ELF: 1,240,504 bytes, SHA-256
-  `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`.
-- Controlled/safe image 모두 CubeProgrammer download verify를 통과했다.
-- Post-overflow safe UART runtime behavior는 warning/retry/parser error 없이 exact ACK/PONG/READY,
-  READY 뒤 14.43 s, 완전한 post-READY TEL 145/145 DISARMED/zero/error 0과 ARM/CMD/error 0으로 PASS했다.
+- Current safe STM32 ELF: 1,241,204 bytes, SHA-256
+  `46A80919B8ECE0521CBFA0861D74446F51904F7D9967517DCDC63118EA73B98A`.
+- Current safe ESP32 BIN: 176,656 bytes, SHA-256
+  `4321B4BF2811590167EB7DCEF58CA84ABE5C0C7EEC67656E20D0EFD787A2724D`.
+- Final safe UART runtime은 retry/test/parser error/ARM/CMD/failure 없이 exact startup,
+  READY 뒤 약 12.2 s, post-READY TEL 123/123 DISARMED/zero/error 0으로 PASS했다.
 - 다만 UART log에 binary hash가 내장되지 않고 physical no-power setup provenance도 pending이다.
 
 중요 evidence boundary:
 
 - Gate A/B/stale/reset/wrong-ACK/active-DISARM raw files에는 LiPo, MDD10A B+/B-, actual motor
   power 분리 상태가 text metadata로 들어 있지 않다.
-- UART 변경 시 양 board power OFF 여부, exact flashed binary hash와 flash transcript도 없다.
-- 작업자가 확인하기 전까지 이 항목은 operator confirmation pending이다.
+- Physical no-power setup은 작업자가 확인했지만 log에 내장되지 않았고, exact flashed
+  binary hash와 final ESP32 safe flash transcript도 raw runtime에 결합되지 않았다.
 - Raw UART와 logic capture가 보여주는 runtime behavior만 PASS로 판정하고 physical
   precondition이나 board identity를 만들어내지 마라.
 
@@ -133,58 +132,34 @@ Active DISARM result:
 - common GND
 - 115200 baud, 8-N-1, flow control 없음
 - 두 board를 각각 USB로 전원 공급할 때 5 V/VBUS/VIN rail은 연결하지 않는다.
-- Current source는 all-hooks-`0U` safe checkpoint지만 Gate C는 controlled test이므로 LiPo,
-  MDD10A B+/B-와 actual motor power를 절대 연결하지 않는다.
+- Current source는 all-hooks-`0U` safe checkpoint다. 다음 latency 시험도 별도 지시 전까지
+  LiPo, MDD10A B+/B-와 actual motor power를 연결하지 않는다.
 - STM32가 parser, command timeout, motor output, encoder와 최종 safety authority다.
 
 다음 작업은 순서를 바꾸지 않는다.
 
-완료 checkpoint - UART runtime behavior
+완료 checkpoint:
 
-- Gate A/B runtime PASS
-- T-BRIDGE-007 wrong-ACK rejection와 same-seq retry PASS
-- Safe-image UART runtime behavior PASS; exact runtime-to-ELF linkage와 physical setup provenance pending
-- T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow subvector PASS; remaining 008A vectors pending
-- T-BRIDGE-008B command-parser recovery NOT TESTED
+- Gate A/B와 T-BRIDGE-007/008 required UART runtime behavior PASS
+- 모든 ESP32/STM32 controlled hook `0U`, contract `15/15`
+- Final exact startup, retry/test/parser error/ARM/CMD 0, post-READY TEL 123/123 safe
+- UART log 내 artifact hash와 physical setup metadata가 없어 provenance는 pending
 
-Completed checkpoint - 2026-08-06~07 duplicate-seq/trailing-comma/required-seq-uint32-overflow vectors and safe restore
+Step 1 - Command-timeout shutdown latency
 
-- Wrong-ACK hook 포함 모든 controlled hook `0U`
-- Duplicate required `seq` ACK rejection, 500 ms same-seq retry, exact response recovery PASS
-- Trailing-comma ACK rejection, 500 ms same-seq retry, exact response recovery PASS
-- Required-`seq` uint32-overflow ACK rejection, 500 ms same-seq retry, exact response recovery PASS
-- Contract `15/15`, protocol recompile+relink `0 errors / 0 warnings`, safe reflash PASS; 별도 observed UART runtime behavior PASS
-- Exact ACK/PONG/READY 뒤 14.43 s, 완전한 post-READY TEL 145/145 DISARMED/zero/error 0, ARM/CMD 0
-- UART log 내 binary hash와 physical no-power metadata가 없어 setup provenance는 pending
-
-Step 1 - Gate C parser recovery
-
-- T-BRIDGE-007 wrong-ACK runtime vector는 이미 PASS다. 원본 로그를 보존하고 반복하지 않는다.
-- Duplicate-required-`seq`, trailing-comma와 required-`seq` uint32-overflow vectors는 완료됐으므로 반복하지 않고 partial frame-name response부터 진행한다.
-- ESP32 startup response parser와 STM32 command parser의 규칙을 섞지 않는다. ESP
-  response parser는 unknown extra field를 허용하지만 current STM32 command parser는
-  non-CMD extra data를 거부하고 CMD field order를 강제한다.
-- ESP32 response 방향에는 partial frame name을 먼저 실행하고 invalid terminator,
-  embedded control과 overlong-line/RX-line-overflow 뒤 exact ACK/PONG recovery를 시험한다.
-  Duplicate required field, trailing comma와 required-`seq` uint32 overflow는 이미 PASS했고 unknown extra field는 reject vector로 사용하지 않는다.
-- STM32 command 방향에는 PING extra data, CMD bad field order, duplicate/overflow,
-  invalid terminator, embedded control/overlong line 뒤 valid PING/PONG recovery를
-  시험한다.
-- Invalid response는 startup gate를 열지 않고, invalid command는 실행되지 않으며 TEL
-  DISARMED/zero를 유지해야 한다.
-- 각 방향의 마지막 exact response 또는 valid PING은 정상 state 전이/PONG을 만들어야
-  한다.
-- unrecovered overflow/desync와 별도의 ARM/유효한 motion CMD traffic이 없어야 하며,
-  주입한 malformed CMD는 실행이나 출력 변화를 만들지 않아야 한다.
+- Motor power를 연결하지 않고 기존 10% test hook과 logic analyzer를 사용한다.
+- UART timeout 기준 event와 PB6/PB7 final active edge를 같은 capture에 담는다.
+- 사전 조건, 정확한 code insertion 위치, 예상 waveform, 중지 조건과 PASS 기준을 먼저
+  설명하고 사용자가 작은 code block을 직접 입력하게 한다.
+- Build/flash와 logic-analyzer 조작은 사용자가 수행한다.
 
 그 다음 안전 시험:
 
-1. Command-timeout UART-to-PWM shutdown latency
-2. Software-fault marker-to-PWM shutdown latency와 latch
-3. 모든 hook 0U restore/test/build/safe reflash
-4. External reset marker를 포함한 boot no-output capture
-5. Board power/back-power와 Physical E-stop 검증
-6. 위 gate가 모두 PASS한 뒤에만 lifted/no-load actual motor 시험
+1. Software-fault marker-to-PWM shutdown latency와 latch
+2. 모든 hook `0U` restore/test/build/safe reflash
+3. External reset marker를 포함한 boot no-output capture
+4. Board power/back-power와 Physical E-stop 검증
+5. 위 gate가 모두 PASS한 뒤에만 lifted/no-load actual motor 시험
 
 금지 사항:
 
@@ -199,10 +174,10 @@ Step 1 - Gate C parser recovery
 첫 답변에서는 다음 네 가지만 보고해라.
 
 1. 실제 git status에서 확인한 변경 파일
-2. Gate A/B, T-BRIDGE-007, T-BRIDGE-008A duplicate-seq/trailing-comma/required-seq-uint32-overflow subvectors와 active DISARM의 현재 판정
-3. Current all-hooks-`0U` source/static/protocol recompile+relink `0/0`, session-observed reflash verify와 별도 safe UART behavior는 PASS지만 exact linkage와 physical setup provenance는 pending인 점
-4. 사용자가 바로 수행할 T-BRIDGE-008A partial frame-name response vector의 사전 조건, 예상 결과,
-   중지 조건과 PASS 기준
+2. Gate A/B, T-BRIDGE-007/008, final safe UART와 active DISARM의 현재 판정
+3. Current all-hooks-`0U`, contract `15/15`와 final safe UART behavior는 PASS지만 exact linkage와 log-embedded physical provenance는 pending인 점
+4. 사용자가 바로 수행할 command-timeout shutdown latency 시험의 사전 조건, code 위치,
+   예상 결과, 중지 조건과 PASS 기준
 
 프롬프트의 상태와 실제 source/diff가 다르면 실제 파일을 우선하고 차이를 먼저
 보고한 뒤 진행한다.

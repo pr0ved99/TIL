@@ -57,7 +57,8 @@ Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor 
 | Boot not complete | Startup state | PWM zero 유지 | Init 완료 후 disarmed |
 | Command timeout | Command age가 timeout 초과 | Motor stop | Disarm/arm flow 이후 새 valid command |
 | CAN heartbeat timeout | Heartbeat missing | Motor stop | Bus reconnect, disarm/arm |
-| E-stop request | Command 또는 physical input | Stop latch | Explicit operator reset |
+| Software stop/E-stop request | Command parser/state machine | Common safe-output, stop latch | Explicit operator reset 후 new ARM/CMD |
+| Physical E-stop asserted/open | S0-B sense; K1 path는 MCU-independent | K1 motor-energy cut + PWM zero/latch | Mechanical release, manual K1 re-enable, software reset 후 new ARM/CMD |
 | Low-voltage warning | ADC 또는 LiPo alarm | Warning, test scope 축소 | Recharge 또는 곧 stop |
 | Low-voltage stop | ADC가 stop threshold 아래 | Motor stop | Recharge, operator reset |
 | Buck output wrong | Multimeter check | Electronics 연결 금지 | Converter 조정/교체 |
@@ -345,7 +346,8 @@ Fault log에는 다음이 포함되어야 한다.
 | Boot safe output | Logic only, motor disconnected | PWM zero |
 | Command timeout | Command 전송 중단 | Motor output stop |
 | Software fault injection | Motor disconnected, limited active output 뒤 fault handler 호출 | PWM/DIR zero, reset 전 output 재활성화 차단 |
-| E-stop | E-stop frame 또는 command 전송 | Fault latched, output disabled |
+| Software stop request | E-stop frame 또는 command 전송 | Fault latched, output disabled |
+| Physical E-stop | K1/S0 hardware와 motor-disconnected staged test | Actual motor rail cut, latch, no auto restart |
 | Low voltage simulated | Low ADC equivalent injection | Output disabled |
 | Encoder sign | Lifted motor test | Forward command produces expected signs |
 | CAN timeout | Heartbeat 중단 | Output disabled |
@@ -368,3 +370,7 @@ invalid, stale, missing, or unsafe input -> PWM zero and nonzero motor output bl
 ```
 
 Latched safety fault에서 회복하려면 explicit operator action이 필요하다.
+
+Physical E-stop의 hazardous situation, initial risk와 derived design input은
+[`22_Physical_EStop_Hazard_Analysis_ko.md`](22_Physical_EStop_Hazard_Analysis_ko.md)를
+정본으로 사용한다.

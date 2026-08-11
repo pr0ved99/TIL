@@ -11,8 +11,8 @@
 #define CMD_TIMEOUT_MIN_MS      50u
 #define CMD_TIMEOUT_MAX_MS     500u
 
-#define VX_MIN_MMPS -100
-#define VX_MAX_MMPS  100
+#define VX_MIN_MMPS  -100
+#define VX_MAX_MMPS   100
 #define W_MIN_MRADPS -500
 #define W_MAX_MRADPS  500
 
@@ -27,6 +27,10 @@
 #define UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
 #define UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED 0U
 #define UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
+#define UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED 0U
 #define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED       0U
 #define UART_MVP_SUPPRESS_PONG_TEST_ENABLED         0U
 
@@ -52,7 +56,11 @@ static uint8_t s_stale_disarm_ack_sent;
 static uint8_t s_duplicate_disarm_ack_seq_sent;
 static uint8_t s_trailing_comma_disarm_ack_sent;
 static uint8_t s_overflow_disarm_ack_seq_sent;
+static uint8_t s_partial_frame_name_disarm_ack_sent;
 static uint8_t s_wrong_disarm_ack_type_sent;
+static uint8_t s_embedded_cr_disarm_ack_sent;
+static uint8_t s_control_byte_disarm_ack_sent;
+static uint8_t s_overlong_disarm_ack_sent;
 static uint8_t s_stale_pong_sent;
 static int32_t s_vx_mmps;
 static int32_t s_w_mradps;
@@ -295,6 +303,67 @@ static void handle_line(const char *line, size_t line_len){
                 return;
             }
 #endif
+#if UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_partial_frame_name_disarm_ack_sent == 0U){
+                s_partial_frame_name_disarm_ack_sent = 1U;
+                uart_sendf(
+                    "AC,seq=%lu,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_embedded_cr_disarm_ack_sent == 0u){
+                s_embedded_cr_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,\rtype=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_control_byte_disarm_ack_sent == 0u){
+                s_control_byte_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu," "\x01" "type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_overlong_disarm_ack_sent == 0u){
+                uint8_t overlong_tail[257u];
+                size_t i;
+
+                s_overlong_disarm_ack_sent = 1u;
+
+                uart_sendf(
+                    "ACK,seq=%lu,type=DISARM,t_ms=%lu,",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+
+                for(i = 0U; i < 256U; i++){
+                    overlong_tail[i] = (uint8_t)'X';
+                }
+
+                overlong_tail[256U] = (uint8_t)'\n';
+
+                (void)HAL_UART_Transmit(
+                    s_uart,
+                    overlong_tail,
+                    (uint16_t)sizeof(overlong_tail),
+                    100
+                );
+                return;
+            }
+#endif
 #if UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED
             if(s_stale_disarm_ack_sent == 0u){
                 s_stale_disarm_ack_sent = 1u;
@@ -349,6 +418,10 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_duplicate_disarm_ack_seq_sent = 0u;
     s_trailing_comma_disarm_ack_sent = 0u;
     s_overflow_disarm_ack_seq_sent = 0u;
+    s_partial_frame_name_disarm_ack_sent = 0u;
+    s_embedded_cr_disarm_ack_sent = 0u;
+    s_control_byte_disarm_ack_sent = 0u;
+    s_overlong_disarm_ack_sent = 0u;
     s_wrong_disarm_ack_type_sent = 0u;
     s_stale_pong_sent = 0u;
     s_last_tel_ms = 0u;

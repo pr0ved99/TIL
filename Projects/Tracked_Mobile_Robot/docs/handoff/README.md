@@ -10,27 +10,30 @@
 2. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 3. [`../../AGENTS.md`](../../AGENTS.md)
 4. [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)
-5. [`2026-08-06_safe_uart_baseline_handoff.md`](2026-08-06_safe_uart_baseline_handoff.md)
-6. [`../progress/2026-08-07_progress.md`](../progress/2026-08-07_progress.md)
-7. [`../verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](../verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md)
-8. [`../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md)
-9. [`../progress/2026-08-06_progress.md`](../progress/2026-08-06_progress.md)
-10. [`../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md)
-11. [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md) (이전 controlled-test 역사 checkpoint)
-12. [`../progress/2026-08-04_progress.md`](../progress/2026-08-04_progress.md)
-13. [`../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)
-14. [`../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
-15. [`2026-08-03_uart_response_gated_startup_implementation_handoff.md`](2026-08-03_uart_response_gated_startup_implementation_handoff.md) (구현 직후 역사 checkpoint)
-16. [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md)
-17. [`../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
-18. [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
-19. [`../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
-20. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
-21. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
-22. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-23. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-24. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-25. [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md) (구현 전 역사 문맥이 필요할 때만)
+5. [`2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md`](2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md)
+6. [`../progress/2026-08-12_progress.md`](../progress/2026-08-12_progress.md)
+7. [`../verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](../verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md)
+8. [`2026-08-12_focused_uart_gate_c_session_plan_ko.md`](2026-08-12_focused_uart_gate_c_session_plan_ko.md) (완료된 실행 runbook)
+9. [`../progress/2026-08-11_progress.md`](../progress/2026-08-11_progress.md)
+10. [`../verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`](../verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md)
+11. [`../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md)
+12. [`../progress/2026-08-06_progress.md`](../progress/2026-08-06_progress.md)
+13. [`../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md)
+14. [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md) (이전 controlled-test 역사 checkpoint)
+15. [`../progress/2026-08-04_progress.md`](../progress/2026-08-04_progress.md)
+16. [`../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)
+17. [`../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](../verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
+18. [`2026-08-03_uart_response_gated_startup_implementation_handoff.md`](2026-08-03_uart_response_gated_startup_implementation_handoff.md) (구현 직후 역사 checkpoint)
+19. [`../progress/2026-08-03_progress.md`](../progress/2026-08-03_progress.md)
+20. [`../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](../verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
+21. [`../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
+22. [`../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
+23. [`2026-07-28_kicad_reva_wiring_handoff.md`](2026-07-28_kicad_reva_wiring_handoff.md)
+24. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
+25. [`../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+26. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+27. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+28. [`2026-08-03_uart_strict_parser_regression_handoff.md`](2026-08-03_uart_strict_parser_regression_handoff.md) (구현 전 역사 문맥이 필요할 때만)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -40,10 +43,16 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
+| 2026-08-13 | [`2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md`](2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md) | Next-session runbook: timeout/fault/reset-marker waveform, all-hooks-`0U` safe restore와 선택적 perfboard 문서 초안 |
+| 2026-08-12 | [`../progress/2026-08-12_progress.md`](../progress/2026-08-12_progress.md) | Current continuation: Gate C required runtime scope PASS, all-hooks-`0U` final safe regression과 다음 timeout/fault/reset-marker 순서 |
+| 2026-08-12 | [`../verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](../verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 safe closeout 판정·evidence boundary |
+| 2026-08-12 | [`2026-08-12_focused_uart_gate_c_session_plan_ko.md`](2026-08-12_focused_uart_gate_c_session_plan_ko.md) | Completed historical runbook; current 작업 지시로 사용하지 않음 |
+| 2026-08-11 | [`../progress/2026-08-11_progress.md`](../progress/2026-08-11_progress.md) | Partial-frame-name까지 4개 T-BRIDGE-008A subvector PASS, all-hooks-`0U`/`15/15`/safe full-build/flash와 post-READY TEL 164 회귀; invalid terminator/control next |
+| 2026-08-11 | [`../verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`](../verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md) | T-BRIDGE-008A partial-frame-name rejection/recovery와 current safe closeout report |
 | 2026-08-07 | [`../progress/2026-08-07_progress.md`](../progress/2026-08-07_progress.md) | Required-`seq` uint32-overflow까지 3개 T-BRIDGE-008A subvector PASS, all-hooks-`0U`/`15/15`/protocol recompile+relink `0/0`/safe flash와 READY 후 14.43 s/TEL 145 회귀; partial frame-name vector next |
 | 2026-08-07 | [`../verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](../verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A required-`seq` uint32-overflow rejection/recovery와 current safe restore report |
 | 2026-08-07 | [`../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](../verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A trailing-comma rejection/recovery와 historical post-trailing safe full-build/artifact reproduction report |
-| 2026-08-06 | [`2026-08-06_safe_uart_baseline_handoff.md`](2026-08-06_safe_uart_baseline_handoff.md) | Current continuation: duplicate-required-seq/trailing-comma/required-seq uint32-overflow 완료와 current safe restore 뒤 partial frame name부터 remaining T-BRIDGE-008A 진행 |
+| 2026-08-06 | [`2026-08-06_safe_uart_baseline_handoff.md`](2026-08-06_safe_uart_baseline_handoff.md) | Historical pre-partial-name checkpoint; 2026-08-11 progress/report가 current continuation |
 | 2026-08-06 | [`../progress/2026-08-06_progress.md`](../progress/2026-08-06_progress.md) | Duplicate-seq subvector PASS (008A overall PARTIAL), all-hooks-`0U`/`15/15`/safe build와 session-observed flash verify, READY 후 14.42 s/TEL 150 회귀 및 provenance 한계 |
 | 2026-08-06 | [`../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](../verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md) | T-BRIDGE-008A duplicate required `seq` rejection/recovery subvector와 safe restore report |
 | 2026-08-04 | [`2026-08-04_uart_runtime_and_active_disarm_handoff.md`](2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Historical controlled-test checkpoint; current 작업 지시로 사용하지 않음 |

@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-08-07
+Last updated: 2026-08-10
 
 ## Project Identity
 
@@ -41,6 +41,23 @@ Last updated: 2026-08-07
 - FreeRTOS comes after HAL bare-metal drivetrain behavior is validated.
 - LL Driver migration comes after a known-good HAL baseline.
 - ROS 2 bridge comes after low-level drivetrain safety, timeout, and odometry basics are validated.
+- Physical E-stop RevB uses an MCU-independent `S0-A NC -> K1 DC power relay` control path; K1 opens the MDD10A `POWER+` feed when de-energized.
+- Physical E-stop monitoring uses a separate `5 V -> S0-B NC -> optocoupler LED` loop and 3.3 V pull-up/transistor output to `ESTOP_SENSE`. It does not prove the K1 main contact actually opened.
+- E-stop release never restores motion authority or K1 motor rail by itself. Step 7 corrected the three-wire path to `F2 -> S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with a second K2 NO contact enabling K1 coil. A K1 high-current pole is not used below its official minimum switching load.
+- Step 7 preferred candidates are Omron `A22NE-M-PD02-N` for S0, Schneider `ZB5AA3 + ZB5AZ009 + ZBE1016` low-power assembly for S2, Panasonic `TX2-12V` for K2 and Vishay `VO617A-3` for S0-B conditioning. They remain conditional until minimum-load, received-part and bench gates close.
+- K1/F1/main wire/connectors remain blocked by missing MG540P30_12V motor current data. F2 is only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
+- Step 6 fixed the functional circuit/net architecture, connector/test-point partition and backfeed boundary in `25_Physical_EStop_RevB_Circuit_Architecture_ko.md`.
+- MVP K1 actual-off evidence is direct downstream continuity/voltage measurement; K2/control state alone is not proof. Protected PA4/PB0 dual-rail sensing remains a post-MVP automatic diagnostic option.
+- Step 6 target pin is PC7 for MVP `ESTOP_SENSE`; PA4 upstream `VBAT_PROTECTED_SENSE` and PB0 downstream `MOTOR_VBAT_SAFE_SENSE` are post-MVP candidates. None is configured or bench-tested.
+- Step 5 baselined `REQ-ESTOP-001~020`: 15 MUST, 5 SHOULD. `REQ-ESTOP-012~015` and precision `T-ESTOP-006` are post-MVP; MVP-linked TBR items still close before their powered-test gates.
+
+## Fixed Engineering Process Decisions
+
+- Project planning and verification use a tailored systems-engineering lifecycle and lightweight Vee traceability.
+- `docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md` is the canonical Engineering Basis ID and standards-claim boundary.
+- Work completed before 2026-08-10 is treated as `RETROSPECTIVE ALIGNMENT` unless its original decision record cites the source. New requirements, ADRs and tests use the selected Basis ID as an `ADOPTED FORWARD BASIS` before the decision.
+- Basis ID linkage does not claim full standard conformance, certification, ISO 13849 PL, SIL, EMC/IP rating or MISRA compliance.
+- New requirements and major design decisions should connect at least one Basis ID and one Test ID.
 
 ## Current Pin Allocation And Candidates
 
@@ -56,7 +73,9 @@ Last updated: 2026-08-07
 | Optional power gate/brake | PC6 / PC5 only if a separate circuit is added |
 | Encoder channel 1 A/B, motor-off bench-confirmed | PB4 / PB5, TIM3 |
 | Encoder channel 2 A/B, motor-off bench-confirmed | PA0 / PA1, TIM5 |
-| Battery ADC | PA4 |
+| K1 upstream rail ADC candidate | PA4, ADC12_IN4 -> `VBAT_PROTECTED_SENSE` |
+| K1 downstream rail ADC candidate | PB0, ADC12_IN8 -> `MOTOR_VBAT_SAFE_SENSE` |
+| Physical E-stop sense candidate | PC7 GPIO/EXTI -> `ESTOP_SENSE` |
 | IMU I2C | PB8 / PB9, I2C1 |
 | CAN RX/TX | PA11 / PA12, CAN1 |
 | SWD | PA13 / PA14 preserved |
@@ -80,6 +99,8 @@ The current canonical architecture docs are under `01_System_Architecture/*_ko.m
 
 Important docs:
 
+- `docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`: Engineering Basis ID catalog, past/future application timing and standards-claim boundary
+- `docs/progress/2026-08-10_progress.md`: Engineering Basis adoption and final MVP matrix linkage record
 - `08_Motor_Driver_and_HBridge_Control_ko.md`: MDD10A decision and PWM+DIR control contract
 - `20_Motor_Driver_Selection_Comparison_ko.md`: BTS7960 to MDD10A decision history and comparison
 - `11_System_Block_Diagram_and_Interface_Map_ko.md`: full hardware/software interface map
@@ -115,8 +136,13 @@ Important docs:
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-08-07_progress.md`: latest progress for trailing-comma and required-`seq` uint32-overflow subvector PASS (008A overall PARTIAL), all-hooks-`0U` safe restores, build/artifact checks, session-observed flash verify, safe UART regressions and provenance limits
-- `docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`: current continuation from the post-overflow all-hooks-`0U` safe checkpoint into remaining T-BRIDGE-008A vectors
+- `docs/progress/2026-08-12_progress.md`: current UART Gate C completion state, all-hooks-`0U` final safe regression and next timeout/fault/reset-marker sequence
+- `docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`: current T-BRIDGE-008A/008B report, artifact metadata and evidence boundaries
+- `docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`: completed historical Gate C execution runbook; not the current next-work instruction
+- `docs/progress/2026-08-11_progress.md`: historical partial-frame-name checkpoint before Gate C completion
+- `docs/verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`: historical partial-frame-name report
+- `docs/progress/2026-08-07_progress.md`: historical trailing-comma and required-`seq` uint32-overflow subvector PASS checkpoint
+- `docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`: historical pre-partial-name continuation checkpoint
 - `docs/progress/2026-08-06_progress.md`: historical duplicate-seq subvector PASS and post-test 14.42 s safe UART checkpoint
 - `docs/progress/2026-08-04_progress.md`: historical Gate A/B, wrong-ACK and active DISARM 23.50 us checkpoint
 - `docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`: historical controlled-test handoff superseded by the 2026-08-06 handoff
@@ -151,8 +177,13 @@ Important docs:
 - `docs/progress/2026-07-24_progress.md`: Rev A manufacturing files, 1:1/vector validation, and vendor upload blocker
 - `docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`: refreshed V-model gate roadmap and current execution order
 - `docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`: project-wide requirement, design, test, evidence, and result traceability
-- `docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`: NC hardware motor-energy cut, auxiliary sense, latch/reset requirements and staged E-stop verification
-- `01_System_Architecture/21_Physical_EStop_Architecture_ko.md`: two-path Physical E-stop architecture and component-selection boundary
+- `docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`: K1 relay motor-energy cut, auxiliary sense, latch/reset requirements and staged E-stop verification
+- `01_System_Architecture/21_Physical_EStop_Architecture_ko.md`: Physical E-stop safety goal, RevA/RevB boundary, K1 relay energy path and independent sense path
+- `01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md`: 12-hazard initial screening, foreseeable misuse, risk-reduction mapping and FMEA inputs
+- `01_System_Architecture/23_Physical_EStop_FMEA_ko.md`: 23 failure modes, action priorities, three-wire re-enable and downstream rail-sense decisions
+- `01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`: 20 shall/should requirements, acceptance criteria, TBR registry and requirement-to-test mapping
+- `01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`: MVP K1 high-side cut, three-wire re-enable, S0-B sense, connector/test-point and backfeed circuit baseline; dual-rail sense is post-MVP
+- `01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`: S0/S2/K2/opto candidates, official minimum-load review, K1/F1/main-current blockers and Step 7 closure gates
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
@@ -206,7 +237,7 @@ Important docs:
 - The 2026-07-20 historical ESP32-STM32 board-only UART bridge baseline is complete. On 2026-08-03, a controlled `500 ms settle -> LF -> 100 ms -> PING` preamble and the current strict-parser normal safety sequence passed again, including PING/PONG, NOT_ARMED, ARM/valid CMD, timeout-zero, OUT_OF_RANGE and final DISARMED.
 - ESP32 source now contains a non-blocking response-gated startup state machine: `500 ms settle -> LF boundary sync -> per-boot DISARM/matching ACK -> next-seq PING/matching PONG -> READY`, with a 500 ms response timeout, at most three attempts per response stage and `FAILED` fail-closed state. Startup sequence is seeded with `esp_random()` on every boot; responses latch only in the matching wait state. ACK `seq/type` and PONG `seq` are parsed and matched explicitly, and scripted ARM/CMD steps are gated on `READY`.
 - TX is emitted as one newline-terminated write and any TX or startup RX-flush failure enters `FAILED`. Duplicate required fields, integer overflow, trailing commas and non-exact frame prefixes are rejected. RX overflow or embedded control/CR marks the whole frame invalid and discards bytes through the next LF, preventing an overflow tail from being reparsed as a command.
-- The 2026-08-03 safe-source contract passed `15/15` and ESP32-S3 build passed with binary `0x2b210`, `83%` partition free. Actual response-gated board logs then passed Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG loss bounded failure, stale ACK/PONG sequence rejection and controlled reset/new-startup recovery. The reset segment does not contain the preceding failure, so post-failure session linkage remains operator-labeled. A 2026-08-04 controlled run also passed matching-seq/wrong-ACK-type rejection, exact 500 ms same-seq DISARM retry and exact-response-only READY. On 2026-08-06~07 T-BRIDGE-008A also passed its duplicate-required-`seq`, trailing-comma and required-`seq` uint32-overflow ACK rejection, exact 500 ms same-seq retry and exact-response recovery subvectors. Remaining 008A response vectors and all of 008B are unverified, so the release remains `PARTIAL`.
+- The 2026-08-03 safe-source contract passed `15/15` and ESP32-S3 build passed with binary `0x2b210`, `83%` partition free. Actual response-gated board logs then passed Gate A exact ACK/PONG/READY, Gate B DISARM-ACK/PONG loss bounded failure, stale ACK/PONG sequence rejection and controlled reset/new-startup recovery. The reset segment does not contain the preceding failure, so post-failure session linkage remains operator-labeled. A 2026-08-04 controlled run also passed matching-seq/wrong-ACK-type rejection, exact 500 ms same-seq DISARM retry and exact-response-only READY. On 2026-08-06~12 T-BRIDGE-008A passed duplicate-required-`seq`, trailing-comma, required-`seq` uint32-overflow, partial-frame-name, embedded-CR, control-byte and overlong-line rejection/recovery. On 2026-08-12 T-BRIDGE-008B also passed eight malformed/unknown STM32 command rejections, TEL 200/200 safe and final matching PING/PONG recovery. Gate C required runtime scope is closed; the strict-parser release remains `PARTIAL` only for exact artifact linkage, external cold-start marker and log-embedded physical setup provenance.
 - The 2026-08-04 safe-image UART runtime behavior passed with about 11.24 s after READY and TEL 118/118 safe; the following wrong-ACK controlled run also passed and is historical evidence.
 - On 2026-08-06 the wrong-ACK hook was restored to `0U`; every ESP32/STM32 test hook was `0U`. Firmware contract discovery passed `15/15`, and the user-observed STM32CubeIDE build reported `0 errors / 0 warnings`. That pre-008A historical ELF was `1,239,972 bytes` with SHA-256 `71EF2C275A5DD5CFAB34995D1CF33A76B4DC4593661842BD6E379D6DBEFACBAF`.
 - The first final 2026-08-06 safe board log passed exact ACK/PONG/READY and then 11.35 s with TEL 120/120 `DISARMED/zero/error 0`, ARM/CMD 0 and parser/startup errors 0. It remains the pre-008A historical baseline.
@@ -215,7 +246,12 @@ Important docs:
 - The trailing-comma controlled runtime then passed: one `RX malformed field list`, no early gate opening, exactly 500 ms same-seq DISARM retry, first exact ACK count 1, matching PONG then READY, TEL 150/150 safe and ARM/CMD/failure 0. Its retained controlled ELF is `1,240,348 bytes`, SHA-256 `5791C9B1E5A8F2ED942B8A8A0BDD8599C2A775EDB5D59022E60CE900C52B406E`.
 - After the trailing-comma vector every controlled hook was restored to `0U`. Contract discovery passed `15/15`; restored artifacts were regenerated, the controlled string was absent from object/ELF/map/list, and safe flash verify passed. A later post-Clean full build recompiled all 31 objects, including `uart_mvp_protocol.c`, linked with `0 errors / 0 warnings` and reproduced every retained safe artifact hash. That historical `1,240,328-byte` ELF SHA-256 is `3526206C7E2043634029B15B7D41F9C80B136904FCA72FB46D8CA24F4119DEE4`. The safe log passed exact startup without warnings/retry/parser errors, 15.51 s after READY, TEL 160/160 safe and ARM/CMD/failure 0.
 - The required-`seq` uint32-overflow controlled runtime then passed: one exact overflow ACK parse rejection, no early gate opening, exactly 500 ms same-seq DISARM retry, first exact ACK count 1, matching PONG then READY, post-READY TEL 140/140 safe and ARM/CMD/failure 0. Its retained controlled ELF is `1,240,520 bytes`, SHA-256 `747F32E3BDFBF0D4130E2F136145806AE88FF4F94BBC8948C7FFB554BE0A3701`.
-- After the overflow vector every controlled hook was restored to `0U`. Contract discovery passed `15/15`; the restored protocol source recompiled and relinked with `0 errors / 0 warnings`, the controlled string was absent from object/ELF/map/list, and safe flash verify passed. The current `1,240,504-byte` safe ELF SHA-256 is `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`. The safe log passed exact startup without warnings/retry/parser errors, 14.43 s after READY, post-READY TEL 145/145 safe and ARM/CMD/failure 0. This build was incremental, not a full Clean Build. UART logs do not embed the ELF hash and physical no-power metadata is absent, so setup provenance remains pending. No battery, MDD10A B+/B- or actual motor power may be connected for the remaining Gate C vectors.
+- After the overflow vector every controlled hook was restored to `0U`. Contract discovery passed `15/15`; the restored protocol source recompiled and relinked with `0 errors / 0 warnings`, the controlled string was absent from object/ELF/map/list, and safe flash verify passed. That historical `1,240,504-byte` safe ELF SHA-256 is `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; its safe log passed exact startup, post-READY TEL 145/145 safe and ARM/CMD/failure 0.
+- The 2026-08-11 partial-frame-name controlled runtime passed: `AC,...` was classified UNKNOWN once, no early gate opened, the same DISARM seq retried exactly 500 ms later, and only exact ACK/PONG opened READY. Visible TEL 165/165 and post-READY TEL 159/159 were safe. The controlled ELF was `1,240,712 bytes`, SHA-256 `FDEF89BFA9420D35BDACA582CD4C7CD19D7973F804BC39D312F7B4BF64A6B818`.
+- After the partial-name vector all hooks were restored to `0U`; contract `15/15`, a full STM32 build `0 errors / 0 warnings`, partial controlled literal absence, NUCLEO-F446RE flash verify and safe runtime passed. That historical safe ELF was `1,240,692 bytes`, SHA-256 `3567C9266C2D46DD920C8DAD6DE29656EBBC0BA73AB35CF1D55CC9368EABF4CA`. Safe runtime had exact startup once, retry/parser error/unknown/failure 0, visible TEL 169/169 and post-READY TEL 164/164 safe over about 16.27 s, ARM/CMD 0. UART logs did not embed the ELF hash or physical metadata; no battery, MDD10A B+/B- or actual motor power was permitted for the then-remaining Gate C vectors.
+- On 2026-08-12 the remaining T-BRIDGE-008A response vectors passed. Embedded CR and control byte `0x01` were each rejected once before an exact 500 ms same-seq retry; overlong line produced one RX overflow before a 510 ms same-seq retry. All three reached READY only after exact ACK/PONG and kept ARM/CMD at zero. The first embedded-CR attempt was invalid because the STM32 one-shot hook had already been consumed; it is retained as excluded evidence.
+- On 2026-08-12 T-BRIDGE-008B passed all eight scripted STM32 malformed/unknown command vectors. Each produced the expected ERR, TEL 200/200 remained DISARMED/zero, accumulated `err=8` was expected, and final `PING,seq=9009` received matching PONG followed by 106 safe TEL over about 10.5 s.
+- Final source has all ESP32 and STM32 controlled hooks `0U`; contract discovery passed `15/15`. The safe STM32 ELF is `1,241,204 bytes`, SHA-256 `46A80919B8ECE0521CBFA0861D74446F51904F7D9967517DCDC63118EA73B98A`. The safe ESP32 BIN is `176,656 bytes`, SHA-256 `4321B4BF2811590167EB7DCEF58CA84ABE5C0C7EEC67656E20D0EFD787A2724D`, with controlled 008B markers absent. Final safe runtime had exact startup once, retry/test/parser error/ARM/CMD/failure 0, visible TEL 128/128 and post-READY TEL 123/123 safe over about 12.2 s. Physical no-power was operator-confirmed but not log-embedded, and the raw UART log does not embed artifact hashes.
 - The STM32 CubeMX `.ioc` init ordering explicitly retains `MX_TIM5_Init` so TIM5 encoder initialization is not silently lost after regeneration.
 - Fifteen firmware preflight tests passed again after the 2026-08-04 safe-source restore. The suite combines source/configuration checks with host parser vectors; it does not replace target runtime or electrical evidence. Isolated clean build PASS likewise does not prove the restored images are running on either board.
 - STM32 motor-output uses `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` with common GND for the bench mapping.
@@ -289,16 +325,16 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short -- Projects/Tracked_Mobile_Robot`.
-2. Read `docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`, `docs/progress/2026-08-07_progress.md` and verification reports 09/10/11/12 before UART or motor-output work.
+2. Read `docs/progress/2026-08-10_progress.md` and `docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md` for the adopted process; use `docs/progress/2026-08-12_progress.md` and verification report 15 as the current UART baseline. The focused Gate C runbook is completed historical context.
 3. Keep LiPo, MDD10A B+/B- and actual motor power disconnected. If both boards are USB-powered, never connect their 5 V/VBUS/VIN rails.
-4. Preserve the all-hooks-`0U` current source, contract `15/15`, protocol-source rebuild `0 errors / 0 warnings`, safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`, verified safe flash and 14.43 s/post-READY TEL 145 post-overflow UART regression. Physical setup provenance remains pending.
-5. Continue T-BRIDGE-008A with the partial-frame-name response vector, then invalid terminator/embedded-control and overlong-line/RX-line-buffer-overflow response vectors. After 008A, execute T-BRIDGE-008B malformed/unknown STM32 commands followed by final valid PING/PONG recovery. The ESP response parser allows unknown extras, while the STM32 command parser rejects non-CMD extra data and enforces CMD field order.
-6. After each controlled Gate C cycle, restore every hook to `0U`, rerun contract `15/15`, rebuild/reflash and repeat the ARM/CMD 0 safe regression. Preserve flash transcript/hash and physical no-power metadata in the next evidence bundle.
-7. Preserve Gate A/B, wrong-ACK and final safe raw logs plus the active DISARM 23.50 us capture. Physical no-power and channel-map conditions remain operator confirmation pending until recorded.
-8. Capture command-timeout shutdown latency, then software-fault event-to-edge latency and latch waveform regression under the motor-disconnected 10% limit. Historical functional output-zero/latch is already PASS.
-9. Restore all hooks to `0U`, rerun tests/build, reflash safe images and capture external-reset-marker boot no-output.
-10. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`, 20.1005 kHz/about 10.05% PWM and direction settle evidence.
-11. Close board power/back-power prerequisites and execute `T-ESTOP-001~006` before any actual motor test.
-12. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10% and record current, heat, smell, noise, actual stop and powered encoder noise.
+4. Preserve the all-hooks-`0U` current source, contract `15/15`, safe STM32 ELF SHA-256 `46A80919B8ECE0521CBFA0861D74446F51904F7D9967517DCDC63118EA73B98A`, safe ESP32 BIN SHA-256 `4321B4BF2811590167EB7DCEF58CA84ABE5C0C7EEC67656E20D0EFD787A2724D` and about 12.2 s/post-READY TEL 123 final UART regression. Exact linkage and log-embedded physical provenance remain pending.
+5. Treat T-BRIDGE-008A/008B required runtime scope as complete and preserve report 15 plus all 2026-08-12 raw logs; do not repeat these controlled vectors unless firmware behavior changes.
+6. Capture command-timeout shutdown latency, then software-fault event-to-edge latency and latch waveform regression under the motor-disconnected 10% limit. Historical functional output-zero/latch is already PASS.
+7. Restore all hooks to `0U`, rerun tests/build, reflash safe images and capture external-reset-marker boot no-output.
+8. Preserve Gate A/B, T-BRIDGE-007/008 and final safe raw logs plus the active DISARM 23.50 us capture. Physical no-power and channel-map conditions remain operator confirmation pending until recorded.
+9. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`, 20.1005 kHz/about 10.05% PWM and direction settle evidence.
+10. Close board power/back-power prerequisites and execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
+11. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-restart evidence.
+12. Keep PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail-transient `T-ESTOP-006` as a post-MVP diagnostic V-cycle.
 13. Preserve the KiCad `RevA DRAFT` verified/TBD boundary and perform schematic-to-hardware continuity review before permanent wiring.
 14. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.

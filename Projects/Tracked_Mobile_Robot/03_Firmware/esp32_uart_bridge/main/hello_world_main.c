@@ -25,6 +25,11 @@
 #define BRIDGE_RX_BUF_SIZE  1024
 /* Safety default: never transmit the scripted motion test at bridge boot. */
 #define BRIDGE_SCRIPTED_TEST_ENABLED 0U
+#define BRIDGE_MALFORMED_COMMAND_TEST_ENABLED 0U
+
+#if BRIDGE_SCRIPTED_TEST_ENABLED && BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+#error "Only one bridge test may be enabled"
+#endif
 #define TEST_STEP_PERIOD_MS 1000
 #define LINE_BUF_SIZE       256
 #define RX_POLL_MS          20
@@ -66,6 +71,37 @@ typedef enum {
     BRIDGE_TEST_DISARM,
     BRIDGE_TEST_DONE
 } bridge_test_step_t;
+
+#if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+#define MALFORMED_TEST_VECTOR_COUNT 8U
+#define MALFORMED_TEST_DONE_STEP    (MALFORMED_TEST_VECTOR_COUNT + 1U)
+
+static const char *const s_malformed_test_frames[
+    MALFORMED_TEST_VECTOR_COUNT
+] = {
+    "PING,seq=9001,extra=1",
+    "CMD,seq=9002,w_mradps=0,vx_mmps=0,timeout_ms=300",
+    "CMD,seq=9003,vx_mmps=0,vx_mmps=0,w_mradps=0,timeout_ms=300",
+    "CMD,seq=9004,vx_mmps=0,w_mradps=0,timeout_ms=4294967296",
+    "NOPE,seq=9005",
+    NULL,
+    "PING,seq=9007\rX",
+    "PING,seq=9008" "\x01" "X",
+};
+
+static const char *const s_malformed_test_labels[
+    MALFORMED_TEST_VECTOR_COUNT
+] = {
+    "PING_EXTRA_DATA",
+    "CMD_BAD_FIELD_ORDER",
+    "CMD_DUPLICATE_FIELD",
+    "CMD_TIMEOUT_OVERFLOW",
+    "UNKNOWN_FRAME",
+    "OVERLONG_LINE_180",
+    "EMBEDDED_CR",
+    "CONTROL_BYTE_0x01",
+};
+#endif
 
 static uint32_t s_rx_line_count;
 static uint32_t s_pong_count;
@@ -267,6 +303,111 @@ static bridge_test_step_t bridge_uart_run_test_step(
             return BRIDGE_TEST_DONE;
     }
 }
+
+#if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+static int bridge_uart_send_labeled_raw_frame(
+    const uint8_t *frame,
+    size_t frame_len,
+    const char *label
+){
+    int written;
+
+    if(frame == NULL || frame_len == 0U || label == NULL){
+        ESP_LOGW(TAG, "Invalid malformed-test frame");
+        return 0;
+    }
+
+    written = uart_write_bytes(
+        BRIDGE_UART_NUM,
+        frame,
+        frame_len
+    );
+
+    if(written != (int)frame_len){
+        ESP_LOGW(TAG, "UART TX test payload failed: %s", label);
+        return 0;
+    }
+
+    written = uart_write_bytes(BRIDGE_UART_NUM, "\n", 1);
+
+    if(written != 1){
+        ESP_LOGW(TAG, "UART TX test newline failed: %s", label);
+        return 0;
+    }
+
+    ESP_LOGI(
+        TAG,
+        "TX UART1 TEST: %s len=%u",
+        label,
+        (unsigned int)frame_len
+    );
+    return 1;
+}
+
+static uint8_t bridge_uart_run_malformed_command_test_step(
+    uint8_t step
+){
+    uint8_t overlong_frame[180U];
+    const uint8_t *payload;
+    size_t payload_len;
+    size_t index;
+    int prefix_len;
+
+    if(step < MALFORMED_TEST_VECTOR_COUNT){
+        if(step == 5U){
+            prefix_len = snprintf(
+                (char *)overlong_frame,
+                sizeof(overlong_frame),
+                "PING,seq=9006,"
+            );
+
+            if(
+                prefix_len <= 0 ||
+                prefix_len >= (int)sizeof(overlong_frame)
+            ){
+                ESP_LOGW(TAG, "Failed to build overlong test frame");
+                return step;
+            }
+
+            for(
+                index = (size_t)prefix_len;
+                index < sizeof(overlong_frame);
+                index++
+            ){
+                overlong_frame[index] = (uint8_t)'X';
+            }
+
+            payload = overlong_frame;
+            payload_len = sizeof(overlong_frame);
+        }
+        else{
+            payload = (const uint8_t *)s_malformed_test_frames[step];
+            payload_len = strlen(s_malformed_test_frames[step]);
+        }
+
+        if(
+            bridge_uart_send_labeled_raw_frame(
+                payload,
+                payload_len,
+                s_malformed_test_labels[step]
+            )
+        ){
+            return step + 1U;
+        }
+        return step;
+    }
+
+    if(step == MALFORMED_TEST_VECTOR_COUNT){
+        ESP_LOGI(TAG, "TX UART1 TEST: FINAL_VALID_PING seq=9009");
+
+        if(bridge_uart_send_ping(9009U)){
+            return MALFORMED_TEST_DONE_STEP;
+        }
+    }
+
+    return step;
+}
+#endif
 
 static const char *find_field_value(const char *line, const char *key){
     if(line == NULL || key == NULL || key[0] == '\0'){
@@ -825,6 +966,10 @@ void app_main(void){
     uint32_t test_seq = s_startup_ping_seq + 1U;
     bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
 
+    #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+        uint8_t malformed_test_step = 0U;
+    #endif
+
     s_startup_state = BRIDGE_STARTUP_SETTLE;
     s_startup_state_tick = xTaskGetTickCount();
     s_startup_attempt_count = 0U;
@@ -832,6 +977,10 @@ void app_main(void){
     if (BRIDGE_SCRIPTED_TEST_ENABLED == 0U){
         ESP_LOGI(TAG, "Scripted UART safety sequence disabled");
     }
+
+    #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+        ESP_LOGW(TAG, "STM32 malformed-command recovery test enabled");
+    #endif
 
     TickType_t last_test_tick = s_startup_state_tick;
     bool startup_ready_seen = false;
@@ -869,5 +1018,19 @@ void app_main(void){
             test_step = bridge_uart_run_test_step(test_step, &test_seq);
             last_test_tick = now;
         }
+
+        #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+                if(
+                    s_startup_state == BRIDGE_STARTUP_READY &&
+                    malformed_test_step < MALFORMED_TEST_DONE_STEP &&
+                    now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
+                ){
+                    malformed_test_step =
+                        bridge_uart_run_malformed_command_test_step(
+                            malformed_test_step
+                        );
+                    last_test_tick = now;
+                }
+        #endif
     }
 }

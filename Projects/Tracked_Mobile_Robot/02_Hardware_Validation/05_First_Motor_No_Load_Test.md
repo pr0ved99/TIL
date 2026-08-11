@@ -33,7 +33,7 @@
 | Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
 | MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; timeout/DISARM와 software fault output-zero/latch functional PASS, actual 20.1005 kHz/약 10.05%와 direction settle ≥1 ms PASS; active shutdown latency와 physical E-stop required |
 | Actual PWM/DIR timing measured | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | PARTIAL; 양 채널 frequency/duty와 direction settle PASS, DISARM/timeout/fault edge latency pending |
-| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; `T-ESTOP-001~006` must pass first |
+| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; MVP `T-ESTOP-001~005` must pass first; `T-ESTOP-006` is post-MVP |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
 | Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3/TIM5 dual independent hand rotation와 encoder-side A=right/TIM5, B=left/TIM3 forward-positive sign PASS |
 | Motor fixed or lifted safely | Physical setup | TBD |

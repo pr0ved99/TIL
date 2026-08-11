@@ -22,13 +22,15 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | [Dated ERC report](KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt) | 0 errors, 0 warnings; ignored checks are listed in the report |
 | [Review PDF](KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf) | Human-readable RevA draft export |
 | [2026-07-28 progress](../docs/progress/2026-07-28_progress.md) | Work log, decisions, blockers and next actions |
+| [Physical E-stop RevB circuit architecture](../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md) | MVP K1/S0/S2, S0-B, connector/test-point baseline; dual rail-sense is post-MVP |
+| [Physical E-stop component/rating selection](../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction and K1/F1 motor-data gate |
 
 ## Captured Interfaces
 
 | Area | Captured design | Status |
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
-| Physical E-stop | NC hardware motor-energy cut + independent 3.3 V fail-safe sense | Architecture/verification baseline drafted; part, topology and schematic TBD |
+| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Step 7 partial: S0/S2/K2/opto candidate selected; K1/F1/main current path motor-data blocked; schematic TBD |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, common GND | Bench static mapping captured |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |
@@ -47,7 +49,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - BNO085 power and I2C wiring
 - Actual high-current distribution, wire gauge, connector and harness plan
 - Powered-motor encoder noise and input-filter validation
-- Physical E-stop direct-contact/contactor variant, DC interrupt rating, auxiliary sense pin and no-auto-restart verification
+- Physical E-stop actual S0/S2/K2/opto part confirmation, K1 DC motor interrupt rating, F1/F2, both coil clamps, rail-sense divider/protection values, connector parts and no-auto-restart/discrepancy verification
 - Physical continuity review from schematic to perfboard and harness
 
 ## Revision Rule

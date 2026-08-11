@@ -6,7 +6,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-08-07
+Last updated: 2026-08-10
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
@@ -15,38 +15,40 @@ Last updated: 2026-08-07
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
 4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
 5. [`docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`](docs/handoff/2026-08-06_safe_uart_baseline_handoff.md)
-6. [`docs/progress/2026-08-07_progress.md`](docs/progress/2026-08-07_progress.md)
-7. [`docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md)
-8. [`docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md)
-9. [`docs/progress/2026-08-06_progress.md`](docs/progress/2026-08-06_progress.md)
-10. [`docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)
-11. [`docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
-12. [`docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md)
-13. [`docs/progress/2026-08-03_progress.md`](docs/progress/2026-08-03_progress.md)
-14. [`docs/handoff/2026-08-03_uart_response_gated_startup_implementation_handoff.md`](docs/handoff/2026-08-03_uart_response_gated_startup_implementation_handoff.md)
-15. [`docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
-16. [`docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
-17. [`02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
-18. [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md)
-18. [`09_Electrical_Design/README.md`](09_Electrical_Design/README.md)
-19. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-20. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-21. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-22. [`docs/verification/README.md`](docs/verification/README.md)
+6. [`docs/progress/2026-08-10_progress.md`](docs/progress/2026-08-10_progress.md)
+7. [`docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md)
+8. [`docs/progress/2026-08-07_progress.md`](docs/progress/2026-08-07_progress.md)
+9. [`docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md)
+10. [`docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md)
+11. [`docs/progress/2026-08-06_progress.md`](docs/progress/2026-08-06_progress.md)
+12. [`docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)
+13. [`docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
+14. [`docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md)
+15. [`docs/progress/2026-08-03_progress.md`](docs/progress/2026-08-03_progress.md)
+16. [`docs/handoff/2026-08-03_uart_response_gated_startup_implementation_handoff.md`](docs/handoff/2026-08-03_uart_response_gated_startup_implementation_handoff.md)
+17. [`docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md)
+18. [`docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)
+19. [`02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
+20. [`docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`](docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md)
+21. [`09_Electrical_Design/README.md`](09_Electrical_Design/README.md)
+22. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
+23. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+24. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+25. [`docs/verification/README.md`](docs/verification/README.md)
 
 현재 바로 이어갈 작업:
 
 ```text
-[PARTIAL: Gate A/B + T-BRIDGE-007 PASS / T-BRIDGE-008A duplicate-seq + trailing-comma + required-seq uint32-overflow subvectors PASS / current all-hooks-0U source·static·build 0/0 + session-observed flash verify/runtime PASS / exact linkage + remaining 008A/008B + setup provenance pending] ESP32-STM32 UART bridge
+[PARTIAL: Gate A/B + T-BRIDGE-007 + T-BRIDGE-008A/008B required runtime PASS / current all-hooks-0U + contract 15/15 + final safe runtime PASS / exact artifact linkage + external cold-start marker + log-embedded setup provenance pending] ESP32-STM32 UART bridge
 [CONDITIONAL PASS] XL4015 #1/#2 bench load validation; final board-load wiring/back-power check pending
 [PARTIAL] STM32 motor output; waveform/direction and active DISARM MCU-pin 23.50 us baseline PASS, timeout/fault latency/reset-marked boot/E-stop pending
 [PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
--> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; contract `15/15`, restored protocol source 재컴파일·재링크 `0 errors / 0 warnings`, overflow string absent와 verified safe flash PASS
--> OBSERVED BOARD BEHAVIOR: post-required-seq-uint32-overflow exact startup, READY 후 14.43 s/post-READY TEL 145/145 safe UART runtime PASS; exact runtime-to-ELF linkage와 physical setup provenance pending
--> CURRENT NEXT: motor/battery power OFF -> T-BRIDGE-008A partial-frame-name response부터 remaining vectors -> T-BRIDGE-008B -> 각 cycle 뒤 all-hooks-`0U` restore/test/build/safe regression -> timeout/software-fault latency -> reset-marked boot -> board power/back-power + Physical E-stop `T-ESTOP-001~006`
--> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test
+-> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; contract `15/15`, 양 firmware build PASS와 controlled 008B marker absent
+-> OBSERVED BOARD BEHAVIOR: Gate C required runtime PASS; final exact startup, READY 후 약 12.2 s/post-READY TEL 123/123 safe, retry/test/parser error/ARM/CMD 0; exact runtime-to-artifact linkage와 log-embedded physical provenance pending
+-> CURRENT NEXT: motor/battery power OFF -> command-timeout latency -> software-fault latency/latch -> all-hooks-`0U` reset-marked boot -> board power/back-power + Physical E-stop MVP `T-ESTOP-001~005`
+-> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test -> `T-ESTOP-007` actual stop; dual-rail/precision transient `T-ESTOP-006`은 post-MVP
 ```
 
 병행 중인 mechanical integration:
@@ -76,7 +78,7 @@ tracked chassis hole-pattern DWG import
 - `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03 current strict parser의 fixed-delay normal sequence 뒤 response-gated FSM을 실제 board에서 실행했다. Exact DISARM ACK/PONG 뒤 READY인 Gate A, DISARM-ACK/PONG loss의 각 3회 bounded FAILED, stale ACK/PONG seq 무시와 controlled reset/new-startup recovery는 raw runtime behavior 기준 PASS다. Reset raw segment에는 직전 failure가 없어 post-failure linkage는 작업자 확인 대기다. 2026-08-04에는 matching seq의 wrong `ACK,type=ARM`을 무시하고 정확히 500 ms 뒤 같은 DISARM seq를 재시도해 exact DISARM ACK/PONG 뒤에만 READY로 진행해 `T-BRIDGE-007` required behavior를 닫았다. 2026-08-06~07에는 T-BRIDGE-008A의 duplicate-required-`seq`, trailing-comma와 required-`seq` uint32 overflow ACK를 각각 1회 거부하고 500 ms same-seq retry 뒤 exact ACK/PONG에서만 READY가 되는 세 하위 벡터도 PASS했다. 최신 overflow cycle 뒤 all-hooks-`0U`, contract `15/15`, restored protocol source 재컴파일·재링크 `0 errors / 0 warnings`, controlled string 부재와 session-observed reflash verify, warning/retry/parser error 없는 READY 후 14.43 s/post-READY TEL 145/145 safe 회귀를 완료했다. Exact runtime-to-ELF linkage, 나머지 008A vectors, 008B와 physical setup provenance가 남아 release는 `PARTIAL`이다.
+- 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03~04 current response-gated FSM의 Gate A/B와 T-BRIDGE-007 required behavior를 actual board에서 PASS했다. 2026-08-06~11 T-BRIDGE-008A 네 vector에 이어 2026-08-12 embedded CR, control byte `0x01`와 overlong response도 gate를 열지 않고 same-seq retry 뒤 exact ACK/PONG에서만 복구했다. 같은 날 T-BRIDGE-008B malformed/unknown STM32 command 8개를 fail-closed로 거부하고 TEL 200/200 safe와 final `PING,seq=9009` matching PONG을 확인했다. All-hooks-`0U`, contract `15/15` 복구 뒤 final exact startup, READY 후 약 12.2 s/post-READY TEL 123/123 safe와 retry/test/parser error/ARM/CMD 0을 확인했다. Gate C required runtime scope는 PASS지만 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 남아 strict-parser release 전체는 `PARTIAL`이다.
 - STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. 2026-07-29에는 direction/timeout/DISARM LED all-off를, 2026-07-30에는 software fault output-zero/latch를 확인했다. 2026-08-03에는 두 PWM `20.1005 kHz`, 약 `10.05%`, DIR 전후 PWM-zero `>=1 ms`를 확인했고, 2026-08-04에는 active DISARM UART RX end부터 PB6/PB7 last edge까지 `23.50 us` MCU-pin baseline을 측정했다. Safe-image UART regression은 2026-08-06에 완료했지만 timeout/fault latency, reset-marker boot, MDD10A power stage, Physical E-stop과 actual motor stop은 남아 있다.
 - MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. 2026-07-30 방향별 50회전 결과로 `1560 counts/output rev`를 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산도 PASS했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 forward-positive로 정규화했다. MDD10A powered channel-to-side mapping, powered-noise와 external tachometer/wheel-speed 검증은 남아 있다.
 - KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, BNO085, 실제 하네스·footprint는 TBD다.
@@ -98,7 +100,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-08-07 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-08-12 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -106,7 +108,7 @@ tracked chassis hole-pattern DWG import
 - PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
 - PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
 - ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
-- Current strict-parser UART는 Gate A exact startup, Gate B bounded loss/stale-sequence/reset recovery와 T-BRIDGE-007 wrong-ACK rejection을 통과했다. T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와 required-`seq` uint32 overflow response rejection/recovery도 actual runtime PASS다. Current source의 모든 hook `0U`, contract `15/15`, restored protocol source build `0 errors / 0 warnings`, controlled string 부재와 session-observed reflash verify, READY 후 14.43 s/post-READY TEL 145/145 safe UART behavior가 PASS했다. Exact runtime-to-ELF linkage, remaining 008A vectors, 008B와 physical setup provenance가 남아 release 상태는 `PARTIAL`이다.
+- Current strict-parser UART는 Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime scope를 통과했다. Current source의 모든 hook `0U`, contract `15/15`, 양 firmware build와 final exact startup, READY 후 약 12.2 s/post-READY TEL 123/123 safe UART behavior가 PASS했다. Exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 남아 release 전체 상태는 `PARTIAL`이다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
@@ -191,6 +193,12 @@ tracked chassis hole-pattern DWG import
 | [`18_Fault_Model_and_Safety_Cases_ko.md`](01_System_Architecture/18_Fault_Model_and_Safety_Cases_ko.md) | Fault cases, detection, safe responses |
 | [`19_Architecture_Decision_Record_ko.md`](01_System_Architecture/19_Architecture_Decision_Record_ko.md) | Accepted, deferred, rejected architecture decisions |
 | [`20_Motor_Driver_Selection_Comparison_ko.md`](01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md) | BTS7960 to MDD10A decision history and driver comparison |
+| [`21_Physical_EStop_Architecture_ko.md`](01_System_Architecture/21_Physical_EStop_Architecture_ko.md) | Physical E-stop safety goal, K1 relay energy path and independent sense path |
+| [`22_Physical_EStop_Hazard_Analysis_ko.md`](01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md) | E-stop life-cycle hazards, initial risk screening and derived design inputs |
+| [`23_Physical_EStop_FMEA_ko.md`](01_System_Architecture/23_Physical_EStop_FMEA_ko.md) | K1/S0/re-enable/monitoring failure modes, effects, detection and treatments |
+| [`24_Physical_EStop_Safety_Requirements_ko.md`](01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md) | 20 testable E-stop safety requirements, acceptance criteria and TBR register |
+| [`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md) | RevB K1 three-wire control, independent sense와 connector/test-point baseline; dual rail diagnostic은 post-MVP option |
+| [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction, K1/F1/main-current selection gates |
 
 ### 02_Hardware_Validation
 
@@ -278,6 +286,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
 | [`docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md`](docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md) | Robotics system-integration engineer strengths to emphasize |
 | [`docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | Current project portfolio strengths, gaps, and next additions |
+| [`docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md) | Engineering Basis IDs, standards-informed claim boundaries, retrospective alignment, and forward design criteria |
 | [`docs/verification/README.md`](docs/verification/README.md) | Lightweight V-model verification index |
 | [`docs/verification/01_UART_MVP_Requirements_ko.md`](docs/verification/01_UART_MVP_Requirements_ko.md) | UART MVP requirements and acceptance criteria |
 | [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
@@ -292,6 +301,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md) | T-BRIDGE-008A duplicate required `seq` rejection/recovery subvector and safe restore report |
 | [`docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A trailing-comma rejection/recovery, safe restore, full-build 0/0 and artifact reproduction report |
 | [`docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A required-`seq` uint32 overflow rejection/recovery and post-test safe restore report |
+| [`docs/verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`](docs/verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md) | T-BRIDGE-008A partial-frame-name rejection/recovery and safe full-build/flash/runtime closeout report |
 | [`assets/logs/firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt`](assets/logs/firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt) | Post-Clean 31-object full-build and link console, 0 errors / 0 warnings |
 | [`assets/logs/firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md`](assets/logs/firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md) | Required-`seq` uint32 overflow controlled/safe build, artifact and session-observed flash evidence |
 | [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
@@ -315,7 +325,12 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-08-04_progress.md`](docs/progress/2026-08-04_progress.md) | Gate A/B and wrong-ACK runtime, active DISARM 23.50 us, safe-image behavior/provenance boundary and current test-hook state |
 | [`docs/progress/2026-08-06_progress.md`](docs/progress/2026-08-06_progress.md) | Safe baseline, T-BRIDGE-008A duplicate-seq subvector PASS (008A overall PARTIAL), safe restore/build/session-observed reflash verify and 14.42 s/TEL 150 regression |
 | [`docs/progress/2026-08-07_progress.md`](docs/progress/2026-08-07_progress.md) | T-BRIDGE-008A trailing-comma와 required-`seq` uint32 overflow subvectors PASS, 각 safe restore/build/reflash/runtime regression |
-| [`docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`](docs/handoff/2026-08-06_safe_uart_baseline_handoff.md) | Current continuation from the post-overflow all-hooks-`0U` safe checkpoint into remaining T-BRIDGE-008A vectors |
+| [`docs/progress/2026-08-10_progress.md`](docs/progress/2026-08-10_progress.md) | Engineering Basis catalog, standards claim boundary, and final MVP matrix Basis ID adoption |
+| [`docs/progress/2026-08-11_progress.md`](docs/progress/2026-08-11_progress.md) | Historical T-BRIDGE-008A partial-frame-name PASS and all-hooks-0U safe closeout checkpoint |
+| [`docs/progress/2026-08-12_progress.md`](docs/progress/2026-08-12_progress.md) | Gate C required runtime scope and all-hooks-0U final safe UART regression PASS; timeout/fault/reset-marker next |
+| [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 final safe evidence report |
+| [`docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`](docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md) | Completed historical Gate C execution runbook |
+| [`docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`](docs/handoff/2026-08-06_safe_uart_baseline_handoff.md) | Historical pre-partial-name UART checkpoint; current continuation is the 2026-08-11 progress/report |
 | [`docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`](docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Historical controlled-test handoff superseded by the 2026-08-06 handoff |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
