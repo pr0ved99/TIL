@@ -206,7 +206,7 @@ python -m unittest discover `
 | Required-`seq` uint32-overflow controlled runtime | **PASS — subvector** | overflow ACK parse reject 1회, 500 ms same-seq retry, exact ACK/PONG 뒤 READY; post-READY TEL 140/140 safe, ARM/CMD/failure 0 |
 | Current post-test safe source/static/build/artifact/flash | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; restored protocol source recompile/link `0 errors / 0 warnings`; overflow string absent; safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; reflash PASS |
 | Post-overflow safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 READY 후 14.43 s, post-READY TEL 145/145 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
-| Current final safe source/runtime | **PASS — behavior** | ESP/STM all-hooks-`0U`, contract `15/15`; exact startup, retry/test/parser error/ARM/CMD 0, READY 후 약 12.2 s와 post-READY TEL 123/123 safe |
+| Current final safe source/runtime | **PASS — behavior** | ESP/STM all-hooks-`0U`, contract `15/15`; motor-output safety 뒤 exact startup, retry/test/parser error/ARM/CMD 0, READY 후 15.4 s와 post-READY TEL 155/155 safe |
 
 2026-07-20과 fixed-delay 2026-08-03 로그는 역사적 baseline이다. 새
 response-gated runtime의 별도 원본과 판정은
@@ -255,13 +255,13 @@ Historical post-trailing safe full-build 원본은
   `DISARMED/zero/error 0`, ARM/CMD/error 0인 observed UART behavior PASS; exact runtime-to-ELF linkage와 physical setup provenance pending
 - embedded CR, control byte `0x01`, overlong startup response 거부와 same-seq retry 뒤 exact response recovery PASS
 - STM32 malformed/unknown command 8/8 거부, TEL 200/200 safe와 final matching PING/PONG recovery PASS
-- Final all-hooks-`0U` exact startup, retry/test/parser error/ARM/CMD 0, post-READY TEL 123/123 safe over 약 12.2 s
+- Final all-hooks-`0U` exact startup, retry/test/parser error/ARM/CMD 0, post-READY TEL 155/155 safe over 15.4 s
 
 남은 순서:
 
-1. Gate C evidence를 보존하고 firmware parser 동작이 바뀌지 않는 한 controlled vectors를 반복하지 않는다.
-2. Motor power를 분리한 10% 제한에서 command-timeout과 software-fault shutdown latency를 계측한다.
-3. 모든 hook `0U` 복구 뒤 external reset marker가 포함된 boot no-output 회귀를 남긴다.
+1. Gate C와 motor-output safety evidence를 보존하고 관련 firmware 동작이 바뀌지 않는 한 controlled vectors를 반복하지 않는다.
+2. 네 motor input의 external `10 kΩ` pull-down을 RevB/permanent wiring에 반영하고 continuity를 확인한다.
+3. Board power/back-power와 Physical E-stop `T-ESTOP-001~005`를 닫은 뒤에만 first powered motor로 이동한다.
 
 ## 프로젝트 구조
 

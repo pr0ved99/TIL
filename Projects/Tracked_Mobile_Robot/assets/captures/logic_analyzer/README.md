@@ -102,10 +102,73 @@ D1/D3은 마지막 edge 뒤 남은 10,848,352 samples, 약 2.712088 s 동안 HIG
 없고 D0/D2는 LOW다. 이 결과는 MCU-pin first baseline `PASS — scoped`이며 numeric
 release limit은 아직 고정되지 않았다.
 
+## Channel Map for 2026-08-12 Timeout, Fault And Reset Captures
+
+| PulseView channel | Connected signal |
+| --- | --- |
+| `D0` | `PA9 / USART1_TX` |
+| `D1` | `PA10 / USART1_RX` |
+| `D2` | `PC8 / DIR1` |
+| `D3` | `PB6 / PWM1` |
+| `D4` | `PC9 / DIR2` |
+| `D5` | `PB7 / PWM2` |
+| `D6` | `PA5 / LD2 / FAULT_MARKER` |
+| `D7` | reset captures에서 `NRST`; timeout/fault에서는 미사용 |
+| Analyzer `GND` | STM32 GND |
+
+공통 물리 조건은 motor, LiPo와 MDD10A `B+/B-` motor energy 분리, board 간
+`5 V/VBUS/VIN` 미연결, analyzer GND=STM32 GND다. 이 조건은 작업자 확인이며 raw `.sr`
+자체에 완전히 내장되지 않는다. 상세 수치와 claim boundary는
+[`../../../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../../../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)를 따른다.
+
+### Command-timeout shutdown PASS
+
+- Raw capture: [2026-08-12_stm32_command_timeout_shutdown_pass.sr](./2026-08-12_stm32_command_timeout_shutdown_pass.sr)
+- PulseView session: [2026-08-12_stm32_command_timeout_shutdown_pass.pvs](./2026-08-12_stm32_command_timeout_shutdown_pass.pvs)
+- SHA-256: `12CE83B2899FE6E00CFCD27F34999E5981D7C92B06DA86AD5B963903E541D64D`
+
+`timeout_ms=300` command의 final LF부터 두 PWM last edge까지 nominal 4 MHz로
+`298.6755 ms`, UART bit-width로 보정한 analyzer rate 기준 `299.690003 ms`였다. Stop 뒤
+약 `8.939464 s` 동안 PWM edge가 다시 나오지 않았다. 1 ms `HAL_GetTick()` phase와 analyzer
+clock tolerance를 명시한 scoped baseline PASS다.
+
+### Software-fault shutdown/latch PASS
+
+- Raw capture: [2026-08-12_stm32_software_fault_shutdown_latch_pass.sr](./2026-08-12_stm32_software_fault_shutdown_latch_pass.sr)
+- PulseView session: [2026-08-12_stm32_software_fault_shutdown_latch_pass.pvs](./2026-08-12_stm32_software_fault_shutdown_latch_pass.pvs)
+- SHA-256: `E7D1CD59D3CA8C76E3757E2BD7E765468189EB3C609652B0B5D62E12B84AA02D`
+
+Fault marker는 PWM LOW phase에서 발생해 last falling edge보다 `5.25 us` 늦었다. 따라서
+이 값을 shutdown latency로 표현하지 않는다. Marker 뒤 예정된 next PWM rise가 차단됐고
+약 `2.052214 s` 동안 두 PWM edge 0으로 no-reactivation latch를 확인했다.
+
+### External reset without pull-down FAIL
+
+- Raw capture: [2026-08-12_stm32_external_reset_floating_motor_inputs_fail.sr](./2026-08-12_stm32_external_reset_floating_motor_inputs_fail.sr)
+- PulseView session: [2026-08-12_stm32_external_reset_floating_motor_inputs_fail.pvs](./2026-08-12_stm32_external_reset_floating_motor_inputs_fail.pvs)
+- SHA-256: `4B638CD9B9F9A37CB68275FFF344B604BA66DE14457B3741DE3B8FC6E7F308B8`
+
+NRST LOW 중 DIR1/PWM1/DIR2/PWM2가 약 `159 ms` HIGH로 판독됐다. Motor power가 분리돼
+실제 회전은 없었지만 reset 구간 safe LOW가 전기적으로 보장되지 않아 FAIL로 보존한다.
+
+### External reset with `10 kΩ` pull-down PASS
+
+- Raw capture: [2026-08-12_stm32_external_reset_boot_10kohm_pulldown_pass.sr](./2026-08-12_stm32_external_reset_boot_10kohm_pulldown_pass.sr)
+- PulseView session: [2026-08-12_stm32_external_reset_boot_10kohm_pulldown_pass.pvs](./2026-08-12_stm32_external_reset_boot_10kohm_pulldown_pass.pvs)
+- SHA-256: `A4E16F12B433282941B9404E7792412F0FA52BE7C25A96A9E622E95681976EA5`
+
+PC8/PB6/PC9/PB7 각각 signal-to-GND `10 kΩ`을 적용했다. 5 s/20 M samples에서 네
+signal의 HIGH sample과 transition이 모두 0이었다. PA5/LD2는 motor control output이 아니며
+fault marker 의미는 firmware 실행 중에만 유효하므로 reset no-output acceptance에서 제외했다.
+
 ## Integrity and Reuse Notes
 
 - 판정 수치를 다시 검토할 때는 `.sr`을 PulseView에서 열고 위 channel map을 적용한다.
 - `.pvs`만으로 sample data가 보존된다고 가정하지 않는다.
 - 파일명을 바꾸면 report와 screenshot index의 상대 링크도 함께 갱신한다.
 - 이 자료는 MCU logic pin 측정이며 MDD10A power terminal, motor current, 실제 motor stop 또는 Physical E-stop을 입증하지 않는다.
-- Active-DISARM capture 당시 ESP scripted hook과 STM32 UART output hook은 `1U`였다. 2026-08-06 current worktree는 ESP/STM controlled hook이 모두 `0U`이고 contract `15/15`, STM32 build와 safe-image UART behavior 회귀가 PASS다. Exact image/setup provenance와 external-reset-marker pin capture는 pending이다.
+- Active-DISARM capture 당시 ESP scripted hook과 STM32 UART output hook은 `1U`였다.
+  2026-08-12 timeout/fault controlled capture 뒤 모든 hook을 `0U`로 복구했고 contract
+  `15/15`, 양 firmware build와 safe UART 회귀가 PASS다. External-reset-marker capture는
+  pull-down 미적용 FAIL을 거쳐 `10 kΩ` 적용 재시험 PASS로 닫았다. Raw flash console과
+  log-embedded physical setup이 없어 exact artifact/setup provenance는 scoped limitation이다.

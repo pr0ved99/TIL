@@ -44,6 +44,10 @@
 #define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
 #define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
 #define ENCODER_SPEED_SAMPLE_PERIOD_MS      100U
+
+#if MOTOR_FAULT_INJECTION_TEST_ENABLED && !MOTOR_OUTPUT_PIN_TEST_ENABLED
+#error "Fault injection requires the motor output pin test"
+#endif
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -359,7 +363,9 @@ static void motor_output_pin_test_process(void){
             HAL_GPIO_WritePin(
                 LD2_GPIO_Port,
                 LD2_Pin,
-                GPIO_PIN_SET
+                (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U)
+                ? GPIO_PIN_RESET
+                : GPIO_PIN_SET
             );
             break;
 
@@ -606,6 +612,14 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+#if MOTOR_FAULT_INJECTION_TEST_ENABLED
+  HAL_GPIO_WritePin(
+    LD2_GPIO_Port,
+    LD2_Pin,
+    GPIO_PIN_SET
+  );
+#endif
+
   motor_output_stop_all();
   __disable_irq();
   while (1)

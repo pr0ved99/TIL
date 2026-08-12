@@ -2,7 +2,26 @@
 
 ## 상태
 
-`PLANNED`
+`COMPLETED — REQUIRED SCOPE`
+
+필수 motor-output 안전 범위는 2026-08-12에 앞당겨 완료했다. 이 문서는 당시 실행 계획과
+판정 기준의 역사 기록이며 현재 작업 지시가 아니다. 현재 continuation은
+[`2026-08-13_power_and_physical_estop_session_ko.md`](2026-08-13_power_and_physical_estop_session_ko.md)다.
+
+완료 결과:
+
+- Command timeout: configured 300 ms 주변 bounded stop, UART-calibrated frame-end-to-last-edge
+  약 `299.690 ms`, 이후 약 `8.939 s` 재출력 없음 — `PASS`.
+- Software fault: marker 뒤 expected next PWM pulse 차단, 약 `2.052 s` latch — `PASS`.
+  Marker가 PWM LOW phase에 발생했으므로 앞선 last fall과의 `5.25 us` 차이는 fault latency로
+  표현하지 않는다.
+- External reset: pull-down 미적용 시 네 motor input 약 `159 ms` HIGH — `FAIL` 보존.
+  각 signal의 외부 `10 kΩ` pull-down 적용 뒤 5 s 전 구간 LOW — `PASS`.
+- 모든 hook `0U`, contract `15/15`, final post-READY TEL 155/155 safe over 15.4 s — `PASS`.
+- 선택 항목인 E-stop perfboard 초안과 acrylic mounting freeze는 다음 대단원으로 이월했다.
+
+정본 결과는
+[`../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)다.
 
 이 세션의 필수 목표는 실제 motor 전원을 인가하는 것이 아니다. Motor-disconnected 조건에서
 남은 MCU motor-output 안전 파형 세 가지를 측정하고, 모든 임시 test hook을 끈 정상
@@ -28,8 +47,8 @@ firmware로 복구하는 것이 목표다. 시간이 남으면 Physical E-stop c
 | `+0:00~0:20` | 작업 상태와 물리 조건 확인 | 잘못된 image·배선·전원 조건에서 측정을 시작하지 않는다. | `git status` 확인, current hook 상태 기록, motor와 LiPo/MDD10A motor-energy 분리, analyzer GND=STM32 GND 확인 |
 | `+0:20~1:10` | 실제 source 재검토 후 timeout/fault 계측용 임시 변경을 한 번에 작성 | 여러 번 수정·build하는 낭비를 줄이고 두 시험의 marker와 10% cap을 동시에 고정한다. | exact insertion location 검토, duty `<=10%`, temporary macro와 marker가 명확하고 normal default는 OFF |
 | `+1:10~1:35` | STM32 build와 flash | 계측 대상 binary가 경고 없이 생성·다운로드됐는지 확인한다. | STM32 `0 errors / 0 warnings`, flash verify PASS |
-| `+1:35~2:20` | Command-timeout shutdown capture | stale command가 정해진 timeout 뒤 실제 PWM을 차단하는지 측정한다. | `t1-t0 >= timeout_ms`, bounded overrun 뒤 PB6/PB7 inactive, 자동 재활성화 없음 |
-| `+2:20~3:05` | Software-fault shutdown/latch capture | fault가 common safe-output path를 통해 두 channel을 끄고 reset까지 유지되는지 확인한다. | marker-to-last-edge latency 측정, PB6/PB7 inactive, PC8/PC9 LOW, reset 전 재활성화 없음 |
+| `+1:35~2:20` | Command-timeout shutdown capture | stale command가 정해진 timeout 주변에서 실제 PWM을 차단하는지 측정한다. | 1 ms `HAL_GetTick` phase와 analyzer clock tolerance를 명시한 bounded stop, 이후 PB6/PB7 inactive, 자동 재활성화 없음 |
+| `+2:20~3:05` | Software-fault shutdown/latch capture | fault가 common safe-output path를 통해 두 channel을 끄고 reset까지 유지되는지 확인한다. | marker와 PWM phase를 함께 해석해 next-pulse 억제 또는 positive latency를 판정, PB6/PB7 inactive, PC8/PC9 LOW, reset 전 재활성화 없음 |
 | `+3:05~3:25` | 휴식 및 두 raw capture 백업 | cursor 작업 전에 원본 손실을 막고 잘못된 capture를 조기에 발견한다. | `.sr`, `.pvs`가 열리고 channel map·sample rate·physical setup 메모가 존재 |
 | `+3:25~4:15` | 모든 임시 hook `0U` 복구와 정적 검사 | controlled image가 정상 firmware로 남는 것을 방지한다. | STM32/ESP32 hook 전부 `0U`, contract `15/15`, controlled marker 잔존 여부 확인 |
 | `+4:15~5:00` | Safe build·flash·external-reset boot capture | 실제 복구된 image가 reset 순간에도 PWM/DIR pulse를 만들지 않는지 확인한다. | 양 firmware build PASS, safe flash verify, reset marker 포함 PB6/PB7 pulse 0, PC8/PC9 safe LOW |
@@ -139,8 +158,8 @@ AND final safe UART regression PASS
 = 대단원 1 MCU 저수준 안전 검증 완료
 ```
 
-하나라도 실패하면 대단원 1은 `PARTIAL`을 유지한다. Perfboard 초안은 선택 작업이므로 미완료여도
-대단원 1 판정에는 영향을 주지 않는다.
+실행 결과 필수 항목을 모두 통과해 대단원 1은 `PASS — motor-disconnected MCU-pin scope`다.
+Perfboard 초안은 선택 작업이므로 미완료 상태로 다음 대단원에 이월했다.
 
 ## 첫 시작 명령
 

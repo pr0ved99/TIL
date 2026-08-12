@@ -41,7 +41,7 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-12 | [`2026-08-12_progress.md`](2026-08-12_progress.md) | T-BRIDGE-008A embedded-CR/control-byte/overlong response와 T-BRIDGE-008B 8-vector STM32 malformed-command recovery PASS; all-hooks-`0U`, contract `15/15`, final safe UART 회귀 PASS |
+| 2026-08-12 | [`2026-08-12_progress.md`](2026-08-12_progress.md) | UART Gate C PASS에 이어 STM32 timeout/fault/reset-boot MCU-pin 시험 완료; reset 부동 HIGH FAIL을 `10 kΩ` pull-down으로 개선·재시험 PASS, all-hooks-`0U`/contract `15/15`/final safe UART PASS |
 | 2026-08-11 | [`2026-08-11_progress.md`](2026-08-11_progress.md) | T-BRIDGE-008A partial-frame-name rejection/recovery PASS; all-hooks-`0U`, contract `15/15`, safe full-build/flash와 post-READY TEL 164/164 회귀 PASS; invalid terminator/control next |
 | 2026-08-10 | [`2026-08-10_progress.md`](2026-08-10_progress.md) | Engineering Basis·표준 추적성 정본과 E-stop Step 1~7 진행; K2 분리/5 V-opto 보정, S0/S2/K2/opto 후보 선정, K1/F1 motor-data blocked |
 | 2026-08-07 | [`2026-08-07_progress.md`](2026-08-07_progress.md) | T-BRIDGE-008A required-`seq` uint32-overflow까지 3개 subvector PASS; all-hooks-`0U`, contract `15/15`, protocol recompile+relink `0/0`, safe flash와 READY 후 14.43 s/TEL 145 회귀 PASS; partial frame-name vector next |

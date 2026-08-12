@@ -28,6 +28,14 @@ ESP32-S3와 NUCLEO-F446RE의 board-only UART bridge 검증에서 저장한 원�
 | 2026-08-07 | [`2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt`](2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt) | Trailing-comma hook `0U` 복구·safe reflash 뒤 warning/retry/parser error 없이 exact startup, READY 후 15.51 s, TEL 160/160 safe — PASS |
 | 2026-08-07 | [`2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt`](2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt) | T-BRIDGE-008A required-`seq` uint32 overflow ACK를 parse error로 1회 거부하고 500 ms same-seq retry, exact ACK/PONG 뒤 READY, post-READY TEL 140/140 safe — 하위 벡터 PASS |
 | 2026-08-07 | [`2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt`](2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt) | Overflow hook `0U` 복구·safe reflash 뒤 warning/retry/parser error 없이 exact startup, READY 후 14.43 s, post-READY TEL 145/145 safe — PASS |
+| 2026-08-11 | [`2026-08-11_response_gated_startup_partial_frame_name_ack_rejection_recovery_pass.txt`](2026-08-11_response_gated_startup_partial_frame_name_ack_rejection_recovery_pass.txt) | T-BRIDGE-008A partial-frame-name ACK rejection, 500 ms same-seq retry와 exact-response recovery PASS |
+| 2026-08-11 | [`2026-08-11_post_t_bridge_008a_partial_frame_name_safe_uart_runtime_regression_pass.txt`](2026-08-11_post_t_bridge_008a_partial_frame_name_safe_uart_runtime_regression_pass.txt) | Partial-name hook `0U` 복구 뒤 exact startup과 post-READY TEL 164/164 safe PASS |
+| 2026-08-12 | [`2026-08-12_response_gated_startup_embedded_cr_ack_rejection_recovery_pass.txt`](2026-08-12_response_gated_startup_embedded_cr_ack_rejection_recovery_pass.txt) | Embedded-CR ACK 거부, same-seq retry와 exact-response recovery PASS |
+| 2026-08-12 | [`2026-08-12_response_gated_startup_control_byte_0x01_ack_rejection_recovery_pass.txt`](2026-08-12_response_gated_startup_control_byte_0x01_ack_rejection_recovery_pass.txt) | Control byte `0x01` ACK 거부, same-seq retry와 exact-response recovery PASS |
+| 2026-08-12 | [`2026-08-12_response_gated_startup_overlong_line_rx_overflow_rejection_recovery_pass.txt`](2026-08-12_response_gated_startup_overlong_line_rx_overflow_rejection_recovery_pass.txt) | Overlong response/RX overflow 거부, bounded retry와 exact-response recovery PASS |
+| 2026-08-12 | [`2026-08-12_t_bridge_008b_stm32_malformed_command_rejection_recovery_pass.txt`](2026-08-12_t_bridge_008b_stm32_malformed_command_rejection_recovery_pass.txt) | STM32 malformed/unknown command 8/8 거부, TEL 200/200 safe와 final PING/PONG recovery PASS |
+| 2026-08-12 | [`2026-08-12_post_t_bridge_008b_safe_uart_runtime_regression_pass.txt`](2026-08-12_post_t_bridge_008b_safe_uart_runtime_regression_pass.txt) | Gate C 뒤 all-hooks-`0U`, exact startup, post-READY TEL 123/123 safe PASS |
+| 2026-08-12 | [`2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt`](2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt) | Timeout/fault/reset 시험과 `10 kΩ` pull-down 개선 뒤 all-hooks-`0U` final regression: post-READY 15.4 s/TEL 155/155 safe, ARM/CMD/error 0 PASS |
 
 2026-07-29 powered/no-motor MDD10A LED 관찰, active `DISARM` run과 판정 범위는 [`2026-07-29_active_motor_output_safety_verification.md`](2026-07-29_active_motor_output_safety_verification.md)에 함께 기록했다.
 
@@ -42,11 +50,9 @@ ACK/PONG/READY, Gate B의 DISARM ACK 및 PONG 누락 3회 bounded failure, stale
 두 로그는 Gate C malformed-command 증거가 아니라 T-BRIDGE-007의 stale/wrong-sequence
 response 증거다.
 
-아직 없는 runtime evidence:
-
-- T-BRIDGE-008A의 나머지 ESP malformed-response 벡터: partial frame name, invalid
-  terminator/control과 overlong/line-overflow 뒤 exact response recovery
-- malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
+위에 열거했던 T-BRIDGE-008A required response vectors와 T-BRIDGE-008B malformed-command
+recovery는 2026-08-12까지 완료했다. 남은 UART 한계는 raw runtime log가 binary hash와 물리
+setup을 자체 포함하지 않는 provenance 범위이며, powered-motor 안전은 별도 Gate다.
 
 ## 2026-08-06~07 Safe-Restore Evidence Integrity
 
@@ -97,6 +103,25 @@ ARM/CMD/failure 0으로 회귀 PASS했다.
 
 세부 판정은 [response-gated startup report](../../../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md),
 active DISARM correlation과 MCU-pin timing은 [active DISARM report](../../../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)에 있다.
+
+## 2026-08-12 Post-Motor-Safety Safe Regression
+
+[Final raw log](2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt)은
+attachment를 byte-for-byte 복사해 보존했고 SHA-256은
+`AED84C38C3EC6FA5361520DADD2D4246294D23891BDBD3E402BA364D7CBE8454`다.
+
+- `DISARM seq=1122656187`과 exact `ACK,type=DISARM`
+- `PING seq=1122656188`과 matching `PONG`
+- `STARTUP READY` 1회, retry/failure/warning/error 0
+- TEL 160/160 `DISARMED/zero/error 0`
+- READY 뒤 15.4 s, TEL 155/155 safe
+- ARM/CMD/scripted/malformed-test 0
+
+이 log의 safe artifact는 STM32 ELF SHA-256
+`3B80E7A6A465545A0324AA7CD83503C95E387DE203374548BCA368FDC7DA831B`, ESP32 BIN SHA-256
+`8F46810367A370A080781A09E52B04F3DF348CF9F3430ABA536686DFFEF033C3`로 local workspace에서
+확인했다. 작업자가 같은 cycle의 STM32 Run과 ESP32 Flash 완료를 확인했지만 raw flash
+console은 보존되지 않아 exact board linkage는 독립 증명하지 않는다.
 
 ## Current Evidence Boundary And Safety State
 

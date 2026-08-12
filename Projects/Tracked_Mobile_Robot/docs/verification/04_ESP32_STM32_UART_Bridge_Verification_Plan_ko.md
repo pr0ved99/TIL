@@ -158,7 +158,7 @@ Acceptance criteria:
 | T-BRIDGE-003 | REQ-BRIDGE-003 | ESP32 scripted command sequence 실행 | `NOT_ARMED`, `ACK`, `OUT_OF_RANGE`, `DISARM` 확인 | 2026-07-20 screenshot / raw log | PASS |
 | T-BRIDGE-004 | REQ-BRIDGE-004 | ESP32가 STM32 `TEL` frame relay 및 세부 field 구조화 | `DISARMED`, `ARMED`, valid CMD, timeout-zero `TEL` 확인 | 2026-07-18 / 2026-07-20 screenshots | PASS |
 | T-BRIDGE-005 | REQ-BRIDGE-005 | valid `CMD` 1회 송신 후 추가 CMD 중단 | timeout 후 `vx_mmps=0`, `w_mradps=0` | 2026-07-20 screenshot / raw log | PASS |
-| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [current safe log](../../assets/logs/esp32_uart_bridge/2026-08-12_post_t_bridge_008b_safe_uart_runtime_regression_pass.txt), [current report](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | PARTIAL — current all-hooks-`0U`, contract `15/15`, exact startup과 post-READY TEL 123/123 observed UART behavior PASS; external cold-start marker, exact source-to-board linkage와 log-embedded physical provenance pending |
+| T-BRIDGE-006 | REQ-BRIDGE-006 | Motor power OFF, safe macro `0U`에서 ESP32와 STM32를 cold start | matching DISARM ACK와 PONG 뒤 READY, ARM/CMD 없음 | [Gate A report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [post-motor-safety safe log](../../assets/logs/esp32_uart_bridge/2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt), [Gate C report](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md), [motor safety report](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | PARTIAL — current all-hooks-`0U`, contract `15/15`, exact startup과 post-READY TEL 155/155 observed UART behavior PASS; external cold-start marker, exact board-artifact linkage와 log-embedded physical provenance pending |
 | T-BRIDGE-007 | REQ-BRIDGE-006 | DISARM ACK 또는 PONG 단절·wrong seq/type 주입 | loss는 단계별 최대 3회 뒤 FAILED; mismatch는 무시·재시도하고 exact response만 통과; ARM/CMD 없음 | [Loss/stale/reset report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md), [wrong-type raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt) | PASS — required UART runtime behavior; binary identity와 physical setup provenance pending |
 | T-BRIDGE-008A | REQ-BRIDGE-007 | ESP32가 ACK/PONG을 기다릴 때 malformed/unknown response 뒤 exact response 주입 | invalid response는 gate를 열지 않고 exact response에서 recovery | [2026-08-06~12 evidence and report](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | PASS — duplicate required `seq`, trailing comma, uint32 overflow, partial frame name, embedded CR, control byte와 overlong-line required runtime vectors; exact artifact/setup provenance는 별도 pending |
 | T-BRIDGE-008B | REQ-BRIDGE-008 | STM32에 malformed PING/CMD/unknown frame 뒤 valid PING 주입 | motion 실행 없는 fail-closed 거부 후 PONG recovery | [008B raw log](../../assets/logs/esp32_uart_bridge/2026-08-12_t_bridge_008b_stm32_malformed_command_rejection_recovery_pass.txt), [report 15](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | PASS — 8/8 malformed/unknown frame ERR, TEL 200/200 DISARMED/zero, final `PING,seq=9009` matching PONG recovery |
@@ -212,7 +212,7 @@ FSM/parser의 모든 분기를 실행하는 host test는 아니다. 이 source/b
 - ESP32 partial frame name response rejection/recovery — PASS
 - ESP32 embedded CR/control byte와 overlong-line/RX-line-overflow response rejection/recovery — PASS
 - STM32 malformed/unknown command 8-vector reject 뒤 valid PING/PONG recovery — PASS
-- Final all-hooks-`0U` exact startup, ARM/CMD/error 0, post-READY TEL 123/123 safe — PASS
+- Final all-hooks-`0U` exact startup, ARM/CMD/error 0, post-READY TEL 155/155 safe over 15.4 s — PASS
 
 Raw log는 실제 flash hash와 LiPo/MDD10A/motor power 분리 상태를 자체 기록하지 않는다.
 따라서 T-BRIDGE-006의 visible runtime transaction은 PASS지만 cold-start marker와
@@ -336,7 +336,7 @@ Evidence:
 10. response-loss bounded retry, stale-seq rejection, reset recovery와 wrong ACK type - PASS behavior / provenance pending
 11. ESP malformed-response recovery - PASS: planned required runtime vectors
 12. STM command parser malformed reject/recovery - PASS: 8/8 reject + final matching PONG
-13. post-Gate-C all-hooks-0U·15/15 + final safe exact startup + post-READY TEL 123/123 PASS / exact linkage·physical setup provenance PENDING
+13. post-motor-safety all-hooks-0U·15/15 + final safe exact startup + post-READY TEL 155/155 over 15.4 s PASS / exact board-artifact linkage·physical setup provenance PENDING
 ```
 
 ## Evidence Naming

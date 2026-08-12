@@ -12,7 +12,11 @@
 - boot/reset에서 unintended PWM pulse가 없는지
 - DISARM, command timeout, software fault의 actual shutdown timing
 
-이 문서는 계측 절차와 2026-08-03~08-04 실행 결과를 함께 기록한다. 파형·방향 전환 timing subtest와 active DISARM MCU-pin first baseline은 통과했다. Command-timeout/software-fault shutdown latency와 physical E-stop은 아직 완료되지 않았다.
+이 문서는 계측 절차와 2026-08-03~08-12 실행 결과를 함께 기록한다. 파형·방향 전환,
+active DISARM, command-timeout, software-fault latch와 external-reset-marker boot subtest를
+통과했다. Reset 첫 시험에서 네 motor-control signal이 부유해 FAIL했고 signal별 외부
+`10 kΩ` pull-down 적용 재시험에서 5 s/20 M samples all-LOW를 확인했다. MDD10A power
+stage, actual motor와 Physical E-stop은 아직 완료되지 않았다.
 
 ## Safety scope
 
@@ -132,6 +136,7 @@ Setup:
 - `MOTOR_FAULT_INJECTION_TEST_ENABLED=0U`
 - `UART_MVP_OUTPUT_TEST_ENABLED=0U`
 - ESP32 `BRIDGE_SCRIPTED_TEST_ENABLED=0U`
+- `PC8`, `PB6`, `PC9`, `PB7` 각각 signal-to-GND 외부 `10 kΩ` pull-down 적용
 
 Procedure:
 
@@ -144,9 +149,18 @@ Procedure:
 Acceptance:
 
 - PB6/PB7에 active-high PWM pulse가 없어야 한다.
-- PC8/PC9는 safe default LOW로 수렴해야 한다.
+- PB6/PB7/PC8/PC9는 reset 시작부터 firmware 초기화 뒤까지 LOW여야 한다.
 - Reset 동안 단발 active pulse가 없어야 한다.
 - Test-disabled build에서 B1 입력은 output을 바꾸지 않아야 한다.
+
+2026-08-12 result:
+
+- Pull-down 미적용 첫 external-reset capture: DIR/PWM 네 signal이 NRST LOW 구간에 약
+  159 ms HIGH로 판독돼 `FAIL`.
+- 각 signal-to-GND `10 kΩ` 적용 재시험: 5 s/20 M samples에서 D2~D5 HIGH sample과
+  transition 모두 0, `PASS`.
+- PA5/LD2 fault marker는 motor control output이 아니며 reset 중 의미가 없으므로 이
+  acceptance에서 제외한다.
 
 ## Test 2: Steady 10% PWM frequency and duty
 
@@ -251,12 +265,22 @@ software overrun estimate = observed total - configured timeout_ms
 
 Acceptance:
 
-- Observed total이 configured timeout보다 짧아 stale command를 조기 종료하지 않는다.
-- Configured timeout 뒤 bounded loop delay 내 두 PWM이 inactive가 된다.
+- Observed total은 configured timeout 주변에서 bounded stop이어야 한다. `HAL_GetTick()`의
+  1 ms phase와 analyzer sample-clock tolerance를 별도 기록한다.
+- Configured timeout의 정수 tick 경계 뒤 bounded loop delay 내 두 PWM이 inactive가 된다.
 - Timeout 뒤 old command가 자동 재적용되지 않는다.
 - Exact bound는 parser/safety-state refactor와 first measurement 뒤 고정한다.
 
 현재 firmware가 timeout 뒤 state를 별도 latched stop으로 전환하는지 source/runtime을 함께 확인한다. Architecture contract와 다르면 `PASS`하지 않는다.
+
+2026-08-12 result:
+
+- `CMD,seq=607604632,vx_mmps=50,w_mradps=0,timeout_ms=300`
+- Nominal 4 MHz 계산은 LF-to-last-edge `298.6755 ms`.
+- UART 115200 bit width로 추정한 actual analyzer rate를 적용하면 `299.690003 ms`.
+- 두 PWM 정지 뒤 약 `8.939464 s` edge 0, 두 DIR LOW, 자동 재활성화 없음.
+- `PASS — scoped baseline`; `300.000 ms` 이상이라는 이전 strict 조건은 tick/sample-clock
+  phase를 무시하므로 사용하지 않는다.
 
 ## Test 6: Software fault shutdown timing
 
@@ -284,6 +308,16 @@ Acceptance:
 - Fault latch 후 추가 B1/ARM/CMD로 output이 재개되지 않는다.
 - Reset 전까지 latch가 유지된다.
 - Operator button의 50 ms debounce를 firmware shutdown latency와 혼합하지 않고 별도 기록한다.
+
+2026-08-12 result:
+
+- PA5 fault marker는 `2.94778575 s`, PB6/PB7 last falling edge는 marker보다 `5.25 us`
+  앞이었다.
+- Marker가 PWM LOW phase에 발생했으므로 `5.25 us`를 shutdown latency로 표현하지 않는다.
+- 약 `39.5 us` 뒤 예정됐던 next rising edge가 차단됐고 marker 이후 edge 0, 약
+  `2.052214 s` no-reactivation latch를 확인했다.
+- `PASS — bounded stop/latch`; exact positive marker-to-disable latency는 별도 trigger/marker
+  설계 없이는 주장하지 않는다.
 
 ## Test 7: Final test-hook-off regression
 
@@ -318,11 +352,13 @@ clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completi
 | CH1 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_post_dir_zero_ge1ms_pass.png) | 1.994 ms / 2.03875 ms, 모두 최소 1 ms 이상 |
 | CH2 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_post_dir_zero_ge1ms_pass.png) | 1.54725 ms / screenshot 약 2.05832 ms; raw edge review 약 2.040 ms, 모두 최소 1 ms 이상 |
 | DISARM latency | `PASS — scoped first baseline` | [2026-08-04 report](../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md), [SR/PVS/PNG](../assets/captures/logic_analyzer/README.md) | UART RX end -> both PWM last edge 23.50 us; numeric release bound TBD |
-| Timeout latency | `NOT TESTED` | TBD | Safety-state semantics must match architecture |
+| Timeout latency | `PASS — scoped baseline` | [2026-08-12 report](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md), [SR/PVS](../assets/captures/logic_analyzer/README.md) | 300 ms command; calibrated LF-to-last-edge 약 299.690 ms, stop 뒤 약 8.939 s edge 0; 1 ms tick/sample-clock tolerance 명시 |
 | Software fault output-zero/latch function | `PASS — functional DMM/LED scope` | [2026-07-30 operator record](../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md) | 정확한 edge latency 증거는 아님 |
-| Software fault event-to-PWM latency | `NOT TESTED` | TBD | fault marker와 PWM edge 동시 capture 필요 |
-| Final hook-off source/static/build regression | `PASS` | [2026-08-06 progress](../docs/progress/2026-08-06_progress.md) | ESP/STM 모든 controlled hook `0U`; contract `15/15`, STM32CubeIDE build PASS; ELF hash recorded |
-| Restored safe-image board regression | `PASS — UART behavior / provenance pending` | [2026-08-06 final raw log](../assets/logs/esp32_uart_bridge/2026-08-06_safe_image_uart_runtime_regression_pass.txt) | Exact ACK/PONG/READY, READY 후 11.35 s, TEL 120/120 safe, ARM/CMD/error 0; flash identity/physical setup와 reset-marker boot는 별도 pending |
+| Software fault next-pulse stop/latch | `PASS — bounded` | [2026-08-12 report](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md), [SR/PVS](../assets/captures/logic_analyzer/README.md) | Marker가 LOW phase여서 exact positive latency는 미주장; next rise 차단, marker 뒤 edge 0, 약 2.052 s latch |
+| External reset without pull-down | `FAIL — root cause preserved` | [SR/PVS](../assets/captures/logic_analyzer/README.md) | NRST LOW 동안 네 control signal 약 159 ms HIGH 판독 |
+| External reset with `10 kΩ` pull-down | `PASS` | [2026-08-12 report](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md), [SR/PVS](../assets/captures/logic_analyzer/README.md) | 5 s/20 M samples에서 PB6/PB7/PC8/PC9 HIGH sample·transition 0 |
+| Final hook-off source/static/build regression | `PASS` | [2026-08-12 report](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | ESP/STM 모든 controlled hook `0U`; contract `15/15`, 양 firmware build artifact hash 기록 |
+| Restored safe-image board regression | `PASS — behavior / provenance scoped` | [final raw log](../assets/logs/esp32_uart_bridge/2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt) | Exact ACK/PONG/READY, post-READY 15.4 s/TEL 155 safe, ARM/CMD/retry/error 0; raw flash console 미보존 |
 
 상세 수치, 판정 범위와 증거 연결은 [`../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](../docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md)를 따른다. High-time 화면의 약 200 kHz 표시는 `1 / 5 us`이며 PWM 반복 주파수가 아니다. PWM 주파수 판정은 rising-to-rising 49.75 us 측정만 사용했다.
 
@@ -332,9 +368,11 @@ clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completi
 Logic analyzer: AVAILABLE / CAPTURED
 Boot inactive + 20 kHz/10% + direction settle subtests: PASS
 DISARM pin-edge latency: PASS — scoped first baseline, 23.50 us
-Timeout/software-fault pin-edge latency: NOT TESTED
-Safe-image UART board runtime: PASS — exact image/setup provenance pending
-External-reset-marker motor-pin capture: PENDING
+Timeout shutdown: PASS — scoped baseline, calibrated 299.690 ms for timeout_ms=300
+Software-fault stop/latch: PASS — bounded next-pulse suppression; exact positive latency not claimed
+External-reset-marker motor-pin capture: initial FAIL -> 10 kΩ pull-down retest PASS
+Safe-image UART board runtime: PASS — exact image/setup provenance scoped
+Motor-disconnected MCU low-level safety chapter: PASS
 First powered motor test: NOT READY
 ```
 

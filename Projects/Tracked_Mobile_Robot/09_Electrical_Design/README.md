@@ -31,7 +31,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
 | Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Step 7 partial: S0/S2/K2/opto candidate selected; K1/F1/main current path motor-data blocked; schematic TBD |
-| MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, common GND | Bench static mapping captured |
+| MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, 각 signal-to-GND `10 kΩ`, common GND | Breadboard reset FAIL -> pull-down 적용 5 s/20 M samples all-LOW PASS; RevB schematic/permanent wiring 반영 pending |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder conditioning | Per A/B channel: `1 kΩ series + MCU-side 15 kΩ pull-down` | Bench voltage/count PASS; powered-noise TBD |
@@ -46,6 +46,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - Final fuse rating
 - XL4015 #1 output destination and STM32/ESP32 USB backfeed policy
 - MDD10A powered motor-output channel 1/2 to vehicle left/right assignment and forward polarity
+- MDD10A DIR1/PWM1/DIR2/PWM2 외부 `10 kΩ` pull-down의 RevB schematic, permanent assembly와 continuity 반영
 - BNO085 power and I2C wiring
 - Actual high-current distribution, wire gauge, connector and harness plan
 - Powered-motor encoder noise and input-filter validation

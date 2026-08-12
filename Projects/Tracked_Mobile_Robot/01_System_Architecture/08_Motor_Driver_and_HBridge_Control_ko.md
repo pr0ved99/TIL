@@ -226,6 +226,11 @@ STM32 PB7/TIM4_CH2 -> MDD10A PWM2
 STM32 PC9          -> MDD10A DIR2
 STM32 GND          -> MDD10A GND
 
+PB6 / PWM1 -> 10 kΩ -> GND
+PC8 / DIR1 -> 10 kΩ -> GND
+PB7 / PWM2 -> 10 kΩ -> GND
+PC9 / DIR2 -> 10 kΩ -> GND
+
 3S LiPo +   -> fuse -> switch -> MDD10A POWER +
 3S LiPo -   -> MDD10A POWER -
 
@@ -237,8 +242,10 @@ Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
 
 - STM32와 MDD10A logic GND는 공통 기준으로 연결한다.
 - 모터 전류는 만능기판 copper trace로 흘리지 않는다.
-- STM32 reset 중 PWM pin이 low 상태가 되도록 설정한다.
-- DIR pin은 초기 상태가 무엇이든 PWM이 0이면 motor output이 없어야 한다.
+- PB6/PWM1, PC8/DIR1, PB7/PWM2, PC9/DIR2에는 각각 외부 `10 kΩ` pull-down을 둔다.
+- Firmware GPIO 초기화만으로 reset 구간의 safe LOW를 주장하지 않는다.
+- DIR pin은 PWM 0이면 motor output을 만들지 않아야 하지만, reset 중 결정 상태를 유지하기
+  위해 DIR에도 같은 pull-down을 적용한다.
 - 별도 hardware power cut이나 brake 기능이 필요하면 MDD10A logic input이 아니라 power path에서 설계한다.
 
 전압 호환성:
@@ -246,6 +253,28 @@ Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
 - STM32 GPIO 출력은 3.3 V logic이다.
 - MDD10A는 3.3 V logic input을 지원한다.
 - 그래도 실제 보드 연결 전 logic-only test로 PWM/DIR 인식을 확인한다.
+
+### Reset-safe `10 kΩ` pull-down 결정
+
+2026-08-12 external-reset capture에서 pull-down이 없는 네 control signal은 NRST LOW 구간에
+약 159 ms HIGH로 판독돼 boot/reset no-output gate를 실패했다. 각 signal-to-GND에 외부
+`10 kΩ`을 추가한 재시험에서는 5 s, 20 M samples 동안 네 signal의 HIGH sample과 transition이
+모두 0이었다.
+
+선정 근거:
+
+- 3.3 V HIGH에서 channel당 `0.33 mA`, 네 channel 합계 최대 `1.32 mA`다.
+- STM32F446 DS10693 Table 56의 일반 GPIO input leakage 최대 `±1 µA`만 고려한 예상
+  pull-down 전압은 약 `10 mV`다.
+- MCU internal weak pull-down `30~50 kΩ`보다 강하며 firmware가 실행되지 않는 reset
+  구간에도 존재한다.
+- MDD10A exact input leakage는 공개 자료에서 확인하지 못했으므로 계산만으로 승인하지 않고
+  actual reset waveform으로 확인했다.
+
+상세 FAIL/PASS raw evidence와 claim boundary는
+[`../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)를 따른다.
+이 결정은 RevB schematic와 permanent wiring에 반영해야 하며 현재 RevA DRAFT에는 아직
+포함되지 않았다.
 
 ## 7. Pin Allocation 영향
 
@@ -410,7 +439,7 @@ powered drivetrain 시험 전에 다음을 확인해야 한다.
 
 - 실제 MDD10A Rev과 terminal labeling
 - MDD10A channel 1/2를 실제 vehicle left/right 중 어느 쪽에 연결할지
-- 실제 20 kHz PWM frequency/duty와 direction 전환 timing
+- 네 motor-control `10 kΩ` pull-down의 RevB schematic/실장/continuity 반영
 - 모터 stall current 또는 실측 worst-case current
 - Encoder voltage와 signal quality
 - MG540과 JGB37-520 중 첫 drivetrain motor로 무엇을 쓸지

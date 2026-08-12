@@ -286,6 +286,41 @@ Consequence:
 - FreeRTOS 실습 task 구조는 `13_FreeRTOS_Task_Architecture_ko.md`의 owner rule과 맞춰야 한다.
 - ROS 2 bridge 실습은 `11_System_Block_Diagram_and_Interface_Map_ko.md`의 STM32 safety authority를 우회하면 안 된다.
 
+## ADR-014: MDD10A Control Input은 External `10 kΩ` Pull-down으로 Reset-safe LOW 유지
+
+Status: Accepted
+
+Decision:
+
+- `PC8/DIR1`, `PB6/PWM1`, `PC9/DIR2`, `PB7/PWM2` 각각에 외부 `10 kΩ` pull-down을 둔다.
+- 이 저항은 firmware나 GPIO 초기화보다 먼저 존재하는 hardware default다.
+- Breadboard 계측 PASS를 RevB/permanent wiring PASS로 확대하지 않고 schematic 반영과
+  continuity를 별도 gate로 둔다.
+
+Reason:
+
+- Pull-down 미적용 external-reset capture에서 네 control input이 NRST LOW 동안 약 `159 ms`
+  HIGH로 판독됐다.
+- STM32 내부 weak pull은 일반적으로 `30~50 kΩ`이고 firmware configuration에 의존한다.
+  외부 `10 kΩ`은 reset 중에도 존재하며 GPIO input leakage 최대 `±1 µA` 기준 예상 LOW
+  offset은 약 `10 mV`다.
+- 3.3 V HIGH 구동 시 channel당 약 `0.33 mA`, 네 선 합계 최대 `1.32 mA`여서 logic output
+  부하로 작다.
+- 적용 후 5 s/20 M samples reset 재시험에서 네 signal의 transition과 HIGH sample이 모두
+  0이었다.
+
+Consequence:
+
+- RevB schematic, connector/perfboard plan과 continuity checklist에 네 저항을 반영한다.
+- 저항이 끊기거나 GND 기준이 유실되면 reset-safe acceptance를 재검증한다.
+- 이 결정은 MCU input pin 안전만 입증하며 MDD10A power stage나 actual motor stop을
+  자동으로 승인하지 않는다.
+
+Evidence:
+
+- [`08_Motor_Driver_and_HBridge_Control_ko.md`](08_Motor_Driver_and_HBridge_Control_ko.md)
+- [`../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)
+
 ## Rejected or Deferred Alternatives
 
 | Alternative | Status | Reason |
@@ -304,11 +339,8 @@ Consequence:
 
 | Topic | Open question |
 | --- | --- |
-| Final PWM/DIR pins | CubeMX validation 이후 NUCLEO-F446RE에서 PB6/PB7 PWM과 PC8/PC9 DIR 후보가 충돌 없이 동작하는가? |
-| Encoder source quality | 어떤 motor encoder가 동작하고 counts per revolution은 얼마인가? |
 | CAN hardware | 어떤 CAN transceiver와 USB-CAN adapter를 구매할 것인가? |
 | Battery voltage divider | 정확한 resistor value와 ADC calibration |
-| PWM frequency | MDD10A와 motor에 적합한 final frequency |
 | Motor current measurement | Current sensor를 추가할지 외부 측정으로 진행할지 |
 | ROS2 bridge path | 학습/시뮬레이션은 ROS 2 Humble에서 시작한다. 실제 command transport는 UART first, CAN later 중 무엇으로 연결할지 |
 | Odometry calibration | Effective track width와 distance-per-count 값 |
@@ -318,7 +350,7 @@ Consequence:
 | Decision area | Evidence to collect |
 | --- | --- |
 | Power safety | Wiring photo, fuse rating, buck voltage measurements |
-| Motor driver | PWM waveform, low-duty motor test, heat observation |
+| Motor driver | PWM waveform, reset-safe pull-down continuity, low-duty motor test, heat observation |
 | Encoder | Direction test, count-rate log, speed plot |
 | UART | Command/telemetry logs, timeout test |
 | FreeRTOS | Task table, timing counters, queue behavior |
