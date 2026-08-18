@@ -17,7 +17,8 @@ Physical E-stop T-ESTOP-001~005              PLANNED/BLOCKED
 First powered motor                          NOT AUTHORIZED
 ```
 
-이 문서는 현재 continuation source다. 직전 결과 정본은
+이 문서는 RevB pull-down과 board power/back-power의 역사 기록이다. 현재 continuation source는
+[`2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](2026-08-18_k1_order_and_physical_estop_continuation_ko.md)다. 당시 직전 결과 정본은
 [`../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)다.
 
 ## 다음 대단원의 목적

@@ -344,8 +344,10 @@ motion을 복구하지 않으며, 수행 순서가 달라도 stale command를 �
 | `R_RAIL_BLEED` | Natural rail decay measurement, resistance/power/thermal calculation |
 | Connectors/wire/terminals | Continuous/fault current, DC voltage, temperature, keying, strain relief and accessible touch protection |
 
-MG540P30_12V 공식 전류 자료가 없으므로 K1/F1/main wire의 최종 정격을 이 단계에서
-추정 확정하지 않는다.
+Step 6 종료 당시에는 MG540P30_12V 공식 전류 자료가 없어 K1/F1/main wire의 최종 정격을
+추정 확정하지 않았다. 이후 WHEELTEC 회신으로 motor당 rated 1.44 A/stall 9 A를 확보했고,
+Step 7 current-envelope와 provisional candidate 계산은
+[`../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md`](../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md)에 기록했다.
 
 ## Step 6 gate
 
@@ -384,7 +386,7 @@ K2 split hold/K1-enable contacts: IMPLEMENTED IN FUNCTIONAL SCHEMATIC
 S0-A/S0-B and S2 connector boundaries: IMPLEMENTED
 VO617A-3 candidate sense path and R13/R14: IMPLEMENTED
 Direct rail/control/sense test points: IMPLEMENTED
-K1/F1/main-current exact parts and values: STILL TBD / MOTOR DATA BLOCKED
+K1/F1/main-current exact parts and values: K1 ORDERED / F1-WIRE-HOLDER TBD / BENCH OPEN
 ERC: 0 errors / 0 warnings
 Ref/Pin/Net tuples: 120 preserved
 Hardware/perfboard implementation: NOT TESTED / NO SOLDER RELEASE
@@ -393,3 +395,11 @@ Hardware/perfboard implementation: NOT TESTED / NO SOLDER RELEASE
 현재 A4 배치는 전기적 WIP 검토본으로 승인했고 포트폴리오 수준의 기능 흐름 재배치는
 학습 후 별도 수행한다. 이는 actual part/rating, continuity, board power/back-power 또는
 `T-ESTOP-001~005` 통과를 뜻하지 않는다.
+
+2026-08-18 기준 TE `V23134J1052D642`/`1393304-9`, `VCF7-1000` socket과 해당 TE main/coil
+terminals를 K1 assembly로 주문했다. Catalog 정격은 18.9 A envelope에 수치상 적합하지만
+입고품 continuity, suppression, motor-load/thermal/rail-off bench는 남아 있다. 10 A ATOF는
+prototype F1이다. Common main harness는 주문한 `280756-4` terminal의 AWG 12~10 범위를
+만족하는 AWG 12를 우선하고 per-motor branch는 AWG 16을 후보로 둔다. AWG 14는 계산
+baseline일 뿐 release wiring 후보가 아니다. 다음 KiCad
+정리에서는 K1 exact field를 갱신하되 F1/holder/wire/connector field는 release 전까지 TBD로 유지한다.

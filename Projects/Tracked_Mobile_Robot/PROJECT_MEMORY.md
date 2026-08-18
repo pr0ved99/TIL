@@ -53,7 +53,9 @@ Last updated: 2026-08-18
 - E-stop release never restores motion authority or K1 motor rail by itself. Step 7 corrected the three-wire path to `F2 -> S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with a second K2 NO contact enabling K1 coil. A K1 high-current pole is not used below its official minimum switching load.
 - Step 7 preferred candidates are Omron `A22NE-M-PD02-N` for S0, Schneider `ZB5AA3 + ZB5AZ009 + ZBE1016` low-power assembly for S2, Panasonic `TX2-12V` for K2 and Vishay `VO617A-3` for S0-B conditioning. They remain conditional until minimum-load, received-part and bench gates close.
 - WHEELTEC technical support confirmed `MG540P30_12V` at 12 V, rated 1.44 A/15 W/280 rpm/2.6 kgf·cm, stall 9 A/10 kgf·cm, 1:30 and PWM 5~20 kHz. Hall encoder is 13-line, 3.3~5 V pulled-up output; STM32 x4 gives `13 x 30 x 4 = 1560 counts/output rev`. Starting current, terminal resistance and thermal/duty-cycle detail remain unavailable.
-- K1/F1/main wire/connectors are no longer blocked by total absence of motor current data, but remain unselected until the two-motor `2.88 A` rated-total/`18 A` simultaneous-stall envelope is coordinated with MDD10A limiting, DC motor-load relay ratings, fuse curves and harness thermal limits. F2 remains only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
+- WHEELTEC repeated the same motor table in a follow-up support reply. This corroborates the manufacturer-supplied `1.44 A` rated/`9 A` stall values but is not an independent test or formal warranty datasheet.
+- Two-motor coordination now uses `2.88 A` rated-total, `18 A` simultaneous stall at 12 V and a conservative `18.9 A` full-charge estimate at 12.6 V. TE Connectivity `V23134J1052D642` / `1393304-9` (12 V, 1 Form A NO) with `VCF7-1000`/`1393310-4` socket, `280756-4` main terminals x2 and `42281-1` coil terminals x2 was ordered on 2026-08-18. Its 16 VDC switching limit, 30 A continuous limiting current even at the listed 125 °C point and 240 A make/70 A break values numerically cover the 18.9 A envelope; received-part continuity, suppression, actual motor-load waveform, voltage-drop/thermal and rail-off bench release remain open. Panasonic `ACA14535` remains a comparison benchmark, not the procured K1.
+- Littelfuse `0287010.PXCN` ATOF 10 A/32 VDC is the provisional F1 prototype candidate for short/harness protection, not a proven locked-rotor protector. AWG 14 remains the common-path electrical calculation baseline, but the ordered TE `280756-4` main terminal accepts AWG 12~10, so the preferred released common harness is AWG 12; the existing AWG 14 fuse-holder lead must not be crimped directly into that terminal. Per-motor AWG 16 remains the branch candidate. Exact fuse holder, wire, connector, installed length, start waveform and thermal evidence remain open. F2 remains only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
 - The downloaded WHEELTEC chassis bundle itself contained no MG540 rating evidence; the values above come from the separate 2026-08-17 manufacturer support reply preserved under `assets/vendor/wheeltec`.
 - Step 6 fixed the functional circuit/net architecture, connector/test-point partition and backfeed boundary in `25_Physical_EStop_RevB_Circuit_Architecture_ko.md`.
 - MVP K1 actual-off evidence is direct downstream continuity/voltage measurement; K2/control state alone is not proof. Protected PA4/PB0 dual-rail sensing remains a post-MVP automatic diagnostic option.
@@ -153,10 +155,12 @@ Important docs:
 - The 150 x 100 mm carrier is not blank: NUCLEO-F446RE, ESP32-S3 and BNO085 socket/header positions are user-confirmed permanently soldered. Preserve their removal envelopes and the ESP32 antenna keep-out; the upper-right open area is the first low-current expansion candidate.
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-08-12_progress.md`: current UART Gate C and motor-disconnected timeout/fault/reset-boot completion state, external `10 kΩ` pull-down decision and next power/E-stop gate
+- `docs/progress/2026-08-18_progress.md`: current continuation state; final 19 kHz perfboard gate PASS, MG540 manufacturer values, TE K1 order and immediate F1/AWG 12/K1 incoming actions
+- `docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`: new-session continuation source for K1 order, F1 holder decision and incoming inspection
+- `docs/progress/2026-08-12_progress.md`: historical UART Gate C and motor-disconnected timeout/fault/reset-boot completion state, external `10 kΩ` pull-down decision
 - `docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`: current T-BRIDGE-008A/008B report, artifact metadata and evidence boundaries
 - `docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`: command-timeout, software-fault latch, reset FAIL/root cause, `10 kΩ` pull-down PASS and final safe restore report
-- `docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`: current continuation source for RevB pull-down, board power/back-power and Physical E-stop work
+- `docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`: historical source for RevB pull-down, board power/back-power and initial Physical E-stop work; superseded by the 2026-08-18 K1 handoff
 - `docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`: completed historical Gate C execution runbook; not the current next-work instruction
 - `docs/progress/2026-08-11_progress.md`: historical partial-frame-name checkpoint before Gate C completion
 - `docs/verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`: historical partial-frame-name report
@@ -202,13 +206,13 @@ Important docs:
 - `01_System_Architecture/23_Physical_EStop_FMEA_ko.md`: 23 failure modes, action priorities, three-wire re-enable and downstream rail-sense decisions
 - `01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`: 20 shall/should requirements, acceptance criteria, TBR registry and requirement-to-test mapping
 - `01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`: MVP K1 high-side cut, three-wire re-enable, S0-B sense, connector/test-point and backfeed circuit baseline; dual-rail sense is post-MVP
-- `01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`: S0/S2/K2/opto candidates, official minimum-load review, K1/F1/main-current blockers and Step 7 closure gates
+- `01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`: S0/S2/K2/opto candidates, official minimum-load review, ordered K1 numerical gate와 남은 F1/harness/incoming closure gates
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
 - `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: latest wiring baseline, safety boundary and next firmware/hardware gate
-- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation is `NEXT_SESSION_START_PROMPT.md` plus `2026-08-06_safe_uart_baseline_handoff.md`
+- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation은 `NEXT_SESSION_START_PROMPT.md`와 `2026-08-18_k1_order_and_physical_estop_continuation_ko.md`다.
 
 ## Current Progress Snapshot
 
@@ -334,7 +338,7 @@ Ask the user or verify from hardware only for these:
 - Actual fuse rating after current measurement
 - BNO085 power and I2C final wiring
 - Physical connector, footprint, perfboard and harness release
-- Exact K1/F1/main-wire/connector parts and Physical E-stop component release
+- K1 received-part/bench release; exact F1 holder/main-wire/connector parts and remaining Physical E-stop component release
 - PC-first UART path: ST-LINK VCP USART2 only, or also external USB-UART
 - UART auto-disarm delay after timeout-zero-output state
 - UART maximum application frame length and ring buffer size
@@ -355,8 +359,9 @@ Ask the user or verify from hardware only for these:
 6. Preserve Gate A/B, T-BRIDGE-007/008, active DISARM 23.50 us and report 16 timeout/fault/reset raw evidence; do not repeat unless firmware or wiring changes.
 7. Preserve the completed RevB-WIP four-`10 kΩ` schematic/ERC/PDF, `55 x 37` layout/1:1 comparison, permanent wiring continuity, power-up/NRST all-LOW and powered/no-motor regression evidence.
 8. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`; treat 20.1005 kHz as historical and final 19.049/19.058 kHz perfboard captures as the current PWM baseline.
-9. Use vendor rated/stall values to close the K1/F1/main-wire coordination, then execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
-10. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-restart evidence.
-11. Keep PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail-transient `T-ESTOP-006` as a post-MVP diagnostic V-cycle.
-12. Preserve the KiCad `RevA DRAFT` history and `RevB-WIP` verified/TBD boundary; perform schematic-to-hardware continuity review before permanent wiring is accepted.
-13. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.
+9. Preserve the completed K1/F1/main-wire calculation and the ordered TE `V23134J1052D642` K1 assembly. Close K1 incoming/continuity/suppression bench plus fuse-holder/wire/connector data before `T-ESTOP-001` PASS; 10 A ATOF, AWG 12 common/AWG 16 branch remain provisional preferred candidates, while AWG 14 is only the prior calculation baseline.
+10. Execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
+11. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-restart evidence.
+12. Keep PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail-transient `T-ESTOP-006` as a post-MVP diagnostic V-cycle.
+13. Preserve the KiCad `RevA DRAFT` history and `RevB-WIP` verified/TBD boundary; perform schematic-to-hardware continuity review before permanent wiring is accepted.
+14. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.

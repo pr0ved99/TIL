@@ -69,11 +69,13 @@ baseline으로 고정했다.
 
 Step 2에서 disconnect 방식은 `K1 DC power relay`로 선택했다. Step 6에서 manual hardware
 re-enable과 downstream rail-sense 확장 회로 및 STM32 target pin 후보를 정했다. Step 7에서는
-S0/S2/K2/opto 후보를 좁혔지만 K1/F1/main-current part, coil clamps와 divider/protection
-value는 여전히 TBD/TBR다. Actual-off
+S0/S2/K2/opto 후보를 좁혔다. 2026-08-18에는 MG540 current envelope를 확보해 TE
+`V23134J1052D642` K1 assembly를 주문하고 catalog numerical gate를 통과시켰다. F1 holder,
+AWG 12 common harness/connector, K1/K2 coil clamps와 divider/protection value는 여전히
+TBD/TBR다. Actual-off
 diagnostic 방법은 Step 4에서 downstream rail sensing으로 선택했다.
-따라서 현재 판정은 `PATH DEFINITION BASELINED / IMPLEMENTATION NOT STARTED /
-VERIFICATION NOT TESTED`다.
+따라서 현재 판정은 `PATH DEFINITION BASELINED / K1 PROCUREMENT IN PROGRESS /
+HARDWARE VERIFICATION NOT TESTED`다.
 
 ## Step 3 hazard traceability
 
@@ -157,11 +159,13 @@ VERIFICATION NOT TESTED`다.
 | `SD-ESTOP-003` Schneider `ZB5AA3 + ZB5AZ009 + ZBE1016` | Conditional | Official minimum-load closure, momentary 1NO continuity와 stuck-closed negative test |
 | `SD-ESTOP-004` Panasonic `TX2-12V` | Conditional | Worst-case K2 coil voltage가 9.0 V 이상인지 DMM sweep으로 확인 |
 | `SD-ESTOP-005` Vishay `VO617A-3`, 680 ohm/10 kohm candidate | Conditional | 5 V tolerance, contact current, PC7 LOW/HIGH와 wire-open 측정 |
-| `SD-ESTOP-006` K1/F1/main-current path | Motor-data blocked | Official motor current 또는 approved characterization 전 powered motor test 금지 |
+| `SD-ESTOP-006` K1/F1/main-current path | TE K1 ordered / catalog numerical PASS; F1/harness open | TE `V23134J1052D642` incoming/continuity/suppression/thermal, 10 A ATOF holder와 AWG 12 common-path actual-part evidence를 닫기 전 powered motor test 금지 |
 
-F2 `0.5 A time-delay`는 preliminary candidate일 뿐이다. Exact fuse/holder curve, K1/K2 clamp,
-ADC values는 post-MVP open item으로 유지한다. K1/F1/main wire, connector와 MVP coil clamp가
-닫힐 때까지 Step 8 MVP schematic에는 명확한 TBD와 calculation note를 남긴다.
+F2 `0.5 A time-delay`는 preliminary candidate일 뿐이다. F1은 Littelfuse ATOF 10 A/32 VDC,
+AWG 12 common/per-motor AWG 16은 preferred prototype candidates이며 final release가 아니다.
+AWG 14 common은 계산 baseline일 뿐이고 주문한 `280756-4`에 직접 압착하지 않는다. Exact
+K1 incoming/F1 holder/wire/connector, K1/K2 clamp와 required MVP values가 닫힐 때까지 Step 8 MVP
+schematic에는 명확한 TBD와 calculation note를 남긴다.
 
 ## 상태 정의
 
@@ -182,7 +186,7 @@ ADC values는 post-MVP open item으로 유지한다. K1/F1/main wire, connector�
 | IDs | Scope | Current verification status |
 | --- | --- | --- |
 | `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `NOT TESTED` |
-| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `BLOCKED` |
+| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; envelope complete, exact parts open |
 | `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `NOT TESTED` |
 | `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `BLOCKED` |
 | `REQ-ESTOP-010~011` | Observability and three-wire manual re-enable | `NOT TESTED` |
@@ -194,7 +198,7 @@ ADC values는 post-MVP open item으로 유지한다. K1/F1/main wire, connector�
 
 | Requirement | Design / implementation | Test ID | Required evidence | Status |
 | --- | --- | --- | --- | --- |
-| `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PLANNED/BLOCKED` |
+| `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PARTIAL/BLOCKED` |
 | `REQ-ESTOP-005`, `018` | `CD-ESTOP-004`, `006`; S0-B interface | `T-ESTOP-003` | DMM GPIO voltage table, pin configuration, wire-open log | `PLANNED` |
 | `REQ-ESTOP-006~008`, `010` | Safety state/latch and common safe-output handling | `T-ESTOP-004~005` | UART log, GPIO/PWM/direct rail capture, reset/re-enable regression | `PLANNED` |
 | `REQ-ESTOP-009`, `016~017` | Functional K1 drop-out, direct rail-off and back-power | `T-PWR-003`, `T-ESTOP-005`, `T-ESTOP-007` | Direct rail observation, power-source matrix and stop evidence | `BLOCKED` |
@@ -222,6 +226,8 @@ Motor와 battery를 연결하지 않은 laptop/document review다.
   넣거나 명시적으로 미실장 처리할 수 있으며 `T-ESTOP-001` MVP PASS를 막지 않는다.
 - DC breaking rating, continuous current, contact/coil default state가 공식 datasheet로 확인된다.
 - Fuse, wire, terminal과 disconnect device의 보호 관계가 문서화된다.
+- Two-motor `2.88 A` rated/`18 A` stall과 12.6 V conservative `18.9 A` envelope의 source와
+  calculation이 기록되고, exact test-build K1/F1/wire/holder가 그 envelope에 trace된다.
 - Logic rail 유지 시 USB/buck back-power 경로가 추가되지 않는다.
 - Regenerative braking/back-EMF 검증 항목이 남아 있다.
 
@@ -436,12 +442,12 @@ Motor-rail re-enable policy: SEPARATE MANUAL HARDWARE ACTION REQUIRED
 MVP actual-off evidence: DIRECT DOWNSTREAM CONTINUITY/VOLTAGE MEASUREMENT REQUIRED
 Post-MVP diagnostic: PA4/PB0 DUAL-RAIL SENSE SELECTED, DEFERRED
 Requirements: 20 BASELINED / 15 MUST / 5 SHOULD / 7 TBR REGISTER ITEMS OPEN (2026-08-10)
-Architecture: DRAFTED
-Component selection: BLOCKED/TBD
-Schematic: NOT STARTED
+Architecture: BASELINED
+Component selection: PARTIAL — K1 ORDERED/CATALOG NUMERICAL PASS; F1/HARNESS/CLAMPS OPEN
+Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
 Firmware: NOT STARTED
 Bench verification: NOT TESTED
-Overall result: PLANNED
+Overall result: PARTIAL / HARDWARE GATES OPEN
 ```
 
 Motor-disconnected 단계인 `T-ESTOP-001~005`가 모두 `PASS`되기 전에는

@@ -52,7 +52,7 @@ Onshape Top View 기준 고정 경계는 다음과 같다.
 | VO617A-3, `680 Ω` LED resistor, PC7 `10 kΩ` pull-up | 만능기판 후보 | S0-B 5 V loop와 STM32 3.3 V sense conditioning |
 | R9~R12/coil/sense test points | 만능기판 가장자리 또는 부품 옆 | DMM/logic probe의 반복 측정과 오접촉 감소 |
 | K1 main contact | 만능기판 밖 | 두 motor의 make/carry/break current가 perfboard trace를 지나면 안 됨 |
-| F1 main fuse와 battery/motor power distribution | 만능기판 밖 | High-current fault path와 holder/wire rating이 아직 motor-data blocked |
+| F1 main fuse와 battery/motor power distribution | 만능기판 밖 | MG540 current envelope는 확보했다. 10 A ATOF는 prototype 후보이고 exact holder/AWG 12 common harness/connector release가 남음 |
 | MDD10A motor `POWER+/-`, motor output current | 만능기판 밖 | Motor current는 dedicated wire/terminal로만 운반 |
 | K1 coil clamp | K1 coil terminal 바로 옆, 기본적으로 만능기판 밖 | Clamp는 보호 대상 coil에 물리적으로 가까워야 함 |
 | PA4/PB0 dual-rail ADC network | 미실장/DNP | Post-MVP diagnostic V-cycle |

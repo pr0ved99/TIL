@@ -107,8 +107,9 @@ PC 또는 ESP32의 속도 명령을 받아
 
 Current strict-parser UART Gate와 MCU-pin safety baseline을 보존한다. Permanent pull-down/5-Net,
 board power/back-power와 final perfboard MDD10A-input 19 kHz active 6-step/safe restore까지 PASS했다.
-WHEELTEC 회신으로 rated/stall current 입력은 확보했지만 K1/F1/main-wire coordination,
-Physical E-stop, MDD10A power stage와 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다
+WHEELTEC 회신으로 rated/stall current 입력을 확보하고 K1/F1/main-wire 계산과 TE K1 주문까지
+완료했다. K1은 catalog numerical PASS지만 입고/continuity/suppression/thermal, exact F1 holder와
+AWG 12 harness, Physical E-stop, MDD10A power stage와 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다
 Gate 상태와 evidence boundary를 기준으로 판단한다.
 
 ## 실행 대단원과 예상 작업시간
@@ -133,6 +134,7 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 ```text
 완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin 검증
 -> 현재: 대단원 2 power/back-power + Physical E-stop
+   -> immediate: 보유 F1 holder 판정 -> AWG 12 common harness 확정 -> K1 입고 무전원 검사
 -> 대단원 3 lifted single motor
 -> 대단원 4 dual drivetrain + odometry
 -> low-level drivetrain MVP acceptance

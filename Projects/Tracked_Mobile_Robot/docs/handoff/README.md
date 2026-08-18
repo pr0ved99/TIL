@@ -8,15 +8,16 @@
 
 1. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
 2. [`../progress/2026-08-18_progress.md`](../progress/2026-08-18_progress.md)
-3. [`../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)
-4. [`2026-08-13_power_and_physical_estop_session_ko.md`](2026-08-13_power_and_physical_estop_session_ko.md)
-5. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-6. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-7. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
-8. [`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md)
-9. [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)
-10. [`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)
-11. [`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)
+3. [`2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](2026-08-18_k1_order_and_physical_estop_continuation_ko.md)
+4. [`../../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md`](../../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md)
+5. [`../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)
+6. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+7. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+8. [`../../09_Electrical_Design/README.md`](../../09_Electrical_Design/README.md)
+9. [`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md)
+10. [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)
+11. [`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)
+12. [`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -26,10 +27,11 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-08-18 | [`../progress/2026-08-18_progress.md`](../progress/2026-08-18_progress.md) | **Current continuation**: MG540 vendor data 반영, final perfboard nominal 19 kHz active 6-step와 safe restore PASS; 다음 Physical E-stop |
+| 2026-08-18 | [`2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](2026-08-18_k1_order_and_physical_estop_continuation_ko.md) | **Current continuation**: TE K1 assembly 주문, F1 holder/AWG 12 판정, K1 incoming 검사와 Physical E-stop 직렬 순서 |
+| 2026-08-18 | [`../progress/2026-08-18_progress.md`](../progress/2026-08-18_progress.md) | Current factual progress: MG540 vendor data, final perfboard 19 kHz/safe restore, K1 catalog numerical PASS와 주문 |
 | 2026-08-18 | [`../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Final perfboard MDD10A-input active DIR/PWM, direction margin, hook-0 all-LOW report |
 | 2026-08-16 | [`../plans/2026-08-16_next_session_perfboard_active_dir_pwm_plan_ko.md`](../plans/2026-08-16_next_session_perfboard_active_dir_pwm_plan_ko.md) | Completed runbook: final perfboard active DIR/PWM 6-step, hook-`0U` restore와 all-LOW closeout |
-| 2026-08-13 | [`2026-08-13_power_and_physical_estop_session_ko.md`](2026-08-13_power_and_physical_estop_session_ko.md) | **Current continuation**: RevB/permanent `10 kΩ` pull-down, board power/back-power와 Physical E-stop `T-ESTOP-001~005` |
+| 2026-08-13 | [`2026-08-13_power_and_physical_estop_session_ko.md`](2026-08-13_power_and_physical_estop_session_ko.md) | Historical RevB/permanent `10 kΩ` pull-down, board power/back-power와 초기 Physical E-stop baseline; 2026-08-18 handoff가 supersede |
 | 2026-08-13 | [`2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md`](2026-08-13_motor_output_safety_and_perfboard_planning_session_ko.md) | Completed historical runbook; required timeout/fault/reset scope PASS, optional perfboard work deferred |
 | 2026-08-12 | [`../progress/2026-08-12_progress.md`](../progress/2026-08-12_progress.md) | UART Gate C와 motor-disconnected MCU low-level chapter PASS; external 10 kΩ 결정과 다음 power/E-stop gate |
 | 2026-08-12 | [`../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Timeout/fault/reset FAIL→10 kΩ PASS, raw hashes, evidence boundary와 final safe restore 정본 |

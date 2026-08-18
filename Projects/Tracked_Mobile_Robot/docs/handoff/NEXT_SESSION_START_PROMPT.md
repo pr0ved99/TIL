@@ -8,30 +8,29 @@ Tracked_Mobile_Robot 프로젝트를 기존 작업 방식과 안전 기준을 �
 프로젝트 경로:
 C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot
 
-대답하기 전에 repository root C:\Users\eyh12\workspace\TIL 에서 다음 명령으로
-현재 변경 상태부터 확인해라.
+먼저 repository root C:\Users\eyh12\workspace\TIL 에서 아래 명령으로 실제 상태를 확인해라.
 
 git status --short -- Projects/Tracked_Mobile_Robot
+git log -1 --oneline -- Projects/Tracked_Mobile_Robot
 
-기존 변경 파일은 사용자의 작업이므로 임의로 되돌리거나 덮어쓰지 마라. 사용자가 요청하기
-전에는 commit/push하지 마라.
+기존 변경은 사용자 작업이므로 임의로 되돌리거나 덮어쓰지 마라. 사용자가 요청하기 전에는
+commit/push하지 마라.
 
-그 다음 아래 문서를 순서대로 실제 파일에서 처음부터 끝까지 읽어라.
+그다음 아래 파일을 실제 저장소에서 순서대로 처음부터 끝까지 읽어라.
 
 1. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
-2. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-12_progress.md
-3. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md
-4. Projects/Tracked_Mobile_Robot/docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md
-5. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
-6. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
-7. Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md
-8. Projects/Tracked_Mobile_Robot/01_System_Architecture/21_Physical_EStop_Architecture_ko.md
-9. Projects/Tracked_Mobile_Robot/01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md
-10. Projects/Tracked_Mobile_Robot/01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md
-11. Projects/Tracked_Mobile_Robot/01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md
+2. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-18_progress.md
+3. Projects/Tracked_Mobile_Robot/docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md
+4. Projects/Tracked_Mobile_Robot/09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md
+5. Projects/Tracked_Mobile_Robot/docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md
+6. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+7. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
+8. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
+9. Projects/Tracked_Mobile_Robot/01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md
+10. Projects/Tracked_Mobile_Robot/01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md
 
-과거 handoff를 현재 지시보다 우선하지 마라. 현재 continuation source는
-2026-08-13_power_and_physical_estop_session_ko.md다.
+과거 handoff는 역사 기록이다. 현재 continuation source는
+2026-08-18_k1_order_and_physical_estop_continuation_ko.md다.
 
 작업 방식:
 
@@ -45,60 +44,43 @@ git status --short -- Projects/Tracked_Mobile_Robot
 
 완료된 현재 기준선:
 
-- UART Gate A/B, T-BRIDGE-007/008 required runtime PASS.
-- 모든 ESP32/STM32 controlled test hook `0U`, firmware contract `15/15` PASS.
-- Motor-output safety 뒤 final UART는 exact DISARM ACK/PING/PONG/READY, post-READY TEL
-  155/155 DISARMED/zero over 15.4 s, ARM/CMD/retry/failure 0으로 PASS.
-- 2026-08-03의 20.1005 kHz는 historical baseline이다. Vendor `5~20 kHz` 상한 margin을 위해
-  final nominal을 19 kHz로 변경했고 permanent perfboard MDD10A-input에서 CH1/CH2
-  19.049/19.058 kHz, 약 10%, direction 전후 약 2 ms PWM-zero를 PASS했다.
-- Active DISARM은 UART frame end부터 PWM last edge까지 23.50 us MCU-pin baseline PASS.
-- Command timeout 300 ms는 UART-calibrated frame-end-to-last-edge 약 299.690 ms, 이후
-  약 8.939 s no-reactivation으로 scoped PASS.
-- Software fault는 marker 뒤 expected next PWM pulse 억제와 약 2.052 s latch PASS.
-  Last fall이 marker보다 5.25 us 앞선 것은 LOW phase 때문이므로 fault latency가 아니다.
-- External reset 첫 시험은 네 motor input이 약 159 ms HIGH여서 FAIL.
-- PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2 각각 영구 10 kΩ to GND가 반영된 만능기판에서
-  continuity, power-up/NRST all-LOW와 final hook-0 5 s transition/HIGH sample 0을 PASS했다.
-- 이 판정은 motor-disconnected MDD10A-input scope다. MDD10A motor output, actual motor,
-  Physical E-stop 또는 산업 안전 인증을 입증하지 않는다.
+- UART Gate A/B/C와 필수 parser/recovery 벡터는 PASS했고 controlled test hook은 모두 `0U`,
+  firmware contract는 `15/15`다.
+- Permanent perfboard의 PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2에는 각각 10 kΩ pull-down이 있다.
+- Motor-disconnected MDD10A-input final active test는 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty,
+  direction 전후 약 2 ms PWM-zero, expected MDD10A LED 순서로 PASS했다.
+- Safe restore 뒤 final 5 s D0~D3 capture는 HIGH sample/transition 0으로 PASS했다.
+- WHEELTEC MG540P30_12V 제조사 회신값은 motor당 12 V, rated 1.44 A, stall 9 A,
+  rated 2.6 kgf·cm, stall 10 kgf·cm, PWM 5~20 kHz다.
+- Two-motor envelope는 rated 2.88 A, simultaneous stall 18 A, 12.6 V 보수 환산 18.9 A다.
+- TE K1 assembly를 2026-08-18 주문했다: V23134J1052D642/1393304-9 x1,
+  VCF7-1000/1393310-4 x1, 280756-4 x2, 42281-1 x2. 결제 합계 31,154원이며
+  판매 화면 발송 예정일은 2026-08-27이었다.
+- K1 official catalog numerical gate는 18.9 A envelope에 PASS하지만 입고품 continuity,
+  suppression, motor-load/voltage-drop/thermal과 rail-off는 아직 미검증이다.
+- Prototype F1은 Littelfuse 0287010.PXCN 10 A ATOF 후보이며 wiring/short protection용이다.
+  Locked-rotor motor protector로 입증한 것은 아니다.
+- TE 280756-4 main terminal은 AWG 12~10용이므로 common main harness는 AWG 12가 우선이다.
+  기존 AWG 14 fuse-holder lead를 이 terminal에 직접 crimp하면 안 된다.
+- 실제 motor output, actual motor stop, Physical E-stop PASS 또는 산업 안전 인증은 아직 아니다.
 
-현재 safe artifact checkpoint:
+현재 즉시 작업:
 
-- STM32 ELF: 1,241,208 bytes, SHA-256
-  3B80E7A6A465545A0324AA7CD83503C95E387DE203374548BCA368FDC7DA831B
-- ESP32 BIN: 176,656 bytes, SHA-256
-  8F46810367A370A080781A09E52B04F3DF348CF9F3430ABA536686DFFEF033C3
-- Raw runtime에 flash transcript와 artifact hash가 내장되지 않아 exact board-artifact
-  identity와 physical setup provenance는 독립 증명되지 않는다.
+1. LiPo와 motor를 분리하고 모든 전원을 끈 상태에서 기존 F1 fuse-holder의 part marking,
+   lead gauge, contact/terminal 구조, fuse 규격과 열화 여부를 확인한다.
+2. AWG 12 대응 holder/wire/connector 조합을 확정하고 F1을 provisional에서 release candidate로 닫는다.
+3. K1 입고 후 part marking을 대조하고 coil resistance 81~99 Ω, 무전원 NO open, socket/terminal
+   fit과 suppression 구성을 확인한다.
+4. 그 후에만 motor-disconnected T-ESTOP-001~005를 순서대로 수행한다.
+5. 위 gate가 모두 PASS한 뒤 lifted single-motor 5~10% no-load 시험으로 이동한다.
 
-고정 안전·배선 결정:
+중지 조건:
 
-- ESP GPIO17 TX -> STM32 PA10 RX, ESP GPIO18 RX <- STM32 PA9 TX, common GND,
-  115200 8-N-1.
-- 두 board를 각각 USB로 공급할 때 board 간 5 V/VBUS/VIN을 연결하지 않는다.
-- STM32가 parser, timeout, motor output, encoder와 final safety authority다.
-- 각 motor control signal은 permanent external 10 kΩ pull-down to GND가 필요하다.
-- K1 main contact/F1 motor-current path는 만능기판 copper trace를 통과시키지 않는다.
+- 전원/모터가 연결된 상태에서 resistance나 continuity를 측정하려는 경우
+- K1 NO contact가 무전원에서 short이거나 coil resistance가 81~99 Ω 밖인 경우
+- holder/terminal이 AWG 12를 확실히 지원하지 않거나 손상·발열 흔적이 있는 경우
+- `T-ESTOP-001~005` 전에 actual motor-energy를 인가하려는 경우
 
-다음 작업 순서:
-
-1. External 10 kΩ 네 개를 RevB schematic/permanent wiring에 반영하고 continuity를 확인한다.
-2. Motor와 LiPo를 분리한 채 USB/buck/back-power policy와 board input 전압을 검증한다.
-3. K1/F1/main wire 정격을 motor starting/stall current 근거로 닫는다.
-4. Physical E-stop T-ESTOP-001~005를 motor-disconnected 상태에서 검증한다.
-5. 위 gate가 모두 PASS한 뒤에만 lifted single-motor 5~10% 시험으로 이동한다.
-
-금지 사항:
-
-- 현재 단계에서 actual motor 또는 MDD10A motor-energy 인가
-- Motor data 없이 K1/F1/main wire 정격 확정
-- Breadboard pull-down PASS를 RevB/permanent wiring PASS로 확대
-- MCU-pin capture를 MDD10A/motor/E-stop PASS로 확대
-- 원본 raw evidence 편집 또는 덮어쓰기
-- UART pin/baud, STM32 safety authority 또는 MDD10A architecture 임의 변경
-- 사용자 요청 없는 commit/push
-
-첫 답변에서는 실제 git status, 완료된 UART/MCU-pin gate, 남은 evidence boundary와
-대단원 2의 첫 작업인 RevB 10 kΩ 반영/continuity 계획만 간단히 보고해라.
+첫 답변에서는 실제 git status/HEAD, 완료된 기준선, 남은 evidence boundary와 F1 holder
+무전원 검사 절차만 간단히 보고해라.
 ```

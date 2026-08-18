@@ -31,7 +31,8 @@ Last updated: 2026-08-18
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
 -> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; contract `15/15`, 양 firmware build PASS와 controlled 008B marker absent
 -> OBSERVED BOARD BEHAVIOR: Gate C required runtime PASS; motor-output safety 뒤 final exact startup, READY 후 15.4 s/post-READY TEL 155/155 safe, retry/test/parser error/ARM/CMD 0; exact runtime-to-artifact linkage와 log-embedded physical provenance pending
--> CURRENT NEXT: vendor rated/stall data로 K1/F1/main-wire coordination -> Physical E-stop MVP `T-ESTOP-001~005`
+-> K1/F1/main-wire current-envelope 계산 PASS: TE V23134J1052D642 K1 assembly ordered/catalog numerical PASS, 10 A ATOF prototype F1, AWG 12 preferred common/AWG 16 per-motor candidates; AWG 14 is the calculation baseline only
+-> CURRENT NEXT: K1 incoming bench + F1 holder/wire/connector exact-part 근거와 actual-part continuity -> Physical E-stop MVP `T-ESTOP-001~005`
 -> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test -> `T-ESTOP-007` actual stop; dual-rail/precision transient `T-ESTOP-006`은 post-MVP
 ```
 
@@ -181,7 +182,7 @@ tracked chassis hole-pattern DWG import
 | [`23_Physical_EStop_FMEA_ko.md`](01_System_Architecture/23_Physical_EStop_FMEA_ko.md) | K1/S0/re-enable/monitoring failure modes, effects, detection and treatments |
 | [`24_Physical_EStop_Safety_Requirements_ko.md`](01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md) | 20 testable E-stop safety requirements, acceptance criteria and TBR register |
 | [`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md) | RevB K1 three-wire control, independent sense와 connector/test-point baseline; dual rail diagnostic은 post-MVP option |
-| [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction, K1/F1/main-current selection gates |
+| [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction, K1/F1/main-current coordination gates |
 
 ### 02_Hardware_Validation
 
@@ -311,11 +312,14 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-08-10_progress.md`](docs/progress/2026-08-10_progress.md) | Engineering Basis catalog, standards claim boundary, and final MVP matrix Basis ID adoption |
 | [`docs/progress/2026-08-11_progress.md`](docs/progress/2026-08-11_progress.md) | Historical T-BRIDGE-008A partial-frame-name PASS and all-hooks-0U safe closeout checkpoint |
 | [`docs/progress/2026-08-12_progress.md`](docs/progress/2026-08-12_progress.md) | UART Gate C와 motor-disconnected timeout/fault/reset-boot PASS; external 10 kΩ pull-down 결정과 power/E-stop next |
+| [`docs/progress/2026-08-18_progress.md`](docs/progress/2026-08-18_progress.md) | MG540 manufacturer data, final perfboard 19 kHz/safe restore PASS, TE K1 catalog numerical PASS와 order, F1/AWG 12/K1 incoming next |
 | [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 final safe evidence report |
 | [`docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Timeout/fault/reset FAIL→10 kΩ PASS, evidence hash와 final safe restore report |
-| [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md) | Current continuation for RevB pull-down, board power/back-power and Physical E-stop |
+| [`docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Final perfboard MDD10A-input 19 kHz active DIR/PWM, direction margin and hook-0 all-LOW closeout |
+| [`docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md) | Current continuation for K1 order, F1 holder/AWG 12 decision, K1 incoming inspection and Physical E-stop serial gates |
+| [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md) | Historical RevB pull-down, board power/back-power and early Physical E-stop baseline |
 | [`docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`](docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md) | Completed historical Gate C execution runbook |
-| [`docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`](docs/handoff/2026-08-06_safe_uart_baseline_handoff.md) | Historical pre-partial-name UART checkpoint; current continuation is the 2026-08-11 progress/report |
+| [`docs/handoff/2026-08-06_safe_uart_baseline_handoff.md`](docs/handoff/2026-08-06_safe_uart_baseline_handoff.md) | Historical pre-partial-name UART checkpoint; superseded by later reports and the 2026-08-18 handoff |
 | [`docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md`](docs/handoff/2026-08-04_uart_runtime_and_active_disarm_handoff.md) | Historical controlled-test handoff superseded by the 2026-08-06 handoff |
 | [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
 | [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |

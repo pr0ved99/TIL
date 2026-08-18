@@ -5,7 +5,8 @@ This folder records dated progress for the tracked mobile robot project.
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
 Latest: [`2026-08-18_progress.md`](2026-08-18_progress.md) — WHEELTEC MG540 정격/스톨 및
-PWM 범위 회신, nominal 19 kHz 확정, final perfboard active 6-step와 hook-0 all-LOW PASS.
+PWM 범위 회신, nominal 19 kHz/final perfboard safe gate PASS, TE K1 assembly 주문과 AWG 12
+common-path 우선 결정. 다음은 F1 holder 판정과 K1 입고 무전원 검사.
 
 ## How To Use
 
@@ -44,6 +45,7 @@ PWM 범위 회신, nominal 19 kHz 확정, final perfboard active 6-step와 hook-
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-08-18 | [`2026-08-18_progress.md`](2026-08-18_progress.md) | MG540 제조사 수치, nominal 19 kHz final perfboard gate PASS, TE K1 assembly 주문·catalog numerical PASS와 AWG 12 common-path 우선 결정 |
 | 2026-08-16 | [`2026-08-16_progress.md`](2026-08-16_progress.md) | VeroRoute `55 x 37` target-hole-area에서 `C1..C55/R1..R37` 전체 포함을 확인하고 PDF export Gate로 전환 |
 | 2026-08-15 | [`2026-08-15_progress.md`](2026-08-15_progress.md) | 실사 joint + Onshape 교차검토로 만능기판 예비 좌표/keep-out을 작성하고, 실물 dry placement 전 VeroRoute 2.40 기반 1:1 component/solder-side와 KiCad-net-to-hole Gate 채택 |
 | 2026-08-14 | [`2026-08-14_progress.md`](2026-08-14_progress.md) | 실제 만능기판 component-side 정면 사진을 `assets/photos/perfboard`에 보존하고 fixed-header/open-area 확인 및 다음 solder-side/scale 입력 정의 |
