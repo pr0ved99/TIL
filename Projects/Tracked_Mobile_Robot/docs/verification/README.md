@@ -34,7 +34,7 @@ ESP32 USB Monitor
 
 ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03~12에는 response-gated Gate A/B와 `T-BRIDGE-007/008` required runtime을 닫았다. Motor-output safety 시험 뒤 all-hooks-`0U`, contract `15/15`와 final safe runtime의 exact startup, READY 뒤 15.4 s/TEL 155 safe, ARM/CMD/error 0을 다시 확인했다. Gate C required runtime scope는 PASS지만 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 없어 current strict-parser release 전체 판정은 `PARTIAL`이다.
 
-2026-08-12 현재 검증된 추가 범위:
+2026-08-18 현재 검증된 추가 범위:
 
 - MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
 - STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
@@ -42,6 +42,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - External reset 첫 FAIL에서 도출한 DIR/PWM별 `10 kΩ` pull-down과 5 s/20 M samples all-LOW 재시험 PASS
 - Dual encoder conditioned input, TIM3/TIM5 count, CPS/mRPM와 vehicle-frame sign
 - Fused/switched LiPo input과 XL4015 bench load
+- Permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step와 final hook-`0U` 5초 all-LOW
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -73,6 +74,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 | [`14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`](14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md) | T-BRIDGE-008A partial-frame-name ACK rejection, 500 ms same-seq retry, exact-response recovery와 safe full-build/flash/runtime closeout evidence |
 | [`15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A embedded-CR/control-byte/overlong response, T-BRIDGE-008B malformed-command 8-vector와 final all-hooks-`0U` safe runtime report |
 | [`16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Command-timeout/fault shutdown, reset first FAIL, external `10 kΩ` pull-down 개선 PASS와 final safe restore report |
+| [`17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Permanent perfboard를 통과한 nominal 19 kHz/10% 양 채널 6-step, DIR 전후 zero margin과 hook-0 5초 all-LOW report |
 
 ## Evidence Files
 
@@ -112,6 +114,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - Post-motor-output-safety final safe board behavior PASS: retry/test/parser error 0, READY 후 15.4 s, post-READY TEL 155/155 DISARMED/zero/error 0, ARM/CMD 0
 - UART log와 ELF의 exact linkage 및 physical no-power setup provenance는 pending
 - Active DISARM UART-to-PWM MCU-pin baseline 23.50 us PASS; timeout scoped baseline, fault next-pulse suppression/latch와 reset-marker `10 kΩ` pull-down 재시험도 PASS. MDD10A power stage, physical E-stop과 motor-connected stop은 계속 `PARTIAL/NOT TESTED`
+- 2026-08-18 final perfboard MDD10A-input에서 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty, DIR 전후 약 2 ms PWM-zero와 inactive-channel LOW를 PASS했다. Hook 복구 뒤 final 5초 capture도 D0~D3 all-LOW였으며 actual motor는 계속 분리했다.
 - MDD10A powered channel 1/2와 실제 좌우 motor 대응은 아직 `PARTIAL`
 
 2026-07-20 기준 ESP32-STM32 board-only UART bridge MVP는 다음 항목을 실제 보드에서 확인했다.

@@ -152,7 +152,7 @@ controlled-test 기록이며 현재 source 상태가 아니다.
 
 - CubeMX `.ioc` pin/peripheral 설정과 generated C source의 일치 여부
 - STM32-ESP32 UART1 `115200 8-N-1`, GPIO17/18와 PA9/PA10 계약
-- TIM3/TIM5 encoder, TIM4 nominal 20 kHz PWM와 left/right mapping
+- TIM3/TIM5 encoder, TIM4 nominal 19 kHz PWM와 left/right mapping
 - 모든 bench-only output/test hook이 release source에서 비활성인지 확인
 - boot, DISARM, timeout, Error Handler의 source-level output-zero 경로
 - ESP32 response-gated startup FSM의 정상 전이와 fail-closed 실패 경로
@@ -215,3 +215,14 @@ current safe restore 원본은
   overlong-line/RX-line-buffer-overflow response recovery
 - malformed PING/CMD/unknown frame 거부 뒤 final valid PING/PONG recovery
 - 다음 controlled cycle의 flash transcript/build identity와 physical setup provenance
+
+## 2026-08-18 final perfboard safe-restored checkpoint
+
+- TIM4 period: `4420`, nominal 약 `19.0002 kHz`
+- STM32 motor/fault/UART output controlled hook: 모두 `0U`
+- `python -m unittest discover ... -v`: **15/15 PASS**
+- Final perfboard raw capture: D0~D3 5초 HIGH sample/transition 모두 0
+- 사용자 수행 STM32 build/flash/run: `0 errors / 0 warnings`, B1 no-output PASS
+
+이 checkpoint는 source/configuration contract와 final logic input all-LOW를 닫는다. 실제 motor,
+MDD10A power-stage와 Physical E-stop은 증명하지 않는다.

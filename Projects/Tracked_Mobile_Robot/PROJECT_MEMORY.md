@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-08-12
+Last updated: 2026-08-18
 
 ## Project Identity
 
@@ -23,7 +23,7 @@ Last updated: 2026-08-12
 | Power safety | Fuse, DC-rated main switch, LiPo alarm, measured buck converter output |
 | IMU candidate | BNO08x |
 | Chassis source drawing | `08_Mechanical_Design/source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` |
-| Adapter plate Rev A | 174 x 208.93379 mm, acrylic 3T candidate, small mounting holes nominal 3.3 mm |
+| Adapter plate order | 174 x 208.93379 mm, PC 3T, supplier minimum-hole response reflected as 3.0 mm small holes; ordered, fit pending |
 | Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
 | CAN transceiver | Not selected yet |
@@ -37,8 +37,12 @@ Last updated: 2026-08-12
 - MDD10A control model is motor당 `PWM + DIR`.
 - Direction changes must ramp or set PWM to zero before changing `DIR`.
 - Each MDD10A control signal has a required external reset-safe pull-down: `PC8/DIR1`,
-  `PB6/PWM1`, `PC9/DIR2`, `PB7/PWM2` each use `10 kΩ` to GND. The breadboard
-  reset capture passed; RevB/permanent wiring and continuity remain required.
+  `PB6/PWM1`, `PC9/DIR2`, `PB7/PWM2` each use `10 kΩ` to GND. Breadboard reset,
+  RevB-WIP schematic/ERC/PDF, permanent wiring continuity, power-up/NRST all-LOW and
+  powered/no-motor regression passed.
+- Board-power policy is fixed: development uses independent dual USB with UART TX/RX/GND only
+  and no 5 V rail tie; standalone uses XL4015 #1 5 V to NUCLEO E5V and ESP32 5V with all USB
+  removed. NUCLEO uses `JP5=PWR-E5V`, `JP1=open`. USB+buck simultaneous use is prohibited.
 - UART/USB serial comes before CAN for first bring-up.
 - CAN is still a required later phase.
 - FreeRTOS comes after HAL bare-metal drivetrain behavior is validated.
@@ -48,7 +52,9 @@ Last updated: 2026-08-12
 - Physical E-stop monitoring uses a separate `5 V -> S0-B NC -> optocoupler LED` loop and 3.3 V pull-up/transistor output to `ESTOP_SENSE`. It does not prove the K1 main contact actually opened.
 - E-stop release never restores motion authority or K1 motor rail by itself. Step 7 corrected the three-wire path to `F2 -> S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with a second K2 NO contact enabling K1 coil. A K1 high-current pole is not used below its official minimum switching load.
 - Step 7 preferred candidates are Omron `A22NE-M-PD02-N` for S0, Schneider `ZB5AA3 + ZB5AZ009 + ZBE1016` low-power assembly for S2, Panasonic `TX2-12V` for K2 and Vishay `VO617A-3` for S0-B conditioning. They remain conditional until minimum-load, received-part and bench gates close.
-- K1/F1/main wire/connectors remain blocked by missing MG540P30_12V motor current data. F2 is only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
+- WHEELTEC technical support confirmed `MG540P30_12V` at 12 V, rated 1.44 A/15 W/280 rpm/2.6 kgf·cm, stall 9 A/10 kgf·cm, 1:30 and PWM 5~20 kHz. Hall encoder is 13-line, 3.3~5 V pulled-up output; STM32 x4 gives `13 x 30 x 4 = 1560 counts/output rev`. Starting current, terminal resistance and thermal/duty-cycle detail remain unavailable.
+- K1/F1/main wire/connectors are no longer blocked by total absence of motor current data, but remain unselected until the two-motor `2.88 A` rated-total/`18 A` simultaneous-stall envelope is coordinated with MDD10A limiting, DC motor-load relay ratings, fuse curves and harness thermal limits. F2 remains only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
+- The downloaded WHEELTEC chassis bundle itself contained no MG540 rating evidence; the values above come from the separate 2026-08-17 manufacturer support reply preserved under `assets/vendor/wheeltec`.
 - Step 6 fixed the functional circuit/net architecture, connector/test-point partition and backfeed boundary in `25_Physical_EStop_RevB_Circuit_Architecture_ko.md`.
 - MVP K1 actual-off evidence is direct downstream continuity/voltage measurement; K2/control state alone is not proof. Protected PA4/PB0 dual-rail sensing remains a post-MVP automatic diagnostic option.
 - Step 6 target pin is PC7 for MVP `ESTOP_SENSE`; PA4 upstream `VBAT_PROTECTED_SENSE` and PB0 downstream `MOTOR_VBAT_SAFE_SENSE` are post-MVP candidates. None is configured or bench-tested.
@@ -135,8 +141,16 @@ Important docs:
 - `08_Mechanical_Design/releases/revA/README.md`: Rev A DXF, DWG, SVG, PDF release-file index and SHA-256 values
 - `08_Mechanical_Design/references/vendor_templates/README.md`: preserved Multimaker source template, original filename, and SHA-256
 - `assets/screenshots/mechanical_layout/README.md`: adapter plate and electronics layout screenshot index
-- `09_Electrical_Design/README.md`: RevA functional wiring scope, verified/TBD boundary and source/evidence index
-- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: current KiCad schematic source
+- `09_Electrical_Design/README.md`: RevB-WIP current scope, RevA history, verified/TBD boundary and source/evidence index
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch`: current pull-down-integrated KiCad schematic source
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/README.md`: RevB-WIP checkpoint evidence hashes and remaining gate
+- `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch`: historical pre-pull-down KiCad schematic source
+- `09_Electrical_Design/01_Perfboard_Low_Current_Allocation_Plan_ko.md`: current 150 x 100 mm/55 x 37-hole low-current zone plan; exact part coordinates and soldering remain HOLD
+- `09_Electrical_Design/04_RevB_Schematic_Functional_Layout_Learning_and_Rework_Plan_ko.md`: RevB electrical WIP baseline freeze and post-learning portfolio-layout rework gate
+- `09_Electrical_Design/05_Perfboard_Photo_Dimension_and_Dry_Placement_Input_Checklist_ko.md`: actual board/part photo, dimension and occupied-hole inputs required before dry placement
+- `09_Electrical_Design/06_Perfboard_Photo_Derived_Occupancy_and_Pulldown_Dry_Placement_ko.md`: actual solder joints + Onshape body/removal cross-check, preliminary fixed-hole map and R9~R12 candidate
+- `09_Electrical_Design/07_Perfboard_Digital_Layout_Workflow_Decision_ko.md`: adopted pre-solder 1:1 component/solder-side and KiCad-net-to-hole review Gate; VeroRoute 2.40 pilot pending
+- The 150 x 100 mm carrier is not blank: NUCLEO-F446RE, ESP32-S3 and BNO085 socket/header positions are user-confirmed permanently soldered. Preserve their removal envelopes and the ESP32 antenna keep-out; the upper-right open area is the first low-current expansion candidate.
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
 - `docs/progress/2026-08-12_progress.md`: current UART Gate C and motor-disconnected timeout/fault/reset-boot completion state, external `10 kΩ` pull-down decision and next power/E-stop gate
@@ -270,7 +284,7 @@ Important docs:
 - On 2026-08-12 the 300 ms command-timeout capture produced a UART-calibrated frame-end-to-last-PWM-edge value of about `299.690 ms`, followed by about `8.939 s` without reactivation. This is a scoped baseline that explicitly allows the 1 ms `HAL_GetTick()` phase and analyzer-clock tolerance.
 - The 2026-08-12 software-fault capture proved expected-next-pulse suppression and about `2.052 s` no-reactivation latch. The last PWM fall was `5.25 us` before the PA5 marker because injection occurred during PWM LOW, so that value is not reported as fault latency.
 - The first external-reset capture without pull-downs failed: all four motor control signals appeared HIGH for about `159 ms` during NRST LOW. After adding an external `10 kΩ` pull-down from each `PC8/PB6/PC9/PB7` signal to GND, a 5 s/20 M-sample retest observed zero transitions and zero HIGH samples on all four signals.
-- Motor-output verification is now `PASS — motor-disconnected MCU-pin scope`. MDD10A power-stage timing, RevB/permanent pull-down continuity, Physical E-stop and actual motor stop remain unverified, so the overall drivetrain release is still `PARTIAL`.
+- Motor-output verification is `PASS — motor-disconnected MCU-pin scope`; permanent pull-down and powered/no-motor regression also passed. MDD10A power-stage timing, Physical E-stop and actual motor stop remain unverified, so the overall drivetrain release is still `PARTIAL`.
 - After the motor-output safety tests all controlled hooks were restored to `0U`; contract discovery passed `15/15`. The safe STM32 ELF was `1,241,208 bytes`, SHA-256 `3B80E7A6A465545A0324AA7CD83503C95E387DE203374548BCA368FDC7DA831B`; the safe ESP32 BIN was `176,656 bytes`, SHA-256 `8F46810367A370A080781A09E52B04F3DF348CF9F3430ABA536686DFFEF033C3`. Final runtime had exact DISARM ACK/PING/PONG/READY and post-READY TEL 155/155 safe over 15.4 s. Raw flash-console and embedded artifact identity remain missing provenance.
 - Two available encoder motors are WHEELTEC `MG540P30_12V`; the encoder-side mapping is MG540-A/motor A = vehicle right/TIM5 and MG540-B/motor B = vehicle left/TIM3. MDD10A powered channel 1/2 to physical side remains TBD.
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
@@ -292,7 +306,10 @@ Important docs:
 - On 2026-07-30 the encoder-side installed mapping was confirmed as A=right/TIM5 and B=left/TIM3. Right/A clockwise and left/B counter-clockwise are physical forward, so production TIM3/left CPS is inverted while TIM5/right keeps its raw sign. Operator manual forward-sign regression passed; powered actuator channel mapping did not form part of this test.
 - USART2 remains a parallel bench logger and carries raw-sign mRPM diagnostics. CPS is fed into production UART `TEL` and parsed by ESP32; the production contract remains forward-positive `left_cps/right_cps`. Powered-motor noise, exact LOW, A/B phase timing, external-tachometer RPM accuracy and wheel-speed scale remain unverified.
 - On 2026-07-28, a KiCad 10.0 `RevA DRAFT` functional wiring schematic captured the battery/fuse/switch distribution, MDD10A power/logic/output, dual encoder 1 kΩ + 15 kΩ conditioning, XL4015 #2 encoder rail and STM32–ESP32 UART.
-- XL4015 #1 output remains a candidate and is not connected to STM32 or ESP32 until its destination and USB backfeed policy are verified.
+- On 2026-08-16, RevB R9~R12 permanent pull-downs and the STM32-MDD10A 5-Net interface passed resistance/continuity, 5 s power-up, NRST-held/cycle all-LOW and powered/no-motor regression.
+- On 2026-08-16, XL4015 #1 was approved for STM32/ESP32 buck-only logic power. Board-connected values were 5.00~5.01 V with NUCLEO 3.30 V and ESP32 3.27 V; supply-off values were all 0 V.
+- On 2026-08-18, WHEELTEC support confirmed rated 1.44 A, stall 9 A and PWM 5~20 kHz for `MG540P30_12V`. Because the nominal 20 kHz baseline remeasured about 20.054 kHz, TIM4 period was changed to `4420` for nominal 19 kHz with upper-limit margin.
+- On 2026-08-18, final perfboard MDD10A-input active 6-step passed. CH1/CH2 measured `19.049/19.058 kHz`, about 10% duty, pre/post-DIR zero about 2 ms, inactive channels LOW and planned MDD10A LED order. After restore all controlled hooks were `0U`, contract `15/15`, user-observed build/flash/run passed and final 5 s D0~D3 capture had zero HIGH samples/transitions.
 - The dated ERC report records 0 errors and 0 warnings under its listed ignored-check policy. This does not verify physical wiring, current capacity, noise, footprints, perfboard layout or manufacturing readiness.
 - A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
 - A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
@@ -309,18 +326,15 @@ Important docs:
 
 Ask the user or verify from hardware only for these:
 
-- Exact DC motor to use first: MG540, JGB37-520, or another available motor
 - Vehicle left/right assignment for MDD10A channel 1/2
-- Physical confirmation and final release decision for the configured 20 kHz PWM
 - Final CAN transceiver model
 - Final USB-CAN adapter model
 - Battery voltage divider resistor values
 - External-tachometer RPM accuracy and wheel-speed scale; the current firmware output-shaft count constant is 1560
 - Actual fuse rating after current measurement
-- XL4015 #1 final 5 V destination and STM32/ESP32 USB backfeed policy
 - BNO085 power and I2C final wiring
 - Physical connector, footprint, perfboard and harness release
-- Whether a separate power gate, brake, or emergency-stop circuit will be added
+- Exact K1/F1/main-wire/connector parts and Physical E-stop component release
 - PC-first UART path: ST-LINK VCP USART2 only, or also external USB-UART
 - UART auto-disarm delay after timeout-zero-output state
 - UART maximum application frame length and ring buffer size
@@ -334,15 +348,15 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short -- Projects/Tracked_Mobile_Robot`.
-2. Read `docs/progress/2026-08-10_progress.md` and `docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md` for the adopted process; use `docs/progress/2026-08-12_progress.md` plus verification reports 15 and 16 as the current UART/motor-output baseline.
-3. Keep LiPo, MDD10A B+/B- and actual motor power disconnected. If both boards are USB-powered, never connect their 5 V/VBUS/VIN rails.
-4. Preserve the all-hooks-`0U` current source, contract `15/15`, post-motor-safety safe STM32 ELF SHA-256 `3B80E7A6A465545A0324AA7CD83503C95E387DE203374548BCA368FDC7DA831B`, safe ESP32 BIN SHA-256 `8F46810367A370A080781A09E52B04F3DF348CF9F3430ABA536686DFFEF033C3` and 15.4 s/post-READY TEL 155 final UART regression. Exact linkage and log-embedded physical provenance remain pending.
+2. Read `docs/progress/2026-08-18_progress.md` and verification report 17 first; use reports 15 and 16 as the preserved UART/MCU-pin safety baseline.
+3. Preserve the fixed power policy: dual USB uses UART TX/RX/GND only; buck-only uses XL4015 #1 with all USB removed; never combine USB and buck. Keep actual motor power disconnected until the E-stop gate passes.
+4. Preserve the all-hooks-`0U` current source, TIM4 period `4420`, contract `15/15` and final 5 s D0~D3 all-LOW capture. Earlier UART-safe artifact hashes remain historical; the 2026-08-18 flashed ELF exact linkage is pending.
 5. Treat T-BRIDGE-008A/008B required runtime scope as complete and preserve report 15 plus all 2026-08-12 raw logs; do not repeat these controlled vectors unless firmware behavior changes.
 6. Preserve Gate A/B, T-BRIDGE-007/008, active DISARM 23.50 us and report 16 timeout/fault/reset raw evidence; do not repeat unless firmware or wiring changes.
-7. Add the four external `10 kΩ` pull-downs to RevB/permanent wiring and verify continuity before motor energy is enabled.
-8. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`, 20.1005 kHz/about 10.05% PWM and direction settle evidence.
-9. Close board power/back-power prerequisites and execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
+7. Preserve the completed RevB-WIP four-`10 kΩ` schematic/ERC/PDF, `55 x 37` layout/1:1 comparison, permanent wiring continuity, power-up/NRST all-LOW and powered/no-motor regression evidence.
+8. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`; treat 20.1005 kHz as historical and final 19.049/19.058 kHz perfboard captures as the current PWM baseline.
+9. Use vendor rated/stall values to close the K1/F1/main-wire coordination, then execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
 10. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-restart evidence.
 11. Keep PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail-transient `T-ESTOP-006` as a post-MVP diagnostic V-cycle.
-12. Preserve the KiCad `RevA DRAFT` verified/TBD boundary and perform schematic-to-hardware continuity review before permanent wiring.
+12. Preserve the KiCad `RevA DRAFT` history and `RevB-WIP` verified/TBD boundary; perform schematic-to-hardware continuity review before permanent wiring is accepted.
 13. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.

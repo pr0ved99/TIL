@@ -43,9 +43,9 @@
 | PS1 | XL4015 #1 | 좌측 상단 | 입출력 단자가 플레이트 상하 방향 | 스페이서 체결 후보 |
 | MD1 | MDD10A | 상단 중앙 | 전력 단자가 플레이트 상단 방향 | 스페이서 체결 후보 |
 | PS2 | XL4015 #2 | 우측 상단 | 입출력 단자가 플레이트 상하 방향 | 스페이서 체결 후보 |
-| MCU1 | NUCLEO-F446RE | 만능기판 좌측 | ST-LINK USB가 왼쪽 방향 | 만능기판 위 체결 |
-| MCU2 | ESP32-S3 DevKitC-1 | 만능기판 우측 하단 | USB가 왼쪽 방향 | 핀헤더 체결 후보 |
-| IMU1 | GY-BNO085 | 차량 중심에 가까운 위치 | 최종 센서축 표기 필요 | 스페이서 체결 후보 |
+| MCU1 | NUCLEO-F446RE | 만능기판 좌측 | ST-LINK USB가 왼쪽 방향 | Socket/header 위치 영구 납땜 확인; module removable |
+| MCU2 | ESP32-S3 DevKitC-1 | 만능기판 우측 하단 | USB가 왼쪽 방향 | Socket/header 위치 영구 납땜 확인; module removable |
+| IMU1 | GY-BNO085 | 차량 중심에 가까운 위치 | 최종 센서축 표기 필요 | Socket/header 위치 영구 납땜 확인; module removable |
 
 ## Placement Decisions
 
@@ -56,6 +56,8 @@
 - GY-BNO085는 차량의 회전 중심에 최대한 가까워지도록 현재 위치를 유지한다.
 - NUCLEO-F446RE는 ST-LINK USB 접근을 위해 만능기판 왼쪽에 배치한다.
 - 만능기판은 네 모서리 지지점에 더해 두 가로변 중앙과 기판 중앙의 세 지지점을 추가한다.
+- 2026-08-12 사용자 확인으로 NUCLEO/ESP32/BNO085 socket/header 위치는 이미 영구 납땜된
+  carrier baseline이다. 이후 저전류 회로는 이 위치와 module-removal envelope를 보존한다.
 
 ## Mounting Hole Status
 

@@ -6,15 +6,15 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-08-12
+Last updated: 2026-08-18
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
-2. [`docs/progress/2026-08-12_progress.md`](docs/progress/2026-08-12_progress.md)
+2. [`docs/progress/2026-08-18_progress.md`](docs/progress/2026-08-18_progress.md)
 3. [`docs/handoff/README.md`](docs/handoff/README.md)
-4. [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md)
-5. [`docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)
+4. [`docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)
+5. [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md)
 6. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 7. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 8. [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md)
@@ -23,14 +23,15 @@ Last updated: 2026-08-12
 
 ```text
 [PARTIAL: Gate A/B + T-BRIDGE-007 + T-BRIDGE-008A/008B required runtime PASS / current all-hooks-0U + contract 15/15 + final safe runtime PASS / exact artifact linkage + external cold-start marker + log-embedded setup provenance pending] ESP32-STM32 UART bridge
-[CONDITIONAL PASS] XL4015 #1/#2 bench load validation; final board-load wiring/back-power check pending
+[PASS] XL4015 #1 board power/back-power policy and buck-only NUCLEO/ESP32 integration
 [PASS — motor-disconnected MCU-pin scope] STM32 motor output; waveform/direction, active DISARM 23.50 us, timeout, software-fault next-pulse/latch, signal별 10 kΩ 적용 reset-boot PASS
+[PASS — motor-disconnected MDD10A-input scope] permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step, direction margin and hook-0 final all-LOW
 [PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
 -> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; contract `15/15`, 양 firmware build PASS와 controlled 008B marker absent
 -> OBSERVED BOARD BEHAVIOR: Gate C required runtime PASS; motor-output safety 뒤 final exact startup, READY 후 15.4 s/post-READY TEL 155/155 safe, retry/test/parser error/ARM/CMD 0; exact runtime-to-artifact linkage와 log-embedded physical provenance pending
--> CURRENT NEXT: RevB/permanent 10 kΩ pull-down + continuity -> board power/back-power -> Physical E-stop MVP `T-ESTOP-001~005`
+-> CURRENT NEXT: vendor rated/stall data로 K1/F1/main-wire coordination -> Physical E-stop MVP `T-ESTOP-001~005`
 -> 그 뒤 MDD10A channel-to-side powered mapping과 lifted/no-load powered-noise test -> `T-ESTOP-007` actual stop; dual-rail/precision transient `T-ESTOP-006`은 post-MVP
 ```
 
@@ -62,7 +63,7 @@ tracked chassis hole-pattern DWG import
 - ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
 - bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
 - 위 bridge PASS는 2026-07-20 historical release baseline이다. 2026-08-03~12 current response-gated FSM의 Gate A/B와 T-BRIDGE-007/008 required runtime을 actual board에서 PASS했다. Motor-output safety 시험 뒤에도 all-hooks-`0U`, contract `15/15`, exact startup과 READY 후 15.4 s/post-READY TEL 155/155 safe를 확인했다. Gate C required runtime scope는 PASS지만 exact board-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 남아 strict-parser release 전체는 `PARTIAL`이다.
-- STM32 PWM/DIR 핀 단독 DMM, 20.1005 kHz/약 10.05% PWM, DIR 전후 PWM-zero `>=1 ms`, active DISARM `23.50 us`, 300 ms timeout shutdown과 software-fault next-pulse suppression/latch를 통과했다. External reset에서 네 motor input이 약 159 ms 부동 HIGH가 되는 FAIL을 발견했고, 각 신호에 `10 kΩ` pull-down을 적용한 재시험에서 5 s 전 구간 LOW를 확인했다. Motor-disconnected MCU-pin scope는 PASS지만 RevB/permanent pull-down continuity, MDD10A power stage, Physical E-stop과 actual motor stop은 남아 있다.
+- Historical 20 kHz baseline은 20.1005 kHz였고 WHEELTEC `5~20 kHz` 상한 margin을 위해 final nominal을 19 kHz로 변경했다. Permanent perfboard MDD10A-input에서 CH1/CH2 19.049/19.058 kHz, 약 10% duty와 DIR 전후 약 2 ms zero interval을 통과했고 hook-0 final 5초 all-LOW까지 닫았다. MDD10A power stage, Physical E-stop과 actual motor stop은 남아 있다.
 - MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V, TIM3/TIM5 dual hand-count, 16/32-bit modular delta, wrap-safe int64 accumulation과 nominal 100 ms CPS를 통과했다. 2026-07-30 방향별 50회전 결과로 `1560 counts/output rev`를 확정했고 signed CPS -> mRPM self-test와 610 sample 동적 계산도 PASS했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 forward-positive로 정규화했다. MDD10A powered channel-to-side mapping, powered-noise와 external tachometer/wheel-speed 검증은 남아 있다.
 - KiCad RevA 기능 회로도는 검증된 전원 경로, MDD10A static mapping, dual encoder conditioning/hand-count와 STM32–ESP32 UART를 캡처했다. ERC는 0 errors / 0 warnings지만 fuse rating, XL4015 #1 출력과 USB backfeed 정책, BNO085, 실제 하네스·footprint는 TBD다.
 - Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
@@ -83,7 +84,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-08-12 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-08-18 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -96,17 +97,17 @@ tracked chassis hole-pattern DWG import
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
 - CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
-- Rev A 어댑터 플레이트 기준은 174 x 208.93379 mm, 아크릴 3T, 소형 체결 홀 nominal 3.3 mm다.
+- 어댑터 플레이트 주문 기준은 174 x 208.93379 mm, PC 3T, 소형 체결 홀 3.0 mm다.
 - A4 1:1 셰시 대조와 주문 PDF의 39개 벡터 경로 및 원본 대비 배율 검증을 완료했다.
 - 3D 전장 Assembly Draft의 참조 오류 표시는 사용자 지시에 따라 이번 2D 플레이트 release 범위에서 제외했다.
-- 멀티메이커 서버가 업로드 폴더를 만들지 못해 주문 상태는 `NOT SUBMITTED`다.
+- 업체 견적과 최소 타공 조건을 반영한 PC 3T 수정본을 전달했고 주문을 진행했다. 제작품 fit은 pending이다.
 - KiCad RevA functional wiring draft와 dated ERC/PDF evidence를 `09_Electrical_Design`에 보존했다. 이 baseline은 PCB 또는 영구 배선 release가 아니다.
 - Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 전진 양수다. MDD10A powered channel 1/2의 실제 좌우 대응은 아직 미확정이다.
 - Dual PWM frequency/duty와 direction-change settle, active DISARM 23.50 us, timeout shutdown,
   software-fault next-pulse/latch와 signal별 `10 kΩ` pull-down 적용 external-reset LOW는
   motor-disconnected MCU-pin 범위에서 PASS했다. Exact runtime-to-artifact linkage와 physical
-  setup provenance, RevB/permanent pull-down continuity, MDD10A power stage와 Physical E-stop은
-  남아 있다.
+  setup provenance, MDD10A power stage와 Physical E-stop은 남아 있다. Permanent pull-down,
+  board power와 final perfboard active/safe-restore는 PASS했다.
 
 작업을 이어가기 전에 먼저 읽을 기준 파일:
 

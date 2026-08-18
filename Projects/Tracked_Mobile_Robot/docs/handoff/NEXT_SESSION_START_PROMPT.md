@@ -49,16 +49,18 @@ git status --short -- Projects/Tracked_Mobile_Robot
 - 모든 ESP32/STM32 controlled test hook `0U`, firmware contract `15/15` PASS.
 - Motor-output safety 뒤 final UART는 exact DISARM ACK/PING/PONG/READY, post-READY TEL
   155/155 DISARMED/zero over 15.4 s, ARM/CMD/retry/failure 0으로 PASS.
-- PWM/DIR actual waveform은 약 20.1005 kHz/10.05%, direction 전후 PWM-zero 1 ms 이상 PASS.
+- 2026-08-03의 20.1005 kHz는 historical baseline이다. Vendor `5~20 kHz` 상한 margin을 위해
+  final nominal을 19 kHz로 변경했고 permanent perfboard MDD10A-input에서 CH1/CH2
+  19.049/19.058 kHz, 약 10%, direction 전후 약 2 ms PWM-zero를 PASS했다.
 - Active DISARM은 UART frame end부터 PWM last edge까지 23.50 us MCU-pin baseline PASS.
 - Command timeout 300 ms는 UART-calibrated frame-end-to-last-edge 약 299.690 ms, 이후
   약 8.939 s no-reactivation으로 scoped PASS.
 - Software fault는 marker 뒤 expected next PWM pulse 억제와 약 2.052 s latch PASS.
   Last fall이 marker보다 5.25 us 앞선 것은 LOW phase 때문이므로 fault latency가 아니다.
 - External reset 첫 시험은 네 motor input이 약 159 ms HIGH여서 FAIL.
-- PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2 각각 외부 10 kΩ to GND 적용 뒤
-  5 s/20 M samples에서 transition/HIGH sample 0으로 PASS.
-- 이 판정은 motor-disconnected MCU-pin scope다. MDD10A power stage, actual motor,
+- PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2 각각 영구 10 kΩ to GND가 반영된 만능기판에서
+  continuity, power-up/NRST all-LOW와 final hook-0 5 s transition/HIGH sample 0을 PASS했다.
+- 이 판정은 motor-disconnected MDD10A-input scope다. MDD10A motor output, actual motor,
   Physical E-stop 또는 산업 안전 인증을 입증하지 않는다.
 
 현재 safe artifact checkpoint:

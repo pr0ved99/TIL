@@ -12,7 +12,7 @@
 - boot/reset에서 unintended PWM pulse가 없는지
 - DISARM, command timeout, software fault의 actual shutdown timing
 
-이 문서는 계측 절차와 2026-08-03~08-12 실행 결과를 함께 기록한다. 파형·방향 전환,
+이 문서는 계측 절차와 2026-08-03~08-18 실행 결과를 함께 기록한다. 파형·방향 전환,
 active DISARM, command-timeout, software-fault latch와 external-reset-marker boot subtest를
 통과했다. Reset 첫 시험에서 네 motor-control signal이 부유해 FAIL했고 signal별 외부
 `10 kΩ` pull-down 적용 재시험에서 5 s/20 M samples all-LOW를 확인했다. MDD10A power
@@ -39,8 +39,8 @@ stage, actual motor와 Physical E-stop은 아직 완료되지 않았다.
 | MCU | NUCLEO-F446RE / STM32F446RE |
 | Timer | TIM4, APB1 timer clock 84 MHz |
 | Prescaler | 0 |
-| Auto-reload | 4199 |
-| Expected PWM | `84 MHz / (4199 + 1) = 20 kHz` |
+| Auto-reload | 4420 |
+| Expected PWM | `84 MHz / (4420 + 1) = about 19.0002 kHz` |
 | Test duty cap | 100 permille = 10% |
 | Direction zero settle | 1 ms minimum |
 | Post-DIR settle | 1 ms minimum |
@@ -91,7 +91,7 @@ D0~D3와 GND는 2026-08-03 map을 그대로 사용했다. 실제 물리 배선�
 | UART decoder | 115200 baud, 8 data, no parity, 1 stop, idle high |
 | Trigger | PWM edge, DIR edge, PA10 UART activity or PC13 edge by test |
 
-24 MHz에서는 20 kHz PWM period당 약 1200 sample을 얻는다. 긴 timeout capture에서 buffer가 부족하면 sample rate를 낮추되 2 MHz 아래로 내리지 않는다.
+24 MHz에서는 19 kHz PWM period당 약 1260 sample을 얻는다. 긴 timeout capture에서 buffer가 부족하면 sample rate를 낮추되 2 MHz 아래로 내리지 않는다.
 
 ## Evidence file convention
 
@@ -174,7 +174,7 @@ Measure:
 
 | Metric | Acceptance |
 | --- | --- |
-| PWM frequency | 19.8~20.2 kHz |
+| PWM frequency | 18.8~19.2 kHz, vendor upper limit 20 kHz 이하 |
 | Duty at 100 permille request | 9.5~10.5% |
 | Inactive channel | No active PWM pulse |
 | DIR stability | Commanded static level; no unexpected toggle |
@@ -349,6 +349,9 @@ clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completi
 | Sampled initial inactive interval | `PASS — scoped` | [`PNG`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_boot_inactive_pass.png), [`SR/PVS`](../assets/captures/logic_analyzer/README.md) | D0~D3 transition 없음. 외부 reset marker가 없어 reset 순간 전체를 독립 입증한 결과로 확대하지 않음 |
 | CH1 20 kHz / 10% | `PASS` | [`period`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_period_20khz_pass.png), [`high time`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_high_time_5us_pass.png) | 49.75 us = 20.1005 kHz, high 5.00 us, duty 약 10.05% |
 | CH2 20 kHz / 10% | `PASS` | [`period`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_period_20khz_pass.png), [`high time`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_high_time_5us_pass.png) | 49.75 us = 20.1005 kHz, high 5.00 us, duty 약 10.05% |
+| Final perfboard CH1 19 kHz / 10% | `PASS` | [2026-08-18 report](../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | 19.049003 kHz, duty 10.0138%, pre/post DIR zero 2.017/2.020 ms |
+| Final perfboard CH2 19 kHz / 10% | `PASS` | [2026-08-18 report](../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | 19.057518 kHz, duty 10.0030%, pre/post DIR zero 2.006/2.029 ms |
+| Final hook-0 perfboard all-LOW | `PASS` | [2026-08-18 report](../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | D0~D3 5 s HIGH sample/transition 0, B1 no output |
 | CH1 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm1_post_dir_zero_ge1ms_pass.png) | 1.994 ms / 2.03875 ms, 모두 최소 1 ms 이상 |
 | CH2 direction settle | `PASS` | [`pre-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_pre_dir_zero_ge1ms_pass.png), [`post-DIR`](../assets/screenshots/logic_analyzer/2026-08-03_stm32_motor_io_pwm2_post_dir_zero_ge1ms_pass.png) | 1.54725 ms / screenshot 약 2.05832 ms; raw edge review 약 2.040 ms, 모두 최소 1 ms 이상 |
 | DISARM latency | `PASS — scoped first baseline` | [2026-08-04 report](../docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md), [SR/PVS/PNG](../assets/captures/logic_analyzer/README.md) | UART RX end -> both PWM last edge 23.50 us; numeric release bound TBD |
@@ -366,13 +369,13 @@ clean인지 확인한다. 커밋 요청이 없으면 `-RequireClean`을 completi
 
 ```text
 Logic analyzer: AVAILABLE / CAPTURED
-Boot inactive + 20 kHz/10% + direction settle subtests: PASS
+Boot inactive + final perfboard 19 kHz/10% + direction settle subtests: PASS
 DISARM pin-edge latency: PASS — scoped first baseline, 23.50 us
 Timeout shutdown: PASS — scoped baseline, calibrated 299.690 ms for timeout_ms=300
 Software-fault stop/latch: PASS — bounded next-pulse suppression; exact positive latency not claimed
 External-reset-marker motor-pin capture: initial FAIL -> 10 kΩ pull-down retest PASS
 Safe-image UART board runtime: PASS — exact image/setup provenance scoped
-Motor-disconnected MCU low-level safety chapter: PASS
+Motor-disconnected MCU and MDD10A-input logic safety chapter: PASS
 First powered motor test: NOT READY
 ```
 

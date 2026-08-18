@@ -269,7 +269,7 @@ class FirmwareContractTest(unittest.TestCase):
             "TIM5.EncoderMode": "TIM_ENCODERMODE_TI12",
             "TIM4.Channel-PWM\\ Generation1\\ CH1": "TIM_CHANNEL_1",
             "TIM4.Channel-PWM\\ Generation2\\ CH2": "TIM_CHANNEL_2",
-            "TIM4.Period": "4199",
+            "TIM4.Period": "4420",
             "RCC.APB1TimFreq_Value": "84000000",
             "USART1.VirtualMode": "VM_ASYNC",
             "USART2.VirtualMode": "VM_ASYNC",
@@ -283,7 +283,7 @@ class FirmwareContractTest(unittest.TestCase):
 
         timer_clock_hz = int(self.ioc["RCC.APB1TimFreq_Value"])
         period_counts = int(self.ioc["TIM4.Period"]) + 1
-        self.assertEqual(timer_clock_hz // period_counts, 20_000)
+        self.assertEqual(timer_clock_hz // period_counts, 19_000)
 
     def test_generated_pin_aliases_match_contract(self) -> None:
         definitions = parse_defines(self.source["main_h"])
@@ -308,7 +308,7 @@ class FirmwareContractTest(unittest.TestCase):
 
         for body, handle, period in (
             (tim3, "htim3", "65535"),
-            (tim4, "htim4", "4199"),
+            (tim4, "htim4", "4420"),
             (tim5, "htim5", "4294967295"),
         ):
             self.assert_assignment(body, f"{handle}.Init.Prescaler", "0")

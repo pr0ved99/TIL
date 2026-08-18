@@ -2,9 +2,9 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-12 UART Gate C closeout + MCU timeout/fault/reset-boot safety closeout + external 10 kΩ motor-input pull-down decision
-- 현재 실행 위치: `G3 PASS — motor-disconnected MCU-pin scope`, `G4A PARTIAL`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. PWM/direction timing, active DISARM 23.50 us, command timeout, software-fault next-pulse suppression/latch와 external-reset boot no-output을 통과했다. Pull-down 없는 reset의 약 159 ms 부동 HIGH는 FAIL evidence로 보존했고 네 신호에 각 `10 kΩ` pull-down을 적용한 재시험은 5 s 전 구간 LOW였다. 모든 hook `0U`, contract `15/15`, final exact startup과 READY 후 15.4 s/TEL 155 safe UART도 PASS했다. RevB 영구 pull-down/continuity, board power/back-power, Physical E-stop, MDD10A power stage와 actual motor가 남아 전체 release는 `PARTIAL`이다.
-- 기구 제작 상태: Rev A release 준비 완료, 주문 접수 전
+- Revision: 2026-08-18 MG540 vendor data + final perfboard nominal 19 kHz active 6-step/safe-restore closeout
+- 현재 실행 위치: `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Permanent pull-down/5-Net, board power/back-power, final 19 kHz/10% 6-step와 hook-0 all-LOW를 통과했다. 다음 직렬 Gate는 Physical E-stop `T-ESTOP-001~005`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- 기구 제작 상태: PC 3T adapter plate 발주 진행, small hole 3.0 mm 수정본 전달; 제작품 fit 미검증
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
 이 문서는 Tracked Mobile Robot 프로젝트의 최신 전체 실행 로드맵이다. 날짜별 progress log는 실제로 수행한 일을 기록하고, 이 문서는 다음에 무엇을 해야 하며 어떤 증거가 있어야 다음 단계로 갈 수 있는지를 정의한다.
@@ -88,7 +88,7 @@ PC 또는 ESP32의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 2026-08-12 현재 기준선
+## 2026-08-18 현재 기준선
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
@@ -97,15 +97,19 @@ PC 또는 ESP32의 속도 명령을 받아
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
-| Adapter plate Rev A release | `PASS` | A4 1:1 user comparison, vector/scale preflight, release hash | 30~60분 E-stop 부품 장착 동결 확인 뒤 prototype RevA 즉시 주문 또는 final-hole freeze까지 보류 |
+| Adapter plate release/order | `PASS / ORDERED` | A4 1:1 비교, PC 3T 견적·발주, 업체 최소 타공에 맞춘 3.0 mm 수정본 | 입고 후 치수/fit/절연 확인 |
 | Adapter plate fabricated fit | `BLOCKED` | 제작품 미입고 | 입고 후 fit check |
-| STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout shutdown, fault next-pulse suppression/latch와 signal별 10 kΩ 적용 reset-boot LOW PASS | RevB 영구 pull-down/continuity; G4B와 Physical E-stop |
-| MDD10A logic input | `PARTIAL` | powered/no-motor 6-step와 functional all-off, MCU waveform/active safety PASS | RevB pull-down, MDD10A power-stage/actual motor stop, Physical E-stop closure |
+| STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout/fault/reset과 hook-0 safe restore PASS | 기준선 보존; Physical E-stop |
+| MDD10A logic input | `PASS — motor-disconnected input scope` | Permanent pull-down/5-Net, powered/no-motor, final CH1/CH2 19.049/19.058 kHz 6-step와 final all-LOW PASS | MDD10A power-stage/actual motor stop, Physical E-stop closure |
 | Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
-| First motor no-load | `NOT TESTED` | motor, duty, current data 없음 | 앞선 안전 Gate 후 실행 |
+| First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | Physical E-stop Gate 뒤 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
-Current strict-parser UART의 Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime은 actual board log로 통과했다. 최신 motor-output safety cycle 뒤에도 모든 hook `0U`, contract `15/15`, exact startup과 READY 후 15.4 s/TEL 155 safe 회귀를 완료했다. UART Gate C required runtime scope는 PASS지만 raw log에 artifact hash와 physical setup metadata가 없어 exact linkage/provenance는 pending이다. Motor-output은 waveform/direction, active DISARM, timeout, software fault와 external reset까지 motor-disconnected MCU pin에서 통과했다. Pull-down 없는 reset FAIL과 signal별 external `10 kΩ` 적용 PASS를 모두 보존했다. MDD10A power stage, RevB 영구 pull-down/continuity, board power/back-power, Physical E-stop과 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다 Gate 상태와 evidence boundary를 기준으로 판단한다.
+Current strict-parser UART Gate와 MCU-pin safety baseline을 보존한다. Permanent pull-down/5-Net,
+board power/back-power와 final perfboard MDD10A-input 19 kHz active 6-step/safe restore까지 PASS했다.
+WHEELTEC 회신으로 rated/stall current 입력은 확보했지만 K1/F1/main-wire coordination,
+Physical E-stop, MDD10A power stage와 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다
+Gate 상태와 evidence boundary를 기준으로 판단한다.
 
 ## 실행 대단원과 예상 작업시간
 
@@ -280,7 +284,7 @@ RELEASE PASS / ORDER NOT SUBMITTED / FABRICATED FIT BLOCKED
 
 - MDD10A channel 1/2의 차량 left/right mapping
 - 첫 motor 후보
-- PWM frequency: target `20 kHz`, actual `20.1005 kHz` 계측 PASS
+- PWM frequency: WHEELTEC `5~20 kHz`; historical 20 kHz baseline `20.1005 kHz`, final nominal `19 kHz`
 - direction polarity와 vehicle-forward 정의
 
 Bench-confirmed pin mapping:
@@ -301,7 +305,7 @@ Bench-confirmed pin mapping:
 5. `PWM 0 -> DIR 변경 -> PWM 재개` 순서를 구현한다.
 6. DISARMED, timeout와 fault path가 실제 compare value를 0으로 만드는 함수를 공유하게 한다.
 
-현재 checkpoint의 구현은 `PWM 0 -> 1 ms PWM-zero settle -> DIR 변경 -> 1 ms post-DIR settle -> PWM 재개` 순서다. 2026-08-03 motor-disconnected logic-analyzer capture에서 양 채널은 period `49.75 us`, frequency `20.1005 kHz`, high time `5.00 us`, duty 약 `10.05%`였다. Direction 전환의 PWM-zero 구간은 channel 1 pre/post `1.994/2.03875 ms`, channel 2 pre/post `1.54725/약 2.040 ms`로 모두 최소 `1 ms`를 만족했다. 2026-08-12 external reset capture에서는 pull-down 미적용 FAIL을 발견했고 `PC8/PB6/PC9/PB7` 각 `10 kΩ` pull-down 적용 후 5 s 전 구간 LOW를 확인했다.
+현재 checkpoint의 구현은 `PWM 0 -> 1 ms PWM-zero settle -> DIR 변경 -> 1 ms post-DIR settle -> PWM 재개` 순서다. 2026-08-03의 20.1005 kHz는 historical baseline이다. WHEELTEC 상한 margin을 위해 2026-08-18 TIM4 period를 `4420`으로 변경했고 final perfboard input에서 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty와 direction 전후 약 2 ms zero interval을 확인했다. 2026-08-12 external reset pull-down 미적용 FAIL과 signal별 `10 kΩ` 적용 5 s all-LOW도 보존한다.
 
 시험 조건:
 
@@ -353,6 +357,9 @@ PASS — motor-disconnected MCU-pin scope; timeout은 configured 300 ms 주변 b
 - 2026-08-11 T-BRIDGE-008A partial-frame-name ACK rejection/recovery subvector도 PASS했다. `AC,...`을 unknown frame으로 1회 거부하고 500 ms same-seq retry 뒤 exact ACK/PONG에서만 READY가 열렸다. 시험 뒤 모든 hook `0U`, contract `15/15`, full build `0 errors / 0 warnings`, controlled literal 부재, safe reflash와 post-READY 약 16.27 s/TEL 164 safe UART regression을 완료했다. 당시 safe ELF SHA-256은 `3567C9266C2D46DD920C8DAD6DE29656EBBC0BA73AB35CF1D55CC9368EABF4CA`다. Physical setup provenance는 pending이었다.
 - 2026-08-12 embedded CR, control byte `0x01`와 overlong startup response를 거부하고 same-seq retry 뒤 exact ACK/PONG에서만 READY가 되는 남은 T-BRIDGE-008A vectors를 PASS했다. T-BRIDGE-008B도 malformed/unknown STM32 command 8/8 거부, TEL 200/200 safe와 final matching PING/PONG recovery를 PASS했다. All-hooks-`0U`, contract `15/15` 뒤 final exact startup, READY 후 약 12.2 s와 post-READY TEL 123/123 safe를 확인했다. Safe STM32 ELF SHA-256은 `46A80919B8ECE0521CBFA0861D74446F51904F7D9967517DCDC63118EA73B98A`, safe ESP32 BIN SHA-256은 `4321B4BF2811590167EB7DCEF58CA84ABE5C0C7EEC67656E20D0EFD787A2724D`다. Exact runtime linkage와 log-embedded setup provenance는 pending이다.
 - 2026-08-12 motor-disconnected timeout/fault/reset 시험을 수행했다. 300 ms timeout은 UART-calibrated frame-end-to-last-edge 약 `299.690 ms`와 이후 약 `8.939 s` no-reactivation으로 통과했다. Software fault는 marker 뒤 expected next PWM pulse가 억제되고 약 `2.052 s` latch를 유지했다. External reset의 부동 HIGH FAIL 뒤 네 signal별 `10 kΩ` pull-down을 추가해 5 s 전 구간 LOW를 확인했다. 최종 모든 hook `0U`, contract `15/15`, READY 뒤 15.4 s/TEL 155 safe UART 회귀도 통과했다. 상세 evidence boundary는 verification report 16을 따른다.
+- 2026-08-18 permanent perfboard MDD10A-input에서 nominal 19 kHz 양 채널 active 6-step,
+  inactive-channel LOW와 direction 전후 약 2 ms zero interval을 PASS했다. 시험 뒤 모든 hook을
+  `0U`로 복구하고 contract `15/15`, B1 no-output와 final 5 s D0~D3 all-LOW를 확인했다.
 
 #### G4B. Board power integration
 
@@ -375,7 +382,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL - G3 motor-disconnected MCU-pin scope와 UART Gate C required runtime PASS; G4A functional logic까지 통과. RevB permanent 10 kΩ/continuity, exact board-artifact/setup provenance, MDD10A power stage, Physical E-stop, G4B와 G4C pending
+PARTIAL - G3와 G4A motor-disconnected input scope, permanent 10 kΩ/5-Net, G4B board power와 final 19 kHz active/safe restore PASS. Exact artifact linkage, fabricated fit, MDD10A power stage, Physical E-stop와 actual motor pending
 ```
 
 ### G5. Encoder safety and first motor no-load
@@ -526,7 +533,9 @@ board power policy -> encoder identification/safe voltage -> final integration
 1. 2026-08-03 waveform/direction, 2026-08-04 active DISARM 23.50 us, Gate A/B와 wrong-ACK raw logs, encoder `1560 counts/output rev`와 forward-positive mapping을 회귀 기준으로 보존한다.
 2. 2026-08-12 report 15, all-hooks-`0U` source, contract `15/15`와 UART Gate C safe artifacts를 완료 기준선으로 보존한다. 다음 evidence부터 raw flash transcript, retained binary hash와 physical setup metadata를 함께 기록한다.
 3. 2026-08-12 report 16과 timeout/fault/reset FAIL/PASS raw capture, external `10 kΩ` pull-down 결정, final post-READY TEL 155 safe 회귀를 대단원 1 기준선으로 보존한다.
-4. 네 `10 kΩ`을 RevB schematic/permanent wiring에 반영하고 continuity를 확인한다.
+4. 네 `10 kΩ`을 RevB schematic에 반영한 기준본에서 fixed occupancy와 Onshape 경계를
+   대조한 `55 x 37홀` component/solder-side 디지털 배치를 만든다. KiCad-net-to-hole review와
+   1:1 실물 대조 뒤 permanent wiring에 반영하고 continuity를 확인한다.
 5. Board power/back-power와 Physical E-stop MVP gate인 `T-ESTOP-001~005`를 닫는다.
 6. 위 safety chain이 모두 PASS한 뒤에만 first lifted/no-load actual motor 시험을 5~10% 제한으로 수행한다.
 7. 같은 lifted setup에서 `T-ESTOP-007` 실제 정지와 no-auto-restart evidence를 확보한다.

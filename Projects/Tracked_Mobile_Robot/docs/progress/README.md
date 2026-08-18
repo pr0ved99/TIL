@@ -4,6 +4,9 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
+Latest: [`2026-08-18_progress.md`](2026-08-18_progress.md) — WHEELTEC MG540 정격/스톨 및
+PWM 범위 회신, nominal 19 kHz 확정, final perfboard active 6-step와 hook-0 all-LOW PASS.
+
 ## How To Use
 
 - Create or update `YYYY-MM-DD_progress.md` for each work session.
@@ -41,6 +44,10 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-08-16 | [`2026-08-16_progress.md`](2026-08-16_progress.md) | VeroRoute `55 x 37` target-hole-area에서 `C1..C55/R1..R37` 전체 포함을 확인하고 PDF export Gate로 전환 |
+| 2026-08-15 | [`2026-08-15_progress.md`](2026-08-15_progress.md) | 실사 joint + Onshape 교차검토로 만능기판 예비 좌표/keep-out을 작성하고, 실물 dry placement 전 VeroRoute 2.40 기반 1:1 component/solder-side와 KiCad-net-to-hole Gate 채택 |
+| 2026-08-14 | [`2026-08-14_progress.md`](2026-08-14_progress.md) | 실제 만능기판 component-side 정면 사진을 `assets/photos/perfboard`에 보존하고 fixed-header/open-area 확인 및 다음 solder-side/scale 입력 정의 |
+| 2026-08-13 | [`2026-08-13_progress.md`](2026-08-13_progress.md) | Physical E-stop RevB 기능 회로도 재배치, 전체 Reference/Value `50/40 mil`, ERC 0/0·넷리스트 120 보존; 기능 흐름 재배치는 학습 후 후속 작업으로 동결 |
 | 2026-08-12 | [`2026-08-12_progress.md`](2026-08-12_progress.md) | UART Gate C PASS에 이어 STM32 timeout/fault/reset-boot MCU-pin 시험 완료; reset 부동 HIGH FAIL을 `10 kΩ` pull-down으로 개선·재시험 PASS, all-hooks-`0U`/contract `15/15`/final safe UART PASS |
 | 2026-08-11 | [`2026-08-11_progress.md`](2026-08-11_progress.md) | T-BRIDGE-008A partial-frame-name rejection/recovery PASS; all-hooks-`0U`, contract `15/15`, safe full-build/flash와 post-READY TEL 164/164 회귀 PASS; invalid terminator/control next |
 | 2026-08-10 | [`2026-08-10_progress.md`](2026-08-10_progress.md) | Engineering Basis·표준 추적성 정본과 E-stop Step 1~7 진행; K2 분리/5 V-opto 보정, S0/S2/K2/opto 후보 선정, K1/F1 motor-data blocked |

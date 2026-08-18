@@ -161,6 +161,23 @@ PC8/PB6/PC9/PB7 각각 signal-to-GND `10 kΩ`을 적용했다. 5 s/20 M samples�
 signal의 HIGH sample과 transition이 모두 0이었다. PA5/LD2는 motor control output이 아니며
 fault marker 의미는 firmware 실행 중에만 유효하므로 reset no-output acceptance에서 제외했다.
 
+## 2026-08-18 Final Perfboard Active DIR/PWM and Safe Restore
+
+Channel map은 `D0=DIR1`, `D1=PWM1`, `D2=DIR2`, `D3=PWM2`, analyzer GND=common GND다.
+Motor는 분리했고 probe는 permanent perfboard 뒤 MDD10A input-side에 연결했다.
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| `2026-08-18_perfboard_pwm20k_baseline_remeasurement.sr` | Historical nominal-20k baseline, average about 20.054 kHz | `BF960D9123BE7DF4B9EAA94880EA995A0D6230F51129480590CA311F3B812817` |
+| `2026-08-18_perfboard_pwm19k_final_remeasurement.sr` | 19.056238 kHz, 10.001285% standalone final setting check | `8842221E0D3AE167C36C65EFBFD7F0FD64C94A4B83706392D2F531B3324E23E8` |
+| `2026-08-18_perfboard_pwm19k_active_6step_capture_A.sr` | CH1 19.049003 kHz/10.0138%, DIR pre/post zero 2.017/2.020 ms | `5795153918B66DFAFE84E158747A936159B4C0650C911F81DA279AE6ED4C3662` |
+| `2026-08-18_perfboard_pwm19k_active_6step_capture_B.sr` | CH2 19.057518 kHz/10.0030%, DIR pre/post zero 2.006/2.029 ms | `8E6D9EF688D924124D2839CF838839239A691FFD274986932218AF02EAE7B6E3` |
+| `2026-08-18_perfboard_pwm19k_hook0_final_all_low.sr` | 1 MHz/5 M, D0~D3 HIGH sample/transition 0 | `4964812C2FFDD07EC788E993CF226D130EC1E347239941E3C54EB6119271D76D` |
+
+WHEELTEC PWM 회신 범위 `5~20 kHz`에 margin을 두기 위해 current firmware nominal은
+19 kHz/TIM4 period `4420`이다. 상세 판정은
+[`../../../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../../../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)를 따른다.
+
 ## Integrity and Reuse Notes
 
 - 판정 수치를 다시 검토할 때는 `.sr`을 PulseView에서 열고 위 channel map을 적용한다.

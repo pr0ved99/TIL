@@ -76,11 +76,11 @@ MDD10A에는 BTS7960식 별도 logic VCC pin이 없다. Signal-only 단계에서
 | Item | Configured value | Physical verification |
 | --- | --- | --- |
 | Timer/channel | TIM4 CH1 / CH2 | Routing response confirmed |
-| Timer period | `4199` | Source/CubeMX setting confirmed |
-| Intended PWM frequency | 20 kHz | 2026-08-03 logic analyzer: both channels 49.75 us = 20.1005 kHz PASS |
-| Temporary duty limit | `100 / 1000 = 10%` | Both channels high 5.00 us / period 49.75 us = 약 10.05% PASS |
-| Pre-DIR PWM-zero settle | `1 ms` minimum | CH1 1.994 ms, CH2 1.54725 ms PASS |
-| Post-DIR settle | `1 ms` minimum | CH1 2.03875 ms, CH2 raw edge 약 2.040 ms PASS |
+| Timer period | `4420` | Source/CubeMX setting confirmed |
+| Intended PWM frequency | nominal 19 kHz | 2026-08-18 final perfboard: CH1 19.049 kHz, CH2 19.058 kHz PASS |
+| Temporary duty limit | `100 / 1000 = 10%` | CH1 10.0138%, CH2 10.0030% PASS |
+| Pre-DIR PWM-zero settle | `1 ms` minimum | CH1 2.017 ms, CH2 2.006 ms PASS |
+| Post-DIR settle | `1 ms` minimum | CH1 2.020 ms, CH2 2.029 ms PASS |
 | Direction-change trigger | Any requested DIR-level change | Source confirmed; covers stopped-to-opposite-direction start |
 | Final test macro | `MOTOR_OUTPUT_PIN_TEST_ENABLED 0U` | Rebuilt/flashed after retest; final build `0 errors / 0 warnings` |
 | Final fault-injection macro | `MOTOR_FAULT_INJECTION_TEST_ENABLED 0U` | Source and B1 no-output regression confirmed |
@@ -130,7 +130,7 @@ DIR이 단독으로 바뀌더라도 PWM이 0이면 motor output을 만들지 않
 | --- | --- | --- | --- |
 | `PB6 / PWM1` | 10% | DMM 평균값과 MDD channel 1 LED 반응이 단계 변화와 일치 | PASS for routing |
 | `PB7 / PWM2` | 10% | DMM 평균값과 MDD channel 2 LED 반응이 단계 변화와 일치 | PASS for routing |
-| Exact frequency/duty | 19.8~20.2 kHz / 9.5~10.5% | CH1/CH2 모두 20.1005 kHz, high 5.00 us, 약 10.05% | PASS |
+| Historical frequency/duty | 당시 20 kHz nominal / 9.5~10.5% | CH1/CH2 모두 20.1005 kHz, high 5.00 us, 약 10.05% | PASS — superseded by final 19 kHz setting |
 
 정확한 파형 판정은 2026-08-03 4 MHz logic-analyzer 캡처에 귀속한다. High-time 화면의 약 200 kHz 표시는 `1 / 5 us`일 뿐 PWM 반복 주파수가 아니며, 주파수는 rising-to-rising 49.75 us로 판정했다.
 
@@ -259,6 +259,29 @@ Evidence:
 
 - [`../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md`](../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md)
 
+## Test 8: Permanent Perfboard Active 6-Step and Safe Restore
+
+2026-08-18에는 motor를 계속 분리하고 permanent R9~R12/J5 5-Net을 통과한 MDD10A
+input-side에서 6-step을 다시 계측했다. WHEELTEC 회신의 PWM 허용범위 `5~20 kHz`를
+반영해 기존 20 kHz nominal을 19 kHz로 변경했다. TIM4 period는 `4420`이다.
+
+| Check | Observed | Result |
+| --- | --- | --- |
+| CH1 PWM | 19.049003 kHz, 10.0138% | PASS |
+| CH2 PWM | 19.057518 kHz, 10.0030% | PASS |
+| CH1 pre/post DIR zero | 2.017/2.020 ms | PASS |
+| CH2 pre/post DIR zero | 2.006/2.029 ms | PASS |
+| Inactive channel | all LOW | PASS |
+| Initial/final state | all LOW | PASS |
+| MDD10A LED sequence | M1A -> M1B -> OFF -> M2A -> M2B -> OFF | PASS |
+| Safe source restore | 세 controlled hook 모두 `0U`, contract 15/15 | PASS |
+| Final B1/runtime capture | B1 no output, D0~D3 5 s HIGH/transition 0 | PASS |
+
+이 시험으로 permanent perfboard logic path는
+`PASS — motor-disconnected MDD10A-input scope`로 닫는다. 상세 raw capture hash와 증거
+경계는
+[`../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)를 따른다.
+
 ## Stop Conditions
 
 다음 중 하나라도 발생하면 즉시 시험을 중단한다.
@@ -276,7 +299,8 @@ Evidence:
 | --- | --- | --- |
 | STM32 pin-only boot/idle zero | PASS | PB6, PB7, PC8, PC9 모두 0 V |
 | PWM1/PWM2 routing | PASS | DMM/LED minimum verification |
-| Exact 20 kHz / 10% waveform | PASS | 20.1005 kHz, high 5.00 us, 약 10.05% on both channels |
+| Historical 20 kHz / 10% waveform | PASS — superseded | 20.1005 kHz baseline; vendor upper-limit margin 때문에 final nominal 19 kHz로 변경 |
+| Final perfboard 19 kHz / 10% waveform | PASS | CH1/CH2 19.049/19.058 kHz, 약 10%; MDD10A-input scope |
 | DIR1/DIR2 behavior | PASS | 교정 후 M1A/M1B, M2A/M2B 선택 정상 |
 | PWM/DIR wiring fault | RESOLVED | 양 채널 swap 교정 후 전체 sequence 재시험 |
 | Powered/no-motor driver check | PASS | 12.35 V, motor disconnected, 이상 증상 없음 |
@@ -284,11 +308,15 @@ Evidence:
 | Active timeout/DISARM output zero | PASS — functional LED scope | Motor disconnected, temporary 10% hook; actual pin waveform/timing 미계측 |
 | Software fault output zero/latch | PASS — functional DMM/LED scope | Motor disconnected; all four STM32 output pins 0 V while latched |
 | Physical E-stop output zero | NOT TESTED | E-stop 미구현/미시험 |
-| Final test-disabled safe state | PASS | Button macro와 UART output hook `0U`, all output LEDs off |
+| Final test-disabled safe state | PASS | 모든 controlled hook `0U`, B1 no output, final D0~D3 5 s all-LOW |
 
 Overall result: `PARTIAL`
 
-이번 단계로 정적 신호 routing, MDD10A channel selection, 정확한 PWM frequency/duty, direction pre/post zero timing, powered/no-motor timeout/DISARM functional shutdown과 software fault output-zero/latch를 확인했다. Active DISARM/timeout/fault edge-to-edge shutdown latency, physical E-stop, final safe-image board flash 회귀와 motor-connected shutdown이 남아 있으므로 전체 motor-output verification을 `PASS`로 종료하지 않는다.
+이번 단계로 정적 신호 routing, MDD10A channel selection, final 19 kHz PWM frequency/duty,
+direction pre/post zero timing, powered/no-motor timeout/DISARM functional shutdown, software
+fault output-zero/latch와 permanent perfboard active/safe-restore를 확인했다. Physical E-stop,
+MDD10A power-stage와 motor-connected shutdown이 남아 있으므로 전체 drivetrain verification을
+`PASS`로 종료하지 않는다.
 
 ## Next Step
 

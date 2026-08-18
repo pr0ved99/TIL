@@ -26,7 +26,7 @@ K2 control/seal-in relay: PREFERRED CANDIDATE, LOW-VOLTAGE GATE OPEN
 S0-B sense conditioner: PREFERRED CANDIDATE, VALUE/BENCH GATE OPEN
 K1 motor-power relay: NOT SELECTED / MOTOR DATA BLOCKED
 F2 control fuse: PRELIMINARY 0.5 A TIME-DELAY CANDIDATE
-F1/main wire/connectors: NOT SELECTED / MOTOR DATA BLOCKED
+F1/main wire/connectors: NOT SELECTED / VENDOR DATA RECEIVED, COORDINATION OPEN
 ADC divider/clamp/bleed values: NOT SELECTED
 Purchase release: NOT APPROVED
 ```
@@ -240,9 +240,26 @@ K1 release/clamp timing <= T_K1_OPEN_MAX
 | Panasonic `ACW212` | 2 Form A, 10~16 V coil range, 120 A/5 s carrying; high-output motor failsafe application | Carry evidence는 강하지만 published switch-off line이 200 A resistive 3회이고 welding terminal; 현재 K1 확정 근거로 부족 |
 | Schneider `RPF2AJD` | 2NO, 12 V, nominal 30 A class | Official motor-load make/break evidence가 없고 minimum load도 자기유지와 불일치; K1에서 제외 |
 
-Motor label `MG540P30_12V`와 encoder pinout 사진은 식별 증거일 뿐 current rating 증거가
-아니다. 제조사에 요청한 no-load/rated/start/stall current 답변과, 필요하면 current-limited
-bench characterization이 들어오기 전 K1을 구매 승인하지 않는다.
+Motor label `MG540P30_12V`와 encoder pinout 사진만으로는 current rating을 확정할 수 없었다.
+그러나 2026-08-17 WHEELTEC 기술지원 회신으로 motor당 rated `1.44 A`, stall `9 A`,
+rated power `15 W`, rated speed `280 rpm`, rated torque `2.6 kgf·cm`, stall torque
+`10 kgf·cm`와 PWM `5~20 kHz`를 확보했다. 이 회신은 정식 데이터시트 원본이 아니라
+제조사 지원 답변이며 starting current, terminal resistance, temperature/duty-cycle 상세는
+여전히 없다. 근거 정본은
+[`../assets/vendor/wheeltec/2026-08-17_mg540p30_12v_support_reply_ko.md`](../assets/vendor/wheeltec/2026-08-17_mg540p30_12v_support_reply_ko.md)다.
+
+따라서 two-motor steady benchmark는 `2 x 1.44 A = 2.88 A`, simultaneous stall envelope는
+`2 x 9 A = 18 A`로 계산을 시작할 수 있다. 다만 이 두 값만으로 K1을 구매 승인하지 않는다.
+Starting pulse, MDD10A current limiting, fuse time-current, DC motor-load make/break, harness
+temperature rise와 실제 current-limited bench evidence를 함께 닫아야 한다.
+
+2026-08-16에는 WHEELTEC가 공개한 `R1/R3/R3X/TT` chassis 자료 묶음도 로컬에서 전수
+검색했다. PDF 59개, 문서명 71개, ZIP 27개의 member/source text와 STP/DWG 등 loose
+CAD/text 파일에서 `MG540`, `540P30`, rated/start/stall-current 계열 근거가 0건이었다.
+미완료 표시가 남은 파일 2개는 serial terminal과 waveform-viewer 실행 파일이므로 이
+결론에 영향을 주지 않는다. 이 자료 묶음 자체는 MG540 식별·전류 정격의 1차 근거로
+채택하지 않는다. 이후 별도로 받은 2026-08-17 기술지원 회신이 rated/stall current 입력을
+제공했지만, K1/F1 승인에는 위의 coordination 계산이 계속 필요하다.
 
 ## F2 control fuse preliminary calculation
 
@@ -307,17 +324,20 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 | S2 exact assembly | Conditional | `ZB5AA3 + ZB5AZ009 + ZBE1016` official minimum-load closure와 actual momentary NO continuity |
 | K2 exact model | Conditional | `V_K2_COIL_MIN >= 9.0 V` 또는 더 낮은 pickup relay 재선정 |
 | S0-B conditioner | Conditional | KiCad calculation, PC7 LOW/HIGH DMM table와 wire-open test |
-| K1 | Blocked | Motor official current data or approved characterization plus DC motor-load comparison |
+| K1 | Conditional / calculation open | Vendor rated 1.44 A/stall 9 A per motor 확보; two-motor envelope, DC motor-load make/break와 release 검토 |
 | F2 | Conditional | Exact fuse/holder datasheet와 time-current coordination |
-| F1/main wire/connectors | Blocked | `I_MOTOR_WORST`, harness and thermal calculation |
+| F1/main wire/connectors | Conditional / calculation open | 2.88 A rated-total/18 A stall-envelope를 시작값으로 time-current, fault, harness thermal 계산 |
 | Coil clamps | Open | Exact relay suppression data and release-time capture |
 | ADC networks | Deferred / post-MVP | Transient/input/source-impedance calculation and bench sweep; MVP blocker 아님 |
 
 ## 다음 단계
 
-1. Step 8 KiCad RevB에는 K2 분리 구조와 5 V optocoupler sense를 먼저 반영한다.
-2. K1/F1/main path는 `TBD` symbol과 계산 note를 유지하고 임의 part number를 넣지 않는다.
-3. Manufacturer motor reply가 오면 `I_MOTOR_WORST`를 닫고 K1/F1/wire를 다시 평가한다.
+2026-08-13에 Step 8 KiCad RevB functional schematic와 ERC `0/0`을 완료했다. 다음은 다음
+순서다.
+
+1. K1/F1/main path는 `TBD` symbol과 계산 note를 유지하고 임의 part number를 넣지 않는다.
+2. 실제 만능기판과 보유 부품 사진/치수를 수집하고 occupied-hole map과 1:1 dry placement를 만든다.
+3. WHEELTEC rated/stall 회신을 입력으로 `I_MOTOR_WORST` 시나리오와 K1/F1/wire coordination을 계산한다.
 4. Powered test 전에 actual purchased S0/S2/K2의 label과 continuity를 확인한다.
 5. Motor-disconnected bench에서 no-auto-restart, wire-open, coil drop과 rail decay를 검증한다.
 6. PA4/PB0 divider/protection은 MVP 뒤 별도 diagnostic V-cycle에서 계산·실장·검증한다.

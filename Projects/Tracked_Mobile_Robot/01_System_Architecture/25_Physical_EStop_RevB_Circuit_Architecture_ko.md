@@ -358,7 +358,8 @@ Target pin candidates: PC7 MVP; PA4 / PB0 POST-MVP, NOT CONFIGURED OR TESTED
 Connector/test-point partition: BASELINED
 S0/S2/K2/opto part candidates: SELECTED IN STEP 7, CONDITIONAL
 K1/F1/main-current parts and exact values: TBD/TBR / MOTOR DATA BLOCKED
-RevB KiCad schematic/ERC: NOT STARTED
+RevB pull-down checkpoint schematic/ERC: PASS
+Physical E-stop schematic/ERC: NOT STARTED
 Firmware implementation: NOT STARTED
 Hardware verification: NOT TESTED
 Residual-risk acceptance: NOT PERFORMED
@@ -372,3 +373,23 @@ PA4/PB0 network 미구현은 그 이동을 막지 않지만 direct rail test poi
 Step 7의 official minimum-load review로 K1-AUX seal-in을 K2 2-contact control relay로,
 S0-B direct 3.3 V contact input을 5 V optocoupler conditioner로 보정했다. 상세 부품 판정은
 [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](26_Physical_EStop_Component_and_Rating_Selection_ko.md)를 따른다.
+
+## 2026-08-13 Step 8 implementation update
+
+위 `Step 6 gate` 표는 Step 6 종료 시점의 역사 상태를 보존한다. 이후 Step 8에서 Physical
+E-stop 기능 회로를 RevB-WIP KiCad에 반영했다.
+
+```text
+K2 split hold/K1-enable contacts: IMPLEMENTED IN FUNCTIONAL SCHEMATIC
+S0-A/S0-B and S2 connector boundaries: IMPLEMENTED
+VO617A-3 candidate sense path and R13/R14: IMPLEMENTED
+Direct rail/control/sense test points: IMPLEMENTED
+K1/F1/main-current exact parts and values: STILL TBD / MOTOR DATA BLOCKED
+ERC: 0 errors / 0 warnings
+Ref/Pin/Net tuples: 120 preserved
+Hardware/perfboard implementation: NOT TESTED / NO SOLDER RELEASE
+```
+
+현재 A4 배치는 전기적 WIP 검토본으로 승인했고 포트폴리오 수준의 기능 흐름 재배치는
+학습 후 별도 수행한다. 이는 actual part/rating, continuity, board power/back-power 또는
+`T-ESTOP-001~005` 통과를 뜻하지 않는다.

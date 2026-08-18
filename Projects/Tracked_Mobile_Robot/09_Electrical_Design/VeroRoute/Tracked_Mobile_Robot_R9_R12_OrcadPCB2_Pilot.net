@@ -1,0 +1,26 @@
+( { EESchema Netlist Version 1.1 derived from KiCad 10.0.5 export 2026-08-15 }
+ ( /PILOT_J5 PADS5 J5 MDD10A_LOGIC
+  (    1 /STM32_PC8_MDD10A_DIR1 )
+  (    2 /STM32_PB6_TIM4_CH1_MDD10A_PWM1 )
+  (    3 /STM32_PC9_MDD10A_DIR2 )
+  (    4 /STM32_PB7_TIM4_CH2_MDD10A_PWM2 )
+  (    5 GND )
+ )
+ ( /PILOT_R9 RESISTOR4 R9 10k
+  (    1 /STM32_PC8_MDD10A_DIR1 )
+  (    2 GND )
+ )
+ ( /PILOT_R10 RESISTOR4 R10 10k
+  (    1 /STM32_PB6_TIM4_CH1_MDD10A_PWM1 )
+  (    2 GND )
+ )
+ ( /PILOT_R11 RESISTOR4 R11 10k
+  (    1 /STM32_PC9_MDD10A_DIR2 )
+  (    2 GND )
+ )
+ ( /PILOT_R12 RESISTOR4 R12 10k
+  (    1 /STM32_PB7_TIM4_CH2_MDD10A_PWM2 )
+  (    2 GND )
+ )
+)
+*
