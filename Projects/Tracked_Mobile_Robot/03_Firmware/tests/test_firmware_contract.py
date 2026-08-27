@@ -195,6 +195,7 @@ class FirmwareContractTest(unittest.TestCase):
             "gpio_c": STM32_ROOT / "Core" / "Src" / "gpio.c",
             "tim_c": STM32_ROOT / "Core" / "Src" / "tim.c",
             "usart_c": STM32_ROOT / "Core" / "Src" / "usart.c",
+            "motor_output_h": STM32_ROOT / "Core" / "Inc" / "motor_output.h",
             "motor_output_c": STM32_ROOT / "Core" / "Src" / "motor_output.c",
             "mapper_h": STM32_ROOT / "Core" / "Inc" / "drive_command_mapper.h",
             "mapper_c": STM32_ROOT / "Core" / "Src" / "drive_command_mapper.c",
@@ -599,6 +600,73 @@ class FirmwareContractTest(unittest.TestCase):
             "motor_output_stop_all();",
             "__disable_irq();",
             "while (1)",
+        )
+
+    def test_signed_motor_output_adapter_contract(self) -> None:
+        header = compact_c(self.source["motor_output_h"])
+        self.assertIn(
+            "HAL_StatusTypeDefmotor_output_set_signed("
+            "int16_tleft_signed_permille,"
+            "int16_tright_signed_permille);",
+            header,
+        )
+
+        definitions = parse_defines(self.source["motor_output_c"])
+        expected_levels = {
+            "MOTOR_OUTPUT_LEFT_FORWARD_DIR_LEVEL": "GPIO_PIN_RESET",
+            "MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL": "GPIO_PIN_SET",
+            "MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL": "GPIO_PIN_RESET",
+            "MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL": "GPIO_PIN_SET",
+        }
+        for name, value in expected_levels.items():
+            with self.subTest(name=name):
+                self.assertEqual(single_define(definitions, name), value)
+
+        body = extract_function(
+            self.source["motor_output_c"],
+            "motor_output_set_signed",
+        )
+        compact_body = compact_c(body)
+        self.assertEqual(compact_body.count("motor_output_set_raw("), 1)
+
+        self.assertIn(
+            compact_c(
+                "status = motor_output_set_raw("
+                "left_duty_permille,"
+                "left_dir_level,"
+                "right_duty_permille,"
+                "right_dir_level"
+                ");"
+            ),
+            compact_body,
+        )
+
+        self.assertGreaterEqual(
+            compact_body.count("motor_output_stop_all();"),
+            2,
+        )
+        self.assert_tokens_in_order(
+            body,
+            "left_signed_permille < -(int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE",
+            "left_signed_permille > (int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE",
+            "right_signed_permille < -(int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE",
+            "right_signed_permille > (int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE",
+            "motor_output_stop_all();",
+            "return HAL_ERROR;",
+            "if (left_signed_permille < 0)",
+            "left_duty_permille = (uint16_t)(-left_signed_permille);",
+            "left_dir_level = MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL;",
+            "left_duty_permille = (uint16_t)left_signed_permille;",
+            "left_dir_level = MOTOR_OUTPUT_LEFT_FORWARD_DIR_LEVEL;",
+            "if (right_signed_permille < 0)",
+            "right_duty_permille = (uint16_t)(-right_signed_permille);",
+            "right_dir_level = MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL;",
+            "right_duty_permille = (uint16_t)right_signed_permille;",
+            "right_dir_level = MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL;",
+            "status = motor_output_set_raw(",
+            "if (status != HAL_OK)",
+            "motor_output_stop_all();",
+            "return status;",
         )
 
     def test_estop_reset_parser_contract(self) -> None:

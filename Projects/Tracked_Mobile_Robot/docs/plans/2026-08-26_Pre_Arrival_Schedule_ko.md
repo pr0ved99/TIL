@@ -99,10 +99,10 @@ flash하기 위해 카페 작업을 생략하지 않는다.
 | --- | --- | ---: | --- |
 | **08-26 수** | `P-01 [COMPLETED]` command owner와 UART ownership 동결 | 1.5~2 h | ESP32/PC 역할, 단일 motion owner와 source-loss timeout 규칙을 ADR-015 `Accepted`로 확정 |
 | **08-27 목** | `P-02A/P-02B [COMPLETED]` Git checkpoint, mapper source/build와 independent vectors/static source contract | 2~3 h | canonical `23/23 PASS`; C native execution/target runtime이 아니라는 evidence boundary 명시 |
-| **08-28 금** | `P-02C` production caller/adapter 계약과 첫 integration 단위 | 1~2 h | ARMED/E-stop/range gate 뒤 mapper 호출, signed-to-output 실패 시 zero 정책을 source/test로 고정 |
+| **08-28 금** | `P-02C-1 [COMPLETED EARLY 08-27]` signed-output adapter source/static/build; `P-02C-2` production caller가 다음 단위 | 1~2 h | adapter range/sign/fail-safe 계약과 canonical `24/24` PASS; incremental build 뒤 32-object forced rebuild PASS; no-caller section의 expected GC discard 경계 기록 |
 | **08-29 토** | Week 1 buffer | 0~2 h | `P-01/P-02` 누락 보완만 수행; PASS면 휴식 |
 | **08-30 일** | 휴식 | - | 작업 없음 |
-| **08-31 월** | `P-02C` saturation, 5~10% initial cap, sign-to-DIR/magnitude-to-PWM와 protocol integration | 2~3 h | out-of-range/zero/saturation 안전 동작과 all-hooks-`0U` 확인 |
+| **08-31 월** | `P-02C-2` production protocol/state caller integration, saturation과 5~10% initial cap 적용 | 2~3 h | mapper와 signed adapter 호출, out-of-range/zero/saturation 안전 동작과 all-hooks-`0U` 확인 |
 | **09-01 화** | `P-03` timeout 뒤 `DISARMED`, new ARM + new CMD recovery 구현·test | 2~3 h | timeout에서 output/stored command zero, state 전이와 stale command 미재생 test PASS |
 | **09-02 수** | `P-02/P-03` 통합 검증 | 2~3 h | host/static 전체 PASS, STM32 build PASS, motor/LiPo-disconnected board UART 회귀 PASS |
 | **09-03 목** | `P-04A` TEL schema와 applied left/right request/PWM, E-stop latch, command-age source 정의 | 2~3 h | 실제 runtime source와 아직 `TARGET PENDING`인 field를 구분한 mapping 표 완성 |

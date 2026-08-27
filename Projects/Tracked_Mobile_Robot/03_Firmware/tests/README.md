@@ -32,22 +32,35 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-27 Current P-02B Snapshot
+## 2026-08-27 Current P-02B / P-02C-1 Snapshot
 
-- `test_firmware_contract.py`: **19/19 PASS**
+- `test_firmware_contract.py`: **20/20 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **23/23 PASS**
-- 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
+- Canonical discovery: **24/24 PASS**
+- P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
+- P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
+  recompile와 ELF relink, **0 errors / 0 warnings**
+- P-02C-1 CubeIDE bundled ARM toolchain `make -B` validation: 32 objects full rebuild,
+  exit `0`, compiler/linker `warning:`/`error:` 0건, ELF `text=28236`, `data=172`, `bss=2832`
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
 mixing과 coupled saturation 순서를 검사한다. Python test가 C 함수를 직접 실행하지는 않으므로
 CubeIDE ARM build evidence와 함께 해석한다.
 
-이 결과는 P-02B source/build 계약을 닫지만, mapper가 production `CMD` caller에 연결됐다는
-뜻은 아니다. `P-02C` 통합, flash, board runtime, PWM/DIR waveform과 actual motor evidence는
-계속 pending이다.
+P-02C-1 정적 계약은 signed `-100~100` request의 range guard, provisional DIR 분리,
+magnitude 변환, raw output 1회 호출과 실패 시 stop-all 순서를 확인한다. Link map의
+`.text.motor_output_set_signed` address `0`은 함수가 object에는 컴파일됐지만 caller가 없어
+`--gc-sections`로 제거됐다는 뜻이다.
+
+`make -B` 결과의 warning 판정은 GUI 요약이 아니라 전체 build output에 진단 문자열이 없고
+process exit code가 0인 것을 기준으로 한다. 별도 strict check에서 `motor_output.c`는
+`-Wall -Wextra -Wconversion -Wsign-conversion -Werror -fsyntax-only`도 통과했다.
+
+이 결과는 P-02B와 P-02C-1 source/static/build 계약을 닫지만, mapper와 adapter가 production
+`CMD` caller에 연결됐다는 뜻은 아니다. `P-02C-2` caller integration, flash, board runtime,
+PWM/DIR waveform과 actual motor evidence는 계속 pending이다.
 
 ## 검증 스냅샷
 

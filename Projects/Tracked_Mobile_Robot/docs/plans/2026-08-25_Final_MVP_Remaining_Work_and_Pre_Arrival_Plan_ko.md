@@ -119,7 +119,7 @@ vx_mmps, w_mradps
 - command-source loss 시 output/stored command zero -> `DISARMED` -> new `ARM` + new `CMD` 정책
 - [`../../01_System_Architecture/19_Architecture_Decision_Record_ko.md`](../../01_System_Architecture/19_Architecture_Decision_Record_ko.md)의 ADR-015 `Accepted`
 - Current source에서 protocol RX는 `huart1` 하나, USART2 `HAL_UART_Receive*`는 0건이고
-  당시 host/static discovery는 `20/20 PASS`; 2026-08-27 mapper 검사를 포함한 current canonical은 `23/23 PASS`
+  당시 host/static discovery는 `20/20 PASS`; 2026-08-27 P-02B mapper checkpoint는 `23/23 PASS`, P-02C-1 signed adapter까지 포함한 current canonical은 `24/24 PASS`
 
 Evidence boundary:
 
@@ -128,7 +128,7 @@ Evidence boundary:
 
 ### `P-02` production open-loop command mapper
 
-상태: `P-02A/P-02B COMPLETE / P-02C PENDING`
+상태: `P-02A/P-02B COMPLETE / P-02C-1 SIGNED ADAPTER PASS / P-02C-2 CALLER PENDING`
 
 구현 범위:
 

@@ -782,9 +782,15 @@ motor safety decision을 소유한다.
 Source loss recovery는 output/stored command zero, `DISARMED`, new `ARM` + new `CMD` 순서다.
 
 Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current
-controlled hook은 모두 `0U`, host/static은 `20/20` PASS다. Exact runtime-to-artifact linkage와
-physical setup provenance 경계는 그대로 남는다. Production `CMD(vx,w)` mapper는 `P-02`,
-ADR-015 timeout recovery의 source/runtime 구현은 `P-03` 작업이며 현재 PASS로 주장하지 않는다.
+controlled hook은 모두 `0U`다. Host/static은 firmware contract `20/20` + mapper vectors `2/2` +
+UART frame `2/2`, 합계 `24/24 PASS`다. `P-02B` mapper source/static/full build와 `P-02C-1`
+signed-output adapter source/static 계약은 PASS했다. 사용자 CubeIDE Incremental Build는
+`motor_output.c`를 명시적으로 재컴파일하고 ELF를 링크해 `0 errors, 0 warnings`였지만,
+adapter는 아직 production caller가 없어 `--gc-sections`에서 제거된다. 따라서 `P-02C-2`
+production protocol/state caller integration과
+board runtime은 pending이다. Exact runtime-to-artifact linkage와 physical setup provenance 경계는
+그대로 남는다. ADR-015 timeout recovery의 source/runtime 구현은 `P-03` 작업이며 현재 PASS로
+주장하지 않는다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

@@ -2,8 +2,8 @@
 
 ## 문서 상태
 
-- Work package: `P-02A / P-02B`
-- 상태: `DESIGN + SOURCE + HOST/STATIC VECTOR PASS / P-02C NOT INTEGRATED`
+- Work package: `P-02A / P-02B / P-02C-1`
+- 상태: `MAPPER + SIGNED ADAPTER SOURCE/STATIC/BUILD PASS / P-02C-2 CALLER NOT INTEGRATED`
 - 작성일: 2026-08-26
 - 최종 갱신: 2026-08-27
 - 적용 범위: motor/LiPo-disconnected source, host/static test와 이후 저속 output request
@@ -141,7 +141,7 @@ Interface 규칙:
 
 ## 7. Signed request와 physical output의 경계
 
-Pure mapper는 GPIO polarity를 알지 못한다. P-02C의 별도 adapter가 다음 변환을 맡는다.
+Pure mapper는 GPIO polarity를 알지 못한다. P-02C-1에 구현한 별도 adapter가 다음 변환을 맡는다.
 
 ```text
 signed request > 0 -> forward DIR 후보 + magnitude PWM
@@ -154,7 +154,7 @@ signed request = 0 -> PWM 0
 MDD10A CH1/CH2가 실제 vehicle left/right motor로 이어지는지와 어느 DIR level이 actual
 forward인지는 powered drivetrain evidence가 없다.
 
-따라서 P-02C에서도 다음을 상수와 주석으로 명시하고, lifted low-duty test 전에는 final로
+P-02C-1은 다음을 상수와 주석으로 명시했으며, lifted low-duty test 전에는 final로
 주장하지 않는다.
 
 - logical left -> CH1: `PROVISIONAL`
@@ -188,17 +188,33 @@ Mapper 또는 output 적용이 실패하면 PWM을 모두 zero로 만들고 stor
 4. canonical discovery: firmware contract `19/19` + mapper vectors `2/2` + UART frame `2/2`, 합계 `23/23 PASS`
 5. STM32CubeIDE full Debug build: `0 errors, 0 warnings`
 
+2026-08-27 P-02C-1 결과:
+
+1. `motor_output_set_signed(int16_t left, int16_t right)` adapter source: `PASS`
+2. `-100~100` range guard, sign-to-provisional-DIR, magnitude-to-PWM, raw failure stop contract: `PASS`
+3. canonical discovery: firmware contract `20/20` + mapper vectors `2/2` + UART frame `2/2`, 합계 `24/24 PASS`
+4. STM32CubeIDE incremental Debug build가 `motor_output.c`를 다시 compile하고 ELF를 relink:
+   `0 errors, 0 warnings`
+5. CubeIDE bundled ARM toolchain `make -B`: 전체 32 objects 강제 재컴파일, exit `0`,
+   compiler/linker diagnostic 0건, ELF `text=28236`, `data=172`, `bss=2832`
+6. `motor_output.c` 단독 strict syntax check:
+   `-Wall -Wextra -Wconversion -Wsign-conversion -Werror`, exit `0`
+7. Link map의 `.text.motor_output_set_signed` address `0`: caller가 없어 `--gc-sections`에서
+   제거된 expected no-caller 상태
+
 다음 단계:
 
-1. `P-02C`: signed request adapter와 protocol state gate를 연결한다.
+1. `P-02C-2`: mapper와 signed adapter를 production protocol state gate에 연결한다.
 2. 전체 host/static regression과 STM32 build를 다시 수행한다.
 3. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
 4. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
 
 ## Evidence Boundary
 
-P-02B는 source 구현, 독립 수학 reference vector, C source 정적 계약과 STM32 full build까지
-증명한다. Python reference test는 C 함수를 직접 실행하는 native unit test가 아니며, 정적 계약이
-두 구현의 상수·순서·수식을 연결한다. 아직 production protocol/state/output caller가 없으므로
-P-02C 통합, flash, board runtime, PWM/DIR waveform, actual channel mapping, actual motor speed와
-chassis motion은 증명하지 않는다.
+P-02B는 mapper source, 독립 수학 reference vector, C source 정적 계약과 STM32 full build를,
+P-02C-1은 signed adapter source/static 계약, relevant-source incremental build와 전체 forced
+rebuild를 증명한다.
+Python reference test는 C 함수를 직접 실행하는 native unit test가 아니며, 정적 계약이 두 구현의
+상수·순서·수식을 연결한다. Adapter section은 no-caller 때문에 final ELF에서 제거됐다. 따라서
+P-02C-2 production caller, flash, board runtime, PWM/DIR waveform, actual channel mapping,
+actual motor speed와 chassis motion은 증명하지 않는다.

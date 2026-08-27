@@ -6,7 +6,8 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 Latest: [`2026-08-27_progress.md`](2026-08-27_progress.md) — K1/S0/VO617/F2/6P-18 AWG의
 partial arrival를 기록하고, S2/P6KE 미도착과 received-part incoming 미실행 경계를 분리했다.
-P-02B mapper source/build와 independent vector/static contract `23/23`도 함께 기록했다.
+P-02B는 완료됐고, P-02C-1 signed adapter source/static contract와 사용자 CubeIDE Incremental
+Build가 PASS해 current canonical은 `24/24`다. P-02C-2 production caller는 pending이다.
 
 ## How To Use
 
@@ -45,7 +46,7 @@ P-02B mapper source/build와 independent vector/static contract `23/23`도 함�
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B mapper source/full-build/vector `23/23 PASS`, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
+| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B mapper 완료, P-02C-1 signed adapter source/static/incremental-build PASS와 canonical `24/24`, P-02C-2 caller pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
 | 2026-08-26 | [`2026-08-26_progress.md`](2026-08-26_progress.md) | 2026-09-15까지의 dated pre-arrival schedule, priority/milestone/buffer와 delivery transition rule |
 | 2026-08-25 | [`2026-08-25_progress.md`](2026-08-25_progress.md) | Four-chapter remaining-work rebaseline, production CMD mapper/data-path gaps, E-stop `005A/005B` scope split and `P-01~P-09` pre-arrival queue |
 | 2026-08-24 | [`2026-08-24_progress.md`](2026-08-24_progress.md) | PC7 direct latch/reset runtime, host contract 20/20, F1/K2 무전원 입고 precheck와 S2 stuck/short no-auto-reenable blocker 확인 |

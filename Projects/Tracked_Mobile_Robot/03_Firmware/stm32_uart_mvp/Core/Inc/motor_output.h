@@ -11,6 +11,11 @@ HAL_StatusTypeDef motor_output_set_raw(
     GPIO_PinState right_dir_level
 );
 
+HAL_StatusTypeDef motor_output_set_signed(
+    int16_t left_signed_permille,
+    int16_t right_signed_permille
+);
+
 void motor_output_stop_all(void);
 
 #endif // MOTOR_OUTPUT_H
