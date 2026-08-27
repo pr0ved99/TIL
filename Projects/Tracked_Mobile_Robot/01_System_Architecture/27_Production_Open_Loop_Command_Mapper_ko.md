@@ -2,8 +2,8 @@
 
 ## 문서 상태
 
-- Work package: `P-02A / P-02B / P-02C-1`
-- 상태: `MAPPER + SIGNED ADAPTER SOURCE/STATIC/BUILD PASS / P-02C-2 CALLER NOT INTEGRATED`
+- Work package: `P-02A / P-02B / P-02C-1 / P-02C-2`
+- 상태: `PRODUCTION CMD CALLER SOURCE/STATIC/BUILD PASS / BOARD RUNTIME PENDING`
 - 작성일: 2026-08-26
 - 최종 갱신: 2026-08-27
 - 적용 범위: motor/LiPo-disconnected source, host/static test와 이후 저속 output request
@@ -178,6 +178,19 @@ Mapper 또는 output 적용이 실패하면 PWM을 모두 zero로 만들고 stor
 유지해야 한다. 기존 controlled output hook은 production mapper와 분리하고 최종 baseline에서
 계속 `0U`여야 한다.
 
+P-02C-2에서 이 순서를 `handle_cmd()`에 연결했다. Controlled hook이 활성화된 경우에는 기존
+raw 시험 경로만 실행하고, 현재 release 기본값처럼 hook이 `0U`이면 mapper 결과를
+`motor_output_set_signed()`에 전달한다. 두 경로는 `if`/`else if`로 상호 배타적이다.
+
+Mapper 또는 raw/signed output 적용 실패 경로는 다음을 수행한 뒤 ACK 없이 반환한다.
+
+```text
+motor_output_stop_all()
+-> stored vx/w zero
+-> MAPPER_FAILED 또는 MOTOR_OUTPUT_FAILED ERR
+-> return
+```
+
 ## 9. 현재 검증 결과와 다음 단계
 
 2026-08-27 P-02B 결과:
@@ -202,19 +215,37 @@ Mapper 또는 output 적용이 실패하면 PWM을 모두 zero로 만들고 stor
 7. Link map의 `.text.motor_output_set_signed` address `0`: caller가 없어 `--gc-sections`에서
    제거된 expected no-caller 상태
 
+위 7번은 P-02C-1 당시의 **historical `24/24` checkpoint**다. 이후 P-02C-2 caller 통합으로
+해당 no-caller 상태는 해소됐다.
+
+2026-08-27 P-02C-2 결과:
+
+1. Production `handle_cmd()`에 mapper와 signed adapter caller 연결: `PASS`
+2. `100 permille = 10%` cap, 세 번의 E-stop guard, controlled raw/production signed 상호 배타
+   경로와 success-only state commit/ACK 정적 계약: `PASS`
+3. Mapper/output 실패 시 stop-all, stored `vx/w` zero, `ERR`, 즉시 return 계약: `PASS`
+4. canonical discovery: firmware contract `21/21` + mapper vectors `2/2` + UART frame `2/2`,
+   합계 `25/25 PASS`
+5. CubeIDE bundled ARM toolchain forced full build: 전체 32 objects, exit `0`, compiler/linker
+   `warning:`/`error:` 진단 0건, ELF `text=29216`, `data=172`, `bss=2832`
+6. Final ELF link map: `drive_command_map=0x0800067c`,
+   `motor_output_set_signed=0x080015dc`; 두 함수 모두 nonzero address로 production caller에 유지됨
+
 다음 단계:
 
-1. `P-02C-2`: mapper와 signed adapter를 production protocol state gate에 연결한다.
-2. 전체 host/static regression과 STM32 build를 다시 수행한다.
+1. `P-03`: timeout 시 output/stored command zero 후 `DISARMED`로 전이하고 새 `ARM` + 새
+   `CMD`만 허용하는 ADR-015 recovery를 구현한다.
+2. `P-04`: 현재 zero placeholder인 TEL PWM/applied-output field를 실제 적용값과 연결한다.
 3. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
 4. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
 
 ## Evidence Boundary
 
 P-02B는 mapper source, 독립 수학 reference vector, C source 정적 계약과 STM32 full build를,
-P-02C-1은 signed adapter source/static 계약, relevant-source incremental build와 전체 forced
-rebuild를 증명한다.
+P-02C-1은 signed adapter source/static 계약을, P-02C-2는 production caller의 제어 순서와
+final ELF linkage를 증명한다.
 Python reference test는 C 함수를 직접 실행하는 native unit test가 아니며, 정적 계약이 두 구현의
-상수·순서·수식을 연결한다. Adapter section은 no-caller 때문에 final ELF에서 제거됐다. 따라서
-P-02C-2 production caller, flash, board runtime, PWM/DIR waveform, actual channel mapping,
-actual motor speed와 chassis motion은 증명하지 않는다.
+상수·순서·수식을 연결한다. 두 함수의 nonzero address는 링크 증거일 뿐 실행 증거가 아니다.
+따라서 flash, board runtime, PWM/DIR waveform, actual channel mapping, provisional DIR polarity,
+actual motor speed와 chassis motion은 증명하지 않는다. TEL PWM/applied-output field도 아직 실제
+출력과 연결되지 않고 zero placeholder이며, timeout-to-`DISARMED`는 P-03으로 남아 있다.

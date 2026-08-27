@@ -32,17 +32,19 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-27 Current P-02B / P-02C-1 Snapshot
+## 2026-08-27 Current P-02B / P-02C Snapshot
 
-- `test_firmware_contract.py`: **20/20 PASS**
+- `test_firmware_contract.py`: **21/21 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **24/24 PASS**
+- Canonical discovery: **25/25 PASS**
 - P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
 - P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
   recompile와 ELF relink, **0 errors / 0 warnings**
 - P-02C-1 CubeIDE bundled ARM toolchain `make -B` validation: 32 objects full rebuild,
   exit `0`, compiler/linker `warning:`/`error:` 0건, ELF `text=28236`, `data=172`, `bss=2832`
+- P-02C-2 CubeIDE bundled ARM toolchain forced full build: 32 objects, exit `0`, compiler/linker
+  `warning:`/`error:` 진단 0건, ELF `text=29216`, `data=172`, `bss=2832`
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
@@ -52,15 +54,23 @@ CubeIDE ARM build evidence와 함께 해석한다.
 P-02C-1 정적 계약은 signed `-100~100` request의 range guard, provisional DIR 분리,
 magnitude 변환, raw output 1회 호출과 실패 시 stop-all 순서를 확인한다. Link map의
 `.text.motor_output_set_signed` address `0`은 함수가 object에는 컴파일됐지만 caller가 없어
-`--gc-sections`로 제거됐다는 뜻이다.
+`--gc-sections`로 제거됐다는 뜻이었다. 이는 historical `24/24` P-02C-1 checkpoint다.
+
+P-02C-2 정적 계약은 production `handle_cmd()`에서 범위/timeout, `ARMED`, E-stop, mapper,
+출력 직전 E-stop, mutually exclusive controlled-raw/production-signed output, 출력 직후 E-stop,
+success-only stored state/ACK 순서를 고정한다. Mapper 또는 output 실패는 stop-all, stored
+`vx/w` zero, 해당 `ERR`, 즉시 return으로 닫힌다. Current ELF에서는
+`drive_command_map=0x0800067c`, `motor_output_set_signed=0x080015dc`로 두 함수가 nonzero
+address에 유지돼 caller linkage가 확인됐다.
 
 `make -B` 결과의 warning 판정은 GUI 요약이 아니라 전체 build output에 진단 문자열이 없고
 process exit code가 0인 것을 기준으로 한다. 별도 strict check에서 `motor_output.c`는
 `-Wall -Wextra -Wconversion -Wsign-conversion -Werror -fsyntax-only`도 통과했다.
 
-이 결과는 P-02B와 P-02C-1 source/static/build 계약을 닫지만, mapper와 adapter가 production
-`CMD` caller에 연결됐다는 뜻은 아니다. `P-02C-2` caller integration, flash, board runtime,
-PWM/DIR waveform과 actual motor evidence는 계속 pending이다.
+이 결과는 P-02B~P-02C-2 source/static/build와 production caller linkage를 닫는다. 그러나
+flash, board runtime, PWM/DIR waveform, provisional polarity/channel mapping과 actual motor
+evidence는 계속 pending이다. TEL PWM/applied-output field는 여전히 zero placeholder이고,
+timeout-to-`DISARMED` recovery는 `P-03`으로 남아 있다.
 
 ## 검증 스냅샷
 

@@ -658,16 +658,16 @@ PA9/PA10`. ESP32-S3 is the only external command ingress; USART2 is bench
 debug/encoder logging only. STM32 owns all motor safety decisions. Source loss
 requires output/stored-command zero, `DISARMED`, and a new `ARM` plus new `CMD`.
 
-Current host/static discovery is `24/24 PASS`: firmware source contracts
-`20/20`, independent mapper vectors `2/2`, and UART frame vectors `2/2`.
-`P-02B` mapper source, static contract, independent vectors, and full STM32
-build are complete. `P-02C-1` signed-output adapter source/static contract and
-an incremental build that explicitly recompiled `motor_output.c` and linked the
-ELF are also complete with `0 errors / 0 warnings`. The adapter section was
-discarded by `--gc-sections` because it has no caller yet; therefore `P-02C-2`
-production protocol/state caller integration and board-runtime evidence remain
-pending. The ADR-015 timeout transition implementation/runtime evidence remains
-`P-03`.
+Current host/static discovery is `25/25 PASS`: firmware source contracts
+`21/21`, independent mapper vectors `2/2`, and UART frame vectors `2/2`.
+`P-02B` mapper and `P-02C-1` signed-output adapter checkpoints are complete.
+`P-02C-2` connects the production `CMD` caller with three E-stop guards,
+mutually exclusive controlled/raw and production/signed output paths, and
+success-only state commit plus ACK. A 32-object forced ARM build passed with no
+warning/error diagnostics, and both mapper and signed adapter have nonzero ELF
+addresses. This is source/static/build/link evidence, not flash, board-runtime,
+PWM-waveform, or motor evidence. The ADR-015 timeout transition remains `P-03`,
+and TEL PWM fields remain zero placeholders.
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

@@ -1,5 +1,6 @@
 #include "uart_mvp_protocol.h"
 
+#include "drive_command_mapper.h"
 #include "motor_output.h"
 #include "ring_buffer.h"
 #include "uart_frame_parser.h"
@@ -16,6 +17,11 @@
 #define W_MIN_MRADPS -500
 #define W_MAX_MRADPS  500
 
+/*
+ * 100 permille = 10% initial production output cap.
+ * Keep provisional until lifted motor verification.
+ */
+#define CMD_OUTPUT_DUTY_CAP_PERMILLE 100U
 #define UART_FRAME_MAX_LEN    127u
 #define UART_LINE_BUFFER_SIZE (UART_FRAME_MAX_LEN + 2u)
 #define TEL_PERIOD_MS         100u
@@ -209,6 +215,7 @@ static uint8_t estop_enforce_latch(void) {
 }
 
 static void handle_cmd(const uart_frame_t *frame){
+    drive_command_request_t request;
     if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
        frame->w_mradps < W_MIN_MRADPS || frame->w_mradps > W_MAX_MRADPS){
         send_err(frame->seq, "CMD", "OUT_OF_RANGE");
@@ -231,6 +238,24 @@ static void handle_cmd(const uart_frame_t *frame){
         return;
     }
 
+    if(!drive_command_map(
+        frame->vx_mmps,
+        frame->w_mradps,
+        CMD_OUTPUT_DUTY_CAP_PERMILLE,
+        &request
+    )){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        send_err(frame->seq, "CMD", "MAPPER_FAILED");
+        return;
+    }
+
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
+
     if(UART_MVP_OUTPUT_TEST_ENABLED != 0U){
         if((frame->vx_mmps == 50) && (frame->w_mradps == 0)){
             if(motor_output_set_raw(
@@ -240,6 +265,8 @@ static void handle_cmd(const uart_frame_t *frame){
                 GPIO_PIN_RESET
             ) != HAL_OK){
                 motor_output_stop_all();
+                s_vx_mmps = 0;
+                s_w_mradps = 0;
                 send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
                 return;
             }
@@ -247,6 +274,16 @@ static void handle_cmd(const uart_frame_t *frame){
         else{
             motor_output_stop_all();
         }
+    }
+    else if(motor_output_set_signed(
+        request.left_signed_permille,
+        request.right_signed_permille
+    ) != HAL_OK){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
+        return;
     }
 
     if (estop_enforce_latch() != 0U) {

@@ -669,6 +669,123 @@ class FirmwareContractTest(unittest.TestCase):
             "return status;",
         )
 
+    def test_production_cmd_output_integration_contract(self) -> None:
+        protocol_source = self.source["protocol_c"]
+        compact_protocol = compact_c(protocol_source)
+
+        self.assertEqual(
+            compact_protocol.count('#include"drive_command_mapper.h"'),
+            1,
+        )
+
+        definitions = parse_defines(protocol_source)
+        self.assertEqual(
+            integer_define(
+                definitions,
+                "CMD_OUTPUT_DUTY_CAP_PERMILLE",
+            ),
+            100,
+        )
+
+        body = extract_function(protocol_source, "handle_cmd")
+        compact_body = compact_c(body)
+
+        self.assertIn(
+            "drive_command_request_trequest;",
+            compact_body,
+        )
+        self.assertEqual(compact_body.count("drive_command_map("), 1)
+        self.assertEqual(
+            compact_body.count("motor_output_set_signed("),
+            1,
+        )
+        mapper_failure = compact_c(
+            "if(!drive_command_map("
+            "frame->vx_mmps,"
+            "frame->w_mradps,"
+            "CMD_OUTPUT_DUTY_CAP_PERMILLE,"
+            "&request"
+            ")){"
+            "motor_output_stop_all();"
+            "s_vx_mmps = 0;"
+            "s_w_mradps = 0;"
+            'send_err(frame->seq, "CMD", "MAPPER_FAILED");'
+            "return;"
+            "}"
+        )
+        self.assertIn(mapper_failure, compact_body)
+        output_failure = (
+            "motor_output_stop_all();"
+            "s_vx_mmps = 0;"
+            "s_w_mradps = 0;"
+            'send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");'
+            "return;"
+        )
+
+        production_output = compact_c(
+            "else if(motor_output_set_signed("
+            "request.left_signed_permille,"
+            "request.right_signed_permille"
+            ") != HAL_OK){"
+            + output_failure
+            + "}"
+        )
+        self.assertIn(production_output, compact_body)
+
+        controlled_output_failure = compact_c(
+            "if(motor_output_set_raw("
+            "UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,"
+            "GPIO_PIN_RESET,"
+            "UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,"
+            "GPIO_PIN_RESET"
+            ") != HAL_OK){"
+            + output_failure
+            + "}"
+        )
+        self.assertIn(controlled_output_failure, compact_body)
+
+        estop_guard = compact_c(
+            "if(estop_enforce_latch() != 0U){"
+            'send_err(frame->seq, "CMD", "ESTOP_LATCHED");'
+            "return;"
+            "}"
+        )
+        self.assertEqual(compact_body.count(estop_guard), 3)
+
+        success_tokens = (
+            "s_last_seq = frame->seq;",
+            "s_vx_mmps = frame->vx_mmps;",
+            "s_w_mradps = frame->w_mradps;",
+            "s_cmd_timeout_ms = frame->timeout_ms;",
+            "s_last_cmd_ms = HAL_GetTick();",
+            'send_ack(frame->seq, "CMD");',
+        )
+
+        for token in success_tokens:
+            self.assertEqual(
+                compact_body.count(compact_c(token)),
+                1,
+            )
+
+        success_commit = compact_c(
+            estop_guard + "".join(success_tokens)
+        )
+        self.assertIn(success_commit, compact_body)
+
+        self.assert_tokens_in_order(
+            body,
+            "if(frame->vx_mmps < VX_MIN_MMPS",
+            "if(frame->timeout_ms < CMD_TIMEOUT_MIN_MS",
+            "if(s_state != ROBOT_ARMED)",
+            estop_guard,
+            mapper_failure,
+            estop_guard,
+            "if(UART_MVP_OUTPUT_TEST_ENABLED != 0U)",
+            controlled_output_failure,
+            production_output,
+            success_commit,
+        )
+
     def test_estop_reset_parser_contract(self) -> None:
         parser_header = compact_c(self.source["parser_h"])
         self.assertIn(

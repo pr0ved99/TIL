@@ -119,7 +119,8 @@ vx_mmps, w_mradps
 - command-source loss 시 output/stored command zero -> `DISARMED` -> new `ARM` + new `CMD` 정책
 - [`../../01_System_Architecture/19_Architecture_Decision_Record_ko.md`](../../01_System_Architecture/19_Architecture_Decision_Record_ko.md)의 ADR-015 `Accepted`
 - Current source에서 protocol RX는 `huart1` 하나, USART2 `HAL_UART_Receive*`는 0건이고
-  당시 host/static discovery는 `20/20 PASS`; 2026-08-27 P-02B mapper checkpoint는 `23/23 PASS`, P-02C-1 signed adapter까지 포함한 current canonical은 `24/24 PASS`
+  당시 host/static discovery `20/20`, P-02B `23/23`, P-02C-1 `24/24` checkpoint를 보존한다.
+  P-02C-2 production caller까지 포함한 current canonical은 `25/25 PASS`다.
 
 Evidence boundary:
 
@@ -128,7 +129,7 @@ Evidence boundary:
 
 ### `P-02` production open-loop command mapper
 
-상태: `P-02A/P-02B COMPLETE / P-02C-1 SIGNED ADAPTER PASS / P-02C-2 CALLER PENDING`
+상태: `P-02A/P-02B/P-02C-1/P-02C-2 COMPLETE / TARGET RUNTIME PENDING`
 
 구현 범위:
 
@@ -139,6 +140,20 @@ Evidence boundary:
 - sign/DIR와 magnitude/PWM 분리
 - actual channel mapping 전 provisional 상수의 명시
 - host/static unit vectors
+- production `handle_cmd()`의 validation/ARMED/3x E-stop/mapper/output/success-only commit+ACK 연결
+- mapper/output failure의 stop-all, stored `vx/w` zero, ERR, return 경로
+
+완료 증거:
+
+- current canonical `21 + 2 + 2 = 25/25 PASS`
+- 32-object forced ARM build exit `0`, compiler/linker warning/error 진단 0건
+- mapper와 signed adapter의 nonzero ELF linkage
+
+Evidence boundary:
+
+- 새 flash/board runtime, PWM/DIR waveform 또는 actual motor evidence는 없다.
+- channel/forward polarity는 provisional이고 TEL PWM field는 zero placeholder다.
+- timeout-to-`DISARMED`는 `P-03`에서 닫는다.
 
 금지:
 
