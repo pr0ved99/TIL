@@ -50,8 +50,8 @@ commit/push하지 마라.
 완료된 현재 기준선:
 
 - UART Gate A/B/C와 필수 parser/recovery 벡터는 PASS했고 controlled test hook은 모두 `0U`,
-  current host/static test는 firmware contract `18/18` + UART frame contract `2/2`, 합계
-  `20/20`이다. Historical `15/15` artifact checkpoint와 혼동하지 마라.
+  current host/static test는 firmware contract `19/19` + mapper vectors `2/2` + UART frame
+  contract `2/2`, 합계 `23/23`이다. Historical `15/15` artifact checkpoint와 혼동하지 마라.
 - Permanent perfboard의 PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2에는 각각 10 kΩ pull-down이 있다.
 - Motor-disconnected MDD10A-input final active test는 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty,
   direction 전후 약 2 ms PWM-zero, expected MDD10A LED 순서로 PASS했다.
@@ -87,10 +87,10 @@ commit/push하지 마라.
 - 2026-08-25에 nominal healthy-S2/harness 시험을 MVP `T-ESTOP-005A`, 위 stuck/short
   single-fault 시험을 post-MVP `T-ESTOP-005B`로 분리했다. 위험은 residual risk로 계속
   추적하며 single-fault tolerance나 산업 안전을 주장하지 않는다.
-- HAL-independent `drive_command_mapper.h/.c`를 추가했고 standalone ARM GCC와 CubeIDE full
-  Debug build `0 errors, 0 warnings`를 확인했다. Mapper-specific independent vectors와 P-02C
-  production protocol/state/output caller integration은 아직 pending이며 일부 TEL motor/battery
-  field도 placeholder다.
+- HAL-independent `drive_command_mapper.h/.c`, independent mapper vectors와 C source 정적
+  contract를 추가해 canonical `23/23`과 standalone ARM GCC/CubeIDE full Debug build
+  `0 errors, 0 warnings`를 확인했다. P-02C production protocol/state/output caller integration은
+  아직 pending이며 일부 TEL motor/battery field도 placeholder다.
 - 실제 motor output, actual motor stop, Physical E-stop PASS 또는 산업 안전 인증은 아직 아니다.
 
 현재 즉시 작업:
@@ -99,9 +99,9 @@ commit/push하지 마라.
    USART2 bench-only, direct dual-owner 금지와 source-loss recovery 정책을 보존한다.
 2. Custom PC adapter plate는 2026-08-26 사용자 보고 기준 이미 수령했다. Exact RevB source
    identity와 치수/chassis/module fit은 집 `H-01`에서 확인하고, 카페에서는 이를 추정하지 않는다.
-3. `P-02A` 수식/interface와 `P-02B` HAL-independent `drive_command_mapper.h/.c` source/full
-   build는 완료했다. 다음 firmware 작업은 mapper-specific independent vectors이며, 이후
-   `P-02C` production protocol/state/output caller integration으로 이동한다.
+3. `P-02A/P-02B` 수식/interface, HAL-independent mapper source, independent vectors/static
+   source contract와 full build는 완료했다. 다음 firmware 작업은 `P-02C` production
+   protocol/state/output caller integration이다.
 4. 이어서 `P-03~P-06`: timeout recovery, 실제 TEL fields, battery ADC/low-voltage policy와
    wheel-distance/1 m odometry path를 구현·검증한다. Build/static 결과를 board evidence로 쓰지 않는다.
 5. 일정 후반의 `P-08/P-09`: F1 `257`/ordered `287` identity와 S1 basis, incoming checklist와

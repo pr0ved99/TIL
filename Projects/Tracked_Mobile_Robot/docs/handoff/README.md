@@ -28,7 +28,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-08-27 | [`../progress/2026-08-27_progress.md`](../progress/2026-08-27_progress.md) | **Current continuation**: P-02B mapper build evidence, partial arrival, received-subset incoming queue와 S2/P6KE blocker |
+| 2026-08-27 | [`../progress/2026-08-27_progress.md`](../progress/2026-08-27_progress.md) | **Current continuation**: P-02B source/build/vector `23/23`, partial arrival, received-subset incoming queue와 S2/P6KE blocker |
 | 2026-08-26 | [`../progress/2026-08-26_progress.md`](../progress/2026-08-26_progress.md) | Previous schedule baseline: P-01/P-02A completion, received-plate correction and evidence boundary |
 | 2026-08-26 | [`../plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](../plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | **Current dated schedule**: partial-arrival transition이 발동된 P-01~P-09 schedule, milestones and buffers |
 | 2026-08-25 | [`../progress/2026-08-25_progress.md`](../progress/2026-08-25_progress.md) | Current scope baseline: final remaining-work audit, evidence boundary and `005A/005B` split |

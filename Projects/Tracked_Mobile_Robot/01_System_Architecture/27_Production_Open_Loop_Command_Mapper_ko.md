@@ -2,9 +2,10 @@
 
 ## 문서 상태
 
-- Work package: `P-02A`
-- 상태: `DESIGN BASELINE / SOURCE NOT IMPLEMENTED`
+- Work package: `P-02A / P-02B`
+- 상태: `DESIGN + SOURCE + HOST/STATIC VECTOR PASS / P-02C NOT INTEGRATED`
 - 작성일: 2026-08-26
+- 최종 갱신: 2026-08-27
 - 적용 범위: motor/LiPo-disconnected source, host/static test와 이후 저속 output request
 - 제외 범위: 실제 속도 보장, PID, track-slip 보정, actual motor enable
 
@@ -85,7 +86,7 @@ C의 signed integer division은 0 방향으로 버림하므로 `100/3` 계열 �
 
 ## 5. Pure-function interface
 
-P-02B 구현 대상 interface는 다음과 같다.
+P-02B에 구현한 interface는 다음과 같다.
 
 ```c
 typedef struct {
@@ -104,9 +105,10 @@ bool drive_command_map(
 Interface 규칙:
 
 - HAL type과 GPIO/TIM register를 포함하지 않는다.
-- 성공 시에만 `request`에 `-cap~+cap` 값을 쓴다.
-- 실패 또는 `request == NULL`에서는 `false`를 반환한다.
-- non-NULL output은 계산 전에 zero로 초기화하여 실패 경로에 stale request를 남기지 않는다.
+- `request == NULL`이면 memory에 접근하지 않고 `false`를 반환한다.
+- non-NULL output은 계산 전에 zero로 초기화한다.
+- 성공하면 `request`에 `-cap~+cap` 계산값을 쓰고 `true`를 반환한다.
+- 범위 검사가 실패하면 `false`를 반환하며, 먼저 기록한 zero를 유지해 stale request를 남기지 않는다.
 - `duty_cap_permille > 100`은 거부한다. `0`은 명시적인 output-disabled 설정으로 허용한다.
 
 ## 6. P-02A 고정 test vectors
@@ -176,16 +178,27 @@ Mapper 또는 output 적용이 실패하면 PWM을 모두 zero로 만들고 stor
 유지해야 한다. 기존 controlled output hook은 production mapper와 분리하고 최종 baseline에서
 계속 `0U`여야 한다.
 
-## 9. 다음 단계
+## 9. 현재 검증 결과와 다음 단계
 
-1. `P-02B`: `drive_command_mapper.h/.c`를 작은 단위로 작성한다.
-2. 위 vector의 independent host/static test를 추가한다.
-3. 기존 `20/20` regression과 STM32 build를 통과한다.
-4. `P-02C`: signed request adapter와 protocol state gate를 연결한다.
-5. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
-6. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
+2026-08-27 P-02B 결과:
+
+1. `drive_command_mapper.h/.c` HAL-independent source 구현: `PASS`
+2. 위 12개 성공 vector와 5개 범위 실패, NULL/stale-output 계약의 독립 Python reference test: `PASS`
+3. C source 상수, interface, zero-before-validation, mixing과 coupled-saturation 정적 계약: `PASS`
+4. canonical discovery: firmware contract `19/19` + mapper vectors `2/2` + UART frame `2/2`, 합계 `23/23 PASS`
+5. STM32CubeIDE full Debug build: `0 errors, 0 warnings`
+
+다음 단계:
+
+1. `P-02C`: signed request adapter와 protocol state gate를 연결한다.
+2. 전체 host/static regression과 STM32 build를 다시 수행한다.
+3. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
+4. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
 
 ## Evidence Boundary
 
-이 문서는 source audit와 design/vector baseline이다. Firmware 구현, build, flash, board runtime,
-PWM/DIR waveform, actual channel mapping, actual motor speed 또는 chassis motion PASS가 아니다.
+P-02B는 source 구현, 독립 수학 reference vector, C source 정적 계약과 STM32 full build까지
+증명한다. Python reference test는 C 함수를 직접 실행하는 native unit test가 아니며, 정적 계약이
+두 구현의 상수·순서·수식을 연결한다. 아직 production protocol/state/output caller가 없으므로
+P-02C 통합, flash, board runtime, PWM/DIR waveform, actual channel mapping, actual motor speed와
+chassis motion은 증명하지 않는다.

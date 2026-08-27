@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-27 P-02B build evidence and Physical E-stop partial-arrival transition
-- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A COMPLETE`, `P-02B SOURCE/FULL BUILD PASS`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset와 host/static `20/20`은 PASS했다. K1/S0/VO617/F2/6P-18 AWG는 사용자 보고 기준 도착해 received-subset 무전원 입고검사를 시작할 수 있고, S2/P6KE는 미도착이다. Mapper independent vectors/P-02C와 입고검사를 병렬로 진행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- Revision: 2026-08-27 P-02B source/build/vector completion and Physical E-stop partial-arrival transition
+- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A/P-02B COMPLETE`, `P-02C PENDING`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset와 mapper를 포함한 host/static `23/23`은 PASS했다. K1/S0/VO617/F2/6P-18 AWG는 사용자 보고 기준 도착해 received-subset 무전원 입고검사를 시작할 수 있고, S2/P6KE는 미도착이다. P-02C와 입고검사를 병렬로 진행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
 - 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -94,7 +94,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
 | Historical PC-first STM32 UART MVP | `PASS — bench baseline` | requirements, matrix, CSV, screenshots, test report | production owner로 사용하지 않고 evidence 보존 |
-| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime PASS; all-hooks-`0U`; host/static `20/20`. HAL-independent production mapper source와 CubeIDE full build는 PASS했지만 independent vectors와 protocol/state/output caller는 없음 | Mapper vector test -> `P-02C` integration |
+| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime PASS; all-hooks-`0U`; mapper 포함 host/static `23/23`. HAL-independent production mapper source/vector와 CubeIDE full build는 PASS했지만 protocol/state/output caller는 없음 | `P-02C` integration |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
@@ -140,7 +140,7 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 
 ```text
 완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin 검증
--> 현재 병렬 A: P-02B mapper vectors -> P-02C integration -> timeout/telemetry/battery/odometry
+-> 현재 병렬 A: P-02C integration -> timeout/telemetry/battery/odometry
 -> 현재 병렬 B: 도착한 K1/S0/VO617/F2/6P의 marking/continuity/polarity/fit 무전원 입고검사
 -> S2/P6KE 도착: 잔여 무전원 입고검사와 complete assembly gate
 -> 대단원 2: T-ESTOP-001~004 -> nominal T-ESTOP-005A
@@ -529,7 +529,7 @@ S2/P6KE 배송 대기 중에도 아래 software/document 작업과 received-subs
 motor-energy 없이 병렬로 진행할 수 있다.
 
 1. `[COMPLETED / ADR-015] P-01`: ESP32-S3 단일 production ingress, USART1 production/USART2 bench-only와 source-loss recovery 정책을 확정했다.
-2. `[SOURCE/FULL BUILD PASS] P-02B`: test hook과 분리된 production mapper module을 추가했다. Independent vectors를 닫고 `P-02C` caller/output integration으로 이동한다.
+2. `[COMPLETE] P-02B`: test hook과 분리된 production mapper module, independent vectors/static source contract `23/23`과 full build를 닫았다. `P-02C` caller/output integration으로 이동한다.
 3. `P-03`: ADR-015로 고정된 timeout recovery(output/stored command zero -> `DISARMED` ->
    new `ARM` + new `CMD`)를 source에 구현하고 host/static·build·board evidence로 닫는다.
 4. `P-04`: TEL의 실제 left/right CPS, command/target와 battery 값을 연결한다.

@@ -196,6 +196,8 @@ class FirmwareContractTest(unittest.TestCase):
             "tim_c": STM32_ROOT / "Core" / "Src" / "tim.c",
             "usart_c": STM32_ROOT / "Core" / "Src" / "usart.c",
             "motor_output_c": STM32_ROOT / "Core" / "Src" / "motor_output.c",
+            "mapper_h": STM32_ROOT / "Core" / "Inc" / "drive_command_mapper.h",
+            "mapper_c": STM32_ROOT / "Core" / "Src" / "drive_command_mapper.c",
             "parser_h": STM32_ROOT / "Core" / "Inc" / "uart_frame_parser.h",
             "parser_c": STM32_ROOT / "Core" / "Src" / "uart_frame_parser.c",
             "protocol_c": STM32_ROOT / "Core" / "Src" / "uart_mvp_protocol.c",
@@ -360,6 +362,82 @@ class FirmwareContractTest(unittest.TestCase):
             "GPIO_InitStruct.Alternate=GPIO_AF2_TIM4;",
         ):
             self.assertIn(token, compact_source)
+
+    def test_drive_command_mapper_source_contract(self) -> None:
+        definitions = parse_defines(self.source["mapper_c"])
+        expected = {
+            "DRIVE_COMMAND_NORMALIZED_SCALE": 1000,
+            "DRIVE_COMMAND_VX_MIN_MMPS": -100,
+            "DRIVE_COMMAND_VX_MAX_MMPS": 100,
+            "DRIVE_COMMAND_W_MIN_MRADPS": -500,
+            "DRIVE_COMMAND_W_MAX_MRADPS": 500,
+            "DRIVE_COMMAND_MAX_DUTY_PERMILLE": 100,
+        }
+        for name, value in expected.items():
+            with self.subTest(name=name):
+                self.assertEqual(integer_define(definitions, name), value)
+
+        compact_header = compact_c(self.source["mapper_h"])
+        self.assertIn(
+            "typedefstruct{"
+            "int16_tleft_signed_permille;"
+            "int16_tright_signed_permille;"
+            "}drive_command_request_t;",
+            compact_header,
+        )
+        self.assertIn(
+            "booldrive_command_map("
+            "int32_tvx_mmps,"
+            "int32_tw_mradps,"
+            "uint16_tduty_cap_permille,"
+            "drive_command_request_t*request"
+            ");",
+            compact_header,
+        )
+
+        mapper_source = strip_c_comments(
+            self.source["mapper_h"] + "\n" + self.source["mapper_c"]
+        )
+        self.assertIsNone(
+            re.search(r"\b(?:HAL_|GPIO_|TIM_)", mapper_source),
+            "pure mapper must not depend on HAL, GPIO or timer symbols",
+        )
+
+        body = extract_function(self.source["mapper_c"], "drive_command_map")
+        compact_body = compact_c(body)
+        range_guard = (
+            "if(vx_mmps < DRIVE_COMMAND_VX_MIN_MMPS || "
+            "vx_mmps > DRIVE_COMMAND_VX_MAX_MMPS || "
+            "w_mradps < DRIVE_COMMAND_W_MIN_MRADPS || "
+            "w_mradps > DRIVE_COMMAND_W_MAX_MRADPS || "
+            "duty_cap_permille > DRIVE_COMMAND_MAX_DUTY_PERMILLE) "
+            "{ return false; }"
+        )
+        self.assertIn(
+            compact_c(range_guard),
+            compact_body,
+        )
+        self.assert_tokens_in_order(
+            body,
+            "if(request == NULL) { return false; }",
+            "request->left_signed_permille = 0;",
+            "request->right_signed_permille = 0;",
+            range_guard,
+            "linear = (vx_mmps * DRIVE_COMMAND_NORMALIZED_SCALE) / DRIVE_COMMAND_VX_MAX_MMPS;",
+            "yaw = (w_mradps * DRIVE_COMMAND_NORMALIZED_SCALE) / DRIVE_COMMAND_W_MAX_MRADPS;",
+            "raw_left = linear - yaw;",
+            "raw_right = linear + yaw;",
+            "left_abs = (raw_left < 0) ? -raw_left : raw_left;",
+            "right_abs = (raw_right < 0) ? -raw_right : raw_right;",
+            "peak = DRIVE_COMMAND_NORMALIZED_SCALE;",
+            "if(left_abs > peak)",
+            "peak = left_abs;",
+            "if(right_abs > peak)",
+            "peak = right_abs;",
+            "request->left_signed_permille =",
+            "request->right_signed_permille =",
+            "return true;",
+        )
 
     def test_generated_uart_contract(self) -> None:
         for number in (1, 2):

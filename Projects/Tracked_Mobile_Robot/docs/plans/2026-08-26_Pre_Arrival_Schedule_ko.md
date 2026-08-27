@@ -98,8 +98,8 @@ flash하기 위해 카페 작업을 생략하지 않는다.
 | 날짜 | 작업 | 예상 집중시간 | 그날의 완료 조건 |
 | --- | --- | ---: | --- |
 | **08-26 수** | `P-01 [COMPLETED]` command owner와 UART ownership 동결 | 1.5~2 h | ESP32/PC 역할, 단일 motion owner와 source-loss timeout 규칙을 ADR-015 `Accepted`로 확정 |
-| **08-27 목** | `P-02A [COMPLETED EARLY 08-26]` normalized open-loop differential mapper 수식·범위와 pure-function interface 설계 | 2~3 h | zero/straight/reverse/left-turn/right-turn/saturation 기대값 표 완성; calibrated speed가 아니라는 경계 명시 |
-| **08-28 금** | `P-02B SOURCE/FULL BUILD PASS` — mapper independent vector tests 마무리 | 1~2 h | zero, straight, reverse, 양 회전과 mixed command host/static PASS |
+| **08-27 목** | `P-02A/P-02B [COMPLETED]` Git checkpoint, mapper source/build와 independent vectors/static source contract | 2~3 h | canonical `23/23 PASS`; C native execution/target runtime이 아니라는 evidence boundary 명시 |
+| **08-28 금** | `P-02C` production caller/adapter 계약과 첫 integration 단위 | 1~2 h | ARMED/E-stop/range gate 뒤 mapper 호출, signed-to-output 실패 시 zero 정책을 source/test로 고정 |
 | **08-29 토** | Week 1 buffer | 0~2 h | `P-01/P-02` 누락 보완만 수행; PASS면 휴식 |
 | **08-30 일** | 휴식 | - | 작업 없음 |
 | **08-31 월** | `P-02C` saturation, 5~10% initial cap, sign-to-DIR/magnitude-to-PWM와 protocol integration | 2~3 h | out-of-range/zero/saturation 안전 동작과 all-hooks-`0U` 확인 |

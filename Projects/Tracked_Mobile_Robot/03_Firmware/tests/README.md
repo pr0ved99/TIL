@@ -32,6 +32,23 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
+## 2026-08-27 Current P-02B Snapshot
+
+- `test_firmware_contract.py`: **19/19 PASS**
+- `test_drive_command_mapper_contract.py`: **2/2 PASS**
+- `test_uart_frame_contract.py`: **2/2 PASS**
+- Canonical discovery: **23/23 PASS**
+- 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
+
+새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
+vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
+mixing과 coupled saturation 순서를 검사한다. Python test가 C 함수를 직접 실행하지는 않으므로
+CubeIDE ARM build evidence와 함께 해석한다.
+
+이 결과는 P-02B source/build 계약을 닫지만, mapper가 production `CMD` caller에 연결됐다는
+뜻은 아니다. `P-02C` 통합, flash, board runtime, PWM/DIR waveform과 actual motor evidence는
+계속 pending이다.
+
 ## 검증 스냅샷
 
 2026-08-03 safe-source checkpoint:
