@@ -32,12 +32,12 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-27 Current P-02B / P-02C Snapshot
+## 2026-08-27 Current P-02B / P-02C / P-03 Snapshot
 
-- `test_firmware_contract.py`: **21/21 PASS**
+- `test_firmware_contract.py`: **22/22 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **25/25 PASS**
+- Canonical discovery: **26/26 PASS**
 - P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
 - P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
   recompile와 ELF relink, **0 errors / 0 warnings**
@@ -45,6 +45,8 @@ python -m unittest discover `
   exit `0`, compiler/linker `warning:`/`error:` 0건, ELF `text=28236`, `data=172`, `bss=2832`
 - P-02C-2 CubeIDE bundled ARM toolchain forced full build: 32 objects, exit `0`, compiler/linker
   `warning:`/`error:` 진단 0건, ELF `text=29216`, `data=172`, `bss=2832`
+- P-03A/P-03B CubeIDE bundled ARM toolchain forced full build: 32 objects, exit `0`, compiler/linker
+  `warning:`/`error:` 진단 0건, ELF `text=29268`, `data=172`, `bss=2832`
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
@@ -63,14 +65,19 @@ success-only stored state/ACK 순서를 고정한다. Mapper 또는 output 실�
 `drive_command_map=0x0800067c`, `motor_output_set_signed=0x080015dc`로 두 함수가 nonzero
 address에 유지돼 caller linkage가 확인됐다.
 
+P-03 정적 계약은 `uart_mvp_process()`가 RX byte 처리 전에 timeout helper를 실행하고, deadline
+초과 시 stop-all -> stored `vx/w` zero -> `DISARMED` 순서를 강제하는지 확인한다. Timeout
+자체는 ACK/ERR, error count 또는 `last_seq`를 만들지 않는다. `ARM` 수락은 output/stored
+command를 zero로 유지한 채 default `300 ms`와 current tick으로 first-CMD window를 새로 연다.
+
 `make -B` 결과의 warning 판정은 GUI 요약이 아니라 전체 build output에 진단 문자열이 없고
 process exit code가 0인 것을 기준으로 한다. 별도 strict check에서 `motor_output.c`는
 `-Wall -Wextra -Wconversion -Wsign-conversion -Werror -fsyntax-only`도 통과했다.
 
-이 결과는 P-02B~P-02C-2 source/static/build와 production caller linkage를 닫는다. 그러나
+이 결과는 P-02B~P-02C-2와 P-03A/P-03B source/static/full-build를 닫는다. 그러나
 flash, board runtime, PWM/DIR waveform, provisional polarity/channel mapping과 actual motor
 evidence는 계속 pending이다. TEL PWM/applied-output field는 여전히 zero placeholder이고,
-timeout-to-`DISARMED` recovery는 `P-03`으로 남아 있다.
+timeout-to-`DISARMED` target runtime은 아직 수행하지 않았다.
 
 ## 검증 스냅샷
 

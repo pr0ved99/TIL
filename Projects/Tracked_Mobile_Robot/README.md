@@ -22,21 +22,22 @@ Last updated: 2026-08-27
 현재 바로 이어갈 작업:
 
 ```text
-[PARTIAL: Gate A/B + T-BRIDGE-007 + T-BRIDGE-008A/008B runtime PASS / all-hooks-0U / current host-static 25/25 / exact artifact linkage and setup provenance pending] ESP32-STM32 UART bridge
+[PARTIAL: Gate A/B + T-BRIDGE-007 + T-BRIDGE-008A/008B runtime PASS / all-hooks-0U / current host-static 26/26 / P-03 target runtime and exact artifact/setup provenance pending] ESP32-STM32 UART bridge
 [PASS] XL4015 #1 board power/back-power policy and buck-only NUCLEO/ESP32 integration
 [PASS — motor-disconnected MCU-pin scope] STM32 motor output; waveform/direction, active DISARM 23.50 us, timeout, software-fault next-pulse/latch, signal별 10 kΩ 적용 reset-boot PASS
 [PASS — motor-disconnected MDD10A-input scope] permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step, direction margin and hook-0 final all-LOW
 [PARTIAL] MG540-A/B conditioning + dual CPS/TEL + 50-rev 1560 counts/output-rev + mRPM + encoder-side vehicle mapping/sign PASS; powered actuator mapping/noise pending
 [DRAFT] KiCad RevA functional wiring schematic + dated ERC/PDF evidence
 -> powered/no-motor active timeout/DISARM LED all-off + hook `0U` 복구 PASS
--> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; host/static `25/25`; historical contract `15/15` checkpoint 보존
+-> CURRENT SAFE SOURCE: ESP/STM의 모든 controlled hook `0U`; host/static `26/26`; historical `15/15`, `20/20`, `23/23`, `24/24`, `25/25` checkpoint 보존
 -> OBSERVED BOARD BEHAVIOR: Gate C required runtime PASS; motor-output safety 뒤 final exact startup, READY 후 15.4 s/post-READY TEL 155/155 safe, retry/test/parser error/ARM/CMD 0; exact runtime-to-artifact linkage와 log-embedded physical provenance pending
 -> P-02B MAPPER: HAL-independent source, independent vectors/static source contract와 CubeIDE full Debug build PASS
 -> P-02C-1 SIGNED ADAPTER: `motor_output_set_signed()` source/static contract와 historical `24/24` checkpoint PASS; 당시 no-caller section의 address `0`/`--gc-sections` 제거는 예상된 결과
--> P-02C-2 CALLER: production `CMD`의 validation/ARMED/3x E-stop/mapper/상호 배타 output/success-only commit+ACK integration, current `25/25`, 32-object forced build와 nonzero ELF linkage PASS; flash/board runtime pending
+-> P-02C-2 CALLER: production `CMD`의 validation/ARMED/3x E-stop/mapper/상호 배타 output/success-only commit+ACK integration, historical P-02C-2 `25/25`, 32-object forced build와 nonzero ELF linkage PASS; flash/board runtime pending
+-> P-03A/P-03B TIMEOUT: pre-RX timeout helper가 stop-all/stored-zero/DISARMED를 강제하고 ARM 시 default 300 ms first-CMD window를 다시 시작; current `26/26`와 32-object forced build PASS; flash/board/PWM runtime pending
 -> PARTIAL ARRIVAL: K1 assembly/S0/VO617A-3/F2/6P-18 AWG USER-REPORTED RECEIVED / INCOMING OPEN; K1 catalog/current-envelope와 F1 unpowered precheck만 해당 범위에서 PASS
 -> NOT RECEIVED: S2 IDEC ABW110G, P6KE16CA-E3/54 x3
--> NOW: received subset 무전원 입고검사와 firmware P-03 timeout recovery를 병렬 진행 -> S2/P6KE 잔여 입고검사 -> Physical E-stop MVP `T-ESTOP-001~004 + T-ESTOP-005A` -> lifted/no-load -> `T-ESTOP-007`
+-> NOW: received subset 무전원 입고검사와 motor/LiPo-disconnected P-03 target-runtime 준비/P-04 telemetry를 병렬 진행 -> S2/P6KE 잔여 입고검사 -> Physical E-stop MVP `T-ESTOP-001~004 + T-ESTOP-005A` -> lifted/no-load -> `T-ESTOP-007`
 -> POST-MVP: `FM-ESTOP-014/T-ESTOP-005B` single-fault extension and dual-rail/precision transient `T-ESTOP-006`
 ```
 
@@ -91,7 +92,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-08-26 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-08-27 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -99,9 +100,9 @@ tracked chassis hole-pattern DWG import
 - ESP32-S3가 유일한 production external command ingress이며, PC control이 필요하면 `PC -> ESP32 -> STM32`로 전달한다.
 - STM32 USART2 PA2/PA3는 bench debug/encoder logger 전용이고 production command RX를 받지 않는다.
 - PC-first UART MVP는 2026-07-09에 ST-LINK Virtual COM Port/USART2, Web Serial dashboard와 CSV/screenshot으로 검증한 historical bench baseline이다.
-- Command-source loss의 목표 동작은 output/stored command zero -> `DISARMED` -> new `ARM` + new `CMD`다. 현재 source는 timeout 뒤 `ARMED`를 유지하므로 `P-03` 구현·runtime evidence가 남아 있다.
+- Command-source loss는 output/stored command zero -> `DISARMED` -> accepted `ARM` + valid `CMD`로 고정됐다. P-03A/P-03B source/static/full-build는 stored command 자동 복원과 CMD-only 재동작을 막지만 transport anti-replay를 구현한 것은 아니며, motor/LiPo-disconnected target runtime evidence가 남아 있다.
 - ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
-- Strict-parser UART는 Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime scope를 통과했다. 해당 historical release checkpoint에서 모든 hook `0U`, contract `15/15`, 양 firmware build와 motor-output safety 뒤 final exact startup, READY 후 15.4 s/post-READY TEL 155/155 safe UART behavior가 PASS했다. Current source도 모든 hook `0U`이며 production mapper/signed caller까지 포함한 host/static discovery는 `25/25 PASS`다. P-02C-2 full build와 nonzero ELF linkage는 PASS했지만 새 flash/board runtime은 수행하지 않았고, exact board-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 남아 release 전체 상태는 `PARTIAL`이다.
+- Strict-parser UART는 Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime scope를 통과했다. 해당 historical release checkpoint에서 모든 hook `0U`, contract `15/15`, 양 firmware build와 motor-output safety 뒤 final exact startup, READY 후 15.4 s/post-READY TEL 155/155 safe UART behavior가 PASS했다. Current source도 모든 hook `0U`이며 P-03 timeout contract까지 포함한 host/static discovery는 `26/26 PASS`다. Forced 32-object build도 PASS했지만 새 flash/board/PWM runtime은 수행하지 않았고, exact board-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 남아 release 전체 상태는 `PARTIAL`이다.
 - STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
 - CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
@@ -326,7 +327,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-08-24_progress.md`](docs/progress/2026-08-24_progress.md) | Direct-PC7 latch/reset runtime, current host/static 20/20 and F1/K2 incoming precheck evidence |
 | [`docs/progress/2026-08-25_progress.md`](docs/progress/2026-08-25_progress.md) | Current scope baseline: final remaining-work audit, evidence boundary, E-stop 005A/005B split and pre-arrival queue |
 | [`docs/progress/2026-08-26_progress.md`](docs/progress/2026-08-26_progress.md) | Previous schedule baseline: dated pre-arrival priorities and evidence boundary |
-| [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md) | Current continuation: P-02B/P-02C-1/P-02C-2 complete, production caller/static/full-build와 canonical `25/25` PASS; board runtime과 partial-arrival incoming queue pending |
+| [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md) | Current continuation: P-02B~P-02C-2와 P-03A/P-03B source/static/full-build complete, canonical `26/26` PASS; target runtime과 partial-arrival incoming queue pending |
 | [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md) | Authoritative scope/sequence for final critical path, P-01~P-09 and arrival-day gates |
 | [`docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | Current dated execution source through 2026-09-15, including milestones, buffers and delivery transitions |
 | [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 final safe evidence report |

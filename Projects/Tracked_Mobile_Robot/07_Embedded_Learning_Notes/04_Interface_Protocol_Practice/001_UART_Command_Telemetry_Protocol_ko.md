@@ -259,11 +259,15 @@ Timeout 동작은 다음을 MVP 기준으로 둔다.
 
 1. `timeout_ms` 안에 새 valid `CMD`가 없으면 STM32는 즉시 motor output을 0으로 만든다.
 2. Stored command를 zero로 만들고 즉시 `DISARMED`로 전환한다.
-3. 재동작에는 timeout 뒤 new `ARM`과 그 이후의 new `CMD`가 필요하며 stale command를 replay하지 않는다.
-4. Timeout은 새 frame을 거부한 상황이 아니므로 `ERR` 대상이 아니라 `TEL`에서 관찰한다.
+3. 재동작에는 timeout 뒤 accepted `ARM`과 그 이후의 valid `CMD`가 필요하며 이전 stored
+   command를 자동 복원하지 않는다. P-03은 sequence/session 기반 transport anti-replay는
+   구현하지 않는다.
+4. Timeout은 새 frame을 거부한 상황이 아니므로 `ERR` 대상이 아니다. 현재는 `TEL`의
+   `DISARMED`와 stored `vx/w=0`으로 결과를 추론하며 명시적 timeout reason은 P-04 pending이다.
 
-이는 ADR-015의 required behavior다. 현재 firmware는 아직 timeout 뒤 `ARMED`를 유지하므로
-실제 source/runtime 정합성은 `P-03`에서 닫는다.
+이는 ADR-015의 required behavior다. P-03A/P-03B source/static/full-build는 pre-RX
+timeout-to-`DISARMED`와 ARM 시 default 300 ms first-CMD window를 구현했다. 실제 target
+runtime 정합성은 아직 닫히지 않았다.
 
 ## 9. Parser Rule
 
@@ -322,7 +326,7 @@ ADR-015로 닫힌 결정과 아직 열린 구현 세부사항을 구분한다.
 | Production command ingress | ADR-015 Accepted: ESP32 UART1 -> STM32 USART1 | `P-02` production mapper; optional PC upstream은 구현할 경우에만 별도 설계 |
 | Command rate | 20 Hz | 그대로 확정할지 |
 | Telemetry rate | 10 Hz | 그대로 확정할지 |
-| Timeout recovery | ADR-015 Accepted: 즉시 `DISARMED`, new ARM + new CMD | `P-03` source/runtime evidence |
+| Timeout recovery | ADR-015 Accepted; P-03 source/static/full-build PASS: 즉시 `DISARMED`, accepted ARM + valid CMD; transport anti-replay는 미구현 | Motor/LiPo-disconnected P-03 target runtime evidence |
 | Max frame length | TBD | 128 byte 또는 256 byte 중 선택 |
 | Ring buffer size | TBD | 256 byte 또는 512 byte 중 선택 |
 | Unknown type handling | TBD | `ERR,code=UNKNOWN_TYPE` 응답 또는 ignore |

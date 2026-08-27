@@ -1011,8 +1011,11 @@ class FirmwareContractTest(unittest.TestCase):
 
         self.assertIn(
             "caseUART_FRAME_TYPE_ARM:motor_output_stop_all();"
-            "s_vx_mmps=0;s_w_mradps=0;s_state=ROBOT_ARMED;"
-            "s_last_seq=frame.seq;send_ack(frame.seq,\"ARM\");return;",
+            "s_vx_mmps=0;s_w_mradps=0;"
+            "s_cmd_timeout_ms=CMD_TIMEOUT_DEFAULT_MS;"
+            "s_last_cmd_ms=HAL_GetTick();"
+            "s_state=ROBOT_ARMED;s_last_seq=frame.seq;"
+            "send_ack(frame.seq,\"ARM\");return;",
             handle_line,
         )
 
@@ -1052,12 +1055,11 @@ class FirmwareContractTest(unittest.TestCase):
             process,
         )
         self.assertNotIn("if(byte=='\\r'){continue;}", process)
-        timeout_guard = (
-            "if(s_state==ROBOT_ARMED&&"
-            "(HAL_GetTick()-s_last_cmd_ms)>=s_cmd_timeout_ms)"
-            "{motor_output_stop_all();"
+        self.assertIn(
+            "for(;;){(void)estop_enforce_latch();"
+            "command_timeout_enforce();",
+            process,
         )
-        self.assertIn(timeout_guard, process)
 
         protocol_init = compact_c(
             extract_function(self.source["protocol_c"], "uart_mvp_init")
@@ -1068,6 +1070,36 @@ class FirmwareContractTest(unittest.TestCase):
             protocol_init,
         )
         self.assertIn("s_cmd_timeout_ms=CMD_TIMEOUT_DEFAULT_MS;", protocol_init)
+
+    def test_command_timeout_forces_disarmed_contract(self) -> None:
+        timeout_body = extract_function(
+            self.source["protocol_c"],
+            "command_timeout_enforce",
+        )
+        compact_timeout = compact_c(timeout_body)
+
+        self.assert_tokens_in_order(
+            timeout_body,
+            "if(s_state != ROBOT_ARMED)",
+            "return;",
+            "if((HAL_GetTick() - s_last_cmd_ms) < s_cmd_timeout_ms)",
+            "return;",
+            "motor_output_stop_all();",
+            "s_vx_mmps = 0;",
+            "s_w_mradps = 0;",
+            "s_state = ROBOT_DISARMED;",
+        )
+
+        for forbidden in (
+            "send_err(",
+            "send_ack(",
+            "s_error_count",
+            "s_last_seq",
+        ):
+            self.assertNotIn(
+                compact_c(forbidden),
+                compact_timeout,
+            )
 
     def test_esp32_uart_and_script_guard_contract(self) -> None:
         definitions = parse_defines(self.source["esp_c"])

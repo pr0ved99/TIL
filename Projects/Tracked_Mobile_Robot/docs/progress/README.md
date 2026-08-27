@@ -7,7 +7,9 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 Latest: [`2026-08-27_progress.md`](2026-08-27_progress.md) — K1/S0/VO617/F2/6P-18 AWG의
 partial arrival를 기록하고, S2/P6KE 미도착과 received-part incoming 미실행 경계를 분리했다.
 P-02B와 P-02C-1에 이어 P-02C-2 production caller/static/full-build가 완료돼 current
-canonical은 `25/25`다. Flash/board runtime은 pending이고 다음 software 단위는 P-03이다.
+historical checkpoint는 `25/25`다. P-03A/P-03B timeout recovery source/static/full-build도
+완료돼 current canonical은 `26/26`이다. Flash/board/PWM runtime은 pending이고 다음 카페
+software 단위는 P-04다.
 
 ## How To Use
 
@@ -46,7 +48,7 @@ canonical은 `25/25`다. Flash/board runtime은 pending이고 다음 software �
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B/P-02C-1/P-02C-2 완료, production caller/static/full-build와 canonical `25/25` PASS, target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
+| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B~P-02C-2와 P-03A/P-03B source/static/full-build 완료, current canonical `26/26` PASS, P-03 target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
 | 2026-08-26 | [`2026-08-26_progress.md`](2026-08-26_progress.md) | 2026-09-15까지의 dated pre-arrival schedule, priority/milestone/buffer와 delivery transition rule |
 | 2026-08-25 | [`2026-08-25_progress.md`](2026-08-25_progress.md) | Four-chapter remaining-work rebaseline, production CMD mapper/data-path gaps, E-stop `005A/005B` scope split and `P-01~P-09` pre-arrival queue |
 | 2026-08-24 | [`2026-08-24_progress.md`](2026-08-24_progress.md) | PC7 direct latch/reset runtime, host contract 20/20, F1/K2 무전원 입고 precheck와 S2 stuck/short no-auto-reenable blocker 확인 |

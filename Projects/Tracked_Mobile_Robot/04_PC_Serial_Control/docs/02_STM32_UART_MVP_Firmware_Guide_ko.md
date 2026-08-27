@@ -367,7 +367,8 @@ MVP rule:
 1. `ARMED` 상태에서 valid `CMD`가 들어오면 `last_valid_ms`를 갱신한다.
 2. `HAL_GetTick() - last_valid_ms > timeout_ms`이면 output을 즉시 0으로 만든다.
 3. Stored command를 zero/invalid로 만들고 즉시 `DISARMED`로 전환한다.
-4. 재동작에는 new `ARM` 뒤 new `CMD`가 필요하다.
+4. 재동작에는 timeout 뒤 accepted `ARM`과 그 이후의 valid `CMD`가 필요하다. 이는
+   stored command 자동 복원을 막는 state-machine 계약이며 transport anti-replay는 아니다.
 
 Pseudo:
 
@@ -477,10 +478,11 @@ STM32 USART2 interrupt receives UART bytes into a ring buffer, main-loop parser 
 
 1. `[COMPLETED]` 같은 protocol을 ESP32 UART1 <-> STM32 USART1 link로 연결했다.
 2. `[COMPLETED — motor-disconnected MDD10A-input scope]` PWM/DIR logic input waveform을 검증했다.
-3. `[P-02]` `left_pwm/right_pwm`을 production mapper의 실제 target output으로 연결한다.
+3. `[P-04]` `left_pwm/right_pwm`을 production mapper의 실제 target output으로 연결한다.
 4. `[COMPLETED — encoder-side scope]` 실제 encoder CPS를 `left_cps/right_cps` telemetry에 연결했다.
-5. `[P-03]` ADR-015 timeout-to-`DISARMED` recovery를 구현·검증하고 actual motor test 전
-   command limit과 timeout을 다시 확인한다.
+5. `[P-03 SOURCE/STATIC/FULL BUILD COMPLETE / TARGET RUNTIME PENDING]` ADR-015
+   timeout-to-`DISARMED` recovery를 motor/LiPo-disconnected target에서 검증하고 actual motor
+   test 전 command limit과 timeout을 다시 확인한다.
 
 ## Detailed Implementation
 

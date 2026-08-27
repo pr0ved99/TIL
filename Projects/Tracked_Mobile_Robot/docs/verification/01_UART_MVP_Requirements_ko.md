@@ -130,15 +130,22 @@ Acceptance criteria:
 - STM32 response: `ACK,seq=N,type=CMD`
 - 이후 `TEL`에서 `last_seq=N`, `vx_mmps=50`, `w_mradps=0`가 관찰된다.
 
-### REQ-SAFE-004: command timeout forces output zero
+### REQ-SAFE-004: command timeout forces DISARMED recovery
 
-STM32는 valid `CMD` 수락 후 `timeout_ms` 안에 새 `CMD`가 들어오지 않으면 command velocity를 0으로 떨어뜨려야 한다.
+STM32는 valid `CMD` 수락 후 `timeout_ms` 안에 새 `CMD`가 들어오지 않으면 motor output과
+stored command를 zero로 만들고 `DISARMED`로 전환해야 한다. 재동작에는 timeout 뒤 수락된
+`ARM`과 그 이후의 valid `CMD`가 모두 필요하며 timeout 이전 stored command를 자동 복원하면
+안 된다. Sequence/session freshness 기반 transport anti-replay는 이 요구사항의 현재 구현·검증
+범위가 아니다.
 
 Acceptance criteria:
 
 - valid `CMD` 수락 직후 `TEL`에서 `vx_mmps=50`
-- `timeout_ms=500` 이후 `TEL`에서 `vx_mmps=0`, `w_mradps=0`
-- state는 `ARMED`를 유지할 수 있으나 output command는 zero여야 한다.
+- `timeout_ms=500` 이후 `TEL`에서 `state=DISARMED`, `vx_mmps=0`, `w_mradps=0`
+- timeout 자체는 새 frame 거부가 아니므로 `ACK` 또는 `ERR`를 만들지 않는다.
+- timeout 뒤 `ARM` 수락 전의 valid `CMD`는 `ERR,code=NOT_ARMED`로 거부되고 output은 zero를 유지한다.
+- accepted `ARM`만으로 이전 stored command가 복원되지 않으며, 그 뒤 수신한 valid `CMD`만 적용한다.
+- 과거 sequence의 `ARM` + `CMD` replay 자체를 판별·거부하는 것은 별도 anti-replay 요구사항으로 남긴다.
 
 ### REQ-SAFE-005: velocity range validation
 
@@ -180,4 +187,3 @@ Acceptance criteria:
 | REQ-ENC-001 | left/right encoder count를 읽고 cps로 변환한다. | encoder validation |
 | REQ-CTRL-001 | target velocity와 measured velocity를 비교해 PWM을 조정한다. | closed-loop control |
 | REQ-POWER-001 | main power, buck, fuse, switch path가 안전하게 검증된다. | hardware bring-up |
-

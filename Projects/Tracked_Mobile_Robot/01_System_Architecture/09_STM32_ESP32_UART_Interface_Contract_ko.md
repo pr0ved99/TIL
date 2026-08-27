@@ -201,13 +201,19 @@ PWM output -> 0
 - 멈춰 있는 상태도 `CMD,seq=N,vx_mmps=0,w_mradps=0,timeout_ms=300`처럼 zero command를 반복한다.
 - valid `CMD`가 `timeout_ms` 안에 새로 들어오지 않으면 STM32는 즉시 motor output을 0으로 만든다.
 - 같은 timeout 처리에서 stored command를 zero로 만들고 state를 `DISARMED`로 전환한다.
-- 재동작에는 timeout 뒤 수신한 new `ARM`과 그 이후의 new `CMD`가 모두 필요하다. 이전 command를 replay하면 안 된다.
+- 재동작에는 timeout 뒤 수락된 `ARM`과 그 이후의 valid `CMD`가 모두 필요하다. Timeout
+  이전 stored command를 자동 복원하지 않으며, `DISARMED`인 동안 수신한 `CMD`는 거부한다.
 
-위 항목은 ADR-015에서 확정한 required behavior다. 현재 firmware는 output/stored command를
-zero로 만들지만 `ARMED`를 유지하므로 아직 이 계약을 충족하지 않으며 `P-03`에서 구현·검증한다.
+위 항목은 ADR-015에서 확정한 required behavior다. P-03A/P-03B source는 RX byte 처리 전에
+timeout을 검사해 output/stored command를 zero로 만들고 `DISARMED`로 전환한다. `ARM` 수락 시
+default 300 ms와 current tick으로 first-CMD window도 다시 시작한다. Source/static/full-build는
+PASS했고 target runtime은 아직 수행하지 않았다.
+P-03에는 sequence 단조 증가 검사, session freshness, RX queue purge 또는 암호학적
+anti-replay가 없다. 따라서 queue에 남았거나 replay된 `ARM` + `CMD` 쌍의 차단은 입증 범위가 아니다.
 
 Timeout은 새 command frame이 들어와서 거부되는 상황이 아니므로 `ERR` 응답 대상이 아니다.
-대신 `TEL`의 `state`, `left_pwm`, `right_pwm`, `fault` 또는 추후 `warn` field로 관찰한다.
+현재 P-03 `TEL`에서는 `state=DISARMED`와 stored `vx/w=0`으로 timeout 결과를 추론한다.
+명시적 timeout reason과 applied-PWM telemetry는 P-04 pending이다.
 
 ### MVP telemetry rule
 
@@ -235,7 +241,8 @@ TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pw
 - missing field `CMD` -> `ERR,code=MISSING_FIELD`
 - out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
 - `DISARMED` 상태 nonzero `CMD` -> `ERR,code=NOT_ARMED`
-- command timeout 후 `TEL`에서 output zero 확인
+- command timeout 후 `TEL`에서 `DISARMED`와 stored `vx/w=0` 확인; applied PWM은 P-04와
+  target-runtime evidence로 별도 확인
 - `DISARM` -> `ACK` 및 이후 `TEL,state=DISARMED`
 
 ## 출처
@@ -511,8 +518,9 @@ Protocol-level state names:
 - `FAULT`
 - `LOW_BATTERY`
 
-Command timeout은 timeout reason을 가진 `DISARMED`로 보고한다. ADR-015는 별도
-`TIMEOUT_STOP` state를 정의하지 않는다.
+Command timeout은 현재 `DISARMED`와 zero stored command 값으로 관찰한다. 명시적 timeout
+reason telemetry field는 P-04 pending이며, ADR-015는 별도 `TIMEOUT_STOP` state를 정의하지
+않는다.
 
 ### FAULT
 
@@ -779,16 +787,18 @@ Final MVP production path는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA1
 ESP32-S3가 유일한 external command ingress다. Optional PC forwarding/arbitration을 구현할
 경우 ESP32가 소유하고, USART2는 bench debug/encoder logger로만 사용한다. STM32가 모든
 motor safety decision을 소유한다.
-Source loss recovery는 output/stored command zero, `DISARMED`, new `ARM` + new `CMD` 순서다.
+Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` + valid `CMD`
+순서다. 이는 state-machine recovery 계약이며 transport freshness/anti-replay 입증은 아니다.
 
 Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current
-controlled hook은 모두 `0U`다. Host/static은 firmware contract `21/21` + mapper vectors `2/2` +
-UART frame `2/2`, 합계 `25/25 PASS`다. `P-02B` mapper와 `P-02C-1` signed adapter에 이어
-`P-02C-2` production caller의 3회 E-stop guard, 상호 배타 raw/signed output과 success-only
-state commit/ACK 계약을 연결했다. 32-object forced ARM build와 mapper/signed adapter nonzero
-ELF linkage도 PASS했다. 이는 source/static/build/link 증거이며 flash, board runtime, PWM waveform
-또는 motor 증거가 아니다. Exact runtime-to-artifact linkage와 physical setup provenance 경계는
-그대로 남는다. ADR-015 timeout recovery는 `P-03`, TEL PWM field 연결은 `P-04` 작업이다.
+controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`이며, P-03A/P-03B
+timeout contract를 추가한 current host/static은 firmware contract `22/22` + mapper vectors `2/2` +
+UART frame `2/2`, 합계 `26/26 PASS`다. Timeout helper의 pre-RX 실행, stop/zero/`DISARMED`
+순서와 ARM 시 default 300 ms first-CMD window 재시작을 고정했다. 32-object forced ARM build는
+exit `0`, warning/error 진단 0건, ELF `text=29268`, `data=172`, `bss=2832`로 PASS했다. 이는
+source/static/build 증거이며 flash, board runtime, PWM waveform 또는 motor 증거가 아니다.
+Exact runtime-to-artifact linkage와 physical setup provenance 경계는 그대로 남는다. P-03 target
+runtime과 TEL PWM field 연결 `P-04`가 다음 작업이다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

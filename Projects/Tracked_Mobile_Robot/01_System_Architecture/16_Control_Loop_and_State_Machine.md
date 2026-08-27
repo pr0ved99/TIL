@@ -152,8 +152,10 @@ SAFETY_FAULT_LATCHED
     +-- fault cleared + explicit reset -> SAFETY_DISARMED
 ```
 
-The controller must not replay the pre-timeout command or accept motion without
-a new `ARM`.
+The controller zeros the stored pre-timeout command and does not automatically
+reapply it. A `CMD` received while `DISARMED` is rejected until an `ARM` is
+accepted. P-03 does not determine transport/session freshness, so rejecting a
+queued or replayed `ARM` + `CMD` pair remains outside the implemented contract.
 
 ## 5. Arm Preconditions
 
@@ -165,7 +167,9 @@ Arm request is accepted only if:
 - No active fault is latched.
 - Motor PWM output is currently zero.
 - PWM compare values are zero.
-- The selected Final MVP production ingress is the ESP32 single owner and the session is not stale.
+- The selected Final MVP production ingress is the ESP32 single owner.
+- Target anti-replay phase only: session freshness is verified; P-03 does not
+  implement this check.
 - Optional: robot is physically safe for the current test stage.
 
 If any condition fails, the controller stays disarmed or enters a latched fault
@@ -235,7 +239,7 @@ Initial command limits:
 | `vx_mmps` | Reject values outside `-100..100`; do not change the active command |
 | `w_mradps` | Reject values outside `-500..500`; do not change the active command |
 | `timeout_ms` | Reject values outside `50..500`; initial default is 300 ms |
-| `seq` | Used for telemetry and stale command inspection |
+| `seq` | Used for response/telemetry correlation; P-03 does not reject commands by sequence freshness |
 
 Invalid command behavior:
 
@@ -353,7 +357,7 @@ These fields make timeout, safety, and output behavior testable.
 | Arm with safe conditions | State becomes `SAFETY_ARMED_IDLE` |
 | Motion command while armed | State becomes `SAFETY_ARMED_ACTIVE`, limited PWM output |
 | Stop command | PWM zero, state returns to idle or disarmed |
-| Command timeout | Output/stored command zero, state becomes `SAFETY_DISARMED`; stale `CMD` is rejected and a new `ARM` then new `CMD` is required |
+| Command timeout | Output/stored command zero, state becomes `SAFETY_DISARMED`; CMD-only is rejected, then an accepted `ARM` and valid `CMD` restore operation; transport anti-replay pending |
 | E-stop command | State becomes `SAFETY_ESTOP_LATCHED`, output disabled |
 | Low-voltage simulated | State becomes `SAFETY_LOW_VOLTAGE_STOP`, output disabled |
 | Fault injected | State becomes `SAFETY_FAULT_LATCHED`, output disabled |
@@ -372,5 +376,7 @@ PWM = 0
 nonzero motor output blocked
 ```
 
-This is the ADR-015 required model. Current firmware still remains `ARMED`
-after timeout, so `P-03` implementation and target runtime evidence are pending.
+This is the ADR-015 required model. P-03A/P-03B source/static/full-build now
+enforces output/stored-command zero and `DISARMED` before RX processing, and
+starts a fresh default 300 ms first-CMD window on `ARM`. Flash, board, and PWM
+target-runtime evidence remains pending.

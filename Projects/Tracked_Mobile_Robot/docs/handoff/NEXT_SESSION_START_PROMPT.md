@@ -50,9 +50,9 @@ commit/push하지 마라.
 완료된 현재 기준선:
 
 - UART Gate A/B/C와 필수 parser/recovery 벡터는 PASS했고 controlled test hook은 모두 `0U`,
-  current host/static test는 firmware contract `21/21` + mapper vectors `2/2` + UART frame
-  contract `2/2`, 합계 `25/25`다. Historical `15/15`, 2026-08-24 `20/20`, P-02B
-  `23/23`, P-02C-1 `24/24` checkpoint와 혼동하지 마라.
+  current host/static test는 firmware contract `22/22` + mapper vectors `2/2` + UART frame
+  contract `2/2`, 합계 `26/26`다. Historical `15/15`, 2026-08-24 `20/20`, P-02B
+  `23/23`, P-02C-1 `24/24`, P-02C-2 `25/25` checkpoint와 혼동하지 마라.
 - Permanent perfboard의 PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2에는 각각 10 kΩ pull-down이 있다.
 - Motor-disconnected MDD10A-input final active test는 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty,
   direction 전후 약 2 ms PWM-zero, expected MDD10A LED 순서로 PASS했다.
@@ -91,10 +91,12 @@ commit/push하지 마라.
 - P-02B HAL-independent mapper와 P-02C-1 signed adapter에 이어 P-02C-2 production
   `handle_cmd()` caller를 연결했다. 순서는 validation -> `ARMED` -> E-stop -> mapper(cap 10%) ->
   E-stop -> mutually exclusive raw/signed output -> E-stop -> success-only state commit/ACK다.
-  Mapper/output 실패는 stop-all, stored `vx/w` zero, ERR, return으로 닫힌다. Current canonical은
-  `25/25`; 32-object forced ARM build는 exit `0`, 진단 0건, ELF `text=29216`, `data=172`,
-  `bss=2832`이며 mapper/signed adapter가 nonzero address에 link됐다. Flash/board runtime,
-  PWM/DIR waveform, actual channel/polarity/motor evidence는 없고 TEL PWM fields는 zero placeholder다.
+  Mapper/output 실패는 stop-all, stored `vx/w` zero, ERR, return으로 닫힌다. 이는 historical
+  `25/25` P-02C-2 checkpoint다.
+- P-03A/P-03B는 pre-RX timeout helper의 stop-all -> stored `vx/w` zero -> `DISARMED`와
+  accepted ARM의 default 300 ms/current-tick first-CMD window 재시작을 구현했다. Current
+  canonical은 `26/26`; 32-object forced ARM build는 exit `0`, 진단 0건, ELF `text=29268`,
+  `data=172`, `bss=2832`다. Flash/board/PWM runtime은 없고 TEL PWM fields는 zero placeholder다.
 - 실제 motor output, actual motor stop, Physical E-stop PASS 또는 산업 안전 인증은 아직 아니다.
 
 현재 즉시 작업:
@@ -104,17 +106,21 @@ commit/push하지 마라.
 2. Custom PC adapter plate는 2026-08-26 사용자 보고 기준 이미 수령했다. Exact RevB source
    identity와 치수/chassis/module fit은 집 `H-01`에서 확인하고, 카페에서는 이를 추정하지 않는다.
 3. `P-02A~P-02C-2` mapper, signed adapter와 production caller source/static/full-build는
-   완료했다. Historical `23/23`, `24/24`와 current `25/25`을 보존한다.
-4. 다음 firmware 작업은 `P-03~P-06`: timeout recovery, 실제 TEL fields, battery ADC/low-voltage policy와
-   wheel-distance/1 m odometry path를 구현·검증한다. Build/static 결과를 board evidence로 쓰지 않는다.
-5. 일정 후반의 `P-08/P-09`: F1 `257`/ordered `287` identity와 S1 basis, incoming checklist와
+   완료했다. Historical `23/23`, `24/24`, `25/25`을 보존한다.
+4. `P-03A/P-03B` source/static/full-build는 완료했다. 집 H-02에서 motor/LiPo-disconnected
+   timeout -> `DISARMED` -> pre-reARM CMD reject -> new ARM -> new CMD target regression을
+   수행한다. 현재 ESP controlled script의 1000 ms step은 300 ms first-CMD window보다 길므로
+   target test 전 ARM->CMD cadence를 300 ms 미만으로 조정한다.
+5. 다음 카페 firmware 작업은 `P-04~P-06`: 실제 TEL fields, battery ADC/low-voltage policy와
+   wheel-distance/1 m odometry path다. Build/static 결과를 board evidence로 쓰지 않는다.
+6. 일정 후반의 `P-08/P-09`: F1 `257`/ordered `287` identity와 S1 basis, incoming checklist와
    T-ESTOP capture sheet를 닫는다.
-6. 지금 도착한 K1/S0/VO617/F2/6P subset부터 모든 전원을 끄고 marking, pin/cavity map,
+7. 지금 도착한 K1/S0/VO617/F2/6P subset부터 모든 전원을 끄고 marking, pin/cavity map,
    polarity, continuity, terminal fit과 wire/seal retention을 확인한다. S2/P6KE는 도착 뒤
    동일한 검사를 수행한다.
-7. Direct PC7-GND 임시 jumper 제거, conditioned path, clamp/internal suppression과
+8. Direct PC7-GND 임시 jumper 제거, conditioned path, clamp/internal suppression과
    current-limited K2/K1 pickup/dropout을 motor-disconnected 상태에서 검증한다.
-8. `T-ESTOP-001~004 + T-ESTOP-005A`를 PASS한 후에만 lifted single-motor 5~10% no-load와
+9. `T-ESTOP-001~004 + T-ESTOP-005A`를 PASS한 후에만 lifted single-motor 5~10% no-load와
    `T-ESTOP-007`로 이동한다. `FM-ESTOP-014/T-ESTOP-005B`는 post-MVP residual-risk V-cycle이다.
 
 중지 조건:

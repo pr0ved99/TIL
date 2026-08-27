@@ -62,7 +62,7 @@ production command path와 timeout policy가 host/static 및 motor-disconnected 
 | --- | --- | --- |
 | `P-01` | command owner, USART1/USART2 역할, source-loss 규칙 문서화 | 없음 |
 | `P-02` | mapper 수식/interface, source 구현, host/static vectors, STM32 build | STM32 flash, motor/LiPo-disconnected UART와 PWM/DIR target regression |
-| `P-03` | timeout/recovery policy, source 구현, host/static test와 build | STM32+ESP32에서 timeout -> `DISARMED` -> new ARM/CMD runtime |
+| `P-03` | `[P-03A/P-03B COMPLETE]` timeout/recovery source, host/static `26/26`와 32-object build | STM32+ESP32에서 timeout -> `DISARMED` -> new ARM/CMD runtime |
 | `P-04` | TEL schema/source mapping, STM32/ESP32 source 수정, parser/format test와 양 firmware build | STM32+ESP32 end-to-end TEL runtime; 필요 시 logic analyzer와 applied output 대조 |
 | `P-05` | divider/protection 계산, threshold/hysteresis 근거, pure conversion과 host tests | divider가 실제 구성된 뒤 안전한 ADC voltage sweep; LiPo 직접 ADC 연결 금지 |
 | `P-06` | count-to-distance math, host tests, 1 m calibration/validation 기록표 | encoder hand-turn target check와 이후 실제 1 m 시험 |
@@ -99,12 +99,12 @@ flash하기 위해 카페 작업을 생략하지 않는다.
 | --- | --- | ---: | --- |
 | **08-26 수** | `P-01 [COMPLETED]` command owner와 UART ownership 동결 | 1.5~2 h | ESP32/PC 역할, 단일 motion owner와 source-loss timeout 규칙을 ADR-015 `Accepted`로 확정 |
 | **08-27 목** | `P-02A/P-02B [COMPLETED]` Git checkpoint, mapper source/build와 independent vectors/static source contract | 2~3 h | canonical `23/23 PASS`; C native execution/target runtime이 아니라는 evidence boundary 명시 |
-| **08-28 금** | `P-02C-1/P-02C-2 [COMPLETED EARLY 08-27]` signed adapter와 production caller source/static/build | 1~2 h | historical `24/24`, current `25/25`, 32-object forced build와 nonzero ELF linkage PASS; target runtime 경계 기록 |
+| **08-28 금** | `P-02C-1/P-02C-2 [COMPLETED EARLY 08-27]` signed adapter와 production caller source/static/build | 1~2 h | historical `24/24`, P-02C-2 `25/25`, 32-object forced build와 nonzero ELF linkage PASS; target runtime 경계 기록 |
 | **08-29 토** | Week 1 buffer | 0~2 h | `P-01/P-02` 누락 보완만 수행; PASS면 휴식 |
 | **08-30 일** | 휴식 | - | 작업 없음 |
-| **08-31 월** | `P-03A` timeout 뒤 `DISARMED`, new ARM + new CMD recovery 구현 | 2~3 h | timeout에서 output/stored command zero, state 전이와 stale command 미재생 source/static test PASS |
-| **09-01 화** | `P-03B` timeout recovery regression과 full build | 2~3 h | all-hooks-`0U`, 전체 host/static와 STM32 full build PASS |
-| **09-02 수** | `P-02/P-03` 통합 검증 | 2~3 h | host/static 전체 PASS, STM32 build PASS, motor/LiPo-disconnected board UART 회귀 PASS |
+| **08-31 월** | `[COMPLETED EARLY 08-27] P-03A` timeout 뒤 `DISARMED`, accepted ARM + valid CMD state recovery 구현 | 완료 | pre-RX stop/stored-zero/DISARMED와 ARM default 300 ms window source/static PASS; transport freshness/anti-replay 제외 |
+| **09-01 화** | `[COMPLETED EARLY 08-27] P-03B` timeout recovery regression과 full build | 완료 | all-hooks-`0U`, canonical `26/26`, 32-object build exit 0/진단 0건 |
+| **09-02 수** | `P-02/P-03` 통합 target 검증 | 2~3 h | ESP script ARM->CMD cadence를 300 ms 미만으로 조정한 뒤 motor/LiPo-disconnected board UART/PWM 회귀 PASS |
 | **09-03 목** | `P-04A` TEL schema와 applied left/right request/PWM, E-stop latch, command-age source 정의 | 2~3 h | 실제 runtime source와 아직 `TARGET PENDING`인 field를 구분한 mapping 표 완성 |
 | **09-04 금** | `P-04B` STM32 TEL/ESP32 parser 연동과 regression | 2~3 h | parser/format test와 motor-disconnected UART runtime에서 구현된 field의 일관성 확인; `batt_mv` 실측 source는 `P-05`까지 pending |
 | **09-05 토** | Week 2 buffer | 0~2 h | 실패 vector 수정·재검증 또는 evidence 정리; PASS면 휴식 |

@@ -120,12 +120,13 @@ vx_mmps, w_mradps
 - [`../../01_System_Architecture/19_Architecture_Decision_Record_ko.md`](../../01_System_Architecture/19_Architecture_Decision_Record_ko.md)의 ADR-015 `Accepted`
 - Current source에서 protocol RX는 `huart1` 하나, USART2 `HAL_UART_Receive*`는 0건이고
   당시 host/static discovery `20/20`, P-02B `23/23`, P-02C-1 `24/24` checkpoint를 보존한다.
-  P-02C-2 production caller까지 포함한 current canonical은 `25/25 PASS`다.
+  P-02C-2 production caller checkpoint는 `25/25`, P-03 timeout contract까지 포함한 current
+  canonical은 `26/26 PASS`다.
 
 Evidence boundary:
 
-- P-01은 architecture/ownership decision 완료다. 현재 timeout source는 아직 `ARMED`를
-  유지하므로 required recovery의 source/board-runtime PASS는 `P-03`에서 닫는다.
+- P-01은 architecture/ownership decision 완료다. P-03 source/static/full-build도 ADR-015
+  recovery와 일치하며 motor/LiPo-disconnected target runtime은 아직 남아 있다.
 
 ### `P-02` production open-loop command mapper
 
@@ -145,7 +146,7 @@ Evidence boundary:
 
 완료 증거:
 
-- current canonical `21 + 2 + 2 = 25/25 PASS`
+- P-02C-2 당시 canonical `21 + 2 + 2 = 25/25 PASS`
 - 32-object forced ARM build exit `0`, compiler/linker warning/error 진단 0건
 - mapper와 signed adapter의 nonzero ELF linkage
 
@@ -153,7 +154,7 @@ Evidence boundary:
 
 - 새 flash/board runtime, PWM/DIR waveform 또는 actual motor evidence는 없다.
 - channel/forward polarity는 provisional이고 TEL PWM field는 zero placeholder다.
-- timeout-to-`DISARMED`는 `P-03`에서 닫는다.
+- timeout-to-`DISARMED` source/static/full-build는 P-03에서 닫혔고 target runtime은 남아 있다.
 
 금지:
 
@@ -163,10 +164,9 @@ Evidence boundary:
 
 ### `P-03` timeout과 motion-recovery 구현·검증
 
-상태: `DECISION ACCEPTED / IMPLEMENTATION PENDING`
+상태: `SOURCE/STATIC/FULL BUILD COMPLETE / TARGET RUNTIME PENDING`
 
-현재 timeout은 PWM과 command를 zero로 만들지만 state는 `ARMED`에 남는다. Ground motion 전에
-다음 정책을 코드와 requirement에 일치시킨다.
+P-03A/P-03B source는 다음 ADR-015 정책과 requirement를 일치시켰다.
 
 ADR-015 Accepted baseline:
 
@@ -175,8 +175,30 @@ CMD timeout
 -> motor_output_stop_all()
 -> stored command zero
 -> DISARMED
--> new ARM + new CMD required
+-> accepted ARM + subsequently processed valid CMD required
 ```
+
+여기서 구현된 것은 state gate와 stored-command 자동 복원 방지다. Sequence/session freshness,
+RX queue purge와 transport anti-replay는 P-03 구현·검증 범위가 아니다.
+
+구현·검증 증거:
+
+- `command_timeout_enforce()`를 RX byte 처리 전에 실행한다.
+- deadline 초과 시 stop-all -> stored `vx/w` zero -> `DISARMED` 순서를 강제한다.
+- accepted `ARM`은 stored/output zero를 유지하고 default `300 ms`와 current tick으로
+  first-CMD window를 다시 시작한다.
+- timeout 자체는 ACK/ERR, error count 또는 `last_seq`를 만들지 않는다.
+- canonical host/static `22 + 2 + 2 = 26/26 PASS`
+- 32-object forced ARM build exit `0`, warning/error 진단 0건, ELF
+  `text=29268`, `data=172`, `bss=2832`
+
+Evidence boundary:
+
+- 새 flash, STM32+ESP32 board runtime과 PB6/PB7/PC8/PC9 PWM/DIR capture는 없다.
+- Historical timeout-zero/PWM-stop evidence는 이전 `ARMED` 유지 image이므로 새 P-03 state
+  recovery를 입증하지 않는다.
+- 기존 ESP controlled script의 `ARM -> CMD` 간격은 `1000 ms`이고 새 default first-CMD
+  window는 `300 ms`이므로 target test 전에 300 ms 미만 cadence로 별도 조정해야 한다.
 
 ### `P-04` 실제 telemetry 값 연결
 

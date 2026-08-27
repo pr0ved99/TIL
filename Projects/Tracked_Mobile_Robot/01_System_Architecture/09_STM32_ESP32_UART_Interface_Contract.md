@@ -157,16 +157,21 @@ After `ARM` is accepted:
 - If no new valid `CMD` arrives within `timeout_ms`, STM32 immediately sets
   motor output to zero.
 - The same timeout handling zeros the stored command and enters `DISARMED`.
-- Motion may resume only after a new `ARM` followed by a new `CMD`; stale
-  commands must never be replayed.
+- Motion may resume only after an accepted `ARM` followed by a valid `CMD`.
+  Timeout handling must not automatically restore the stored pre-timeout
+  command, and a `CMD` received while still `DISARMED` is rejected.
 
-ADR-015 fixes this required behavior. Current firmware zeros output/stored
-command but remains `ARMED`, so implementation and runtime evidence remain
-pending under `P-03`.
+ADR-015 fixes this required behavior. P-03A/P-03B source now checks timeout
+before processing RX bytes, zeros output/stored command, and enters `DISARMED`.
+Accepted `ARM` starts a fresh first-CMD window using the default 300 ms and the
+current tick. Source/static/full-build evidence passes; target runtime remains
+pending. P-03 does not implement sequence monotonicity, session freshness, RX
+queue purging, or cryptographic anti-replay; a queued or replayed `ARM` + `CMD`
+pair is outside the proven contract.
 
-Timeout is not an `ERR` response case because no new frame arrived. Report it
-through `TEL` using `state`, `left_pwm`, `right_pwm`, `fault`, or a future
-`warn` field.
+Timeout is not an `ERR` response case because no new frame arrived. Current
+P-03 `TEL` lets the receiver infer the event from `state=DISARMED` and stored
+`vx/w=0`; an explicit timeout reason and applied-PWM telemetry remain P-04.
 
 ### MVP telemetry rule
 
@@ -195,7 +200,8 @@ The first UART MVP passes when these logs are captured:
 - missing-field `CMD` -> `ERR,code=MISSING_FIELD`
 - out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
 - nonzero `CMD` while `DISARMED` -> `ERR,code=NOT_ARMED`
-- telemetry confirms zero output after command timeout
+- telemetry confirms `DISARMED` and stored `vx/w=0` after command timeout;
+  applied PWM remains P-04 plus target-runtime evidence
 - `DISARM` -> `ACK` and later `TEL,state=DISARMED`
 
 ## Sources
@@ -468,8 +474,9 @@ Protocol-level state names:
 - `FAULT`
 - `LOW_BATTERY`
 
-Command timeout is reported as `DISARMED` with a timeout reason. ADR-015 does
-not define a separate `TIMEOUT_STOP` state.
+Command timeout is currently observable as `DISARMED` with zero stored command
+values. An explicit timeout-reason telemetry field is pending P-04; ADR-015
+does not define a separate `TIMEOUT_STOP` state.
 
 ### FAULT
 
@@ -656,18 +663,18 @@ The STM32-ESP32 link is a 3.3 V UART interface using text messages.
 The Final MVP production path is `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1
 PA9/PA10`. ESP32-S3 is the only external command ingress; USART2 is bench
 debug/encoder logging only. STM32 owns all motor safety decisions. Source loss
-requires output/stored-command zero, `DISARMED`, and a new `ARM` plus new `CMD`.
+requires output/stored-command zero, `DISARMED`, and an accepted `ARM` plus a
+valid `CMD`. This is a state-machine recovery contract, not proof of transport
+freshness or anti-replay.
 
-Current host/static discovery is `25/25 PASS`: firmware source contracts
-`21/21`, independent mapper vectors `2/2`, and UART frame vectors `2/2`.
-`P-02B` mapper and `P-02C-1` signed-output adapter checkpoints are complete.
-`P-02C-2` connects the production `CMD` caller with three E-stop guards,
-mutually exclusive controlled/raw and production/signed output paths, and
-success-only state commit plus ACK. A 32-object forced ARM build passed with no
-warning/error diagnostics, and both mapper and signed adapter have nonzero ELF
-addresses. This is source/static/build/link evidence, not flash, board-runtime,
-PWM-waveform, or motor evidence. The ADR-015 timeout transition remains `P-03`,
-and TEL PWM fields remain zero placeholders.
+The P-02C-2 historical checkpoint is `25/25`. Current host/static discovery is
+`26/26 PASS`: firmware source contracts `22/22`, independent mapper vectors
+`2/2`, and UART frame vectors `2/2`. P-03A/P-03B fixes the pre-RX timeout,
+stop/zero/`DISARMED` order and the fresh default 300 ms first-CMD window after
+`ARM`. A 32-object forced ARM build passed with no warning/error diagnostics;
+ELF size is `text=29268`, `data=172`, `bss=2832`. This is source/static/build
+evidence, not flash, board-runtime, PWM-waveform, or motor evidence. P-03 target
+runtime is pending, and TEL PWM fields remain zero placeholders for `P-04`.
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

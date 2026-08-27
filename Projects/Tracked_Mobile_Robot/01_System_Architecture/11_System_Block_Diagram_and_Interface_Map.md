@@ -344,7 +344,7 @@ Rule:
 | Encoder output exceeds STM32 input tolerance | encoder -> STM32 | measure encoder output before connection, use level shifting if needed |
 | UART wires pick up motor noise | STM32 <-> ESP32 | short wires, GND reference, test before motor power |
 | Buck converter misadjusted | logic power | adjust without MCU connected, verify with multimeter |
-| Command source freezes | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, new ARM/CMD requirement |
+| Command source freezes | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, accepted ARM then valid CMD state gate; queued/replayed pair rejection not covered |
 | Software task blocks motor loop | firmware architecture | defer FreeRTOS until HAL baseline exists, use queues and priorities |
 | CAN wiring/debug complexity delays motor bring-up | CAN bus | validate drivetrain first, test CAN standalone later |
 

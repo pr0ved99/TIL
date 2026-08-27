@@ -55,7 +55,7 @@ Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor 
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
 | Boot not complete | Startup state | PWM zero 유지 | Init 완료 후 disarmed |
-| Command timeout | Command age가 timeout 초과 | Motor output/stored command zero, `DISARMED` | New `ARM` 뒤 new `CMD` |
+| Command timeout | Command age가 timeout 초과 | Motor output/stored command zero, `DISARMED` | Accepted `ARM` 뒤 valid `CMD`; transport anti-replay는 별도 |
 | CAN heartbeat timeout | Heartbeat missing | Motor stop | Bus reconnect, disarm/arm |
 | Software stop/E-stop request | Command parser/state machine | Common safe-output, stop latch | Explicit operator reset 후 new ARM/CMD |
 | Physical E-stop asserted/open | S0-B sense; K1 path는 MCU-independent | K1 motor-energy cut + PWM zero/latch | Mechanical release, manual K1 re-enable, software reset 후 new ARM/CMD |
@@ -198,18 +198,23 @@ Required response:
 
 Detection:
 
-- `last_command_age_ms > timeout_ms`.
+- `last_command_age_ms >= timeout_ms`.
 
 Required response:
 
 - PWM과 stored command zero.
 - 즉시 `DISARMED`로 전환.
-- Timeout 이전 command replay 금지.
-- 재동작은 new `ARM` 뒤 new `CMD`가 들어온 경우에만 허용.
-- Telemetry로 timeout report.
+- Timeout 이전 stored command 자동 복원 금지.
+- 재동작은 accepted `ARM` 뒤 valid `CMD`가 들어온 경우에만 허용.
+- 현재 telemetry는 `DISARMED`와 zero command 값을 보여 준다. 명시적 timeout reason은
+  P-04 pending이다.
 
-과거 timeout-stop/armed-idle 후보 정책은 ADR-015로 superseded됐다. 현재 firmware는 아직
-timeout 뒤 `ARMED`를 유지하므로 이 required response의 구현·runtime evidence는 `P-03`에서 닫는다.
+과거 timeout-stop/armed-idle 후보 정책은 ADR-015로 superseded됐다. P-03A/P-03B
+source/static/full-build는 pre-RX timeout의 stop/zero/`DISARMED` response와 ARM 시 default
+300 ms first-CMD window 재시작을 PASS했다. Target runtime evidence는 아직 닫히지 않았다.
+P-03에는 sequence 단조 증가 검사, session freshness, RX queue purge 또는 암호학적
+anti-replay가 없다. 따라서 `DISARMED`에서 CMD-only 거부는 입증하지만 queue에 남았거나
+replay된 `ARM` + `CMD` 쌍의 차단은 입증하지 않는다.
 
 ### Case C2: CAN Heartbeat Timeout
 
@@ -349,7 +354,7 @@ Fault log에는 다음이 포함되어야 한다.
 | Validation | Method | Pass condition |
 | --- | --- | --- |
 | Boot safe output | Logic only, motor disconnected | PWM zero |
-| Command timeout | Command 전송 중단 | Motor output/stored command zero, `DISARMED`, stale `CMD` 거부, new `ARM` 뒤 new `CMD`만 허용 |
+| Command timeout | Command 전송 중단 | Motor output/stored command zero, `DISARMED`, CMD-only 거부, accepted `ARM` 뒤 valid `CMD` 필요; transport anti-replay pending |
 | Software fault injection | Motor disconnected, limited active output 뒤 fault handler 호출 | PWM/DIR zero, reset 전 output 재활성화 차단 |
 | Software stop request | E-stop frame 또는 command 전송 | Fault latched, output disabled |
 | Physical E-stop | K1/S0 hardware와 motor-disconnected staged test | Actual motor rail cut, latch, no auto restart |
@@ -371,11 +376,13 @@ Fault model은 architecture의 일부이지 나중에 붙이는 부가기능이 
 모든 command path는 같은 fail-safe behavior를 공유해야 한다.
 
 ```text
-invalid, stale, missing, or unsafe input -> PWM zero and nonzero motor output blocked
+invalid, detected-stale, missing, or unsafe input -> PWM zero and nonzero motor output blocked
 ```
 
 Final MVP command-source loss는 추가로 stored command zero와 `DISARMED` 전이를 강제하며,
-재동작에는 new `ARM`과 그 이후의 new `CMD`가 필요하다.
+재동작에는 accepted `ARM`과 그 이후의 valid `CMD`가 필요하다.
+현재 P-03 구현 자체에는 transport/session freshness 판별이 없으므로 anti-replay는 별도
+pending control이다.
 
 Latched safety fault에서 회복하려면 explicit operator action이 필요하다.
 

@@ -1502,11 +1502,11 @@ valid CMD 끊김
 -> timeout_ms 후 output zero
 -> stored command zero
 -> 즉시 DISARMED
--> new ARM 뒤 new CMD 필요
+-> accepted ARM 뒤 valid CMD 필요
 ```
 
-현재 실제 firmware는 아직 timeout 뒤 `ARMED`를 유지하므로 이 guide와의 source/runtime
-정합성은 `P-03`에서 구현·검증한다.
+P-03A/P-03B actual source/static/full-build는 timeout 뒤 `DISARMED`와 ARM 시 default 300 ms
+first-CMD window로 이 guide와 정합하다. Flash/board/PWM target runtime은 아직 검증하지 않았다.
 
 ## 20. Telemetry 구현
 
@@ -1771,7 +1771,7 @@ STM32CubeMX generated a NUCLEO-F446RE HAL project with USART2 PA2/PA3 at 115200 
 
 이 historical MVP 이후의 완료/잔여 상태는 다음과 같다.
 
-1. `[P-02]` `left_pwm/right_pwm`을 production mapper의 실제 PWM target과 연결한다.
+1. `[P-04]` `left_pwm/right_pwm`을 production mapper의 실제 PWM target과 연결한다.
 2. `[COMPLETED — motor-disconnected MDD10A-input scope]` PWM waveform을 측정했다.
 3. `[COMPLETED — encoder-side scope]` Encoder voltage safety와 TIM encoder mode를 검증했다.
 4. `[COMPLETED — encoder-side scope]` `left_cps/right_cps`를 실제 encoder delta로 대체했다.

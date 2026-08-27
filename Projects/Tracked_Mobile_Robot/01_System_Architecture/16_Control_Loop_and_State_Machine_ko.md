@@ -150,7 +150,9 @@ SAFETY_FAULT_LATCHED
     +-- fault cleared + explicit reset -> SAFETY_DISARMED
 ```
 
-Timeout 이전 command를 replay하거나 new `ARM` 없이 다음 `CMD`를 적용하면 안 된다.
+Timeout 시 이전 stored command를 zero로 만들고 자동 재적용하지 않는다. `DISARMED`에서
+수신한 `CMD`는 `ARM`이 수락될 때까지 거부한다. P-03은 transport/session freshness를
+판별하지 않으므로 queue에 남았거나 replay된 `ARM` + `CMD` 쌍의 차단은 구현 범위가 아니다.
 
 ## 5. Arm Preconditions
 
@@ -162,7 +164,8 @@ Arm request는 다음 조건에서만 accept된다.
 - Active fault가 latch되어 있지 않다.
 - Motor PWM output이 현재 zero.
 - PWM compare 값이 zero.
-- Final MVP production ingress가 ESP32 단일 owner로 선택되어 있고 stale session이 아니다.
+- Final MVP production ingress가 ESP32 단일 owner로 선택되어 있다.
+- Target anti-replay 단계에서는 session freshness도 확인해야 하지만 P-03에는 이 검사가 없다.
 - Optional: 현재 test stage에서 robot이 물리적으로 safe.
 
 하나라도 실패하면 controller는 disarmed에 남거나 latched fault state로 들어간다.
@@ -230,7 +233,7 @@ Initial command limits:
 | `vx_mmps` | `-100~100` 범위 밖이면 거부; active command를 바꾸지 않음 |
 | `w_mradps` | `-500~500` 범위 밖이면 거부; active command를 바꾸지 않음 |
 | `timeout_ms` | `50~500` 범위 밖이면 거부; 초기 기본값 300 ms |
-| `seq` | Telemetry와 stale command inspection에 사용 |
+| `seq` | Response/telemetry correlation에 사용하며 P-03은 sequence freshness로 command를 거부하지 않음 |
 
 Invalid command behavior:
 
@@ -345,7 +348,7 @@ loop_dt_max_us
 | Arm with safe conditions | State가 `SAFETY_ARMED_IDLE` |
 | Motion command while armed | State가 `SAFETY_ARMED_ACTIVE`, limited PWM output |
 | Stop command | PWM zero, state가 idle 또는 disarmed로 복귀 |
-| Command timeout | PWM/stored command zero, state가 `SAFETY_DISARMED`; stale `CMD`는 거부되고 new `ARM` 뒤 new `CMD` 필요 |
+| Command timeout | PWM/stored command zero, state가 `SAFETY_DISARMED`; CMD-only 거부 뒤 accepted `ARM`과 valid `CMD`로 복구, transport anti-replay는 pending |
 | E-stop command | State가 `SAFETY_ESTOP_LATCHED`, PWM zero |
 | Low-voltage simulated | State가 `SAFETY_LOW_VOLTAGE_STOP`, PWM zero |
 | Fault injected | State가 `SAFETY_FAULT_LATCHED`, PWM zero |
@@ -364,6 +367,7 @@ PWM = 0
 nonzero motor output blocked
 ```
 
-이 항목은 ADR-015의 required state model이다. 현재 firmware는 timeout 시 output과 stored
-command를 zero로 만들지만 `ARMED`를 유지하므로 `P-03` 구현과 target runtime 검증 전에는
-이 state transition을 PASS로 간주하지 않는다.
+이 항목은 ADR-015의 required state model이다. P-03A/P-03B source/static/full-build는 pre-RX
+timeout에서 output/stored command zero와 `DISARMED` 전이를 강제하고, `ARM`에서 default
+300 ms first-CMD window를 다시 시작하는 계약을 PASS했다. Flash/board/PWM target runtime
+검증 전에는 이 state transition의 실기 PASS를 주장하지 않는다.

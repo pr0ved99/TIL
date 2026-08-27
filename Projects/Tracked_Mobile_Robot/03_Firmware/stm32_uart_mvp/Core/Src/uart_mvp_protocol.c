@@ -214,6 +214,21 @@ static uint8_t estop_enforce_latch(void) {
     return 0U;
 }
 
+static void command_timeout_enforce(void) {
+    if(s_state != ROBOT_ARMED){
+        return;
+    }
+
+    if((HAL_GetTick() - s_last_cmd_ms) < s_cmd_timeout_ms){
+        return;
+    }
+
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_state = ROBOT_DISARMED;
+}
+
 static void handle_cmd(const uart_frame_t *frame){
     drive_command_request_t request;
     if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
@@ -470,6 +485,8 @@ static void handle_line(const char *line, size_t line_len){
             motor_output_stop_all();
             s_vx_mmps = 0;
             s_w_mradps = 0;
+            s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
+            s_last_cmd_ms = HAL_GetTick();
             s_state = ROBOT_ARMED;
             s_last_seq = frame.seq;
             send_ack(frame.seq, "ARM");
@@ -586,6 +603,7 @@ void uart_mvp_process(void){
 
     for(;;){
         (void)estop_enforce_latch();
+        command_timeout_enforce();
 
         if(s_rx_desync_pending != 0u){
             begin_rx_resynchronization();
@@ -637,14 +655,6 @@ void uart_mvp_process(void){
         else{
             s_line_overflow = 1u;
         }
-    }
-
-    /* Force command velocity to zero when no fresh CMD arrives in time. */
-    if(s_state == ROBOT_ARMED &&
-       (HAL_GetTick() - s_last_cmd_ms) >= s_cmd_timeout_ms){
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
     }
 
     if((HAL_GetTick() - s_last_tel_ms) >= TEL_PERIOD_MS){

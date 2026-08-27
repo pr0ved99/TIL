@@ -410,7 +410,7 @@ UART/CAN status publishing
 | Encoder output이 STM32 input tolerance를 초과 | encoder -> STM32 | 연결 전 encoder output 측정, 필요 시 level shifting |
 | UART wire가 motor noise를 받음 | STM32 <-> ESP32 | 짧은 wire, GND reference, motor power 전 test |
 | Buck converter 설정 오류 | logic power | MCU 연결 전 조정, multimeter로 확인 |
-| Command source freeze | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, new ARM/CMD requirement |
+| Command source freeze | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, accepted ARM 뒤 valid CMD state gate; queued/replayed pair 거부는 미포함 |
 | Software task가 motor loop를 block | firmware architecture | HAL baseline 이후 FreeRTOS 도입, queue/priority 사용 |
 | CAN wiring/debug complexity가 motor bring-up을 지연 | CAN bus | drivetrain 먼저 검증, CAN은 나중에 standalone test |
 

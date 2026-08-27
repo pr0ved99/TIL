@@ -233,8 +233,9 @@ motor_output_stop_all()
 
 다음 단계:
 
-1. `P-03`: timeout 시 output/stored command zero 후 `DISARMED`로 전이하고 새 `ARM` + 새
-   `CMD`만 허용하는 ADR-015 recovery를 구현한다.
+1. `[SOURCE/STATIC/FULL BUILD COMPLETE] P-03`: pre-RX timeout에서 output/stored command
+   zero 후 `DISARMED`로 전이하고, `ARM` 시 default 300 ms first-CMD window를 다시 시작한다.
+   Motor/LiPo-disconnected target runtime은 pending이다.
 2. `P-04`: 현재 zero placeholder인 TEL PWM/applied-output field를 실제 적용값과 연결한다.
 3. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
 4. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
@@ -248,4 +249,5 @@ Python reference test는 C 함수를 직접 실행하는 native unit test가 아
 상수·순서·수식을 연결한다. 두 함수의 nonzero address는 링크 증거일 뿐 실행 증거가 아니다.
 따라서 flash, board runtime, PWM/DIR waveform, actual channel mapping, provisional DIR polarity,
 actual motor speed와 chassis motion은 증명하지 않는다. TEL PWM/applied-output field도 아직 실제
-출력과 연결되지 않고 zero placeholder이며, timeout-to-`DISARMED`는 P-03으로 남아 있다.
+출력과 연결되지 않고 zero placeholder다. Timeout-to-`DISARMED` source/static/full-build는 P-03에서
+PASS했지만 target runtime은 남아 있다.

@@ -332,7 +332,7 @@ Decision:
 - STM32 USART2 PA2/PA3는 bench debug/encoder logger로만 사용하고 production command를 받지 않는다.
 - PC interactive control이 필요하면 `PC -> ESP32 -> STM32`로 전달하며 direct dual-owner 구조는 허용하지 않는다.
 - STM32는 command parser, state machine, timeout, motor permission과 PWM/DIR의 최종 authority를 유지한다.
-- Command source loss 시 output과 stored command를 zero로 만들고 `DISARMED`로 전이한다. 재동작에는 new `ARM`과 new `CMD`가 필요하다.
+- Command source loss 시 output과 stored command를 zero로 만들고 `DISARMED`로 전이한다. 재동작에는 accepted `ARM`과 valid `CMD`가 필요하다. 이는 stored command 자동 복원 방지 정책이며 transport anti-replay를 뜻하지 않는다.
 
 Reason:
 
@@ -343,8 +343,8 @@ Reason:
 Consequence:
 
 - `PC -> ESP32` production forwarding은 아직 구현하지 않았으며 별도 구현이 필요하다.
-- Production `CMD -> left/right PWM/DIR` mapper는 `P-02`에서 구현한다.
-- 현재 timeout이 `ARMED`를 유지하는 동작은 `P-03`에서 이 결정에 맞게 변경한다.
+- Production `CMD -> left/right PWM/DIR` mapper/caller는 `P-02` source/static/full-build에서 구현했다. Target runtime은 별도다.
+- Timeout-to-`DISARMED` recovery는 `P-03A/P-03B` source/static/full-build에서 이 결정에 맞게 구현했다. Flash/board/PWM target runtime은 pending이다.
 - 이 결정은 command transport를 고정하며 STM32의 최종 safety authority를 ESP32로 이전하지 않는다.
 
 ## Rejected or Deferred Alternatives

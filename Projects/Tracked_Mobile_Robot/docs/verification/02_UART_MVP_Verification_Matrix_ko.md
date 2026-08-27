@@ -69,7 +69,7 @@
 | REQ-SAFE-001 | DISARMED 상태에서 `CMD` 전송 | EV-IMG-03, EV-CSV-20260709 | PASS | `ERR,seq=2,type=CMD,code=NOT_ARMED` |
 | REQ-SAFE-002 | `ARM,seq=3` 전송 | EV-IMG-04, EV-CSV-20260709 | PASS | `ACK,seq=3,type=ARM`, 이후 `TEL,state=ARMED` |
 | REQ-SAFE-003 | ARMED 상태에서 `CMD,seq=20,vx_mmps=50,w_mradps=0,timeout_ms=500` 전송 | EV-IMG-05, EV-CSV-20260709 | PASS | `ACK,seq=20,type=CMD`, 이후 `TEL,last_seq=20,vx_mmps=50` |
-| REQ-SAFE-004 | valid `CMD` 후 추가 command 없이 timeout 대기 | EV-IMG-06, EV-CSV-20260709 | PASS | seq 20 기준 `vx_mmps=50` -> `vx_mmps=0` 전환 확인 |
+| REQ-SAFE-004 | valid `CMD` 후 추가 command 없이 timeout 대기 | EV-IMG-06, EV-CSV-20260709 | PARTIAL — historical timeout-zero only | 2026-07-09 증거는 seq 20 기준 `vx_mmps=50` -> `vx_mmps=0`만 확인했다. 새 요구사항의 `DISARMED`, CMD-only 거부와 ARM+CMD 복구는 P-03 target runtime pending |
 | REQ-SAFE-005 | `CMD`에 `vx_mmps=9999` 전송 | EV-IMG-07, EV-CSV-20260709 | PASS | `ERR,seq=25,type=CMD,code=OUT_OF_RANGE` |
 | REQ-SAFE-006 | `CMD`에 `timeout_ms=3000` 전송 | EV-CSV-20260709 | PASS | `ERR,code=TIMEOUT_OUT_OF_RANGE`; 스크린샷은 별도 저장하지 않음 |
 | REQ-SAFE-007 | `DISARM,seq=26` 전송 | EV-IMG-08, EV-CSV-20260709 | PASS | `ACK,seq=26,type=DISARM`, 이후 `TEL,state=DISARMED` |
