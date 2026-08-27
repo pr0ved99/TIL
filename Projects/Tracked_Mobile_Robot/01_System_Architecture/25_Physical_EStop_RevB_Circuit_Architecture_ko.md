@@ -192,9 +192,10 @@ pressed/open or wire break = HIGH
   될 수 있는 잔여 고장이다.
   Startup/session press test, S0-B/rail discrepancy와 harness inspection으로 관리한다.
 
-PC7은 현재 motor/UART/encoder/CAN/SWD 배정과 충돌하지 않고 NUCLEO-F446RE Arduino D9로
-접근 가능한 후보다. 현재 `.ioc`에는 아직 구성되지 않았으므로 CubeMX pin-conflict review,
-GPIO input threshold 계산과 실제 전압 시험 전까지 `CANDIDATE`다.
+이 절을 처음 작성할 때 PC7은 motor/UART/encoder/CAN/SWD 배정과 충돌하지 않는
+NUCLEO-F446RE Arduino D9 후보였다. 이후 `.ioc`와 firmware에 internal-pull-up,
+active-HIGH/open-fault `ESTOP_SENSE`로 반영했고 direct PC7-to-GND motor-disconnected runtime을
+통과했다. 이 결과는 PC7 firmware input만 검증하며 VO617A-3/S0-B/K1 통합 증거는 아니다.
 
 ### `CD-ESTOP-005`: K1 전·후 독립 ADC 비교는 post-MVP diagnostic option이다
 
@@ -455,3 +456,24 @@ Physical E-stop overall: NOT PASS
 fit 또는 retention을 입증하지 않는다. Received subset은 모든 전원과 motor/LiPo를 분리한
 무전원 입고검사만 앞당긴다. S2/P6KE 도착과 모든 incoming PASS 전에는 complete assembly나
 coil energize로 이동하지 않는다. 기존 direct-PC7/K2/F1 evidence boundary도 변하지 않는다.
+
+## 2026-08-28 received-subset incoming update
+
+[`../docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)에
+다음 무전원 결과를 기록했다.
+
+| Item | Completed evidence | Still open |
+| --- | --- | --- |
+| K1 assembly | Exact relay/socket/main and coil terminals matched; coil `89.5 ohm`; de-energized NO open; coil/contact cross-isolation open | Crimped-terminal retention, suppression, powered pickup/dropout, rail-off, voltage drop and thermal |
+| S0 | Body/contact markings; both `SFEA-CB` NC pairs closed when released and open when pressed/latched | Order suffix `-A` reconciliation, integrated S0-A/S0-B path and loaded DC behavior |
+| VO617A-3 | Pin 1->2 diode display `955`; reverse OL; all input-output pairs open | LED current, CTR/saturation and actual PC7 LOW/HIGH margin |
+| F2 | Operator-reported continuity and movement screen PASS | Exact physical marking capture, time-current coordination, voltage drop and thermal |
+| 6P connector | Loose-kit inventory and visual screen PASS | Mating-face cavity map, first-article crimp, 6-by-6 continuity/isolation, seal and terminal retention |
+
+6P 품목은 완성 하네스가 아니라 male/female housing, loose terminals, seals, secondary locks와
+별도 18 AWG wire다. `1-2=S0-A`, `3-4=S0-B`, `5-6=S2`는 실제 cavity 번호와 mating-face
+방향을 확인하기 전까지 설계 후보일 뿐이다. `VH-30J`/`WX-03B` tooling은 주문했지만 아직
+도착·검증되지 않았으며, 표기된 wire range만으로 terminal crimp 적합성을 주장하지 않는다.
+
+S2 `ABW110G`와 `P6KE16CA-E3/54` x3는 여전히 미도착이다. 따라서 complete control-path
+integration, powered K1/K2 coil test와 `T-ESTOP-001~005A`는 계속 `BLOCKED`다.

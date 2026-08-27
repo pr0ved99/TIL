@@ -9,8 +9,8 @@ F1과 배선 후보를 계산한다. 이 문서는 구매 확정서가 아니라
 ```text
 Current-envelope calculation: COMPLETE
 K1 selected part: TE Connectivity V23134J1052D642 / TE 1393304-9
-K1 procurement: USER-REPORTED RECEIVED 2026-08-27 / exact incoming open
-K1 electrical release: NUMERICAL PASS / exact-part and motor-load bench gate open
+K1 procurement/incoming: RECEIVED / exact parts, 89.5-ohm coil, de-energized NO and cross-isolation unpowered PASS 2026-08-28
+K1 electrical release: NUMERICAL PASS / crimped retention, suppression and motor-load bench gate open
 F1 prototype candidate: Littelfuse 0287010.PXCN, ATOF 10 A / 32 VDC
 F1 final release: HOLD — measured start waveform and holder/wire gate open
 Main wire candidate: AWG 14 is the electrical calculation baseline, but AWG 12 is preferred for the released common path because the ordered K1 terminal accepts AWG 12~10; exact wire not selected
@@ -88,10 +88,10 @@ make/break와 suppression/release 자료를 확인해야 한다. 단순히 `자�
 
 | Role | Ordered part | Quantity | Status |
 | --- | --- | ---: | --- |
-| K1 relay | TE Connectivity alias `V23134J1052D642`, TE part `1393304-9` | 1 | Ordered; incoming inspection pending |
-| K1 socket | TE `VCF7-1000`, TE part `1393310-4` | 1 | Ordered; fit/terminal-map check pending |
-| Main-contact terminal | TE `280756-4`, 9.5 x 1.2 mm, AWG 12~10 | 2 | Ordered; crimp/tool/retention check pending |
-| Coil terminal | TE `42281-1`, 6.3 x 0.8 mm, AWG 18~14 | 2 | Ordered; crimp/tool/retention check pending |
+| K1 relay | TE Connectivity alias `V23134J1052D642`, TE part `1393304-9` | 1 | Received; exact relay and unpowered electrical screen PASS |
+| K1 socket | TE `VCF7-1000`, TE part `1393310-4` | 1 | Received; identity/loose-part fit screen PASS; crimped retention pending |
+| Main-contact terminal | TE `280756-4`, 9.5 x 1.2 mm, AWG 12~10 | 2 | Received; identity/fit screen PASS; crimp/tool/retention pending |
+| Coil terminal | TE `42281-1`, 6.3 x 0.8 mm, AWG 18~14 | 2 | Received; identity/fit screen PASS; crimp/tool/retention pending |
 
 TE의 2026-07 F7 datasheet에서 exact relay code `V23134-J1052-D642`는 bracket, internal
 suppression 없음, 1 Form A NO, 12 V coil, plug-in quick-connect 구성이다. 주요 정격은 다음과 같다.
@@ -109,7 +109,7 @@ suppression 없음, 1 Form A NO, 12 V coil, plug-in quick-connect 구성이다. 
 | Normal carry | > 2.88 A | 30 A even at 125 °C | Numerical PASS |
 | Conservative two-motor envelope | >= 18.9 A | 30 A at 125 °C; 50 A at 85 °C | Numerical PASS; 63% utilization at the strictest listed temperature point |
 | Make / break amplitude | >= initial 18.9 A bound | 240 A make / 70 A break | Numerical PASS; actual waveform still unmeasured |
-| Fail-safe default | De-energized open | 1 Form A NO | PASS by part definition; actual continuity pending |
+| Fail-safe default | De-energized open | 1 Form A NO | Part definition and 2026-08-28 actual unpowered continuity PASS |
 | Coil load | Must be switchable by K2 | about 133 mA at 12 V nominal; about 156 mA at 12.6 V and -10% resistance | K2/S0/F2 coordination input established |
 | Drop-out | Rail must open fast enough | 2 ms relay release without suppression | Datasheet basis only; assembled rail-decay capture pending |
 
@@ -118,6 +118,12 @@ suppression 없음, 1 Form A NO, 12 V coil, plug-in quick-connect 구성이다. 
 start/stall waveform, battery wiring과 regenerative/transient 조건을 그대로 재현한 motor-life
 증거는 아니다. 입고 후 label, terminal map, coil resistance, NO continuity, socket retention,
 contact voltage drop와 온도, 실제 rail-off를 검증하기 전에는 `ELECTRICAL RELEASE`로 올리지 않는다.
+
+2026-08-28 입고 검사에서 exact relay/socket/terminal 구성을 대조했고 relay coil `85-86`은
+`89.5 ohm`으로 official `81~99 ohm` 범위에 들어왔다. De-energized main NO `30-87`은 open,
+coil-contact 네 cross pair도 continuity 없음이었다. 따라서 exact-part와 basic unpowered screen은
+닫혔지만, 이는 insulation withstand, crimped socket retention, powered contact 동작 또는
+motor-load release가 아니다.
 
 이 relay에는 internal suppression이 없다. TE는 diode 또는 p-n junction 방식이 inductive
 switching에서 relay release를 늦추고 접점 수명에 불리할 수 있다고 경고한다. 따라서 K1 coil에
@@ -197,17 +203,18 @@ Alpha Wire의 tinned-copper conductor chart에서 예시 저항값을 사용한 
 3S battery
 -> F1: ATOF 10 A / 32 VDC prototype candidate
 -> S1 / holder / connector: exact DC rating >= selected path requirement
--> K1: TE V23134J1052D642 user-reported received; numerical PASS, exact incoming/bench release pending
+-> K1: TE V23134J1052D642 unpowered incoming + numerical PASS; crimped/powered bench release pending
 -> AWG 12 preferred released common path; AWG 14 remains calculation baseline only
 -> MDD10A: 10 A continuous per motor channel
 -> AWG 16 minimum branch candidate
 -> MG540P30_12V x 2
 ```
 
-현재 K1 주문과 catalog 정격 검토는 닫혔고 2026-08-27 사용자 도착 보고가 있다. 그러나
-actual contents/marking은 아직 incoming PASS가 아니다. 다음이 모두 닫혀야 배선/시험 release다.
+현재 K1 주문/catalog 정격과 2026-08-28 exact-part/coil/NO/isolation 무전원 screen은 닫혔다.
+다음이 모두 닫혀야 배선/시험 release다.
 
-1. 입고 K1/socket/terminal의 label, fit, NO/coil resistance와 continuity 검사
+1. Crimper/die와 final AWG 12 wire를 확인하고 K1 terminal crimp/socket retention을 승인한다.
+   `280756-4`는 2개뿐이므로 practice terminal로 사용하지 않는다.
 2. K1 coil suppression 선정 및 assembled drop-out/rail-decay 시간
 3. 입고 fuse의 `257` 각인과 주문 `0287010.PXCN` identity/curve 대조, exact holder와 실제
    wire/terminal part, installed loop length

@@ -34,10 +34,11 @@ custom PC plate가 이미 도착했다고 확인했다. 이 도착품이 해당 
 주문 기록 또는 실물 치수·홀 패턴으로 아직 대조하지 않았다. 과거 RevA 접수 때의 vendor server
 오류와 이후 PC plate 주문·수령은 서로 다른 사건이다.
 
-2026-08-27 사용자는 K1 assembly, S0, VO617A-3, F2와 6P/18 AWG harness 도착도 보고했다.
-따라서 이 품목들의 실물 외형·terminal 방향·service access 확인은 지금 가능하다. S2와
-P6KE16CA x3는 미도착이므로 해당 cutout/rear-depth와 clamp placement는 실제 부품 기준으로
-아직 동결하지 않는다. 도착 보고 자체는 mechanical fit PASS가 아니다.
+2026-08-28 K1 assembly, S0, VO617A-3와 F2의 지정된 무전원 component screen은 PASS했다.
+6P는 완성 harness가 아니라 loose male/female housing, terminal, seal, secondary lock와 별도
+18 AWG 전선으로 확인됐다. 이 품목들의 mechanical dry-fit은 지금 가능하지만 실제 service
+access/retention PASS는 아니다. S2, P6KE16CA x3와 crimp tooling은 미도착이므로 해당
+cutout/rear-depth, clamp placement와 final harness routing은 아직 동결하지 않는다.
 
 ## Document Index
 
@@ -65,10 +66,11 @@ P6KE16CA x3는 미도착이므로 해당 cutout/rear-depth와 clamp placement는
 
 ## Current Next Step
 
-1. 카페에서는 received state와 fit-check 양식을 정리한 뒤 `P-02A` production mapper로 이동한다.
-2. 집 `H-01`에서 도착 plate의 사진, 폭·높이·두께와 mixed hole pattern을 기록한다.
+1. 다음 집 세션에서 `H-02` P-03 target runtime을 먼저 닫고, 시간이 남으면 `H-01`을 수행한다.
+2. `H-01`에서 도착 plate의 사진, 폭·높이·두께와 mixed hole pattern을 기록한다.
 3. 전원 완전 분리 상태에서 chassis, perfboard, XL4015 x2와 MDD10A를 dry fit한다.
-4. 도착한 K1+VCF7, F1/F2, S0, VO617A-3와 6P의 실제 terminal 방향과 service access를 먼저 확인한다.
-5. S2/P6KE가 도착하면 operator-panel rear depth와 clamp placement를 추가 확인한다.
-6. K1 bracket, inline holder retention, operator panel과 power/signal routing을 도면에 반영한다.
-7. 실물 결과가 기존 plate로 수용되지 않을 때만 추가 CAD revision 또는 재주문 Gate를 연다.
+4. K1+VCF7, F1/F2, S0, VO617A-3와 loose 6P kit의 실제 terminal 방향과 service access를 확인한다.
+5. 카페에서는 P-03 결과 정리 뒤 `P-04` TEL schema/source와 H-01/6P 검사표를 준비한다.
+6. S2/P6KE와 crimp tooling 도착 뒤 rear depth, clamp와 first-article harness retention을 확인한다.
+7. K1 bracket, inline holder retention, operator panel과 power/signal routing을 도면에 반영한다.
+8. 실물 결과가 기존 plate로 수용되지 않을 때만 추가 CAD revision 또는 재주문 Gate를 연다.

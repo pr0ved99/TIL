@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-27 P-03A/P-03B timeout source/static/full-build completion and Physical E-stop partial-arrival transition
-- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 SOURCE/STATIC/FULL BUILD COMPLETE — TARGET RUNTIME PENDING`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset, production mapper/signed caller와 timeout-to-`DISARMED` 계약을 포함한 host/static은 `26/26`이고 32-object forced build도 PASS했다. 이는 flash/board/PWM/motor 증거가 아니며 channel/DIR polarity는 provisional이다. K1/S0/VO617/F2/6P-18 AWG는 사용자 보고 기준 도착해 received-subset 무전원 입고검사를 시작할 수 있고, S2/P6KE는 미도착이다. P-03 target-runtime 준비/P-04와 입고검사를 병렬로 진행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- Revision: 2026-08-28 received Physical E-stop component unpowered screens and next home/cafe execution split
+- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 SOURCE/STATIC/FULL BUILD COMPLETE — TARGET RUNTIME PENDING`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset, production mapper/signed caller와 timeout-to-`DISARMED` 계약을 포함한 host/static은 `26/26`이고 32-object forced build도 PASS했다. 이는 flash/board/PWM/motor 증거가 아니며 channel/DIR polarity는 provisional이다. K1/S0/VO617A-3/F2는 report 19의 무전원 component screen을 통과했고 6P는 loose kit+별도 18 AWG로 확인됐지만 미조립이다. S2/P6KE와 crimp tool은 미도착이다. 다음 우선 작업은 집 `H-02` P-03 target runtime과 `H-01` plate/6P non-destructive capture이며, 그 뒤 카페 P-04로 이동한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
 - 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -89,7 +89,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 현재 기준선 — 2026-08-27 갱신
+## 현재 기준선 — 2026-08-28 갱신
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
@@ -104,17 +104,17 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout/fault/reset과 hook-0 safe restore PASS | 기준선 보존; Physical E-stop |
 | MDD10A logic input | `PASS — motor-disconnected input scope` | Permanent pull-down/5-Net, powered/no-motor, final CH1/CH2 19.049/19.058 kHz 6-step와 final all-LOW PASS | MDD10A power-stage/actual motor stop, Physical E-stop closure |
 | Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
-| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset subset와 F1/K2 무전원 검사는 PASS. K1/S0/VO617/F2/6P-18 AWG는 user-reported received지만 incoming open; S2/P6KE는 not received. Conditioned path, clamp, K1 rail-off는 미검증 | Received-subset A-01 -> S2/P6KE 잔여 A-01 -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
+| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset, report 18 F1/K2/resistors와 report 19 K1/S0/VO617A-3/F2 무전원 subset PASS. 6P는 loose kit로 미조립; S2/P6KE not received. Conditioned path, clamp, K1 rail-off는 미검증 | 6P cavity/crimp preparation -> S2/P6KE 잔여 A-01 -> complete assembly -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
 | First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
 Current strict-parser UART Gate와 MCU-pin safety baseline을 보존한다. Permanent pull-down/5-Net,
 board power/back-power와 final perfboard MDD10A-input 19 kHz active 6-step/safe restore까지 PASS했다.
 WHEELTEC 회신으로 rated/stall current 입력을 확보하고 K1/F1/main-wire 계산을 완료했다. K1은
-catalog numerical PASS지만 incoming/continuity/suppression/thermal, Physical E-stop 통합,
-MDD10A power stage와 실제 motor 회전은 미검증이다. 2026-08-27 partial arrival로 K1/S0/
-VO617/F2/6P-18 AWG의 무전원 입고검사는 지금 시작할 수 있다. 그러나 S2/P6KE 도착과 모든
-incoming PASS 전에는 complete control-path assembly나 powered coil test로 이동하지 않는다.
+catalog numerical PASS이고 exact components/`89.5 ohm` coil/NO/isolation 무전원 screen도
+통과했지만 suppression/thermal/rail-off는 미검증이다. S0/VO617A-3/F2의 지정된 무전원 screen도
+report 19에 닫았다. 그러나 6P cavity/crimp/retention, S2/P6KE 도착과 모든 incoming PASS 전에는
+complete control-path assembly나 powered coil test로 이동하지 않는다.
 따라서 진행률 숫자나 배송상태보다 Gate와 evidence boundary를 기준으로 판단한다.
 
 ## 실행 대단원과 예상 작업시간
@@ -131,7 +131,7 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 | 4. 양쪽 궤도·이동·odometry | `G6`, `G7` | dual motor mapping, 전진/후진/제자리 회전, wheel-travel scale, 1 m distance error, final fault/stop regression | 12~24시간 | 저속 drivetrain와 1 m odometry acceptance evidence PASS |
 
 최초 합계는 **29~57시간**이었다. 대단원 1 완료 후 남은 순수 작업시간은 **26~52시간**이다.
-2026-08-27 partial arrival로 received-subset 입고검사는 앞당길 수 있지만 S2/P6KE의 실제
+2026-08-28 received-subset 무전원 screen을 앞당겨 닫았지만 S2/P6KE의 실제
 도착일이 complete E-stop integration의 달력 blocker로 남는다. 종료일은 `잔여 부품 도착일 +
 잔여 입고검사 + 26~52시간의 유효 작업시간 + 재시험 여유`로 계산한다. 기존 `2~3주` 수치는
 현재 일정 약속으로 사용하지 않는다.
@@ -140,8 +140,9 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 
 ```text
 완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin 검증
--> 현재 병렬 A: P-03 target-runtime 준비 -> P-04 telemetry -> battery/odometry
--> 현재 병렬 B: 도착한 K1/S0/VO617/F2/6P의 marking/continuity/polarity/fit 무전원 입고검사
+-> 현재 우선 HOME: P-03 target runtime + plate/6P cavity non-destructive capture
+-> 다음 CAFE: P-04 telemetry -> battery/odometry
+-> tooling 도착: spare 6P terminal first-article crimp -> cavity/continuity/isolation/retention
 -> S2/P6KE 도착: 잔여 무전원 입고검사와 complete assembly gate
 -> 대단원 2: T-ESTOP-001~004 -> nominal T-ESTOP-005A
 -> 대단원 3 lifted single motor
@@ -540,7 +541,8 @@ motor-energy 없이 병렬로 진행할 수 있다.
 10. `P-08`: F1 `257`/ordered `287` identity, S1 DC rating basis와 계측표를 닫는다.
 11. `P-09`: 부품별 입고검사표와 `T-ESTOP-001~004 + T-ESTOP-005A` capture sheet를 미리 만든다.
 
-현재 도착품은 received-subset `A-01`만 수행한다. S2/P6KE 도착과 잔여 입고검사까지 닫힌 뒤
+K1/S0/VO617A-3/F2 received-subset의 지정된 `A-01` 무전원 screen은 report 19에 기록했다.
+6P cavity/crimp/retention과 S2/P6KE 잔여 입고검사까지 닫힌 뒤
 `T-ESTOP-001~004 -> T-ESTOP-005A -> lifted single motor 5~10% -> T-ESTOP-007 -> dual
 drivetrain -> 1 m odometry` 순서를 지킨다. `FM-ESTOP-014`와
 `T-ESTOP-005B`는 지우지 않고 post-MVP residual-risk V-cycle로 추적한다.

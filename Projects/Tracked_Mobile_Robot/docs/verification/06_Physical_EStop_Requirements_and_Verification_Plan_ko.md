@@ -59,7 +59,7 @@ Safety goal과 safe-state vector의 설계 정본은
 - New ARM과 post-reset new command 전 motion 금지
 - Electrical shutdown과 mechanical stop evidence의 분리
 
-현재 판정은 `DEFINITION BASELINED / DIRECT-PC7 FIRMWARE PARTIAL / HARDWARE INTEGRATION NOT TESTED`다.
+현재 판정은 `DEFINITION BASELINED / DIRECT-PC7 FIRMWARE PARTIAL / RECEIVED-SUBSET UNPOWERED SCREENS PARTIAL / HARDWARE INTEGRATION NOT TESTED`다.
 문서 baseline은 아래 `REQ-ESTOP-*` 또는 시험 결과의 `PASS`를 의미하지 않는다.
 
 ## Step 2 system-boundary traceability
@@ -88,10 +88,11 @@ thermal, powered coil/dropout와 direct rail-off는 열려 있다. Actual-off di
 downstream rail direct measurement로 선택했다. 따라서 현재 판정은
 `PATH DEFINITION BASELINED / INCOMING + DIRECT-PC7 PARTIAL / HARDWARE RAIL VERIFICATION BLOCKED`다.
 
-2026-08-27 사용자는 K1/S0/VO617A-3/F2/6P-18 AWG 도착을 보고했고 S2/P6KE x3는
-미도착이라고 보고했다. 도착품은 `USER-REPORTED RECEIVED / INCOMING OPEN`이므로 위
-`PARTIAL/BLOCKED` 판정은 변하지 않는다. Received subset의 무전원 입고검사만 지금
-앞당길 수 있고, S2/P6KE 도착과 모든 incoming PASS 전 complete assembly/coil energize는 금지한다.
+2026-08-28 report 19에서 K1 exact components/`89.5 ohm` coil/de-energized NO/isolation,
+S0 2NC/latch, VO617A-3 diode/isolation과 F2 operator-reported continuity를 무전원 범위에서
+통과했다. 6P는 완성 harness가 아닌 loose connector kit+별도 18 AWG로 정정했으며 cavity
+map/crimp/6x6 isolation/retention은 열려 있다. S2/P6KE x3도 미도착이므로 위
+`PARTIAL/BLOCKED` 판정은 변하지 않고 complete assembly/coil energize는 계속 금지한다.
 
 ## Step 3 hazard traceability
 
@@ -171,19 +172,20 @@ INTEGRATED HARDWARE VERIFICATION BLOCKED`다.
 | Selection decision | Current status | Verification consequence |
 | --- | --- | --- |
 | `SD-ESTOP-001` K2 separated control | Baselined architecture | S2 stuck, K2-HOLD/K2-K1 contact fault와 power-restore test 추가 |
-| `SD-ESTOP-002` Autonics `SF2ER-E2R2B-A` | User-reported received; incoming/integration pending | Actual marking, independent NC paths, latch/release와 direct terminal continuity 확인 |
+| `SD-ESTOP-002` Autonics ordered `SF2ER-E2R2B-A` | Body/contact marking and 2NC/latch unpowered screen PASS | Order suffix trace, integrated independent NC paths and loaded DC check |
 | `SD-ESTOP-003` IDEC `ABW110G` | Ordered / not received | Arrival 뒤 momentary 1NO continuity, cavity mapping; stuck-closed/pair-short는 post-MVP negative test |
 | `SD-ESTOP-004` Panasonic `TX2-12V` | Incoming unpowered subset PASS | Two samples: `1.025/1.035 kΩ`, de-energized NC/NO and coil-contact isolation PASS; powered voltage/pickup/dropout pending |
-| `SD-ESTOP-005` Vishay `VO617A-3`, measured `670.1 Ω`/`9.97 kΩ` | Opto user-reported received; incoming/integration pending | Actual marking/orientation/isolation, 5 V tolerance, contact current, conditioned PC7 LOW/HIGH and wire-open measurement |
-| `SD-ESTOP-006` K1/F1/main-current path | TE K1 user-reported received/catalog numerical PASS; F1 incoming unpowered subset PASS | TE `V23134J1052D642` exact incoming/continuity/suppression/thermal and F1 loaded voltage-drop/thermal before powered motor test |
+| `SD-ESTOP-005` Vishay `VO617A-3`, measured `670.1 Ω`/`9.97 kΩ` | Opto diode/isolation unpowered screen PASS; integration pending | 5 V tolerance/current, CTR/saturation, conditioned PC7 LOW/HIGH and wire-open measurement |
+| `SD-ESTOP-006` K1/F1/main-current path | TE K1 catalog numerical PASS and unpowered `89.5 ohm`/NO/isolation PASS; F1 incoming unpowered subset PASS | K1 crimp/retention/suppression/powered thermal/rail-off and F1 loaded voltage-drop/thermal before powered motor test |
 
-F2 Littelfuse `0287001.PXCN` 1 A ATOF와 `FHAC0001ZXJA` holder, 6P/18 AWG harness는
-2026-08-27 사용자 보고로 도착했으나 incoming/integration은 pending이다. P6KE clamp x3는
+F2 ordered Littelfuse `0287001.PXCN` 1 A ATOF와 `FHAC0001ZXJA` holder는 operator-reported
+unpowered continuity/movement screen을 통과했지만 exact actual marking과 powered coordination은
+pending이다. 6P는 loose kit+별도 18 AWG로 확인됐고 assembly evidence는 없다. P6KE clamp x3는
 not received다. F1은 received Littelfuse holder의 `GXL 12AWG SCL -LF-` lead와
 fuse marking `LITTELFUSE/257/32V/10` 및 continuity를 확인했지만 final release가 아니다.
 AWG 12 common/per-motor AWG 16은 preferred prototype candidates다. AWG 14 common은 계산
 baseline일 뿐이고 `280756-4`에 직접 압착하지 않는다. K1 incoming, F1 loaded behavior,
-K1/K2 clamp, 6P/18 AWG harness와 required MVP values가 닫힐 때까지 Step 8 MVP schematic에는
+K1/K2 clamp, 6P loose-kit crimp/assembly와 required MVP values가 닫힐 때까지 Step 8 MVP schematic에는
 명확한 TBD와 calculation note를 남긴다.
 
 ## 상태 정의
@@ -204,15 +206,15 @@ K1/K2 clamp, 6P/18 AWG harness와 required MVP values가 닫힐 때까지 Step 8
 
 | IDs | Scope | Current verification status |
 | --- | --- | --- |
-| `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `NOT TESTED/BLOCKED`; K2 incoming is supporting evidence, not S0/K1 cut evidence |
-| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `BLOCKED`; envelope and F1/K2 unpowered incoming exist, but full coordination and integrated parts remain open |
+| `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `PARTIAL/BLOCKED`; S0/K1 component-level unpowered screens PASS, but integrated/powered K1 cut is not tested |
+| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; envelope and F1/K1/K2/F2 unpowered subsets exist, but full coordination, crimp and integrated parts remain open |
 | `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `PARTIAL/BLOCKED`; direct PC7/latch/reset subtest passed, conditioned sense/active output and nominal integrated no-auto-motion open; FM-014 single-fault extension is post-MVP |
 | `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `BLOCKED` |
 | `REQ-ESTOP-010` | Complete state observability | `NOT TESTED`; direct runtime log is a supporting subset, but rail/discrepancy states remain open |
 | `REQ-ESTOP-011` | Three-wire manual re-enable | `BLOCKED`; nominal integrated path open. `FM-ESTOP-014` single-fault mitigation is retained as post-MVP work |
 | `REQ-ESTOP-012~015` | Downstream rail diagnostic and discrepancy/plausibility | `POST-MVP / NOT TESTED` |
 | `REQ-ESTOP-016` | Coil clamp rating and functional K1 drop-out | `BLOCKED` |
-| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `NOT TESTED/BLOCKED`; motor/LiPo-disconnected records do not close the integrated/powered acceptance |
+| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL/BLOCKED`; motor/LiPo-disconnected records exist, but loose 6P cavity/crimp/retention and integrated/powered acceptance remain open |
 
 ## Traceability matrix
 
@@ -231,7 +233,7 @@ K1/K2 clamp, 6P/18 AWG harness와 required MVP values가 닫힐 때까지 Step 8
 
 ### `T-ESTOP-001` Design and component review
 
-상태: `PARTIAL/BLOCKED` — rating architecture와 F1/K2/resistor incoming subset complete; exact integrated test build와 remaining parts open. `FM-ESTOP-014` mitigation은 post-MVP `005B`로 분리
+상태: `PARTIAL/BLOCKED` — rating architecture와 reports 18/19의 F1/K1/K2/S0/VO617A-3/F2/resistor unpowered subsets complete; exact integrated test build와 remaining parts open. `FM-ESTOP-014` mitigation은 post-MVP `005B`로 분리
 
 Motor와 battery를 연결하지 않은 laptop/document review다.
 
@@ -277,9 +279,21 @@ assets/logs/estop/YYYY-MM-DD_estop_component_review.md
 이 subset은 위 Acceptance의 `No unnamed/TBD safety-critical device`, release schematic/ERC 또는
 integrated hardware review를 충족하지 않으므로 `T-ESTOP-001 PASS`가 아니다.
 
+2026-08-28 completed subset:
+
+- K1 exact relay/socket/terminal identity, `89.5 ohm` coil, de-energized NO open and coil/contact isolation
+- S0 two `SFEA-CB` NC channels, latch/turn-release and cross-channel isolation
+- VO617A-3 forward/reverse diode behavior and input-output isolation
+- F2 operator-reported fuse/holder continuity and movement screen
+- 6P가 preterminated harness가 아닌 loose connector kit임을 확인
+
+상세 경계는
+[`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)에
+기록한다. 이 subset도 complete test-build, powered coordination 또는 rail-off PASS가 아니다.
+
 ### `T-ESTOP-002` Unpowered continuity and wire-break test
 
-상태: `BLOCKED` — K2/F1 incoming checks are supporting evidence only; K1/S0/S2/VO617A-3/F2/6P integrated continuity and wire-break acceptance not executed
+상태: `PARTIAL/BLOCKED` — K1/S0/VO617A-3/F2/K2/F1 component-level unpowered subsets exist; S2와 assembled 6P의 integrated continuity/wire-break acceptance는 미실행
 
 준비:
 
@@ -373,7 +387,7 @@ clear되지 않았으며, LOW restore 뒤 explicit `ESTOP_RESET` ACK 후 `DISARM
 
 ### `T-ESTOP-005A` Driver powered, motor disconnected nominal no-auto-motion test
 
-상태: `BLOCKED` — S2/P6KE arrival, every received-part incoming PASS와 `T-ESTOP-001~004 PASS` 필요
+상태: `BLOCKED` — S2/P6KE arrival, 6P qualified crimp/assembly, every received-part incoming PASS와 `T-ESTOP-001~004 PASS` 필요
 
 시험 경계:
 
@@ -522,9 +536,10 @@ MVP actual-off evidence: DIRECT DOWNSTREAM CONTINUITY/VOLTAGE MEASUREMENT REQUIR
 Post-MVP diagnostic: PA4/PB0 DUAL-RAIL SENSE SELECTED, DEFERRED
 Requirements: 20 BASELINED / 15 MUST / 5 SHOULD / 7 TBR REGISTER ITEMS OPEN (2026-08-10)
 Architecture: BASELINED
-Component selection: PARTIAL — K1/S0/VO617/F2/HARNESS USER-REPORTED RECEIVED/INCOMING OPEN; S2/P6KE NOT RECEIVED
+Component selection: PARTIAL — K1/S0/VO617/F2 RECEIVED-SUBSET UNPOWERED SCREENS RECORDED; 6P LOOSE KIT UNASSEMBLED; S2/P6KE NOT RECEIVED
 F1 incoming: PARTIAL PASS — UNPOWERED MARKING/VISUAL/CONTINUITY ONLY
 K2 incoming: PARTIAL PASS — TWO-SAMPLE UNPOWERED COIL/CONTACT/ISOLATION ONLY
+K1/S0/VO617/F2 incoming: PARTIAL PASS — REPORT 19 UNPOWERED COMPONENT SCREENS ONLY
 Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
 Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; HOST/STATIC 26/26; P-02B~P-02C-2 AND P-03A/P-03B SOURCE/STATIC/FULL BUILD PASS; NEW TARGET RUNTIME PENDING
 Bench verification: PARTIAL — DIRECT PC7 MOTOR-DISCONNECTED RUNTIME; NO OPTO/K1 RAIL/MOTOR CLAIM

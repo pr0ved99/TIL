@@ -6,18 +6,19 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-08-27
+Last updated: 2026-08-28
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
-2. [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md)
-3. [`docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md)
-4. [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-5. [`docs/handoff/README.md`](docs/handoff/README.md)
-6. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-7. [`docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
-8. [`docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)
+2. [`docs/progress/2026-08-28_progress.md`](docs/progress/2026-08-28_progress.md)
+3. [`docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
+4. [`docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md)
+5. [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
+6. [`docs/handoff/README.md`](docs/handoff/README.md)
+7. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+8. [`docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
+9. [`docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)
 
 현재 바로 이어갈 작업:
 
@@ -35,9 +36,10 @@ Last updated: 2026-08-27
 -> P-02C-1 SIGNED ADAPTER: `motor_output_set_signed()` source/static contract와 historical `24/24` checkpoint PASS; 당시 no-caller section의 address `0`/`--gc-sections` 제거는 예상된 결과
 -> P-02C-2 CALLER: production `CMD`의 validation/ARMED/3x E-stop/mapper/상호 배타 output/success-only commit+ACK integration, historical P-02C-2 `25/25`, 32-object forced build와 nonzero ELF linkage PASS; flash/board runtime pending
 -> P-03A/P-03B TIMEOUT: pre-RX timeout helper가 stop-all/stored-zero/DISARMED를 강제하고 ARM 시 default 300 ms first-CMD window를 다시 시작; current `26/26`와 32-object forced build PASS; flash/board/PWM runtime pending
--> PARTIAL ARRIVAL: K1 assembly/S0/VO617A-3/F2/6P-18 AWG USER-REPORTED RECEIVED / INCOMING OPEN; K1 catalog/current-envelope와 F1 unpowered precheck만 해당 범위에서 PASS
+-> INCOMING SCREEN: K1 exact parts/89.5 ohm coil/de-energized NO/isolation, S0 dual-NC/latch, VO617A-3 diode/isolation, F2 continuity/movement를 무전원 범위에서 PASS; powered/integrated evidence 아님
+-> 6P: preterminated harness가 아닌 loose waterproof connector kit + 별도 18 AWG; inventory/visual만 PASS, cavity map/crimp/6x6 isolation/retention pending; VH-30J/WX-03B tooling ordered/not received
 -> NOT RECEIVED: S2 IDEC ABW110G, P6KE16CA-E3/54 x3
--> NOW: received subset 무전원 입고검사와 motor/LiPo-disconnected P-03 target-runtime 준비/P-04 telemetry를 병렬 진행 -> S2/P6KE 잔여 입고검사 -> Physical E-stop MVP `T-ESTOP-001~004 + T-ESTOP-005A` -> lifted/no-load -> `T-ESTOP-007`
+-> NOW: 집에서 motor/LiPo-disconnected P-03 target runtime + plate/mechanical dry-fit + 6P cavity orientation 확인 -> 카페 P-04는 P-03 runtime 이후 -> S2/P6KE 잔여 입고검사 -> Physical E-stop MVP `T-ESTOP-001~004 + T-ESTOP-005A` -> lifted/no-load -> `T-ESTOP-007`
 -> POST-MVP: `FM-ESTOP-014/T-ESTOP-005B` single-fault extension and dual-rail/precision transient `T-ESTOP-006`
 ```
 
@@ -92,7 +94,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-08-27 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-08-28 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -327,12 +329,15 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-08-24_progress.md`](docs/progress/2026-08-24_progress.md) | Direct-PC7 latch/reset runtime, current host/static 20/20 and F1/K2 incoming precheck evidence |
 | [`docs/progress/2026-08-25_progress.md`](docs/progress/2026-08-25_progress.md) | Current scope baseline: final remaining-work audit, evidence boundary, E-stop 005A/005B split and pre-arrival queue |
 | [`docs/progress/2026-08-26_progress.md`](docs/progress/2026-08-26_progress.md) | Previous schedule baseline: dated pre-arrival priorities and evidence boundary |
-| [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md) | Current continuation: P-02B~P-02C-2와 P-03A/P-03B source/static/full-build complete, canonical `26/26` PASS; target runtime과 partial-arrival incoming queue pending |
+| [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md) | Historical P-02B~P-02C-2와 P-03A/P-03B source/static/full-build completion, canonical `26/26` PASS and partial-arrival transition |
+| [`docs/progress/2026-08-28_progress.md`](docs/progress/2026-08-28_progress.md) | Current continuation: K1/S0/VO617A-3/F2 unpowered screens, 6P loose-kit/tooling boundary, remaining blockers and home/cafe next work |
 | [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md) | Authoritative scope/sequence for final critical path, P-01~P-09 and arrival-day gates |
 | [`docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | Current dated execution source through 2026-09-15, including milestones, buffers and delivery transitions |
 | [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 final safe evidence report |
 | [`docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Timeout/fault/reset FAIL→10 kΩ PASS, evidence hash와 final safe restore report |
 | [`docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Final perfboard MDD10A-input 19 kHz active DIR/PWM, direction margin and hook-0 all-LOW closeout |
+| [`docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) | Direct-PC7 E-stop latch/reset runtime과 F1/K2/resistor component incoming precheck evidence |
+| [`docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md) | K1/S0/VO617A-3/F2 unpowered incoming screens and loose 6P connector/tooling evidence boundary |
 | [`docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md) | Historical K1 order/F1 continuation; superseded by 2026-08-25 progress and plan |
 | [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md) | Historical RevB pull-down, board power/back-power and early Physical E-stop baseline |
 | [`docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`](docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md) | Completed historical Gate C execution runbook |

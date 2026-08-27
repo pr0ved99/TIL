@@ -34,7 +34,7 @@ ESP32 USB Monitor
 
 ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03~12에는 response-gated Gate A/B와 `T-BRIDGE-007/008` required runtime을 닫았다. Motor-output safety 시험 뒤 all-hooks-`0U`, historical contract `15/15`와 final safe runtime의 exact startup, READY 뒤 15.4 s/TEL 155 safe, ARM/CMD/error 0을 다시 확인했다. P-02C-2 historical host/static checkpoint는 `25/25`다. P-03A/P-03B timeout-to-`DISARMED` source contract를 더한 current suite는 firmware `22/22` + mapper `2/2` + UART `2/2`, 합계 `26/26`이고 32-object forced build도 PASS했다. 이는 새 flash/board/PWM/motor evidence가 아니며 TEL PWM fields와 P-03 target runtime은 pending이다. Gate C required runtime scope는 PASS지만 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 없어 current strict-parser release 전체 판정은 `PARTIAL`이다.
 
-2026-08-25 현재 검증된 추가 범위:
+2026-08-28 현재 검증된 추가 범위:
 
 - MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
 - STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
@@ -44,6 +44,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - Fused/switched LiPo input과 XL4015 bench load
 - Permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step와 final hook-`0U` 5초 all-LOW
 - Motor/LiPo/K1-disconnected direct-PC7 E-stop latch/reset runtime과 F1/K2/resistor unpowered subset
+- K1 exact parts/`89.5 ohm`/de-energized NO/isolation, S0 2NC/latch, VO617A-3 diode/isolation과 F2 continuity의 component-level unpowered subset
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -82,6 +83,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [`16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Command-timeout/fault shutdown, reset first FAIL, external `10 kΩ` pull-down 개선 PASS와 final safe restore report |
 | [`17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Permanent perfboard를 통과한 nominal 19 kHz/10% 양 채널 6-step, DIR 전후 zero margin과 hook-0 5초 all-LOW report |
 | [`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) | Motor-disconnected PC7 direct latch/reset runtime과 F1/K2/저항 무전원 precheck; VO617/S0/K1 rail 및 전체 E-stop PASS는 미포함 |
+| [`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md) | K1/S0/VO617A-3/F2 무전원 incoming screen과 loose 6P connector/tooling 상태; powered integration/rail-off PASS는 미포함 |
 
 ## Evidence Files
 

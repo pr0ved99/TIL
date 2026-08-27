@@ -3,19 +3,33 @@
 ## 문서 상태
 
 - 일정 구간: 2026-08-26 ~ 2026-09-15
-- 상태: `ACTIVE / PARTIAL-ARRIVAL TRANSITION`
+- 상태: `ACTIVE / RECEIVED-SUBSET SCREEN TRANSITION 2026-08-28`
 - 상위 실행계획: [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-- 현재 진행기록: [`../progress/2026-08-27_progress.md`](../progress/2026-08-27_progress.md)
+- 현재 진행기록: [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)
 - 일정 수립 기록: [`../progress/2026-08-26_progress.md`](../progress/2026-08-26_progress.md)
-- 기준: 2026-08-27 사용자 보고로 K1/S0/VO617A-3/F2/6P-18 AWG는 도착했고,
-  S2 `ABW110G`와 `P6KE16CA-E3/54` x3만 미도착이다. 도착 보고는 입고검사 PASS가 아니다.
+- 기준: 2026-08-28 K1/S0/VO617A-3/F2의 지정된 무전원 component screen은 report 19에
+  기록했다. 6P는 loose kit+별도 18 AWG로 미조립이고, S2 `ABW110G`,
+  `P6KE16CA-E3/54` x3와 `VH-30J`/`WX-03B` tooling은 미도착이다.
 
 이 일정은 평일 하루 `2~3시간`의 집중 작업을 기준으로 한다. 토요일은 필수 신규 기능을
 넣는 날이 아니라 밀린 검증·수정용 `1~2시간 buffer`, 일요일은 원칙적으로 휴식이다.
 사용자가 더 오래 작업할 수 있더라도 다음 날짜의 Gate를 건너뛰어 actual motor 단계로
 이동하지 않는다.
 
-## 2026-08-27 Partial-Arrival Transition
+## 2026-08-28 Received-Subset Screen Transition
+
+| 구분 | 부품/작업 | 현재 처리 |
+| --- | --- | --- |
+| Unpowered screen recorded | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, VO617A-3 diode/isolation, F2 continuity/movement | Report 19 범위를 보존하고 powered/integrated 증거와 구분 |
+| Received / unassembled | Loose 6P connector kit + separate 18 AWG | Mating-face numbering을 먼저 기록; tooling 도착 뒤 spare terminal first-article와 6x6 검사 |
+| Not received | S2 `ABW110G`, `P6KE16CA-E3/54` x3, crimp tooling | Complete control path, powered K1/K2와 `T-ESTOP-001~005A` 계속 금지 |
+
+다음 작업 장소는 **집 우선**이다. `H-02` P-03 motor/LiPo-disconnected target runtime을 닫고,
+시간이 남으면 `H-01` plate dry-fit과 6P molded cavity orientation을 기록한다. P-04 TEL source
+변경은 P-03 runtime 뒤 카페 세션에서 시작한다. 아래 2026-08-27 transition은 역사적 도착
+상태로 보존한다.
+
+## 2026-08-27 Historical Partial-Arrival Transition
 
 | 구분 | 부품 | 현재 처리 |
 | --- | --- | --- |
@@ -148,8 +162,10 @@ flash하기 위해 카페 작업을 생략하지 않는다.
 
 ### 부품이 9월 15일보다 일찍 도착한 경우
 
-2026-08-27 K1/S0/VO617A-3/F2/6P-18 AWG에 대해 이 전환 규칙이 발동됐다. 현재는 2번
-`A-01 incoming inspection`의 received subset까지만 허용한다.
+2026-08-27 K1/S0/VO617A-3/F2/6P-18 AWG에 대해 이 전환 규칙이 발동됐고, 지정된 received
+subset의 `A-01 incoming inspection`은 2026-08-28 report 19 범위에서 완료됐다. 현재는
+motor/LiPo-disconnected P-03 target runtime과 mechanical dry-fit을 병렬로 진행할 수 있지만,
+S2/P6KE 도착·검사 전 complete `A-02` control-path assembly와 powered coil test는 허용하지 않는다.
 
 1. 진행 중 firmware 작업을 test PASS/all-hooks-`0U`인 safe checkpoint에서 멈춘다.
 2. LiPo/motor를 분리하고 `A-01` incoming inspection만 먼저 수행한다.

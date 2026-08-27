@@ -3,9 +3,9 @@
 ## 문서 상태
 
 - 기준일: 2026-08-25
-- 상태: `ACTIVE / PARTIAL-ARRIVAL UPDATE 2026-08-27`
+- 상태: `ACTIVE / RECEIVED-SUBSET SCREEN UPDATE 2026-08-28`
 - 목적: Final MVP까지 남은 작업의 임계 순서와 잔여 부품 대기 중 병렬 작업을 분리한다.
-- 진행 기록: [`../progress/2026-08-25_progress.md`](../progress/2026-08-25_progress.md)
+- 현재 진행 기록: [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)
 - 날짜별 실행 일정: [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md)
 - 상위 계획: [`00_Project_Master_Plan_To_Final_MVP_ko.md`](00_Project_Master_Plan_To_Final_MVP_ko.md)
 
@@ -13,10 +13,27 @@
 입고 전 확정하지 않는다. 배송 완료는 시험 PASS가 아니며, 입고 검사와 motor-disconnected
 통합 시험이 끝나야 actual motor 단계로 이동할 수 있다.
 
-### 2026-08-27 current arrival update
+### 2026-08-28 received-subset screen update
 
-위 문단은 2026-08-25 계획 수립 당시의 배송 baseline이다. 현재 continuation은
-[`../progress/2026-08-27_progress.md`](../progress/2026-08-27_progress.md)를 따른다.
+현재 continuation은 [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)와
+[`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를
+따른다.
+
+| State | Items | Current consequence |
+| --- | --- | --- |
+| UNPOWERED COMPONENT SCREEN PASS | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, VO617A-3 diode/isolation, F2 continuity/movement | 해당 component-level A-01 subset은 반복하지 않고 powered/integrated Gate로 trace |
+| RECEIVED / UNASSEMBLED | Loose 6P waterproof connector kit + separate 18 AWG | Mating-face numbering, qualified first-article crimp, 6x6 continuity/isolation, seal/retention 필요 |
+| ORDERED / NOT RECEIVED | S2 `ABW110G`, `P6KE16CA-E3/54` x3, `VH-30J`/`WX-03B` tooling | Complete nominal control path와 powered coil test는 계속 blocked |
+
+다음 세션은 집 `H-02` P-03 target runtime을 먼저 닫고, 시간이 남으면 plate dry-fit과 6P
+cavity orientation을 비파괴 기록한다. P-04 source 변경은 이 runtime checkpoint 뒤 카페에서
+시작한다. 이 update가 아래 2026-08-27 도착 요약보다 우선한다.
+
+### 2026-08-27 historical arrival update
+
+이 절은 2026-08-27 당시의 partial-arrival snapshot이다. 현재 continuation은
+[`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)와
+[`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를 따른다.
 
 | State | Items | Current consequence |
 | --- | --- | --- |
