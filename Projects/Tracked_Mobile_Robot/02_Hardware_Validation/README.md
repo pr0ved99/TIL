@@ -73,7 +73,7 @@ Firmware보다 먼저 확인할 것:
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
-| Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
+| Adapter plate fit | User-reported received / Ready / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md` |
 | Motor output waveform/timing | PASS — motor-disconnected MCU-pin scope | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; waveform/direction, active DISARM 23.50 us, 300 ms timeout shutdown, fault next-pulse/latch와 signal별 10 kΩ 적용 external-reset LOW PASS. Driver power stage와 actual motor는 별도 gate |
 
 현재 실행 순서는 다음과 같다.

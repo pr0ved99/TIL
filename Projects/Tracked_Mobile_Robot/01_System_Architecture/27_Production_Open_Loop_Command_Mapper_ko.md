@@ -1,0 +1,191 @@
+# Production Open-Loop Command Mapper
+
+## 문서 상태
+
+- Work package: `P-02A`
+- 상태: `DESIGN BASELINE / SOURCE NOT IMPLEMENTED`
+- 작성일: 2026-08-26
+- 적용 범위: motor/LiPo-disconnected source, host/static test와 이후 저속 output request
+- 제외 범위: 실제 속도 보장, PID, track-slip 보정, actual motor enable
+
+이 문서는 UART `CMD(vx_mmps, w_mradps)`를 논리적인 좌우 signed PWM request로 바꾸는
+첫 production mapper를 정의한다. 현재 단계에서는 encoder closed loop가 없으므로 출력은
+**속도 명령의 저속 open-loop 비율**이다. 예를 들어 `vx_mmps=100`이 실제 주행속도
+`100 mm/s`를 보장한다는 뜻은 아니다.
+
+## 1. 현재 확정된 입력 계약
+
+| 항목 | 값 | 처리 |
+| --- | ---: | --- |
+| `vx_mmps` | `-100~100 mm/s` | 범위 밖이면 `ERR,OUT_OF_RANGE`; clamp 금지 |
+| `w_mradps` | `-500~500 mrad/s` | 범위 밖이면 `ERR,OUT_OF_RANGE`; clamp 금지 |
+| `timeout_ms` | `50~500 ms` | 범위 밖이면 `ERR,TIMEOUT_OUT_OF_RANGE` |
+| `PWM cap` | `100/1000` | 현재 motor-output 절대 상한, 즉 10% duty |
+| 좌표계 | `+vx=전진`, `+w=좌회전` | logical vehicle frame |
+
+Parser/state gate가 입력을 먼저 거부하더라도 mapper 자체도 같은 범위를 다시 검사한다.
+잘못된 인자나 범위 밖 입력에서는 output을 zero로 만들고 실패를 반환한다.
+
+## 2. 왜 지금 physical track-width 수식을 직접 사용하지 않는가
+
+이상적인 differential-drive 역기구학은 다음과 같다.
+
+```text
+v_l = v - wB/2
+v_r = v + wB/2
+```
+
+여기서 `B`는 effective track width다. 현재 저장소에는 실측·보정된 `B`가 없으며,
+tracked vehicle은 바닥과의 slip 때문에 자로 잰 폭만으로 최종 회전 scale을 고정할 수도 없다.
+따라서 P-02에서 임의의 `B`를 production constant로 만들지 않는다.
+
+P-02는 먼저 다음을 검증하는 최소 단계다.
+
+1. 전진/후진/좌회전/우회전 부호가 일관된다.
+2. 두 축을 함께 요청해도 duty cap을 넘지 않는다.
+3. 좌우 비율을 유지한 채 saturation한다.
+4. HAL과 무관한 pure function으로 host test가 가능하다.
+
+실측 `B`, track travel/count와 actual speed calibration은 `P-06` 및 chassis 시험에서
+추가한다. 그 전까지 이 mapper를 calibrated kinematics 또는 speed controller라고 부르지 않는다.
+
+## 3. 정규화와 differential mixing
+
+입력을 각각 `-1000~1000`의 내부 request scale로 바꾼다.
+
+```text
+linear = vx_mmps   * 1000 / 100
+yaw    = w_mradps  * 1000 / 500
+
+raw_left  = linear - yaw
+raw_right = linear + yaw
+```
+
+부호 해석:
+
+- `linear > 0`: 양쪽 전진
+- `yaw > 0`: left를 줄이고 right를 늘려 좌회전
+- `linear = 0`, `yaw > 0`: left 후진, right 전진의 제자리 좌회전
+
+## 4. Coupled saturation
+
+좌우를 각각 따로 잘라내면 요청한 회전 비율이 바뀐다. 따라서 가장 큰 절댓값을 기준으로
+양쪽을 같은 비율로 줄인다.
+
+```text
+peak = max(1000, abs(raw_left), abs(raw_right))
+
+left_signed_permille  = raw_left  * duty_cap_permille / peak
+right_signed_permille = raw_right * duty_cap_permille / peak
+```
+
+초기 `duty_cap_permille=100`이므로 최종 signed output은 항상 `-100~100`이다.
+C의 signed integer division은 0 방향으로 버림하므로 `100/3` 계열 결과는 `33`으로
+검증한다.
+
+## 5. Pure-function interface
+
+P-02B 구현 대상 interface는 다음과 같다.
+
+```c
+typedef struct {
+    int16_t left_signed_permille;
+    int16_t right_signed_permille;
+} drive_command_request_t;
+
+bool drive_command_map(
+    int32_t vx_mmps,
+    int32_t w_mradps,
+    uint16_t duty_cap_permille,
+    drive_command_request_t *request
+);
+```
+
+Interface 규칙:
+
+- HAL type과 GPIO/TIM register를 포함하지 않는다.
+- 성공 시에만 `request`에 `-cap~+cap` 값을 쓴다.
+- 실패 또는 `request == NULL`에서는 `false`를 반환한다.
+- non-NULL output은 계산 전에 zero로 초기화하여 실패 경로에 stale request를 남기지 않는다.
+- `duty_cap_permille > 100`은 거부한다. `0`은 명시적인 output-disabled 설정으로 허용한다.
+
+## 6. P-02A 고정 test vectors
+
+아래 값은 `duty_cap_permille=100`일 때의 exact integer 기대값이다.
+
+| `vx` | `w` | 의미 | `raw L / R` | 최종 signed `L / R` |
+| ---: | ---: | --- | ---: | ---: |
+| 0 | 0 | 정지 | `0 / 0` | `0 / 0` |
+| 100 | 0 | 최대 저속 전진 | `1000 / 1000` | `100 / 100` |
+| -100 | 0 | 최대 저속 후진 | `-1000 / -1000` | `-100 / -100` |
+| 50 | 0 | 절반 전진 | `500 / 500` | `50 / 50` |
+| 0 | 500 | 제자리 좌회전 | `-1000 / 1000` | `-100 / 100` |
+| 0 | -500 | 제자리 우회전 | `1000 / -1000` | `100 / -100` |
+| 0 | 250 | 절반 좌회전 | `-500 / 500` | `-50 / 50` |
+| 100 | 250 | 전진+좌회전, saturation | `500 / 1500` | `33 / 100` |
+| -100 | 250 | 후진+좌회전, saturation | `-1500 / -500` | `-100 / -33` |
+| 100 | 500 | 최대 전진+좌회전 | `0 / 2000` | `0 / 100` |
+
+추가 경계 vector:
+
+| 입력 | 기대 결과 |
+| --- | --- |
+| `cap=50`, `vx=100`, `w=0` | `true`, `50 / 50` |
+| `cap=0`, valid command | `true`, `0 / 0` |
+| `vx=101` 또는 `vx=-101` | `false`, output zero |
+| `w=501` 또는 `w=-501` | `false`, output zero |
+| `cap=101` | `false`, output zero |
+| `request=NULL` | `false`, memory access 없음 |
+
+## 7. Signed request와 physical output의 경계
+
+Pure mapper는 GPIO polarity를 알지 못한다. P-02C의 별도 adapter가 다음 변환을 맡는다.
+
+```text
+signed request > 0 -> forward DIR 후보 + magnitude PWM
+signed request < 0 -> reverse DIR 후보 + abs(request) PWM
+signed request = 0 -> PWM 0
+```
+
+현재 source naming은 logical left를 `TIM4_CH1/PB6 + PC8`, logical right를
+`TIM4_CH2/PB7 + PC9`에 연결한다. 그러나 이는 **provisional software mapping**이다.
+MDD10A CH1/CH2가 실제 vehicle left/right motor로 이어지는지와 어느 DIR level이 actual
+forward인지는 powered drivetrain evidence가 없다.
+
+따라서 P-02C에서도 다음을 상수와 주석으로 명시하고, lifted low-duty test 전에는 final로
+주장하지 않는다.
+
+- logical left -> CH1: `PROVISIONAL`
+- logical right -> CH2: `PROVISIONAL`
+- left/right forward DIR level: `PROVISIONAL`
+
+## 8. 안전한 production 통합 순서
+
+```text
+range/timeout validation
+-> ARMED 확인
+-> E-stop latch 확인
+-> pure mapper 계산
+-> output 직전 E-stop 재확인
+-> signed request를 PWM/DIR로 적용
+-> output 적용 직후 E-stop 재확인
+-> 성공한 경우에만 stored CMD/timestamp 갱신과 ACK
+```
+
+Mapper 또는 output 적용이 실패하면 PWM을 모두 zero로 만들고 stored command도 zero로
+유지해야 한다. 기존 controlled output hook은 production mapper와 분리하고 최종 baseline에서
+계속 `0U`여야 한다.
+
+## 9. 다음 단계
+
+1. `P-02B`: `drive_command_mapper.h/.c`를 작은 단위로 작성한다.
+2. 위 vector의 independent host/static test를 추가한다.
+3. 기존 `20/20` regression과 STM32 build를 통과한다.
+4. `P-02C`: signed request adapter와 protocol state gate를 연결한다.
+5. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
+6. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
+
+## Evidence Boundary
+
+이 문서는 source audit와 design/vector baseline이다. Firmware 구현, build, flash, board runtime,
+PWM/DIR waveform, actual channel mapping, actual motor speed 또는 chassis motion PASS가 아니다.

@@ -31,7 +31,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | [Perfboard digital-layout workflow decision](07_Perfboard_Digital_Layout_Workflow_Decision_ko.md) | 실물 dry placement 전 1:1 component/solder-side layout와 KiCad-net-to-hole review Gate; OrcadPCB2 파일럿 PASS, local routing WIP |
 | [Perfboard STM32-MDD10A routing plan](08_Perfboard_STM32_to_MDD10A_Routing_Plan_ko.md) | VeroRoute의 J5/R9~R12 local routing 상태, Wire/부품 핀 분리 규칙과 STM32 5-Net 전체 홀 좌표 경로 |
 | [KiCad-VeroRoute 5-Net independent review](09_Perfboard_KiCad_to_VeroRoute_Independent_Review_2026-08-15_ko.md) | fresh KiCad 10.0.5 XML, ST UM1724 connector pin과 VeroRoute hole-coordinate 독립 대조; design cross-check PASS |
-| [K1/F1/main-path coordination](10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md) | WHEELTEC rated/stall 회신 기반 two-motor envelope, ordered TE K1 assembly, 10 A ATOF와 AWG 후보 및 release gate |
+| [K1/F1/main-path coordination](10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md) | WHEELTEC rated/stall 회신 기반 two-motor envelope, user-reported received TE K1 assembly, 10 A ATOF와 AWG 후보 및 remaining incoming/release gate |
 | [2026-07-28 progress](../docs/progress/2026-07-28_progress.md) | Work log, decisions, blockers and next actions |
 | [Physical E-stop RevB circuit architecture](../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md) | MVP K1/S0/S2, S0-B, connector/test-point baseline; dual rail-sense is post-MVP |
 | [Physical E-stop component/rating selection](../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction and K1/F1/main-path coordination gate |
@@ -41,7 +41,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | Area | Captured design | Status |
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
-| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Functional schematic/ERC complete; TE K1 assembly ordered and numerical rating PASS; K1 incoming bench, F1/wire and remaining actual parts remain open |
+| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Functional schematic/ERC complete; K1/S0/VO617/F2/6P user-reported received but incoming open; S2/P6KE not received; complete integration/powered rail remains blocked |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, 각 signal-to-GND `10 kΩ`, common GND | Permanent perfboard continuity, power-up/NRST all-LOW, active 19 kHz six-step와 hook-0 safe restore PASS |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |

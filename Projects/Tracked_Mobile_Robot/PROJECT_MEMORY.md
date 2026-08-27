@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-08-18
+Last updated: 2026-08-27
 
 ## Project Identity
 
@@ -23,7 +23,7 @@ Last updated: 2026-08-18
 | Power safety | Fuse, DC-rated main switch, LiPo alarm, measured buck converter output |
 | IMU candidate | BNO08x |
 | Chassis source drawing | `08_Mechanical_Design/source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg` |
-| Adapter plate order | 174 x 208.93379 mm, PC 3T, supplier minimum-hole response reflected as 3.0 mm small holes; ordered, fit pending |
+| Adapter plate | 174 x 208.93379 mm PC 3T order candidate with the supplier minimum-hole response reflected in 8 holes changed to 3.0 mm. The user reported the fabricated custom PC plate received on 2026-08-26. Exact order-source identity, physical dimensions/hole pattern and chassis/module fit remain pending. |
 | Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
 | CAN transceiver | Not selected yet |
@@ -34,6 +34,7 @@ Last updated: 2026-08-18
 
 - STM32 owns final motor output permission.
 - ESP32, PC, CAN, and future ROS 2 can request motion but cannot bypass STM32 safety.
+- ADR-015 fixes ESP32-S3 as the only Final MVP production external command ingress. The production path is `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`; optional PC control must go through ESP32, and direct PC/ESP32 dual ownership is prohibited.
 - MDD10A control model is motor당 `PWM + DIR`.
 - Direction changes must ramp or set PWM to zero before changing `DIR`.
 - Each MDD10A control signal has a required external reset-safe pull-down: `PC8/DIR1`,
@@ -48,18 +49,21 @@ Last updated: 2026-08-18
 - FreeRTOS comes after HAL bare-metal drivetrain behavior is validated.
 - LL Driver migration comes after a known-good HAL baseline.
 - ROS 2 bridge comes after low-level drivetrain safety, timeout, and odometry basics are validated.
-- Physical E-stop RevB uses an MCU-independent `S0-A NC -> K1 DC power relay` control path; K1 opens the MDD10A `POWER+` feed when de-energized.
+- Physical E-stop RevB nominal control path is `F2 -> S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with K2 pole 2 enabling the K1 coil. K1 opens the MDD10A `POWER+` feed when de-energized, independently of MCU output permission.
 - Physical E-stop monitoring uses a separate `5 V -> S0-B NC -> optocoupler LED` loop and 3.3 V pull-up/transistor output to `ESTOP_SENSE`. It does not prove the K1 main contact actually opened.
-- E-stop release never restores motion authority or K1 motor rail by itself. Step 7 corrected the three-wire path to `F2 -> S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with a second K2 NO contact enabling K1 coil. A K1 high-current pole is not used below its official minimum switching load.
-- Step 7 preferred candidates are Omron `A22NE-M-PD02-N` for S0, Schneider `ZB5AA3 + ZB5AZ009 + ZBE1016` low-power assembly for S2, Panasonic `TX2-12V` for K2 and Vishay `VO617A-3` for S0-B conditioning. They remain conditional until minimum-load, received-part and bench gates close.
+- With a healthy, released S2 and no S2-pair cross-short, E-stop release does not restore the K1 motor rail by itself. The 2026-08-24 audit identified the open `FM-ESTOP-014` gap: S2 stuck closed or a 6P S2-pair short can energize K2/K1 immediately when S0 is released or control power returns. On 2026-08-25 its verification scope was split: nominal healthy-path/no-auto-motion is MVP `T-ESTOP-005A`; stuck/short single-fault tolerance is post-MVP `T-ESTOP-005B`. The hazard remains a documented residual risk, and no single-fault-tolerant or industrial-safety claim is allowed. Firmware `DISARMED`/PWM zero is an independent layer, not hardware rail-off evidence.
+- Current procured/selected Physical E-stop parts are Autonics `SF2ER-E2R2B-A` for S0, IDEC `ABW110G` for S2, Panasonic `TX2-12V` for K2 and Vishay `VO617A-3` for S0-B conditioning. K2 incoming unpowered screening passed. On 2026-08-27 the user reported S0 and VO617A-3 received, while S2 remains not received; S0/VO617 actual marking, terminal/pin checks and circuit integration remain open.
 - WHEELTEC technical support confirmed `MG540P30_12V` at 12 V, rated 1.44 A/15 W/280 rpm/2.6 kgf·cm, stall 9 A/10 kgf·cm, 1:30 and PWM 5~20 kHz. Hall encoder is 13-line, 3.3~5 V pulled-up output; STM32 x4 gives `13 x 30 x 4 = 1560 counts/output rev`. Starting current, terminal resistance and thermal/duty-cycle detail remain unavailable.
 - WHEELTEC repeated the same motor table in a follow-up support reply. This corroborates the manufacturer-supplied `1.44 A` rated/`9 A` stall values but is not an independent test or formal warranty datasheet.
-- Two-motor coordination now uses `2.88 A` rated-total, `18 A` simultaneous stall at 12 V and a conservative `18.9 A` full-charge estimate at 12.6 V. TE Connectivity `V23134J1052D642` / `1393304-9` (12 V, 1 Form A NO) with `VCF7-1000`/`1393310-4` socket, `280756-4` main terminals x2 and `42281-1` coil terminals x2 was ordered on 2026-08-18. Its 16 VDC switching limit, 30 A continuous limiting current even at the listed 125 °C point and 240 A make/70 A break values numerically cover the 18.9 A envelope; received-part continuity, suppression, actual motor-load waveform, voltage-drop/thermal and rail-off bench release remain open. Panasonic `ACA14535` remains a comparison benchmark, not the procured K1.
-- Littelfuse `0287010.PXCN` ATOF 10 A/32 VDC is the provisional F1 prototype candidate for short/harness protection, not a proven locked-rotor protector. AWG 14 remains the common-path electrical calculation baseline, but the ordered TE `280756-4` main terminal accepts AWG 12~10, so the preferred released common harness is AWG 12; the existing AWG 14 fuse-holder lead must not be crimped directly into that terminal. Per-motor AWG 16 remains the branch candidate. Exact fuse holder, wire, connector, installed length, start waveform and thermal evidence remain open. F2 remains only a preliminary 0.5 A time-delay candidate; coil clamps and ADC values remain open.
+- Two-motor coordination now uses `2.88 A` rated-total, `18 A` simultaneous stall at 12 V and a conservative `18.9 A` full-charge estimate at 12.6 V. TE Connectivity `V23134J1052D642` / `1393304-9` (12 V, 1 Form A NO) with `VCF7-1000`/`1393310-4` socket, `280756-4` main terminals x2 and `42281-1` coil terminals x2 was ordered on 2026-08-18 and user-reported received on 2026-08-27. Its 16 VDC switching limit, 30 A continuous limiting current even at the listed 125 °C point and 240 A make/70 A break values numerically cover the 18.9 A envelope; exact contents/markings, continuity, suppression, actual motor-load waveform, voltage-drop/thermal and rail-off bench release remain open. Panasonic `ACA14535` remains a comparison benchmark, not the procured K1.
+- Littelfuse `0287010.PXCN` ATOF 10 A/32 VDC remains the provisional F1 prototype candidate for short/harness protection, not a proven locked-rotor protector. The received Littelfuse holder has `GXL 12AWG SCL -LF-` leads; visual inspection, fuse/holder continuity and light-movement continuity passed unpowered. The fuse itself is marked `LITTELFUSE/257/32V/10`, so its identity/time-current curve must be reconciled with the ordered 287 ATOF part before release. Loaded voltage-drop/thermal, interruption and locked-rotor claims remain open. AWG 12 remains the preferred released common harness because TE `280756-4` accepts AWG 12~10; per-motor AWG 16 remains the branch candidate.
+- F2 is the Littelfuse `0287001.PXCN` 1 A ATOF with `FHAC0001ZXJA` holder. On 2026-08-27 the user reported the F2 set and 6P/18 AWG harness received; exact markings, holder continuity, cavity map, isolation and terminal/seal retention remain open. Three `P6KE16CA-E3/54` coil-clamp candidates remain not received; exact K1/K2 clamp behavior and ADC values remain open.
+- A 2026-08-25 source audit found that normal production `CMD(vx,w)` was not mapped to left/right PWM/DIR. The existing raw motor-output call remains reachable only through a disabled controlled test hook, and current TEL motor/battery fields are placeholders. P-02A fixed a normalized, coupled-saturation open-loop mixer and pure-function/vector contract. On 2026-08-27 `drive_command_mapper.h/.c` was implemented, compiled by the CubeIDE ARM toolchain and included in a full STM32 Debug build with `0 errors, 0 warnings`; independent mapper vectors and P-02C protocol/output integration remain open. This is not calibrated mm/s or runtime motor evidence.
+- As of 2026-08-27, the user reports only S2 `ABW110G` and the three `P6KE16CA-E3/54` devices still not received. K1/S0/VO617A-3/F2/6P-18 AWG arrival no longer blocks their unpowered incoming inspection, but their exact-part and electrical checks are not yet PASS. S2 and clamp arrival still blocks complete nominal integration and powered coil tests.
 - The downloaded WHEELTEC chassis bundle itself contained no MG540 rating evidence; the values above come from the separate 2026-08-17 manufacturer support reply preserved under `assets/vendor/wheeltec`.
 - Step 6 fixed the functional circuit/net architecture, connector/test-point partition and backfeed boundary in `25_Physical_EStop_RevB_Circuit_Architecture_ko.md`.
 - MVP K1 actual-off evidence is direct downstream continuity/voltage measurement; K2/control state alone is not proof. Protected PA4/PB0 dual-rail sensing remains a post-MVP automatic diagnostic option.
-- Step 6 target pin is PC7 for MVP `ESTOP_SENSE`; PA4 upstream `VBAT_PROTECTED_SENSE` and PB0 downstream `MOTOR_VBAT_SAFE_SENSE` are post-MVP candidates. None is configured or bench-tested.
+- PC7 is configured for MVP `ESTOP_SENSE` as an internal-pull-up, active-HIGH/open-fault input. A motor-disconnected direct PC7-to-GND runtime subtest passed healthy boot, asserted/open fault latch, ARM/CMD rejection, reset-while-active rejection, release-with-latch persistence and explicit-reset-to-`DISARMED`; this is firmware/direct-pin evidence only, not VO617A-3/S0-B/K1 proof. PA4 upstream `VBAT_PROTECTED_SENSE` and PB0 downstream `MOTOR_VBAT_SAFE_SENSE` remain post-MVP candidates.
 - Step 5 baselined `REQ-ESTOP-001~020`: 15 MUST, 5 SHOULD. `REQ-ESTOP-012~015` and precision `T-ESTOP-006` are post-MVP; MVP-linked TBR items still close before their powered-test gates.
 
 ## Fixed Engineering Process Decisions
@@ -74,9 +78,9 @@ Last updated: 2026-08-18
 
 | Function | Candidate |
 | --- | --- |
-| PC serial TX/RX | PA2 / PA3, USART2 |
-| STM32 ESP bridge UART TX/RX | PA9 / PA10, USART1 |
-| ESP32 UART TX/RX candidate | GPIO17 / GPIO18 |
+| PC bench debug/encoder logger; historical PC-first evidence only | PA2 / PA3, USART2; production command RX disabled |
+| STM32 production ESP bridge UART TX/RX | PA9 / PA10, USART1 |
+| ESP32 production UART TX/RX | GPIO17 / GPIO18, UART1 |
 | Firmware motor channel 1 PWM, bench-confirmed | PB6, TIM4_CH1 -> MDD10A PWM1 |
 | Firmware motor channel 2 PWM, bench-confirmed | PB7, TIM4_CH2 -> MDD10A PWM2 |
 | Firmware motor channel 1 DIR, bench-confirmed | PC8 -> MDD10A DIR1 |
@@ -86,7 +90,7 @@ Last updated: 2026-08-18
 | Encoder channel 2 A/B, motor-off bench-confirmed | PA0 / PA1, TIM5 |
 | K1 upstream rail ADC candidate | PA4, ADC12_IN4 -> `VBAT_PROTECTED_SENSE` |
 | K1 downstream rail ADC candidate | PB0, ADC12_IN8 -> `MOTOR_VBAT_SAFE_SENSE` |
-| Physical E-stop sense candidate | PC7 GPIO/EXTI -> `ESTOP_SENSE` |
+| Physical E-stop sense, configured/direct-runtime partial | PC7 GPIO input, internal pull-up, active HIGH/open -> `ESTOP_SENSE` |
 | IMU I2C | PB8 / PB9, I2C1 |
 | CAN RX/TX | PA11 / PA12, CAN1 |
 | SWD | PA13 / PA14 preserved |
@@ -130,11 +134,11 @@ Important docs:
 - `04_PC_Serial_Control/tools/ServeWebDashboard.ps1`: Windows localhost static server for Web Serial dashboard
 - `04_PC_Serial_Control/tools/serve_web_dashboard.sh`: Ubuntu/Linux localhost static server for Web Serial dashboard
 - `04_PC_Serial_Control/docs/01_PC_UART_MVP_Test_Tool_ko.md`: PC-side UART MVP test guide
-- `04_PC_Serial_Control/docs/02_STM32_UART_MVP_Firmware_Guide_ko.md`: STM32 USART2/ring-buffer/parser implementation guide
+- `04_PC_Serial_Control/docs/02_STM32_UART_MVP_Firmware_Guide_ko.md`: historical PC-first STM32 USART2/ring-buffer/parser implementation guide
 - `04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md`: Ubuntu PC-side UART MVP test guide with `/dev/ttyACM0`, `dialout`, and `stty` notes
 - `04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md`: browser Web Serial dashboard guide
-- `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md`: end-to-end UART MVP execution guide for Web dashboard and terminal tools
-- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: STM32CubeMX-first detailed implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
+- `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md`: historical PC-first end-to-end UART MVP execution guide for Web dashboard and terminal tools
+- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`: historical PC-first STM32CubeMX implementation guide for NUCLEO-F446RE, USART2, ring buffer, parser, state machine, timeout, and telemetry
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`: ESP32 UART1 loopback, STM32 PING/PONG/TEL integration, scripted safety sequence, timeout-zero, and final evidence
 - `07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md`: ESP32-S3 ESP-IDF v6.0.2 bring-up evidence
 - `08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`: adapter plate and electronics placement baseline, Rev A state, and remaining physical checks
@@ -155,8 +159,15 @@ Important docs:
 - The 150 x 100 mm carrier is not blank: NUCLEO-F446RE, ESP32-S3 and BNO085 socket/header positions are user-confirmed permanently soldered. Preserve their removal envelopes and the ESP32 antenna keep-out; the upper-right open area is the first low-current expansion candidate.
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt`: dated ERC 0/0 evidence
 - `09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevA/exports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_draft.pdf`: RevA human-review export
-- `docs/progress/2026-08-18_progress.md`: current continuation state; final 19 kHz perfboard gate PASS, MG540 manufacturer values, TE K1 order and immediate F1/AWG 12/K1 incoming actions
-- `docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`: new-session continuation source for K1 order, F1 holder decision and incoming inspection
+- `docs/progress/2026-08-27_progress.md`: current continuation state; partial parts arrival, P-02B mapper implementation/build evidence and immediate incoming-inspection boundary
+- `docs/progress/2026-08-26_progress.md`: dated pre-arrival schedule decision and P-01/P-02A baseline; superseded as current continuation by 2026-08-27 progress
+- `docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`: current dated execution source; `P-01~P-09` daily allocation, milestones, buffers and delivery transition rules
+- `docs/progress/2026-08-25_progress.md`: current scope baseline; final remaining-work audit, `005A/005B` scope split, evidence boundaries and pre-arrival queue
+- `docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`: authoritative final-MVP remaining-work sequence and `P-01~P-09` scope definitions
+- `docs/progress/2026-08-24_progress.md`: historical direct-PC7 firmware/runtime evidence, F1/K2 incoming prechecks and initial `FM-ESTOP-014` finding
+- `docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`: motor-disconnected direct-PC7 runtime and unpowered F1/K2/resistor evidence with explicit scope limits
+- `docs/progress/2026-08-18_progress.md`: historical final 19 kHz perfboard gate PASS, MG540 manufacturer values, TE K1 order and initial F1/AWG 12/K1 incoming actions
+- `docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`: historical continuation source superseded by the 2026-08-25 progress/plan; 2026-08-24 progress/report remains the latest hardware evidence baseline
 - `docs/progress/2026-08-12_progress.md`: historical UART Gate C and motor-disconnected timeout/fault/reset-boot completion state, external `10 kΩ` pull-down decision
 - `docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`: current T-BRIDGE-008A/008B report, artifact metadata and evidence boundaries
 - `docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`: command-timeout, software-fault latch, reset FAIL/root cause, `10 kΩ` pull-down PASS and final safe restore report
@@ -181,7 +192,7 @@ Important docs:
 - `docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md`: response-gated implementation 이전의 historical strict-parser baseline
 - `docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`: current strict-parser controlled normal-sequence result and scope limit
 - `assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt`: raw ESP32 monitor evidence for the 2026-08-03 controlled normal sequence
-- `03_Firmware/tests/test_firmware_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, encoder sign and default-off safety contract preflight
+- `03_Firmware/tests/test_firmware_contract.py`, `test_uart_frame_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, E-stop, encoder sign and default-off host/static contract preflight; current result is `18 + 2 = 20/20 PASS`, not a substitute for target electrical evidence
 - `03_Firmware/tools/Build-Firmware.ps1`, `README.md`: repository build trees를 건드리지 않는 isolated STM32/ESP32 build workflow
 - `assets/logs/firmware_build/2026-07-30_laptop_firmware_preflight.md`: contract test, isolated clean-build result, artifact hashes and laptop-only evidence boundary
 - `02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`: logic-analyzer channel map and exact PWM/direction/shutdown timing procedure
@@ -206,13 +217,14 @@ Important docs:
 - `01_System_Architecture/23_Physical_EStop_FMEA_ko.md`: 23 failure modes, action priorities, three-wire re-enable and downstream rail-sense decisions
 - `01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`: 20 shall/should requirements, acceptance criteria, TBR registry and requirement-to-test mapping
 - `01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`: MVP K1 high-side cut, three-wire re-enable, S0-B sense, connector/test-point and backfeed circuit baseline; dual-rail sense is post-MVP
-- `01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`: S0/S2/K2/opto candidates, official minimum-load review, ordered K1 numerical gate와 남은 F1/harness/incoming closure gates
+- `01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`: actual S0/S2/K2/opto/F2/K1 selection, 2026-08-27 partial-arrival status, catalog/current-envelope review와 남은 incoming/integration closure gates
+- `01_System_Architecture/27_Production_Open_Loop_Command_Mapper_ko.md`: P-02A normalized open-loop differential mixer, coupled saturation, HAL-independent interface and exact host vectors
 - `docs/progress/2026-07-23_progress.md`: adapter plate Draft, electronics placement, and Onshape Version
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
 - `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: latest wiring baseline, safety boundary and next firmware/hardware gate
-- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation은 `NEXT_SESSION_START_PROMPT.md`와 `2026-08-18_k1_order_and_physical_estop_continuation_ko.md`다.
+- `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation source는 2026-08-25 progress/plan이며 2026-08-24 report 18은 hardware evidence baseline이다.
 
 ## Current Progress Snapshot
 
@@ -226,17 +238,17 @@ Important docs:
 - English mirror architecture docs were updated to remove stale active BTS7960/RPWM/LPWM assumptions.
 - Embedded learning notes were split into concept notes, STM32/ESP32 practice logs, protocol practice, and measurement/debugging records under `07_Embedded_Learning_Notes`.
 - UART protocol learning note now explains frame vs field, sequence number, telemetry, CMD required fields, ACK/ERR, DISARM/DISARMED, and zero CMD keepalive behavior while armed.
-- Official UART MVP rule now treats PC and ESP32 as equivalent command sources that use the same line-based frames. STM32 remains the parser, safety gate, drivetrain authority, and command-timeout owner.
+- Historical PC-first tools and ESP32 use the same line-based application frames, but ADR-015 no longer treats them as simultaneous/equivalent production owners. ESP32 is the single production ingress; STM32 remains the parser, safety gate, drivetrain authority, and command-timeout owner.
 - First UART MVP uses `ACK` for accepted commands and `ERR` for rejected commands or parse failures. A separate `NACK` frame is not used.
-- Timeout policy candidate: timeout immediately forces motor output zero while staying armed first; later auto-disarm delay still needs confirmation.
+- The pre-ADR-015 timeout candidate kept `ARMED` after output zero. ADR-015 supersedes it with output/stored command zero -> `DISARMED` -> new `ARM` + new `CMD`. Current firmware still implements the historical ARMED behavior, so `P-03` source/runtime closure is pending.
 - PC telemetry dashboard mock is planned as a fake-telemetry-first tool before real serial integration.
-- PC-first UART MVP tooling was added under `04_PC_Serial_Control`. The PowerShell tool is the current Windows-first path because this machine does not currently expose a working Python launcher. The Bash tool is the Ubuntu/Linux path for `/dev/ttyACM0` or `/dev/ttyUSB0`. The tools can build frames, send frames over a serial port, run an interactive console, run a scripted MVP smoke test, monitor RX lines, and save raw/parsed logs.
+- Historical PC-first UART MVP tooling was added under `04_PC_Serial_Control`. For that bench workflow, the PowerShell tool was the Windows-first path and the Bash tool was the Ubuntu/Linux path for `/dev/ttyACM0` or `/dev/ttyUSB0`. The tools can build frames, send frames over a serial port, run an interactive console, run a scripted MVP smoke test, monitor RX lines, and save raw/parsed logs.
 - A browser-based Web Serial dashboard was added under `04_PC_Serial_Control/web_serial_dashboard`. This is not a backend WebSocket bridge; Chrome/Edge directly opens the serial port from `localhost`, keeping the first web UI simple.
-- `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md` is the primary execution guide for running the Web dashboard, Windows terminal tool, Ubuntu terminal tool, and collecting MVP evidence.
-- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md` is the current detailed STM32 firmware build guide for the UART MVP.
-- The STM32 firmware workflow is now STM32CubeMX-first: install/run standalone STM32CubeMX, select `NUCLEO-F446RE` through Board Selector, configure USART2 and NVIC, generate code under `03_Firmware/stm32_uart_mvp`, then open/import in STM32CubeIDE.
+- `04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md` is the execution guide for the historical PC-first Web dashboard, terminal tools, and evidence collection.
+- `04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md` is the detailed historical PC-first STM32 UART MVP build guide. Its USART2 command path is not the Final MVP production contract after ADR-015.
+- The historical PC-first STM32 firmware workflow was STM32CubeMX-first: install/run standalone STM32CubeMX, select `NUCLEO-F446RE` through Board Selector, configure USART2 and NVIC, generate code under `03_Firmware/stm32_uart_mvp`, then open/import in STM32CubeIDE.
 - `STM32CubeIDE Empty Project` is not the starting point for the current MVP because the project depends on CubeMX `.ioc` and generated HAL initialization code.
-- STM32-side UART MVP firmware guide covers USART2, RX interrupt, ring buffer, parser, ACK/ERR/TEL responses, timeout handling, and telemetry generation.
+- The historical STM32-side UART MVP guide covers USART2, RX interrupt, ring buffer, parser, ACK/ERR/TEL responses, timeout handling, and telemetry generation. The current production protocol binding is USART1 under ADR-015.
 - WebSocket dashboard and AI-assisted log diagnosis are optional extensions, not MVP scope.
 - AI must not be the primary motor safety authority; STM32 deterministic safety remains authoritative.
 - MDD10A board is available.
@@ -314,15 +326,22 @@ Important docs:
 - On 2026-08-16, XL4015 #1 was approved for STM32/ESP32 buck-only logic power. Board-connected values were 5.00~5.01 V with NUCLEO 3.30 V and ESP32 3.27 V; supply-off values were all 0 V.
 - On 2026-08-18, WHEELTEC support confirmed rated 1.44 A, stall 9 A and PWM 5~20 kHz for `MG540P30_12V`. Because the nominal 20 kHz baseline remeasured about 20.054 kHz, TIM4 period was changed to `4420` for nominal 19 kHz with upper-limit margin.
 - On 2026-08-18, final perfboard MDD10A-input active 6-step passed. CH1/CH2 measured `19.049/19.058 kHz`, about 10% duty, pre/post-DIR zero about 2 ms, inactive channels LOW and planned MDD10A LED order. After restore all controlled hooks were `0U`, contract `15/15`, user-observed build/flash/run passed and final 5 s D0~D3 capture had zero HIGH samples/transitions.
+- On 2026-08-24, current host/static discovery passed `test_firmware_contract.py` 18 tests and `test_uart_frame_contract.py` 2 tests (`20/20`). Both controlled ESP32 hooks are `0U`. This is source/host evidence, while the separate direct-PC7 board run is target runtime evidence.
+- On 2026-08-26, ADR-015 was accepted and the Korean/English pin, ESP32-role, UART, block-map, FreeRTOS, state-machine and fault documents plus historical PC-first/protocol learning guides were synchronized. Target timeout-only states and direct PC/ESP32 dual-ingress wording were removed or retained only as explicit superseded history. Source inspection found only `uart_mvp_init(&huart1)`, no USART2 `HAL_UART_Receive*`, and three USART2 logger TX call sites; host/static discovery re-passed `20/20`. This closes P-01 ownership/documentation. P-02A fixed the open-loop mapper design/vectors, and on 2026-08-27 P-02B HAL-independent source plus CubeIDE full build passed `0 errors, 0 warnings`. Mapper-specific independent tests, P-02C caller/output integration, optional `PC -> ESP32` forwarding and timeout-to-`DISARMED` source/runtime behavior remain pending.
+- The motor-disconnected direct-PC7 run passed active-HIGH/open-fault behavior: open/HIGH entered and retained `FAULT`, ARM/CMD and active reset were rejected, DISARM did not clear the latch, restoring LOW did not clear it, and an explicit `ESTOP_RESET` returned the system to `DISARMED` with zero telemetry. This does not test VO617A-3, S0, K1 rail interruption, active-output assertion timing or an actual motor.
+- Incoming K2 `TX2-12V` samples measured `1.025 kΩ` and `1.035 kΩ` against the official `1.028 kΩ ±10%` coil value. De-energized `3-4`/`10-9` NC continuity, `4-5`/`9-8` NO-open state and coil-to-contact isolation passed on both samples. Powered pickup/dropout waits for the clamp and controlled supply path.
+- The received F1 holder/fuse passed unpowered visual and continuity screening: Littelfuse holder, `GXL 12AWG SCL -LF-` leads, fuse markings `LITTELFUSE/257/32V/10`, open holder without fuse, fuse continuity and stable installed continuity. Loaded milliohm/voltage-drop/thermal and interruption behavior remain unverified. The selected S0-B resistors measured `670.1 Ω` and `9.97 kΩ`; VO617A-3 is user-reported received but its marking/pin check and conditioned-path integration remain pending.
+- On 2026-08-27 the user reported K1 assembly, S0, VO617A-3, F2 holder/fuse and the 6P/18 AWG harness received. This is inventory status only: exact contents, markings, terminal map, polarity, continuity, fit and retention have not been recorded. S2 `ABW110G` and `P6KE16CA-E3/54` x3 remain not received.
 - The dated ERC report records 0 errors and 0 warnings under its listed ignored-check policy. This does not verify physical wiring, current capacity, noise, footprints, perfboard layout or manufacturing readiness.
 - A roughly 174 x 209 mm adapter plate Draft was created from the tracked-chassis hole-pattern drawing on 2026-07-23.
 - A 150 x 100 mm, 55 x 37 universal PCB carries the NUCLEO-F446RE, ESP32-S3, and GY-BNO085 in the Draft assembly.
 - XL4015 x2 and MDD10A are placed in the upper power area; ESP32 stays horizontal for USB access and the IMU stays near the vehicle center.
 - The CAD checkpoint is preserved under the displayed Onshape Version name `dapter-layout_draft01_2026-07-23`; the intended name starts with `adapter-`.
-- Rev A 2D manufacturing baseline is 174 x 208.93379 mm with nominal 3.3 mm small mounting holes; the first fabrication candidate is acrylic 3T.
+- Rev A 2D manufacturing baseline is 174 x 208.93379 mm. Direct DXF audit found 21 x diameter 3.3 mm and 8 x diameter 2.2 mm small holes; the first fabrication candidate was acrylic 3T.
 - The A4 1:1 print was physically compared with the chassis and recorded as `USER-CONFIRMED PASS`.
 - The final Multimaker PDF passed a one-page, 39-vector-path, zero-raster, zero-text and source-scale comparison.
-- The Multimaker order is not submitted because its WordPress server could not create or write `wp-content/uploads/2026/07`.
+- The 2026-07 RevA Multimaker attempt was not submitted because its WordPress server could not create or write `wp-content/uploads/2026/07`; this is historical and does not describe the later PC plate order.
+- A later PC plate order was recorded as placed on 2026-08-18, and the user reported the fabricated custom PC plate received on 2026-08-26. The repository still needs the actual order artifact or physical measurements/photos to link that plate to the RevB DWG/DXF and close fit evidence.
 - The original chassis input file is preserved at `08_Mechanical_Design/source/chassis/R3_High_Config_Version_Tracked_Vehicle_Hole_Pattern_Drawing.dwg`; verify its SHA-256 against the source README before a Rev B rebase.
 - Red reference-instance badges remain in the 3D Assembly Draft, but they are outside the user-approved Rev A 2D order scope; fabricated-plate fit remains `NOT TESTED`.
 
@@ -335,12 +354,12 @@ Ask the user or verify from hardware only for these:
 - Final USB-CAN adapter model
 - Battery voltage divider resistor values
 - External-tachometer RPM accuracy and wheel-speed scale; the current firmware output-shaft count constant is 1560
-- Actual fuse rating after current measurement
+- Final F1 release after loaded start-waveform, voltage-drop/thermal and protection-coordination evidence; 10 A ATOF remains the prototype candidate
 - BNO085 power and I2C final wiring
-- Physical connector, footprint, perfboard and harness release
-- K1 received-part/bench release; exact F1 holder/main-wire/connector parts and remaining Physical E-stop component release
-- PC-first UART path: ST-LINK VCP USART2 only, or also external USB-UART
-- UART auto-disarm delay after timeout-zero-output state
+- Physical connector, footprint, perfboard and harness release; 6P cavity mapping and 18 AWG terminal/seal retention remain pending incoming inspection
+- K1 received-part/bench release and remaining Physical E-stop component integration
+- Post-MVP disposition/mitigation for `FM-ESTOP-014`: `T-ESTOP-005B` covers S2 stuck closed and 6P S2-pair short; until closed, document the residual risk and make no single-fault-tolerant/industrial-safety claim
+- Optional `PC -> ESP32` forwarding transport/arbitration, if that feature is implemented
 - UART maximum application frame length and ring buffer size
 - UART unknown frame type handling: return `ERR,code=UNKNOWN_TYPE` or ignore
 - Whether checksum/CRC stays deferred until Wi-Fi forwarding
@@ -352,16 +371,19 @@ Ask the user or verify from hardware only for these:
 ## Next Concrete Actions
 
 1. Start every new session with `git status --short -- Projects/Tracked_Mobile_Robot`.
-2. Read `docs/progress/2026-08-18_progress.md` and verification report 17 first; use reports 15 and 16 as the preserved UART/MCU-pin safety baseline.
+2. Read `docs/progress/2026-08-27_progress.md`, `docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md` and the authoritative scope plan `docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md` first. Treat 2026-08-24 progress/report 18 as the latest completed hardware evidence baseline and the 2026-08-18 handoff as history.
 3. Preserve the fixed power policy: dual USB uses UART TX/RX/GND only; buck-only uses XL4015 #1 with all USB removed; never combine USB and buck. Keep actual motor power disconnected until the E-stop gate passes.
-4. Preserve the all-hooks-`0U` current source, TIM4 period `4420`, contract `15/15` and final 5 s D0~D3 all-LOW capture. Earlier UART-safe artifact hashes remain historical; the 2026-08-18 flashed ELF exact linkage is pending.
+4. Preserve the all-hooks-`0U` current source, TIM4 period `4420`, current host/static `20/20` and final 5 s D0~D3 all-LOW capture. Earlier UART-safe artifact hashes and `15/15` checkpoints remain historical; host/static PASS does not replace board or electrical evidence.
 5. Treat T-BRIDGE-008A/008B required runtime scope as complete and preserve report 15 plus all 2026-08-12 raw logs; do not repeat these controlled vectors unless firmware behavior changes.
 6. Preserve Gate A/B, T-BRIDGE-007/008, active DISARM 23.50 us and report 16 timeout/fault/reset raw evidence; do not repeat unless firmware or wiring changes.
 7. Preserve the completed RevB-WIP four-`10 kΩ` schematic/ERC/PDF, `55 x 37` layout/1:1 comparison, permanent wiring continuity, power-up/NRST all-LOW and powered/no-motor regression evidence.
 8. Preserve A=right/TIM5, B=left/TIM3, forward-positive CPS, `1560 counts/output rev`; treat 20.1005 kHz as historical and final 19.049/19.058 kHz perfboard captures as the current PWM baseline.
-9. Preserve the completed K1/F1/main-wire calculation and the ordered TE `V23134J1052D642` K1 assembly. Close K1 incoming/continuity/suppression bench plus fuse-holder/wire/connector data before `T-ESTOP-001` PASS; 10 A ATOF, AWG 12 common/AWG 16 branch remain provisional preferred candidates, while AWG 14 is only the prior calculation baseline.
-10. Execute Physical E-stop MVP `T-ESTOP-001~005` before any actual motor test.
-11. Only after all preceding safety gates pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-restart evidence.
-12. Keep PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail-transient `T-ESTOP-006` as a post-MVP diagnostic V-cycle.
-13. Preserve the KiCad `RevA DRAFT` history and `RevB-WIP` verified/TBD boundary; perform schematic-to-hardware continuity review before permanent wiring is accepted.
-14. Read the adapter-plate preflight before order work, record vendor terms/order ID, and run fit check after delivery.
+9. `P-01` is complete through Accepted ADR-015. `P-02A` design is complete and the HAL-independent `drive_command_mapper.h/.c` now compiles in the full STM32 build; the immediate software task is independent mapper vectors, followed by P-02C protocol/output integration. Plate identification/dry fit remains a separate home `H-01` checkpoint.
+10. Then close timeout recovery (`P-03`), real telemetry (`P-04`), battery sensing/low-voltage behavior (`P-05`) and wheel-distance/odometry (`P-06`) without claiming board-runtime evidence.
+11. Complete received-plate identification, fit and mechanical/harness preflight (`P-07`) without assuming the plate matches the RevB source, reconcile received F1 `257` versus ordered `287` identity and S1 DC basis (`P-08`), and prepare incoming/test capture sheets (`P-09`).
+12. With all power and motor/LiPo disconnected, inspect the now-received K1/S0/VO617A-3/F2/6P-harness contents, markings, polarity, continuity and fit. Inspect S2/P6KE16CA the same way when they arrive. Remove the temporary direct PC7-to-GND jumper before connecting the optocoupler path.
+13. Execute `T-ESTOP-001~004` and then nominal healthy-path `T-ESTOP-005A`. Keep the direct-PC7 result as a partial subtest, not full conditioned-path PASS. Do not apply actual motor energy before all five MVP gates pass.
+14. Only after `T-ESTOP-001~004 + T-ESTOP-005A` pass, run lifted/no-load actual motor at 5~10%, record current/heat/smell/noise/powered encoder noise, then execute `T-ESTOP-007` actual-stop/no-auto-motion evidence.
+15. Continue with dual drivetrain mapping, low-speed ground motion, low-voltage behavior, 1 m odometry and final documentation/evidence audit.
+16. Keep `FM-ESTOP-014`/`T-ESTOP-005B`, PA4/PB0 dual-rail plausibility, discrepancy fault injection and precision rail transient `T-ESTOP-006` as explicit post-MVP V-cycles.
+17. Preserve the KiCad `RevA DRAFT` history and `RevB-WIP` verified/TBD boundary; do not treat the incomplete RevC workspace as released. Perform schematic-to-hardware continuity review before permanent wiring is accepted.

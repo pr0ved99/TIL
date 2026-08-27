@@ -32,9 +32,9 @@ ESP32 USB Monitor
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03~12에는 response-gated Gate A/B와 `T-BRIDGE-007/008` required runtime을 닫았다. Motor-output safety 시험 뒤 all-hooks-`0U`, contract `15/15`와 final safe runtime의 exact startup, READY 뒤 15.4 s/TEL 155 safe, ARM/CMD/error 0을 다시 확인했다. Gate C required runtime scope는 PASS지만 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 없어 current strict-parser release 전체 판정은 `PARTIAL`이다.
+ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. 2026-08-03~12에는 response-gated Gate A/B와 `T-BRIDGE-007/008` required runtime을 닫았다. Motor-output safety 시험 뒤 all-hooks-`0U`, historical contract `15/15`와 final safe runtime의 exact startup, READY 뒤 15.4 s/TEL 155 safe, ARM/CMD/error 0을 다시 확인했다. Current host/static suites는 `20/20`이다. Gate C required runtime scope는 PASS지만 exact runtime-to-artifact linkage, external cold-start marker와 log-embedded physical setup provenance가 없어 current strict-parser release 전체 판정은 `PARTIAL`이다.
 
-2026-08-18 현재 검증된 추가 범위:
+2026-08-25 현재 검증된 추가 범위:
 
 - MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
 - STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
@@ -43,6 +43,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - Dual encoder conditioned input, TIM3/TIM5 count, CPS/mRPM와 vehicle-frame sign
 - Fused/switched LiPo input과 XL4015 bench load
 - Permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step와 final hook-`0U` 5초 all-LOW
+- Motor/LiPo/K1-disconnected direct-PC7 E-stop latch/reset runtime과 F1/K2/resistor unpowered subset
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -51,6 +52,11 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 - MDD10A power-stage shutdown timing과 actual motor response
 - Powered-motor encoder noise와 wheel-speed/odometry
 - ROS 2 bridge
+
+Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로 추적한다.
+`005A`는 verified healthy S2/harness의 nominal direct rail-off/no-auto-motion 시험이다.
+`FM-ESTOP-014` S2 stuck/6P pair-short single-fault extension은 post-MVP `T-ESTOP-005B`이며,
+완료 전에는 single-fault tolerance 또는 산업 안전 적합성을 주장하지 않는다.
 
 따라서 이 검증의 의미는 "로봇 전체가 움직였다"가 아니라, "STM32 하위 제어기가 command/telemetry protocol과 safety gate를 실제 보드에서 수행했다"이다.
 
@@ -75,6 +81,7 @@ ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structu
 | [`15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A embedded-CR/control-byte/overlong response, T-BRIDGE-008B malformed-command 8-vector와 final all-hooks-`0U` safe runtime report |
 | [`16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Command-timeout/fault shutdown, reset first FAIL, external `10 kΩ` pull-down 개선 PASS와 final safe restore report |
 | [`17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Permanent perfboard를 통과한 nominal 19 kHz/10% 양 채널 6-step, DIR 전후 zero margin과 hook-0 5초 all-LOW report |
+| [`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) | Motor-disconnected PC7 direct latch/reset runtime과 F1/K2/저항 무전원 precheck; VO617/S0/K1 rail 및 전체 E-stop PASS는 미포함 |
 
 ## Evidence Files
 

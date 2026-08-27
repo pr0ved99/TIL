@@ -56,7 +56,7 @@ This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
 | Boot not complete | Startup state | Keep PWM zero | Complete init then disarmed |
-| Command timeout | Command age exceeds timeout | Stop motors | New valid command after disarm/arm flow |
+| Command timeout | Command age exceeds timeout | Zero motor output/stored command, enter `DISARMED` | New `ARM` then new `CMD` |
 | CAN heartbeat timeout | Missing heartbeat | Stop motors | Reconnect bus, disarm/arm |
 | E-stop request | Command or physical input | Latch stop | Explicit operator reset |
 | Low-voltage warning | ADC or LiPo alarm | Warn, reduce test scope | Recharge or stop soon |
@@ -202,9 +202,15 @@ Detection:
 
 Required response:
 
-- PWM zero.
-- Driver disabled or armed idle depending on state-machine decision.
+- PWM and stored command zero.
+- Enter `DISARMED` immediately.
+- Do not replay the pre-timeout command.
+- Resume only after a new `ARM` followed by a new `CMD`.
 - Telemetry reports timeout.
+
+ADR-015 supersedes the earlier timeout-stop/armed-idle candidate. Current
+firmware still remains `ARMED`, so `P-03` must close implementation and runtime
+evidence.
 
 ### Case C2: CAN Heartbeat Timeout
 
@@ -344,7 +350,7 @@ Fault logs should include:
 | Validation | Method | Pass condition |
 | --- | --- | --- |
 | Boot safe output | Power logic only, motor disconnected | PWM zero |
-| Command timeout | Stop sending commands | Motor output stops |
+| Command timeout | Stop sending commands | Motor output/stored command zero, `DISARMED`, stale `CMD` rejected, new `ARM` then new `CMD` required |
 | E-stop | Send E-stop frame or command | Fault latched, output disabled |
 | Low voltage simulated | Inject low ADC equivalent | Output disabled |
 | Encoder sign | Lifted motor test | Forward command produces expected signs |
@@ -361,5 +367,8 @@ Every command path must share the same fail-safe behavior:
 ```text
 invalid, stale, missing, or unsafe input -> PWM zero and driver disabled
 ```
+
+Final MVP command-source loss additionally requires stored-command zero and a
+`DISARMED` transition. Motion needs a new `ARM` followed by a new `CMD`.
 
 Recovery from latched safety faults requires explicit operator action.

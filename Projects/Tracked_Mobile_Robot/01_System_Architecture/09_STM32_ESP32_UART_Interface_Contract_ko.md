@@ -3,8 +3,9 @@
 ## 목적
 
 이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조
-컨트롤러 사이의 첫 통신 계약을 정의한다. 초기 실습에서는 PC serial terminal
-또는 Python script도 ESP32와 같은 command source로 취급한다.
+컨트롤러 사이의 통신 계약을 정의한다. Final MVP production external command ingress는
+ESP32-S3 하나다. PC serial terminal/Python script는 역사적 bench source로만 STM32
+USART2를 사용했으며, optional interactive control은 `PC -> ESP32 -> STM32`로 전달한다.
 
 목표는 첫 궤도형 drivetrain MVP에 맞게 안전하고, 테스트 가능하고, 단순한
 interface를 만드는 것이다.
@@ -44,26 +45,28 @@ MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 
 ## MVP Rule Set
 
-이 섹션은 PC 또는 ESP32 제어부와 STM32 구동부 사이의 첫 UART MVP에서 반드시
-지켜야 할 규칙이다.
+이 섹션은 ESP32 production ingress와 STM32 구동부 사이에서 반드시 지켜야 할 규칙이다.
+PC-first bench 실습은 동일 application frame의 검증 이력이지 별도 production owner가 아니다.
 
 ### 역할
 
 ```text
-PC/ESP32 = command source, logger, dashboard
-STM32    = parser, safety gate, drivetrain authority
+ESP32 = production command ingress + STM32 bridge; optional PC arbitration/logger/dashboard pending
+STM32 = parser, safety gate, drivetrain authority
+PC    = optional ESP32 upstream client 또는 historical bench source
 ```
 
 규칙:
 
-- PC와 ESP32는 같은 application frame을 사용한다.
-- PC는 첫 실습에서 ESP32를 대체하는 test source로 사용할 수 있다.
+- Historical PC bench tool과 ESP32는 같은 application frame을 사용한다.
+- Direct PC/ESP32 dual ownership은 허용하지 않는다.
+- PC interactive control을 구현할 경우 ESP32가 단일 session/sequence owner로 중재한 뒤 전달한다.
 - ESP32, PC, Wi-Fi, dashboard는 motor output을 직접 소유하지 않는다.
 - STM32만 MDD10A PWM/DIR output과 command timeout을 최종 결정한다.
 
 ### MVP link
 
-초기 PC 실습:
+Historical PC-first bench path — production motion ingress 아님:
 
 ```text
 PC serial terminal / Python script
@@ -71,14 +74,15 @@ PC serial terminal / Python script
 <-> STM32 USART2 후보 PA2/PA3
 ```
 
-초기 ESP32 연동:
+Final MVP production link:
 
 ```text
 ESP32 UART1 GPIO17/GPIO18
 <-> STM32 USART1 PA9/PA10
 ```
 
-두 경우 모두 application protocol은 동일하게 유지한다.
+두 경로의 application frame은 동일하지만 동시에 STM32 command source로 연결하지 않는다.
+현재 STM32 firmware의 parser/RX는 `huart1`에만 연결되며 USART2는 encoder/debug logger다.
 
 ### MVP UART 설정
 
@@ -96,14 +100,14 @@ ESP32 UART1 GPIO17/GPIO18
 
 | Direction | Frame | Purpose |
 | --- | --- | --- |
-| PC/ESP32 -> STM32 | `PING,seq=<u32>` | Link 확인 |
-| STM32 -> PC/ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link 응답 |
-| PC/ESP32 -> STM32 | `ARM,seq=<u32>` | Motion command 허용 요청 |
-| PC/ESP32 -> STM32 | `DISARM,seq=<u32>` | Motor output 차단 요청 |
-| PC/ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command 요청 |
-| STM32 -> PC/ESP32 | `ACK,seq=<u32>,type=<text>` | Command 수락 |
-| STM32 -> PC/ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command 거부 또는 parse error |
-| STM32 -> PC/ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | 주기 telemetry |
+| ESP32 -> STM32 | `PING,seq=<u32>` | Link 확인 |
+| STM32 -> ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link 응답 |
+| ESP32 -> STM32 | `ARM,seq=<u32>` | Motion command 허용 요청 |
+| ESP32 -> STM32 | `DISARM,seq=<u32>` | Motor output 차단 요청 |
+| ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command 요청 |
+| STM32 -> ESP32 | `ACK,seq=<u32>,type=<text>` | Command 수락 |
+| STM32 -> ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command 거부 또는 parse error |
+| STM32 -> ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | 주기 telemetry |
 
 `NACK` frame은 첫 MVP에서 별도로 만들지 않는다. 거부 응답은 `ERR`로 통일한다.
 
@@ -196,8 +200,11 @@ PWM output -> 0
 - `CMD`가 20 Hz 정도로 반복해서 들어오는 동안에만 active command를 유지한다.
 - 멈춰 있는 상태도 `CMD,seq=N,vx_mmps=0,w_mradps=0,timeout_ms=300`처럼 zero command를 반복한다.
 - valid `CMD`가 `timeout_ms` 안에 새로 들어오지 않으면 STM32는 즉시 motor output을 0으로 만든다.
-- Timeout 직후에는 바로 `DISARMED`로 내리지 않고, 우선 `ARMED` 상태에서 output zero를 유지하는 방향으로 둔다.
-- 추가 idle 시간이 지나도 valid command가 없으면 `DISARMED`로 전환하는 auto-disarm 정책은 MVP 확정 필요 항목으로 남긴다.
+- 같은 timeout 처리에서 stored command를 zero로 만들고 state를 `DISARMED`로 전환한다.
+- 재동작에는 timeout 뒤 수신한 new `ARM`과 그 이후의 new `CMD`가 모두 필요하다. 이전 command를 replay하면 안 된다.
+
+위 항목은 ADR-015에서 확정한 required behavior다. 현재 firmware는 output/stored command를
+zero로 만들지만 `ARMED`를 유지하므로 아직 이 계약을 충족하지 않으며 `P-03`에서 구현·검증한다.
 
 Timeout은 새 command frame이 들어와서 거부되는 상황이 아니므로 `ERR` 응답 대상이 아니다.
 대신 `TEL`의 `state`, `left_pwm`, `right_pwm`, `fault` 또는 추후 `warn` field로 관찰한다.
@@ -253,7 +260,7 @@ UART link는 역할이 다른 두 컨트롤러를 연결한다.
 | Battery voltage safety | 소유 | Telemetry 표시 |
 | Command timeout | 소유 | 요청 timeout 값만 전달 |
 | Wireless dashboard | 소유하지 않음 | 소유 |
-| Wi-Fi command source | 필터링된 요청 수신 | UI와 forwarding 담당 |
+| Wi-Fi command source | 필터링된 요청 수신 | 구현 시 UI와 forwarding 소유 |
 | Telemetry formatting | 핵심 telemetry 제공 | 표시/기록/전달 |
 | Emergency stop request | 수신 후 강제 | 요청 가능 |
 | 최종 safety decision | 소유 | 소유하지 않음 |
@@ -496,14 +503,16 @@ ESP32 dashboard parsing이 시작된 뒤에는 telemetry field를 안정적으�
 STATE,t_ms=123500,state=DISARMED,reason=BOOT\n
 ```
 
-Candidate states:
+Protocol-level state names:
 
 - `BOOT`
 - `DISARMED`
 - `ARMED`
 - `FAULT`
 - `LOW_BATTERY`
-- `TIMEOUT_STOP`
+
+Command timeout은 timeout reason을 가진 `DISARMED`로 보고한다. ADR-015는 별도
+`TIMEOUT_STOP` state를 정의하지 않는다.
 
 ### FAULT
 
@@ -747,13 +756,14 @@ ESP32:
 
 ## 14. 열린 결정 사항
 
-영구 배선과 후속 통합 전에 답해야 할 항목:
+영구 배선과 후속 통합 전에 답해야 할 항목이다. Command owner, production UART와 timeout
+recovery 정책은 ADR-015로 닫혔으며 아래 목록의 열린 항목이 아니다.
 
-- PC-first 실습에서 사용할 UART: ST-LINK VCP USART2만 사용할지, 외부 USB-UART도 허용할지
-- Bench-validated GPIO17/18과 PA9/PA10을 영구 harness에도 그대로 사용할지
+- Optional `PC -> ESP32` forwarding을 구현할 경우 사용할 upstream transport와 arbitration 방식
+- 고정된 GPIO17/18 <-> PA9/PA10 link의 영구 harness connector, pinout, strain relief와
+  service-disconnect 상세
 - 실제 module에서 level shifting 또는 buffering이 필요한지
 - 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
-- Timeout 후 output zero 상태를 유지하다가 자동 `DISARMED`로 전환할 `auto_disarm_ms`
 - 최대 application frame length와 ring buffer size
 - Unknown frame type을 `ERR,code=UNKNOWN_TYPE`로 답할지 조용히 ignore할지
 - 최종 fault bitmask definition
@@ -765,20 +775,16 @@ ESP32:
 
 첫 STM32-ESP32 link는 3.3 V UART interface와 text message를 사용한다.
 
-STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
-request source, telemetry bridge로 동작한다.
+Final MVP production path는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다.
+ESP32-S3가 유일한 external command ingress다. Optional PC forwarding/arbitration을 구현할
+경우 ESP32가 소유하고, USART2는 bench debug/encoder logger로만 사용한다. STM32가 모든
+motor safety decision을 소유한다.
+Source loss recovery는 output/stored command zero, `DISARMED`, new `ARM` + new `CMD` 순서다.
 
-Earlier safe UART behavior와 T-BRIDGE-007 wrong-seq/wrong-type rejection은 required runtime
-behavior를 통과했다. T-BRIDGE-008A duplicate-required-`seq`, trailing-comma와
-required-`seq` uint32-overflow rejection/recovery도 각각 subvector PASS다. 2026-08-07
-current source는 모든 hook `0U`이며 contract `15/15`, restored protocol source build
-`0 errors / 0 warnings`, safe artifact 검사와 reflash가 PASS했다. Post-test board log도
-warning/retry/parser error 없는 exact startup, READY 뒤 14.43 s와 post-READY TEL 145/145
-`DISARMED/zero/error 0`, ARM/CMD/error 0으로 PASS했다. 현재 다음 실무 작업은
-motor-energy source를 분리한 상태에서 partial-frame-name, invalid
-terminator/embedded-control과 overlong-line/RX-line-buffer-overflow vectors를 닫은 뒤
-T-BRIDGE-008B를 실행하는 것이다. Current
-release는 exact runtime-to-ELF linkage, remaining parser recovery와 physical setup provenance가 남아 `PARTIAL`이다.
+Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current
+controlled hook은 모두 `0U`, host/static은 `20/20` PASS다. Exact runtime-to-artifact linkage와
+physical setup provenance 경계는 그대로 남는다. Production `CMD(vx,w)` mapper는 `P-02`,
+ADR-015 timeout recovery의 source/runtime 구현은 `P-03` 작업이며 현재 PASS로 주장하지 않는다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

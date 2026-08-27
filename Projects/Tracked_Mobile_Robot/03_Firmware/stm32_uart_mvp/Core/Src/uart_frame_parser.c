@@ -158,6 +158,9 @@ static uart_frame_type_t parse_type(
     if (token_equals(line, token_len, "CMD")) {
         return UART_FRAME_TYPE_CMD;
     }
+    if (token_equals(line, token_len, "ESTOP_RESET")) {
+        return UART_FRAME_TYPE_ESTOP_RESET;
+    }
 
     return UART_FRAME_TYPE_UNKNOWN;
 }
@@ -285,6 +288,8 @@ const char *uart_frame_type_name(uart_frame_type_t type){
             return "DISARM";
         case UART_FRAME_TYPE_CMD:
             return "CMD";
+        case UART_FRAME_TYPE_ESTOP_RESET:
+            return "ESTOP_RESET";
         case UART_FRAME_TYPE_UNKNOWN:
         default:
             return "UNKNOWN";

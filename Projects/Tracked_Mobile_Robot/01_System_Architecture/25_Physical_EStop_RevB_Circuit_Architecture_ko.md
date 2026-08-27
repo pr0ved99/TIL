@@ -46,7 +46,7 @@ SG-ESTOP-001
 | --- | --- |
 | `REQ-ESTOP-003` | K1 주접점은 firmware와 무관하게 `MDD10A POWER+`를 차단한다. |
 | `REQ-ESTOP-005~006` | S0-B는 motor/coil current와 분리된 fail-safe input이며 PC7에는 3.3 V logic만 들어간다. |
-| `REQ-ESTOP-007~008`, `011` | Release와 power restore만으로 K1가 재인가되지 않는 3선식 수동 재투입 회로를 사용한다. |
+| `REQ-ESTOP-007~008`, `011` | S2가 정상 해제/open이고 cross-short가 없는 nominal 조건에서 release와 power restore만으로 K1가 재인가되지 않는 3선식 수동 재투입 회로를 사용한다. Nominal MVP는 `T-ESTOP-005A`; `FM-ESTOP-014` mitigation은 post-MVP `T-ESTOP-005B` open gate다. |
 | `REQ-ESTOP-012~015` | Post-MVP option으로 K1 전·후 rail voltage를 ADC로 직접 비교한다. MVP는 downstream test point를 직접 측정한다. |
 | `REQ-ESTOP-016` | Coil clamp는 위치만 확정하고 topology/value는 K1 자료와 timing 측정으로 승인한다. |
 | `REQ-ESTOP-017` | Logic/USB/GPIO가 open K1을 우회하는 backfeed path가 없는지 별도 시험한다. |
@@ -119,12 +119,18 @@ VBAT_PROTECTED
        +-> K2-K1-ENABLE-NO -> K1_COIL_P -> K1 coil -> PWR_GND
 ```
 
-- Initial power-up: K2가 OFF이므로 S2를 누르기 전 K1도 OFF.
+- Initial power-up: S2가 정상 해제/open이고 cross-short가 없으면 K2가 OFF이므로 S2를 누르기 전 K1도 OFF.
 - S2 press: K2가 energize되고 pole 1이 K2를 hold하며 pole 2가 K1 coil을 energize한다.
 - S0 press/control-wire break/power loss: S0-A가 공통 permission을 열어 K2와 K1을 OFF한다.
-- S0 release: K2-HOLD가 이미 open이므로 K2/K1 OFF 유지.
-- Power restoration: K2가 OFF이므로 자동 재인가되지 않는다.
+- S0 release: S2가 정상 해제/open이고 `J_S2` 5-6 short가 없으면 K2-HOLD가 이미 open이므로 K2/K1 OFF 유지.
+- Power restoration: 같은 nominal 조건에서는 K2가 OFF이므로 자동 재인가되지 않는다.
 - MCU는 K2/K1 coil을 energize하거나 seal-in을 유지하는 경로에 포함하지 않는다.
+
+이 nominal 설명은 S2가 stuck-closed가 아니고 S2 loop에 unsafe cross-short가 없다는 조건이다.
+S2 stuck-closed 또는 `J_S2` 5-6 short에서는 S0-A가 다시 닫히거나 control power가 복구될 때
+S2 우회 경로로 K2가 즉시 energize되고 이어서 K1/motor rail이 자동 재인가될 수 있다.
+이는 `FM-ESTOP-014`의 확인된 current-RevB design gap이며 software `DISARMED`/PWM zero로
+hardware no-auto-reenable을 대체할 수 없다.
 
 F2는 main motor fuse F1과 별도의 control-branch protection 기능이다. F2의 정격과 fuse
 형태는 K1+K2 coil current, S0/S2/K2 contact rating과 wire ampacity로 Step 7에서 정한다.
@@ -286,11 +292,11 @@ Test point는 DMM/scope probe가 high-current terminal을 미끄러져 short시�
 | S1/source | S0 | S2 action | K1 / motor rail | `ESTOP_SENSE` | Required software condition |
 | --- | --- | --- | --- | --- | --- |
 | OFF | released or pressed | none | OFF / de-energized | USB logic이 있으면 contact 상태 반영 | PWM zero, no motion |
-| ON | released | none after initial power | OFF / de-energized | LOW | `DISARMED`, `K1_REENABLE_REQUIRED` |
+| ON | released | healthy/released; no 5-6 short | OFF / de-energized | LOW | `DISARMED`, `K1_REENABLE_REQUIRED` |
 | ON | released | deliberate press | ON / present after checks | LOW | 여전히 `DISARMED`; ARM 전 rail plausibility 확인 |
 | ON | pressed/latched | irrelevant | OFF / decay | HIGH | immediate safe output, E-stop latch, ARM/CMD reject |
-| ON | released after press | none | OFF / de-energized | LOW | latch 유지, release alone does not re-enable |
-| Restored after loss | released | none | OFF / de-energized | LOW | boot safe, deliberate S2 required |
+| ON | released after press | healthy/released; no 5-6 short | OFF / de-energized | LOW | latch 유지, release alone does not re-enable |
+| Restored after loss | released | healthy/released; no 5-6 short | OFF / de-energized | LOW | boot safe, deliberate S2 required |
 | ON, K1 main welded | pressed | irrelevant | Unexpected HIGH | HIGH | `K1_OFF_DISCREPANCY`, outputs zero, S1/battery isolation required |
 
 K1 manual re-enable, software reset, new ARM과 new CMD는 서로 다른 권한이다. 어느 하나만으로
@@ -305,8 +311,8 @@ motion을 복구하지 않으며, 수행 순서가 달라도 stale command를 �
 | S0-B/sense wire open | GPIO HIGH, software latch | Hardware K1는 S0-A에 의존 |
 | S0-B short-to-GND | False healthy 가능 | Session press test와 rail comparison; single-fault tolerant 미주장 |
 | S2 stuck open | K1 re-enable 불가 | Bypass 금지, inspect/repair |
-| S2 stuck closed | K2-HOLD가 open인 initial state에서는 단독 auto-reenable 금지 | Step 8 cross-contact review와 fault injection |
-| K2-HOLD welded/stuck closed | Power restore/release 뒤 auto-reenable 위험 | `T-ESTOP-004/005`, software DISARMED, S1 backup; 일반 safety relay가 아님 |
+| S2 stuck closed 또는 `J_S2` 5-6 short | S0 release/initial power/power restore에서 K2/K1와 motor rail이 자동 재인가될 수 있음 | `FM-ESTOP-014` hardware mitigation과 post-MVP `T-ESTOP-005B` open; firmware `DISARMED`/PWM zero는 rail 차단 대체 불가; single-fault tolerance 미주장 |
+| K2-HOLD welded/stuck closed | Power restore/release 뒤 auto-reenable 위험 | Post-MVP fault-injection extension, software DISARMED, S1 backup; 일반 safety relay가 아님 |
 | K2-K1-ENABLE welded | K2 OFF 뒤에도 K1 coil path가 남을 수 있음 | S0-A는 common upstream cut 유지; coil/rail discrepancy test |
 | K2 coil open/control fault | K1 re-enable 불가 | Availability loss, inspect/repair |
 | K1 coil open/control fuse open | K1 OFF | Availability loss, fault inspection |
@@ -315,19 +321,19 @@ motion을 복구하지 않으며, 수행 순서가 달라도 stale command를 �
 | Clamp short | F2 trip/K1 OFF target | F2 coordination 필요 |
 | Downstream divider open | False-low 가능 | K1 ON pre-ARM upstream/downstream comparison |
 | Divider short/ADC overrange | Input damage/false reading 가능 | Two-part top resistance, series/protection, current-limited test |
-| USB/GPIO backfeed | K1 open인데 residual rail 가능 | `T-PWR-003`, `T-ESTOP-005/006`; 필요 시 회로 변경 |
+| USB/GPIO backfeed | K1 open인데 residual rail 가능 | `T-PWR-003`, `T-ESTOP-005A/006`; 필요 시 회로 변경 |
 
 ## Requirement/design/test traceability
 
 | Design decision | Requirements | Primary tests |
 | --- | --- | --- |
-| `CD-ESTOP-001` K1 high-side cut | `003~004`, `012~013`, `015`, `017` | `T-ESTOP-001`, `005~006` |
-| `CD-ESTOP-002` three-wire re-enable | `001~002`, `007~008`, `011`, `018` | `T-ESTOP-001~002`, `004~005` |
+| `CD-ESTOP-001` K1 high-side cut | `003~004`, `012~013`, `015`, `017` | `T-ESTOP-001`, MVP `005A`, post-MVP `006` |
+| `CD-ESTOP-002` three-wire re-enable | `001~002`, `007~008`, `011`, `018` | `T-ESTOP-001~002`, `004`, MVP `005A`, post-MVP `005B` |
 | `CD-ESTOP-003` coil clamp | `004`, `009`, `016` | `T-ESTOP-001`, `006` |
-| `CD-ESTOP-004` S0-B sense | `002`, `005~010`, `018` | `T-ESTOP-002~005` |
+| `CD-ESTOP-004` S0-B sense | `002`, `005~010`, `018` | `T-ESTOP-002~004`, `005A` |
 | `CD-ESTOP-005` dual rail sense | `012~015` SHOULD/POST-MVP | `T-ESTOP-006` |
 | `CD-ESTOP-006` connector/test point | `004`, `018~020` | `T-ESTOP-001~003`, `006` |
-| `CD-ESTOP-007` backfeed boundary | `003`, `013~017` | `T-ESTOP-005~006`, `T-PWR-003` |
+| `CD-ESTOP-007` backfeed boundary | `003`, `013~017` | `T-ESTOP-005A`, `006`, `T-PWR-003` |
 
 ## Step 7로 넘기는 component/rating 결정
 
@@ -394,7 +400,7 @@ Hardware/perfboard implementation: NOT TESTED / NO SOLDER RELEASE
 
 현재 A4 배치는 전기적 WIP 검토본으로 승인했고 포트폴리오 수준의 기능 흐름 재배치는
 학습 후 별도 수행한다. 이는 actual part/rating, continuity, board power/back-power 또는
-`T-ESTOP-001~005` 통과를 뜻하지 않는다.
+`T-ESTOP-001~004 + T-ESTOP-005A` 통과를 뜻하지 않는다.
 
 2026-08-18 기준 TE `V23134J1052D642`/`1393304-9`, `VCF7-1000` socket과 해당 TE main/coil
 terminals를 K1 assembly로 주문했다. Catalog 정격은 18.9 A envelope에 수치상 적합하지만
@@ -403,3 +409,49 @@ prototype F1이다. Common main harness는 주문한 `280756-4` terminal의 AWG 
 만족하는 AWG 12를 우선하고 per-motor branch는 AWG 16을 후보로 둔다. AWG 14는 계산
 baseline일 뿐 release wiring 후보가 아니다. 다음 KiCad
 정리에서는 K1 exact field를 갱신하되 F1/holder/wire/connector field는 release 전까지 TBD로 유지한다.
+
+## 2026-08-24 implementation/evidence audit update
+
+위 `Step 6 gate`와 `2026-08-13 Step 8 implementation update`는 각각 당시 역사 상태를
+보존한다. 현재 추가 evidence와 남은 경계는 다음과 같다.
+
+```text
+PC7 firmware/input path: IMPLEMENTED / DIRECT-JUMPER RUNTIME PARTIAL PASS
+Host static regression: 20/20 PASS
+VO617A-3/S0-B conditioned path: PARTS PENDING / NOT TESTED
+K2 TX2-12V incoming no-power screen: 2/2 PASS
+F1 holder/fuse incoming no-power screen: PASS
+K1/F2/S0/S2/clamp powered path: NOT TESTED
+Three-wire no-auto-reenable: NOMINAL BASELINE ONLY / FM-ESTOP-014 DESIGN GAP OPEN
+KiCad RevB functional schematic: UNCHANGED BY THIS AUDIT
+Physical E-stop overall: NOT PASS
+```
+
+K2 두 개의 coil resistance는 `1.025 kOhm`, `1.035 kOhm`으로 official `1.028 kOhm +/-10%`
+범위 안이었고, 무전원 contact map은 두 샘플 모두 `3-4`, `10-9` closed와 `4-5`, `9-8`
+open이었다. Coil-contact isolation도 확인했다. 이는 powered pickup/dropout, clamp와 K1 coil
+switching evidence가 아니다.
+
+F1은 Littelfuse 표시 holder, `GXL 12AWG SCL -LF-` lead와 `LITTELFUSE / 257 / 32V / 10`
+표시 fuse의 외관, fuse 단품/장착 continuity와 가벼운 움직임 중 continuity를 확인했다.
+Fuse/holder mOhm contact resistance, voltage drop, fault interruption과 thermal evidence는 열려
+있다. PC7 direct test와 이 incoming screen 어느 것도 실제 K1 motor rail 차단을 증명하지 않는다.
+
+## 2026-08-27 partial-arrival update
+
+사용자는 K1 assembly, S0 `SF2ER-E2R2B-A`, VO617A-3, F2 `0287001.PXCN`/
+`FHAC0001ZXJA`와 6P waterproof harness/18 AWG의 도착을 보고했다. S2 `ABW110G`와
+`P6KE16CA-E3/54` x3는 아직 도착하지 않았다.
+
+```text
+K1/S0/VO617/F2/6P-18 AWG: USER-REPORTED RECEIVED / INCOMING NOT PERFORMED
+S2/P6KE16CA: ORDERED / NOT RECEIVED
+Complete control-path integration: BLOCKED
+Powered K1/K2 coil test: BLOCKED
+Physical E-stop overall: NOT PASS
+```
+
+도착 보고는 exact contents, actual marking, terminal/cavity map, continuity, polarity, isolation,
+fit 또는 retention을 입증하지 않는다. Received subset은 모든 전원과 motor/LiPo를 분리한
+무전원 입고검사만 앞당긴다. S2/P6KE 도착과 모든 incoming PASS 전에는 complete assembly나
+coil energize로 이동하지 않는다. 기존 direct-PC7/K2/F1 evidence boundary도 변하지 않는다.

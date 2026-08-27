@@ -321,6 +321,32 @@ Evidence:
 - [`08_Motor_Driver_and_HBridge_Control_ko.md`](08_Motor_Driver_and_HBridge_Control_ko.md)
 - [`../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)
 
+## ADR-015: Final MVP Production Command Ingress는 ESP32-STM32 USART1 단일 경로
+
+Status: Accepted
+
+Decision:
+
+- Final MVP의 유일한 production external command ingress는 ESP32-S3다.
+- Production link는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다.
+- STM32 USART2 PA2/PA3는 bench debug/encoder logger로만 사용하고 production command를 받지 않는다.
+- PC interactive control이 필요하면 `PC -> ESP32 -> STM32`로 전달하며 direct dual-owner 구조는 허용하지 않는다.
+- STM32는 command parser, state machine, timeout, motor permission과 PWM/DIR의 최종 authority를 유지한다.
+- Command source loss 시 output과 stored command를 zero로 만들고 `DISARMED`로 전이한다. 재동작에는 new `ARM`과 new `CMD`가 필요하다.
+
+Reason:
+
+- Current firmware는 protocol을 `huart1`에만 연결하고 USART2는 진단 로그 TX로 사용한다.
+- 단일 ingress는 PC와 ESP32가 서로 다른 session과 sequence로 동시에 명령하는 문제를 제거한다.
+- 과거 USART2 PC-first 경로는 parser 학습과 bench evidence로 보존하되 final production 경로로 사용하지 않는다.
+
+Consequence:
+
+- `PC -> ESP32` production forwarding은 아직 구현하지 않았으며 별도 구현이 필요하다.
+- Production `CMD -> left/right PWM/DIR` mapper는 `P-02`에서 구현한다.
+- 현재 timeout이 `ARMED`를 유지하는 동작은 `P-03`에서 이 결정에 맞게 변경한다.
+- 이 결정은 command transport를 고정하며 STM32의 최종 safety authority를 ESP32로 이전하지 않는다.
+
 ## Rejected or Deferred Alternatives
 
 | Alternative | Status | Reason |

@@ -55,7 +55,7 @@ Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor 
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
 | Boot not complete | Startup state | PWM zero 유지 | Init 완료 후 disarmed |
-| Command timeout | Command age가 timeout 초과 | Motor stop | Disarm/arm flow 이후 새 valid command |
+| Command timeout | Command age가 timeout 초과 | Motor output/stored command zero, `DISARMED` | New `ARM` 뒤 new `CMD` |
 | CAN heartbeat timeout | Heartbeat missing | Motor stop | Bus reconnect, disarm/arm |
 | Software stop/E-stop request | Command parser/state machine | Common safe-output, stop latch | Explicit operator reset 후 new ARM/CMD |
 | Physical E-stop asserted/open | S0-B sense; K1 path는 MCU-independent | K1 motor-energy cut + PWM zero/latch | Mechanical release, manual K1 re-enable, software reset 후 new ARM/CMD |
@@ -202,9 +202,14 @@ Detection:
 
 Required response:
 
-- PWM zero.
-- State-machine decision에 따라 timeout stop 또는 armed idle로 전환.
+- PWM과 stored command zero.
+- 즉시 `DISARMED`로 전환.
+- Timeout 이전 command replay 금지.
+- 재동작은 new `ARM` 뒤 new `CMD`가 들어온 경우에만 허용.
 - Telemetry로 timeout report.
+
+과거 timeout-stop/armed-idle 후보 정책은 ADR-015로 superseded됐다. 현재 firmware는 아직
+timeout 뒤 `ARMED`를 유지하므로 이 required response의 구현·runtime evidence는 `P-03`에서 닫는다.
 
 ### Case C2: CAN Heartbeat Timeout
 
@@ -344,7 +349,7 @@ Fault log에는 다음이 포함되어야 한다.
 | Validation | Method | Pass condition |
 | --- | --- | --- |
 | Boot safe output | Logic only, motor disconnected | PWM zero |
-| Command timeout | Command 전송 중단 | Motor output stop |
+| Command timeout | Command 전송 중단 | Motor output/stored command zero, `DISARMED`, stale `CMD` 거부, new `ARM` 뒤 new `CMD`만 허용 |
 | Software fault injection | Motor disconnected, limited active output 뒤 fault handler 호출 | PWM/DIR zero, reset 전 output 재활성화 차단 |
 | Software stop request | E-stop frame 또는 command 전송 | Fault latched, output disabled |
 | Physical E-stop | K1/S0 hardware와 motor-disconnected staged test | Actual motor rail cut, latch, no auto restart |
@@ -368,6 +373,9 @@ Fault model은 architecture의 일부이지 나중에 붙이는 부가기능이 
 ```text
 invalid, stale, missing, or unsafe input -> PWM zero and nonzero motor output blocked
 ```
+
+Final MVP command-source loss는 추가로 stored command zero와 `DISARMED` 전이를 강제하며,
+재동작에는 new `ARM`과 그 이후의 new `CMD`가 필요하다.
 
 Latched safety fault에서 회복하려면 explicit operator action이 필요하다.
 

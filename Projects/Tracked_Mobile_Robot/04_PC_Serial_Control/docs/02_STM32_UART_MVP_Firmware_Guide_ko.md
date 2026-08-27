@@ -11,6 +11,10 @@ CubeMX/CubeIDE 설정 스크린샷과 Web Serial 검증 스크린샷은 `assets/
 초기 목표는 motor control이 아니다.
 이번 firmware는 USB serial 기반 protocol 검증용이다.
 
+> 이 문서는 2026-07-09 PC-first USART2 bench 실습을 보존하는 historical guide다.
+> Final MVP production 경로는 ADR-015의 `ESP32 UART1 -> STM32 USART1`이며, USART2는
+> production command RX로 사용하지 않는다. 아래 timeout 동작은 ADR-015 기준으로 갱신했다.
+
 ```text
 PC tool
 -> ST-LINK Virtual COM Port
@@ -92,7 +96,6 @@ Pin:
 #define CMD_TIMEOUT_DEFAULT_MS 300u
 #define CMD_TIMEOUT_MIN_MS      50u
 #define CMD_TIMEOUT_MAX_MS     500u
-#define AUTO_DISARM_MS        3000u
 #define TEL_PERIOD_MS          100u
 
 #define VX_MIN_MMPS            -100
@@ -101,8 +104,8 @@ Pin:
 #define W_MAX_MRADPS            500
 ```
 
-`AUTO_DISARM_MS`는 아직 공식 확정값이 아니라 lab default다.
-프로젝트 계약 문서에서 최종 결정되면 이 값을 맞춘다.
+Timeout은 별도 auto-disarm delay 없이 output/stored command를 zero로 만들고 즉시
+`DISARMED`로 전환한다.
 
 ## Module Split
 
@@ -161,7 +164,6 @@ typedef struct {
     uint32_t err_count;
     uint32_t last_rx_ms;
     uint32_t last_tel_ms;
-    uint32_t timeout_started_ms;
 } uart_mvp_stats_t;
 ```
 
@@ -364,8 +366,8 @@ MVP rule:
 
 1. `ARMED` 상태에서 valid `CMD`가 들어오면 `last_valid_ms`를 갱신한다.
 2. `HAL_GetTick() - last_valid_ms > timeout_ms`이면 output을 즉시 0으로 만든다.
-3. Timeout 직후에는 `ARMED`를 유지하되 output zero 상태로 둔다.
-4. `AUTO_DISARM_MS` 동안 valid `CMD`가 없으면 lab default로 `DISARMED` 전환을 구현할 수 있다.
+3. Stored command를 zero/invalid로 만들고 즉시 `DISARMED`로 전환한다.
+4. 재동작에는 new `ARM` 뒤 new `CMD`가 필요하다.
 
 Pseudo:
 
@@ -378,14 +380,9 @@ void uart_mvp_update_safety(void)
         if ((now - active_cmd.last_valid_ms) > active_cmd.timeout_ms) {
             left_pwm = 0;
             right_pwm = 0;
+            active_cmd.vx_mmps = 0;
+            active_cmd.w_mradps = 0;
             active_cmd.valid = 0;
-            timeout_started_ms = now;
-        }
-    }
-
-    if (robot_state == ROBOT_ARMED && !active_cmd.valid) {
-        if (timeout_started_ms != 0u &&
-            (now - timeout_started_ms) > AUTO_DISARM_MS) {
             robot_state = ROBOT_DISARMED;
         }
     }
@@ -476,13 +473,14 @@ STM32 쪽:
 STM32 USART2 interrupt receives UART bytes into a ring buffer, main-loop parser validates line-based MVP frames, and STM32 returns ACK/ERR/TEL according to the safety state. PC logs confirm PING/PONG, NOT_ARMED rejection, valid CMD ACK, malformed CMD ERR, timeout zero-output, and DISARMED telemetry.
 ```
 
-## Next Step After This MVP
+## 이 Historical MVP 이후 상태
 
-1. 같은 protocol을 ESP32 USART link로 옮긴다.
-2. MDD10A logic input test와 결합한다.
-3. `left_pwm/right_pwm`을 실제 target output으로 연결하되 motor power 전에는 계속 0으로 검증한다.
-4. Encoder count가 들어오면 `left_cps/right_cps`를 실제 값으로 대체한다.
-5. 실제 motor test 전 command limit과 timeout을 다시 확인한다.
+1. `[COMPLETED]` 같은 protocol을 ESP32 UART1 <-> STM32 USART1 link로 연결했다.
+2. `[COMPLETED — motor-disconnected MDD10A-input scope]` PWM/DIR logic input waveform을 검증했다.
+3. `[P-02]` `left_pwm/right_pwm`을 production mapper의 실제 target output으로 연결한다.
+4. `[COMPLETED — encoder-side scope]` 실제 encoder CPS를 `left_cps/right_cps` telemetry에 연결했다.
+5. `[P-03]` ADR-015 timeout-to-`DISARMED` recovery를 구현·검증하고 actual motor test 전
+   command limit과 timeout을 다시 확인한다.
 
 ## Detailed Implementation
 

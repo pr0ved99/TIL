@@ -51,6 +51,7 @@ static volatile uint8_t s_rx_desync_pending;
 static uint8_t s_rx_discard_until_lf;
 
 static robot_state_t s_state = ROBOT_DISARMED;
+static uint8_t s_estop_latched;
 static uint32_t s_last_seq;
 static uint8_t s_stale_disarm_ack_sent;
 static uint8_t s_duplicate_disarm_ack_seq_sent;
@@ -182,6 +183,31 @@ static void begin_rx_resynchronization(void){
     s_rx_discard_until_lf = 1u;
 }
 
+static uint8_t estop_input_active(void) {
+    return (HAL_GPIO_ReadPin(
+        ESTOP_SENSE_GPIO_Port,
+        ESTOP_SENSE_Pin
+        ) == GPIO_PIN_SET) ? 1U : 0U;
+}
+
+static void estop_latch_and_force_safe(void) {
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_estop_latched = 1U;
+    s_state = ROBOT_FAULT;
+}
+
+static uint8_t estop_enforce_latch(void) {
+    if ((estop_input_active() != 0U) ||
+        (s_estop_latched != 0U)) {
+        estop_latch_and_force_safe();
+        return 1U;
+    }
+
+    return 0U;
+}
+
 static void handle_cmd(const uart_frame_t *frame){
     if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
        frame->w_mradps < W_MIN_MRADPS || frame->w_mradps > W_MAX_MRADPS){
@@ -197,6 +223,11 @@ static void handle_cmd(const uart_frame_t *frame){
 
     if(s_state != ROBOT_ARMED){
         send_err(frame->seq, "CMD", "NOT_ARMED");
+        return;
+    }
+
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
         return;
     }
 
@@ -218,6 +249,10 @@ static void handle_cmd(const uart_frame_t *frame){
         }
     }
 
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
     s_last_seq = frame->seq;
     s_vx_mmps = frame->vx_mmps;
     s_w_mradps = frame->w_mradps;
@@ -240,6 +275,17 @@ static void handle_line(const char *line, size_t line_len){
         );
         return;
     }
+
+    if(((frame.type == UART_FRAME_TYPE_ARM) ||
+        (frame.type == UART_FRAME_TYPE_CMD)) &&
+       (estop_enforce_latch() != 0U)) {
+        send_err(
+            frame.seq,
+            uart_frame_type_name(frame.type),
+            "ESTOP_LATCHED"
+        );
+        return;
+       }
 
     switch(frame.type){
         case UART_FRAME_TYPE_PING:
@@ -268,7 +314,9 @@ static void handle_line(const char *line, size_t line_len){
             motor_output_stop_all();
             s_vx_mmps = 0;
             s_w_mradps = 0;
-            s_state = ROBOT_DISARMED;
+            if (estop_enforce_latch() == 0U) {
+                s_state = ROBOT_DISARMED;
+            }
             s_last_seq = frame.seq;
 #if UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
             if(s_duplicate_disarm_ack_seq_sent == 0u){
@@ -390,6 +438,27 @@ static void handle_line(const char *line, size_t line_len){
             send_ack(frame.seq, "ARM");
             return;
 
+        case UART_FRAME_TYPE_ESTOP_RESET:
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+
+            if (estop_input_active() != 0U) {
+                estop_latch_and_force_safe();
+                send_err(
+                    frame.seq,
+                    "ESTOP_RESET",
+                    "ESTOP_ACTIVE"
+                );
+                return;
+            }
+
+            s_estop_latched = 0U;
+            s_state = ROBOT_DISARMED;
+            s_last_seq = frame.seq;
+            send_ack(frame.seq, "ESTOP_RESET");
+            return;
+
         case UART_FRAME_TYPE_CMD:
             handle_cmd(&frame);
             return;
@@ -413,6 +482,7 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_rx_discard_until_lf = 0u;
 
     s_state = ROBOT_DISARMED;
+    s_estop_latched = 0U;
     s_last_seq = 0;
     s_stale_disarm_ack_sent = 0u;
     s_duplicate_disarm_ack_seq_sent = 0u;
@@ -433,6 +503,7 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_w_mradps = 0;
     s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
     s_last_cmd_ms = 0u;
+    (void)estop_enforce_latch();
 }
 
 void uart_mvp_set_encoder_cps(
@@ -477,6 +548,8 @@ void uart_mvp_process(void){
     uint8_t byte;
 
     for(;;){
+        (void)estop_enforce_latch();
+
         if(s_rx_desync_pending != 0u){
             begin_rx_resynchronization();
         }

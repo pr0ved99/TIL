@@ -2,9 +2,9 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-18 MG540 vendor data + final perfboard nominal 19 kHz active 6-step/safe-restore closeout
-- 현재 실행 위치: `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Permanent pull-down/5-Net, board power/back-power, final 19 kHz/10% 6-step와 hook-0 all-LOW를 통과했다. 다음 직렬 Gate는 Physical E-stop `T-ESTOP-001~005`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
-- 기구 제작 상태: PC 3T adapter plate 발주 진행, small hole 3.0 mm 수정본 전달; 제작품 fit 미검증
+- Revision: 2026-08-27 P-02B build evidence and Physical E-stop partial-arrival transition
+- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A COMPLETE`, `P-02B SOURCE/FULL BUILD PASS`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset와 host/static `20/20`은 PASS했다. K1/S0/VO617/F2/6P-18 AWG는 사용자 보고 기준 도착해 received-subset 무전원 입고검사를 시작할 수 있고, S2/P6KE는 미도착이다. Mapper independent vectors/P-02C와 입고검사를 병렬로 진행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
 이 문서는 Tracked Mobile Robot 프로젝트의 최신 전체 실행 로드맵이다. 날짜별 progress log는 실제로 수행한 일을 기록하고, 이 문서는 다음에 무엇을 해야 하며 어떤 증거가 있어야 다음 단계로 갈 수 있는지를 정의한다.
@@ -15,7 +15,7 @@
 
 ```text
 STM32 기반 하위 구동 플랫폼이
-PC 또는 ESP32의 속도 명령을 받아
+ESP32-S3 단일 production ingress의 속도 명령을 받아
 안전 상태머신을 거쳐 좌우 모터를 제어하고
 엔코더 기반 속도·이동량 telemetry를 생성하며
 저속 전진·후진·제자리 회전과 1 m 측정 시험을 통과하고
@@ -33,7 +33,7 @@ PC 또는 ESP32의 속도 명령을 받아
 
 - 3S LiPo, fuse, main switch와 검증된 5 V 전원 경로
 - STM32가 최종 motor output authority인 안전 상태머신
-- PC와 ESP32가 공통 UART protocol을 사용하는 command source
+- ESP32-S3가 유일한 Final MVP production command ingress를 맡고 STM32 USART1로 전달하는 구조; PC control은 필요 시 ESP32를 경유하고 USART2는 bench-only
 - MDD10A 좌우 PWM/DIR 출력
 - boot/reset/DISARM/timeout/fault의 실제 PWM zero
 - 방향 변경 전 PWM zero
@@ -55,6 +55,7 @@ PC 또는 ESP32의 속도 명령을 받아
 - ROS 2 bridge, LiDAR, SLAM과 Nav2
 - PA4/PB0 이중 rail ADC plausibility, welded-contact discrepancy 자동 진단
 - 정밀 `t0~t3` rail-transient 분포와 확장 fault-injection campaign
+- `FM-ESTOP-014`의 S2 stuck-closed/6P S2-pair short 단일고장 내성 및 `T-ESTOP-005B`
 - Force-guided/safety relay, ISO 13849 PL 또는 IEC 62061/61508 SIL 적합성·인증
 
 이 항목들은 최종 MVP가 통과된 뒤 별도 V-cycle로 진행한다.
@@ -75,7 +76,7 @@ PC 또는 ESP32의 속도 명령을 받아
 | --- | --- | --- |
 | 목표와 사용 시나리오 | charter, `MVP-001~013` | 최종 기본 동작, Physical E-stop, 1 m, 문서 인수시험 |
 | 시스템 요구사항 | UART, power, mechanical, motor, encoder, drive requirement | fault stop, drivetrain, telemetry 시험 |
-| 아키텍처와 interface | controller ownership, pin map, UART, power, MDD10A contract | PC/ESP32-STM32, STM32-MDD10A, encoder 통합시험 |
+| 아키텍처와 interface | controller ownership, pin map, UART, power, MDD10A contract | ESP32-USART1 production ingress, STM32-MDD10A, encoder 통합시험 |
 | 상세 설계 | CubeMX pin/timer, motor-output module, CAD Rev, harness | 핀 파형, DMM, 치수와 fit 시험 |
 | 구현 | firmware, wiring, fabricated plate | build/flash 뒤 실제 계측과 동작 증거 |
 
@@ -88,29 +89,33 @@ PC 또는 ESP32의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 2026-08-18 현재 기준선
+## 현재 기준선 — 2026-08-27 갱신
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
-| PC-first STM32 UART MVP | `PASS` | requirements, matrix, CSV, screenshots, test report | baseline 보존 |
-| ESP32-STM32 UART bridge | `PARTIAL` | Gate A/B와 T-BRIDGE-007/008 required runtime PASS; post-test all-hooks-`0U`, contract `15/15`, motor-output safety 뒤 final exact startup과 READY 후 15.4 s/TEL 155 safe 회귀 PASS; exact board-artifact linkage, external cold-start marker와 log-embedded physical provenance pending | UART evidence 기준선 보존 |
+| Historical PC-first STM32 UART MVP | `PASS — bench baseline` | requirements, matrix, CSV, screenshots, test report | production owner로 사용하지 않고 evidence 보존 |
+| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime PASS; all-hooks-`0U`; host/static `20/20`. HAL-independent production mapper source와 CubeIDE full build는 PASS했지만 independent vectors와 protocol/state/output caller는 없음 | Mapper vector test -> `P-02C` integration |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
-| Adapter plate release/order | `PASS / ORDERED` | A4 1:1 비교, PC 3T 견적·발주, 업체 최소 타공에 맞춘 3.0 mm 수정본 | 입고 후 치수/fit/절연 확인 |
-| Adapter plate fabricated fit | `BLOCKED` | 제작품 미입고 | 입고 후 fit check |
+| Adapter plate release | `PASS` | A4 1:1 비교와 3.0 mm 수정본까지 확인 | release 기준선 보존 |
+| Adapter plate order/fabrication | `USER-REPORTED RECEIVED` | 2026-08-18 order 기록과 2026-08-26 사용자 수령 확인; actual order artifact/source hash는 없음 | 도착품을 RevB source와 물리적으로 대조 |
+| Adapter plate fabricated fit | `READY / NOT TESTED` | 제작품은 수령했지만 사진·실측·체결 evidence 없음 | 집 H-01에서 치수/fit/절연 확인 |
 | STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout/fault/reset과 hook-0 safe restore PASS | 기준선 보존; Physical E-stop |
 | MDD10A logic input | `PASS — motor-disconnected input scope` | Permanent pull-down/5-Net, powered/no-motor, final CH1/CH2 19.049/19.058 kHz 6-step와 final all-LOW PASS | MDD10A power-stage/actual motor stop, Physical E-stop closure |
 | Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
-| First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | Physical E-stop Gate 뒤 실행 |
+| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset subset와 F1/K2 무전원 검사는 PASS. K1/S0/VO617/F2/6P-18 AWG는 user-reported received지만 incoming open; S2/P6KE는 not received. Conditioned path, clamp, K1 rail-off는 미검증 | Received-subset A-01 -> S2/P6KE 잔여 A-01 -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
+| First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
 Current strict-parser UART Gate와 MCU-pin safety baseline을 보존한다. Permanent pull-down/5-Net,
 board power/back-power와 final perfboard MDD10A-input 19 kHz active 6-step/safe restore까지 PASS했다.
-WHEELTEC 회신으로 rated/stall current 입력을 확보하고 K1/F1/main-wire 계산과 TE K1 주문까지
-완료했다. K1은 catalog numerical PASS지만 입고/continuity/suppression/thermal, exact F1 holder와
-AWG 12 harness, Physical E-stop, MDD10A power stage와 실제 motor 회전은 미검증이다. 따라서 진행률 숫자보다
-Gate 상태와 evidence boundary를 기준으로 판단한다.
+WHEELTEC 회신으로 rated/stall current 입력을 확보하고 K1/F1/main-wire 계산을 완료했다. K1은
+catalog numerical PASS지만 incoming/continuity/suppression/thermal, Physical E-stop 통합,
+MDD10A power stage와 실제 motor 회전은 미검증이다. 2026-08-27 partial arrival로 K1/S0/
+VO617/F2/6P-18 AWG의 무전원 입고검사는 지금 시작할 수 있다. 그러나 S2/P6KE 도착과 모든
+incoming PASS 전에는 complete control-path assembly나 powered coil test로 이동하지 않는다.
+따라서 진행률 숫자나 배송상태보다 Gate와 evidence boundary를 기준으로 판단한다.
 
 ## 실행 대단원과 예상 작업시간
 
@@ -121,50 +126,51 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 | 대단원 | 대응 Gate | 주요 소단원 | 예상 작업시간 | 완료 조건 |
 | --- | --- | --- | ---: | --- |
 | 1. MCU 저수준 안전 검증 마무리 | `G3`, `G4A` | command-timeout shutdown, software-fault next-pulse suppression/latch, all-hooks-`0U` restore, external-reset boot no-output | 3~5시간 | `COMPLETED` — 세 waveform scope와 safe restore PASS |
-| 2. 전원·Physical E-stop | `G4B`, `T-ESTOP-001~005` | USB/buck back-power, K1/K2/S0/S2/opto/F1 회로·배선, sense/latch/reset, motor-disconnected energy-cut | 8~16시간 | power policy와 motor-disconnected E-stop MVP Gate PASS |
+| 2. 전원·Physical E-stop | `G4B`, `T-ESTOP-001~004`, `T-ESTOP-005A` | USB/buck back-power, K1/K2/S0/S2/opto/F1 회로·배선, sense/latch/reset, motor-disconnected nominal energy-cut | 8~16시간 | power policy와 nominal motor-disconnected E-stop MVP Gate PASS |
 | 3. 첫 실제 motor 구동 | `G5`, `T-ESTOP-007` | lifted single motor 5~10%, current/heat/smell/noise, MDD channel/side/direction, powered encoder noise, actual stop/no-auto-restart | 6~12시간 | 한쪽 motor와 encoder, stop path evidence PASS |
 | 4. 양쪽 궤도·이동·odometry | `G6`, `G7` | dual motor mapping, 전진/후진/제자리 회전, wheel-travel scale, 1 m distance error, final fault/stop regression | 12~24시간 | 저속 drivetrain와 1 m odometry acceptance evidence PASS |
 
-최초 합계는 **29~57시간**이었다. 대단원 1 완료 후 남은 순수 작업시간은 **26~52시간**이며
-주 25시간 기준 약 **1~2.5주**다. 재배선, 부품 조달과 재시험을 포함한 현실적인 남은
-달력 일정은 **2~3주**로 잡는다.
+최초 합계는 **29~57시간**이었다. 대단원 1 완료 후 남은 순수 작업시간은 **26~52시간**이다.
+2026-08-27 partial arrival로 received-subset 입고검사는 앞당길 수 있지만 S2/P6KE의 실제
+도착일이 complete E-stop integration의 달력 blocker로 남는다. 종료일은 `잔여 부품 도착일 +
+잔여 입고검사 + 26~52시간의 유효 작업시간 + 재시험 여유`로 계산한다. 기존 `2~3주` 수치는
+현재 일정 약속으로 사용하지 않는다.
 
 ### 대단원 간 직렬 순서
 
 ```text
 완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin 검증
--> 현재: 대단원 2 power/back-power + Physical E-stop
-   -> immediate: 보유 F1 holder 판정 -> AWG 12 common harness 확정 -> K1 입고 무전원 검사
+-> 현재 병렬 A: P-02B mapper vectors -> P-02C integration -> timeout/telemetry/battery/odometry
+-> 현재 병렬 B: 도착한 K1/S0/VO617/F2/6P의 marking/continuity/polarity/fit 무전원 입고검사
+-> S2/P6KE 도착: 잔여 무전원 입고검사와 complete assembly gate
+-> 대단원 2: T-ESTOP-001~004 -> nominal T-ESTOP-005A
 -> 대단원 3 lifted single motor
 -> 대단원 4 dual drivetrain + odometry
 -> low-level drivetrain MVP acceptance
 ```
 
-대단원 1~4는 safety evidence 관점에서는 직렬이다. 다만 adapter plate 제작과 배송은
-control firmware 검증을 막지 않는 병렬 mechanical branch로 운영한다.
+대단원 1~4의 실제 energy-on 시험은 safety evidence 관점에서 직렬이다. 다만 부품 배송 중에는
+[`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)의
+`P-01~P-09`를 병렬로 수행한다. `T-ESTOP-005B` 단일고장 확장은 MVP 뒤 별도 V-cycle이다.
 
-### RevA acrylic 주문 시점 Gate
+### Received PC plate identification and fit Gate
 
-현재 RevA는 `174 x 208.93379 mm`, acrylic 3T, nominal 3.3 mm hole 기준으로 주문 파일,
-A4 1:1 chassis 대조와 vector/scale preflight를 통과했다. 실제 주문만 vendor upload 오류로
-`NOT SUBMITTED`다. 반면 RevA의 component list에는 XL4015 x2, MDD10A와 universal PCB가
-있지만 이후 추가된 Physical E-stop의 K1/K2/F1/S0/S2 exact mounting은 포함되지 않았다.
+2026-08-26 사용자는 custom PC adapter plate가 이미 도착했다고 확인했다. 저장소의
+`2026-08-18_adapter_plate_revB_PC3T_hole3p0_order` DWG/DXF가 실제 제조 source일 가능성은
+높지만 주문 artifact·사진·실측이 없어 아직 동일성을 입증하지 않았다. 따라서 plate 부재나
+주문 미제출을 blocker로 두지 않고 physical evidence만 집 `H-01`로 분리한다.
 
-주문 전 30~60분 mechanical freeze check에서 다음을 확인한다.
+집에서 모든 전원을 분리하고 다음을 확인한다.
 
-1. K1/K2/F1을 RevA plate, universal PCB 또는 별도 bracket 중 어디에 고정할지 결정한다.
-2. S0/S2는 operator 접근 가능한 chassis/body 위치에 별도 고정하며 plate hole이 필요한지 확인한다.
-3. 현재 RevA hole을 바꾸지 않아도 절연·배선 굽힘·단자 접근·교체성이 확보되는지 확인한다.
-4. 업체에 acrylic 방식/색상, kerf, minimum 3.3 mm hole, 공차, VAT/배송비를 확인한다.
+1. 도착 plate의 top/bottom/edge 사진과 폭·높이·두께를 기록한다.
+2. RevB 후보의 `8 x diameter 3.0 + 21 x diameter 3.3 + 2 x diameter 30 mm` 패턴과 대조한다.
+3. 억지 가공이나 plate 휨 없이 chassis에 체결한다.
+4. universal PCB, XL4015 x2와 MDD10A를 무전원 dry fit한다.
+5. USB·terminal 접근, spacer, 납땜면 절연과 cable path를 확인한다.
+6. K1/K2/F1/F2는 plate/perfboard/inline bracket, S0/S1/S2는 operator panel로 분류하고
+   추가 drilling 필요 여부를 결정한다.
 
-판정 규칙:
-
-- **Prototype RevA 1개이고 추가 가공 또는 RevB를 허용한다면:** 위 확인 직후 대단원 1과
-  병렬로 주문한다. Firmware/E-stop 완료까지 기다리지 않는다.
-- **이번 한 장을 final plate로 사용하고 재가공을 허용하지 않는다면:** K1/K2/F1 실제
-  부품과 장착 위치가 동결되는 대단원 2 중반까지 보류하고, first motor 시험 전 주문한다.
-- Order ID, revision, material, thickness, tolerance와 주문 PDF hash를 기록하기 전에는
-  `ORDERED`로 표시하지 않는다.
+현재 카페에서는 이 실물 결과를 추정하지 않고 `P-02` production mapper를 진행한다.
 
 ## Gate 로드맵
 
@@ -244,23 +250,23 @@ CONDITIONAL PASS - signal-only firmware 작업은 진행 가능, board power 통
 
 목표:
 
-- electronics를 셰시에 안전하게 고정할 Rev A plate를 제작하고 실물 검증한다.
+- electronics를 셰시에 안전하게 고정할 received PC plate를 식별하고 실물 검증한다.
 
-Release branch:
+Source candidate:
 
 - 174 x 208.93379 mm
-- acrylic 3T candidate
-- nominal 3.3 mm small holes
+- PC 3T order intent
+- RevB mixed hole pattern: 8 x diameter 3.0, 21 x diameter 3.3, 2 x diameter 30 mm
 - A4 1:1 comparison PASS
 - order PDF vector and scale PASS
 
-발주 직후 기록할 항목:
+Source-to-part identification에서 기록할 항목:
 
-- 실제 제출 파일과 revision
-- acrylic 세부 재질, kerf, 최소 hole과 공차
-- 수량, 견적, 배송비/VAT, order ID와 예상 납기
+- 실제 제출 파일과 revision 또는 order artifact
+- 도착품 material, thickness, outer size와 hole pattern
+- 사진, 실측값과 candidate DWG/DXF 대조 결과
 
-입고 후 Exit criteria:
+Exit criteria:
 
 - 외곽, 두께, 주요 hole 지름과 center distance를 실측한다.
 - 억지 가공이나 plate 휨 없이 chassis에 체결한다.
@@ -271,7 +277,9 @@ Release branch:
 상태:
 
 ```text
-RELEASE PASS / ORDER NOT SUBMITTED / FABRICATED FIT BLOCKED
+FABRICATED PLATE USER-REPORTED RECEIVED
+/ SOURCE IDENTITY OPEN
+/ PHYSICAL FIT NOT TESTED
 ```
 
 ### G3. STM32 PWM/DIR signal-only verification
@@ -460,8 +468,8 @@ PARTIAL - production CPS TEL과 encoder-side A=right/TIM5, B=left/TIM3 forward-p
 필수 시험:
 
 1. cold boot output-zero
-2. PC command source basic motion
-3. ESP32 command source basic motion
+2. ESP32 production command ingress basic motion
+3. USART2 bench path가 production motion command를 소유하거나 우회하지 않음
 4. low-speed forward, backward와 in-place rotation
 5. command timeout actual stop
 6. DISARM actual stop
@@ -513,39 +521,28 @@ Exit criteria:
 PLANNED
 ```
 
-## 제작 대기 중 병렬 실행 계획
+## Partial arrival 중 병렬 실행 계획
 
-어댑터 플레이트 납기 때문에 firmware와 signal 검증을 멈추지 않는다.
+상세 task, 완료 조건과 금지사항의 현재 정본은
+[`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)다.
+S2/P6KE 배송 대기 중에도 아래 software/document 작업과 received-subset 무전원 입고검사를
+motor-energy 없이 병렬로 진행할 수 있다.
 
-```text
-Mechanical branch
-Rev A order -> vendor confirmation -> fabrication -> fit check -----+
-                                                               |
-Control branch                                                 v
-pin/frequency config -> static pin PASS -> MDD static PASS -> timing/active safety
-                                                               |
-Power/encoder branch                                           v
-board power policy -> encoder identification/safe voltage -> final integration
-```
+1. `[COMPLETED / ADR-015] P-01`: ESP32-S3 단일 production ingress, USART1 production/USART2 bench-only와 source-loss recovery 정책을 확정했다.
+2. `[SOURCE/FULL BUILD PASS] P-02B`: test hook과 분리된 production mapper module을 추가했다. Independent vectors를 닫고 `P-02C` caller/output integration으로 이동한다.
+3. `P-03`: ADR-015로 고정된 timeout recovery(output/stored command zero -> `DISARMED` ->
+   new `ARM` + new `CMD`)를 source에 구현하고 host/static·build·board evidence로 닫는다.
+4. `P-04`: TEL의 실제 left/right CPS, command/target와 battery 값을 연결한다.
+5. `P-05`: battery ADC divider, calibration과 low-voltage policy를 설계·검증한다.
+6. `P-06`: encoder count에서 wheel distance와 1 m odometry를 계산하는 경로를 구현한다.
+7. `P-07`: received adapter plate identity/fit, E-stop mounting freeze, track/fastener/strain-relief와 6P cavity map을 준비한다.
+8. `P-08`: F1 `257`/ordered `287` identity, S1 DC rating basis와 계측표를 닫는다.
+9. `P-09`: 부품별 입고검사표와 `T-ESTOP-001~004 + T-ESTOP-005A` capture sheet를 미리 만든다.
 
-2026-08-12 대단원 1 완료 이후 우선순위:
-
-아래 1~3은 완료된 UART/MCU-pin evidence를 보존하는 단계다. 아래 4~6은 actual motor 활성화 전 직렬 safety chain이며, 앞 단계가 통과하기 전에는 다음 단계로 넘어가지 않는다.
-
-1. 2026-08-03 waveform/direction, 2026-08-04 active DISARM 23.50 us, Gate A/B와 wrong-ACK raw logs, encoder `1560 counts/output rev`와 forward-positive mapping을 회귀 기준으로 보존한다.
-2. 2026-08-12 report 15, all-hooks-`0U` source, contract `15/15`와 UART Gate C safe artifacts를 완료 기준선으로 보존한다. 다음 evidence부터 raw flash transcript, retained binary hash와 physical setup metadata를 함께 기록한다.
-3. 2026-08-12 report 16과 timeout/fault/reset FAIL/PASS raw capture, external `10 kΩ` pull-down 결정, final post-READY TEL 155 safe 회귀를 대단원 1 기준선으로 보존한다.
-4. 네 `10 kΩ`을 RevB schematic에 반영한 기준본에서 fixed occupancy와 Onshape 경계를
-   대조한 `55 x 37홀` component/solder-side 디지털 배치를 만든다. KiCad-net-to-hole review와
-   1:1 실물 대조 뒤 permanent wiring에 반영하고 continuity를 확인한다.
-5. Board power/back-power와 Physical E-stop MVP gate인 `T-ESTOP-001~005`를 닫는다.
-6. 위 safety chain이 모두 PASS한 뒤에만 first lifted/no-load actual motor 시험을 5~10% 제한으로 수행한다.
-7. 같은 lifted setup에서 `T-ESTOP-007` 실제 정지와 no-auto-restart evidence를 확보한다.
-8. 정밀 rail transient/dual-rail plausibility인 `T-ESTOP-006`은 MVP 종료를 막지 않는 후속 진단 V-cycle로 수행한다.
-9. 30~60분 E-stop mounting freeze check를 먼저 수행한다. RevA를 prototype으로 허용하면
-    대단원 2와 병렬로 즉시 1개 주문하고, final-only라면 대단원 2 component placement
-    freeze 뒤 first motor 전 주문한다. Order ID/revision/material/tolerance를 기록하고
-    입고 후 fit check를 수행한다.
+현재 도착품은 received-subset `A-01`만 수행한다. S2/P6KE 도착과 잔여 입고검사까지 닫힌 뒤
+`T-ESTOP-001~004 -> T-ESTOP-005A -> lifted single motor 5~10% -> T-ESTOP-007 -> dual
+drivetrain -> 1 m odometry` 순서를 지킨다. `FM-ESTOP-014`와
+`T-ESTOP-005B`는 지우지 않고 post-MVP residual-risk V-cycle로 추적한다.
 
 ## 사용자 직접 타이핑 학습 방식
 
@@ -643,7 +640,8 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [x] PWM/DIR actual pin static/DMM evidence
 - [x] MDD10A logic input static/LED evidence
 - [x] PWM frequency/duty와 direction deadtime instrument evidence
-- [ ] board power/back-power rule와 measurement
+- [x] current logic-board power/back-power measurement
+- [ ] final K1 downstream motor-rail back-power/rail-off measurement
 - [ ] first motor no-load report
 - [x] motor-off encoder voltage, dual count와 speed telemetry evidence
 - [ ] powered encoder noise와 external speed evidence
@@ -652,7 +650,8 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [x] active DISARM MCU-pin first shutdown-latency baseline
 - [x] motor-disconnected active timeout, software-fault next-pulse/latch와 reset-marker boot report
 - [x] external-reset motor-input floating FAIL 발견과 signal별 `10 kΩ` pull-down 재시험 PASS
-- [ ] RevB/permanent pull-down continuity, physical E-stop와 actual motor-stop report
+- [x] RevB/permanent motor-input pull-down continuity와 safe-restore report
+- [ ] integrated physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`와 actual motor-stop report
 - [ ] 1 m distance/odometry report
 - [ ] portfolio-ready README와 short demo
 
@@ -669,13 +668,15 @@ encoder feedback, 전원·기구 통합과 fault validation을
 핵심 강조점:
 
 - STM32가 final drivetrain safety authority다.
-- PC/ESP32는 command source이며 safety를 우회할 수 없다.
+- ESP32-S3는 Final MVP production command ingress이고 PC는 필요 시 ESP32 upstream client다. 어느 쪽도 STM32 safety를 우회할 수 없다.
 - hardware bring-up을 무전원, signal-only, no-load, lifted, ground 단계로 분리했다.
 - command-level zero와 physical output zero를 구분해 검증한다.
 - 성공 화면뿐 아니라 계측값, fault와 residual risk를 증거로 남긴다.
 
 ## 관련 문서
 
+- [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
+- [`../progress/2026-08-25_progress.md`](../progress/2026-08-25_progress.md)
 - [`../../00_Project_Charter/01_Goal_and_Scope.md`](../../00_Project_Charter/01_Goal_and_Scope.md)
 - [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 - [`../../01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md`](../../01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md)

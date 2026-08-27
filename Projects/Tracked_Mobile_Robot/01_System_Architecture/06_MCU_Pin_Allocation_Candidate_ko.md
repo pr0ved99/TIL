@@ -23,8 +23,8 @@
 - 좌/우 모터 direction GPIO
 - 선택적 motor power gate 또는 brake GPIO 후보
 - 좌/우 quadrature encoder A/B 입력
-- PC command/debug serial link
-- 선택적 ESP32-S3 serial link
+- PC bench debug/encoder logger serial link
+- ESP32-S3 production command/telemetry serial link
 - BNO08x IMU용 I2C
 - 3S LiPo 배터리 전압 감시용 ADC
 - Physical E-stop 독립 contact sense GPIO
@@ -52,7 +52,7 @@ UM1724에서 사용한 중요한 사실:
 첫 핀 배정은 다음 원칙을 따른다.
 
 1. PA13/PA14는 SWD용으로 보존한다.
-2. 첫 PC serial link에는 USART2 PA2/PA3를 사용한다.
+2. Final MVP production command link에는 USART1 PA9/PA10을 사용하고, USART2 PA2/PA3는 bench debug/logger로만 유지한다.
 3. BNO08x IMU에는 I2C1 PB8/PB9를 사용한다.
 4. 양쪽 모터 엔코더에는 hardware timer encoder mode를 사용한다.
 5. 모터 속도 제어에는 timer PWM output을 사용한다.
@@ -64,8 +64,8 @@ UM1724에서 사용한 중요한 사실:
 
 | 로봇 기능 | MCU 핀 | 주변장치/기능 | 보드 접근 | 상태 |
 | --- | --- | --- | --- | --- |
-| PC serial TX | PA2 | USART2_TX | Arduino D1 / ST morpho CN10 pin 35 | Primary |
-| PC serial RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Primary |
+| PC bench logger TX | PA2 | USART2_TX | Arduino D1 / ST morpho CN10 pin 35 | Bench-only / historical PC-first evidence |
+| PC bench logger RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Production command RX disabled |
 | IMU I2C SCL | PB8 | I2C1_SCL | Arduino D15 / ST morpho CN10 pin 3 | Primary |
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
 | 왼쪽 모터 PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
@@ -81,8 +81,8 @@ UM1724에서 사용한 중요한 사실:
 | 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
 | 왼쪽 선택적 power gate/brake | PC6 | GPIO output | ST morpho CN10 pin 4 | Optional |
 | 오른쪽 선택적 power gate/brake | PC5 | GPIO output | ST morpho CN10 pin 6 | Optional |
-| 선택적 ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
-| 선택적 ESP32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
+| STM32 -> ESP32 production TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Production / bench-validated |
+| ESP32 -> STM32 production RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Production / bench-validated |
 | 향후 CAN RX | PA11 | CAN1_RX | ST morpho CN10 pin 14 | Reserve |
 | 향후 CAN TX | PA12 | CAN1_TX | ST morpho CN10 pin 12 | Reserve |
 | SWDIO | PA13 | SWDIO | ST-LINK / ST morpho CN7 pin 13 | Preserve |
@@ -90,16 +90,18 @@ UM1724에서 사용한 중요한 사실:
 
 ## 하위 시스템별 근거
 
-### PC Serial Link
+### Historical PC-First Bench Serial
 
 PA2와 PA3는 USART2에 배정한다. UM1724에서 이 핀들은 Arduino D1/D0와
-USART2_TX/USART2_RX로 매핑되어 있다.
+USART2_TX/USART2_RX로 매핑되어 있다. 이 경로는 2026-07-09 PC-first UART MVP의
+역사적 bench evidence를 보존하지만 Final MVP production command ingress는 아니다.
+현재 firmware는 USART2 command RX를 시작하지 않고 encoder/self-test logger TX로 사용한다.
 
 용도:
 
-- PC command input
 - Debug log output
-- 초기 serial protocol 검증
+- Encoder/self-test logger
+- 역사적 PC-first serial protocol 검증
 
 위험:
 
@@ -108,7 +110,8 @@ USART2_TX/USART2_RX로 매핑되어 있다.
 
 확인:
 
-- 간단한 UART echo test로 USART2 PA2/PA3 동작을 확인한다.
+- 역사적 UART echo/PC-first evidence를 보존한다.
+- Production command가 USART2 parser에 연결되지 않았는지 source audit로 확인한다.
 
 ### IMU I2C
 
@@ -251,14 +254,16 @@ logic input에는 필요하지 않지만, 나중에 별도 motor power gate, bra
 - Motor driver input logic level 확인
 - STM32 reset 또는 boot 중 PWM output이 0 상태인지 확인
 
-### Optional ESP32 Serial
+### Production ESP32 Serial
 
-PA9/PA10은 USART1_TX/USART1_RX 후보로 reserve한다.
+PA9/PA10은 Final MVP production link의 USART1_TX/USART1_RX로 고정한다.
 
 이유:
 
-- USART1은 ESP32-S3와 연결할 수 있는 깔끔한 optional serial link다.
-- PC serial MVP가 동작한 뒤 추가하면 된다.
+- 실제 firmware protocol은 `huart1`에 연결되어 있고 ESP32-S3 UART1 GPIO17/GPIO18과
+  board-level 통신이 검증됐다.
+- Optional PC control이 필요하면 `PC -> ESP32 -> STM32 USART1`로 전달하며 direct
+  PC/ESP32 dual-owner 경로는 만들지 않는다.
 
 확인:
 
@@ -296,23 +301,24 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 현재 검증 상태:
 
 1. `[x]` STM32F446RETx 기준 CubeMX project 생성
-2. `[x]` USART2 PA2/PA3 활성화와 PC UART 사용
-3. `[ ]` I2C1 PB8/PB9 활성화와 BNO08x 확인
-4. `[x]` TIM4 PWM PB6/PB7 활성화와 static motor-output 시험
-5. `[x]` TIM3 encoder mode PB4/PB5 활성화와 motor-off hand-count
-6. `[x]` TIM5 encoder mode PA0/PA1 활성화와 두 번째 channel 시험
-7. `[ ]` Post-MVP PA4/PB0 ADC 활성화와 독립 divider/rail plausibility 시험
-8. `[x]` PC8/PC9 MDD10A DIR GPIO 설정과 static routing 시험
-9. `[ ]` 필요 시 PC6/PC5 optional power gate/brake 회로 결정
-10. `[x]` PA13/PA14 SWD 유지
-11. `[ ]` 남은 후보까지 포함한 최종 warning/pin-conflict review
-12. `[x]` 현재 검증 범위의 `.ioc` 생성 및 Git 추적
-13. `[ ]` PC7 `ESTOP_SENSE` input/EXTI 후보의 threshold와 latency 시험
+2. `[x]` USART2 PA2/PA3 historical PC-first 검증과 current bench logger 사용
+3. `[x]` USART1 PA9/PA10과 ESP32 GPIO17/GPIO18 production link 검증
+4. `[ ]` I2C1 PB8/PB9 활성화와 BNO08x 확인
+5. `[x]` TIM4 PWM PB6/PB7 활성화와 static motor-output 시험
+6. `[x]` TIM3 encoder mode PB4/PB5 활성화와 motor-off hand-count
+7. `[x]` TIM5 encoder mode PA0/PA1 활성화와 두 번째 channel 시험
+8. `[ ]` Post-MVP PA4/PB0 ADC 활성화와 독립 divider/rail plausibility 시험
+9. `[x]` PC8/PC9 MDD10A DIR GPIO 설정과 static routing 시험
+10. `[ ]` 필요 시 PC6/PC5 optional power gate/brake 회로 결정
+11. `[x]` PA13/PA14 SWD 유지
+12. `[ ]` 남은 후보까지 포함한 최종 warning/pin-conflict review
+13. `[x]` 현재 검증 범위의 `.ioc` 생성 및 Git 추적
+14. `[ ]` PC7 `ESTOP_SENSE` input/EXTI 후보의 threshold와 latency 시험
 
 벤치 검증 순서:
 
 1. GPIO output toggle test
-2. USART2 echo test
+2. USART1 ESP32 bridge 회귀와 USART2 bench logger 확인
 3. I2C scan 또는 BNO08x identity read
 4. PWM output 측정
 5. 손으로 모터를 돌리며 encoder count test
@@ -327,7 +333,8 @@ MDD10A powered channel 1/2의 실제 vehicle-side mapping은 아직 후보 상�
 
 가장 중요한 설계 선택:
 
-- PC serial: USART2 PA2/PA3
+- Final production command/telemetry: ESP32 GPIO17/GPIO18 <-> USART1 PA9/PA10
+- PC bench debug/encoder logger: USART2 PA2/PA3; production command RX disabled
 - IMU: I2C1 PB8/PB9
 - 좌/우 PWM: TIM4 PB6/PB7
 - 엔코더: TIM3 PB4/PB5, TIM5 PA0/PA1

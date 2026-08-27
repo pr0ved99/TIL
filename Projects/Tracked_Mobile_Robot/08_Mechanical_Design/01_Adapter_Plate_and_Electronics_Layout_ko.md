@@ -1,5 +1,9 @@
 # Adapter Plate and Electronics Layout
 
+> 현재 상태 안내: 이 문서는 2026-07-23/24의 Draft와 RevA 배치 기준을 보존하는 역사
+> 문서다. 현재 RevB 주문 후보와 E-stop 장착 판정은
+> [`03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)를 따른다.
+
 ## 목적
 
 이 문서는 궤도 셰시의 기존 홀 패턴 위에 장착할 어댑터 플레이트와 전장 모듈의 배치 기준을
@@ -7,7 +11,7 @@
 
 ## Status
 
-`REV A FILE PREPARED / ORDER BLOCKED`
+`HISTORICAL REV A FILE PREPARED / ORDER NOT SUBMITTED`
 
 - 초기 홀 패턴과 전장 모듈 배치 작성 및 화면 캡처 완료
 - Onshape Draft Version 생성 완료: 화면 표기 `dapter-layout_draft01_2026-07-23`
@@ -27,7 +31,7 @@
 | 프로젝트 반올림 표기 | 174 x 209 mm | 정보용 |
 | 재질 | 아크릴 | 제작 후보 결정 |
 | 판 두께 | 3 mm | 제작 후보 결정 |
-| 소형 체결 홀 | nominal diameter 3.3 mm | Rev A 반영 |
+| RevA 소형 홀 | 21 x diameter 3.3 mm + 8 x diameter 2.2 mm | 2026-08-26 DXF 직접 감사로 정정 |
 | 만능기판 외곽 | 150 x 100 mm | Draft 반영 |
 | 만능기판 홀 배열 | 55 x 37 | 사용자 실물 확인값 |
 | CAD/플레이트 기준 차량 전방 방향 | 미확정 | `OPEN` |
@@ -70,7 +74,8 @@ DWG/DXF를 기준으로 하고, 아래 표는 각 홀 그룹의 용도와 남은
 | Universal PCB support | 만능기판 네 모서리와 추가 세 지지점 | Rev A 반영; 실제 스페이서와 모듈 간섭 확인 필요 |
 | XL4015 support | XL4015 두 개의 절연 스페이서 체결 | Rev A 반영; 실물 체결 확인 필요 |
 | MDD10A support | MDD10A 절연 스페이서 체결 | Rev A 반영; 실물 체결 확인 필요 |
-| Small mounting holes | M3 체결 여유 홀 후보 | nominal diameter 3.3 mm; 업체 kerf·공차 확인 필요 |
+| Small-hole group A | 체결 후보, exact fastener 목적은 DXF에 미기록 | 21 x diameter 3.3 mm; 업체 kerf·공차 확인 필요 |
+| Small-hole group B | 체결 후보, exact fastener 목적은 DXF에 미기록 | 8 x diameter 2.2 mm; RevB 후보에서 diameter 3.0 mm로 변경 |
 | Large openings | 기존 셰시 형상과 접근 공간 유지 | Rev A 반영; 제작품 간섭 확인 필요 |
 
 정확한 `X`, `Y`와 형상은 Rev A DWG/DXF에서 관리한다. 업체의 kerf 보정, 허용 공차와 실제 체결 부품은
@@ -174,4 +179,4 @@ XL4015 두 개, MDD10A, 만능기판, NUCLEO-F446RE, ESP32-S3, GY-BNO085의 상�
 | Rev | 날짜 | 상태 | 변경 내용 |
 | --- | --- | --- | --- |
 | Draft 01 | 2026-07-23 | `DRAFT / CAD CHECK REQUIRED` | 209 x 174 mm 플레이트, 홀 패턴, 전장 모듈 배치와 스페이서 구성 기록; Assembly 오류 표시 미해소 |
-| Rev A | 2026-07-24 | `ORDER FILE PASS / ORDER BLOCKED` | 아크릴 3T, 외곽 174 x 208.93379 mm, 소형 홀 3.3 mm, 1:1 출력 및 주문 PDF 검증 완료; 업체 서버 오류로 미접수 |
+| Rev A | 2026-07-24 | `ORDER FILE PASS / ORDER NOT SUBMITTED` | 아크릴 3T, 외곽 174 x 208.93379 mm, 소형 홀 21 x diameter 3.3 mm + 8 x diameter 2.2 mm, 1:1 출력 및 주문 PDF 검증 완료; 당시 업체 서버 오류로 미접수 |

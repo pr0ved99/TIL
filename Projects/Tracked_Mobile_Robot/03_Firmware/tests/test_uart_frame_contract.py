@@ -17,7 +17,10 @@ U32_MAX = 4_294_967_295
 I32_MIN = -2_147_483_648
 I32_MAX = 2_147_483_647
 
-SIMPLE_FRAME = re.compile(r"(PING|ARM|DISARM),seq=([0-9]+)", re.ASCII)
+SIMPLE_FRAME = re.compile(
+    r"(PING|ARM|DISARM|ESTOP_RESET),seq=([0-9]+)",
+    re.ASCII,
+)
 CMD_FRAME = re.compile(
     r"CMD,seq=([0-9]+),vx_mmps=(-?[0-9]+),"
     r"w_mradps=(-?[0-9]+),timeout_ms=([0-9]+)",
@@ -72,6 +75,7 @@ class UartFrameContractTest(unittest.TestCase):
             b"PING,seq=0": ParsedFrame("PING", 0),
             b"ARM,seq=4294967295": ParsedFrame("ARM", U32_MAX),
             b"DISARM,seq=1": ParsedFrame("DISARM", 1),
+            b"ESTOP_RESET,seq=2": ParsedFrame("ESTOP_RESET", 2),
             (
                 b"CMD,seq=20,vx_mmps=50,w_mradps=0,timeout_ms=500"
             ): ParsedFrame("CMD", 20, 50, 0, 500),
@@ -95,6 +99,10 @@ class UartFrameContractTest(unittest.TestCase):
             b"PING,seq=4294967296",
             b"PING,seq=1junk",
             b"PING,seq=1,extra=2",
+            b"ESTOP_RESET",
+            b"ESTOP_RESET,seq=",
+            b"ESTOP_RESET,seq=4294967296",
+            b"ESTOP_RESET,seq=2,extra=1",
             b"ARMORED,seq=1",
             b"CMDX,seq=1,vx_mmps=0,w_mradps=0,timeout_ms=300",
             b"CMD,seq=1",

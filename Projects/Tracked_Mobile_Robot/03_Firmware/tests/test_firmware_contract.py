@@ -254,6 +254,9 @@ class FirmwareContractTest(unittest.TestCase):
             "PB6.GPIO_Label": "MOTOR_LEFT_PWM",
             "PB7.Signal": "S_TIM4_CH2",
             "PB7.GPIO_Label": "MOTOR_RIGHT_PWM",
+            "PC7.Signal": "GPIO_Input",
+            "PC7.GPIO_Label": "ESTOP_SENSE",
+            "PC7.GPIO_PuPd": "GPIO_PULLUP",
             "PC8.Signal": "GPIO_Output",
             "PC8.GPIO_Label": "MOTOR_LEFT_DIR",
             "PC9.Signal": "GPIO_Output",
@@ -288,6 +291,8 @@ class FirmwareContractTest(unittest.TestCase):
     def test_generated_pin_aliases_match_contract(self) -> None:
         definitions = parse_defines(self.source["main_h"])
         expected = {
+            "ESTOP_SENSE_Pin": "GPIO_PIN_7",
+            "ESTOP_SENSE_GPIO_Port": "GPIOC",
             "MOTOR_LEFT_DIR_Pin": "GPIO_PIN_8",
             "MOTOR_LEFT_DIR_GPIO_Port": "GPIOC",
             "MOTOR_RIGHT_DIR_Pin": "GPIO_PIN_9",
@@ -300,6 +305,17 @@ class FirmwareContractTest(unittest.TestCase):
         for name, value in expected.items():
             with self.subTest(name=name):
                 self.assertEqual(single_define(definitions, name), value)
+    def test_generated_estop_input_contract(self) -> None:
+        gpio = compact_c(
+            extract_function(self.source["gpio_c"], "MX_GPIO_Init")
+        )
+        self.assertIn(
+            "GPIO_InitStruct.Pin=ESTOP_SENSE_Pin;"
+            "GPIO_InitStruct.Mode=GPIO_MODE_INPUT;"
+            "GPIO_InitStruct.Pull=GPIO_PULLUP;"
+            "HAL_GPIO_Init(ESTOP_SENSE_GPIO_Port,&GPIO_InitStruct);",
+            gpio,
+        )
 
     def test_generated_timer_contract(self) -> None:
         tim3 = extract_function(self.source["tim_c"], "MX_TIM3_Init")
@@ -505,6 +521,169 @@ class FirmwareContractTest(unittest.TestCase):
             "motor_output_stop_all();",
             "__disable_irq();",
             "while (1)",
+        )
+
+    def test_estop_reset_parser_contract(self) -> None:
+        parser_header = compact_c(self.source["parser_h"])
+        self.assertIn(
+            "UART_FRAME_TYPE_CMD,UART_FRAME_TYPE_ESTOP_RESET",
+            parser_header,
+        )
+
+        parse_type = compact_c(
+            extract_function(self.source["parser_c"], "parse_type")
+        )
+        self.assertIn(
+            'if(token_equals(line,token_len,"ESTOP_RESET"))'
+            "{returnUART_FRAME_TYPE_ESTOP_RESET;}",
+            parse_type,
+        )
+
+        type_name = compact_c(
+            extract_function(self.source["parser_c"], "uart_frame_type_name")
+        )
+        self.assertIn(
+            'caseUART_FRAME_TYPE_ESTOP_RESET:return"ESTOP_RESET";',
+            type_name,
+        )
+
+    def test_estop_latch_forces_safe_state(self) -> None:
+        force_safe = extract_function(
+            self.source["protocol_c"], "estop_latch_and_force_safe"
+        )
+        self.assert_tokens_in_order(
+            force_safe,
+            "motor_output_stop_all();",
+            "s_vx_mmps = 0;",
+            "s_w_mradps = 0;",
+            "s_estop_latched = 1U;",
+            "s_state = ROBOT_FAULT;",
+        )
+
+        enforce_latch_contract = compact_c(
+            "static uint8_t estop_enforce_latch(void) {"
+            "if ((estop_input_active() != 0U) ||"
+            "(s_estop_latched != 0U)) {"
+            "estop_latch_and_force_safe();"
+            "return 1U;"
+            "}"
+            "return 0U;"
+            "}"
+        )
+        self.assertIn(
+            enforce_latch_contract,
+            compact_c(self.source["protocol_c"]),
+        )
+
+    def test_estop_blocks_arm_and_cmd_contract(self) -> None:
+        handle_line = compact_c(
+            extract_function(self.source["protocol_c"], "handle_line")
+        )
+        arm_cmd_guard = compact_c(
+            "if (((frame.type == UART_FRAME_TYPE_ARM) ||"
+            "(frame.type == UART_FRAME_TYPE_CMD)) &&"
+            "(estop_enforce_latch() != 0U)) {"
+            "send_err("
+            "frame.seq,"
+            "uart_frame_type_name(frame.type),"
+            '"ESTOP_LATCHED"'
+            ");"
+            "return;"
+            "}"
+        )
+
+        self.assertIn(arm_cmd_guard, handle_line)
+        self.assertLess(
+            handle_line.index(arm_cmd_guard),
+            handle_line.index("switch(frame.type){"),
+        )
+
+    def test_estop_disarm_reset_and_polling_contract(self) -> None:
+        protocol_source = self.source["protocol_c"]
+        compact_protocol = compact_c(protocol_source)
+
+        input_high_contract = compact_c(
+            "static uint8_t estop_input_active(void) {"
+            "return (HAL_GPIO_ReadPin("
+            "ESTOP_SENSE_GPIO_Port,"
+            "ESTOP_SENSE_Pin"
+            ") == GPIO_PIN_SET) ? 1U : 0U;"
+            "}"
+        )
+        self.assertIn(input_high_contract, compact_protocol)
+
+        handle_line = compact_c(
+            extract_function(protocol_source, "handle_line")
+        )
+
+        disarm_start = handle_line.index(
+            "caseUART_FRAME_TYPE_DISARM:"
+        )
+        disarm_end = handle_line.index(
+            "caseUART_FRAME_TYPE_ARM:",
+            disarm_start,
+        )
+        disarm_case = handle_line[disarm_start:disarm_end]
+
+        self.assertIn(
+            compact_c(
+                "if (estop_enforce_latch() == 0U) {"
+                "s_state = ROBOT_DISARMED;"
+                "}"
+            ),
+            disarm_case,
+        )
+        self.assertNotIn("s_estop_latched=0U;", disarm_case)
+
+        reset_start = handle_line.index(
+            "caseUART_FRAME_TYPE_ESTOP_RESET:"
+        )
+        reset_end = handle_line.index(
+            "caseUART_FRAME_TYPE_CMD:",
+            reset_start,
+        )
+        reset_case = handle_line[reset_start:reset_end]
+
+        active_reject = compact_c(
+            "if (estop_input_active() != 0U) {"
+            "estop_latch_and_force_safe();"
+            'send_err(frame.seq, "ESTOP_RESET", "ESTOP_ACTIVE");'
+            "return;"
+            "}"
+        )
+        clear_to_disarmed = compact_c(
+            "s_estop_latched = 0U;"
+            "s_state = ROBOT_DISARMED;"
+            "s_last_seq = frame.seq;"
+            'send_ack(frame.seq, "ESTOP_RESET");'
+            "return;"
+        )
+
+        self.assertIn(active_reject, reset_case)
+        self.assertIn(clear_to_disarmed, reset_case)
+        self.assertLess(
+            reset_case.index(active_reject),
+            reset_case.index(clear_to_disarmed),
+        )
+
+        protocol_init = compact_c(
+            extract_function(protocol_source, "uart_mvp_init")
+        )
+        clear_latch = "s_estop_latched=0U;"
+        enforce_latch = "(void)estop_enforce_latch();"
+        self.assertIn(clear_latch, protocol_init)
+        self.assertIn(enforce_latch, protocol_init)
+        self.assertLess(
+            protocol_init.index(clear_latch),
+            protocol_init.index(enforce_latch),
+        )
+
+        process = compact_c(
+            extract_function(protocol_source, "uart_mvp_process")
+        )
+        self.assertIn(
+            "for(;;){(void)estop_enforce_latch();",
+            process,
         )
 
     def test_protocol_limits_and_stop_paths(self) -> None:

@@ -69,6 +69,7 @@ typedef enum {
     BRIDGE_TEST_VALID_CMD,
     BRIDGE_TEST_INVALID_CMD,
     BRIDGE_TEST_DISARM,
+    BRIDGE_TEST_ESTOP_RESET,
     BRIDGE_TEST_DONE
 } bridge_test_step_t;
 
@@ -230,6 +231,23 @@ static int bridge_uart_send_disarm(uint32_t seq){
     return bridge_uart_send_frame(frame);
 }
 
+static int bridge_uart_send_estop_reset(uint32_t seq){
+    char frame[64];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "ESTOP_RESET,seq=%" PRIu32,
+        seq
+    );
+
+    if(len <= 0 || len >= (int)sizeof(frame)){
+        ESP_LOGW(TAG, "Failed to build ESTOP_RESET frame");
+        return 0;
+    }
+
+    return bridge_uart_send_frame(frame);
+}
+
 static int bridge_uart_send_cmd(
     uint32_t seq,
     int32_t vx_mmps,
@@ -294,6 +312,12 @@ static bridge_test_step_t bridge_uart_run_test_step(
             return step;
         case BRIDGE_TEST_DISARM:
             if(bridge_uart_send_disarm(*seq)){
+                (*seq)++;
+                return BRIDGE_TEST_ESTOP_RESET;
+            }
+            return step;
+        case BRIDGE_TEST_ESTOP_RESET:
+            if(bridge_uart_send_estop_reset(*seq)){
                 (*seq)++;
                 return BRIDGE_TEST_DONE;
             }

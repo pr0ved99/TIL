@@ -8,9 +8,9 @@ F1과 배선 후보를 계산한다. 이 문서는 구매 확정서가 아니라
 
 ```text
 Current-envelope calculation: COMPLETE
-K1 ordered candidate: TE Connectivity V23134J1052D642 / TE 1393304-9
-K1 procurement: COMPLETE — ordered 2026-08-18
-K1 electrical release: NUMERICAL PASS / received-part and motor-load bench gate open
+K1 selected part: TE Connectivity V23134J1052D642 / TE 1393304-9
+K1 procurement: USER-REPORTED RECEIVED 2026-08-27 / exact incoming open
+K1 electrical release: NUMERICAL PASS / exact-part and motor-load bench gate open
 F1 prototype candidate: Littelfuse 0287010.PXCN, ATOF 10 A / 32 VDC
 F1 final release: HOLD — measured start waveform and holder/wire gate open
 Main wire candidate: AWG 14 is the electrical calculation baseline, but AWG 12 is preferred for the released common path because the ordered K1 terminal accepts AWG 12~10; exact wire not selected
@@ -151,6 +151,13 @@ contact/lead temperature rating을 식별할 수 없으므로 F1 재사용은 co
 분리한 무전원 상태에서 holder/fuse 각인과 치수를 확인하고, 자료가 없으면 정격이 명확한
 sealed inline ATO/ATC holder로 교체한다.
 
+2026-08-24에 별도 구매한 holder/fuse의 무전원 입고 검사는 통과했다. Holder에는
+`Littelfuse`, lead에는 `GXL 12AWG SCL -LF-`, fuse에는 `LITTELFUSE / 257 / 32V / 10`과
+측면 `2340`이 표시돼 있었고 fuse 단품/장착 continuity와 가벼운 움직임 중 접촉은
+정상이었다. 다만 주문 기준 `0287010.PXCN` 287 ATOF와 실물의 `257` 각인이 동일 ordering
+code/time-current curve를 뜻하는지는 포장 label 또는 납품 trace로 아직 닫지 못했다. 이
+identity가 닫히기 전에는 위 287 ATOF curve를 실물 F1의 release evidence로 적용하지 않는다.
+
 또한 주문한 K1 main terminal `280756-4`의 적용 전선 범위는 AWG 12~10이다. 따라서 보유한
 AWG 14 holder lead를 이 단자에 직접 압착하지 않는다. 최종 common path는 AWG 12 lead가
 달린 holder를 사용해 AWG 12로 통일하는 방안을 우선한다. 기존 holder를 쓰려면 AWG 12와
@@ -190,18 +197,20 @@ Alpha Wire의 tinned-copper conductor chart에서 예시 저항값을 사용한 
 3S battery
 -> F1: ATOF 10 A / 32 VDC prototype candidate
 -> S1 / holder / connector: exact DC rating >= selected path requirement
--> K1: TE V23134J1052D642 ordered; numerical PASS, received-part bench release pending
+-> K1: TE V23134J1052D642 user-reported received; numerical PASS, exact incoming/bench release pending
 -> AWG 12 preferred released common path; AWG 14 remains calculation baseline only
 -> MDD10A: 10 A continuous per motor channel
 -> AWG 16 minimum branch candidate
 -> MG540P30_12V x 2
 ```
 
-현재 K1 exact-part 조달과 catalog 정격 검토까지 닫혔다. 다음이 모두 닫혀야 배선/시험 release다.
+현재 K1 주문과 catalog 정격 검토는 닫혔고 2026-08-27 사용자 도착 보고가 있다. 그러나
+actual contents/marking은 아직 incoming PASS가 아니다. 다음이 모두 닫혀야 배선/시험 release다.
 
 1. 입고 K1/socket/terminal의 label, fit, NO/coil resistance와 continuity 검사
 2. K1 coil suppression 선정 및 assembled drop-out/rail-decay 시간
-3. 10 A ATOF exact holder와 실제 wire/terminal part, installed loop length
+3. 입고 fuse의 `257` 각인과 주문 `0287010.PXCN` identity/curve 대조, exact holder와 실제
+   wire/terminal part, installed loop length
 4. 무전원 pin-map/continuity/cross-wire 검사
 5. Motor-disconnected `T-ESTOP-001~005`
 6. 첫 lifted single-motor에서 supply current/start pulse/connector voltage drop/온도 기록

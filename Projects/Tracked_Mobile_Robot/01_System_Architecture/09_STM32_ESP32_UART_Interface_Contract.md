@@ -2,10 +2,11 @@
 
 ## Purpose
 
-This document defines the first communication contract between the STM32
+This document defines the communication contract between the STM32
 NUCLEO-F446RE low-level controller and the ESP32-S3 DevKitC-1 support
-controller. During the first lab, a PC serial terminal or Python script is
-treated as the same kind of command source as the ESP32.
+controller. ESP32-S3 is the only Final MVP production external command ingress.
+A PC serial terminal or Python script used STM32 USART2 only as a historical
+bench source; optional interactive control must use `PC -> ESP32 -> STM32`.
 
 The goal is to make the interface safe, testable, and simple enough for the
 first tracked drivetrain MVP.
@@ -21,8 +22,9 @@ Use UART as the first STM32-ESP32 interface.
 Initial decision:
 
 - Physical interface: 3.3 V UART
-- STM32 candidate peripheral: USART1
-- STM32 candidate pins: PA9/PA10
+- STM32 peripheral: USART1
+- STM32 pins: PA9/PA10
+- ESP32 UART1 pins: GPIO17/GPIO18
 - Frame format: 115200 baud, 8 data bits, no parity, 1 stop bit
 - Initial protocol: newline-terminated ASCII text messages
 - Initial command timeout: 300 ms
@@ -44,26 +46,29 @@ Note:
 
 ## MVP Rule Set
 
-This section defines the rules that the first PC/ESP32-to-STM32 UART MVP must
-follow.
+This section defines the rules for the ESP32 production ingress and STM32
+drivetrain controller. The PC-first lab is protocol evidence, not another
+production owner.
 
 ### Roles
 
 ```text
-PC/ESP32 = command source, logger, dashboard
-STM32    = parser, safety gate, drivetrain authority
+ESP32 = production command ingress + STM32 bridge; optional PC arbitration/logger/dashboard pending
+STM32 = parser, safety gate, drivetrain authority
+PC    = optional ESP32 upstream client or historical bench source
 ```
 
 Rules:
 
-- PC and ESP32 use the same application frames.
-- PC can replace ESP32 as a test source during the first lab.
+- Historical PC tools and ESP32 use the same application frames.
+- Direct PC/ESP32 dual ownership is prohibited.
+- If optional PC control is implemented, ESP32 arbitrates and forwards it as the single session owner.
 - ESP32, PC, Wi-Fi, and dashboards do not directly own motor output.
 - STM32 is the only authority for MDD10A PWM/DIR output and command timeout.
 
 ### MVP link
 
-Initial PC lab:
+Historical PC-first bench path, not a production motion ingress:
 
 ```text
 PC serial terminal / Python script
@@ -71,14 +76,16 @@ PC serial terminal / Python script
 <-> STM32 USART2 candidate PA2/PA3
 ```
 
-Initial ESP32 integration:
+Final MVP production link:
 
 ```text
-ESP32 UART
-<-> STM32 USART1 candidate PA9/PA10
+ESP32 UART1 GPIO17/GPIO18
+<-> STM32 USART1 PA9/PA10
 ```
 
-Both paths use the same application protocol.
+Both paths use the same application frames, but they must not be connected as
+simultaneous STM32 command sources. Current command RX/parser binding is
+`huart1`; USART2 is an encoder/debug logger.
 
 ### MVP UART settings
 
@@ -96,14 +103,14 @@ Both paths use the same application protocol.
 
 | Direction | Frame | Purpose |
 | --- | --- | --- |
-| PC/ESP32 -> STM32 | `PING,seq=<u32>` | Link check |
-| STM32 -> PC/ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link response |
-| PC/ESP32 -> STM32 | `ARM,seq=<u32>` | Request motion-command permission |
-| PC/ESP32 -> STM32 | `DISARM,seq=<u32>` | Request motor-output disable |
-| PC/ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command request |
-| STM32 -> PC/ESP32 | `ACK,seq=<u32>,type=<text>` | Command accepted |
-| STM32 -> PC/ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command rejected or parse error |
-| STM32 -> PC/ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | Periodic telemetry |
+| ESP32 -> STM32 | `PING,seq=<u32>` | Link check |
+| STM32 -> ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link response |
+| ESP32 -> STM32 | `ARM,seq=<u32>` | Request motion-command permission |
+| ESP32 -> STM32 | `DISARM,seq=<u32>` | Request motor-output disable |
+| ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command request |
+| STM32 -> ESP32 | `ACK,seq=<u32>,type=<text>` | Command accepted |
+| STM32 -> ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command rejected or parse error |
+| STM32 -> ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | Periodic telemetry |
 
 Do not add a separate `NACK` frame in the first MVP. Use `ERR` for negative
 acknowledgement behavior.
@@ -149,9 +156,13 @@ After `ARM` is accepted:
   `CMD,seq=N,vx_mmps=0,w_mradps=0,timeout_ms=300`.
 - If no new valid `CMD` arrives within `timeout_ms`, STM32 immediately sets
   motor output to zero.
-- Right after timeout, keep the system armed with zero output instead of
-  immediately entering `DISARMED`.
-- The later auto-disarm delay is an open MVP decision.
+- The same timeout handling zeros the stored command and enters `DISARMED`.
+- Motion may resume only after a new `ARM` followed by a new `CMD`; stale
+  commands must never be replayed.
+
+ADR-015 fixes this required behavior. Current firmware zeros output/stored
+command but remains `ARMED`, so implementation and runtime evidence remain
+pending under `P-03`.
 
 Timeout is not an `ERR` response case because no new frame arrived. Report it
 through `TEL` using `state`, `left_pwm`, `right_pwm`, `fault`, or a future
@@ -209,7 +220,7 @@ The UART link connects two controllers with different responsibilities.
 | Battery voltage safety | Owns | Displays telemetry |
 | Command timeout | Owns | Sends requested timeout value only |
 | Wireless dashboard | Does not own | Owns |
-| Wi-Fi command source | Receives filtered request | Owns UI and forwarding |
+| Wi-Fi command source | Receives filtered request | Owns UI and forwarding if implemented |
 | Telemetry formatting | Provides core telemetry | Displays/logs/forwards |
 | Emergency stop request | Receives and enforces | May request |
 | Final safety decision | Owns | Does not own |
@@ -223,11 +234,11 @@ STM32 decides whether motion is allowed.
 
 ## 2. Physical Wiring
 
-Candidate wiring:
+Current production wiring:
 
 ```text
-STM32 PA9  / USART1_TX -> ESP32 UART_RX
-STM32 PA10 / USART1_RX <- ESP32 UART_TX
+STM32 PA9  / USART1_TX -> ESP32 GPIO18 / UART1_RX
+STM32 PA10 / USART1_RX <- ESP32 GPIO17 / UART1_TX
 STM32 GND              <-> ESP32 GND
 ```
 
@@ -239,14 +250,14 @@ Important:
 - Keep UART wires away from motor power wires.
 - Test UART before motor power is connected.
 
-STM32 candidate pins from the current pin allocation document:
+STM32 production pins from the current pin allocation document:
 
 | Signal | STM32 pin | Function | Board access | Status |
 | --- | --- | --- | --- | --- |
-| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
-| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
+| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Production / bench-validated |
+| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Production / bench-validated |
 
-ESP32-S3 pin assignment is not finalized in this document.
+ESP32-S3 UART1 is fixed at GPIO17 TX and GPIO18 RX for this Final MVP board.
 
 Selection rule for ESP32 pins:
 
@@ -349,9 +360,9 @@ Fields:
 
 Initial limits:
 
-- `vx_mmps` is clamped by STM32.
-- `w_mradps` is clamped by STM32.
-- `timeout_ms` is clamped by STM32.
+- STM32 rejects out-of-range `vx_mmps` without changing the active command.
+- STM32 rejects out-of-range `w_mradps` without changing the active command.
+- STM32 rejects out-of-range `timeout_ms` without changing the active command.
 - STM32 may ignore a command even if ESP32 sends it correctly.
 
 Why integer units:
@@ -449,14 +460,16 @@ Example:
 STATE,t_ms=123500,state=DISARMED,reason=BOOT\n
 ```
 
-Candidate states:
+Protocol-level state names:
 
 - `BOOT`
 - `DISARMED`
 - `ARMED`
 - `FAULT`
 - `LOW_BATTERY`
-- `TIMEOUT_STOP`
+
+Command timeout is reported as `DISARMED` with a timeout reason. ADR-015 does
+not define a separate `TIMEOUT_STOP` state.
 
 ### FAULT
 
@@ -625,14 +638,12 @@ ESP32:
 
 ## 13. Open Questions
 
-These must be answered before final wiring:
+These must be answered before final wiring. ADR-015 already closes command
+ownership, production UART routing, and timeout recovery policy.
 
-- Whether the PC-first lab uses only ST-LINK VCP USART2 or also allows an external USB-UART adapter.
-- Final ESP32-S3 UART GPIO pair.
-- Whether STM32 USART1 PA9/PA10 remain conflict-free after MDD10A PWM/DIR pin validation.
+- Optional `PC -> ESP32` upstream transport and arbitration, if implemented.
 - Whether level shifting or buffering is needed for the actual modules.
 - Final command and telemetry rate. Current candidate is `CMD 20 Hz`, `TEL 10 Hz`.
-- `auto_disarm_ms` after timeout-zero-output state.
 - Maximum application frame length and ring buffer size.
 - Whether unknown frame types return `ERR,code=UNKNOWN_TYPE` or are silently ignored.
 - Final fault bitmask definition.
@@ -640,14 +651,15 @@ These must be answered before final wiring:
 
 ## Architecture Decision
 
-The first STM32-ESP32 link will be a 3.3 V UART interface using text messages.
+The STM32-ESP32 link is a 3.3 V UART interface using text messages.
 
-STM32 owns all motor safety decisions. ESP32-S3 acts as a dashboard, command
-request source, and telemetry bridge.
+The Final MVP production path is `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1
+PA9/PA10`. ESP32-S3 is the only external command ingress; USART2 is bench
+debug/encoder logging only. STM32 owns all motor safety decisions. Source loss
+requires output/stored-command zero, `DISARMED`, and a new `ARM` plus new `CMD`.
 
-The next practical task is to validate UART on both boards without motor power,
-then verify that MDD10A PWM/DIR outputs, encoders, ADC, I2C, USART2 debug, and
-USART1 ESP32 link can coexist.
+The production `CMD(vx,w)` mapper remains `P-02`, and the ADR-015 timeout
+transition implementation/runtime evidence remains `P-03`.
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

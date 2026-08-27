@@ -9,7 +9,8 @@ typedef enum {
     UART_FRAME_TYPE_PING,
     UART_FRAME_TYPE_ARM,
     UART_FRAME_TYPE_DISARM,
-    UART_FRAME_TYPE_CMD
+    UART_FRAME_TYPE_CMD,
+    UART_FRAME_TYPE_ESTOP_RESET
 } uart_frame_type_t;
 
 typedef enum {
