@@ -32,12 +32,12 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-27 Current P-02B / P-02C / P-03 Snapshot
+## 2026-08-29 Current P-02B / P-02C / P-03 / P-04A Snapshot
 
-- `test_firmware_contract.py`: **22/22 PASS**
+- `test_firmware_contract.py`: **23/23 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **26/26 PASS**
+- Canonical discovery: **27/27 PASS**
 - P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
 - P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
   recompile와 ELF relink, **0 errors / 0 warnings**
@@ -47,6 +47,19 @@ python -m unittest discover `
   `warning:`/`error:` 진단 0건, ELF `text=29216`, `data=172`, `bss=2832`
 - P-03A/P-03B CubeIDE bundled ARM toolchain forced full build: 32 objects, exit `0`, compiler/linker
   `warning:`/`error:` 진단 0건, ELF `text=29268`, `data=172`, `bss=2832`
+- P-03 current-default 300 ms STM32+ESP32 target UART/PWM recovery: **PASS — motor/LiPo-disconnected control-net scope**
+- P-03 all-hooks-`0U` safe restore: 당시 canonical **26/26 PASS**, ESP32 safe build/flash,
+  UART ARM/CMD TX 0회와 D0~D3 10 s all-LOW
+- `REQ-SAFE-004 timeout_ms=500`: **PASS — motor/LiPo-disconnected UART + MCU control-net scope**;
+  same-run D4/D5 UART와 D0~D3에서 timeout/reject/ARM-only expiry/fresh recovery/final safe tail 확인
+- Run03 post-test run04 restore: source hook `0U` + 당시 canonical `26/26`, safe ESP
+  build/flash, ARM/CMD TX 0 + `DISARMED/zero` UART와 D0~D3 10 s all-LOW PASS
+- P-04A STM32CubeIDE incremental Debug build: **0 errors / 0 warnings**, ELF
+  `text=29428`, `data=172`, `bss=2832`
+- P-04A applied-output telemetry target runtime: **PASS — UART/software-cached scope**;
+  accepted `CMD(vx=50,w=0)`의 7 TEL은 `left_pwm=50,right_pwm=50`, 나머지 42 TEL은 `0/0`
+- P-04A all-hooks-`0U` safe restore: current canonical **27/27 PASS**, script disabled,
+  ARM/CMD TX 0, TEL 50/50 `DISARMED,left_pwm=0,right_pwm=0`
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
@@ -74,10 +87,24 @@ command를 zero로 유지한 채 default `300 ms`와 current tick으로 first-CM
 process exit code가 0인 것을 기준으로 한다. 별도 strict check에서 `motor_output.c`는
 `-Wall -Wextra -Wconversion -Wsign-conversion -Werror -fsyntax-only`도 통과했다.
 
-이 결과는 P-02B~P-02C-2와 P-03A/P-03B source/static/full-build를 닫는다. 그러나
-flash, board runtime, PWM/DIR waveform, provisional polarity/channel mapping과 actual motor
-evidence는 계속 pending이다. TEL PWM/applied-output field는 여전히 zero placeholder이고,
-timeout-to-`DISARMED` target runtime은 아직 수행하지 않았다.
+이 결과는 P-02B~P-02C-2와 P-03A/P-03B source/static/full-build를 닫는다. 2026-08-28에는
+current-default 300 ms timeout-to-`DISARMED`, CMD-only 거부, ARM-only old-command 미복원과
+new ARM+CMD recovery를 실제 STM32+ESP32 UART와 PB6/PB7 PWM burst로 확인했다. 시험 뒤에는
+모든 hook을 `0U`로 복구하고 D0~D3 10 s all-LOW를 확인했다. 이어 canonical 500 ms run03도
+동일 state/recovery 계약을 same-run UART/PWM으로 PASS했다. Run03 뒤 run04는 source hook `0U`,
+당시 canonical host/static `26/26`, safe build/flash/UART와 D0~D3 all-LOW를 PASS했다.
+
+2026-08-29 P-04A는 TEL의 `left_pwm/right_pwm`를 motor-output software cache와 연결하고 ESP32
+parser/log까지 확장했다. Current canonical은 `27/27`이다. Positive symmetric `+50/+50`과
+timeout/ARM-only/DISARM `0/0` target UART vector 및 별도 hook-0 safe runtime을 PASS했다. 이 값은
+measured PWM feedback이 아니며 reverse/asymmetric runtime, exact controlled BIN linkage, external
+cold-start marker, provisional polarity/channel mapping과 actual motor evidence는 계속 pending이다.
+`batt_mv`도 여전히 placeholder다. 300 ms 역사 기록은
+[`../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md),
+canonical 500 ms acceptance와 restore 경계는
+[`../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md),
+P-04A는
+[`../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ## 검증 스냅샷
 

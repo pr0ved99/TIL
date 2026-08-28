@@ -213,21 +213,25 @@ anti-replay가 없다. 따라서 queue에 남았거나 replay된 `ARM` + `CMD` �
 
 Timeout은 새 command frame이 들어와서 거부되는 상황이 아니므로 `ERR` 응답 대상이 아니다.
 현재 P-03 `TEL`에서는 `state=DISARMED`와 stored `vx/w=0`으로 timeout 결과를 추론한다.
-명시적 timeout reason과 applied-PWM telemetry는 P-04 pending이다.
+P-04A에서 software-applied PWM telemetry를 연결했다. 명시적 timeout/E-stop reason과 command
+age는 P-04B pending이다.
 
 ### MVP telemetry rule
 
 첫 MVP telemetry는 다음 field를 유지한다.
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pwm=0,fault=0\n
+TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=50,right_pwm=50,fault=0\n
 ```
 
 규칙:
 
 - `state`는 최소 `BOOT`, `DISARMED`, `ARMED`, `FAULT`를 사용한다.
 - PC-only parser 실습에서는 `batt_mv`, `left_cps`, `right_cps`를 0으로 보낼 수 있다.
-- Motor power가 없는 UART 실습에서는 `left_pwm`, `right_pwm`도 0으로 유지한다.
+- `left_pwm/right_pwm`는 motor-output 계층이 마지막으로 성공 적용한 software cache를 signed
+  permille로 보고한다. `50`은 50 permille, 즉 5% duty target이다.
+- stop/DISARM/timeout/error 경로는 applied fields를 `0/0`으로 만든다.
+- 이 값은 measured PWM feedback, MDD10A output 또는 motor motion이 아니다.
 - Telemetry는 safety 판단을 대신하지 않는다. Safety 판단은 STM32 내부 state machine이 수행한다.
 - Telemetry rate 초기값은 10 Hz다.
 
@@ -241,8 +245,8 @@ TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pw
 - missing field `CMD` -> `ERR,code=MISSING_FIELD`
 - out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
 - `DISARMED` 상태 nonzero `CMD` -> `ERR,code=NOT_ARMED`
-- command timeout 후 `TEL`에서 `DISARMED`와 stored `vx/w=0` 확인; applied PWM은 P-04와
-  target-runtime evidence로 별도 확인
+- command timeout 후 `TEL`에서 `DISARMED`, stored `vx/w=0`과 applied PWM `0/0` 확인
+- accepted forward CMD에서 `left_pwm=50,right_pwm=50`, ARM-only에서는 `0/0` 확인
 - `DISARM` -> `ACK` 및 이후 `TEL,state=DISARMED`
 
 ## 출처
@@ -492,8 +496,8 @@ TEL,t_ms=123456,state=ARMED,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=42
 | `right_cps` | counts/s | 오른쪽 encoder count rate |
 | `left_mmps` | mm/s | Calibration 후 선택 가능한 왼쪽 track speed estimate |
 | `right_mmps` | mm/s | Calibration 후 선택 가능한 오른쪽 track speed estimate |
-| `left_pwm` | timer counts 또는 percent-scaled value | 왼쪽 motor command output |
-| `right_pwm` | timer counts 또는 percent-scaled value | 오른쪽 motor command output |
+| `left_pwm` | signed permille | 왼쪽 software-applied motor target; measured feedback 아님 |
+| `right_pwm` | signed permille | 오른쪽 software-applied motor target; measured feedback 아님 |
 | `state` | text | `BOOT`, `DISARMED`, `ARMED`, `FAULT` 같은 safety state |
 | `motor_out` | 0/1 | STM32 safety gate가 motor output을 허용하는지 여부. MVP에서는 optional |
 | `fault` | bitmask | Active fault flags |
@@ -791,14 +795,15 @@ Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` +
 순서다. 이는 state-machine recovery 계약이며 transport freshness/anti-replay 입증은 아니다.
 
 Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current
-controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`이며, P-03A/P-03B
-timeout contract를 추가한 current host/static은 firmware contract `22/22` + mapper vectors `2/2` +
-UART frame `2/2`, 합계 `26/26 PASS`다. Timeout helper의 pre-RX 실행, stop/zero/`DISARMED`
-순서와 ARM 시 default 300 ms first-CMD window 재시작을 고정했다. 32-object forced ARM build는
-exit `0`, warning/error 진단 0건, ELF `text=29268`, `data=172`, `bss=2832`로 PASS했다. 이는
-source/static/build 증거이며 flash, board runtime, PWM waveform 또는 motor 증거가 아니다.
-Exact runtime-to-artifact linkage와 physical setup provenance 경계는 그대로 남는다. P-03 target
-runtime과 TEL PWM field 연결 `P-04`가 다음 작업이다.
+controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`, P-03 checkpoint는
+`26/26`이다. P-03 300/500 ms target timeout/recovery와 safe restore를 통과했고, P-04A는
+software-applied signed PWM TEL/ESP parser를 연결했다. Current host/static은 firmware contract
+`23/23` + mapper vectors `2/2` + UART frame `2/2`, 합계 `27/27 PASS`다. STM32 incremental
+build는 0 errors/0 warnings와 ELF `text=29428`, `data=172`, `bss=2832`를 기록했다. P-04A
+positive symmetric `50/50`, timeout/ARM-only/DISARM zero와 hook-0 safe UART runtime도 PASS했다.
+이는 software cache/UART 증거이며 measured PWM, reverse/asymmetric sign, exact artifact linkage,
+physical setup 또는 motor evidence가 아니다. 다음 telemetry 작업은 P-04B reason/command age와
+P-05 battery다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

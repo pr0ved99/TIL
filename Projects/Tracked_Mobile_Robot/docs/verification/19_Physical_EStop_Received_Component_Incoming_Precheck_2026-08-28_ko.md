@@ -1,13 +1,13 @@
 # Physical E-stop Received-Component Incoming Precheck Report
 
 - 시험일: 2026-08-28
-- 시험 범위: K1, S0, `VO617A-3`, F2와 6P connector kit의 무전원 입고 선별
+- 시험 범위: K1, S0, S2, `VO617A-3`, P6KE, F2와 6P connector kit의 무전원 입고 선별
 - 결과: `PARTIAL PASS — RECEIVED-COMPONENT UNPOWERED PRECHECK ONLY`
 - 전체 Physical E-stop 판정: `NOT PASSED`
 
 ## 1. 목적과 증거 경계
 
-2026-08-27에 도착이 보고된 Physical E-stop 부품 중 전원을 인가하지 않고 확인할 수 있는
+2026-08-27~28에 도착이 보고된 Physical E-stop 부품 중 전원을 인가하지 않고 확인할 수 있는
 항목을 선별했다. 모든 저항·다이오드·도통 측정은 relay, switch와 semiconductor를 회로에서
 분리하고 LiPo, motor, USB 및 외부 전원을 모두 제거한 상태에서 사용자가 수행했다.
 
@@ -18,15 +18,19 @@
 - `VO617A-3` input LED polarity와 무전원 input-output 단락 선별
 - F2 fuse/holder 조합의 무전원 연결성
 - 6P 부품이 완성 하네스가 아니라 직접 압착·조립하는 loose connector kit임을 확인
+- S2 momentary NO contact의 release/press/release truth table
+- P6KE16CA x3의 exact `CA` marking, 양방향 gross-short 선별과 무극성 외관
 
 다음은 이번 보고서의 PASS 범위가 아니다.
 
 - K1/K2 powered pickup/dropout, coil clamp, release delay와 contact switching
 - K1 main-contact milliohm resistance, loaded voltage drop, temperature rise 또는 downstream rail-off
+- K1/VO617A-3/S0의 insulation resistance 또는 정격 isolation-withstand 성능
 - S0 실제 DC load, direct-opening 성능 또는 완성 회로에서의 two-channel 동작
 - `VO617A-3` CTR, 5 V LED-loop current, transistor saturation 또는 conditioned PC7 LOW/HIGH
 - F2 정확한 실물 marking 대조, time-current coordination, interruption 또는 loaded thermal 성능
-- 6P cavity map, crimp quality, 1:1 continuity, pair isolation, seal 또는 terminal retention
+- 6P cavity map, crimp quality, intended-pair continuity, unintended-pair open, seal 또는 terminal retention
+- P6KE breakdown/clamp voltage, pulse energy 또는 powered K1/K2 release 영향
 - `T-ESTOP-001~004`, nominal `T-ESTOP-005A`, actual motor stop 또는 산업 안전 적합성
 
 ## 2. K1 TE assembly 무전원 검사
@@ -68,7 +72,9 @@ powered contact close/open과 motor-load release는 검증하지 않았다.
 | Output transistor pins 3–4, both directions | Meter `1`/open, 도통음 없음 | PASS |
 | Input-output cross pairs `1–3`, `1–4`, `2–3`, `2–4` | 전부 도통음 없음 | PASS |
 
-따라서 `VO617A-3`는 `UNPOWERED DIODE/ISOLATION SCREEN PASS`다. `0.955 V`는 사용한 DMM의
+따라서 `VO617A-3`는 `UNPOWERED DIODE/GROSS-SHORT SCREEN PASS`다. Cross-pair open은
+저전압 DMM에서 input-output 사이에 명백한 단락이 없다는 선별 결과일 뿐, insulation
+resistance나 isolation withstand 성능을 증명하지 않는다. `0.955 V`는 사용한 DMM의
 diode-test current에서 관찰한 값이며, datasheet 특정 시험조건의 `V_F` 재현값으로 해석하지
 않는다. 실제 `5 V -> 680 ohm -> S0-B -> LED` 경로, external `10 kohm` pull-up, PC7 voltage와
 wire-open safe direction은 별도 powered motor-disconnected 시험이 필요하다.
@@ -89,7 +95,7 @@ wire-open safe direction은 별도 powered motor-disconnected 시험이 필요�
 판정하지 않지만, official order-code/포장 label 대조 없이 body에 없는 suffix를 관찰값처럼
 기록하지 않는다.
 
-### 4.2 Truth table과 channel isolation
+### 4.2 Truth table과 channel 간 단락 선별
 
 | State/check | Upper NC `.1–.2` | Lower NC `.1–.2` | Verdict |
 | --- | --- | --- | --- |
@@ -155,7 +161,7 @@ actual mating-face numbering과 orientation을 확인하기 전에는 전체 `1�
 
 - Actual cavity number와 mating-face orientation
 - `S0-A / S0-B / S2` pair assignment release
-- Male-female 1:1 continuity와 모든 unintended pair isolation
+- Male-female 1:1 continuity와 모든 unintended-pair open/short screen
 - 18 AWG conductor crimp와 yellow seal crimp
 - Terminal insertion/retention, secondary-lock engagement와 strain relief
 
@@ -181,31 +187,65 @@ housing insertion/retention을 먼저 확인한다. K1 `280756-4`는 2개뿐이�
 terminal로 사용하지 않는다. K1 main crimp는 final wire와 die fit을 확인한 뒤 실행하고 이후
 loaded voltage-drop/thermal 시험으로 별도 release한다.
 
-## 8. 남은 부품과 직렬 Gate
+## 8. S2 IDEC `ABW110G` 무전원 검사
+
+입고품은 terminal `3`, `4`의 2-terminal momentary pushbutton이다.
+
+| State/check | Operator-observed result | Acceptance | Verdict |
+| --- | --- | --- | --- |
+| Released, `3–4` | 도통음 없음 / open | NO contact released-open | PASS |
+| Pressed, `3–4` | 도통음 발생 | Pressed-closed | PASS |
+| Release after press | open으로 복귀 | Momentary return | PASS |
+| Repeated operation | 동일 truth table 유지 | Repeatable return | PASS |
+
+따라서 S2는 `UNPOWERED MOMENTARY-NO FUNCTION SCREEN PASS`다. 이는 K2/K1 self-hold loop에
+배선된 상태의 reset/re-enable, contact bounce, actual DC current 또는 `FM-ESTOP-014`
+stuck-closed fault tolerance를 증명하지 않는다.
+
+## 9. `P6KE16CA-E3/54` x3 무전원 검사
+
+사용자는 세 입고품의 `P6KE16CA` marking을 확인했다. `CA` suffix는 bidirectional TVS이므로
+일반 정류 다이오드와 달리 한쪽 극성을 나타내는 cathode stripe가 없는 외관과 일치한다.
+
+| Check | Operator-observed result | Verdict |
+| --- | --- | --- |
+| Continuity, both probe directions | 세 샘플 모두 도통음 없음 | PASS |
+| Diode mode, both probe directions | 세 샘플 모두 meter `1`/open | PASS |
+| Polarity stripe | 보이지 않음 | Consistent with bidirectional `CA` |
+
+따라서 P6KE x3는 `UNPOWERED IDENTITY / GROSS-SHORT SCREEN PASS`다. DMM의 continuity/diode
+mode는 13.6 V stand-off, 15.2~16.8 V breakdown, 22.5 V clamp, surge energy 또는 K1/K2 coil release time을 시험할
+전압·전류가 아니다. 이 양방향 TVS는 coil 양단에 극성 구분 없이 병렬 설치할 수 있지만 lead insulation, mechanical support와
+powered pickup/dropout/release test는 계속 열려 있다.
+
+## 10. 남은 조립·공구와 직렬 Gate
 
 | Item | 2026-08-28 status | Gate |
 | --- | --- | --- |
-| S2 IDEC `ABW110G` | ORDERED / NOT RECEIVED | Momentary 1NO/release-open, terminal map과 nominal re-enable path |
-| `P6KE16CA-E3/54` x3 | ORDERED / NOT RECEIVED | K1/K2 coil clamp identity, installation와 release-time test |
+| S2 IDEC `ABW110G` | RECEIVED / UNPOWERED FUNCTION SCREEN PASS | Nominal K2/K1 re-enable path integration |
+| `P6KE16CA-E3/54` x3 | RECEIVED / UNPOWERED GROSS-SHORT SCREEN PASS | K1/K2 installation와 powered release-time test |
 | `VH-30J` multi-die set, including `WX-03B` | ORDERED / NOT RECEIVED | 6P/K1 first-article crimp validation |
-| 6P loose kit + 18 AWG | RECEIVED / UNASSEMBLED | Cavity map, crimp, 1:1/isolation와 retention |
+| 6P loose kit + 18 AWG | RECEIVED / UNASSEMBLED | Cavity map, crimp, 1:1/unintended-pair open과 retention |
 
-S2와 P6KE가 없으므로 complete control path assembly와 powered K1/K2 coil 시험을 시작하지
-않는다. Crimp tool 도착도 부품 입고 PASS 자체와 별개이며, 실제 crimp 결과를 확인해야 한다.
+S2와 P6KE incoming은 닫혔지만 6P가 미조립이고 crimp tool compatibility도 검증하지 않았으므로
+complete control path assembly와 powered K1/K2 coil 시험은 아직 시작하지 않는다. Crimp tool
+도착은 부품 입고 PASS 자체와 별개이며, 실제 first-article crimp 결과를 확인해야 한다.
 
-## 9. 종합 판정
+## 11. 종합 판정
 
 닫힌 범위:
 
-- K1 exact received components와 unpowered coil/NO/isolation screen
+- K1 exact received components와 unpowered coil/NO/coil-contact gross-short screen
 - `VO617A-3` unpowered LED direction, output-open과 input-output short screen
-- S0 2NC, latch/turn-release three-cycle 및 cross-channel isolation screen
+- S0 2NC, latch/turn-release three-cycle 및 cross-channel gross-short screen
 - F2 fuse/holder unpowered continuity screen
 - 6P 실물의 `loose connector kit + separate 18 AWG` 상태 식별
+- S2 `3–4` momentary NO release/press/release screen
+- P6KE16CA x3 identity와 bidirectional gross-short screen
 
 열린 범위:
 
-- S2/P6KE/crimp-tool incoming
+- Crimp-tool incoming과 6P first-article compatibility
 - F2 exact actual marking
 - 6P assembly와 모든 cavity/crimp/retention evidence
 - Conditioned PC7 path와 powered K1/K2 control circuit
@@ -214,7 +254,9 @@ S2와 P6KE가 없으므로 complete control path assembly와 powered K1/K2 coil 
 따라서 전체 판정은 계속 다음과 같다.
 
 ```text
-Received-component incoming: PARTIAL PASS
+Executed unpowered electrical screens: PASS — LIMITED DMM SCREEN SCOPE
+Overall received-component incoming: PARTIAL — F2 marking, 6P/tooling and powered integration OPEN
+Harness/tooling readiness: PARTIAL / UNASSEMBLED
 Physical E-stop integrated hardware: NOT TESTED
 T-ESTOP-001~004: BLOCKED / NOT PASSED
 T-ESTOP-005A: BLOCKED / NOT PASSED
@@ -222,7 +264,7 @@ Actual motor stop: NOT TESTED
 Industrial-safety or single-fault-tolerant claim: NOT ALLOWED
 ```
 
-## 10. Evidence provenance
+## 12. Evidence provenance
 
 측정값과 continuity 결과는 사용자가 session에서 보고한 operator-observed evidence다. DMM 화면
 사진이나 raw measurement log는 repository에 보존되지 않았다.

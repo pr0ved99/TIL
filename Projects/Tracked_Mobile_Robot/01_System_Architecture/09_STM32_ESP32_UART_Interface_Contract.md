@@ -171,21 +171,26 @@ pair is outside the proven contract.
 
 Timeout is not an `ERR` response case because no new frame arrived. Current
 P-03 `TEL` lets the receiver infer the event from `state=DISARMED` and stored
-`vx/w=0`; an explicit timeout reason and applied-PWM telemetry remain P-04.
+`vx/w=0`. P-04A connects software-applied PWM telemetry; explicit timeout/E-stop
+reason and command age remain P-04B.
 
 ### MVP telemetry rule
 
 The first MVP keeps this telemetry shape:
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pwm=0,fault=0\n
+TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=50,right_pwm=50,fault=0\n
 ```
 
 Rules:
 
 - `state` uses at least `BOOT`, `DISARMED`, `ARMED`, and `FAULT`.
 - PC-only parser labs may send `batt_mv`, `left_cps`, and `right_cps` as zero.
-- UART-only labs without motor power keep `left_pwm` and `right_pwm` at zero.
+- `left_pwm/right_pwm` report the motor-output module's last successfully
+  applied software cache in signed permille. `50` means 50 permille, or a 5%
+  duty target.
+- Stop, DISARM, timeout, and output-error paths report `0/0`.
+- These fields are not measured PWM feedback, MDD10A output, or motor motion.
 - Telemetry does not replace safety decisions. STM32's internal state machine
   owns safety.
 - Initial telemetry rate is 10 Hz.
@@ -200,8 +205,9 @@ The first UART MVP passes when these logs are captured:
 - missing-field `CMD` -> `ERR,code=MISSING_FIELD`
 - out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
 - nonzero `CMD` while `DISARMED` -> `ERR,code=NOT_ARMED`
-- telemetry confirms `DISARMED` and stored `vx/w=0` after command timeout;
-  applied PWM remains P-04 plus target-runtime evidence
+- telemetry confirms `DISARMED`, stored `vx/w=0`, and applied PWM `0/0` after
+  command timeout
+- accepted forward CMD reports `left_pwm=50,right_pwm=50`; ARM-only remains `0/0`
 - `DISARM` -> `ACK` and later `TEL,state=DISARMED`
 
 ## Sources
@@ -448,8 +454,8 @@ Recommended initial telemetry fields:
 | `right_cps` | counts/s | Right encoder count rate |
 | `left_mmps` | mm/s | Left track speed estimate, optional after calibration |
 | `right_mmps` | mm/s | Right track speed estimate, optional after calibration |
-| `left_pwm` | timer counts or percent-scaled value | Left motor command output |
-| `right_pwm` | timer counts or percent-scaled value | Right motor command output |
+| `left_pwm` | signed permille | Left software-applied motor target; not measured feedback |
+| `right_pwm` | signed permille | Right software-applied motor target; not measured feedback |
 | `state` | text | Safety state such as `BOOT`, `DISARMED`, `ARMED`, or `FAULT` |
 | `motor_allowed` | 0/1 | Whether STM32 safety gate allows nonzero motor output. Optional in the MVP |
 | `fault` | bitmask | Active fault flags |
@@ -667,14 +673,17 @@ requires output/stored-command zero, `DISARMED`, and an accepted `ARM` plus a
 valid `CMD`. This is a state-machine recovery contract, not proof of transport
 freshness or anti-replay.
 
-The P-02C-2 historical checkpoint is `25/25`. Current host/static discovery is
-`26/26 PASS`: firmware source contracts `22/22`, independent mapper vectors
-`2/2`, and UART frame vectors `2/2`. P-03A/P-03B fixes the pre-RX timeout,
-stop/zero/`DISARMED` order and the fresh default 300 ms first-CMD window after
-`ARM`. A 32-object forced ARM build passed with no warning/error diagnostics;
-ELF size is `text=29268`, `data=172`, `bss=2832`. This is source/static/build
-evidence, not flash, board-runtime, PWM-waveform, or motor evidence. P-03 target
-runtime is pending, and TEL PWM fields remain zero placeholders for `P-04`.
+The P-02C-2 historical checkpoint is `25/25`; P-03 reached `26/26` and passed
+the scoped 300/500 ms target timeout/recovery and safe-restore runs. P-04A
+connects software-applied signed PWM to STM32 TEL and the ESP32 parser/log.
+Current host/static discovery is `27/27 PASS`: firmware source contracts
+`23/23`, independent mapper vectors `2/2`, and UART frame vectors `2/2`.
+The STM32 incremental build passed with zero errors/warnings and ELF size
+`text=29428`, `data=172`, `bss=2832`. P-04A positive-symmetric `50/50`,
+timeout/ARM-only/DISARM zero, and hook-zero safe UART runtime passed. This is
+software-cache/UART evidence, not measured PWM, reverse/asymmetric sign,
+exact artifact linkage, physical setup, or motor evidence. P-04B reason/command
+age and P-05 battery are next.
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

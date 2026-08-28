@@ -602,6 +602,77 @@ class FirmwareContractTest(unittest.TestCase):
             "while (1)",
         )
 
+    def test_applied_output_telemetry_contract(self) -> None:
+        header = compact_c(self.source["motor_output_h"])
+
+        self.assertIn(
+            "typedefstruct{" \
+            "int16_tleft_signed_permille;" \
+            "int16_tright_signed_permille;" \
+            "}motor_output_applied_t;",
+            header,
+        )
+        self.assertIn(
+            "motor_output_applied_tmotor_output_get_applied(void);",
+            header,
+        )
+
+        stop = extract_function(
+            self.source["motor_output_c"],
+            "motor_output_stop_all",
+        )
+        self.assert_tokens_in_order(
+            stop,
+            "motor_left_duty_permille = 0U;",
+            "motor_right_duty_permille = 0U;",
+        )
+
+        getter = extract_function(
+            self.source["motor_output_c"],
+            "motor_output_get_applied",
+        )
+        self.assert_tokens_in_order(
+            getter,
+            "motor_output_applied_t applied = {0};",
+            "if(motor_left_duty_permille != 0U)",
+            "MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL",
+            "if(motor_right_duty_permille != 0U)",
+            "MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL",
+            "return applied",
+        )
+
+        send_tel = extract_function(
+            self.source["protocol_c"],
+            "send_tel",
+        )
+        compact_tel = compact_c(send_tel)
+
+        self.assertNotIn(
+            '"left_pwm=0,right_pwm=0,"',
+            compact_tel,
+        )
+        self.assert_tokens_in_order(
+            send_tel,
+            "motor_output_applied_t applied =",
+            "motor_output_get_applied();",
+            '"left_pwm=%ld,right_pwm=%ld,"',
+            "(long)applied.left_signed_permille",
+            "(long)applied.right_signed_permille",
+        )
+
+        esp_source = self.source["esp_c"]
+        self.assert_tokens_in_order(
+            esp_source,
+            "int32_t left_pwm;",
+            "int32_t right_pwm;",
+            'parse_i32_field(line, "left_pwm=", &parsed.left_pwm)',
+            'parse_i32_field(line, "right_pwm=", &parsed.right_pwm)',
+            '" left_pwm=%" PRIi32',
+            '" right_pwm=%" PRIi32',
+            "s_telemetry.left_pwm",
+            "s_telemetry.right_pwm",
+        )
+
     def test_signed_motor_output_adapter_contract(self) -> None:
         header = compact_c(self.source["motor_output_h"])
         self.assertIn(

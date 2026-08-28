@@ -23,6 +23,15 @@ Chrome / Edge Web Serial Dashboard
 <-> UART MVP firmware
 ```
 
+초기 PC-first boundary는 bench baseline으로 보존한다. 현재 production path에서는 동일한 frame
+contract를 다음 경로로 확장한다.
+
+```text
+ESP32-S3 UART1 GPIO17/GPIO18
+<-> STM32F446RE USART1 PA9/PA10
+<-> UART MVP firmware
+```
+
 이번 요구사항에 포함하지 않는 것:
 
 - motor driver output
@@ -56,7 +65,7 @@ COMMAND,key=value,...
 | `CMD` | PC -> STM32 | `CMD,seq=20,vx_mmps=50,w_mradps=0,timeout_ms=500` |
 | `ACK` | STM32 -> PC | `ACK,seq=20,type=CMD,t_ms=1339233` |
 | `ERR` | STM32 -> PC | `ERR,seq=25,type=CMD,code=OUT_OF_RANGE,t_ms=1634272` |
-| `TEL` | STM32 -> PC | `TEL,t_ms=...,state=ARMED,last_seq=20,vx_mmps=0,w_mradps=0,...` |
+| `TEL` | STM32 -> PC/ESP32 | `TEL,t_ms=...,state=ARMED,last_seq=20,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,...` |
 
 ## Requirements
 
@@ -98,6 +107,27 @@ Acceptance criteria:
 
 - `ERR`에는 `seq`, `type`, `code`가 포함된다.
 - 대표 error code는 `NOT_ARMED`, `OUT_OF_RANGE`, `TIMEOUT_OUT_OF_RANGE`를 포함한다.
+
+### REQ-UART-005: TEL reports software-applied signed motor output
+
+STM32 `TEL`은 motor-output 계층이 마지막으로 성공 적용한 좌우 software output을
+`left_pwm/right_pwm`로 보고해야 하며 ESP32 structured parser/log는 두 값을 보존해야 한다.
+
+Acceptance criteria:
+
+- 두 field는 signed permille 단위이며 stop 상태는 `0`이다.
+- accepted `CMD(vx_mmps=50,w_mradps=0)`의 현재 100-permille cap vector는
+  `left_pwm=50,right_pwm=50`으로 관찰된다.
+- `ARM`만 수락한 상태에서는 이전 output을 복원하지 않고 `0/0`을 유지한다.
+- command timeout, `DISARM`과 output error 경로는 `0/0`으로 복귀한다.
+- ESP32가 음수 부호를 포함한 signed integer field를 parse할 수 있어야 한다.
+- 이 값은 duty/DIR software cache에서 복원한 applied target이다. 물리 PWM pin, MDD10A output,
+  motor 전압·회전·전류를 직접 측정한 feedback으로 해석하지 않는다.
+
+2026-08-29 P-04A positive symmetric/zero-state target UART vector와 post-test hook-0 safe runtime은
+위 수용 기준의 현재 검증 범위를 통과했다. Reverse/asymmetric sign과 same-run physical pin
+상관계측은 아직 남아 있다. 상세 결과는
+[`22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ### REQ-SAFE-001: CMD is rejected before ARM
 
@@ -146,6 +176,12 @@ Acceptance criteria:
 - timeout 뒤 `ARM` 수락 전의 valid `CMD`는 `ERR,code=NOT_ARMED`로 거부되고 output은 zero를 유지한다.
 - accepted `ARM`만으로 이전 stored command가 복원되지 않으며, 그 뒤 수신한 valid `CMD`만 적용한다.
 - 과거 sequence의 `ARM` + `CMD` replay 자체를 판별·거부하는 것은 별도 anti-replay 요구사항으로 남긴다.
+
+2026-08-28 canonical `timeout_ms=500` run03은 motor/LiPo-disconnected UART + STM32
+DIR/PWM control-net 범위에서 위 acceptance를 통과했다. Same-run UART/PWM 근거와 startup
+transient, reset-marker 경계 및 run04 post-run safe board restore 결과는
+[`21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)에 기록한다.
+이는 actual motor stop 또는 Physical E-stop PASS가 아니다.
 
 ### REQ-SAFE-005: velocity range validation
 

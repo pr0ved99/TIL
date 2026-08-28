@@ -178,6 +178,53 @@ WHEELTEC PWM 회신 범위 `5~20 kHz`에 margin을 두기 위해 current firmwar
 19 kHz/TIM4 period `4420`이다. 상세 판정은
 [`../../../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](../../../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)를 따른다.
 
+## 2026-08-28 P-03 Timeout/Re-arm Target Runtime And Safe Restore
+
+Channel map은 `D0=PC8/DIR1`, `D1=PB6/PWM1`, `D2=PC9/DIR2`, `D3=PB7/PWM2`다.
+두 capture 모두 `2 MHz`, `20,000,000 samples`, nominal `10 s`이며 LiPo와 motor를 분리한
+operator-observed setup에서 취득했다.
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| `2026-08-28_p03_timeout_disarmed_rearm_recovery_target_runtime_pass.sr` | Current-default 300 ms timeout/re-arm sequence: DIR1/DIR2 LOW, PB6/PB7 약 19.06 kHz/5% burst 2개와 final no-reactivation | `ED32D55C4B59FF51134FAF0B58E99F3570B1F7CCC550067C676314A488563393` |
+| `2026-08-28_p03_timeout_disarmed_rearm_recovery_target_runtime_pass.pvs` | 위 raw capture의 channel/session 설정 | `722F027DFE8FF8CCBA7E2389717960A62859673219C1C63E4695F796C0CE6286` |
+| `2026-08-28_p03_safe_restore_all_hooks_zero_no_output_pass.sr` | All-hooks-`0U`; D0~D3 HIGH sample/transition 0 | `224E4C45E6680C8BE423D330E51626B6DE0D41C13D3F593F78E770FD480D7942` |
+| `2026-08-28_p03_safe_restore_all_hooks_zero_no_output_pass.pvs` | Safe raw capture의 channel/session 설정 | `31354375EE710EB8358FE24C596911C5F981138B55860EFA0F1A43FACC3AFB87` |
+
+위 300 ms capture에는 UART channel이 포함되지 않았으므로 UART event와 PWM edge의 대응은
+scripted 순서와 burst 형상에 의한 교차 확인이다. 공통 clock 기반 latency 측정은 아니다. 상세 판정과
+한계는
+[`../../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)를 따른다.
+
+## 2026-08-28 REQ-SAFE-004 500 ms Same-run UART/PWM Acceptance
+
+Canonical `run03`은 `D0=PC8/DIR1`, `D1=PB6/PWM1`, `D2=PC9/DIR2`, `D3=PB7/PWM2`,
+`D4=ESP32 TX->STM32 PA10`, `D5=STM32 PA9->ESP32 RX`를 같은 `2 MHz`, `20,000,000 samples`,
+10 s timeline에 저장했다.
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| `2026-08-28_req_safe_004_500ms_uart_diagnostic_run01.sr` | 500 ms state/recovery diagnostic PASS; 별도 실행 | `52FF422456002FD456974F08D185A92B1AF446EFB128997B05D8B00326F465F8` |
+| `2026-08-28_req_safe_004_500ms_uart_diagnostic_run01.pvs` | run01 channel/session 설정 | `A6D91A86AD99010AB64785F82C65AFE6A23C0436B15FA3E6155664F7AF9AB86C` |
+| `2026-08-28_req_safe_004_500ms_timeout_disarmed_rearm_runtime_run02.sr` | Operator reset-release 절차를 포함한 독립 반복 PASS | `FFED8E43045A17ACE9BF1EA06AF4389F1643404DD117F5F93AA98D75524976C5` |
+| `2026-08-28_req_safe_004_500ms_timeout_disarmed_rearm_runtime_run02.pvs` | run02 channel/session 설정 | `0623D269F53A386F694997006D856A6968639E8C7DE590B7EB4B6E635EA24C9D` |
+| `2026-08-28_req_safe_004_500ms_operator_dual_reset_release_runtime_run03.sr` | Canonical same-run UART/PWM: first PWM `498.4085 ms`, timeout/reject/expiry/recovery/final safe tail PASS | `8B630CCFD5BEAC6BFAB590C836FD4FB89B493A31F9F0EACCF2383E71F78FD55C` |
+| `2026-08-28_req_safe_004_500ms_operator_dual_reset_release_runtime_run03.pvs` | run03 channel/session 설정 | `0623D269F53A386F694997006D856A6968639E8C7DE590B7EB4B6E635EA24C9D` |
+| `2026-08-28_req_safe_004_post_run03_safe_restore_all_hooks_zero_run04.sr` | Post-run safe restore: 2 MHz/20M/10 s, D0~D3 HIGH sample/transition 0 | `28EAAF26C307C2B8B88CDE65C024C4A00B2719CCC6EBA322679F250852E04CEF` |
+| `2026-08-28_req_safe_004_post_run03_safe_restore_all_hooks_zero_run04.pvs` | run04 safe channel/session 설정 | `0623D269F53A386F694997006D856A6968639E8C7DE590B7EB4B6E635EA24C9D` |
+
+`run03` D0/D2는 전체 LOW였고 D1/D3에는 약 19.04 kHz/5% burst 두 개만 있었다. D4 startup
+gate 전 framing error와 D5 `RX_DESYNC`가 각 1회 있었지만 DISARM ACK/PONG/READY 뒤 추가
+transport error는 없었다. ESP monitor log와 raw UART는 같은 sequence
+`1123029003~1123029013`을 사용한다. RST net 자체는 capture하지 않았으므로 두 reset의 전기적
+동시성은 입증하지 않는다. 상세 판정은
+[`../../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)를 따른다.
+
+`run04`는 canonical run03 뒤 all-hooks-`0U` safe image를 별도로 확인한 capture다. D4는 capture
+전체에서 idle-HIGH였고 D5에는 telemetry activity가 있었으며, 안전 판정 대상 D0~D3은 10 s
+동안 모두 LOW였다. UART startup/recovery와 ARM/CMD 0회는 같은 basename의 ESP monitor log에
+보존한다. Run03 functional capture와 run04 safe restore capture를 한 timeline으로 합치지 않는다.
+
 ## Integrity and Reuse Notes
 
 - 판정 수치를 다시 검토할 때는 `.sr`을 PulseView에서 열고 위 channel map을 적용한다.

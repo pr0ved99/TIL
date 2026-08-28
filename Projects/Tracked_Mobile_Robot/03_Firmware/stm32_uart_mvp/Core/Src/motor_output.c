@@ -150,6 +150,28 @@ HAL_StatusTypeDef motor_output_set_raw(
     return HAL_OK;
 }
 
+motor_output_applied_t motor_output_get_applied(void){
+    motor_output_applied_t applied = {0};
+
+    if(motor_left_duty_permille != 0U){
+        applied.left_signed_permille =
+            (motor_left_dir_level ==
+             MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL)
+            ? -(int16_t)motor_left_duty_permille
+            : (int16_t)motor_left_duty_permille;
+    }
+
+    if(motor_right_duty_permille != 0U){
+        applied.right_signed_permille =
+            (motor_right_dir_level ==
+             MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL)
+            ? -(int16_t)motor_right_duty_permille
+            : (int16_t)motor_right_duty_permille;
+    }
+
+    return applied;
+}
+
 HAL_StatusTypeDef motor_output_set_signed(
     int16_t left_signed_permille,
     int16_t right_signed_permille

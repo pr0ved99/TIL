@@ -7,18 +7,18 @@
 새 대화창에서 작업을 이어갈 때는 아래 순서로 읽는다.
 
 1. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
-2. [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)
-3. [`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
-4. [`../plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](../plans/2026-08-26_Pre_Arrival_Schedule_ko.md)
-5. [`../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-6. [`../verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](../verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)
-7. [`../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
-8. [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)
-9. [`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)
-10. [`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)
-11. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-12. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-13. [`../../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md`](../../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md)
+2. [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md)
+3. [`../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)
+4. [`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
+5. [`../verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)
+6. [`../verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)
+7. [`../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
+8. [`../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
+9. [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)
+10. [`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)
+11. [`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)
+12. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+13. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 
 그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
 
@@ -28,11 +28,13 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-08-28 | [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md) | **Current continuation**: K1/S0/VO617A-3/F2 unpowered screens, 6P loose-kit/tooling boundary, S2/P6KE blockers and HOME-first next work |
+| 2026-08-29 | [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md) | **Current continuation**: P-04A applied-output TEL/ESP parser, current `27/27`, target UART and hook-0 safe runtime |
+| 2026-08-29 | [`../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | **Current firmware evidence**: positive symmetric/zero-state applied-output telemetry와 measured-output boundary |
+| 2026-08-28 | [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md) | Historical P-03/REQ-SAFE-004 runtime, incoming-screen and 6P/tooling checkpoint |
 | 2026-08-28 | [`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md) | **Current incoming evidence**: received component-level unpowered PASS와 powered/integrated NOT PASS 경계 |
 | 2026-08-27 | [`../progress/2026-08-27_progress.md`](../progress/2026-08-27_progress.md) | Historical P-02B~P-02C-2와 P-03A/P-03B source/static/full-build completion and partial-arrival transition |
 | 2026-08-26 | [`../progress/2026-08-26_progress.md`](../progress/2026-08-26_progress.md) | Previous schedule baseline: P-01/P-02A completion, received-plate correction and evidence boundary |
-| 2026-08-26 | [`../plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](../plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | **Current dated schedule**: partial-arrival transition이 발동된 P-01~P-09 schedule, milestones and buffers |
+| 2026-08-26 | [`../plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](../plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | Historical dated schedule: P-01~P-09 milestones and buffers |
 | 2026-08-25 | [`../progress/2026-08-25_progress.md`](../progress/2026-08-25_progress.md) | Current scope baseline: final remaining-work audit, evidence boundary and `005A/005B` split |
 | 2026-08-25 | [`../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md) | **Authoritative scope/sequence**: final critical path, pre-arrival `P-01~P-09`, post-arrival gates and stop rules |
 | 2026-08-24 | [`../progress/2026-08-24_progress.md`](../progress/2026-08-24_progress.md) | Historical direct-PC7 runtime, F1/K2 incoming precheck and initial `FM-ESTOP-014` finding |

@@ -24,15 +24,17 @@
 #define BRIDGE_UART_BAUD    115200
 #define BRIDGE_RX_BUF_SIZE  1024
 /* Safety default: never transmit the scripted motion test at bridge boot. */
-#define BRIDGE_SCRIPTED_TEST_ENABLED 0U
-#define BRIDGE_MALFORMED_COMMAND_TEST_ENABLED 0U
+#define BRIDGE_SCRIPTED_TEST_ENABLED            0U
+#define BRIDGE_MALFORMED_COMMAND_TEST_ENABLED   0U
 
 #if BRIDGE_SCRIPTED_TEST_ENABLED && BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
 #error "Only one bridge test may be enabled"
 #endif
-#define TEST_STEP_PERIOD_MS 1000
-#define LINE_BUF_SIZE       256
-#define RX_POLL_MS          20
+#define TEST_STEP_PERIOD_MS         1000
+#define P03_TEST_STEP_PERIOD_MS     100U
+#define P03_CMD_TIMEOUT_TARGET_MS   500U
+#define LINE_BUF_SIZE               256
+#define RX_POLL_MS                  20
 
 #define STARTUP_SETTLE_MS           500U
 #define STARTUP_SYNC_WAIT_MS        100U
@@ -48,6 +50,8 @@ typedef struct {
     uint32_t last_seq;
     int32_t vx_mmps;
     int32_t w_mradps;
+    int32_t left_pwm;
+    int32_t right_pwm;
     int32_t left_cps;
     int32_t right_cps;
     uint32_t err;
@@ -65,11 +69,24 @@ typedef enum {
 
 typedef enum {
     BRIDGE_TEST_CMD_BEFORE_ARM = 0,
-    BRIDGE_TEST_ARM,
-    BRIDGE_TEST_VALID_CMD,
-    BRIDGE_TEST_INVALID_CMD,
-    BRIDGE_TEST_DISARM,
-    BRIDGE_TEST_ESTOP_RESET,
+    BRIDGE_TEST_FIRST_ARM,
+    BRIDGE_TEST_FIRST_CMD,
+    BRIDGE_TEST_WAIT_CMD_TIMEOUT_1,
+    BRIDGE_TEST_WAIT_CMD_TIMEOUT_2,
+    BRIDGE_TEST_WAIT_CMD_TIMEOUT_3,
+    BRIDGE_TEST_WAIT_CMD_TIMEOUT_4,
+    BRIDGE_TEST_WAIT_CMD_TIMEOUT_MARGIN,
+    BRIDGE_TEST_CMD_AFTER_TIMEOUT,
+    BRIDGE_TEST_ARM_WITHOUT_CMD,
+    BRIDGE_TEST_WAIT_ARM_TIMEOUT_1,
+    BRIDGE_TEST_WAIT_ARM_TIMEOUT_2,
+    BRIDGE_TEST_WAIT_ARM_TIMEOUT_3,
+    BRIDGE_TEST_WAIT_ARM_TIMEOUT_4,
+    BRIDGE_TEST_CMD_AFTER_ARM_TIMEOUT,
+    BRIDGE_TEST_RECOVERY_ARM,
+    BRIDGE_TEST_RECOVERY_CMD,
+    BRIDGE_TEST_RECOVERY_HOLD,
+    BRIDGE_TEST_FINAL_DISARM,
     BRIDGE_TEST_DONE
 } bridge_test_step_t;
 
@@ -231,23 +248,6 @@ static int bridge_uart_send_disarm(uint32_t seq){
     return bridge_uart_send_frame(frame);
 }
 
-static int bridge_uart_send_estop_reset(uint32_t seq){
-    char frame[64];
-    int len = snprintf(
-        frame,
-        sizeof(frame),
-        "ESTOP_RESET,seq=%" PRIu32,
-        seq
-    );
-
-    if(len <= 0 || len >= (int)sizeof(frame)){
-        ESP_LOGW(TAG, "Failed to build ESTOP_RESET frame");
-        return 0;
-    }
-
-    return bridge_uart_send_frame(frame);
-}
-
 static int bridge_uart_send_cmd(
     uint32_t seq,
     int32_t vx_mmps,
@@ -287,41 +287,98 @@ static bridge_test_step_t bridge_uart_run_test_step(
 
     switch(step){
         case BRIDGE_TEST_CMD_BEFORE_ARM:
-            if(bridge_uart_send_cmd(*seq, 50, 0, 300)){
+            if(bridge_uart_send_cmd(*seq, 50, 0, P03_CMD_TIMEOUT_TARGET_MS)){
                 (*seq)++;
-                return BRIDGE_TEST_ARM;
+                return BRIDGE_TEST_FIRST_ARM;
             }
             return step;
-        case BRIDGE_TEST_ARM:
+        case BRIDGE_TEST_FIRST_ARM:
             if(bridge_uart_send_arm(*seq)){
                 (*seq)++;
-                return BRIDGE_TEST_VALID_CMD;
+                return BRIDGE_TEST_FIRST_CMD;
             }
             return step;
-        case BRIDGE_TEST_VALID_CMD:
-            if(bridge_uart_send_cmd(*seq, 50, 0, 300)){
+        case BRIDGE_TEST_FIRST_CMD:
+            if(bridge_uart_send_cmd(*seq, 50, 0, P03_CMD_TIMEOUT_TARGET_MS)){
                 (*seq)++;
-                return BRIDGE_TEST_INVALID_CMD;
+                return BRIDGE_TEST_WAIT_CMD_TIMEOUT_1;
             }
             return step;
-        case BRIDGE_TEST_INVALID_CMD:
-            if(bridge_uart_send_cmd(*seq, 9999, 0, 300)){
+        case BRIDGE_TEST_WAIT_CMD_TIMEOUT_1:
+            ESP_LOGI(TAG, "P-03: waiting for CMD timeout");
+            return BRIDGE_TEST_WAIT_CMD_TIMEOUT_2;
+
+        case BRIDGE_TEST_WAIT_CMD_TIMEOUT_2:
+            return BRIDGE_TEST_WAIT_CMD_TIMEOUT_3;
+
+        case BRIDGE_TEST_WAIT_CMD_TIMEOUT_3:
+            return BRIDGE_TEST_WAIT_CMD_TIMEOUT_4;
+
+        case BRIDGE_TEST_WAIT_CMD_TIMEOUT_4:
+            return BRIDGE_TEST_WAIT_CMD_TIMEOUT_MARGIN;
+
+        case BRIDGE_TEST_WAIT_CMD_TIMEOUT_MARGIN:
+            ESP_LOGI(TAG, "REQ-SAFE-004: post-timeout margin");
+            return BRIDGE_TEST_CMD_AFTER_TIMEOUT;
+
+        case BRIDGE_TEST_CMD_AFTER_TIMEOUT:
+            if(bridge_uart_send_cmd(*seq, 50, 0, P03_CMD_TIMEOUT_TARGET_MS)){
                 (*seq)++;
-                return BRIDGE_TEST_DISARM;
+                return BRIDGE_TEST_ARM_WITHOUT_CMD;
             }
             return step;
-        case BRIDGE_TEST_DISARM:
+        case BRIDGE_TEST_ARM_WITHOUT_CMD:
+            if(bridge_uart_send_arm(*seq)){
+                (*seq)++;
+                return BRIDGE_TEST_WAIT_ARM_TIMEOUT_1;
+            }
+            return step;
+        case BRIDGE_TEST_WAIT_ARM_TIMEOUT_1:
+            ESP_LOGI(TAG, "P-03: waiting for ARM-only timeout");
+            return BRIDGE_TEST_WAIT_ARM_TIMEOUT_2;
+
+        case BRIDGE_TEST_WAIT_ARM_TIMEOUT_2:
+            return BRIDGE_TEST_WAIT_ARM_TIMEOUT_3;
+
+        case BRIDGE_TEST_WAIT_ARM_TIMEOUT_3:
+            return BRIDGE_TEST_WAIT_ARM_TIMEOUT_4;
+
+        case BRIDGE_TEST_WAIT_ARM_TIMEOUT_4:
+            return BRIDGE_TEST_CMD_AFTER_ARM_TIMEOUT;
+
+        case BRIDGE_TEST_CMD_AFTER_ARM_TIMEOUT:
+            if(bridge_uart_send_cmd(*seq, 50, 0, P03_CMD_TIMEOUT_TARGET_MS)){
+                (*seq)++;
+                return BRIDGE_TEST_RECOVERY_ARM;
+            }
+            return step;
+
+        case BRIDGE_TEST_RECOVERY_ARM:
+            if(bridge_uart_send_arm(*seq)){
+                (*seq)++;
+                return BRIDGE_TEST_RECOVERY_CMD;
+            }
+            return step;
+
+        case BRIDGE_TEST_RECOVERY_CMD:
+            if(bridge_uart_send_cmd(*seq, 50, 0, P03_CMD_TIMEOUT_TARGET_MS)){
+                (*seq)++;
+                return BRIDGE_TEST_RECOVERY_HOLD;
+            }
+            return step;
+
+        case BRIDGE_TEST_RECOVERY_HOLD:
+            ESP_LOGI(TAG, "P-03: observing recovered output");
+            return BRIDGE_TEST_FINAL_DISARM;
+
+        case BRIDGE_TEST_FINAL_DISARM:
             if(bridge_uart_send_disarm(*seq)){
                 (*seq)++;
-                return BRIDGE_TEST_ESTOP_RESET;
-            }
-            return step;
-        case BRIDGE_TEST_ESTOP_RESET:
-            if(bridge_uart_send_estop_reset(*seq)){
-                (*seq)++;
+                ESP_LOGI(TAG, "P-03: scripted sequence complete");
                 return BRIDGE_TEST_DONE;
             }
             return step;
+
         case BRIDGE_TEST_DONE:
         default:
             return BRIDGE_TEST_DONE;
@@ -646,9 +703,11 @@ static void bridge_uart_handle_rx_line(const char *line){
                 sizeof(parsed.state)) &&
             parse_u32_field(line, "last_seq=", &parsed.last_seq) &&
             parse_i32_field(line, "vx_mmps=", &parsed.vx_mmps) &&
+            parse_i32_field(line, "w_mradps=", &parsed.w_mradps) &&
+            parse_i32_field(line, "left_pwm=", &parsed.left_pwm) &&
+            parse_i32_field(line, "right_pwm=", &parsed.right_pwm) &&
             parse_i32_field(line, "left_cps=", &parsed.left_cps) &&
             parse_i32_field(line, "right_cps=", &parsed.right_cps) &&
-            parse_i32_field(line, "w_mradps=", &parsed.w_mradps) &&
             parse_u32_field(line, "err=", &parsed.err);
 
         if(parse_ok){
@@ -664,6 +723,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 " last_seq=%" PRIu32
                 " vx=%" PRIi32
                 " w=%" PRIi32
+                " left_pwm=%" PRIi32
+                " right_pwm=%" PRIi32
                 " left_cps=%" PRIi32
                 " right_cps=%" PRIi32
                 " err=%" PRIu32
@@ -673,6 +734,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 s_telemetry.last_seq,
                 s_telemetry.vx_mmps,
                 s_telemetry.w_mradps,
+                s_telemetry.left_pwm,
+                s_telemetry.right_pwm,
                 s_telemetry.left_cps,
                 s_telemetry.right_cps,
                 s_telemetry.err,
@@ -1001,6 +1064,9 @@ void app_main(void){
     if (BRIDGE_SCRIPTED_TEST_ENABLED == 0U){
         ESP_LOGI(TAG, "Scripted UART safety sequence disabled");
     }
+    else {
+        ESP_LOGI(TAG, "P-03 target runtime scripted test enabled");
+    }
 
     #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
         ESP_LOGW(TAG, "STM32 malformed-command recovery test enabled");
@@ -1037,7 +1103,7 @@ void app_main(void){
             BRIDGE_SCRIPTED_TEST_ENABLED != 0U &&
             s_startup_state == BRIDGE_STARTUP_READY &&
             test_step != BRIDGE_TEST_DONE &&
-            now - last_test_tick >= pdMS_TO_TICKS(TEST_STEP_PERIOD_MS)
+            now - last_test_tick >= pdMS_TO_TICKS(P03_TEST_STEP_PERIOD_MS)
         ){
             test_step = bridge_uart_run_test_step(test_step, &test_seq);
             last_test_tick = now;

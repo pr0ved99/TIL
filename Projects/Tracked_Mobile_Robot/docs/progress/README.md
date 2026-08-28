@@ -4,10 +4,11 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [`2026-08-28_progress.md`](2026-08-28_progress.md) — K1/S0/VO617A-3/F2의 지정된
-무전원 incoming screen과 6P loose connector kit 상태를 기록했다. S2/P6KE와 crimp tooling은
-미도착이며 complete powered E-stop은 계속 blocked다. Firmware canonical `26/26`은 유지되고
-다음 우선 checkpoint는 집 P-03 target runtime과 plate/6P non-destructive capture다.
+Latest: [`2026-08-29_progress.md`](2026-08-29_progress.md) — P-04A에서 TEL의
+`left_pwm/right_pwm`를 software-cached signed applied output과 연결하고 ESP32 parser/log까지
+확장했다. Current canonical `27/27`, positive symmetric `50/50`, timeout/ARM-only/DISARM zero와
+all-hooks-`0U` safe runtime을 PASS했다. 물리 PWM feedback, reverse/asymmetric polarity,
+E-stop/timeout reason, command age와 battery는 후속 범위다.
 
 ## How To Use
 
@@ -46,8 +47,9 @@ Latest: [`2026-08-28_progress.md`](2026-08-28_progress.md) — K1/S0/VO617A-3/F2
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-28 | [`2026-08-28_progress.md`](2026-08-28_progress.md) | K1/S0/VO617A-3/F2 unpowered screen, 6P loose-kit/tooling boundary, S2/P6KE blockers and next home/cafe split |
-| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B~P-02C-2와 P-03A/P-03B source/static/full-build 완료, current canonical `26/26` PASS, P-03 target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
+| 2026-08-29 | [`2026-08-29_progress.md`](2026-08-29_progress.md) | P-04A software-applied signed PWM TEL/ESP parser 연결, canonical `27/27`, target UART runtime와 hook-0 safe restore PASS, remaining evidence boundary |
+| 2026-08-28 | [`2026-08-28_progress.md`](2026-08-28_progress.md) | K1/S0/S2/VO617A-3/P6KE/F2 unpowered screen, P-03/REQ-SAFE-004 target runtime와 run04 safe restore PASS, 6P/tooling boundary와 next work |
+| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B~P-02C-2와 P-03A/P-03B source/static/full-build 완료, 당시 canonical `26/26` PASS, P-03 target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
 | 2026-08-26 | [`2026-08-26_progress.md`](2026-08-26_progress.md) | 2026-09-15까지의 dated pre-arrival schedule, priority/milestone/buffer와 delivery transition rule |
 | 2026-08-25 | [`2026-08-25_progress.md`](2026-08-25_progress.md) | Four-chapter remaining-work rebaseline, production CMD mapper/data-path gaps, E-stop `005A/005B` scope split and `P-01~P-09` pre-arrival queue |
 | 2026-08-24 | [`2026-08-24_progress.md`](2026-08-24_progress.md) | PC7 direct latch/reset runtime, host contract 20/20, F1/K2 무전원 입고 precheck와 S2 stuck/short no-auto-reenable blocker 확인 |

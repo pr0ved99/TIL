@@ -123,6 +123,56 @@ attachment를 byte-for-byte 복사해 보존했고 SHA-256은
 확인했다. 작업자가 같은 cycle의 STM32 Run과 ESP32 Flash 완료를 확인했지만 raw flash
 console은 보존되지 않아 exact board linkage는 독립 증명하지 않는다.
 
+## 2026-08-28 P-03 Timeout/Re-arm Target Runtime And Safe Restore
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| [`2026-08-28_p03_timeout_disarmed_rearm_recovery_target_runtime_pass.txt`](2026-08-28_p03_timeout_disarmed_rearm_recovery_target_runtime_pass.txt) | Current-default 300 ms timeout-to-DISARMED, CMD-only reject, ARM-only expiry, new ARM+CMD recovery와 final DISARM | `050FD8921527CFC306039A7B73AFA4FE8406D2F46ADAE2A7E34A04F0494A7461` |
+| [`2026-08-28_p03_safe_restore_all_hooks_zero_no_output_pass.txt`](2026-08-28_p03_safe_restore_all_hooks_zero_no_output_pass.txt) | All-hooks-`0U`; startup DISARM/PING/READY, ARM/CMD TX 0회와 DISARMED/zero 유지 | `20CCE7E774F93A71BDD515E3D09F19B25E50CB4F14C4F263DCD21DED7D8713C3` |
+
+Target log에서는 timeout 자체 response 없이 stored command가 zero가 되고 `DISARMED`로
+전환됐으며, recovery는 새 ARM과 새 CMD 뒤에만 발생했다. Safe log는 READY 뒤 `DISARMED` TEL
+137개와 약 13.58 s safe observation을 보존한다. 두 run 모두 log 시작 전에 STM32 error/sequence
+history가 있어 external clean-reset evidence가 아니고, controlled ESP32 BIN은 safe rebuild로
+덮어써 exact runtime-to-BIN hash linkage가 없다. 상세 판정은
+[`../../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)를 따른다.
+
+## 2026-08-28 REQ-SAFE-004 500 ms Canonical Run03
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| [`2026-08-28_req_safe_004_500ms_operator_dual_reset_release_runtime_run03.txt`](2026-08-28_req_safe_004_500ms_operator_dual_reset_release_runtime_run03.txt) | Same-run seq `1123029003~1123029013`; startup recovery, 500 ms timeout-to-DISARMED, CMD-only rejection, ARM-only expiry, new ARM+CMD recovery와 final safe tail | `5EDCACA3CC62E2ED4B62A0F9EAD5AF8F171F97925A3B0BA2CA786DD3F8333F70` |
+| [`2026-08-28_req_safe_004_post_run03_safe_restore_all_hooks_zero_run04.txt`](2026-08-28_req_safe_004_post_run03_safe_restore_all_hooks_zero_run04.txt) | Script disabled; startup DISARM/PING/READY, ARM/CMD TX 0회와 READY 뒤 TEL 144개/약 14.3 s `DISARMED/zero` | `AA082C22D65FBC5D4EBA64F367F7858BEE2F1F2217221AA495C3CE284E3FA146` |
+
+ESP monitor는 USB reconnect 때문에 STM32 `t_ms=609`부터 보이지만 companion `.sr`의 D5 UART는
+`t_ms=109`부터 보존한다. Monitor의 final DISARM 뒤 `t_ms=2909~10309` TEL 75개는 모두
+`DISARMED/zero`다. 이 log와 companion SR은 같은 sequence를 사용하므로 동일 run evidence로
+결합할 수 있다. RST line 자체, physical no-power setup과 flashed binary identity는 log에 내장되지
+않는다. 상세 판정은
+[`../../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)를 따른다.
+
+Run04는 STM32를 reset하지 않고 ESP32 command source만 restart한 safe restore 실행이다. 시작할
+때 STM32 frame 중간부터 수신해 partial-frame `UNKNOWN/BAD_TYPE`과 `err=85 -> 86`이 한 번
+보였지만 DISARM ACK/PONG gate 뒤 추가 오류 없이 안전 상태를 유지했다. 따라서 clean cold-boot
+proof가 아니라 asynchronous source restart fail-closed recovery와 no-command evidence다.
+
+## 2026-08-29 P-04A Applied PWM Telemetry And Safe Restore
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| [`2026-08-29_p04a_applied_pwm_telemetry_runtime_run01.txt`](2026-08-29_p04a_applied_pwm_telemetry_runtime_run01.txt) | TEL 49개 중 accepted forward CMD 7개는 signed permille `50/50`, ARM-only 5개와 DISARMED 37개는 `0/0`; timeout/reject/expiry/recovery/final DISARM stale PWM 0 | `547D4E96B792934FDD3FC0D3550FEA0D4EC2F749A69EE11C6FA59D6566B0138D` |
+| [`2026-08-29_p04a_post_test_safe_restore_all_hooks_zero_run02.txt`](2026-08-29_p04a_post_test_safe_restore_all_hooks_zero_run02.txt) | Script disabled, ARM/CMD TX 0회, TEL 50/50 `DISARMED,left_pwm=0,right_pwm=0`; READY 뒤 43 TEL/4.2 s stable tail | `70C081888FBD80F870E55D28F16FE570DA3A4EAA0EE55B0F0D4DA5345870E854` |
+
+Run01의 `50`은 50%가 아니라 50 permille, 즉 nominal 5% duty target이다. Run01의 `err=4`는
+line-sync `RX_DESYNC` 1회와 의도된 `NOT_ARMED` 3회 누적이다. Run02는 startup partial frame
+`BAD_TYPE` 1회 뒤 `err=1`로 고정됐고 추가 오류나 재활성화가 없었다. 두 로그 모두 TEL parse
+failure는 없었다.
+
+이 evidence는 software-cached applied-output의 UART 전달을 입증한다. 같은 run의 logic-analyzer
+파형, reverse/asymmetric sign, MDD10A/motor output, exact flashed binary identity와 physical setup은
+로그 자체가 증명하지 않는다. 상세 판정은
+[`../../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
+
 ## Current Evidence Boundary And Safety State
 
 Raw monitor log는 UART text와 순서를 보존하지만 다음 물리 조건이나 binary identity를

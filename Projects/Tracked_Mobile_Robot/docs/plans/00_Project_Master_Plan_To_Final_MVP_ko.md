@@ -2,8 +2,8 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-28 received Physical E-stop component unpowered screens and next home/cafe execution split
-- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 SOURCE/STATIC/FULL BUILD COMPLETE — TARGET RUNTIME PENDING`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Direct-PC7 E-stop firmware/latch subset, production mapper/signed caller와 timeout-to-`DISARMED` 계약을 포함한 host/static은 `26/26`이고 32-object forced build도 PASS했다. 이는 flash/board/PWM/motor 증거가 아니며 channel/DIR polarity는 provisional이다. K1/S0/VO617A-3/F2는 report 19의 무전원 component screen을 통과했고 6P는 loose kit+별도 18 AWG로 확인됐지만 미조립이다. S2/P6KE와 crimp tool은 미도착이다. 다음 우선 작업은 집 `H-02` P-03 target runtime과 `H-01` plate/6P non-destructive capture이며, 그 뒤 카페 P-04로 이동한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- Revision: 2026-08-29 P-04A software-applied PWM telemetry target runtime + hook-0 safe restore PASS
+- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 COMPLETE`, canonical `REQ-SAFE-004` 500 ms target acceptance COMPLETE, `P-04A COMPLETE — UART/software-cached applied-output scope`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Current host/static은 `27/27`이며 P-04A에서 accepted forward CMD의 7 TEL `50/50`, ARM-only/timeout/DISARM zero와 hook-0 restore의 50개 TEL 모두 `DISARMED/0/0`을 PASS했다. 이는 measured PWM feedback이나 actual motor evidence가 아니다. K1/S0/S2/VO617A-3/P6KE/F2는 report 19의 무전원 component screen을 통과했고 6P는 loose kit+별도 18 AWG로 확인됐지만 미조립이다. Crimp tool은 미도착이다. 다음 firmware 작업은 `P-04B` E-stop/timeout reason과 command-age telemetry이고 battery는 `P-05`다. 집에서는 `H-01` plate/6P non-destructive capture와 tool 도착 뒤 first-article crimp를 병행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
 - 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
 
@@ -89,12 +89,12 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 현재 기준선 — 2026-08-28 갱신
+## 현재 기준선 — 2026-08-29 갱신
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
 | Historical PC-first STM32 UART MVP | `PASS — bench baseline` | requirements, matrix, CSV, screenshots, test report | production owner로 사용하지 않고 evidence 보존 |
-| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime PASS; all-hooks-`0U`; P-03 timeout contract까지 포함한 host/static `26/26`, 32-object build PASS. 새 flash/board/PWM runtime은 없음 | Motor/LiPo-disconnected `P-02/P-03` target regression |
+| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime, P-03/REQ-SAFE-004 recovery와 P-04A applied-output TEL/ESP parser PASS. Current host/static `27/27`; hook-0 safe runtime PASS. Exact artifact/setup provenance, reset-net evidence, reverse/asymmetric sign과 P-04B reason/age fields는 open | P-04B reason/age telemetry -> P-05 battery |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
@@ -104,17 +104,17 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout/fault/reset과 hook-0 safe restore PASS | 기준선 보존; Physical E-stop |
 | MDD10A logic input | `PASS — motor-disconnected input scope` | Permanent pull-down/5-Net, powered/no-motor, final CH1/CH2 19.049/19.058 kHz 6-step와 final all-LOW PASS | MDD10A power-stage/actual motor stop, Physical E-stop closure |
 | Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
-| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset, report 18 F1/K2/resistors와 report 19 K1/S0/VO617A-3/F2 무전원 subset PASS. 6P는 loose kit로 미조립; S2/P6KE not received. Conditioned path, clamp, K1 rail-off는 미검증 | 6P cavity/crimp preparation -> S2/P6KE 잔여 A-01 -> complete assembly -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
+| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset, report 18 F1/K2/resistors와 report 19 K1/S0/S2/VO617A-3/P6KE/F2 무전원 subset PASS. 6P는 loose kit로 미조립이고 clamp powered behavior/conditioned path/K1 rail-off는 미검증 | 6P cavity/crimp first article -> complete assembly -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
 | First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
 Current strict-parser UART Gate와 MCU-pin safety baseline을 보존한다. Permanent pull-down/5-Net,
 board power/back-power와 final perfboard MDD10A-input 19 kHz active 6-step/safe restore까지 PASS했다.
 WHEELTEC 회신으로 rated/stall current 입력을 확보하고 K1/F1/main-wire 계산을 완료했다. K1은
-catalog numerical PASS이고 exact components/`89.5 ohm` coil/NO/isolation 무전원 screen도
+catalog numerical PASS이고 exact components/`89.5 ohm` coil/NO/coil-contact gross-short 무전원 screen도
 통과했지만 suppression/thermal/rail-off는 미검증이다. S0/VO617A-3/F2의 지정된 무전원 screen도
-report 19에 닫았다. 그러나 6P cavity/crimp/retention, S2/P6KE 도착과 모든 incoming PASS 전에는
-complete control-path assembly나 powered coil test로 이동하지 않는다.
+report 19에 닫았다. S2/P6KE incoming도 같은 report에서 닫혔다. 그러나 6P
+cavity/crimp/retention과 complete assembly가 PASS하기 전에는 powered coil test로 이동하지 않는다.
 따라서 진행률 숫자나 배송상태보다 Gate와 evidence boundary를 기준으로 판단한다.
 
 ## 실행 대단원과 예상 작업시간
@@ -131,19 +131,23 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 | 4. 양쪽 궤도·이동·odometry | `G6`, `G7` | dual motor mapping, 전진/후진/제자리 회전, wheel-travel scale, 1 m distance error, final fault/stop regression | 12~24시간 | 저속 drivetrain와 1 m odometry acceptance evidence PASS |
 
 최초 합계는 **29~57시간**이었다. 대단원 1 완료 후 남은 순수 작업시간은 **26~52시간**이다.
-2026-08-28 received-subset 무전원 screen을 앞당겨 닫았지만 S2/P6KE의 실제
-도착일이 complete E-stop integration의 달력 blocker로 남는다. 종료일은 `잔여 부품 도착일 +
-잔여 입고검사 + 26~52시간의 유효 작업시간 + 재시험 여유`로 계산한다. 기존 `2~3주` 수치는
-현재 일정 약속으로 사용하지 않는다.
+2026-08-28 selected component 무전원 screen, P-03 scoped target runtime과 canonical
+`REQ-SAFE-004` 500 ms target acceptance를 앞당겨 닫았고 2026-08-29 P-04A applied-output
+telemetry도 닫았다.
+현재 complete E-stop integration의 달력 blocker는 crimp tool 수령과 6P first-article/assembly다.
+종료일은 `tool 수령일 + 6P 조립/통합시험 + 26~52시간의 유효 작업시간 + 재시험 여유`로
+계산한다. 기존 `2~3주` 수치는 현재 일정 약속으로 사용하지 않는다.
 
 ### 대단원 간 직렬 순서
 
 ```text
-완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin 검증
--> 현재 우선 HOME: P-03 target runtime + plate/6P cavity non-destructive capture
--> 다음 CAFE: P-04 telemetry -> battery/odometry
--> tooling 도착: spare 6P terminal first-article crimp -> cavity/continuity/isolation/retention
--> S2/P6KE 도착: 잔여 무전원 입고검사와 complete assembly gate
+완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin + P-03 300 ms target runtime/safe restore + REQ-SAFE-004 500 ms target acceptance
+-> run04 safe build/flash/UART/D0~D3 all-LOW restore 완료
+-> P-04A applied-output telemetry + hook-0 safe restore 완료
+-> 현재 CAFE/NOTEBOOK: P-04B reason/age telemetry -> P-05 battery -> P-06 odometry
+-> 병행 HOME: plate/6P cavity non-destructive capture
+-> tooling 도착: spare 6P terminal first-article crimp -> cavity/intended-continuity/unintended-open/retention
+-> complete assembly gate
 -> 대단원 2: T-ESTOP-001~004 -> nominal T-ESTOP-005A
 -> 대단원 3 lifted single motor
 -> 대단원 4 dual drivetrain + odometry
@@ -171,7 +175,8 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 6. K1/K2/F1/F2는 plate/perfboard/inline bracket, S0/S1/S2는 operator panel로 분류하고
    추가 drilling 필요 여부를 결정한다.
 
-현재 카페에서는 이 실물 결과를 추정하지 않고 `P-02` production mapper를 진행한다.
+현재 카페에서는 이 실물 결과를 추정하지 않고 `P-04B` E-stop/timeout reason과
+command-age telemetry를 진행한다.
 
 ## Gate 로드맵
 
@@ -197,7 +202,8 @@ PASS - 2026-07-24 V-model refresh
 
 목표:
 
-- PC와 ESP32 command path에서 STM32 parser와 safety authority를 검증한다.
+- Historical PC-first bench path와 current ESP32 production path의 증거를 구분해 STM32 parser와
+  safety authority를 검증한다. Optional PC control은 `PC -> ESP32 -> STM32` 경로만 허용한다.
 
 검증된 항목:
 
@@ -522,27 +528,27 @@ Exit criteria:
 PLANNED
 ```
 
-## Partial arrival 중 병렬 실행 계획
+## Current 병렬 실행 계획
 
 상세 task, 완료 조건과 금지사항의 현재 정본은
 [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)다.
-S2/P6KE 배송 대기 중에도 아래 software/document 작업과 received-subset 무전원 입고검사를
-motor-energy 없이 병렬로 진행할 수 있다.
+P-03/REQ-SAFE-004 target acceptance와 selected-component incoming이 닫힌 현재, 아래 software/document 작업과 6P/tooling
+준비를 motor-energy 없이 병렬로 진행할 수 있다.
 
 1. `[COMPLETED / ADR-015] P-01`: ESP32-S3 단일 production ingress, USART1 production/USART2 bench-only와 source-loss recovery 정책을 확정했다.
 2. `[COMPLETE] P-02B`: test hook과 분리된 production mapper module, independent vectors/static source contract의 당시 `23/23` checkpoint와 full build를 닫았다.
 3. `[PASS / HISTORICAL 24/24] P-02C-1`: provisional DIR polarity를 명시한 signed-output adapter와 fail-safe range/error 경로를 추가했다. 당시 no-caller section의 `--gc-sections` 제거는 P-02C-2에서 해소됐다.
 4. `[COMPLETE / HISTORICAL 25/25] P-02C-2`: validation/ARMED/3x E-stop/mapper/상호 배타 output/success-only commit+ACK caller와 실패 시 stop/zero/ERR/return 계약을 연결했다. 당시 32-object forced build와 nonzero ELF linkage PASS이며 flash/board runtime은 pending이다.
-5. `[SOURCE/STATIC/FULL BUILD COMPLETE] P-03`: pre-RX timeout helper가 output/stored command zero -> `DISARMED`를 강제하고, accepted `ARM`이 default 300 ms first-CMD window를 다시 시작한다. Current canonical `26/26`, forced 32-object build와 ELF `29268/172/2832`는 PASS했고 motor/LiPo-disconnected target runtime은 pending이다.
-6. `P-04`: TEL의 실제 left/right CPS, command/target와 battery 값을 연결한다.
+5. `[COMPLETE — 300 ms P-03 + 500 ms REQ-SAFE-004 SCOPED TARGET RUNTIME + RUN04 SAFE RESTORE] P-03`: pre-RX timeout helper가 output/stored command zero -> `DISARMED`를 강제하고, accepted `ARM`이 default 300 ms first-CMD window를 다시 시작한다. Historical P-03 canonical `26/26`, forced 32-object build와 ELF `29268/172/2832`, motor/LiPo-disconnected 300 ms target UART/PWM recovery와 당시 all-hooks-`0U` safe restore가 PASS했다. Canonical 500 ms run03도 same-run UART/PWM acceptance를 PASS했고 run04에서 source hook `0U`, safe build/flash/UART와 D0~D3 10 s all-LOW restore를 PASS했다. Exact controlled artifact linkage, electrically captured reset timing, clean electrical cold-start와 actual motor는 범위 밖/pending이다.
+6. `[P-04A COMPLETE / P-04B READY] P-04`: software-cached signed left/right applied PWM을 STM TEL과 ESP parser/log에 연결했다. Current canonical `27/27`, positive symmetric `50/50`, timeout/ARM-only/DISARM zero와 hook-0 safe runtime을 PASS했다. 다음은 E-stop/timeout reason과 command age다. Battery actual source는 P-05로 분리한다.
 7. `P-05`: battery ADC divider, calibration과 low-voltage policy를 설계·검증한다.
 8. `P-06`: encoder count에서 wheel distance와 1 m odometry를 계산하는 경로를 구현한다.
 9. `P-07`: received adapter plate identity/fit, E-stop mounting freeze, track/fastener/strain-relief와 6P cavity map을 준비한다.
 10. `P-08`: F1 `257`/ordered `287` identity, S1 DC rating basis와 계측표를 닫는다.
 11. `P-09`: 부품별 입고검사표와 `T-ESTOP-001~004 + T-ESTOP-005A` capture sheet를 미리 만든다.
 
-K1/S0/VO617A-3/F2 received-subset의 지정된 `A-01` 무전원 screen은 report 19에 기록했다.
-6P cavity/crimp/retention과 S2/P6KE 잔여 입고검사까지 닫힌 뒤
+K1/S0/S2/VO617A-3/P6KE/F2의 지정된 `A-01` 무전원 screen은 report 19에 기록했다.
+6P cavity/crimp/retention과 complete assembly를 닫은 뒤
 `T-ESTOP-001~004 -> T-ESTOP-005A -> lifted single motor 5~10% -> T-ESTOP-007 -> dual
 drivetrain -> 1 m odometry` 순서를 지킨다. `FM-ESTOP-014`와
 `T-ESTOP-005B`는 지우지 않고 post-MVP residual-risk V-cycle로 추적한다.

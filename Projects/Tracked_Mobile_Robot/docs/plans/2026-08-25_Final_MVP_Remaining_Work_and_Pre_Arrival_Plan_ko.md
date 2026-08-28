@@ -3,9 +3,9 @@
 ## 문서 상태
 
 - 기준일: 2026-08-25
-- 상태: `ACTIVE / RECEIVED-SUBSET SCREEN UPDATE 2026-08-28`
+- 상태: `ACTIVE / P-04A + ALL-SELECTED-INCOMING UPDATE 2026-08-29`
 - 목적: Final MVP까지 남은 작업의 임계 순서와 잔여 부품 대기 중 병렬 작업을 분리한다.
-- 현재 진행 기록: [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)
+- 현재 진행 기록: [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md)
 - 날짜별 실행 일정: [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md)
 - 상위 계획: [`00_Project_Master_Plan_To_Final_MVP_ko.md`](00_Project_Master_Plan_To_Final_MVP_ko.md)
 
@@ -13,21 +13,22 @@
 입고 전 확정하지 않는다. 배송 완료는 시험 PASS가 아니며, 입고 검사와 motor-disconnected
 통합 시험이 끝나야 actual motor 단계로 이동할 수 있다.
 
-### 2026-08-28 received-subset screen update
+### 2026-08-29 current execution update
 
-현재 continuation은 [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)와
-[`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를
-따른다.
+현재 continuation은 [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md),
+[P-04A report 22](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)와
+[incoming report 19](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를 따른다.
 
 | State | Items | Current consequence |
 | --- | --- | --- |
-| UNPOWERED COMPONENT SCREEN PASS | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, VO617A-3 diode/isolation, F2 continuity/movement | 해당 component-level A-01 subset은 반복하지 않고 powered/integrated Gate로 trace |
+| UNPOWERED COMPONENT SCREEN PASS | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, S2 momentary-NO, VO617A-3 diode/isolation, P6KE x3 identity/gross-short, F2 continuity/movement | 해당 component-level A-01 subset은 반복하지 않고 powered/integrated Gate로 trace |
 | RECEIVED / UNASSEMBLED | Loose 6P waterproof connector kit + separate 18 AWG | Mating-face numbering, qualified first-article crimp, 6x6 continuity/isolation, seal/retention 필요 |
-| ORDERED / NOT RECEIVED | S2 `ABW110G`, `P6KE16CA-E3/54` x3, `VH-30J`/`WX-03B` tooling | Complete nominal control path와 powered coil test는 계속 blocked |
+| ORDERED / NOT RECEIVED | `VH-30J`/`WX-03B` tooling | Complete 6P assembly와 powered coil test는 first-article crimp까지 blocked |
+| P-04A COMPLETE | Applied left/right signed PWM TEL -> ESP parser/log, current `27/27`, target UART + hook-0 safe runtime | P-04B reason/age와 P-05 battery로 진행; measured PWM/actual motor 주장 금지 |
 
-다음 세션은 집 `H-02` P-03 target runtime을 먼저 닫고, 시간이 남으면 plate dry-fit과 6P
-cavity orientation을 비파괴 기록한다. P-04 source 변경은 이 runtime checkpoint 뒤 카페에서
-시작한다. 이 update가 아래 2026-08-27 도착 요약보다 우선한다.
+다음 카페 세션은 P-04B reason/command-age telemetry, 다음 집 세션은 plate dry-fit과 6P cavity
+orientation을 비파괴 기록한다. Tool 도착 뒤 spare 18 AWG terminal first-article crimp를 먼저
+검증한다. 이 update가 아래 2026-08-27 도착 요약보다 우선한다.
 
 ### 2026-08-27 historical arrival update
 
@@ -169,9 +170,11 @@ Evidence boundary:
 
 Evidence boundary:
 
-- 새 flash/board runtime, PWM/DIR waveform 또는 actual motor evidence는 없다.
-- channel/forward polarity는 provisional이고 TEL PWM field는 zero placeholder다.
-- timeout-to-`DISARMED` source/static/full-build는 P-03에서 닫혔고 target runtime은 남아 있다.
+- P-02 checkpoint 자체에는 새 flash/board runtime, PWM/DIR waveform 또는 actual motor evidence가 없었다.
+  후속 P-03 target runtime과 P-04A TEL runtime은 각각 별도 보고서에서 닫았다.
+- channel/forward polarity는 provisional이다. TEL applied PWM placeholder는 P-04A에서 연결했지만
+  measured physical feedback은 아니다.
+- timeout-to-`DISARMED` source/static/full-build와 target runtime은 후속 P-03/report 20~21에서 닫았다.
 
 금지:
 
@@ -181,7 +184,7 @@ Evidence boundary:
 
 ### `P-03` timeout과 motion-recovery 구현·검증
 
-상태: `SOURCE/STATIC/FULL BUILD COMPLETE / TARGET RUNTIME PENDING`
+상태: `COMPLETE — 300 ms TARGET SUBVECTOR + CANONICAL 500 ms ACCEPTANCE / MOTOR-LIPO-DISCONNECTED SCOPE`
 
 P-03A/P-03B source는 다음 ADR-015 정책과 requirement를 일치시켰다.
 
@@ -208,28 +211,33 @@ RX queue purge와 transport anti-replay는 P-03 구현·검증 범위가 아니�
 - canonical host/static `22 + 2 + 2 = 26/26 PASS`
 - 32-object forced ARM build exit `0`, warning/error 진단 0건, ELF
   `text=29268`, `data=172`, `bss=2832`
+- 2026-08-28 current-default 300 ms target UART/PWM에서 timeout-to-`DISARMED`, CMD-only 거부,
+  ARM-only old-command 미복원/expiry, fresh ARM+CMD recovery와 final DISARM PASS
+- canonical `timeout_ms=500` same-run UART+MCU control-net acceptance와 post-test hook-0
+  UART/D0~D3 safe restore PASS
 
 Evidence boundary:
 
-- 새 flash, STM32+ESP32 board runtime과 PB6/PB7/PC8/PC9 PWM/DIR capture는 없다.
-- Historical timeout-zero/PWM-stop evidence는 이전 `ARMED` 유지 image이므로 새 P-03 state
-  recovery를 입증하지 않는다.
-- 기존 ESP controlled script의 `ARM -> CMD` 간격은 `1000 ms`이고 새 default first-CMD
-  window는 `300 ms`이므로 target test 전에 300 ms 미만 cadence로 별도 조정해야 한다.
+- Exact controlled binary linkage, reset-net 동시성, clean electrical cold-start와 actual motor stop은
+  P-03/report 20~21의 증거 범위 밖이다.
+- Sequence/session anti-replay와 exhaustive timeout sweep은 별도 요구사항으로 남는다.
 
 ### `P-04` 실제 telemetry 값 연결
 
-상태: `READY`
+상태: `P-04A COMPLETE / P-04B READY / BATTERY MOVED TO P-05`
 
-현재 hard-coded `left_pwm=0`, `right_pwm=0`, `batt_mv=0`을 최종 상태와 연결한다.
+P-04A에서 hard-coded `left_pwm/right_pwm=0`을 motor-output software cache의 signed permille과
+연결하고 ESP32 parser/log까지 확장했다. Current canonical `27/27`, STM32 build 0 errors/0 warnings,
+positive symmetric `50/50`, timeout/ARM-only/DISARM `0/0`과 hook-0 safe UART restore를 PASS했다.
+이는 measured PWM feedback이 아니며 reverse/asymmetric sign과 actual motor는 미검증이다.
 
 MVP telemetry 우선순위:
 
-1. applied left/right PWM 또는 signed request
-2. E-stop active/latch/reset-rejected 식별
-3. command age 또는 timeout 상태
-4. battery millivolt
-5. existing left/right CPS
+1. `[COMPLETE — P-04A]` applied left/right signed PWM target
+2. `[P-04B]` E-stop active/latch/reset-rejected 식별
+3. `[P-04B]` command age 또는 timeout 상태
+4. `[P-05]` battery millivolt
+5. `[EXISTING PASS]` left/right CPS
 
 ### `P-05` battery ADC와 low-voltage 설계
 

@@ -133,9 +133,12 @@ static void send_err(uint32_t seq, const char *type, const char *code){
 }
 
 static void send_tel(void){
+    motor_output_applied_t applied =
+        motor_output_get_applied();
+
     uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%lu,"
                "vx_mmps=%ld,w_mradps=%ld,"
-               "left_pwm=0,right_pwm=0,"
+               "left_pwm=%ld,right_pwm=%ld,"
                "left_cps=%ld,right_cps=%ld,"
                "batt_mv=0,drop=%lu,err=%lu\n",
                (unsigned long)HAL_GetTick(),
@@ -143,6 +146,8 @@ static void send_tel(void){
                (unsigned long)s_last_seq,
                (long)s_vx_mmps,
                (long)s_w_mradps,
+               (long)applied.left_signed_permille,
+               (long)applied.right_signed_permille,
                (long)s_left_cps,
                (long)s_right_cps,
                (unsigned long)ring_buffer_dropped(&s_rx_rb),
