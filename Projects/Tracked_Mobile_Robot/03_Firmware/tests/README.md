@@ -32,12 +32,12 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-29 Current P-02B / P-02C / P-03 / P-04A Snapshot
+## 2026-08-29 Current P-02B / P-02C / P-03 / P-04 Snapshot
 
-- `test_firmware_contract.py`: **23/23 PASS**
+- `test_firmware_contract.py`: **24/24 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **27/27 PASS**
+- Canonical discovery: **28/28 PASS**
 - P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
 - P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
   recompile와 ELF relink, **0 errors / 0 warnings**
@@ -58,8 +58,16 @@ python -m unittest discover `
   `text=29428`, `data=172`, `bss=2832`
 - P-04A applied-output telemetry target runtime: **PASS — UART/software-cached scope**;
   accepted `CMD(vx=50,w=0)`의 7 TEL은 `left_pwm=50,right_pwm=50`, 나머지 42 TEL은 `0/0`
-- P-04A all-hooks-`0U` safe restore: current canonical **27/27 PASS**, script disabled,
+- P-04A all-hooks-`0U` safe restore: historical canonical **27/27 PASS**, script disabled,
   ARM/CMD TX 0, TEL 50/50 `DISARMED,left_pwm=0,right_pwm=0`
+- P-04B reason/command-age contract: `reason[32]`, unsigned `command_age_ms`, accepted-CMD-only
+  timestamp, no-CMD `UINT32_MAX` sentinel와 STM/ESP `384-byte` TEL buffer를 검사
+- P-04B controlled STM32 build: **0 errors / 0 warnings**, ELF
+  `text=29872`, `data=172`, `bss=2840`
+- P-04B target subset: timeout age `485 -> 585`, fresh-CMD-only age reset과 direct-PC7
+  `ESTOP_ACTIVE -> ESTOP_LATCHED`, FAULT PWM `0/0` PASS
+- Current source는 모든 controlled hook `0U`, canonical **28/28 PASS**다. 이 hook-0 source의
+  격리 STM32/ESP32 build도 PASS했으며, post-test target reflash/runtime restore는 아직 open이다.
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
@@ -95,16 +103,21 @@ new ARM+CMD recovery를 실제 STM32+ESP32 UART와 PB6/PB7 PWM burst로 확인�
 당시 canonical host/static `26/26`, safe build/flash/UART와 D0~D3 all-LOW를 PASS했다.
 
 2026-08-29 P-04A는 TEL의 `left_pwm/right_pwm`를 motor-output software cache와 연결하고 ESP32
-parser/log까지 확장했다. Current canonical은 `27/27`이다. Positive symmetric `+50/+50`과
+parser/log까지 확장했다. 당시 canonical은 `27/27`이다. Positive symmetric `+50/+50`과
 timeout/ARM-only/DISARM `0/0` target UART vector 및 별도 hook-0 safe runtime을 PASS했다. 이 값은
 measured PWM feedback이 아니며 reverse/asymmetric runtime, exact controlled BIN linkage, external
 cold-start marker, provisional polarity/channel mapping과 actual motor evidence는 계속 pending이다.
-`batt_mv`도 여전히 placeholder다. 300 ms 역사 기록은
+P-04B는 `reason/command_age_ms` actual source와 ESP strict parser/log를 추가해 current canonical을
+`28/28`로 올렸다. Runtime에서 no-CMD sentinel, accepted-CMD-only reset, timeout reason과
+direct-PC7 active/latch subset을 확인했다. Active reset rejection/successful reset과 hook-0 target
+restore는 아직 남아 있고 `batt_mv`도 여전히 placeholder다. 300 ms 역사 기록은
 [`../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md),
 canonical 500 ms acceptance와 restore 경계는
 [`../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md),
 P-04A는
-[`../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
+[`../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md),
+P-04B는
+[`../../docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](../../docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ## 검증 스냅샷
 

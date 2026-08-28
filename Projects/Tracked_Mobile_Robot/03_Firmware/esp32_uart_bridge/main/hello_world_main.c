@@ -33,7 +33,7 @@
 #define TEST_STEP_PERIOD_MS         1000
 #define P03_TEST_STEP_PERIOD_MS     100U
 #define P03_CMD_TIMEOUT_TARGET_MS   500U
-#define LINE_BUF_SIZE               256
+#define LINE_BUF_SIZE               384
 #define RX_POLL_MS                  20
 
 #define STARTUP_SETTLE_MS           500U
@@ -47,6 +47,8 @@ static const char *TAG = "esp32_uart_bridge";
 typedef struct {
     uint32_t t_ms;
     char state[16];
+    char reason[32];
+    uint32_t command_age_ms;
     uint32_t last_seq;
     int32_t vx_mmps;
     int32_t w_mradps;
@@ -701,6 +703,15 @@ static void bridge_uart_handle_rx_line(const char *line){
                 "state=",
                 parsed.state,
                 sizeof(parsed.state)) &&
+            parse_string_field(
+                line,
+                "reason=",
+                parsed.reason,
+                sizeof(parsed.reason)) &&
+            parse_u32_field(
+                line,
+                "command_age_ms=",
+                &parsed.command_age_ms) &&
             parse_u32_field(line, "last_seq=", &parsed.last_seq) &&
             parse_i32_field(line, "vx_mmps=", &parsed.vx_mmps) &&
             parse_i32_field(line, "w_mradps=", &parsed.w_mradps) &&
@@ -720,6 +731,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 TAG,
                 "RX TEL: t_ms=%" PRIu32
                 " state=%s"
+                " reason=%s"
+                " command_age_ms=%" PRIu32
                 " last_seq=%" PRIu32
                 " vx=%" PRIi32
                 " w=%" PRIi32
@@ -731,6 +744,8 @@ static void bridge_uart_handle_rx_line(const char *line){
                 " tel_count=%" PRIu32,
                 s_telemetry.t_ms,
                 s_telemetry.state,
+                s_telemetry.reason,
+                s_telemetry.command_age_ms,
                 s_telemetry.last_seq,
                 s_telemetry.vx_mmps,
                 s_telemetry.w_mradps,

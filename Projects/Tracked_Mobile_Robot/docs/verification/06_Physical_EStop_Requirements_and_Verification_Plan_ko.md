@@ -83,9 +83,9 @@ S0/S2/K2/opto 후보를 좁혔다. 2026-08-18에는 MG540 current envelope를 �
 2026-08-24 당시 F1 Littelfuse holder/10 A fuse의 unpowered visual/continuity와 K2 `TX2-12V`
 두 샘플의 coil resistance, de-energized NC/NO state와 coil-contact gross-short screen은 incoming subset으로
 통과했다. PC7 direct motor-disconnected firmware/runtime와 당시 host/static suites `20/20`도
-통과했다. 2026-08-28 P-03 suite checkpoint는 `26/26`이었고 2026-08-29 P-04A
-applied-output TEL 계약을 더한 current suite는 `27/27`이다. P-04A는 software telemetry
-증거이므로 Physical E-stop conditioned path 판정을 바꾸지 않는다. K1/S0/S2/
+통과했다. 2026-08-28 P-03 suite checkpoint는 `26/26`, 2026-08-29 P-04A checkpoint는
+`27/27`이었고 P-04B reason/command-age 계약을 더한 current suite는 `28/28`이다. P-04A/P-04B는
+software/UART telemetry 증거이므로 Physical E-stop conditioned path 판정을 바꾸지 않는다. K1/S0/S2/
 VO617A-3/P6KE16CA/F2/6P harness integration, loaded voltage-drop/
 thermal, powered coil/dropout와 direct rail-off는 열려 있다. Actual-off diagnostic 방법은 Step 4에서
 downstream rail direct measurement로 선택했다. 따라서 현재 판정은
@@ -384,8 +384,9 @@ all test hooks restored to 0U after test
 확인했다. Asserted/open에서 `FAULT`가 유지됐고 DISARM 또는 physical LOW restore만으로 latch가
 clear되지 않았으며, LOW restore 뒤 explicit `ESTOP_RESET` ACK 후 `DISARMED`/zero telemetry로
 복귀했다. 이는 당시 `18 + 2 = 20/20` checkpoint였고, 2026-08-28 P-03 checkpoint는
-`26/26`, 2026-08-29 P-04A 이후 current host/static suite는 `27/27`이며 controlled hooks는
-`0U`다.
+`26/26`, P-04A checkpoint는 `27/27`, P-04B 이후 current host/static suite는 `28/28`이며
+current source의 controlled hooks는 `0U`이고 isolated STM32/ESP32 build는 PASS했다. P-04B
+hook-0 target reflash/runtime은 아직 open이다.
 
 다만 active limited PWM에서 assertion해 both PWM zero와 latency를 직접 capture한 case 3,
 실제 VO617A-3/S0-B wire-open, 그리고 hardware motor rail은 이 실행 범위 밖이다. 근거와 경계는
@@ -547,7 +548,7 @@ F1 incoming: PARTIAL PASS — UNPOWERED MARKING/VISUAL/CONTINUITY ONLY
 K2 incoming: PARTIAL PASS — TWO-SAMPLE UNPOWERED COIL/CONTACT/GROSS-SHORT SCREEN ONLY
 K1/S0/S2/VO617/P6KE/F2 incoming: PARTIAL PASS — REPORT 19 UNPOWERED COMPONENT SCREENS ONLY
 Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
-Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A CURRENT 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; CONDITIONED PATH AND ACTUAL MOTOR OPEN
+Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A HISTORICAL 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; P-04B CURRENT 28/28 + REASON/AGE/DIRECT-PC7 ACTIVE-LATCH UART SUBSET + HOOK-0 ISOLATED BUILD PASS, RESET AND TARGET REFLASH/RUNTIME RESTORE OPEN; CONDITIONED PATH AND ACTUAL MOTOR OPEN
 Bench verification: PARTIAL — DIRECT PC7 MOTOR-DISCONNECTED RUNTIME; NO OPTO/K1 RAIL/MOTOR CLAIM
 T-ESTOP-005A: BLOCKED — 6P ASSEMBLY + COMPLETE INCOMING + T-ESTOP-001~004 FULL PASS REQUIRED
 T-ESTOP-005B: DEFERRED / POST-MVP — FM-ESTOP-014 MITIGATION AND FAULT INJECTION

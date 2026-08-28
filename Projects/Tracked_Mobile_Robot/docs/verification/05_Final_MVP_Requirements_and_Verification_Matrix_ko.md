@@ -67,8 +67,8 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 
 | ID | 수용 기준 | 우선순위 | 현재 상태 |
 | --- | --- | --- | --- |
-| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` — normal sequence, Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime PASS; malformed/unknown command 8/8 ERR, TEL 200/200 safe, final matching PING/PONG과 P-04A applied-output TEL 확인; exact runtime-to-artifact linkage와 log-embedded physical setup provenance pending |
-| `MVP-002` | ESP32가 유일한 production command ingress로 동작하고, optional PC control은 ESP32 upstream client로만 연결돼야 한다. | MUST | `PARTIAL` — ESP32-to-STM32 exact startup, bounded loss, stale-seq/reset과 T-BRIDGE-007/008 required runtime PASS; P-03 300 ms/canonical 500 ms recovery 및 P-04A signed applied-output parser/log target runtime PASS; optional PC-to-ESP32 forwarding, exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical setup provenance pending |
+| `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` — normal sequence, Gate A/B, T-BRIDGE-007과 T-BRIDGE-008A/008B required runtime PASS; malformed/unknown command 8/8 ERR, TEL 200/200 safe, final matching PING/PONG, P-04A applied-output과 P-04B reason/command-age direct-PC7 software-state subset 확인. P-04B hook-0 isolated build도 PASS했지만 reset 거부/성공과 target reflash/runtime restore, exact runtime-to-artifact linkage와 log-embedded physical setup provenance pending |
+| `MVP-002` | ESP32가 유일한 production command ingress로 동작하고, optional PC control은 ESP32 upstream client로만 연결돼야 한다. | MUST | `PARTIAL` — ESP32-to-STM32 exact startup, bounded loss, stale-seq/reset과 T-BRIDGE-007/008 required runtime PASS; P-03 300 ms/canonical 500 ms recovery, P-04A signed applied-output과 P-04B reason/command-age strict parser/log subset 및 hook-0 isolated build PASS. P-04B reset 거부/성공과 target reflash/runtime restore, optional PC-to-ESP32 forwarding, exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical setup provenance pending |
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` — raw controlled output의 핀/주파수/direction safety, P-02B~P-02C-2 production mapper/signed caller, P-03 normal `CMD(vx=50,w=0)` target PWM와 P-04A software-applied TEL은 PASS했다. Actual motor-side channel/polarity와 motor evidence는 pending |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PLANNED` |
@@ -101,11 +101,23 @@ build/flash, ARM/CMD TX 0 + `DISARMED/zero` UART와 D0~D3 10 s all-LOW도 PASS�
 restart의 startup partial-frame `BAD_TYPE` 1회 때문에 clean cold-boot/error-zero 증거는 아니다.
 
 2026-08-29 P-04A는 TEL의 `left_pwm/right_pwm`를 motor-output software cache와 연결했다.
-Current host/static은 `23 + 2 + 2 = 27/27`, STM32 incremental build는 0 errors/0 warnings와
+당시 host/static은 `23 + 2 + 2 = 27/27`, STM32 incremental build는 0 errors/0 warnings와
 ELF `29428/172/2832`를 기록했다. Target UART run에서 active 7 TEL은 signed permille `50/50`,
 ARM-only 5개와 DISARMED 37개 TEL은 `0/0`이었고, hook-0 restore의 50개 TEL도 모두
 `DISARMED/0/0`이었다. 이는 software-cached target evidence이며 same-run physical PWM,
 reverse/asymmetric sign, MDD10A output 또는 actual motor evidence는 아니다.
+
+같은 날 P-04B는 `reason/command_age_ms`를 STM TEL과 ESP strict parser/log에 추가했다.
+Current host/static은 `24 + 2 + 2 = 28/28`이다. [Run02](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_reason_command_age_clean_boot_runtime_run02.txt)의
+99 TEL에서 no-CMD sentinel, successful CMD-only age reset과 age `485 -> 585 ms`의
+`CMD_TIMEOUT/PWM 0/0`을 확인했다. [Run03](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_estop_active_latched_runtime_run03.txt)은
+`ESTOP_ACTIVE` 보조 증거이며 latch sample은 없다. [Run04](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_estop_latched_runtime_run04.txt)의
+55 TEL은 baseline 6, `ESTOP_ACTIVE` 23, `ESTOP_LATCHED` 26과 software-applied PWM
+55/55 `0/0`을 보존했다. All-hooks-`0U` isolated build는 PASS했다. 새 schema의 active
+reset 거부와 release 뒤 reset 성공, target reflash/runtime restore는 `OPEN`이다. 이 P-04B subset은 direct-PC7
+UART/software-state evidence일 뿐 conditioned Physical E-stop, K1 rail-off, measured PWM,
+MDD10A output 또는 actual motor stop을 증명하지 않는다. 정본 판정은
+[report 23](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ## 하위 요구사항
 
@@ -115,9 +127,9 @@ reverse/asymmetric sign, MDD10A output 또는 actual motor evidence는 아니다
 
 | 범위 | 요구사항 | 상태 | 근거 |
 | --- | --- | --- | --- |
-| UART | `REQ-UART-001` ~ `REQ-UART-005` | `PARTIAL` | PC-first baseline, Gate A/B와 T-BRIDGE-007/008 required runtime 및 P-04A applied-output TEL/ESP parser PASS; hook-0 safe runtime PASS. Reverse/asymmetric sign, exact artifact linkage, external cold-start marker와 log-embedded physical provenance 대기 |
+| UART | `REQ-UART-001` ~ `REQ-UART-006` | `PARTIAL` | PC-first baseline, Gate A/B, T-BRIDGE-007/008 required runtime, P-04A applied-output과 P-04B reason/command-age direct-PC7 UART/software-state subset 및 hook-0 isolated build PASS. P-04A hook-0 safe runtime은 보존하지만 P-04B reset 거부/성공과 변경 후 target reflash/runtime restore는 `OPEN`; reverse/asymmetric sign, exact artifact linkage, external cold-start marker와 log-embedded physical provenance 대기 |
 | Command safety | `REQ-SAFE-001` ~ `REQ-SAFE-007` | `PASS — required UART + MCU control-net scope` | P-03A/P-03B source/static/full-build와 300 ms target subvector에 이어 report 21의 canonical 500 ms same-run timeout-to-`DISARMED`, CMD-only 거부, ARM-only old-command 미복원과 fresh ARM/CMD recovery PASS. Transport anti-replay와 exhaustive timeout sweep은 별도 요구/확장 범위 |
-| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `PARTIAL` | Exact startup, bounded loss, stale response/reset recovery, T-BRIDGE-007/008, canonical 500 ms state/recovery, P-04A signed applied fields와 hook-0 safe restore PASS; exact controlled artifact/setup provenance와 electrically captured reset marker 대기 |
+| ESP32 bridge | 동일 UART rule set을 ESP32 command source에서도 만족 | `PARTIAL` | Exact startup, bounded loss, stale response/reset recovery, T-BRIDGE-007/008, canonical 500 ms state/recovery, P-04A signed applied fields/hook-0 safe restore와 P-04B reason/command-age strict parser/log subset 및 hook-0 isolated build PASS; P-04B reset 거부/성공과 target reflash/runtime restore, exact controlled artifact/setup provenance와 electrically captured reset marker 대기 |
 
 `T-BRIDGE-007` required UART runtime behavior는 [wrong-ACK raw log](../../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)에서 PASS다. Matching DISARM seq의 `ACK,type=ARM`은 gate를 열지 않았고, 500 ms 뒤 같은 DISARM seq를 재시도해 exact `ACK,type=DISARM`과 다음-seq PONG 뒤에만 READY가 됐다.
 
@@ -177,7 +189,7 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | `REQ-ESTOP-001~004` | Mechanical-latching actuator의 독립 NC control/sense와 정격에 맞는 K1이 MCU와 독립적으로 motor-energy feed를 차단해야 한다. | MUST | `PARTIAL/BLOCKED` — K1 `89.5 ohm`/NO/coil-contact gross-short와 S0 2NC/latch unpowered screen PASS; 6P assembly, powered K1 and motor-energy cut pending |
 | `REQ-ESTOP-005~008` | 독립 auxiliary NC sense, software latch, boot-safe와 explicit-reset/no-auto-restart를 만족해야 한다. | MUST | `PARTIAL/BLOCKED` — direct-PC7 active-HIGH/open-fault latch/reset과 VO617A-3 diode/input-output gross-short screen PASS; S0-B 5 V conditioned path, active-output assertion and hardware no-auto-re-enable pending |
 | `REQ-ESTOP-009` | MVP에서 sense/PWM, direct rail-off와 mechanical stop evidence를 분리해 기록해야 한다. 정밀 동기 transient 계측은 post-MVP다. | MUST | `BLOCKED` |
-| `REQ-ESTOP-010` | E-stop asserted/latch/reset-reject 상태를 log 또는 telemetry에서 식별할 수 있어야 한다. | SHOULD | `PARTIAL` — direct-PC7 log에서 asserted/latch/reset-reject subset을 식별했지만 conditioned path와 rail/discrepancy state set은 미완성 |
+| `REQ-ESTOP-010` | E-stop asserted/latch/reset-reject 상태를 log 또는 telemetry에서 식별할 수 있어야 한다. | SHOULD | `PARTIAL` — historical direct-PC7 runtime은 active reset 거부와 explicit reset 동작을 확인했고, P-04B TEL은 `ESTOP_ACTIVE/ESTOP_LATCHED`를 새 schema로 식별했다. Hook-0 isolated build는 PASS했지만 새 schema의 same-run reset 거부/성공과 target reflash/runtime restore, conditioned path, K1 rail-off과 rail/discrepancy state set은 `OPEN` |
 | `REQ-ESTOP-011`, `016` | Three-wire manual re-enable과 정격에 맞는 coil suppression이 functional K1 drop-out을 방해하지 않아야 한다. | MUST | `BLOCKED` — S2/P6KE16CA unpowered incoming PASS; P6KE/K1/K2 powered integration과 nominal healthy-S2/harness path pending; `FM-ESTOP-014` stuck/short extension은 post-MVP |
 | `REQ-ESTOP-012~015` | PA4/PB0 dual-rail ADC, discrepancy/plausibility fault와 welded-contact automatic diagnostic을 구현한다. | SHOULD / POST-MVP | `DEFERRED` |
 | `REQ-ESTOP-017~020` | Back-power 방지, harness 식별, 안전한 시험환경과 완전한 evidence record를 만족해야 한다. | MUST | `PARTIAL/BLOCKED` — current logic-power back-power와 motor/LiPo-disconnected precheck record가 존재; 6P는 loose kit로 확인됐고 cavity/crimp/6x6 continuity/open/retention, powered motor rail/back-power and final evidence pending |
@@ -202,10 +214,12 @@ S0 body/contact marking과 2NC/latch, VO617A-3 diode/input-output gross-short, F
 Software 쪽은 P-02B mapper, P-02C-1 signed adapter와 P-02C-2 production caller의 historical
 `25/25` checkpoint에 이어 P-03A/P-03B timeout recovery를 연결했다. P-03 checkpoint `26/26`과
 report 20/21의 300/500 ms target recovery 및 run04 safe restore를 보존한다. P-04A는
-software-applied signed PWM getter, STM TEL serialization과 ESP parser/log를 추가해 current
-host/static `27/27`, STM32 build 0 errors/0 warnings, positive symmetric `50/50`과 safe-zero
-target UART runtime 및 별도 hook-0 restore를 PASS했다. Actual motor-side channel/polarity,
-measured PWM feedback와 motor evidence는 아니며 `batt_mv`는 계속 placeholder다.
+software-applied signed PWM getter, STM TEL serialization과 ESP parser/log를 추가해 당시
+host/static `27/27`, positive symmetric `50/50`과 safe-zero target UART runtime 및 별도
+hook-0 restore를 PASS했다. P-04B는 reason/command-age와 direct-PC7 active/latch
+UART/software-state subset을 추가해 current `28/28`이지만, 새 schema reset 거부/성공과
+hook-0 target reflash/runtime restore는 미실행이다. 이 결과는 Actual motor-side channel/polarity, measured PWM,
+K1 rail-off 또는 motor evidence가 아니며 `batt_mv`는 계속 placeholder다.
 
 ### 엔코더와 telemetry
 
@@ -258,9 +272,9 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 
 | Requirement | Basis ID | 설계/인터페이스 정본 | 구현 대상 | Test ID / 절차 | 증거 | 결과 |
 | --- | --- | --- | --- | --- | --- | --- |
-| `REQ-UART-001~005` | `REQ-001`, `INT-001`, `FMEA-001`, `VVT-001`, `FW-C-001` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, ESP32 parser/log | `T-COM-001` PC-first UART MVP; P-04A target UART | 2026-07-09 CSV/screenshots/report; [strict-parser normal report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md); [Gate A/B report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md); [Gate C report](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md); [P-04A report 22](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | `PARTIAL` — `REQ-UART-005` current positive symmetric/zero-state scope PASS |
+| `REQ-UART-001~006` | `REQ-001`, `INT-001`, `FMEA-001`, `VVT-001`, `FW-C-001` | `09_STM32_ESP32_UART_Interface_Contract_ko.md` | STM32 UART MVP, ESP32 parser/log | `T-COM-001` PC-first UART MVP; P-04A/P-04B target UART | 2026-07-09 CSV/screenshots/report; [strict-parser normal report](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md); [Gate A/B report](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md); [Gate C report](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md); [P-04A report 22](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md); [P-04B report 23](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md), [hook-0 isolated build](../../assets/logs/firmware_build/2026-08-29_p04b_hook0_isolated_build_pass.md) 및 [run02](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_reason_command_age_clean_boot_runtime_run02.txt)/[run03](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_estop_active_latched_runtime_run03.txt)/[run04](../../assets/logs/esp32_uart_bridge/2026-08-29_p04b_estop_latched_runtime_run04.txt) | `PARTIAL` — `REQ-UART-005` current positive symmetric/zero-state scope PASS; `REQ-UART-006` reason/age/active/latch subset와 hook-0 isolated build PASS, reset 거부/성공과 target reflash/runtime restore `OPEN` |
 | `REQ-SAFE-001~007` | `RISK-001`, `FMEA-001`, `VVT-001`, `FW-C-001` | `16_Control_Loop_and_State_Machine_ko.md` | parser, safety state, timeout | `T-SAFE-001` scripted UART safety sequence | Current normal/startup loss/stale-response와 T-BRIDGE-008A/008B fail-closed recovery PASS; [P-03 report 20](20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)의 300 ms subvector와 당시 safe restore, [REQ-SAFE-004 report 21](21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)의 canonical 500 ms same-run UART/PWM acceptance PASS | `PASS — REQUIRED UART + MCU CONTROL-NET SCOPE` |
-| `MVP-002` ESP32 source | `ARCH-001`, `INT-001`, `VVT-001`, `CM-001` | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | Historical baseline + Gate A/B, T-BRIDGE-007 and [Gate C report 15](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md); report 20/21의 recovery/run04 restore와 [P-04A report 22](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)의 applied-output parser/log runtime PASS; exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical provenance TBD | `PARTIAL` |
+| `MVP-002` ESP32 source | `ARCH-001`, `INT-001`, `VVT-001`, `CM-001` | UART contract | ESP32 UART bridge | `T-COM-002` board-only bridge | Historical baseline + Gate A/B, T-BRIDGE-007 and [Gate C report 15](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md); report 20/21의 recovery/run04 restore, [P-04A report 22](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)의 applied-output과 [P-04B report 23](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)의 reason/age/active/latch parser/log subset 및 hook-0 isolated build PASS; P-04B reset 거부/성공과 target reflash/runtime restore, exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical provenance TBD | `PARTIAL` |
 | `REQ-POWER-001` | `RISK-001`, `FMEA-001`, `PART-001`, `MET-001` | `12_Power_Distribution_and_Safety_Architecture_ko.md` | fuse/switch harness | `T-PWR-001` power bring-up | DMM log, wiring photos | `PASS` |
 | `REQ-POWER-002` | `RISK-001`, `PART-001`, `MET-001`, `VVT-001` | power architecture | XL4015 #1/#2 | `T-PWR-002` buck load test | calibration log, load photos | `CONDITIONAL PASS` |
 | `REQ-POWER-003` | `RISK-001`, `FMEA-001`, `PART-001`, `VVT-001` | power architecture | final board power harness | `T-PWR-003` USB/buck back-power check | 2026-08-16 current logic-power scope PASS; final integrated harness rule TBD | `PARTIAL` |
@@ -283,7 +297,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | 순서 | Test ID | 시험 | 선행 조건 | 상태 |
 | --- | --- | --- | --- | --- |
 | 1 | `T-COM-001` | PC-first UART MVP | STM32 UART firmware | `HISTORICAL FULL PASS / CURRENT RESPONSE SUBSET PASS` |
-| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `PARTIAL` — Gate A/B, T-BRIDGE-007/008, P-03 300 ms/canonical 500 ms timeout-recovery, P-04A applied-output TEL과 hook-0 safe restore PASS; exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical setup provenance pending |
+| 2 | `T-COM-002` | ESP32-STM32 UART bridge | `T-COM-001` | `PARTIAL` — Gate A/B, T-BRIDGE-007/008, P-03 300 ms/canonical 500 ms timeout-recovery, P-04A applied-output TEL/hook-0 safe restore와 P-04B reason/command-age active/latch subset 및 hook-0 isolated build PASS; P-04B reset 거부/성공과 target reflash/runtime restore, exact controlled artifact linkage, electrically captured reset marker와 log-embedded physical setup provenance pending |
 | 3 | `T-PWR-001` | fused/switched power path | 무전원 검사 | `PASS` |
 | 4 | `T-PWR-002` | XL4015 bench load | `T-PWR-001` | `CONDITIONAL PASS` |
 | 5 | `T-MECH-001` | Rev A 1:1/vector preflight | CAD release | `PASS` |
@@ -335,6 +349,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 - [`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)
 - [`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
 - [`20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)
+- [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)
 - [`../../01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md`](../../01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md)
 - [`../../01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md`](../../01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md)
 - [`../../01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md`](../../01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md)

@@ -107,10 +107,11 @@ simultaneous STM32 command sources. Current command RX/parser binding is
 | STM32 -> ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link response |
 | ESP32 -> STM32 | `ARM,seq=<u32>` | Request motion-command permission |
 | ESP32 -> STM32 | `DISARM,seq=<u32>` | Request motor-output disable |
+| ESP32 -> STM32 | `ESTOP_RESET,seq=<u32>` | Request software E-stop latch clear after input recovery |
 | ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command request |
 | STM32 -> ESP32 | `ACK,seq=<u32>,type=<text>` | Command accepted |
 | STM32 -> ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command rejected or parse error |
-| STM32 -> ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | Periodic telemetry |
+| STM32 -> ESP32 | `TEL,t_ms=<u32>,state=<text>,reason=<text>,command_age_ms=<u32>,last_seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,left_pwm=<i32>,right_pwm=<i32>,left_cps=<i32>,right_cps=<i32>,batt_mv=<u32>,drop=<u32>,err=<u32>` | Periodic telemetry |
 
 Do not add a separate `NACK` frame in the first MVP. Use `ERR` for negative
 acknowledgement behavior.
@@ -132,10 +133,16 @@ tests.
 
 - UART RX ISR only pushes bytes into the ring buffer and exits.
 - The parser runs in the main loop or task context and assembles frames by `\n`.
-- Overlong frames are dropped and the parse error count is incremented.
-- Unknown frame types are handled as `ERR,code=UNKNOWN_TYPE` or ignored.
+- Overlong frames or embedded CR/control bytes before LF increment the parse
+  error count once and discard the complete frame through the next LF.
+- Field keys must match exactly at comma-token boundaries; duplicated required
+  keys are rejected as ambiguous.
+- Integer fields require at least one digit, must end at a comma or frame end,
+  and must fit the declared integer type.
+- Unknown or unsupported frame types return `ERR,code=BAD_TYPE`.
 - Missing required `CMD` fields return `ERR,code=MISSING_FIELD`.
-- Numeric conversion failures return `ERR,code=BAD_VALUE`.
+- Numeric conversion, field-order, or extra-data failures return
+  `ERR,code=MISSING_FIELD`.
 - Range violations return `ERR,code=OUT_OF_RANGE`.
 - Nonzero `CMD` frames in `DISARMED` return `ERR,code=NOT_ARMED`.
 - Invalid `CMD` frames must not update the active command.
@@ -161,30 +168,37 @@ After `ARM` is accepted:
   Timeout handling must not automatically restore the stored pre-timeout
   command, and a `CMD` received while still `DISARMED` is rejected.
 
-ADR-015 fixes this required behavior. P-03A/P-03B source now checks timeout
-before processing RX bytes, zeros output/stored command, and enters `DISARMED`.
+ADR-015 fixes this required behavior. P-03A/P-03B checks timeout before
+processing RX bytes, zeros output/stored command, and enters `DISARMED`.
 Accepted `ARM` starts a fresh first-CMD window using the default 300 ms and the
-current tick. Source/static/full-build evidence passes; target runtime remains
-pending. P-03 does not implement sequence monotonicity, session freshness, RX
-queue purging, or cryptographic anti-replay; a queued or replayed `ARM` + `CMD`
-pair is outside the proven contract.
+current tick. The scoped 300 ms and canonical 500 ms target runtime and their
+safe restores passed. P-03 does not implement sequence monotonicity, session
+freshness, RX queue purging, or cryptographic anti-replay; a queued or replayed
+`ARM` + `CMD` pair is outside the proven contract.
 
-Timeout is not an `ERR` response case because no new frame arrived. Current
-P-03 `TEL` lets the receiver infer the event from `state=DISARMED` and stored
-`vx/w=0`. P-04A connects software-applied PWM telemetry; explicit timeout/E-stop
-reason and command age remain P-04B.
+Timeout is not an `ERR` response case because no new frame arrived. P-04B now
+reports the transition as `state=DISARMED,reason=CMD_TIMEOUT` while keeping the
+stored command and applied output at zero. `command_age_ms` is based on a
+separate accepted-CMD-only timestamp; it is not the internal first-CMD watchdog
+timestamp that `ARM` refreshes.
 
 ### MVP telemetry rule
 
-The first MVP keeps this telemetry shape:
+The current MVP keeps this telemetry shape:
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=50,right_pwm=50,fault=0\n
+TEL,t_ms=123456,state=ARMED,reason=NONE,command_age_ms=85,last_seq=42,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0\n
 ```
 
 Rules:
 
-- `state` uses at least `BOOT`, `DISARMED`, `ARMED`, and `FAULT`.
+- Current wire-level `state` values are `DISARMED`, `ARMED`, and `FAULT`.
+  Boot is represented as `state=DISARMED,reason=BOOT`.
+- `reason` is one of `BOOT`, `NONE`, `DISARM`, `CMD_TIMEOUT`, `ESTOP_ACTIVE`,
+  `ESTOP_LATCHED`, `ESTOP_RESET`, or `OUTPUT_ERROR`.
+- `command_age_ms=4294967295` means no `CMD` has been accepted since MCU boot.
+  Only a successfully applied and committed `CMD` resets the age. `ARM`, a
+  rejected `CMD`, `DISARM`, timeout, E-stop, and `ESTOP_RESET` do not reset it.
 - PC-only parser labs may send `batt_mv`, `left_cps`, and `right_cps` as zero.
 - `left_pwm/right_pwm` report the motor-output module's last successfully
   applied software cache in signed permille. `50` means 50 permille, or a 5%
@@ -208,7 +222,19 @@ The first UART MVP passes when these logs are captured:
 - telemetry confirms `DISARMED`, stored `vx/w=0`, and applied PWM `0/0` after
   command timeout
 - accepted forward CMD reports `left_pwm=50,right_pwm=50`; ARM-only remains `0/0`
+- no accepted CMD reports `command_age_ms=4294967295`; a successful CMD alone
+  resets the age, which continues increasing after timeout
+- timeout reports `state=DISARMED,reason=CMD_TIMEOUT` with zero stored command
+  and applied PWM `0/0`
+- direct-PC7 assertion/release reports `FAULT/ESTOP_ACTIVE` followed by
+  `FAULT/ESTOP_LATCHED`
 - `DISARM` -> `ACK` and later `TEL,state=DISARMED`
+
+P-04B is currently `PARTIAL` in the UART/software-state scope. The boot,
+accepted-CMD age, timeout, and direct-PC7 active-to-latched subvectors passed.
+The post-test all-hooks-zero isolated STM32/ESP32 builds also passed. Active
+reset rejection, released reset success, and target reflash/no-command safe
+runtime remain open.
 
 ## Sources
 
@@ -416,6 +442,32 @@ Rule:
 - `DISARM` should always be accepted if the frame is valid.
 - After disarm, PWM outputs go to zero and nonzero motor output is blocked.
 
+### ESTOP_RESET
+
+`ESTOP_RESET` requests a software E-stop latch clear after the physical input
+has returned healthy.
+
+Example:
+
+```text
+ESTOP_RESET,seq=45\n
+```
+
+Rules:
+
+- STM32 forces stored command and motor output to zero before evaluating reset.
+- If the E-stop input is still active, STM32 returns
+  `ERR,seq=45,type=ESTOP_RESET,code=ESTOP_ACTIVE`; it does not clear the latch or
+  create a new persistent reset-rejected reason. TEL remains
+  `state=FAULT,reason=ESTOP_ACTIVE`.
+- If the input is healthy, STM32 clears the software latch, enters `DISARMED`,
+  sets `reason=ESTOP_RESET`, and returns `ACK,seq=45,type=ESTOP_RESET`.
+- A successful reset does not arm the robot or restore an old command. Motion
+  still requires a new accepted `ARM` followed by a valid `CMD`.
+
+The active-reject and released-success runtime vectors with the new TEL schema
+are still open in P-04B.
+
 ### PING
 
 `PING` checks that the link is alive.
@@ -423,13 +475,13 @@ Rule:
 Example:
 
 ```text
-PING,seq=45\n
+PING,seq=46\n
 ```
 
 STM32 response:
 
 ```text
-PONG,seq=45,uptime_ms=123456\n
+PONG,seq=46,t_ms=123456\n
 ```
 
 ## 7. Telemetry Messages
@@ -441,30 +493,50 @@ PONG,seq=45,uptime_ms=123456\n
 Example:
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=415,fault=0\n
+TEL,t_ms=123456,state=ARMED,reason=NONE,command_age_ms=85,last_seq=42,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=120,right_cps=118,batt_mv=0,drop=0,err=0\n
 ```
 
-Recommended initial telemetry fields:
+Current telemetry fields:
 
 | Field | Unit | Meaning |
 | --- | --- | --- |
 | `t_ms` | ms | STM32 uptime |
-| `batt_mv` | mV | Measured battery voltage after ADC conversion |
-| `left_cps` | counts/s | Left encoder count rate |
-| `right_cps` | counts/s | Right encoder count rate |
-| `left_mmps` | mm/s | Left track speed estimate, optional after calibration |
-| `right_mmps` | mm/s | Right track speed estimate, optional after calibration |
+| `state` | text | Current safety state: `DISARMED`, `ARMED`, or `FAULT` |
+| `reason` | text | Current state-transition/stop marker defined below |
+| `command_age_ms` | ms | Time since the last successfully accepted CMD, or `UINT32_MAX` if none |
+| `last_seq` | count | Last sequence recorded by the current protocol behavior; not the age source |
+| `vx_mmps` | mm/s | Stored forward command; zero on stop paths |
+| `w_mradps` | millirad/s | Stored yaw command; zero on stop paths |
 | `left_pwm` | signed permille | Left software-applied motor target; not measured feedback |
 | `right_pwm` | signed permille | Right software-applied motor target; not measured feedback |
-| `state` | text | Safety state such as `BOOT`, `DISARMED`, `ARMED`, or `FAULT` |
-| `motor_allowed` | 0/1 | Whether STM32 safety gate allows nonzero motor output. Optional in the MVP |
-| `fault` | bitmask | Active fault flags |
+| `left_cps` | counts/s | Left encoder count rate |
+| `right_cps` | counts/s | Right encoder count rate |
+| `batt_mv` | mV | Current P-04B placeholder `0`; actual ADC source is P-05 |
+| `drop` | count | RX ring-buffer drop count |
+| `err` | count | Protocol/runtime error count |
 
 Telemetry fields should be stable once ESP32 dashboard parsing begins.
 
+Current `reason` values:
+
+| Value | Meaning |
+| --- | --- |
+| `BOOT` | Initial marker while the current state is `DISARMED` |
+| `NONE` | No active software stop reason |
+| `DISARM` | A valid `DISARM` was accepted |
+| `CMD_TIMEOUT` | Accepted-CMD timeout or ARM first-CMD window expiry |
+| `ESTOP_ACTIVE` | E-stop input is active HIGH/open-fault |
+| `ESTOP_LATCHED` | Input recovered but the software latch remains set |
+| `ESTOP_RESET` | Explicit reset was accepted with a healthy input |
+| `OUTPUT_ERROR` | Mapper or motor-output application failed and output was zeroed |
+
+The active-reset rejection is an `ERR` event, not another persistent reason.
+It leaves the current telemetry reason as `ESTOP_ACTIVE`.
+
 ### STATE
 
-`STATE` reports high-level controller state changes.
+`STATE` is a future event-frame candidate. The current MVP firmware does not
+emit a separate `STATE` frame; periodic `TEL` carries `state` and `reason`.
 
 Example:
 
@@ -472,7 +544,7 @@ Example:
 STATE,t_ms=123500,state=DISARMED,reason=BOOT\n
 ```
 
-Protocol-level state names:
+Candidate high-level state names:
 
 - `BOOT`
 - `DISARMED`
@@ -480,13 +552,15 @@ Protocol-level state names:
 - `FAULT`
 - `LOW_BATTERY`
 
-Command timeout is currently observable as `DISARMED` with zero stored command
-values. An explicit timeout-reason telemetry field is pending P-04; ADR-015
-does not define a separate `TIMEOUT_STOP` state.
+Current P-04B TEL reports command timeout as
+`state=DISARMED,reason=CMD_TIMEOUT` with zero stored command. ADR-015 does not
+define a separate `TIMEOUT_STOP` state.
 
 ### FAULT
 
-`FAULT` reports a fault event.
+`FAULT` is a future event-frame candidate. The current MVP firmware reports
+fault state and reason through periodic `TEL` and does not emit this separate
+frame.
 
 Example:
 
@@ -516,15 +590,16 @@ Possible error codes:
 
 | Code | Meaning |
 | --- | --- |
-| `BAD_FRAME` | Message could not be parsed |
-| `UNKNOWN_TYPE` | Unsupported frame type |
+| `MISSING_SEQ` | Missing or invalid `seq` |
 | `MISSING_FIELD` | Required field missing |
-| `BAD_VALUE` | Numeric conversion failure or malformed field value |
+| `BAD_TYPE` | Empty or unsupported frame type |
 | `OUT_OF_RANGE` | Field outside allowed range |
 | `NOT_ARMED` | Motion command rejected because robot is disarmed |
-| `LOW_BATTERY` | Motion command rejected by battery safety |
-| `FAULT_ACTIVE` | Fault state active |
-| `TIMEOUT_TOO_LONG` | Requested timeout exceeds STM32 limit |
+| `TIMEOUT_OUT_OF_RANGE` | Requested timeout is outside the accepted range |
+| `ESTOP_LATCHED` | ARM or CMD is rejected while the E-stop latch is set |
+| `ESTOP_ACTIVE` | `ESTOP_RESET` is rejected while the physical input is active |
+| `MAPPER_FAILED` | Drive-command mapping failed before output apply |
+| `MOTOR_OUTPUT_FAILED` | Motor-output apply or verification failed |
 
 Minimum safe behavior:
 
@@ -658,7 +733,6 @@ ownership, production UART routing, and timeout recovery policy.
 - Whether level shifting or buffering is needed for the actual modules.
 - Final command and telemetry rate. Current candidate is `CMD 20 Hz`, `TEL 10 Hz`.
 - Maximum application frame length and ring buffer size.
-- Whether unknown frame types return `ERR,code=UNKNOWN_TYPE` or are silently ignored.
 - Final fault bitmask definition.
 - Whether checksum should be added before Wi-Fi command forwarding.
 
@@ -675,15 +749,21 @@ freshness or anti-replay.
 
 The P-02C-2 historical checkpoint is `25/25`; P-03 reached `26/26` and passed
 the scoped 300/500 ms target timeout/recovery and safe-restore runs. P-04A
-connects software-applied signed PWM to STM32 TEL and the ESP32 parser/log.
-Current host/static discovery is `27/27 PASS`: firmware source contracts
-`23/23`, independent mapper vectors `2/2`, and UART frame vectors `2/2`.
-The STM32 incremental build passed with zero errors/warnings and ELF size
-`text=29428`, `data=172`, `bss=2832`. P-04A positive-symmetric `50/50`,
-timeout/ARM-only/DISARM zero, and hook-zero safe UART runtime passed. This is
-software-cache/UART evidence, not measured PWM, reverse/asymmetric sign,
-exact artifact linkage, physical setup, or motor evidence. P-04B reason/command
-age and P-05 battery are next.
+connected software-applied signed PWM to STM32 TEL and the ESP32 parser/log at
+the historical `27/27` checkpoint. P-04B adds `reason/command_age_ms` actual
+sources and required ESP32 parsing. Current host/static discovery passes all
+**28/28** tests: firmware source contracts `24/24`, independent mapper vectors
+`2/2`, and UART frame vectors `2/2`; all controlled hooks in the current source
+are `0U`.
+
+P-04B run02 passed the no-CMD sentinel, accepted-CMD-only age reset, and 500 ms
+`CMD_TIMEOUT` subvector. Run04 passed direct-PC7
+`ESTOP_ACTIVE -> ESTOP_LATCHED` in the UART/software-state scope. The post-test
+hook-zero isolated STM32/ESP32 builds passed. P-04B remains `PARTIAL`: active
+reset rejection, released reset success, and target reflash/no-command safe
+runtime are open. These UART logs are not measured PWM, conditioned E-stop,
+K1 rail-off, exact artifact
+linkage, physical setup, or motor evidence. Battery telemetry remains P-05.
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

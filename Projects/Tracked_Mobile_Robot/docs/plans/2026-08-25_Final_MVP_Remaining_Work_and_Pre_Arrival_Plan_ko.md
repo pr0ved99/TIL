@@ -3,7 +3,7 @@
 ## 문서 상태
 
 - 기준일: 2026-08-25
-- 상태: `ACTIVE / P-04A + ALL-SELECTED-INCOMING UPDATE 2026-08-29`
+- 상태: `ACTIVE / P-04B PARTIAL + ALL-SELECTED-INCOMING UPDATE 2026-08-29`
 - 목적: Final MVP까지 남은 작업의 임계 순서와 잔여 부품 대기 중 병렬 작업을 분리한다.
 - 현재 진행 기록: [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md)
 - 날짜별 실행 일정: [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md)
@@ -16,6 +16,7 @@
 ### 2026-08-29 current execution update
 
 현재 continuation은 [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md),
+[P-04B report 23](../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md),
 [P-04A report 22](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)와
 [incoming report 19](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를 따른다.
 
@@ -24,11 +25,14 @@
 | UNPOWERED COMPONENT SCREEN PASS | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, S2 momentary-NO, VO617A-3 diode/isolation, P6KE x3 identity/gross-short, F2 continuity/movement | 해당 component-level A-01 subset은 반복하지 않고 powered/integrated Gate로 trace |
 | RECEIVED / UNASSEMBLED | Loose 6P waterproof connector kit + separate 18 AWG | Mating-face numbering, qualified first-article crimp, 6x6 continuity/isolation, seal/retention 필요 |
 | ORDERED / NOT RECEIVED | `VH-30J`/`WX-03B` tooling | Complete 6P assembly와 powered coil test는 first-article crimp까지 blocked |
-| P-04A COMPLETE | Applied left/right signed PWM TEL -> ESP parser/log, current `27/27`, target UART + hook-0 safe runtime | P-04B reason/age와 P-05 battery로 진행; measured PWM/actual motor 주장 금지 |
+| P-04A COMPLETE / P-04B PARTIAL | Applied PWM과 reason/command-age TEL -> ESP parser/log, current `28/28`; P-04B no-CMD/accepted-CMD/timeout/direct-PC7 active-to-latched runtime subset와 hook-0 isolated build PASS | Active reset reject/released reset success same-run과 current all-hooks-`0U` target reflash/no-command runtime을 닫은 뒤 P-05; measured PWM/actual motor 주장 금지 |
 
-다음 카페 세션은 P-04B reason/command-age telemetry, 다음 집 세션은 plate dry-fit과 6P cavity
-orientation을 비파괴 기록한다. Tool 도착 뒤 spare 18 AWG terminal first-article crimp를 먼저
-검증한다. 이 update가 아래 2026-08-27 도착 요약보다 우선한다.
+다음 카페 세션은 P-04B active reset 거부 ERR+TEL pair, release 뒤 explicit reset 성공,
+all-hooks-`0U` 양 board reflash와 ARM/CMD TX 0 no-command safe runtime 순서로 닫는다. Hook-0
+isolated STM32/ESP32 build와 artifact hash 기록은 완료했다.
+그 뒤 P-05 battery로 이동한다. 다음 집 세션은 plate dry-fit과 6P cavity orientation을 비파괴
+기록하고, tool 도착 뒤 spare 18 AWG terminal first-article crimp를 먼저 검증한다. 이 update가
+아래 2026-08-27 도착 요약보다 우선한다.
 
 ### 2026-08-27 historical arrival update
 
@@ -224,20 +228,41 @@ Evidence boundary:
 
 ### `P-04` 실제 telemetry 값 연결
 
-상태: `P-04A COMPLETE / P-04B READY / BATTERY MOVED TO P-05`
+상태: `P-04A COMPLETE / P-04B PARTIAL / BATTERY MOVED TO P-05`
 
 P-04A에서 hard-coded `left_pwm/right_pwm=0`을 motor-output software cache의 signed permille과
-연결하고 ESP32 parser/log까지 확장했다. Current canonical `27/27`, STM32 build 0 errors/0 warnings,
+연결하고 ESP32 parser/log까지 확장했다. P-04A 당시 canonical `27/27`, STM32 build 0 errors/0 warnings,
 positive symmetric `50/50`, timeout/ARM-only/DISARM `0/0`과 hook-0 safe UART restore를 PASS했다.
 이는 measured PWM feedback이 아니며 reverse/asymmetric sign과 actual motor는 미검증이다.
+
+P-04B는 STM32 TEL과 ESP32 required parser/log에 `reason/command_age_ms`를 연결했고 current
+host/static `28/28`을 PASS했다. Target runtime에서는 accepted CMD 전 sentinel, accepted CMD에서만
+age reset, 500 ms timeout 뒤 age 지속 증가와 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset을
+확인했다. Active E-stop 중 reset 거부는 별도 persistent reason을 추가하지 않고
+`ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 계속 유지되는
+`TEL state=FAULT,reason=ESTOP_ACTIVE`의 같은-run 조합으로 식별한다. 이 reset-reject pair,
+release 뒤 explicit reset의 `ACK + DISARMED/ESTOP_RESET`과 current all-hooks-`0U` source의
+isolated STM32/ESP32 build는 PASS했다. 양 board reflash/no-command safe runtime은 아직 OPEN이다.
 
 MVP telemetry 우선순위:
 
 1. `[COMPLETE — P-04A]` applied left/right signed PWM target
-2. `[P-04B]` E-stop active/latch/reset-rejected 식별
-3. `[P-04B]` command age 또는 timeout 상태
+2. `[P-04B PARTIAL]` E-stop active/latch runtime PASS; reset-rejected ERR+TEL pair와 reset success OPEN
+3. `[P-04B PARTIAL]` command age/timeout runtime subset와 hook-0 isolated build PASS; target reflash/runtime restore OPEN
 4. `[P-05]` battery millivolt
 5. `[EXISTING PASS]` left/right CPS
+
+P-04B closeout 순서는 고정한다.
+
+1. Active E-stop 상태에서 reset 요청을 보내 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와
+   `TEL state=FAULT,reason=ESTOP_ACTIVE`가 같은 run에서 유지되는지 기록한다.
+2. PC7 healthy restore 뒤 explicit reset의 ACK와 `DISARMED/ESTOP_RESET/PWM 0/0`을 기록한다.
+3. `[COMPLETE]` 모든 controlled hook이 `0U`인 source의 isolated STM32/ESP32 build와 artifact
+   hash를 보존한다.
+4. Hook-0 image를 STM32와 ESP32에 reflash한다.
+5. Motor/LiPo disconnected 상태에서 scripted ARM/CMD TX 0과 no-command
+   `DISARMED/PWM 0/0` safe runtime을 기록한다.
+6. 위 다섯 항목 뒤 P-04B를 COMPLETE로 전환하고 P-05 battery를 시작한다.
 
 ### `P-05` battery ADC와 low-voltage 설계
 

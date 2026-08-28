@@ -673,6 +673,98 @@ class FirmwareContractTest(unittest.TestCase):
             "s_telemetry.right_pwm",
         )
 
+    def test_reason_and_command_age_telemetry_contract(self) -> None:
+        protocol_source = self.source["protocol_c"]
+        esp_source = self.source["esp_c"]
+
+        protocol_defines = parse_defines(protocol_source)
+        esp_defines = parse_defines(esp_source)
+
+        self.assertEqual(
+            integer_define(protocol_defines, "UART_TX_BUFFER_SIZE"),
+            384,
+        )
+        self.assertEqual(
+            integer_define(protocol_defines, "COMMAND_AGE_INVALID_MS"),
+            0xFFFFFFFF,
+        )
+        self.assertEqual(
+            integer_define(esp_defines, "LINE_BUF_SIZE"),
+            384,
+        )
+
+        command_age = extract_function(
+            protocol_source,
+            "command_age_ms",
+        )
+        self.assert_tokens_in_order(
+            command_age,
+            "if(s_has_accepted_cmd == 0U)",
+            "return COMMAND_AGE_INVALID_MS;",
+            "return now_ms - s_last_accepted_cmd_ms;",
+        )
+
+        send_tel = extract_function(protocol_source, "send_tel")
+        self.assert_tokens_in_order(
+            send_tel,
+            "uint32_t now_ms = HAL_GetTick();",
+            '"TEL,t_ms=%lu,state=%s,reason=%s,"',
+            '"command_age_ms=%lu,last_seq=%lu,"',
+            "reason_name(s_reason)",
+            "(unsigned long)command_age_ms(now_ms)",
+        )
+
+        handle_cmd = extract_function(protocol_source, "handle_cmd")
+        self.assert_tokens_in_order(
+            handle_cmd,
+            "s_last_cmd_ms = HAL_GetTick();",
+            "s_last_accepted_cmd_ms = s_last_cmd_ms;",
+            "s_has_accepted_cmd = 1U;",
+            "s_reason = ROBOT_REASON_NONE;",
+            'send_ack(frame->seq, "CMD");',
+        )
+
+        protocol_init = extract_function(protocol_source, "uart_mvp_init")
+        self.assert_tokens_in_order(
+            protocol_init,
+            "s_reason = ROBOT_REASON_BOOT;",
+            "s_has_accepted_cmd = 0U;",
+            "s_last_accepted_cmd_ms = 0U;",
+            "(void)estop_enforce_latch();",
+        )
+
+        compact_protocol = compact_c(protocol_source)
+        self.assertIn(
+            "s_reason=ROBOT_REASON_CMD_TIMEOUT;",
+            compact_protocol,
+        )
+        self.assertIn(
+            "s_reason=(input_active!=0U)"
+            "?ROBOT_REASON_ESTOP_ACTIVE"
+            ":ROBOT_REASON_ESTOP_LATCHED;",
+            compact_protocol,
+        )
+        self.assertEqual(
+            compact_protocol.count(
+                "s_reason=ROBOT_REASON_OUTPUT_ERROR;"
+            ),
+            3,
+        )
+
+        self.assert_tokens_in_order(
+            esp_source,
+            "char reason[32];",
+            "uint32_t command_age_ms;",
+            'parse_string_field('
+            'line,"reason=",parsed.reason,sizeof(parsed.reason))&&',
+            'parse_u32_field('
+            'line,"command_age_ms=",&parsed.command_age_ms)&&',
+            '" reason=%s"',
+            '" command_age_ms=%" PRIu32',
+            "s_telemetry.reason",
+            "s_telemetry.command_age_ms",
+        )
+
     def test_signed_motor_output_adapter_contract(self) -> None:
         header = compact_c(self.source["motor_output_h"])
         self.assertIn(
@@ -780,6 +872,7 @@ class FirmwareContractTest(unittest.TestCase):
             "motor_output_stop_all();"
             "s_vx_mmps = 0;"
             "s_w_mradps = 0;"
+            "s_reason = ROBOT_REASON_OUTPUT_ERROR;"
             'send_err(frame->seq, "CMD", "MAPPER_FAILED");'
             "return;"
             "}"
@@ -789,6 +882,7 @@ class FirmwareContractTest(unittest.TestCase):
             "motor_output_stop_all();"
             "s_vx_mmps = 0;"
             "s_w_mradps = 0;"
+            "s_reason = ROBOT_REASON_OUTPUT_ERROR;"
             'send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");'
             "return;"
         )
@@ -829,6 +923,9 @@ class FirmwareContractTest(unittest.TestCase):
             "s_w_mradps = frame->w_mradps;",
             "s_cmd_timeout_ms = frame->timeout_ms;",
             "s_last_cmd_ms = HAL_GetTick();",
+            "s_last_accepted_cmd_ms = s_last_cmd_ms;",
+            "s_has_accepted_cmd = 1U;",
+            "s_reason = ROBOT_REASON_NONE;",
             'send_ack(frame->seq, "CMD");',
         )
 
@@ -963,6 +1060,7 @@ class FirmwareContractTest(unittest.TestCase):
             compact_c(
                 "if (estop_enforce_latch() == 0U) {"
                 "s_state = ROBOT_DISARMED;"
+                "s_reason = ROBOT_REASON_DISARM;"
                 "}"
             ),
             disarm_case,
@@ -988,6 +1086,7 @@ class FirmwareContractTest(unittest.TestCase):
         clear_to_disarmed = compact_c(
             "s_estop_latched = 0U;"
             "s_state = ROBOT_DISARMED;"
+            "s_reason = ROBOT_REASON_ESTOP_RESET;"
             "s_last_seq = frame.seq;"
             'send_ack(frame.seq, "ESTOP_RESET");'
             "return;"
@@ -1085,7 +1184,9 @@ class FirmwareContractTest(unittest.TestCase):
             "s_vx_mmps=0;s_w_mradps=0;"
             "s_cmd_timeout_ms=CMD_TIMEOUT_DEFAULT_MS;"
             "s_last_cmd_ms=HAL_GetTick();"
-            "s_state=ROBOT_ARMED;s_last_seq=frame.seq;"
+            "s_state=ROBOT_ARMED;"
+            "s_reason=ROBOT_REASON_NONE;"
+            "s_last_seq=frame.seq;"
             "send_ack(frame.seq,\"ARM\");return;",
             handle_line,
         )

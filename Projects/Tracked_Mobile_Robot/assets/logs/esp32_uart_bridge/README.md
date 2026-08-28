@@ -173,6 +173,22 @@ failure는 없었다.
 로그 자체가 증명하지 않는다. 상세 판정은
 [`../../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../../../docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
+## 2026-08-29 P-04B Stop Reason And Command Age Telemetry
+
+| File | Summary | SHA-256 |
+| --- | --- | --- |
+| [`2026-08-29_p04b_reason_command_age_clean_boot_runtime_run02.txt`](2026-08-29_p04b_reason_command_age_clean_boot_runtime_run02.txt) | TEL 99개: BOOT 5, sentinel 9, accepted-CMD age `85~485`, timeout 첫 safe age `585`, fresh-CMD-only reset과 final DISARM 74 TEL/7.3 s PWM `0/0` | `D12767C24948068CA1F9CEAB6AFF42D6A51F404E24E0A0F31F8C96F9411F55EE` |
+| [`2026-08-29_p04b_estop_active_latched_runtime_run03.txt`](2026-08-29_p04b_estop_active_latched_runtime_run03.txt) | `DISARMED/DISARM` 5 -> `FAULT/ESTOP_ACTIVE` 6; 파일명과 달리 latched sample은 없어 active 보조 증거로만 사용 | `BD93E2C400782C302AEAAE3CA62C59DF50B5B626D1DA1AF2B3C125D7CDE9D24D` |
+| [`2026-08-29_p04b_estop_latched_runtime_run04.txt`](2026-08-29_p04b_estop_latched_runtime_run04.txt) | TEL 55개: `DISARM 6 -> ESTOP_ACTIVE 23 -> ESTOP_LATCHED 26`; age 연속 증가, 전부 PWM `0/0` | `2507B8BCA8D0C6908D9C9248A3A053FEC097E1B410948B30C85F3F49169A9F1B` |
+
+Run02 startup에는 `RX_DESYNC` 1회와 의도한 `NOT_ARMED` 3회가 있어 `err=4`로 누적됐다.
+Run04 latched 구간에는 PWM `0/0` 상태에서 `right_cps=-20` 1회와 `+10` 2회가 있어 별도 encoder
+observation으로 남긴다. 세 로그에는 `ESTOP_RESET` TX/ACK/ERR이 없다. Current hook-0 source의
+격리 STM32/ESP32 build는 PASS했지만 target reflash 후 safe runtime은 없다. 따라서 P-04B는
+timeout/active/latch subset만 PASS다.
+상세 판정은
+[`../../../docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](../../../docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
+
 ## Current Evidence Boundary And Safety State
 
 Raw monitor log는 UART text와 순서를 보존하지만 다음 물리 조건이나 binary identity를

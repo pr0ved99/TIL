@@ -21,30 +21,43 @@
  * 100 permille = 10% initial production output cap.
  * Keep provisional until lifted motor verification.
  */
-#define CMD_OUTPUT_DUTY_CAP_PERMILLE 100U
-#define UART_FRAME_MAX_LEN    127u
-#define UART_LINE_BUFFER_SIZE (UART_FRAME_MAX_LEN + 2u)
-#define TEL_PERIOD_MS         100u
+#define CMD_OUTPUT_DUTY_CAP_PERMILLE    100U
+#define UART_FRAME_MAX_LEN              127u
+#define UART_LINE_BUFFER_SIZE           (UART_FRAME_MAX_LEN + 2u)
+#define UART_TX_BUFFER_SIZE             384u
+#define TEL_PERIOD_MS                   100u
+#define COMMAND_AGE_INVALID_MS          0xFFFFFFFFu
 
-#define UART_MVP_OUTPUT_TEST_ENABLED       0U
-#define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE 100U
-#define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED 0U
+#define UART_MVP_OUTPUT_TEST_ENABLED                        0U
+#define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE                  100U
+#define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED         0U
+#define UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED    0U
 #define UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
 #define UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
+#define UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED  0U
 #define UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED 0U
-#define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED       0U
-#define UART_MVP_SUPPRESS_PONG_TEST_ENABLED         0U
+#define UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED   0U
+#define UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED  0U
+#define UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED  0U
+#define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED           0U
+#define UART_MVP_SUPPRESS_PONG_TEST_ENABLED             0U
 
 typedef enum{
     ROBOT_DISARMED = 0,
     ROBOT_ARMED,
     ROBOT_FAULT
 } robot_state_t;
+
+typedef enum {
+    ROBOT_REASON_BOOT = 0,
+    ROBOT_REASON_NONE,
+    ROBOT_REASON_DISARM,
+    ROBOT_REASON_CMD_TIMEOUT,
+    ROBOT_REASON_ESTOP_ACTIVE,
+    ROBOT_REASON_ESTOP_LATCHED,
+    ROBOT_REASON_ESTOP_RESET,
+    ROBOT_REASON_OUTPUT_ERROR
+} robot_reason_t;
 
 static UART_HandleTypeDef *s_uart;
 static uint8_t s_rx_byte;
@@ -56,6 +69,9 @@ static uint8_t s_line_overflow;
 static volatile uint8_t s_rx_desync_pending;
 static uint8_t s_rx_discard_until_lf;
 
+static robot_reason_t s_reason = ROBOT_REASON_BOOT;
+static uint8_t s_has_accepted_cmd;
+static uint32_t s_last_accepted_cmd_ms;
 static robot_state_t s_state = ROBOT_DISARMED;
 static uint8_t s_estop_latched;
 static uint32_t s_last_seq;
@@ -91,8 +107,39 @@ static const char *state_name(robot_state_t state){
     }
 }
 
+static const char *reason_name(robot_reason_t reason){
+    switch (reason){
+        case ROBOT_REASON_BOOT:
+            return "BOOT";
+        case ROBOT_REASON_NONE:
+            return "NONE";
+        case ROBOT_REASON_DISARM:
+            return "DISARM";
+        case ROBOT_REASON_CMD_TIMEOUT:
+            return "CMD_TIMEOUT";
+        case ROBOT_REASON_ESTOP_ACTIVE:
+            return "ESTOP_ACTIVE";
+        case ROBOT_REASON_ESTOP_LATCHED:
+            return "ESTOP_LATCHED";
+        case ROBOT_REASON_ESTOP_RESET:
+            return "ESTOP_RESET";
+        case ROBOT_REASON_OUTPUT_ERROR:
+            return "OUTPUT_ERROR";
+        default:
+            return "UNKNOWN";
+    }
+}
+
+static uint32_t command_age_ms(uint32_t now_ms){
+    if(s_has_accepted_cmd == 0U){
+        return COMMAND_AGE_INVALID_MS;
+    }
+
+    return now_ms - s_last_accepted_cmd_ms;
+}
+
 static void uart_sendf(const char *fmt, ...){
-    char tx[256];
+    char tx[UART_TX_BUFFER_SIZE];
     va_list args;
     int len;
 
@@ -133,25 +180,29 @@ static void send_err(uint32_t seq, const char *type, const char *code){
 }
 
 static void send_tel(void){
+    uint32_t now_ms = HAL_GetTick();
     motor_output_applied_t applied =
         motor_output_get_applied();
 
-    uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%lu,"
+    uart_sendf("TEL,t_ms=%lu,state=%s,reason=%s,"
+               "command_age_ms=%lu,last_seq=%lu,"
                "vx_mmps=%ld,w_mradps=%ld,"
                "left_pwm=%ld,right_pwm=%ld,"
                "left_cps=%ld,right_cps=%ld,"
                "batt_mv=0,drop=%lu,err=%lu\n",
-               (unsigned long)HAL_GetTick(),
-               state_name(s_state),
-               (unsigned long)s_last_seq,
-               (long)s_vx_mmps,
-               (long)s_w_mradps,
-               (long)applied.left_signed_permille,
-               (long)applied.right_signed_permille,
-               (long)s_left_cps,
-               (long)s_right_cps,
-               (unsigned long)ring_buffer_dropped(&s_rx_rb),
-               (unsigned long)s_error_count);
+                (unsigned long)now_ms,
+                state_name(s_state),
+                reason_name(s_reason),
+                (unsigned long)command_age_ms(now_ms),
+                (unsigned long)s_last_seq,
+                (long)s_vx_mmps,
+                (long)s_w_mradps,
+                (long)applied.left_signed_permille,
+                (long)applied.right_signed_permille,
+                (long)s_left_cps,
+                (long)s_right_cps,
+                (unsigned long)ring_buffer_dropped(&s_rx_rb),
+                (unsigned long)s_error_count);
 }
 
 static const char *parse_error_code(uart_frame_parse_result_t result){
@@ -202,11 +253,16 @@ static uint8_t estop_input_active(void) {
 }
 
 static void estop_latch_and_force_safe(void) {
+    uint8_t input_active = estop_input_active();
+
     motor_output_stop_all();
     s_vx_mmps = 0;
     s_w_mradps = 0;
     s_estop_latched = 1U;
     s_state = ROBOT_FAULT;
+    s_reason = (input_active != 0U)
+        ? ROBOT_REASON_ESTOP_ACTIVE
+        : ROBOT_REASON_ESTOP_LATCHED;
 }
 
 static uint8_t estop_enforce_latch(void) {
@@ -232,6 +288,7 @@ static void command_timeout_enforce(void) {
     s_vx_mmps = 0;
     s_w_mradps = 0;
     s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_CMD_TIMEOUT;
 }
 
 static void handle_cmd(const uart_frame_t *frame){
@@ -267,6 +324,7 @@ static void handle_cmd(const uart_frame_t *frame){
         motor_output_stop_all();
         s_vx_mmps = 0;
         s_w_mradps = 0;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
         send_err(frame->seq, "CMD", "MAPPER_FAILED");
         return;
     }
@@ -287,6 +345,7 @@ static void handle_cmd(const uart_frame_t *frame){
                 motor_output_stop_all();
                 s_vx_mmps = 0;
                 s_w_mradps = 0;
+                s_reason = ROBOT_REASON_OUTPUT_ERROR;
                 send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
                 return;
             }
@@ -302,6 +361,7 @@ static void handle_cmd(const uart_frame_t *frame){
         motor_output_stop_all();
         s_vx_mmps = 0;
         s_w_mradps = 0;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
         send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
         return;
     }
@@ -315,6 +375,9 @@ static void handle_cmd(const uart_frame_t *frame){
     s_w_mradps = frame->w_mradps;
     s_cmd_timeout_ms = frame->timeout_ms;
     s_last_cmd_ms = HAL_GetTick();
+    s_last_accepted_cmd_ms = s_last_cmd_ms;
+    s_has_accepted_cmd = 1U;
+    s_reason = ROBOT_REASON_NONE;
 
     send_ack(frame->seq, "CMD");
 }
@@ -373,6 +436,7 @@ static void handle_line(const char *line, size_t line_len){
             s_w_mradps = 0;
             if (estop_enforce_latch() == 0U) {
                 s_state = ROBOT_DISARMED;
+                s_reason = ROBOT_REASON_DISARM;
             }
             s_last_seq = frame.seq;
 #if UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
@@ -493,6 +557,7 @@ static void handle_line(const char *line, size_t line_len){
             s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
             s_last_cmd_ms = HAL_GetTick();
             s_state = ROBOT_ARMED;
+            s_reason = ROBOT_REASON_NONE;
             s_last_seq = frame.seq;
             send_ack(frame.seq, "ARM");
             return;
@@ -514,6 +579,7 @@ static void handle_line(const char *line, size_t line_len){
 
             s_estop_latched = 0U;
             s_state = ROBOT_DISARMED;
+            s_reason = ROBOT_REASON_ESTOP_RESET;
             s_last_seq = frame.seq;
             send_ack(frame.seq, "ESTOP_RESET");
             return;
@@ -541,6 +607,9 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_rx_discard_until_lf = 0u;
 
     s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_BOOT;
+    s_has_accepted_cmd = 0U;
+    s_last_accepted_cmd_ms = 0U;
     s_estop_latched = 0U;
     s_last_seq = 0;
     s_stale_disarm_ack_sent = 0u;

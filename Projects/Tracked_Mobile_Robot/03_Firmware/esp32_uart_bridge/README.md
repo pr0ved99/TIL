@@ -97,8 +97,14 @@ sequence는 시작하지 않는다.
 모터를 분리한 통제된 Gate C에서만 임시로 사용하며, production 명령 경로로
 간주하지 않는다.
 
-> **Current source status — 2026-08-07:** ESP32 `0U/1000 ms`와 STM32의 모든
-> controlled hook이 `0U`다. 이 current source의 contract `15/15`, restored protocol source
+> **Current source/static status — 2026-08-29:** ESP32와 STM32의 모든 controlled hook이
+> `0U`이고 canonical host/static test는 `28/28 PASS`다. P-04B controlled runtime은
+> reason/command-age와 direct-PC7 active/latch UART subset을 확인했다. 이 hook-0 source의
+> 격리 STM32/ESP32 build도 PASS했지만 target reflash/no-command safe runtime은 아직 수행하지 않았다. 따라서 current
+> P-04B safe target 상태는 `OPEN`이며 source/static PASS를 board runtime PASS로 읽으면 안 된다.
+
+> **Historical source status — 2026-08-07:** ESP32 `0U/1000 ms`와 STM32의 모든
+> controlled hook이 `0U`였다. 당시 contract `15/15`, restored protocol source
 > recompile/link `0 errors / 0 warnings`, overflow string 부재와 reflash verify가 PASS했다.
 > 별도 post-test board log의 observed UART behavior도 PASS했다. Log는 warning/retry/parser
 > error 없는 exact ACK/PONG/READY, READY 후 14.43 s, post-READY TEL 145/145
@@ -150,12 +156,13 @@ PING,seq=<u32>
 DISARM,seq=<u32>
 ARM,seq=<u32>                              # controlled bench only
 CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>
+ESTOP_RESET,seq=<u32>
 
 STM32 -> ESP32
 PONG,seq=<u32>,...
 ACK,seq=<u32>,type=<text>,...
 ERR,seq=<u32>,type=<text>,code=<text>,...
-TEL,t_ms=<u32>,state=<text>,last_seq=<u32>,vx_mmps=<i32>,...
+TEL,t_ms=<u32>,state=<text>,reason=<text>,command_age_ms=<u32>,last_seq=<u32>,...
 ```
 
 전체 계약은
@@ -204,9 +211,11 @@ python -m unittest discover `
 | Trailing-comma controlled runtime | **PASS — subvector** | malformed field-list reject 1회, 500 ms same-seq retry, exact ACK/PONG 뒤 READY; TEL 150/150 safe, ARM/CMD/failure 0 |
 | Post-trailing-comma safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 READY 후 15.51 s, TEL 160/160 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
 | Required-`seq` uint32-overflow controlled runtime | **PASS — subvector** | overflow ACK parse reject 1회, 500 ms same-seq retry, exact ACK/PONG 뒤 READY; post-READY TEL 140/140 safe, ARM/CMD/failure 0 |
-| Current post-test safe source/static/build/artifact/flash | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; restored protocol source recompile/link `0 errors / 0 warnings`; overflow string absent; safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; reflash PASS |
+| Historical post-test safe source/static/build/artifact/flash | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; restored protocol source recompile/link `0 errors / 0 warnings`; overflow string absent; safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; reflash PASS |
 | Post-overflow safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 READY 후 14.43 s, post-READY TEL 145/145 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
-| Current final safe source/runtime | **PASS — behavior** | ESP/STM all-hooks-`0U`, contract `15/15`; motor-output safety 뒤 exact startup, retry/test/parser error/ARM/CMD 0, READY 후 15.4 s와 post-READY TEL 155/155 safe |
+| Historical final safe source/runtime | **PASS — behavior** | ESP/STM all-hooks-`0U`, contract `15/15`; motor-output safety 뒤 exact startup, retry/test/parser error/ARM/CMD 0, READY 후 15.4 s와 post-READY TEL 155/155 safe |
+| P-04A applied-output TEL | **PASS — scoped runtime** | signed software-cached PWM 전달과 hook-0 50-TEL safe runtime; physical PWM/sign coverage는 별도 경계 |
+| P-04B reason/command age | **PARTIAL** | current `28/28`와 hook-0 isolated build PASS; no-CMD sentinel, accepted-CMD age, timeout, direct-PC7 active/latch UART subset PASS. Active reset reject/released reset success와 target reflash/runtime restore OPEN |
 
 2026-07-20과 fixed-delay 2026-08-03 로그는 역사적 baseline이다. 새
 response-gated runtime의 별도 원본과 판정은
@@ -250,18 +259,21 @@ Historical post-trailing safe full-build 원본은
   재시도와 exact ACK/PONG 뒤 READY; post-READY TEL 140/140 safe, ARM/CMD 0
 - earlier safe image에서 READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`,
   ARM/CMD TX 0
-- Current post-overflow all-hooks-`0U` source/static/protocol rebuild `0/0`/controlled-string 부재/reflash PASS
+- Historical post-overflow all-hooks-`0U` source/static/protocol rebuild `0/0`/controlled-string 부재/reflash PASS
 - 별도 board log에서 warning/retry/parser error 없이 READY 뒤 14.43 s, post-READY TEL 145/145
   `DISARMED/zero/error 0`, ARM/CMD/error 0인 observed UART behavior PASS; exact runtime-to-ELF linkage와 physical setup provenance pending
 - embedded CR, control byte `0x01`, overlong startup response 거부와 same-seq retry 뒤 exact response recovery PASS
 - STM32 malformed/unknown command 8/8 거부, TEL 200/200 safe와 final matching PING/PONG recovery PASS
 - Final all-hooks-`0U` exact startup, retry/test/parser error/ARM/CMD 0, post-READY TEL 155/155 safe over 15.4 s
+- P-04A applied-output TEL과 P-04B reason/command-age, direct-PC7 active/latch UART subset PASS
 
 남은 순서:
 
-1. Gate C와 motor-output safety evidence를 보존하고 관련 firmware 동작이 바뀌지 않는 한 controlled vectors를 반복하지 않는다.
-2. 네 motor input의 external `10 kΩ` pull-down을 RevB/permanent wiring에 반영하고 continuity를 확인한다.
-3. Board power/back-power와 Physical E-stop `T-ESTOP-001~005`를 닫은 뒤에만 first powered motor로 이동한다.
+1. Motor/LiPo disconnected 상태에서 P-04B active reset reject와 released reset success를 새 TEL schema로 기록한다.
+2. PASS한 all-hooks-`0U` 격리 build 산출물을 양 board에 reflash하고 ARM/CMD TX 0,
+   `DISARMED/PWM 0/0` safe runtime을 보존한다.
+3. Gate C와 motor-output safety evidence를 보존하고 관련 firmware 동작이 바뀌지 않는 한 기존 controlled vectors를 반복하지 않는다.
+4. Board power/back-power와 Physical E-stop `T-ESTOP-001~005A`를 닫은 뒤에만 first powered motor로 이동한다.
 
 ## 프로젝트 구조
 

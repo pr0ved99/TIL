@@ -62,10 +62,11 @@ COMMAND,key=value,...
 | `PONG` | STM32 -> PC | `PONG,seq=1,t_ms=497650` |
 | `ARM` | PC -> STM32 | `ARM,seq=3` |
 | `DISARM` | PC -> STM32 | `DISARM,seq=26` |
+| `ESTOP_RESET` | PC/ESP32 -> STM32 | `ESTOP_RESET,seq=27` |
 | `CMD` | PC -> STM32 | `CMD,seq=20,vx_mmps=50,w_mradps=0,timeout_ms=500` |
 | `ACK` | STM32 -> PC | `ACK,seq=20,type=CMD,t_ms=1339233` |
 | `ERR` | STM32 -> PC | `ERR,seq=25,type=CMD,code=OUT_OF_RANGE,t_ms=1634272` |
-| `TEL` | STM32 -> PC/ESP32 | `TEL,t_ms=...,state=ARMED,last_seq=20,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,...` |
+| `TEL` | STM32 -> PC/ESP32 | `TEL,t_ms=...,state=ARMED,reason=NONE,command_age_ms=85,last_seq=20,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,...` |
 
 ## Requirements
 
@@ -98,6 +99,7 @@ Acceptance criteria:
 - `ARM` 수락 시 `ACK,seq=N,type=ARM`
 - valid `CMD` 수락 시 `ACK,seq=N,type=CMD`
 - `DISARM` 수락 시 `ACK,seq=N,type=DISARM`
+- E-stop input이 healthy인 상태의 `ESTOP_RESET` 수락 시 `ACK,seq=N,type=ESTOP_RESET`
 
 ### REQ-UART-004: ERR includes command type, sequence, and code
 
@@ -107,6 +109,8 @@ Acceptance criteria:
 
 - `ERR`에는 `seq`, `type`, `code`가 포함된다.
 - 대표 error code는 `NOT_ARMED`, `OUT_OF_RANGE`, `TIMEOUT_OUT_OF_RANGE`를 포함한다.
+- E-stop input이 active인 동안의 `ESTOP_RESET`은
+  `ERR,seq=N,type=ESTOP_RESET,code=ESTOP_ACTIVE`로 거부한다.
 
 ### REQ-UART-005: TEL reports software-applied signed motor output
 
@@ -128,6 +132,49 @@ Acceptance criteria:
 위 수용 기준의 현재 검증 범위를 통과했다. Reverse/asymmetric sign과 same-run physical pin
 상관계측은 아직 남아 있다. 상세 결과는
 [`22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
+
+### REQ-UART-006: TEL reports current reason and accepted-command age
+
+STM32 `TEL`은 현재 software state 전이 원인을 `reason`으로, MCU boot 뒤 마지막으로 성공
+적용한 accepted `CMD` 이후 경과 시간을 unsigned `command_age_ms`로 보고해야 한다. ESP32
+strict parser/log는 두 field를 required field로 보존해야 한다.
+
+현재 wire-level `reason` 값과 의미:
+
+| Value | Meaning |
+| --- | --- |
+| `BOOT` | Boot 초기의 `DISARMED` marker |
+| `NONE` | 현재 active stop reason이 없음 |
+| `DISARM` | valid `DISARM`이 수락됨 |
+| `CMD_TIMEOUT` | accepted CMD timeout 또는 ARM 뒤 first-CMD window 만료 |
+| `ESTOP_ACTIVE` | E-stop input이 active HIGH/open-fault 상태 |
+| `ESTOP_LATCHED` | E-stop input은 healthy로 복구됐지만 software latch가 남음 |
+| `ESTOP_RESET` | Healthy input에서 explicit reset이 수락됨 |
+| `OUTPUT_ERROR` | Mapper 또는 motor-output 적용 실패로 output을 zero 처리함 |
+
+Acceptance criteria:
+
+- MCU boot 뒤 accepted `CMD`가 한 번도 없으면 `command_age_ms=4294967295`
+  (`UINT32_MAX`)를 보고한다.
+- Successful `CMD` 적용·commit만 age 기준 시각을 갱신한다. `ARM`, rejected `CMD`, `DISARM`,
+  timeout, E-stop active/latch와 `ESTOP_RESET`은 age를 reset하지 않는다.
+- 500 ms CMD timeout 뒤 `TEL`은 `state=DISARMED,reason=CMD_TIMEOUT`, zero stored command와
+  `left_pwm=0,right_pwm=0`을 보고하며 age는 timeout 이후에도 계속 증가한다.
+- E-stop input active 시 `state=FAULT,reason=ESTOP_ACTIVE`, input release 뒤 explicit reset
+  전에는 `state=FAULT,reason=ESTOP_LATCHED`를 보고한다.
+- Active 상태의 `ESTOP_RESET` 거부는 새 persistent reason을 만들지 않는다. 요청은
+  `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`로 식별하고 뒤이은 TEL은
+  `reason=ESTOP_ACTIVE`를 유지한다.
+- Input release 뒤 successful `ESTOP_RESET`은 ACK 후
+  `state=DISARMED,reason=ESTOP_RESET`으로 관찰돼야 하며 implicit ARM 또는 command replay를
+  만들면 안 된다.
+
+현재 판정은 **PARTIAL — UART/software-state scope**다. 2026-08-29 P-04B run02는 no-CMD
+sentinel, accepted-CMD-only age reset과 500 ms timeout의 `CMD_TIMEOUT`을 통과했고, run04는
+direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`를 통과했다. 새 TEL schema에서 active reset reject와
+released reset success는 아직 실행하지 않았으며, 시험 뒤 all-hooks-`0U` source의 isolated
+STM32/ESP32 build는 PASS했지만 target reflash/no-command safe runtime은 open이다. 상세 결과와 evidence boundary는
+[`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ### REQ-SAFE-001: CMD is rejected before ARM
 
