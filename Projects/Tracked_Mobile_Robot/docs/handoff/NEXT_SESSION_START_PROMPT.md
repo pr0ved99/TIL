@@ -19,23 +19,25 @@ commit/push하지 마라.
 그다음 아래 파일을 실제 저장소에서 순서대로 처음부터 끝까지 읽어라.
 
 1. Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md
-2. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-29_progress.md
-3. Projects/Tracked_Mobile_Robot/docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md
-4. Projects/Tracked_Mobile_Robot/docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md
-5. Projects/Tracked_Mobile_Robot/docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md
-6. Projects/Tracked_Mobile_Robot/docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md
-7. Projects/Tracked_Mobile_Robot/docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md
-8. Projects/Tracked_Mobile_Robot/docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md
-9. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
-10. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
-11. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
-12. Projects/Tracked_Mobile_Robot/01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md
-13. Projects/Tracked_Mobile_Robot/01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md
-14. Projects/Tracked_Mobile_Robot/01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md
-15. Projects/Tracked_Mobile_Robot/09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md
+2. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-30_progress.md
+3. Projects/Tracked_Mobile_Robot/docs/progress/2026-08-29_progress.md
+4. Projects/Tracked_Mobile_Robot/docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md
+5. Projects/Tracked_Mobile_Robot/docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md
+6. Projects/Tracked_Mobile_Robot/docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md
+7. Projects/Tracked_Mobile_Robot/docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md
+8. Projects/Tracked_Mobile_Robot/docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md
+9. Projects/Tracked_Mobile_Robot/docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md
+10. Projects/Tracked_Mobile_Robot/docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md
+11. Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md
+12. Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md
+13. Projects/Tracked_Mobile_Robot/01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md
+14. Projects/Tracked_Mobile_Robot/01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md
+15. Projects/Tracked_Mobile_Robot/01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md
+16. Projects/Tracked_Mobile_Robot/09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md
 
 과거 handoff는 역사 기록이다. 현재 continuation source는
-2026-08-29_progress.md와 report 23다. Report 22는 바로 앞 P-04A baseline이고 reports
+2026-08-30_progress.md다. 2026-08-29_progress.md와 report 23은 바로 앞 P-04B runtime
+checkpoint이고 report 22는 P-04A baseline이며 reports
 19/20/21은 hardware/P-03 evidence다.
 2026-08-26 pre-arrival schedule은 역사 기록이다.
 2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md는 authoritative scope/sequence다.
@@ -54,11 +56,12 @@ Report 18은 direct-PC7/K2/F1/resistor의 앞선 hardware evidence baseline이�
 완료된 현재 기준선:
 
 - UART Gate A/B/C와 필수 parser/recovery 벡터는 PASS했고 current source의 controlled test hook은
-  모두 `0U`다. Current host/static test는 firmware contract `24/24` + mapper vectors `2/2` +
-  UART frame contract `2/2`, 합계 `28/28`다. Historical `15/15`, 2026-08-24 `20/20`,
-  P-02B `23/23`, P-02C-1 `24/24`, P-02C-2 `25/25`, P-03 `26/26`, P-04A `27/27`
-  checkpoint와 혼동하지 마라. Hook-0 source의 isolated STM32/ESP32 build는 PASS했고,
-  target reflash/runtime restore는 아직 OPEN이다.
+  모두 `0U`다. Current host/static test는 firmware contract `25/25` + mapper vectors `2/2` +
+  UART frame contract `2/2`, 합계 `29/29`다. Historical `15/15`, 2026-08-24 `20/20`,
+  P-02B `23/23`, P-02C-1 `24/24`, P-02C-2 `25/25`, P-03 `26/26`, P-04A `27/27`,
+  P-04B reason/age `28/28` checkpoint와 혼동하지 마라. Historical hook-0 isolated STM32/ESP32
+  build와 current default-off reset-harness ESP32 isolated build는 PASS했고, 변경 source의 target
+  flash/runtime restore는 아직 OPEN이다.
 - Permanent perfboard의 PC8/DIR1, PB6/PWM1, PC9/DIR2, PB7/PWM2에는 각각 10 kΩ pull-down이 있다.
 - Motor-disconnected MDD10A-input final active test는 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty,
   direction 전후 약 2 ms PWM-zero, expected MDD10A LED 순서로 PASS했다.
@@ -90,10 +93,12 @@ Report 18은 direct-PC7/K2/F1/resistor의 앞선 hardware evidence baseline이�
   coordination은 open이다.
 - 6P 품목은 완성 harness가 아니라 loose housings/terminals/seals/secondary locks와 별도
   18 AWG wire다. Inventory/visual만 PASS했고 cavity map, crimp, 6x6 intended-continuity/unintended-open, retention은 open이다.
-- `VH-30J`/`WX-03B` crimp-tool set는 주문했지만 미도착·미검증이다. K1 `280756-4` 두 개를
-  practice terminal로 사용하지 않는다.
+- `VH-30J`/`WX-03B` crimp-tool set는 2026-08-30 사용자 보고로 도착했다. Exact set/visual
+  inspection, die fit과 spare 6P terminal first-article crimp/pull/continuity/retention은 NOT RUN이다.
+  K1 `280756-4` 두 개를 practice terminal로 사용하지 않는다.
 - S2 `ABW110G`와 `P6KE16CA-E3/54` x3는 도착했다. S2 `3–4` momentary-NO truth table과
-  P6KE exact `CA` marking/양방향 gross-short screen은 무전원 PASS다. Crimp-tool set는 미도착이다.
+  P6KE exact `CA` marking/양방향 gross-short screen은 무전원 PASS다. Crimp tool 도착은
+  기록했지만 위 first-article 결과가 없으므로 6P는 계속 unassembled다.
 - 현재 RevB는 S2 stuck-closed 또는 S2 6P pair short에서 S0 release/control-power restore 시
   K2/K1과 motor rail이 자동 재인가될 수 있다. `FM-ESTOP-014` design gap이며 firmware
   `DISARMED`/PWM zero는 hardware no-auto-reenable의 대체가 아니다.
@@ -127,9 +132,11 @@ Report 18은 direct-PC7/K2/F1/resistor의 앞선 hardware evidence baseline이�
   no-CMD sentinel, successful-CMD-only age reset, 500 ms `CMD_TIMEOUT`, ARM-only timeout과 fresh-CMD
   recovery를 PASS했다. 서로 독립인 direct-PC7 run03/run04는 각각 `ESTOP_ACTIVE`와
   `ESTOP_ACTIVE -> ESTOP_LATCHED`를 보였고 모든 FAULT TEL의 software PWM은 `0/0`이었다.
-  새 schema의 active reset reject와 released reset success는 NOT RUN이며, current all-hooks-`0U`
-  source의 isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다. Target reflash/no-command
-  safe runtime은 OPEN이다. 따라서 P-04B는 `PARTIAL`이다.
+  새 schema의 active reset reject와 released reset success는 NOT RUN이다. 2026-08-30 default-`0U`
+  reset closeout harness를 추가해 current canonical `29/29`과 ESP32 isolated build를 PASS했다.
+  이 harness는 active에서 `ESTOP_RESET` 1회, latched에서 1회만 보내고 safe TEL을 확인하도록
+  준비했을 뿐이다. Active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0`
+  및 `VECTOR DONE`, target flash/no-command safe runtime은 OPEN이다. 따라서 P-04B는 `PARTIAL`이다.
 - 실제 motor output, actual motor stop, Physical E-stop PASS 또는 산업 안전 인증은 아직 아니다.
 
 현재 즉시 작업:
@@ -150,9 +157,9 @@ Report 18은 direct-PC7/K2/F1/resistor의 앞선 hardware evidence baseline이�
    닫는 것이다. 그 뒤 `P-05` battery ADC/low-voltage policy와 `P-06` wheel-distance/1 m odometry로 간다.
 6. 일정 후반의 `P-08/P-09`: F1 `257`/ordered `287` identity와 S1 basis, incoming checklist와
    T-ESTOP capture sheet를 닫는다.
-7. Report 19의 K1/S0/S2/VO617/P6KE/F2 무전원 screen은 보존한다. 집에서 6P molded cavity number와
-   orientation을 비파괴 기록하고, tool 도착 뒤 spare 6P terminal first article을 visual/pull/
-   housing-retention으로 확인한다.
+7. Report 19의 K1/S0/S2/VO617/P6KE/F2 무전원 screen은 보존한다. 집에서 도착한 tool의 exact
+   `VH-30J`/`WX-03B` set와 die를 먼저 확인하고, 6P molded cavity number/orientation을 비파괴
+   기록한 뒤 spare 6P terminal first article을 visual/pull/continuity/housing-retention으로 확인한다.
 8. Direct PC7-GND 임시 jumper 제거, conditioned path, clamp/internal suppression과
    current-limited K2/K1 pickup/dropout을 motor-disconnected 상태에서 검증한다.
 9. `T-ESTOP-001~004 + T-ESTOP-005A`를 PASS한 후에만 lifted single-motor 5~10% no-load와
@@ -168,8 +175,10 @@ Report 18은 direct-PC7/K2/F1/resistor의 앞선 hardware evidence baseline이�
 - 건강한 S2 release-open과 6P intended-pair continuity/unintended-pair open을 확인하지 않고 powered `T-ESTOP-005A`를 시작하려는 경우
 - `T-ESTOP-001~004 + T-ESTOP-005A` 전에 actual motor-energy를 인가하려는 경우
 
-첫 답변에서는 실제 git status/HEAD, current `28/28`, P-04B reason/command-age와 active/latch
-UART subset과 hook-0 isolated build PASS, active reset reject/released reset success 및 target reflash/runtime restore OPEN, 남은 physical evidence
-boundary와 crimp-tool/6P blocker를 간단히 보고해라. 다음 작업은 집에서 motor/LiPo disconnected
-P-04B reset/recovery와 hook-0 safe restore, 또는 tool 도착 시 first-article crimp다.
+첫 답변에서는 실제 git status/HEAD, current `29/29`, P-04B reason/command-age와 active/latch
+UART subset, default-`0U` reset harness source/static/ESP isolated build PASS, active reset
+`ERR`/released reset `ACK`+TEL+vector 및 target flash/runtime OPEN, 남은 physical evidence
+boundary와 arrived-but-unverified crimp-tool/6P blocker를 간단히 보고해라. 다음 작업은 집에서
+motor/LiPo disconnected P-04B reset/recovery와 hook-0 safe restore, 또는 tool inspection 뒤
+spare-terminal first-article crimp다.
 ```

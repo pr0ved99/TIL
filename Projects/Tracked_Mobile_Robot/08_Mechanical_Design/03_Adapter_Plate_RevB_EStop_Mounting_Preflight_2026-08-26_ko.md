@@ -26,10 +26,12 @@ state를 `NOT SUBMITTED`로 판단했던 직전 repository audit를 정정한다
 아래 RevB DWG/DXF와 동일한 물건이라고 단정하지 않는다. 이 evidence gap은 “판이 없다”는
 뜻이 아니라 source-to-part 추적성과 physical fit이 아직 열려 있다는 뜻이다.
 
-2026-08-28 K1 assembly, S0, VO617A-3와 F2 holder/fuse의 지정된 무전원 component screen은
-PASS했다. 6P는 완성 harness가 아니라 loose connector kit와 별도 18 AWG 전선이며 아직 cavity
-map/crimp/retention이 열려 있다. 이 부품들은 H-01 dry placement가 가능하지만 mechanical fit
-PASS는 아니다. S2, P6KE16CA x3와 crimp tooling은 미도착이므로 mounting freeze는 계속 HOLD다.
+2026-08-28 K1 assembly, S0, S2, VO617A-3, P6KE16CA x3와 F2 holder/fuse의 지정된 무전원
+component screen은 PASS했다. 6P는 완성 harness가 아니라 loose connector kit와 별도 18 AWG
+전선이며 아직 cavity map/crimp/retention이 열려 있다. 이 부품들은 H-01 dry placement가 가능하지만
+mechanical fit PASS는 아니다. 2026-08-30 사용자는 `VH-30J + WX-03B` 압착 공구 세트가
+도착했다고 보고했다. Exact 구성·상태·die fit과 6P first-article crimp/pull/continuity/retention은
+아직 검사하지 않았으므로 mounting freeze는 계속 HOLD다.
 
 ## 저장소의 CAD 기준 감사
 
@@ -73,12 +75,12 @@ RevB DXF를 직접 읽어 확인한 형상은 다음과 같다.
 | K1 `V23134J1052D642` + `VCF7-1000` | adapter plate/chassis 쪽 별도 강성 bracket 우선 | Motor current와 AWG 12 main path는 perfboard를 통과하지 않는다. Exact relay/socket/terminal identity와 loose fit 무전원 PASS; 기존 RevB에 K1 전용 장착 형상은 없다. | 전체 dry fit, bracket/retention, terminal 출구, AWG 12 굽힘·공구 접근 공간 |
 | K2 `TX2-12V` | permanent perfboard THT | `15 x 7.4 x 8.2 mm` PCB relay이며 upper-right low-current 영역 후보. 별도 plate hole은 필요하지 않다. | 현재 배선이 반영된 perfboard 위 실제 8-pin 정렬, 부품·module 탈착과 rework 여유 사진 |
 | `VO617A-3`, `680 ohm`, `10 kohm` | permanent perfboard THT | PC7 E-stop sense conditioner로 K2 인접 저전류 영역에 둔다. Actual suffix, input diode 방향과 input-output isolation 무전원 PASS다. | Pin-1 orientation을 보존한 current perfboard dry fit와 assembled continuity |
-| K2용 `P6KE16CA` | K2 coil 바로 옆 perfboard | Clamp loop를 짧게 유지한다. | 입고 marking, K2 내부 suppression 부재 확인, lead forming과 clearance |
-| K1용 `P6KE16CA` | K1 coil terminal 바로 옆 절연 지지점 | K1에서 떨어진 perfboard까지 긴 clamp loop를 만들지 않는다. | K1/VCF7 실제 coil terminal 접근과 절연·고정 방법 |
+| K2용 `P6KE16CA` | K2 coil 바로 옆 perfboard | Clamp loop를 짧게 유지한다. Exact `CA` marking과 bidirectional gross-short 무전원 screen은 PASS했다. | K2 내부 suppression 부재 확인, lead forming과 clearance |
+| K1용 `P6KE16CA` | K1 coil terminal 바로 옆 절연 지지점 | K1에서 떨어진 perfboard까지 긴 clamp loop를 만들지 않는다. Exact `CA` marking과 bidirectional gross-short 무전원 screen은 PASS했다. | K1/VCF7 실제 coil terminal 접근과 절연·고정 방법 |
 | F1 `FHAC0002ZXJA` 계열 holder | AWG 12 main harness의 inline holder | Plate 관통 장착 부품이 아니다. body를 P-clamp 또는 rated tie mount로 구속하고 양쪽 wire strain relief와 fuse service 공간을 둔다. | actual body 치수, lid opening 방향, clamp 선정, 설치 위치와 lead bend |
 | F2 `FHAC0001ZXJA` | control harness의 inline holder | Perfboard current trace 위에 fuse holder를 억지로 올리지 않는다. Holder에 인장이 걸리지 않도록 인접 위치에 고정한다. | 입고 body/lead 확인, fuse 교체 접근과 clamp 선정 |
 | S0 `SF2ER-E2R2B-A` | 별도 operator panel | 사용자가 track을 건드리지 않고 즉시 누르고 의도적으로 해제할 수 있어야 한다. Body `SF2ER-E2R2B`, 2NC block과 latch/release 무전원 PASS; Main horizontal plate 내부 장착 대상으로 보지 않는다. | Order suffix `-A` trace, panel cutout/두께, rear depth와 배선 접근 |
-| S2 `IDEC ABW110G` | 별도 operator panel | `diameter 22 mm`급 momentary re-enable 조작부다. S0와 기능·label을 명확히 분리한다. | actual rear depth, terminal 방향, panel cutout와 tool access |
+| S2 `IDEC ABW110G` | 별도 operator panel | `diameter 22 mm`급 momentary re-enable 조작부다. Terminal `3-4` momentary-NO 무전원 screen은 PASS했고 S0와 기능·label을 명확히 분리한다. | actual rear depth, terminal 방향, panel cutout와 tool access |
 | S1 main power switch | 별도 operator panel 또는 chassis edge | S0와 혼동되지 않고 track 접근 없이 조작 가능해야 한다. | exact model, DC rating, marking, cutout와 rear depth |
 | 6P E-stop loose connector kit | signal/control inline disconnect | S0-A/S0-B/S2 회로를 분리·점검하기 위한 connector다. Motor current를 운반하지 않으며 아직 harness로 조립되지 않았다. | mating-face cavity map, keying, first-article 18 AWG crimp/terminal retention, bend/strain relief와 label |
 

@@ -26,8 +26,9 @@
 /* Safety default: never transmit the scripted motion test at bridge boot. */
 #define BRIDGE_SCRIPTED_TEST_ENABLED            0U
 #define BRIDGE_MALFORMED_COMMAND_TEST_ENABLED   0U
+#define BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED    0U
 
-#if BRIDGE_SCRIPTED_TEST_ENABLED && BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
+#if (BRIDGE_SCRIPTED_TEST_ENABLED + BRIDGE_MALFORMED_COMMAND_TEST_ENABLED + BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED) > 1U
 #error "Only one bridge test may be enabled"
 #endif
 #define TEST_STEP_PERIOD_MS         1000
@@ -91,6 +92,14 @@ typedef enum {
     BRIDGE_TEST_FINAL_DISARM,
     BRIDGE_TEST_DONE
 } bridge_test_step_t;
+
+typedef enum {
+    BRIDGE_P04B_RESET_WAIT_ACTIVE = 0,
+    BRIDGE_P04B_RESET_WAIT_LATCHED,
+    BRIDGE_P04B_RESET_WAIT_SAFE_CONFIRM,
+    BRIDGE_P04B_RESET_DONE,
+    BRIDGE_P04B_RESET_FAILED
+} bridge_p04b_reset_test_state_t;
 
 #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
 #define MALFORMED_TEST_VECTOR_COUNT 8U
@@ -250,6 +259,23 @@ static int bridge_uart_send_disarm(uint32_t seq){
     return bridge_uart_send_frame(frame);
 }
 
+static int bridge_uart_send_estop_reset(uint32_t seq){
+    char frame[64];
+    int len = snprintf(
+        frame,
+        sizeof(frame),
+        "ESTOP_RESET,seq=%" PRIu32,
+        seq
+    );
+
+    if(len <= 0 || len >= (int)sizeof(frame)){
+        ESP_LOGW(TAG, "Failed to build ESTOP_RESET frame");
+        return 0;
+    }
+
+    return bridge_uart_send_frame(frame);
+}
+
 static int bridge_uart_send_cmd(
     uint32_t seq,
     int32_t vx_mmps,
@@ -384,6 +410,161 @@ static bridge_test_step_t bridge_uart_run_test_step(
         case BRIDGE_TEST_DONE:
         default:
             return BRIDGE_TEST_DONE;
+    }
+}
+
+static bridge_p04b_reset_test_state_t
+bridge_uart_run_p04b_estop_reset_test_step(
+    bridge_p04b_reset_test_state_t state,
+    uint32_t *seq
+){
+    int reset_sent;
+
+    if(seq == NULL){
+        ESP_LOGE(
+            TAG,
+            "P-04B RESET TEST FAILED: sequence pointer is NULL; no reset retry"
+        );
+        return BRIDGE_P04B_RESET_FAILED;
+    }
+
+    if(!s_telemetry.valid){
+        return state;
+    }
+
+    switch(state){
+        case BRIDGE_P04B_RESET_WAIT_ACTIVE:
+            if(
+                strcmp(s_telemetry.state, "FAULT") == 0 &&
+                strcmp(s_telemetry.reason, "ESTOP_ACTIVE") == 0
+            ){
+                ESP_LOGW(
+                    TAG,
+                    "P-04B RESET TEST: ESTOP_ACTIVE observed; "
+                    "sending active reset seq=%" PRIu32,
+                    *seq
+                );
+
+                reset_sent = bridge_uart_send_estop_reset(*seq);
+
+                if(!reset_sent){
+                    ESP_LOGE(
+                        TAG,
+                        "P-04B RESET TEST FAILED: active reset TX failed; "
+                        "no reset retry"
+                    );
+                    return BRIDGE_P04B_RESET_FAILED;
+                }
+
+                (*seq)++;
+                ESP_LOGI(
+                    TAG,
+                    "P-04B RESET TEST: active reset sent once; "
+                    "keep PC7 active until RX ERR confirms rejection, "
+                    "then release PC7 and wait for ESTOP_LATCHED"
+                );
+                return BRIDGE_P04B_RESET_WAIT_LATCHED;
+            }
+
+            if(strcmp(s_telemetry.state, "DISARMED") == 0){
+                return state;
+            }
+
+            ESP_LOGE(
+                TAG,
+                "P-04B RESET TEST FAILED: unexpected pre-active "
+                "state=%s reason=%s; no reset sent and no reset retry",
+                s_telemetry.state,
+                s_telemetry.reason
+            );
+            return BRIDGE_P04B_RESET_FAILED;
+
+        case BRIDGE_P04B_RESET_WAIT_LATCHED:
+            if(
+                strcmp(s_telemetry.state, "FAULT") == 0 &&
+                strcmp(s_telemetry.reason, "ESTOP_ACTIVE") == 0
+            ){
+                return state;
+            }
+
+            if(
+                strcmp(s_telemetry.state, "FAULT") == 0 &&
+                strcmp(s_telemetry.reason, "ESTOP_LATCHED") == 0
+            ){
+                ESP_LOGW(
+                    TAG,
+                    "P-04B RESET TEST: ESTOP_LATCHED observed; "
+                    "sending released reset seq=%" PRIu32,
+                    *seq
+                );
+
+                reset_sent = bridge_uart_send_estop_reset(*seq);
+
+                if(!reset_sent){
+                    ESP_LOGE(
+                        TAG,
+                        "P-04B RESET TEST FAILED: released reset TX failed; "
+                        "no reset retry"
+                    );
+                    return BRIDGE_P04B_RESET_FAILED;
+                }
+
+                (*seq)++;
+                ESP_LOGI(
+                    TAG,
+                    "P-04B RESET TEST: released reset sent once; "
+                    "waiting for safe telemetry"
+                );
+                return BRIDGE_P04B_RESET_WAIT_SAFE_CONFIRM;
+            }
+
+            ESP_LOGE(
+                TAG,
+                "P-04B RESET TEST FAILED: unexpected post-active "
+                "state=%s reason=%s; no reset retry",
+                s_telemetry.state,
+                s_telemetry.reason
+            );
+            return BRIDGE_P04B_RESET_FAILED;
+
+        case BRIDGE_P04B_RESET_WAIT_SAFE_CONFIRM:
+            if(
+                strcmp(s_telemetry.state, "FAULT") == 0 &&
+                strcmp(s_telemetry.reason, "ESTOP_LATCHED") == 0
+            ){
+                return state;
+            }
+
+            if(
+                strcmp(s_telemetry.state, "DISARMED") == 0 &&
+                strcmp(s_telemetry.reason, "ESTOP_RESET") == 0 &&
+                s_telemetry.left_pwm == 0 &&
+                s_telemetry.right_pwm == 0
+            ){
+                ESP_LOGI(
+                    TAG,
+                    "P-04B RESET TEST VECTOR DONE: "
+                    "DISARMED/ESTOP_RESET PWM=0/0"
+                );
+                return BRIDGE_P04B_RESET_DONE;
+            }
+
+            ESP_LOGE(
+                TAG,
+                "P-04B RESET TEST FAILED: unexpected safe confirmation "
+                "state=%s reason=%s PWM=%" PRId32 "/%" PRId32
+                "; no reset retry",
+                s_telemetry.state,
+                s_telemetry.reason,
+                s_telemetry.left_pwm,
+                s_telemetry.right_pwm
+            );
+            return BRIDGE_P04B_RESET_FAILED;
+
+        case BRIDGE_P04B_RESET_DONE:
+        case BRIDGE_P04B_RESET_FAILED:
+        default:
+            return state;
     }
 }
 
@@ -1067,6 +1248,8 @@ void app_main(void){
 
     uint32_t test_seq = s_startup_ping_seq + 1U;
     bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
+    bridge_p04b_reset_test_state_t p04b_reset_test_state =
+        BRIDGE_P04B_RESET_WAIT_ACTIVE;
 
     #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
         uint8_t malformed_test_step = 0U;
@@ -1081,6 +1264,16 @@ void app_main(void){
     }
     else {
         ESP_LOGI(TAG, "P-03 target runtime scripted test enabled");
+    }
+
+    if(BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED == 0U){
+        ESP_LOGI(TAG, "P-04B controlled ESTOP reset test disabled");
+    }
+    else {
+        ESP_LOGW(
+            TAG,
+            "P-04B controlled ESTOP reset test enabled (no ARM/CMD)"
+        );
     }
 
     #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
@@ -1112,6 +1305,14 @@ void app_main(void){
         ){
             startup_ready_seen = true;
             last_test_tick = now;
+
+            if(BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED != 0U){
+                ESP_LOGI(
+                    TAG,
+                    "P-04B RESET TEST: STARTUP READY; "
+                    "waiting for FAULT/ESTOP_ACTIVE"
+                );
+            }
         }
 
         if(
@@ -1122,6 +1323,19 @@ void app_main(void){
         ){
             test_step = bridge_uart_run_test_step(test_step, &test_seq);
             last_test_tick = now;
+        }
+
+        if(
+            BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED != 0U &&
+            s_startup_state == BRIDGE_STARTUP_READY &&
+            p04b_reset_test_state != BRIDGE_P04B_RESET_DONE &&
+            p04b_reset_test_state != BRIDGE_P04B_RESET_FAILED
+        ){
+            p04b_reset_test_state =
+                bridge_uart_run_p04b_estop_reset_test_step(
+                    p04b_reset_test_state,
+                    &test_seq
+                );
         }
 
         #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED

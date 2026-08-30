@@ -2,10 +2,11 @@
 
 ## 문서 기준
 
-- Revision: 2026-08-29 P-04B reason/command-age target runtime subset PARTIAL
-- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 COMPLETE`, canonical `REQ-SAFE-004` 500 ms target acceptance COMPLETE, `P-04A COMPLETE — UART/software-cached applied-output scope`, `P-04B PARTIAL — reason/command-age source/static + target runtime subset + hook-0 isolated build`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Current host/static은 `28/28`이다. P-04B에서 no-CMD sentinel, accepted-CMD age reset, 500 ms timeout과 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` runtime subset을 PASS했다. Active E-stop 중 reset 거부는 별도 persistent reason이 아니라 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 계속 유지되는 `TEL state=FAULT,reason=ESTOP_ACTIVE`의 같은-run 조합으로 식별하는 계약이다. All-hooks-`0U` isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다. 이 reset-reject runtime, release 뒤 explicit reset 성공과 hook-0 target reflash/no-command safe runtime은 아직 OPEN이다. P-04A/P-04B telemetry는 measured PWM feedback이나 actual motor evidence가 아니다. K1/S0/S2/VO617A-3/P6KE/F2는 report 19의 무전원 component screen을 통과했고 6P는 loose kit+별도 18 AWG로 확인됐지만 미조립이다. Crimp tool은 미도착이다. 다음 firmware 순서는 P-04B의 open 항목을 닫은 뒤 `P-05` battery로 이동하는 것이다. 집에서는 `H-01` plate/6P non-destructive capture와 tool 도착 뒤 first-article crimp를 병행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
+- Revision: 2026-08-30 P-04B reset-harness prepared / all selected E-stop parts arrived
+- 현재 실행 위치: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 COMPLETE`, canonical `REQ-SAFE-004` 500 ms target acceptance COMPLETE, `P-04A COMPLETE — UART/software-cached applied-output scope`, `P-04B PARTIAL — reason/command-age source/static + target runtime subset + reset closeout harness prepared`, `G3 PASS`, `G4A PASS — motor-disconnected MDD10A-input scope`, `G5 encoder PARTIAL`, `G6 encoder mapping subtest PASS`. Current host/static은 `29/29`이다. P-04B에서 no-CMD sentinel, accepted-CMD age reset, 500 ms timeout과 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` runtime subset을 PASS했다. Active E-stop 중 reset 거부는 별도 persistent reason이 아니라 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 계속 유지되는 `TEL state=FAULT,reason=ESTOP_ACTIVE`의 같은-run 조합으로 식별하는 계약이다. All-hooks-`0U` isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다. Default-off reset harness의 source/static과 current ESP32 build도 PASS했지만, 이 reset-reject runtime, release 뒤 explicit reset 성공과 current hook-0 target reflash/no-command safe runtime은 아직 OPEN이다. P-04A/P-04B telemetry는 measured PWM feedback이나 actual motor evidence가 아니다. K1/S0/S2/VO617A-3/P6KE/F2는 report 19의 무전원 component screen을 통과했고 6P는 loose kit+별도 18 AWG로 확인됐지만 미조립이다. `VH-30J`/`WX-03B` crimp-tool set는 사용자 보고로 도착했지만 exact 구성/상태, die 적합성과 first-article crimp는 미검증이다. 다음 firmware 순서는 집에서 P-04B의 open 항목을 닫은 뒤 `P-05` battery로 이동하는 것이다. 집에서는 `H-01` plate/6P non-destructive capture와 crimp-tool inspection/first-article를 병행한다. 다음 실제 직렬 Gate는 Physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`이며 MDD10A power stage와 actual motor는 아직 미검증이라 전체 release는 `PARTIAL`이다.
 - 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+- 현재 진행 기록: [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)
 
 이 문서는 Tracked Mobile Robot 프로젝트의 최신 전체 실행 로드맵이다. 날짜별 progress log는 실제로 수행한 일을 기록하고, 이 문서는 다음에 무엇을 해야 하며 어떤 증거가 있어야 다음 단계로 갈 수 있는지를 정의한다.
 
@@ -89,12 +90,12 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 현재 기준선 — 2026-08-29 갱신
+## 현재 기준선 — 2026-08-30 갱신
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
 | Historical PC-first STM32 UART MVP | `PASS — bench baseline` | requirements, matrix, CSV, screenshots, test report | production owner로 사용하지 않고 evidence 보존 |
-| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime, P-03/REQ-SAFE-004 recovery와 P-04A applied-output TEL/ESP parser PASS. P-04B reason/command-age source/static, no-CMD/accepted-CMD/timeout/direct-PC7 active-to-latched runtime subset와 hook-0 isolated build PASS, current host/static `28/28`. P-04B active reset reject/released reset success와 current all-hooks-`0U` target reflash/runtime, exact artifact/setup provenance, reset-net evidence와 reverse/asymmetric sign은 open | Active reset 거부 ERR+TEL pair -> release 뒤 explicit reset 성공 -> all-hooks-`0U` reflash/no-command safe runtime -> P-05 battery |
+| ESP32-STM32 UART bridge | `PARTIAL` | ADR-015 owner/path ACCEPTED; Gate A/B와 T-BRIDGE-007/008 required runtime, P-03/REQ-SAFE-004 recovery와 P-04A applied-output TEL/ESP parser PASS. P-04B reason/command-age source/static, no-CMD/accepted-CMD/timeout/direct-PC7 active-to-latched runtime subset와 hook-0 isolated build PASS. Default-off reset closeout harness와 current ESP32 build를 준비했고 current host/static은 `29/29`. P-04B active reset reject/released reset success와 current all-hooks-`0U` target reflash/runtime, exact artifact/setup provenance, reset-net evidence와 reverse/asymmetric sign은 open | 집에서 reset harness run -> all-hooks-`0U` 복구/reflash/no-command safe runtime -> P-05 battery |
 | MDD10A 무전원 검사 | `PASS` | visual/DMM hard-short inspection | logic input 전 재확인 |
 | Fuse/switch power path | `PASS` | OFF 0 V, ON 12.49 V와 wiring evidence | 실제 통합 harness에서 재검증 |
 | XL4015 x2 | `CONDITIONAL PASS` | 약 1 A 5분, 약 1.8 A 3분과 회복 전압 기록 | board power/back-power policy 결정 |
@@ -104,7 +105,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | STM32 PWM/DIR | `PASS — motor-disconnected MCU-pin scope` | waveform/direction, active DISARM 23.50 us, timeout/fault/reset과 hook-0 safe restore PASS | 기준선 보존; Physical E-stop |
 | MDD10A logic input | `PASS — motor-disconnected input scope` | Permanent pull-down/5-Net, powered/no-motor, final CH1/CH2 19.049/19.058 kHz 6-step와 final all-LOW PASS | MDD10A power-stage/actual motor stop, Physical E-stop closure |
 | Encoder | `PARTIAL` | conditioning, dual count/CPS/mRPM, 1560 counts/rev와 encoder-side A=right/TIM5·B=left/TIM3 forward-positive PASS | powered-noise, external tachometer/wheel-speed 검증 |
-| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset, report 18 F1/K2/resistors와 report 19 K1/S0/S2/VO617A-3/P6KE/F2 무전원 subset PASS. 6P는 loose kit로 미조립이고 clamp powered behavior/conditioned path/K1 rail-off는 미검증 | 6P cavity/crimp first article -> complete assembly -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
+| Physical E-stop MVP | `PARTIAL/BLOCKED` | direct-PC7 sense/latch/reset, report 18 F1/K2/resistors와 report 19 K1/S0/S2/VO617A-3/P6KE/F2 무전원 subset PASS. 6P는 loose kit로 미조립이다. Crimp-tool set는 도착했지만 구성/적합성과 first article은 미검증이고 clamp powered behavior/conditioned path/K1 rail-off도 open | Tool/die inspection -> spare 18 AWG first article -> 6P cavity/continuity/retention -> complete assembly -> `T-ESTOP-001~004` -> nominal `T-ESTOP-005A` |
 | First motor no-load | `NOT TESTED` | vendor rated 1.44 A/stall 9 A 확보; actual current/thermal evidence 없음 | `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤 실행 |
 | Dual drivetrain / chassis | `NOT TESTED` | MDD10A powered channel-to-side mapping과 주행 evidence 없음 | single motor/encoder 후 실행 |
 
@@ -135,8 +136,9 @@ requirement와 evidence 통과 여부를 관리하는 **검증 Gate 관점**이�
 `REQ-SAFE-004` 500 ms target acceptance를 앞당겨 닫았고 2026-08-29 P-04A applied-output
 telemetry도 닫았다. P-04B는 reason/command-age source/static과 target runtime subset까지 진행했지만
 active reset reject/released reset success와 hook-0 target reflash/runtime restore가 남아 `PARTIAL`이다.
-현재 complete E-stop integration의 달력 blocker는 crimp tool 수령과 6P first-article/assembly다.
-종료일은 `tool 수령일 + 6P 조립/통합시험 + 26~52시간의 유효 작업시간 + 재시험 여유`로
+Crimp-tool 배송 blocker는 해소됐다. 현재 complete E-stop integration의 blocker는 tool/die
+inspection과 6P first-article/assembly다. 종료일은 `tool 검증 + 6P 조립/통합시험 +
+26~52시간의 유효 작업시간 + 재시험 여유`로
 계산한다. 기존 `2~3주` 수치는 현재 일정 약속으로 사용하지 않는다.
 
 ### 대단원 간 직렬 순서
@@ -146,11 +148,12 @@ active reset reject/released reset success와 hook-0 target reflash/runtime rest
 -> run04 safe build/flash/UART/D0~D3 all-LOW restore 완료
 -> P-04A applied-output telemetry + hook-0 safe restore 완료
 -> P-04B reason/age + no-CMD/timeout/direct-PC7 active-to-latched runtime subset 완료, PARTIAL
--> 현재 CAFE/NOTEBOOK: active reset 거부 ERR+TEL pair -> release 뒤 explicit reset 성공
+-> 완료: default-0U P-04B E-stop-reset test harness + host/static contract + current ESP32 isolated build
+-> 다음 HOME/BOARDS: active reset 거부 ERR+TEL pair -> release 뒤 explicit reset 성공
 -> all-hooks-0U 양 board reflash -> ARM/CMD TX 0 no-command safe runtime
 -> P-04B COMPLETE 뒤 P-05 battery -> P-06 odometry
 -> 병행 HOME: plate/6P cavity non-destructive capture
--> tooling 도착: spare 6P terminal first-article crimp -> cavity/intended-continuity/unintended-open/retention
+-> 도착한 tooling의 exact 구성/상태/die 확인 -> spare 6P terminal first-article crimp -> cavity/intended-continuity/unintended-open/retention
 -> complete assembly gate
 -> 대단원 2: T-ESTOP-001~004 -> nominal T-ESTOP-005A
 -> 대단원 3 lifted single motor
@@ -538,15 +541,15 @@ PLANNED
 
 상세 task, 완료 조건과 금지사항의 현재 정본은
 [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)다.
-P-03/REQ-SAFE-004 target acceptance와 selected-component incoming이 닫힌 현재, 아래 software/document 작업과 6P/tooling
-준비를 motor-energy 없이 병렬로 진행할 수 있다.
+P-03/REQ-SAFE-004 target acceptance와 selected-component incoming이 닫히고 crimp-tool set도
+도착한 현재, 아래 software/document 작업과 6P/tooling 검증을 motor-energy 없이 병렬로 진행할 수 있다.
 
 1. `[COMPLETED / ADR-015] P-01`: ESP32-S3 단일 production ingress, USART1 production/USART2 bench-only와 source-loss recovery 정책을 확정했다.
 2. `[COMPLETE] P-02B`: test hook과 분리된 production mapper module, independent vectors/static source contract의 당시 `23/23` checkpoint와 full build를 닫았다.
 3. `[PASS / HISTORICAL 24/24] P-02C-1`: provisional DIR polarity를 명시한 signed-output adapter와 fail-safe range/error 경로를 추가했다. 당시 no-caller section의 `--gc-sections` 제거는 P-02C-2에서 해소됐다.
 4. `[COMPLETE / HISTORICAL 25/25] P-02C-2`: validation/ARMED/3x E-stop/mapper/상호 배타 output/success-only commit+ACK caller와 실패 시 stop/zero/ERR/return 계약을 연결했다. 당시 32-object forced build와 nonzero ELF linkage PASS이며 flash/board runtime은 pending이다.
 5. `[COMPLETE — 300 ms P-03 + 500 ms REQ-SAFE-004 SCOPED TARGET RUNTIME + RUN04 SAFE RESTORE] P-03`: pre-RX timeout helper가 output/stored command zero -> `DISARMED`를 강제하고, accepted `ARM`이 default 300 ms first-CMD window를 다시 시작한다. Historical P-03 canonical `26/26`, forced 32-object build와 ELF `29268/172/2832`, motor/LiPo-disconnected 300 ms target UART/PWM recovery와 당시 all-hooks-`0U` safe restore가 PASS했다. Canonical 500 ms run03도 same-run UART/PWM acceptance를 PASS했고 run04에서 source hook `0U`, safe build/flash/UART와 D0~D3 10 s all-LOW restore를 PASS했다. Exact controlled artifact linkage, electrically captured reset timing, clean electrical cold-start와 actual motor는 범위 밖/pending이다.
-6. `[P-04A COMPLETE / P-04B PARTIAL] P-04`: software-cached signed left/right applied PWM과 reason/command-age를 STM TEL 및 ESP parser/log에 연결했고 current canonical `28/28`이다. P-04B target에서는 no-CMD sentinel, accepted-CMD age reset, timeout과 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset을 PASS했다. Reset-rejected 식별 계약은 active 상태의 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 유지되는 `TEL state=FAULT,reason=ESTOP_ACTIVE` pair이며, 이 pair의 runtime과 release 뒤 `DISARMED/ESTOP_RESET` 성공은 아직 실행하지 않았다. All-hooks-`0U` isolated STM32/ESP32 build와 artifact hash 기록은 PASS했으며, 이어 양 board reflash와 ARM/CMD TX 0 no-command safe runtime까지 확인한 뒤 P-04B를 완료한다. Battery actual source는 P-05로 분리한다.
+6. `[P-04A COMPLETE / P-04B PARTIAL] P-04`: software-cached signed left/right applied PWM과 reason/command-age를 STM TEL 및 ESP parser/log에 연결했고 current canonical `29/29`이다. P-04B target에서는 no-CMD sentinel, accepted-CMD age reset, timeout과 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset을 PASS했다. Reset-rejected 식별 계약은 active 상태의 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 유지되는 `TEL state=FAULT,reason=ESTOP_ACTIVE` pair다. Default-off reset closeout harness와 current ESP32 isolated build는 PASS했지만 이 pair의 runtime과 release 뒤 `DISARMED/ESTOP_RESET` 성공은 아직 실행하지 않았다. 이어 all-hooks-`0U` 양 board reflash와 ARM/CMD TX 0 no-command safe runtime까지 확인한 뒤 P-04B를 완료한다. Battery actual source는 P-05로 분리한다.
 7. `P-05`: battery ADC divider, calibration과 low-voltage policy를 설계·검증한다.
 8. `P-06`: encoder count에서 wheel distance와 1 m odometry를 계산하는 경로를 구현한다.
 9. `P-07`: received adapter plate identity/fit, E-stop mounting freeze, track/fastener/strain-relief와 6P cavity map을 준비한다.

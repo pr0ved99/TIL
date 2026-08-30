@@ -4,11 +4,11 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [`2026-08-29_progress.md`](2026-08-29_progress.md) — P-04A software-applied PWM을
-완료하고 P-04B `reason/command_age_ms`와 ESP32 parser/log를 연결했다. Current canonical
-`28/28`; no-CMD sentinel, 500 ms timeout와 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset을
-PASS했고 hook-0 격리 STM32/ESP32 build도 PASS했다. P-04B active reset reject/released reset success,
-target reflash/no-command runtime restore와 P-05 battery는 후속 범위다.
+Latest: [`2026-08-30_progress.md`](2026-08-30_progress.md) — P-04B default-`0U` reset closeout
+harness를 준비해 current canonical `25 + 2 + 2 = 29/29`과 ESP32 isolated build를 PASS했다.
+Active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`,
+변경 source의 target flash/runtime은 OPEN이다. Crimp tool은 user-reported arrived지만 exact
+set/inspection/first article은 NOT RUN이고 6P는 미조립이다.
 
 ## How To Use
 
@@ -47,7 +47,8 @@ target reflash/no-command runtime restore와 P-05 battery는 후속 범위다.
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-08-29 | [`2026-08-29_progress.md`](2026-08-29_progress.md) | P-04A complete, P-04B reason/command-age와 timeout/direct-PC7 active-latch subset PASS, canonical `28/28`와 hook-0 isolated build PASS, reset/target reflash-runtime pending |
+| 2026-08-30 | [`2026-08-30_progress.md`](2026-08-30_progress.md) | P-04B default-`0U` reset closeout harness, current canonical `29/29`과 ESP32 isolated build PASS; reset target runtime OPEN; crimp tool user-reported arrived/unverified, 6P unassembled |
+| 2026-08-29 | [`2026-08-29_progress.md`](2026-08-29_progress.md) | P-04A complete, P-04B reason/command-age와 timeout/direct-PC7 active-latch subset PASS, historical checkpoint `28/28`와 hook-0 isolated build PASS, reset/target reflash-runtime pending |
 | 2026-08-28 | [`2026-08-28_progress.md`](2026-08-28_progress.md) | K1/S0/S2/VO617A-3/P6KE/F2 unpowered screen, P-03/REQ-SAFE-004 target runtime와 run04 safe restore PASS, 6P/tooling boundary와 next work |
 | 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B~P-02C-2와 P-03A/P-03B source/static/full-build 완료, 당시 canonical `26/26` PASS, P-03 target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
 | 2026-08-26 | [`2026-08-26_progress.md`](2026-08-26_progress.md) | 2026-09-15까지의 dated pre-arrival schedule, priority/milestone/buffer와 delivery transition rule |

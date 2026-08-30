@@ -750,18 +750,22 @@ freshness or anti-replay.
 The P-02C-2 historical checkpoint is `25/25`; P-03 reached `26/26` and passed
 the scoped 300/500 ms target timeout/recovery and safe-restore runs. P-04A
 connected software-applied signed PWM to STM32 TEL and the ESP32 parser/log at
-the historical `27/27` checkpoint. P-04B adds `reason/command_age_ms` actual
-sources and required ESP32 parsing. Current host/static discovery passes all
-**28/28** tests: firmware source contracts `24/24`, independent mapper vectors
+the historical `27/27` checkpoint. P-04B added `reason/command_age_ms` actual
+sources and required ESP32 parsing at the now-historical `28/28` checkpoint.
+The default-off reset closeout harness then raised current host/static discovery
+to **29/29** tests: firmware source contracts `25/25`, independent mapper vectors
 `2/2`, and UART frame vectors `2/2`; all controlled hooks in the current source
 are `0U`.
 
 P-04B run02 passed the no-CMD sentinel, accepted-CMD-only age reset, and 500 ms
 `CMD_TIMEOUT` subvector. Run04 passed direct-PC7
-`ESTOP_ACTIVE -> ESTOP_LATCHED` in the UART/software-state scope. The post-test
-hook-zero isolated STM32/ESP32 builds passed. P-04B remains `PARTIAL`: active
-reset rejection, released reset success, and target reflash/no-command safe
-runtime are open. These UART logs are not measured PWM, conditioned E-stop,
+`ESTOP_ACTIVE -> ESTOP_LATCHED` in the UART/software-state scope. The pre-reset-
+harness hook-zero isolated STM32/ESP32 builds passed. The current
+`BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED=0U` harness passed its source/static
+contract and current ESP32 isolated build, but it has not been enabled, flashed, or run
+on the boards. P-04B remains `PARTIAL`: active reset rejection, released reset
+success, and the final hook-zero target reflash/no-command safe runtime are
+open. These UART logs are not measured PWM, conditioned E-stop,
 K1 rail-off, exact artifact
 linkage, physical setup, or motor evidence. Battery telemetry remains P-05.
 

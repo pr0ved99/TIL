@@ -34,10 +34,10 @@ python -m unittest discover `
 
 ## 2026-08-29 Current P-02B / P-02C / P-03 / P-04 Snapshot
 
-- `test_firmware_contract.py`: **24/24 PASS**
+- `test_firmware_contract.py`: **25/25 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**
 - `test_uart_frame_contract.py`: **2/2 PASS**
-- Canonical discovery: **28/28 PASS**
+- Canonical discovery: **29/29 PASS**
 - P-02B 별도 사용자 수행 STM32CubeIDE full Debug build: **0 errors / 0 warnings**
 - P-02C-1 사용자 수행 STM32CubeIDE incremental Debug build: `motor_output.c` explicit
   recompile와 ELF relink, **0 errors / 0 warnings**
@@ -66,8 +66,11 @@ python -m unittest discover `
   `text=29872`, `data=172`, `bss=2840`
 - P-04B target subset: timeout age `485 -> 585`, fresh-CMD-only age reset과 direct-PC7
   `ESTOP_ACTIVE -> ESTOP_LATCHED`, FAULT PWM `0/0` PASS
-- Current source는 모든 controlled hook `0U`, canonical **28/28 PASS**다. 이 hook-0 source의
-  격리 STM32/ESP32 build도 PASS했으며, post-test target reflash/runtime restore는 아직 open이다.
+- P-04B reset closeout harness: `BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED=0U`, active/latch/safe-confirm
+  one-shot FSM과 no-ARM/CMD source/static contract 및 current ESP32 isolated build PASS
+- Current source는 모든 controlled hook `0U`, canonical **29/29 PASS**다. Pre-reset-harness
+  hook-0 source의 격리 STM32/ESP32 build는 historical PASS이며, harness-enabled board flash/runtime과
+  시험 뒤 all-hooks-`0U` target reflash/no-command safe runtime은 아직 open이다.
 
 새 mapper 검사는 설계식에서 작성한 독립 Python reference model로 고정 성공·경계·실패
 vector를 실행하고, 기존 정적 suite가 실제 C source의 상수, interface, 실패 전 output-zero,
@@ -107,10 +110,12 @@ parser/log까지 확장했다. 당시 canonical은 `27/27`이다. Positive symme
 timeout/ARM-only/DISARM `0/0` target UART vector 및 별도 hook-0 safe runtime을 PASS했다. 이 값은
 measured PWM feedback이 아니며 reverse/asymmetric runtime, exact controlled BIN linkage, external
 cold-start marker, provisional polarity/channel mapping과 actual motor evidence는 계속 pending이다.
-P-04B는 `reason/command_age_ms` actual source와 ESP strict parser/log를 추가해 current canonical을
-`28/28`로 올렸다. Runtime에서 no-CMD sentinel, accepted-CMD-only reset, timeout reason과
-direct-PC7 active/latch subset을 확인했다. Active reset rejection/successful reset과 hook-0 target
-restore는 아직 남아 있고 `batt_mv`도 여전히 placeholder다. 300 ms 역사 기록은
+P-04B는 `reason/command_age_ms` actual source와 ESP strict parser/log를 추가해 당시 canonical
+`28/28` checkpoint에 도달했다. Runtime에서 no-CMD sentinel, accepted-CMD-only age reset,
+timeout reason과 direct-PC7 active/latch subset을 확인했다. 이후 default-off reset closeout
+harness 정적 계약 1건을 추가해 current canonical은 `29/29`이며 current ESP32 isolated build도 PASS했다.
+Harness-enabled active reset rejection/successful reset board runtime과 최종 hook-0 target restore는
+아직 남아 있고 `batt_mv`도 여전히 placeholder다. 300 ms 역사 기록은
 [`../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md),
 canonical 500 ms acceptance와 restore 경계는
 [`../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../../docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md),

@@ -171,9 +171,11 @@ Acceptance criteria:
 
 현재 판정은 **PARTIAL — UART/software-state scope**다. 2026-08-29 P-04B run02는 no-CMD
 sentinel, accepted-CMD-only age reset과 500 ms timeout의 `CMD_TIMEOUT`을 통과했고, run04는
-direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`를 통과했다. 새 TEL schema에서 active reset reject와
-released reset success는 아직 실행하지 않았으며, 시험 뒤 all-hooks-`0U` source의 isolated
-STM32/ESP32 build는 PASS했지만 target reflash/no-command safe runtime은 open이다. 상세 결과와 evidence boundary는
+direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`를 통과했다. 2026-08-30에는 ESP32에 기본값 `0U`인
+P-04B reset closeout harness를 추가해 current canonical host/static `25 + 2 + 2 = 29/29`과
+ESP32 isolated build를 통과했다. 이 결과는 source/static/build 준비 증거이며, 새 TEL schema의
+active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`,
+그리고 변경 source의 target flash/runtime은 아직 실행하지 않았다. 상세 결과와 evidence boundary는
 [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ### REQ-SAFE-001: CMD is rejected before ARM

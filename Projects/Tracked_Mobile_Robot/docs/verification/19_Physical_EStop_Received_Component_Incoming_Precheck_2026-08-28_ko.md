@@ -1,6 +1,7 @@
 # Physical E-stop Received-Component Incoming Precheck Report
 
 - 시험일: 2026-08-28
+- 현재 상태 갱신: 2026-08-30 `VH-30J + WX-03B` 압착 공구 도착 보고; incoming/die-fit/first-article 검증은 미수행
 - 시험 범위: K1, S0, S2, `VO617A-3`, P6KE, F2와 6P connector kit의 무전원 입고 선별
 - 결과: `PARTIAL PASS — RECEIVED-COMPONENT UNPOWERED PRECHECK ONLY`
 - 전체 Physical E-stop 판정: `NOT PASSED`
@@ -165,24 +166,27 @@ actual mating-face numbering과 orientation을 확인하기 전에는 전체 `1�
 - 18 AWG conductor crimp와 yellow seal crimp
 - Terminal insertion/retention, secondary-lock engagement와 strain relief
 
-## 7. Crimp tool 주문 상태
+## 7. Crimp tool 주문·입고 상태
 
 사용자는 2026-08-28 `VH-30J` 교체식 die set를 주문했다. 판매 자료에 표시된 구성은
 `WX-35WF (10~35 mm2)`, `WX-03B (0.5~6 mm2)`, `WS-25WF (2x0.5~2x6 mm2)`와
-`WS-692 (1.5~6 mm2)`다. 이는 seller-claimed 범위이며 아직 공구가 도착하지 않았고 실제
-jaw profile, 6P terminal/seal crimp와 TE `280756-4` crimp를 확인하지 않았다.
+`WS-692 (1.5~6 mm2)`다. 이는 seller-claimed 범위다. 2026-08-30 사용자는 `VH-30J + WX-03B`
+압착 공구 세트가 도착했다고 보고했다. Exact 구성품·수량·외관/손상·die marking·jaw profile,
+6P terminal/seal 적합성과 TE `280756-4` crimp 적합성은 아직 확인하지 않았다.
 
 현재 판정은 다음과 같다.
 
 ```text
 Procurement: USER-REPORTED ORDERED
-Arrival: NOT RECEIVED
+Arrival: USER-REPORTED RECEIVED 2026-08-30
+Exact contents/condition/die marking: NOT INSPECTED
 6P compatibility: NOT VALIDATED
 K1 280756-4 compatibility: NOT VALIDATED
 Crimp/retention/electrical release: OPEN
 ```
 
-공구 도착 후에는 여분 6P terminal로 first-article conductor/seal crimp의 외관, 강한 손당김과
+공구 exact contents/상태/die marking을 먼저 확인한 후 여분 6P terminal로 first-article
+conductor/seal crimp의 외관, 강한 손당김과
 housing insertion/retention을 먼저 확인한다. K1 `280756-4`는 2개뿐이므로 첫 연습용
 terminal로 사용하지 않는다. K1 main crimp는 final wire와 die fit을 확인한 뒤 실행하고 이후
 loaded voltage-drop/thermal 시험으로 별도 release한다.
@@ -220,14 +224,15 @@ powered pickup/dropout/release test는 계속 열려 있다.
 
 ## 10. 남은 조립·공구와 직렬 Gate
 
-| Item | 2026-08-28 status | Gate |
+| Item | Dated status | Gate |
 | --- | --- | --- |
 | S2 IDEC `ABW110G` | RECEIVED / UNPOWERED FUNCTION SCREEN PASS | Nominal K2/K1 re-enable path integration |
 | `P6KE16CA-E3/54` x3 | RECEIVED / UNPOWERED GROSS-SHORT SCREEN PASS | K1/K2 installation와 powered release-time test |
-| `VH-30J` multi-die set, including `WX-03B` | ORDERED / NOT RECEIVED | 6P/K1 first-article crimp validation |
+| `VH-30J` multi-die set, including `WX-03B` | 2026-08-28 `ORDERED / NOT RECEIVED`; 2026-08-30 `USER-REPORTED RECEIVED / INCOMING NOT RUN` | Exact contents/condition/die fit, then 6P/K1 first-article crimp validation |
 | 6P loose kit + 18 AWG | RECEIVED / UNASSEMBLED | Cavity map, crimp, 1:1/unintended-pair open과 retention |
 
-S2와 P6KE incoming은 닫혔지만 6P가 미조립이고 crimp tool compatibility도 검증하지 않았으므로
+S2와 P6KE incoming은 닫혔지만 6P가 미조립이고 도착한 crimp tool의 incoming/compatibility도
+검증하지 않았으므로
 complete control path assembly와 powered K1/K2 coil 시험은 아직 시작하지 않는다. Crimp tool
 도착은 부품 입고 PASS 자체와 별개이며, 실제 first-article crimp 결과를 확인해야 한다.
 
@@ -245,7 +250,7 @@ complete control path assembly와 powered K1/K2 coil 시험은 아직 시작하�
 
 열린 범위:
 
-- Crimp-tool incoming과 6P first-article compatibility
+- Crimp-tool exact contents/condition/die-fit incoming과 6P first-article compatibility
 - F2 exact actual marking
 - 6P assembly와 모든 cavity/crimp/retention evidence
 - Conditioned PC7 path와 powered K1/K2 control circuit

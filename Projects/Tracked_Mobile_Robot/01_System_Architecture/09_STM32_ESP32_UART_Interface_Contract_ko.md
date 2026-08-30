@@ -848,13 +848,15 @@ Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` +
 
 Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current source의
 controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`, P-03 checkpoint는
-`26/26`, P-04A checkpoint는 `27/27`이다. P-04B는 reason/accepted-command age를 연결해 current
-host/static을 firmware contract `24/24` + mapper vectors `2/2` + UART frame `2/2`, 합계
-`28/28 PASS`로 올렸다. Controlled STM32 build는 0 errors/0 warnings와 ELF
+`26/26`, P-04A checkpoint는 `27/27`이다. P-04B reason/accepted-command age 단계의
+`28/28`도 historical checkpoint로 보존한다. 이후 default-off reset closeout harness가 추가되어
+current host/static은 firmware contract `25/25` + mapper vectors `2/2` + UART frame `2/2`, 합계
+`29/29 PASS`다. Controlled STM32 build는 0 errors/0 warnings와 ELF
 `text=29872`, `data=172`, `bss=2840`을 기록했다. Runtime에서 timeout age `485 -> 585`와
 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`, 모든 FAULT PWM `0/0`을 확인했다. Active reset
-reject와 released reset success는 남아 있고, post-test all-hooks-`0U` 격리 STM32/ESP32
-build는 PASS했지만
+reject와 released reset success는 남아 있다. Pre-reset-harness all-hooks-`0U` 격리 STM32/ESP32
+build는 PASS했고, current `BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED=0U` harness의 source/static과
+ESP32 isolated build도 PASS했다. 그러나 harness-enabled board flash/runtime과 시험 뒤 all-hooks-`0U`
 target reflash/no-command runtime restore는 남아 P-04B 전체는 `PARTIAL`이다. 이는 software
 cache/UART 증거이며 measured PWM, exact artifact/setup linkage 또는 motor evidence가 아니다.
 다음 telemetry 작업은 P-04B closeout 뒤 P-05 battery다.

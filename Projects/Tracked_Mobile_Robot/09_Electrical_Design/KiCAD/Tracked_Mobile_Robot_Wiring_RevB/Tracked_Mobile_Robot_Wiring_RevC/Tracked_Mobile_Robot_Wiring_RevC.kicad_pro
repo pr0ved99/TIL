@@ -240,7 +240,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": "RevB-WIP"
+      "sch_revision": ""
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -488,7 +488,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "Tracked_Mobile_Robot_Wiring_RevB.kicad_pro",
+    "filename": "Tracked_Mobile_Robot_Wiring_RevC.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -656,18 +656,18 @@
     "subpart_id_separator": 0,
     "top_level_sheets": [
       {
-        "filename": "Tracked_Mobile_Robot_Wiring_RevB.kicad_sch",
-        "name": "Tracked_Mobile_Robot_Wiring_RevB",
-        "uuid": "db987ccb-2864-4731-9389-36c891dba454"
+        "filename": "Tracked_Mobile_Robot_Wiring_RevC.kicad_sch",
+        "name": "루트",
+        "uuid": "3797800f-2a28-4b73-b072-0f0301b92630"
       }
     ],
-    "used_designators": "J1-19,#FLG1-4,R1-14,#PWR1-16,F1-2,SW1-2,K1-2,U1,TP1-7,S1-2",
+    "used_designators": "J1,J10-11,F1,SW1-2,#PWR1-9,U1,K1-2",
     "variants": []
   },
   "sheets": [
     [
-      "db987ccb-2864-4731-9389-36c891dba454",
-      "Tracked_Mobile_Robot_Wiring_RevB"
+      "3797800f-2a28-4b73-b072-0f0301b92630",
+      "루트"
     ]
   ],
   "text_variables": {},

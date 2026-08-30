@@ -99,6 +99,23 @@ runtime 뒤 source hook을 `0U`로 복구한 뒤 Codex가 repository 밖 격리 
 두 image를 target에 flash하지 않았고 post-build board runtime도 실행하지 않았으므로 hook-0 target
 reflash/runtime evidence는 아직 없다.
 
+### P-04B reset closeout harness 준비
+
+후속 카페 세션에서 ESP32에 default-`0U` `BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED` 훅을 추가했다.
+이 훅은 startup `READY` 뒤 telemetry를 사용해 active reset 1회, latched reset 1회만 송신하고
+`DISARMED/ESTOP_RESET/PWM 0/0`에서 종료한다. 예상 밖 상태에서는 실패로 고정하고 재송신하지
+않으며, 해당 경로에는 `ARM/CMD/DISARM` 송신이 없다. 세 controlled hook은 compile-time
+상호배타다.
+
+- current `test_firmware_contract.py`: **25/25 PASS**
+- mapper/UART frame 포함 current canonical: **29/29 PASS**
+- current ESP-IDF v6.0.2 ESP32 build: **PASS**, BIN `0x2b340 bytes`, app partition `83%` free
+- retained build summary: [2026-08-30_p04b_reset_harness_default_off_esp32_isolated_build_pass.md](../../assets/logs/firmware_build/2026-08-30_p04b_reset_harness_default_off_esp32_isolated_build_pass.md)
+
+이는 실행 도구의 source/static/build 준비 완료다. 아직 target에 flash하지 않았고 active reset의
+`ERR`, released reset의 `ACK/TEL`, `VECTOR DONE`을 수집하지 않았으므로 아래 runtime 판정은
+계속 `NOT RUN`이다. 앞의 `28/28`과 isolated artifact hash는 harness 추가 전 checkpoint로 보존한다.
+
 ## 4. Run02 — reason과 command age controlled runtime
 
 증거:
@@ -200,6 +217,7 @@ E-stop 전이로 reset되지 않았다.
 1. motor/LiPo disconnected 상태에서 active reset rejection을 `ERR code=ESTOP_ACTIVE`와
    `TEL reason=ESTOP_ACTIVE`로 같은 run에 기록한다.
 2. PC7 healthy restore 뒤 explicit reset ACK와 `DISARMED/ESTOP_RESET/PWM 0/0`을 기록한다.
-3. 위 isolated build artifact 또는 동일 hook-0 source에서 생성한 image를 양 board에 flash한다.
-4. ARM/CMD TX 0, startup READY 뒤 `DISARMED/PWM 0/0` safe runtime을 보존한다.
-5. 위 네 항목 뒤 P-04B를 완료하고 P-05 battery 또는 6P/Physical E-stop integration으로 이동한다.
+3. 두 reset vector가 끝나면 P-04B test hook을 다시 `0U`로 복구한다.
+4. current all-hooks-`0U` source에서 image를 생성해 양 board에 flash한다.
+5. ARM/CMD TX 0, startup READY 뒤 `DISARMED/PWM 0/0` safe runtime을 보존한다.
+6. 위 항목 뒤 P-04B를 완료하고 P-05 battery 또는 6P/Physical E-stop integration으로 이동한다.

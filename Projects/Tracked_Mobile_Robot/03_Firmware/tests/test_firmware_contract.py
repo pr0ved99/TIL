@@ -483,6 +483,7 @@ class FirmwareContractTest(unittest.TestCase):
             "UART_MVP_OUTPUT_TEST_ENABLED",
             "UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED",
             "BRIDGE_SCRIPTED_TEST_ENABLED",
+            "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED",
         }
         self.assertTrue(
             required.issubset(hooks),
@@ -1416,6 +1417,98 @@ class FirmwareContractTest(unittest.TestCase):
         self.assertNotIn("vTaskDelay(", app_main)
         self.assertNotIn('uart_write_bytes(BRIDGE_UART_NUM,"\\n",1)', app_main)
         self.assertEqual(app_main.count("bridge_uart_run_test_step("), 1)
+        self.assertNotIn("bridge_uart_send_arm(", app_main)
+        self.assertNotIn("bridge_uart_send_cmd(", app_main)
+
+    def test_esp32_p04b_estop_reset_test_harness_contract(self) -> None:
+        source = self.source["esp_c"]
+        definitions = parse_defines(source)
+        self.assertEqual(
+            integer_define(definitions, "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED"),
+            0,
+        )
+
+        compact_source = compact_c(source)
+        self.assertIn(
+            "#if(BRIDGE_SCRIPTED_TEST_ENABLED+"
+            "BRIDGE_MALFORMED_COMMAND_TEST_ENABLED+"
+            "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED)>1U",
+            compact_source,
+        )
+        self.assertIn('#error"Onlyonebridgetestmaybeenabled"', compact_source)
+
+        sender = extract_function(source, "bridge_uart_send_estop_reset")
+        compact_sender = compact_c(sender)
+        self.assert_tokens_in_order(
+            sender,
+            "char frame[64];",
+            "int len = snprintf(",
+            "frame,",
+            "sizeof(frame),",
+            '"ESTOP_RESET,seq=%" PRIu32,',
+            "seq",
+            "if(len <= 0 || len >= (int)sizeof(frame))",
+            "return bridge_uart_send_frame(frame);",
+        )
+        self.assertEqual(
+            compact_sender.count('"ESTOP_RESET,seq=%"PRIu32'),
+            1,
+        )
+
+        reset_fsm = extract_function(
+            source,
+            "bridge_uart_run_p04b_estop_reset_test_step",
+        )
+        compact_reset_fsm = compact_c(reset_fsm)
+        for token in (
+            "caseBRIDGE_P04B_RESET_WAIT_ACTIVE:",
+            'strcmp(s_telemetry.state,"FAULT")==0',
+            'strcmp(s_telemetry.reason,"ESTOP_ACTIVE")==0',
+            "returnBRIDGE_P04B_RESET_WAIT_LATCHED;",
+            "caseBRIDGE_P04B_RESET_WAIT_LATCHED:",
+            'strcmp(s_telemetry.reason,"ESTOP_LATCHED")==0',
+            "returnBRIDGE_P04B_RESET_WAIT_SAFE_CONFIRM;",
+            "caseBRIDGE_P04B_RESET_WAIT_SAFE_CONFIRM:",
+            'strcmp(s_telemetry.state,"DISARMED")==0',
+            'strcmp(s_telemetry.reason,"ESTOP_RESET")==0',
+            "s_telemetry.left_pwm==0",
+            "s_telemetry.right_pwm==0",
+            "returnBRIDGE_P04B_RESET_DONE;",
+            "returnBRIDGE_P04B_RESET_FAILED;",
+            '"P-04BRESETTESTFAILED:unexpectedpre-active"',
+            '"P-04BRESETTESTFAILED:unexpectedpost-active"',
+            '"P-04BRESETTESTFAILED:unexpectedsafeconfirmation"',
+        ):
+            self.assertIn(token, compact_reset_fsm)
+        self.assertEqual(
+            compact_reset_fsm.count("bridge_uart_send_estop_reset(*seq)"),
+            2,
+        )
+        self.assertEqual(compact_reset_fsm.count("(*seq)++;"), 2)
+        self.assertGreaterEqual(compact_reset_fsm.count("noresetretry"), 4)
+        for forbidden in (
+            "bridge_uart_send_arm(",
+            "bridge_uart_send_cmd(",
+            "bridge_uart_send_disarm(",
+        ):
+            self.assertNotIn(forbidden, compact_reset_fsm)
+
+        app_main = compact_c(extract_function(source, "app_main"))
+        self.assertIn(
+            "if(BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED!=0U&&"
+            "s_startup_state==BRIDGE_STARTUP_READY&&"
+            "p04b_reset_test_state!=BRIDGE_P04B_RESET_DONE&&"
+            "p04b_reset_test_state!=BRIDGE_P04B_RESET_FAILED)",
+            app_main,
+        )
+        self.assertEqual(
+            app_main.count("bridge_uart_run_p04b_estop_reset_test_step("),
+            1,
+        )
+        self.assertIn(
+            '"P-04BcontrolledESTOPresettestenabled(noARM/CMD)"',
+            app_main,
+        )
         self.assertNotIn("bridge_uart_send_arm(", app_main)
         self.assertNotIn("bridge_uart_send_cmd(", app_main)
 

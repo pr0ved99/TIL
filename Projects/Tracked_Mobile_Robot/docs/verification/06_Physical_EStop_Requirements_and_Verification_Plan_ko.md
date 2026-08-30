@@ -84,7 +84,9 @@ S0/S2/K2/opto 후보를 좁혔다. 2026-08-18에는 MG540 current envelope를 �
 두 샘플의 coil resistance, de-energized NC/NO state와 coil-contact gross-short screen은 incoming subset으로
 통과했다. PC7 direct motor-disconnected firmware/runtime와 당시 host/static suites `20/20`도
 통과했다. 2026-08-28 P-03 suite checkpoint는 `26/26`, 2026-08-29 P-04A checkpoint는
-`27/27`이었고 P-04B reason/command-age 계약을 더한 current suite는 `28/28`이다. P-04A/P-04B는
+`27/27`, P-04B reason/command-age checkpoint는 `28/28`이었다. 2026-08-30 default-`0U`
+reset closeout harness 계약을 더한 current suite는 `25 + 2 + 2 = 29/29`이고 current ESP32
+isolated build도 PASS했다. P-04A/P-04B는
 software/UART telemetry 증거이므로 Physical E-stop conditioned path 판정을 바꾸지 않는다. K1/S0/S2/
 VO617A-3/P6KE16CA/F2/6P harness integration, loaded voltage-drop/
 thermal, powered coil/dropout와 direct rail-off는 열려 있다. Actual-off diagnostic 방법은 Step 4에서
@@ -95,7 +97,9 @@ downstream rail direct measurement로 선택했다. 따라서 현재 판정은
 S0 2NC/latch, VO617A-3 diode/input-output gross-short와 F2 operator-reported continuity를 무전원 범위에서
 통과했다. 6P는 완성 harness가 아닌 loose connector kit+별도 18 AWG로 정정했으며 cavity
 map/crimp/6x6 intended-continuity/unintended-open/retention은 열려 있다. 이후 S2 momentary-NO truth table과 P6KE x3
-exact `CA` marking/양방향 gross-short screen도 통과했다. 위 `PARTIAL/BLOCKED` 판정은
+exact `CA` marking/양방향 gross-short screen도 통과했다. `VH-30J` + `WX-03B` crimp-tool set는
+2026-08-30 사용자 보고로 도착했지만 exact set/visual inspection과 spare-terminal first article
+crimp/pull/continuity/retention은 실행하지 않았다. 위 `PARTIAL/BLOCKED` 판정은
 변하지 않으며 complete assembly 전 coil energize는 계속 금지한다.
 
 ## Step 3 hazard traceability
@@ -184,7 +188,8 @@ INTEGRATED HARDWARE VERIFICATION BLOCKED`다.
 
 F2 ordered Littelfuse `0287001.PXCN` 1 A ATOF와 `FHAC0001ZXJA` holder는 operator-reported
 unpowered continuity/movement screen을 통과했지만 exact actual marking과 powered coordination은
-pending이다. 6P는 loose kit+별도 18 AWG로 확인됐고 assembly evidence는 없다. P6KE clamp x3는
+pending이다. 6P는 loose kit+별도 18 AWG로 확인됐고 assembly evidence는 없다. Crimp-tool set는
+사용자 보고로 도착했지만 exact set/inspection과 first article은 아직 검증하지 않았다. P6KE clamp x3는
 exact `CA` marking과 양방향 gross-short screen을 통과했지만 powered clamp behavior는 open이다. F1은 received Littelfuse holder의 `GXL 12AWG SCL -LF-` lead와
 fuse marking `LITTELFUSE/257/32V/10` 및 continuity를 확인했지만 final release가 아니다.
 AWG 12 common/per-motor AWG 16은 preferred prototype candidates다. AWG 14 common은 계산
@@ -211,14 +216,14 @@ K1/K2 clamp, 6P loose-kit crimp/assembly와 required MVP values가 닫힐 때까
 | IDs | Scope | Current verification status |
 | --- | --- | --- |
 | `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `PARTIAL/BLOCKED`; S0/K1 component-level unpowered screens PASS, but integrated/powered K1 cut is not tested |
-| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; envelope and F1/K1/K2/F2 unpowered subsets exist, but full coordination, crimp and integrated parts remain open |
+| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; envelope and F1/K1/K2/F2 unpowered subsets exist. Crimp tool is user-reported arrived, but exact-set inspection, first-article crimp/pull/continuity and integrated coordination remain open |
 | `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `PARTIAL/BLOCKED`; direct PC7/latch/reset subtest passed, conditioned sense/active output and nominal integrated no-auto-motion open; FM-014 single-fault extension is post-MVP |
 | `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `BLOCKED` |
-| `REQ-ESTOP-010` | Complete state observability | `NOT TESTED`; direct runtime log is a supporting subset, but rail/discrepancy states remain open |
+| `REQ-ESTOP-010` | Complete state observability | `PARTIAL`; old-schema direct-PC7 reset runtime와 P-04B `ESTOP_ACTIVE/ESTOP_LATCHED` telemetry subset은 존재한다. Default-`0U` reset harness source/static/build는 PASS했지만 새-schema reset ERR/ACK/TEL/vector runtime과 rail/discrepancy states remain open |
 | `REQ-ESTOP-011` | Three-wire manual re-enable | `BLOCKED`; nominal integrated path open. `FM-ESTOP-014` single-fault mitigation is retained as post-MVP work |
 | `REQ-ESTOP-012~015` | Downstream rail diagnostic and discrepancy/plausibility | `POST-MVP / NOT TESTED` |
 | `REQ-ESTOP-016` | Coil clamp rating and functional K1 drop-out | `BLOCKED` |
-| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL/BLOCKED`; motor/LiPo-disconnected records exist, but loose 6P cavity/crimp/retention and integrated/powered acceptance remain open |
+| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL/BLOCKED`; motor/LiPo-disconnected records exist and the crimp tool is user-reported arrived. Tool inspection, loose-6P first article/cavity/crimp/retention and integrated/powered acceptance remain open |
 
 ## Traceability matrix
 
@@ -237,7 +242,7 @@ K1/K2 clamp, 6P loose-kit crimp/assembly와 required MVP values가 닫힐 때까
 
 ### `T-ESTOP-001` Design and component review
 
-상태: `PARTIAL/BLOCKED` — rating architecture와 reports 18/19의 F1/K1/K2/S0/S2/VO617A-3/P6KE/F2/resistor unpowered subsets complete; exact integrated test build, F1/F2 final identity·coordination과 6P crimp/assembly gates open. `FM-ESTOP-014` mitigation은 post-MVP `005B`로 분리
+상태: `PARTIAL/BLOCKED` — rating architecture와 reports 18/19의 F1/K1/K2/S0/S2/VO617A-3/P6KE/F2/resistor unpowered subsets complete. Crimp tool은 사용자 보고로 도착했지만 exact set/inspection/first article은 미실행이다. Exact integrated test build, F1/F2 final identity·coordination과 6P crimp/assembly gates open. `FM-ESTOP-014` mitigation은 post-MVP `005B`로 분리
 
 Motor와 battery를 연결하지 않은 laptop/document review다.
 
@@ -291,13 +296,17 @@ integrated hardware review를 충족하지 않으므로 `T-ESTOP-001 PASS`가 �
 - F2 operator-reported fuse/holder continuity and movement screen
 - 6P가 preterminated harness가 아닌 loose connector kit임을 확인
 
+2026-08-30에는 `VH-30J` + `WX-03B` crimp-tool set 도착을 사용자 보고로만 기록했다. Exact
+set/visual inspection, die fit, spare-terminal first-article crimp/pull/continuity와 housing retention은
+아직 실행하지 않았으므로 입고 또는 압착 PASS로 승격하지 않는다.
+
 상세 경계는
 [`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)에
 기록한다. 이 subset도 complete test-build, powered coordination 또는 rail-off PASS가 아니다.
 
 ### `T-ESTOP-002` Unpowered continuity and wire-break test
 
-상태: `PARTIAL/BLOCKED` — K1/S0/S2/VO617A-3/P6KE/F2/K2/F1 component-level unpowered subsets exist; assembled 6P와 complete circuit의 integrated continuity/wire-break acceptance는 미실행
+상태: `PARTIAL/BLOCKED` — K1/S0/S2/VO617A-3/P6KE/F2/K2/F1 component-level unpowered subsets exist. Crimp tool은 user-reported arrived/unverified이며 assembled 6P와 complete circuit의 integrated continuity/wire-break acceptance는 미실행
 
 준비:
 
@@ -384,9 +393,10 @@ all test hooks restored to 0U after test
 확인했다. Asserted/open에서 `FAULT`가 유지됐고 DISARM 또는 physical LOW restore만으로 latch가
 clear되지 않았으며, LOW restore 뒤 explicit `ESTOP_RESET` ACK 후 `DISARMED`/zero telemetry로
 복귀했다. 이는 당시 `18 + 2 = 20/20` checkpoint였고, 2026-08-28 P-03 checkpoint는
-`26/26`, P-04A checkpoint는 `27/27`, P-04B 이후 current host/static suite는 `28/28`이며
-current source의 controlled hooks는 `0U`이고 isolated STM32/ESP32 build는 PASS했다. P-04B
-hook-0 target reflash/runtime은 아직 open이다.
+`26/26`, P-04A checkpoint는 `27/27`, P-04B reason/age checkpoint는 `28/28`이었다. 2026-08-30
+default-`0U` reset closeout harness 계약을 포함한 current host/static suite는 `25 + 2 + 2 = 29/29`이고
+current ESP32 isolated build도 PASS했다. Active reset `ERR`, release 뒤 reset `ACK` +
+`DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`와 변경 source의 target flash/runtime은 아직 open이다.
 
 다만 active limited PWM에서 assertion해 both PWM zero와 latency를 직접 capture한 case 3,
 실제 VO617A-3/S0-B wire-open, 그리고 hardware motor rail은 이 실행 범위 밖이다. 근거와 경계는
@@ -394,7 +404,7 @@ hook-0 target reflash/runtime은 아직 open이다.
 
 ### `T-ESTOP-005A` Driver powered, motor disconnected nominal no-auto-motion test
 
-상태: `BLOCKED` — 6P qualified crimp/assembly, complete incoming review와 `T-ESTOP-001~004 PASS` 필요
+상태: `BLOCKED` — crimp tool은 user-reported arrived지만 exact-set inspection/first article이 미실행이다. 6P qualified crimp/assembly, complete incoming review와 `T-ESTOP-001~004 PASS` 필요
 
 시험 경계:
 
@@ -543,14 +553,14 @@ MVP actual-off evidence: DIRECT DOWNSTREAM CONTINUITY/VOLTAGE MEASUREMENT REQUIR
 Post-MVP diagnostic: PA4/PB0 DUAL-RAIL SENSE SELECTED, DEFERRED
 Requirements: 20 BASELINED / 15 MUST / 5 SHOULD / 7 TBR REGISTER ITEMS OPEN (2026-08-10)
 Architecture: BASELINED
-Component selection: PARTIAL — K1/S0/S2/VO617/P6KE/F2 UNPOWERED SCREENS RECORDED; 6P LOOSE KIT UNASSEMBLED
+Component selection: PARTIAL — K1/S0/S2/VO617/P6KE/F2 UNPOWERED SCREENS RECORDED; CRIMP TOOL USER-REPORTED ARRIVED/UNINSPECTED; 6P LOOSE KIT UNASSEMBLED
 F1 incoming: PARTIAL PASS — UNPOWERED MARKING/VISUAL/CONTINUITY ONLY
 K2 incoming: PARTIAL PASS — TWO-SAMPLE UNPOWERED COIL/CONTACT/GROSS-SHORT SCREEN ONLY
 K1/S0/S2/VO617/P6KE/F2 incoming: PARTIAL PASS — REPORT 19 UNPOWERED COMPONENT SCREENS ONLY
 Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
-Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A HISTORICAL 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; P-04B CURRENT 28/28 + REASON/AGE/DIRECT-PC7 ACTIVE-LATCH UART SUBSET + HOOK-0 ISOLATED BUILD PASS, RESET AND TARGET REFLASH/RUNTIME RESTORE OPEN; CONDITIONED PATH AND ACTUAL MOTOR OPEN
+Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A HISTORICAL 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; P-04B HISTORICAL REASON/AGE CHECKPOINT 28/28 + DIRECT-PC7 ACTIVE-LATCH UART SUBSET PASS; DEFAULT-0U RESET HARNESS CURRENT 29/29 + ESP ISOLATED BUILD PASS, RESET ERR/ACK/TEL/VECTOR AND TARGET FLASH/RUNTIME OPEN; CONDITIONED PATH AND ACTUAL MOTOR OPEN
 Bench verification: PARTIAL — DIRECT PC7 MOTOR-DISCONNECTED RUNTIME; NO OPTO/K1 RAIL/MOTOR CLAIM
-T-ESTOP-005A: BLOCKED — 6P ASSEMBLY + COMPLETE INCOMING + T-ESTOP-001~004 FULL PASS REQUIRED
+T-ESTOP-005A: BLOCKED — CRIMP TOOL INSPECTION/FIRST ARTICLE + 6P ASSEMBLY + COMPLETE INCOMING + T-ESTOP-001~004 FULL PASS REQUIRED
 T-ESTOP-005B: DEFERRED / POST-MVP — FM-ESTOP-014 MITIGATION AND FAULT INJECTION
 Overall result: PARTIAL / NOMINAL HARDWARE RAIL AND NO-AUTO-MOTION GATES OPEN
 ```

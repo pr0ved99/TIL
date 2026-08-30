@@ -419,7 +419,7 @@ baseline일 뿐 release wiring 후보가 아니다. 다음 KiCad
 ```text
 PC7 firmware/input path: IMPLEMENTED / DIRECT-JUMPER RUNTIME PARTIAL PASS
 Host static regression: 20/20 PASS
-VO617A-3/S0-B conditioned path: PARTS PENDING / NOT TESTED
+VO617A-3 unpowered screen: PASS / S0-B CONDITIONED PATH NOT TESTED
 K2 TX2-12V incoming no-power screen: 2/2 PASS
 F1 holder/fuse incoming no-power screen: PASS
 K1/F2/S0/S2/clamp powered path: NOT TESTED
@@ -466,7 +466,9 @@ coil energize로 이동하지 않는다. 기존 direct-PC7/K2/F1 evidence bounda
 | --- | --- | --- |
 | K1 assembly | Exact relay/socket/main and coil terminals matched; coil `89.5 ohm`; de-energized NO open; coil/contact cross-isolation open | Crimped-terminal retention, suppression, powered pickup/dropout, rail-off, voltage drop and thermal |
 | S0 | Body/contact markings; both `SFEA-CB` NC pairs closed when released and open when pressed/latched | Order suffix `-A` reconciliation, integrated S0-A/S0-B path and loaded DC behavior |
+| S2 | Terminal `3-4` released-open, pressed-closed and momentary-return unpowered screen PASS | Integrated K2/K1 re-enable path, loaded DC behavior and post-MVP stuck-closed injection |
 | VO617A-3 | Pin 1->2 diode display `955`; reverse OL; all input-output pairs open | LED current, CTR/saturation and actual PC7 LOW/HIGH margin |
+| P6KE16CA-E3/54 x3 | Exact `CA` marking and bidirectional gross-short screen PASS | K1/K2 internal-suppression check, installation and powered release-time test |
 | F2 | Operator-reported continuity and movement screen PASS | Exact physical marking capture, time-current coordination, voltage drop and thermal |
 | 6P connector | Loose-kit inventory and visual screen PASS | Mating-face cavity map, first-article crimp, 6-by-6 continuity/isolation, seal and terminal retention |
 
@@ -475,5 +477,23 @@ coil energize로 이동하지 않는다. 기존 direct-PC7/K2/F1 evidence bounda
 방향을 확인하기 전까지 설계 후보일 뿐이다. `VH-30J`/`WX-03B` tooling은 주문했지만 아직
 도착·검증되지 않았으며, 표기된 wire range만으로 terminal crimp 적합성을 주장하지 않는다.
 
-S2 `ABW110G`와 `P6KE16CA-E3/54` x3는 여전히 미도착이다. 따라서 complete control-path
-integration, powered K1/K2 coil test와 `T-ESTOP-001~005A`는 계속 `BLOCKED`다.
+S2 `ABW110G`와 `P6KE16CA-E3/54` x3는 도착했고 위 무전원 선별을 통과했다. 다만 6P는
+미조립이고 `VH-30J`/`WX-03B` tooling도 미도착·미검증이므로 complete control-path integration,
+powered K1/K2 coil test와 `T-ESTOP-001~005A`는 계속 `BLOCKED`다.
+
+## 2026-08-30 crimp-tool arrival override
+
+위 2026-08-28 문단의 `미도착`은 당시 스냅샷이다. 2026-08-30 사용자는 `VH-30J + WX-03B`
+압착 공구 세트가 도착했다고 보고했다. 다만 exact 구성품·외관/손상·die marking·jaw profile·
+6P terminal/seal 적합성과 first-article crimp/pull/continuity는 아직 검사하지 않았다.
+
+```text
+VH-30J + WX-03B arrival: USER-REPORTED RECEIVED
+Tool incoming inspection and die fit: NOT RUN
+6P loose kit + 18 AWG assembly: NOT STARTED
+First-article crimp/pull/continuity/retention: NOT RUN
+Complete control-path integration and powered tests: BLOCKED
+```
+
+따라서 이번 도착 보고는 구매/물류 blocker만 해제한다. Terminal crimp quality, harness
+continuity/isolation, retention 또는 Physical E-stop 통합 PASS로 승격하지 않는다.

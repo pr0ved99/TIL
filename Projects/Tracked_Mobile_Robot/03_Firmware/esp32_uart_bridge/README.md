@@ -98,10 +98,34 @@ sequence는 시작하지 않는다.
 간주하지 않는다.
 
 > **Current source/static status — 2026-08-29:** ESP32와 STM32의 모든 controlled hook이
-> `0U`이고 canonical host/static test는 `28/28 PASS`다. P-04B controlled runtime은
+> `0U`이고 canonical host/static test는 `29/29 PASS`다. P-04B controlled runtime은
 > reason/command-age와 direct-PC7 active/latch UART subset을 확인했다. 이 hook-0 source의
 > 격리 STM32/ESP32 build도 PASS했지만 target reflash/no-command safe runtime은 아직 수행하지 않았다. 따라서 current
 > P-04B safe target 상태는 `OPEN`이며 source/static PASS를 board runtime PASS로 읽으면 안 된다.
+
+### P-04B E-stop reset 종료시험 훅
+
+P-04B의 남은 reset vector를 한 run에서 재현하기 위한 별도 훅은 다음과 같다.
+
+```c
+#define BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED 0U
+```
+
+기본값 `0U`에서는 `ESTOP_RESET`을 자동 송신하지 않는다. `1U`로 임시 활성화하면 startup
+`READY` 뒤 telemetry를 보고 다음 순서만 수행한다.
+
+1. `FAULT/ESTOP_ACTIVE`에서 `ESTOP_RESET`을 정확히 한 번 송신한다.
+2. operator는 `RX ERR ... type=ESTOP_RESET ... code=ESTOP_ACTIVE`를 확인할 때까지 PC7 active를
+   유지한 뒤 PC7을 healthy로 복구한다.
+3. `FAULT/ESTOP_LATCHED`가 관찰되면 두 번째 `ESTOP_RESET`을 정확히 한 번 송신한다.
+4. `DISARMED/ESTOP_RESET`과 `left_pwm/right_pwm=0/0`을 확인하면 `VECTOR DONE`으로 끝낸다.
+5. 예상 밖 상태나 송신 실패는 `FAILED`로 끝내며 자동 재시도하지 않는다.
+
+이 경로에는 `ARM`, `CMD`, 추가 `DISARM`이 없다. 세 controlled test hook 중 둘 이상을 동시에
+켜면 compile-time error가 발생한다. 실제 실행은 motor/LiPo-disconnected bench에서만 하고,
+같은 monitor log에 active reset의 `ERR`, released reset의 `ACK`, 최종 TEL과 `VECTOR DONE`을 모두
+보존한다. 시험 뒤에는 이 매크로를 다시 `0U`로 복구해 build/flash하고 no-command safe runtime을
+별도로 확인해야 한다.
 
 > **Historical source status — 2026-08-07:** ESP32 `0U/1000 ms`와 STM32의 모든
 > controlled hook이 `0U`였다. 당시 contract `15/15`, restored protocol source
@@ -215,7 +239,7 @@ python -m unittest discover `
 | Post-overflow safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 READY 후 14.43 s, post-READY TEL 145/145 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
 | Historical final safe source/runtime | **PASS — behavior** | ESP/STM all-hooks-`0U`, contract `15/15`; motor-output safety 뒤 exact startup, retry/test/parser error/ARM/CMD 0, READY 후 15.4 s와 post-READY TEL 155/155 safe |
 | P-04A applied-output TEL | **PASS — scoped runtime** | signed software-cached PWM 전달과 hook-0 50-TEL safe runtime; physical PWM/sign coverage는 별도 경계 |
-| P-04B reason/command age | **PARTIAL** | current `28/28`와 hook-0 isolated build PASS; no-CMD sentinel, accepted-CMD age, timeout, direct-PC7 active/latch UART subset PASS. Active reset reject/released reset success와 target reflash/runtime restore OPEN |
+| P-04B reason/command age | **PARTIAL** | pre-harness hook-0 isolated pair build와 current `29/29`/default-off reset harness ESP32 build PASS; no-CMD sentinel, accepted-CMD age, timeout, direct-PC7 active/latch UART subset PASS. Active reset reject/released reset success와 target reflash/runtime restore OPEN |
 
 2026-07-20과 fixed-delay 2026-08-03 로그는 역사적 baseline이다. 새
 response-gated runtime의 별도 원본과 판정은

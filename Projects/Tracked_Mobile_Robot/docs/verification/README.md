@@ -39,14 +39,16 @@ checkpoint는 `26/26`이며 2026-08-28 current-default 300 ms와 canonical 500 m
 target UART/PWM 및 hook-0 restore를 PASS했다.
 
 2026-08-29 P-04A에서 TEL의 `left_pwm/right_pwm`를 software-cached signed applied output과
-연결했고 P-04B에서 `reason/command_age_ms` actual source와 ESP32 parser/log를 추가했다. Current
-suite는 firmware `24/24` + mapper `2/2` + UART `2/2`, 합계 **28/28 PASS**다. Positive symmetric
+연결했고 P-04B에서 `reason/command_age_ms` actual source와 ESP32 parser/log를 추가했다. 당시
+P-04B checkpoint는 **28/28 PASS**였다. 2026-08-30 default-`0U` reset closeout harness 계약을
+추가한 current suite는 firmware `25/25` + mapper `2/2` + UART `2/2`, 합계 **29/29 PASS**다. Positive symmetric
 `50/50`, timeout/ARM-only/DISARM zero, no-CMD sentinel, accepted-CMD-only age reset과 direct-PC7
-`ESTOP_ACTIVE -> ESTOP_LATCHED` target subset과 hook-0 isolated STM32/ESP32 build를 PASS했다.
-P-04B active reset reject/released reset success와 target reflash/runtime restore, measured physical PWM, exact
+`ESTOP_ACTIVE -> ESTOP_LATCHED` target subset과 hook-0 isolated STM32/ESP32 build, current default-off
+reset-harness ESP32 isolated build를 PASS했다. P-04B active reset `ERR`, released reset
+`ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`와 target flash/runtime restore, measured physical PWM, exact
 artifact/setup provenance가 남아 current bridge release 전체 판정은 `PARTIAL`이다.
 
-2026-08-29 현재 검증된 추가 범위:
+2026-08-30 현재 검증된 추가 범위:
 
 - MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
 - STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
@@ -65,7 +67,10 @@ artifact/setup provenance가 남아 current bridge release 전체 판정은 `PAR
 - P-04A software-cached signed `left_pwm/right_pwm`의 STM TEL -> ESP parser/log 전달,
   positive symmetric `50/50`, timeout/ARM-only/DISARM zero와 hook-0 safe UART restore
 - P-04B `reason/command_age_ms`의 STM TEL -> ESP parser/log 전달, 500 ms timeout marker와
-  direct-PC7 active/latch subset; current source/static hook-0 `28/28`
+  direct-PC7 active/latch subset; default-`0U` reset closeout harness source/static `29/29`과 current
+  ESP32 isolated build. Reset runtime과 target flash/runtime은 제외
+- Crimp tool은 사용자 보고로 도착했지만 exact set/inspection/first-article crimp/pull/continuity는
+  실행하지 않았고 6P는 미조립이므로 hardware PASS에는 포함하지 않음
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -163,11 +168,13 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
   Target UART run의 active 7 TEL은 `left_pwm=50,right_pwm=50`, 나머지 42 TEL은 `0/0`이었고,
   hook-0 restore의 50개 TEL도 모두 `DISARMED/0/0`이었다. 이 값은 software-cached target이며 same-run
   physical PWM, reverse/asymmetric sign과 actual motor evidence는 아니다.
-- P-04B는 current host/static `28/28`과 controlled STM32 build 0 errors/0 warnings를 통과했다.
+- P-04B reason/age historical checkpoint는 host/static `28/28`과 controlled STM32 build 0 errors/0 warnings를 통과했다.
   Run02는 no-CMD sentinel, age `485 -> 585` timeout과 fresh-CMD-only reset을, run04는
   `DISARM 6 -> ESTOP_ACTIVE 23 -> ESTOP_LATCHED 26`을 보존했고 모든 FAULT TEL은 PWM `0/0`이었다.
   Active reset reject와 released reset success, hook-0 target reflash/runtime은 아직 open이다. Hook-0 source의
-  isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다.
+  isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다. 2026-08-30 default-`0U` reset harness를
+  더한 current canonical `25 + 2 + 2 = 29/29`과 current ESP32 isolated build도 PASS했지만
+  `ERR`/`ACK`/TEL/`VECTOR DONE` target runtime을 대신하지 않는다.
 
 2026-07-20 기준 ESP32-STM32 board-only UART bridge MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -220,9 +227,9 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 
 1. 완료된 Gate A/B, T-BRIDGE-007, T-BRIDGE-008A/008B와 final safe evidence를 보존
 2. 완료된 P-04A와 P-04B timeout/active/latch subset evidence 보존
-3. P-04B active reset rejection, released reset success와 hook-0 target reflash/runtime restore
+3. P-04B default-`0U` harness를 controlled test에서만 활성화해 active reset rejection, released reset success를 기록한 뒤 hook-0 target reflash/runtime restore
 4. P-05 battery actual source/calibration/low-voltage policy
-5. 6P first-article crimp/cavity/intended-continuity/unintended-open/retention 뒤 Physical E-stop conditioned path 검증
+5. 도착한 crimp tool exact-set/visual inspection 후 6P spare-terminal first-article crimp/pull/continuity, cavity/intended-continuity/unintended-open/retention을 통과하고 Physical E-stop conditioned path 검증
 6. Board rail-off와 nominal `T-ESTOP-001~004 + T-ESTOP-005A`
 7. Fabricated plate fit 검증
 8. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험

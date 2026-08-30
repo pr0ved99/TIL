@@ -41,7 +41,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | Area | Captured design | Status |
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
-| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Functional schematic/ERC complete; K1/S0/VO617A-3/F2 specified unpowered screens recorded; 6P is an unassembled loose kit; S2/P6KE/tooling not received; complete integration/powered rail remains blocked |
+| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Functional schematic/ERC complete; K1/S0/S2/VO617A-3/P6KE/F2 specified unpowered screens recorded; 6P is an unassembled loose kit; `VH-30J`/`WX-03B` tooling is user-reported received but incoming/die-fit/first-article validation is not run; complete integration/powered rail remains blocked |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, 각 signal-to-GND `10 kΩ`, common GND | Permanent perfboard continuity, power-up/NRST all-LOW, active 19 kHz six-step와 hook-0 safe restore PASS |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |
@@ -60,7 +60,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - BNO085 power and I2C wiring
 - Actual high-current distribution, wire gauge, connector and harness plan
 - Powered-motor encoder noise and input-filter validation
-- Physical E-stop S2/P6KE incoming, 6P cavity/crimp/retention, K1/K2 powered pickup/dropout and K1 thermal/rail-off bench, F1/F2 coordination, rail-sense divider/protection values and no-auto-restart/discrepancy verification
+- Physical E-stop S2/P6KE integration, 6P cavity/crimp/retention, K1/K2 powered pickup/dropout and K1 thermal/rail-off bench, F1/F2 coordination, rail-sense divider/protection values and no-auto-restart/discrepancy verification
 - Physical continuity review from schematic to perfboard and harness
 
 ## Revision Rule

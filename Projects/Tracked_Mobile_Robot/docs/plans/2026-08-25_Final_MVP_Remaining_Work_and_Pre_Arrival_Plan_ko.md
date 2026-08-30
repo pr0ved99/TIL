@@ -3,19 +3,20 @@
 ## 문서 상태
 
 - 기준일: 2026-08-25
-- 상태: `ACTIVE / P-04B PARTIAL + ALL-SELECTED-INCOMING UPDATE 2026-08-29`
+- 상태: `ACTIVE / P-04B PARTIAL + ALL-SELECTED-PARTS-ARRIVED UPDATE 2026-08-30`
 - 목적: Final MVP까지 남은 작업의 임계 순서와 잔여 부품 대기 중 병렬 작업을 분리한다.
-- 현재 진행 기록: [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md)
+- 현재 진행 기록: [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)
 - 날짜별 실행 일정: [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md)
 - 상위 계획: [`00_Project_Master_Plan_To_Final_MVP_ko.md`](00_Project_Master_Plan_To_Final_MVP_ko.md)
 
-사용자가 전달한 현재 배송 예상은 2026년 9월 중순이다. 개별 부품의 실제 도착일과 상태는
-입고 전 확정하지 않는다. 배송 완료는 시험 PASS가 아니며, 입고 검사와 motor-disconnected
-통합 시험이 끝나야 actual motor 단계로 이동할 수 있다.
+초기 배송 예상은 2026년 9월 중순이었지만 2026-08-30 기준 선정한 E-stop 부품과 crimp-tool
+set는 모두 사용자 보고로 도착했다. 배송 완료는 시험 PASS가 아니다. Tool/die inspection,
+first-article crimp, 6P 조립 검사와 motor-disconnected 통합 시험이 끝나야 actual motor 단계로
+이동할 수 있다.
 
-### 2026-08-29 current execution update
+### 2026-08-30 current execution update
 
-현재 continuation은 [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md),
+현재 continuation은 [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md),
 [P-04B report 23](../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md),
 [P-04A report 22](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)와
 [incoming report 19](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)를 따른다.
@@ -24,14 +25,17 @@
 | --- | --- | --- |
 | UNPOWERED COMPONENT SCREEN PASS | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, S2 momentary-NO, VO617A-3 diode/isolation, P6KE x3 identity/gross-short, F2 continuity/movement | 해당 component-level A-01 subset은 반복하지 않고 powered/integrated Gate로 trace |
 | RECEIVED / UNASSEMBLED | Loose 6P waterproof connector kit + separate 18 AWG | Mating-face numbering, qualified first-article crimp, 6x6 continuity/isolation, seal/retention 필요 |
-| ORDERED / NOT RECEIVED | `VH-30J`/`WX-03B` tooling | Complete 6P assembly와 powered coil test는 first-article crimp까지 blocked |
-| P-04A COMPLETE / P-04B PARTIAL | Applied PWM과 reason/command-age TEL -> ESP parser/log, current `28/28`; P-04B no-CMD/accepted-CMD/timeout/direct-PC7 active-to-latched runtime subset와 hook-0 isolated build PASS | Active reset reject/released reset success same-run과 current all-hooks-`0U` target reflash/no-command runtime을 닫은 뒤 P-05; measured PWM/actual motor 주장 금지 |
+| USER-REPORTED RECEIVED / UNVERIFIED | `VH-30J` set ordered with `WX-03B` | Exact contents/condition/die 확인과 spare 18 AWG first-article crimp, pull/continuity/housing retention 전 complete assembly 금지 |
+| P-04A COMPLETE / P-04B PARTIAL | Applied PWM과 reason/command-age TEL -> ESP parser/log, current `29/29`; P-04B no-CMD/accepted-CMD/timeout/direct-PC7 active-to-latched runtime subset와 hook-0 isolated build PASS. Default-off reset closeout harness와 current ESP32 build PASS | 집에서 active reset reject/released reset success same-run과 current all-hooks-`0U` target reflash/no-command runtime을 닫은 뒤 P-05; measured PWM/actual motor 주장 금지 |
 
-다음 카페 세션은 P-04B active reset 거부 ERR+TEL pair, release 뒤 explicit reset 성공,
-all-hooks-`0U` 양 board reflash와 ARM/CMD TX 0 no-command safe runtime 순서로 닫는다. Hook-0
-isolated STM32/ESP32 build와 artifact hash 기록은 완료했다.
+카페 세션에서 default-`0U` P-04B E-stop-reset 송신/test harness와 host/static contract를
+준비했고 canonical `29/29` 및 current ESP32 build를 PASS했다. 실제 active reset 거부 ERR+TEL pair,
+release 뒤 explicit reset 성공, all-hooks-`0U`
+양 board reflash와 ARM/CMD TX 0 no-command safe runtime은 STM32/ESP32/PC7가 있는 집 세션에서
+순서대로 닫는다. Hook-0 isolated STM32/ESP32 build와 artifact hash 기록은 완료했다.
 그 뒤 P-05 battery로 이동한다. 다음 집 세션은 plate dry-fit과 6P cavity orientation을 비파괴
-기록하고, tool 도착 뒤 spare 18 AWG terminal first-article crimp를 먼저 검증한다. 이 update가
+기록하고, 도착한 tool/die의 구성·상태를 확인한 뒤 spare 18 AWG terminal first-article crimp를
+먼저 검증한다. 이 update가
 아래 2026-08-27 도착 요약보다 우선한다.
 
 ### 2026-08-27 historical arrival update
@@ -57,7 +61,7 @@ integration -> T-ESTOP-001~004 -> T-ESTOP-005A`로 전환한다. 이 dated updat
 새 대단원을 추가하지 않는다.
 
 1. 대단원 1: MCU 저수준 안전 검증 — 완료
-2. 대단원 2: 전원과 Physical E-stop — 실물 부품 대기, 부분 완료
+2. 대단원 2: 전원과 Physical E-stop — 전체 선정품 도착, 공구/6P 조립·통합 검증 대기, 부분 완료
 3. 대단원 3: 첫 실제 motor 구동 — 대단원 2 Gate 뒤
 4. 대단원 4: dual drivetrain, ground motion과 odometry — 대단원 3 뒤
 
@@ -236,13 +240,15 @@ positive symmetric `50/50`, timeout/ARM-only/DISARM `0/0`과 hook-0 safe UART re
 이는 measured PWM feedback이 아니며 reverse/asymmetric sign과 actual motor는 미검증이다.
 
 P-04B는 STM32 TEL과 ESP32 required parser/log에 `reason/command_age_ms`를 연결했고 current
-host/static `28/28`을 PASS했다. Target runtime에서는 accepted CMD 전 sentinel, accepted CMD에서만
+host/static `29/29`을 PASS했다. Target runtime에서는 accepted CMD 전 sentinel, accepted CMD에서만
 age reset, 500 ms timeout 뒤 age 지속 증가와 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset을
 확인했다. Active E-stop 중 reset 거부는 별도 persistent reason을 추가하지 않고
 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 계속 유지되는
-`TEL state=FAULT,reason=ESTOP_ACTIVE`의 같은-run 조합으로 식별한다. 이 reset-reject pair,
-release 뒤 explicit reset의 `ACK + DISARMED/ESTOP_RESET`과 current all-hooks-`0U` source의
-isolated STM32/ESP32 build는 PASS했다. 양 board reflash/no-command safe runtime은 아직 OPEN이다.
+`TEL state=FAULT,reason=ESTOP_ACTIVE`의 같은-run 조합으로 식별한다. 이 reset-reject pair와
+release 뒤 explicit reset의 `ACK + DISARMED/ESTOP_RESET` runtime은 아직 OPEN이다. Current
+all-hooks-`0U` source의 isolated STM32/ESP32 build만 PASS했고, 양 board reflash/no-command
+safe runtime도 아직 OPEN이다. Default-off ESP32 reset closeout harness와 current ESP32 build는
+PASS했지만 아직 target에 flash하거나 실행하지 않았다.
 
 MVP telemetry 우선순위:
 

@@ -3,20 +3,33 @@
 ## 문서 상태
 
 - 일정 구간: 2026-08-26 ~ 2026-09-15
-- 상태: `ACTIVE / RECEIVED-SUBSET SCREEN TRANSITION 2026-08-28`
+- 상태: `ACTIVE / ALL-SELECTED-PARTS-ARRIVED TRANSITION 2026-08-30`
 - 상위 실행계획: [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-- 현재 진행기록: [`../progress/2026-08-28_progress.md`](../progress/2026-08-28_progress.md)
+- 현재 진행기록: [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)
 - 일정 수립 기록: [`../progress/2026-08-26_progress.md`](../progress/2026-08-26_progress.md)
-- 기준: 2026-08-28 K1/S0/VO617A-3/F2의 지정된 무전원 component screen은 report 19에
-  기록했다. 6P는 loose kit+별도 18 AWG로 미조립이고, S2 `ABW110G`,
-  `P6KE16CA-E3/54` x3와 `VH-30J`/`WX-03B` tooling은 미도착이다.
+- 기준: 2026-08-30 K1/S0/S2/VO617A-3/P6KE/F2의 지정된 무전원 component screen은 report
+  19에 기록했다. 6P는 loose kit+별도 18 AWG로 미조립이다. `VH-30J`/`WX-03B` crimp-tool
+  set도 사용자 보고로 도착했지만 exact 구성/상태, die 형상과 first-article crimp는 미검증이다.
 
 이 일정은 평일 하루 `2~3시간`의 집중 작업을 기준으로 한다. 토요일은 필수 신규 기능을
 넣는 날이 아니라 밀린 검증·수정용 `1~2시간 buffer`, 일요일은 원칙적으로 휴식이다.
 사용자가 더 오래 작업할 수 있더라도 다음 날짜의 Gate를 건너뛰어 actual motor 단계로
 이동하지 않는다.
 
-## 2026-08-28 Received-Subset Screen Transition
+## 2026-08-30 All-selected-parts-arrived transition
+
+| 구분 | 부품/작업 | 현재 처리 |
+| --- | --- | --- |
+| Unpowered screen recorded | K1 exact parts/`89.5 ohm`/NO/isolation, S0 2NC/latch, S2 momentary-NO, VO617A-3 diode/isolation, P6KE x3 identity/gross-short, F2 continuity/movement | Report 19 범위를 보존하고 powered/integrated 증거와 구분 |
+| Received / unassembled | Loose 6P connector kit + separate 18 AWG | Mating-face numbering, qualified first-article crimp, 6x6 continuity/isolation, seal/retention 필요 |
+| User-reported received / unverified | `VH-30J` set ordered with `WX-03B` | Exact set/die marking과 tool condition 확인 -> spare 18 AWG terminal first article -> pull/continuity/housing retention |
+
+배송 대기는 더 이상 blocker가 아니다. 현재 blocker는 압착 공구의 실제 적합성 검증과 6P 첫
+압착/조립이며, 이를 통과하기 전 complete control-path assembly, powered K1/K2와
+`T-ESTOP-001~005A`를 시작하지 않는다. Firmware는 P-04B reset runtime/안전 복구를 집에서
+닫은 뒤 P-05로 이동한다.
+
+## 2026-08-28 Historical received-subset screen transition
 
 | 구분 | 부품/작업 | 현재 처리 |
 | --- | --- | --- |
@@ -24,7 +37,7 @@
 | Received / unassembled | Loose 6P connector kit + separate 18 AWG | Mating-face numbering을 먼저 기록; tooling 도착 뒤 spare terminal first-article와 6x6 검사 |
 | Not received | S2 `ABW110G`, `P6KE16CA-E3/54` x3, crimp tooling | Complete control path, powered K1/K2와 `T-ESTOP-001~005A` 계속 금지 |
 
-다음 작업 장소는 **집 우선**이다. `H-02` P-03 motor/LiPo-disconnected target runtime을 닫고,
+당시 다음 작업 장소는 **집 우선**이었다. `H-02` P-03 motor/LiPo-disconnected target runtime을 닫고,
 시간이 남으면 `H-01` plate dry-fit과 6P molded cavity orientation을 기록한다. P-04 TEL source
 변경은 P-03 runtime 뒤 카페 세션에서 시작한다. 아래 2026-08-27 transition은 역사적 도착
 상태로 보존한다.
