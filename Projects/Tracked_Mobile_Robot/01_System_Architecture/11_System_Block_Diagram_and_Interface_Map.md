@@ -10,8 +10,8 @@ It connects the previous architecture documents into one system view:
 - STM32 owns low-level drivetrain control and safety.
 - MDD10A converts STM32 PWM/DIR commands into motor power.
 - Encoders, IMU, and battery sensing provide feedback to STM32.
-- ESP32-S3 is a support controller for telemetry, wireless UI, and later
-  bridging.
+- ESP32-S3 is the Final MVP production external command ingress and a support
+  controller for telemetry and wireless UI.
 - UART is the first STM32-ESP32 interface.
 - CAN, FreeRTOS, LL Driver migration, ROS2, LiDAR, and SLAM are later
   expansion phases.
@@ -170,8 +170,8 @@ Candidate STM32 interfaces for the first MVP:
 | Timer encoder input | Motor encoder -> STM32 | Right encoder A/B | Count and direction | Required |
 | ADC input | Battery divider -> STM32 | Main battery monitor | Low-voltage decision | Required |
 | I2C | STM32 <-> BNO08x | IMU | Yaw/attitude candidate | Required after motor bring-up |
-| USART1 | STM32 <-> ESP32 | Support controller | Command/telemetry | Required |
-| USB serial | STM32 <-> PC | Development PC | Debug and manual command | Required |
+| USART1 | STM32 <-> ESP32 | Production ingress/support controller | Command/telemetry | Required, production |
+| USART2 / ST-LINK USB serial | STM32 -> PC | Development PC | Bench debug/encoder logger; historical PC-first evidence | Development only, not production ingress |
 | bxCAN | STM32 <-> CAN transceiver | Future CAN bus | Later command/telemetry path | Deferred |
 
 Pin allocation is not finalized in this document.
@@ -181,11 +181,11 @@ DIR, pending CubeMX and header-access validation.
 
 ## 6. ESP32-S3 Interface Map
 
-Candidate ESP32-S3 responsibilities:
+ESP32-S3 responsibilities:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| UART | ESP32 <-> STM32 | Low-level controller | Command forwarding and telemetry | First interface |
+| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command and telemetry bridge; optional PC forwarding is planned | Architecture fixed; production mapper/upstream pending |
 | USB Serial/JTAG | ESP32 <-> PC | Development PC | Flashing and debug | Required |
 | Wi-Fi | ESP32 <-> PC/phone | Dashboard or log bridge | Later |
 | GPIO/RGB LED | ESP32 local | Board test | Already validated in earlier ESP32 practice | Optional |
@@ -232,23 +232,23 @@ Sensor data ownership:
 
 ## 9. Communication Interface Map
 
-### Initial Path
+### Final MVP Production Path
 
 ```text
-PC serial terminal or ESP32
+optional PC client
         |
         v
-UART command request
+ESP32-S3 ingress / arbitration
         |
         v
-STM32 command parser
+UART1 GPIO17/GPIO18 <-> USART1 PA9/PA10
         |
         v
-safety gate + command clamp
-        |
-        v
-motor control output
+STM32 parser -> safety gate -> motor control output
 ```
+
+Do not use direct PC-to-STM32 USART2 and ESP32 as simultaneous command owners.
+USART2 is for bench debug/encoder logging and historical PC-first evidence only.
 
 ### Telemetry Path
 
@@ -344,7 +344,7 @@ Rule:
 | Encoder output exceeds STM32 input tolerance | encoder -> STM32 | measure encoder output before connection, use level shifting if needed |
 | UART wires pick up motor noise | STM32 <-> ESP32 | short wires, GND reference, test before motor power |
 | Buck converter misadjusted | logic power | adjust without MCU connected, verify with multimeter |
-| Command source freezes | UART/CAN command | STM32 command timeout stop |
+| Command source freezes | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, accepted ARM then valid CMD state gate; queued/replayed pair rejection not covered |
 | Software task blocks motor loop | firmware architecture | defer FreeRTOS until HAL baseline exists, use queues and priorities |
 | CAN wiring/debug complexity delays motor bring-up | CAN bus | validate drivetrain first, test CAN standalone later |
 
@@ -366,3 +366,7 @@ The first tracked robot architecture is STM32-centered.
 ESP32, PC, future CAN nodes, and future ROS2 bridges may request or display
 robot motion, but the STM32 remains the low-level authority for motor output,
 sensor feedback, command timeout, and safety gating.
+
+ESP32-S3 is the only Final MVP external command ingress. The production UART is
+`ESP32 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`; optional PC control goes through
+ESP32, while USART2 remains a bench logger.

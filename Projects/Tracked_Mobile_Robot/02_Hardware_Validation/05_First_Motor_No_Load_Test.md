@@ -30,23 +30,26 @@
 | Precondition | Source document | Result |
 | --- | --- | --- |
 | Power path checked | `01_Power_Bringup_Checklist.md` | PASS through MDD10A powered/no-motor input |
-| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
-| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; active timeout/DISARM and timing closure required |
+| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | PASS for current board-power/back-power scope; STM32 5.00/3.30 V, ESP32 5.00/3.27 V |
+| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PASS for motor-disconnected MDD10A-input scope; permanent 10 kΩ pull-down, final 19 kHz/약 10%, DIR settle와 hook-0 all-LOW 확인 |
+| Actual PWM/DIR timing measured | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | PASS for motor-disconnected input scope; active DISARM/timeout/fault edge와 final 19 kHz A/B capture 완료 |
+| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; MVP `T-ESTOP-001~005` must pass first; `T-ESTOP-006` is post-MVP |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
-| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3 PB4/PB5 TI12 x4에서 두 bench motor 순차 PASS; TIM5와 vehicle sign은 pending |
+| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3/TIM5 dual independent hand rotation와 encoder-side A=right/TIM5, B=left/TIM3 forward-positive sign PASS |
 | Motor fixed or lifted safely | Physical setup | TBD |
-| 10 A or 15 A fuse selected | Test stage | TBD |
+| Bench fuse selected from validated current envelope | Test stage | TBD; 10 A candidate, no rating increase without root-cause/design review |
 
 Current gate decision: `NOT READY`
 
-Encoder loaded-voltage gate와 TIM3 motor-power-off hand-rotation count/sign은 통과했다. 그러나 이 결과는 powered-motor noise 또는 vehicle-forward sign을 입증하지 않는다. 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero와 의도한 post-DIR settle을 확인해야 한다.
+Encoder loaded-voltage gate, TIM3/TIM5 dual motor-power-off independent count/sign과 encoder-side vehicle-forward sign은 통과했다. 그러나 이 결과는 MDD10A powered channel-to-side mapping이나 powered-motor noise를 입증하지 않는다. Powered/no-motor timeout/DISARM와 software fault output-zero/latch, exact PWM/direction timing, permanent pull-down과 final safe-image 회귀는 통과했다. 실제 motor 연결 전 Physical E-stop `T-ESTOP-001~005`, fuse/current-limit coordination과 lifted setup을 닫아야 한다.
 
 ## Wiring Under Test
 
 ```text
 3S LiPo +
     -> fuse
-    -> switch
+    -> verified Physical E-stop motor-power disconnect
+       (selected T-ESTOP variant, including its main-switch topology)
     -> MDD10A POWER+
 
 3S LiPo -

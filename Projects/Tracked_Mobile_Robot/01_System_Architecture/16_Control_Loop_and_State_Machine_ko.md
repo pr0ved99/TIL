@@ -53,7 +53,6 @@ typedef enum {
     SAFETY_ARMING_CHECK,
     SAFETY_ARMED_IDLE,
     SAFETY_ARMED_ACTIVE,
-    SAFETY_TIMEOUT_STOP,
     SAFETY_LOW_VOLTAGE_STOP,
     SAFETY_ESTOP_LATCHED,
     SAFETY_FAULT_LATCHED
@@ -69,10 +68,12 @@ State meaning:
 | `SAFETY_ARMING_CHECK` | Disabled | Arm 가능 여부 확인 중 |
 | `SAFETY_ARMED_IDLE` | Enabled but zero command | Armed, active motion command 없음 |
 | `SAFETY_ARMED_ACTIVE` | Limited output allowed | Valid command가 적용 중 |
-| `SAFETY_TIMEOUT_STOP` | Disabled 또는 zero PWM | Command 또는 heartbeat timeout |
 | `SAFETY_LOW_VOLTAGE_STOP` | Disabled | Battery가 stop threshold 아래 |
 | `SAFETY_ESTOP_LATCHED` | Disabled | Emergency stop request 발생 |
 | `SAFETY_FAULT_LATCHED` | Disabled | Firmware, sensor, encoder, driver, internal fault |
+
+`SAFETY_TIMEOUT_STOP`은 과거 후보 상태였으나 ADR-015에서 Final MVP command-source loss를
+즉시 `SAFETY_DISARMED`로 귀결하도록 확정했으므로 현재 목표 state list에서는 사용하지 않는다.
 
 ## 3. Events
 
@@ -114,23 +115,30 @@ SAFETY_ARMED_IDLE
     |
     +-- valid_motion_command ----------> SAFETY_ARMED_ACTIVE
     +-- disarm_request ----------------> SAFETY_DISARMED
-    +-- timeout/low_voltage/estop/fault -> stop state
+    +-- command_timeout ---------------> SAFETY_DISARMED
+    +-- low_voltage_stop --------------> SAFETY_LOW_VOLTAGE_STOP
+    +-- estop_request -----------------> SAFETY_ESTOP_LATCHED
+    +-- fault_detected ----------------> SAFETY_FAULT_LATCHED
 
 SAFETY_ARMED_ACTIVE
     |
     +-- command becomes zero ----------> SAFETY_ARMED_IDLE
-    +-- command_timeout ---------------> SAFETY_TIMEOUT_STOP
+    +-- command_timeout ---------------> SAFETY_DISARMED
     +-- disarm_request ----------------> SAFETY_DISARMED
     +-- low_voltage_stop --------------> SAFETY_LOW_VOLTAGE_STOP
     +-- estop_request -----------------> SAFETY_ESTOP_LATCHED
     +-- fault_detected ----------------> SAFETY_FAULT_LATCHED
 ```
 
-Recovery states:
+Timeout과 recovery 규칙:
 
 ```text
-SAFETY_TIMEOUT_STOP
-    +-- disarm_request or valid re-arm flow -> SAFETY_DISARMED
+command_timeout
+    -> motor output zero
+    -> stored command zero
+    -> SAFETY_DISARMED
+    -> new ARM
+    -> new CMD
 
 SAFETY_LOW_VOLTAGE_STOP
     +-- voltage recovered + operator reset -> SAFETY_DISARMED
@@ -142,6 +150,10 @@ SAFETY_FAULT_LATCHED
     +-- fault cleared + explicit reset -> SAFETY_DISARMED
 ```
 
+Timeout 시 이전 stored command를 zero로 만들고 자동 재적용하지 않는다. `DISARMED`에서
+수신한 `CMD`는 `ARM`이 수락될 때까지 거부한다. P-03은 transport/session freshness를
+판별하지 않으므로 queue에 남았거나 replay된 `ARM` + `CMD` 쌍의 차단은 구현 범위가 아니다.
+
 ## 5. Arm Preconditions
 
 Arm request는 다음 조건에서만 accept된다.
@@ -152,7 +164,8 @@ Arm request는 다음 조건에서만 accept된다.
 - Active fault가 latch되어 있지 않다.
 - Motor PWM output이 현재 zero.
 - PWM compare 값이 zero.
-- Command source가 known이거나 command timeout이 inactive.
+- Final MVP production ingress가 ESP32 단일 owner로 선택되어 있다.
+- Target anti-replay 단계에서는 session freshness도 확인해야 하지만 P-03에는 이 검사가 없다.
 - Optional: 현재 test stage에서 robot이 물리적으로 safe.
 
 하나라도 실패하면 controller는 disarmed에 남거나 latched fault state로 들어간다.
@@ -217,10 +230,10 @@ Initial command limits:
 
 | Field | Initial handling |
 | --- | --- |
-| `vx_mmps` | Low-speed test limit으로 clamp |
-| `w_mradps` | Low-speed yaw limit으로 clamp |
-| `timeout_ms` | Configured min/max로 clamp, 초기 300 ms |
-| `seq` | Telemetry와 stale command inspection에 사용 |
+| `vx_mmps` | `-100~100` 범위 밖이면 거부; active command를 바꾸지 않음 |
+| `w_mradps` | `-500~500` 범위 밖이면 거부; active command를 바꾸지 않음 |
+| `timeout_ms` | `50~500` 범위 밖이면 거부; 초기 기본값 300 ms |
+| `seq` | Response/telemetry correlation에 사용하며 P-03은 sequence freshness로 command를 거부하지 않음 |
 
 Invalid command behavior:
 
@@ -335,7 +348,7 @@ loop_dt_max_us
 | Arm with safe conditions | State가 `SAFETY_ARMED_IDLE` |
 | Motion command while armed | State가 `SAFETY_ARMED_ACTIVE`, limited PWM output |
 | Stop command | PWM zero, state가 idle 또는 disarmed로 복귀 |
-| Command timeout | State가 `SAFETY_TIMEOUT_STOP`, PWM zero |
+| Command timeout | PWM/stored command zero, state가 `SAFETY_DISARMED`; CMD-only 거부 뒤 accepted `ARM`과 valid `CMD`로 복구, transport anti-replay는 pending |
 | E-stop command | State가 `SAFETY_ESTOP_LATCHED`, PWM zero |
 | Low-voltage simulated | State가 `SAFETY_LOW_VOLTAGE_STOP`, PWM zero |
 | Fault injected | State가 `SAFETY_FAULT_LATCHED`, PWM zero |
@@ -353,3 +366,8 @@ nonzero PWM은 `SAFETY_ARMED_ACTIVE`에서만 적용된다.
 PWM = 0
 nonzero motor output blocked
 ```
+
+이 항목은 ADR-015의 required state model이다. P-03A/P-03B source/static/full-build는 pre-RX
+timeout에서 output/stored command zero와 `DISARMED` 전이를 강제하고, `ARM`에서 default
+300 ms first-CMD window를 다시 시작하는 계약을 PASS했다. Flash/board/PWM target runtime
+검증 전에는 이 state transition의 실기 PASS를 주장하지 않는다.

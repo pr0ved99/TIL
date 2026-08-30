@@ -166,11 +166,11 @@ STM32/ESP32 연결 전 확인:
 
 | Check | Expected | Result |
 | --- | --- | --- |
-| Board allowed 5 V input path checked | Yes | TBD |
-| USB and buck simultaneous power policy written | Yes | TBD |
-| Buck output voltage measured just before connection | 5.00 V target | TBD |
-| Ground reference planned | Common GND, no motor current through signal GND | TBD |
-| Connector polarity labeled | Yes | TBD |
+| Board allowed 5 V input path checked | Yes | PASS; NUCLEO CN7 E5V with JP5=PWR-E5V/JP1 open, ESP32 header 5V/GND |
+| USB and buck simultaneous power policy written | Yes | PASS; simultaneous use prohibited |
+| Buck output voltage measured just before connection | 5.00 V target | PASS; 5.03 V no-load, 5.00~5.01 V board-connected |
+| Ground reference planned | Common GND, no motor current through signal GND | PASS; XL4015 OUT- logic return branches |
+| Connector polarity labeled | Yes | PASS for tested E5V/5V/GND points |
 
 Power method per test:
 
@@ -199,13 +199,13 @@ Stop immediately if:
 
 | Converter | Approved role | Approved output | Approved for board connection? | Notes |
 | --- | --- | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V candidate | 5.03 V no-load; terminal stabilized from 4.91 V to 4.93 V at nominal 1 A | Not yet | Nominal 1 A for 5 min PASS; measured 1.76-1.80 A held for 3 min with electronic-load heat; USB/buck simultaneous power policy remains open |
+| XL4015 #1 | STM32/ESP32 logic 5 V | 5.03 V no-load; 5.00~5.01 V with NUCLEO/ESP32 | Yes — buck-only | NUCLEO/ESP32 individual and combined mode PASS; all USB disconnected; USB+buck simultaneous use prohibited |
 | XL4015 #2 | Sensor/auxiliary 5 V candidate | 5.03 V no-load; terminal stabilized at 4.90-4.89 V and USB-side 4.90 V at 0.94 A | Not yet | Approximately 1 A sustained load PASS; 1.78-1.80 A held for 3 min at USB-side 4.73 V; need final load assignment and board/sensor power path policy |
 
 ## Next Step
 
-Buck converter가 안전하게 조정되면 다음 문서로 진행한다.
+Buck converter board-power Gate를 닫았으므로 다음 Gate로 진행한다.
 
 ```text
-03_MDD10A_Logic_Input_Test.md
+Physical E-stop T-ESTOP-001~005 (motor disconnected)
 ```

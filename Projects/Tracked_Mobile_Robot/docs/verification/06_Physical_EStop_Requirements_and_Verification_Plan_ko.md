@@ -1,0 +1,572 @@
+# Physical E-stop Requirements And Verification Plan
+
+## 목적
+
+이 문서는 Physical E-stop 요구사항의 시험 순서, 증거와 판정을 관리한다.
+
+설계 정본은 [`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md)다.
+요구사항 정본은 [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)다.
+RevB 기능 회로 정본은
+[`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)다.
+
+이 계획은 다음 두 주장을 분리한다.
+
+```text
+Hardware claim
+    MCU/software 상태와 무관하게 motor energy path가 차단된다.
+
+Software claim
+    STM32가 E-stop을 감지해 output zero와 latch/no-auto-restart를 보장한다.
+```
+
+둘 중 하나만 통과하면 Physical E-stop 전체를 `PASS`로 판정하지 않는다.
+
+## MVP gate와 확장 진단의 분리
+
+첫 actual motor 시험을 막는 Physical E-stop gate는 `T-ESTOP-001~004 + T-ESTOP-005A`다. 이 범위는
+정격이 확인된 K1/S0/K2 path, no-power continuity, PC7 sense, firmware latch,
+motor-disconnected direct downstream rail-off와 정상 S2/harness 조건의 nominal no-auto-motion을 검증한다.
+
+`T-ESTOP-007`은 그 gate 뒤 첫 lifted motor setup에서 실제 정지를 확인하는 MVP 시험이다.
+`T-ESTOP-006`의 PA4/PB0 dual-rail plausibility, discrepancy fault injection, synchronized
+rail transient characterization은 유용한 후속 진단이지만 MVP blocker가 아니다. 이 분리는
+direct DMM/continuity evidence를 생략한다는 뜻이 아니며 산업 안전 적합성을 주장하지도 않는다.
+
+2026-08-24 audit에서 현 RevB three-wire topology의 `FM-ESTOP-014` gap을 확인했다. S2가 stuck
+closed이거나 6P harness의 S2 pair가 short이면 S0 release 또는 control-power restore가 K2/K1과
+motor rail을 자동 재인가할 수 있다. 이 failure mode는 삭제하지 않고 post-MVP `T-ESTOP-005B`에서
+mitigation/fault injection으로 추적한다. MVP `T-ESTOP-005A`는 건강한 momentary S2와 short가
+없는 것으로 무전원 확인된 harness의 nominal 기능만 검증한다. 따라서 MVP 결과로 single-fault
+tolerance나 산업 안전 적합성을 주장하지 않는다. Firmware `DISARMED`/PWM zero도 hardware rail
+acceptance의 대체 증거가 아니다.
+
+## Safety goal traceability
+
+Safety goal과 safe-state vector의 설계 정본은
+[`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md)의
+`SG-ESTOP-001`이다.
+
+| Safety goal | Basis ID | Derived requirement | Verification |
+| --- | --- | --- | --- |
+| `SG-ESTOP-001` | `RISK-001`, `ESTOP-001`, `REQ-001`, `VVT-001` | `REQ-ESTOP-001~020` | `T-ESTOP-001~007` |
+
+2026-08-10의 Step 1 definition gate는 다음 항목을 문서 baseline으로 고정했다.
+
+- Hardware-independent motor-energy isolation
+- Controller safe-output와 E-stop latch
+- Release와 reset의 분리
+- Valid reset 뒤 `DISARMED` 유지
+- New ARM과 post-reset new command 전 motion 금지
+- Electrical shutdown과 mechanical stop evidence의 분리
+
+현재 판정은 `DEFINITION BASELINED / DIRECT-PC7 FIRMWARE PARTIAL / RECEIVED-SUBSET UNPOWERED SCREENS PARTIAL / HARDWARE INTEGRATION NOT TESTED`다.
+문서 baseline은 아래 `REQ-ESTOP-*` 또는 시험 결과의 `PASS`를 의미하지 않는다.
+
+## Step 2 system-boundary traceability
+
+2026-08-10 Step 2는 RevA actual net과 RevB target path를 분리하고 다음 검증 경계를
+baseline으로 고정했다.
+
+| Path | Architecture boundary | Related requirement | Verification consequence |
+| --- | --- | --- | --- |
+| Motor energy | `VBAT_PROTECTED -> K1 main contact -> MOTOR_VBAT_SAFE -> MDD10A POWER+` | `REQ-ESTOP-003~004`, `016~017`; post-MVP `012~015` | MVP는 K1 open continuity/direct rail voltage와 back-power를 측정; dual-rail ADC 진단은 후속 |
+| Relay control | `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`; K2 pole 2 -> K1 coil permission; MCU-independent | `REQ-ESTOP-002~004`, `011`, `016` | Press, wire-open, manual re-enable, coil-power-loss 방향과 S2 stuck/pair-short negative case 확인 |
+| Monitoring | 5 V `S0-B NC` loop -> optocoupler -> 3.3 V `ESTOP_SENSE`; motor/coil current와 분리 | `REQ-ESTOP-005~010`; post-MVP `012~015` | MVP는 contact-loop current, PC7 level, latch/reset reject; rail plausibility는 후속 |
+| Logic power | XL4015/USB controller path remains available candidate | `REQ-ESTOP-008`, `017`; post-MVP `012~014` | Motor rail 역급전과 logic-powered no-auto-restart 확인 |
+| Mechanical response | K1/MDD10A 이후 motor/track | `REQ-ESTOP-009`, `019~020` | Electrical rail decay와 stop time/distance를 분리 |
+
+Step 2에서 disconnect 방식은 `K1 DC power relay`로 선택했다. Step 6에서 manual hardware
+re-enable과 downstream rail-sense 확장 회로 및 STM32 target pin 후보를 정했다. Step 7에서는
+S0/S2/K2/opto 후보를 좁혔다. 2026-08-18에는 MG540 current envelope를 확보해 TE
+`V23134J1052D642` K1 assembly를 주문하고 catalog numerical gate를 통과시켰다.
+
+2026-08-24 당시 F1 Littelfuse holder/10 A fuse의 unpowered visual/continuity와 K2 `TX2-12V`
+두 샘플의 coil resistance, de-energized NC/NO state와 coil-contact gross-short screen은 incoming subset으로
+통과했다. PC7 direct motor-disconnected firmware/runtime와 당시 host/static suites `20/20`도
+통과했다. 2026-08-28 P-03 suite checkpoint는 `26/26`, 2026-08-29 P-04A checkpoint는
+`27/27`, P-04B reason/command-age checkpoint는 `28/28`이었다. 2026-08-30 default-`0U`
+reset closeout harness 계약을 더한 current suite는 `25 + 2 + 2 = 29/29`이고 current ESP32
+isolated build도 PASS했다. P-04A/P-04B는
+software/UART telemetry 증거이므로 Physical E-stop conditioned path 판정을 바꾸지 않는다. K1/S0/S2/
+VO617A-3/P6KE16CA/F2/6P harness integration, loaded voltage-drop/
+thermal, powered coil/dropout와 direct rail-off는 열려 있다. Actual-off diagnostic 방법은 Step 4에서
+downstream rail direct measurement로 선택했다. 따라서 현재 판정은
+`PATH DEFINITION BASELINED / INCOMING + DIRECT-PC7 PARTIAL / HARDWARE RAIL VERIFICATION BLOCKED`다.
+
+2026-08-28 report 19에서 K1 exact components/`89.5 ohm` coil/de-energized NO/coil-contact gross-short,
+S0 2NC/latch, VO617A-3 diode/input-output gross-short와 F2 operator-reported continuity를 무전원 범위에서
+통과했다. 6P는 완성 harness가 아닌 loose connector kit+별도 18 AWG로 정정했으며 cavity
+map/crimp/6x6 intended-continuity/unintended-open/retention은 열려 있다. 이후 S2 momentary-NO truth table과 P6KE x3
+exact `CA` marking/양방향 gross-short screen도 통과했다. `VH-30J` + `WX-03B` crimp-tool set는
+2026-08-30 사용자 보고로 도착했지만 exact set/visual inspection과 spare-terminal first article
+crimp/pull/continuity/retention은 실행하지 않았다. 위 `PARTIAL/BLOCKED` 판정은
+변하지 않으며 complete assembly 전 coil energize는 계속 금지한다.
+
+## Step 3 hazard traceability
+
+Hazard analysis 정본은
+[`../../01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md`](../../01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md)다.
+
+| Hazard group | Primary requirements/tests | Step 3 decision |
+| --- | --- | --- |
+| `HZ-ESTOP-001` unexpected restart | `REQ-ESTOP-006~008`, `011`, `013~014`; `T-ESTOP-004~005` | Release와 별도 manual K1 hardware re-enable required |
+| `HZ-ESTOP-002`, `006~008` isolation/diagnostic | `REQ-ESTOP-002~005`, `009`, `016~018`; post-MVP `012~015` | Direct downstream rail evidence is MVP-mandatory; automatic plausibility is post-MVP |
+| `HZ-ESTOP-003~004`, `009`, `011~012` motion/exposure | `REQ-ESTOP-009~010`, `019~020`; `T-ESTOP-006~007` | Fixed stand, exclusion zone, flat surface and reach gate required |
+| `HZ-ESTOP-005`, `010` thermal/electrical | `REQ-ESTOP-004`, `016`, `018`, `020`; `T-ESTOP-001~003` | Current/rating data, fuse and instrument preflight required |
+
+12개 hazard의 initial screening은 완료했지만 safeguard 구현과 residual-risk 판정은 아직
+없다. `Hazard BASELINED`는 E-stop 구현 또는 시험 `PASS`가 아니다.
+
+## Step 4 FMEA traceability
+
+FMEA 정본은
+[`../../01_System_Architecture/23_Physical_EStop_FMEA_ko.md`](../../01_System_Architecture/23_Physical_EStop_FMEA_ko.md)다.
+
+| FMEA group | Failure modes | Verification consequence |
+| --- | --- | --- |
+| K1 main/coil/clamp | `FM-ESTOP-001~008` | DC rating, continuity, coil transient, drop-out와 downstream rail-decay evidence |
+| S0/manual re-enable | `FM-ESTOP-009~015` | Open/cross-wire test, release-only no-rail, deliberate S2 action과 stuck-contact negative test |
+| Monitoring/software | `FM-ESTOP-016~020` | Upstream/downstream plausibility, discrepancy latch, reset/ARM/CMD rejection |
+| Power/backup isolation | `FM-ESTOP-021~023` | Back-power matrix, fuse/wire record, S1 reach/continuity test |
+
+Step 4는 다음 설계 방향을 고정했다.
+
+- Manual re-enable: `S0-A NC -> [S2 momentary NO || K2-HOLD-NO] -> K2 coil`, K2 pole 2 -> K1 coil
+- Actual-off evidence: direct DMM/continuity is MVP-mandatory; protected `MOTOR_VBAT_SAFE_SENSE` is post-MVP diagnostic
+- K1 power contact: official minimum switching load보다 작은 seal-in load에 사용 금지
+- Coil suppression: `P6KE16CA-E3/54` x3 arrived and passed the identity/gross-short screen, but exact K1/K2 installation and measured drop-out timing remain open
+
+23개 failure mode와 action 및 Step 6 기능 회로는 baselined됐다. Firmware/direct-PC7 subpath와
+일부 incoming component checks는 구현·실행됐지만, integrated hardware와 motor-energy 시험은 아직 없다.
+
+## Step 5 requirement baseline
+
+요구사항 정본은
+[`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)다.
+
+| Requirement group | IDs | Primary verification |
+| --- | --- | --- |
+| Mechanical/hardware interruption | `REQ-ESTOP-001~004` | `T-ESTOP-001~002` |
+| Control/restart/software | `REQ-ESTOP-005~011` | `T-ESTOP-003~005` |
+| Actual-off diagnostic/clamp | `REQ-ESTOP-016` MVP; `REQ-ESTOP-012~015` post-MVP | `T-ESTOP-001`, `005`; post-MVP `T-ESTOP-006` |
+| Integration/operation/evidence | `REQ-ESTOP-017~020` | `T-PWR-003`, `T-ESTOP-001~007` |
+
+20개 requirement는 baselined됐으며 15 MUST/5 SHOULD다. MVP MUST에 연결된
+timing/current/voltage TBR은 관련 powered-test gate 전에 닫는다. 오직 post-MVP
+`REQ-ESTOP-012~015`/`T-ESTOP-006`에 연결된 TBR은 확장 V-cycle에서 닫는다.
+
+## Step 6 circuit-architecture traceability
+
+기능 회로 정본은
+[`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)다.
+
+| Circuit decision | Baseline | Verification consequence |
+| --- | --- | --- |
+| `CD-ESTOP-001` | `VBAT_PROTECTED -> K1-MAIN-NO -> MOTOR_VBAT_SAFE` | K1 open continuity와 actual rail voltage를 직접 측정 |
+| `CD-ESTOP-002` | `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`; K2 pole 2 -> K1 coil | MVP `005A`: healthy/released S2에서 initial/release/power-restore OFF와 deliberate S2 re-enable. Post-MVP `005B`: `FM-ESTOP-014` stuck/short negative case |
+| `CD-ESTOP-003` | K1/K2 coil-side clamp function blocks | Stress와 K1-open/rail-decay timing을 함께 승인 |
+| `CD-ESTOP-004` | 5 V S0-B loop -> optocoupler -> external-pull-up PC7 | Contact current, GPIO voltage, 5 V/wire-open, latch와 PWM-zero latency 확인 |
+| `CD-ESTOP-005` | PA4 upstream/PB0 downstream independent ADC networks | Post-MVP diagnostic option; MVP schematic/first motor blocker가 아님 |
+| `CD-ESTOP-006~007` | Keyed connector/test points and no-backfeed boundary | Cross-wire/continuity와 power-source matrix 실행 |
+
+현재 판정은 `FUNCTIONAL CIRCUIT BASELINED / STEP 7 PARTIAL / DIRECT-PC7 IMPLEMENTED /
+INTEGRATED HARDWARE VERIFICATION BLOCKED`다.
+
+## Step 7 component/rating traceability
+
+부품·정격 정본은
+[`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)다.
+
+| Selection decision | Current status | Verification consequence |
+| --- | --- | --- |
+| `SD-ESTOP-001` K2 separated control | Baselined architecture | S2 stuck, K2-HOLD/K2-K1 contact fault와 power-restore test 추가 |
+| `SD-ESTOP-002` Autonics ordered `SF2ER-E2R2B-A` | Body/contact marking and 2NC/latch unpowered screen PASS | Order suffix trace, integrated independent NC paths and loaded DC check |
+| `SD-ESTOP-003` IDEC `ABW110G` | Received; terminal `3–4` momentary 1NO unpowered screen PASS | Integrated K2/K1 re-enable path와 cavity mapping; stuck-closed/pair-short는 post-MVP negative test |
+| `SD-ESTOP-004` Panasonic `TX2-12V` | Incoming unpowered subset PASS | Two samples: `1.025/1.035 kΩ`, de-energized NC/NO and coil-contact gross-short screen PASS; powered voltage/pickup/dropout pending |
+| `SD-ESTOP-005` Vishay `VO617A-3`, measured `670.1 Ω`/`9.97 kΩ` | Opto diode/input-output gross-short unpowered screen PASS; integration pending | Insulation-withstand, 5 V tolerance/current, CTR/saturation, conditioned PC7 LOW/HIGH and wire-open measurement |
+| `SD-ESTOP-006` K1/F1/main-current path | TE K1 catalog numerical PASS and unpowered `89.5 ohm`/NO/coil-contact gross-short PASS; F1 incoming unpowered subset PASS | K1 insulation/crimp/retention/suppression/powered thermal/rail-off and F1 loaded voltage-drop/thermal before powered motor test |
+
+F2 ordered Littelfuse `0287001.PXCN` 1 A ATOF와 `FHAC0001ZXJA` holder는 operator-reported
+unpowered continuity/movement screen을 통과했지만 exact actual marking과 powered coordination은
+pending이다. 6P는 loose kit+별도 18 AWG로 확인됐고 assembly evidence는 없다. Crimp-tool set는
+사용자 보고로 도착했지만 exact set/inspection과 first article은 아직 검증하지 않았다. P6KE clamp x3는
+exact `CA` marking과 양방향 gross-short screen을 통과했지만 powered clamp behavior는 open이다. F1은 received Littelfuse holder의 `GXL 12AWG SCL -LF-` lead와
+fuse marking `LITTELFUSE/257/32V/10` 및 continuity를 확인했지만 final release가 아니다.
+AWG 12 common/per-motor AWG 16은 preferred prototype candidates다. AWG 14 common은 계산
+baseline일 뿐이고 `280756-4`에 직접 압착하지 않는다. K1 incoming, F1 loaded behavior,
+K1/K2 clamp, 6P loose-kit crimp/assembly와 required MVP values가 닫힐 때까지 Step 8 MVP schematic에는
+명확한 TBD와 calculation note를 남긴다.
+
+## 상태 정의
+
+| Status | Meaning |
+| --- | --- |
+| `PLANNED` | 요구사항/절차만 있고 구현 또는 시험 전 |
+| `PARTIAL` | Hardware와 software 중 일부만 구현·검증 |
+| `BLOCKED` | 선행 부품·계측·회로가 없어 실행 불가 |
+| `PASS` | 수용 기준과 저장소 evidence가 모두 충족 |
+| `FAIL` | 수용 기준 위반; 원인 수정 전 powered test 금지 |
+
+## 요구사항 요약
+
+상세 shall statement, acceptance criteria, hazard/FMEA source와 TBR register는
+[`24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)를
+유일한 정본으로 사용한다. 이 시험계획에는 status와 test mapping만 유지한다.
+
+| IDs | Scope | Current verification status |
+| --- | --- | --- |
+| `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `PARTIAL/BLOCKED`; S0/K1 component-level unpowered screens PASS, but integrated/powered K1 cut is not tested |
+| `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; envelope and F1/K1/K2/F2 unpowered subsets exist. Crimp tool is user-reported arrived, but exact-set inspection, first-article crimp/pull/continuity and integrated coordination remain open |
+| `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `PARTIAL/BLOCKED`; direct PC7/latch/reset subtest passed, conditioned sense/active output and nominal integrated no-auto-motion open; FM-014 single-fault extension is post-MVP |
+| `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `BLOCKED` |
+| `REQ-ESTOP-010` | Complete state observability | `PARTIAL`; old-schema direct-PC7 reset runtime와 P-04B `ESTOP_ACTIVE/ESTOP_LATCHED` telemetry subset은 존재한다. Default-`0U` reset harness source/static/build는 PASS했지만 새-schema reset ERR/ACK/TEL/vector runtime과 rail/discrepancy states remain open |
+| `REQ-ESTOP-011` | Three-wire manual re-enable | `BLOCKED`; nominal integrated path open. `FM-ESTOP-014` single-fault mitigation is retained as post-MVP work |
+| `REQ-ESTOP-012~015` | Downstream rail diagnostic and discrepancy/plausibility | `POST-MVP / NOT TESTED` |
+| `REQ-ESTOP-016` | Coil clamp rating and functional K1 drop-out | `BLOCKED` |
+| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL/BLOCKED`; motor/LiPo-disconnected records exist and the crimp tool is user-reported arrived. Tool inspection, loose-6P first article/cavity/crimp/retention and integrated/powered acceptance remain open |
+
+## Traceability matrix
+
+| Requirement | Design / implementation | Test ID | Required evidence | Status |
+| --- | --- | --- | --- | --- |
+| `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PARTIAL/BLOCKED` |
+| `REQ-ESTOP-005`, `018` | `CD-ESTOP-004`, `006`; S0-B interface | `T-ESTOP-003` | DMM GPIO voltage table, pin configuration, wire-open log | `PARTIAL/BLOCKED` — direct PC7 only |
+| `REQ-ESTOP-006~008`, `010` | Safety state/latch and common safe-output handling | `T-ESTOP-004`, `T-ESTOP-005A`; post-MVP `005B` | UART log, GPIO/PWM/direct rail capture, reset/re-enable regression; single-fault extension separately | `PARTIAL/BLOCKED` — firmware direct-pin subset only; nominal rail/no-auto gate open |
+| `REQ-ESTOP-009`, `016~017` | Functional K1 drop-out, direct rail-off and back-power | `T-PWR-003`, `T-ESTOP-005A`, `T-ESTOP-007` | Direct rail observation, power-source matrix and stop evidence | `BLOCKED` |
+| `REQ-ESTOP-012~015` | `CD-ESTOP-005`; dual rail ADC plausibility and discrepancy handling | `T-ESTOP-006` | Post-MVP ADC sweep, synchronized waveform and fault injection | `DEFERRED` |
+| `REQ-ESTOP-009`, `019~020` | Lifted motor mechanical stop and environment/evidence gate | `T-ESTOP-007` | Fixture photo, synchronized video, stop-time/distance table | `BLOCKED` |
+
+## Test sequence and gates
+
+시험은 아래 순서대로 수행한다. 뒤 단계는 앞 단계의 acceptance가 통과하기 전 실행하지 않는다.
+
+### `T-ESTOP-001` Design and component review
+
+상태: `PARTIAL/BLOCKED` — rating architecture와 reports 18/19의 F1/K1/K2/S0/S2/VO617A-3/P6KE/F2/resistor unpowered subsets complete. Crimp tool은 사용자 보고로 도착했지만 exact set/inspection/first article은 미실행이다. Exact integrated test build, F1/F2 final identity·coordination과 6P crimp/assembly gates open. `FM-ESTOP-014` mitigation은 post-MVP `005B`로 분리
+
+Motor와 battery를 연결하지 않은 laptop/document review다.
+
+확인 항목:
+
+- `S0-A` NC relay-control path와 `S0-B` NC auxiliary sense path가 분리돼 있다.
+- Power disconnect 위치가 fuse 뒤, MDD10A motor rail 앞이다.
+- RevA actual net과 RevB `VBAT_PROTECTED/K1/MOTOR_VBAT_SAFE` target net이 구분돼 있다.
+- K1 main contact의 de-energized-open 동작과 `S0-A`/`S0-B` 독립 경로가 명시돼 있다.
+- S2 manual re-enable/seal-in과 direct `MOTOR_VBAT_SAFE` measurement point가 명시돼 있다.
+- PC7 target pin과 5 V/opto sense가 명시돼 있다. PA4/PB0 divider는 post-MVP option으로
+  넣거나 명시적으로 미실장 처리할 수 있으며 `T-ESTOP-001` MVP PASS를 막지 않는다.
+- DC breaking rating, continuous current, contact/coil default state가 공식 datasheet로 확인된다.
+- Fuse, wire, terminal과 disconnect device의 보호 관계가 문서화된다.
+- Two-motor `2.88 A` rated/`18 A` stall과 12.6 V conservative `18.9 A` envelope의 source와
+  calculation이 기록되고, exact test-build K1/F1/wire/holder가 그 envelope에 trace된다.
+- Logic rail 유지 시 USB/buck back-power 경로가 추가되지 않는다.
+- Regenerative braking/back-EMF 검증 항목이 남아 있다.
+
+Acceptance:
+
+```text
+No unnamed/TBD safety-critical device in the test build
+No AC-only contact rating used as DC interruption evidence
+Schematic ERC = 0 errors / 0 warnings
+Human review checklist = all checked
+```
+
+Evidence filename candidates:
+
+```text
+09_Electrical_Design/.../exports/YYYY-MM-DD_..._estop_draft.pdf
+09_Electrical_Design/.../reports/YYYY-MM-DD_..._estop_erc.rpt
+assets/logs/estop/YYYY-MM-DD_estop_component_review.md
+```
+
+2026-08-24 completed subset:
+
+- F1 holder/fuse marking, visual and unpowered continuity screening
+- K2 two-sample coil resistance, de-energized NC/NO state and coil-contact gross-short screen
+- S0-B candidate resistors `670.1 Ω` and `9.97 kΩ`
+
+이 subset은 위 Acceptance의 `No unnamed/TBD safety-critical device`, release schematic/ERC 또는
+integrated hardware review를 충족하지 않으므로 `T-ESTOP-001 PASS`가 아니다.
+
+2026-08-28 completed subset:
+
+- K1 exact relay/socket/terminal identity, `89.5 ohm` coil, de-energized NO open and coil/contact gross-short screen
+- S0 two `SFEA-CB` NC channels, latch/turn-release and cross-channel gross-short screen
+- VO617A-3 forward/reverse diode behavior and input-output gross-short screen
+- F2 operator-reported fuse/holder continuity and movement screen
+- 6P가 preterminated harness가 아닌 loose connector kit임을 확인
+
+2026-08-30에는 `VH-30J` + `WX-03B` crimp-tool set 도착을 사용자 보고로만 기록했다. Exact
+set/visual inspection, die fit, spare-terminal first-article crimp/pull/continuity와 housing retention은
+아직 실행하지 않았으므로 입고 또는 압착 PASS로 승격하지 않는다.
+
+상세 경계는
+[`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)에
+기록한다. 이 subset도 complete test-build, powered coordination 또는 rail-off PASS가 아니다.
+
+### `T-ESTOP-002` Unpowered continuity and wire-break test
+
+상태: `PARTIAL/BLOCKED` — K1/S0/S2/VO617A-3/P6KE/F2/K2/F1 component-level unpowered subsets exist. Crimp tool은 user-reported arrived/unverified이며 assembled 6P와 complete circuit의 integrated continuity/wire-break acceptance는 미실행
+
+준비:
+
+- Battery, USB, STM32, ESP32, motor를 모두 분리한다.
+- DMM continuity mode를 확인한다.
+- Power contact와 auxiliary contact를 식별한다.
+
+절차:
+
+1. K1 coil과 모든 source가 분리된 상태에서 K1 main contact가 open인지 측정한다.
+2. Released 상태에서 `S0-A` control NC continuity를 측정한다.
+3. Pressed/latched 상태에서 `S0-A` control path가 open인지 확인한다.
+4. Released 상태에서 `S0-B` auxiliary sense NC continuity를 측정한다.
+5. Pressed/latched 상태에서 `S0-B` sense path가 open인지 확인한다.
+6. Control connector와 sense connector를 각각 한쪽씩 분리해 open fault가 재현되는지 확인한다.
+7. Mechanical latch가 press 후 유지되고 manual release가 필요한지 확인한다.
+8. K1 main contact, coil, S0-A와 S0-B 사이 unintended continuity가 없는지 확인한다.
+
+Acceptance:
+
+| Condition | K1/control path | Sense path |
+| --- | --- | --- |
+| K1 coil unpowered | Main contact open | Independent |
+| S0 released/healthy | `S0-A` closed | `S0-B` closed |
+| S0 pressed/latched | `S0-A` open | `S0-B` open |
+| Control wire removed | Control open/fault | State independent |
+| Sense wire removed | Control state independent | Open/fault |
+
+### `T-ESTOP-003` 3.3 V sense electrical test
+
+상태: `PARTIAL/BLOCKED` — direct PC7 LOW/HIGH/open subpath PASS; VO617A-3/S0-B conditioned path pending
+
+Motor power와 MDD10A output은 연결하지 않는다.
+
+측정:
+
+| Point | Healthy expected | Pressed/open expected |
+| --- | --- | --- |
+| `ESTOP_SENSE` to STM32 GND | Logic LOW | 3.3 V-class HIGH |
+| GPIO absolute level | 3.3 V input limits 내 | 3.3 V input limits 내 |
+| Wire removed | N/A | HIGH/fault |
+
+Acceptance:
+
+- No 5 V direct input.
+- Pressed와 wire break가 동일한 asserted state다.
+- Released bounce는 software latch를 clear하지 않는다.
+- Power contact와 sense contact에 unintended current sharing이 없다.
+
+2026-08-24 direct-pin subset에서는 PC7 internal pull-up open level `3.3 V`와 PC7-to-GND
+healthy LOW를 확인했고, jumper removal/open이 firmware asserted state로 들어갔다. 임시 direct
+PC7-to-GND jumper는 VO617A-3 path 연결 전에 제거해야 한다. 이 결과는 5 V LED loop current,
+opto transistor saturation, S0-B/wire-open 및 control/sense isolation을 시험하지 않았으므로 전체
+`T-ESTOP-003`은 `PARTIAL/BLOCKED`다.
+
+### `T-ESTOP-004` Firmware latch and common-safe-path test
+
+상태: `PARTIAL/BLOCKED` — direct-PC7 boot/latch/reject/reset subcases PASS; active-output assertion/timing and integrated S0-B path pending
+
+Motor-disconnected 상태에서 수행한다.
+
+Test cases:
+
+1. Boot with E-stop released -> `DISARMED`, output zero.
+2. Boot with E-stop pressed/open -> ARM reject, output zero.
+3. ARM/limited output hook 상태에서 E-stop assert -> both PWM zero, latch set.
+4. E-stop physical release -> output remains zero, ARM/CMD reject.
+5. Reset request while contact open -> reject.
+6. Physical release + explicit reset -> latch clear, still `DISARMED`.
+7. New ARM request 전에는 output이 다시 활성화되지 않는다.
+8. Sense wire removal -> case 3과 동일하다.
+
+Acceptance:
+
+```text
+assertion -> Motor_Output_ForceSafe() path reached
+both PWM requests = 0
+software latch persists until valid explicit reset
+no automatic command replay
+all test hooks restored to 0U after test
+```
+
+2026-08-24 direct-PC7 runtime은 test cases 1, 2, 4, 5, 6과 fail-closed command rejection을
+확인했다. Asserted/open에서 `FAULT`가 유지됐고 DISARM 또는 physical LOW restore만으로 latch가
+clear되지 않았으며, LOW restore 뒤 explicit `ESTOP_RESET` ACK 후 `DISARMED`/zero telemetry로
+복귀했다. 이는 당시 `18 + 2 = 20/20` checkpoint였고, 2026-08-28 P-03 checkpoint는
+`26/26`, P-04A checkpoint는 `27/27`, P-04B reason/age checkpoint는 `28/28`이었다. 2026-08-30
+default-`0U` reset closeout harness 계약을 포함한 current host/static suite는 `25 + 2 + 2 = 29/29`이고
+current ESP32 isolated build도 PASS했다. Active reset `ERR`, release 뒤 reset `ACK` +
+`DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`와 변경 source의 target flash/runtime은 아직 open이다.
+
+다만 active limited PWM에서 assertion해 both PWM zero와 latency를 직접 capture한 case 3,
+실제 VO617A-3/S0-B wire-open, 그리고 hardware motor rail은 이 실행 범위 밖이다. 근거와 경계는
+[`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)에 기록한다.
+
+### `T-ESTOP-005A` Driver powered, motor disconnected nominal no-auto-motion test
+
+상태: `BLOCKED` — crimp tool은 user-reported arrived지만 exact-set inspection/first article이 미실행이다. 6P qualified crimp/assembly, complete incoming review와 `T-ESTOP-001~004 PASS` 필요
+
+시험 경계:
+
+- S2는 무전원 continuity로 정상 momentary NO와 release-open을 먼저 확인한다.
+- 6P harness는 cavity map, intended-pair continuity와 unintended-pair open이 먼저 확인된 정상품만 사용한다.
+- 검증된 current envelope에 맞는 bench fuse와 switch path를 사용한다. 현재 10 A F1은
+  prototype candidate이며 nuisance trip 원인을 규명하지 않은 채 rating을 높이지 않는다.
+- Motor는 MDD10A에서 분리한 상태로 유지한다.
+- Logic analyzer로 `ESTOP_SENSE`, `PB6/PWM1`, `PB7/PWM2`를 관찰한다.
+- DMM 또는 적절한 probe로 K1 downstream MDD10A motor-power rail을 직접 확인한다.
+
+Nominal cases:
+
+1. Initial power와 E-stop-open boot에서 K2/K1, downstream rail과 PWM이 안전 상태인지 확인한다.
+2. Deliberate S2로 rail을 enable한 뒤 S0를 눌러 K2/K1 drop-out, direct rail-off와 PWM zero를 확인한다.
+3. S0를 물리적으로 release해도 S2를 다시 누르기 전에는 rail이 복귀하지 않는지 확인한다.
+4. S0 pressed 상태와 released/no-S2 상태 각각에서 control power OFF -> ON을 수행해 자동 rail
+   재인가나 motion command replay가 없는지 확인한다.
+5. Deliberate S2 후에도 firmware E-stop latch는 explicit reset 전까지 유지되고, reset은
+   `DISARMED`만 복귀시키며 new ARM과 post-reset new CMD 전에는 PWM이 zero인지 확인한다.
+6. UART/ESP32 연결 상실 조건에서도 동일한 safe result인지 확인한다.
+
+Acceptance:
+
+- E-stop assert에서 motor-power rail이 hardware로 제거된다.
+- PB6/PB7은 software path로 zero가 된다.
+- 정상 release/power-restore만으로 motor rail/output/motion이 재활성화되지 않는다. Rail은 별도
+  deliberate S2 후에만 재인가될 수 있다.
+- K1 expected OFF에서 direct DMM 또는 voltage-appropriate instrument로 downstream rail이 닫힌
+  `V_RAIL_OFF_MAX` 이하인지 확인한다. K2/contact state만으로 차단을 추정하지 않는다.
+- Explicit reset과 new ARM 및 post-reset new CMD 전까지 zero가 유지된다.
+
+### `T-ESTOP-005B` S2 stuck/6P pair-short single-fault extension
+
+상태: `DEFERRED / POST-MVP` — `FM-ESTOP-014` residual-risk closure
+
+이 시험은 `005A`의 정상 기능 증거와 섞지 않는다. 설계 mitigation을 정한 뒤 motor를 분리하고
+current-limited setup에서 다음을 수행한다.
+
+1. S0 pressed/K2-K1 OFF 상태에서 S2를 held/stuck-closed로 등가 주입한 뒤 S0를 release한다.
+2. 6P S2 pair short를 등가 주입한 뒤 S0 release와 control-power OFF -> ON을 각각 수행한다.
+3. 각 case에서 K2/K1 상태는 보조로 기록하고 downstream motor rail을 직접 측정한다.
+4. Fault 제거와 deliberate manual re-enable 전까지 rail이 OFF인지 확인한다.
+
+S2 stuck 또는 6P pair short에서 rail이 자동 재인가되면 `005B FAIL`이다. 이는 `005A`의 nominal
+기능 결과를 지우지는 않지만, mitigation 전에는 single-fault-tolerant·industrial-safety claim을
+금지하고 `FM-ESTOP-014`를 open residual risk로 유지한다. `DISARMED`/PWM zero도 이 hardware
+FAIL을 PASS로 바꾸지 않는다.
+
+### `T-ESTOP-006` Timing and rail-transient measurement
+
+상태: `DEFERRED / POST-MVP` — logic analyzer, voltage-appropriate measurement와 optional dual-rail ADC 필요
+
+이 시험은 `T-MOTOR-003`의 선행 조건이 아니다. MVP 기본 동작과 actual-stop evidence를 닫은 뒤
+진단 깊이를 확장할 때 수행한다.
+
+측정값을 구분한다.
+
+```text
+t0: ESTOP_SENSE assertion edge
+t1: PWM output reaches inactive
+t2: motor rail disconnect state
+t3: motor rail decays below defined threshold
+```
+
+기록:
+
+- `t1 - t0`: software output-zero latency
+- `t2 - t0`: hardware disconnect latency
+- Peak/undershoot/overshoot on motor rail
+- Contact bounce and sense debounce behavior
+- PA4/PB0 upstream/downstream plausibility와 `K1_OFF_DISCREPANCY`/`RAIL_SENSE_FAULT` fault injection
+
+24 MHz, 5 V-class logic analyzer는 STM32 digital signals 관찰용이다. 3S LiPo/MDD10A power rail에 직접 연결하지 않는다. Motor rail의 차단 지연, 감쇠와 overshoot/undershoot는 적절한 voltage rating과 grounding을 가진 oscilloscope/probe로 측정한다. DMM은 steady-state 또는 정적 rail 존재 여부 확인에만 사용하며 transient timing evidence를 대체하지 않는다.
+
+수치 acceptance threshold는 계측 baseline과 hazard review 후 확정한다. 측정 전 임의 숫자를 `PASS` 기준으로 만들지 않는다.
+
+### `T-ESTOP-007` Lifted single-motor stop test
+
+상태: `BLOCKED` — `T-ESTOP-001~004 + T-ESTOP-005A`와 `T-MOTOR-003` PASS, physical fixture 필요
+
+조건:
+
+- 한쪽 motor/track만 완전히 lifted.
+- 5~10% 제한 duty.
+- Operator 손이 track/motor에서 떨어져 있다.
+- Main switch와 battery disconnect에도 즉시 접근 가능하다.
+- Current, heat, sound, motion video와 command log를 기록한다.
+
+측정:
+
+- E-stop press에서 command/PWM/rail/motor motion 변화
+- Mechanical stop time
+- Shaft 또는 track stop distance
+- Driver/battery rail abnormal behavior
+- Release 후 no-auto-restart
+
+Acceptance threshold는 첫 no-load baseline을 얻은 뒤 수치화한다. `멈춘 것처럼 보임`만으로 PASS하지 않는다.
+
+## Evidence record template
+
+```text
+Date/time:
+Operator:
+Firmware commit:
+KiCad revision:
+E-stop/disconnect part number:
+Datasheet URL/hash:
+Battery voltage:
+Fuse rating:
+Motor connection state:
+Instrumentation:
+Test ID:
+Expected:
+Observed:
+Measured timing/voltage:
+Photos/log/video paths:
+Result: PASS / FAIL / PARTIAL
+Limits and next action:
+```
+
+## Stop rules
+
+다음 중 하나라도 발생하면 즉시 main switch OFF, battery disconnect 후 원인을 조사한다.
+
+- E-stop press에도 power contact가 closed로 남음
+- Sense wire open이 healthy로 읽힘
+- E-stop release만으로 PWM 또는 motor rail이 자동 재활성화됨
+- S2 held/stuck 또는 6P S2 pair short 상태에서 S0 release/control-power restore 후 K2/K1 또는 motor rail이 자동 재활성화됨
+- Motor rail overshoot/역극성/grounding 이상
+- Switch, contactor, terminal, wire, fuse holder의 발열·냄새·변색
+- Contact welding 또는 mechanical latch 불량
+- Logic analyzer ground를 3S power node에 잘못 연결할 위험
+
+## Current decision
+
+```text
+Safety goal/safe-state definition: BASELINED (2026-08-10)
+System boundary/energy/sense paths: BASELINED (2026-08-10)
+Hazard analysis: BASELINED (2026-08-10)
+FMEA: BASELINED (2026-08-10)
+Disconnect method: K1 DC POWER RELAY SELECTED
+Motor-rail re-enable policy: MVP NOMINAL PATH REQUIRES SEPARATE MANUAL S2 ACTION
+FM-ESTOP-014: OPEN RESIDUAL RISK / T-ESTOP-005B POST-MVP SINGLE-FAULT EXTENSION
+MVP actual-off evidence: DIRECT DOWNSTREAM CONTINUITY/VOLTAGE MEASUREMENT REQUIRED
+Post-MVP diagnostic: PA4/PB0 DUAL-RAIL SENSE SELECTED, DEFERRED
+Requirements: 20 BASELINED / 15 MUST / 5 SHOULD / 7 TBR REGISTER ITEMS OPEN (2026-08-10)
+Architecture: BASELINED
+Component selection: PARTIAL — K1/S0/S2/VO617/P6KE/F2 UNPOWERED SCREENS RECORDED; CRIMP TOOL USER-REPORTED ARRIVED/UNINSPECTED; 6P LOOSE KIT UNASSEMBLED
+F1 incoming: PARTIAL PASS — UNPOWERED MARKING/VISUAL/CONTINUITY ONLY
+K2 incoming: PARTIAL PASS — TWO-SAMPLE UNPOWERED COIL/CONTACT/GROSS-SHORT SCREEN ONLY
+K1/S0/S2/VO617/P6KE/F2 incoming: PARTIAL PASS — REPORT 19 UNPOWERED COMPONENT SCREENS ONLY
+Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
+Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A HISTORICAL 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; P-04B HISTORICAL REASON/AGE CHECKPOINT 28/28 + DIRECT-PC7 ACTIVE-LATCH UART SUBSET PASS; DEFAULT-0U RESET HARNESS CURRENT 29/29 + ESP ISOLATED BUILD PASS, RESET ERR/ACK/TEL/VECTOR AND TARGET FLASH/RUNTIME OPEN; CONDITIONED PATH AND ACTUAL MOTOR OPEN
+Bench verification: PARTIAL — DIRECT PC7 MOTOR-DISCONNECTED RUNTIME; NO OPTO/K1 RAIL/MOTOR CLAIM
+T-ESTOP-005A: BLOCKED — CRIMP TOOL INSPECTION/FIRST ARTICLE + 6P ASSEMBLY + COMPLETE INCOMING + T-ESTOP-001~004 FULL PASS REQUIRED
+T-ESTOP-005B: DEFERRED / POST-MVP — FM-ESTOP-014 MITIGATION AND FAULT INJECTION
+Overall result: PARTIAL / NOMINAL HARDWARE RAIL AND NO-AUTO-MOTION GATES OPEN
+```
+
+Motor-disconnected 단계인 `T-ESTOP-001~004 + T-ESTOP-005A`가 모두 `PASS`되기 전에는
+[`T-MOTOR-003`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)의 powered
+single-motor test를 시작하지 않는다. `T-ESTOP-007`은 그 선행 gate를 통과한 lifted
+single-motor setup에서 실행한다. `T-ESTOP-005B`와 `T-ESTOP-006`은 post-MVP 확장 진단이며
+이 MVP gate에 포함하지 않는다.

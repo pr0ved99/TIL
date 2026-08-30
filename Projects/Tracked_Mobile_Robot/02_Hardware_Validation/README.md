@@ -36,6 +36,7 @@ Firmware보다 먼저 확인할 것:
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
 | 7 | `07_STM32_ESP32_UART_Wiring_Checklist.md` | Board-only STM32/ESP32 UART wiring and bring-up checklist |
 | 8 | `08_Adapter_Plate_Fit_Check.md` | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
+| Safety gate | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | Logic analyzer 기반 PWM/duty, direction settle, boot/DISARM/timeout/fault actual pin timing 검증 |
 
 ## Evidence Policy
 
@@ -66,13 +67,14 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
-| Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
-| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`, 교정 후 6-step LED 및 final safe-state PASS; exact PWM/deadtime와 active timeout/DISARM은 미검증 |
-| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 조건에서 MG540-A/B를 TIM3 PB4/PB5 TI12 x4로 순차 hand-rotation PASS; TIM5, powered-noise와 vehicle sign은 미검증 |
+| Buck converter output / board power | PASS for XL4015 #1 logic role | XL4015 #1 board-connected 5.00~5.01 V; NUCLEO/ESP32 individual+combined buck-only, dual-USB isolation and rail-off PASS; USB+buck simultaneous use prohibited. XL4015 #2 final sensor assignment remains open |
+| MDD10A logic input | PASS — motor-disconnected input scope | `03_MDD10A_Logic_Input_Test.md`; permanent signal별 10 kΩ, final perfboard CH1/CH2 19.049/19.058 kHz active 6-step, pre/post-DIR zero 약 2 ms와 hook-0 all-LOW PASS. Physical E-stop, power stage와 actual motor는 별도 Gate |
+| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 1560 counts/rev, CPS/mRPM, production TEL과 A=right/TIM5·B=left/TIM3 forward-positive PASS; powered-noise와 external RPM/wheel scale 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
-| Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
+| Adapter plate fit | User-reported received / Ready / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md` |
+| Motor output waveform/timing | PASS — motor-disconnected MCU-pin scope | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; waveform/direction, active DISARM 23.50 us, 300 ms timeout shutdown, fault next-pulse/latch와 signal별 10 kΩ 적용 external-reset LOW PASS. Driver power stage와 actual motor는 별도 gate |
 
 현재 실행 순서는 다음과 같다.
 
@@ -82,8 +84,19 @@ STM32 PWM/DIR safe output 구현 완료
 -> MDD10A powered-no-motor static/LED PASS
 -> encoder loaded-voltage safety CONDITIONAL PASS
 -> TIM3 PB4/PB5 TI12 x4 motor-power-off count/sign PASS
--> TIM5 PA0/PA1 motor-power-off 반복 및 powered-noise 확인
--> exact PWM/direction timing 및 active timeout/DISARM 검증
--> first motor no-load
+-> TIM5 PA0/PA1 및 dual independent motor-power-off count/sign PASS
+-> 16/32-bit modular delta, wrap-safe accumulation과 counts/s bench PASS
+-> active timeout/DISARM powered/no-motor LED functional PASS, hook `0U` 복구 PASS
+-> production TEL -> ESP32 dual CPS independent CW/CCW PASS
+-> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
+-> A=right/TIM5, B=left/TIM3 encoder-side vehicle forward-positive sign PASS
+-> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
+-> historical 20.1005 kHz 시험 뒤 vendor 상한 margin을 반영해 final perfboard CH1/CH2 19.049/19.058 kHz, 약 10%, direction 전후 약 2 ms zero PASS
+-> active DISARM 23.50 us, timeout scoped baseline, software-fault next-pulse/latch와 external-reset 10 kΩ pull-down MCU-pin PASS
+-> 모든 controlled hook `0U`, contract 15/15, final safe UART post-READY TEL 155/155 over 15.4 s PASS; exact board-artifact/setup provenance pending
+-> RevB/permanent 10 kΩ pull-down continuity + board power/back-power PASS
+-> final perfboard MDD10A-input 19 kHz active DIR/PWM 6-step + restored all-LOW PASS
+-> physical E-stop T-ESTOP-001~005
+-> first motor no-load + powered encoder noise
 -> left/right drivetrain
 ```

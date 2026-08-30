@@ -46,6 +46,14 @@ int ring_buffer_pop(ring_buffer_t *rb, uint8_t *data){
     return 1;
 }
 
+void ring_buffer_discard_all(ring_buffer_t *rb){
+    if(rb == NULL){
+        return;
+    }
+
+    rb->tail = rb->head;
+}
+
 uint16_t ring_buffer_available(const ring_buffer_t *rb){
     if(rb == NULL){
         return 0;

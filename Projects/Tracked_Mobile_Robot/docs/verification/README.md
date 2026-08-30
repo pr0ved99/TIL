@@ -5,16 +5,20 @@
 목표는 개인 프로젝트 규모에 맞는 경량 V-model을 적용하는 것이다. 즉, 큰 조직의 절차 문서를 흉내 내는 것이 아니라 다음 흐름을 작게라도 남긴다.
 
 ```text
-요구사항
+Engineering Basis
+-> 요구사항
 -> 구현 대상
 -> 검증 방법
 -> 실제 증거
 -> 결과와 다음 조치
 ```
 
+계획·설계·구현·검증에 사용한 Basis ID, 적용 수준과 인증 주장 경계는 [`../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md)를 정본으로 사용한다.
+
 ## Current Verification Scope
 
-현재 검증 완료 범위는 PC-first UART MVP와 ESP32 board-only UART bridge MVP다.
+현재 검증 완료 범위는 PC-first UART MVP, ESP32 board-only UART bridge MVP와
+motor-disconnected MDD10A/dual-encoder 하위 시험까지 확장됐다.
 
 ```text
 PC Web Serial Dashboard
@@ -28,15 +32,58 @@ ESP32 USB Monitor
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD before ARM -> ARM -> valid CMD -> invalid CMD -> DISARM`, timeout-zero를 모두 PASS했다. STM32가 parser, safety gate, timeout owner 역할을 유지하는 것도 실제 `ACK/ERR/TEL`로 확인했다.
+ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing과
+scripted safety sequence를 PASS했고, 2026-08-03~12에는 response-gated Gate A/B와
+`T-BRIDGE-007/008` required runtime을 닫았다. P-02C-2 historical checkpoint는 `25/25`, P-03
+checkpoint는 `26/26`이며 2026-08-28 current-default 300 ms와 canonical 500 ms timeout/recovery
+target UART/PWM 및 hook-0 restore를 PASS했다.
 
-아직 이 검증에 포함하지 않은 것:
+2026-08-29 P-04A에서 TEL의 `left_pwm/right_pwm`를 software-cached signed applied output과
+연결했고 P-04B에서 `reason/command_age_ms` actual source와 ESP32 parser/log를 추가했다. 당시
+P-04B checkpoint는 **28/28 PASS**였다. 2026-08-30 default-`0U` reset closeout harness 계약을
+추가한 current suite는 firmware `25/25` + mapper `2/2` + UART `2/2`, 합계 **29/29 PASS**다. Positive symmetric
+`50/50`, timeout/ARM-only/DISARM zero, no-CMD sentinel, accepted-CMD-only age reset과 direct-PC7
+`ESTOP_ACTIVE -> ESTOP_LATCHED` target subset과 hook-0 isolated STM32/ESP32 build, current default-off
+reset-harness ESP32 isolated build를 PASS했다. P-04B active reset `ERR`, released reset
+`ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`와 target flash/runtime restore, measured physical PWM, exact
+artifact/setup provenance가 남아 current bridge release 전체 판정은 `PARTIAL`이다.
 
-- MDD10A motor driver 출력
+2026-08-30 현재 검증된 추가 범위:
+
+- MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
+- STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
+- Command-timeout shutdown scoped baseline과 software-fault next-pulse suppression/no-reactivation latch
+- External reset 첫 FAIL에서 도출한 DIR/PWM별 `10 kΩ` pull-down과 5 s/20 M samples all-LOW 재시험 PASS
+- Dual encoder conditioned input, TIM3/TIM5 count, CPS/mRPM와 vehicle-frame sign
+- Fused/switched LiPo input과 XL4015 bench load
+- Permanent perfboard 5-Net, nominal 19 kHz/10% active 6-step와 final hook-`0U` 5초 all-LOW
+- Motor/LiPo/K1-disconnected direct-PC7 E-stop latch/reset runtime과 F1/K2/resistor unpowered subset
+- K1 exact parts/`89.5 ohm`/de-energized NO/coil-contact gross-short, S0 2NC/latch, S2 momentary-NO,
+  VO617A-3 diode/input-output gross-short, P6KE x3 identity/gross-short와 F2 continuity의 component-level unpowered subset
+- P-03 current-default timeout/re-arm target UART sequence, 약 19.06 kHz/5% PWM burst와
+  all-hooks-`0U` 10 s four-net all-LOW safe restore
+- `REQ-SAFE-004 timeout_ms=500` same-run D4/D5 UART+D0~D3 timeout/rejection/expiry/recovery와
+  final no-reactivation; operator dual-reset release의 RST net 자체는 미계측
+- P-04A software-cached signed `left_pwm/right_pwm`의 STM TEL -> ESP parser/log 전달,
+  positive symmetric `50/50`, timeout/ARM-only/DISARM zero와 hook-0 safe UART restore
+- P-04B `reason/command_age_ms`의 STM TEL -> ESP parser/log 전달, 500 ms timeout marker와
+  direct-PC7 active/latch subset; default-`0U` reset closeout harness source/static `29/29`과 current
+  ESP32 isolated build. Reset runtime과 target flash/runtime은 제외
+- Crimp tool은 사용자 보고로 도착했지만 exact set/inspection/first-article crimp/pull/continuity는
+  실행하지 않았고 6P는 미조립이므로 hardware PASS에는 포함하지 않음
+
+아직 최종 검증에 포함하지 않은 것:
+
 - 실제 DC motor 구동
-- encoder feedback
-- LiPo main power
+- Physical E-stop과 motor-connected stop
+- MDD10A power-stage shutdown timing과 actual motor response
+- Powered-motor encoder noise와 wheel-speed/odometry
 - ROS 2 bridge
+
+Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로 추적한다.
+`005A`는 verified healthy S2/harness의 nominal direct rail-off/no-auto-motion 시험이다.
+`FM-ESTOP-014` S2 stuck/6P pair-short single-fault extension은 post-MVP `T-ESTOP-005B`이며,
+완료 전에는 single-fault tolerance 또는 산업 안전 적합성을 주장하지 않는다.
 
 따라서 이 검증의 의미는 "로봇 전체가 움직였다"가 아니라, "STM32 하위 제어기가 command/telemetry protocol과 safety gate를 실제 보드에서 수행했다"이다.
 
@@ -49,6 +96,24 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 | [`03_UART_MVP_Test_Report_2026-07-09_ko.md`](03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 실제 STM32 + Web Serial 검증 리포트 |
 | [`04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32를 command source / telemetry relay로 붙이는 보드 단독 검증 계획 |
 | [`05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | 전원·기구·모터·엔코더·주행까지 확장한 최종 MVP 요구사항과 V-model 추적 매트릭스 |
+| [`06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](06_Physical_EStop_Requirements_and_Verification_Plan_ko.md) | MCU와 독립적인 motor-energy 차단, fail-safe sense, latch/reset과 단계별 E-stop 검증 계획 |
+| [`07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md`](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md) | Logic analyzer로 확인한 boot inactive sampled interval, 양 채널 PWM frequency/duty와 direction settle 결과·한계 |
+| [`08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`](08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md) | Current strict parser의 controlled normal sequence PASS 결과와 startup/malformed 잔여 release gate |
+| [`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md) | Gate A exact startup, Gate B bounded loss/stale response/reset recovery 결과와 evidence 한계 |
+| [`10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) | DISARM UART RX frame end부터 PB6/PB7 last-active-edge까지 23.50 us MCU-pin baseline |
+| [`11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md`](11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md) | T-BRIDGE-008A duplicate required `seq` ACK rejection, same-seq retry, exact-response recovery와 safe restore evidence |
+| [`12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md`](12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A trailing-comma ACK rejection/recovery, safe restore, full-build 0/0와 artifact hash reproduction evidence |
+| [`13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md`](13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md) | T-BRIDGE-008A required-`seq` uint32-overflow ACK rejection/recovery와 current safe restore evidence |
+| [`14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md`](14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md) | T-BRIDGE-008A partial-frame-name ACK rejection, 500 ms same-seq retry, exact-response recovery와 safe full-build/flash/runtime closeout evidence |
+| [`15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A embedded-CR/control-byte/overlong response, T-BRIDGE-008B malformed-command 8-vector와 final all-hooks-`0U` safe runtime report |
+| [`16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Command-timeout/fault shutdown, reset first FAIL, external `10 kΩ` pull-down 개선 PASS와 final safe restore report |
+| [`17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | Permanent perfboard를 통과한 nominal 19 kHz/10% 양 채널 6-step, DIR 전후 zero margin과 hook-0 5초 all-LOW report |
+| [`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) | Motor-disconnected PC7 direct latch/reset runtime과 F1/K2/저항 무전원 precheck; VO617/S0/K1 rail 및 전체 E-stop PASS는 미포함 |
+| [`19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md) | K1/S0/S2/VO617A-3/P6KE/F2 무전원 incoming screen과 loose 6P connector/tooling 상태; powered integration/rail-off PASS는 미포함 |
+| [`20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md) | Current-default 300 ms timeout-to-DISARMED/CMD-only reject/new ARM+CMD recovery, actual control-net burst와 all-hooks-`0U` safe restore evidence |
+| [`21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) | Canonical 500 ms same-run UART/PWM timeout/reject/expiry/recovery, final safe tail와 post-run restore boundary |
+| [`22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | Software-cached signed applied PWM의 STM TEL/ESP parser 연결, positive symmetric/zero-state target runtime와 hook-0 safe restore boundary |
+| [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md) | Stop reason/accepted-CMD age의 STM TEL/ESP parser 연결, timeout와 direct-PC7 active/latch subset, hook-0 isolated build 및 남은 reset/target reflash-runtime boundary |
 
 ## Evidence Files
 
@@ -59,8 +124,57 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 | Web Serial screenshots | [`../../assets/screenshots/uart_mvp`](../../assets/screenshots/uart_mvp) |
 | UART validation CSV | [`../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv`](../../04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv) |
 | ESP32-STM32 UART bridge screenshots | [`../../assets/screenshots/esp32_uart_bridge`](../../assets/screenshots/esp32_uart_bridge) |
+| ESP32-STM32 UART bridge raw logs | [`../../assets/logs/esp32_uart_bridge`](../../assets/logs/esp32_uart_bridge) |
+| Firmware build/flash evidence | [`../../assets/logs/firmware_build`](../../assets/logs/firmware_build) |
+| Encoder calibration, CPS/mRPM and vehicle-sign evidence | [`../../assets/logs/encoder`](../../assets/logs/encoder) |
+| Motor-output fault evidence | [`../../assets/logs/motor_output`](../../assets/logs/motor_output) |
+| Logic-analyzer raw/session captures | [`../../assets/captures/logic_analyzer`](../../assets/captures/logic_analyzer) |
+| Logic-analyzer measurement screenshots | [`../../assets/screenshots/logic_analyzer`](../../assets/screenshots/logic_analyzer) |
 
 ## Result Summary
+
+2026-08-29 기준 누적 하드웨어/firmware subtest:
+
+- A=right/TIM5, B=left/TIM3 encoder-side vehicle mapping과 forward-positive production CPS subtest PASS
+- 방향별 50회전 `1560 counts/output rev`, CPS-to-mRPM self-test와 dynamic calculation PASS
+- Motor-disconnected software fault injection 뒤 MDD10A all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch PASS
+- Button output/fault test macro를 모두 `0U`로 복구한 뒤 B1 no-output regression PASS
+- D0=DIR1, D1=PWM1, D2=DIR2, D3=PWM2 실제 mapping에서 양 PWM 20.1005 kHz, high 5.00 us, 약 10.05% PASS
+- Direction-change PWM-zero interval은 CH1 pre/post 1.994/2.03875 ms, CH2 pre/post 1.54725/~2.040 ms로 모두 최소 1 ms PASS
+- Current strict parser의 controlled normal sequence는 startup `PING/PONG`, `NOT_ARMED`, ARM/CMD ACK, timeout-zero, `OUT_OF_RANGE`, final DISARMED까지 PASS
+- Response-gated `DISARM/ACK -> PING/PONG` Gate A actual runtime behavior PASS
+- DISARM ACK/PONG 누락의 최대 3회 bounded failure, stale ACK/PONG seq rejection과 controlled reset recovery PASS
+- T-BRIDGE-007 required UART runtime behavior PASS: matching seq `type=ARM` ACK를 무시하고
+  500 ms 뒤 같은 DISARM seq를 재시도해 exact ACK/PONG에서만 READY
+- Gate C ESP response parser required runtime vectors PASS: 기존 4개 vector와 embedded CR, control byte `0x01`, overlong line을 거부하고 same-seq retry 뒤 exact response에서만 recovery
+- T-BRIDGE-008B PASS: STM32 malformed/unknown command 8개 fail-closed 거부, TEL 200/200 safe와 final matching PING/PONG recovery
+- READY 이후 controlled normal sequence와 active DISARM PASS
+- Current safe source는 모든 controlled hook `0U`; contract `15/15`, protocol source 재컴파일과 ELF relink `0 errors / 0 warnings`, controlled string 부재와 session-observed safe reflash verify PASS
+- Post-motor-output-safety final safe board behavior PASS: retry/test/parser error 0, READY 후 15.4 s, post-READY TEL 155/155 DISARMED/zero/error 0, ARM/CMD 0
+- UART log와 ELF의 exact linkage 및 physical no-power setup provenance는 pending
+- Active DISARM UART-to-PWM MCU-pin baseline 23.50 us PASS; timeout scoped baseline, fault next-pulse suppression/latch와 reset-marker `10 kΩ` pull-down 재시험도 PASS. MDD10A power stage, physical E-stop과 motor-connected stop은 계속 `PARTIAL/NOT TESTED`
+- 2026-08-18 final perfboard MDD10A-input에서 CH1/CH2 `19.049/19.058 kHz`, 약 10% duty, DIR 전후 약 2 ms PWM-zero와 inactive-channel LOW를 PASS했다. Hook 복구 뒤 final 5초 capture도 D0~D3 all-LOW였으며 actual motor는 계속 분리했다.
+- MDD10A powered channel 1/2와 실제 좌우 motor 대응은 아직 `PARTIAL`
+- 2026-08-28 P-03 target runtime은 current-default 300 ms에서 timeout 뒤 `DISARMED/zero`,
+  CMD-only 거부, ARM-only expiry와 new ARM+CMD recovery를 PASS했다. D1/D3에는 약 19.06 kHz/5%
+  burst 2개만 존재했고 D0/D2는 계속 LOW였다. Safe restore 뒤 D0~D3 10 s HIGH/transition 0,
+  UART ARM/CMD TX 0을 확인했다. Exact controlled BIN linkage와 actual motor는 미포함이다.
+- Canonical 500 ms run03은 같은 D4/D5 UART+D0~D3 timeline에서 first PWM `498.4085 ms`,
+  timeout-to-`DISARMED`, CMD-only rejection, ARM-only old-command non-restoration/expiry, fresh
+  recovery와 final 약 6.545 s no-edge를 PASS했다. Run04는 source hooks `0U`, host/static `26/26`,
+  safe build/flash, script-disabled UART와 D0~D3 10 s all-LOW restore를 PASS했다. ESP-only restart의
+  startup partial-frame `BAD_TYPE` 1회 뒤 DISARM/PING gate가 복구했으므로 clean cold-boot proof는 아니다.
+- P-04A는 historical host/static `27/27`과 STM32 incremental build 0 errors/0 warnings를 통과했다.
+  Target UART run의 active 7 TEL은 `left_pwm=50,right_pwm=50`, 나머지 42 TEL은 `0/0`이었고,
+  hook-0 restore의 50개 TEL도 모두 `DISARMED/0/0`이었다. 이 값은 software-cached target이며 same-run
+  physical PWM, reverse/asymmetric sign과 actual motor evidence는 아니다.
+- P-04B reason/age historical checkpoint는 host/static `28/28`과 controlled STM32 build 0 errors/0 warnings를 통과했다.
+  Run02는 no-CMD sentinel, age `485 -> 585` timeout과 fresh-CMD-only reset을, run04는
+  `DISARM 6 -> ESTOP_ACTIVE 23 -> ESTOP_LATCHED 26`을 보존했고 모든 FAULT TEL은 PWM `0/0`이었다.
+  Active reset reject와 released reset success, hook-0 target reflash/runtime은 아직 open이다. Hook-0 source의
+  isolated STM32/ESP32 build와 artifact hash 기록은 PASS했다. 2026-08-30 default-`0U` reset harness를
+  더한 current canonical `25 + 2 + 2 = 29/29`과 current ESP32 isolated build도 PASS했지만
+  `ERR`/`ACK`/TEL/`VECTOR DONE` target runtime을 대신하지 않는다.
 
 2026-07-20 기준 ESP32-STM32 board-only UART bridge MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -71,6 +185,8 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 - invalid range command -> `ERR,code=OUT_OF_RANGE`, 이전 `last_seq` 유지
 - `DISARM` -> `ACK,type=DISARM`, `TEL,state=DISARMED`
 - evidence: [`screenshot`](../../assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png), [`raw log`](../../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt)
+
+2026-08-03 fixed-delay와 response-gated Gate A/B, 2026-08-04 wrong-ACK, 2026-08-06~11 네 개 008A vector의 상세 이력은 report 08~14에 보존했다. 2026-08-12 [embedded-CR](../../assets/logs/esp32_uart_bridge/2026-08-12_response_gated_startup_embedded_cr_ack_rejection_recovery_pass.txt), [control-byte](../../assets/logs/esp32_uart_bridge/2026-08-12_response_gated_startup_control_byte_0x01_ack_rejection_recovery_pass.txt), [overlong-line](../../assets/logs/esp32_uart_bridge/2026-08-12_response_gated_startup_overlong_line_rx_overflow_rejection_recovery_pass.txt) response도 gate를 열지 않고 same-seq retry 뒤 exact ACK/PONG에서만 READY가 됐다. [008B log](../../assets/logs/esp32_uart_bridge/2026-08-12_t_bridge_008b_stm32_malformed_command_rejection_recovery_pass.txt)는 STM32가 malformed/unknown command 8개를 거부하고 `DISARMED/zero`를 유지한 뒤 `PING,seq=9009`에 matching PONG으로 복구함을 보여준다. [Post-motor-output-safety safe log](../../assets/logs/esp32_uart_bridge/2026-08-12_post_motor_output_safety_safe_uart_runtime_regression_pass.txt)는 all-hooks-`0U` source의 exact startup, retry/test/parser error/ARM/CMD 0과 READY 뒤 15.4 s/TEL 155 safe를 보존한다. Raw UART 로그가 physical power state나 flashed binary identity를 내장하지 않아 exact runtime-to-artifact linkage는 pending이다. RX desync는 오염 frame을 LF까지 버리고 다음 line boundary에서 복구하지만 즉시 motor stop을 실행하지 않으며, 현재 최대 500 ms command timeout이 fallback이다.
 
 2026-07-09 기준 PC-first UART MVP는 다음 항목을 실제 보드에서 확인했다.
 
@@ -109,10 +225,13 @@ ESP32 bridge는 loopback, `PING/PONG`, structured `TEL` parsing, scripted `CMD b
 
 다음 단계 검증 순서:
 
-1. STM32 PWM/DIR safe output 구현과 MCU 핀 단독 검증
-2. MDD10A logic input test
-3. board power/back-power와 fabricated plate fit 검증
-4. encoder signal voltage safety validation
-5. motor no-load low-duty test
-6. encoder count 및 speed telemetry validation
-7. left/right drivetrain과 final fault/odometry acceptance
+1. 완료된 Gate A/B, T-BRIDGE-007, T-BRIDGE-008A/008B와 final safe evidence를 보존
+2. 완료된 P-04A와 P-04B timeout/active/latch subset evidence 보존
+3. P-04B default-`0U` harness를 controlled test에서만 활성화해 active reset rejection, released reset success를 기록한 뒤 hook-0 target reflash/runtime restore
+4. P-05 battery actual source/calibration/low-voltage policy
+5. 도착한 crimp tool exact-set/visual inspection 후 6P spare-terminal first-article crimp/pull/continuity, cavity/intended-continuity/unintended-open/retention을 통과하고 Physical E-stop conditioned path 검증
+6. Board rail-off와 nominal `T-ESTOP-001~004 + T-ESTOP-005A`
+7. Fabricated plate fit 검증
+8. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
+9. Left/right drivetrain과 wheel travel/odometry 검증
+10. Final fault/stop acceptance와 traceability audit
