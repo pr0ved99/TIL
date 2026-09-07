@@ -19,29 +19,30 @@ Step 7의 목표는 catalog 제목의 전류값만 보고 부품을 고르는 �
 ## 현재 판정
 
 ```text
-Step 7 overall: PARTIAL / RECEIVED-SUBSET UNPOWERED SCREENS RECORDED / POWERED GATES OPEN
-S0 emergency-stop actuator: RECEIVED AUTONICS SF2ER-E2R2B-A / BODY SF2ER-E2R2B / 2NC-LATCH UNPOWERED SCREEN PASS / INTEGRATION OPEN
-S2 manual re-enable switch: IDEC ABW110G RECEIVED / 3-4 MOMENTARY-NO UNPOWERED SCREEN PASS / NOMINAL-INTEGRATION GATE OPEN; FM-ESTOP-014 POST-MVP RESIDUAL RISK
-K2 control/seal-in relay: PANASONIC TX2-12V RECEIVED / NO-POWER SCREEN 2/2 PASS / POWERED GATE OPEN
+Step 7 overall: PARTIAL / ASSEMBLED UNPOWERED AND MOTOR-DISCONNECTED CONTROL-ONLY SUBSETS PASS / FORMAL POWERED GATES OPEN
+S0 emergency-stop actuator: RECEIVED AUTONICS SF2ER-E2R2B-A / 2NC-LATCH + ASSEMBLED 6P TRUTH TABLE PASS / POWERED S0-B OPEN
+S2 manual re-enable switch: IDEC ABW110G / ASSEMBLED 6P MOMENTARY-NO + NOMINAL K2/K1 CONTROL-ONLY PASS; FM-ESTOP-014 POST-MVP RESIDUAL RISK
+K2 control/seal-in relay: PANASONIC TX2-12V / BOTTOM-VIEW COIL POLARITY CORRECTED / 9-COM->8-NO HOLD + 4-COM->5-NO K1 ENABLE CONTROL-ONLY PASS / TIMING AND LOW-VOLTAGE GATE OPEN
 S0-B sense conditioner: VO617A-3 DIODE/ISOLATION UNPOWERED SCREEN PASS / POWERED CONDITIONED PATH OPEN / DIRECT PC7 PARTIAL ONLY
-K1 motor-power relay: TE V23134J1052D642 NUMERICAL PASS / 89.5-OHM COIL, DE-ENERGIZED NO AND ISOLATION UNPOWERED PASS / POWERED BENCH OPEN
+K1 motor-power relay: TE V23134J1052D642 / 18 AWG COIL + 14 AWG MAIN + P6KE ASSEMBLED / 91~92.4-OHM COIL AND MOTOR-DISCONNECTED CONTROL-ONLY PASS / AWG DEVIATION, LOAD, THERMAL AND TIMING OPEN
 F2 control fuse: RECEIVED 0287001.PXCN 1 A ATOF + FHAC0001ZXJA / OPERATOR-REPORTED UNPOWERED CONTINUITY PASS / MARKING AND COORDINATION OPEN
 F1/main wire/connectors: F1 HOLDER/FUSE NO-POWER SCREEN PASS / POWERED MEASUREMENT GATE OPEN
-K1/K2 coil clamps: P6KE16CA-E3/54 x3 RECEIVED / EXACT-CA IDENTITY AND BIDIRECTIONAL GROSS-SHORT SCREEN PASS / POWERED GATE OPEN
-6P operator connector kit/18 AWG: LOOSE KIT INVENTORY/VISUAL PASS / CAVITY MAP, CRIMP, ISOLATION AND RETENTION OPEN
-Crimp tooling: VH-30J/WX-03B SET USER-REPORTED RECEIVED / INCOMING AND DIE FIT NOT RUN / TERMINAL CRIMP QUALITY NOT VALIDATED
+K1/K2 coil clamps: P6KE16CA-E3/54 RECEIVED / K1 85-86 PARALLEL ASSEMBLY AND CONTINUITY PASS / CLAMP ENERGY AND RELEASE-TIME OPEN
+6P operator connector kit/18 AWG: FIRST ARTICLE + FULL ASSEMBLY / CAVITY PAIRS, CONTINUITY, ISOLATION AND RETENTION OPERATOR-REPORTED PASS
+Crimp tooling: VH-30J/WX-03B / 18 AWG FIRST-ARTICLE AND 6P ASSEMBLY USE PASS / K1 MAIN-TERMINAL RELEASED-WIRE RANGE OPEN
 ADC divider/clamp/bleed values: NOT SELECTED
 Motor-energy release: NOT APPROVED
 ```
 
-이 판정은 부품의 기능 후보를 좁혔다는 뜻이다. 회로도/ERC, 실제 구매품 확인, DMM/scope와
-motor-disconnected 시험을 통과했다는 뜻은 아니다.
+이 판정은 부품 선정과 2026-09-05까지의 assembled unpowered/control-only subset을 구분해
+기록한 것이다. Formal powered sense/firmware test, full `T-ESTOP-005A`, load/thermal/timing 또는
+motor 시험을 통과했다는 뜻은 아니다.
 
 2026-08-28의 received-component 판정은 report 19에 적힌 무전원 항목만 통과했다는 뜻이다.
 통전, 실제 회로 통합, 부하, rail-off 또는 motor-energy PASS가 아니다. S2 `ABW110G`와
-`P6KE16CA-E3/54` x3는 도착·선별됐다. 2026-08-30에는 `VH-30J + WX-03B` 압착 공구 세트의
-도착도 사용자가 보고했지만, exact contents/상태·die fit·first-article crimp/pull/continuity는
-아직 검사하지 않았고 6P는 미조립이다.
+`P6KE16CA-E3/54` x3는 도착·선별됐다. 당시 미실시였던 `VH-30J + WX-03B`의 18 AWG
+first-article과 6P 조립/continuity/isolation/retention은 이후 operator-reported PASS로
+갱신됐다. K1 14 AWG main termination 편차와 powered/load evidence는 별도 OPEN 항목이다.
 
 ## 근거와 주장 경계
 
@@ -110,8 +111,14 @@ VBAT_PROTECTED
        |
        +-> K2-K1-ENABLE-NO
             -> K1 coil
-            -> PWR_GND
+             -> PWR_GND
 ```
+
+현재 offboard/as-built control entry는
+`S1 OUT -> F2 -> 6P.1 -> S0-A NC -> 6P.2 -> board JESTOP.2`다. Board-side JESTOP.1은
+사용하지 않으며 JESTOP.1-2 jumper도 없다. K2의 actual contact mapping은
+`9(COM) -> 8(NO) = seal-in`이고 actual pin 8은 `K2_COIL_P`,
+`4(COM) -> 5(NO) = K1 enable`이고 actual pin 5는 `K1_COIL_P`다.
 
 동작은 다음과 같다.
 
@@ -136,8 +143,9 @@ rail의 hardware no-auto-reenable PASS 근거가 아니다.
 `SF2ER-E2R2B`, actuator `AE21R`, contact block `SFEA-CB`, `NC`, terminal `.1/.2` 두 개를
 확인했다. Released 상태에서 두 NC pair 모두 도통, button press/latch 상태에서 두 pair 모두
 open이었고 deliberate release 뒤 원상복귀까지 무전원 기능 screen을 통과했다. 주문 suffix
-`-A`는 본체 각인에서 직접 확인되지 않았으므로 포장/주문 trace 대조가 남는다. Integrated
-S0-A/S0-B path와 loaded DC 동작도 아직 release하지 않는다. 아래 Omron 표는 초기 Step 7 비교
+`-A`는 본체 각인에서 직접 확인되지 않았으므로 포장/주문 trace 대조가 남는다. 이후 6P를 통한
+S0-A/S0-B released/pressed truth table와 pair isolation은 operator-reported PASS했지만 powered
+S0-B conditioner와 loaded DC 동작은 아직 release하지 않는다. 아래 Omron 표는 초기 Step 7 비교
 benchmark로 보존하며 actual build part를 뜻하지 않는다.
 
 | Item | Official value | 판단 |
@@ -156,8 +164,9 @@ panel cutout와 rear depth를 다시 확인한다.
 ### `SD-ESTOP-003`: S2 actual procurement는 IDEC `ABW110G`다
 
 2026-08-19 실제 주문품은 IDEC `ABW110G`다. 입고품 terminal `3-4`는 released-open,
-pressed-closed와 release 뒤 momentary-return 무전원 선별을 통과했다. DC low-current contact drop,
-bounce, integrated K2/K1 re-enable path는 계속 미검증이다. 아래 Schneider 조합은
+pressed-closed와 release 뒤 momentary-return 무전원 선별을 통과했다. 6P pin 5/6을 통한
+assembled truth table와 motor-disconnected K2/K1 deliberate re-enable도 operator-reported PASS했다.
+DC low-current contact drop, bounce와 formal full `T-ESTOP-005A`는 계속 미검증이다. 아래 Schneider 조합은
 초기 Step 7 저전력-contact 비교 benchmark이며 actual build part가 아니다.
 
 우선 조합은 `ZB5AA3` green flush spring-return head, `ZB5AZ009` fixing collar와
@@ -205,6 +214,19 @@ powered-use release `HOLD`다.
 closed, `4-5`, `9-8` open이었고 coil-contact isolation도 확인했다. 따라서 incoming
 no-power screen은 `2/2 PASS`지만 powered pickup/dropout, K1 coil switching, clamp와 release
 time은 `NOT TESTED`다.
+
+2026-09-05 통합 시험에서 datasheet pin diagram이 **bottom view**인데 frozen perfboard
+reference를 component-side pin 번호처럼 읽어 K2 polarized coil pin 1/12가 반대로 연결된 것을
+확인했다. Actual component side는 상단 좌→우 `12, 10, 9, 8`, 하단 좌→우
+`1, 3, 4, 5`이며 dimple 쪽 좌하단이 pin 1(+)다. Coil을 actual pin 1(+)=`K2_COIL_P`,
+pin 12(-)=GND로 수정했다. Contact Net은 정확히 `9(COM)->8(NO)=seal-in`, actual pin 8
+`C41,R19`=`K2_COIL_P`; `4(COM)->5(NO)=K1 enable`, actual pin 5
+`C41,R21`=`K1_COIL_P`다.
+
+수정 후 S2 press/release에서 `JK1COIL.1` 약 `12.19 V` 유지, S0/S1 cut에서 drop,
+release/power restore만으로 재인가되지 않는 motor-disconnected nominal control-only subset을
+통과했다. 이는 nominal-voltage functional evidence이며 `V_K2_COIL_MIN`, pickup/dropout margin,
+contact drop, clamp stress와 release time을 닫지 않는다.
 
 검토 후 제외/보류한 대안:
 
@@ -287,7 +309,7 @@ K1 release/clamp timing <= T_K1_OPEN_MAX
 
 | Part | Useful official evidence | Current disposition |
 | --- | --- | --- |
-| TE `V23134J1052D642` / `1393304-9` | 1 Form A NO, 12 V/90 ohm coil, 16 VDC maximum switching, continuous limiting 70 A at 23 C/50 A at 85 C/30 A at 125 C, 240 A make/70 A break | 18.9 A envelope numerical PASS. 2026-08-28 exact relay/socket/terminal identities, `89.5 ohm` coil, de-energized NO open and cross-isolation unpowered PASS; crimped retention, powered motor-load waveform, voltage-drop/thermal and rail-off bench hold |
+| TE `V23134J1052D642` / `1393304-9` | 1 Form A NO, 12 V/90 ohm coil, 16 VDC maximum switching, continuous limiting 70 A at 23 C/50 A at 85 C/30 A at 125 C, 240 A make/70 A break | 18.9 A envelope numerical PASS. 18 AWG coil/14 AWG main/P6KE assembled, `91~92.4 ohm` coil and motor-disconnected control-only operation PASS; 14 AWG vs `280756-4` AWG 12~10 deviation, motor-load waveform, voltage-drop/thermal and timing OPEN |
 | Panasonic `ACA14535` | 1 Form A, 12 V, internal resistor, 20 A continuous at 80 C; 12 V motor load 120 A inrush/20 A steady for 100k operations | 두 motor 18.9 A 보수 envelope에 수치상 적합한 preferred electrical benchmark. 20 A 대비 여유가 작고 개인 판매 제한이 있어 procurement/bench hold |
 | Panasonic `ACW212` | 2 Form A, 10~16 V coil range, 120 A/5 s carrying; high-output motor failsafe application | Carry evidence는 강하지만 published switch-off line이 200 A resistive 3회이고 welding terminal; 현재 K1 확정 근거로 부족 |
 | Schneider `RPF2AJD` | 2NO, 12 V, nominal 30 A class | Official motor-load make/break evidence가 없고 minimum load도 자기유지와 불일치; K1에서 제외 |
@@ -318,9 +340,10 @@ listed temperature point인 125 C에서도 continuous limiting current가 30 A�
 
 다만 TE 공개 endurance 예시는 주로 resistive load이고 프로젝트의 MDD10A input, 실제 motor
 start/stall waveform과 배선 transient를 그대로 보증하지 않는다. 따라서 판정은
-`UNPOWERED INCOMING PASS / NUMERICAL PASS / POWERED BENCH VALIDATION REQUIRED`다.
-Crimped terminal/socket retention, suppression, powered pickup/dropout, voltage drop, temperature와
-actual rail-off를 확인하기 전 최종 release하지 않는다.
+`UNPOWERED INCOMING PASS / NUMERICAL PASS / ASSEMBLED CONTROL-ONLY SUBSET PASS /
+POWERED LOAD VALIDATION REQUIRED`다. Terminal/socket retention과 nominal control-only 30-87
+동작은 확인했지만 released AWG coordination, clamp/drop-out timing, loaded voltage drop,
+temperature와 actual motor rail-off를 확인하기 전 최종 release하지 않는다.
 
 상세 계산 정본은
 [`../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md`](../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md)다.
@@ -369,7 +392,7 @@ K2-K1-ENABLE은 K1 coil current를 운반한다. Step 8에서는 각 contact에 
 | Item | Provisional decision | Remaining release evidence |
 | --- | --- | --- |
 | F1 | 입고 fuse marking `LITTELFUSE / 257 / 32V / 10`, holder Littelfuse marking과 `GXL 12AWG SCL -LF-` lead; no-power screen PASS | Ordered `0287010.PXCN`과 actual `257` marking/curve identity 대조, start waveform, nuisance opening, battery prospective short current와 thermal test |
-| K1 main terminal | TE socket `VCF7-1000`, main terminals `280756-4` x2, coil terminals `42281-1` x2 identity/count와 loose fit 무전원 PASS | Final AWG 12 crimp/retention, assembled contact resistance와 temperature rise |
+| K1 main terminal | TE socket/terminal identity PASS; coil 18 AWG와 main 14 AWG crimp/retention operator-reported PASS | `280756-4` documented AWG 12~10 대비 14 AWG 편차 해소, loaded contact resistance와 temperature rise |
 | Main wire | AWG 14는 전기 계산 minimum baseline. 주문한 `280756-4`가 AWG 12~10용이므로 released common path는 AWG 12 우선 | Exact wire insulation/temperature/ampacity, 왕복 길이, bundling와 ambient |
 | Per-motor branch | AWG 16 minimum candidate | Exact wire와 installed length/termination |
 | Battery/K1/MDD10A connector | Common path 20 A 이상 DC-carry class를 출발 gate로 사용 | Exact official current/contact-resistance data, mating, keying와 strain relief |
@@ -393,9 +416,10 @@ K1/K2 coil마다 coil 바로 옆에 독립 suppression function을 둔다. Plain
 확인한다.
 
 Prototype external clamp 후보 `P6KE16CA-E3/54` 3개는 도착했고 exact `CA` marking,
-polarity stripe가 없는 외관과 양방향 gross-short 무전원 선별을 통과했다. 이는 breakdown/clamp
-voltage 또는 pulse energy 시험이 아니다. K1/K2 internal suppression 유무와 중복 여부를 먼저
-확인하고 실제 clamp를 설치하기 전에는 coil에 전원을 인가하지 않는다.
+polarity stripe가 없는 외관과 양방향 gross-short 무전원 선별을 통과했다. K1 85-86에는
+bidirectional P6KE16CA를 병렬 설치하고 continuity/control-only drop subset을 확인했다. 이는
+breakdown/clamp voltage, pulse energy, K2 suppression 또는 release-time 시험이 아니므로 clamp
+전기적 release는 계속 OPEN이다.
 
 PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`만 맞추고 끝내지
 않으며, 다음 입력이 닫혀야 exact resistor, capacitor와 clamp를 승인한다.
@@ -411,27 +435,36 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 
 | Gate | Status | Closure evidence |
 | --- | --- | --- |
-| S0 exact model/contact topology | Received `SF2ER-E2R2B-A`; body/contact 2NC-latch unpowered screen PASS | Order suffix trace, integrated S0-A/S0-B path and loaded DC evidence |
-| S2 exact assembly | IDEC `ABW110G` received; terminal `3-4` momentary-NO unpowered screen PASS / nominal integration open | Integrated DC low-load evidence for MVP; stuck-closed/5-6 short mitigation is post-MVP `005B` |
-| K2 exact model | No-power screen 2/2 PASS / powered conditional | `V_K2_COIL_MIN >= 9.0 V`, clamp-installed pickup/dropout와 contact switching |
+| S0 exact model/contact topology | Received `SF2ER-E2R2B-A`; body/contact 2NC-latch와 assembled 6P S0-A/S0-B truth table/isolation PASS | Order suffix trace, powered S0-B와 loaded DC evidence |
+| S2 exact assembly | IDEC `ABW110G`; 6P momentary-NO와 nominal K2/K1 control-only integration PASS | Formal `T-ESTOP-005A`; stuck-closed/5-6 short mitigation is post-MVP `005B` |
+| K2 exact model | No-power screen 2/2, polarity-corrected nominal seal-in/drop/no-auto control-only PASS | `V_K2_COIL_MIN >= 9.0 V`, clamp-installed pickup/dropout timing과 contact drop |
 | S0-B conditioner | Direct PC7 partial / VO617 diode-isolation unpowered screen PASS | S0-B 5 V path, external pull-up, PC7 LOW/HIGH와 wire-open measurement |
-| K1 | Exact contents, `89.5 ohm` coil, de-energized NO and isolation unpowered PASS / numerical PASS | Crimped retention, suppression, powered pickup/dropout, motor-load/thermal/rail-off bench 필요 |
+| K1 | Exact contents/numerical PASS; 18 AWG coil/14 AWG main/P6KE assembly, `91~92.4 ohm` and control-only operation PASS | 14 AWG terminal-range deviation, clamp/dropout timing, motor-load/thermal/rail-off bench |
 | F2 | Received 1 A ATOF/holder; operator-reported unpowered screen PASS | Exact physical marking capture and time-current/drop/thermal coordination |
 | F1/main wire/connectors | F1 no-power screen PASS / powered conditional | Actual 257-vs-ordered identity, AWG 12 common/per-motor AWG 16, connector and start/thermal measurement |
-| Coil clamps | `P6KE16CA-E3/54` x3 received; exact `CA` identity/bidirectional gross-short screen PASS | Relay internal suppression check, installation and release-time capture |
-| 6P loose connector kit/18 AWG | Inventory/visual screen PASS / unassembled | Mating-face cavity numbering, qualified first-article crimp, S0-A/S0-B/S2 intended pairs, 6x6 isolation, terminal/seal retention |
-| Crimp tooling | `VH-30J`/`WX-03B` set user-reported received / incoming and die fit not run | Exact contents/condition/die marking; spare 6P terminal first article: visual, pull, continuity, housing insertion/retention; K1 terminals are not practice pieces |
+| Coil clamps | `P6KE16CA-E3/54` identity screen; K1 85-86 assembly/continuity and control-only drop subset PASS | Clamp voltage/energy, K2 suppression and release-time capture |
+| 6P connector kit/18 AWG | First article, full assembly, S0-A/S0-B/S2 intended pairs, isolation과 terminal retention operator-reported PASS | Permanent labels와 powered wire-open/cross-wire evidence |
+| Crimp tooling | `VH-30J`/`WX-03B` 18 AWG first article와 6P assembly use PASS | K1 14 AWG main-terminal deviation closure and released common-path tooling/termination evidence |
 | ADC networks | Deferred / post-MVP | Transient/input/source-impedance calculation and bench sweep; MVP blocker 아님 |
 
 ## 다음 단계
 
-2026-08-13에 Step 8 KiCad RevB functional schematic와 ERC `0/0`을 완료했다. 다음은 다음
-순서다.
+2026-08-13 Step 8 KiCad RevB functional schematic/ERC `0/0` 뒤, 2026-09-05까지 18 AWG
+first article와 6P full assembly, perfboard, K1/K2 motor-disconnected nominal control-only subset을
+완료했다. 다음은 다음 순서다.
 
-1. Report 19의 K1/S0/S2/VO617A-3/P6KE16CA/F2 무전원 결과를 보존한다. 도착한 `VH-30J`/`WX-03B`의 exact contents/상태/die marking을 먼저 검사하고, 6P mating-face cavity numbering/orientation을 확정한 뒤 spare terminal+seal+18 AWG first article을 visual/pull/continuity/housing-retention으로 승인한다.
-2. First-article PASS 뒤에만 6P를 조립하고 intended-pair continuity, unintended-pair open과 terminal/seal retention을 확인한다. 그 전에는 complete nominal control path 또는 powered coil gate로 이동하지 않는다.
-3. Clamp/internal-suppression 확인 뒤 K2와 K1의 current-limited powered pickup/dropout을 시험한다.
-4. 부품·회로 gate를 닫고 motor-disconnected `T-ESTOP-001~004`를 순서대로 수행한다.
-5. Healthy/released S2와 short 없는 harness로 nominal `T-ESTOP-005A`의 direct rail-off와 no-auto-motion을 검증한다.
-6. `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤에만 첫 lifted single motor에서 start current, voltage drop, holder/terminal 온도와 encoder noise를 계측한다.
-7. `FM-ESTOP-014` hardware mitigation과 S2 stuck/6P pair-short `T-ESTOP-005B`, PA4/PB0 divider/protection은 MVP 뒤 별도 V-cycle에서 설계·실장·검증한다.
+1. [`Remaining bench gates`](../docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)의
+   power-off reentry, K2 post-rework direct continuity와 남은 `T-ESTOP-002` wire-break/독립성을 닫는다.
+2. Current power-source/back-power policy를 지키며 AUX5V와 STM32 3.3 V를 준비하고 powered
+   `T-ESTOP-003`의 S0-B/VO617A/PC7 LOW-HIGH-wire-open을 측정한다.
+3. `T-ESTOP-004`의 formal firmware latch/PWM/state capture를 실제 conditioned sense path로 닫는다.
+4. K1 main `280756-4`의 AWG 12~10 범위 대비 as-built 14 AWG 편차를 해소하고 P6KE clamp,
+   K1/K2 pickup/drop-out/rail-decay, F1/F2와 loaded voltage-drop/thermal Gate를 닫는다.
+5. Healthy/released S2와 검증된 6P harness로 full `T-ESTOP-005A` direct rail-off,
+   firmware/PWM와 nominal no-auto-motion을 정식 evidence로 검증한다.
+6. `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤에만 첫 lifted single motor에서 start current,
+   voltage drop, holder/terminal 온도와 encoder noise를 계측한다.
+7. `FM-ESTOP-014` mitigation과 S2 stuck/6P pair-short `T-ESTOP-005B`, PA4/PB0 divider/protection은
+   MVP 뒤 별도 V-cycle에서 설계·실장·검증한다.
+
+현재 overall 판정은 `PARTIAL / FORMAL POWERED SENSE, FIRMWARE, LOAD AND MOTOR GATES OPEN`이다.

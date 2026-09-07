@@ -1,26 +1,27 @@
 # Tracked Mobile Robot
 
+현재 이어받기: [2026-09-07 복원 handoff](docs/handoff/2026-09-07_session_recovery_handoff.md).
+최신 문서 정리는 [2026-09-07 progress](docs/progress/2026-09-07_progress.md), 최신 하드웨어 결과는
+[2026-09-05 progress](docs/progress/2026-09-05_progress.md)다.
+
 STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바일 로봇 플랫폼을 만드는 프로젝트다.
 
 초기 목표는 자율주행 전체 시스템이 아니라, 자율주행으로 확장 가능한 안정적인 하위 구동 플랫폼을 만드는 것이다. 먼저 전원계, 모터 제어, 엔코더, IMU, UART 통신을 검증하고, 이후 FreeRTOS, CAN, LL Driver 전환, ROS2, LiDAR로 확장한다.
 
 ## Current Handoff Snapshot
 
-Last updated: 2026-08-30
+Last updated: 2026-09-05
 
 작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
 
 1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
-2. [`docs/progress/2026-08-30_progress.md`](docs/progress/2026-08-30_progress.md)
-3. [`docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)
-4. [`docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)
-5. [`docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
-6. [`docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)
-7. [`docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)
-8. [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-9. [`docs/handoff/README.md`](docs/handoff/README.md)
-10. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-11. [`docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
+2. [`docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)
+3. [`docs/progress/2026-09-05_progress.md`](docs/progress/2026-09-05_progress.md)
+4. [`docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)
+5. [`docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
+6. [`docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)
+7. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
+8. [`docs/handoff/README.md`](docs/handoff/README.md)
 
 현재 바로 이어갈 작업:
 
@@ -41,10 +42,11 @@ Last updated: 2026-08-30
 -> P-03/REQ-SAFE-004 TIMEOUT: historical `26/26`와 32-object forced build 뒤 default 300 ms subvector와 canonical 500 ms same-run UART/PWM timeout-to-DISARMED, CMD-only reject, ARM-only old-command 미복원, new ARM+CMD recovery PASS. 300 ms restore와 500 ms run 뒤 run04 source/static/build/flash/UART/D0~D3 all-LOW safe restore도 PASS
 -> P-04A APPLIED TEL: software-cached signed PWM을 STM TEL/ESP parser에 연결, historical `27/27`, forward `50/50`, timeout/ARM-only/DISARM zero와 hook-0 50-TEL safe runtime PASS; measured PWM/reverse-asymmetric/actual motor는 미검증
 -> P-04B REASON/AGE + RESET HARNESS: STM TEL과 ESP strict parser/log에 `reason/command_age_ms`를 연결, no-CMD sentinel·accepted-CMD age reset·500 ms `CMD_TIMEOUT`·direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` UART subset PASS; default-off reset harness의 source/static·ESP isolated build는 PASS했지만 active reset reject/released reset success board runtime과 최종 hook-0 target reflash/runtime restore는 OPEN
--> INCOMING SCREEN: K1 exact parts/89.5 ohm coil/de-energized NO/coil-contact gross-short, S0 dual-NC/latch, S2 momentary-NO, VO617A-3 diode/input-output gross-short, P6KE x3 identity/gross-short, F2 continuity/movement를 무전원 범위에서 PASS; 정격 절연·powered/integrated evidence 아님
--> 6P: preterminated harness가 아닌 loose waterproof connector kit + 별도 18 AWG; inventory/visual만 PASS, cavity map/crimp/6x6 intended-continuity/unintended-open/retention pending; VH-30J/WX-03B tooling은 user-reported arrived지만 tool/die inspection과 first-article crimp validation은 NOT RUN
--> ARRIVAL BLOCKER CLEARED: S2 IDEC ABW110G와 P6KE16CA-E3/54 x3 도착/무전원 선별 PASS; crimp-tool inspection/6P assembly는 open
--> NOW: P-04B active reset reject/released reset success -> all-hooks-`0U` reflash/no-command safe runtime -> P-05 battery 또는 집 plate/6P cavity 확인 -> first-article crimp/6P assembly -> Physical E-stop MVP `T-ESTOP-001~004 + T-ESTOP-005A` -> lifted/no-load -> `T-ESTOP-007`
+-> ESTOP ASSEMBLY: RevC 납땜과 local 무전원 검사, 18 AWG 6P(`1-2=S0-A`, `3-4=S0-B`, `5-6=S2`) 압착/락킹/도통, K1 18 AWG coil+14 AWG `30/87` 및 `85-86` P6KE 조립을 operator-reported PASS. K1 coil은 조립 상태 `91~92.4 ohm`
+-> K2 CORRECTIVE ACTION: TX2 공식 회로도의 BOTTOM VIEW를 부품면에 그대로 적용해 coil `1(+)/12(-)`가 뒤집힌 오류를 발견했다. 실제 부품면 pin 1/pin 12 배선을 수정한 뒤 S2 pickup/self-hold, K1 enable, S0 dropout, S0 release와 S1 OFF->ON no-auto-restart를 12.24 V control-only 조건에서 PASS
+-> CURRENT BOUNDARY: MDD10A B+와 motor는 분리·절연돼 있었다. Powered VO617A/PC7 `ESTOP_SENSE`, firmware/PWM 결합, direct downstream rail, load/thermal/transient와 actual motor stop은 OPEN이며 전체 Physical E-stop/`T-ESTOP-005A` PASS가 아님
+-> DIGITAL ERRATUM: RevC FINAL/PDF는 K2 coil polarity rework 전 historical checkpoint다. WIP/FINAL/PDF hash도 서로 달라 새 corrected as-built revision/export/hash 전까지 재제작 기준으로 사용하지 않음
+-> NOW: 남은 integrated sense-wire-open/독립성 기록 -> `T-ESTOP-003` VO617A/PC7 LOW-HIGH/open -> `T-ESTOP-004` conditioned firmware/PWM latch -> motor-disconnected direct-rail `T-ESTOP-005A` -> 모든 MVP gate 뒤 lifted/no-load와 `T-ESTOP-007`
 -> POST-MVP: `FM-ESTOP-014/T-ESTOP-005B` single-fault extension and dual-rail/precision transient `T-ESTOP-006`
 ```
 
@@ -99,7 +101,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-08-29 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-09-05 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -120,6 +122,7 @@ tracked chassis hole-pattern DWG import
 - 업체 최소 타공 조건을 반영한 PC 3T 수정본은 존재하고, 제작품은 `USER-REPORTED RECEIVED`다.
   Exact source-to-part identity와 제작품 fit은 pending이다.
 - KiCad RevA functional wiring draft와 dated ERC/PDF evidence를 `09_Electrical_Design`에 보존했다. 이 baseline은 PCB 또는 영구 배선 release가 아니다.
+- Physical E-stop RevC perfboard, 18 AWG 6P switch harness와 K1 socket harness는 조립됐다. TX2 K2의 bottom-view/component-side pin 해석으로 생긴 coil polarity 오류를 실제 배선에서 수정한 뒤, 12.24 V motor-disconnected control-only 조건의 S2 self-hold, K1 enable, S0 dropout과 no-auto-restart가 통과했다. Frozen RevC digital file은 이 rework의 as-built 정본이 아니며, conditioned PC7와 downstream motor rail/actual motor evidence가 남아 전체 E-stop은 `PARTIAL`이다.
 - Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 전진 양수다. MDD10A powered channel 1/2의 실제 좌우 대응은 아직 미확정이다.
 - Dual PWM frequency/duty와 direction-change settle, active DISARM 23.50 us, timeout shutdown,
   software-fault next-pulse/latch와 signal별 `10 kΩ` pull-down 적용 external-reset LOW는
@@ -283,6 +286,8 @@ tracked chassis hole-pattern DWG import
 | --- | --- |
 | [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
 | [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | Current V-model gate roadmap to the portfolio-ready final MVP |
+| [`docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | Current continuation: remaining wire-open, conditioned sense, firmware and direct downstream-rail gates |
+| [`docs/plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md`](docs/plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md) | Historical RevC local unpowered inspection runbook and K2 bottom-view erratum |
 | [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
 | [`docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md) | STM32 + ESP32 board-only UART bridge plan |
 | [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
@@ -337,8 +342,11 @@ tracked chassis hole-pattern DWG import
 | [`docs/progress/2026-08-26_progress.md`](docs/progress/2026-08-26_progress.md) | Previous schedule baseline: dated pre-arrival priorities and evidence boundary |
 | [`docs/progress/2026-08-27_progress.md`](docs/progress/2026-08-27_progress.md) | Historical P-02B~P-02C-2와 P-03A/P-03B source/static/full-build completion, canonical `26/26` PASS and partial-arrival transition |
 | [`docs/progress/2026-08-28_progress.md`](docs/progress/2026-08-28_progress.md) | Historical K1/S0/S2/VO617A-3/P6KE/F2 incoming and P-03/REQ-SAFE-004 target-runtime checkpoint |
-| [`docs/progress/2026-08-30_progress.md`](docs/progress/2026-08-30_progress.md) | Current continuation: canonical `29/29`, default-off reset-harness source/static + ESP isolated build PASS, reset-harness board runtime/target flash OPEN, VH-30J/WX-03B arrived but inspection/first-article crimp NOT RUN |
 | [`docs/progress/2026-08-29_progress.md`](docs/progress/2026-08-29_progress.md) | Historical P-04A completion and P-04B reason/command-age/direct-PC7 active-latch checkpoint; pre-reset-harness `28/28` and paired hook-0 isolated-build boundary |
+| [`docs/progress/2026-08-30_progress.md`](docs/progress/2026-08-30_progress.md) | Previous continuation: canonical `29/29`, default-off reset-harness source/static + ESP isolated build PASS, reset-harness board runtime/target flash OPEN, VH-30J/WX-03B arrived but inspection/first-article crimp NOT RUN |
+| [`docs/progress/2026-09-01_progress.md`](docs/progress/2026-09-01_progress.md) | Physical E-stop perfboard RevC FINAL/PDF checkpoint and user-reported partial R14/U1/K2/D2/JESTOP soldering; assembled continuity/isolation/powered evidence OPEN |
+| [`docs/progress/2026-09-03_progress.md`](docs/progress/2026-09-03_progress.md) | RevC partial-assembly rail/U1/K2 unpowered inspection checkpoint |
+| [`docs/progress/2026-09-05_progress.md`](docs/progress/2026-09-05_progress.md) | RevC/K1/6P completion, K2 polarity correction and motor-disconnected control-only E-stop results |
 | [`docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md) | Authoritative scope/sequence for final critical path, P-01~P-09 and arrival-day gates |
 | [`docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md) | Historical pre-arrival schedule baseline through 2026-09-15, including milestones, buffers and delivery transitions |
 | [`docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md`](docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md) | T-BRIDGE-008A remaining response vectors, T-BRIDGE-008B 8-vector와 final safe evidence report |
@@ -350,6 +358,7 @@ tracked chassis hole-pattern DWG import
 | [`docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) | Canonical 500 ms same-run UART/PWM acceptance and run04 post-run safe restore evidence/hashes |
 | [`docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | Software-applied signed PWM TEL/ESP parser runtime, hook-0 safe restore and evidence boundary |
 | [`docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md) | Stop reason/accepted-CMD age telemetry와 direct-PC7 active/latch UART subset; reset 및 hook-0 target reflash/runtime restore는 OPEN |
+| [`docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | RevC/6P/K1 assembly, K2 polarity corrective action and bounded 12.24 V control-only nominal test report |
 | [`docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md`](docs/handoff/2026-08-18_k1_order_and_physical_estop_continuation_ko.md) | Historical K1 order/F1 continuation; superseded by 2026-08-25 progress and plan |
 | [`docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md`](docs/handoff/2026-08-13_power_and_physical_estop_session_ko.md) | Historical RevB pull-down, board power/back-power and early Physical E-stop baseline |
 | [`docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md`](docs/handoff/2026-08-12_focused_uart_gate_c_session_plan_ko.md) | Completed historical Gate C execution runbook |

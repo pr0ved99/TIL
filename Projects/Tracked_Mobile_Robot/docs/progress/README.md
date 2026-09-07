@@ -4,11 +4,14 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [`2026-08-30_progress.md`](2026-08-30_progress.md) — P-04B default-`0U` reset closeout
-harness를 준비해 current canonical `25 + 2 + 2 = 29/29`과 ESP32 isolated build를 PASS했다.
-Active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`,
-변경 source의 target flash/runtime은 OPEN이다. Crimp tool은 user-reported arrived지만 exact
-set/inspection/first article은 NOT RUN이고 6P는 미조립이다.
+Latest: [`2026-09-07_progress.md`](2026-09-07_progress.md) — 중단된 문서/Git closeout 복원,
+현재/과거 상태와 artifact hash 정정, host/static `29/29` 재확인. 새 하드웨어 시험은 수행하지 않았다.
+
+Latest hardware: [`2026-09-05_progress.md`](2026-09-05_progress.md) — K2 bottom-view/polarity를
+as-built로 정정한 뒤 12.24 V control-only K2/K1 pickup/dropout, S2 self-hold와 S0/S1 nominal
+no-auto-restart subset을 PASS했다. S0-B `JESTOP.3 <-> JESTOP.4` contact truth table은
+무전원 PASS지만 explicit wire removal과 powered conditioned PC7은 OPEN이다. MDD10A B+는
+분리·절연했으므로 전체 Physical E-stop이나 `T-ESTOP-005A PASS`가 아니다.
 
 ## How To Use
 
@@ -47,6 +50,10 @@ set/inspection/first article은 NOT RUN이고 6P는 미조립이다.
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-07 | [`2026-09-07_progress.md`](2026-09-07_progress.md) | Session/documentation 복원, K2 실측 근거와 현재 artifact 식별값 정정, 29/29 PASS; 하드웨어 상태는 9/5 PARTIAL 유지 |
+| 2026-09-05 | [`2026-09-05_progress.md`](2026-09-05_progress.md) | K2 bottom-view/polarity as-built correction 뒤 12.24 V control-only K2/K1/S2/S0/S1 nominal subset와 S0-B contact truth table PASS; MDD10A B+ disconnected, wire-break/T003/full rail gate OPEN |
+| 2026-09-03 | [`2026-09-03_progress.md`](2026-09-03_progress.md) | RevC 무전원 검사 IN PROGRESS; rail 0 V와 U1 방향/forward `0.918 V`/reverse-open PASS, 나머지 local continuity/isolation OPEN |
+| 2026-09-01 | [`2026-09-01_progress.md`](2026-09-01_progress.md) | RevC E-stop VeroRoute FINAL과 component/solder mirror PDF 고정; R14/U1/K2/D2/JESTOP 및 세 배선 구간 user-reported partial solder, 무전원 실물 continuity/isolation OPEN |
 | 2026-08-30 | [`2026-08-30_progress.md`](2026-08-30_progress.md) | P-04B default-`0U` reset closeout harness, current canonical `29/29`과 ESP32 isolated build PASS; reset target runtime OPEN; crimp tool user-reported arrived/unverified, 6P unassembled |
 | 2026-08-29 | [`2026-08-29_progress.md`](2026-08-29_progress.md) | P-04A complete, P-04B reason/command-age와 timeout/direct-PC7 active-latch subset PASS, historical checkpoint `28/28`와 hook-0 isolated build PASS, reset/target reflash-runtime pending |
 | 2026-08-28 | [`2026-08-28_progress.md`](2026-08-28_progress.md) | K1/S0/S2/VO617A-3/P6KE/F2 unpowered screen, P-03/REQ-SAFE-004 target runtime와 run04 safe restore PASS, 6P/tooling boundary와 next work |

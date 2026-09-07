@@ -9,6 +9,12 @@
 - Tool: KiCad 10.0
 - Scope: RevA 기능 연결에 MDD10A DIR/PWM 네 신호의 reset-safe `10 kΩ` pull-down을 반영한 단계
 - Not included: PCB layout, 만능기판 실장 좌표, 실제 하네스 길이·AWG·커넥터 footprint, 제조 승인
+- Perfboard implementation: RevC planned soldering complete; intended continuity/isolation and component
+  checks operator-reported PASS. Frozen VeroRoute FINAL/PDF is a pre-as-built digital checkpoint; K2
+  polarized-coil mapping was corrected on the actual board and the later WIP differs from FINAL.
+- Harness/control implementation: 6P 18 AWG assembly/crimp/retention and K1 18 AWG coil/14 AWG main
+  terminal assembly completed; motor-disconnected K2 seal-in, K1 output and nominal S0/S1/S2 control-only
+  checks operator-reported PASS. Powered optocoupler-PC7, load/thermal/timing and motor release remain OPEN.
 
 ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻이다. 전류 용량, 실제 배선, noise, footprint와 제조 적합성을 증명하지 않는다.
 
@@ -22,7 +28,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | [RevB-WIP review PDF](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/2026-08-12_Tracked_Mobile_Robot_Wiring_RevB_pulldown_checkpoint.pdf) | Title/status/pull-down human-review export |
 | [RevA schematic](KiCAD/Tracked_Mobile_Robot_Wiring_RevA/Tracked_Mobile_Robot_Wiring_RevA.kicad_sch) | Historical pre-pull-down functional baseline |
 | [RevA ERC report](KiCAD/Tracked_Mobile_Robot_Wiring_RevA/reports/2026-07-28_Tracked_Mobile_Robot_Wiring_RevA_erc.rpt) | Historical RevA 0/0 evidence |
-| [Perfboard low-current allocation plan](01_Perfboard_Low_Current_Allocation_Plan_ko.md) | R9~R12, K2/opto/control 영역과 high-current exclusion; current status `DRAFT / NO SOLDER` |
+| [Perfboard low-current allocation plan](01_Perfboard_Low_Current_Allocation_Plan_ko.md) | R9~R12, K2/opto/control 영역과 high-current exclusion의 planning baseline; latest hardware status는 2026-09-05 progress 참조 |
 | [RevB schematic position baseline](02_RevB_Schematic_Position_Baseline_2026-08-13_ko.md) | 2026-08-13 saved source의 48개 부품 심볼, 19개 전원 심볼, 주요 주석 좌표 기준선 |
 | [RevB schematic readability reallocation plan](03_RevB_Schematic_Readability_Reallocation_Plan_ko.md) | A4 인쇄 검토 기반 유지/이동 판정, 목표 mil 좌표, 이동 순서와 netlist/ERC PASS 기준 |
 | [RevB functional-layout learning/rework plan](04_RevB_Schematic_Functional_Layout_Learning_and_Rework_Plan_ko.md) | 현재 전기적 기준본 동결, 학습 후 기능 흐름 중심 재배치 범위와 재개/PASS 기준 |
@@ -31,7 +37,11 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | [Perfboard digital-layout workflow decision](07_Perfboard_Digital_Layout_Workflow_Decision_ko.md) | 실물 dry placement 전 1:1 component/solder-side layout와 KiCad-net-to-hole review Gate; OrcadPCB2 파일럿 PASS, local routing WIP |
 | [Perfboard STM32-MDD10A routing plan](08_Perfboard_STM32_to_MDD10A_Routing_Plan_ko.md) | VeroRoute의 J5/R9~R12 local routing 상태, Wire/부품 핀 분리 규칙과 STM32 5-Net 전체 홀 좌표 경로 |
 | [KiCad-VeroRoute 5-Net independent review](09_Perfboard_KiCad_to_VeroRoute_Independent_Review_2026-08-15_ko.md) | fresh KiCad 10.0.5 XML, ST UM1724 connector pin과 VeroRoute hole-coordinate 독립 대조; design cross-check PASS |
-| [K1/F1/main-path coordination](10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md) | WHEELTEC rated/stall 회신 기반 two-motor envelope, TE K1 unpowered incoming screen, 10 A ATOF와 AWG 후보 및 remaining powered release gate |
+| [VeroRoute RevC checkpoint and as-built corrections](VeroRoute/README.md) | Frozen FINAL과 현재 WIP/PDF 식별값, U1/K2 component-side mapping, JESTOP as-built boundary와 evidence limits |
+| [2026-09-01 progress](../docs/progress/2026-09-01_progress.md) | Historical R14/U1/K2/D2/JESTOP partial solder report와 three-path digital design-map checkpoint |
+| [2026-09-05 progress](../docs/progress/2026-09-05_progress.md) | Latest hardware result: RevC/6P/K1 assembly, K2 polarity correction과 bounded control-only subset |
+| [Remaining bench gates](../docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | Power-off reentry와 K2 post-rework continuity부터 남은 T002 wire-break, conditioned PC7, firmware/PWM와 direct rail 검증 순서 |
+| [K1/F1/main-path coordination](10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md) | WHEELTEC rated/stall 회신 기반 envelope, TE K1 assembled control-only subset, 10 A ATOF/AWG 후보와 remaining load/thermal release gate |
 | [2026-07-28 progress](../docs/progress/2026-07-28_progress.md) | Work log, decisions, blockers and next actions |
 | [Physical E-stop RevB circuit architecture](../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md) | MVP K1/S0/S2, S0-B, connector/test-point baseline; dual rail-sense is post-MVP |
 | [Physical E-stop component/rating selection](../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | S0/S2/K2/opto candidates, minimum-load correction and K1/F1/main-path coordination gate |
@@ -41,7 +51,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 | Area | Captured design | Status |
 | --- | --- | --- |
 | Main power | `3S LiPo -> FUSE_TBD -> MAIN_DC_SWITCH -> VBAT_SW`, then MDD10A and XL4015 #1/#2 inputs in parallel | `PARTIAL`; fuse rating TBD |
-| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | Functional schematic/ERC complete; K1/S0/S2/VO617A-3/P6KE/F2 specified unpowered screens recorded; 6P is an unassembled loose kit; `VH-30J`/`WX-03B` tooling is user-reported received but incoming/die-fit/first-article validation is not run; complete integration/powered rail remains blocked |
+| Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | RevC perfboard soldering and unpowered continuity/isolation, 6P 18 AWG assembly/crimp/retention, K1 terminal assembly and motor-disconnected nominal K2/K1 control-only path operator-reported PASS. Actual K2 coil polarity and JESTOP.1-unused path are recorded as as-built corrections. Powered VO617A/PC7, firmware-coupled, timing, load/thermal and motor gates OPEN |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, 각 signal-to-GND `10 kΩ`, common GND | Permanent perfboard continuity, power-up/NRST all-LOW, active 19 kHz six-step와 hook-0 safe restore PASS |
 | Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | Motor-off count and forward-positive production sign PASS |
 | Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | Motor-off count and forward-positive production sign PASS |
@@ -52,7 +62,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 
 `FUNCTIONAL` connector blocks group related signals for readability. They do not assert that the corresponding MCU or driver pins form one physically contiguous header.
 
-## Open Items Before A Permanent Wiring Release
+## Open Items Before Physical/Electrical Release
 
 - Final fuse rating
 - XL4015 #1 output destination and STM32/ESP32 USB backfeed policy
@@ -60,13 +70,19 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - BNO085 power and I2C wiring
 - Actual high-current distribution, wire gauge, connector and harness plan
 - Powered-motor encoder noise and input-filter validation
-- Physical E-stop S2/P6KE integration, 6P cavity/crimp/retention, K1/K2 powered pickup/dropout and K1 thermal/rail-off bench, F1/F2 coordination, rail-sense divider/protection values and no-auto-restart/discrepancy verification
-- Physical continuity review from schematic to perfboard and harness
+- Physical E-stop powered `AUX5V -> S0-B -> VO617A -> ESTOP_SENSE/PC7` LOW/HIGH/wire-open test
+- K1/K2 pickup/drop-out and rail-decay timing, K1 load/thermal/voltage-drop, F1/F2 coordination,
+  rail-sense divider/protection values와 firmware-coupled no-auto-restart/discrepancy verification
+- Frozen VeroRoute FINAL/PDF와 later WIP/as-built K2 polarity·JESTOP.1-unused 편차의 release-source 정리
+- K1 main terminal의 as-built 14 AWG와 `280756-4` documented AWG 12~10 범위 사이 released-harness
+  coordination; actual high-current loop length와 connector/holder 정격 확인
 
 ## Revision Rule
 
 - `RevA DRAFT`는 pull-down 반영 전 역사 baseline이다.
 - `RevB-WIP` pull-down checkpoint도 manufacturing release가 아니다.
+- RevC frozen VeroRoute FINAL은 historical checkpoint다. 현재 WIP/PDF의 K2 polarity/JESTOP
+  실물 경로 일치와 source/export linkage는 미검증이므로 verified as-built release로 사용하지 않는다.
 - Bench-proven and TBD items must stay visibly separated.
 - A decision that affects power, safety or pin mapping must first be verified and then reflected in the schematic, progress log and project memory.
 - Dated ERC reports and review exports are tracked; KiCad lock, local history and per-user session files are ignored.

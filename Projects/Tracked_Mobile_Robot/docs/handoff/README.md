@@ -4,25 +4,20 @@
 
 ## How To Use
 
-새 대화창에서 작업을 이어갈 때는 아래 순서로 읽는다.
+새 대화창에서 작업을 이어갈 때는 아래 순서로 읽는다. 2026-09-07은 문서/Git 복원 checkpoint이며,
+최신 하드웨어 결과는 2026-09-05다.
 
 1. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
-2. [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)
-3. [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md)
-4. [`../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)
-5. [`../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)
-6. [`../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md`](../verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md)
-7. [`../verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md`](../verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md)
-8. [`../verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](../verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)
-9. [`../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
-10. [`../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
-11. [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)
-12. [`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)
-13. [`../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md)
-14. [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-15. [`../plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+2. [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md)
+3. [`../progress/2026-09-07_progress.md`](../progress/2026-09-07_progress.md)
+4. Bench 작업이면 [`../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md),
+   [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md),
+   [report 24](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)와
+   [verification plan](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)을 읽는다.
 
-그 다음 현재 작업 주제에 맞는 verification, firmware, learning note를 읽는다.
+그 다음 현재 작업 주제에 맞는 한국어 architecture, verification, firmware, learning note를 읽는다.
+과거 progress 전체를 매번 읽지 않는다. 복사용 프롬프트는
+[`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)다.
 
 ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_handoff.md`](2026-07-29_codex_plus_transition_handoff.md)를 사용한다. 일반 프로젝트 세션의 필수 읽기 문서에는 포함하지 않는다.
 
@@ -30,7 +25,15 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-08-30 | [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md) | **Current continuation**: P-04B default-`0U` reset harness, current `29/29`과 ESP isolated build PASS; reset target runtime OPEN; crimp tool user-reported arrived/unverified, 6P unassembled |
+| 2026-09-07 | [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md) | **Current continuation**: 중단된 문서/Git 작업 복원, 완료/미완료와 다음 무전원 시작점 |
+| 2026-09-07 | [`../progress/2026-09-07_progress.md`](../progress/2026-09-07_progress.md) | 문서 상태·artifact hash 정정과 host/static 29/29 재확인; 새 hardware evidence 없음 |
+| 2026-09-05 | [`../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | **Current bench runbook**: remaining explicit wire-open, conditioned PC7, firmware/PWM and direct downstream-rail gates |
+| 2026-09-05 | [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md) | **Current result baseline**: RevC/6P/K1 assembly, K2 polarity correction and 12.24 V motor-disconnected control-only subset |
+| 2026-09-05 | [`../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | **Current Physical E-stop evidence**: bounded PASS and remaining full-gate exclusions |
+| 2026-09-03 | [`../plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md`](../plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md) | Historical RevC local unpowered runbook; K2 bottom-view erratum added |
+| 2026-09-03 | [`../progress/2026-09-03_progress.md`](../progress/2026-09-03_progress.md) | Historical partial-assembly rail/U1/K2 unpowered checkpoint |
+| 2026-09-01 | [`../progress/2026-09-01_progress.md`](../progress/2026-09-01_progress.md) | Previous RevC FINAL/PDF and partial-solder baseline; actual continuity/isolation remained OPEN |
+| 2026-08-30 | [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md) | **Previous continuation**: P-04B default-`0U` reset harness, current `29/29`과 ESP isolated build PASS; reset target runtime OPEN; crimp tool user-reported arrived/unverified, 6P unassembled |
 | 2026-08-29 | [`../progress/2026-08-29_progress.md`](../progress/2026-08-29_progress.md) | **Previous firmware checkpoint**: P-04A COMPLETE, P-04B reason/command-age PARTIAL, historical `28/28`와 hook-0 isolated build PASS, reset/target reflash-runtime OPEN |
 | 2026-08-29 | [`../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](../verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md) | **Current firmware evidence**: reason/age와 direct-PC7 active/latch UART subset 및 hook-0 isolated build; reset 및 target reflash/runtime 경계 |
 | 2026-08-29 | [`../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](../verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | **Previous firmware baseline**: positive symmetric/zero-state applied-output telemetry와 measured-output boundary |

@@ -4,32 +4,111 @@
 
 ## 현재 작업 파일
 
-- 작업 파일: `Tracked_Mobile_Robot_Perfboard_RevB_WIP.vrt`
-- 상태: STM32-MDD10A 5-Net connectivity PASS / target hole area `55 x 37` PASS / NO SOLDER
+아래 크기와 SHA-256은 2026-09-07 저장소 복원 시 실제 파일을 읽어 확인했다. 파일 식별값이며
+실물 배선 일치나 재제작 release를 뜻하지 않는다.
+
+- Frozen digital checkpoint: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_FINAL.vrt`
+  - Size: `122,915 bytes`
+  - SHA-256: `680999D4AF62FC953635B7AA56EE6DE31CD4CCCF2A39F3C9F8E2B7170A70DFF2`
+- Later working file: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_WIP.vrt`
+  - Size: `122,116 bytes`
+  - SHA-256: `43FD79BACF3A0505C3FED0F5838F4569657CF7F893B19E956395CACB6A1D8848`
+- 두 `.vrt`는 byte-for-byte 동일하지 않다. `FINAL`은 2026-08-31 동결본이고 WIP는 그 뒤의
+  편집본이다. 특히 frozen `FINAL`의 K2 표기/배치는 실물 조립 후 확인한 polarized-coil
+  component-side pin mapping의 as-built 정본이 아니다. 아래 as-built 표를 우선한다.
+- 상태: RevC perfboard soldering complete / unpowered continuity-isolation operator-reported PASS /
+  motor-disconnected control-only K2/K1 subset PASS / powered optocoupler-PC7와 motor-load release OPEN
 - 도구: VeroRoute 2.40
-- import pilot: `Tracked_Mobile_Robot_R9_R12_OrcadPCB2_Pilot.net`
+- Historical import pilot: `Tracked_Mobile_Robot_R9_R12_OrcadPCB2_Pilot.net`
 
-## Review exports
+## RevC review exports — current files, as-built unverified
 
-- `exports/2026-08-16_Tracked_Mobile_Robot_Perfboard_RevB_component_side_reference.pdf`
+PDF 파일명은 2026-08-31을 유지하지만 내용은 이후 덮어써졌다. 아래 view/scale 설명은 기존 export
+설정과 과거 검증 기록이며, 현재 hash의 파일을 새로 geometry 검증한 결과가 아니다.
+
+- `exports/2026-08-31_Tracked_Mobile_Robot_Perfboard_RevC_Estop_component_side_reference.pdf`
   - unflipped reference: `Layer=Bottom`, horizontal/vertical flip OFF
   - A4 landscape, 1 page, vector output
   - C1 left -> C55 right, R1 top -> R37 bottom
   - PDF guide pitch `7.2 pt = 2.54 mm`; 1:1 source geometry PASS
-  - 146,074 bytes, SHA-256
-    `C1A557E3EBAC6CAC7B6DB79E6DD07542C2E4E4BAEB39B43514564D83E39C63A6`
-- `exports/2026-08-16_Tracked_Mobile_Robot_Perfboard_RevB_solder_side_mirrored.pdf`
+  - 153,181 bytes, SHA-256
+    `93DCEED59050B93A9070E0910BA58086F88FA8417848FF2E9BC9C295382E3978`
+- `exports/2026-08-31_Tracked_Mobile_Robot_Perfboard_RevC_Estop_solder_side_mirrored.pdf`
   - horizontal flip ON, vertical flip OFF
   - A4 landscape, 1 page, vector output
   - C55 left -> C1 right; R1 top -> R37 bottom with row guide moved to the right
   - component-side PDF와 동일한 page/drawing bounds 및 `7.2 pt = 2.54 mm` pitch
+  - 154,551 bytes, SHA-256
+    `36E95B7D5B6FC49998E010E6D9CBF345D653E858828D91EA90B3BE4E855DAE13`
+
+과거 PDF의 vector geometry/horizontal-mirror 검증과 사용자가 보고한 1:1 pitch/overlay 검증은
+당시 evidence다. 현재 두 PDF의 정확한 source-VRT linkage, mirror/scale과 K2 post-rework 반영은
+미검증이다. 파일 수정 시각만으로 생성 순서나 source revision을 확정하지 않는다.
+
+2026-09-05 문서 작성 당시의 WIP `122,954 bytes / 4BEBA3C2…`, component PDF
+`153,061 bytes / 182FF3E3…`, solder PDF `154,412 bytes / F3E74D4F…`는 현재 파일과 다르다.
+2026-09-01 progress의 더 이른 PDF/hash도 역사 기록으로 보존한다. 현재 WIP/PDF를 실물 K2 극성
+정정이 검증된 corrected as-built revision이나 fabrication source로 사용하지 않는다.
+
+## 2026-09-01~2026-09-05 physical/as-built checkpoint
+
+2026-09-01에는 R14, U1, K2, D2와 JESTOP 및 세 배선 구간이 부분 실장 상태였다. 이후 사용자는
+RevC perfboard의 계획 배선을 모두 납땜하고 무전원 continuity/isolation 기대 결과를 충족했다고
+보고했다. 대화에서 검토한 사진과 DMM 결과는 repository 원본 evidence로 보존되지 않았으므로
+`OPERATOR-REPORTED PASS` 경계를 유지한다.
+
+FINAL 기준 R14 연결은 다음과 같다.
+
+| R14 endpoint | Net | Required peer |
+| --- | --- | --- |
+| P1 / VeroRoute left `C29,R19` | `ESTOP_SENSE / PC7` | `C15,R5`, U1 pin 4 `C29,R20` |
+| P2 / VeroRoute right `C33,R19` | `STM32_3V3` | `C13,R28` |
+
+FINAL pin/Node decode 기준 사용자 보고의 세 경로는 design-map PASS다. component-side reference는
+실물 부품면과 같은 방향의 unflipped 배치도이므로 실제 component-side 사진을 다시 좌우 반전하지
+않는다. 이 만능기판의 부품면 가장자리 인쇄 숫자는 프로젝트의 VeroRoute 열 번호와 반대로 보일 수
+있다. 부품면 인쇄 숫자를 `P`라 하면 프로젝트 열은 `C(56-P)`로 환산하고, 상대 배치와 Net도 함께
+확인한다. U1 pin 4의 실제 continuity와 adjacent-Net isolation은 이후 무전원 검사에서
+operator-reported PASS로 갱신됐다.
+
+VO617A-3의 실제 component-side 핀 배열은 `좌상 4 / 우상 3 / 좌하 1 / 우하 2`다. 작은 원형
+corner dimple이 pin 1 식별표시이며, 2026-09-03 근접사진의 좌하단 dimple은 FINAL component-side
+reference와 일치한다.
+
+Panasonic `TX2-12V` K2의 datasheet 회로도는 bottom view다. 실물 component side에서 작은
+dimple이 있는 좌하단이 polarized coil pin 1(+)이고 좌상단이 pin 12(-)다. 극성 수정 후의 실제
+component-side/as-built mapping은 다음과 같다.
+
+| Component-side position | Physical pin | As-built net/function |
+| --- | ---: | --- |
+| 좌상 | 12 | GND / coil (-) |
+| 좌상에서 두 번째 | 10 | NC, board Wire 없음 |
+| 우상에서 두 번째 | 9 | `ESTOP_CONTROL_PERMISSION` / hold-pole COM |
+| 우상 | 8 | `K2_COIL_P` / hold-pole NO |
+| 좌하, dimple | 1 | `K2_COIL_P` / coil (+) |
+| 좌하에서 두 번째 | 3 | NC, board Wire 없음 |
+| 우하에서 두 번째 | 4 | `ESTOP_CONTROL_PERMISSION` / K1-enable-pole COM |
+| 우하 | 5 | `K1_COIL_P` / K1-enable-pole NO |
+
+Frozen `FINAL`의 top/bottom-row pin 표기를 따라 coil pin 1과 12를 배선했을 때 극성이 반대로
+연결됐고 K2가 동작하지 않았다. 위 as-built mapping으로 수정한 뒤 S2 press/release 후
+`JK1COIL.1`에 약 `12.19 V`가 유지되는 seal-in 동작을 확인했다. Contact pole은 pin `9->8`이
+K2 hold, pin `4->5`가 K1 enable로 동작하며 두 COM pin 9/4가 같은 permission Net이므로 의도한
+기능은 유지된다.
+
+현재 offboard/as-built control 경로는
+`S1 OUT -> F2 -> 6P pin 1 -> S0-A NC -> 6P pin 2 -> JESTOP pin 2`다. 이 구성에서는 board-side
+JESTOP pin 1을 사용하지 않으며 pin 1과 pin 2 사이에 jumper를 추가하지 않는다. Frozen `FINAL`의
+`F2 OUT -> JESTOP pin 1` landing 표기는 현재 실물 경로의 as-built 정본이 아니다.
+
+## Historical RevB review exports
+
+- `exports/2026-08-16_Tracked_Mobile_Robot_Perfboard_RevB_component_side_reference.pdf`
+  - 146,074 bytes, SHA-256
+    `C1A557E3EBAC6CAC7B6DB79E6DD07542C2E4E4BAEB39B43514564D83E39C63A6`
+- `exports/2026-08-16_Tracked_Mobile_Robot_Perfboard_RevB_solder_side_mirrored.pdf`
   - 147,352 bytes, SHA-256
     `676BE489DD8F38B521CC9E6DA24F4D7229D6120F57313565A6BB27524195DEFB`
-
-두 PDF는 horizontal-mirror pair PASS다. export 후 horizontal flip을 다시 OFF로 복귀해 저장한
-WIP는 99,963 bytes이며 SHA-256
-`C3F30928E8F8F866F2EC81DC2902649C44032DA5B675833DF3D0164DFA89F7A3`로 비반전 baseline과
-동일하다.
 
 PDF source geometry가 1:1이어도 프린터/뷰어가 `Fit` 또는 `Shrink`를 적용하면 실물 출력은
 축소된다. 실물 대조 출력은 `Actual size` 또는 `100%`로 인쇄하고 2.54 mm pitch를 자로 다시
@@ -115,10 +194,14 @@ ST UM1724 connector table과의 대조 결과는
 - ESP32 upper: `C31..C52/R26`, `1 x 22`
 - ESP32 lower: `C31..C52/R35`, `1 x 22`
 
-K2, VO617A, F2 및 미확정 connector는 실제 치수와 pinout이 확정되기 전까지 final part로
-배치하지 않는다. K1/F1과 motor-current path는 이 만능기판 작업 범위 밖이다.
+RevC는 실제 Panasonic `TX2-12V`, Vishay `VO617A-3`, `P6KE16CA`와 board-side JESTOP/JK1COIL
+termination을 반영한다. F2, S0, S2, K1/F1과 motor-current path 및 waterproof 6P harness는
+perfboard 밖이다. 6P 18 AWG assembly/cavity/continuity/retention과 K1 control-only 동작은
+operator-reported PASS지만 load, thermal, timing과 powered sense Gate는 계속 분리한다.
 
 ## 안전 경계
 
-이 파일의 완성은 디지털 배치 검토일 뿐이다. 납땜, 전원 인가, back-power 시험 또는 모터
-구동을 승인하지 않는다. 그 작업은 별도의 continuity 및 hardware gate를 통과한 뒤 진행한다.
+Frozen FINAL/PDF의 완성은 당시 디지털 배치 검토다. 이후 완료된 soldering, 무전원 검사와
+motor-disconnected control-only K2/K1 시험도 사용자 보고 기반의 부분 증거이며 전체 electrical
+release가 아니다. Powered `AUX5V -> S0-B -> VO617A -> ESTOP_SENSE/PC7`, K1 drop-out/rail-decay,
+load/thermal, back-power와 motor Gate를 각각 통과하기 전에는 모터 구동을 승인하지 않는다.
