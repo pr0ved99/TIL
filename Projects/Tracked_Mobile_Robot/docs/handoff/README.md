@@ -4,20 +4,16 @@
 
 ## How To Use
 
-새 대화창에서 작업을 이어갈 때는 아래 순서로 읽는다. 2026-09-07은 문서/Git 복원 checkpoint이며,
-최신 하드웨어 결과는 2026-09-05다.
+새 대화창에서는 작은 현재상태 문서에서 시작한다.
 
-1. [`../../PROJECT_MEMORY.md`](../../PROJECT_MEMORY.md)
-2. [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md)
-3. [`../progress/2026-09-07_progress.md`](../progress/2026-09-07_progress.md)
-4. Bench 작업이면 [`../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md),
-   [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md),
-   [report 24](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)와
-   [verification plan](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)을 읽는다.
+1. [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md)
+2. [`../progress/README.md`](../progress/README.md)와 최신 progress 1개
+3. 현재 gate에 직접 필요한 plan/report/source 1개
 
-그 다음 현재 작업 주제에 맞는 한국어 architecture, verification, firmware, learning note를 읽는다.
-과거 progress 전체를 매번 읽지 않는다. 복사용 프롬프트는
+`PROJECT_MEMORY.md`, 이 전체 index, 과거 handoff/progress와 architecture tree는 현재 문서로
+해결되지 않는 사실이나 충돌이 있을 때만 읽는다. 복사용 프롬프트는
 [`NEXT_SESSION_START_PROMPT.md`](NEXT_SESSION_START_PROMPT.md)다.
+세션과 외부 대화 아카이브 운용은 [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md)를 따른다.
 
 ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_handoff.md`](2026-07-29_codex_plus_transition_handoff.md)를 사용한다. 일반 프로젝트 세션의 필수 읽기 문서에는 포함하지 않는다.
 
@@ -25,11 +21,15 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| 2026-09-07 | [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md) | **Current continuation**: 중단된 문서/Git 작업 복원, 완료/미완료와 다음 무전원 시작점 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 완료 기준선, 다음 `T-ESTOP-004`, 이후 critical path와 작업 방식 |
+| Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
+| 2026-09-08 | [`../progress/2026-09-08_progress.md`](../progress/2026-09-08_progress.md) | **Current result baseline**: wire-open, XL4015 #1/#2 power와 conditioned sense 기능 subset PASS; T004 NOT RUN |
+| 2026-09-08 | [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | **Current powered evidence**: bounded logic-power/conditioned-sense result와 미완료 evidence |
+| 2026-09-07 | [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md) | Recovery checkpoint: 중단된 문서/Git 작업 복원과 9/8 결과로 이어지는 기준 |
 | 2026-09-07 | [`../progress/2026-09-07_progress.md`](../progress/2026-09-07_progress.md) | 문서 상태·artifact hash 정정과 host/static 29/29 재확인; 새 hardware evidence 없음 |
 | 2026-09-05 | [`../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | **Current bench runbook**: remaining explicit wire-open, conditioned PC7, firmware/PWM and direct downstream-rail gates |
-| 2026-09-05 | [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md) | **Current result baseline**: RevC/6P/K1 assembly, K2 polarity correction and 12.24 V motor-disconnected control-only subset |
-| 2026-09-05 | [`../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | **Current Physical E-stop evidence**: bounded PASS and remaining full-gate exclusions |
+| 2026-09-05 | [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md) | Previous control-only baseline: RevC/6P/K1 assembly, K2 polarity correction and 12.24 V subset |
+| 2026-09-05 | [`../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | Previous control-only Physical E-stop evidence and full-gate exclusions |
 | 2026-09-03 | [`../plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md`](../plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md) | Historical RevC local unpowered runbook; K2 bottom-view erratum added |
 | 2026-09-03 | [`../progress/2026-09-03_progress.md`](../progress/2026-09-03_progress.md) | Historical partial-assembly rail/U1/K2 unpowered checkpoint |
 | 2026-09-01 | [`../progress/2026-09-01_progress.md`](../progress/2026-09-01_progress.md) | Previous RevC FINAL/PDF and partial-solder baseline; actual continuity/isolation remained OPEN |
