@@ -9,7 +9,7 @@
   motor-disconnected `T-ESTOP-004` firmware/PWM integration으로 이동한다.
 
 2026-09-07 사용자는 bottom-view 해석 오류를 설명하고 VeroRoute의 K2 Label을 정정해
-`Tracked_Mobile_Robot_Perfboard_RevC_Estop_WIP_수정본.vrt`로 저장했다. 수정본의 Label 배열과
+`Tracked_Mobile_Robot_Perfboard_RevC_Estop_K2_Label_Corrected_WIP.vrt`로 저장했다. 수정본의 Label 배열과
 화면 위쪽 `R19=12/10/9/8`, 아래쪽 `R21=1/3/4/5`는 아래 Gate 1 표와 일치한다.
 기존 `_WIP.vrt`는 이전 Label 배열이므로 현재 표시 기준으로 혼용하지 않는다.
 이전 `2 kΩ` range의 `1.017 / 1.109 / 1.019 / 0.002`는 실제 접촉 패드가 확정되지 않은

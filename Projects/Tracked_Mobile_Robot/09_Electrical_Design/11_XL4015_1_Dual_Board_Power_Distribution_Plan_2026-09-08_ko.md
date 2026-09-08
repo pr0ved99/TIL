@@ -44,10 +44,10 @@ distribution은 아직 digital layout에도 추가되지 않았다. 2026-08-14 �
 
 사용자가 저장한 첫 전원배선 WIP와 component-side PDF를 독립 대조한 결과는 `FAIL`이다.
 
-- VRT: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_DualBoardPower_WIP.vrt`
+- VRT: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_WIP.vrt`
   - 128,830 bytes
   - SHA-256 `3428D13A39A892F38A5A42C8D30DB2FF152879C12BDC7CAF972CD6CA235A3E79`
-- PDF: `exports/Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_DualBoardPower_WIP.pdf`
+- PDF: `exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_component_side_reference.pdf`
   - 155,186 bytes
   - SHA-256 `287CA1E281C336F6C1778B940645D2F36CD0CFCDFFE554357C36DFED7FAC82D8`
   - VeroRoute/Qt 생성 시각은 VRT 저장 16초 뒤이며, 보이는 배치와 VRT decode가 일치한다.
@@ -70,16 +70,24 @@ WIP 파일을 덮어써 수정했다.
 
 ### 2.2 2026-09-08 04:14 corrected working-file review
 
-- VRT: 130,113 bytes, SHA-256
+- 검토 기준 VRT(04:14:14): 130,113 bytes, SHA-256
   `2DD86CD6F431BEF995D5B8DDC50A2F74E2674FBE34FFF16563E45DB95DF7A410`
-- Component-side PDF: 155,443 bytes, SHA-256
+- Component-side PDF:
+  `exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_component_side_reference.pdf`,
+  155,443 bytes, SHA-256
   `F3EFFC5753120E816B1D2279753AC70C47109C8E137A25CB4AE5B612C7644364`
 - VRT 저장: 04:14:14, PDF 생성: 04:14:29
 - `5V_NUC=C8,R28`, `GND_NUC=C9,R28`: PASS
 - `5V_ESP=C32,R26`, `GND_ESP=C31,R26`: 이전 R35 오연결 수정, PASS
 - `H_ESP_LOW_R35`의 앞 두 hole: 새 전원 Net에서 분리됨
 - `5V_NUC`, `5V_ESP`, `AUX_5V`: 서로 다른 node 유지
-- 새 solder-side mirrored PDF: 아직 없음
+- Solder-side mirrored PDF:
+  `exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_solder_side_mirrored.pdf`,
+  156,986 bytes, SHA-256
+  `96A18F668B5484CD87A20F5FE40DA65ABE4172333B2A461EF32AE4F02B1FF77B`.
+  파일 식별값만 확인했으며 전체 mirror/as-built visual review는 아직 수행하지 않았다.
+- 파일명 정리 시 보존한 최신 VRT(09:51:21): 130,121 bytes, SHA-256
+  `4E376B998D9322A9747E492A0FA33BC521D3026A8B971DFD91D03F5FA559709F`
 
 전원 endpoint와 Net 분리의 digital-routing subset은 PASS다. 전체 VRT grid/wire graph 재검사에서도
 각 새 5 V Net은 단일 연결 성분이고 dangling endpoint, 비대칭 track bit, 서로 다른 Net을 잇는

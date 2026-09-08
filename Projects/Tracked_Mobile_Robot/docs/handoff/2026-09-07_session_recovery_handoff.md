@@ -7,7 +7,7 @@
 복원 정리 단계에서는 새 하드웨어 시험, 전원 인가, 배선 변경이나 firmware flash를 수행하지 않았다.
 
 이후 2026-09-07 bench 재개 중 사용자는 VeroRoute bottom-view 해석 오류를 설명하고
-`..._WIP_수정본.vrt`의 K2 Label을 정정했다. 저장 배열 `12/10/9/8/1/3/4/5`와 화면의
+`..._K2_Label_Corrected_WIP.vrt`의 K2 Label을 정정했다. 저장 배열 `12/10/9/8/1/3/4/5`와 화면의
 위쪽 `R19=12/10/9/8`, 아래쪽 `R21=1/3/4/5`를 확인했다. 기존 WIP는 이전 Label 배열이다.
 수정된 표시 기준의 K2-R02a/R02b/R03 재측정은 각각 `0.002~0.003 kΩ`의 공통 범위로
 보고됐고, lead baseline `.003 kΩ`와 가까워 low-Ω subset `OPERATOR-REPORTED PASS`다.

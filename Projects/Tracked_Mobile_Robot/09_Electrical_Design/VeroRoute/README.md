@@ -14,7 +14,7 @@
   - Size: `122,124 bytes`
   - SHA-256: `972DD4BED0F8986D4CB60956C8759AAC0B61538D1A2A4214A3FEB6CAE1F938FF`
   - K2 Label 배열: `1,3,4,5,12,10,9,8` — 표시 정정 전 배열
-- Current label-corrected working file: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_WIP_수정본.vrt`
+- Current label-corrected working file: `Tracked_Mobile_Robot_Perfboard_RevC_Estop_K2_Label_Corrected_WIP.vrt`
   - Size: `122,124 bytes`
   - SHA-256: `13BD2C696521758112B567EC36912EF341935BB69EA2C3DD0B567B72EBF92FC1`
   - K2 내부 pin 1~8의 Label: `12,10,9,8,1,3,4,5`; 저장 레코드와 사용자 화면이 일치한다.
@@ -37,8 +37,8 @@
 
 | 파일 | Size | SHA-256 |
 | --- | ---: | --- |
-| `exports/2026-08-31_Tracked_Mobile_Robot_Perfboard_RevC_Estop_component_side_reference_수정본.pdf` | 152,757 bytes | `42DD60EC10C77CA2A39123903628C93B093FBB1AF3D54B4470009827B7DD9937` |
-| `exports/2026-08-31_Tracked_Mobile_Robot_Perfboard_RevC_Estop_solder_side_mirrored_수정본.pdf` | 154,064 bytes | `B836BBB8A8B5D9D7BA9C4A2CDCC99158D40ED996DDEE9F4E577A4AE3EE312872` |
+| `exports/2026-09-07_Tracked_Mobile_Robot_Perfboard_RevC_Estop_K2_Label_Corrected_component_side_reference.pdf` | 152,757 bytes | `42DD60EC10C77CA2A39123903628C93B093FBB1AF3D54B4470009827B7DD9937` |
+| `exports/2026-09-07_Tracked_Mobile_Robot_Perfboard_RevC_Estop_K2_Label_Corrected_solder_side_mirrored.pdf` | 154,064 bytes | `B836BBB8A8B5D9D7BA9C4A2CDCC99158D40ED996DDEE9F4E577A4AE3EE312872` |
 
 PDF 텍스트의 위치를 대조해 K2 부품면은 위 `12/10/9/8`, 아래 `1/3/4/5`로 수정 VRT 표시와
 일치함을 확인했다. 납땜면은 위 `8/9/10/12`, 아래 `5/4/3/1`로 K2 국소 표기의 수평 반전과
@@ -226,8 +226,8 @@ firmware/PWM timing과 direct motor rail Gate는 계속 분리한다.
 
 ## 2026-09-08 XL4015 #1 first layout review
 
-`Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_DualBoardPower_WIP.vrt`와 같은 이름의
-component-side PDF를 VRT component/node decode와 PDF visual review로 대조했다.
+`Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_WIP.vrt`와
+2026-09-08 component-side PDF를 VRT component/node decode와 PDF visual review로 대조했다.
 
 - VRT: 128,830 bytes, SHA-256
   `3428D13A39A892F38A5A42C8D30DB2FF152879C12BDC7CAF972CD6CA235A3E79`
@@ -243,17 +243,33 @@ GND에 연결되므로 판정은 **FAIL / DO NOT SOLDER / DO NOT POWER**다. 다
 `C31/R26=GND`, `C32/R26=5V`로 옮겨 다시 검토한다. 당시 연속 1x4 변경까지 요구한 것은 실제
 dual-2P 구조를 잘못 이해한 검토자 판단이었으며 이후 철회했다.
 
-같은 파일명은 이후 사용자가 덮어써 수정했다. 04:14:14의 current VRT는 130,113 bytes,
+같은 VRT는 이후 사용자가 덮어써 수정했다. 현재 표준 파일명은
+`Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_WIP.vrt`다.
+04:14:14의 검토 기준 VRT는 130,113 bytes,
 SHA-256 `2DD86CD6F431BEF995D5B8DDC50A2F74E2674FBE34FFF16563E45DB95DF7A410`이고,
-04:14:29의 component-side PDF는 155,443 bytes, SHA-256
+04:14:29의 current component-side PDF
+`exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_component_side_reference.pdf`는
+155,443 bytes, SHA-256
 `F3EFFC5753120E816B1D2279753AC70C47109C8E137A25CB4AE5B612C7644364`다.
+
+파일명 정리 시 기존 이름으로 한 번 더 저장된 09:51:21 VRT를 최신본으로 보존했다. 현재 VRT는
+130,121 bytes, SHA-256
+`4E376B998D9322A9747E492A0FA33BC521D3026A8B971DFD91D03F5FA559709F`다.
 
 - NUCLEO: `C8/R28=5V`, `C9/R28=GND` 유지
 - ESP32: `C32/R26=5V`, `C31/R26=GND`로 수정됨
 - ESP32 lower `R35` P1/P2: 새 전원 Net에서 분리됨
 - `5V_NUC`, `5V_ESP`, `AUX_5V`: 서로 다른 node
 - 좌하단: 여전히 연속 4-pin이 아니라 2-pin 두 개, 둘 다 pin 1=GND/pin 2=+5 V
-- Export: component-side 1장만 있고 새 solder-side mirrored PDF는 없음
+- Export: component-side와 solder-side mirrored PDF가 현재 표준 이름으로 존재한다.
+
+| Current XL4015 #1 export | Size | SHA-256 |
+| --- | ---: | --- |
+| `exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_component_side_reference.pdf` | 155,443 bytes | `F3EFFC5753120E816B1D2279753AC70C47109C8E137A25CB4AE5B612C7644364` |
+| `exports/2026-09-08_Tracked_Mobile_Robot_Perfboard_RevC_Estop_XL4015_1_Dual_Board_Power_solder_side_mirrored.pdf` | 156,986 bytes | `96A18F668B5484CD87A20F5FE40DA65ABE4172333B2A461EF32AE4F02B1FF77B` |
+
+Solder-side mirrored PDF는 이번 파일명 정리 시 식별값만 기록했다. 전체 geometry/mirror/as-built
+visual review를 새 PASS로 추가하지 않는다.
 
 사용자는 두 2-pin이 의도된 board landing이라고 확인했다. NUC/ESP branch를 개별 시험하기 위해
 board에는 2P를 따로 두고, XL4015 #1 OUT+/OUT-에서 두 26 AWG cable pair로 바로 분기해 각 2P로
