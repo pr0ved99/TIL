@@ -449,22 +449,20 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 
 ## 다음 단계
 
-2026-08-13 Step 8 KiCad RevB functional schematic/ERC `0/0` 뒤, 2026-09-05까지 18 AWG
-first article와 6P full assembly, perfboard, K1/K2 motor-disconnected nominal control-only subset을
-완료했다. 다음은 다음 순서다.
+2026-08-13 Step 8 KiCad RevB functional schematic/ERC `0/0` 뒤, 2026-09-08까지 18 AWG
+6P assembly, perfboard, K1/K2 motor-disconnected control-only, S0-A/S0-B wire-open independence,
+XL4015 logic/AUX power와 conditioned sense voltage-function subset을 완료했다. 다음은 다음 순서다.
 
-1. [`Remaining bench gates`](../docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)의
-   power-off reentry, K2 post-rework direct continuity와 남은 `T-ESTOP-002` wire-break/독립성을 닫는다.
-2. Current power-source/back-power policy를 지키며 AUX5V와 STM32 3.3 V를 준비하고 powered
-   `T-ESTOP-003`의 S0-B/VO617A/PC7 LOW-HIGH-wire-open을 측정한다.
-3. `T-ESTOP-004`의 formal firmware latch/PWM/state capture를 실제 conditioned sense path로 닫는다.
-4. K1 main `280756-4`의 AWG 12~10 범위 대비 as-built 14 AWG 편차를 해소하고 P6KE clamp,
+1. [Report 25](../docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)의
+   완료 결과와 evidence 한계를 보존하고 같은 기능 시험을 반복하지 않는다.
+2. `T-ESTOP-004`의 formal firmware latch/PWM/state capture를 실제 conditioned sense path로 닫는다.
+3. K1 main `280756-4`의 AWG 12~10 범위 대비 as-built 14 AWG 편차를 해소하고 P6KE clamp,
    K1/K2 pickup/drop-out/rail-decay, F1/F2와 loaded voltage-drop/thermal Gate를 닫는다.
-5. Healthy/released S2와 검증된 6P harness로 full `T-ESTOP-005A` direct rail-off,
+4. Healthy/released S2와 검증된 6P harness로 full `T-ESTOP-005A` direct rail-off,
    firmware/PWM와 nominal no-auto-motion을 정식 evidence로 검증한다.
-6. `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤에만 첫 lifted single motor에서 start current,
+5. `T-ESTOP-001~004 + T-ESTOP-005A` PASS 뒤에만 첫 lifted single motor에서 start current,
    voltage drop, holder/terminal 온도와 encoder noise를 계측한다.
-7. `FM-ESTOP-014` mitigation과 S2 stuck/6P pair-short `T-ESTOP-005B`, PA4/PB0 divider/protection은
+6. `FM-ESTOP-014` mitigation과 S2 stuck/6P pair-short `T-ESTOP-005B`, PA4/PB0 divider/protection은
    MVP 뒤 별도 V-cycle에서 설계·실장·검증한다.
 
-현재 overall 판정은 `PARTIAL / FORMAL POWERED SENSE, FIRMWARE, LOAD AND MOTOR GATES OPEN`이다.
+현재 overall 판정은 `PARTIAL / FIRMWARE, DIRECT-RAIL, LOAD AND MOTOR GATES OPEN`이다.

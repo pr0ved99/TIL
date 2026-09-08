@@ -199,8 +199,8 @@ Stop immediately if:
 
 | Converter | Approved role | Approved output | Approved for board connection? | Notes |
 | --- | --- | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V | 5.03 V no-load; 5.00~5.01 V with NUCLEO/ESP32 | Yes — buck-only | NUCLEO/ESP32 individual and combined mode PASS; all USB disconnected; USB+buck simultaneous use prohibited |
-| XL4015 #2 | Sensor/auxiliary 5 V candidate | 5.03 V no-load; terminal stabilized at 4.90-4.89 V and USB-side 4.90 V at 0.94 A | Not yet | Approximately 1 A sustained load PASS; 1.78-1.80 A held for 3 min at USB-side 4.73 V; need final load assignment and board/sensor power path policy |
+| XL4015 #1 | STM32/ESP32 logic 5 V | 2026-09-08 new path: 5.02 V pre-connect; 4.97 V individual, 4.95 V combined OUT | Yes — buck-only functional subset | Separate 26 AWG dual-2P source branches; NUC E5V 4.94 V and ESP 5V 4.95 V combined, both 3V3 rails nominal, power-off 0 V PASS. All USB disconnected; current/drop/temperature release evidence open |
+| XL4015 #2 | Encoder and Physical E-stop `AUX_5V` | 5.03 V no-load; 5.08 V at J3 during 2026-09-08 sense test | Conditional — functional subset | Both encoder 5 V feeds and R13/S0-B input share `AUX_5V`; conditioned PC7 released 0.06 V, pressed/open 3.27 V PASS. LED current/instrument/raw evidence remains open |
 
 ## Next Step
 

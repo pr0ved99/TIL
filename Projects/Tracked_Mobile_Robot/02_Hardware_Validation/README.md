@@ -67,7 +67,7 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
-| Buck converter output / board power | PASS for XL4015 #1 logic role | XL4015 #1 board-connected 5.00~5.01 V; NUCLEO/ESP32 individual+combined buck-only, dual-USB isolation and rail-off PASS; USB+buck simultaneous use prohibited. XL4015 #2 final sensor assignment remains open |
+| Buck converter output / board power | PASS for XL4015 #1 functional logic-power subset; PARTIAL for XL4015 #2 evidence | 2026-09-08 dual-2P #1 path: 5.02 V pre-connect, 4.97 V individual and 4.95 V combined OUT; NUC E5V 4.94 V/ESP 5V 4.95 V combined, power-off 0 V PASS. #2 J3 5.08 V and conditioned PC7 0.06/3.27 V released/asserted PASS; current/drop/temperature and raw evidence open |
 | MDD10A logic input | PASS — motor-disconnected input scope | `03_MDD10A_Logic_Input_Test.md`; permanent signal별 10 kΩ, final perfboard CH1/CH2 19.049/19.058 kHz active 6-step, pre/post-DIR zero 약 2 ms와 hook-0 all-LOW PASS. Physical E-stop, power stage와 actual motor는 별도 Gate |
 | Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 1560 counts/rev, CPS/mRPM, production TEL과 A=right/TIM5·B=left/TIM3 forward-positive PASS; powered-noise와 external RPM/wheel scale 미검증 |
 | First motor no-load | Not started | TBD |

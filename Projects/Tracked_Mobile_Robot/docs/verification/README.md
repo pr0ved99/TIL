@@ -48,7 +48,7 @@ reset-harness ESP32 isolated build를 PASS했다. P-04B active reset `ERR`, rele
 `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`와 target flash/runtime restore, measured physical PWM, exact
 artifact/setup provenance가 남아 current bridge release 전체 판정은 `PARTIAL`이다.
 
-2026-09-05 현재 검증된 추가 범위:
+2026-09-08 현재 검증된 추가 범위:
 
 - MDD10A powered/no-motor routing, direction, timeout/DISARM와 software fault shutdown
 - STM32 pin-only PWM frequency/duty, direction-change pre/post zero와 active DISARM 23.50 us first baseline
@@ -78,6 +78,12 @@ artifact/setup provenance가 남아 current bridge release 전체 판정은 `PAR
   ESP32 isolated build. Reset runtime과 target flash/runtime은 제외
 - 2026-09-05 조립·측정 결과는 operator-reported/session-attached evidence다. MDD10A `B+`가
   분리됐으므로 conditioned PC7, direct downstream rail, active PWM와 full `T-ESTOP-005A`는 미통과
+- 2026-09-08 S0-A/S0-B 실제 한 가닥 단선·독립성·복구 기능 subset PASS
+- XL4015 #1의 별도 26 AWG dual-2P에서 NUCLEO/ESP32 단독·동시 공급과 power-off 0 V PASS;
+  combined OUT/NUC E5V/ESP 5V는 `4.95/4.94/4.95 V`
+- XL4015 #2 J3 `5.08 V`에서 실제 conditioned `ESTOP_SENSE` released `0.06 V`,
+  pressed와 S0-B wire-open `3.27 V` functional subset PASS. LED current, instrument/photo/raw evidence는 OPEN
+- `T-ESTOP-004` firmware/PWM integration은 미실행이며 firmware source 변경·flash도 없었다
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -122,6 +128,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [`22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md) | Software-cached signed applied PWM의 STM TEL/ESP parser 연결, positive symmetric/zero-state target runtime와 hook-0 safe restore boundary |
 | [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md) | Stop reason/accepted-CMD age의 STM TEL/ESP parser 연결, timeout와 direct-PC7 active/latch subset, hook-0 isolated build 및 남은 reset/target reflash-runtime boundary |
 | [`24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | RevC/6P/K1 조립, S0-A/S0-B/S2 truth table, K2 polarity correction과 motor-disconnected K2/K1 control-path subset; conditioned PC7/direct MDD rail/full E-stop PASS는 미포함 |
+| [`25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md`](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | XL4015 #1 dual-board logic power, #2 AUX path, S0-A/S0-B wire-open independence와 conditioned sense LOW/HIGH/open functional subsets; firmware/PWM/direct rail 미포함 |
 
 ## Evidence Files
 

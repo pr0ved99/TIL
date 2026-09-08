@@ -244,8 +244,8 @@ baseline일 뿐이며 실제 K1 main assembly의 14 AWG와 `280756-4` compatibil
 
 | Requirement | Design / implementation | Test ID | Required evidence | Status |
 | --- | --- | --- | --- | --- |
-| `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PARTIAL/BLOCKED` — 6P/S0 truth-table and K1/K2 assembly subset PASS; full wire-break/release audit open |
-| `REQ-ESTOP-005`, `018` | `CD-ESTOP-004`, `006`; S0-B interface | `T-ESTOP-003` | DMM GPIO voltage table, pin configuration, wire-open log | `PARTIAL/BLOCKED` — direct PC7 only |
+| `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PARTIAL` — 6P/S0 truth-table, K1/K2 assembly와 S0-A/S0-B actual wire-open independence functional subset PASS; exact cavity/raw evidence와 release audit open |
+| `REQ-ESTOP-005`, `018` | `CD-ESTOP-004`, `006`; S0-B interface | `T-ESTOP-003` | DMM GPIO voltage table, pin configuration, wire-open log | `PARTIAL` — conditioned LOW/HIGH/wire-open voltage-function subset PASS; current/instrument/raw evidence open |
 | `REQ-ESTOP-006~008`, `010` | Safety state/latch and common safe-output handling | `T-ESTOP-004`, `T-ESTOP-005A`; post-MVP `005B` | UART log, GPIO/PWM/direct rail capture, reset/re-enable regression; single-fault extension separately | `PARTIAL/BLOCKED` — direct-PC7 firmware subset and healthy-path K2/K1 no-restart subset PASS; combined PWM/direct-rail gate open |
 | `REQ-ESTOP-009`, `016~017` | Functional K1 drop-out, direct rail-off and back-power | `T-PWR-003`, `T-ESTOP-005A`, `T-ESTOP-007` | Direct rail observation, power-source matrix and stop evidence | `PARTIAL/BLOCKED` — K1 dropout observed, MDD `B+` disconnected and direct downstream rail not tested |
 | `REQ-ESTOP-012~015` | `CD-ESTOP-005`; dual rail ADC plausibility and discrepancy handling | `T-ESTOP-006` | Post-MVP ADC sweep, synchronized waveform and fault injection | `DEFERRED` |
@@ -335,9 +335,9 @@ high-current crimp, loaded coordination 또는 direct downstream rail을 대신�
 
 ### `T-ESTOP-002` Unpowered continuity and wire-break test
 
-상태: `PARTIAL/BLOCKED` — 6P `1–2=S0-A`, `3–4=S0-B`, `5–6=S2` pair mapping,
-crimp/retention, intended continuity와 switch truth table는 operator-reported PASS다. Complete
-end-to-end wire-removal/cross-wire matrix와 immutable raw evidence는 아직 미완료다.
+상태: `FUNCTIONAL SUBSET PASS / EVIDENCE PARTIAL` — 6P pair mapping, crimp/retention,
+switch truth table와 S0-A/S0-B 한 가닥 제거·상호 독립·복구는 operator-reported PASS다.
+Exact removed cavity, numeric Ω/OL과 immutable raw evidence는 미완료다.
 
 준비:
 
@@ -377,9 +377,14 @@ Acceptance:
 end-to-end fault matrix와 저장소 raw measurement record가 없어 전체 `T-ESTOP-002 PASS`로
 승격하지 않는다.
 
+2026-09-08에는 S0-B conductor open에서 sense만 open/control continuity 유지, 복구 뒤 양쪽
+continuity, S0-A conductor open에서 control만 open/sense continuity 유지와 최종 복구를 확인했다.
+기능 subset은 통과했지만 exact cavity와 numeric Ω/OL·사진은 기록되지 않았다. 상세 경계는
+[report 25](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)를 따른다.
+
 ### `T-ESTOP-003` 3.3 V sense electrical test
 
-상태: `PARTIAL/BLOCKED` — direct PC7 LOW/HIGH/open subpath PASS; VO617A-3/S0-B conditioned path pending
+상태: `CONDITIONED VOLTAGE SUBSET PASS / EVIDENCE PARTIAL`
 
 Motor power와 MDD10A output은 연결하지 않는다.
 
@@ -407,6 +412,13 @@ opto transistor saturation, S0-B/wire-open 및 control/sense isolation을 시험
 2026-09-05의 6P `3–4`/S0-B 무전원 truth table PASS는 switch/harness continuity 증거다.
 5 V LED-loop current, optocoupler output과 PC7 voltage를 측정하지 않았으므로 `T-ESTOP-003`
 판정은 바뀌지 않는다.
+
+2026-09-08에는 실제 S0-B/VO617A conditioned path에서 `ESTOP_SENSE`를 측정했다. STM32 3V3
+`3.30 V` 조건에서 released `0.06 V`, pressed/latched `3.27 V`, released recovery `0.06 V`,
+S0-B conductor open `3.27 V steady`였고 모두 LOW `0.99 V`/HIGH `2.31 V` threshold를 만족했다.
+전원 제거·wire 복구도 사용자 보고 PASS다. XL4015 #1/#2 source configuration과 motor-disconnected
+범위는 report 25에 기록했다. LED-loop current, exact instrument metadata와 repository photo/raw log가
+없으므로 전체 evidence package는 `PARTIAL`이다.
 
 ### `T-ESTOP-004` Firmware latch and common-safe-path test
 

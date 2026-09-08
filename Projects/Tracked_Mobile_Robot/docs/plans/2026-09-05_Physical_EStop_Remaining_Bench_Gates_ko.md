@@ -2,11 +2,31 @@
 
 ## 상태와 목표
 
-- 상태: `CURRENT / POWER-OFF REENTRY FIRST`
-- 최신 결과: [`2026-09-05 progress`](../progress/2026-09-05_progress.md)
+- 상태: `CURRENT / GATE 2 FUNCTIONAL PASS — GATE 4 CONDITIONED VOLTAGE SUBSET PASS, GATE 5 NEXT`
+- 최신 결과: [`2026-09-08 progress`](../progress/2026-09-08_progress.md)
 - 공식 수용 기준: [`Physical E-stop verification plan`](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)
-- 목표: K2 post-rework 좌표를 무전원으로 고정하고, 남은 `T-ESTOP-002` wire-break/독립성부터
-  순서대로 닫은 뒤 `T-ESTOP-003` conditioned sense로 이동한다.
+- 목표: 완료된 K2/Gate 2, XL4015 #1/#2와 `T-ESTOP-003` voltage-function 결과를 보존하고,
+  motor-disconnected `T-ESTOP-004` firmware/PWM integration으로 이동한다.
+
+2026-09-07 사용자는 bottom-view 해석 오류를 설명하고 VeroRoute의 K2 Label을 정정해
+`Tracked_Mobile_Robot_Perfboard_RevC_Estop_WIP_수정본.vrt`로 저장했다. 수정본의 Label 배열과
+화면 위쪽 `R19=12/10/9/8`, 아래쪽 `R21=1/3/4/5`는 아래 Gate 1 표와 일치한다.
+기존 `_WIP.vrt`는 이전 Label 배열이므로 현재 표시 기준으로 혼용하지 않는다.
+이전 `2 kΩ` range의 `1.017 / 1.109 / 1.019 / 0.002`는 실제 접촉 패드가 확정되지 않은
+raw로 보존하며 배선 오류나 PASS로 판정하지 않는다. 수정된 표시 기준의 K2-R02a/R02b/R03
+재측정은 각각 `0.002~0.003 kΩ`라는 공통 범위 보고를 받았고 lead baseline `.003 kΩ`에 가까워
+low-Ω subset `OPERATOR-REPORTED PASS`로 기록했다. 9/8에는 K2-R04a/R04b/R05 안내에
+사용자가 `모두 통과`로 응답했고 정성 `OPERATOR-REPORTED PASS`로 기록했다(개별 숫자 미제공).
+이후 사용자는 기존 LiPo 연결 스위치 PASS를 근거로 추가 NC/NO 재검사를 중단하고 다음으로
+넘어가라고 지시했다. R06~R09는 `NOT RUN / SKIPPED PER USER DIRECTION`으로 남기며,
+새 PASS로 바꾸지 않는다. 기존 정상 동작 PASS와 이번 R02~R05 도통 기록을 유지하고
+K2 재진입 확인을 종료한다. Gate 2의 control/sense baseline은 도통 모드에서 모두
+`OPERATOR-REPORTED PASS`다(정확한 Ω 미제공). 다음은 S0-B 한 가닥의 실제 단선·독립성이다. Powered 단계는 해당
+Gate 2와 conditioned-sense preflight가 완료된 뒤에만 진행한다. 이후 S0-B 한쪽을 실제 분리한
+상태에서 sense `open/no beep`, control `continuity/beep 유지`를 사용자가 모두 통과했다고 보고했다.
+정확한 분리 종단/cavity와 Ω/OL 화면은 미기록이다. 이후 S0-B 복구/retention/도통 복귀,
+S0-A 한쪽 단선의 control-open/sense-closed 독립성과 최종 복구도 모두 통과했다고 보고했다.
+Gate 2 기능은 `OPERATOR-REPORTED PASS`, evidence metadata는 미완료다. 다음은 Gate 3 preflight다.
 
 2026-09-05에는 12.24 V control-only setup에서 K2/K1 nominal pickup/dropout, S2 self-hold,
 `JK1COIL.1=12.19 V`, S0/S1 no-auto-restart를 확인했다. S0-B `JESTOP.3 <-> JESTOP.4`의
@@ -64,7 +84,8 @@ corrected component-side mapping은 다음과 같다.
 | 9 | `C40,R19` | `ESTOP_CONTROL_PERMISSION` |
 | 8 | `C41,R19` | `K2_COIL_P` / hold-pole NO |
 
-아래를 direct pad에서 확인한다.
+아래는 direct-pad 검사 참조표다. R02~R05는 위 기록대로 완료됐고, R06~R09는 9/8 사용자 지시로
+이번 세션의 추가 재검사에서 제외했다. 이 표를 근거로 완료한 정상 릴레이 시험을 다시 시작하지 않는다.
 
 | ID | FROM | TO | 기대 |
 | --- | --- | --- | --- |
@@ -127,7 +148,7 @@ Acceptance:
 
 ## Gate 3 — `T-ESTOP-003` Preflight
 
-Gate 0~2가 통과한 뒤에만 진행한다.
+Gate 0 무전원 확인, 위에 기록한 Gate 1 재진입 종료 결정과 Gate 2 단선·독립성 통과 뒤에만 진행한다.
 
 1. STM32F446 PC7의 선택된 input configuration과 `V_SENSE_LOW_MAX`, `V_SENSE_HIGH_MIN`, absolute
    maximum 근거를 기록한다.
@@ -138,6 +159,32 @@ Gate 0~2가 통과한 뒤에만 진행한다.
 5. MDD10A B+와 motor가 여전히 분리·절연됐는지 확인한다.
 
 하나라도 닫히지 않으면 `T-ESTOP-003`을 시작하지 않는다.
+
+현재 source 확인 결과 PC7은 `GPIO_MODE_INPUT + GPIO_PULLUP`, active-HIGH/open-fault다.
+NUCLEO의 실제 접근점은 Arduino `D9`, `CN5 pin 2`다. STM32F446RE 공식
+[`DS10693 Rev 11`](https://www.st.com/resource/en/datasheet/stm32f446re.pdf) Table 56의
+CMOS production-test 기준에 따라 이번 벤치 판정은 실측 VDD에 대해
+`V_SENSE_LOW_MAX=0.3 × VDD`, `V_SENSE_HIGH_MIN=0.7 × VDD`로 둔다.
+VDD가 정확히 `3.300 V`일 때만 각각 `0.99 V`, `2.31 V`다.
+PC7은 FTf pin이지만 architecture상 3.3 V pull-up 출력만 허용하며 5 V direct input으로 시험하지 않는다.
+실제 `STM32_3V3`도 함께 측정하고, sense에서 5 V-class가 관찰되면 즉시 전원을 제거한다.
+
+9/3에 R14 약 `10 kΩ`, U1.4↔GND와 U1.1↔U1.4 gross-short 없음,
+U1.4↔PC7 및 R14.2↔3V3 continuity는 operator-reported PASS다. 관련 배선이 바뀌지 않았으므로
+반복하지 않는다. 아직 필요한 preflight는 과거 direct-PC7용 D9-to-GND 점퍼의 물리적 제거,
+사용할 단일 logic power-source 구성과 MDD10A B+/motor 분리 확인이다.
+
+사용자는 현물에 별도 D9/PC7-to-GND jumper가 없음을 확인했다. 설계/netlist 기준 `R13.1`의
+`AUX_5V`는 `J3.1 = XL4015 #2 OUT+`이며, 기존 승인된 USB 없는 board-power 구성은 XL4015 #1에서
+NUCLEO E5V와 ESP32 5V를 공급한다. 두 buck OUT+를 서로 합치지 않는다. 현재 두 XL4015는
+만능기판에 연결돼 있지 않으므로 `R13 ↔ buck OUT+` 도통검사를 요구하지 않는다. 두 모듈을
+식별하고 board 연결 전 각각의 무부하 출력 전압과 극성을 확인한 뒤, 전원 OFF/rail 0 V 상태에서
+#1 board-power와 #2 `J3.1/AUX_5V`를 분리된 출력 Net으로 연결한다.
+XL4015 #1의 영구 분배는
+[`11_XL4015_1_Dual_Board_Power_Distribution_Plan_2026-09-08_ko.md`](../../09_Electrical_Design/11_XL4015_1_Dual_Board_Power_Distribution_Plan_2026-09-08_ko.md)의
+두 개별 2P의 탈착·극성·전원 Gate를 먼저 따른다. #1 OUT+/OUT-에서 두 cable pair로 바로 분기하며
+inline 4P connector는 없다. Dual-USB mode에서는 두 2P를 모두 기판에서 제거한다. Board-path,
+dual-2P source polarity와 NUCLEO/ESP32 단독·동시 powered 검증은 9/8 operator-reported PASS다.
 
 ## Gate 4 — `T-ESTOP-003` Conditioned Sense Powered Test
 
@@ -162,9 +209,29 @@ Acceptance:
 - 5 V direct input, control/sense unintended current sharing과 비정상 발열이 없다.
 - 각 상태의 voltage, source configuration, DMM와 사진/log 경로가 남는다.
 
+2026-09-08 실행 결과:
+
+| Condition | `ESTOP_SENSE C29,R19` to `LOGIC_GND C15,R4` |
+| --- | ---: |
+| S0 released / S0-B closed | `0.06 V` |
+| S0 pressed and latched | `3.27 V` |
+| S0 manually released | `0.06 V` |
+| S0-B conductor open | `3.27 V` steady |
+
+NUCLEO는 XL4015 #1, R13/S0-B/VO617A 입력은 XL4015 #2에서 공급했고 ESP32, MDD10A B+와
+motor는 분리했다. 같은 실행에서 STM32 3V3는 `3.30 V`였으므로 `0.99/2.31 V` LOW/HIGH
+threshold에 여유 있게 들어온다. 전원 제거·S0-B 복구와 정상 LOW 복귀도 사용자 보고 PASS다.
+LED-loop current, 복구 뒤 exact voltage, DMM 모델/range와 photo/raw-log가 없어 formal evidence는
+`PARTIAL`이지만 conditioned voltage/function subset은 `OPERATOR-REPORTED PASS`로 닫는다.
+상세 결과는 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)를 따른다.
+
 ## Gate 5 — Later `T-ESTOP-004` Firmware/PWM Integration
 
 `T-ESTOP-003 PASS` 뒤 motor와 MDD10A B+를 계속 분리하고 진행한다.
+
+현재 `NOT RUN`이다. Firmware source 변경·flash·runtime은 없었다. 이 단계부터는 기존 학습 방식대로
+Codex가 현재 코드를 확인하고 한 번에 작은 코드 단위와 위치·이유를 설명하면 사용자가 직접 입력·저장한다.
+저장 후 Codex가 확인하고, 사용자가 지시할 때 build/flash/bench로 이동한다.
 
 - Logic analyzer: PC7/`ESTOP_SENSE`, PB6/PWM1, PB7/PWM2와 공통 LOGIC_GND.
 - Boot released/open, active limited-output assertion, physical release, reset-while-active reject,

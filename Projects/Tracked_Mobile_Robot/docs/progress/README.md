@@ -4,13 +4,14 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [`2026-09-07_progress.md`](2026-09-07_progress.md) — 중단된 문서/Git closeout 복원,
-현재/과거 상태와 artifact hash 정정, host/static `29/29` 재확인. 새 하드웨어 시험은 수행하지 않았다.
+Latest: [`2026-09-08_progress.md`](2026-09-08_progress.md) — K2 표시/도통과 S0-A/S0-B 실제
+단선·독립성 복구, XL4015 #1 dual-2P NUCLEO/ESP32 단독·동시 power, XL4015 #2 `AUX_5V`,
+conditioned `ESTOP_SENSE` released `0.06 V`/pressed·wire-open `3.27 V` 기능 subset PASS.
+Firmware/PWM `T-ESTOP-004`는 미실행이다.
 
-Latest hardware: [`2026-09-05_progress.md`](2026-09-05_progress.md) — K2 bottom-view/polarity를
-as-built로 정정한 뒤 12.24 V control-only K2/K1 pickup/dropout, S2 self-hold와 S0/S1 nominal
-no-auto-restart subset을 PASS했다. S0-B `JESTOP.3 <-> JESTOP.4` contact truth table은
-무전원 PASS지만 explicit wire removal과 powered conditioned PC7은 OPEN이다. MDD10A B+는
+Latest powered hardware: 위 9/8 기록과 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
+이전 [`2026-09-05_progress.md`](2026-09-05_progress.md)는 12.24 V control-only K2/K1 pickup/dropout,
+S2 self-hold와 S0/S1 nominal no-auto-restart subset을 기록한다. MDD10A B+는
 분리·절연했으므로 전체 Physical E-stop이나 `T-ESTOP-005A PASS`가 아니다.
 
 ## How To Use
@@ -50,7 +51,8 @@ no-auto-restart subset을 PASS했다. S0-B `JESTOP.3 <-> JESTOP.4` contact truth
 
 | Date | File | Summary |
 | --- | --- | --- |
-| 2026-09-07 | [`2026-09-07_progress.md`](2026-09-07_progress.md) | Session/documentation 복원, K2 실측 근거와 현재 artifact 식별값 정정, 29/29 PASS; 하드웨어 상태는 9/5 PARTIAL 유지 |
+| 2026-09-08 | [`2026-09-08_progress.md`](2026-09-08_progress.md) | K2/S0 wire-break, XL4015 #1 dual-board power, #2 AUX path와 conditioned sense 0.06/3.27 V 기능 subset PASS; T004 firmware/PWM NOT RUN |
+| 2026-09-07 | [`2026-09-07_progress.md`](2026-09-07_progress.md) | Session/documentation 복원, host 29/29 PASS, K2 VeroRoute/PDF Label 정정 확인 및 R02/R03 재측정 low-Ω PASS; 전체 E-stop PARTIAL |
 | 2026-09-05 | [`2026-09-05_progress.md`](2026-09-05_progress.md) | K2 bottom-view/polarity as-built correction 뒤 12.24 V control-only K2/K1/S2/S0/S1 nominal subset와 S0-B contact truth table PASS; MDD10A B+ disconnected, wire-break/T003/full rail gate OPEN |
 | 2026-09-03 | [`2026-09-03_progress.md`](2026-09-03_progress.md) | RevC 무전원 검사 IN PROGRESS; rail 0 V와 U1 방향/forward `0.918 V`/reverse-open PASS, 나머지 local continuity/isolation OPEN |
 | 2026-09-01 | [`2026-09-01_progress.md`](2026-09-01_progress.md) | RevC E-stop VeroRoute FINAL과 component/solder mirror PDF 고정; R14/U1/K2/D2/JESTOP 및 세 배선 구간 user-reported partial solder, 무전원 실물 continuity/isolation OPEN |

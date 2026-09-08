@@ -44,9 +44,10 @@ Last updated: 2026-09-05
 -> P-04B REASON/AGE + RESET HARNESS: STM TEL과 ESP strict parser/log에 `reason/command_age_ms`를 연결, no-CMD sentinel·accepted-CMD age reset·500 ms `CMD_TIMEOUT`·direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED` UART subset PASS; default-off reset harness의 source/static·ESP isolated build는 PASS했지만 active reset reject/released reset success board runtime과 최종 hook-0 target reflash/runtime restore는 OPEN
 -> ESTOP ASSEMBLY: RevC 납땜과 local 무전원 검사, 18 AWG 6P(`1-2=S0-A`, `3-4=S0-B`, `5-6=S2`) 압착/락킹/도통, K1 18 AWG coil+14 AWG `30/87` 및 `85-86` P6KE 조립을 operator-reported PASS. K1 coil은 조립 상태 `91~92.4 ohm`
 -> K2 CORRECTIVE ACTION: TX2 공식 회로도의 BOTTOM VIEW를 부품면에 그대로 적용해 coil `1(+)/12(-)`가 뒤집힌 오류를 발견했다. 실제 부품면 pin 1/pin 12 배선을 수정한 뒤 S2 pickup/self-hold, K1 enable, S0 dropout, S0 release와 S1 OFF->ON no-auto-restart를 12.24 V control-only 조건에서 PASS
--> CURRENT BOUNDARY: MDD10A B+와 motor는 분리·절연돼 있었다. Powered VO617A/PC7 `ESTOP_SENSE`, firmware/PWM 결합, direct downstream rail, load/thermal/transient와 actual motor stop은 OPEN이며 전체 Physical E-stop/`T-ESTOP-005A` PASS가 아님
+-> 2026-09-08 POWER/SENSE: XL4015 #1 dual-2P NUCLEO/ESP32 단독·동시 power와 #2 J3 5.08 V, conditioned `ESTOP_SENSE` released 0.06 V/pressed·wire-open 3.27 V 기능 subset PASS
+-> CURRENT BOUNDARY: MDD10A B+와 motor는 계속 분리됐다. Firmware/PWM 결합, direct downstream rail, load/thermal/transient와 actual motor stop은 OPEN이며 전체 Physical E-stop/`T-ESTOP-005A` PASS가 아님
 -> DIGITAL ERRATUM: RevC FINAL/PDF는 K2 coil polarity rework 전 historical checkpoint다. WIP/FINAL/PDF hash도 서로 달라 새 corrected as-built revision/export/hash 전까지 재제작 기준으로 사용하지 않음
--> NOW: 남은 integrated sense-wire-open/독립성 기록 -> `T-ESTOP-003` VO617A/PC7 LOW-HIGH/open -> `T-ESTOP-004` conditioned firmware/PWM latch -> motor-disconnected direct-rail `T-ESTOP-005A` -> 모든 MVP gate 뒤 lifted/no-load와 `T-ESTOP-007`
+-> NOW: `T-ESTOP-004` conditioned firmware/PWM latch -> motor-disconnected direct-rail `T-ESTOP-005A` -> 모든 MVP gate 뒤 lifted/no-load와 `T-ESTOP-007`
 -> POST-MVP: `FM-ESTOP-014/T-ESTOP-005B` single-fault extension and dual-rail/precision transient `T-ESTOP-006`
 ```
 
@@ -101,7 +102,7 @@ tracked chassis hole-pattern DWG import
 
 ## Current Architecture Status
 
-2026-09-05 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
+2026-09-08 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
 
 - STM32가 motor output, command timeout, safety gate의 최종 authority다.
 - 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
@@ -122,7 +123,7 @@ tracked chassis hole-pattern DWG import
 - 업체 최소 타공 조건을 반영한 PC 3T 수정본은 존재하고, 제작품은 `USER-REPORTED RECEIVED`다.
   Exact source-to-part identity와 제작품 fit은 pending이다.
 - KiCad RevA functional wiring draft와 dated ERC/PDF evidence를 `09_Electrical_Design`에 보존했다. 이 baseline은 PCB 또는 영구 배선 release가 아니다.
-- Physical E-stop RevC perfboard, 18 AWG 6P switch harness와 K1 socket harness는 조립됐다. TX2 K2의 bottom-view/component-side pin 해석으로 생긴 coil polarity 오류를 실제 배선에서 수정한 뒤, 12.24 V motor-disconnected control-only 조건의 S2 self-hold, K1 enable, S0 dropout과 no-auto-restart가 통과했다. Frozen RevC digital file은 이 rework의 as-built 정본이 아니며, conditioned PC7와 downstream motor rail/actual motor evidence가 남아 전체 E-stop은 `PARTIAL`이다.
+- Physical E-stop RevC perfboard, 18 AWG 6P switch harness와 K1 socket harness는 조립됐다. TX2 K2의 bottom-view/component-side pin 오류 수정 뒤 control-only latch/dropout/no-restart, S0-A/S0-B wire-open independence, XL4015 #1 dual-board power와 #2 conditioned PC7 LOW/HIGH/open 기능 subset이 통과했다. Frozen RevC digital file은 rework의 as-built 정본이 아니며 firmware/PWM, downstream motor rail과 actual motor evidence가 남아 전체 E-stop은 `PARTIAL`이다.
 - Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3이며 production CPS는 전진 양수다. MDD10A powered channel 1/2의 실제 좌우 대응은 아직 미확정이다.
 - Dual PWM frequency/duty와 direction-change settle, active DISARM 23.50 us, timeout shutdown,
   software-fault next-pulse/latch와 signal별 `10 kΩ` pull-down 적용 external-reset LOW는
