@@ -3,8 +3,9 @@
 ## 목적
 
 이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조
-컨트롤러 사이의 첫 통신 계약을 정의한다. 초기 실습에서는 PC serial terminal
-또는 Python script도 ESP32와 같은 command source로 취급한다.
+컨트롤러 사이의 통신 계약을 정의한다. Final MVP production external command ingress는
+ESP32-S3 하나다. PC serial terminal/Python script는 역사적 bench source로만 STM32
+USART2를 사용했으며, optional interactive control은 `PC -> ESP32 -> STM32`로 전달한다.
 
 목표는 첫 궤도형 drivetrain MVP에 맞게 안전하고, 테스트 가능하고, 단순한
 interface를 만드는 것이다.
@@ -20,8 +21,9 @@ MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 초기 결정:
 
 - 물리 interface: 3.3 V UART
-- STM32 후보 peripheral: USART1
-- STM32 후보 pin: PA9/PA10
+- STM32 peripheral: USART1
+- STM32 pin: PA9/PA10
+- ESP32 UART1 pin: GPIO17/GPIO18
 - Frame format: 115200 baud, 8 data bits, no parity, 1 stop bit
 - 초기 protocol: newline으로 끝나는 ASCII text message
 - 초기 command timeout: 300 ms
@@ -43,26 +45,28 @@ MDD10A PWM/DIR 출력은 STM32가 계속 소유한다.
 
 ## MVP Rule Set
 
-이 섹션은 PC 또는 ESP32 제어부와 STM32 구동부 사이의 첫 UART MVP에서 반드시
-지켜야 할 규칙이다.
+이 섹션은 ESP32 production ingress와 STM32 구동부 사이에서 반드시 지켜야 할 규칙이다.
+PC-first bench 실습은 동일 application frame의 검증 이력이지 별도 production owner가 아니다.
 
 ### 역할
 
 ```text
-PC/ESP32 = command source, logger, dashboard
-STM32    = parser, safety gate, drivetrain authority
+ESP32 = production command ingress + STM32 bridge; optional PC arbitration/logger/dashboard pending
+STM32 = parser, safety gate, drivetrain authority
+PC    = optional ESP32 upstream client 또는 historical bench source
 ```
 
 규칙:
 
-- PC와 ESP32는 같은 application frame을 사용한다.
-- PC는 첫 실습에서 ESP32를 대체하는 test source로 사용할 수 있다.
+- Historical PC bench tool과 ESP32는 같은 application frame을 사용한다.
+- Direct PC/ESP32 dual ownership은 허용하지 않는다.
+- PC interactive control을 구현할 경우 ESP32가 단일 session/sequence owner로 중재한 뒤 전달한다.
 - ESP32, PC, Wi-Fi, dashboard는 motor output을 직접 소유하지 않는다.
 - STM32만 MDD10A PWM/DIR output과 command timeout을 최종 결정한다.
 
 ### MVP link
 
-초기 PC 실습:
+Historical PC-first bench path — production motion ingress 아님:
 
 ```text
 PC serial terminal / Python script
@@ -70,14 +74,15 @@ PC serial terminal / Python script
 <-> STM32 USART2 후보 PA2/PA3
 ```
 
-초기 ESP32 연동:
+Final MVP production link:
 
 ```text
-ESP32 UART
-<-> STM32 USART1 후보 PA9/PA10
+ESP32 UART1 GPIO17/GPIO18
+<-> STM32 USART1 PA9/PA10
 ```
 
-두 경우 모두 application protocol은 동일하게 유지한다.
+두 경로의 application frame은 동일하지만 동시에 STM32 command source로 연결하지 않는다.
+현재 STM32 firmware의 parser/RX는 `huart1`에만 연결되며 USART2는 encoder/debug logger다.
 
 ### MVP UART 설정
 
@@ -95,14 +100,15 @@ ESP32 UART
 
 | Direction | Frame | Purpose |
 | --- | --- | --- |
-| PC/ESP32 -> STM32 | `PING,seq=<u32>` | Link 확인 |
-| STM32 -> PC/ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link 응답 |
-| PC/ESP32 -> STM32 | `ARM,seq=<u32>` | Motion command 허용 요청 |
-| PC/ESP32 -> STM32 | `DISARM,seq=<u32>` | Motor output 차단 요청 |
-| PC/ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command 요청 |
-| STM32 -> PC/ESP32 | `ACK,seq=<u32>,type=<text>` | Command 수락 |
-| STM32 -> PC/ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command 거부 또는 parse error |
-| STM32 -> PC/ESP32 | `TEL,t_ms=<u32>,state=<text>,batt_mv=<u32>,left_cps=<i32>,right_cps=<i32>,left_pwm=<i32>,right_pwm=<i32>,fault=<u32>` | 주기 telemetry |
+| ESP32 -> STM32 | `PING,seq=<u32>` | Link 확인 |
+| STM32 -> ESP32 | `PONG,seq=<u32>,t_ms=<u32>` | Link 응답 |
+| ESP32 -> STM32 | `ARM,seq=<u32>` | Motion command 허용 요청 |
+| ESP32 -> STM32 | `DISARM,seq=<u32>` | Motor output 차단 요청 |
+| ESP32 -> STM32 | `ESTOP_RESET,seq=<u32>` | Physical input 복구 뒤 software E-stop latch 해제 요청 |
+| ESP32 -> STM32 | `CMD,seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,timeout_ms=<u32>` | Motion command 요청 |
+| STM32 -> ESP32 | `ACK,seq=<u32>,type=<text>` | Command 수락 |
+| STM32 -> ESP32 | `ERR,seq=<u32>,type=<text>,code=<text>` | Command 거부 또는 parse error |
+| STM32 -> ESP32 | `TEL,t_ms=<u32>,state=<text>,reason=<text>,command_age_ms=<u32>,last_seq=<u32>,vx_mmps=<i32>,w_mradps=<i32>,left_pwm=<i32>,right_pwm=<i32>,left_cps=<i32>,right_cps=<i32>,batt_mv=<u32>,drop=<u32>,err=<u32>` | 주기 telemetry |
 
 `NACK` frame은 첫 MVP에서 별도로 만들지 않는다. 거부 응답은 `ERR`로 통일한다.
 
@@ -122,13 +128,64 @@ ESP32 UART
 
 - UART RX ISR은 byte를 ring buffer에 넣고 즉시 빠져나온다.
 - Parser는 main loop 또는 task context에서 `\n` 기준으로 frame을 조립한다.
-- 너무 긴 frame은 버리고 parse error count를 증가시킨다.
-- 알 수 없는 frame type은 `ERR,code=UNKNOWN_TYPE` 또는 ignore 중 하나로 처리한다.
+- 너무 긴 frame 또는 LF 앞의 embedded control/CR을 발견하면 parse error count를 한 번 증가시키고 다음 LF까지 frame 전체를 버린다. Overflow tail을 새 frame으로 재해석하면 안 된다.
+- Field key는 comma로 나뉘 token의 시작 지점에서 정확히 일치해야 한다.
+- Startup 응답에 필요한 동일 field key가 두 번 나오면 ambiguous frame으로 거부한다.
+- Integer field는 최소 한 자리의 숫자를 포함하고 comma 또는 frame 끝에서
+  종료되어야 한다.
+- `uint32_t`/`int32_t` 범위를 넘는 숫자는 parse failure로 처리한다.
+- 알 수 없거나 지원하지 않는 frame type은 `ERR,code=BAD_TYPE`으로 거부한다.
 - `CMD`의 required field가 없으면 `ERR,code=MISSING_FIELD`를 보낸다.
-- 숫자 변환 실패는 `ERR,code=BAD_VALUE`로 처리한다.
+- 숫자 변환 실패 또는 field 순서/추가 데이터 오류는 `ERR,code=MISSING_FIELD`로 처리한다.
 - 범위 초과는 `ERR,code=OUT_OF_RANGE`로 처리한다.
 - `DISARMED` 상태에서 nonzero `CMD`는 `ERR,code=NOT_ARMED`로 거부한다.
 - Invalid `CMD`는 현재 active command를 바꾸면 안 된다.
+
+Startup gate에 사용하는 response parser의 추가 규칙:
+
+- `PONG` response는 `PONG,`으로 시작하고 exact `seq` field parsing에
+  성공해야 valid event다.
+- `ACK` response는 `ACK,`으로 시작하고 exact `seq`, `type` field parsing에
+  모두 성공해야 valid event다.
+- `badseq=1`, `badtype=DISARM`, `seq=1x` 같은 substring 또는 미완성 값을
+  정상 field로 오인하면 안 된다.
+- `ACK,seq=7,seq=7,type=DISARM` 같은 duplicate required field와 trailing comma를 정상 응답으로 인정하면 안 된다.
+- 정상 line ending은 LF 또는 terminal CRLF이며 frame 중간의 CR/NUL/control byte는 해당 frame 전체를 무효화한다.
+
+### MVP startup synchronization rule
+
+ESP32는 STM32가 준비되었다고 시간만으로 가정하지 않는다. 부팅 중
+다음 response-gated sequence를 사용한다.
+
+```text
+SETTLE 500 ms
+-> line sync LF
+-> SYNC_WAIT 100 ms
+-> RX input/assembler reset
+-> DISARM,seq=S                 # S는 매 부팅 esp_random()으로 생성
+-> matching ACK,seq=S,type=DISARM
+-> PING,seq=S+1
+-> matching PONG,seq=S+1
+-> READY
+```
+
+계약:
+
+- `DISARM` 및 `PING` response timeout은 각각 500 ms다.
+- 각 요청은 첫 송신을 포함해 최대 3회 시도한다.
+- `ACK`는 `WAIT_DISARM_ACK` 상태에서만 latch하며 `valid && seq == S && type == DISARM`을 모두 만족해야 한다.
+- `PONG`은 `WAIT_PONG` 상태에서만 latch하며 `valid && seq == S+1`을 만족해야 한다.
+- Mismatched, malformed, stale response는 다음 상태로 이동시키지 않는다.
+- Startup TX 또는 RX input flush가 실패하면 재시도를 성공으로 간주하지 않고 즉시 `FAILED`로 닫는다.
+- 시도를 소진하면 `FAILED`에 머물고 자동 motion sequence를 실행하지
+  않는다.
+- Startup FSM은 `DISARM`, `PING`만 송신하며 `ARM`, `CMD`를 송신하지
+  않는다.
+
+`BRIDGE_SCRIPTED_TEST_ENABLED == 0U`여도 위 startup `DISARM/PING`은 수행한다.
+이 매크로가 금지하는 것은 `ARM/CMD`를 포함한 controlled-bench motion
+script다. 매크로를 활성화해도 startup이 `READY`가 아니면 script는
+시작할 수 없다.
 
 ### MVP safety and timeout rule
 
@@ -144,25 +201,42 @@ PWM output -> 0
 - `CMD`가 20 Hz 정도로 반복해서 들어오는 동안에만 active command를 유지한다.
 - 멈춰 있는 상태도 `CMD,seq=N,vx_mmps=0,w_mradps=0,timeout_ms=300`처럼 zero command를 반복한다.
 - valid `CMD`가 `timeout_ms` 안에 새로 들어오지 않으면 STM32는 즉시 motor output을 0으로 만든다.
-- Timeout 직후에는 바로 `DISARMED`로 내리지 않고, 우선 `ARMED` 상태에서 output zero를 유지하는 방향으로 둔다.
-- 추가 idle 시간이 지나도 valid command가 없으면 `DISARMED`로 전환하는 auto-disarm 정책은 MVP 확정 필요 항목으로 남긴다.
+- 같은 timeout 처리에서 stored command를 zero로 만들고 state를 `DISARMED`로 전환한다.
+- 재동작에는 timeout 뒤 수락된 `ARM`과 그 이후의 valid `CMD`가 모두 필요하다. Timeout
+  이전 stored command를 자동 복원하지 않으며, `DISARMED`인 동안 수신한 `CMD`는 거부한다.
+
+위 항목은 ADR-015에서 확정한 required behavior다. P-03A/P-03B source는 RX byte 처리 전에
+timeout을 검사해 output/stored command를 zero로 만들고 `DISARMED`로 전환한다. `ARM` 수락 시
+default 300 ms와 current tick으로 first-CMD window도 다시 시작한다. Source/static/full-build와
+motor/LiPo-disconnected 300/500 ms target runtime 및 safe restore가 PASS했다.
+P-03에는 sequence 단조 증가 검사, session freshness, RX queue purge 또는 암호학적
+anti-replay가 없다. 따라서 queue에 남았거나 replay된 `ARM` + `CMD` 쌍의 차단은 입증 범위가 아니다.
 
 Timeout은 새 command frame이 들어와서 거부되는 상황이 아니므로 `ERR` 응답 대상이 아니다.
-대신 `TEL`의 `state`, `left_pwm`, `right_pwm`, `fault` 또는 추후 `warn` field로 관찰한다.
+P-04A에서 software-applied PWM telemetry를 연결했고 P-04B에서 `reason=CMD_TIMEOUT`과 마지막
+accepted CMD 기준 `command_age_ms`를 추가했다. Timeout 뒤에도 age는 계속 증가한다.
 
 ### MVP telemetry rule
 
 첫 MVP telemetry는 다음 field를 유지한다.
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pwm=0,fault=0\n
+TEL,t_ms=123456,state=ARMED,reason=NONE,command_age_ms=85,last_seq=20,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0\n
 ```
 
 규칙:
 
-- `state`는 최소 `BOOT`, `DISARMED`, `ARMED`, `FAULT`를 사용한다.
+- 현재 `state`는 `DISARMED`, `ARMED`, `FAULT`를 사용한다. Boot phase는
+  `state=DISARMED,reason=BOOT`로 표현한다.
+- `reason`은 현재 diagnostic marker이며
+  `BOOT/NONE/DISARM/CMD_TIMEOUT/ESTOP_ACTIVE/ESTOP_LATCHED/ESTOP_RESET/OUTPUT_ERROR`를 사용한다.
+- `command_age_ms=4294967295`는 boot 뒤 accepted CMD가 없다는 sentinel이다. Successful CMD
+  commit에서만 reset되고 ARM, rejected CMD, DISARM과 E-stop은 reset하지 않는다.
 - PC-only parser 실습에서는 `batt_mv`, `left_cps`, `right_cps`를 0으로 보낼 수 있다.
-- Motor power가 없는 UART 실습에서는 `left_pwm`, `right_pwm`도 0으로 유지한다.
+- `left_pwm/right_pwm`는 motor-output 계층이 마지막으로 성공 적용한 software cache를 signed
+  permille로 보고한다. `50`은 50 permille, 즉 5% duty target이다.
+- stop/DISARM/timeout/error 경로는 applied fields를 `0/0`으로 만든다.
+- 이 값은 measured PWM feedback, MDD10A output 또는 motor motion이 아니다.
 - Telemetry는 safety 판단을 대신하지 않는다. Safety 판단은 STM32 내부 state machine이 수행한다.
 - Telemetry rate 초기값은 10 Hz다.
 
@@ -176,7 +250,12 @@ TEL,t_ms=123456,state=ARMED,batt_mv=0,left_cps=0,right_cps=0,left_pwm=0,right_pw
 - missing field `CMD` -> `ERR,code=MISSING_FIELD`
 - out-of-range `CMD` -> `ERR,code=OUT_OF_RANGE`
 - `DISARMED` 상태 nonzero `CMD` -> `ERR,code=NOT_ARMED`
-- command timeout 후 `TEL`에서 output zero 확인
+- command timeout 후 `TEL`에서 `DISARMED`, stored `vx/w=0`과 applied PWM `0/0` 확인
+- command timeout에서 `reason=CMD_TIMEOUT`, age가 timeout 이상이며 이후에도 증가하는지 확인
+- direct-PC7 active/release에서 `ESTOP_ACTIVE -> ESTOP_LATCHED`와 PWM `0/0` 확인
+- active reset 거부는 `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`와 유지된
+  `TEL reason=ESTOP_ACTIVE`를 함께 확인
+- accepted forward CMD에서 `left_pwm=50,right_pwm=50`, ARM-only에서는 `0/0` 확인
 - `DISARM` -> `ACK` 및 이후 `TEL,state=DISARMED`
 
 ## 출처
@@ -201,7 +280,7 @@ UART link는 역할이 다른 두 컨트롤러를 연결한다.
 | Battery voltage safety | 소유 | Telemetry 표시 |
 | Command timeout | 소유 | 요청 timeout 값만 전달 |
 | Wireless dashboard | 소유하지 않음 | 소유 |
-| Wi-Fi command source | 필터링된 요청 수신 | UI와 forwarding 담당 |
+| Wi-Fi command source | 필터링된 요청 수신 | 구현 시 UI와 forwarding 소유 |
 | Telemetry formatting | 핵심 telemetry 제공 | 표시/기록/전달 |
 | Emergency stop request | 수신 후 강제 | 요청 가능 |
 | 최종 safety decision | 소유 | 소유하지 않음 |
@@ -215,11 +294,11 @@ STM32는 motion 허용 여부를 결정한다.
 
 ## 2. 물리 배선
 
-후보 배선:
+현재 검증 배선:
 
 ```text
-STM32 PA9  / USART1_TX -> ESP32 UART_RX
-STM32 PA10 / USART1_RX <- ESP32 UART_TX
+STM32 PA9  / USART1_TX -> ESP32 GPIO18 / UART1_RX
+STM32 PA10 / USART1_RX <- ESP32 GPIO17 / UART1_TX
 STM32 GND              <-> ESP32 GND
 ```
 
@@ -231,14 +310,16 @@ STM32 GND              <-> ESP32 GND
 - UART wire는 모터 전원선과 떨어뜨린다.
 - 모터 전원을 연결하기 전에 UART를 먼저 테스트한다.
 
-현재 pin allocation 문서 기준 STM32 후보 pin:
+현재 pin allocation 및 bench link 기준:
 
 | Signal | STM32 pin | Function | Board access | Status |
 | --- | --- | --- | --- | --- |
-| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
-| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
+| STM32 to ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Bench tested |
+| ESP32 to STM32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Bench tested |
 
-ESP32-S3 pin assignment는 이 문서에서 최종 확정하지 않는다.
+ESP32-S3 DevKitC-1은 현재 펌웨어와 bench 검증에서 GPIO17 TX, GPIO18 RX를
+사용한다. 영구 배선 제작 전에는 보드 revision, connector 방향, 다른 신호와의
+충돌을 다시 확인한다.
 
 ESP32 pin 선택 규칙:
 
@@ -246,8 +327,8 @@ ESP32 pin 선택 규칙:
 - USB Serial/JTAG pin은 피한다.
 - 보드 매뉴얼에서 안전하다고 확인되지 않은 BOOT/strapping-sensitive pin은 피한다.
 - 현재 프로젝트 테스트에서 RGB LED로 확인된 GPIO38은 피한다.
-- 정확한 DevKitC-1 보드 pinout과 ESP-IDF UART mapping을 확인한 뒤 최종 ESP32 pin
-  번호를 기록한다.
+- 현재 GPIO17/18 mapping을 유지하되, 영구 harness 제작 전 DevKitC-1
+  board revision과 connector 접근성을 다시 확인한다.
 
 ## 3. 전기적 규칙
 
@@ -386,6 +467,29 @@ DISARM,seq=44\n
 - Frame이 valid라면 `DISARM`은 항상 accept하는 방향으로 구현한다.
 - Disarm 이후 PWM output은 0이 되고 nonzero motor command는 차단된다.
 
+### ESTOP_RESET
+
+`ESTOP_RESET`은 physical E-stop input이 healthy로 복구된 뒤 software latch 해제를 요청한다.
+
+예:
+
+```text
+ESTOP_RESET,seq=45\n
+```
+
+규칙:
+
+- STM32는 reset 판정 전에 stored command와 motor output을 0으로 강제한다.
+- E-stop input이 아직 active면 `ERR,seq=45,type=ESTOP_RESET,code=ESTOP_ACTIVE`를 반환한다.
+  Latch를 해제하거나 별도 persistent reset-rejected reason을 만들지 않으며, TEL은
+  `state=FAULT,reason=ESTOP_ACTIVE`를 유지한다.
+- Input이 healthy면 software latch를 해제하고 `DISARMED`로 전환하며
+  `reason=ESTOP_RESET`을 설정한 뒤 `ACK,seq=45,type=ESTOP_RESET`을 반환한다.
+- 성공한 reset은 robot을 arm하거나 이전 command를 복원하지 않는다. Motion에는 새로 수락된
+  `ARM` 뒤 valid `CMD`가 필요하다.
+
+새 TEL schema에서 active-reject와 released-success runtime vector는 P-04B의 OPEN 항목이다.
+
 ### PING
 
 `PING`은 link가 살아 있는지 확인한다.
@@ -393,13 +497,13 @@ DISARM,seq=44\n
 예:
 
 ```text
-PING,seq=45\n
+PING,seq=46\n
 ```
 
 STM32 response:
 
 ```text
-PONG,seq=45,uptime_ms=123456\n
+PONG,seq=46,t_ms=123456\n
 ```
 
 ## 7. Telemetry Message
@@ -411,30 +515,50 @@ PONG,seq=45,uptime_ms=123456\n
 예:
 
 ```text
-TEL,t_ms=123456,state=ARMED,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=415,fault=0\n
+TEL,t_ms=123456,state=ARMED,reason=NONE,command_age_ms=80,last_seq=42,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=120,right_cps=118,batt_mv=0,drop=0,err=0\n
 ```
 
-추천 초기 telemetry fields:
+현재 telemetry fields:
 
 | Field | Unit | Meaning |
 | --- | --- | --- |
 | `t_ms` | ms | STM32 uptime |
-| `batt_mv` | mV | ADC 변환 후 측정한 battery voltage |
+| `state` | text | `DISARMED`, `ARMED`, `FAULT` safety state |
+| `reason` | text | 현재 diagnostic marker; timeout/E-stop active/latch/reset 등을 구분 |
+| `command_age_ms` | ms/u32 | 마지막 accepted CMD 이후 경과 시간; `UINT32_MAX`는 accepted CMD 없음 |
+| `last_seq` | u32 | 현재 protocol 동작이 마지막으로 기록한 sequence; age source 아님 |
+| `vx_mmps` | mm/s | 저장된 linear command request; stop path에서는 0 |
+| `w_mradps` | mrad/s | 저장된 angular command request; stop path에서는 0 |
+| `left_pwm` | signed permille | 왼쪽 software-applied motor target; measured feedback 아님 |
+| `right_pwm` | signed permille | 오른쪽 software-applied motor target; measured feedback 아님 |
 | `left_cps` | counts/s | 왼쪽 encoder count rate |
 | `right_cps` | counts/s | 오른쪽 encoder count rate |
-| `left_mmps` | mm/s | Calibration 후 선택 가능한 왼쪽 track speed estimate |
-| `right_mmps` | mm/s | Calibration 후 선택 가능한 오른쪽 track speed estimate |
-| `left_pwm` | timer counts 또는 percent-scaled value | 왼쪽 motor command output |
-| `right_pwm` | timer counts 또는 percent-scaled value | 오른쪽 motor command output |
-| `state` | text | `BOOT`, `DISARMED`, `ARMED`, `FAULT` 같은 safety state |
-| `motor_out` | 0/1 | STM32 safety gate가 motor output을 허용하는지 여부. MVP에서는 optional |
-| `fault` | bitmask | Active fault flags |
+| `batt_mv` | mV | P-04B에서는 placeholder `0`; actual ADC source는 P-05 |
+| `drop` | count | STM32 RX ring-buffer dropped-byte 누적값 |
+| `err` | count | STM32 protocol error 누적값 |
 
 ESP32 dashboard parsing이 시작된 뒤에는 telemetry field를 안정적으로 유지한다.
 
+현재 `reason` 값:
+
+| Value | Meaning |
+| --- | --- |
+| `BOOT` | 현재 state는 `DISARMED`이며 아직 state-changing request가 수락되지 않은 초기 marker |
+| `NONE` | Active software stop reason 없음 |
+| `DISARM` | Valid `DISARM` 수락 |
+| `CMD_TIMEOUT` | Accepted-CMD timeout 또는 ARM first-CMD window 만료 |
+| `ESTOP_ACTIVE` | E-stop input active HIGH/open-fault |
+| `ESTOP_LATCHED` | Input은 복구됐지만 software latch 유지 |
+| `ESTOP_RESET` | Healthy input에서 explicit reset 수락 |
+| `OUTPUT_ERROR` | Mapper 또는 motor-output 적용 실패 뒤 output zero |
+
+Active reset 거부는 별도 persistent reason이 아니라 `ERR` event이며 TEL reason은
+`ESTOP_ACTIVE`를 유지한다.
+
 ### STATE
 
-`STATE`는 high-level controller state change를 보고한다.
+`STATE`는 미래 event-frame 후보다. 현재 MVP firmware는 별도 `STATE` frame을 보내지 않고
+주기 `TEL`의 `state/reason`으로 상태를 보고한다.
 
 예:
 
@@ -442,18 +566,21 @@ ESP32 dashboard parsing이 시작된 뒤에는 telemetry field를 안정적으�
 STATE,t_ms=123500,state=DISARMED,reason=BOOT\n
 ```
 
-Candidate states:
+후보 high-level state names:
 
 - `BOOT`
 - `DISARMED`
 - `ARMED`
 - `FAULT`
 - `LOW_BATTERY`
-- `TIMEOUT_STOP`
+
+Command timeout은 `state=DISARMED,reason=CMD_TIMEOUT`, zero stored command와 PWM `0/0`으로
+관찰한다. ADR-015는 별도 `TIMEOUT_STOP` state를 정의하지 않는다.
 
 ### FAULT
 
-`FAULT`는 fault event를 보고한다.
+`FAULT`는 미래 event-frame 후보다. 현재 MVP firmware는 별도 `FAULT` frame을 보내지 않고
+주기 `TEL`의 state와 reason으로 fault를 보고한다.
 
 예:
 
@@ -483,15 +610,16 @@ ERR,seq=42,type=CMD,code=NOT_ARMED\n
 
 | Code | Meaning |
 | --- | --- |
-| `BAD_FRAME` | Message parsing 실패 |
-| `UNKNOWN_TYPE` | 지원하지 않는 frame type |
+| `MISSING_SEQ` | `seq` 누락 또는 invalid `seq` |
 | `MISSING_FIELD` | Required field 누락 |
-| `BAD_VALUE` | 숫자 변환 실패 또는 field 값 문법 오류 |
+| `BAD_TYPE` | 비어 있거나 지원하지 않는 frame type |
 | `OUT_OF_RANGE` | Field가 허용 범위 밖 |
+| `TIMEOUT_OUT_OF_RANGE` | 요청 timeout이 `50~500 ms` 밖 |
 | `NOT_ARMED` | Robot이 disarmed 상태라 motion command 거부 |
-| `LOW_BATTERY` | Battery safety로 motion command 거부 |
-| `FAULT_ACTIVE` | Fault state active |
-| `TIMEOUT_TOO_LONG` | 요청 timeout이 STM32 제한보다 큼 |
+| `ESTOP_LATCHED` | E-stop latch 때문에 `ARM` 또는 `CMD` 거부 |
+| `ESTOP_ACTIVE` | Physical E-stop input active 상태라 `ESTOP_RESET` 거부 |
+| `MAPPER_FAILED` | Drive command mapper가 output request 생성에 실패 |
+| `MOTOR_OUTPUT_FAILED` | Motor-output 적용 또는 검증 실패 |
 
 최소 안전 동작:
 
@@ -511,6 +639,10 @@ ERR,seq=42,type=CMD,code=NOT_ARMED\n
 | Command timeout | 300 ms |
 | PING interval | Idle 상태에서 1 s |
 | Startup motor-disabled delay | STM32가 정의 |
+| ESP32 startup settle | 500 ms |
+| ESP32 line-sync wait | 100 ms |
+| Startup response timeout | `DISARM`, `PING` 각 500 ms |
+| Startup maximum attempts | 각 request당 3회, 첫 송신 포함 |
 
 규칙:
 
@@ -539,6 +671,11 @@ ESP32가 강제해야 하는 것:
 - STM32 fault 또는 reset 이후 자동 re-arm하지 않는다.
 - UI command source가 끊기면 `CMD` 전송을 중단한다.
 - 사용자가 stop을 누르면 `DISARM`을 보낸다.
+- 부팅 중 matching `DISARM ACK`를 받기 전에 `PING` 단계로 진행하지 않는다.
+- Matching `PONG`을 받기 전에 startup `READY`를 선언하지 않는다.
+- Startup 실패를 `ARM`/`CMD` 자동 송신으로 복구하지 않는다.
+- Motion bench script는 compile-time default-off와 startup `READY` 두 gate를 모두
+  통과해야만 실행한다.
 
 공통 규칙:
 
@@ -558,11 +695,13 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 
 ### Stage 2: 모터 전원 없는 Cross-Board Link
 
-- STM32 PA9를 ESP32 RX에 연결한다.
-- ESP32 TX를 STM32 PA10에 연결한다.
+- STM32 PA9를 ESP32 GPIO18 RX에 연결한다.
+- ESP32 GPIO17 TX를 STM32 PA10에 연결한다.
 - Common GND를 연결한다.
 - Motor battery는 연결하지 않는다.
-- `PING`을 보내고 `PONG`을 확인한다.
+- `DISARM -> ACK -> PING -> PONG -> READY` 순서를 확인한다.
+- 응답 누락과 mismatched response 주입 시 `FAILED`에 머물고 `ARM/CMD`가
+  없음을 확인한다.
 
 ### Stage 3: Telemetry Only
 
@@ -589,7 +728,67 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 - ESP32가 UI에서 low-speed command request를 보낸다.
 - STM32는 계속 최종 safety gate로 남는다.
 
-## 12. Logging과 Debugging
+## 12. 현재 구현 및 검증 상태
+
+2026-08-06 현재 구현·runtime과 source 상태:
+
+| 항목 | 결과 | 판정 범위 |
+| --- | --- | --- |
+| Response-gated startup FSM 구현 | DONE | settle, sync, DISARM ACK, PONG, READY/FAILED 경로 |
+| Exact frame/parser hardening | DONE | exact prefix, field boundary/duplicate, integer terminator/overflow, overlong/control frame discard |
+| 2026-08-03 safe-source preflight | **15/15 PASS** | 당시 정적 source/configuration contract + 기존 host parser test |
+| 2026-08-03 ESP-IDF build | **PASS** | binary `0x2b210`, smallest app partition `83%` free; board identity 증거 아님 |
+| Gate A startup runtime | **PASS — behavior** | exact DISARM ACK/PONG 뒤 READY, ARM/CMD 없음 |
+| Gate B bounded failure | **PASS** | DISARM ACK 및 PONG loss 각각 3회 뒤 FAILED |
+| Stale response/reset recovery | **PASS — executed vectors** | stale ACK/PONG seq 무시, controlled reset 뒤 새 startup |
+| T-BRIDGE-007 wrong-response runtime | **PASS — required UART behavior** | stale seq 거부에 더해 matching seq의 `type=ARM` ACK를 무시하고 정확히 500 ms 뒤 동일 DISARM seq 재시도; exact DISARM ACK/PONG 뒤에만 READY, TEL 97/97 `DISARMED/zero`, ARM/CMD TX 0 |
+| T-BRIDGE-008A ESP response parser recovery | **PARTIAL** | Duplicate required `seq`, trailing-comma와 required-`seq` uint32 overflow ACK를 각각 거부하고 정확히 500 ms 뒤 same-seq retry, exact ACK/PONG 뒤 READY — 세 subvector PASS; remaining vectors pending |
+| T-BRIDGE-008B STM32 command parser recovery | **NOT TESTED** | malformed PING/CMD/unknown command -> valid PING/PONG evidence 없음 |
+| Safe-source restore checkpoint (wrong-ACK 주입 전) | **PASS — source/static/build** | ESP script `0U/1000 ms`, STM UART output hook `0U`; contract `15/15 PASS`; isolated clean STM32/ESP32 build `PASS` (`20260804043010-26408-7918`) |
+| Earlier safe-image UART runtime | **PASS — behavior** | exact ACK/PONG/READY, READY 뒤 약 11.24 s, TEL 118/118 `DISARMED/zero/error 0`, ARM/CMD TX 0; image/setup provenance는 pending |
+| 2026-08-04 wrong-ACK controlled source | **HISTORICAL** | 당시 `UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED=1U`; required vector PASS 뒤 복구됨 |
+| T-BRIDGE-008A duplicate-seq controlled runtime | **PASS — subvector** | malformed ACK parse reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; TEL 150/150 safe, ARM/CMD/failure 0 |
+| Post-duplicate safe source/build/flash | **PASS — historical checkpoint** | 모든 hook `0U`; contract `15/15`; ELF SHA-256 `25885322BD28B19456498A37C14B87D039984A96F2E2EA30CC1764A36E086A2A`; flash verify PASS |
+| T-BRIDGE-008A trailing-comma controlled runtime | **PASS — subvector** | malformed field-list reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; TEL 150/150 safe, ARM/CMD/failure 0 |
+| Post-trailing-comma safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 exact ACK/PONG/READY, READY 뒤 15.51 s, TEL 160/160 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
+| T-BRIDGE-008A required-`seq` uint32 overflow controlled runtime | **PASS — subvector** | overflow parse reject 1회, 500 ms same-seq retry, first exact ACK count 1와 matching PONG 뒤 READY; post-READY TEL 140/140 safe, ARM/CMD/failure 0 |
+| Current post-test safe source/static/build/artifact/flash | **PASS** | ESP/STM 모든 controlled hook `0U`; contract `15/15`; restored protocol source recompile/link `0 errors / 0 warnings`; safe ELF SHA-256 `244DD5D31192591AA35866D7529FF7596D3A56CE87E0596F34BFFDBB459E5F6B`; controlled string absent from object/ELF/map/list; flash verify PASS |
+| Post-overflow safe-image regression | **PASS — behavior** | warning/retry/parser error 없이 exact ACK/PONG/READY, READY 뒤 14.43 s, post-READY TEL 145/145 `DISARMED/zero/error 0`, ARM/CMD/failure 0; exact runtime-to-ELF linkage와 physical setup provenance pending |
+
+2026-07-20 PING/PONG, telemetry relay와 scripted sequence는 역사적 baseline이다.
+새 response-gated runtime은 별도 raw log와
+[`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](../docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md)에
+기록했다. Earlier safe-image 동작 증거는
+[`2026-08-04_safe_image_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_safe_image_uart_runtime_regression_pass.txt),
+matching-seq/wrong-type 거부 증거는
+[`2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-04_response_gated_startup_wrong_disarm_ack_type_rejection_pass.txt)다.
+Pre-008A safe regression은
+[`2026-08-06_safe_image_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_safe_image_uart_runtime_regression_pass.txt)에 보존했다.
+Duplicate-required-`seq` controlled evidence와 post-test safe regression은 각각
+[`2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_duplicate_required_seq_ack_rejection_recovery_pass.txt),
+[`2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_post_t_bridge_008a_duplicate_seq_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Trailing-comma controlled evidence와 post-trailing safe regression은 각각
+[`2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-06_response_gated_startup_trailing_comma_ack_rejection_recovery_pass.txt),
+[`2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_trailing_comma_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Required-`seq` uint32-overflow controlled evidence와 current safe regression은 각각
+[`2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_response_gated_startup_required_seq_uint32_overflow_ack_rejection_recovery_pass.txt),
+[`2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt`](../assets/logs/esp32_uart_bridge/2026-08-07_post_t_bridge_008a_required_seq_uint32_overflow_safe_uart_runtime_regression_pass.txt)에 보존했다.
+Historical post-trailing safe full-build console은
+[`2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt`](../assets/logs/firmware_build/2026-08-07_post_t_bridge_008a_trailing_comma_safe_clean_build_pass.txt)에 보존했다.
+Current overflow controlled/safe build와 flash 요약은
+[`2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md`](../assets/logs/firmware_build/2026-08-07_t_bridge_008a_required_seq_uint32_overflow_ack_controlled_and_safe_build_flash.md)에 보존했다.
+이 raw log들은 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지 않으므로
+그 image/physical provenance는 작업자 확인 대기다.
+
+현재 revision의 verification gate는 다음과 같다.
+
+1. 완료된 T-BRIDGE-007, T-BRIDGE-008A duplicate-seq/trailing-comma/required-`seq` uint32-overflow와 post-test safe evidence를 보존
+2. T-BRIDGE-008A partial-frame-name response부터 invalid terminator/embedded-control, overlong-line/RX-line-buffer-overflow vectors를 닫는다.
+3. T-BRIDGE-008B STM32 malformed command fail-closed/recovery runtime을 닫는다.
+4. 각 controlled cycle 뒤 모든 hook `0U`, contract `15/15`, build/reflash와 safe runtime 회귀
+5. 다음 evidence부터 flash transcript/hash와 physical no-power setup metadata를 함께 보존
+
+## 13. Logging과 Debugging
 
 초기 개발 중에는 다음을 유지한다.
 
@@ -615,32 +814,52 @@ ESP32:
 - Last telemetry time
 - Wi-Fi client state
 - Last command sent
+- Startup state transition
+- `DISARM`/`PING` attempt number
+- Matching ACK/PONG 확인
+- Retry 소진 시 `FAILED` reason
 
-## 13. 열린 결정 사항
+## 14. 열린 결정 사항
 
-최종 배선 전에 답해야 할 항목:
+영구 배선과 후속 통합 전에 답해야 할 항목이다. Command owner, production UART와 timeout
+recovery 정책은 ADR-015로 닫혔으며 아래 목록의 열린 항목이 아니다.
 
-- PC-first 실습에서 사용할 UART: ST-LINK VCP USART2만 사용할지, 외부 USB-UART도 허용할지
-- 최종 ESP32-S3 UART GPIO pair
-- MDD10A PWM/DIR pin 확정 이후에도 STM32 USART1 PA9/PA10이 conflict-free인지
+- Optional `PC -> ESP32` forwarding을 구현할 경우 사용할 upstream transport와 arbitration 방식
+- 고정된 GPIO17/18 <-> PA9/PA10 link의 영구 harness connector, pinout, strain relief와
+  service-disconnect 상세
 - 실제 module에서 level shifting 또는 buffering이 필요한지
 - 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
-- Timeout 후 output zero 상태를 유지하다가 자동 `DISARMED`로 전환할 `auto_disarm_ms`
 - 최대 application frame length와 ring buffer size
-- Unknown frame type을 `ERR,code=UNKNOWN_TYPE`로 답할지 조용히 ignore할지
 - 최종 fault bitmask definition
 - Wi-Fi command forwarding 전에 checksum을 추가할지
+- Runtime에서 startup `FAILED` 후 수동 reset만 허용할지, 제한된 재시작
+  절차를 추가할지
 
 ## Architecture Decision
 
 첫 STM32-ESP32 link는 3.3 V UART interface와 text message를 사용한다.
 
-STM32가 모든 motor safety decision을 소유한다. ESP32-S3는 dashboard, command
-request source, telemetry bridge로 동작한다.
+Final MVP production path는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다.
+ESP32-S3가 유일한 external command ingress다. Optional PC forwarding/arbitration을 구현할
+경우 ESP32가 소유하고, USART2는 bench debug/encoder logger로만 사용한다. STM32가 모든
+motor safety decision을 소유한다.
+Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` + valid `CMD`
+순서다. 이는 state-machine recovery 계약이며 transport freshness/anti-replay 입증은 아니다.
 
-다음 실무 작업은 모터 전원 없이 양쪽 보드에서 UART를 검증하고, 이후 MDD10A PWM/DIR
-output, encoder, ADC, I2C, USART2 debug, USART1 ESP32 link가 공존하도록 STM32 pin
-allocation을 수정하는 것이다.
+Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current source의
+controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`, P-03 checkpoint는
+`26/26`, P-04A checkpoint는 `27/27`이다. P-04B reason/accepted-command age 단계의
+`28/28`도 historical checkpoint로 보존한다. 이후 default-off reset closeout harness가 추가되어
+current host/static은 firmware contract `25/25` + mapper vectors `2/2` + UART frame `2/2`, 합계
+`29/29 PASS`다. Controlled STM32 build는 0 errors/0 warnings와 ELF
+`text=29872`, `data=172`, `bss=2840`을 기록했다. Runtime에서 timeout age `485 -> 585`와
+direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`, 모든 FAULT PWM `0/0`을 확인했다. Active reset
+reject와 released reset success는 남아 있다. Pre-reset-harness all-hooks-`0U` 격리 STM32/ESP32
+build는 PASS했고, current `BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED=0U` harness의 source/static과
+ESP32 isolated build도 PASS했다. 그러나 harness-enabled board flash/runtime과 시험 뒤 all-hooks-`0U`
+target reflash/no-command runtime restore는 남아 P-04B 전체는 `PARTIAL`이다. 이는 software
+cache/UART 증거이며 measured PWM, exact artifact/setup linkage 또는 motor evidence가 아니다.
+다음 telemetry 작업은 P-04B closeout 뒤 P-05 battery다.
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

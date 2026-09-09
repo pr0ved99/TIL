@@ -147,7 +147,7 @@ cryptographic acceleration 같은 hardware security 기능을 제공한다.
 | Motor fail-safe | Primary | 보조만 가능 |
 | Battery low-voltage motor shutdown | Primary | Telemetry만 가능 |
 | IMU integration | Primary 후보 | Prototype 후보 |
-| PC serial command | 첫 primary path | 나중에 bridge 가능 |
+| External command ingress | 요청 검증·실행과 최종 safety authority | Final MVP production ingress owner; optional arbitration/forwarding planned |
 | Wireless control | 부적합 | Primary |
 | Web UI 또는 mobile UI | 부적합 | Primary |
 | Debug telemetry over Wi-Fi | 부적합 | Primary |
@@ -314,12 +314,23 @@ CMD,linear=0.10,angular=0.00,timeout_ms=300
 ESP32-S3는 이 프로젝트에서 support controller로 적합하다. 첫 low-level motor
 controller로 두는 것은 적절하지 않다.
 
-초기 역할:
+Final MVP 역할:
 
 - Wireless dashboard
-- UART bridge
+- Production external command ingress와 UART bridge
 - IMU/sensor prototype platform
 - UI 및 개발 편의 controller
+
+고정된 production 경로는 다음과 같다.
+
+```text
+optional PC control -> ESP32-S3 -> UART1 GPIO17/GPIO18
+                                   <-> STM32 USART1 PA9/PA10
+```
+
+STM32 USART2 PA2/PA3의 PC-first command 경로는 역사적 bench evidence로만 보존하며
+Final MVP production command를 받지 않는다. ESP32는 ingress를 소유하지만 motor output과
+safety permission은 계속 STM32가 소유한다. 현재 `PC -> ESP32` forwarding은 미구현이다.
 
 후순위 역할:
 
@@ -336,23 +347,17 @@ MVP에서 제외할 역할:
 
 ## 8. 다음 단계
 
-다음 실무 단계는 더 많은 기능 나열이 아니다. 먼저 low-level drivetrain interface를
-확정하고, 그 다음 STM32-ESP32 통신 경계를 정의한다.
+STM32-ESP32 통신 경계와 production ingress는 ADR-015로 확정됐다. 다음 command-path
+실무 단계는 test hook과 분리된 production `CMD(vx,w)` mapper와 timeout recovery 구현이다.
 
-즉시 이어지는 문서:
+현재 기준 문서:
 
-- `08_Motor_Driver_and_HBridge_Control.md`
+- `09_STM32_ESP32_UART_Interface_Contract_ko.md`
+- `19_Architecture_Decision_Record_ko.md`의 ADR-015
 
-후속 문서 후보:
+후속 구현에서 닫을 내용:
 
-- `09_STM32_ESP32_UART_Interface_Contract.md`
-
-후속 UART contract에서 정의할 내용:
-
-- UART pins
-- Baud rate
-- Message direction
-- Command timeout
-- Telemetry fields
-- Safety ownership
-- Error handling
+- Production `CMD(vx,w)` to left/right PWM/DIR mapper
+- Timeout 시 output/stored command zero와 `DISARMED` 전이
+- 재동작 전 new `ARM` + new `CMD`
+- Optional `PC -> ESP32` forwarding

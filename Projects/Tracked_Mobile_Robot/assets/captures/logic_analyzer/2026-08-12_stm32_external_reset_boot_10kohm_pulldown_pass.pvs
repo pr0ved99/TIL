@@ -1,0 +1,77 @@
+[D0]
+name="  USART1_TX  "
+enabled=true
+color=4279638298
+conversion_type=0
+conv_options=0
+
+[D1]
+name="  USART1_RX  "
+enabled=true
+color=4287582722
+conversion_type=0
+conv_options=0
+
+[D2]
+name="  DIR1  "
+enabled=true
+color=4291559424
+conversion_type=0
+conv_options=0
+
+[D3]
+name="  PWM1  "
+enabled=true
+color=4294277376
+conversion_type=0
+conv_options=0
+
+[D4]
+name="  DIR2  "
+enabled=true
+color=4293776384
+conversion_type=0
+conv_options=0
+
+[D5]
+name="  PWM2  "
+enabled=true
+color=4285780502
+conversion_type=0
+conv_options=0
+
+[D6]
+name="  FAULT_MARKER  "
+enabled=true
+color=4281623972
+conversion_type=0
+conv_options=0
+
+[D7]
+name="  NRST  "
+enabled=true
+color=4285878395
+conversion_type=0
+conv_options=0
+
+[General]
+decode_signals=0
+generated_signals=0
+views=1
+meta_objs=0
+
+[view0]
+scale=0.006480414746543779
+v_offset=-295
+splitter_state=@ByteArray(\0\0\0\xff\0\0\0\x1\0\0\0\x2\0\0\0\xa0\0\0\x6\xd9\x1\0\0\0\x1\x1\0\0\0\x1\0)
+segment_display_mode=1
+offset=22 serialization::archive 14 0 0 0 0 4 22307027 64976958 67655435 27562272 17467507 0 1 0 6
+zero_offset=22 serialization::archive 14 0 0 0 0 0 0 0 0 0 0 0 0 0 6
+D0\trace_height=24
+D1\trace_height=24
+D2\trace_height=24
+D3\trace_height=24
+D4\trace_height=24
+D5\trace_height=24
+D6\trace_height=24
+D7\trace_height=24

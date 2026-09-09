@@ -86,6 +86,12 @@ positive w  -> robot turns left
 
 Encoder sign must be adjusted so this convention is true.
 
+2026-07-30 encoder-side checkpoint: Motor A is vehicle right/TIM5 and Motor B
+is vehicle left/TIM3. Right/A clockwise and left/B counter-clockwise are
+forward, so production TIM3/left CPS is inverted while TIM5/right keeps the
+raw sign. This manual motor-off result does not establish the powered MDD10A
+channel 1/2 to physical-side mapping or command-driven motor polarity.
+
 ## 3. Differential Drive Approximation
 
 Let:
@@ -143,7 +149,7 @@ Open parameters to measure:
 | Gear ratio | Motor model datasheet or manual count test |
 | Output sprocket circumference | Measure or infer from track movement |
 | Effective track width | Measure from chassis, tune with rotation test |
-| Encoder sign | Confirm by low-speed forward command |
+| Encoder sign | Motor-off encoder-side mapping confirmed; recheck with powered forward command |
 
 Do not assume the nominal motor label gives enough information for accurate
 odometry.

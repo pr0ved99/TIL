@@ -227,17 +227,17 @@ Detailed comparison is recorded in
 MDD10A first wiring contract:
 
 ```text
-STM32 PWM_L -> MDD10A PWM1
-STM32 DIR_L -> MDD10A DIR1
-STM32 PWM_R -> MDD10A PWM2
-STM32 DIR_R -> MDD10A DIR2
-STM32 GND   -> MDD10A GND
+STM32 PB6/TIM4_CH1 -> MDD10A PWM1
+STM32 PC8          -> MDD10A DIR1
+STM32 PB7/TIM4_CH2 -> MDD10A PWM2
+STM32 PC9          -> MDD10A DIR2
+STM32 GND          -> MDD10A GND
 
 3S LiPo +   -> fuse -> switch -> MDD10A POWER+
 3S LiPo -   -> MDD10A POWER-
 
-Left motor  -> MDD10A M1A / M1B
-Right motor -> MDD10A M2A / M2B
+Output channel 1 -> MDD10A M1A / M1B -> physical side TBD
+Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
 ```
 
 Initial wiring rules:
@@ -261,21 +261,23 @@ The first `06_MCU_Pin_Allocation_Candidate_ko.md` map fits MDD10A well.
 
 MDD10A requirements:
 
-- Left motor: `PWM1` + `DIR1`
-- Right motor: `PWM2` + `DIR2`
+- MDD10A channel 1: `PWM1` + `DIR1`
+- MDD10A channel 2: `PWM2` + `DIR2`
 - Two-motor drivetrain: two PWM-capable outputs plus two GPIO outputs
 
 Candidate concept:
 
 | Robot function | Candidate peripheral |
 | --- | --- |
-| Left motor PWM | `TIM4_CH1` / PB6 |
-| Right motor PWM | `TIM4_CH2` / PB7 |
-| Left motor DIR | GPIO / PC8 |
-| Right motor DIR | GPIO / PC9 |
+| MDD10A channel 1 PWM | `TIM4_CH1` / PB6 |
+| MDD10A channel 2 PWM | `TIM4_CH2` / PB7 |
+| MDD10A channel 1 DIR | GPIO / PC8 |
+| MDD10A channel 2 DIR | GPIO / PC9 |
 | Optional power gate or brake | Only if a separate circuit is added, candidate GPIO PC6/PC5 |
 
-This is not the final pinout. Required checks:
+The MCU-to-driver routing above has passed static/no-motor bench checks. The
+powered channel 1/2 to physical left/right assignment remains open. Required
+checks:
 
 - NUCLEO-F446RE header access
 - CubeMX alternate-function mapping
@@ -412,12 +414,11 @@ Main switch requirement:
 
 ## 11. Open Questions
 
-These items must be checked before final firmware implementation:
+These items must be checked before powered drivetrain testing:
 
 - Actual MDD10A revision and terminal labeling.
-- Whether `PWM1/DIR1` maps to left or right.
-- Final STM32 timer channel selection.
-- Final PWM frequency.
+- Which physical vehicle side maps to MDD10A channel 1/2.
+- Actual 20 kHz PWM frequency/duty and direction-transition timing.
 - Motor stall current or measured worst-case current.
 - Encoder voltage and signal quality.
 - Whether MG540, JGB37-520, or another motor becomes the first drivetrain motor.

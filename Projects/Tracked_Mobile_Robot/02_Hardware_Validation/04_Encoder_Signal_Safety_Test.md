@@ -4,7 +4,19 @@
 
 이 문서는 MG540P30_12V motor encoder를 STM32에 연결하기 전에 전원, A/B 신호 전압과 입력 보호 조건을 검증한 기록이다.
 
-2026-07-26 시험은 motor를 구동하지 않고 shaft를 손으로 돌리며 DMM으로 수행했다. Oscilloscope 또는 logic analyzer는 사용하지 않았다.
+2026-07-26 시험은 motor를 구동하지 않고 shaft를 손으로 돌리며 DMM으로 수행했다.
+2026-07-27에는 같은 signal-conditioning 조건에서 TIM3와 TIM5에 encoder 두 개를
+동시에 연결하고 독립 count/sign을 USART raw log로 확인했다. Oscilloscope 또는
+logic analyzer는 사용하지 않았다.
+2026-07-29에는 main DC switch를 켜되 production motor-output hook은 `0U`로
+비활성화하고 의도적인 motor 구동 없이 각 shaft를 독립적으로 시계·반시계 방향으로
+손회전했다. STM32 production `TEL`의 signed CPS와 ESP32 structured parser까지
+end-to-end로 확인했으며 active PWM/motor-current noise 시험은 아니다.
+2026-07-30에는 출력축을 motor별·방향별 50회전시켜 `1560 counts/output rev`를
+firmware 변환 상수로 확정하고, signed CPS -> mRPM self-test와 dual hand-rotation
+동적 계산 일치를 확인했다.
+같은 날 encoder-side 실제 장착 기준 motor A=right/TIM5, motor B=left/TIM3를 확정하고,
+vehicle forward-positive 규칙에 맞게 production TIM3/left CPS만 부호 반전했다.
 
 ## Core Rule
 
@@ -23,14 +35,14 @@ STM32의 일부 핀은 5 V tolerant이지만, unpowered board, power sequencing�
 - 정지 상태는 shaft 위치에 따라 약 0 V 또는 HIGH가 될 수 있다.
 - 정확한 LOW 전압과 pulse shape는 별도 계측하지 않았다.
 - A/B quadrature 동작, count sign과 출력축 1회전 count는 TIM3 손회전 시험으로 기능 확인했다.
-- `MG540-A`, `MG540-B`는 bench 식별명이다. 차량 left/right는 아직 확정하지 않는다.
+- `MG540-A`, `MG540-B`는 bench 식별명이며 2026-07-30부터 encoder-side vehicle right와 left로 확정한다. MDD10A powered channel mapping은 이 판정에 포함하지 않는다.
 
 ## Encoder Identification
 
 | Bench ID | Model | Encoder status | Vehicle side | Notes |
 | --- | --- | --- | --- | --- |
-| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 motor-off hand-count PASS | TBD | 첫 번째 측정 motor |
-| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 motor-off hand-count PASS | TBD | 두 번째 측정 motor |
+| MG540-A | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | Right | TIM5/`right_cps`; physical forward is shaft-end clockwise |
+| MG540-B | WHEELTEC `MG540P30_12V` | TIM3 sequential PASS; dual-session included | Left | TIM3/`left_cps`; physical forward is shaft-end counter-clockwise |
 | JGB37-520 candidates | TBD | Previous fault suspicion | TBD | 이번 시험 범위에서 제외 |
 
 PCB의 자석/실크 면을 정면으로 보고 connector가 위쪽일 때, connector pad의 왼쪽부터 오른쪽 순서는 다음과 같다.
@@ -151,7 +163,7 @@ Encoder GND -------- STM32 GND -------- XL4015 OUT-
 - 1 kΩ 뒤 STM32 input node에서 15 kΩ을 common GND로 연결했다.
 - PB4/PB5를 분리한 사전 측정에서 MG540-A의 A/B HIGH는 모두 3.06 V, MG540-B의 A/B HIGH는 3.06~3.07 V였다.
 - 첫 timer 입력은 `PB4/TIM3_CH1 = A`, `PB5/TIM3_CH2 = B`로 검증했다.
-- 두 번째 후보는 `PA0/TIM5_CH1`, `PA1/TIM5_CH2`다.
+- 두 번째 timer 입력은 `PA0/TIM5_CH1 = A`, `PA1/TIM5_CH2 = B`로 검증했다.
 - 이 단계에서는 motor power를 넣지 않고 shaft를 손으로만 돌린다.
 
 ## Test 6: Direction Sign and Count
@@ -162,8 +174,8 @@ rising/direct input, filter 0, no NVIC로 설정했다. Firmware는 counter를 3
 
 | Bench motor | Bench timer path | Clockwise 1 rev | Counter-clockwise 1 rev | Provisional counts/output rev | Vehicle side |
 | --- | --- | ---: | ---: | ---: | --- |
-| MG540-A | TIM3 PB4/PB5 | +1560 | -1560~-1570 | 1560 | TBD |
-| MG540-B | TIM3 PB4/PB5 | +1562 | -1560 | 1560 | TBD |
+| MG540-A | TIM3 PB4/PB5 | +1560 | -1560~-1570 | 1560 | Right, later production path TIM5 |
+| MG540-B | TIM3 PB4/PB5 | +1562 | -1560 | 1560 | Left, production path TIM3 |
 
 Clockwise/counter-clockwise는 output shaft 끝을 정면으로 바라본 기준이다. 두 motor는
 같은 TIM3 bench input에 순차 연결해 시험했으며, 정지 시 count가 고정되고 방향을
@@ -178,14 +190,136 @@ Raw serial log는 MG540-A에서 정지 count와 양방향 증감만 담은 부�
 1회전 수치와 MG540-B 결과는 같은 bench session에서 별도로 관찰·보고한 값이며,
 raw log 하나가 표 전체를 증명하는 것으로 해석하지 않는다.
 
+### 2026-07-27 TIM3/TIM5 dual-input retest
+
+TIM3는 16-bit counter를 `32768`에서, TIM5는 32-bit counter를 `0x80000000`에서
+시작했다. 두 encoder를 동시에 연결하고 한 encoder씩 손으로 회전·복귀시켜
+반대쪽 counter가 고정되는지 확인했다.
+
+| Phase | Active path | Raw-log centered count | Inactive path | Result |
+| --- | --- | ---: | --- | --- |
+| First rotation and return | ENC5 / TIM5 PA0/PA1 | `0 -> +1557 -> -6` | ENC3 remained `0` | PASS |
+| Second rotation and return | ENC3 / TIM3 PB4/PB5 | `0 -> +1561 -> +7` | ENC5 remained `-6` | PASS |
+
+사용자가 같은 bench session에서 별도로 보고한 새 경로 출력축 1회전 값은
+`+1555 / -1566`이고, 기존 시험 encoder도 이전의 약 1560 count/rev를
+재현했다. 이 숫자는 별도 관찰값이며 raw log의 isolated endpoint로 기록된
+값은 아니다.
+
+손회전 시험에는 정확한 360° 시작·종료를 고정하는 jig가 없었다. 기준선 정렬,
+미세한 초과 회전과 gearbox backlash가 포함될 수 있으므로 이 값은 정확한
+encoder CPR calibration이 아니라 `약 1560 counts/output rev`의 기능시험
+잠정값이다. 최종 보정은 축 기준선을 표시하고 여러 바퀴의 총 count를 회전수로
+나누는 방식으로 반복 측정한다.
+
+Dual evidence:
+
+- [`../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt`](../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt)
+- [`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)
+
 제한:
 
-- `centered_count = raw - 32768`은 제한적인 손회전 표시값이며 16-bit wrap을 처리하는 production 누적 count가 아니다.
+- TIM3의 `raw - 32768`과 TIM5의 `raw - 0x80000000`은 제한적인 손회전 표시값이며 production wrap-safe delta/누적 count가 아니다.
 - Filter 0과 DMM 측정은 motor-off 조건만 검증한다. Powered motor noise, overshoot와 적절한 input filter는 미검증이다.
 - Oscilloscope/logic analyzer로 LOW, pulse width와 A/B phase timing을 계측하지 않았다.
-- TIM5 PA0/PA1 두 번째 MCU channel과 동시 dual-encoder 동작은 미검증이다.
+- 이 제한은 2026-07-27 당시 상태다. Vehicle side와 forward-positive production sign은 2026-07-30 Test 9에서 확정했다.
 
-MG540-A/B를 left/right로 부르지 않는다. 실제 장착 방향과 forward 기준이 정해진 뒤 channel assignment와 sign inversion을 확정한다.
+2026-07-27 당시에는 MG540-A/B를 실제 차량 left/right로 부르지 않았다. 이후
+실제 장착 방향을 확인해 2026-07-30 Test 9에서 channel assignment와 sign
+normalization을 확정했다.
+
+## Test 7: STM32 TEL -> ESP32 End-to-End CPS
+
+Main DC switch를 켜고 motor-output hook을 `0U`로 비활성화해 commanded output을
+zero로 유지한 상태에서 motor A를 먼저, motor B를 다음에 손으로 돌렸다. 두 motor는
+동시에 돌리지 않았다. Production path는 TIM3/TIM5 -> wrap-safe CPS -> STM32 UART
+`TEL` -> ESP32 parser/log다. Motor lead의 물리적 분리 여부는 이 raw log가 증명하지
+않으며, active PWM/motor-current가 발생하는 powered-noise 시험과 구분한다.
+
+| Operator sequence | Active TEL field | Direction result | Inactive field | Result |
+| --- | --- | --- | --- | --- |
+| Motor A clockwise | `right_cps` / TIM5 | 22 moving samples, `+10..+580` | `left_cps=0` | PASS |
+| Motor B clockwise | `left_cps` / TIM3 | normal moving samples `+10..+390` | `right_cps=0` | PASS |
+| Motor A counter-clockwise | `right_cps` / TIM5 | 30 negative samples, `-560..-10` | `left_cps=0` | PASS |
+| Motor B counter-clockwise | `left_cps` / TIM3 | 29 negative samples, `-760..-10` | `right_cps=0` | PASS |
+
+- Clean reset/stationary capture에서 두 CPS field는 0이었다.
+- Clockwise capture의 230개 TEL row와 counter-clockwise capture의 165개 TEL row는
+  각각 `t_ms +100`, `tel_count +1`로 연속했다.
+- Stop transition에서 관찰된 단일 `-10` 또는 `+20` rebound sample은 지속되지
+  않았고 이후 0으로 복귀했다.
+- 회전 로그의 누적 `err=2`는 scripted sequence의 의도된 `NOT_ARMED`와
+  `OUT_OF_RANGE` negative case다. 회전 중 새 parse/frame error는 없었다.
+
+Evidence:
+
+- [`../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md`](../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md)
+- [`../assets/logs/encoder/2026-07-29_dual_encoder_cps_tel_cw_pass.txt`](../assets/logs/encoder/2026-07-29_dual_encoder_cps_tel_cw_pass.txt)
+- [`../assets/logs/encoder/2026-07-29_dual_encoder_cps_tel_ccw_pass.txt`](../assets/logs/encoder/2026-07-29_dual_encoder_cps_tel_ccw_pass.txt)
+
+## Test 8: 50-Revolution Calibration and CPS to mRPM
+
+2026-07-26~27의 1회전 결과는 기능 확인용 잠정 scale이었다. 2026-07-30에는
+출력축을 방향별 50회전시키고 총 count를 회전수로 나눴다. 반시계 총 count는
+실제 음수였으며 표에서는 절댓값으로 비교한다.
+
+| Bench motor | Direction | Revolutions | Absolute count | Counts/output rev |
+| --- | --- | ---: | ---: | ---: |
+| MG540-A | Clockwise | 50 | 77,998 | 1559.96 |
+| MG540-A | Counter-clockwise | 50 | 78,001 | 1560.02 |
+| MG540-B | Clockwise | 50 | 78,000 | 1560.00 |
+| MG540-B | Counter-clockwise | 50 | 78,000 | 1560.00 |
+
+따라서 현재 STM32 quadrature x4와 출력축 기준 firmware 상수는
+`1560 counts/output rev`로 확정한다. 이 50회전 숫자는 작업자가 별도로 관찰한
+측정값이며 아래 dynamic raw log 자체에 들어 있는 endpoint는 아니다.
+
+Firmware는 다음 정수 변환을 사용한다.
+
+```text
+mRPM = trunc(CPS * 60000 / 1560)
+```
+
+- Boot: `ENC_SELF_TEST,wrap=PASS,millirpm=PASS`
+- Dynamic raw log: 305 complete dual row, 610 channel sample, malformed 0
+- CPS -> mRPM formula mismatch: 0 / 610
+- Direction mismatch: 0
+- Simultaneous active dual-channel row: 0
+- 마지막 26 row: 양 channel `delta=0`, `cps=0`, `mrpm=0`
+
+Evidence:
+
+- [`../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`](../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)
+- [`../assets/logs/encoder/2026-07-30_50rev_output_shaft_calibration_operator_record.txt`](../assets/logs/encoder/2026-07-30_50rev_output_shaft_calibration_operator_record.txt) (`OPERATOR_REPORTED_BENCH_OBSERVATION`, raw serial 아님)
+- [`../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt`](../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt)
+
+이 PASS는 external tachometer 기반 절대 RPM 정확도, wheel 이동거리, vehicle
+left/right·forward sign 또는 powered-motor noise를 포함하지 않는다. mRPM은 현재
+USART2 bench diagnostic field이며 production `TEL`은 signed CPS 계약을 유지한다.
+
+## Test 9: Encoder-Side Vehicle Mapping and Forward-Positive Sign
+
+실제 장착 기준 motor A는 right/TIM5, motor B는 left/TIM3다. 출력축 끝을 바라본
+기준에서 right/A의 clockwise가 차량 전진이고, left/B의 counter-clockwise가 차량
+전진이다. 두 timer의 raw bench sign은 clockwise positive였으므로 production
+vehicle-frame CPS에는 TIM3/left만 부호를 반전한다.
+
+| Production field | Physical path | Vehicle forward direction | Raw sign on forward | Normalization | Result |
+| --- | --- | --- | --- | --- | --- |
+| `right_cps` | Motor A / TIM5 | Clockwise | Positive | Keep | PASS |
+| `left_cps` | Motor B / TIM3 | Counter-clockwise | Negative | Invert | PASS |
+
+작업자는 변경 후 두 motor를 각각 physical forward로 손회전해 해당 production CPS가
+양수로 바뀌는 것을 확인했다. USART2 `ENC3/ENC5` diagnostic은 bench 분석을 위해 raw
+sign을 유지한다.
+
+Evidence:
+
+- [`../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md`](../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md)
+
+이 결과는 operator-controlled manual-rotation 기능 확인이며 exact run의 새 raw
+serial capture는 없다. MDD10A powered channel-to-side mapping, command-driven
+motor polarity, powered-motor noise와 wheel-speed scale은 포함하지 않는다.
 
 ## Stop Conditions
 
@@ -205,17 +339,22 @@ MG540-A/B를 left/right로 부르지 않는다. 실제 장착 방향과 forward 
 | Output structure | `PROBABLE` | 약 10 kΩ internal 5 V pull-up과 일치하지만 회로형식 미확정 |
 | Quadrature behavior | `FUNCTIONALLY OBSERVED` | TIM3 x4 count와 direction reversal PASS; scope phase timing 미계측 |
 | STM32 input protection | `BENCH-CONFIRMED / POWERED-NOISE TBD` | 채널별 1 kΩ series + 15 kΩ pull-down, common GND |
-| Direction sign and count | `PASS ON TIM3` | Shaft-end view CW positive, CCW negative; 양 motor 순차 시험 |
-| Counts per output revolution | `PROVISIONAL PASS` | 두 motor 모두 약 1560 count/rev |
-| Limited hand-rotation STM32 test | `PASS` | Motor power disconnected, stationary count stable |
-| Powered closed-loop operation | `NOT READY` | TIM5, motor-on noise, active motor safety와 no-load 시험 필요 |
+| Direction sign and count | `PASS ON TIM3/TIM5 (MOTOR-OFF)` | Sequential TIM3 result와 dual independent hand rotation |
+| Counts per output revolution | `PASS` | 방향별 50회전 손보정 `1559.96~1560.02`; firmware 상수 1560 counts/output rev |
+| Dual input independence | `PASS` | TIM5 active 동안 TIM3 fixed, TIM3 active 동안 TIM5 fixed |
+| Limited hand-rotation STM32 test | `PASS` | Motor power disconnected, both encoders concurrently connected |
+| Production TEL CPS | `PASS` | Both signed CPS fields reached ESP32 at 100 ms TEL interval |
+| ESP32 structured CPS parse | `PASS` | Independent CW/CCW sign, inactive-channel zero와 stop-to-zero 확인 |
+| CPS to mRPM calculation | `PASS` | wrap/millirpm self-test와 610 sample formula/sign 일치, stop-to-zero |
+| Encoder-side vehicle mapping / forward-positive sign | `PASS` | A=right/TIM5 keep sign, B=left/TIM3 invert sign; operator manual regression |
+| Powered closed-loop operation | `NOT READY` | Motor-on noise, active motor safety와 no-load 시험 필요 |
 
 ## Next Step
 
-1. 현재 TIM3 CubeMX/firmware와 raw log를 Git 기준점으로 보존한다.
-2. TIM5 `PA0/PA1`을 두 번째 encoder channel로 설정하고 동일한 motor-off hand-count 시험을 반복한다.
-3. 16-bit/32-bit modular delta와 누적 count를 production encoder module로 분리하고 speed telemetry를 추가한다.
+1. 현재 TIM3/TIM5 firmware, production TEL/ESP32 parser, 50회전 상수와 dated raw evidence를 Git 기준점으로 보존한다.
+2. 확정된 A=right/TIM5, B=left/TIM3와 forward-positive production sign을 회귀 기준으로 유지한다.
+3. External tachometer 기준 절대 RPM 정확도와 sprocket/track 이동거리로 wheel-speed 변환값을 검증한다.
 4. Powered motor noise와 input filter는 계측 장비 또는 제한된 lifted test에서 별도 검증한다.
-5. 실제 motor no-load 시험은 direction timing과 active timeout/DISARM output-zero gate까지 통과한 뒤 진행한다.
+5. Powered/no-motor timeout/DISARM 및 software fault functional gate와 actual PB6/PB7 PWM/direction timing 하위 게이트는 통과했다. 실제 motor no-load 시험은 active shutdown edge latency, final safe-image board 회귀와 Physical E-stop gate까지 통과한 뒤 진행한다.
 
 관련 절차: [`05_First_Motor_No_Load_Test.md`](05_First_Motor_No_Load_Test.md)

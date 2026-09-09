@@ -2,14 +2,16 @@
 
 ## Status
 
-Draft v0
+ADR-015 aligned — 2026-08-26
 
 공식 MVP rule은 `01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md`를 따른다.
 이 문서는 그 규칙을 실습 관점에서 풀어 쓰는 학습 노트다.
 
 ## Purpose
 
-PC 또는 ESP32가 STM32에 motion command를 보내고, STM32가 encoder/safety telemetry를 돌려주는 최소 protocol을 실습한다.
+ESP32-S3 production ingress가 STM32에 motion command를 보내고, STM32가 encoder/safety
+telemetry를 돌려주는 최소 protocol을 실습한다. PC-first USART2 실습은 historical bench
+evidence이며 optional PC control은 `PC -> ESP32 -> STM32`로 전달한다.
 
 이 문서는 공식 architecture contract를 바로 바꾸기 전, 학습과 실습을 위해 protocol의 의미를 풀어쓴다.
 
@@ -55,19 +57,23 @@ CMD,seq=4,vx_mmps=80,w_mradps=0,timeout_ms=300\n
 
 ## 2. Command and Telemetry
 
-Command는 PC 또는 ESP32가 STM32에 보내는 요청이다.
+Production command는 ESP32가 STM32에 보내는 요청이다. Optional PC control을 구현할 경우
+PC는 ESP32의 upstream client이며 STM32에 직접 command를 보내지 않는다.
 
 ```text
-PC/ESP32 -> STM32
+ESP32 UART1 -> STM32 USART1
 CMD,seq=4,vx_mmps=80,w_mradps=0,timeout_ms=300\n
 ```
 
 Telemetry는 STM32가 외부로 보내는 상태 보고다.
 
 ```text
-STM32 -> PC/ESP32
+STM32 USART1 -> ESP32 UART1
 TEL,t_ms=123456,state=ARMED,batt_mv=11820,left_cps=120,right_cps=118,left_pwm=420,right_pwm=415,fault=0\n
 ```
+
+Historical PC-first bench에서는 같은 application frame을 PC -> STM32 USART2로 검증했지만,
+그 경로는 Final MVP production ingress가 아니다.
 
 중요한 원칙:
 
@@ -204,10 +210,10 @@ TEL,t_ms=1000,state=DISARMED,batt_mv=11820,left_cps=0,right_cps=0,left_pwm=0,rig
 흐름:
 
 ```text
-PC/ESP32 -> STM32: DISARM,seq=20
+ESP32 -> STM32: DISARM,seq=20
 STM32 internal: state = DISARMED
-STM32 -> PC/ESP32: ACK,seq=20,type=DISARM
-STM32 -> PC/ESP32: TEL,...,state=DISARMED,...
+STM32 -> ESP32: ACK,seq=20,type=DISARM
+STM32 -> ESP32: TEL,...,state=DISARMED,...
 ```
 
 `DISARM`은 다음 상황에서 보낸다.
@@ -216,7 +222,7 @@ STM32 -> PC/ESP32: TEL,...,state=DISARMED,...
 - 테스트 시작 전 모터 출력을 잠글 때
 - 테스트 종료 후 motor output을 차단할 때
 - 사용자가 stop/disarm 버튼을 눌렀을 때
-- PC/ESP32 program 종료 직전
+- ESP32 command-source program 종료 직전
 
 `DISARMED` 상태에서 nonzero `CMD`가 들어오면 STM32는 `ERR,code=NOT_ARMED`로 거부한다.
 
@@ -252,9 +258,16 @@ TEL send rate: 10 Hz
 Timeout 동작은 다음을 MVP 기준으로 둔다.
 
 1. `timeout_ms` 안에 새 valid `CMD`가 없으면 STM32는 즉시 motor output을 0으로 만든다.
-2. Timeout 직후에는 바로 `DISARMED`로 내리지 않고, 우선 `ARMED` 상태에서 output zero를 유지한다.
-3. 추가 idle 시간이 지나도 valid command가 없으면 `DISARMED`로 전환하는 auto-disarm 정책은 확정 필요 항목으로 둔다.
-4. Timeout은 새 frame을 거부한 상황이 아니므로 `ERR` 대상이 아니라 `TEL`에서 관찰한다.
+2. Stored command를 zero로 만들고 즉시 `DISARMED`로 전환한다.
+3. 재동작에는 timeout 뒤 accepted `ARM`과 그 이후의 valid `CMD`가 필요하며 이전 stored
+   command를 자동 복원하지 않는다. P-03은 sequence/session 기반 transport anti-replay는
+   구현하지 않는다.
+4. Timeout은 새 frame을 거부한 상황이 아니므로 `ERR` 대상이 아니다. 현재는 `TEL`의
+   `DISARMED`와 stored `vx/w=0`으로 결과를 추론하며 명시적 timeout reason은 P-04 pending이다.
+
+이는 ADR-015의 required behavior다. P-03A/P-03B source/static/full-build는 pre-RX
+timeout-to-`DISARMED`와 ARM 시 default 300 ms first-CMD window를 구현했다. 실제 target
+runtime 정합성은 아직 닫히지 않았다.
 
 ## 9. Parser Rule
 
@@ -304,16 +317,16 @@ Dashboard v0에서 볼 값:
 Dashboard는 motor authority가 아니다.
 처음에는 telemetry display와 command sender mock으로 제한한다.
 
-## Open MVP Decisions
+## Fixed Decisions and Remaining MVP Decisions
 
-아직 확정이 필요한 항목:
+ADR-015로 닫힌 결정과 아직 열린 구현 세부사항을 구분한다.
 
-| Item | Current candidate | Need decision |
+| Item | Current status | Remaining work |
 | --- | --- | --- |
-| PC-first UART path | ST-LINK VCP USART2 | 외부 USB-UART도 허용할지 |
+| Production command ingress | ADR-015 Accepted: ESP32 UART1 -> STM32 USART1 | `P-02` production mapper; optional PC upstream은 구현할 경우에만 별도 설계 |
 | Command rate | 20 Hz | 그대로 확정할지 |
 | Telemetry rate | 10 Hz | 그대로 확정할지 |
-| Auto-disarm delay | TBD | timeout zero-output 후 몇 ms 뒤 `DISARMED`로 전환할지 |
+| Timeout recovery | ADR-015 Accepted; P-03 source/static/full-build PASS: 즉시 `DISARMED`, accepted ARM + valid CMD; transport anti-replay는 미구현 | Motor/LiPo-disconnected P-03 target runtime evidence |
 | Max frame length | TBD | 128 byte 또는 256 byte 중 선택 |
 | Ring buffer size | TBD | 256 byte 또는 512 byte 중 선택 |
 | Unknown type handling | TBD | `ERR,code=UNKNOWN_TYPE` 응답 또는 ignore |

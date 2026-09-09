@@ -2,7 +2,7 @@
 
 ## Status
 
-Partial — TIM3 motor-power-off hand-rotation PASS, TIM5/powered-noise pending
+Partial — TIM3/TIM5 dual motor-power-off independent hand-rotation PASS; production speed와 powered-noise pending
 
 ## Purpose
 
@@ -15,7 +15,7 @@ MG540-A/B encoder A/B 신호를 STM32 timer encoder mode로 읽고, motor power 
 | --- | --- |
 | TIM3 encoder A/B | `PB4/TIM3_CH1 = A`, `PB5/TIM3_CH2 = B`; motor-power-off PASS |
 | TIM3 mode | `TIM_ENCODERMODE_TI12`, x4 quadrature count |
-| TIM5 encoder A/B | `PA0/TIM5_CH1 = A`, `PA1/TIM5_CH2 = B`; pending |
+| TIM5 encoder A/B | `PA0/TIM5_CH1 = A`, `PA1/TIM5_CH2 = B`; motor-power-off PASS |
 | Per-channel conditioning | Encoder signal -> 1 kΩ series -> MCU node; MCU node -> 15 kΩ -> common GND |
 
 ## Pre-Checks
@@ -59,9 +59,15 @@ Raw serial log는 MG540-A의 정지 안정성과 방향별 증감만 직접 보�
 1-output-revolution 값과 MG540-B 결과는 같은 bench session에서 별도로 보고된
 측정이므로 provisional로 유지한다.
 
+손으로 정확히 360°의 시작점과 종료점을 맞추는 데는 한계가 있고 gearbox
+backlash도 포함될 수 있다. 따라서 한 바퀴 결과는 기능 확인용 잠정값이며,
+최종 counts/rev는 축에 기준선을 표시해 여러 바퀴를 반복 측정한 뒤 총 count를
+회전수로 나누어 보정한다.
+
 ## Follow-Up
 
-- TIM5 PA0/PA1에서 같은 motor-power-off 시험을 반복한다.
+- TIM5 PA0/PA1의 motor-power-off 시험과 TIM3/TIM5 dual 독립 count는 2026-07-27에 통과했다.
+- 다음은 16-bit/32-bit wrap-safe delta와 speed telemetry를 구현한다.
 - Powered motor 상태에서 noise, false count와 reset 여부를 확인한다.
 - 차량 장착 후 left/right와 forward sign을 확정한다.
 - MDD10A no-load motor test와 연결한다.

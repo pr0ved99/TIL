@@ -21,8 +21,8 @@ The pin allocation must support:
 - Left/right motor PWM
 - Left/right motor direction GPIO and optional power gate/brake GPIO
 - Left/right quadrature encoder A/B inputs
-- PC command/debug serial link
-- Optional ESP32-S3 serial link
+- PC bench debug/encoder logger serial link
+- ESP32-S3 production command/telemetry serial link
 - BNO08x IMU through I2C
 - 3S LiPo battery voltage monitoring through ADC
 - Future CAN expansion
@@ -49,7 +49,7 @@ Important UM1724 facts used:
 The first allocation uses these principles:
 
 1. Keep PA13/PA14 reserved for SWD.
-2. Use USART2 PA2/PA3 for the first PC serial link.
+2. Use USART1 PA9/PA10 for the Final MVP production link and keep USART2 PA2/PA3 for bench debug/logging only.
 3. Use I2C1 PB8/PB9 for the BNO08x IMU.
 4. Use hardware timer encoder mode for both motor encoders.
 5. Use timer PWM outputs for motor speed control.
@@ -62,8 +62,8 @@ The first allocation uses these principles:
 
 | Robot function | MCU pin | Peripheral/function | Board access | Status |
 | --- | --- | --- | --- | --- |
-| PC serial TX | PA2 | USART2_TX | Arduino D1 / ST morpho CN10 pin 35 | Primary |
-| PC serial RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Primary |
+| PC bench logger TX | PA2 | USART2_TX | Arduino D1 / ST morpho CN10 pin 35 | Bench-only / historical PC-first evidence |
+| PC bench logger RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Production command RX disabled |
 | IMU I2C SCL | PB8 | I2C1_SCL | Arduino D15 / ST morpho CN10 pin 3 | Primary |
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
 | Left motor PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
@@ -77,8 +77,8 @@ The first allocation uses these principles:
 | Right motor direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
 | Optional power gate/brake 1 | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate only if separate circuit is added |
 | Optional power gate/brake 2 | PC5 | GPIO output | ST morpho CN10 pin 6 | Candidate only if separate circuit is added |
-| Optional ESP32 TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Reserve |
-| Optional ESP32 RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Reserve |
+| STM32 -> ESP32 production TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Production / bench-validated |
+| ESP32 -> STM32 production RX | PA10 | USART1_RX | Arduino D2 / ST morpho CN10 pin 33 | Production / bench-validated |
 | Future CAN RX | PA11 | CAN1_RX | ST morpho CN10 pin 14 | Reserve |
 | Future CAN TX | PA12 | CAN1_TX | ST morpho CN10 pin 12 | Reserve |
 | SWDIO | PA13 | SWDIO | ST-LINK / ST morpho CN7 pin 13 | Preserve |
@@ -86,16 +86,18 @@ The first allocation uses these principles:
 
 ## Rationale by Subsystem
 
-### PC Serial Link
+### Historical PC-First Bench Serial
 
 PA2 and PA3 are assigned to USART2 because UM1724 maps them to Arduino D1/D0
-and USART2_TX/USART2_RX.
+and USART2_TX/USART2_RX. This preserves the historical PC-first bench evidence,
+but it is not a Final MVP production command ingress. Current firmware does not
+start USART2 command RX and uses it for encoder/self-test logger TX.
 
 Use:
 
-- PC command input
 - Debug log output
-- Early serial protocol validation
+- Encoder/self-test logging
+- Historical PC-first serial protocol validation
 
 Risk:
 
@@ -104,7 +106,8 @@ Risk:
 
 Check:
 
-- Confirm USART2 PA2/PA3 behavior with a simple UART echo test.
+- Preserve the historical UART echo/PC-first evidence.
+- Confirm by source audit that USART2 is not attached to the production parser.
 
 ### IMU I2C
 
@@ -210,14 +213,16 @@ Check:
 - Verify motor driver input logic level.
 - Verify motor outputs remain disabled while STM32 resets or boots.
 
-### Optional ESP32 Serial
+### Production ESP32 Serial
 
-PA9/PA10 are reserved for USART1_TX/USART1_RX.
+PA9/PA10 are fixed as the Final MVP USART1_TX/USART1_RX production link.
 
 Reason:
 
-- USART1 is a clean optional serial link.
-- It can connect to ESP32-S3 after the PC serial MVP works.
+- The firmware protocol is attached to `huart1`, and board-level communication
+  with ESP32-S3 UART1 GPIO17/GPIO18 has been validated.
+- Optional PC control must use `PC -> ESP32 -> STM32 USART1`; direct PC/ESP32
+  dual ownership is prohibited.
 
 Check:
 
@@ -255,21 +260,22 @@ Important:
 Before firmware implementation:
 
 1. Create a CubeMX project for STM32F446RETx.
-2. Enable USART2 on PA2/PA3.
-3. Enable I2C1 on PB8/PB9.
-4. Enable TIM4 PWM on PB6/PB7.
-5. Enable TIM3 encoder mode on PB4/PB5.
-6. Enable TIM5 encoder mode on PA0/PA1.
-7. Enable ADC on PA4.
-8. Configure PC8, PC9, PC6, PC5 as GPIO outputs.
-9. Keep SWD enabled on PA13/PA14.
-10. Check all warnings and pin conflicts.
-11. Generate a `.ioc` file and commit it after validation.
+2. Preserve historical USART2 PA2/PA3 validation and use it as a bench logger.
+3. Validate the USART1 PA9/PA10 and ESP32 GPIO17/GPIO18 production link.
+4. Enable I2C1 on PB8/PB9.
+5. Enable TIM4 PWM on PB6/PB7.
+6. Enable TIM3 encoder mode on PB4/PB5.
+7. Enable TIM5 encoder mode on PA0/PA1.
+8. Enable ADC on PA4.
+9. Configure PC8, PC9, PC6, PC5 as GPIO outputs.
+10. Keep SWD enabled on PA13/PA14.
+11. Check all warnings and pin conflicts.
+12. Generate a `.ioc` file and commit it after validation.
 
 Bench validation order:
 
 1. GPIO output toggle test.
-2. USART2 echo test.
+2. USART1 ESP32 bridge regression and USART2 bench logger check.
 3. I2C scan or BNO08x identity read.
 4. PWM output measurement.
 5. Encoder count test by hand rotation.
@@ -282,7 +288,8 @@ This candidate is suitable for the first CubeMX validation pass.
 
 The most important design choices are:
 
-- USART2 PA2/PA3 for PC serial.
+- ESP32 GPIO17/GPIO18 <-> USART1 PA9/PA10 for production command/telemetry.
+- USART2 PA2/PA3 for PC bench debug/logging; production command RX disabled.
 - I2C1 PB8/PB9 for IMU.
 - TIM4 PB6/PB7 for left/right PWM.
 - TIM3 PB4/PB5 and TIM5 PA0/PA1 for encoders.

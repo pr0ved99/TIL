@@ -95,6 +95,34 @@ Notes:
 - Motor current는 perfboard copper trace로 흘리지 않는다.
 - 첫 전원 투입 전에 XT60 polarity를 확인한다.
 
+### Physical E-stop RevB target boundary
+
+현재 RevA는 `VBAT_SW`에서 MDD10A와 XL4015 두 개가 함께 분기된다. Physical E-stop을
+추가하는 RevB에서는 motor와 logic branch의 제어 경계를 다음과 같이 분리한다.
+
+```text
+VBAT_RAW -> F1 -> S1 MAIN_DC_SWITCH -> VBAT_PROTECTED
+                                         +-> K1 relay main contact
+                                         |    -> MOTOR_VBAT_SAFE
+                                         |         -> MDD10A POWER+
+                                         |
+                                         +-> XL4015 logic/aux branch
+```
+
+K1은 de-energized 때 main contact가 open되는 DC power relay 기능 블록이다. E-stop actuator는
+motor current를 직접 차단하지 않고 K1 coil permission을 제거한다. Logic branch는 E-stop
+상태 기록을 위해 살아 있을 수 있지만 USB, PWM/DIR 또는 buck을 통한 motor-rail 역급전이
+없어야 한다.
+
+상세 시스템 경계, sense path와 아직 결정하지 않은 항목은
+[`21_Physical_EStop_Architecture_ko.md`](21_Physical_EStop_Architecture_ko.md)의 Step 2를 정본으로 한다.
+K1/S0/S2/K2 three-wire control, 5 V/opto PC7 S0-B sense, direct rail test point와 connector의
+MVP Step 6 기능 회로는
+[`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를 정본으로 한다.
+PA4/PB0 dual rail-sense는 post-MVP diagnostic option이다.
+Step 7 부품 후보, 최소 부하와 정격 gate는
+[`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](26_Physical_EStop_Component_and_Rating_Selection_ko.md)를 정본으로 한다.
+
 ## 4. LiPo Operating Envelope
 
 3S LiPo pack은 cell 3개가 직렬로 연결된 battery다.

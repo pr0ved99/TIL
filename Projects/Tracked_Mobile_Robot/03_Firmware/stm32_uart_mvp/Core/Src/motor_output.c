@@ -2,7 +2,15 @@
 
 #define MOTOR_OUTPUT_DUTY_SCALE_PERMILLE 1000U
 #define MOTOR_OUTPUT_MAX_DUTY_PERMILLE   100U
+#define MOTOR_OUTPUT_PWM_ZERO_SETTLE_MS  1U
 #define MOTOR_OUTPUT_DIR_SETTLE_MS       1U
+/*
+ * PROVISIONAL until lifted motor mapping verifies actual forward polarity.
+ */
+#define MOTOR_OUTPUT_LEFT_FORWARD_DIR_LEVEL     GPIO_PIN_RESET
+#define MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL     GPIO_PIN_SET
+#define MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL    GPIO_PIN_RESET
+#define MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL    GPIO_PIN_SET
 
 static TIM_HandleTypeDef *motor_timer = NULL;
 
@@ -57,7 +65,7 @@ HAL_StatusTypeDef motor_output_set_raw(
 ){
     uint32_t left_compare;
     uint32_t right_compare;
-    uint8_t direction_change_while_active;
+    uint8_t direction_changed;
 
 
     if (motor_timer == NULL) {
@@ -89,17 +97,11 @@ HAL_StatusTypeDef motor_output_set_raw(
     left_compare = motor_output_permille_to_compare(left_duty_permille);
     right_compare = motor_output_permille_to_compare(right_duty_permille);
 
-    direction_change_while_active =
-    (
-        motor_left_duty_permille > 0U &&
-        left_dir_level != motor_left_dir_level
-    ) ||
-    (
-        motor_right_duty_permille > 0U &&
-        right_dir_level != motor_right_dir_level
-    );
+    direction_changed =
+        (left_dir_level != motor_left_dir_level) ||
+        (right_dir_level != motor_right_dir_level);
 
-    if (direction_change_while_active != 0U){
+    if (direction_changed != 0U){
         __HAL_TIM_SET_COMPARE(
             motor_timer,
             TIM_CHANNEL_1,
@@ -111,7 +113,7 @@ HAL_StatusTypeDef motor_output_set_raw(
             0U
         );
 
-        HAL_Delay(MOTOR_OUTPUT_DIR_SETTLE_MS);
+        HAL_Delay(MOTOR_OUTPUT_PWM_ZERO_SETTLE_MS);
     }
     HAL_GPIO_WritePin(
         MOTOR_LEFT_DIR_GPIO_Port,
@@ -123,6 +125,10 @@ HAL_StatusTypeDef motor_output_set_raw(
         MOTOR_RIGHT_DIR_Pin,
         right_dir_level
     );
+
+    if (direction_changed != 0U){
+        HAL_Delay(MOTOR_OUTPUT_DIR_SETTLE_MS);
+    }
 
     __HAL_TIM_SET_COMPARE(
         motor_timer,
@@ -142,6 +148,80 @@ HAL_StatusTypeDef motor_output_set_raw(
     motor_right_dir_level = right_dir_level;
 
     return HAL_OK;
+}
+
+motor_output_applied_t motor_output_get_applied(void){
+    motor_output_applied_t applied = {0};
+
+    if(motor_left_duty_permille != 0U){
+        applied.left_signed_permille =
+            (motor_left_dir_level ==
+             MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL)
+            ? -(int16_t)motor_left_duty_permille
+            : (int16_t)motor_left_duty_permille;
+    }
+
+    if(motor_right_duty_permille != 0U){
+        applied.right_signed_permille =
+            (motor_right_dir_level ==
+             MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL)
+            ? -(int16_t)motor_right_duty_permille
+            : (int16_t)motor_right_duty_permille;
+    }
+
+    return applied;
+}
+
+HAL_StatusTypeDef motor_output_set_signed(
+    int16_t left_signed_permille,
+    int16_t right_signed_permille
+){
+    HAL_StatusTypeDef status;
+    uint16_t left_duty_permille;
+    uint16_t right_duty_permille;
+    GPIO_PinState left_dir_level;
+    GPIO_PinState right_dir_level;
+
+    if(
+        left_signed_permille < -(int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE ||
+        left_signed_permille > (int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE ||
+        right_signed_permille < -(int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE ||
+        right_signed_permille > (int32_t)MOTOR_OUTPUT_MAX_DUTY_PERMILLE
+    ){
+        motor_output_stop_all();
+        return HAL_ERROR;
+    }
+
+    if (left_signed_permille < 0){
+        left_duty_permille = (uint16_t)(-left_signed_permille);
+        left_dir_level = MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL;
+    }
+    else {
+        left_duty_permille = (uint16_t)left_signed_permille;
+        left_dir_level = MOTOR_OUTPUT_LEFT_FORWARD_DIR_LEVEL;
+    }
+
+    if (right_signed_permille < 0){
+        right_duty_permille = (uint16_t)(-right_signed_permille);
+        right_dir_level = MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL;
+    }
+    else {
+        right_duty_permille = (uint16_t)right_signed_permille;
+        right_dir_level = MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL;
+    }
+
+    status = motor_output_set_raw(
+        left_duty_permille,
+        left_dir_level,
+        right_duty_permille,
+        right_dir_level
+    );
+
+    if (status != HAL_OK){
+        motor_output_stop_all();
+    }
+
+    return status;
 }
 
 HAL_StatusTypeDef motor_output_init(TIM_HandleTypeDef *htim){

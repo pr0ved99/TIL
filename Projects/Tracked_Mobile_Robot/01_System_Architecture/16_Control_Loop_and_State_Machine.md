@@ -54,7 +54,6 @@ typedef enum {
     SAFETY_ARMING_CHECK,
     SAFETY_ARMED_IDLE,
     SAFETY_ARMED_ACTIVE,
-    SAFETY_TIMEOUT_STOP,
     SAFETY_LOW_VOLTAGE_STOP,
     SAFETY_ESTOP_LATCHED,
     SAFETY_FAULT_LATCHED
@@ -70,10 +69,13 @@ State meaning:
 | `SAFETY_ARMING_CHECK` | Disabled | Checking whether arm is allowed |
 | `SAFETY_ARMED_IDLE` | Enabled but zero command | Armed, no active motion command |
 | `SAFETY_ARMED_ACTIVE` | Limited output allowed | Valid command is being applied |
-| `SAFETY_TIMEOUT_STOP` | Disabled or zero PWM | Command or heartbeat timed out |
 | `SAFETY_LOW_VOLTAGE_STOP` | Disabled | Battery below stop threshold |
 | `SAFETY_ESTOP_LATCHED` | Disabled | Emergency stop requested |
 | `SAFETY_FAULT_LATCHED` | Disabled | Firmware, sensor, encoder, driver, or internal fault |
+
+`SAFETY_TIMEOUT_STOP` was an earlier candidate. ADR-015 makes Final MVP command
+source loss converge directly to `SAFETY_DISARMED`, so it is not in the target
+state list.
 
 ## 3. Events
 
@@ -115,23 +117,30 @@ SAFETY_ARMED_IDLE
     |
     +-- valid_motion_command ----------> SAFETY_ARMED_ACTIVE
     +-- disarm_request ----------------> SAFETY_DISARMED
-    +-- timeout/low_voltage/estop/fault -> stop state
+    +-- command_timeout ---------------> SAFETY_DISARMED
+    +-- low_voltage_stop --------------> SAFETY_LOW_VOLTAGE_STOP
+    +-- estop_request -----------------> SAFETY_ESTOP_LATCHED
+    +-- fault_detected ----------------> SAFETY_FAULT_LATCHED
 
 SAFETY_ARMED_ACTIVE
     |
     +-- command becomes zero ----------> SAFETY_ARMED_IDLE
-    +-- command_timeout ---------------> SAFETY_TIMEOUT_STOP
+    +-- command_timeout ---------------> SAFETY_DISARMED
     +-- disarm_request ----------------> SAFETY_DISARMED
     +-- low_voltage_stop --------------> SAFETY_LOW_VOLTAGE_STOP
     +-- estop_request -----------------> SAFETY_ESTOP_LATCHED
     +-- fault_detected ----------------> SAFETY_FAULT_LATCHED
 ```
 
-Recovery states:
+Timeout and recovery rules:
 
 ```text
-SAFETY_TIMEOUT_STOP
-    +-- disarm_request or valid re-arm flow -> SAFETY_DISARMED
+command_timeout
+    -> motor output zero
+    -> stored command zero
+    -> SAFETY_DISARMED
+    -> new ARM
+    -> new CMD
 
 SAFETY_LOW_VOLTAGE_STOP
     +-- voltage recovered + operator reset -> SAFETY_DISARMED
@@ -143,6 +152,11 @@ SAFETY_FAULT_LATCHED
     +-- fault cleared + explicit reset -> SAFETY_DISARMED
 ```
 
+The controller zeros the stored pre-timeout command and does not automatically
+reapply it. A `CMD` received while `DISARMED` is rejected until an `ARM` is
+accepted. P-03 does not determine transport/session freshness, so rejecting a
+queued or replayed `ARM` + `CMD` pair remains outside the implemented contract.
+
 ## 5. Arm Preconditions
 
 Arm request is accepted only if:
@@ -153,7 +167,9 @@ Arm request is accepted only if:
 - No active fault is latched.
 - Motor PWM output is currently zero.
 - PWM compare values are zero.
-- Command source is known, or command timeout is inactive.
+- The selected Final MVP production ingress is the ESP32 single owner.
+- Target anti-replay phase only: session freshness is verified; P-03 does not
+  implement this check.
 - Optional: robot is physically safe for the current test stage.
 
 If any condition fails, the controller stays disarmed or enters a latched fault
@@ -220,10 +236,10 @@ Initial command limits:
 
 | Field | Initial handling |
 | --- | --- |
-| `vx_mmps` | Clamp to low-speed test limit |
-| `w_mradps` | Clamp to low-speed yaw limit |
-| `timeout_ms` | Clamp to configured min/max, initial 300 ms |
-| `seq` | Used for telemetry and stale command inspection |
+| `vx_mmps` | Reject values outside `-100..100`; do not change the active command |
+| `w_mradps` | Reject values outside `-500..500`; do not change the active command |
+| `timeout_ms` | Reject values outside `50..500`; initial default is 300 ms |
+| `seq` | Used for response/telemetry correlation; P-03 does not reject commands by sequence freshness |
 
 Invalid command behavior:
 
@@ -341,7 +357,7 @@ These fields make timeout, safety, and output behavior testable.
 | Arm with safe conditions | State becomes `SAFETY_ARMED_IDLE` |
 | Motion command while armed | State becomes `SAFETY_ARMED_ACTIVE`, limited PWM output |
 | Stop command | PWM zero, state returns to idle or disarmed |
-| Command timeout | State becomes `SAFETY_TIMEOUT_STOP`, output disabled |
+| Command timeout | Output/stored command zero, state becomes `SAFETY_DISARMED`; CMD-only is rejected, then an accepted `ARM` and valid `CMD` restore operation; transport anti-replay pending |
 | E-stop command | State becomes `SAFETY_ESTOP_LATCHED`, output disabled |
 | Low-voltage simulated | State becomes `SAFETY_LOW_VOLTAGE_STOP`, output disabled |
 | Fault injected | State becomes `SAFETY_FAULT_LATCHED`, output disabled |
@@ -359,3 +375,8 @@ All other states force:
 PWM = 0
 nonzero motor output blocked
 ```
+
+This is the ADR-015 required model. P-03A/P-03B source/static/full-build now
+enforces output/stored-command zero and `DISARMED` before RX processing, and
+starts a fresh default 300 ms first-CMD window on `ARM`. Flash, board, and PWM
+target-runtime evidence remains pending.

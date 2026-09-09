@@ -1,0 +1,49 @@
+--- Waiting for the device to reconnect.
+I (617) esp32_uart_bridge: RX TEL: t_ms=22463 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=4
+I (717) esp32_uart_bridge: RX TEL: t_ms=22563 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=5
+I (777) esp32_uart_bridge: STARTUP: line sync sent
+W (777) esp32_uart_bridge: RX ERR: ERR,seq=0,type=RX,code=RX_DESYNC
+I (817) esp32_uart_bridge: RX TEL: t_ms=22663 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=6
+I (877) esp32_uart_bridge: TX UART1: DISARM,seq=1314481158
+I (877) esp32_uart_bridge: RX ACK: seq=1314481158 type=DISARM ack_count=1
+I (877) esp32_uart_bridge: STARTUP: DISARM acknowledged
+I (877) esp32_uart_bridge: TX UART1: PING,seq=1314481159
+I (917) esp32_uart_bridge: RX TEL: t_ms=22763 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=7
+I (1017) esp32_uart_bridge: RX TEL: t_ms=22863 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=8
+I (1117) esp32_uart_bridge: RX TEL: t_ms=22963 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=9
+I (1217) esp32_uart_bridge: RX TEL: t_ms=23063 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=10
+I (1307) esp32_uart_bridge: RX TEL: t_ms=23163 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=11
+W (1377) esp32_uart_bridge: STARTUP: retry PING attempt=2
+I (1377) esp32_uart_bridge: TX UART1: PING,seq=1314481159
+I (1407) esp32_uart_bridge: RX TEL: t_ms=23263 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=12
+I (1507) esp32_uart_bridge: RX TEL: t_ms=23363 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=13
+I (1607) esp32_uart_bridge: RX TEL: t_ms=23463 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=14
+I (1707) esp32_uart_bridge: RX TEL: t_ms=23563 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=15
+I (1807) esp32_uart_bridge: RX TEL: t_ms=23663 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=16
+W (1887) esp32_uart_bridge: STARTUP: retry PING attempt=3
+I (1887) esp32_uart_bridge: TX UART1: PING,seq=1314481159
+I (1907) esp32_uart_bridge: RX TEL: t_ms=23763 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=17
+I (2007) esp32_uart_bridge: RX TEL: t_ms=23863 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=18
+I (2107) esp32_uart_bridge: RX TEL: t_ms=23963 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=19
+I (2207) esp32_uart_bridge: RX TEL: t_ms=24063 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=20
+I (2307) esp32_uart_bridge: RX TEL: t_ms=24163 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=21
+E (2387) esp32_uart_bridge: STARTUP FAILED: no matching PONG
+I (2407) esp32_uart_bridge: RX TEL: t_ms=24263 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=22
+I (2507) esp32_uart_bridge: RX TEL: t_ms=24363 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=23
+I (2607) esp32_uart_bridge: RX TEL: t_ms=24463 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=24
+I (2707) esp32_uart_bridge: RX TEL: t_ms=24563 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=25
+I (2807) esp32_uart_bridge: RX TEL: t_ms=24663 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=26
+I (2907) esp32_uart_bridge: RX TEL: t_ms=24763 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=27
+I (3007) esp32_uart_bridge: RX TEL: t_ms=24863 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=28
+I (3107) esp32_uart_bridge: RX TEL: t_ms=24963 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=29
+I (3207) esp32_uart_bridge: RX TEL: t_ms=25063 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=30
+I (3307) esp32_uart_bridge: RX TEL: t_ms=25163 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=31
+I (3407) esp32_uart_bridge: RX TEL: t_ms=25263 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=32
+I (3507) esp32_uart_bridge: RX TEL: t_ms=25363 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=33
+I (3607) esp32_uart_bridge: RX TEL: t_ms=25463 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=34
+I (3707) esp32_uart_bridge: RX TEL: t_ms=25563 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=35
+I (3807) esp32_uart_bridge: RX TEL: t_ms=25663 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=36
+I (3907) esp32_uart_bridge: RX TEL: t_ms=25763 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=37
+I (4007) esp32_uart_bridge: RX TEL: t_ms=25863 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=38
+I (4107) esp32_uart_bridge: RX TEL: t_ms=25963 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=39
+I (4207) esp32_uart_bridge: RX TEL: t_ms=26063 state=DISARMED last_seq=1314481159 vx=0 w=0 left_cps=0 right_cps=0 err=117 tel_count=40
