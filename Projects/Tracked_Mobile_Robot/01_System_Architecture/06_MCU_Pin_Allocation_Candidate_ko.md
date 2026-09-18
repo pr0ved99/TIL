@@ -68,6 +68,8 @@ UM1724에서 사용한 중요한 사실:
 | PC bench logger RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Production command RX disabled |
 | IMU I2C SCL | PB8 | I2C1_SCL | Arduino D15 / ST morpho CN10 pin 3 | Primary |
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
+| IMU interrupt `IMU_INT_N` | PB1 | GPIO input / EXTI1 | ST morpho CN10 pin 24 / H_NUC_UP_R4 Pin12 / C17/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
+| IMU reset `IMU_RST_N` | PC4 | GPIO output | ST morpho CN10 pin 34 / H_NUC_UP_R4 Pin17 / C22/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
 | 왼쪽 모터 PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
 | 오른쪽 모터 PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
 | Encoder channel 1 A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Motor-power-off validated |
@@ -87,6 +89,19 @@ UM1724에서 사용한 중요한 사실:
 | 향후 CAN TX | PA12 | CAN1_TX | ST morpho CN10 pin 12 | Reserve |
 | SWDIO | PA13 | SWDIO | ST-LINK / ST morpho CN7 pin 13 | Preserve |
 | SWCLK | PA14 | SWCLK | ST-LINK / ST morpho CN7 pin 15 | Preserve |
+
+2026-09-15 IMU 보조 핀 선정 당시 `.ioc`와 VRT에서 PB1/PC4는 미사용이었다.
+PB1은 JDBG_IMU Pin2의 INT(Net24), PC4는 Pin1의 RESET(Net23)에 연결할 설계 핀으로 선정했다.
+당시 두 소켓의 인출 홀 C17/R3, C22/R3도 비어 있었다. PB1의 EXTI1은 현재 사용자 버튼 PC13의 EXTI13과
+다른 라인이며, PC7의 향후 EXTI7 후보도 보존한다. CAN PA11/PA12, I2C PB8/PB9, optional gate/brake
+PC5/PC6, 진단 ADC PA4/PB0 및 SWD PA13/PA14는 유지한다.
+PB1은 active-low INT 입력, PC4는 active-low 센서 RESET 제어용이다. RST는 BNO 센서 리셋이며
+NUCLEO NRST와 구분한다. 실제 GPIO 설정과 풀업/출력 방식 검토는 IMU 통합 단계에서 수행한다.
+9/19에는 PB1/PC4 및 PB8/PB9의 STM·BNO 소켓↔JDBG 배선과 무전원 검사를 사용자가 완료했다.
+BNO 전원·모드·풀업 및 센서 동작은 미완료다. 상세 범위는
+[9/19 진행 기록](../docs/progress/2026-09-19_progress.md)에 보존한다.
+근거: [UM1724 Rev17 Table29](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf),
+[BNO08x 인터페이스 설명](https://www.ceva-ip.com/wp-content/uploads/BNO080_085-Datasheet.pdf).
 
 ## 하위 시스템별 근거
 

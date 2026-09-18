@@ -27,12 +27,17 @@
 #define BRIDGE_SCRIPTED_TEST_ENABLED            0U
 #define BRIDGE_MALFORMED_COMMAND_TEST_ENABLED   0U
 #define BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED    0U
+#define BRIDGE_T004_ESTOP_PWM_TEST_ENABLED      1U
 
-#if (BRIDGE_SCRIPTED_TEST_ENABLED + BRIDGE_MALFORMED_COMMAND_TEST_ENABLED + BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED) > 1U
+#if (BRIDGE_SCRIPTED_TEST_ENABLED + BRIDGE_MALFORMED_COMMAND_TEST_ENABLED + BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED + BRIDGE_T004_ESTOP_PWM_TEST_ENABLED) > 1U
 #error "Only one bridge test may be enabled"
 #endif
 #define TEST_STEP_PERIOD_MS         1000
 #define P03_TEST_STEP_PERIOD_MS     100U
+#define T004_CMD_REFRESH_PERIOD_MS  100U
+#define T004_CMD_TIMEOUT_MS         500U
+#define T004_TEST_VX_MMPS           50
+#define T004_TEST_W_MRADPS          0
 #define P03_CMD_TIMEOUT_TARGET_MS   500U
 #define LINE_BUF_SIZE               384
 #define RX_POLL_MS                  20
@@ -100,6 +105,17 @@ typedef enum {
     BRIDGE_P04B_RESET_DONE,
     BRIDGE_P04B_RESET_FAILED
 } bridge_p04b_reset_test_state_t;
+
+typedef enum {
+    BRIDGE_T004_COORD_DRIVE = 0,
+    BRIDGE_T004_COORD_RESET,
+    BRIDGE_T004_COORD_POST_RESET,
+    BRIDGE_T004_COORD_DONE,
+    BRIDGE_T004_COORD_FAILED
+} bridge_t004_coordinator_state_t;
+
+static bridge_t004_coordinator_state_t s_t004_coordinator_state =
+    BRIDGE_T004_COORD_DRIVE;
 
 #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED
 #define MALFORMED_TEST_VECTOR_COUNT 8U
@@ -396,6 +412,87 @@ static bridge_test_step_t bridge_uart_run_test_step(
             return step;
 
         case BRIDGE_TEST_RECOVERY_HOLD:
+            if(
+                BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                s_t004_coordinator_state == BRIDGE_T004_COORD_DRIVE
+            ){
+                if(
+                    s_telemetry.valid &&
+                    strcmp(s_telemetry.state, "FAULT") == 0 &&
+                    strcmp(s_telemetry.reason, "ESTOP_ACTIVE") == 0 &&
+                    s_telemetry.left_pwm == 0 &&
+                    s_telemetry.right_pwm == 0
+                ){
+                    ESP_LOGW(
+                        TAG,
+                        "T-ESTOP-004: ESTOP_ACTIVE/PWM 0 observed; "
+
+                        "CMD refresh stopped"
+                    );
+                    s_t004_coordinator_state = BRIDGE_T004_COORD_RESET;
+                    return BRIDGE_TEST_DONE;
+                }
+
+                if(
+                    bridge_uart_send_cmd(
+                        *seq,
+                        T004_TEST_VX_MMPS,
+                        T004_TEST_W_MRADPS,
+                        T004_CMD_TIMEOUT_MS
+                    )
+                ){
+                    (*seq)++;
+                }
+
+                return BRIDGE_TEST_RECOVERY_HOLD;
+            }
+
+            if(
+                BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                s_t004_coordinator_state == BRIDGE_T004_COORD_POST_RESET
+            ){
+                if(
+                    s_telemetry.valid &&
+                    strcmp(s_telemetry.state, "FAULT") == 0
+                ){
+                    ESP_LOGE(
+                        TAG,
+                        "T-ESTOP-004: unexpected FAULT during post-reset check"
+                    );
+                    s_t004_coordinator_state = BRIDGE_T004_COORD_FAILED;
+                    return BRIDGE_TEST_DONE;
+                }
+
+                if(
+                    s_telemetry.valid &&
+                    strcmp(s_telemetry.state, "ARMED") == 0 &&
+                    s_telemetry.vx_mmps == T004_TEST_VX_MMPS &&
+                    s_telemetry.w_mradps == T004_TEST_W_MRADPS &&
+                    s_telemetry.left_pwm == 50 &&
+                    s_telemetry.right_pwm == 50
+                ){
+                    ESP_LOGI(
+                        TAG,
+                        "T-ESTOP-004: post-reset fresh CMD restored PWM; "
+                        "advancing to final DISARM"
+                    );
+                    return BRIDGE_TEST_FINAL_DISARM;
+                }
+
+                if(
+                    bridge_uart_send_cmd(
+                        *seq,
+                        T004_TEST_VX_MMPS,
+                        T004_TEST_W_MRADPS,
+                        T004_CMD_TIMEOUT_MS
+                    )
+                ){
+                    (*seq)++;
+                }
+
+                return BRIDGE_TEST_RECOVERY_HOLD;
+            }
+
             ESP_LOGI(TAG, "P-03: observing recovered output");
             return BRIDGE_TEST_FINAL_DISARM;
 
@@ -1247,7 +1344,10 @@ void app_main(void){
     s_startup_ping_seq = s_startup_disarm_seq + 1U;
 
     uint32_t test_seq = s_startup_ping_seq + 1U;
-    bridge_test_step_t test_step = BRIDGE_TEST_CMD_BEFORE_ARM;
+    bridge_test_step_t test_step =
+        (BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U)
+            ? BRIDGE_TEST_RECOVERY_ARM
+            : BRIDGE_TEST_CMD_BEFORE_ARM;
     bridge_p04b_reset_test_state_t p04b_reset_test_state =
         BRIDGE_P04B_RESET_WAIT_ACTIVE;
 
@@ -1316,17 +1416,46 @@ void app_main(void){
         }
 
         if(
-            BRIDGE_SCRIPTED_TEST_ENABLED != 0U &&
+            (
+                BRIDGE_SCRIPTED_TEST_ENABLED != 0U ||
+                (
+                    BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                    (
+                        s_t004_coordinator_state ==
+                            BRIDGE_T004_COORD_DRIVE ||
+                        s_t004_coordinator_state ==
+                            BRIDGE_T004_COORD_POST_RESET
+                    )
+                )
+            ) &&
             s_startup_state == BRIDGE_STARTUP_READY &&
             test_step != BRIDGE_TEST_DONE &&
-            now - last_test_tick >= pdMS_TO_TICKS(P03_TEST_STEP_PERIOD_MS)
+            now - last_test_tick >= pdMS_TO_TICKS(
+                (BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U)
+                    ? T004_CMD_REFRESH_PERIOD_MS
+                    : P03_TEST_STEP_PERIOD_MS
+            )
         ){
             test_step = bridge_uart_run_test_step(test_step, &test_seq);
             last_test_tick = now;
+
+            if(
+                BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                s_t004_coordinator_state == BRIDGE_T004_COORD_POST_RESET &&
+                test_step == BRIDGE_TEST_DONE
+            ){
+                s_t004_coordinator_state = BRIDGE_T004_COORD_DONE;
+            }
         }
 
         if(
-            BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED != 0U &&
+            (
+                BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED != 0U ||
+                (
+                    BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                     s_t004_coordinator_state == BRIDGE_T004_COORD_RESET
+                )
+            ) &&
             s_startup_state == BRIDGE_STARTUP_READY &&
             p04b_reset_test_state != BRIDGE_P04B_RESET_DONE &&
             p04b_reset_test_state != BRIDGE_P04B_RESET_FAILED
@@ -1336,6 +1465,24 @@ void app_main(void){
                     p04b_reset_test_state,
                     &test_seq
                 );
+
+            if(
+                BRIDGE_T004_ESTOP_PWM_TEST_ENABLED != 0U &&
+                s_t004_coordinator_state == BRIDGE_T004_COORD_RESET
+            ){
+                if(p04b_reset_test_state == BRIDGE_P04B_RESET_DONE){
+                    s_t004_coordinator_state =
+                        BRIDGE_T004_COORD_POST_RESET;
+                    test_step = BRIDGE_TEST_RECOVERY_ARM;
+                    last_test_tick = now;
+                }
+                else if(
+                    p04b_reset_test_state == BRIDGE_P04B_RESET_FAILED
+                ){
+                    s_t004_coordinator_state = BRIDGE_T004_COORD_FAILED;
+                    test_step = BRIDGE_TEST_DONE;
+                }
+            }
         }
 
         #if BRIDGE_MALFORMED_COMMAND_TEST_ENABLED

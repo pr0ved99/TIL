@@ -4,12 +4,13 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [`2026-09-08_progress.md`](2026-09-08_progress.md) — K2 표시/도통과 S0-A/S0-B 실제
-단선·독립성 복구, XL4015 #1 dual-2P NUCLEO/ESP32 단독·동시 power, XL4015 #2 `AUX_5V`,
-conditioned `ESTOP_SENSE` released `0.06 V`/pressed·wire-open `3.27 V` 기능 subset PASS.
-Firmware/PWM `T-ESTOP-004`는 미실행이다.
+Latest: [2026-09-19 progress](2026-09-19_progress.md) — UART·CTRL·ENC·IMU 배선,
+안내한 무전원 검사 및 마감 사용자 보고 PASS. 다음은 T004 BUILD-01 사용자 빌드다.
+Scheduler 교정과 hook-0 30/30 기준선은 유지하며 현재 소스는 T004만 `1U`다.
+사용자 build/flash/runtime 및 최신 PDF 재출력 완료는 아직 보고되지 않았다.
 
-Latest powered hardware: 위 9/8 기록과 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
+Latest powered hardware: [2026-09-08 progress](2026-09-08_progress.md)와
+[report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
 이전 [`2026-09-05_progress.md`](2026-09-05_progress.md)는 12.24 V control-only K2/K1 pickup/dropout,
 S2 self-hold와 S0/S1 nominal no-auto-restart subset을 기록한다. MDD10A B+는
 분리·절연했으므로 전체 Physical E-stop이나 `T-ESTOP-005A PASS`가 아니다.
@@ -51,6 +52,10 @@ S2 self-hold와 S0/S1 nominal no-auto-restart subset을 기록한다. MDD10A B+�
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-19 | [2026-09-19_progress.md](2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; CTRL/ENC 각 3핀 두 개, T004 사용자 빌드부터 재개 |
+| 2026-09-15 | [2026-09-15_progress.md](2026-09-15_progress.md) | README 162줄 개편, 상세 색인 보존, 9/15 도면 검토와 이후 저장본 경계 정리; 기존 배선 도면 잔여 검토부터 재개 |
+| 2026-09-10 | [`2026-09-10_progress.md`](2026-09-10_progress.md) | Daily UART/debug-header plan; carried-forward scheduler correction and hook-0 30/30 PASS; T004-only 1U confirmed, user build/flash/runtime unreported |
+| 2026-09-09 | [`2026-09-09_progress.md`](2026-09-09_progress.md) | Historical initial paused checkpoint; subsequent scheduler/test completion and current resume point are carried forward in 2026-09-10 progress |
 | 2026-09-08 | [`2026-09-08_progress.md`](2026-09-08_progress.md) | K2/S0 wire-break, XL4015 #1 dual-board power, #2 AUX path와 conditioned sense 0.06/3.27 V 기능 subset PASS; T004 firmware/PWM NOT RUN |
 | 2026-09-07 | [`2026-09-07_progress.md`](2026-09-07_progress.md) | Session/documentation 복원, host 29/29 PASS, K2 VeroRoute/PDF Label 정정 확인 및 R02/R03 재측정 low-Ω PASS; 전체 E-stop PARTIAL |
 | 2026-09-05 | [`2026-09-05_progress.md`](2026-09-05_progress.md) | K2 bottom-view/polarity as-built correction 뒤 12.24 V control-only K2/K1/S2/S0/S1 nominal subset와 S0-B contact truth table PASS; MDD10A B+ disconnected, wire-break/T003/full rail gate OPEN |

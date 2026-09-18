@@ -4,25 +4,31 @@ This folder stores short-term execution plans for hardware sessions.
 
 Use progress logs for what actually happened. Use this folder for the plan that should guide the next bench session.
 
-The current bench runbook is the
-[`2026-09-05 Physical E-stop remaining bench gates`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md).
-It starts with power-off K2 post-rework continuity and the remaining `T-ESTOP-002` explicit
-wire-break/independence matrix, then permits `T-ESTOP-003` conditioned PC7 power only after the
-unpowered acceptance passes. MDD10A B+ and motor stay disconnected through that sequence.
+Current bench record is the
+[soldering checklist](2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md).
+UART/CTRL/ENC/IMU wiring, instructed unpowered checks and final fit/workmanship passed by user report
+through 9/19. Resume at **BUILD-01: user builds both firmwares with boards unpowered**.
+See [9/19 progress](../progress/2026-09-19_progress.md) for the closeout and remaining boundaries.
+The detailed runtime procedure remains the
+[`2026-09-08 T-ESTOP-004 firmware/PWM integration runbook`](2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md).
+It records each logical result while preserving the completed K2, wire-open, board-power and
+conditioned-sense baseline. Connected firmware edits use a complete replacement range and reviewed block.
+MDD10A B+ and both motors remain disconnected throughout T-ESTOP-004.
 
-Current firmware checkpoint is `P-04B PARTIAL`. The 2026-08-29 reason/command-age checkpoint was
-`28/28`; the 2026-08-30 default-`0U` reset closeout harness brings current canonical host/static to
-`25 + 2 + 2 = 29/29` and its ESP32 isolated build is PASS. The closeout order is active reset rejection
-(`ERR ESTOP_ACTIVE` + persistent `TEL reason=ESTOP_ACTIVE`), released explicit-reset success,
-then all-hooks-`0U` target reflash and motor/LiPo-disconnected no-command safe runtime before P-05.
-The historical hook-0 isolated STM32/ESP32 build and current default-off reset-harness ESP32 isolated
-build are PASS; none of these build results substitutes for the still-open target runtime.
+The scheduler correction and static-test update are complete: the all-hooks-0U baseline passed **30/30**
+tests and seven in-memory regression mutations were caught. Current ESP source has only T004 enabled at
+`1U`; build/flash/runtime results have not been reported. Do not repeat the completed scheduler replacement.
+The user performs both STM32 and ESP32 builds and flashes. Latest matching PDF exports remain unconfirmed;
+powered communication, IMU integration and T004 runtime are not established by the wiring checks.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
-| 2026-09-05 / current bench runbook | [`2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | **POWER-OFF REENTRY FIRST**: corrected K2 mapping continuity -> explicit S0-B/S0-A wire-break and independence -> conditioned PC7; MDD10A B+/motor remain disconnected |
+| 2026-09-16 plan / updated through 9/19 | [납땜 체크리스트](2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) | 배선·무전원 검사·마감 완료; T004 사용자 빌드부터 재개 |
+| 2026-09-11 plan / updated through 9/19 | [`2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md`](2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md) | UART·측정 헤더 도면 검토 및 제작 이력 |
+| 2026-09-08 / current T-ESTOP-004 runtime procedure | [`2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md`](2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md) | Scheduler/static work complete; same-boot active/reset/post-reset capture, wire-open and all-hooks-0U safe restore remain; MDD10A B+/motors disconnected |
+| 2026-09-05 / Gates 1~4 completed, historical predecessor | [`2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | Corrected K2 mapping, S0-A/S0-B independence and conditioned PC7 baseline; Gate 5 moved to the 2026-09-08 runbook |
 | 2026-09-03 / execution closed, historical | [`2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md`](2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md) | 2026-09-05에 실행 종료; rail/U1 subset과 후속 control-only results는 progress에 보존, K2 frozen coordinate table은 bottom-view 해석 오류로 비정본이며 남은 formal gates는 새 runbook으로 이관 |
 | Project-wide / current | [`00_Project_Master_Plan_To_Final_MVP_ko.md`](00_Project_Master_Plan_To_Final_MVP_ko.md) | Four-chapter V-model roadmap; P-04B PARTIAL/current `29/29` default-off reset-harness closeout sequence, nominal E-stop MVP gate and post-MVP single-fault boundary |
 | 2026-08-26 to 2026-09-15 / historical | [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md) | Historical dated schedule: `P-01~P-09`, received-subset screen, HOME-first checkpoint, milestones and buffers |

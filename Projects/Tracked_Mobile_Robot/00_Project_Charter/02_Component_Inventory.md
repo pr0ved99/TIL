@@ -8,6 +8,7 @@
 |---|---|---|---|
 | MCU | NUCLEO-F446RE | low-level motor controller | STM32 firmware main target |
 | MCU | ESP32-S3 DevKitC | support controller | wireless/UI/sensor test candidate |
+| Communication | SN65HVD230-based MCU-230 CAN transceiver module | future CAN physical interface | USER-REPORTED OWNED / MODEL IDENTIFIED 2026-09-15; nominal 3.3 V transceiver IC; module terminal order, RS wiring, termination and dimensions not yet checked |
 | Firmware | STM32 HAL / CubeMX | initial bring-up | validate PWM, encoder, ADC, UART first |
 | Firmware | FreeRTOS | required later firmware architecture | task, queue, timing, safety separation |
 | Firmware | STM32 LL Driver | advanced migration target | timing-critical paths after HAL validation |
@@ -58,7 +59,6 @@ terminal first-article crimp, cavity map, 6x6 continuity/isolation, seal/retenti
 | Component | Reason |
 |---|---|
 | BMS | not used with finished RC LiPo pack in this project phase |
-| CAN transceiver | UART first, required later CAN phase |
 | USB-CAN adapter | required later for CAN debugging |
 | LiDAR | drivetrain and odometry first |
 | large 5000mAh battery | current 3S LiPo is enough for initial validation |

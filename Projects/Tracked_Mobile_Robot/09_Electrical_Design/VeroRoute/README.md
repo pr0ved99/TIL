@@ -4,6 +4,37 @@
 
 ## 현재 작업 파일
 
+- **Git 종료 시점 최신 저장본:** 아래 CTRL수정본은 9/19 02:33:28에 다시 저장됐다.
+  160,699 bytes, SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`.
+  아래 9/18 검토본과 다르며 이번에는 파일 보존만 진행했다. 다음 도면 사용 전 변경분 대조가 필요하다.
+- **9/18 검토 당시 기준:** [CTRL수정본 VRT](Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt).
+  2026-09-18 19:21:55 저장, 161,191 bytes,
+  SHA-256 `251b271958db7ae46055e674bef86913f683b9c5241d12fd48fa47f34cbcb772`.
+  CTRL/ENC가 각각 `JDBG_CTRL_1/2`, `JDBG_ENC_1/2`의 3핀 두 개로 분리됐다.
+  **CTRL GND는 CTRL_2 Pin3(C35/R7)**이며 C35/R6은 PC7이다.
+  UART/IMU는 기존 배정을 유지하고, 132 Wire·28개 비-Wire 부품 검사에서 Broken Net과 Net 불일치는 0건이다.
+  현재 납땜·검사 지점은 [납땜 순서 문서](../../docs/plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md)의 최신 표를 따른다.
+  아래 IMU_WIP는 9/16 검토본으로 보존하며, 사용자 지정 최신 파일을 덮어쓰거나 다시 이름 변경하지 않았다.
+
+## 9/16 이름 정리 당시 검토본
+
+- [RevC Logic Power / UART Debug / IMU WIP](Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_IMU_WIP.vrt)
+  - 사용자 저장: 2026-09-16 22:36:06, 160,794 bytes.
+  - SHA-256: `25f941ab93cd2949b1cf573e830468c4895a5789a7c595ed195317a6699077fa`.
+  - 기존 `Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt`를
+    위 이름으로 변경했다. 내용 hash는 변경 전후 동일하며, 이전 revision 파일은 보존했다.
+  - IMU RESET=PC4/Net23, INT=PB1/Net24, SDA=PB9/Net25, SCL=PB8/Net26의
+    STM32↔BNO 소켓↔JDBG_IMU 연결을 확인했다. UART·ENC·CTRL·공통 GND와 CAN 예약도 유지된다.
+  - 지정된 양수 Net의 단절 및 검사한 Wire/Track의 Net 불일치는 0건이다.
+    이는 도면 연결 검토이며 BNO 전원·모드 설정, 실물 제작·도통·센서 동작 검증은 미완료다.
+- 기존 `exports/*_CTRL수정본_addIMU.pdf`는 **2026-09-15 17:55:25 이전 배선 상태**이며
+  이번 SCL/SDA MCU 연결이 없다. 현재 VRT와 같은 revision의 PDF로 사용하지 않는다.
+- 다음 export 이름은 `2026-09-16_Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_IMU_component_side_reference.pdf`와
+  같은 접두사의 `_solder_side_mirrored.pdf`다. 두 파일은 아직 생성하지 않았다.
+- 상세 결과: [진행 중인 UART·측정 헤더 계획](../../docs/plans/2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md).
+
+## 2026-09-07 K2 표기 정정 당시 작업 파일
+
 아래 크기와 SHA-256은 2026-09-07 사용자 K2 Label 정정 저장 후 실제 파일을 읽어 확인했다. 파일 식별값이며
 실물 배선 일치나 재제작 release를 뜻하지 않는다.
 

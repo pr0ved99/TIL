@@ -1409,9 +1409,16 @@ class FirmwareContractTest(unittest.TestCase):
             self.assertIn(token, app_main)
         self.assertEqual(app_main.count("bridge_uart_startup_step(now);"), 1)
         self.assertIn(
-            "if(BRIDGE_SCRIPTED_TEST_ENABLED!=0U&&"
+            "if((BRIDGE_SCRIPTED_TEST_ENABLED!=0U||"
+            "(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "(s_t004_coordinator_state==BRIDGE_T004_COORD_DRIVE||"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_POST_RESET)))&&"
             "s_startup_state==BRIDGE_STARTUP_READY&&"
             "test_step!=BRIDGE_TEST_DONE&&",
+            app_main,
+        )
+        self.assertIn(
+            "test_step=bridge_uart_run_test_step(test_step,&test_seq);",
             app_main,
         )
         self.assertNotIn("vTaskDelay(", app_main)
@@ -1432,7 +1439,8 @@ class FirmwareContractTest(unittest.TestCase):
         self.assertIn(
             "#if(BRIDGE_SCRIPTED_TEST_ENABLED+"
             "BRIDGE_MALFORMED_COMMAND_TEST_ENABLED+"
-            "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED)>1U",
+            "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED+"
+            "BRIDGE_T004_ESTOP_PWM_TEST_ENABLED)>1U",
             compact_source,
         )
         self.assertIn('#error"Onlyonebridgetestmaybeenabled"', compact_source)
@@ -1495,10 +1503,15 @@ class FirmwareContractTest(unittest.TestCase):
 
         app_main = compact_c(extract_function(source, "app_main"))
         self.assertIn(
-            "if(BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED!=0U&&"
+            "if((BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED!=0U||"
+            "(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_RESET))&&"
             "s_startup_state==BRIDGE_STARTUP_READY&&"
             "p04b_reset_test_state!=BRIDGE_P04B_RESET_DONE&&"
-            "p04b_reset_test_state!=BRIDGE_P04B_RESET_FAILED)",
+            "p04b_reset_test_state!=BRIDGE_P04B_RESET_FAILED){"
+            "p04b_reset_test_state="
+            "bridge_uart_run_p04b_estop_reset_test_step("
+            "p04b_reset_test_state,&test_seq);",
             app_main,
         )
         self.assertEqual(
@@ -1511,6 +1524,108 @@ class FirmwareContractTest(unittest.TestCase):
         )
         self.assertNotIn("bridge_uart_send_arm(", app_main)
         self.assertNotIn("bridge_uart_send_cmd(", app_main)
+
+    def test_esp32_t004_coordinator_contract(self) -> None:
+        source = self.source["esp_c"]
+        definitions = parse_defines(source)
+        for name in (
+            "BRIDGE_SCRIPTED_TEST_ENABLED",
+            "BRIDGE_MALFORMED_COMMAND_TEST_ENABLED",
+            "BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED",
+            "BRIDGE_T004_ESTOP_PWM_TEST_ENABLED",
+        ):
+            with self.subTest(hook=name):
+                self.assertEqual(integer_define(definitions, name), 0)
+
+        for name, value in {
+            "T004_CMD_REFRESH_PERIOD_MS": 100,
+            "T004_CMD_TIMEOUT_MS": 500,
+            "T004_TEST_VX_MMPS": 50,
+            "T004_TEST_W_MRADPS": 0,
+            "P03_CMD_TIMEOUT_TARGET_MS": 500,
+        }.items():
+            with self.subTest(setting=name):
+                self.assertEqual(integer_define(definitions, name), value)
+
+        app_main = compact_c(extract_function(source, "app_main"))
+        for token in (
+            "bridge_test_step_ttest_step="
+            "(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U)"
+            "?BRIDGE_TEST_RECOVERY_ARM:BRIDGE_TEST_CMD_BEFORE_ARM;",
+            "now-last_test_tick>=pdMS_TO_TICKS("
+            "(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U)"
+            "?T004_CMD_REFRESH_PERIOD_MS:P03_TEST_STEP_PERIOD_MS)",
+            "if(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_POST_RESET&&"
+            "test_step==BRIDGE_TEST_DONE){"
+            "s_t004_coordinator_state=BRIDGE_T004_COORD_DONE;}",
+            "if(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_RESET){"
+            "if(p04b_reset_test_state==BRIDGE_P04B_RESET_DONE){"
+            "s_t004_coordinator_state=BRIDGE_T004_COORD_POST_RESET;"
+            "test_step=BRIDGE_TEST_RECOVERY_ARM;last_test_tick=now;}"
+            "elseif(p04b_reset_test_state==BRIDGE_P04B_RESET_FAILED){"
+            "s_t004_coordinator_state=BRIDGE_T004_COORD_FAILED;"
+            "test_step=BRIDGE_TEST_DONE;}}",
+        ):
+            self.assertIn(token, app_main)
+        self.assert_assignment(
+            source, "s_t004_coordinator_state", "BRIDGE_T004_COORD_DRIVE"
+        )
+
+        runner = compact_c(extract_function(source, "bridge_uart_run_test_step"))
+        hold = runner.split("caseBRIDGE_TEST_RECOVERY_HOLD:", 1)[1]
+        hold, final = hold.split("caseBRIDGE_TEST_FINAL_DISARM:", 1)
+        drive, post_reset = hold.split(
+            "if(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_POST_RESET){",
+            1,
+        )
+        refresh = (
+            "bridge_uart_send_cmd(*seq,T004_TEST_VX_MMPS,"
+            "T004_TEST_W_MRADPS,T004_CMD_TIMEOUT_MS)"
+        )
+
+        self.assert_tokens_in_order(
+            drive,
+            "if(BRIDGE_T004_ESTOP_PWM_TEST_ENABLED!=0U&&"
+            "s_t004_coordinator_state==BRIDGE_T004_COORD_DRIVE){",
+            "if(s_telemetry.valid&&"
+            'strcmp(s_telemetry.state,"FAULT")==0&&'
+            'strcmp(s_telemetry.reason,"ESTOP_ACTIVE")==0&&'
+            "s_telemetry.left_pwm==0&&s_telemetry.right_pwm==0){",
+            "s_t004_coordinator_state=BRIDGE_T004_COORD_RESET;",
+            "returnBRIDGE_TEST_DONE;}",
+            refresh,
+            "returnBRIDGE_TEST_RECOVERY_HOLD;",
+        )
+        self.assert_tokens_in_order(
+            post_reset,
+            "if(s_telemetry.valid&&"
+            'strcmp(s_telemetry.state,"FAULT")==0){',
+            "s_t004_coordinator_state=BRIDGE_T004_COORD_FAILED;",
+            "returnBRIDGE_TEST_DONE;}",
+            "if(s_telemetry.valid&&"
+            'strcmp(s_telemetry.state,"ARMED")==0&&'
+            "s_telemetry.vx_mmps==T004_TEST_VX_MMPS&&"
+            "s_telemetry.w_mradps==T004_TEST_W_MRADPS&&"
+            "s_telemetry.left_pwm==50&&s_telemetry.right_pwm==50){",
+            "returnBRIDGE_TEST_FINAL_DISARM;}",
+            refresh,
+            "returnBRIDGE_TEST_RECOVERY_HOLD;",
+        )
+        for phase in (drive, post_reset):
+            self.assertNotIn(
+                "bridge_uart_send_cmd(",
+                phase.split("returnBRIDGE_TEST_DONE;", 1)[0],
+            )
+        self.assert_tokens_in_order(
+            final,
+            "if(bridge_uart_send_disarm(*seq)){",
+            "(*seq)++;",
+            "returnBRIDGE_TEST_DONE;}",
+            "returnstep;",
+        )
 
     def test_esp32_field_parser_requires_exact_field_boundaries(self) -> None:
         esp_source = compact_c(self.source["esp_c"])

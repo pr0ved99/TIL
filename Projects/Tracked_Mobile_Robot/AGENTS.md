@@ -41,23 +41,30 @@ Firmware learning work normally follows this loop:
 
 ```text
 requirement and safety condition
--> one small code block with an exact insertion location
+-> state flow, safety reason, and verification criteria
+-> one logically complete code block with an exact replacement range
 -> user types and saves it
 -> Codex rereads the real file
--> design and structure explanation
 -> tests/build
 -> board measurement or log evidence
 ```
 
 Apply these rules:
 
-- The default for learning-target STM32 and ESP32 firmware is that the user types each small block. Do not replace this with a large paste-ready module.
+- The default for learning-target STM32 and ESP32 firmware is that the user types the code. For a connected
+  function or scheduler change, provide the exact replacement range and the complete reviewed block at once;
+  do not fragment it into repeated one-character or few-line edits. Keep unrelated modules out of the block.
 - If the user explicitly says `너가 추가해`, `너가 수정해`, `직접 진행해`, or otherwise clearly delegates the edit, Codex may edit the stated scope directly. Documentation, tests, and repetitive mechanical edits may also be performed directly when they are inside the requested scope.
 - When the user says `확인해봐`, reread the actual saved file before judging it. Check the exact text, placement, typos, control flow, compile impact, and relevant safety invariant; do not rely only on the previous chat message.
 - After presenting or editing code, explain it in enough detail for the user to reconstruct the reasoning. Cover the problem being solved, why the design was chosen, module/state/data responsibilities, control and data flow, normal path, timeout/error/failure path, safety invariants, alternatives and tradeoffs, and the verification method with explicit PASS criteria.
-- When the user is typing, present the code and exact location first, then give the detailed explanation. Keep each typing step independently reviewable.
+- Before the user types, present the exact replacement range, state flow, design reason and complete connected
+  block as one instruction so the user can reconstruct it. If several related corrections are found, provide
+  one corrected replacement block instead of serial micro-fixes.
 - A successful static test or build is not board-runtime or electrical evidence. State the evidence boundary explicitly before moving to flash, power, or hardware work.
 - Hardware power, rewiring, flashing, and physical measurements are performed by the user. Give the exact preconditions, expected observation, stop conditions, and PASS criteria before asking the user to act.
+- The user also performs **both STM32 and ESP32 firmware builds**. Do not run a build or flash on their behalf
+  unless they explicitly delegate it again. Codex may maintain and run the Python contract tests; the user
+  need not retype repetitive validation code.
 
 ## Bench Workflow
 

@@ -2,7 +2,7 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-09-08 (XL4015 logic power and conditioned Physical E-stop sense bench results)
+Last updated: 2026-09-19 (debug/IMU wiring and unpowered checks complete; user build pending)
 
 ## Project Identity
 
@@ -26,7 +26,7 @@ Last updated: 2026-09-08 (XL4015 logic power and conditioned Physical E-stop sen
 | Adapter plate | 174 x 208.93379 mm PC 3T order candidate with the supplier minimum-hole response reflected in 8 holes changed to 3.0 mm. The user reported the fabricated custom PC plate received on 2026-08-26. Exact order-source identity, physical dimensions/hole pattern and chassis/module fit remain pending. |
 | Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
-| CAN transceiver | Not selected yet |
+| CAN transceiver | SN65HVD230-based MCU-230 module, user-reported owned/identified 2026-09-15; module terminal order, RS wiring, termination and dimensions not yet checked |
 | USB-CAN adapter | Not selected yet |
 | DC main switch | Available; fused switch path validated 2026-07-10 and MDD10A input check repeated 2026-07-26 |
 
@@ -135,15 +135,25 @@ Last updated: 2026-09-08 (XL4015 logic power and conditioned Physical E-stop sen
 | K1 upstream rail ADC candidate | PA4, ADC12_IN4 -> `VBAT_PROTECTED_SENSE` |
 | K1 downstream rail ADC candidate | PB0, ADC12_IN8 -> `MOTOR_VBAT_SAFE_SENSE` |
 | Physical E-stop sense, configured/direct-runtime partial | PC7 GPIO input, internal pull-up, active HIGH/open -> `ESTOP_SENSE` |
-| IMU I2C | PB8 / PB9, I2C1 |
+| IMU I2C | PB8 / PB9, I2C1; socket/debug wiring and unpowered checks user-reported PASS 2026-09-19; powered integration pending |
+| IMU interrupt, 2026-09-15 design selection | PB1 / EXTI1, CN10 pin 24 = H_NUC_UP_R4 pin 12, C17/R4; JDBG_IMU pin 2 / Net24; wiring/unpowered checks user-reported PASS 2026-09-19, firmware configuration pending |
+| IMU reset, 2026-09-15 design selection | PC4 GPIO output, CN10 pin 34 = H_NUC_UP_R4 pin 17, C22/R4; JDBG_IMU pin 1 / Net23; wiring/unpowered checks user-reported PASS 2026-09-19, firmware configuration pending |
 | CAN RX/TX | PA11 / PA12, CAN1 |
 | SWD | PA13 / PA14 preserved |
+
+2026-09-15 CAN reservation check: preserve PA12/TX at CN10 pin 12 =
+`H_NUC_UP_R4` pin 6 (`C11/R4`) and PA11/RX at CN10 pin 14 =
+`H_NUC_UP_R4` pin 7 (`C12/R4`). Both are unused in the current `.ioc` and VRT;
+keep adjacent breakout pads `C11/R3` and `C12/R3` available. Do not allocate
+these pins to IMU INT/RESET. IMU I2C remains PB8/PB9. The owned transceiver is now
+identified as an SN65HVD230-based MCU-230 module. Any optional RS-control GPIO and
+connector footprint depend on the actual module's exposed pins, circuit and dimensions.
 
 ## CAN Parts Needed Later
 
 Minimum CAN bring-up parts:
 
-- 3.3 V CAN transceiver module, SN65HVD230-class preferred for first STM32 test
+- SN65HVD230-based MCU-230 transceiver module: already owned; the TI transceiver uses nominal 3.3 V supply. Verify actual module terminal order, RS wiring and termination before its hardware connection.
 - SocketCAN-compatible USB-CAN adapter
 - 120 ohm termination resistor x2
 - Twisted pair wire for CANH/CANL
@@ -413,12 +423,12 @@ Important docs:
 Ask the user or verify from hardware only for these:
 
 - Vehicle left/right assignment for MDD10A channel 1/2
-- Final CAN transceiver model
+- MCU-230 CAN module terminal order, RS wiring, termination and mounting dimensions (SN65HVD230 model identified)
 - Final USB-CAN adapter model
 - Battery voltage divider resistor values
 - External-tachometer RPM accuracy and wheel-speed scale; the current firmware output-shaft count constant is 1560
 - Final F1 release after loaded start-waveform, voltage-drop/thermal and protection-coordination evidence; 10 A ATOF remains the prototype candidate
-- BNO085 power and I2C final wiring
+- BNO085 power, mode/pull-ups and powered I2C integration; signal socket/debug wiring passed unpowered checks on 2026-09-19
 - Physical connector, footprint, perfboard and harness release; 6P cavity mapping, 18 AWG first article, terminal retention and integrated wire-break/independence passed in the operator-reported scope, while permanent labels, seal/IP qualification and corrected digital as-built verification remain open
 - K1 full electrical release and remaining Physical E-stop integration; assembly and nominal control-only pickup/dropout passed, while 14 AWG termination compatibility, direct downstream rail, load/thermal and timing remain open
 - Post-MVP disposition/mitigation for `FM-ESTOP-014`: `T-ESTOP-005B` covers S2 stuck closed and 6P S2-pair short; until closed, document the residual risk and make no single-fault-tolerant/industrial-safety claim
