@@ -46,15 +46,15 @@ commit/remote before resuming; 3c756e5 is the previous checkpoint.
   starts `7bc5eca6f`, matching its USB boot log. Artifact hashes/limitations are in report 26.
   Complete flash transcripts/STM flash readback and a controlled ESP BIN backup were not supplied.
 - Scheduler correction is complete. Do not re-enter the coordinator or Python validation code.
-- Current user-designated drawing is `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt`,
-  At Git closeout the live file is saved 9/19 02:33:28, 160,699 bytes,
+- Current user-designated drawing is `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt`.
+  A new save appeared during Git closeout on 9/22 04:18:39, 160,699 bytes,
+  SHA-256 `26bc7f6cfc48d415185a1c40590c181038191a3e3d91653f68ed7e75e1a8c666`.
+  This latest save is preserved without a new circuit/Net review. Compare relevant changes before using
+  it to prescribe probe points or new wiring; do not infer a physical wiring change from a saved file.
+- T004 header/Net checks used the preceding 160,699-byte file,
   SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`.
-  This differs from the reviewed 9/18 revision (161,191 bytes,
-  SHA-256 `251b271958db7ae46055e674bef86913f683b9c5241d12fd48fa47f34cbcb772`).
-  On 9/22 the live T004 headers and their STM Net endpoints were checked directly in this file.
-  This was not a revalidation of the complete wire graph or latest PDF export.
-  The similarly named `...UART_Debug_IMU_WIP.vrt` is the older 9/16 revision; do not use it for current header numbering.
-  The 9/18 reviewed drawing had 132 wires/28 checked non-wire parts, zero broken nets and zero detected Net inconsistencies.
+  Earlier full Wire132/parts28/BrokenNets0 findings belonged to the 9/18 revision, not the new save.
+  The similarly named `...UART_Debug_IMU_WIP.vrt` and old addIMU PDF remain older references.
 - CTRL and ENC each use two 3-pin connectors. CTRL_1 Pins1/2/3 are DIR1/PWM1/DIR2 at C35/R1/2/3;
   CTRL_2 Pins1/2/3 are PWM2/PC7/GND at C35/R5/6/7. **C35/R6 is PC7, not GND.**
   ENC_1 Pins1/2/3 are PB4/PB5/GND at C9/8/7,R37; ENC_2 are PA0/PA1/GND at C5/4/3,R37.
