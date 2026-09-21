@@ -1,0 +1,346 @@
+{
+  "file": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run06_active_sense_open.sr",
+  "sha256": "37984c31ddb2be3da7342df4b2ef5a6e0a526d66bab6b6b2b86e21f380524a2d",
+  "metadata": "[global]\nsigrok version=0.6.0-git-883c2ac\n\n[device 1]\ncapturefile=logic-1\ntotal probes=8\nsamplerate=4 MHz\ntotal analog=0\nprobe1=D0\nprobe2=D1\nprobe3=D2\nprobe4=D3\nprobe5=D4\nprobe6=D5\nprobe7=D6\nprobe8=D7\nunitsize=1\n",
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "0": {
+      "high_samples": 54961231,
+      "high_runs": 2,
+      "high_intervals_s": [
+        [
+          5.3566945,
+          5.3567525
+        ],
+        [
+          11.25975025,
+          25.0
+        ]
+      ]
+    },
+    "1": {
+      "high_samples": 956627,
+      "high_runs": 90916,
+      "bursts": [
+        {
+          "start_s": 6.47969475,
+          "end_s": 11.2601075,
+          "pulses": 90916,
+          "mean_frequency_hz": 19018.243205080737,
+          "duty_pct": 5.002795146769207,
+          "end_censored": false
+        }
+      ],
+      "last_pulses_s": [
+        [
+          11.25984175,
+          11.25984425
+        ],
+        [
+          11.25989425,
+          11.259897
+        ],
+        [
+          11.259947,
+          11.2599495
+        ],
+        [
+          11.2599995,
+          11.26000225
+        ],
+        [
+          11.26005225,
+          11.26005475
+        ],
+        [
+          11.26010475,
+          11.2601075
+        ]
+      ]
+    },
+    "2": {
+      "high_samples": 956586,
+      "high_runs": 90916,
+      "bursts": [
+        {
+          "start_s": 6.47969475,
+          "end_s": 11.2601075,
+          "pulses": 90916,
+          "mean_frequency_hz": 19018.243205080737,
+          "duty_pct": 5.002580732372564,
+          "end_censored": false
+        }
+      ],
+      "last_pulses_s": [
+        [
+          11.25984175,
+          11.25984425
+        ],
+        [
+          11.25989425,
+          11.259897
+        ],
+        [
+          11.259947,
+          11.2599495
+        ],
+        [
+          11.2599995,
+          11.26000225
+        ],
+        [
+          11.26005225,
+          11.26005475
+        ],
+        [
+          11.26010475,
+          11.2601075
+        ]
+      ]
+    }
+  },
+  "uart": {
+    "4": {
+      "valid_bytes": 2833,
+      "invalid_frames": [
+        {
+          "t_s": 5.35907375,
+          "value": 0
+        }
+      ],
+      "line_count": 54,
+      "line_types": {
+        "": 1,
+        "DISARM": 1,
+        "PING": 1,
+        "ARM": 1,
+        "CMD": 49,
+        "ESTOP_RESET": 1
+      },
+      "partial_tail": ""
+    },
+    "5": {
+      "valid_bytes": 36100,
+      "invalid_frames": [
+        {
+          "t_s": 5.35907375,
+          "value": 0
+        }
+      ],
+      "line_count": 248,
+      "line_types": {
+        "TEL": 195,
+        "ACK": 50,
+        "PONG": 1,
+        "ERR": 2
+      },
+      "partial_tail": ""
+    }
+  },
+  "timing": {
+    "stable_PC7_high_s": 11.25975025,
+    "PC7_high_duration_s": 13.74024975,
+    "PWM": {
+      "1": {
+        "last_fall_s": 11.2601075,
+        "last_fall_minus_t0_us": 357.25,
+        "observed_low_after_last_fall_s": 13.7398925,
+        "high_runs_after_t0": 7
+      },
+      "2": {
+        "last_fall_s": 11.2601075,
+        "last_fall_minus_t0_us": 357.25,
+        "observed_low_after_last_fall_s": 13.7398925,
+        "high_runs_after_t0": 7
+      }
+    }
+  },
+  "telemetry": {
+    "count": 195,
+    "transitions": [
+      {
+        "t_ms": "100",
+        "state": "DISARMED",
+        "reason": "BOOT",
+        "command_age_ms": "4294967295",
+        "last_seq": "0",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 5.53766825,
+        "end_s": 5.552157055555556
+      },
+      {
+        "t_ms": "803",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "4294967295",
+        "last_seq": "1925755529",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 6.24039875,
+        "end_s": 6.255832555555556
+      },
+      {
+        "t_ms": "1003",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "4294967295",
+        "last_seq": "1925755531",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 6.43997075,
+        "end_s": 6.455059555555556
+      },
+      {
+        "t_ms": "1103",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "61",
+        "last_seq": "1925755532",
+        "vx_mmps": "50",
+        "w_mradps": "0",
+        "left_pwm": "50",
+        "right_pwm": "50",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 6.5398805,
+        "end_s": 6.5545370555555555
+      },
+      {
+        "t_ms": "5903",
+        "state": "FAULT",
+        "reason": "ESTOP_ACTIVE",
+        "command_age_ms": "156",
+        "last_seq": "1925755579",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1",
+        "start_s": 11.3353155,
+        "end_s": 11.350490555555556
+      }
+    ],
+    "last": {
+      "t_ms": "19503",
+      "state": "FAULT",
+      "reason": "ESTOP_ACTIVE",
+      "command_age_ms": "13756",
+      "last_seq": "1925755579",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "2",
+      "start_s": 24.9157835,
+      "end_s": 24.931201555555557
+    },
+    "counters": {
+      "state": {
+        "DISARMED": 9,
+        "ARMED": 49,
+        "FAULT": 137
+      },
+      "reason": {
+        "BOOT": 7,
+        "DISARM": 2,
+        "NONE": 49,
+        "ESTOP_ACTIVE": 137
+      },
+      "err": {
+        "0": 58,
+        "1": 1,
+        "2": 136
+      },
+      "drop": {
+        "0": 195
+      },
+      "left_cps": {
+        "0": 195
+      },
+      "right_cps": {
+        "0": 194,
+        "10": 1
+      }
+    }
+  },
+  "validation": {
+    "command_count": 53,
+    "response_count": 53,
+    "unmatched": [],
+    "telemetry_t_ms_monotonic": true,
+    "last_commands": [
+      {
+        "start_s": 10.974747,
+        "end_s": 10.979608055555556,
+        "text": "CMD,seq=1925755577,vx_mmps=50,w_mradps=0,timeout_ms=500"
+      },
+      {
+        "start_s": 11.074748,
+        "end_s": 11.079609055555556,
+        "text": "CMD,seq=1925755578,vx_mmps=50,w_mradps=0,timeout_ms=500"
+      },
+      {
+        "start_s": 11.17474875,
+        "end_s": 11.179610055555555,
+        "text": "CMD,seq=1925755579,vx_mmps=50,w_mradps=0,timeout_ms=500"
+      },
+      {
+        "start_s": 11.27474975,
+        "end_s": 11.279610805555556,
+        "text": "CMD,seq=1925755580,vx_mmps=50,w_mradps=0,timeout_ms=500"
+      },
+      {
+        "start_s": 11.38066525,
+        "end_s": 11.383009055555556,
+        "text": "ESTOP_RESET,seq=1925755581"
+      }
+    ],
+    "errors": [
+      {
+        "start_s": 11.2797615,
+        "end_s": 11.284703555555556,
+        "text": "ERR,seq=1925755580,type=CMD,code=ESTOP_LATCHED,t_ms=5847"
+      },
+      {
+        "start_s": 11.38312475,
+        "end_s": 11.388672805555556,
+        "text": "ERR,seq=1925755581,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=5950"
+      }
+    ]
+  },
+  "physical_setup": "User confirmed series test fixture ready in JESTOP Pin3 S0-B conductor; instructed to open fixture while S0 released and PWM running. MDD B+ and motors remain disconnected."
+}

@@ -1,24 +1,22 @@
 # T-ESTOP-004 Firmware/PWM Integration Runbook
 
 - 작성일: 2026-09-08
-- 최근 확인일: 2026-09-19
-- 상태: `SOURCE/STATIC AND WIRING/UNPOWERED CHECKS COMPLETE — USER BUILD/FLASH PENDING`
-- 정식 시험 판정: `RUNTIME NOT CONFIRMED — hook-0 static 30/30 PASS; user build/flash/runtime 결과 미보고`
+- 최근 확인일: 2026-09-22
+- 상태: `COMPLETE — MOTOR-DISCONNECTED T004 AND ALL-HOOKS-0U SAFE RESTORE PASS`
+- 정식 시험 판정: `PASS — S0-B/VO617A/PC7 firmware/PWM scope; full Physical E-stop PARTIAL`
 - 작업자: Lee Younghyun
 - 시작 branch: `agent/dual-encoder-bringup`
 - 시작 commit: `1e11ffdd0360dd36c2f27e6861d81a50f88e848f`
 
-오늘 시작점은 [9/11 UART·측정 헤더 연장 계획](2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md)이다.
-Scheduler 교정과 TEST-01/BASE-02는 완료했으며 현재 T004 hook은 1U다. 이 문서의 9/9
-중단 checkpoint는 역사 기록이고, 아래 scheduler 전문을 다시 입력할 필요가 없다.
-ESP32/STM32 빌드·플래시는 사용자가 직접 수행하고, Python 검사 코드는 Codex가 관리한다.
+2026-09-22: 사용자가 controlled 이미지 빌드·플래시와 모터 분리 시험을 완료했다.
+S0 assertion/release/reset/fresh command, pressed/open boot, active wire-open과 최종 hook-0
+무명령 부팅을 통과했다. [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)이 정식 결과다.
+run06은 PC7 HIGH→PWM last falling edge **357.25 µs**, run07은 25 s PWM HIGH 0개다.
+현재 모든 controlled hook은 **0U**, 정적 검사 **30/30 PASS**다. 이 완료 시험을 다시 시작하지 않는다.
 
-9/19 재개 checkpoint: UART·CTRL·ENC·IMU 배선과 안내한 무전원 검사, 납땜 마감·STM/ESP 장착
-간섭 확인까지 사용자 PASS다. 상세 범위와 현재 3핀 CTRL/ENC 배정은
-[납땜 순서 문서](2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md)에 있다.
-현재 ESP/STM protocol/Python 검사 소스 hash는 기존 검증 기록과 동일하며 T004 hook만 1U다.
-다음은 **BUILD-01 사용자 빌드**이며 USB 연결/플래시는 PRE-01/DEV-01 확인 뒤 진행한다.
-새 배선에서 전원 인가, UART runtime, T004 또는 IMU 동작이 검증됐다는 의미는 아니다.
+9/9 scheduler WIP와 9/19 배선 완료 checkpoint는 역사 기록이다. 빌드·플래시와 코드 입력은
+사용자가 수행했고, Codex는 파일·capture 분석과 Python 검사·closeout를 담당했다.
+전체 Physical E-stop, K1/MDD10A 직접 전력 차단과 실제 모터 동작은 이 PASS에 포함하지 않는다.
 
 ## 오늘의 한 줄 목표
 
@@ -29,14 +27,14 @@ STM32의 공통 safe-output 경로, 두 PWM zero, software latch, explicit reset
 ## 진행·기록 규칙
 
 - 서로 연결된 firmware 수정은 잘게 끊지 않고, 교체 범위와 완성 코드 전문을 한 번에 제시한다.
-- 사용자가 결과를 보고하면 이 문서의 체크박스, 실제 관찰과 판정을 즉시 갱신한다.
+- 활성 bench 중에는 대화에 결과를 모으고 작업 블록 종료 때 체크박스·실제 관찰·판정을 한 번에 갱신한다.
 - `[x]`는 해당 단계를 처리했다는 뜻이다. 성공 여부는 `판정` 열의 `PASS`, `PARTIAL`,
   `FAIL/HOLD`, `SKIPPED`로 따로 기록한다.
 - 사용자가 `통과 다음`이라고 하면 현재 한 단계만 `PASS`로 닫고 다음 한 단계로 이동한다.
 - Firmware는 사용자가 직접 읽고 입력한다. Codex는 실제 파일의 정확한 교체 범위와 완성된
   코드 전문, 변경 이유와 기대 결과를 한 번에 설명하고 저장 뒤 실제 파일을 다시 확인한다.
-- 이 실행 체크리스트는 매 단계 갱신한다. Progress, verification report와 matrix는 오늘 작업
-  블록 종료 때 실제 결과를 한 번에 반영한다.
+- 이 실행 체크리스트, progress, verification report와 matrix는 작업 블록 종료 때 실제 결과를
+  한 번에 반영한다. 잘못된 live 지시나 안전상 사실의 정정은 즉시 반영한다.
 
 ## 고정 시험 경계
 
@@ -199,29 +197,29 @@ motor-disconnected software path에만 적용하고 motor/mechanical stop 기준
 | [x] | `TEST-01` | 사용자 위임으로 Codex가 static contract 갱신 | default-off/4-hook guard, runner reuse, FAULT TX-stop와 final DISARM 검사 | 실제 검사 파일 갱신, 기존 검사 보존, T004 검사 추가; 메모리 내 오류 7개 검출 | `PASS — SOURCE CONTRACT` |
 | [x] | `BASE-02` | 변경 후 canonical host/static 실행 | current suite 전체 PASS; 새 hook 포함 모든 hook source default `0U` | hook-0 ESP hash ECC30489...3EF000E4에서 30/30 PASS; firmware diff check PASS | `PASS — HOOK-0 BASELINE` |
 | [x] | `CFG-01` | 사용자가 T004 hook 한 줄만 `0U→1U` 입력 | ESP T004 hook만 `1U`; 다른 세 ESP hook과 STM hook은 `0U` | 9/10 실제 ESP 1U/0U/0U/0U 확인; 현재 hash C7582EB8...0D334201, T004 값만 되돌린 메모리 hash가 BASE-02와 일치; STM source 변경 없음 | `PASS — SOURCE ONLY` |
-| [ ] | `BUILD-01` | controlled T004 image build와 artifact 식별 | 양 board build PASS, exact source diff와 artifact/hash 기록 |  | `NOT RUN` |
-| [ ] | `PRE-01` | 완전 OFF에서 motor-energy 경계 확인 | MDD `B+` 분리·절연, motors 분리, S2 released, 대상 rail 약 `0 V` |  | `NOT RUN` |
-| [ ] | `DEV-01` | dual-USB flash 구성 확인 | LiPo/#1/#2 OFF, #1 두 2P 제거, `JP5=PWR-U5V`, `JP1=open`, UART 3-wire |  | `NOT RUN` |
-| [ ] | `FLASH-01` | controlled T004 image 양 board flash | exact image flash 성공; source/image/hash 기록 |  | `NOT RUN` |
-| [ ] | `XFER-01` | OFF/0 V 뒤 standalone runtime/analyzer 구성 | USB 제거, `JP5=PWR-E5V`, #1/#2와 D0/D1/D2/D4/D5/GND 확인 |  | `NOT RUN` |
-| [ ] | `BOOT-REL-01` | S0 released 상태로 Main run boot | startup 뒤 `DISARMED`, PWM `0/0` |  | `NOT RUN` |
-| [ ] | `PWM-01` | 자동 ARM/new CMD로 limited PWM 생성 | ARM만으로 zero; accepted CMD 뒤 PB6/PB7 `50/50`; assertion 전 100 ms refresh |  | `NOT RUN` |
-| [ ] | `PWM-02` | 안내 뒤 S0를 press/latch하고 계속 유지 | PC7 HIGH 뒤 both PWM inactive; `t1-t0 <= 200 ms`; 이후 500 ms edge 없음 |  | `NOT RUN` |
-| [ ] | `RST-ACT-01` | active 상태의 reset reject 확인 | exact `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`; `FAULT/ESTOP_ACTIVE`, PWM zero 유지 |  | `NOT RUN` |
-| [ ] | `LATCH-01` | 안내 뒤 S0 release와 conditioned latch 유지 확인 | `FAULT/ESTOP_LATCHED`와 PWM zero 유지; ARM/CMD exact reject는 historical direct-PC7 [report 18](../verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) 증거 재사용 |  | `NOT RUN` |
-| [ ] | `RST-REL-01` | released explicit reset 확인 | reset ACK 뒤 `DISARMED/ESTOP_RESET`, PWM `0/0` |  | `NOT RUN` |
-| [ ] | `REARM-01` | reset 뒤 no-replay와 새 command 확인 | new ARM만으로 zero; post-reset new CMD만 `50/50`; final DISARM 뒤 zero/DONE |  | `NOT RUN` |
-| [ ] | `BOOT-ACTIVE-01` | S0 press/latch 상태로 별도 boot | `FAULT/ESTOP_ACTIVE`, PWM `0/0`; ARM/CMD/reset exact reject; 출력 활성화 없음 |  | `NOT RUN` |
-| [ ] | `OPEN-FIX-01` | OFF/0 V에서 S0-B series fault fixture 정의·설치 | powered 상태에서 probe/상시 배선을 움직이지 않고 sense만 open 가능 |  | `NOT RUN` |
-| [ ] | `OPEN-01` | Main run limited PWM 중 fixture open | PC7 HIGH, both PWM zero/latch와 `<=200 ms`/500 ms no-edge 충족 |  | `NOT RUN` |
-| [ ] | `OPEN-BOOT-01` | OFF 상태에서 fixture open 후 boot | `FAULT/ESTOP_ACTIVE`, PWM `0/0`, ARM/CMD/reset reject |  | `NOT RUN` |
-| [ ] | `OPEN-02` | OFF/0 V에서 fixture/conductor 복구 | intended continuity와 normal PC7 LOW 복구, 임시 분리 흔적 없음 |  | `NOT RUN` |
-| [ ] | `XFER-SAFE-01` | final source 복원 전 development flash 구성으로 전환 | S1/LiPo/#1/#2 OFF, rail 0 V, #1 두 2P 제거, `JP5=PWR-U5V` |  | `NOT RUN` |
-| [ ] | `SAFE-01` | 사용자가 T004 hook을 `0U`로 복구 | 새 hook 포함 모든 controlled hook `0U`; canonical suite PASS |  | `NOT RUN` |
-| [ ] | `SAFE-02` | all-hooks-`0U` 양 board build/reflash | build/flash PASS, exact artifact/hash 기록 |  | `NOT RUN` |
-| [ ] | `XFER-SAFE-02` | OFF/0 V 뒤 standalone final-safe runtime 구성 | USB 제거, `JP5=PWR-E5V`, #1/#2와 analyzer channel map 재확인 |  | `NOT RUN` |
-| [ ] | `SAFE-03` | all-hooks-`0U` no-command runtime | D4 ARM/CMD TX 0, startup 뒤 `DISARMED`, PWM `0/0`, unexpected output 없음 |  | `NOT RUN` |
-| [ ] | `EVID-01` | raw capture/log/hash와 판정 정리 | PC7/PB6/PB7 raw, UART decode, source/artifact provenance와 limits 보존 |  | `NOT RUN` |
+| [x] | `BUILD-01` | controlled T004 image build와 artifact 식별 | 양 board build PASS, exact source diff와 artifact/hash 기록 | 사용자 양 보드 build 성공; controlled ESP BIN hash와 source 식별 기록은 report 26 참조 | `PASS — user report + artifact record` |
+| [x] | `PRE-01` | 완전 OFF에서 motor-energy 경계 확인 | MDD `B+` 분리·절연, motors 분리, S2 released, 대상 rail 약 `0 V` | MDD B+ 분리·절연, 두 motor 분리, S2 미조작의 기존 preflight 사용자 확인 | `PASS — operator-reported` |
+| [x] | `DEV-01` | dual-USB flash 구성 확인 | LiPo/#1/#2 OFF, #1 두 2P 제거, `JP5=PWR-U5V`, `JP1=open`, UART 3-wire | #1 두 2P 제거, JP5 U5V/JP1 OPEN, dual USB 안내 후 사용자 진행; 초기 USB runtime 로그 보존 | `PASS — operator + runtime` |
+| [x] | `FLASH-01` | controlled T004 image 양 board flash | exact image flash 성공; source/image/hash 기록 | controlled 양 보드 runtime 및 ESP image 식별 관찰; flash 전체 console은 미보존 | `PASS — runtime / provenance limits in report 26` |
+| [x] | `XFER-01` | OFF/0 V 뒤 standalone runtime/analyzer 구성 | USB 제거, `JP5=PWR-E5V`, #1/#2와 D0/D1/D2/D4/D5/GND 확인 | 보드 USB 제거, JP5 E5V/JP1 OPEN, #1/#2 별도 공급과 analyzer header 확인 후 capture | `PASS — operator + capture` |
+| [x] | `BOOT-REL-01` | S0 released 상태로 Main run boot | startup 뒤 `DISARMED`, PWM `0/0` | run03 DISARMED/BOOT→DISARM, PWM zero; run01 짧은 파일 대신 run03을 정식 근거로 사용 | `PASS — run03` |
+| [x] | `PWM-01` | 자동 ARM/new CMD로 limited PWM 생성 | ARM만으로 zero; accepted CMD 뒤 PB6/PB7 `50/50`; assertion 전 100 ms refresh | run03 ARM-only PWM0 뒤 accepted CMD에서 약 19.02 kHz/5% PWM; CMD refresh | `PASS — run03` |
+| [x] | `PWM-02` | 안내 뒤 S0를 press/latch하고 계속 유지 | PC7 HIGH 뒤 both PWM inactive; `t1-t0 <= 200 ms`; 이후 500 ms edge 없음 | run02/03 PC7 HIGH 뒤 추가 PWM 없음, 200 ms/500 ms 기준 충족; negative last-fall을 반응시간으로 해석하지 않음 | `PASS — run02/03` |
+| [x] | `RST-ACT-01` | active 상태의 reset reject 확인 | exact `ERR,type=ESTOP_RESET,code=ESTOP_ACTIVE`; `FAULT/ESTOP_ACTIVE`, PWM zero 유지 | run03 seq2525055104 ERR type=ESTOP_RESET code=ESTOP_ACTIVE; PWM zero | `PASS — run03` |
+| [x] | `LATCH-01` | 안내 뒤 S0 release와 conditioned latch 유지 확인 | `FAULT/ESTOP_LATCHED`와 PWM zero 유지; ARM/CMD exact reject는 historical direct-PC7 [report 18](../verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md) 증거 재사용 | run03 release 뒤 TEL FAULT/ESTOP_LATCHED 및 PWM0; 별도 ARM/CMD reject는 report18 재사용 | `PASS — run03 + historical rejection` |
+| [x] | `RST-REL-01` | released explicit reset 확인 | reset ACK 뒤 `DISARMED/ESTOP_RESET`, PWM `0/0` | run03 seq2525055105 RESET ACK→DISARMED/ESTOP_RESET/PWM0 | `PASS — run03` |
+| [x] | `REARM-01` | reset 뒤 no-replay와 새 command 확인 | new ARM만으로 zero; post-reset new CMD만 `50/50`; final DISARM 뒤 zero/DONE | run03 ARM seq2525055106만으로 PWM0, fresh CMD seq2525055107 뒤 재출력, DISARM seq2525055108 뒤 6.244 s LOW | `PASS — run03` |
+| [x] | `BOOT-ACTIVE-01` | S0 press/latch 상태로 별도 boot | `FAULT/ESTOP_ACTIVE`, PWM `0/0`; ARM/CMD/reset exact reject; 출력 활성화 없음 | run04 전체25 s PWM HIGH0, TEL199 모두 FAULT/ESTOP_ACTIVE; ARM/CMD/RESET exact ERR | `PASS — run04` |
+| [x] | `OPEN-FIX-01` | OFF/0 V에서 S0-B series fault fixture 정의·설치 | powered 상태에서 probe/상시 배선을 움직이지 않고 sense만 open 가능 | JESTOP Pin3 선 분리 후 직렬 탈착 연결·무전원 검사 준비 완료 사용자 보고; 구체 부품/사진 미기록 | `PASS — operator-reported` |
+| [x] | `OPEN-01` | Main run limited PWM 중 fixture open | PC7 HIGH, both PWM zero/latch와 `<=200 ms`/500 ms no-edge 충족 | run06 PC7 HIGH11.25975025 s→both PWM last fall11.26010750 s=357.25 us; 13.7398925 s LOW | `PASS — run06` |
+| [x] | `OPEN-BOOT-01` | OFF 상태에서 fixture open 후 boot | `FAULT/ESTOP_ACTIVE`, PWM `0/0`, ARM/CMD/reset reject | run05 JESTOP Pin3 분리/S0 해제, PWM HIGH0, TEL198 FAULT/ESTOP_ACTIVE; ARM/CMD/RESET ERR. OPEN-01보다 먼저 시행 | `PASS — run05` |
+| [x] | `OPEN-02` | OFF/0 V에서 fixture/conductor 복구 | intended continuity와 normal PC7 LOW 복구, 임시 분리 흔적 없음 | 임시 연결 제거·원래 Pin3 복구 안내 후 사용자 다음 단계 진행; run07 정상 PC7 LOW로 powered 복구 확인 | `PASS — operator + run07` |
+| [x] | `XFER-SAFE-01` | final source 복원 전 development flash 구성으로 전환 | S1/LiPo/#1/#2 OFF, rail 0 V, #1 두 2P 제거, `JP5=PWR-U5V` | OFF/0 V, #1 두 2P 제거, JP5 U5V의 개발 전원 전환 안내 후 사용자 flash/USB monitor 수행 | `PASS — operator + USB log` |
+| [x] | `SAFE-01` | 사용자가 T004 hook을 `0U`로 복구 | 새 hook 포함 모든 controlled hook `0U`; canonical suite PASS | 사용자 T004 1U→0U; 네 ESP/STM hooks0, ESP source ECC30489...3EF000E4, static30/30 PASS | `PASS — actual source + tests` |
+| [x] | `SAFE-02` | all-hooks-`0U` 양 board build/reflash | build/flash PASS, exact artifact/hash 기록 | STM build/flash 모두 성공 명시 보고; ESP USB ELF prefix7bc5eca6f와 current ELF hash 일치 | `PASS — user + runtime image` |
+| [x] | `XFER-SAFE-02` | OFF/0 V 뒤 standalone final-safe runtime 구성 | USB 제거, `JP5=PWR-E5V`, #1/#2와 analyzer channel map 재확인 | USB 제거/OFF0V/JP5 E5V/#1 두2P 복구 안내 후 사용자가 run07 수행 | `PASS — operator + run07` |
+| [x] | `SAFE-03` | all-hooks-`0U` no-command runtime | D4 ARM/CMD TX 0, startup 뒤 `DISARMED`, PWM `0/0`, unexpected output 없음 | run07 25 s PWM HIGH0, TEL199 DISARMED/zero, err/drop0; D4 DISARM/PING만 송신 | `PASS — run07` |
+| [x] | `EVID-01` | raw capture/log/hash와 판정 정리 | PC7/PB6/PB7 raw, UART decode, source/artifact provenance와 limits 보존 | report26, raw run02~07, UART decode/summary/manifest와 log/source/artifact 식별·한계 보존 | `PASS — scoped evidence preserved` |
 | [x] | `DOC-99` | 2026-09-09 work block closeout | progress/handoff/index를 실제 결과로 한 번 갱신하고 Git 상태 검증; 새 runtime 증거가 없으면 report/matrix 상태 유지 | 9/9 progress와 resume context/index 작성; source WIP hash·오류·hooks `0U`·미실행 경계 보존; report/matrix PASS 변경 없음; commit/push 미요청 | `PASS — PAUSED CHECKPOINT` |
 
 ## 핵심 수용 기준

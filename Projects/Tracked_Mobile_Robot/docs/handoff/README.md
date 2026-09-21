@@ -21,16 +21,18 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 완료 기준선, 다음 `T-ESTOP-004`, 이후 critical path와 작업 방식 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: T004 완료/hook0, 다음 T005A 준비와 작업 방식 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-09-19 | [최신 진행 기록](../progress/2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; 다음은 T004 BUILD-01 사용자 빌드 |
+| 2026-09-22 / next session | [휴식 후 작업 계획](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | +/− 분배부·퓨즈·K1 단자 실물 대조부터 시작; 조건 충족 시 모터 분리 T005A 정적 rail 시험 |
+| 2026-09-22 | [최신 진행 기록](../progress/2026-09-22_progress.md) / [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | T004 firmware/PWM PASS, hook0/30회 정적 검사와 safe restore; 다음 T005A 준비 |
+| 2026-09-19 | [이전 진행 기록](../progress/2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; 다음은 T004 BUILD-01 사용자 빌드 |
 | 2026-09-19 / current bench record | [납땜 체크리스트](../plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) | 현재 CTRL/ENC 3핀 두 개 배정과 9/17~19 검사 지점·결과; 전원 인가·T004 미실행 |
 | 2026-09-11 / drawing history | [UART·측정 헤더 계획](../plans/2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md) | 날짜별 도면 검토와 후속 배선 기록; 최신 PDF 재출력 완료는 미확인 |
 | 2026-09-10 | [`../progress/2026-09-10_progress.md`](../progress/2026-09-10_progress.md) | Firmware baseline: scheduler 교정 완료, hook-0 30/30; T004-only 1U 소스와 미보고 build/flash/runtime 경계 |
 | 2026-09-09 | [`../progress/2026-09-09_progress.md`](../progress/2026-09-09_progress.md) | Historical initial pause; scheduler 교정과 후속 기준선은 9/10 기록으로 대체됨 |
 | 2026-09-08 / current runtime procedure | [`../plans/2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md`](../plans/2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md) | Scheduler 교정 완료; same-boot P-03/P-04B coordinator, Saleae oracle와 safe restore 절차 |
 | 2026-09-08 | [`../progress/2026-09-08_progress.md`](../progress/2026-09-08_progress.md) | Previous hardware result baseline: wire-open, XL4015 #1/#2 power와 conditioned sense 기능 subset PASS; T004 NOT RUN |
-| 2026-09-08 | [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | **Current powered evidence**: bounded logic-power/conditioned-sense result와 미완료 evidence |
+| 2026-09-08 | [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | **Previous powered evidence**: bounded logic-power/conditioned-sense result와 미완료 evidence |
 | 2026-09-07 | [`2026-09-07_session_recovery_handoff.md`](2026-09-07_session_recovery_handoff.md) | Recovery checkpoint: 중단된 문서/Git 작업 복원과 9/8 결과로 이어지는 기준 |
 | 2026-09-07 | [`../progress/2026-09-07_progress.md`](../progress/2026-09-07_progress.md) | 문서 상태·artifact hash 정정과 host/static 29/29 재확인; 새 hardware evidence 없음 |
 | 2026-09-05 | [`../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](../plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md) | Historical predecessor: Gates 1~4 baseline; Gate 5 moved to the 2026-09-08 T-ESTOP-004 runbook |

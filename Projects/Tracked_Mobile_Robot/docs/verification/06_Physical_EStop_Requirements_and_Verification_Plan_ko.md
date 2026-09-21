@@ -422,7 +422,7 @@ S0-B conductor open `3.27 V steady`였고 모두 LOW `0.99 V`/HIGH `2.31 V` thre
 
 ### `T-ESTOP-004` Firmware latch and common-safe-path test
 
-상태: `PARTIAL/BLOCKED` — direct-PC7 boot/latch/reject/reset subcases PASS; active-output assertion/timing and integrated S0-B path pending
+상태: **`PASS — 2026-09-22 MOTOR-DISCONNECTED CONDITIONED FIRMWARE/PWM SCOPE`**. [report 26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md). K1/MDD10A rail과 실제 motor 정지는 별도 gate다.
 
 Motor-disconnected 상태에서 수행한다.
 
@@ -460,11 +460,19 @@ current ESP32 isolated build도 PASS했다. Active reset `ERR`, release 뒤 rese
 실제 VO617A-3/S0-B wire-open, 그리고 hardware motor rail은 이 실행 범위 밖이다. 근거와 경계는
 [`18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md`](18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md)에 기록한다.
 
+2026-09-22 완료: 위 8/24~8/30 미실행 경계 중 실제 S0-B/VO617A assertion, same-boot
+latch/reset/ARM-only-zero/fresh-CMD/DISARM, pressed/open boot, active wire-open과 최종 hook0 복구를
+[report 26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)에서 닫았다. run06 PC7→PWM last fall **357.25 µs**와 13.740 s no-edge,
+run07 25 s PWM HIGH0 및 TEL199 DISARMED/zero, **30/30 static PASS**가 근거다.
+run02/03의 negative last-fall delta는 반응 시간으로 해석하지 않는다. 전체 flash console과
+계측기 교정은 미보존이며 controlled image/source hash·사용자 build/flash 보고·raw runtime의
+증거 범위를 report 26에 구분했다. Hardware rail 차단과 실제 motor 정지는 닫지 않는다.
+
 ### `T-ESTOP-005A` Driver powered, motor disconnected nominal no-auto-motion test
 
 상태: `PARTIAL/BLOCKED` — report 24의 healthy-S2 K2/K1 pickup/self-hold/dropout/no-restart
-control-relay subcases는 PASS했다. Conditioned `T-ESTOP-003`, integrated firmware/PWM
-`T-ESTOP-004`와 MDD10A direct downstream rail을 포함한 full acceptance는 open이다.
+control-relay subcases는 PASS했다. 9/22 `T-ESTOP-004` firmware/PWM은 PASS했다.
+`T-ESTOP-003` 잔여 계측 metadata/current evidence와 MDD10A direct downstream rail을 포함한 full acceptance는 open이다.
 
 시험 경계:
 
@@ -629,11 +637,11 @@ F1 incoming: PARTIAL PASS — UNPOWERED MARKING/VISUAL/CONTINUITY ONLY
 K2: PARTIAL PASS — TWO-SAMPLE INCOMING + POLARITY-CORRECTED PICKUP/SELF-HOLD/DROPOUT SUBSET; TIMING/RAIL OPEN
 K1/S0/S2/VO617/P6KE/F2/6P: PARTIAL PASS — REPORTS 19/24 COMPONENT, ASSEMBLY AND HEALTHY-PATH SUBSETS
 Schematic: FUNCTIONAL WIP / ERC PASS; EXACT RELEASE FIELDS OPEN
-Firmware: PARTIAL — PC7 ACTIVE-HIGH/OPEN LATCH + RESET PATH IMPLEMENTED; P-03 RUN04 SOURCE HOOK 0U + HISTORICAL HOST/STATIC 26/26 + SAFE BUILD/FLASH/UART/D0~D3 ALL-LOW RESTORE PASS; P-04A HISTORICAL 27/27 + SOFTWARE-APPLIED PWM TEL/HOOK-0 UART RUNTIME PASS; P-04B HISTORICAL REASON/AGE CHECKPOINT 28/28 + DIRECT-PC7 ACTIVE-LATCH UART SUBSET PASS; DEFAULT-0U RESET HARNESS CURRENT 29/29 + ESP ISOLATED BUILD PASS, RESET ERR/ACK/TEL/VECTOR AND TARGET FLASH/RUNTIME OPEN; CONDITIONED PATH AND ACTUAL MOTOR OPEN
-Bench verification: PARTIAL — DIRECT PC7 FIRMWARE + REV C CONTROL-RELAY SUBSETS; NO CONDITIONED PC7/DIRECT MDD RAIL/MOTOR CLAIM
-T-ESTOP-005A: PARTIAL/BLOCKED — HEALTHY-PATH K2/K1 NO-RESTART SUBSET PASS; T003/T004 + DIRECT MDD RAIL FULL ACCEPTANCE OPEN
+Firmware: T-ESTOP-004 PASS (2026-09-22) — CONDITIONED S0-B/PWM/LATCH/RESET/OPEN; ALL-HOOKS-0U, STATIC 30/30 AND RUN07 NO-COMMAND RESTORE PASS; ACTUAL MOTOR OPEN
+Bench verification: PARTIAL — CONDITIONED FIRMWARE/PWM AND CONTROL-RELAY SUBSETS PASS; DIRECT MDD RAIL/MOTOR OPEN
+T-ESTOP-005A: PARTIAL/BLOCKED — HEALTHY K2/K1 SUBSET AND T004 PASS; RELEASE/T003 EVIDENCE AND DIRECT MDD RAIL ACCEPTANCE OPEN
 T-ESTOP-005B: DEFERRED / POST-MVP — FM-ESTOP-014 MITIGATION AND FAULT INJECTION
-Overall result: PARTIAL / CONTROL-RELAY NO-AUTO-RESTART SUBSET PASS / CONDITIONED SENSE AND NOMINAL HARDWARE RAIL GATES OPEN
+Overall result: PARTIAL / CONTROL-RELAY AND CONDITIONED FIRMWARE/PWM PASS / RELEASE AND NOMINAL HARDWARE RAIL GATES OPEN
 ```
 
 Motor-disconnected 단계인 `T-ESTOP-001~004 + T-ESTOP-005A`가 모두 `PASS`되기 전에는

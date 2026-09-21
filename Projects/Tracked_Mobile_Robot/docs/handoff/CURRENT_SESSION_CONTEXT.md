@@ -1,21 +1,21 @@
 # Current Session Context
 
-Last updated: 2026-09-19
+Last updated: 2026-09-22
 
 ## Current Milestone
 
-Finish the motor-disconnected integrated Physical E-stop gate before reconnecting MDD10A `B+` or either
-motor. The `T-ESTOP-004` scheduler correction and static-test update are complete. The user has now
-completed UART/CTRL/ENC/IMU wiring, the instructed unpowered continuity/isolation checks, and final
-workmanship/STM32-ESP32 fit checks. Resume with **BUILD-01: user builds both firmwares with board power
-disconnected**. PRE-01/DEV-01 precede USB connection and flashing. Powered communication/T004 remain untested.
-The [soldering checklist](../plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) is the current
-bench record. The [UART/debug-header plan](../plans/2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md)
-preserves drawing history. The [9/19 progress](../progress/2026-09-19_progress.md) records this work-block closeout.
+**2026-09-22 T-ESTOP-004 PASS**, motor-disconnected conditioned S0-B/VO617A/PC7 firmware/PWM scope.
+Read [latest progress](../progress/2026-09-22_progress.md) and
+[report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) for raw evidence and limits.
+All controlled hooks are now **0U**; final static suite **30/30 PASS** and run07 no-command boot PASS.
+Do not repeat the completed T004/source-walkthrough/wiring steps.
 
-Repository root is `C:\Users\eyh12\workspace\TIL`, project path is
-`Projects\Tracked_Mobile_Robot`, and the working branch is `agent/dual-encoder-bringup`. Check Git status and
-the latest commit at session start; do not assume this file proves the live electrical state.
+Next: resolve documented power-distribution/fuse/terminal release items and prepare **T-ESTOP-005A**,
+with motors still disconnected. This is not authorization to attach MDD10A B+ or either motor now.
+Repository root: `C:\Users\eyh12\workspace\TIL`; branch: `agent/dual-encoder-bringup`.
+The user requested a Git checkpoint/push on 9/22. This checkpoint includes the restored ESP hook,
+T004 raw/decoded evidence, report/progress and next-session plan. Check live Git status and the latest
+commit/remote before resuming; 3c756e5 is the previous checkpoint.
 
 ## Completed Baseline To Preserve
 
@@ -28,29 +28,31 @@ the latest commit at session start; do not assume this file proves the live elec
   XL4015 #1 5 V branches.
 - Conditioned `ESTOP_SENSE` measured `0.06 V` released and `3.27 V` pressed/latched or S0-B conductor-open.
   This closes the functional voltage subset of `T-ESTOP-003`; the formal evidence package remains PARTIAL.
-- The modified firmware's all-hooks-0U host/static baseline passed `30/30`; seven in-memory regression
-  mutations were caught. Current source has T004 `1U` and the other three ESP hooks `0U`.
+- All-hooks-0U static suite passed 30/30 again on 9/22. The earlier seven mutation detections remain historical evidence.
+- T004 run03 proved latch/reset/ARM-only-zero/fresh-CMD/DISARM in one boot. run04/05 proved active/open boot.
+- run06 wire-open PC7 HIGH to final PWM falling edge = 357.25 us; 13.740 s LOW afterward.
+- run07: 25 s PWM HIGH 0, 199 TEL all DISARMED/zero, err/drop0; only DISARM/PING transmitted.
 
 ## Current Firmware And Wiring Checkpoint
 
 - STM32 production E-stop/latch/reset code and ESP ACK/ERR parser were not changed.
 - The chosen test-only design reuses P-03 and P-04B with
-  `DRIVE -> RESET -> POST_RESET -> DONE/FAILED`. Saleae D4/D5 remains the exact UART oracle.
-- Current ESP source SHA-256:
-  `C7582EB895B0955C434CD17DCB9AE7CD767AA01CE7506415021476680D334201`.
-- Restoring only the T004 define to 0U in memory reproduces the prior 30/30 source hash
-  `ECC304898B7F61BA1C28A8F01FA69B2FE9B11EB196BFAF02FB911D003EF000E4` exactly. No source was changed
-  during this 9/10 comparison. Firmware `git diff --check` passes.
-- Test file SHA-256: `AC1C7C4D4E7F193F750495BB332B1BFDCDE06CC2F05BD2E059F64EEDD1C0681D`.
-- The wrong runner, RESET/POST_RESET completion condition and FAILED assignment are corrected. Do not ask
-  the user to re-enter the scheduler or Python tests.
-- User build/flash/runtime results are not yet reported; source hook state does not establish board state.
+  `DRIVE -> RESET -> POST_RESET -> DONE/FAILED`. PulseView/sigrok D4/D5 decode supplies exact seq/type/code evidence.
+- Final ESP source SHA-256: `ECC304898B7F61BA1C28A8F01FA69B2FE9B11EB196BFAF02FB911D003EF000E4`.
+  All four ESP hooks and STM output/response-injection hooks are 0U. User changed only T004 1U→0U.
+- STM protocol source remains `063F608DE44673649E4FEAFC22A525532CD48552199AF93AECE1EDC3FF1A5127`.
+- Test source remains `AC1C7C4D4E7F193F750495BB332B1BFDCDE06CC2F05BD2E059F64EEDD1C0681D`.
+- User performed both builds/flashes and explicitly confirmed final STM success. Final ESP ELF hash
+  starts `7bc5eca6f`, matching its USB boot log. Artifact hashes/limitations are in report 26.
+  Complete flash transcripts/STM flash readback and a controlled ESP BIN backup were not supplied.
+- Scheduler correction is complete. Do not re-enter the coordinator or Python validation code.
 - Current user-designated drawing is `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt`,
   At Git closeout the live file is saved 9/19 02:33:28, 160,699 bytes,
   SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`.
   This differs from the reviewed 9/18 revision (161,191 bytes,
   SHA-256 `251b271958db7ae46055e674bef86913f683b9c5241d12fd48fa47f34cbcb772`).
-  The latest file is preserved without review in this Git-only closeout; compare its changes before using drawing endpoints.
+  On 9/22 the live T004 headers and their STM Net endpoints were checked directly in this file.
+  This was not a revalidation of the complete wire graph or latest PDF export.
   The similarly named `...UART_Debug_IMU_WIP.vrt` is the older 9/16 revision; do not use it for current header numbering.
   The 9/18 reviewed drawing had 132 wires/28 checked non-wire parts, zero broken nets and zero detected Net inconsistencies.
 - CTRL and ENC each use two 3-pin connectors. CTRL_1 Pins1/2/3 are DIR1/PWM1/DIR2 at C35/R1/2/3;
@@ -63,30 +65,30 @@ the latest commit at session start; do not assume this file proves the live elec
 - IMU RST=PC4, INT=PB1, SDA=PB9, SCL=PB8. BNO supply/mode/pull-ups remain unfinished, so the module stays removed.
   Encoder raw input connectors/conditioning are still separate pending work. Debug wiring does not close those gates.
   Matching latest component/solder PDF exports are not yet confirmed. The old isolated PC7 pad was cleared in an earlier review.
-- On 9/19 the live ESP, STM protocol and Python test hashes match the recorded baseline. ESP T004=1U,
-  the other ESP hooks=0U, and STM output/response-injection hooks=0U. No new build or static rerun was performed.
-- T004 needs PC7, PB6/PB7, UART PA10/PA9 and LOGIC_GND. DIR access remains useful for later gates.
-  IMU signal/owner integration and additional S2 software interlocks remain outside this gate.
-
-Use the soldering checklist for 9/17-19 bench results and the 9/10 progress for the preserved firmware
-baseline. The 9/9 progress is an earlier paused checkpoint. The original T004 runbook still supplies runtime
-and safe-restore procedures. The user paused before BUILD-01; the 9/19 progress consolidates this work block.
+- Normal runtime uses board USB removed, JP5=E5V, JP1=OPEN, both #1 board plugs and #2 AUX connected.
+  Development USB needs OFF/0 V, both #1 plugs removed, JP5=U5V. Never combine USB and buck supply.
+- Left encoder PB4/PB5 each retain temporary 15 kΩ to STM GND. Before: TIM3 ±1 count / left CPS ±10;
+  after: 414 raw pairs all left delta/CPS0. Do not alter arithmetic to hide floating-input counts.
+- Right encoder has one +10 CPS startup report per run02~07; permanent input conditioning and powered
+  motor noise/sign checks remain open. Both encoder connectors/conditioning are not fully implemented.
+- JESTOP Pin3 wire was used for open-fault tests, then restored; run07 PC7 LOW confirms live sense recovery.
+  S0 released, S2 not used, MDD10A B+ and motors disconnected, BNO removed throughout.
+- Final operator instruction was S1 OFF/LiPo disconnected. The capture ends before that action; recheck
+  physical power state before subsequent work rather than deriving it from a file.
+- Evidence: `assets/logs/estop/2026-09-22_t004/manifest.json` and named raw run02~07 captures.
+  Named run01 is only 1.25 s; the previous long Session 2 was overwritten by the application. Use run03
+  for normal boot. Current Session 2 raw samples match run03, not the historical run01 long capture.
 
 ## Next Session Resume Order
 
-1. Read the current soldering checklist and T004 runbook. Do not restart completed wiring or scheduler work.
-2. BUILD-01: the user builds STM32 `stm32_uart_mvp` and ESP32 `esp32_uart_bridge` without powering boards.
-   Review build results and identify artifacts. Codex does not build/flash unless explicitly delegated.
-3. PRE-01/DEV-01: check motor-energy boundaries and development dual-USB configuration before USB connection.
-   Keep BNO removed; XL4015 #1's two board plugs must be removed for USB power.
-4. The user flashes the identified images, then changes to the standalone runtime setup through OFF/0 V.
-5. Capture startup UART and the motor-disconnected T004 sequence with analyzer connections ready before
-   startup. The controlled image sends ARM/CMD automatically after READY.
-6. After testing, the user restores every controlled hook to 0U, runs the required build/reflash and confirms
-   no-command safe runtime; Codex may run the canonical Python suite and prepare the closeout.
+The user paused to sleep. Follow the [next-session plan](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md); it is a plan, not completed hardware work. Start with the as-built power hub/fuse/K1 terminal identification.
 
-Do not start `T-ESTOP-005A` merely because part of `T-ESTOP-004` passes. Close the whole test and its evidence
-first. If the work block is short, completing the source walkthrough and exact capture plan is still useful.
+1. Read latest progress/report 26 only as needed. Preserve completed T004 PASS and default-off hooks.
+2. Inspect the currently unresolved power hub, F1/F2, K1 terminal/wire-release facts in existing documents.
+3. Prepare the motor-disconnected T-ESTOP-005A plan from those facts. Do not connect power/motors merely
+   because the secondary firmware/PWM path passed.
+4. Keep user-authored firmware/build/flash and one coherent bench group per turn. Record results once
+   at work-block closeout. No subagents unless the user explicitly requests them.
 
 ## Remaining Critical Path After `T-ESTOP-004`
 

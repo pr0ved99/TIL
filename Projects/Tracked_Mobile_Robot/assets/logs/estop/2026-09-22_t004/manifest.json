@@ -1,0 +1,218 @@
+{
+  "date": "2026-09-22",
+  "capture_sample_rate_hz": 4000000,
+  "files": [
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run01_boot_pwm.pvs",
+      "bytes": 2605,
+      "sha256": "60578cbb9a3567a4ee7d9c89184b54f8e31b646b76741424e3c14f78638b6e1b"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run01_boot_pwm.sr",
+      "bytes": 31243,
+      "sha256": "54b5b9011697cd5904ad8dfa14c2b53e8710033412aa43540cedf395dc88c925",
+      "samples": 5000000,
+      "duration_s": 1.25
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run02_active_estop.pvs",
+      "bytes": 2605,
+      "sha256": "f2cb40deb9fd578f9b64f02f6e398e988413c1aea94770925bdc6daff8b4a851"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run02_active_estop.sr",
+      "bytes": 464079,
+      "sha256": "cd1d3a968b35b6a5423c8c9321b6af82b353099cba1e02388d7f03301f6e51f0",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run03_estop_release_reset.pvs",
+      "bytes": 2570,
+      "sha256": "f46981f3fe5d536f0ecd92c515f184c7c89c3294e9b424f3c0f7b9edbd189ba7"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run03_estop_release_reset.sr",
+      "bytes": 492557,
+      "sha256": "b5b5e121a7e9489913ade8cfef1ea64daca73bd3b6738319979e1a076282f7c7",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run04_boot_estop_active.pvs",
+      "bytes": 2570,
+      "sha256": "f46981f3fe5d536f0ecd92c515f184c7c89c3294e9b424f3c0f7b9edbd189ba7"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run04_boot_estop_active.sr",
+      "bytes": 229472,
+      "sha256": "b81393dfb582e821a47f5516557046516df83807c5d70a2f90f63de6e4df7a59",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run05_boot_sense_open.pvs",
+      "bytes": 2570,
+      "sha256": "f46981f3fe5d536f0ecd92c515f184c7c89c3294e9b424f3c0f7b9edbd189ba7"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run05_boot_sense_open.sr",
+      "bytes": 228601,
+      "sha256": "21878eaa3bcf793257e40d24bb15ba0b6b7736a0ab33627c98e7a11aa129fdda",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run06_active_sense_open.pvs",
+      "bytes": 2570,
+      "sha256": "f46981f3fe5d536f0ecd92c515f184c7c89c3294e9b424f3c0f7b9edbd189ba7"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run06_active_sense_open.sr",
+      "bytes": 387301,
+      "sha256": "37984c31ddb2be3da7342df4b2ef5a6e0a526d66bab6b6b2b86e21f380524a2d",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run07_safe_restore_all_hooks_zero.pvs",
+      "bytes": 2603,
+      "sha256": "8b3f236749c60b7d17f477fb8674e2a42d1582577bda9f8ab107931b90cc214a"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run07_safe_restore_all_hooks_zero.sr",
+      "bytes": 225154,
+      "sha256": "df67de6d7ef5b200c9e7cc41c2d3d8fce7605e8b7c84971c0c76057fb3ea5a40",
+      "samples": 100000000,
+      "duration_s": 25.0
+    },
+    {
+      "path": "assets/logs/esp32_uart_bridge/2026-09-22_t004_initial_usb_monitor.txt",
+      "bytes": 82364,
+      "sha256": "01d1748606c02e2f62e45d53f9475a854dd5ed688d0e4672d72538f1dab9582c"
+    },
+    {
+      "path": "assets/logs/encoder/2026-09-22_tim3_floating_before_pulldown.txt",
+      "bytes": 83878,
+      "sha256": "09c78254553171d2c4276fb9cedf22fb78baa2f009e8663c3c239bf404cc110e"
+    },
+    {
+      "path": "assets/logs/encoder/2026-09-22_tim3_after_15k_pulldown.txt",
+      "bytes": 46595,
+      "sha256": "e60f8dd716ec2c6b3a3738d325dcfb220aecd593d269e932b292f2b1e9f6da93"
+    },
+    {
+      "path": "assets/logs/esp32_uart_bridge/2026-09-22_t004_safe_restore_usb_monitor.txt",
+      "bytes": 35424,
+      "sha256": "54a2fe5fec918419514117702c5094cd02402fa05596f3050d6bb406d8f5d5d9"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run01_historical_summary.json",
+      "bytes": 27436,
+      "sha256": "fc8b1377e7c0236c4c0fdb26858bdddcf5671afade50b30718477817dabde4fb"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run02_D4_uart.txt",
+      "bytes": 4493,
+      "sha256": "588e31972bdcc826d1de2632263da82dc6798393e4befcf0cbd970c407657b98"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run02_D5_uart.txt",
+      "bytes": 45988,
+      "sha256": "69b18f3aeb0c0fe18efad47eb9a6e1042395128e2bbde8710f2f6508340e0416"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run02_summary.json",
+      "bytes": 17383,
+      "sha256": "a633ef3a6c861069253874077377f73ed3851fa601b48bedb06718b329b32a71"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run03_D4_uart.txt",
+      "bytes": 6459,
+      "sha256": "81f2c10e780ccd9682a29f7e00cde64a1b19fb5ef69eda0c05b2f92da8415fca"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run03_D5_uart.txt",
+      "bytes": 49949,
+      "sha256": "50ad85d090fb924480c25b9ade7adfe4f5c806572d393e0e6dd8af0d8eb17b4e"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run03_summary.json",
+      "bytes": 9839,
+      "sha256": "bf9f2c6db9540870e5a1b1f0ea9ea4704e7938b4e9ee610c8f288a5db0cd569a"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run04_D4_uart.txt",
+      "bytes": 299,
+      "sha256": "f919f72992227f3b328d834df43f1abbb6aae0f9c96ebb1baf686df9485a9256"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run04_D5_uart.txt",
+      "bytes": 42095,
+      "sha256": "388cc1671c405c90842ffc8788d4ca88118d87eb6468d721b9aab920e0ee782f"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run04_summary.json",
+      "bytes": 5637,
+      "sha256": "c0e6b4270d13164fd2f01eb9ce68b4f0e334854bb6b2bcdea853f71c1093c239"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run05_D4_uart.txt",
+      "bytes": 299,
+      "sha256": "48e64532bacea44682ecfe391d56f83c973b6ccf2237a528c4f96f6f6726f772"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run05_D5_uart.txt",
+      "bytes": 41886,
+      "sha256": "0126cc4853ca1a61cb644a2c5844ad59ecc987821376b4785dd4c2a443178ceb"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run05_summary.json",
+      "bytes": 5792,
+      "sha256": "df7555c7268fbaf31bfdb585461bdf34a2847d43ba1b8ac7d7eff96cd01c1a21"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run06_D4_uart.txt",
+      "bytes": 4263,
+      "sha256": "a1f37ff8701c0c1a2254cd8ad83f8dfd20feb16870ef9bebb941c9b3b2b3fd74"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run06_D5_uart.txt",
+      "bytes": 42874,
+      "sha256": "17741b2e4da82de16aaf312c6560b70d13b4aff31cae3193697049bd6d7fc1eb"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run06_summary.json",
+      "bytes": 8422,
+      "sha256": "c62b01cd69bfa40e304876c745078ca0aff0f7f617273defb06b69346058b97b"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run07_D4_uart.txt",
+      "bytes": 117,
+      "sha256": "6304ae1f6fa1eee04a0b468d021c0af9218652e46342e8e0a31498c3160e3e5a"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run07_D5_uart.txt",
+      "bytes": 41037,
+      "sha256": "50676a417e8da21a2e6ac36aee59e20b2d201c45a1272be4f5639c52131cc38f"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run07_summary.json",
+      "bytes": 4504,
+      "sha256": "c78e11bdfab3e62a7d2796cdd7fc8102a22262fa418df7ca252831d09e496bd4"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/safe_restore_source_artifacts.json",
+      "bytes": 4383,
+      "sha256": "e16bf0a9dda28440dbfbd624afdbc2ca125910044b9c3dc436bbb3b8456a8939"
+    }
+  ],
+  "notes": [
+    "run01 named SR is 1.25 s. Previously analyzed 25 s Session 2 is no longer the same raw file; its historical summary is not a replacement for raw evidence. Use run03 for normal boot and full recovery.",
+    "Session 2 is an application working copy, not a canonical capture. Its raw samples currently match: 2026-09-22_T_ESTOP_004_run03_estop_release_reset.sr",
+    "Boot UART transition with invalid stop bit is excluded from complete UART frames; no claim about analog ramp or decoder error-free power-up."
+  ],
+  "session_2_raw_matches": [
+    "2026-09-22_T_ESTOP_004_run03_estop_release_reset.sr"
+  ]
+}

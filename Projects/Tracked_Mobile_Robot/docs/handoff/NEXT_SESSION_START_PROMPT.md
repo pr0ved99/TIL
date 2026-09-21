@@ -10,10 +10,15 @@ Tracked_Mobile_Robot 프로젝트를 이어서 진행해라.
 프로젝트: Projects/Tracked_Mobile_Robot
 브랜치: agent/dual-encoder-bringup
 
-9/19 종료 지점: UART/CTRL/ENC/IMU 배선과 안내한 무전원 검사·마감은 완료다.
-다음은 T004 BUILD-01이며 STM32/ESP32 빌드와 플래시는 내가 직접 한다.
-T004 hook=1U 이미지는 READY 뒤 자동 ARM/CMD를 보내므로 USB 연결 전 PRE-01/DEV-01을 따른다.
-완료한 배선 검사나 코드 입력을 반복하지 마라.
+9/22 종료 지점: T-ESTOP-004 모터 분리 조건의 conditioned PWM/latch/reset/wire-open과
+all-hooks-0U 복구까지 PASS다. 정적 검사 30/30, run07 25초 PWM HIGH0/자동 ARM·CMD0이다.
+완료한 T004/배선/코드 입력을 반복하지 마라. 빌드·플래시는 내가 직접 한다.
+다음은 전원 분배·퓨즈·K1 단자 release 미결 항목을 정리하고 T-ESTOP-005A를 준비하는 것이다.
+실행 순서는 docs/plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md을 따른다.
+이미 실물에서 해결한 항목은 기록으로 닫고, 완료한 검사를 반복하지 마라.
+아직 MDD10A B+나 모터를 연결하지 마라. 왼쪽 PB4/PB5 임시 15kΩ GND pull-down은 유지 중이다.
+9/22 Git 저장 요청 범위는 문서·검증 증거·다음 세션 계획·ESP hook0 복구다.
+최신 커밋과 원격 동기화 상태를 확인하고 기존 변경을 보존해라.
 
 먼저 git status와 최신 project commit을 확인하고 기존 변경을 보존해라. 그다음 아래 자료만 먼저
 읽어라.

@@ -17,6 +17,12 @@ Engineering Basis
 
 ## Current Verification Scope
 
+**2026-09-22 최신 추가:** T-ESTOP-004 conditioned S0-B/PC7 firmware/PWM/latch/reset/wire-open과
+all-hooks-0U safe restore PASS. run06 PC7→PWM last-fall 357.25 µs, run07 25 s PWM HIGH0,
+정적 검사 **30/30 PASS**. [report 26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)과 원본 증거를 기준으로 한다.
+K1/MDD10A direct rail 및 실제 모터 gate는 미완료다. 아래 8월~9/8 수치는 해당 시점의 이력이다.
+
+
 현재 검증 완료 범위는 PC-first UART MVP, ESP32 board-only UART bridge MVP와
 motor-disconnected MDD10A/dual-encoder 하위 시험까지 확장됐다.
 
@@ -41,7 +47,7 @@ target UART/PWM 및 hook-0 restore를 PASS했다.
 2026-08-29 P-04A에서 TEL의 `left_pwm/right_pwm`를 software-cached signed applied output과
 연결했고 P-04B에서 `reason/command_age_ms` actual source와 ESP32 parser/log를 추가했다. 당시
 P-04B checkpoint는 **28/28 PASS**였다. 2026-08-30 default-`0U` reset closeout harness 계약을
-추가한 current suite는 firmware `25/25` + mapper `2/2` + UART `2/2`, 합계 **29/29 PASS**다. Positive symmetric
+추가한 당시 suite는 firmware `25/25` + mapper `2/2` + UART `2/2`, 합계 **29/29 PASS**였다. Positive symmetric
 `50/50`, timeout/ARM-only/DISARM zero, no-CMD sentinel, accepted-CMD-only age reset과 direct-PC7
 `ESTOP_ACTIVE -> ESTOP_LATCHED` target subset과 hook-0 isolated STM32/ESP32 build, current default-off
 reset-harness ESP32 isolated build를 PASS했다. P-04B active reset `ERR`, released reset
@@ -83,7 +89,7 @@ artifact/setup provenance가 남아 current bridge release 전체 판정은 `PAR
   combined OUT/NUC E5V/ESP 5V는 `4.95/4.94/4.95 V`
 - XL4015 #2 J3 `5.08 V`에서 실제 conditioned `ESTOP_SENSE` released `0.06 V`,
   pressed와 S0-B wire-open `3.27 V` functional subset PASS. LED current, instrument/photo/raw evidence는 OPEN
-- `T-ESTOP-004` firmware/PWM integration은 미실행이며 firmware source 변경·flash도 없었다
+- 9/8 당시 `T-ESTOP-004`는 미실행이었다. 9/22 실제 conditioned PWM/reset/wire-open과 hook0 복구를 report 26으로 완료했다.
 
 아직 최종 검증에 포함하지 않은 것:
 
@@ -129,6 +135,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md) | Stop reason/accepted-CMD age의 STM TEL/ESP parser 연결, timeout와 direct-PC7 active/latch subset, hook-0 isolated build 및 남은 reset/target reflash-runtime boundary |
 | [`24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | RevC/6P/K1 조립, S0-A/S0-B/S2 truth table, K2 polarity correction과 motor-disconnected K2/K1 control-path subset; conditioned PC7/direct MDD rail/full E-stop PASS는 미포함 |
 | [`25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md`](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | XL4015 #1 dual-board logic power, #2 AUX path, S0-A/S0-B wire-open independence와 conditioned sense LOW/HIGH/open functional subsets; firmware/PWM/direct rail 미포함 |
+| [26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | 9/22 T004 conditioned PWM/latch/reset/wire-open, 357.25 µs와 hook0 최종 복구 PASS; 전력단/실모터 미포함 |
 
 ## Evidence Files
 

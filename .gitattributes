@@ -1,1 +1,9 @@
 Projects/Tracked_Mobile_Robot/assets/logs/**/*.txt -text whitespace=cr-at-eol
+
+# Preserve SHA-256 of the 2026-09-22 T004 capture views and evidence summaries.
+Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_*.pvs -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t004/*.json -text whitespace=cr-at-eol
+
+# Raw monitor padding and decoded empty UART lines are intentional evidence.
+Projects/Tracked_Mobile_Robot/assets/logs/esp32_uart_bridge/2026-09-22_t004_*.txt -text whitespace=cr-at-eol,-blank-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t004/*.txt -text whitespace=cr-at-eol,-blank-at-eol

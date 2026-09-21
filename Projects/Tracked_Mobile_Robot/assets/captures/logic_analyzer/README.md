@@ -13,6 +13,25 @@
 - [Motor Output Waveform And Shutdown Latency Test](../../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
 - [Screenshot index](../../screenshots/logic_analyzer/README.md)
 
+## 2026-09-22 T-ESTOP-004 완료
+
+[report 26](../../../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) / [decode·summary·hash](../../logs/estop/2026-09-22_t004/README.md).
+D0=PC7, D1=PB6/PWM1, D2=PB7/PWM2, D4=STM RX, D5=STM TX. 과거 D0/D2 DIR 배정과 다르다.
+run02~07은 각 100 M/4 MHz=25 s, UART 115200/8N1이다.
+
+| 파일 접두사 `2026-09-22_T_ESTOP_004_` 뒤 이름 | 결과 |
+| --- | --- |
+| `run01_boot_pwm` | 1.25 s 초기 보조 캡처. 정상 부팅 정식 근거는 run03 |
+| `run02_active_estop` | S0 assertion·PWM zero·active RESET 거절 PASS |
+| `run03_estop_release_reset` | 같은 부팅의 latch/reset/ARM-only-zero/fresh CMD/DISARM PASS |
+| `run04_boot_estop_active` | S0 잠금 부팅 PWM HIGH0·명령 거절 PASS |
+| `run05_boot_sense_open` | JESTOP Pin3 단선 부팅 PWM HIGH0·명령 거절 PASS |
+| `run06_active_sense_open` | 동작 중 단선: PC7→PWM last fall 357.25 µs, LOW 13.740 s PASS |
+| `run07_safe_restore_all_hooks_zero` | hook0, 25 s PWM HIGH0, 자동 ARM/CMD0, DISARMED PASS |
+
+각 `.sr`이 원본이며 같은 이름 `.pvs`는 view 설정이다. 현재 `Session 2` raw sample은 run03과
+같은 작업 사본이다. 이전 run01 장시간 capture로 오인하지 않는다. 기존 파일 삭제/이름 변경 없음.
+
 ## Canonical Channel Map for 2026-08-03 Motor Capture
 
 | PulseView channel | Connected signal |

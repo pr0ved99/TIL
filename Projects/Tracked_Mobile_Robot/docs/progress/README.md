@@ -4,16 +4,15 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [2026-09-19 progress](2026-09-19_progress.md) — UART·CTRL·ENC·IMU 배선,
-안내한 무전원 검사 및 마감 사용자 보고 PASS. 다음은 T004 BUILD-01 사용자 빌드다.
-Scheduler 교정과 hook-0 30/30 기준선은 유지하며 현재 소스는 T004만 `1U`다.
-사용자 build/flash/runtime 및 최신 PDF 재출력 완료는 아직 보고되지 않았다.
+Latest: [2026-09-22 progress](2026-09-22_progress.md) — **T-ESTOP-004 모터 분리 조건 PASS**.
+S0-B/PWM/latch/reset, pressed/open boot, active wire-open과 all-hooks-0U 복구를 완료했다.
+run06 PC7→PWM last falling edge 357.25 µs; run07 25 s PWM HIGH 0개, 정적 검사 30/30 PASS.
+[report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)과 raw/decoded evidence를 정본으로 사용한다.
+다음은 전원 분배·퓨즈·단자 release 미결 항목과 T-ESTOP-005A 준비다. 실제 모터는 미연결이다.
 
-Latest powered hardware: [2026-09-08 progress](2026-09-08_progress.md)와
+Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
-이전 [`2026-09-05_progress.md`](2026-09-05_progress.md)는 12.24 V control-only K2/K1 pickup/dropout,
-S2 self-hold와 S0/S1 nominal no-auto-restart subset을 기록한다. MDD10A B+는
-분리·절연했으므로 전체 Physical E-stop이나 `T-ESTOP-005A PASS`가 아니다.
+9/5 K2/K1 control-only 결과는 보존하며 전체 Physical E-stop 또는 T-ESTOP-005A PASS로 확대하지 않는다.
 
 ## How To Use
 
@@ -52,6 +51,7 @@ S2 self-hold와 S0/S1 nominal no-auto-restart subset을 기록한다. MDD10A B+�
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-22 | [2026-09-22_progress.md](2026-09-22_progress.md) | T004 conditioned PWM/latch/reset/wire-open 및 hook0 복구 PASS; left encoder 임시 pull-down, 30/30, 다음은 T005A 준비 |
 | 2026-09-19 | [2026-09-19_progress.md](2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; CTRL/ENC 각 3핀 두 개, T004 사용자 빌드부터 재개 |
 | 2026-09-15 | [2026-09-15_progress.md](2026-09-15_progress.md) | README 162줄 개편, 상세 색인 보존, 9/15 도면 검토와 이후 저장본 경계 정리; 기존 배선 도면 잔여 검토부터 재개 |
 | 2026-09-10 | [`2026-09-10_progress.md`](2026-09-10_progress.md) | Daily UART/debug-header plan; carried-forward scheduler correction and hook-0 30/30 PASS; T004-only 1U confirmed, user build/flash/runtime unreported |
