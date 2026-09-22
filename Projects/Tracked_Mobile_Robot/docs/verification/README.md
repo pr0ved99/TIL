@@ -17,10 +17,16 @@ Engineering Basis
 
 ## Current Verification Scope
 
-**2026-09-22 최신 추가:** T-ESTOP-004 conditioned S0-B/PC7 firmware/PWM/latch/reset/wire-open과
+**2026-09-23 최신 추가:** [report 28](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의
+엔코더 영구 조정부 납땜·저항·전원 검사 사용자 보고 PASS, JENC_1/2 +5.05V.
+실제 엔코더 연결·새 경로의 LOW/HIGH·수동 회전 검증은 다음 작업이다.
+[report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에
+MDD 전력단 연결 후 T005A 6캡처와 all-hooks-0U 복구를 보존했다. T005A 전체는 PARTIAL이다.
+
+**2026-09-22 이전 완료:** T-ESTOP-004 conditioned S0-B/PC7 firmware/PWM/latch/reset/wire-open과
 all-hooks-0U safe restore PASS. run06 PC7→PWM last-fall 357.25 µs, run07 25 s PWM HIGH0,
 정적 검사 **30/30 PASS**. [report 26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)과 원본 증거를 기준으로 한다.
-K1/MDD10A direct rail 및 실제 모터 gate는 미완료다. 아래 8월~9/8 수치는 해당 시점의 이력이다.
+K1/MDD10A direct rail의 수용 기준 및 실제 모터 gate는 미완료다. 아래 8월~9/8 수치는 해당 시점의 이력이다.
 
 
 현재 검증 완료 범위는 PC-first UART MVP, ESP32 board-only UART bridge MVP와

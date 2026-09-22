@@ -1,5 +1,7 @@
 # 다음 세션 — 전원 경로 정리와 T-ESTOP-005A 준비
 
+> 2026-09-23 상태: 이 문서는 당시 T005A 진입 계획이다. 이후 run01~06과 복구 결과는 [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 보존했다. 현재 작업은 엔코더 영구 배선 검사 뒤 실제 엔코더 연결이며 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+
 - 작성일: 2026-09-22, T004 완료 후 휴식 전
 - 실행일: 사용자가 수면 후 재개하는 세션. 임의로 다음 날짜의 완료 기록을 만들지 않는다.
 - 상태: **PLAN ONLY — 아래 작업은 아직 실행하지 않음**

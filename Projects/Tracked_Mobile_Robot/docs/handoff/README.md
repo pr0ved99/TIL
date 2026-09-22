@@ -21,10 +21,12 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: T004 완료/hook0, 다음 T005A 준비와 작업 방식 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/23 엔코더 납땜·전기 검사 완료, 다음 실제 엔코더 연결과 작업 방식 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-09-22 / next session | [휴식 후 작업 계획](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | +/− 분배부·퓨즈·K1 단자 실물 대조부터 시작; 조건 충족 시 모터 분리 T005A 정적 rail 시험 |
-| 2026-09-22 | [최신 진행 기록](../progress/2026-09-22_progress.md) / [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | T004 firmware/PWM PASS, hook0/30회 정적 검사와 safe restore; 다음 T005A 준비 |
+| 2026-09-23 | [최신 진행 기록](../progress/2026-09-23_progress.md) / [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 1kΩ+15kΩ 네 채널 납땜/전기 검사 PASS, 두 +5.05V; 실제 엔코더 전압/수동 회전 다음 |
+| 2026-09-23 | [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | 9/22 재개 T005A run01~06·버튼 정정·default-off 복구 증거; 전체 PARTIAL |
+| 2026-09-22 / historical plan | [당시 휴식 후 작업 계획](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | 당시 T005A 진입 계획. 현재 시작점은 위 9/23 기록으로 대체 |
+| 2026-09-22 | [이전 진행 기록](../progress/2026-09-22_progress.md) / [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | T004 firmware/PWM PASS와 safe restore 이력 |
 | 2026-09-19 | [이전 진행 기록](../progress/2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; 다음은 T004 BUILD-01 사용자 빌드 |
 | 2026-09-19 / current bench record | [납땜 체크리스트](../plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) | 현재 CTRL/ENC 3핀 두 개 배정과 9/17~19 검사 지점·결과; 전원 인가·T004 미실행 |
 | 2026-09-11 / drawing history | [UART·측정 헤더 계획](../plans/2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md) | 날짜별 도면 검토와 후속 배선 기록; 최신 PDF 재출력 완료는 미확인 |

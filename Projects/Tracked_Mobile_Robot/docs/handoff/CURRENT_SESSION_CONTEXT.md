@@ -1,118 +1,81 @@
 # Current Session Context
 
-Last updated: 2026-09-22
+Last updated: 2026-09-23 — encoder conditioning electrical checks complete; actual encoder next.
 
-## Current Milestone
+## 현재 종료 지점
 
-**2026-09-22 T-ESTOP-004 PASS**, motor-disconnected conditioned S0-B/VO617A/PC7 firmware/PWM scope.
-Read [latest progress](../progress/2026-09-22_progress.md) and
-[report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) for raw evidence and limits.
-All controlled hooks are now **0U**; final static suite **30/30 PASS** and run07 no-command boot PASS.
-Do not repeat the completed T004/source-walkthrough/wiring steps.
+**엔코더 입력 조정부 실제 납땜 완료 사용자 보고. 저항 8곳, 전원 연결·단락 6곳 PASS.
+JENC_1/2 모두 +5.05V. 실제 엔코더 연결부터 다음 세션으로 보류했다.**
 
-Next: resolve documented power-distribution/fuse/terminal release items and prepare **T-ESTOP-005A**,
-with motors still disconnected. This is not authorization to attach MDD10A B+ or either motor now.
-Repository root: `C:\Users\eyh12\workspace\TIL`; branch: `agent/dual-encoder-bringup`.
-The user requested a Git checkpoint/push on 9/22. This checkpoint includes the restored ESP hook,
-T004 raw/decoded evidence, report/progress and next-session plan. Check live Git status and the latest
-commit/remote before resuming; 3c756e5 is the previous checkpoint.
+먼저 [9/23 progress](../progress/2026-09-23_progress.md)와 필요한 부분의
+[report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 읽는다.
+완료한 저항·도통·5.05V 검사는 배선 변경이나 실패가 없으면 반복하지 않는다.
 
-## Completed Baseline To Preserve
+## 바로 다음 작업
 
-- K2 label correction and bounded direct continuity are complete. Do not repeat K2 contact tests.
-- S0-A/S0-B baseline, wire-open independence, restoration, and the nominal K2/K1 control-only switch sequence
-  are operator-reported PASS.
-- XL4015 #1 powers the separate NUCLEO and ESP32 2P branches. Standalone single/dual board power and power-off
-  return passed. USB and buck power must not be connected together.
-- XL4015 #2 supplies `AUX_5V` to the encoder/E-stop sense input side. Its OUT+ remains separate from both
-  XL4015 #1 5 V branches.
-- Conditioned `ESTOP_SENSE` measured `0.06 V` released and `3.27 V` pressed/latched or S0-B conductor-open.
-  This closes the functional voltage subset of `T-ESTOP-003`; the formal evidence package remains PARTIAL.
-- All-hooks-0U static suite passed 30/30 again on 9/22. The earlier seven mutation detections remain historical evidence.
-- T004 run03 proved latch/reset/ARM-only-zero/fresh-CMD/DISARM in one boot. run04/05 proved active/open boot.
-- run06 wire-open PC7 HIGH to final PWM falling edge = 357.25 us; 13.740 s LOW afterward.
-- run07: 25 s PWM HIGH 0, 199 TEL all DISARMED/zero, err/drop0; only DISARM/PING transmitted.
+1. 실제 무전원 상태와 엔코더 4선 케이블 준비 여부·제품 핀 방향을 확인한다.
+   마지막 케이블 준비 질문은 사용자가 작업을 미루어 미답변이다. 준비됐다고 가정하지 않는다.
+2. 무전원에서 GND/B/A/5V를 JENC에 연결한다. 모터 동력선 2개는 계속 분리한다.
+3. STM32 분리 상태로 실제 엔코더의 A/B LOW/HIGH를 JDBG_ENC에서 측정한다.
+   축을 조금씩 돌려 멈추며 측정한다. 연속 회전 중 DMM 평균을 HIGH로 해석하지 않는다.
+4. 입력 전압 적합성 확인 후 보드를 복원하고 새 배선의 수동 회전·양방향·정지·독립성을 검증한다.
 
-## Current Firmware And Wiring Checkpoint
+최종 안내는 S1 OFF→LiPo 분리였다. 사용자의 마지막 별도 분리 완료 보고는 없으므로
+전원이 꺼졌다고 문서만으로 판단하지 않는다. 이번 종료에는 실제 엔코더를 연결하지 않았다.
 
-- STM32 production E-stop/latch/reset code and ESP ACK/ERR parser were not changed.
-- The chosen test-only design reuses P-03 and P-04B with
-  `DRIVE -> RESET -> POST_RESET -> DONE/FAILED`. PulseView/sigrok D4/D5 decode supplies exact seq/type/code evidence.
-- Final ESP source SHA-256: `ECC304898B7F61BA1C28A8F01FA69B2FE9B11EB196BFAF02FB911D003EF000E4`.
-  All four ESP hooks and STM output/response-injection hooks are 0U. User changed only T004 1U→0U.
-- STM protocol source remains `063F608DE44673649E4FEAFC22A525532CD48552199AF93AECE1EDC3FF1A5127`.
-- Test source remains `AC1C7C4D4E7F193F750495BB332B1BFDCDE06CC2F05BD2E059F64EEDD1C0681D`.
-- User performed both builds/flashes and explicitly confirmed final STM success. Final ESP ELF hash
-  starts `7bc5eca6f`, matching its USB boot log. Artifact hashes/limitations are in report 26.
-  Complete flash transcripts/STM flash readback and a controlled ESP BIN backup were not supplied.
-- Scheduler correction is complete. Do not re-enter the coordinator or Python validation code.
-- Current user-designated drawing is `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt`.
-  A new save appeared during Git closeout on 9/22 04:18:39, 160,699 bytes,
-  SHA-256 `26bc7f6cfc48d415185a1c40590c181038191a3e3d91653f68ed7e75e1a8c666`.
-  This latest save is preserved without a new circuit/Net review. Compare relevant changes before using
-  it to prescribe probe points or new wiring; do not infer a physical wiring change from a saved file.
-- T004 header/Net checks used the preceding 160,699-byte file,
-  SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`.
-  Earlier full Wire132/parts28/BrokenNets0 findings belonged to the 9/18 revision, not the new save.
-  The similarly named `...UART_Debug_IMU_WIP.vrt` and old addIMU PDF remain older references.
-- CTRL and ENC each use two 3-pin connectors. CTRL_1 Pins1/2/3 are DIR1/PWM1/DIR2 at C35/R1/2/3;
-  CTRL_2 Pins1/2/3 are PWM2/PC7/GND at C35/R5/6/7. **C35/R6 is PC7, not GND.**
-  ENC_1 Pins1/2/3 are PB4/PB5/GND at C9/8/7,R37; ENC_2 are PA0/PA1/GND at C5/4/3,R37.
-  UART remains C26/27/28,R37 (STM TX/ESP TX/GND); IMU remains C45/R15...R10 (RST/INT/SDA/SCL/NC/GND).
-- User reports: all debug GND and UART directions passed on 9/17; CTRL and ENC passed on 9/18;
-  IMU signal continuity/isolation and final workmanship/STM-ESP fit passed on 9/19. Record as operator-reported,
-  unpowered evidence; numerical resistances and powered waveforms were not provided. Do not repeat completed checks.
-- IMU RST=PC4, INT=PB1, SDA=PB9, SCL=PB8. BNO supply/mode/pull-ups remain unfinished, so the module stays removed.
-  Encoder raw input connectors/conditioning are still separate pending work. Debug wiring does not close those gates.
-  Matching latest component/solder PDF exports are not yet confirmed. The old isolated PC7 pad was cleared in an earlier review.
-- Normal runtime uses board USB removed, JP5=E5V, JP1=OPEN, both #1 board plugs and #2 AUX connected.
-  Development USB needs OFF/0 V, both #1 plugs removed, JP5=U5V. Never combine USB and buck supply.
-- Left encoder PB4/PB5 each retain temporary 15 kΩ to STM GND. Before: TIM3 ±1 count / left CPS ±10;
-  after: 414 raw pairs all left delta/CPS0. Do not alter arithmetic to hide floating-input counts.
-- Right encoder has one +10 CPS startup report per run02~07; permanent input conditioning and powered
-  motor noise/sign checks remain open. Both encoder connectors/conditioning are not fully implemented.
-- JESTOP Pin3 wire was used for open-fault tests, then restored; run07 PC7 LOW confirms live sense recovery.
-  S0 released, S2 not used, MDD10A B+ and motors disconnected, BNO removed throughout.
-- Final operator instruction was S1 OFF/LiPo disconnected. The capture ends before that action; recheck
-  physical power state before subsequent work rather than deriving it from a file.
-- Evidence: `assets/logs/estop/2026-09-22_t004/manifest.json` and named raw run02~07 captures.
-  Named run01 is only 1.25 s; the previous long Session 2 was overwritten by the application. Use run03
-  for normal boot. Current Session 2 raw samples match run03, not the historical run01 long capture.
+## 새 도면과 실물 검사
 
-## Next Session Resume Order
+- 현재 VRT: `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.vrt`.
+  182,515 bytes; SHA-256 `09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78`.
+- exports의 동일 이름 PDF: 02:36 저장, 172,045 bytes; 새 연결 반영 확인.
+- 저장 Net/Flying Wire Pad 19개와 Broken Nets 0개 확인. 전체 좌표·Net은 report 28에 있다.
+- JENC_1=C50/R11~14, JENC_2=C54/R5~8. 위→아래 Pin1 GND, Pin2 B raw, Pin3 A raw, Pin4 AUX_5V.
+- 왼쪽 PB4/A=R2 1k+R6 15k, PB5/B=R1+R5. 오른쪽 PA0/A=R4+R8, PA1/B=R3+R7.
+  직렬저항 뒤 MCU 노드에 풀다운과 JDBG를 연결한다. AUX는 R13 앞 J3 Pin1에서 분기한다.
+- 실제 납땜 완료 및 두 보드 장착 monitor 사용자 보고. 이후 저항 검사 8곳 모두 정상;
+  직렬 최솟값 0.98kΩ, 풀다운 한 값 14.69kΩ. JENC 전원 6검사 및 두 +5.05V PASS.
+- 1k+15k는 범용 5V→3.3V 분압기가 아니다. 실제 엔코더 연결 후 새 배선의 입력 전압 검증이 남았다.
+- 커넥터 실물 제품/케이블과 부품 높이·고정 상태를 도면만으로 확정하지 않는다.
 
-The user paused to sleep. Follow the [next-session plan](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md); it is a plan, not completed hardware work. Start with the as-built power hub/fuse/K1 terminal identification.
+## 로그의 확인 범위
 
-1. Read latest progress/report 26 only as needed. Preserve completed T004 PASS and default-off hooks.
-2. Inspect the currently unresolved power hub, F1/F2, K1 terminal/wire-release facts in existing documents.
-3. Prepare the motor-disconnected T-ESTOP-005A plan from those facts. Do not connect power/motors merely
-   because the secondary firmware/PWM path passed.
-4. Keep user-authored firmware/build/flash and one coherent bench group per turn. Record results once
-   at work-block closeout. No subagents unless the user explicitly requests them.
+[9/23 monitor](../../assets/logs/encoder/2026-09-23_perfboard_conditioning/README.md):
+STM t_ms=4200~44100, TEL 400개/39.9초, left/right CPS 모두 0, TEL 100ms 연속.
+FAULT/ESTOP_ACTIVE 유지, PWM 보고값 0, err=7 고정. RX_DESYNC 1회 뒤 DISARM ACK/PONG/READY.
+첫 4.2초가 없어 과거 300/400ms 부팅 튐 해결은 미확인이다. 로그 촬영 때 임시 빵판 저항 제거와
+엔코더 케이블 상태는 별도 보고되지 않았다. 이후 무전원 검사에는 STM/임시 저항 분리를 안내했다.
+CPS 계산을 변경하지 않는다. 새 실제 엔코더 경로 전체 PASS로 확대하지 않는다.
 
-## Remaining Critical Path After `T-ESTOP-004`
+## T005A와 현재 전력단
 
-1. Resolve the positive/ground distribution hardware and the K1/F1/F2 release blockers: F1 `257` versus
-   ordered `287`, K1 14 AWG lead versus the `280756-4` AWG 12~10 range, connector/terminal ratings, and
-   voltage-drop/temperature evidence.
-2. Run `T-ESTOP-005A` at the actual MDD10A `B+` input with motors disconnected, including rail-off,
-   no-auto-restart, back-power, UART-loss, and firmware-reset behavior.
-3. Verify fabricated adapter-plate fit, E-stop mounting, labels, fasteners, insulation, and strain relief.
-4. Run the lifted first-motor low-duty test and powered encoder-noise/sign checks.
-5. Complete battery ADC/low-voltage behavior, odometry/1 m calibration, dual drivetrain testing, final fault
-   acceptance, and portfolio packaging.
+[report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md):
+9/22 run01~06과 파생 증거 보존 완료. **T005A 전체 PARTIAL**, T004 PASS는 유지한다.
 
-`T-ESTOP-005B` single-fault tolerance, CAN, FreeRTOS, selected LL migration, IMU integration, and ROS 2/Nav2
-remain post-MVP work.
+- 두 커버형 버스바 사용. +는 S1 OUT→XL1/XL2 IN+, K1 30, F2/6P Pin1 분기.
+  −는 LiPo−/XL1·XL2 IN−/MDD B−. MDD B+=K1 87, B−=GND 16 AWG. K1 주선 14 AWG.
+- MDD 5P 제어 하네스 연결, 두 모터는 분리. BNO 모듈은 미연결.
+- run03 오른쪽 RESET 표기 버튼은 ESP 송신을 멈추지 않았다.
+  실제 HG-ESP32-S3-DevkitC-1은 **왼쪽 BOOT 표기 버튼이 EN LOW**를 만든다.
+  run04에서 마지막 CMD 끝→PWM 정지 498.635ms와 CMD_TIMEOUT 관측.
+- run05/06 all-hooks-0U 복구 후 25초 두 PWM HIGH0, 자동 ARM/CMD/RESET 없음.
+  right_cps=10 한 번씩(t_ms=300/400)이 남아 이번 입력 조정부 작업으로 이어졌다.
+- DMM 잔류 0.45~1.6V를 임의 rail-off PASS로 처리하지 않는다. V_RAIL_OFF_MAX/판정 시점,
+  F1 257/287 식별, F2 식별, K1 단자-선재 release 항목은 report 27을 따른다.
+- T005A D4=STM TX/TEL, D5=ESP TX/명령. 이전 T004와 채널 역할이 반대다.
 
-## Interaction Contract
+## 전원·펌웨어·작업 방식
 
-- Firmware is user-authored by default. For connected function/scheduler changes, Codex gives the exact
-  replacement range, complete reviewed block and state-flow explanation at once; the user saves it and Codex
-  rereads the actual source. Do not return to serial one-character corrections.
-- STM32 and ESP32 builds and flashes are user-performed. Python validation code maintenance/execution is
-  delegated to Codex; do not require the user to retype the complete test block.
-- Bench instructions state the gate and purpose, then give one physical action at a time.
-- `통과 다음` closes only the stated subset and advances without retesting completed work.
-- Progress and evidence documents are updated once at the end of the work block, unless the user requests an
-  immediate update.
+- XL4015 #1 OUT에서 별도 2P 두 갈래로 NUCLEO/ESP32에 공급한다. 중간 4P는 없다.
+  #2는 AUX_5V이며 두 buck의 OUT+는 분리, GND 공통.
+- 독립 전원 운전: USB 제거, NUCLEO JP5=E5V, JP1=OPEN.
+  USB 개발: S1 OFF/LiPo 분리/잔류전압 확인 후 #1 두 2P 분리, JP5=U5V/JP1=OPEN,
+  두 보드 각각 USB 공급. USB와 buck을 동시 공급하지 않는다.
+- ESP controlled hook 네 개 모두 0U, STM unchanged. 복구 사용자 빌드·플래시 및 당시 static 30/30 PASS.
+  source SHA `ecc304898b7f61ba1c28a8f01fa69b2fe9b11eb196bfaf02fb911d003ef000e4`,
+  ELF SHA 시작 `3c5b64553806`; 9/23 monitor의 `3c5b64553...`와 일치. flash readback은 아니다.
+- 사용자가 펌웨어 입력, STM/ESP 빌드·플래시와 하드웨어 조작을 수행한다. Codex가 대신 진행하지 않는다.
+- 코드 안내는 연결된 블록 전체와 정확한 교체 범위·이유를 제공한다. bench는 한 측정 묶음씩 진행한다.
+- progress는 사용자 작업 마감 때 한 번에 갱신. 하위 PASS를 전체로 확대하지 않는다.
+- 사용자 요청 없이 subagent/전체 대화 아카이브 검색을 실행하지 않는다.
+- repo `C:\Users\eyh12\workspace\TIL`, branch `agent/dual-encoder-bringup`.
+  사용자가 이번 문서·증거·도면의 Git 커밋/푸시를 요청했다. 현재 commit/원격 상태는 Git에서 확인한다.

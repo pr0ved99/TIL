@@ -1,5 +1,14 @@
 # Encoder Logs
 
+## 2026-09-23 permanent perfboard conditioning
+
+- [Stationary ESP monitor and summary](2026-09-23_perfboard_conditioning/README.md):
+  TEL 400 samples from STM t_ms=4200 to 44100; both CPS always zero.
+- [Assembly/electrical report](../../../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md):
+  four 1kΩ series/15kΩ pulldown channels, eight resistance checks, connector checks and both +5.05V.
+- Actual encoder connection, conditioned signal voltage and hand-rotation through the new wiring remain pending.
+  The monitor does not cover the first 4.2 seconds or prove removal of the earlier boot transient.
+
 ## 2026-07-30 encoder-side vehicle-frame mapping and sign normalization
 
 - Verification record: [`2026-07-30_vehicle_frame_encoder_sign_verification.md`](2026-07-30_vehicle_frame_encoder_sign_verification.md)

@@ -1,5 +1,7 @@
 # Logic Analyzer Raw Captures
 
+> 2026-09-23 추가: `2026-09-22_T_ESTOP_005A_run01`~`run06` 원본과 `.pvs`를 보존했다. [증거 묶음](../../logs/estop/2026-09-22_t005a/README.md)에 hash/파생 분석이 있다. 이 T005A의 D4=STM TX, D5=ESP TX이며 이전 T004와 반대다.
+
 이 디렉터리는 PulseView/sigrok로 저장한 원본 로직 분석기 자료를 보관한다.
 
 - `.sr`: 실제 digital sample과 capture metadata를 포함하는 sigrok session archive. 재검토 시 기준이 되는 원본 증거다.

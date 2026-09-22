@@ -2,7 +2,28 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-09-19 (debug/IMU wiring and unpowered checks complete; user build pending)
+Last updated: 2026-09-23 (encoder conditioning assembled/electrically checked; actual encoder connection next)
+
+## Current Hardware Checkpoint
+
+이 절과 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)가 아래 과거 시점의
+current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/report에 보존한다.
+
+- [9/23 report 28](docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md):
+  네 encoder 입력에 1kΩ 직렬+MCU 측 15kΩ GND 풀다운 실제 납땜 사용자 확인.
+  저항 8곳 및 전원 연결/단락 6곳 PASS, JENC_1/2 모두 +5.05V. 실제 encoder 연결은 다음 작업이다.
+- 현재 도면은 VeroRoute `...ENC_Conditioning_WIP.vrt`와 동일 이름 PDF다.
+  JENC_1=C50/R11~14, JENC_2=C54/R5~8; Pin1~4=GND/B/A/AUX_5V.
+  좌표·저항 매핑·19개 Flying Wire pad의 정본은 report 28이다.
+- 버스바 두 개로 +/− 분배. MDD B+=K1 87, B−=GND 16 AWG, K1 main leads=14 AWG.
+  두 모터는 분리다. 예전 MDD B+ disconnected 문장은 해당 날짜의 이력이다.
+- T004 firmware/PWM PASS. T005A run01~06과 default-off 복구는
+  [report 27](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 보존;
+  전체 T005A는 rail-off 수용 기준/release 항목 때문에 PARTIAL이다.
+- 실제 HG-ESP32-S3-DevkitC-1은 왼쪽 BOOT 표기 버튼에서 EN LOW/송신 중단을 관측했다.
+  오른쪽 RESET 표기 버튼에서는 GPIO0 LOW이고 송신이 유지됐다. 다른 보드로 일반화하지 않는다.
+- ESP 네 controlled hook=0U, STM unchanged, 사용자 복구 build/flash와 당시 static 30/30 PASS.
+  9/23 ESP monitor는 4.2~44.1초 CPS0만 확인했으며 부팅 첫 0.4초는 미포함이다.
 
 ## Project Identity
 

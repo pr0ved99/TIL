@@ -4,11 +4,12 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [2026-09-22 progress](2026-09-22_progress.md) — **T-ESTOP-004 모터 분리 조건 PASS**.
-S0-B/PWM/latch/reset, pressed/open boot, active wire-open과 all-hooks-0U 복구를 완료했다.
-run06 PC7→PWM last falling edge 357.25 µs; run07 25 s PWM HIGH 0개, 정적 검사 30/30 PASS.
-[report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)과 raw/decoded evidence를 정본으로 사용한다.
-다음은 전원 분배·퓨즈·단자 release 미결 항목과 T-ESTOP-005A 준비다. 실제 모터는 미연결이다.
+Latest: [2026-09-23 progress](2026-09-23_progress.md) — **엔코더 입력 조정부 납땜·저항 8곳·전원 6검사 PASS, 양쪽 +5.05V**.
+현재 도면은 ENC_Conditioning_WIP VRT/PDF다. 다음은 실제 엔코더 4선 케이블 확인과
+STM32 분리 상태의 A/B 전압, 수동 회전 검증이다. [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
+정지 monitor 400개 CPS=0은 첫 4.2초를 포함하지 않는다. T005A run01~06은
+[report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)로 보존했으며 전체 PARTIAL이다.
+T004 PASS와 all-hooks-0U 복구는 유지한다. 실제 모터는 미연결이다.
 
 Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
@@ -51,6 +52,7 @@ Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-23 | [2026-09-23_progress.md](2026-09-23_progress.md) | 엔코더 영구 조정부 납땜/저항/전원 검사와 +5.05V PASS; 정지 TEL400 CPS0, 실제 엔코더 연결 다음; T005A 6캡처 마감 |
 | 2026-09-22 | [2026-09-22_progress.md](2026-09-22_progress.md) | T004 conditioned PWM/latch/reset/wire-open 및 hook0 복구 PASS; left encoder 임시 pull-down, 30/30, 다음은 T005A 준비 |
 | 2026-09-19 | [2026-09-19_progress.md](2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; CTRL/ENC 각 3핀 두 개, T004 사용자 빌드부터 재개 |
 | 2026-09-15 | [2026-09-15_progress.md](2026-09-15_progress.md) | README 162줄 개편, 상세 색인 보존, 9/15 도면 검토와 이후 저장본 경계 정리; 기존 배선 도면 잔여 검토부터 재개 |

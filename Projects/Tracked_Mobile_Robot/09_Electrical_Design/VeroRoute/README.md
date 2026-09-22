@@ -4,6 +4,16 @@
 
 ## 현재 작업 파일
 
+- **2026-09-23 현재:** [ENC Conditioning VRT](Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.vrt)와
+  [동일 이름 PDF](exports/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.pdf).
+  VRT 02:32 저장/182,515 bytes/SHA `09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78`.
+  PDF 02:36 export/172,045 bytes. 1kΩ 직렬+15kΩ 풀다운 네 채널, JENC_1/2와 Flying Wire Pad 19개,
+  지정 Net 및 Broken Nets 0개 확인. 실제 납땜·저항·전원 검사와 두 +5.05V는 사용자 보고 PASS.
+  좌표·pinout·검사 범위는 [report 28](../../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
+  실제 엔코더 케이블과 신호 검증은 미완료다. 과거 CTRL/addIMU 파일은 이력으로 보존한다.
+
+## 과거 CTRL 작업 파일
+
 - **Git 종료 시점 최신 저장본:** 아래 CTRL수정본은 9/19 02:33:28에 다시 저장됐다.
   160,699 bytes, SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`.
   아래 9/18 검토본과 다르며 이번에는 파일 보존만 진행했다. 다음 도면 사용 전 변경분 대조가 필요하다.
