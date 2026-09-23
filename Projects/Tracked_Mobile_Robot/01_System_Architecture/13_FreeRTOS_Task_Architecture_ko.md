@@ -235,12 +235,15 @@ typedef enum {
     SAFETY_ARMING_CHECK,
     SAFETY_ARMED_IDLE,
     SAFETY_ARMED_ACTIVE,
-    SAFETY_TIMEOUT_STOP,
     SAFETY_LOW_VOLTAGE_STOP,
     SAFETY_ESTOP_LATCHED,
     SAFETY_FAULT_LATCHED
 } safety_state_t;
 ```
+
+ADR-015 기준으로 command timeout은 output/stored command zero 뒤 즉시
+`SAFETY_DISARMED`로 전환한다. `SAFETY_TIMEOUT_STOP`은 과거 후보이므로 FreeRTOS
+target enum에 포함하지 않으며 재동작에는 new `ARM` 뒤 new `CMD`가 필요하다.
 
 Rules:
 
@@ -392,12 +395,13 @@ Responsibilities:
 
 Safety output:
 
-- `SAFETY_ARMED`일 때만 제한된 motor output이 허용된다.
+- `SAFETY_ARMED_ACTIVE`일 때만 nonzero motor output이 허용되고,
+  `SAFETY_ARMED_IDLE`은 output zero를 유지한다.
 - Unsafe state는 motor-control output path를 통해 PWM zero와 driver disable을 강제한다.
 
 중요:
 
-정확한 state machine은 `16_Control_Loop_and_State_Machine.md`에서 정의한다. 이 문서는 RTOS task
+정확한 state machine은 `16_Control_Loop_and_State_Machine_ko.md`에서 정의한다. 이 문서는 RTOS task
 ownership만 정의한다.
 
 ## 14. Battery Task

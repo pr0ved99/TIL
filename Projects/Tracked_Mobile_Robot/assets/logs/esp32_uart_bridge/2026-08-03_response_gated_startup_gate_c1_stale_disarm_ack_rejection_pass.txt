@@ -1,0 +1,32 @@
+--- Waiting for the device to reconnect
+I (377) esp32_uart_bridge: RX TEL: t_ms=1619 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=91 tel_count=2
+I (477) esp32_uart_bridge: RX TEL: t_ms=1719 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=91 tel_count=3
+I (577) esp32_uart_bridge: RX TEL: t_ms=1819 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=91 tel_count=4
+I (677) esp32_uart_bridge: RX TEL: t_ms=1919 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=91 tel_count=5
+I (777) esp32_uart_bridge: STARTUP: line sync sent
+I (777) esp32_uart_bridge: RX TEL: t_ms=2019 state=DISARMED last_seq=0 vx=0 w=0 left_cps=0 right_cps=0 err=91 tel_count=6
+W (797) esp32_uart_bridge: RX ERR: ERR,seq=0,type=UNKNOWN,code=BAD_TYPE,t_ms=2040
+I (877) esp32_uart_bridge: TX UART1: DISARM,seq=1516921324
+W (877) esp32_uart_bridge: RX UNKNOWN: ,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=92
+I (897) esp32_uart_bridge: RX ACK: seq=1516921323 type=DISARM ack_count=1
+W (897) esp32_uart_bridge: STARTUP: ignored non-matching ACK seq=1516921323 type=DISARM
+I (977) esp32_uart_bridge: RX TEL: t_ms=2219 state=DISARMED last_seq=1516921324 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=7
+I (1077) esp32_uart_bridge: RX TEL: t_ms=2319 state=DISARMED last_seq=1516921324 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=8
+I (1177) esp32_uart_bridge: RX TEL: t_ms=2419 state=DISARMED last_seq=1516921324 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=9
+I (1277) esp32_uart_bridge: RX TEL: t_ms=2519 state=DISARMED last_seq=1516921324 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=10
+W (1377) esp32_uart_bridge: STARTUP: retry DISARM attempt=2
+I (1377) esp32_uart_bridge: TX UART1: DISARM,seq=1516921324
+I (1377) esp32_uart_bridge: RX TEL: t_ms=2619 state=DISARMED last_seq=1516921324 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=11
+I (1397) esp32_uart_bridge: RX ACK: seq=1516921324 type=DISARM ack_count=2
+I (1397) esp32_uart_bridge: STARTUP: DISARM acknowledged
+I (1397) esp32_uart_bridge: TX UART1: PING,seq=1516921325
+I (1397) esp32_uart_bridge: RX PONG: seq=1516921325 pong_count=1
+I (1407) esp32_uart_bridge: STARTUP READY: DISARM ACK and PONG verified
+I (1477) esp32_uart_bridge: RX TEL: t_ms=2719 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=12
+I (1577) esp32_uart_bridge: RX TEL: t_ms=2819 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=13
+I (1677) esp32_uart_bridge: RX TEL: t_ms=2919 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=14
+I (1777) esp32_uart_bridge: RX TEL: t_ms=3019 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=15
+I (1877) esp32_uart_bridge: RX TEL: t_ms=3119 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=16
+I (1977) esp32_uart_bridge: RX TEL: t_ms=3219 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=17
+I (2077) esp32_uart_bridge: RX TEL: t_ms=3319 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=18
+I (2177) esp32_uart_bridge: RX TEL: t_ms=3419 state=DISARMED last_seq=1516921325 vx=0 w=0 left_cps=0 right_cps=0 err=92 tel_count=19

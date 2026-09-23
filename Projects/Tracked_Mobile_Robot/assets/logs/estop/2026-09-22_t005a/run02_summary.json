@@ -1,0 +1,279 @@
+{
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-22_T_ESTOP_005A_run02_release_no_s2.sr",
+  "sha256": "4739bab0a678b14b2e92345c36612966a6fbfa611ced52a378b45ae7a7852a82",
+  "fs": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "D0": {
+      "high_runs": 5,
+      "high_samples": 31298472,
+      "high_at_start": false,
+      "high_at_end": false,
+      "high_intervals_s": [
+        [
+          4.94226725,
+          4.942302
+        ],
+        [
+          4.942386,
+          12.76693425
+        ],
+        [
+          12.766975,
+          12.76698725
+        ],
+        [
+          12.76702775,
+          12.76704825
+        ],
+        [
+          12.7671605,
+          12.76716275
+        ]
+      ]
+    },
+    "D1": {
+      "high_runs": 97999,
+      "high_samples": 1029669,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": [
+        {
+          "start_s": 4.45e-05,
+          "end_s": 4.94875725,
+          "pulses": 94247,
+          "mean_hz": 19044.55908711563,
+          "mean_duty_percent": 5.002813864623305
+        },
+        {
+          "start_s": 13.13809825,
+          "end_s": 13.33500775,
+          "pulses": 3752,
+          "mean_hz": 19049.626282491587,
+          "mean_duty_percent": 4.995765762219934
+        }
+      ]
+    },
+    "D2": {
+      "high_runs": 97999,
+      "high_samples": 1029641,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": [
+        {
+          "start_s": 4.45e-05,
+          "end_s": 4.94875725,
+          "pulses": 94247,
+          "mean_hz": 19044.55908711563,
+          "mean_duty_percent": 5.002667361797316
+        },
+        {
+          "start_s": 13.13809825,
+          "end_s": 13.33500775,
+          "pulses": 3752,
+          "mean_hz": 19049.626282491587,
+          "mean_duty_percent": 4.99589272587151
+        }
+      ]
+    },
+    "D4": {
+      "decoded_bytes": 45913,
+      "invalid_stop_bits": 0,
+      "lines": 306,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "TEL": 251,
+        "ACK": 53,
+        "ERR": 2
+      },
+      "telemetry_distributions": {
+        "state": {
+          "ARMED": 53,
+          "FAULT": 79,
+          "DISARMED": 119
+        },
+        "reason": {
+          "NONE": 53,
+          "ESTOP_ACTIVE": 78,
+          "ESTOP_LATCHED": 1,
+          "ESTOP_RESET": 2,
+          "DISARM": 117
+        },
+        "left_pwm": {
+          "50": 52,
+          "0": 199
+        },
+        "right_pwm": {
+          "50": 52,
+          "0": 199
+        },
+        "left_cps": {
+          "0": 251
+        },
+        "right_cps": {
+          "0": 251
+        },
+        "err": {
+          "0": 50,
+          "1": 1,
+          "2": 200
+        },
+        "drop": {
+          "0": 251
+        }
+      },
+      "state_transitions": [
+        {
+          "start_s": 0.030507,
+          "end_s": 0.045221055555555556,
+          "text": "TEL,t_ms=22700,state=ARMED,reason=NONE,command_age_ms=63,last_seq=3985019025,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "start_s": 5.018867,
+          "end_s": 5.034101055555556,
+          "text": "TEL,t_ms=27700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=142,last_seq=3985019074,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        },
+        {
+          "start_s": 12.80043225,
+          "end_s": 12.815834555555556,
+          "text": "TEL,t_ms=35500,state=FAULT,reason=ESTOP_LATCHED,command_age_ms=7942,last_seq=3985019074,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "start_s": 12.90017075,
+          "end_s": 12.915661555555555,
+          "text": "TEL,t_ms=35600,state=DISARMED,reason=ESTOP_RESET,command_age_ms=8042,last_seq=3985019077,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "start_s": 13.09963875,
+          "end_s": 13.114266805555555,
+          "text": "TEL,t_ms=35800,state=ARMED,reason=NONE,command_age_ms=8242,last_seq=3985019078,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "start_s": 13.39887025,
+          "end_s": 13.413848555555555,
+          "text": "TEL,t_ms=36100,state=DISARMED,reason=DISARM,command_age_ms=262,last_seq=3985019080,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        }
+      ],
+      "selected_commands_responses": [
+        {
+          "start_s": 4.97803875,
+          "end_s": 4.983059555555556,
+          "text": "ERR,seq=3985019075,type=CMD,code=ESTOP_LATCHED,t_ms=27659"
+        },
+        {
+          "start_s": 5.08158625,
+          "end_s": 5.0872135555555555,
+          "text": "ERR,seq=3985019076,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=27762"
+        },
+        {
+          "start_s": 12.835705,
+          "end_s": 12.839773805555556,
+          "text": "ACK,seq=3985019077,type=ESTOP_RESET,t_ms=35535"
+        },
+        {
+          "start_s": 13.02968275,
+          "end_s": 13.033059305555556,
+          "text": "ACK,seq=3985019078,type=ARM,t_ms=35729"
+        },
+        {
+          "start_s": 13.33509675,
+          "end_s": 13.338731805555556,
+          "text": "ACK,seq=3985019080,type=DISARM,t_ms=36036"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.030507,
+          "end_s": 0.045221055555555556,
+          "text": "TEL,t_ms=22700,state=ARMED,reason=NONE,command_age_ms=63,last_seq=3985019025,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.96803525,
+          "end_s": 24.983191305555557,
+          "text": "TEL,t_ms=47700,state=DISARMED,reason=DISARM,command_age_ms=11862,last_seq=3985019080,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        }
+      ]
+    },
+    "D5": {
+      "decoded_bytes": 2951,
+      "invalid_stop_bits": 0,
+      "lines": 55,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "CMD": 51,
+        "ESTOP_RESET": 2,
+        "ARM": 1,
+        "DISARM": 1
+      },
+      "telemetry_distributions": {},
+      "state_transitions": [],
+      "selected_commands_responses": [
+        {
+          "start_s": 5.079123,
+          "end_s": 5.081466805555556,
+          "text": "ESTOP_RESET,seq=3985019076"
+        },
+        {
+          "start_s": 12.83325225,
+          "end_s": 12.835596055555555,
+          "text": "ESTOP_RESET,seq=3985019077"
+        },
+        {
+          "start_s": 13.0233045,
+          "end_s": 13.024953805555556,
+          "text": "ARM,seq=3985019078"
+        },
+        {
+          "start_s": 13.33309175,
+          "end_s": 13.335001555555555,
+          "text": "DISARM,seq=3985019080"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.0629875,
+          "end_s": 0.06784880555555556,
+          "text": "CMD,seq=3985019026,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 13.33309175,
+          "end_s": 13.335001555555555,
+          "text": "DISARM,seq=3985019080"
+        }
+      ]
+    }
+  },
+  "stop_check": {
+    "first_pc7_high_s": 4.94226725,
+    "pc7_stable_high_s": 4.942386,
+    "pc7_stable_release_s": 12.76716275,
+    "last_pwm_fall_before_release_s": 4.94875725,
+    "first_pwm_after_release_s": 13.13809825,
+    "last_fall_minus_first_pc7_us": 6490.0,
+    "last_fall_minus_stable_pc7_us": 6371.25,
+    "high_samples_assert_plus_200ms_to_release": {
+      "D1": 0,
+      "D2": 0
+    }
+  },
+  "uart_roles": {
+    "D4": "STM32 TX / ESP32 RX (inferred from TEL/ACK/ERR)",
+    "D5": "ESP32 TX / STM32 RX (inferred from commands)"
+  },
+  "command_response_check": {
+    "complete_commands": 55,
+    "matched": 55,
+    "missing_seqs": [],
+    "type_mismatches": []
+  },
+  "limits": [
+    "This digital capture contains no analog MDD rail voltage.",
+    "A PWM last falling edge before PC7 assertion does not measure negative or exact-zero shutdown latency.",
+    "Physical operating steps and analog measurements require operator reports."
+  ]
+}

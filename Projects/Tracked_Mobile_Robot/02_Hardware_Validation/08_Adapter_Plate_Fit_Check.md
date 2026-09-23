@@ -2,24 +2,25 @@
 
 ## Status
 
-`PLANNED / NOT TESTED`
+`USER-REPORTED RECEIVED / IDENTITY AND FIT NOT TESTED`
 
-이 문서는 Rev A 아크릴 3T 어댑터 플레이트 제작품을 받은 뒤 셰시 체결, 전장 모듈 조립, 접근성과
-절연 간격을 실물로 검증할 때 사용한다. A4 1:1 종이 대조와 주문 PDF 검증은 제작품 fit-check 합격
-증거가 아니다.
+2026-08-26 사용자가 custom PC adapter plate 수령을 보고했다. 이 문서는 도착 plate가 RevB
+주문 후보와 같은지 식별하고, chassis 체결, 전장 모듈 조립, 접근성과 절연 간격을 실물로
+검증할 때 사용한다. 수령 보고는 fit PASS 또는 exact revision identity를 뜻하지 않는다.
 
 ## Related Design
 
 - Design baseline: [`../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`](../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md)
-- Manufacturing preflight: [`../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
-- Rev A release files: [`../08_Mechanical_Design/releases/revA/README.md`](../08_Mechanical_Design/releases/revA/README.md)
+- Historical RevA preflight: [`../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](../08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
+- Received-plate mounting audit: [`../08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](../08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)
+- RevB source candidates: `../assets/2026-08-18_adapter_plate_revB_PC3T_hole3p0_order.{dwg,dxf}`
 - Draft evidence: [`../assets/screenshots/mechanical_layout/README.md`](../assets/screenshots/mechanical_layout/README.md)
-- Manufacturing revision: `Rev A / order not submitted`
+- Fabricated state: `USER-REPORTED RECEIVED`
+- Manufacturing revision: `TBD — source-to-part mapping pending`
 
 ## Entry Conditions
 
-- 주문에 사용한 Onshape Version과 DWG/PDF revision이 기록되어 있다.
-- 제작된 플레이트와 원본 주문 파일을 함께 확인할 수 있다.
+- 도착 plate와 RevB DWG/DXF 후보를 함께 확인할 수 있다.
 - 사용할 나사, 너트, 와셔, 절연 스페이서가 준비되어 있다.
 - 전원과 배터리를 분리한 상태에서 기구 조립을 시작한다.
 
@@ -30,7 +31,9 @@
 | 플레이트 폭 | 174 mm | TBD | TBD | NOT TESTED |
 | 플레이트 높이 | 208.93379 mm | TBD | TBD | NOT TESTED |
 | 플레이트 두께 | 3 mm | TBD | TBD | NOT TESTED |
-| 소형 체결 홀 지름 | 3.3 mm | TBD | TBD | NOT TESTED |
+| 소형 홀 group A | 21 x diameter 3.3 mm | TBD | vendor tolerance TBD | NOT TESTED |
+| 소형 홀 group B | 8 x diameter 3.0 mm | TBD | vendor tolerance TBD | NOT TESTED |
+| 대형 관통 홀 | 2 x diameter 30 mm | TBD | vendor tolerance TBD | NOT TESTED |
 | 셰시 체결 홀 중심 간격 | TBD | TBD | TBD | NOT TESTED |
 | 만능기판 체결 홀 중심 간격 | TBD | TBD | TBD | NOT TESTED |
 | XL4015 체결 홀 간격 | TBD | TBD | TBD | NOT TESTED |
@@ -54,6 +57,7 @@
 ## Evidence To Collect
 
 - 플레이트 단독 Top View 사진
+- 플레이트 Bottom View와 edge/두께 사진
 - 셰시에 체결한 전체 사진
 - 만능기판과 스페이서 측면 사진
 - NUCLEO 및 ESP32 USB 케이블 연결 사진
@@ -65,9 +69,10 @@
 
 - Overall result: `NOT TESTED`
 - Tested revision: `TBD`
+- Source-to-part identity: `TBD`
 - Required CAD revision: `TBD`
 
 ## Next Action
 
-제작품을 받은 뒤 전원 없이 치수 측정과 기구 조립을 먼저 수행하고, 모든 항목이 통과한 뒤에만 플레이트 위
-최종 전장 배선과 통전 조립을 진행한다.
+집 `H-01`에서 전원 없이 치수 측정과 기구 dry fit을 먼저 수행한다. 모든 항목이 통과한 뒤에만
+plate drilling, 최종 전장 배선 또는 통전 조립을 진행한다.

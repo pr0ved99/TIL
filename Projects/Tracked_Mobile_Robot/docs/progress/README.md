@@ -4,6 +4,17 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
+Latest: [2026-09-23 progress](2026-09-23_progress.md) — **엔코더 입력 조정부 납땜·저항 8곳·전원 6검사 PASS, 양쪽 +5.05V**.
+현재 도면은 ENC_Conditioning_WIP VRT/PDF다. 다음은 실제 엔코더 4선 케이블 확인과
+STM32 분리 상태의 A/B 전압, 수동 회전 검증이다. [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
+정지 monitor 400개 CPS=0은 첫 4.2초를 포함하지 않는다. T005A run01~06은
+[report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)로 보존했으며 전체 PARTIAL이다.
+T004 PASS와 all-hooks-0U 복구는 유지한다. 실제 모터는 미연결이다.
+
+Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
+[report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
+9/5 K2/K1 control-only 결과는 보존하며 전체 Physical E-stop 또는 T-ESTOP-005A PASS로 확대하지 않는다.
+
 ## How To Use
 
 - Create or update `YYYY-MM-DD_progress.md` for each work session.
@@ -41,6 +52,41 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-23 | [2026-09-23_progress.md](2026-09-23_progress.md) | 엔코더 영구 조정부 납땜/저항/전원 검사와 +5.05V PASS; 정지 TEL400 CPS0, 실제 엔코더 연결 다음; T005A 6캡처 마감 |
+| 2026-09-22 | [2026-09-22_progress.md](2026-09-22_progress.md) | T004 conditioned PWM/latch/reset/wire-open 및 hook0 복구 PASS; left encoder 임시 pull-down, 30/30, 다음은 T005A 준비 |
+| 2026-09-19 | [2026-09-19_progress.md](2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; CTRL/ENC 각 3핀 두 개, T004 사용자 빌드부터 재개 |
+| 2026-09-15 | [2026-09-15_progress.md](2026-09-15_progress.md) | README 162줄 개편, 상세 색인 보존, 9/15 도면 검토와 이후 저장본 경계 정리; 기존 배선 도면 잔여 검토부터 재개 |
+| 2026-09-10 | [`2026-09-10_progress.md`](2026-09-10_progress.md) | Daily UART/debug-header plan; carried-forward scheduler correction and hook-0 30/30 PASS; T004-only 1U confirmed, user build/flash/runtime unreported |
+| 2026-09-09 | [`2026-09-09_progress.md`](2026-09-09_progress.md) | Historical initial paused checkpoint; subsequent scheduler/test completion and current resume point are carried forward in 2026-09-10 progress |
+| 2026-09-08 | [`2026-09-08_progress.md`](2026-09-08_progress.md) | K2/S0 wire-break, XL4015 #1 dual-board power, #2 AUX path와 conditioned sense 0.06/3.27 V 기능 subset PASS; T004 firmware/PWM NOT RUN |
+| 2026-09-07 | [`2026-09-07_progress.md`](2026-09-07_progress.md) | Session/documentation 복원, host 29/29 PASS, K2 VeroRoute/PDF Label 정정 확인 및 R02/R03 재측정 low-Ω PASS; 전체 E-stop PARTIAL |
+| 2026-09-05 | [`2026-09-05_progress.md`](2026-09-05_progress.md) | K2 bottom-view/polarity as-built correction 뒤 12.24 V control-only K2/K1/S2/S0/S1 nominal subset와 S0-B contact truth table PASS; MDD10A B+ disconnected, wire-break/T003/full rail gate OPEN |
+| 2026-09-03 | [`2026-09-03_progress.md`](2026-09-03_progress.md) | RevC 무전원 검사 IN PROGRESS; rail 0 V와 U1 방향/forward `0.918 V`/reverse-open PASS, 나머지 local continuity/isolation OPEN |
+| 2026-09-01 | [`2026-09-01_progress.md`](2026-09-01_progress.md) | RevC E-stop VeroRoute FINAL과 component/solder mirror PDF 고정; R14/U1/K2/D2/JESTOP 및 세 배선 구간 user-reported partial solder, 무전원 실물 continuity/isolation OPEN |
+| 2026-08-30 | [`2026-08-30_progress.md`](2026-08-30_progress.md) | P-04B default-`0U` reset closeout harness, current canonical `29/29`과 ESP32 isolated build PASS; reset target runtime OPEN; crimp tool user-reported arrived/unverified, 6P unassembled |
+| 2026-08-29 | [`2026-08-29_progress.md`](2026-08-29_progress.md) | P-04A complete, P-04B reason/command-age와 timeout/direct-PC7 active-latch subset PASS, historical checkpoint `28/28`와 hook-0 isolated build PASS, reset/target reflash-runtime pending |
+| 2026-08-28 | [`2026-08-28_progress.md`](2026-08-28_progress.md) | K1/S0/S2/VO617A-3/P6KE/F2 unpowered screen, P-03/REQ-SAFE-004 target runtime와 run04 safe restore PASS, 6P/tooling boundary와 next work |
+| 2026-08-27 | [`2026-08-27_progress.md`](2026-08-27_progress.md) | P-02B~P-02C-2와 P-03A/P-03B source/static/full-build 완료, 당시 canonical `26/26` PASS, P-03 target runtime pending, Physical E-stop partial arrival와 received-subset 무전원 입고검사 전환 |
+| 2026-08-26 | [`2026-08-26_progress.md`](2026-08-26_progress.md) | 2026-09-15까지의 dated pre-arrival schedule, priority/milestone/buffer와 delivery transition rule |
+| 2026-08-25 | [`2026-08-25_progress.md`](2026-08-25_progress.md) | Four-chapter remaining-work rebaseline, production CMD mapper/data-path gaps, E-stop `005A/005B` scope split and `P-01~P-09` pre-arrival queue |
+| 2026-08-24 | [`2026-08-24_progress.md`](2026-08-24_progress.md) | PC7 direct latch/reset runtime, host contract 20/20, F1/K2 무전원 입고 precheck와 S2 stuck/short no-auto-reenable blocker 확인 |
+| 2026-08-18 | [`2026-08-18_progress.md`](2026-08-18_progress.md) | MG540 제조사 수치, nominal 19 kHz final perfboard gate PASS, TE K1 assembly 주문·catalog numerical PASS와 AWG 12 common-path 우선 결정 |
+| 2026-08-16 | [`2026-08-16_progress.md`](2026-08-16_progress.md) | VeroRoute `55 x 37` target-hole-area에서 `C1..C55/R1..R37` 전체 포함을 확인하고 PDF export Gate로 전환 |
+| 2026-08-15 | [`2026-08-15_progress.md`](2026-08-15_progress.md) | 실사 joint + Onshape 교차검토로 만능기판 예비 좌표/keep-out을 작성하고, 실물 dry placement 전 VeroRoute 2.40 기반 1:1 component/solder-side와 KiCad-net-to-hole Gate 채택 |
+| 2026-08-14 | [`2026-08-14_progress.md`](2026-08-14_progress.md) | 실제 만능기판 component-side 정면 사진을 `assets/photos/perfboard`에 보존하고 fixed-header/open-area 확인 및 다음 solder-side/scale 입력 정의 |
+| 2026-08-13 | [`2026-08-13_progress.md`](2026-08-13_progress.md) | Physical E-stop RevB 기능 회로도 재배치, 전체 Reference/Value `50/40 mil`, ERC 0/0·넷리스트 120 보존; 기능 흐름 재배치는 학습 후 후속 작업으로 동결 |
+| 2026-08-12 | [`2026-08-12_progress.md`](2026-08-12_progress.md) | UART Gate C PASS에 이어 STM32 timeout/fault/reset-boot MCU-pin 시험 완료; reset 부동 HIGH FAIL을 `10 kΩ` pull-down으로 개선·재시험 PASS, all-hooks-`0U`/contract `15/15`/final safe UART PASS |
+| 2026-08-11 | [`2026-08-11_progress.md`](2026-08-11_progress.md) | T-BRIDGE-008A partial-frame-name rejection/recovery PASS; all-hooks-`0U`, contract `15/15`, safe full-build/flash와 post-READY TEL 164/164 회귀 PASS; invalid terminator/control next |
+| 2026-08-10 | [`2026-08-10_progress.md`](2026-08-10_progress.md) | Engineering Basis·표준 추적성 정본과 E-stop Step 1~7 진행; K2 분리/5 V-opto 보정, S0/S2/K2/opto 후보 선정, K1/F1 motor-data blocked |
+| 2026-08-07 | [`2026-08-07_progress.md`](2026-08-07_progress.md) | T-BRIDGE-008A required-`seq` uint32-overflow까지 3개 subvector PASS; all-hooks-`0U`, contract `15/15`, protocol recompile+relink `0/0`, safe flash와 READY 후 14.43 s/TEL 145 회귀 PASS; partial frame-name vector next |
+| 2026-08-06 | [`2026-08-06_progress.md`](2026-08-06_progress.md) | Safe baseline 뒤 T-BRIDGE-008A duplicate-required-seq subvector PASS; all-hooks-`0U`, contract `15/15`, safe build/reflash와 READY 후 14.42 s/TEL 150 회귀 PASS; remaining 008A와 008B next |
+| 2026-08-04 | [`2026-08-04_progress.md`](2026-08-04_progress.md) | Gate A/B response-gated runtime과 active DISARM 23.50 us PASS; safe source/contract/isolated build PASS, board reflash/run·wrong ACK type·Gate C two-parser recovery pending |
+| 2026-08-03 | [`2026-08-03_progress.md`](2026-08-03_progress.md) | USART1/PWM/DIR 로직 분석기 검증, safe STM32 runtime과 strict-parser controlled normal sequence PASS, response-gated startup source·contract `15/15`·ESP build PASS; actual board retry/wrong-response/malformed 회귀는 PARTIAL |
+| 2026-07-31 | [`2026-07-31_progress.md`](2026-07-31_progress.md) | Strict UART frame parser fail-closed/recovery board-only 시험과 startup PING/desynchronization 한계 확인 |
+| 2026-07-30 | [`2026-07-30_progress.md`](2026-07-30_progress.md) | 1560 counts/rev·mRPM, vehicle-frame sign, software fault latch 검증과 default-off 회귀; firmware safety contract 12/12 및 격리 STM32+ESP32 build PASS |
+| 2026-07-29 | [`2026-07-29_progress.md`](2026-07-29_progress.md) | Dual encoder modular delta/CPS와 production TEL -> ESP32 independent CW/CCW PASS, direction 6-step 회귀, timeout/DISARM LED shutdown, Plus 전환 인수인계 |
+| 2026-07-28 | [`2026-07-28_progress.md`](2026-07-28_progress.md) | KiCad RevA functional wiring draft, PDF export와 ERC 0/0; XL4015 #1 backfeed·fuse rating·vehicle mapping·BNO085는 TBD |
+| 2026-07-27 | [`2026-07-27_progress.md`](2026-07-27_progress.md) | TIM5 PA0/PA1 추가, TIM3/TIM5 dual motor-off 독립 count/sign 및 약 1560 count/rev 재현 PASS; speed·vehicle sign·powered-noise는 PARTIAL |
 | 2026-07-26 | [`2026-07-26_progress.md`](2026-07-26_progress.md) | STM32 PWM/DIR·MDD10A 6-step 검증과 swap 교정, MG540-A/B conditioned TIM3 TI12 x4 motor-power-off count/sign PASS; TIM5, powered-noise와 active safety는 PARTIAL |
 | 2026-07-24 | [`2026-07-24_progress.md`](2026-07-24_progress.md) | Rev A 제조 사전검증과 주문 blocker, 최신 V-model master plan 및 final MVP traceability matrix 작성 |
 | 2026-07-23 | [`2026-07-23_progress.md`](2026-07-23_progress.md) | 209 x 174 mm 알루미늄 어댑터 플레이트와 전장 배치 Draft 캡처; CAD 트리 오류 검증과 제조 release는 미완료 |
@@ -55,5 +101,7 @@ Use this log to avoid losing context between Codex sessions, hardware sessions, 
 
 Related execution plans:
 
+- [`../plans/2026-08-26_Pre_Arrival_Schedule_ko.md`](../plans/2026-08-26_Pre_Arrival_Schedule_ko.md)
+- [`../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](../plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)
 - [`../plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](../plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md)
 - [`../plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](../plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md)

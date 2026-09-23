@@ -125,12 +125,13 @@ STM32 GND            -> MDD10A GND
 3S LiPo + -> fuse -> switch -> MDD10A POWER+
 3S LiPo - ------------------> MDD10A POWER-
 
-Left motor  -> MDD10A M1A/M1B
-Right motor -> MDD10A M2A/M2B
+Output channel 1 -> MDD10A M1A/M1B -> physical side TBD
+Output channel 2 -> MDD10A M2A/M2B -> physical side TBD
 ```
 
-The final left/right channel mapping must be confirmed after bench wiring,
-motor direction checks, and encoder sign tests.
+The MCU-to-driver routing has passed static/no-motor bench checks. The final
+powered channel 1/2 to physical left/right mapping still requires a motor
+direction test; the encoder-side sign result alone does not close it.
 
 ## Validation Impact
 

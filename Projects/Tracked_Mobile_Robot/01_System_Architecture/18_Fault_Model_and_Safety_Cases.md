@@ -56,7 +56,7 @@ This applies to UART, CAN, ESP32, ROS2, encoder, battery, and firmware faults.
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |
 | Boot not complete | Startup state | Keep PWM zero | Complete init then disarmed |
-| Command timeout | Command age exceeds timeout | Stop motors | New valid command after disarm/arm flow |
+| Command timeout | Command age exceeds timeout | Zero motor output/stored command, enter `DISARMED` | Accepted `ARM` then valid `CMD`; transport anti-replay separate |
 | CAN heartbeat timeout | Missing heartbeat | Stop motors | Reconnect bus, disarm/arm |
 | E-stop request | Command or physical input | Latch stop | Explicit operator reset |
 | Low-voltage warning | ADC or LiPo alarm | Warn, reduce test scope | Recharge or stop soon |
@@ -198,13 +198,24 @@ Required response:
 
 Detection:
 
-- `last_command_age_ms > timeout_ms`.
+- `last_command_age_ms >= timeout_ms`.
 
 Required response:
 
-- PWM zero.
-- Driver disabled or armed idle depending on state-machine decision.
-- Telemetry reports timeout.
+- PWM and stored command zero.
+- Enter `DISARMED` immediately.
+- Do not automatically restore the stored pre-timeout command.
+- Resume only after an accepted `ARM` followed by a valid `CMD`.
+- Current telemetry shows `DISARMED` and zero command values; an explicit
+  timeout reason is pending P-04.
+
+ADR-015 supersedes the earlier timeout-stop/armed-idle candidate. P-03A/P-03B
+source/static/full-build now passes the pre-RX timeout stop/zero/`DISARMED`
+response and starts a fresh default 300 ms first-CMD window on `ARM`. Target
+runtime evidence remains open.
+P-03 does not implement sequence monotonicity, session freshness, RX queue
+purging, or cryptographic anti-replay. It proves CMD-only rejection while
+`DISARMED`, not rejection of a queued or replayed `ARM` + `CMD` pair.
 
 ### Case C2: CAN Heartbeat Timeout
 
@@ -344,7 +355,7 @@ Fault logs should include:
 | Validation | Method | Pass condition |
 | --- | --- | --- |
 | Boot safe output | Power logic only, motor disconnected | PWM zero |
-| Command timeout | Stop sending commands | Motor output stops |
+| Command timeout | Stop sending commands | Motor output/stored command zero, `DISARMED`, CMD-only rejected, accepted `ARM` then valid `CMD` required; transport anti-replay pending |
 | E-stop | Send E-stop frame or command | Fault latched, output disabled |
 | Low voltage simulated | Inject low ADC equivalent | Output disabled |
 | Encoder sign | Lifted motor test | Forward command produces expected signs |
@@ -359,7 +370,12 @@ The fault model is part of the architecture, not an afterthought.
 Every command path must share the same fail-safe behavior:
 
 ```text
-invalid, stale, missing, or unsafe input -> PWM zero and driver disabled
+invalid, detected-stale, missing, or unsafe input -> PWM zero and driver disabled
 ```
+
+Final MVP command-source loss additionally requires stored-command zero and a
+`DISARMED` transition. Motion needs an accepted `ARM` followed by a valid `CMD`.
+The current P-03 implementation does not itself detect transport/session
+freshness; anti-replay remains a separate pending control.
 
 Recovery from latched safety faults requires explicit operator action.

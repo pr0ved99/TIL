@@ -131,12 +131,14 @@ STM32 GND            -> MDD10A GND
 3S LiPo + -> fuse -> switch -> MDD10A POWER+
 3S LiPo - ------------------> MDD10A POWER-
 
-Left motor  -> MDD10A M1A/M1B
-Right motor -> MDD10A M2A/M2B
+Output channel 1 -> MDD10A M1A/M1B -> physical side TBD
+Output channel 2 -> MDD10A M2A/M2B -> physical side TBD
 ```
 
-최종 left/right channel mapping은 bench wiring 후 확정한다. 문서에서는 `PWM1/DIR1 = left`를 후보로
-두되, 실제 motor direction과 encoder sign test 결과로 결정한다.
+MCU-to-driver routing은 static/no-motor bench에서 확인했다. 최종 left/right
+channel mapping은 powered motor direction 시험에서 확정한다. Encoder-side
+A=right/TIM5, B=left/TIM3 sign 결과만으로 MDD10A channel 1/2의 물리 좌우를
+확정하지 않는다.
 
 ## Validation 영향
 

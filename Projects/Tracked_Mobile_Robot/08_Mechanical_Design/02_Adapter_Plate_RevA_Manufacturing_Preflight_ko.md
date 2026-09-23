@@ -1,5 +1,8 @@
 # Adapter Plate Rev A Manufacturing Preflight
 
+> 이 문서는 RevA 주문 파일의 역사 기록이다. 현재 RevB 주문 판단은
+> [`03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)를 따른다.
+
 ## 목적
 
 이 문서는 어댑터 플레이트 Rev A의 주문 전 치수, 1:1 출력, 벡터 파일과 업체 제출 상태를 기록한다.
@@ -22,7 +25,8 @@
 | 기준 셰시 도면 | [`source/chassis/README.md`](source/chassis/README.md) | 원본·SHA-256 보존 |
 | 외곽 크기 | 174 x 208.93379 mm | `PASS` |
 | 프로젝트 반올림 표기 | 174 x 209 mm | 정보용 |
-| 소형 체결 홀 | nominal diameter 3.3 mm | `PASS` |
+| 소형 홀 group A | 21 x diameter 3.3 mm | `PASS / 2026-08-26 DXF DIRECT AUDIT` |
+| 소형 홀 group B | 8 x diameter 2.2 mm | `PASS / 2026-08-26 DXF DIRECT AUDIT` |
 | 제작 후보 재질 | 아크릴 3T | 결정 |
 | 색상·캐스팅/압출 방식 | 업체 확인 필요 | `OPEN` |
 | 수량 | 1개 후보 | 견적 확인 필요 |
@@ -38,7 +42,10 @@
 
 - Onshape에서 외곽 평행 거리 `208.93379 mm`를 확인했다.
 - 반대 방향 외곽 nominal은 `174 mm`다.
-- 소형 체결 홀은 M3 여유 홀 후보로 diameter `3.3 mm`를 사용했다.
+- RevA DXF에는 21개의 diameter `3.3 mm` 홀과 8개의 diameter `2.2 mm` 홀이 함께 있다.
+- 2026-07 문서의 “모든 소형 홀 3.3 mm” 표현은 2026-08-26 direct DXF audit에서
+  부정확한 것으로 확인돼 이 표를 정정했다. DXF에는 각 hole group의 fastener 용도
+  메타데이터가 없으므로 `2.2 mm` 그룹을 임의로 M3 홀이라고 부르지 않는다.
 - 주문용 DWG와 DXF는 같은 Rev A 형상에서 출력했다.
 
 ### 2. A4 1:1 print check

@@ -1,0 +1,131 @@
+--- Waiting for the device to reconnect...
+I (407) esp32_uart_bridge: RX TEL: t_ms=409 state=DISARMED reason=BOOT command_age_ms=4294967295 last_seq=0 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=2
+I (507) esp32_uart_bridge: RX TEL: t_ms=509 state=DISARMED reason=BOOT command_age_ms=4294967295 last_seq=0 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=3
+I (607) esp32_uart_bridge: RX TEL: t_ms=609 state=DISARMED reason=BOOT command_age_ms=4294967295 last_seq=0 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=4
+I (707) esp32_uart_bridge: RX TEL: t_ms=709 state=DISARMED reason=BOOT command_age_ms=4294967295 last_seq=0 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=5
+I (777) esp32_uart_bridge: STARTUP: line sync sent
+W (777) esp32_uart_bridge: RX ERR: ERR,seq=0,type=RX,code=RX_DESYNC
+I (807) esp32_uart_bridge: RX TEL: t_ms=809 state=DISARMED reason=BOOT command_age_ms=4294967295 last_seq=0 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=6
+I (877) esp32_uart_bridge: TX UART1: DISARM,seq=335406398
+I (877) esp32_uart_bridge: RX ACK: seq=335406398 type=DISARM ack_count=1
+I (877) esp32_uart_bridge: STARTUP: DISARM acknowledged
+I (877) esp32_uart_bridge: TX UART1: PING,seq=335406399
+I (887) esp32_uart_bridge: RX PONG: seq=335406399 pong_count=1
+I (887) esp32_uart_bridge: STARTUP READY: DISARM ACK and PONG verified
+I (907) esp32_uart_bridge: RX TEL: t_ms=911 state=DISARMED reason=DISARM command_age_ms=4294967295 last_seq=335406399 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=7
+I (997) esp32_uart_bridge: TX UART1: CMD,seq=335406400,vx_mmps=50,w_mradps=0,timeout_ms=500
+I (1017) esp32_uart_bridge: RX TEL: t_ms=1011 state=DISARMED reason=DISARM command_age_ms=4294967295 last_seq=335406399 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1 tel_count=8
+W (1017) esp32_uart_bridge: RX ERR: ERR,seq=335406400,type=CMD,code=NOT_ARMED,t_ms=1026
+I (1107) esp32_uart_bridge: TX UART1: ARM,seq=335406401
+I (1117) esp32_uart_bridge: RX TEL: t_ms=1111 state=DISARMED reason=DISARM command_age_ms=4294967295 last_seq=335406399 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=2 tel_count=9
+I (1117) esp32_uart_bridge: RX ACK: seq=335406401 type=ARM ack_count=2
+I (1207) esp32_uart_bridge: TX UART1: CMD,seq=335406402,vx_mmps=50,w_mradps=0,timeout_ms=500
+I (1217) esp32_uart_bridge: RX TEL: t_ms=1211 state=ARMED reason=NONE command_age_ms=4294967295 last_seq=335406401 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=2 tel_count=10
+I (1217) esp32_uart_bridge: RX ACK: seq=335406402 type=CMD ack_count=3
+I (1307) esp32_uart_bridge: P-03: waiting for CMD timeout
+I (1307) esp32_uart_bridge: RX TEL: t_ms=1311 state=ARMED reason=NONE command_age_ms=85 last_seq=335406402 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=2 tel_count=11
+I (1407) esp32_uart_bridge: RX TEL: t_ms=1411 state=ARMED reason=NONE command_age_ms=185 last_seq=335406402 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=2 tel_count=12
+I (1507) esp32_uart_bridge: RX TEL: t_ms=1511 state=ARMED reason=NONE command_age_ms=285 last_seq=335406402 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=2 tel_count=13
+I (1607) esp32_uart_bridge: RX TEL: t_ms=1611 state=ARMED reason=NONE command_age_ms=385 last_seq=335406402 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=2 tel_count=14
+I (1707) esp32_uart_bridge: REQ-SAFE-004: post-timeout margin
+I (1707) esp32_uart_bridge: RX TEL: t_ms=1711 state=ARMED reason=NONE command_age_ms=485 last_seq=335406402 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=2 tel_count=15
+I (1807) esp32_uart_bridge: TX UART1: CMD,seq=335406403,vx_mmps=50,w_mradps=0,timeout_ms=500
+I (1817) esp32_uart_bridge: RX TEL: t_ms=1811 state=DISARMED reason=CMD_TIMEOUT command_age_ms=585 last_seq=335406402 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=2 tel_count=16
+W (1817) esp32_uart_bridge: RX ERR: ERR,seq=335406403,type=CMD,code=NOT_ARMED,t_ms=1826
+I (1907) esp32_uart_bridge: TX UART1: ARM,seq=335406404
+I (1907) esp32_uart_bridge: RX TEL: t_ms=1911 state=DISARMED reason=CMD_TIMEOUT command_age_ms=685 last_seq=335406402 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=17
+I (1917) esp32_uart_bridge: RX ACK: seq=335406404 type=ARM ack_count=4
+I (2007) esp32_uart_bridge: P-03: waiting for ARM-only timeout
+I (2007) esp32_uart_bridge: RX TEL: t_ms=2011 state=ARMED reason=NONE command_age_ms=785 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=18
+I (2107) esp32_uart_bridge: RX TEL: t_ms=2111 state=ARMED reason=NONE command_age_ms=885 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=19
+I (2207) esp32_uart_bridge: RX TEL: t_ms=2211 state=ARMED reason=NONE command_age_ms=985 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=20
+I (2307) esp32_uart_bridge: RX TEL: t_ms=2311 state=DISARMED reason=CMD_TIMEOUT command_age_ms=1085 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=21
+I (2407) esp32_uart_bridge: TX UART1: CMD,seq=335406405,vx_mmps=50,w_mradps=0,timeout_ms=500
+I (2407) esp32_uart_bridge: RX TEL: t_ms=2411 state=DISARMED reason=CMD_TIMEOUT command_age_ms=1185 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=3 tel_count=22
+W (2417) esp32_uart_bridge: RX ERR: ERR,seq=335406405,type=CMD,code=NOT_ARMED,t_ms=2427
+I (2507) esp32_uart_bridge: TX UART1: ARM,seq=335406406
+I (2507) esp32_uart_bridge: RX TEL: t_ms=2511 state=DISARMED reason=CMD_TIMEOUT command_age_ms=1285 last_seq=335406404 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=23
+I (2517) esp32_uart_bridge: RX ACK: seq=335406406 type=ARM ack_count=5
+I (2607) esp32_uart_bridge: TX UART1: CMD,seq=335406407,vx_mmps=50,w_mradps=0,timeout_ms=500
+I (2607) esp32_uart_bridge: RX TEL: t_ms=2611 state=ARMED reason=NONE command_age_ms=1385 last_seq=335406406 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=24
+I (2617) esp32_uart_bridge: RX ACK: seq=335406407 type=CMD ack_count=6
+I (2707) esp32_uart_bridge: P-03: observing recovered output
+I (2707) esp32_uart_bridge: RX TEL: t_ms=2711 state=ARMED reason=NONE command_age_ms=80 last_seq=335406407 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=4 tel_count=25
+I (2807) esp32_uart_bridge: TX UART1: DISARM,seq=335406408
+I (2807) esp32_uart_bridge: P-03: scripted sequence complete
+I (2807) esp32_uart_bridge: RX TEL: t_ms=2811 state=ARMED reason=NONE command_age_ms=180 last_seq=335406407 vx=50 w=0 left_pwm=50 right_pwm=50 left_cps=0 right_cps=0 err=4 tel_count=26
+I (2817) esp32_uart_bridge: RX ACK: seq=335406408 type=DISARM ack_count=7
+I (2907) esp32_uart_bridge: RX TEL: t_ms=2911 state=DISARMED reason=DISARM command_age_ms=280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=27
+I (3007) esp32_uart_bridge: RX TEL: t_ms=3011 state=DISARMED reason=DISARM command_age_ms=380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=28
+I (3107) esp32_uart_bridge: RX TEL: t_ms=3111 state=DISARMED reason=DISARM command_age_ms=480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=29
+I (3207) esp32_uart_bridge: RX TEL: t_ms=3211 state=DISARMED reason=DISARM command_age_ms=580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=30
+I (3307) esp32_uart_bridge: RX TEL: t_ms=3311 state=DISARMED reason=DISARM command_age_ms=680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=31
+I (3407) esp32_uart_bridge: RX TEL: t_ms=3411 state=DISARMED reason=DISARM command_age_ms=780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=32
+I (3507) esp32_uart_bridge: RX TEL: t_ms=3511 state=DISARMED reason=DISARM command_age_ms=880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=33
+I (3607) esp32_uart_bridge: RX TEL: t_ms=3611 state=DISARMED reason=DISARM command_age_ms=980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=34
+I (3707) esp32_uart_bridge: RX TEL: t_ms=3711 state=DISARMED reason=DISARM command_age_ms=1080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=35
+I (3807) esp32_uart_bridge: RX TEL: t_ms=3811 state=DISARMED reason=DISARM command_age_ms=1180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=36
+I (3907) esp32_uart_bridge: RX TEL: t_ms=3911 state=DISARMED reason=DISARM command_age_ms=1280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=37
+I (4007) esp32_uart_bridge: RX TEL: t_ms=4011 state=DISARMED reason=DISARM command_age_ms=1380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=38
+I (4107) esp32_uart_bridge: RX TEL: t_ms=4111 state=DISARMED reason=DISARM command_age_ms=1480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=39
+I (4207) esp32_uart_bridge: RX TEL: t_ms=4211 state=DISARMED reason=DISARM command_age_ms=1580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=40
+I (4307) esp32_uart_bridge: RX TEL: t_ms=4311 state=DISARMED reason=DISARM command_age_ms=1680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=41
+I (4407) esp32_uart_bridge: RX TEL: t_ms=4411 state=DISARMED reason=DISARM command_age_ms=1780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=42
+I (4507) esp32_uart_bridge: RX TEL: t_ms=4511 state=DISARMED reason=DISARM command_age_ms=1880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=43
+I (4597) esp32_uart_bridge: RX TEL: t_ms=4611 state=DISARMED reason=DISARM command_age_ms=1980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=44
+I (4697) esp32_uart_bridge: RX TEL: t_ms=4711 state=DISARMED reason=DISARM command_age_ms=2080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=45
+I (4797) esp32_uart_bridge: RX TEL: t_ms=4811 state=DISARMED reason=DISARM command_age_ms=2180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=46
+I (4897) esp32_uart_bridge: RX TEL: t_ms=4911 state=DISARMED reason=DISARM command_age_ms=2280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=47
+I (4997) esp32_uart_bridge: RX TEL: t_ms=5011 state=DISARMED reason=DISARM command_age_ms=2380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=48
+I (5097) esp32_uart_bridge: RX TEL: t_ms=5111 state=DISARMED reason=DISARM command_age_ms=2480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=49
+I (5197) esp32_uart_bridge: RX TEL: t_ms=5211 state=DISARMED reason=DISARM command_age_ms=2580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=50
+I (5297) esp32_uart_bridge: RX TEL: t_ms=5311 state=DISARMED reason=DISARM command_age_ms=2680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=51
+I (5397) esp32_uart_bridge: RX TEL: t_ms=5411 state=DISARMED reason=DISARM command_age_ms=2780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=52
+I (5497) esp32_uart_bridge: RX TEL: t_ms=5511 state=DISARMED reason=DISARM command_age_ms=2880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=53
+I (5597) esp32_uart_bridge: RX TEL: t_ms=5611 state=DISARMED reason=DISARM command_age_ms=2980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=54
+I (5697) esp32_uart_bridge: RX TEL: t_ms=5711 state=DISARMED reason=DISARM command_age_ms=3080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=55
+I (5797) esp32_uart_bridge: RX TEL: t_ms=5811 state=DISARMED reason=DISARM command_age_ms=3180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=56
+I (5897) esp32_uart_bridge: RX TEL: t_ms=5911 state=DISARMED reason=DISARM command_age_ms=3280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=57
+I (5997) esp32_uart_bridge: RX TEL: t_ms=6011 state=DISARMED reason=DISARM command_age_ms=3380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=58
+I (6097) esp32_uart_bridge: RX TEL: t_ms=6111 state=DISARMED reason=DISARM command_age_ms=3480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=59
+I (6197) esp32_uart_bridge: RX TEL: t_ms=6211 state=DISARMED reason=DISARM command_age_ms=3580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=60
+I (6297) esp32_uart_bridge: RX TEL: t_ms=6311 state=DISARMED reason=DISARM command_age_ms=3680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=61
+I (6397) esp32_uart_bridge: RX TEL: t_ms=6411 state=DISARMED reason=DISARM command_age_ms=3780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=62
+I (6497) esp32_uart_bridge: RX TEL: t_ms=6511 state=DISARMED reason=DISARM command_age_ms=3880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=63
+I (6597) esp32_uart_bridge: RX TEL: t_ms=6611 state=DISARMED reason=DISARM command_age_ms=3980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=64
+I (6697) esp32_uart_bridge: RX TEL: t_ms=6711 state=DISARMED reason=DISARM command_age_ms=4080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=65
+I (6797) esp32_uart_bridge: RX TEL: t_ms=6811 state=DISARMED reason=DISARM command_age_ms=4180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=66
+I (6897) esp32_uart_bridge: RX TEL: t_ms=6911 state=DISARMED reason=DISARM command_age_ms=4280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=67
+I (6997) esp32_uart_bridge: RX TEL: t_ms=7011 state=DISARMED reason=DISARM command_age_ms=4380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=68
+I (7097) esp32_uart_bridge: RX TEL: t_ms=7111 state=DISARMED reason=DISARM command_age_ms=4480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=69
+I (7197) esp32_uart_bridge: RX TEL: t_ms=7211 state=DISARMED reason=DISARM command_age_ms=4580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=70
+I (7297) esp32_uart_bridge: RX TEL: t_ms=7311 state=DISARMED reason=DISARM command_age_ms=4680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=71
+I (7397) esp32_uart_bridge: RX TEL: t_ms=7411 state=DISARMED reason=DISARM command_age_ms=4780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=72
+I (7497) esp32_uart_bridge: RX TEL: t_ms=7511 state=DISARMED reason=DISARM command_age_ms=4880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=73
+I (7597) esp32_uart_bridge: RX TEL: t_ms=7611 state=DISARMED reason=DISARM command_age_ms=4980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=74
+I (7697) esp32_uart_bridge: RX TEL: t_ms=7711 state=DISARMED reason=DISARM command_age_ms=5080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=75
+I (7797) esp32_uart_bridge: RX TEL: t_ms=7811 state=DISARMED reason=DISARM command_age_ms=5180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=76
+I (7897) esp32_uart_bridge: RX TEL: t_ms=7911 state=DISARMED reason=DISARM command_age_ms=5280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=77
+I (7997) esp32_uart_bridge: RX TEL: t_ms=8011 state=DISARMED reason=DISARM command_age_ms=5380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=78
+I (8097) esp32_uart_bridge: RX TEL: t_ms=8111 state=DISARMED reason=DISARM command_age_ms=5480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=79
+I (8197) esp32_uart_bridge: RX TEL: t_ms=8211 state=DISARMED reason=DISARM command_age_ms=5580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=80
+I (8297) esp32_uart_bridge: RX TEL: t_ms=8311 state=DISARMED reason=DISARM command_age_ms=5680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=81
+I (8397) esp32_uart_bridge: RX TEL: t_ms=8411 state=DISARMED reason=DISARM command_age_ms=5780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=82
+I (8497) esp32_uart_bridge: RX TEL: t_ms=8511 state=DISARMED reason=DISARM command_age_ms=5880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=83
+I (8587) esp32_uart_bridge: RX TEL: t_ms=8611 state=DISARMED reason=DISARM command_age_ms=5980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=84
+I (8687) esp32_uart_bridge: RX TEL: t_ms=8711 state=DISARMED reason=DISARM command_age_ms=6080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=85
+I (8787) esp32_uart_bridge: RX TEL: t_ms=8811 state=DISARMED reason=DISARM command_age_ms=6180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=86
+I (8887) esp32_uart_bridge: RX TEL: t_ms=8911 state=DISARMED reason=DISARM command_age_ms=6280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=87
+I (8987) esp32_uart_bridge: RX TEL: t_ms=9011 state=DISARMED reason=DISARM command_age_ms=6380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=88
+I (9087) esp32_uart_bridge: RX TEL: t_ms=9111 state=DISARMED reason=DISARM command_age_ms=6480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=89
+I (9187) esp32_uart_bridge: RX TEL: t_ms=9211 state=DISARMED reason=DISARM command_age_ms=6580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=90
+I (9287) esp32_uart_bridge: RX TEL: t_ms=9311 state=DISARMED reason=DISARM command_age_ms=6680 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=91
+I (9387) esp32_uart_bridge: RX TEL: t_ms=9411 state=DISARMED reason=DISARM command_age_ms=6780 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=92
+I (9487) esp32_uart_bridge: RX TEL: t_ms=9511 state=DISARMED reason=DISARM command_age_ms=6880 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=93
+I (9587) esp32_uart_bridge: RX TEL: t_ms=9611 state=DISARMED reason=DISARM command_age_ms=6980 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=94
+I (9687) esp32_uart_bridge: RX TEL: t_ms=9711 state=DISARMED reason=DISARM command_age_ms=7080 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=95
+I (9787) esp32_uart_bridge: RX TEL: t_ms=9811 state=DISARMED reason=DISARM command_age_ms=7180 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=96
+I (9887) esp32_uart_bridge: RX TEL: t_ms=9911 state=DISARMED reason=DISARM command_age_ms=7280 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=97
+I (9987) esp32_uart_bridge: RX TEL: t_ms=10011 state=DISARMED reason=DISARM command_age_ms=7380 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=98
+I (10087) esp32_uart_bridge: RX TEL: t_ms=10111 state=DISARMED reason=DISARM command_age_ms=7480 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=99
+I (10187) esp32_uart_bridge: RX TEL: t_ms=10211 state=DISARMED reason=DISARM command_age_ms=7580 last_seq=335406408 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=4 tel_count=100

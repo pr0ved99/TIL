@@ -1,0 +1,379 @@
+{
+  "file": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run03_estop_release_reset.sr",
+  "sha256": "b5b5e121a7e9489913ade8cfef1ea64daca73bd3b6738319979e1a076282f7c7",
+  "metadata": "[global]\nsigrok version=0.6.0-git-883c2ac\n\n[device 1]\ncapturefile=logic-1\ntotal probes=8\nsamplerate=4 MHz\ntotal analog=0\nprobe1=D0\nprobe2=D1\nprobe3=D2\nprobe4=D3\nprobe5=D4\nprobe6=D5\nprobe7=D6\nprobe8=D7\nunitsize=1\n",
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "0": {
+      "high_runs": 6,
+      "high_samples": 29138853,
+      "high_intervals_s": [
+        [
+          2.55552525,
+          2.555601
+        ],
+        [
+          10.88357025,
+          10.88360475
+        ],
+        [
+          10.883664,
+          18.16819825
+        ],
+        [
+          18.16823075,
+          18.168237
+        ],
+        [
+          18.168309,
+          18.16835675
+        ],
+        [
+          18.168396,
+          18.16841075
+        ]
+      ]
+    },
+    "1": {
+      "high_runs": 140775,
+      "high_samples": 1481393,
+      "bursts": [
+        {
+          "start_s": 3.679022,
+          "end_s": 10.88355675,
+          "pulses": 137025,
+          "mean_frequency_hz": 19019.139619339607,
+          "duty_pct": 5.003754846186479,
+          "end_censored": false
+        },
+        {
+          "start_s": 18.55912475,
+          "end_s": 18.7560825,
+          "pulses": 3750,
+          "mean_frequency_hz": 19034.780743341445,
+          "duty_pct": 4.999041017354619,
+          "end_censored": false
+        }
+      ]
+    },
+    "2": {
+      "high_runs": 140775,
+      "high_samples": 1481318,
+      "bursts": [
+        {
+          "start_s": 3.679022,
+          "end_s": 10.88355675,
+          "pulses": 137025,
+          "mean_frequency_hz": 19019.139619339607,
+          "duty_pct": 5.003508475284641,
+          "end_censored": false
+        },
+        {
+          "start_s": 18.55912475,
+          "end_s": 18.7560825,
+          "pulses": 3750,
+          "mean_frequency_hz": 19034.780743341445,
+          "duty_pct": 4.998533423201464,
+          "end_censored": false
+        }
+      ]
+    }
+  },
+  "uart": {
+    "4": {
+      "valid_bytes": 4301,
+      "invalid_frames": [
+        {
+          "t_s": 2.557906,
+          "value": 0
+        }
+      ],
+      "line_count": 82,
+      "line_types": {
+        "": 1,
+        "DISARM": 2,
+        "PING": 1,
+        "ARM": 2,
+        "CMD": 74,
+        "ESTOP_RESET": 2
+      },
+      "partial_tail": ""
+    },
+    "5": {
+      "valid_bytes": 41719,
+      "invalid_frames": [
+        {
+          "t_s": 2.557906,
+          "value": 0
+        }
+      ],
+      "line_count": 304,
+      "line_types": {
+        "TEL": 223,
+        "ACK": 78,
+        "PONG": 1,
+        "ERR": 2
+      },
+      "partial_tail": ""
+    }
+  },
+  "telemetry": {
+    "count": 223,
+    "transitions": [
+      {
+        "t_ms": "100",
+        "state": "DISARMED",
+        "reason": "BOOT",
+        "command_age_ms": "4294967295",
+        "last_seq": "0",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 2.73660125,
+        "end_s": 2.7511035555555554
+      },
+      {
+        "t_ms": "803",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "4294967295",
+        "last_seq": "2525055028",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 3.43971575,
+        "end_s": 3.4551605555555556
+      },
+      {
+        "t_ms": "1003",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "4294967295",
+        "last_seq": "2525055030",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 3.63947975,
+        "end_s": 3.6545800555555554
+      },
+      {
+        "t_ms": "1103",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "61",
+        "last_seq": "2525055031",
+        "vx_mmps": "50",
+        "w_mradps": "0",
+        "left_pwm": "50",
+        "right_pwm": "50",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 3.73946925,
+        "end_s": 3.7541363055555554
+      },
+      {
+        "t_ms": "8303",
+        "state": "FAULT",
+        "reason": "ESTOP_ACTIVE",
+        "command_age_ms": "144",
+        "last_seq": "2525055102",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1",
+        "start_s": 10.9322445,
+        "end_s": 10.947411555555556
+      },
+      {
+        "t_ms": "15603",
+        "state": "FAULT",
+        "reason": "ESTOP_LATCHED",
+        "command_age_ms": "7444",
+        "last_seq": "2525055102",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "2",
+        "start_s": 18.22147,
+        "end_s": 18.236886555555557
+      },
+      {
+        "t_ms": "15703",
+        "state": "DISARMED",
+        "reason": "ESTOP_RESET",
+        "command_age_ms": "7544",
+        "last_seq": "2525055105",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "2",
+        "start_s": 18.3212885,
+        "end_s": 18.336798555555557
+      },
+      {
+        "t_ms": "15903",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "7744",
+        "last_seq": "2525055106",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "2",
+        "start_s": 18.5209755,
+        "end_s": 18.535615305555556
+      },
+      {
+        "t_ms": "16003",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "62",
+        "last_seq": "2525055107",
+        "vx_mmps": "50",
+        "w_mradps": "0",
+        "left_pwm": "50",
+        "right_pwm": "50",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "2",
+        "start_s": 18.6207945,
+        "end_s": 18.635520055555556
+      },
+      {
+        "t_ms": "16203",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "262",
+        "last_seq": "2525055108",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "2",
+        "start_s": 18.820456,
+        "end_s": 18.835449305555557
+      }
+    ],
+    "counters": {
+      "state": {
+        "DISARMED": 73,
+        "ARMED": 76,
+        "FAULT": 74
+      },
+      "reason": {
+        "BOOT": 7,
+        "DISARM": 64,
+        "NONE": 76,
+        "ESTOP_ACTIVE": 73,
+        "ESTOP_LATCHED": 1,
+        "ESTOP_RESET": 2
+      },
+      "err": {
+        "0": 82,
+        "1": 1,
+        "2": 140
+      },
+      "drop": {
+        "0": 223
+      },
+      "left_cps": {
+        "0": 223
+      },
+      "right_cps": {
+        "0": 222,
+        "10": 1
+      }
+    }
+  },
+  "validation": {
+    "commands": 81,
+    "responses": 81,
+    "unmatched": [],
+    "telemetry_t_ms_monotonic": true,
+    "last_telemetry": {
+      "start_s": 24.9109565,
+      "end_s": 24.926029555555555,
+      "text": "TEL,t_ms=22303,state=DISARMED,reason=DISARM,command_age_ms=6362,last_seq=2525055108,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+    },
+    "errors": [
+      {
+        "start_s": 10.889083,
+        "end_s": 10.894025055555556,
+        "text": "ERR,seq=2525055103,type=CMD,code=ESTOP_LATCHED,t_ms=8259"
+      },
+      {
+        "start_s": 11.0024555,
+        "end_s": 11.008002555555557,
+        "text": "ERR,seq=2525055104,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=8373"
+      }
+    ],
+    "physical_release_stable_s": 18.16841075,
+    "release_to_pwm_restart_s": 0.3907139999999991,
+    "pwm_off_gap_s": 7.675567999999998,
+    "restored_pwm_duration_s": 0.19695775000000282,
+    "final_pwm_low_observed_s": 6.2439174999999985,
+    "last_command": {
+      "start_s": 18.754132,
+      "end_s": 18.756041805555554,
+      "text": "DISARM,seq=2525055108"
+    },
+    "checks": {
+      "all_commands_have_unique_response": true,
+      "both_PWM_bursts_same_start_end": true,
+      "latched_then_reset_disarmed_then_armed_zero_then_fresh_output_then_disarmed": true,
+      "fresh_CMD_frame_completes_before_PWM_restart": true,
+      "no_motion_commands_after_final_DISARM": true,
+      "last_telemetry_disarmed_zero": true,
+      "left_cps_always_zero": true,
+      "no_dropped_frames_reported": true
+    }
+  }
+}
