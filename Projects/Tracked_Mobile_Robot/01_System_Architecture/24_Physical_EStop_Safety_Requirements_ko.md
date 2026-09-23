@@ -39,44 +39,52 @@ SG-ESTOP-001
 | Verification | `BLOCKED` | 설계 gap, 부품·계측 또는 선행 데이터 때문에 PASS 판정 불가 |
 | Verification | `PASS/FAIL` | 정본 절차와 evidence로 판정됨 |
 
+## 현재 검증 상태 — 2026-09-23
+
+[report 25](../docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)는 conditioned PC7 전압 기능,
+[report 26](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)는 T004 firmware/PWM/latch/reset/wire-open PASS,
+[report 27](../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)는 MDD 전력단 연결 후 관측과 T005A PARTIAL의 근거다.
+아래 현재 상태 열에 후속 증거를 반영했다. 날짜별 이력의 미완료 표현은 당시 기록으로 보존한다.
+
 ## TBR parameter register
 
 TBR은 requirement를 무기한 모호하게 두기 위한 표기가 아니다. 각 parameter는 지정된 gate
 전에 근거와 승인 기록으로 닫아야 한다.
 
-| Parameter | Meaning | Closure basis | Must close before |
+| Parameter | Meaning | Closure basis | Must close before / 현재 반영 상태 |
 | --- | --- | --- | --- |
 | `I_MOTOR_WORST` | 동시 motor 운전/starting/stall을 포함한 worst-case current envelope | MG540 official data + controlled current measurement | K1/fuse/wire final selection; `T-ESTOP-001 PASS` |
-| `V_SENSE_LOW_MAX`, `V_SENSE_HIGH_MIN` | 선택한 STM32 GPIO의 guaranteed LOW/HIGH input boundary | STM32 datasheet + selected pin/configuration | RevB schematic approval; `T-ESTOP-003` |
+| `V_SENSE_LOW_MAX`, `V_SENSE_HIGH_MIN` | 선택한 STM32 GPIO의 guaranteed LOW/HIGH input boundary | STM32 datasheet + selected pin/configuration | RevB schematic approval/T003 이전 기준 확정. T003 전압 기능 판정에는 VDD=3.30 V에서 LOW ≤0.99 V / HIGH ≥2.31 V 적용(report 25); current/계측 evidence package는 PARTIAL |
 | `V_RAIL_OFF_MAX` | K1 expected OFF에서 de-energized로 판정할 downstream rail upper limit | MDD10A/no-motor/back-power baseline, instrument uncertainty | Direct DMM rail-off 판정; `T-ESTOP-005A` |
-| `T_PWM_ZERO_MAX` | S0-B assertion edge에서 both PWM inactive까지 허용 시간 | Hazard review + motor-disconnected capture; active DISARM baseline is reference only | `T-ESTOP-004 PASS` |
+| `T_PWM_ZERO_MAX` | S0-B assertion edge에서 both PWM inactive까지 허용 시간 | Hazard review + motor-disconnected capture; active DISARM baseline is reference only | T004 PASS 이전 기준 확정. Motor-disconnected 기준 200 ms, 이후 ≥500 ms no-edge 적용 완료; report 26 §3 및 9/8 runbook. Trigger는 conditioned PC7 first stable HIGH |
 | `T_K1_OPEN_MAX` | S0-A assertion에서 K1 main contact open까지 허용 시간 | K1 datasheet + coil/clamp measurement | Post-MVP `T-ESTOP-006` precision characterization |
 | `T_RAIL_DECAY_MAX` | K1 open 뒤 rail이 `V_RAIL_OFF_MAX` 아래로 내려가는 허용 시간 | No-motor then lifted-motor rail waveform | Post-MVP `T-ESTOP-006` precision characterization |
 | `T_STOP_MAX`, `D_STOP_MAX` | Defined low-duty setup에서 mechanical stop time/distance limit | First safe baseline + hazard review; repeatability/measurement uncertainty | Ground drivetrain acceptance |
 
-현재 `T_PWM_ZERO_MAX`는 기존 active DISARM `23.50 us`를 자동 재사용하지 않는다. UART frame
-수신과 physical S0-B edge는 서로 다른 trigger path이므로 Physical E-stop capture로 별도
-기준을 확정한다.
+`T_PWM_ZERO_MAX`의 T004 사전 기준은 **200 ms**였고 report 26에 판정 방법과 결과를 보존했다.
+PC7 first stable HIGH부터 늦은 PWM last-fall까지를 측정하며, run06은 357.25 µs였다.
+기존 UART active DISARM 23.50 µs와 다른 trigger path다. PC7 이전 접점/광결합기 지연,
+K1 접점·rail decay나 실제 모터 정지 시간까지 측정한 값으로 확대하지 않는다.
 
 ## Mechanical and hardware interruption requirements
 
 | ID | Requirement and acceptance criteria | Source | Maturity / verification |
 | --- | --- | --- | --- |
 | `REQ-ESTOP-001` | Physical actuator shall be a red mushroom, mechanically latched, manual twist/pull-release device. PASS: official datasheet identifies the actuation/release mechanism and visual/functional inspection confirms press remains latched until deliberate release. | `HZ-ESTOP-009`; `FM-ESTOP-009~012` | `BASELINED / PARTIAL` — actual S0 red-mushroom body, latch, deliberate release와 2NC restoration 무전원 PASS; order suffix trace와 installed access/fit pending |
-| `REQ-ESTOP-002` | S0 shall provide independent `S0-A NC` relay-control and `S0-B NC` sense paths. `S0-A`/control-wire open shall remove K1 coil permission; `S0-B`/sense-wire open shall assert software stop/latch. PASS: unpowered continuity and each independent wire-open test match the truth table with no unintended cross-contact continuity. | `HZ-ESTOP-002`, `007`; `FM-ESTOP-009~013` | `BASELINED / PARTIAL` — 6P 18 AWG 조립, 두 NC pair의 released/pressed truth table, intended continuity와 pair 간 isolation은 operator-reported PASS. S0-B powered sense/wire-open와 정식 evidence record는 OPEN |
-| `REQ-ESTOP-003` | K1 shall open the positive feed between `VBAT_PROTECTED` and `MOTOR_VBAT_SAFE` without depending on STM32, ESP32, UART or application firmware. PASS: with controllers absent/unpowered and motor disconnected, S0-A assertion de-energizes K1 and direct continuity/voltage measurement confirms the downstream source feed is open. | `HZ-ESTOP-002`; `FM-ESTOP-001`, `005`, `018` | `BASELINED / PARTIAL` — K1 조립 후 motor-disconnected control-only bench에서 S2 enable, S0/S1 cut, K1-87 출력 차단 관찰과 no-auto-restore subset operator-reported PASS. 정확한 OFF 전압은 미기록이며 formal `T-ESTOP-005A`, load와 actual motor rail은 OPEN |
+| `REQ-ESTOP-002` | S0 shall provide independent `S0-A NC` relay-control and `S0-B NC` sense paths. `S0-A`/control-wire open shall remove K1 coil permission; `S0-B`/sense-wire open shall assert software stop/latch. PASS: unpowered continuity and each independent wire-open test match the truth table with no unintended cross-contact continuity. | `HZ-ESTOP-002`, `007`; `FM-ESTOP-009~013` | `BASELINED / PARTIAL` — 기존 6P/NC truth table·독립성 PASS, report 25 conditioned S0-B open 전압과 report 26 active wire-open PWM/latch PASS 추가. 전체 하네스 release 증거는 별도 |
+| `REQ-ESTOP-003` | K1 shall open the positive feed between `VBAT_PROTECTED` and `MOTOR_VBAT_SAFE` without depending on STM32, ESP32, UART or application firmware. PASS: with controllers absent/unpowered and motor disconnected, S0-A assertion de-energizes K1 and direct continuity/voltage measurement confirms the downstream source feed is open. | `HZ-ESTOP-002`; `FM-ESTOP-001`, `005`, `018` | `BASELINED / PARTIAL` — 기존 control-only K1 dropout/no-auto-restore에 report 27의 MDD B+ 연결 후 DMM 전압 관측 추가. Controller-independent 전체 조건·V_RAIL_OFF_MAX/판정 시점과 formal T005A 수용은 미완료 |
 | `REQ-ESTOP-004` | K1, fuse, wire, connector and terminal shall be suitable for the documented 3S LiPo DC voltage, `I_MOTOR_WORST`, make/break, inductive and temperature conditions. PASS: official DC ratings, derating, fuse coordination and wire/terminal calculation are recorded; AC-only rating or sales-title current is not accepted. | `HZ-ESTOP-005`, `010`; `FM-ESTOP-001`, `003`, `006`, `022` | `BASELINED/TBR / PARTIAL-BLOCKED` — 6P 18 AWG first article/assembly와 K1 18 AWG coil/14 AWG main/P6KE 조립은 operator-reported PASS. `280756-4` documented AWG 12~10 대비 14 AWG 편차, F1/F2 coordination, loaded voltage-drop/start-current/thermal/timing은 OPEN |
 
 ## Control, restart and software requirements
 
 | ID | Requirement and acceptance criteria | Source | Maturity / verification |
 | --- | --- | --- | --- |
-| `REQ-ESTOP-005` | `ESTOP_SENSE` shall be a 3.3 V-safe, externally biased fail-safe input electrically separated from motor and coil current. Healthy/closed shall satisfy the selected GPIO LOW limit; pressed/open/wire-break shall satisfy its HIGH limit without exceeding pin absolute maximum. PASS: calculation, DMM table and input-state capture close `V_SENSE_*`. | `HZ-ESTOP-007`; `FM-ESTOP-011~013`, `018` | `BASELINED/TBR / PARTIAL — DIRECT PC7 INPUT ONLY; VO617/S0-B PATH OPEN` |
-| `REQ-ESTOP-006` | S0-B assertion shall invoke the common safe-output path, make both PWM outputs inactive within `T_PWM_ZERO_MAX`, zero stored motion commands and set a persistent E-stop latch. PASS: logic capture, state/UART log and command-variable evidence agree for armed and disarmed cases. | `HZ-ESTOP-001`; `FM-ESTOP-018~020` | `BASELINED/TBR / PARTIAL — DIRECT PC7 LATCH/REJECT/RESET ONLY; PWM EDGE CAPTURE OPEN` |
-| `REQ-ESTOP-007` | Mechanical release, manual K1 re-enable and software reset shall not individually restore motion. Valid software reset shall only clear the latch and remain `DISARMED`; motion requires a new ARM and post-reset new CMD. PASS: stale/pre-E-stop command is never replayed in release/reset/re-enable order permutations. | `HZ-ESTOP-001`; `FM-ESTOP-014`, `019` | `BASELINED / PARTIAL` — direct-PC7 release/reset과 motor-disconnected K2/K1 physical release/re-enable/no-auto-restore subsets PASS. Powered S0-B/firmware 결합, full order-permutation과 FM-014 single-fault extension은 OPEN |
-| `REQ-ESTOP-008` | Initial power-up, controller boot/reset, E-stop-open boot and control-power restoration shall begin with K1/output safe and no automatic motion. MVP PASS uses a verified healthy/released S2 and non-shorted harness: K1 remains off until deliberate S2 action and PWM remains zero until valid reset/new ARM/CMD. S2 stuck/6P pair-short single-fault tolerance is the separate post-MVP `T-ESTOP-005B`. | `HZ-ESTOP-001`; `FM-ESTOP-004`, `014`, `018~019` | `BASELINED / PARTIAL-BLOCKED` — healthy 6P/S2의 motor-disconnected nominal K2/K1 initial-safe, deliberate-S2, S0 cut와 S1 restore no-auto subset PASS. Firmware/PWM를 포함한 formal `T-ESTOP-005A`와 FM-014 extension은 OPEN |
-| `REQ-ESTOP-009` | Electrical shutdown evidence and mechanical stop evidence shall be recorded separately. MVP PASS: `T-ESTOP-004` records sense-to-PWM zero, `T-ESTOP-005A` records direct downstream rail-off and `T-ESTOP-007` records actual motor stop without treating electrical isolation as immediate mechanical stop. Synchronized `t0~t3` transient characterization is post-MVP `T-ESTOP-006`. | `HZ-ESTOP-003`, `008`, `011~012`; `FM-ESTOP-004`, `008` | `BASELINED/TBR / BLOCKED` |
-| `REQ-ESTOP-010` | Telemetry or bench log should distinguish physical-open, latched, re-enable-required, rail-present, discrepancy, rail-sense-fault and reset-rejected states. PASS: each injected/physical state has a unique observable record; telemetry is not used as sole proof of isolation. | `HZ-ESTOP-002`, `009`; `FM-ESTOP-020` | `BASELINED / NOT TESTED` |
+| `REQ-ESTOP-005` | `ESTOP_SENSE` shall be a 3.3 V-safe, externally biased fail-safe input electrically separated from motor and coil current. Healthy/closed shall satisfy the selected GPIO LOW limit; pressed/open/wire-break shall satisfy its HIGH limit without exceeding pin absolute maximum. PASS: calculation, DMM table and input-state capture close `V_SENSE_*`. | `HZ-ESTOP-007`; `FM-ESTOP-011~013`, `018` | `BASELINED / PARTIAL` — report 25 actual S0-B/VO617A/PC7 0.06 V healthy, 3.27 V pressed/open 기능 PASS; current·계측 metadata 보완 미완료 |
+| `REQ-ESTOP-006` | S0-B assertion shall invoke the common safe-output path, make both PWM outputs inactive within `T_PWM_ZERO_MAX`, zero stored motion commands and set a persistent E-stop latch. PASS: logic capture, state/UART log and command-variable evidence agree for armed and disarmed cases. | `HZ-ESTOP-001`; `FM-ESTOP-018~020` | `BASELINED / T004 PASS — MOTOR-DISCONNECTED CONDITIONED FIRMWARE/PWM SCOPE` — report 26 §3, 200 ms/500 ms 기준과 run06 357.25 µs; rail/실모터 정지는 별도 |
+| `REQ-ESTOP-007` | Mechanical release, manual K1 re-enable and software reset shall not individually restore motion. Valid software reset shall only clear the latch and remain `DISARMED`; motion requires a new ARM and post-reset new CMD. PASS: stale/pre-E-stop command is never replayed in release/reset/re-enable order permutations. | `HZ-ESTOP-001`; `FM-ESTOP-014`, `019` | `BASELINED / PARTIAL` — report 26 conditioned latch, active reset reject, released reset→DISARMED, ARM-only zero와 fresh-CMD 출력 PASS. Full hardware order-permutation/T005A와 FM-014 확장은 미완료 |
+| `REQ-ESTOP-008` | Initial power-up, controller boot/reset, E-stop-open boot and control-power restoration shall begin with K1/output safe and no automatic motion. MVP PASS uses a verified healthy/released S2 and non-shorted harness: K1 remains off until deliberate S2 action and PWM remains zero until valid reset/new ARM/CMD. S2 stuck/6P pair-short single-fault tolerance is the separate post-MVP `T-ESTOP-005B`. | `HZ-ESTOP-001`; `FM-ESTOP-004`, `014`, `018~019` | `BASELINED / PARTIAL` — healthy-S2/K2/K1 nominal subset, report 26 pressed/open boot 및 reports 26/27 hook0 무출력 복구 PASS. T005A 전체 rail 수용과 FM-014 확장은 미완료 |
+| `REQ-ESTOP-009` | Electrical shutdown evidence and mechanical stop evidence shall be recorded separately. MVP PASS: `T-ESTOP-004` records sense-to-PWM zero, `T-ESTOP-005A` records direct downstream rail-off and `T-ESTOP-007` records actual motor stop without treating electrical isolation as immediate mechanical stop. Synchronized `t0~t3` transient characterization is post-MVP `T-ESTOP-006`. | `HZ-ESTOP-003`, `008`, `011~012`; `FM-ESTOP-004`, `008` | `BASELINED/TBR / PARTIAL` — report 26 sense-to-PWM 계측과 report 27 DMM rail 관측은 분리 보존. Rail 수용 기준·T007 실제 모터 정지·post-MVP 정밀 계측은 남음 |
+| `REQ-ESTOP-010` | Telemetry or bench log should distinguish physical-open, latched, re-enable-required, rail-present, discrepancy, rail-sense-fault and reset-rejected states. PASS: each injected/physical state has a unique observable record; telemetry is not used as sole proof of isolation. | `HZ-ESTOP-002`, `009`; `FM-ESTOP-020` | `BASELINED / PARTIAL` — report 26의 ESTOP_ACTIVE/ESTOP_LATCHED·reset ERR/ACK·DISARMED 관측. Rail-present/re-enable-required/discrepancy/rail-sense-fault 전체 관측은 미구현·미검증 |
 | `REQ-ESTOP-011` | Manual rail re-enable shall use `S0-A NC -> [S2 momentary NO OR K2-HOLD-NO] -> K2 coil`, with a separate `K2-K1-ENABLE-NO -> K1 coil`, or a documented equivalent preserving the same nominal behavior. MVP PASS with verified healthy/released S2 and non-shorted harness: initial power, S0 press, mechanical release and power restoration leave K2/K1 off; only deliberate S2 action energizes them. Stuck/short single-fault tolerance remains `T-ESTOP-005B`. | `HZ-ESTOP-001`; `FM-ESTOP-009`, `014~015` | `BASELINED / PARTIAL` — TX2 bottom-view 해석 오류를 고쳐 coil physical pin 1(+)/12(-)로 수정한 뒤 `9->8` hold, `4->5` K1-enable, deliberate-S2 seal-in, S0/S1 drop와 no-auto-restore nominal hardware subset PASS. Formal `T-ESTOP-005A`와 FM-014 extension은 OPEN |
 
 ## Actual-off diagnostic requirements
@@ -138,12 +146,12 @@ TBR은 requirement를 무기한 모호하게 두기 위한 표기가 아니다. 
 ```text
 Safety requirements: 20 BASELINED
 MUST/SHOULD: 15 MUST / 5 SHOULD
-Open TBR register items: 7
+Parameter groups tracked: 7 (current closure notes in the register above)
 Hazard-to-requirement traceability: COMPLETE
 FMEA-to-requirement traceability: COMPLETE
 Requirement-to-test traceability: COMPLETE
 Requirement implementation: PARTIAL
-Verification evidence: PARTIAL — direct-PC7, full unpowered assembly/harness and motor-disconnected nominal K2/K1 control-only subsets
+Verification evidence: PARTIAL — conditioned sense function, T004 firmware/PWM PASS; T005A observations retained, full rail acceptance and actual motor pending
 Residual risk acceptance: DOCUMENTED / NOT CLOSED
 ```
 

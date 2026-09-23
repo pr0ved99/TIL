@@ -187,12 +187,21 @@ Avoid MCP2515 as the first STM32 path because STM32F446RE already has bxCAN. MCP
 
 The current canonical architecture docs are under `01_System_Architecture/*_ko.md`.
 
+현재 작업용 문서:
+
+- [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md): 최신 재개 지점과 해석 경계
+- [9/23 진행 기록](docs/progress/2026-09-23_progress.md): 엔코더 조정부 검사 완료 및 다음 작업
+- [T005A 보고서](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md): 전력단 연결·관측과 미결 기준
+- [엔코더 조정부 보고서](docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md): 새 배선 좌표·검사 결과·실제 엔코더 연결 순서
+
+아래 상세 색인은 각 문서 작성 당시의 범위와 상태를 설명한다. 날짜별 build/시험 결과를 최신 보드 상태로 간주하지 않는다.
+
 Important docs:
 
-- `docs/handoff/2026-09-07_session_recovery_handoff.md`: current continuation summary, preserved results, remaining work and artifact identity after recovering the interrupted documentation/Git closeout
-- `docs/progress/2026-09-07_progress.md`: latest documentation/recovery work and host checks; no new hardware test
-- `docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`: current continuation runbook; close the remaining wire-open evidence, then conditioned `ESTOP_SENSE`, firmware and direct downstream-rail gates
-- `docs/progress/2026-09-05_progress.md`: current RevC/K1/6P assembly, K2 polarity corrective action and motor-disconnected control-only bench results
+- `docs/handoff/2026-09-07_session_recovery_handoff.md`: historical 9/7 continuation summary, preserved results, remaining work and artifact identity after recovering the interrupted documentation/Git closeout
+- `docs/progress/2026-09-07_progress.md`: historical 9/7 documentation/recovery work and host checks; no new hardware test
+- `docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`: historical 9/5 continuation runbook; the then-remaining wire-open evidence, conditioned `ESTOP_SENSE`, firmware and direct downstream-rail gates
+- `docs/progress/2026-09-05_progress.md`: historical 9/5 RevC/K1/6P assembly, K2 polarity corrective action and motor-disconnected control-only bench results
 - `docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`: bounded 2026-09-05 evidence and explicit exclusions
 - `docs/plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md`: completed historical RevC local unpowered inspection runbook with the K2 bottom-view erratum
 - `docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`: Engineering Basis ID catalog, past/future application timing and standards-claim boundary
@@ -283,7 +292,7 @@ Important docs:
 - `docs/handoff/2026-08-03_uart_strict_parser_regression_handoff.md`: response-gated implementation 이전의 historical strict-parser baseline
 - `docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md`: current strict-parser controlled normal-sequence result and scope limit
 - `assets/logs/esp32_uart_bridge/2026-08-03_strict_parser_normal_sequence_pass.txt`: raw ESP32 monitor evidence for the 2026-08-03 controlled normal sequence
-- `03_Firmware/tests/test_firmware_contract.py`, `test_drive_command_mapper_contract.py`, `test_uart_frame_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, E-stop, encoder sign, mapper, signed output adapter, production caller, timeout-to-`DISARMED`, applied-output/reason-command-age telemetry와 default-off P-04B reset harness를 포함한 host/static contract preflight; current result is `25 + 2 + 2 = 29/29 PASS`, not a substitute for target electrical evidence
+- `03_Firmware/tests/test_firmware_contract.py`, `test_drive_command_mapper_contract.py`, `test_uart_frame_contract.py`, `README.md`: STM32/ESP32 pin, timer, UART, E-stop, encoder sign, mapper, signed output adapter, production caller, timeout-to-`DISARMED`, applied-output/reason-command-age telemetry와 default-off P-04B reset harness를 포함한 host/static contract preflight; latest recorded result is `30/30 PASS` (reports 26/27); the earlier `25 + 2 + 2 = 29/29 PASS` is historical, and neither substitutes for target electrical evidence
 - `03_Firmware/tools/Build-Firmware.ps1`, `README.md`: repository build trees를 건드리지 않는 isolated STM32/ESP32 build workflow
 - `assets/logs/firmware_build/2026-07-30_laptop_firmware_preflight.md`: contract test, isolated clean-build result, artifact hashes and laptop-only evidence boundary
 - `02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`: logic-analyzer channel map and exact PWM/direction/shutdown timing procedure
@@ -314,10 +323,12 @@ Important docs:
 - `docs/progress/2026-07-20_progress.md`: ESP32 scripted safety sequence, timeout-zero, and bridge MVP PASS
 - `docs/handoff/README.md`: handoff folder index and reading order
 - `docs/handoff/NEXT_SESSION_START_PROMPT.md`: prompt to paste into a new Codex session
-- `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: latest wiring baseline, safety boundary and next firmware/hardware gate
+- `docs/handoff/2026-07-28_kicad_reva_wiring_handoff.md`: historical 7/28 wiring baseline, safety boundary and then-next firmware/hardware gate
 - `docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`: historical UART bridge closeout; current continuation source는 2026-08-25 progress/plan이며 2026-08-24 report 18은 hardware evidence baseline이다.
 
-## Current Progress Snapshot
+## 누적 진행 이력
+
+각 항목은 해당 작업 시점의 사실·판정을 보존한다. 아래의 `current/pending`은 당시 상태이며, 최신 상태는 맨 위 Current Hardware Checkpoint와 현재 인수인계를 따른다.
 
 - ROS 2 Humble, RViz2, and Gazebo classic 11 were installed and basic execution was verified on the laptop.
 - ROS 2 A-to-Z learning map and practice paths were added.
@@ -461,7 +472,17 @@ Ask the user or verify from hardware only for these:
 - Mounting screw, nut, washer, and insulating-spacer specifications
 - CAD coordinate origin for the manufacturing drawing
 
-## Next Concrete Actions
+## 다음 작업 — 2026-09-23
+
+1. [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), 최신 progress와 report 28의 필요한 절만 읽는다.
+2. 실제 엔코더 케이블 준비·핀 방향과 무전원 상태를 확인한다. 새 조정부에 연결 후 LOW/HIGH를 검증하고 수동 회전·양방향·정지·채널 독립성을 확인한다.
+3. 완료한 저항 8곳·전원 연결 6곳·두 +5.05V 검사는 변경·실패 없이 반복하지 않는다. 기존 CPS0 로그는 부팅 첫 4.2초를 포함하지 않는다.
+4. 두 모터를 분리한 채 report 27의 T005A 수용 기준과 release 미결 항목을 정리한다. 실제 모터 구동은 선행 Gate를 충족한 뒤 진행한다.
+5. 사용자 펌웨어 입력·빌드·플래시 원칙, USB/buck 전원 전환 절차를 유지한다. IMU/CAN과 post-MVP rail 진단은 별도 단계다.
+
+## 이전 재개 계획 — 2026-09-08 기준 이력
+
+아래 목록은 당시의 판단 근거와 보존할 증거를 남긴 것이다. T004 재실행·이미 완료한 배선 수정 지시로 사용하지 않는다. 후속 완료 상태는 위 다음 작업과 reports 26~28을 따른다.
 
 1. Start every new session with `git status --short -- Projects/Tracked_Mobile_Robot`.
 2. Read `docs/handoff/2026-09-07_session_recovery_handoff.md`, `docs/progress/2026-09-08_progress.md` and report 25 first. For the next bench step use the updated 2026-09-05 remaining-gates runbook. Report 24 and older progress remain historical inputs.

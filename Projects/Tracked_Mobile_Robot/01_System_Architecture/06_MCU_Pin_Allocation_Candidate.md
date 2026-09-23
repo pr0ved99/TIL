@@ -1,5 +1,8 @@
 # STM32F446RE Pin Allocation Candidate
 
+> English reference updated for the recorded IMU auxiliary-pin selection on 2026-09-23.
+> The [Korean pin map](06_MCU_Pin_Allocation_Candidate_ko.md) is canonical; candidates and completed wiring are not equivalent to firmware/runtime validation.
+
 ## Purpose
 
 This document proposes the first pin allocation candidate for the NUCLEO-F446RE
@@ -66,13 +69,17 @@ The first allocation uses these principles:
 | PC bench logger RX | PA3 | USART2_RX | Arduino D0 / ST morpho CN10 pin 37 | Production command RX disabled |
 | IMU I2C SCL | PB8 | I2C1_SCL | Arduino D15 / ST morpho CN10 pin 3 | Primary |
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
+| IMU interrupt `IMU_INT_N` | PB1 | GPIO input / EXTI1 | ST morpho CN10 pin 24 / H_NUC_UP_R4 Pin12 / C17/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
+| IMU reset `IMU_RST_N` | PC4 | GPIO output | ST morpho CN10 pin 34 / H_NUC_UP_R4 Pin17 / C22/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
 | Left motor PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
 | Right motor PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
 | Left encoder A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Candidate |
 | Left encoder B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Candidate |
 | Right encoder A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Candidate |
 | Right encoder B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Candidate |
-| Battery voltage ADC | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Candidate |
+| K1 upstream `VBAT_PROTECTED_SENSE` | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Post-MVP diagnostic candidate |
+| K1 downstream `MOTOR_VBAT_SAFE_SENSE` | PB0 | ADC12_IN8 | Arduino A3 / ST morpho access | Post-MVP diagnostic candidate |
+| Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input/EXTI7 candidate | Arduino D9 / ST morpho access | See Korean map and current E-stop reports for implementation status |
 | Left motor direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
 | Right motor direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
 | Optional power gate/brake 1 | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate only if separate circuit is added |

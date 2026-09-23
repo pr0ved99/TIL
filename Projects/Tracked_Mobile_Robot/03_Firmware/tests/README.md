@@ -32,7 +32,16 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 2026-08-29 Current P-02B / P-02C / P-03 / P-04 Snapshot
+## 최신 기록 — 2026-09-23
+
+- ESP controlled hook 네 개는 현재 소스에서 모두 `0U`다.
+- 최근 보존된 정적 검사 결과는 **30/30 PASS**다. [T004 보고서](../../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)와 [T005A 복구 보고서](../../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)를 근거로 한다.
+- T004 conditioned firmware/PWM/latch/reset과 시험 후 사용자 빌드·플래시/무출력 복구는 완료됐다. 전체 T005A는 PARTIAL이다.
+- 이 문서 갱신에서 테스트·빌드·플래시를 새로 수행한 것은 아니다. 정적 검사와 소스 설정만으로 현재 보드의 실행 이미지를 증명하지 않는다.
+
+## 2026-08-29~30 P-02B / P-02C / P-03 / P-04 기록
+
+아래 검사 개수·artifact·`current/open` 표현은 당시 기록이다. 후속 결과는 위 최신 기록을 따른다.
 
 - `test_firmware_contract.py`: **25/25 PASS**
 - `test_drive_command_mapper_contract.py`: **2/2 PASS**

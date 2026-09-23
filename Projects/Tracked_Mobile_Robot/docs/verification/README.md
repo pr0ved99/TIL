@@ -142,6 +142,8 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [`24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md) | RevC/6P/K1 조립, S0-A/S0-B/S2 truth table, K2 polarity correction과 motor-disconnected K2/K1 control-path subset; conditioned PC7/direct MDD rail/full E-stop PASS는 미포함 |
 | [`25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md`](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | XL4015 #1 dual-board logic power, #2 AUX path, S0-A/S0-B wire-open independence와 conditioned sense LOW/HIGH/open functional subsets; firmware/PWM/direct rail 미포함 |
 | [26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | 9/22 T004 conditioned PWM/latch/reset/wire-open, 357.25 µs와 hook0 최종 복구 PASS; 전력단/실모터 미포함 |
+| [T005A 전력단 시험과 복구](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | MDD B+ 연결 후 직접 전압·6캡처·복구 기록; 전체 판정 PARTIAL |
+| [엔코더 조정부 납땜·전기 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 연결은 다음 작업 |
 
 ## Evidence Files
 
@@ -253,17 +255,12 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 
 ![Timeout output zero](../../assets/screenshots/uart_mvp/2026-07-09_06_cmd_timeout_output_zero.png)
 
-## Next Verification Areas
+## 다음 검증 순서 — 2026-09-23
 
-다음 단계 검증 순서:
+1. 실제 엔코더 케이블 준비·핀 방향을 확인하고, 새 조정부의 A/B LOW/HIGH와 수동 회전·방향·정지·독립성을 검증한다. 절차와 기록 범위는 [report 28](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
+2. T005A는 [report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 남은 rail-off 수용 기준·판정 시점, F1/F2 식별과 K1 단자/선재 적합성을 정리한다. 기존 DMM 관측을 임의의 PASS 기준으로 바꾸지 않는다.
+3. 첫 실모터 시험 전에 해당 전원/E-stop Gate와 제작품 fit·고정·절연 조건을 충족한다. 기본 저전압 경고/정지도 첫 주행 전에 준비한다.
+4. Lifted 단일 모터 저 duty 시험에서 전류·온도·정지 동작·구동 중 엔코더 잡음과 방향을 확인한다.
+5. 양쪽 구동계 매핑, 저속 주행, wheel travel/1 m odometry와 최종 정지 회귀·증거 추적을 진행한다.
 
-1. 완료된 Gate A/B, T-BRIDGE-007, T-BRIDGE-008A/008B와 final safe evidence를 보존
-2. 완료된 P-04A와 P-04B timeout/active/latch subset evidence 보존
-3. P-04B default-`0U` harness를 controlled test에서만 활성화해 active reset rejection, released reset success를 기록한 뒤 hook-0 target reflash/runtime restore
-4. P-05 battery actual source/calibration/low-voltage policy
-5. 무전원 재진입/K2 post-rework continuity와 남은 `T-ESTOP-002` wire-removal/독립성부터 닫고 `S0-B -> VO617A-3 -> PC7` conditioned path 검증; 완료된 6P cavity/truth-table 결과는 보존
-6. `T-ESTOP-001~004` 모두 PASS 뒤 motor를 계속 분리하고 direct MDD10A downstream rail을 포함한 nominal `T-ESTOP-005A`
-7. Fabricated plate fit 검증
-8. 첫 motor lifted/no-load low-duty 및 powered encoder noise 시험
-9. Left/right drivetrain과 wheel travel/odometry 검증
-10. Final fault/stop acceptance와 traceability audit
+T004의 active reset 거부/released reset 성공, conditioned sense/wire-open, hook-0 복구와 기존 UART 시험은 완료한 범위로 보존한다. 변경·실패 없이 다시 수행하지 않는다. 9/23 정지 로그는 첫 4.2초가 없어 부팅 초기 CPS 튐 해결 여부는 아직 확인되지 않았다.

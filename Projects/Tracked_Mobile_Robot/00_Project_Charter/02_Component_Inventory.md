@@ -2,6 +2,9 @@
 
 이 문서는 프로젝트에 사용할 부품 목록과 역할을 정리하는 문서다.
 
+현재 구성 반영: **2026-09-23**. 보유·사용 여부와 검증 완료 여부는 구분한다.
+[현재 작업 현황](../docs/handoff/CURRENT_SESSION_CONTEXT.md)을 재개 기준으로 사용한다.
+
 ## Owned Components
 
 | Category | Component | Role | Notes |
@@ -16,10 +19,12 @@
 | Power | 3S LiPo battery | main power source | BMS not used |
 | Power | LiPo charger | balance charge / storage mode | iMAX B6 class charger |
 | Power | XL4015 x2 | 5V buck converter | MCU/sensor power |
+| Power distribution | 커버형 6구 버스바 x2 | S1 OUT 이후 + 분배 / 공통 GND 분배 | 차량용 퓨즈 허브에서 변경하여 사용; 판매 표기 150 A는 실물 검증 정격이 아님. [연결 기록](../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) |
 | Protection | AWG14 fuse holder | main power protection | use blade fuses |
 | Protection | main power switch | manual power control | DC 20A-30A class target |
 | Protection | 3S low-voltage alarm | LiPo over-discharge warning | required in operation |
-| Motor | encoder DC motors x2 types | drivetrain candidates | JGB37-520 encoder status must be checked |
+| Motor — other candidates | 기존 encoder DC motor 후보 | 비교·예비 후보 | JGB37-520 encoder 상태는 미확정; 현재 선택한 MG540-A/B와 구분 |
+| Motor — selected | WHEELTEC MG540P30_12V x2 | 현재 구동계의 모터·엔코더 | MG540-A=오른쪽/TIM5, MG540-B=왼쪽/TIM3; 기존 수동 회전 검증. 새 영구 배선의 연결 검증과 실모터 구동은 남음. [식별·시험 기록](../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) |
 | Driver | BTS7960-class module | previous motor-driver candidate | superseded by MDD10A for the first drivetrain path; kept as comparison history |
 | Driver | MDD10A | first motor driver path | dual-channel PWM+DIR driver for left/right DC motors |
 | Mechanical | tracked chassis | robot base | low-speed test platform |
@@ -28,6 +33,10 @@
 | Build | perfboard, headers, sockets | power/signal hub | do not route motor current through perfboard traces |
 
 ## Physical E-stop Procurement Snapshot — 2026-08-30
+
+아래 표는 **8/30 입고 시점의 기록**이다. 당시 CRIMP/POWERED OPEN을 현재 미완료로 해석하지 않는다.
+후속 조립·제어 결과는 [report 24](../docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md),
+감지 신호·펌웨어·전력단은 [검증 색인의 reports 25~27](../docs/verification/README.md)을 따른다.
 
 `UNPOWERED SCREEN PASS`는 아래에 명시한 저항/continuity/diode/기구 동작만 통과했다는 뜻이다.
 통전, 부하, 온도, 전압강하, rail-off 또는 전체 회로 통합 PASS를 뜻하지 않는다.

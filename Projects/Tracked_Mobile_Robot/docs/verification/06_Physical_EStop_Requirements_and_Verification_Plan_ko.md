@@ -59,7 +59,11 @@ Safety goal과 safe-state vector의 설계 정본은
 - New ARM과 post-reset new command 전 motion 금지
 - Electrical shutdown과 mechanical stop evidence의 분리
 
-현재 판정은 `DEFINITION BASELINED / DIRECT-PC7 FIRMWARE PARTIAL / REV C ASSEMBLY AND CONTROL-RELAY SUBSET PARTIAL / FULL HARDWARE RAIL VERIFICATION OPEN`다.
+2026-09-23 현재 판정: **T004 CONDITIONED FIRMWARE/PWM PASS / T005A PARTIAL / ACTUAL MOTOR NOT TESTED**.
+[report 25](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)의 conditioned sense 전압 기능,
+[report 26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)의 PWM/latch/reset/wire-open,
+[report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)의 전력단 연결·DMM·복구 관측을 구분한다.
+T003의 잔여 계측/current evidence와 T005A rail-off 수용 기준·release 미결 항목은 남아 있다.
 문서 baseline은 아래 `REQ-ESTOP-*` 또는 시험 결과의 `PASS`를 의미하지 않는다.
 
 ## Step 2 system-boundary traceability
@@ -230,15 +234,15 @@ baseline일 뿐이며 실제 K1 main assembly의 14 AWG와 `280756-4` compatibil
 
 | IDs | Scope | Current verification status |
 | --- | --- | --- |
-| `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `PARTIAL/BLOCKED`; assembled S0-A/S0-B truth table와 K2/K1 no-load control subset PASS, but direct MDD downstream motor-energy cut is not tested |
+| `REQ-ESTOP-001~003` | Actuator, independent NC paths, MCU-independent K1 cut | `PARTIAL`; 조립·NC 독립성과 control-only PASS, report 27에 MDD B+ 연결 후 직접 DMM 관측 추가. 전체 독립 motor-energy cut 판정은 T005A 기준·미결 조건 때문에 미완료 |
 | `REQ-ESTOP-004` | DC rating/fuse/wire coordination | `PARTIAL/BLOCKED`; F1/K1/K2/F2 subsets and operator-reported 6P/K1 crimp-retention exist. K1 14 AWG-terminal compatibility, exact fuse coordination and loaded voltage-drop/thermal remain open |
-| `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `PARTIAL/BLOCKED`; direct PC7/latch/reset and healthy-path hardware no-restart subsets passed. Conditioned sense, active PWM and combined firmware/hardware nominal gate remain open; FM-014 single-fault extension is post-MVP |
-| `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `BLOCKED` |
-| `REQ-ESTOP-010` | Complete state observability | `PARTIAL`; old-schema direct-PC7 reset runtime와 P-04B `ESTOP_ACTIVE/ESTOP_LATCHED` telemetry subset은 존재한다. Default-`0U` reset harness source/static/build는 PASS했지만 새-schema reset ERR/ACK/TEL/vector runtime과 rail/discrepancy states remain open |
-| `REQ-ESTOP-011` | Three-wire manual re-enable | `PARTIAL`; corrected-polarity K2 pickup/self-hold, S0 dropout and healthy-path no-restart subset PASS. Direct rail and combined firmware cases remain open; `FM-ESTOP-014` mitigation is post-MVP |
+| `REQ-ESTOP-005~008` | 3.3 V sense, PWM/latch, restart and boot-safe | `PARTIAL`; report 25 conditioned sense 전압 기능 및 report 26 T004 PWM/latch/reset/wire-open/boot-safe PASS. 결합 hardware rail acceptance는 T005A PARTIAL; FM-014는 post-MVP |
+| `REQ-ESTOP-009` | MVP electrical/mechanical evidence separation; post-MVP precision timing | `PARTIAL`; report 26의 sense-to-PWM 계측과 report 27의 DMM rail 관측은 분리 보존. Rail 수용과 T007 실제 모터 정지는 미완료 |
+| `REQ-ESTOP-010` | Complete state observability | `PARTIAL`; report 26의 ESTOP_ACTIVE/ESTOP_LATCHED·active reset ERR·released reset ACK/DISARMED 기록 존재. Rail/discrepancy 상태 관측은 미완료 |
+| `REQ-ESTOP-011` | Three-wire manual re-enable | `PARTIAL`; K2/K1 deliberate re-enable/no-restart와 T004 firmware subset PASS. Report 27의 rail 관측은 존재하나 T005A 전체 수용은 미완료; FM-014는 post-MVP |
 | `REQ-ESTOP-012~015` | Downstream rail diagnostic and discrepancy/plausibility | `POST-MVP / NOT TESTED` |
 | `REQ-ESTOP-016` | Coil clamp rating and functional K1 drop-out | `PARTIAL/BLOCKED`; K1/K2 clamp installation and relay dropout subset reported, but clamp transient/release timing and loaded rail are open |
-| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL/BLOCKED`; 6P cavity/crimp/retention/truth table and motor-disconnected control-relay subset are operator-reported. Tool qualification, direct MDD rail/back-power, immutable raw evidence and motor acceptance remain open |
+| `REQ-ESTOP-017~020` | Back-power, harness, safe test environment and evidence | `PARTIAL`; 6P 조립/독립성, reports 26/27의 원본·파생 캡처 보존. Rail/back-power 수용, 도구 적합성·release와 실제 모터 검증은 남음 |
 
 ## Traceability matrix
 
@@ -246,8 +250,8 @@ baseline일 뿐이며 실제 K1 main assembly의 14 AWG와 `280756-4` compatibil
 | --- | --- | --- | --- | --- |
 | `REQ-ESTOP-001~004`, `011`, `016`, `018`, `020` | `CD-ESTOP-001~004`, `006`; power schematic, component/harness records | `T-ESTOP-001~002` | Datasheet, calculation, schematic/ERC, continuity/cross-wire log | `PARTIAL` — 6P/S0 truth-table, K1/K2 assembly와 S0-A/S0-B actual wire-open independence functional subset PASS; exact cavity/raw evidence와 release audit open |
 | `REQ-ESTOP-005`, `018` | `CD-ESTOP-004`, `006`; S0-B interface | `T-ESTOP-003` | DMM GPIO voltage table, pin configuration, wire-open log | `PARTIAL` — conditioned LOW/HIGH/wire-open voltage-function subset PASS; current/instrument/raw evidence open |
-| `REQ-ESTOP-006~008`, `010` | Safety state/latch and common safe-output handling | `T-ESTOP-004`, `T-ESTOP-005A`; post-MVP `005B` | UART log, GPIO/PWM/direct rail capture, reset/re-enable regression; single-fault extension separately | `PARTIAL/BLOCKED` — direct-PC7 firmware subset and healthy-path K2/K1 no-restart subset PASS; combined PWM/direct-rail gate open |
-| `REQ-ESTOP-009`, `016~017` | Functional K1 drop-out, direct rail-off and back-power | `T-PWR-003`, `T-ESTOP-005A`, `T-ESTOP-007` | Direct rail observation, power-source matrix and stop evidence | `PARTIAL/BLOCKED` — K1 dropout observed, MDD `B+` disconnected and direct downstream rail not tested |
+| `REQ-ESTOP-006~008`, `010` | Safety state/latch and common safe-output handling | `T-ESTOP-004`, `T-ESTOP-005A`; post-MVP `005B` | UART log, GPIO/PWM/direct rail capture, reset/re-enable regression; single-fault extension separately | `PARTIAL` — report 26의 conditioned PWM/latch/reset/boot/wire-open PASS; report 27의 전력단 관측·복구 존재. T005A rail 수용과 전체 결합 판정은 미완료 |
+| `REQ-ESTOP-009`, `016~017` | Functional K1 drop-out, direct rail-off and back-power | `T-PWR-003`, `T-ESTOP-005A`, `T-ESTOP-007` | Direct rail observation, power-source matrix and stop evidence | `PARTIAL` — MDD B+=K1 87/B−=GND 연결 후 직접 DMM 관측은 report 27에 보존. V_RAIL_OFF_MAX·판정 시점과 back-power 전체 수용은 미확정; 실모터 정지는 미검증 |
 | `REQ-ESTOP-012~015` | `CD-ESTOP-005`; dual rail ADC plausibility and discrepancy handling | `T-ESTOP-006` | Post-MVP ADC sweep, synchronized waveform and fault injection | `DEFERRED` |
 | `REQ-ESTOP-009`, `019~020` | Lifted motor mechanical stop and environment/evidence gate | `T-ESTOP-007` | Fixture photo, synchronized video, stop-time/distance table | `BLOCKED` |
 
@@ -470,9 +474,12 @@ run02/03의 negative last-fall delta는 반응 시간으로 해석하지 않는�
 
 ### `T-ESTOP-005A` Driver powered, motor disconnected nominal no-auto-motion test
 
-상태: `PARTIAL/BLOCKED` — report 24의 healthy-S2 K2/K1 pickup/self-hold/dropout/no-restart
-control-relay subcases는 PASS했다. 9/22 `T-ESTOP-004` firmware/PWM은 PASS했다.
-`T-ESTOP-003` 잔여 계측 metadata/current evidence와 MDD10A direct downstream rail을 포함한 full acceptance는 open이다.
+상태: **`PARTIAL — 전력단 연결·직접 DMM 관측과 6캡처 보존, 전체 수용 미완료`**.
+[report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 MDD B+=K1 87/B−=GND 연결과 S0 동작 전후 전압을 기록했다.
+run04 ESP 송신 중단 뒤 마지막 CMD 끝→PWM 정지 498.635 ms, run05/06 hook0 복구 후 25 s PWM HIGH0를 관측했다.
+기존 report 24의 healthy-S2 control-relay subset과 report 26의 T004 PASS는 보존한다.
+V_RAIL_OFF_MAX/판정 시점, F1/F2 식별·K1 단자/선재 release와 T003 잔여 계측/current evidence는 미결이다.
+DMM 잔류 전압 관측을 정식 rail-off PASS로 변경하지 않는다.
 
 시험 경계:
 

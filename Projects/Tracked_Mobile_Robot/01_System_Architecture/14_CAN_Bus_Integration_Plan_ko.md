@@ -536,9 +536,13 @@ Minimum acceptance evidence:
 
 ## 15. Later Finalization Items
 
+2026-09-15 사용자 확인으로 **SN65HVD230 기반 MCU-230 CAN 트랜시버 모듈 보유·모델 식별**은 완료됐다.
+[부품 목록](../00_Project_Charter/02_Component_Inventory.md)과 [핀 배정](06_MCU_Pin_Allocation_Candidate_ko.md)의
+CAN1 RX=PA11/TX=PA12 예약을 따른다. 모듈 보유는 실제 CAN 배선·통신 시험 완료를 뜻하지 않는다.
+
 나중에 확정할 항목:
 
-- 정확한 CAN transceiver module
+- 보유 MCU-230 모듈의 실제 단자 순서, RS 연결, 내장 종단저항 유무·설정과 실장 치수
 - 정확한 USB-CAN adapter
 - Wiring test 이후 final bitrate
 - CAN을 FreeRTOS 이전에 통합할지 이후에 통합할지

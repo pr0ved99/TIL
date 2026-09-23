@@ -2,8 +2,24 @@
 
 ## 문서 기준
 
+- 현재 상태 갱신: **2026-09-23**. 실제 작업 재개는 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md)과 [9/23 진행 기록](../progress/2026-09-23_progress.md)을 따른다.
+- 이 문서는 MVP 종료선과 검증 Gate를 보존하는 전체 로드맵이다. 아래 9/5 기준선·잔여시간·직렬 순서는 당시 계획 이력이며, 그 안의 `현재/OPEN/다음`을 오늘의 미완료 항목으로 해석하지 않는다.
+
+| 분야 | 9/23 기준 확인된 범위 | 다음 작업과 근거 |
+| --- | --- | --- |
+| UART·E-stop 펌웨어/PWM | T004 conditioned sense/latch/reset/wire-open 및 all-hooks-0U 복구 PASS; 당시 정적 검사 30/30 | [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)의 완료 범위를 보존 |
+| 전원·물리 E-stop | 버스바 두 개, MDD B+=K1 87/B−=GND 연결; 모터 분리 T005A 관측과 복구 완료, 전체 판정 PARTIAL | [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)의 rail-off 기준·부품/단자 적합성 미결 항목 정리 |
+| 엔코더 영구 배선 | 1kΩ+15kΩ 네 채널 납땜, 저항·연결 검사, JENC 두 곳 +5.05V PASS | **바로 다음:** [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의 실제 엔코더 연결·LOW/HIGH·수동 회전 검증 |
+| 첫 실모터·주행 | 미완료 | 선행 전원/E-stop/입력·기구 Gate 충족 후 lifted 단일 모터, 양쪽 주행, 1 m odometry |
+| IMU·CAN | IMU 헤더 배선까지; CAN 모듈 보유·PA11/PA12 예약 | 통합은 후속 단계. IMU 동작과 CAN 통신 PASS로 간주하지 않음 |
+
+이번 문서 갱신은 새 하드웨어 시험이 아니다. 과거 encoder 손회전 PASS는 당시 배선의 증거이며,
+9/23 영구 배선에서 실제 엔코더를 연결한 결과로 대체하지 않는다. 기본 저전압 경고/정지는 첫 주행 전에 준비한다.
+
+## 2026-09-05 계획 기준선 — 이력 보존
+
 - Revision: 2026-09-05 RevC/6P/K1 assembly and motor-disconnected control-path checkpoint
-- 현재 실행 위치:
+- 당시 실행 위치:
   - Firmware: `P-01/ADR-015 ACCEPTED`, `P-02A~P-02C-2 COMPLETE`, `P-03 COMPLETE`, canonical
     `REQ-SAFE-004` 500 ms target acceptance COMPLETE, `P-04A COMPLETE`, `P-04B PARTIAL`; current
     host/static `29/29`. P-04B active-reset reject/released-reset success와 all-hooks-`0U` target
@@ -19,11 +35,11 @@
     evidence가 OPEN이므로 전체 Physical E-stop과 Final MVP는 `PARTIAL`이다.
 - 기구 제작 상태: `USER-REPORTED RECEIVED / EXACT REVISION IDENTITY AND FIT NOT TESTED`. 실제 order source, 치수·hole pattern과 chassis/module fit은 아직 증거가 없다.
 - 요구사항·검증 정본: [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-- 현재 진행 기록: [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md)
-- 현재 bench runbook: [`2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)
-- 현재 Physical E-stop evidence: [`../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)
+- 당시 진행 기록: [`../progress/2026-09-05_progress.md`](../progress/2026-09-05_progress.md)
+- 당시 bench runbook: [`2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)
+- 당시 Physical E-stop evidence: [`../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md`](../verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)
 
-이 문서는 Tracked Mobile Robot 프로젝트의 최신 전체 실행 로드맵이다. 날짜별 progress log는 실제로 수행한 일을 기록하고, 이 문서는 다음에 무엇을 해야 하며 어떤 증거가 있어야 다음 단계로 갈 수 있는지를 정의한다.
+아래에는 당시 로드맵의 목표·Gate·계획 근거를 보존한다. 날짜별 progress/report는 실제 수행 결과를 기록하며, 최신 완료 상태와 재개 순서는 맨 위 표를 따른다.
 
 ## 최종 MVP 종료선
 
@@ -105,7 +121,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 5. 다음 Gate는 선행 Gate의 evidence가 있어야 시작한다.
 6. 설계가 바뀌면 영향받는 requirement, test와 evidence를 함께 갱신한다.
 
-## 현재 기준선 — 2026-09-05 갱신
+## 당시 기준선 — 2026-09-05
 
 | Workstream | 현재 상태 | 판정 근거 | 다음 행동 |
 | --- | --- | --- | --- |
@@ -161,7 +177,7 @@ wire-open record, `T-ESTOP-003 -> T-ESTOP-004 -> formal T-ESTOP-005A`, 이후 mo
 evidence다. 위 `26~52시간`은 2026-08-30까지의 planning range이며 2026-09-05 완료분을 뺀 새
 잔여시간은 아직 재산정하지 않았다. 기존 `2~3주` 수치도 현재 일정 약속으로 사용하지 않는다.
 
-### 대단원 간 직렬 순서
+### 대단원 간 직렬 순서 — 2026-09-05 계획 이력
 
 ```text
 완료: UART Gate C + 대단원 1 timeout/fault/reset MCU-pin + P-03 300 ms target runtime/safe restore + REQ-SAFE-004 500 ms target acceptance
@@ -210,6 +226,8 @@ release 뒤 explicit reset 성공, all-hooks-`0U` 양 board reflash와 ARM/CMD T
 no-command safe runtime 순서로 닫는다.
 
 ## Gate 로드맵
+
+아래 Gate의 요구·종료 조건은 보존한다. 상태 설명은 9/5 기준선이며 이후 완료·잔여 범위는 맨 위 9/23 표와 연결된 보고서를 따른다.
 
 ### G0. MVP 요구사항 기준선
 
@@ -559,7 +577,7 @@ Exit criteria:
 PLANNED
 ```
 
-## Current 병렬 실행 계획
+## 병렬 실행 계획 — 2026-09-05 이력
 
 P-01~P-09의 scope 정본은
 [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)다.
