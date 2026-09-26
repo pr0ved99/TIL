@@ -2,28 +2,44 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-09-23 (encoder conditioning assembled/electrically checked; actual encoder connection next)
+Last updated: 2026-09-27 (bench closeout and partially typed M1 console checkpoint)
 
 ## Current Hardware Checkpoint
 
 이 절과 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)가 아래 과거 시점의
 current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/report에 보존한다.
 
+- **9/26 현재 매핑:** A=왼쪽/M1/JENC_1/TIM3/left, B=오른쪽/M2/JENC_2/TIM5/right.
+  A 동력선 +→M1A, −→M1B 연결 확인; B 동력선은 아직 분리, M2는 계획이다.
+  두 엔코더 커넥터 교환 후 채널 독립성·전진 양수/후진 음수·정지 CPS0 사용자 보고 PASS.
+  [report 29](docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)가 현재 기준이다.
+  아래 7월의 A=right/B=left는 당시 기록으로만 보존한다. 전동 구동 방향은 아직 미검증이다.
 - [9/23 report 28](docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md):
   네 encoder 입력에 1kΩ 직렬+MCU 측 15kΩ GND 풀다운 실제 납땜 사용자 확인.
-  저항 8곳 및 전원 연결/단락 6곳 PASS, JENC_1/2 모두 +5.05V. 실제 encoder 연결은 다음 작업이다.
+  저항 8곳 및 전원 연결/단락 6곳 PASS, JENC_1/2 모두 +5.05V. 당시 보류한 실제 encoder 연결은
+  9/26 진행했고 네 입력 LOW 0V/HIGH 약 2.86V 및 손회전 검사를 사용자 보고 PASS로 확인했다.
 - 현재 도면은 VeroRoute `...ENC_Conditioning_WIP.vrt`와 동일 이름 PDF다.
   JENC_1=C50/R11~14, JENC_2=C54/R5~8; Pin1~4=GND/B/A/AUX_5V.
   좌표·저항 매핑·19개 Flying Wire pad의 정본은 report 28이다.
 - 버스바 두 개로 +/− 분배. MDD B+=K1 87, B−=GND 16 AWG, K1 main leads=14 AWG.
-  두 모터는 분리다. 예전 MDD B+ disconnected 문장은 해당 날짜의 이력이다.
+  현재 모터 A만 M1에 연결했다. 예전 두 모터/MDD B+ disconnected 문장은 해당 날짜의 이력이다.
 - T004 firmware/PWM PASS. T005A run01~06과 default-off 복구는
   [report 27](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 보존;
   전체 T005A는 rail-off 수용 기준/release 항목 때문에 PARTIAL이다.
 - 실제 HG-ESP32-S3-DevkitC-1은 왼쪽 BOOT 표기 버튼에서 EN LOW/송신 중단을 관측했다.
   오른쪽 RESET 표기 버튼에서는 GPIO0 LOW이고 송신이 유지됐다. 다른 보드로 일반화하지 않는다.
-- ESP 네 controlled hook=0U, STM unchanged, 사용자 복구 build/flash와 당시 static 30/30 PASS.
-  9/23 ESP monitor는 4.2~44.1초 CPS0만 확인했으며 부팅 첫 0.4초는 미포함이다.
+- 현재 ESP는 M1 수동 시험 코드를 사용자가 입력 중이다. command까지 입력, 빈 함수3개·호출2곳·오타가 남은 WIP다.
+  기존 네 hook=0U, 새 수동 매크로=1U. 새 빌드/플래시/HELP/전동 구동은 하지 않았다.
+  [코드 안내와 재개 위치](docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)를 따른다.
+  학습 설명은 enum까지 했고 다음은 expected_seq/tel_mark 등 변수다. STM은 좌우 주석만 정정했다.
+- [report 30](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md):
+  warm STM reset TEL169/16.8초, STM200~17000ms와300/400ms CPS0. 최초0~200ms/cold boot는 미검증이다.
+  초기 ESP parser 경고6회는 보존했다. S1 OFF/ON 순간 CPS −10/+10은 즉시0 복귀로 마감했고 필터를 바꾸지 않았다.
+- 사용자 확인 퓨즈는 Littelfuse F1=10A/F2=1A. K1주선14AWG로 진행한다는 결정을 반복해서 묻지 않는다.
+  이번 S2 전후 rail0.23→11.78V, S0잠금 뒤5초1.28/30초0.59V는 관측이며 rail-off 전체 PASS가 아니다.
+  마지막 셀 보고4.12/4.16/4.16V 및 앞선 배터리 관측은 report30에 보존한다.
+- 과거 사용자 복구 build/flash와 당시 static30/30 PASS는 해당 이미지의 이력이다.
+  현재 미완성 소스와 분리하며, 실제 최종 전원 차단 완료는 별도 사용자 보고가 없다.
 
 ## Project Identity
 
@@ -404,7 +420,7 @@ Important docs:
 - The first external-reset capture without pull-downs failed: all four motor control signals appeared HIGH for about `159 ms` during NRST LOW. After adding an external `10 kΩ` pull-down from each `PC8/PB6/PC9/PB7` signal to GND, a 5 s/20 M-sample retest observed zero transitions and zero HIGH samples on all four signals.
 - Motor-output verification is `PASS — motor-disconnected MCU-pin scope`; permanent pull-down and powered/no-motor regression also passed. MDD10A power-stage timing, Physical E-stop and actual motor stop remain unverified, so the overall drivetrain release is still `PARTIAL`.
 - After the motor-output safety tests all controlled hooks were restored to `0U`; contract discovery passed `15/15`. The safe STM32 ELF was `1,241,208 bytes`, SHA-256 `3B80E7A6A465545A0324AA7CD83503C95E387DE203374548BCA368FDC7DA831B`; the safe ESP32 BIN was `176,656 bytes`, SHA-256 `8F46810367A370A080781A09E52B04F3DF348CF9F3430ABA536686DFFEF033C3`. Final runtime had exact DISARM ACK/PING/PONG/READY and post-READY TEL 155/155 safe over 15.4 s. Raw flash-console and embedded artifact identity remain missing provenance.
-- Two available encoder motors are WHEELTEC `MG540P30_12V`; the encoder-side mapping is MG540-A/motor A = vehicle right/TIM5 and MG540-B/motor B = vehicle left/TIM3. MDD10A powered channel 1/2 to physical side remains TBD.
+- Two available encoder motors are WHEELTEC `MG540P30_12V`. The corrected 2026-09-26 mapping is MG540-A = vehicle left/JENC_1/TIM3/M1 and MG540-B = vehicle right/JENC_2/TIM5/M2. A is connected to M1; B motor-power wiring to M2 is planned. Hand-rotation channel/sign checks passed; powered forward polarity remains unverified. Earlier A=right/B=left records are historical.
 - With the encoder PCB/magnet face toward the viewer and connector at the top, the six connector pads are left-to-right: motor+, encoder GND, encoder B, encoder A, encoder 5 V, motor-.
 - XL4015 #2 encoder rail measured 5.06 V before MG540-A and 5.03 V connected; MG540-B connected rail also measured 5.03 V.
 - MG540-A raw encoder A/B can idle near 0 V or 5 V depending on shaft position; raw encoder outputs must not be connected directly to STM32.
@@ -472,7 +488,14 @@ Ask the user or verify from hardware only for these:
 - Mounting screw, nut, washer, and insulating-spacer specifications
 - CAD coordinate origin for the manufacturing drawing
 
-## 다음 작업 — 2026-09-23
+## 다음 작업 — 2026-09-26
+
+1. 현재 좌우 기준은 report 29와 현재 인수인계를 따른다. A의 M1/JENC_1 연결과 수동 부호 확인을 반복하지 않는다.
+2. 수동 시작·M1만 저듀티·1회 자동 종료하는 시험 코드를 사용자 입력 방식으로 준비한다.
+3. 부호 수식, 타이머 설정, 1560 counts/rev는 유지한다. 전동 구동의 DIR/실제 전진 관계는 다음 시험에서 확인한다.
+4. T005A 잔여 판정과 실제 모터 시험의 완료 범위를 구분한다. 다른 세션 결과는 마감 때 일괄 문서화한다.
+
+## 2026-09-23 당시 다음 작업 — 이력
 
 1. [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), 최신 progress와 report 28의 필요한 절만 읽는다.
 2. 실제 엔코더 케이블 준비·핀 방향과 무전원 상태를 확인한다. 새 조정부에 연결 후 LOW/HIGH를 검증하고 수동 회전·양방향·정지·채널 독립성을 확인한다.

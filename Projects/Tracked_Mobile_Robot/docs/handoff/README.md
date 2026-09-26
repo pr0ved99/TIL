@@ -21,11 +21,13 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/23 엔코더 납땜·전기 검사 완료, 다음 실제 엔코더 연결과 작업 방식 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/27 M1 코드 입력 WIP, 다음 상태 변수 설명·남은 입력, 완료한 bench 범위 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-09-23 | [최신 진행 기록](../progress/2026-09-23_progress.md) / [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 1kΩ+15kΩ 네 채널 납땜/전기 검사 PASS, 두 +5.05V; 실제 엔코더 전압/수동 회전 다음 |
+| 2026-09-27 | [최신 진행 기록](../progress/2026-09-27_progress.md) / [M1 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 사용자 입력 중단 위치·오타·남은 함수와 새 빌드/실행 미검증 경계 |
+| 2026-09-27 | [검사 마감 report 30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | 실제 엔코더·warm reset·전압·배터리·S1 순간 CPS 결과 |
+| 2026-09-23 | [이전 진행 기록](../progress/2026-09-23_progress.md) / [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 1kΩ+15kΩ 네 채널 납땜/전기 검사 PASS, 두 +5.05V; 실제 엔코더 전압/수동 회전 다음 |
 | 2026-09-23 | [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | 9/22 재개 T005A run01~06·버튼 정정·default-off 복구 증거; 전체 PARTIAL |
-| 2026-09-22 / historical plan | [당시 휴식 후 작업 계획](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | 당시 T005A 진입 계획. 현재 시작점은 위 9/23 기록으로 대체 |
+| 2026-09-22 / historical plan | [당시 휴식 후 작업 계획](../plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | 당시 T005A 진입 계획. 현재 시작점은 위 최신 기록으로 대체 |
 | 2026-09-22 | [이전 진행 기록](../progress/2026-09-22_progress.md) / [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | T004 firmware/PWM PASS와 safe restore 이력 |
 | 2026-09-19 | [이전 진행 기록](../progress/2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; 다음은 T004 BUILD-01 사용자 빌드 |
 | 2026-09-19 / current bench record | [납땜 체크리스트](../plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) | 현재 CTRL/ENC 3핀 두 개 배정과 9/17~19 검사 지점·결과; 전원 인가·T004 미실행 |

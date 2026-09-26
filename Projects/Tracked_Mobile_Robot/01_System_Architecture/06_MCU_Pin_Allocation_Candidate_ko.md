@@ -343,8 +343,10 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 ## 1차 결정
 
 이 후보안의 USART/PWM/DIR/TIM3/TIM5 범위는 CubeMX와 제한 bench 시험까지 진행했다.
-Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3로 확인했지만 I2C1/ADC와
-MDD10A powered channel 1/2의 실제 vehicle-side mapping은 아직 후보 상태다.
+2026-09-26 실물 정정 후 encoder-side mapping은 A=left/JENC_1/TIM3,
+B=right/JENC_2/TIM5이며 커넥터 교환 후 손회전 채널·전진 부호를 확인했다.
+[정정 근거](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)를 따른다.
+M1→A 동력선은 연결했고 M2→B는 계획이다. 실제 전동 구동의 forward polarity는 미검증이다.
 
 가장 중요한 설계 선택:
 
@@ -365,5 +367,5 @@ MDD10A powered channel 1/2의 실제 vehicle-side mapping은 아직 후보 상�
 2. I2C1 `PB8/PB9`와 MVP PC7 GPIO/EXTI 후보가 기존 확정 핀과 충돌하지 않는지 CubeMX에서
    확인한다. PA4/PB0 ADC는 post-MVP diagnostic V-cycle에서 확인한다.
 3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
-4. 확정된 encoder-side A=right/TIM5, B=left/TIM3와 forward-positive sign을 유지하고, MDD10A powered channel의 실제 left/right mapping을 별도 확인한다.
+4. 현재 A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5와 forward-positive CPS를 유지한다. M2 동력선 연결과 양쪽 전동 구동 방향은 별도 확인한다.
 5. 탈락한 후보는 decision log에 남긴다.

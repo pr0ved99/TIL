@@ -17,9 +17,17 @@ Engineering Basis
 
 ## Current Verification Scope
 
-**2026-09-23 최신 추가:** [report 28](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의
+**2026-09-27 마감:** [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 실제 엔코더 LOW/HIGH·정지·warm reset와 전력단·배터리 관측을 보존했다.
+M1 수동 시험 코드는 사용자 입력 중이며 새 빌드·플래시·HELP·구동 검증은 하지 않았다.
+
+**2026-09-26 검사 / 9/27 정리:** [report 29](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+A=왼쪽/M1/JENC_1/TIM3/left, B=오른쪽/M2/JENC_2/TIM5/right로 현재 기준을 정정했다.
+A 동력선은 M1에 연결했고 B 동력선은 분리 유지다. 커넥터 교환 후 독립 손회전·전진 양수/후진 음수·정지 0 사용자 보고 PASS.
+새 원본 로그·정량 CPS 값은 없으며 실제 전동 구동과 powered-noise는 미검증이다.
+
+**2026-09-23 이전 체크포인트:** [report 28](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의
 엔코더 영구 조정부 납땜·저항·전원 검사 사용자 보고 PASS, JENC_1/2 +5.05V.
-실제 엔코더 연결·새 경로의 LOW/HIGH·수동 회전 검증은 다음 작업이다.
+당시 보류한 실제 엔코더 연결·LOW/HIGH·수동 회전은 이후 대화에서 사용자 보고 PASS로 확인했고, 최종 좌우 정정은 report 29를 따른다.
 [report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에
 MDD 전력단 연결 후 T005A 6캡처와 all-hooks-0U 복구를 보존했다. T005A 전체는 PARTIAL이다.
 
@@ -143,7 +151,9 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [`25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md`](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | XL4015 #1 dual-board logic power, #2 AUX path, S0-A/S0-B wire-open independence와 conditioned sense LOW/HIGH/open functional subsets; firmware/PWM/direct rail 미포함 |
 | [26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | 9/22 T004 conditioned PWM/latch/reset/wire-open, 357.25 µs와 hook0 최종 복구 PASS; 전력단/실모터 미포함 |
 | [T005A 전력단 시험과 복구](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | MDD B+ 연결 후 직접 전압·6캡처·복구 기록; 전체 판정 PARTIAL |
-| [엔코더 조정부 납땜·전기 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 연결은 다음 작업 |
+| [엔코더 조정부 납땜·전기 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 후속 결과는 reports 29/30 |
+| [차량 좌우 정정·손회전 확인](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | 현재 A=left/M1/TIM3, B=right/M2/TIM5; 교환 후 사용자 보고 PASS |
+| [실제 엔코더·전력단 검사 마감](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | warm reset169TEL, 전압·배터리·S1 CPS 관측과 M1 코드 입력 WIP |
 
 ## Evidence Files
 
@@ -165,7 +175,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 
 2026-09-05 기준 누적 하드웨어/firmware subtest:
 
-- A=right/TIM5, B=left/TIM3 encoder-side vehicle mapping과 forward-positive production CPS subtest PASS
+- 7월 당시 A=right/TIM5, B=left/TIM3 encoder-side sign subtest PASS. 현재는 report 29의 A=left/TIM3, B=right/TIM5 정정과 교환 후 손회전 PASS를 적용한다.
 - 방향별 50회전 `1560 counts/output rev`, CPS-to-mRPM self-test와 dynamic calculation PASS
 - Motor-disconnected software fault injection 뒤 MDD10A all-off, `PB6/PB7/PC8/PC9=0 V`와 reset 전 latch PASS
 - Button output/fault test macro를 모두 `0U`로 복구한 뒤 B1 no-output regression PASS
@@ -255,12 +265,12 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 
 ![Timeout output zero](../../assets/screenshots/uart_mvp/2026-07-09_06_cmd_timeout_output_zero.png)
 
-## 다음 검증 순서 — 2026-09-23
+## 다음 검증 순서 — 2026-09-27
 
-1. 실제 엔코더 케이블 준비·핀 방향을 확인하고, 새 조정부의 A/B LOW/HIGH와 수동 회전·방향·정지·독립성을 검증한다. 절차와 기록 범위는 [report 28](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
-2. T005A는 [report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 남은 rail-off 수용 기준·판정 시점, F1/F2 식별과 K1 단자/선재 적합성을 정리한다. 기존 DMM 관측을 임의의 PASS 기준으로 바꾸지 않는다.
+1. [M1 수동 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)의 사용자 입력을 완성하고 저장 파일을 검토한다. 이후 사용자 ESP 빌드·플래시와 LiPo 분리 HELP 확인을 진행한다. 엔코더 LOW/HIGH·손회전·좌우 정정 검사는 완료했다.
+2. T005A 전체는 PARTIAL이다. [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)의 추가 rail 관측·Littelfuse 10A/1A 확인과 14AWG 유지 결정을 적용하되, report 27의 전체 수용 판정을 임의로 PASS로 바꾸지 않는다. 확인된 사실을 다시 묻지 않는다.
 3. 첫 실모터 시험 전에 해당 전원/E-stop Gate와 제작품 fit·고정·절연 조건을 충족한다. 기본 저전압 경고/정지도 첫 주행 전에 준비한다.
 4. Lifted 단일 모터 저 duty 시험에서 전류·온도·정지 동작·구동 중 엔코더 잡음과 방향을 확인한다.
 5. 양쪽 구동계 매핑, 저속 주행, wheel travel/1 m odometry와 최종 정지 회귀·증거 추적을 진행한다.
 
-T004의 active reset 거부/released reset 성공, conditioned sense/wire-open, hook-0 복구와 기존 UART 시험은 완료한 범위로 보존한다. 변경·실패 없이 다시 수행하지 않는다. 9/23 정지 로그는 첫 4.2초가 없어 부팅 초기 CPS 튐 해결 여부는 아직 확인되지 않았다.
+T004의 active reset 거부/released reset 성공, conditioned sense/wire-open, hook-0 복구와 기존 UART 시험은 완료한 범위로 보존한다. 변경·실패 없이 다시 수행하지 않는다. 9/23 로그 이후 STM 단독 warm reset에서200~17000ms CPS0을 추가 확인했다. 최초0~200ms/cold boot의 전체 검증은 아니다. S1 전환 순간 ±10은 즉시0 복귀로 마감했다.

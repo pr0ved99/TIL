@@ -1,81 +1,74 @@
 # Current Session Context
 
-Last updated: 2026-09-23 — encoder conditioning electrical checks complete; actual encoder next.
+Last updated: 2026-09-27 — 9/26~27 bench 마감, M1 수동 시험 코드 사용자 입력 중 휴식.
 
-## 현재 종료 지점
+## 지금 이어갈 작업
 
-**엔코더 입력 조정부 실제 납땜 완료 사용자 보고. 저항 8곳, 전원 연결·단락 6곳 PASS.
-JENC_1/2 모두 +5.05V. 실제 엔코더 연결부터 다음 세션으로 보류했다.**
+**ESP 펌웨어 입력 중단 지점에서 재개한다. 전동 구동은 아직 하지 않았다.**
+[9/27 progress](../progress/2026-09-27_progress.md)와
+[M1 코드 안내의 재개 메모](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)를 먼저 읽는다.
 
-먼저 [9/23 progress](../progress/2026-09-23_progress.md)와 필요한 부분의
-[report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 읽는다.
-완료한 저항·도통·5.05V 검사는 배선 변경이나 실패가 없으면 반복하지 않는다.
+- 실제 파일: `03_Firmware/esp32_uart_bridge/main/hello_world_main.c`.
+- 입력은 `bridge_bench_command()`까지; `bridge_bench_advance/console_init/console_poll` 몸체는 비어 있다.
+  app_main의 init/poll 호출 두 곳도 미추가다. #if 줄 연속 처리, SCRIPED/finished/HLEP 오타는 안내 문서에 기록했다.
+- 기존 ESP 네 hook=0U, 새 수동 기능 매크로=1U. 현재 파일은 **미완성·컴파일 오류가 남은 WIP**다.
+  기능을 대신 완성하거나 빌드·플래시하지 않는다. Git 저장이 빌드 가능한 이미지라는 뜻은 아니다.
+- 설명은 목적·ARM/CMD/timeout 흐름·시간 상수·enum과 s_bench_state까지 했다.
+  **다음은 expected_seq/tel_mark 등 상태 변수 설명부터**다. 작성한 부분을 다시 타이핑시키지 않는다.
+- 완성 목표: 수동 HELP/RESET_ESTOP/M1_PULSE/STOP, M1 5%·M2 0%, CMD 한 번·STM timeout 300ms,
+  종료·실패 뒤 재구동 잠금. 새 소스의 빌드/플래시/HELP/구동은 모두 미실행이다.
+- 저장된 파일 검토 → 사용자 ESP 빌드·플래시 → LiPo 분리 상태의 HELP 확인 순서다.
+  STM32 실행 코드는 바꾸지 않았으므로 이번 기능만을 위해 STM 재플래시를 요구하지 않는다.
 
-## 바로 다음 작업
+## 현재 연결과 완료 결과
 
-1. 실제 무전원 상태와 엔코더 4선 케이블 준비 여부·제품 핀 방향을 확인한다.
-   마지막 케이블 준비 질문은 사용자가 작업을 미루어 미답변이다. 준비됐다고 가정하지 않는다.
-2. 무전원에서 GND/B/A/5V를 JENC에 연결한다. 모터 동력선 2개는 계속 분리한다.
-3. STM32 분리 상태로 실제 엔코더의 A/B LOW/HIGH를 JDBG_ENC에서 측정한다.
-   축을 조금씩 돌려 멈추며 측정한다. 연속 회전 중 DMM 평균을 HIGH로 해석하지 않는다.
-4. 입력 전압 적합성 확인 후 보드를 복원하고 새 배선의 수동 회전·양방향·정지·독립성을 검증한다.
+정본: [report 29 좌우 매핑](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md),
+[report 30 이번 검사 마감](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-최종 안내는 S1 OFF→LiPo 분리였다. 사용자의 마지막 별도 분리 완료 보고는 없으므로
-전원이 꺼졌다고 문서만으로 판단하지 않는다. 이번 종료에는 실제 엔코더를 연결하지 않았다.
+| 항목 | 현재 기준 |
+| --- | --- |
+| 왼쪽 | 모터 A / M1 / JENC_1 / TIM3 PB4(A)·PB5(B) / left_cps |
+| 오른쪽 | 모터 B / M2 계획 / JENC_2 / TIM5 PA0(A)·PA1(B) / right_cps |
+| 동력선 | A Motor+→M1A, Motor−→M1B 연결 확인. B 동력선은 분리·절연 유지 |
+| 출력 | M1 PB6 PWM·PC8 DIR, M2 PB7 PWM·PC9 DIR |
+| 엔코더 커넥터 | 두 JENC 모두 Pin1 GND / Pin2 B raw / Pin3 A raw / Pin4 AUX_5V |
+| 입력 조정·환산 | 각 신호 1kΩ 직렬+MCU 측 15kΩ GND, TIM3 부호 반전/TIM5 유지, 1560 counts/rev |
 
-## 새 도면과 실물 검사
+두 모터는 섀시에서 분리해 검사했다. 기존 A=right/B=left는 과거 연결 이력이다.
+최종 커넥터 교환 후 전진 양수·후진 음수·정지0·독립성 사용자 보고 PASS.
+실제 전동 구동 방향과 기구 고정 상태의 최종 검증은 아직 없다.
 
-- 현재 VRT: `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.vrt`.
-  182,515 bytes; SHA-256 `09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78`.
-- exports의 동일 이름 PDF: 02:36 저장, 172,045 bytes; 새 연결 반영 확인.
-- 저장 Net/Flying Wire Pad 19개와 Broken Nets 0개 확인. 전체 좌표·Net은 report 28에 있다.
-- JENC_1=C50/R11~14, JENC_2=C54/R5~8. 위→아래 Pin1 GND, Pin2 B raw, Pin3 A raw, Pin4 AUX_5V.
-- 왼쪽 PB4/A=R2 1k+R6 15k, PB5/B=R1+R5. 오른쪽 PA0/A=R4+R8, PA1/B=R3+R7.
-  직렬저항 뒤 MCU 노드에 풀다운과 JDBG를 연결한다. AUX는 R13 앞 J3 Pin1에서 분기한다.
-- 실제 납땜 완료 및 두 보드 장착 monitor 사용자 보고. 이후 저항 검사 8곳 모두 정상;
-  직렬 최솟값 0.98kΩ, 풀다운 한 값 14.69kΩ. JENC 전원 6검사 및 두 +5.05V PASS.
-- 1k+15k는 범용 5V→3.3V 분압기가 아니다. 실제 엔코더 연결 후 새 배선의 입력 전압 검증이 남았다.
-- 커넥터 실물 제품/케이블과 부품 높이·고정 상태를 도면만으로 확정하지 않는다.
+- [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의 저항 8곳·전원 6검사·양쪽 +5.05V 완료 유지.
+  이후 실제 엔코더 네 입력 LOW0V/HIGH 약2.86V, 정지10초 이상 CPS0·양방향 손회전도 사용자 보고 PASS.
+- [warm reset 원본](../../assets/logs/encoder/2026-09-26_actual_encoder_warm_reset/README.md): STM만 RESET,
+  엔코더 전원 유지·정지·S0 잠금. TEL169/16.8초, STM200~17000ms, 300/400ms 포함 CPS/PWM0.
+  제어문자 거부5회+embedded CR1회 뒤 정상 TEL. 최초0~200ms/cold boot/전동 노이즈는 미검증이다.
+- S1 OFF/ON 순간 양쪽 CPS −10/+10은 바로0으로 복귀했다고 확인했다. 이 관측은 마감했으며 재검사·필터 수정으로 돌아가지 않는다.
+- 도면은 `09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.vrt`와 exports의 같은 이름 PDF다.
+  JENC_1=C50/R11~14, JENC_2=C54/R5~8. 좌표·Net·도면 SHA는 report 28을 따른다.
 
-## 로그의 확인 범위
+## 전원과 미완료 범위
 
-[9/23 monitor](../../assets/logs/encoder/2026-09-23_perfboard_conditioning/README.md):
-STM t_ms=4200~44100, TEL 400개/39.9초, left/right CPS 모두 0, TEL 100ms 연속.
-FAULT/ESTOP_ACTIVE 유지, PWM 보고값 0, err=7 고정. RX_DESYNC 1회 뒤 DISARM ACK/PONG/READY.
-첫 4.2초가 없어 과거 300/400ms 부팅 튐 해결은 미확인이다. 로그 촬영 때 임시 빵판 저항 제거와
-엔코더 케이블 상태는 별도 보고되지 않았다. 이후 무전원 검사에는 STM/임시 저항 분리를 안내했다.
-CPS 계산을 변경하지 않는다. 새 실제 엔코더 경로 전체 PASS로 확대하지 않는다.
+- 버스바 두 개, MDD B+=K1 87/B−=GND 16AWG, K1 주선14AWG. 사용자의 선재 진행 결정을 반복해서 묻지 않는다.
+  Littelfuse F1=10A/F2=1A 사용자 확인. T004 기존 PASS, 전체 T005A PARTIAL은 유지한다.
+- 이번 S0 해제 전후/S2 전→후 rail 0.23→11.78V; 다시 S0 잠금 뒤5초1.28/30초0.59V 관측.
+  1kΩ은 무전원 방전에만 임시 사용 후 제거했다. 값 감소만으로 rail-off PASS를 만들지 않는다.
+- 마지막 보고한 셀 값은4.12/4.16/4.16V다. 시점·앞선 알람/DMM 값은 report 30에 보존했다.
+  종료 시 전압을 새로 측정한 것은 아니며, 이미 완료한 배터리 확인을 이유 없이 재시작하지 않는다.
+- 마지막 안내는 S0 잠금/S1 OFF/LiPo 분리 후 코드 입력이었다. **최종 전원 분리 완료는 별도 보고되지 않았다.**
+  문서만으로 현재 전원이 꺼졌다고 단정하지 않는다.
+- USB 개발 구성: #1의 보드용2P 두 개 분리·절연, STM JP5=U5V/JP1=OPEN, 두 보드 USB 공급.
+  ESP 콘솔 입력은 보드의 UART 표기 USB 커넥터/UART0. COM 번호는 고정하지 않는다.
+- #1은 로직5V 두2P 분기, #2는 AUX5V/실제 엔코더/S0-B. 두 OUT+는 분리하고 GND 공통.
+  독립 전원 운전은 USB 제거 후 STM JP5=E5V/JP1=OPEN이다.
+- 실제 ESP 보드의 왼쪽 BOOT 표기는 EN LOW, 오른쪽 RESET 표기는 GPIO0 LOW였다.
+  버튼 표기를 일반 DevKit과 같다고 가정하지 않는다.
 
-## T005A와 현재 전력단
+## 작업 방식
 
-[report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md):
-9/22 run01~06과 파생 증거 보존 완료. **T005A 전체 PARTIAL**, T004 PASS는 유지한다.
-
-- 두 커버형 버스바 사용. +는 S1 OUT→XL1/XL2 IN+, K1 30, F2/6P Pin1 분기.
-  −는 LiPo−/XL1·XL2 IN−/MDD B−. MDD B+=K1 87, B−=GND 16 AWG. K1 주선 14 AWG.
-- MDD 5P 제어 하네스 연결, 두 모터는 분리. BNO 모듈은 미연결.
-- run03 오른쪽 RESET 표기 버튼은 ESP 송신을 멈추지 않았다.
-  실제 HG-ESP32-S3-DevkitC-1은 **왼쪽 BOOT 표기 버튼이 EN LOW**를 만든다.
-  run04에서 마지막 CMD 끝→PWM 정지 498.635ms와 CMD_TIMEOUT 관측.
-- run05/06 all-hooks-0U 복구 후 25초 두 PWM HIGH0, 자동 ARM/CMD/RESET 없음.
-  right_cps=10 한 번씩(t_ms=300/400)이 남아 이번 입력 조정부 작업으로 이어졌다.
-- DMM 잔류 0.45~1.6V를 임의 rail-off PASS로 처리하지 않는다. V_RAIL_OFF_MAX/판정 시점,
-  F1 257/287 식별, F2 식별, K1 단자-선재 release 항목은 report 27을 따른다.
-- T005A D4=STM TX/TEL, D5=ESP TX/명령. 이전 T004와 채널 역할이 반대다.
-
-## 전원·펌웨어·작업 방식
-
-- XL4015 #1 OUT에서 별도 2P 두 갈래로 NUCLEO/ESP32에 공급한다. 중간 4P는 없다.
-  #2는 AUX_5V이며 두 buck의 OUT+는 분리, GND 공통.
-- 독립 전원 운전: USB 제거, NUCLEO JP5=E5V, JP1=OPEN.
-  USB 개발: S1 OFF/LiPo 분리/잔류전압 확인 후 #1 두 2P 분리, JP5=U5V/JP1=OPEN,
-  두 보드 각각 USB 공급. USB와 buck을 동시 공급하지 않는다.
-- ESP controlled hook 네 개 모두 0U, STM unchanged. 복구 사용자 빌드·플래시 및 당시 static 30/30 PASS.
-  source SHA `ecc304898b7f61ba1c28a8f01fa69b2fe9b11eb196bfaf02fb911d003ef000e4`,
-  ELF SHA 시작 `3c5b64553806`; 9/23 monitor의 `3c5b64553...`와 일치. flash readback은 아니다.
-- 사용자가 펌웨어 입력, STM/ESP 빌드·플래시와 하드웨어 조작을 수행한다. Codex가 대신 진행하지 않는다.
-- 코드 안내는 연결된 블록 전체와 정확한 교체 범위·이유를 제공한다. bench는 한 측정 묶음씩 진행한다.
-- progress는 사용자 작업 마감 때 한 번에 갱신. 하위 PASS를 전체로 확대하지 않는다.
-- 사용자 요청 없이 subagent/전체 대화 아카이브 검색을 실행하지 않는다.
-- repo `C:\Users\eyh12\workspace\TIL`, branch `agent/dual-encoder-bringup`.
-  사용자가 이번 문서·증거·도면의 Git 커밋/푸시를 요청했다. 현재 commit/원격 상태는 Git에서 확인한다.
+- 사용자가 기능 코드 입력과 STM/ESP 빌드·플래시·물리 작업을 한다. Codex는 실제 저장 파일 검토와 설명을 한다.
+- 논리적으로 연결된 블록과 정확한 위치를 한 번에 제공한다. 하드웨어는 한 묶음씩, 통과 검사는 변경·실패 없이 반복하지 않는다.
+- 과거30/30은 당시 완료 기준선이다. 이번 WIP는 빌드/테스트 통과가 아니다.
+- 진행 기록은 마감 때 갱신한다. 사용자 요청 없이 subagent·전체 과거 대화 아카이브를 사용하지 않는다.
+- 저장소 `C:/Users/eyh12/workspace/TIL`, 브랜치 `agent/dual-encoder-bringup`.
+  이번 마감은 사용자 요청으로 문서·증거·미완성 소스를 함께 Git 체크포인트로 보존한다.

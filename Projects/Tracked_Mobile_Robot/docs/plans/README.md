@@ -2,28 +2,28 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-09-23
+## 현재 시작점 — 2026-09-27
 
-**다음 작업은 실제 엔코더 케이블 연결과 새 만능기판 경로의 입력 전압·수동 회전 검증이다.**
+**다음 작업은 작성 중인 ESP M1 수동 시험 코드를 이해하고 완성하는 것이다.**
 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md) →
-[9/23 진행 기록](../progress/2026-09-23_progress.md) →
-[엔코더 조정부 보고서의 다음 시작점](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md#7-다음-시작점) 순서로 읽는다.
+[9/27 진행 기록](../progress/2026-09-27_progress.md) →
+[M1 코드 안내와 재개 메모](2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) 순서로 읽는다.
 
-- 완료: UART/CTRL/ENC/IMU 헤더 배선, T004 conditioned firmware/PWM 시험, 시험 후 ESP 네 hook `0U` 복구.
-  당시 정적 검사 **30/30 PASS**, 복구 빌드·플래시는 사용자 수행 결과다.
-- 최신 완료: 엔코더 조정부 납땜, 저항 8곳·전원 연결/단락 6곳, JENC_1/2 **+5.05V** 사용자 보고 PASS.
-  `...ENC_Conditioning_WIP.vrt`와 동일 이름 PDF 검토 결과는 report 28에 있다.
-- 남음: 실제 엔코더 연결 후 LOW/HIGH·수동 회전, 부팅 초기 CPS 튐 확인, T005A 전체 판정과 실모터 시험.
-  T005A는 **PARTIAL**이며 MDD B+는 K1 87에 연결된 상태로 기록됐다. 두 모터는 분리 상태다.
+- 실제 엔코더 입력 LOW/HIGH, 독립 손회전, 최종 A=left/M1/TIM3·B=right/M2/TIM5 부호 검사 PASS.
+  A 동력선만 M1에 연결하고 B는 분리 유지다. 세부 결과는 reports 29/30에 있다.
+- ESP는 command까지 입력했고 빈 함수3개·호출2곳·입력 오타가 남았다. 설명은 enum까지 진행했다.
+  사용자 직접 입력을 유지하고 새 빌드·플래시·HELP 확인부터 수행한다. 실제 회전은 별도 단계다.
+- T004 기존 PASS와 T005A 전체 PARTIAL은 유지한다. 과거30/30은 새 WIP의 검증 결과가 아니다.
 - 완료한 검사는 변경·실패 없이 반복하지 않는다. 펌웨어 입력과 두 보드의 빌드·플래시는 사용자가 수행한다.
 
-날짜별 계획의 `next/open/current`는 해당 시점의 표현이다. 아래 완료·이력 문서를 그대로 다음 작업 지시로 사용하지 않는다.
+날짜별 계획의 `next/open/current`는 해당 시점의 표현이다. 아래 이력 문서를 현재 작업 지시로 사용하지 않는다.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
-| 2026-09-23 / 현재 재개 | [엔코더 조정부 검사와 다음 작업](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 완료한 저항·도통·전원 검사는 보존; 실제 엔코더 연결부터 진행 |
+| 2026-09-27 / 현재 재개 | [M1 수동 1회 시험 코드](2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 사용자 입력 WIP; 남은 함수·오타·설명 위치와 전체 완성 블록, HELP 확인까지 |
+| 2026-09-23 / 검사 이력 | [엔코더 조정부 검사와 다음 작업](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 당시 저항·도통·전원 PASS; 후속 실제 엔코더 결과는 reports 29/30 |
 | 2026-09-22 / 후속 결과 있음 | [전원 경로와 T005A 계획](2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | 실행 결과는 report 27; 전체 T005A는 PARTIAL |
 | 2026-09-16 plan / updated through 9/19 | [납땜 체크리스트](2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md) | 당시 배선·무전원 검사·마감 기록; 후속 T004 결과는 report 26 |
 | 2026-09-11 plan / updated through 9/19 | [`2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md`](2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md) | UART·측정 헤더 도면 검토 및 제작 이력 |

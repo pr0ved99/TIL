@@ -2,7 +2,7 @@
 
 이 폴더는 전원·모터 드라이버·엔코더·MCU의 기능 회로를 KiCad로, 만능기판 배치·배선을 VeroRoute로 관리한다.
 
-## 도면별 기준과 현재 구현 — 2026-09-23
+## 도면별 기준과 현재 구현 — 2026-09-27
 
 - Revision: `RevB-WIP`
 - Status: `PULL-DOWN CHECKPOINT / ERC PASS`
@@ -12,10 +12,10 @@
 - 현재 만능기판 도면: VeroRoute `...ENC_Conditioning_WIP.vrt`와 exports의 동일 이름 PDF.
   [report 28](../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)에 좌표·Net·19개 Flying Wire pad와 실물 검사 범위를 기록했다.
 - 구현: K2 bottom-view 해석 수정 뒤 UART/CTRL/ENC/IMU 헤더 배선 완료. 새 엔코더 조정부
-  저항·연결 검사와 JENC_1/2 +5.05V는 사용자 보고 PASS이며 실제 엔코더 연결은 다음 작업이다.
+  저항·연결 검사와 JENC_1/2 +5.05V는 사용자 보고 PASS다. 이후 실제 엔코더 네 A/B LOW0V/HIGH 약2.86V와 손회전·좌우 정정 검사를 통과했다. [report 30](../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)을 따른다.
 - 전원/E-stop: conditioned PC7 전압 기능과 T004 firmware/PWM PASS. 두 버스바 및
   MDD B+=K1 87/B−=GND 연결 상태의 T005A 관측은 보존했으며 전체 판정은 PARTIAL이다.
-  두 모터는 분리 상태다. 부하·온도·rail-off 판정과 실제 모터 정지는 미완료다.
+  두 모터는 섀시에서 분리돼 있다. A 동력선은 M1에 연결했고 B 동력선은 분리 유지다. 부하·온도·rail-off 판정과 실제 모터 정지는 미완료다.
 
 ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻이다. 전류 용량, 실제 배선, noise, footprint와 제조 적합성을 증명하지 않는다.
 
@@ -61,12 +61,12 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 
 | Area | Captured design | Status |
 | --- | --- | --- |
-| Main power | S1 OUT → + 버스바 → XL4015 #1/#2 IN+, K1 30, F2/6P Pin1; K1 87 → MDD B+; MDD B− → GND 버스바 | 연결 상태는 report 27. F1 10 A/F2 1 A는 선정값이며 실물 식별·보호 협조와 부하 검증은 남음 |
+| Main power | S1 OUT → + 버스바 → XL4015 #1/#2 IN+, K1 30, F2/6P Pin1; K1 87 → MDD B+; MDD B− → GND 버스바 | 현재 연결과 전압 관측은 report 30. Littelfuse F1 10A/F2 1A 사용자 확인; 정확한 시리즈/보호 협조와 부하 검증의 이력은 report 27 |
 | Physical E-stop | MVP: `VBAT_PROTECTED -> K1 -> MOTOR_VBAT_SAFE -> MDD10A`; `F2 -> S0-A NC -> [S2 NO OR K2-HOLD-NO] -> K2`, K2 second pole -> K1 coil; 5 V S0-B/opto PC7 sense; post-MVP: PA4/PB0 rail sense | 기존 조립·무전원·control-only 결과에 report 25의 conditioned PC7 전압 기능과 report 26의 firmware/PWM PASS가 추가됨. MDD 전력단 연결 후 report 27의 T005A 전체는 PARTIAL; rail-off 수용 기준·release·실모터 미완료 |
 | MDD10A logic | `PC8/DIR1`, `PB6/TIM4_CH1/PWM1`, `PC9/DIR2`, `PB7/TIM4_CH2/PWM2`, 각 signal-to-GND `10 kΩ`, common GND | Permanent perfboard continuity, power-up/NRST all-LOW, active 19 kHz six-step와 hook-0 safe restore PASS |
-| Encoder TIM3 | Motor B/vehicle left; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | 기존 motor-off count/forward-positive PASS; 새 영구 배선에서 실제 엔코더 수동 회전은 다음 작업 |
-| Encoder TIM5 | Motor A/vehicle right; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | 기존 motor-off count/forward-positive PASS; 새 영구 배선에서 실제 엔코더 수동 회전은 다음 작업 |
-| Encoder conditioning | Per A/B channel: `1 kΩ series + MCU-side 15 kΩ pull-down` | 9/23 실제 납땜·저항/연결 검사 PASS. 과거 배선의 전압/count PASS와 구분하며 새 배선의 실제 A/B LOW/HIGH·구동 잡음은 미검증 |
+| Encoder TIM3 | Motor A/vehicle left/JENC_1; A to `PB4/TIM3_CH1`, B to `PB5/TIM3_CH2` | report 29: 커넥터 교환 후 독립 손회전·전진 부호·정지0 사용자 보고 PASS |
+| Encoder TIM5 | Motor B/vehicle right/JENC_2; A to `PA0/TIM5_CH1`, B to `PA1/TIM5_CH2` | report 29: 커넥터 교환 후 독립 손회전·전진 부호·정지0 사용자 보고 PASS |
+| Encoder conditioning | Per A/B channel: `1 kΩ series + MCU-side 15 kΩ pull-down` | 9/23 납땜·저항/연결 검사 PASS. 이후 실제 네 입력 LOW0V/HIGH 약2.86V·손회전 PASS; 전동 구동 중 잡음은 미검증 |
 | Encoder/AUX supply | XL4015 #2 → `AUX_5V`: JENC_1/2 Pin4(모터 측 6P의 encoder 전원 Pin5) 및 R13/S0-B 입력; common GND | 기존 J3 5.08 V와 conditioned sense 0.06/3.27 V 기능 PASS; 9/23 엔코더 분리 상태 JENC_1/2 각각 +5.05 V PASS |
 | STM32–ESP32 UART | STM32 PA9 TX to ESP32 GPIO18 RX, ESP32 GPIO17 TX to STM32 PA10 RX, common GND, 115200 8-N-1 | Board-only 및 영구 배선을 통한 T004/T005A UART 캡처·9/23 monitor 보존; 전체 통합 범위는 각 보고서 참조 |
 | XL4015 #1 output | Standalone STM32/ESP32 logic 5 V: NUCLEO `E5V/GND` plus ESP32 `5V/GND` through two separate 2P branches | 2026-09-08 new 26 AWG path individual/combined voltage-function PASS; all USB removed; current/drop/temperature evidence open |

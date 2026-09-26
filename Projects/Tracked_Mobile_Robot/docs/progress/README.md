@@ -4,12 +4,13 @@ This folder records dated progress for the tracked mobile robot project.
 
 Use this log to avoid losing context between Codex sessions, hardware sessions, and commits.
 
-Latest: [2026-09-23 progress](2026-09-23_progress.md) — **엔코더 입력 조정부 납땜·저항 8곳·전원 6검사 PASS, 양쪽 +5.05V**.
-현재 도면은 ENC_Conditioning_WIP VRT/PDF다. 다음은 실제 엔코더 4선 케이블 확인과
-STM32 분리 상태의 A/B 전압, 수동 회전 검증이다. [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
-정지 monitor 400개 CPS=0은 첫 4.2초를 포함하지 않는다. T005A run01~06은
-[report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)로 보존했으며 전체 PARTIAL이다.
-T004 PASS와 all-hooks-0U 복구는 유지한다. 실제 모터는 미연결이다.
+Latest: [2026-09-27 progress](2026-09-27_progress.md) — **실제 엔코더·좌우 정정 검사 마감, M1 수동 시험 코드 입력 중 휴식**.
+현재 시작점은 [M1 코드 안내의 재개 메모](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)다.
+ESP 코드는 command까지 입력, advance/init/poll과 app_main 연결·오타 수정이 남은 WIP다.
+새 빌드·플래시·HELP·실제 전동 구동은 미실행이다.
+[report 29](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)의 A=left/M1/TIM3, B=right/M2/TIM5와
+[report 30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)의 전압·손회전·warm reset169TEL을 보존한다.
+S1 전환 순간 CPS ±10은 즉시0 복귀 확인으로 마감했다. T004 기존 PASS, T005A 전체 PARTIAL 유지.
 
 Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
 [report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md).
@@ -52,6 +53,7 @@ Previous powered baseline: [9/8 progress](2026-09-08_progress.md)와
 
 | Date | File | Summary |
 | --- | --- | --- |
+| 2026-09-27 | [2026-09-27_progress.md](2026-09-27_progress.md) | 실제 엔코더·warm reset·좌우 정정·전력단 관측 보존; ESP M1 수동 콘솔 사용자 입력 WIP, 다음 상태 변수 설명 |
 | 2026-09-23 | [2026-09-23_progress.md](2026-09-23_progress.md) | 엔코더 영구 조정부 납땜/저항/전원 검사와 +5.05V PASS; 정지 TEL400 CPS0, 실제 엔코더 연결 다음; T005A 6캡처 마감 |
 | 2026-09-22 | [2026-09-22_progress.md](2026-09-22_progress.md) | T004 conditioned PWM/latch/reset/wire-open 및 hook0 복구 PASS; left encoder 임시 pull-down, 30/30, 다음은 T005A 준비 |
 | 2026-09-19 | [2026-09-19_progress.md](2026-09-19_progress.md) | 측정 배선·무전원 검사·마감 사용자 보고 PASS; CTRL/ENC 각 3핀 두 개, T004 사용자 빌드부터 재개 |

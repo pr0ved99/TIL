@@ -1,5 +1,13 @@
 # First Motor No-Load Test
 
+> **2026-09-26 연결 정정:** 첫 시험 대상은 왼쪽 모터 A다.
+> Motor+→M1A, Motor−→M1B 연결 확인; 엔코더는 JENC_1/TIM3/left_cps다.
+> 오른쪽 B 엔코더는 JENC_2/TIM5/right_cps이며 동력선은 아직 분리한다.
+> 교환 후 손회전 채널·전진 양수/후진 음수·정지 0은 사용자 보고 PASS.
+> [현재 매핑과 확인 범위](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+> 실제 전동 구동과 DIR 정방향은 미검증이며, 아래 미결 선행 Gate를 이 손회전 결과로 전체 PASS 처리하지 않는다.
+> 9/27 현재 [M1 수동 코드](../docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)는 사용자 입력 WIP다. 새 빌드·플래시·회전은 미실행이며 [report 30](../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 검사 마감을 보존했다.
+
 ## 목적
 
 이 문서는 motor 1개와 MDD10A 1개 channel을 사용해 첫 low-duty no-load motor test를 수행하는 절차를 정의한다.
@@ -35,7 +43,7 @@
 | Actual PWM/DIR timing measured | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | PASS for motor-disconnected input scope; active DISARM/timeout/fault edge와 final 19 kHz A/B capture 완료 |
 | Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; MVP `T-ESTOP-001~005` must pass first; `T-ESTOP-006` is post-MVP |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
-| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3/TIM5 dual independent hand rotation와 encoder-side A=right/TIM5, B=left/TIM3 forward-positive sign PASS |
+| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, report 29 | 9/26 현재 A=left/TIM3, B=right/TIM5로 커넥터 교환 후 독립 손회전·forward-positive·정지 0 사용자 보고 PASS |
 | Motor fixed or lifted safely | Physical setup | TBD |
 | Bench fuse selected from validated current envelope | Test stage | TBD; 10 A candidate, no rating increase without root-cause/design review |
 
@@ -67,14 +75,14 @@ Each STM32 input node -> 15 kΩ -> common GND
 
 | Item | Value |
 | --- | --- |
-| Motor under test | TBD |
-| MDD10A channel | TBD |
+| Motor under test | MG540-A, vehicle left, chassis에서 분리 |
+| MDD10A channel | M1: Motor+→M1A, Motor−→M1B |
 | Fuse rating | TBD |
 | Battery voltage before test | TBD |
 | PWM frequency | TBD |
 | Duty limit | TBD |
 | Command timeout | TBD |
-| Encoder connected? | TBD |
+| Encoder connected? | A→JENC_1/TIM3/left_cps, 교환 후 손회전 PASS |
 | Test duration limit | TBD |
 
 Recommended initial limits:

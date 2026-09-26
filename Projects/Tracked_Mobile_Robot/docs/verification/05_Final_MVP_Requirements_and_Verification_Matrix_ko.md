@@ -1,5 +1,13 @@
 # Final MVP Requirements And Verification Matrix
 
+> **2026-09-27 마감:** [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 실제 입력 LOW/HIGH·손회전·warm reset169TEL과 전력단 관측을 보존했다.
+> ESP M1 수동 시험 코드는 입력 중 WIP이며 빌드·플래시·실모터 시험은 미실행이다. 전체 T005A PARTIAL 유지.
+>
+> **2026-09-26 검사 / 9/27 정리:** [report 29](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+> 현재 A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5. A 동력선 연결 확인, B 동력선은 분리 유지다.
+> 엔코더 교환 후 채널 독립성·전진 양수/후진 음수·정지 0 사용자 보고 PASS. 전동 구동 방향·노이즈는 미검증이다.
+> 아래 9/23의 실제 엔코더 미연결과 7월 A=right/B=left는 당시 이력이며 현재 연결 지시가 아니다.
+
 > 2026-09-23 업데이트: T004 conditioned firmware/PWM PASS는 report 26에 보존했다.
 > [report 27](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)의 T005A run01~06은
 > 모터 분리 전력단/명령 유실 관측과 hook0 복구까지 완료, 전체 T005A는 수용 기준·release 미결로 PARTIAL이다.
@@ -177,7 +185,7 @@ fit과 조립 사진은 아직 확인하지 않았다. A4 종이 대조 결과�
 
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 
-- `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다. Encoder-side vehicle mapping은 A=right/TIM5, B=left/TIM3로 확인했지만 MDD10A channel 1/2와 물리 motor side의 powered 연결은 첫 motor 시험에서 최종 확인한다.
+- `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다. 현재 좌우는 report 29의 A=left/M1/TIM3, B=right/M2/TIM5다. A의 M1 동력선 연결은 확인했고 B의 M2는 계획이다. 실제 전동 구동의 방향은 첫 motor 시험에서 확인한다.
 - `REQ-MOTOR-002 PASS — motor-disconnected MDD10A-input scope`: 2026-08-04 active DISARM은 UART RX frame end부터 두 PWM last-active-edge까지 `23.50 us`였고, 2026-08-12에는 300 ms timeout shutdown, software fault의 다음 PWM pulse 억제와 reset 전 latch를 확인했다. 외부 reset 시 네 motor input이 부동 HIGH가 되는 최초 시험은 FAIL로 보존한다. 이후 각 신호의 외부 10 kΩ pull-down 재시험과 Rev B 영구 만능기판의 continuity·power-up·NRST·hook-0 final capture에서 all-LOW를 확인했다. MDD10A motor output, Physical E-stop과 실제 motor stop은 상위 `MVP-009`와 `T-MOTOR-003`에서 계속 추적한다.
 - `REQ-MOTOR-003 PASS`: 현재 코드는 `PWM 0 -> 최소 1 ms PWM-zero settle -> DIR -> 최소 1 ms post-DIR settle -> PWM` 순서다. 2026-08-03 actual capture에서 CH1 pre/post `1.994/2.03875 ms`, CH2 pre/post `1.54725/~2.040 ms`로 모두 최소 1 ms를 만족했다.
 - `REQ-MOTOR-004 CONDITIONAL PASS`: 2026-08-03의 20.1005 kHz/약 10.05%는 historical
@@ -290,10 +298,10 @@ External tachometer 기준 절대 RPM 정확도는 아직 검증하지 않았다
 | `REQ-ODO-001` | 1 m 직진 시험에서 실제 거리, encoder 추정 거리, 절대 및 백분율 오차를 기록해야 한다. | MUST | `PLANNED` |
 | `REQ-CTRL-001` | target/measured speed 기반 closed-loop 제어를 구현하고 step response를 기록한다. | SHOULD / POST-MVP | `DEFERRED` |
 
-`REQ-DRIVE-001 PARTIAL`에서 encoder-side subtest는 `PASS`다. Motor A=right/TIM5,
-Motor B=left/TIM3와 forward-positive production CPS를 수동 회귀로 확인했다. 그러나
-MDD10A powered channel 1/2와 실제 좌·우 motor의 연결 및 command-driven forward
-polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫지 않는다.
+`REQ-DRIVE-001 PARTIAL`에서 encoder-side subtest는 `PASS`다. 9/26 현재 Motor A=left/TIM3,
+Motor B=right/TIM5로 커넥터를 교환한 뒤 forward-positive production CPS와 독립성·정지 0을
+사용자가 확인했다. A의 M1A/M1B 연결은 확인했고 B의 M2 연결은 계획이다.
+Command-driven forward polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫지 않는다.
 
 ## 요구사항-설계-검증 추적 매트릭스
 
@@ -314,7 +322,7 @@ polarity는 아직 확인하지 않았으므로 전체 drivetrain mapping은 닫
 | `REQ-ENC-001` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), DMM log와 encoder photos | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | `REQ-001`, `MET-001`, `VVT-001`, `CM-001` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt), [50-rev calibration summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [vehicle sign record](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md) | `PARTIAL` |
 | `REQ-ENC-003` | `REQ-001`, `QUAL-001`, `MET-001`, `VVT-001` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | [2026-07-29 stationary log](../../assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt), [production CPS TEL verification](../../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md), [50-rev/mRPM summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [mRPM dynamic raw log](../../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt) | `PASS` |
-| `REQ-DRIVE-001` | `ARCH-001`, `REQ-001`, `MET-001`, `VVT-001` | encoder-side vehicle-frame sign과 powered actuator-side mapping | A=right/TIM5, B=left/TIM3 forward-positive CPS; MDD10A channel-to-side TBD | manual encoder forward-sign regression; powered motor mapping pending | [vehicle sign record](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md) | `PARTIAL` |
+| `REQ-DRIVE-001` | `ARCH-001`, `REQ-001`, `MET-001`, `VVT-001` | encoder-side vehicle-frame sign과 powered actuator-side mapping | 현재 A=left/M1/TIM3, B=right/M2/TIM5; A 동력선 연결, B M2는 계획 | 교환 후 손회전 부호·독립성 PASS; 전동 구동 방향 pending | [현재 좌우 정정](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [7월 당시 부호 기록](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md) | `PARTIAL` |
 | `REQ-DRIVE-002~003` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | state machine, kinematics | dual motor path | `T-DRIVE-001` lifted/ground drivetrain and actual stop | video, mapping and fault log | `PLANNED` |
 | `REQ-ODO-001` | `ODO-001`, `MET-001`, `VVT-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
 | `MVP-012` | `LCM-001`, `INFO-001`, `CM-001`, `VVT-001` | master plan and README | documentation package | `T-DOC-001` evidence audit | README, linked evidence matrix | `PARTIAL` |

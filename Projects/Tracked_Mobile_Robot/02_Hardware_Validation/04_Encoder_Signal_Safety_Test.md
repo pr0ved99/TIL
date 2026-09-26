@@ -1,5 +1,10 @@
 # Encoder Signal Safety Test
 
+> **현재 좌우 기준 — 2026-09-26:** A=왼쪽/JENC_1/TIM3/left_cps,
+> B=오른쪽/JENC_2/TIM5/right_cps. 두 커넥터 교환 후 독립 손회전·전진 부호·정지 0 사용자 보고 PASS.
+> [정정 근거와 현재 연결](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+> 아래 A=right/B=left 및 CW/CCW 표는 7월 당시 기록이다. 측정 원본은 보존하되 현재 배선에 적용하지 않는다.
+
 ## 목적
 
 이 문서는 MG540P30_12V motor encoder를 STM32에 연결하기 전에 전원, A/B 신호 전압과 입력 보호 조건을 검증한 기록이다.
@@ -37,7 +42,7 @@ STM32의 일부 핀은 5 V tolerant이지만, unpowered board, power sequencing�
 - A/B quadrature 동작, count sign과 출력축 1회전 count는 TIM3 손회전 시험으로 기능 확인했다.
 - `MG540-A`, `MG540-B`는 bench 식별명이며 2026-07-30부터 encoder-side vehicle right와 left로 확정한다. MDD10A powered channel mapping은 이 판정에 포함하지 않는다.
 
-## Encoder Identification
+## Encoder Identification — 2026-07-30 당시 기록
 
 | Bench ID | Model | Encoder status | Vehicle side | Notes |
 | --- | --- | --- | --- | --- |
@@ -352,7 +357,7 @@ motor polarity, powered-motor noise와 wheel-speed scale은 포함하지 않는�
 ## Next Step
 
 1. 현재 TIM3/TIM5 firmware, production TEL/ESP32 parser, 50회전 상수와 dated raw evidence를 Git 기준점으로 보존한다.
-2. 확정된 A=right/TIM5, B=left/TIM3와 forward-positive production sign을 회귀 기준으로 유지한다.
+2. 현재 좌우 기준은 report 29의 A=left/TIM3, B=right/TIM5를 따른다. 7월 원본의 A=right/B=left는 당시 연결 이력으로 보존한다.
 3. External tachometer 기준 절대 RPM 정확도와 sprocket/track 이동거리로 wheel-speed 변환값을 검증한다.
 4. Powered motor noise와 input filter는 계측 장비 또는 제한된 lifted test에서 별도 검증한다.
 5. Powered/no-motor timeout/DISARM 및 software fault functional gate와 actual PB6/PB7 PWM/direction timing 하위 게이트는 통과했다. 실제 motor no-load 시험은 active shutdown edge latency, final safe-image board 회귀와 Physical E-stop gate까지 통과한 뒤 진행한다.

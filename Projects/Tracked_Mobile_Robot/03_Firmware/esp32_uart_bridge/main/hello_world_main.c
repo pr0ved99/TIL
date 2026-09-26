@@ -1331,6 +1331,149 @@ static void bridge_uart_startup_step(TickType_t now){
     }
 }
 
+/* Manual bench console: one attempted M1 pulse per ESP boot. */
+#define BRIDGE_M1_PULSE_TEST_ENABLED 1U
+#define BENCH_RESPONSE_MS 200U
+#define BENCH_TELEMETRY_MAX_AGE_MS 250U
+#define BENCH_STOP_OBSERVE_MS 600U
+
+#if BRIDGE_M1_PULSE_TEST_ENABLED && (BRIDGE_SCRIPED_TEST_ENABLED ||
+BRIDGE_MALFORMED_COMMAND_TEST_ENABLED || BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED ||
+BRIDGE_T004_ESTOP_PWM_TEST_ENABLED)
+#error "Disable all automatic bridge test hook for the manual bench console"
+#endif
+
+#if BRIDGE_M1_PULSE_TEST_ENABLED && (!defined(CONFIG_ESP_CONSOLE_UART_NUM) ||
+CONFIG_ESP_CONSOLE_UART_NUM != 0)
+#error "The manual bench console requires the UART0 console"
+#endif
+
+typedef enum {
+    BENCH_IDLE = 0,
+    BENCH_WAIT_RESET,
+    BENCH_WAIT_ARM,
+    BENCH_WAIT_STOP,
+    BENCH_FINISHED
+} bridge_bench_state_t;
+
+static bridge_bench_state_t s_bench_state = BENCH_IDLE;
+static uint32_t s_bench_expected_seq;
+static uint32_t s_bench_tel_mark;
+static uint32_t s_bench_seen_tel_count;
+static uint32_t s_bench_err_mark;
+static uint32_t s_bench_parse_mark;
+static TickType_t s_bench_phase_tick;
+static TickType_t s_bench_last_tel_tick;
+static bool s_bench_saw_output;
+static char s_bench_line[24];
+static size_t s_bench_line_len;
+static bool s_bench_discard_line;
+
+static bool bridge_bench_fresh(TickType_t now){
+    return s_telemetry.valid &&
+        (now - s_bench_last_tel_tick <=
+         pdMS_TO_TICKS(BENCH_TELEMETRY_MAX_AGE_MS));
+}
+
+static bool bridge_bench_pwm_zero(void){
+    return s_telemetry.left_pwm == 0 && s_telemetry.right_pwm == 0;
+}
+
+static void bridge_bench_finish(uint32_t *seq, const char *message){
+    s_bench_state = BENCH_FINISHED;
+    int sent = bridge_uart_send_disarm((*seq)++);
+    ESP_LOGW(TAG, "BENCH LOCKED: %s; DISARM TX=%s",
+        message, sent ? "OK" : "FAILED");
+}
+
+static void bridge_bench_wait(
+    bridge_bench_state_t state,
+    uint32_t expected_seq,
+    TickType_t now
+){
+    s_bench_state = state;
+    s_bench_expected_seq = expected_seq;
+    s_bench_tel_mark = s_tel_count;
+    s_bench_err_mark = s_err_count;
+    s_bench_parse_mark = s_parse_error_count;
+    s_bench_phase_tick = now;
+}
+
+static void bridge_bench_command(
+    const char *command,
+    TickType_t now,
+    uint32_t *seq
+){
+    if(strcmp(command, "HELP") == 0){
+        ESP_LOGI(TAG,
+            "BENCH: RESET_ESTOP, M1_PULSE, STOP; "
+            "one M1 5%% / 300ms timeout pulse per boot");
+        return;
+    }
+
+    if(strcmp(command, "STOP") == 0){
+        bridge_bench_finish(seq, "operator STOP");
+        return;
+    }
+
+    if(strcmp(command, "RESET_ESTOP") != 0 &&
+       strcmp(command, "M1_PULSE") != 0){
+        ESP_LOGW(TAG, "BENCH: unknown command; enter HLEP");
+        return;
+    }
+
+    if(s_bench_state != BENCH_IDLE){
+        ESP_LOGW(TAG, "BENCH: busy or finished; no command sent");
+        return;
+    }
+
+    if(s_startup_state != BRIDGE_STARTUP_READY ||
+       !bridge_bench_fresh(now) || !bridge_bench_pwm_zero()){
+        ESP_LOGW(TAG, "BENCH: need startup READY and fresh PWM=0/0 TEL");
+        return;
+    }
+
+    if(strcmp(command, "RESET_ESTOP") == 0){
+        if(strcmp(s_telemetry.state, "FAULT") != 0 ||
+           strcmp(s_telemetry.reason, "ESTOP_LATCHED") != 0){
+            ESP_LOGW(TAG, "BENCH: RESET_ESTOP requires FAULT/ESTOP_LATCHED");
+            return;
+        }
+
+        uint32_t reset_seq = (*seq)++;
+        bridge_bench_wait(BENCH_WAIT_RESET, reset_seq, now);
+        if(!bridge_uart_send_estop_reset(reset_seq)){
+            bridge_bench_finished(seq, "ESTOP_RESET TX failed");
+        }
+        return;
+    }
+
+    if(strcmp(s_telemetry.state, "DISARMED") != 0 ||
+       s_telemetry.left_cps != 0 || s_telemetry.right_cps != 0){
+        ESP_LOGW(TAG, "BENCH: M1_PULSE requires DISARMED and CPS=0/0");
+        return;
+    }
+
+    uint32_t arm_seq = (*seq)++;
+    s_bench_saw_output = false;
+    bridge_bench_wait(BENCH_WAIT_ARM, arm_seq, now);
+    if(!bridge_uart_send_arm(arm_seq)){
+        bridge_bench_finish(seq, "ARM TX failed");
+    }
+}
+
+static void bridge_bench_advance(TickType_t now, uint32_t *seq){
+
+}
+
+static void bridge_bench_console_init(void){
+
+}
+
+static void bridge_bench_console_poll(TickType_t now, uint32_t *seq){
+    
+}
+
 void app_main(void){
     ESP_LOGI(TAG, "ESP UART bridge app start");
 

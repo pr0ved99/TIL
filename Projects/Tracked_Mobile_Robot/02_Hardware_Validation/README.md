@@ -69,7 +69,7 @@ Firmware보다 먼저 확인할 것:
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
 | Buck converter output / board power | PASS for XL4015 #1 functional logic-power subset; PARTIAL for XL4015 #2 evidence | 2026-09-08 dual-2P #1 path: 5.02 V pre-connect, 4.97 V individual and 4.95 V combined OUT; NUC E5V 4.94 V/ESP 5V 4.95 V combined, power-off 0 V PASS. #2 J3 5.08 V and conditioned PC7 0.06/3.27 V released/asserted PASS; current/drop/temperature and raw evidence open |
 | MDD10A logic input | PASS — motor-disconnected input scope | `03_MDD10A_Logic_Input_Test.md`; permanent signal별 10 kΩ, final perfboard CH1/CH2 19.049/19.058 kHz active 6-step, pre/post-DIR zero 약 2 ms와 hook-0 all-LOW PASS. Physical E-stop, power stage와 actual motor는 별도 Gate |
-| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; conditioned dual count/sign, 1560 counts/rev, CPS/mRPM, production TEL과 A=right/TIM5·B=left/TIM3 forward-positive PASS; powered-noise와 external RPM/wheel scale 미검증 |
+| Encoder input/count | PARTIAL | 1560 counts/rev 보정 이력 유지. 9/26 report 29: A=left/JENC_1/TIM3, B=right/JENC_2/TIM5 교환 후 독립 손회전·전진 부호·정지 0 사용자 보고 PASS; powered-noise와 external RPM/wheel scale 미검증 |
 | First motor no-load | Not started | TBD |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
@@ -89,7 +89,7 @@ STM32 PWM/DIR safe output 구현 완료
 -> active timeout/DISARM powered/no-motor LED functional PASS, hook `0U` 복구 PASS
 -> production TEL -> ESP32 dual CPS independent CW/CCW PASS
 -> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
--> A=right/TIM5, B=left/TIM3 encoder-side vehicle forward-positive sign PASS
+-> 7/30 당시 A=right/TIM5, B=left/TIM3 sign PASS; 9/26 현재 A=left/TIM3, B=right/TIM5로 정정하고 손회전 회귀 PASS (report 29)
 -> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
 -> historical 20.1005 kHz 시험 뒤 vendor 상한 margin을 반영해 final perfboard CH1/CH2 19.049/19.058 kHz, 약 10%, direction 전후 약 2 ms zero PASS
 -> active DISARM 23.50 us, timeout scoped baseline, software-fault next-pulse/latch와 external-reset 10 kΩ pull-down MCU-pin PASS

@@ -131,14 +131,14 @@ STM32 GND            -> MDD10A GND
 3S LiPo + -> fuse -> switch -> MDD10A POWER+
 3S LiPo - ------------------> MDD10A POWER-
 
-Output channel 1 -> MDD10A M1A/M1B -> physical side TBD
-Output channel 2 -> MDD10A M2A/M2B -> physical side TBD
+Output channel 1 -> MDD10A M1A/M1B -> Motor A / left (connected)
+Output channel 2 -> MDD10A M2A/M2B -> Motor B / right (planned; disconnected)
 ```
 
-MCU-to-driver routing은 static/no-motor bench에서 확인했다. 최종 left/right
-channel mapping은 powered motor direction 시험에서 확정한다. Encoder-side
-A=right/TIM5, B=left/TIM3 sign 결과만으로 MDD10A channel 1/2의 물리 좌우를
-확정하지 않는다.
+MCU-to-driver routing은 static/no-motor bench에서 확인했다. 위 연결 기준은
+[9/26 실물 좌우 정정](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)을 따른다.
+A의 엔코더는 JENC_1/TIM3/left_cps, B는 JENC_2/TIM5/right_cps이며 손회전 부호 확인은 통과했다.
+실제 전동 구동의 forward polarity와 M2→B 동력선 연결은 아직 완료하지 않았다.
 
 ## Validation 영향
 

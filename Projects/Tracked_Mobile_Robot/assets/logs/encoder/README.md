@@ -1,12 +1,19 @@
 # Encoder Logs
 
+## 2026-09-26 actual encoders and warm reset (closed 9/27)
+
+- [Raw monitor and summary](2026-09-26_actual_encoder_warm_reset/README.md): 169 TEL, STM200~17000ms, both CPS/PWM0 including300/400ms; initial six parser warnings preserved.
+- Warm STM-only reset with encoders powered. First0~200ms, cold boot and powered-motor noise are not covered.
+- [Current vehicle mapping](../../../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md): A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5; swapped-connector hand checks PASS.
+- The July A=right/B=left entries below describe the historical setup, not current wiring instructions.
+
 ## 2026-09-23 permanent perfboard conditioning
 
 - [Stationary ESP monitor and summary](2026-09-23_perfboard_conditioning/README.md):
   TEL 400 samples from STM t_ms=4200 to 44100; both CPS always zero.
 - [Assembly/electrical report](../../../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md):
   four 1kΩ series/15kΩ pulldown channels, eight resistance checks, connector checks and both +5.05V.
-- Actual encoder connection, conditioned signal voltage and hand-rotation through the new wiring remain pending.
+- At the 9/23 checkpoint, actual encoder connection, signal voltage and hand-rotation were pending; subsequent results are recorded above.
   The monitor does not cover the first 4.2 seconds or prove removal of the earlier boot transient.
 
 ## 2026-07-30 encoder-side vehicle-frame mapping and sign normalization

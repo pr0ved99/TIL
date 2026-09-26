@@ -138,7 +138,7 @@
 
 ## 실행 계획
 
-현재 재개는 [9/23 엔코더 조정부 보고서](verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)와 [작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)을 따른다. 아래 날짜별 계획은 당시의 순서다.
+현재 재개는 [9/27 진행 기록](progress/2026-09-27_progress.md), [M1 수동 코드 안내](plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)와 [작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)을 따른다. ESP 코드 입력 WIP이며 실제 회전은 미실행이다. 아래 날짜별 계획은 당시의 순서다.
 
 | 문서 | 내용 |
 | --- | --- |
@@ -193,7 +193,9 @@
 | [로직 전원·감지 신호 검사](verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) | XL4015 두 전원 경로와 conditioned PC7 LOW/HIGH/wire-open의 사용자 보고 결과 |
 | [T004 펌웨어·PWM 통합시험](verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) | 감지·latch/reset·단선 시 PWM 차단과 all-hooks-0U 복구 PASS |
 | [T005A 전력단 시험과 복구](verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | MDD B+ 연결 후 직접 전압·6캡처·복구 기록; 전체 판정 PARTIAL |
-| [엔코더 조정부 납땜·전기 검사](verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 연결은 다음 작업 |
+| [엔코더 조정부 납땜·전기 검사](verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 후속 결과는 reports 29/30 |
+| [차량 좌우 정정·손회전 확인](verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | 현재 A=left/M1/TIM3, B=right/M2/TIM5; 교환 후 사용자 보고 PASS |
+| [실제 엔코더·전력단 검사 마감](verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | warm reset169TEL, 전압·배터리·S1 CPS 관측과 M1 코드 입력 WIP |
 
 ## 계측·빌드 원본 자료
 
@@ -210,7 +212,8 @@
 | [2026-09-15 문서 개편과 현황 정리](progress/2026-09-15_progress.md) | README 개편, 9/15 도면 검토 기록과 현재 저장본 차이, 다음 작업 |
 | [2026-09-19 배선 마감](progress/2026-09-19_progress.md) | UART/CTRL/ENC/IMU 배선과 무전원 검사 완료 기록 |
 | [2026-09-22 T004 완료](progress/2026-09-22_progress.md) | Conditioned firmware/PWM 통합시험과 안전 설정 복구 |
-| [2026-09-23 엔코더 조정부 마감](progress/2026-09-23_progress.md) | 영구 조정부 검사, T005A 증거 보존과 현재 재개 지점 |
+| [2026-09-23 엔코더 조정부 마감](progress/2026-09-23_progress.md) | 당시 영구 조정부 검사와 T005A 증거 보존 |
+| [2026-09-27 엔코더·전력단 마감과 코드 WIP](progress/2026-09-27_progress.md) | 실제 엔코더·좌우 정정·warm reset 결과, M1 코드 중단 위치와 재개 순서 |
 | [`docs/progress/README.md`](../docs/progress/README.md) | Progress log policy and index |
 | [`docs/progress/2026-06-08_progress.md`](../docs/progress/2026-06-08_progress.md) | recorded project progress snapshot |
 | [`docs/progress/2026-06-21_progress.md`](../docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |

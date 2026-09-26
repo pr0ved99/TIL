@@ -2,19 +2,21 @@
 
 ## 문서 기준
 
-- 현재 상태 갱신: **2026-09-23**. 실제 작업 재개는 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md)과 [9/23 진행 기록](../progress/2026-09-23_progress.md)을 따른다.
+- 현재 상태 갱신: **2026-09-27**. 실제 작업 재개는 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md)과 [9/27 진행 기록](../progress/2026-09-27_progress.md)을 따른다. 다음 작업은 [M1 수동 코드 입력 WIP](2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)의 완성이다.
 - 이 문서는 MVP 종료선과 검증 Gate를 보존하는 전체 로드맵이다. 아래 9/5 기준선·잔여시간·직렬 순서는 당시 계획 이력이며, 그 안의 `현재/OPEN/다음`을 오늘의 미완료 항목으로 해석하지 않는다.
 
-| 분야 | 9/23 기준 확인된 범위 | 다음 작업과 근거 |
+| 분야 | 현재 확인된 범위 | 다음 작업과 근거 |
 | --- | --- | --- |
 | UART·E-stop 펌웨어/PWM | T004 conditioned sense/latch/reset/wire-open 및 all-hooks-0U 복구 PASS; 당시 정적 검사 30/30 | [report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)의 완료 범위를 보존 |
 | 전원·물리 E-stop | 버스바 두 개, MDD B+=K1 87/B−=GND 연결; 모터 분리 T005A 관측과 복구 완료, 전체 판정 PARTIAL | [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)의 rail-off 기준·부품/단자 적합성 미결 항목 정리 |
-| 엔코더 영구 배선 | 1kΩ+15kΩ 네 채널 납땜, 저항·연결 검사, JENC 두 곳 +5.05V PASS | **바로 다음:** [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의 실제 엔코더 연결·LOW/HIGH·수동 회전 검증 |
+| 엔코더 영구 배선 | report 28의 납땜·저항·전원 검사 이후 실제 입력 LOW 0V/HIGH 약 2.86V와 손회전 사용자 보고 PASS. 현재 A=left/JENC_1/TIM3, B=right/JENC_2/TIM5; 교환 후 독립성·전진 부호·정지 0 PASS | [report 29](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)를 기준으로 M1 한 번 저듀티 구동·자동 종료 경로 준비 |
 | 첫 실모터·주행 | 미완료 | 선행 전원/E-stop/입력·기구 Gate 충족 후 lifted 단일 모터, 양쪽 주행, 1 m odometry |
 | IMU·CAN | IMU 헤더 배선까지; CAN 모듈 보유·PA11/PA12 예약 | 통합은 후속 단계. IMU 동작과 CAN 통신 PASS로 간주하지 않음 |
 
-이번 문서 갱신은 새 하드웨어 시험이 아니다. 과거 encoder 손회전 PASS는 당시 배선의 증거이며,
-9/23 영구 배선에서 실제 엔코더를 연결한 결과로 대체하지 않는다. 기본 저전압 경고/정지는 첫 주행 전에 준비한다.
+9/26 좌우 정정 후의 손회전 PASS는 새 사용자 보고이며 전동 구동의 증거는 아니다.
+[report 30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 warm reset169TEL과 rail·배터리 관측을 마감했다.
+ESP의 새 수동 콘솔은 사용자 입력 중이며 새 빌드·플래시·HELP·모터 시험은 아직 하지 않았다.
+과거 encoder 로그는 당시 배선 조건으로 보존한다. 기본 저전압 경고/정지는 첫 주행 전에 준비한다.
 
 ## 2026-09-05 계획 기준선 — 이력 보존
 

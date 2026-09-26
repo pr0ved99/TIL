@@ -86,6 +86,14 @@ Encoder sign은 이 convention이 성립하도록 조정해야 한다.
 
 ### Bench와 vehicle-frame encoder sign convention
 
+**현재 기준 — 2026-09-26 정정:** A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5.
+두 엔코더 커넥터 교환 후 손회전 시 해당 쪽 CPS만 변화하고 전진 양수·후진 음수·정지 0을
+사용자가 확인했다. TIM3 부호 반전·TIM5 유지 수식은 그대로 사용한다.
+M1→A 동력선은 연결, M2→B는 계획이며 실제 전동 구동의 전진 방향은 아직 확인하지 않았다.
+[정정과 새 손회전 근거](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+
+**아래는 7월 당시 연결과 측정 이력이다. 현재 모터 A/B의 좌우 배선 지시로 사용하지 않는다.**
+
 2026-07-26 motor-power-off 시험에서는 output shaft end를 정면에서 본 기준으로
 clockwise 회전 시 TIM3 count가 증가하고 counter-clockwise 회전 시 감소했다.
 이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench raw-sign 결과다.
@@ -98,8 +106,8 @@ clockwise 회전 시 TIM3 count가 증가하고 counter-clockwise 회전 시 감
 | Right | MG540-A / TIM5 | Clockwise | Positive | Keep |
 | Left | MG540-B / TIM3 | Counter-clockwise | Negative | Invert TIM3/left CPS |
 
-따라서 production `left_cps/right_cps`는 모두 차량 전진에서 양수가 된다. 이
-결정은 **encoder-side vehicle-frame mapping과 부호**만 닫는다. MDD10A powered
+따라서 당시 production `left_cps/right_cps`는 모두 차량 전진에서 양수가 되었다. 이
+검증은 **당시 encoder-side vehicle-frame mapping과 부호**만 닫는다. MDD10A powered
 channel 1/2가 실제 좌·우 motor로 이어지는 관계와 command-driven forward
 polarity는 첫 powered drivetrain 시험에서 별도로 확인한다.
 

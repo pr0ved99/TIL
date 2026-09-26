@@ -276,9 +276,9 @@ static void encoder_speed_log_process(void){
     Error_Handler();
   }
 
-  /* Confirmed vehicle-frame mapping: forward motion is positive.
-   * Motor B/left uses TIM3 and requires sign inversion.
-   * Motor A/right uses TIM5 and keeps its raw sign.
+  /* Vehicle mapping corrected and hand-checked on 2026-09-26.
+   * Motor A/left: JENC_1 -> TIM3; invert raw sign for forward-positive CPS.
+   * Motor B/right: JENC_2 -> TIM5; keep raw sign for forward-positive CPS.
   */
   uart_mvp_set_encoder_cps(
     encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
