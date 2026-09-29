@@ -1331,19 +1331,19 @@ static void bridge_uart_startup_step(TickType_t now){
     }
 }
 
-/* Manual bench console: one attempted M1 pulse per ESP boot. */
-#define BRIDGE_M1_PULSE_TEST_ENABLED 1U
+/* Manual bench console: one attempted M2 pulse per ESP boot. */
+#define BRIDGE_M2_PULSE_TEST_ENABLED 1U
 #define BENCH_RESPONSE_MS 200U
 #define BENCH_TELEMETRY_MAX_AGE_MS 250U
 #define BENCH_STOP_OBSERVE_MS 600U
 
-#if BRIDGE_M1_PULSE_TEST_ENABLED && (BRIDGE_SCRIPED_TEST_ENABLED ||
-BRIDGE_MALFORMED_COMMAND_TEST_ENABLED || BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED ||
+#if BRIDGE_M2_PULSE_TEST_ENABLED && (BRIDGE_SCRIPTED_TEST_ENABLED || \
+BRIDGE_MALFORMED_COMMAND_TEST_ENABLED || BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED || \
 BRIDGE_T004_ESTOP_PWM_TEST_ENABLED)
 #error "Disable all automatic bridge test hook for the manual bench console"
 #endif
 
-#if BRIDGE_M1_PULSE_TEST_ENABLED && (!defined(CONFIG_ESP_CONSOLE_UART_NUM) ||
+#if BRIDGE_M2_PULSE_TEST_ENABLED && (!defined(CONFIG_ESP_CONSOLE_UART_NUM) || \
 CONFIG_ESP_CONSOLE_UART_NUM != 0)
 #error "The manual bench console requires the UART0 console"
 #endif
@@ -1406,8 +1406,8 @@ static void bridge_bench_command(
 ){
     if(strcmp(command, "HELP") == 0){
         ESP_LOGI(TAG,
-            "BENCH: RESET_ESTOP, M1_PULSE, STOP; "
-            "one M1 5%% / 300ms timeout pulse per boot");
+            "BENCH: RESET_ESTOP, M2_PULSE, STOP; "
+            "one M2 reverse 10%% / 300ms timeout pulse per boot");
         return;
     }
 
@@ -1417,8 +1417,8 @@ static void bridge_bench_command(
     }
 
     if(strcmp(command, "RESET_ESTOP") != 0 &&
-       strcmp(command, "M1_PULSE") != 0){
-        ESP_LOGW(TAG, "BENCH: unknown command; enter HLEP");
+       strcmp(command, "M2_PULSE") != 0){
+        ESP_LOGW(TAG, "BENCH: unknown command; enter HELP");
         return;
     }
 
@@ -1443,14 +1443,14 @@ static void bridge_bench_command(
         uint32_t reset_seq = (*seq)++;
         bridge_bench_wait(BENCH_WAIT_RESET, reset_seq, now);
         if(!bridge_uart_send_estop_reset(reset_seq)){
-            bridge_bench_finished(seq, "ESTOP_RESET TX failed");
+            bridge_bench_finish(seq, "ESTOP_RESET TX failed");
         }
         return;
     }
 
     if(strcmp(s_telemetry.state, "DISARMED") != 0 ||
        s_telemetry.left_cps != 0 || s_telemetry.right_cps != 0){
-        ESP_LOGW(TAG, "BENCH: M1_PULSE requires DISARMED and CPS=0/0");
+        ESP_LOGW(TAG, "BENCH: M2_PULSE requires DISARMED and CPS=0/0");
         return;
     }
 
@@ -1463,21 +1463,152 @@ static void bridge_bench_command(
 }
 
 static void bridge_bench_advance(TickType_t now, uint32_t *seq){
+    if(s_bench_state == BENCH_IDLE || s_bench_state == BENCH_FINISHED){
+        return;
+    }
 
+    if(!bridge_bench_fresh(now) ||
+       s_err_count != s_bench_err_mark ||
+       s_parse_error_count != s_bench_parse_mark){
+        bridge_bench_finish(seq, "stale telemetry or RX error");
+        return;
+    }
+
+    bool new_tel = s_tel_count != s_bench_tel_mark;
+    bool matching_tel = new_tel &&
+        s_telemetry.last_seq == s_bench_expected_seq;
+    TickType_t elapsed = now - s_bench_phase_tick;
+
+    if(s_bench_state == BENCH_WAIT_RESET){
+        if(matching_tel &&
+           strcmp(s_telemetry.state, "DISARMED") == 0 &&
+           strcmp(s_telemetry.reason, "ESTOP_RESET") == 0 &&
+           bridge_bench_pwm_zero()){
+            s_bench_state = BENCH_IDLE;
+            ESP_LOGI(TAG, "BENCH: reset confirmed; no ARM/CMD sent");
+        }
+        else if(elapsed >= pdMS_TO_TICKS(BENCH_RESPONSE_MS)){
+            bridge_bench_finish(seq, "reset confirmation timeout");
+        }
+        return;
+    }
+
+    if(strcmp(s_telemetry.state, "FAULT") == 0){
+        bridge_bench_finish(seq, "STM32 FAULT; no retry");
+        return;
+    }
+
+    if(s_bench_state == BENCH_WAIT_ARM){
+        if(elapsed >= pdMS_TO_TICKS(BENCH_RESPONSE_MS)){
+            bridge_bench_finish(seq, "ARM confirmation timeout; no CMD");
+            return;
+        }
+
+        if(matching_tel && strcmp(s_telemetry.state, "ARMED") == 0){
+            if(!bridge_bench_pwm_zero()){
+                bridge_bench_finish(seq, "unexpected PWM before CMD");
+                return;
+            }
+
+            uint32_t cmd_seq = (*seq)++;
+            bridge_bench_wait(BENCH_WAIT_STOP, cmd_seq, now);
+            if(!bridge_uart_send_cmd(cmd_seq, -50, -250, 300U)){
+                bridge_bench_finish(seq, "CMD TX failed; no retry");
+                return;
+            }
+            ESP_LOGW(TAG, "BENCH: single M2 reverse 10%% CMD sent; no refresh");
+        }
+        return;
+    }
+
+    if(s_telemetry.left_pwm != 0 ||
+       (s_telemetry.right_pwm != 0 && s_telemetry.right_pwm != -100)){
+        bridge_bench_finish(seq, "unexpected applied PWM");
+        return;
+    }
+
+    if(matching_tel && strcmp(s_telemetry.state, "ARMED") == 0 &&
+       s_telemetry.right_pwm == -100){
+        s_bench_saw_output = true;
+    }
+
+    if(matching_tel && strcmp(s_telemetry.state, "DISARMED") == 0 &&
+       strcmp(s_telemetry.reason, "CMD_TIMEOUT") == 0 &&
+       bridge_bench_pwm_zero()){
+        bridge_bench_finish(seq, s_bench_saw_output
+            ? "PWM 0/-100 then CMD_TIMEOUT 0/0 observed; inspect actual motor"
+            : "timeout observed, active PWM TEL missing; result incomplete");
+        return;
+    }
+
+    if(elapsed >= pdMS_TO_TICKS(BENCH_STOP_OBSERVE_MS)){
+        bridge_bench_finish(seq, "stop confirmation missing; check S0");
+    }
 }
 
 static void bridge_bench_console_init(void){
+    if(BRIDGE_M2_PULSE_TEST_ENABLED == 0U){
+        return;
+    }
 
+    const uart_config_t config = {
+        .baud_rate = 115200,
+        .data_bits = UART_DATA_8_BITS,
+        .parity = UART_PARITY_DISABLE,
+        .stop_bits = UART_STOP_BITS_1,
+        .flow_ctrl = UART_HW_FLOWCTRL_DISABLE,
+        .source_clk = UART_SCLK_DEFAULT,
+    };
+
+    ESP_ERROR_CHECK(uart_driver_install(UART_NUM_0, 256, 0, 0, NULL, 0));
+    ESP_ERROR_CHECK(uart_param_config(UART_NUM_0, &config));
+    ESP_LOGI(TAG, "BENCH manual console ready on UART0; enter HELP");
 }
 
 static void bridge_bench_console_poll(TickType_t now, uint32_t *seq){
-    
+    if(BRIDGE_M2_PULSE_TEST_ENABLED == 0U || seq == NULL){
+        return;
+    }
+
+    if(s_bench_seen_tel_count != s_tel_count){
+        s_bench_seen_tel_count = s_tel_count;
+        s_bench_last_tel_tick = now;
+    }
+
+    /* Bound the console work so UART1 telemetry still gets serviced. */
+    for(unsigned i = 0U; i < 32U; i++){
+        uint8_t ch;
+        if(uart_read_bytes(UART_NUM_0, &ch, 1, 0) != 1){
+            break;
+        }
+
+        if(ch == '\r' || ch == '\n'){
+            if(!s_bench_discard_line && s_bench_line_len > 0U){
+                s_bench_line[s_bench_line_len] = '\0';
+                bridge_bench_command(s_bench_line, now, seq);
+            }
+            s_bench_line_len = 0U;
+            s_bench_discard_line = false;
+        }
+        else if(!s_bench_discard_line){
+            if(ch < 32U || ch > 126U ||
+               s_bench_line_len >= sizeof(s_bench_line) - 1U){
+                s_bench_discard_line = true;
+                s_bench_line_len = 0U;
+            }
+            else{
+                s_bench_line[s_bench_line_len++] = (char)ch;
+            }
+        }
+    }
+    bridge_bench_advance(now, seq);
 }
 
 void app_main(void){
     ESP_LOGI(TAG, "ESP UART bridge app start");
 
     bridge_uart_init();
+    bridge_bench_console_init();
     ESP_LOGI(TAG, "UART1 init done: TX=GPIO%d RX=GPIO%d baud=%d",
         BRIDGE_UART_TX_GPIO,
         BRIDGE_UART_RX_GPIO,
@@ -1541,6 +1672,7 @@ void app_main(void){
 
         TickType_t now = xTaskGetTickCount();
         bridge_uart_startup_step(now);
+        bridge_bench_console_poll(now, &test_seq);
 
         if(
             s_startup_state == BRIDGE_STARTUP_READY &&

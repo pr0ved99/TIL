@@ -145,7 +145,7 @@ def extract_function(source: str, name: str) -> str:
     """Extract a C function body with brace matching rather than line matching."""
     clean = strip_c_comments(source)
     signature = re.compile(
-        rf"\b{re.escape(name)}\s*\([^;{{}}]*\)\s*\{{",
+        rf"\b{re.escape(name)}\s*\([^;{{}}()]*\)\s*\{{",
         re.MULTILINE,
     )
     matches = list(signature.finditer(clean))
@@ -185,6 +185,26 @@ def extract_function(source: str, name: str) -> str:
     raise AssertionError(f"unterminated function body for {name}")
 
 
+class SourceExtractionTest(unittest.TestCase):
+    def test_conditional_call_is_not_a_function_definition(self) -> None:
+        source = """
+static int send_reset(uint32_t seq){ return seq != 0; }
+static void command(uint32_t seq){
+    if(!send_reset(seq)){ stop(); }
+    if(send_reset(seq) && ready()){ observe(); }
+}
+"""
+        self.assertEqual(
+            compact_c(extract_function(source, "send_reset")),
+            "returnseq!=0;",
+        )
+        with self.assertRaisesRegex(AssertionError, "found 2"):
+            extract_function(
+                source + "\nstatic int send_reset(uint32_t seq){ return 0; }",
+                "send_reset",
+            )
+
+
 class FirmwareContractTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -202,7 +222,7 @@ class FirmwareContractTest(unittest.TestCase):
             "parser_h": STM32_ROOT / "Core" / "Inc" / "uart_frame_parser.h",
             "parser_c": STM32_ROOT / "Core" / "Src" / "uart_frame_parser.c",
             "protocol_c": STM32_ROOT / "Core" / "Src" / "uart_mvp_protocol.c",
-            "esp_c": ESP32_ROOT / "main" / "hello_world_main.c",
+            "esp_c": ESP32_ROOT / "main" / "uart_bridge_main.c",
         }
         cls.source = {name: read_text(path) for name, path in cls.paths.items()}
         cls.ioc, cls.ioc_duplicates = parse_ioc(cls.source["ioc"])
@@ -776,11 +796,13 @@ class FirmwareContractTest(unittest.TestCase):
         )
 
         definitions = parse_defines(self.source["motor_output_c"])
+        # M2 DIR LOW drove motor B backward with negative right_cps on the bench.
+        # Check the corrected mapping here; powered direction validation is separate.
         expected_levels = {
             "MOTOR_OUTPUT_LEFT_FORWARD_DIR_LEVEL": "GPIO_PIN_RESET",
             "MOTOR_OUTPUT_LEFT_REVERSE_DIR_LEVEL": "GPIO_PIN_SET",
-            "MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL": "GPIO_PIN_RESET",
-            "MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL": "GPIO_PIN_SET",
+            "MOTOR_OUTPUT_RIGHT_FORWARD_DIR_LEVEL": "GPIO_PIN_SET",
+            "MOTOR_OUTPUT_RIGHT_REVERSE_DIR_LEVEL": "GPIO_PIN_RESET",
         }
         for name, value in expected_levels.items():
             with self.subTest(name=name):

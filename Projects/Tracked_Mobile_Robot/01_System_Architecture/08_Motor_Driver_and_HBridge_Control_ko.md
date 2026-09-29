@@ -1,5 +1,11 @@
 # 모터 드라이버와 H-Bridge 제어 결정
 
+> **2026-09-29 실물 방향 확인:** 현재 A=left/M1, B=right/M2, 각 Motor+→MxA/Motor−→MxB 연결이다.
+> 오른쪽은 DIR HIGH=전진, LOW=후진으로 펌웨어를 보정하고 양방향10%/300ms 단발 구동을 확인했다.
+> 왼쪽 정의는 LOW=전진/HIGH=후진을 유지하며, A 양수 명령의 실제 차량 전진 방향 관찰은 남아 있다.
+> 이는 현재 모터·배선·장착 기준의 대응이며 MDD10A의 보편적 전진 극성 규칙이 아니다.
+> [report31](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 근거와 한계를 보존한다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트의 첫 모터 드라이버 결정을 정리하고,

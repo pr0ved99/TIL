@@ -21,9 +21,12 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/27 M1 코드 입력 WIP, 다음 상태 변수 설명·남은 입력, 완료한 bench 범위 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/30 문서 개편 마감·노트북 복습 상태; 장비 재개 목표는 기존 A/M1 방향 확인 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-09-27 | [최신 진행 기록](../progress/2026-09-27_progress.md) / [M1 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 사용자 입력 중단 위치·오타·남은 함수와 새 빌드/실행 미검증 경계 |
+| 2026-09-30 | [최신 진행 기록](../progress/2026-09-30_progress.md) / [공통 작성 형식](../progress/README.md#공통-템플릿) | 문서 개편 4단계 마감, 과거 본문 보존과 새 진행 기록 형식 |
+| 2026-09-29 | [모터 시험·문서 기록](../progress/2026-09-29_progress.md) / [다음 계획](../plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) | 단일 모터 교차시험·DIR 보정·B 양방향 완료와 남은 방향/통신 관측 |
+| 2026-09-28~29 | [report31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | 원본12개·실제 회전·timeout·오류 카운터와 증거 경계 |
+| 2026-09-27 / 이력 | [당시 진행 기록](../progress/2026-09-27_progress.md) / [M1 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 당시 입력 WIP. 완성과 실제 구동은9/28~29 기록을 따름 |
 | 2026-09-27 | [검사 마감 report 30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | 실제 엔코더·warm reset·전압·배터리·S1 순간 CPS 결과 |
 | 2026-09-23 | [이전 진행 기록](../progress/2026-09-23_progress.md) / [report 28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 1kΩ+15kΩ 네 채널 납땜/전기 검사 PASS, 두 +5.05V; 실제 엔코더 전압/수동 회전 다음 |
 | 2026-09-23 | [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) | 9/22 재개 T005A run01~06·버튼 정정·default-off 복구 증거; 전체 PARTIAL |

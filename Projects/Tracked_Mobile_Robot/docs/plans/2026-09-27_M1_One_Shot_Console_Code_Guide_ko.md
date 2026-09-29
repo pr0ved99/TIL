@@ -1,12 +1,15 @@
 # M1 수동 1회 펄스 시험 코드 입력 안내
 
+> **후속 완료:** 아래는9/27 입력 이력과 최초5% 설계다. 콘솔 완성과 실모터 시험은9/28~29에 진행했다.
+> 현재 M2 역방향10%/300ms 설정과 재개 위치는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md), 결과는 [report31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)을 따른다.
+
 상태: **2026-09-27 사용자 입력 도중 중단한 WIP**. 아래는 완성 목표 블록이며 실제 파일은 일부만 입력됐다.
 ESP-IDF v6.0.2의 로컬 UART API와 현재 프로젝트 설정을 기준으로 작성했다.
 펌웨어 빌드·플래시·보드 동작은 아직 검증하지 않았다. 사용자가 입력한 실제 파일을 다시 검토한 뒤 진행한다.
 
 ## 휴식 후 재개 위치
 
-실제 [hello_world_main.c](../../03_Firmware/esp32_uart_bridge/main/hello_world_main.c)는
+실제 [uart_bridge_main.c](../../03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c)는
 `bridge_bench_command()`까지 입력했고 아래 세 함수는 선언된 빈 몸체 상태다.
 
 - `bridge_bench_advance()`
@@ -75,7 +78,7 @@ ESP는 응답·통신 이상에서 DISARM을 추가로 보내지만, 통신이 �
 
 ## 1. 연결된 코드 블록 전체 추가
 
-대상: `03_Firmware/esp32_uart_bridge/main/hello_world_main.c`.
+대상: `03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c`.
 기존 `bridge_uart_startup_step()` 함수가 끝난 뒤, **`void app_main(void){` 바로 앞**에 다음 블록 전체를 추가한다.
 기존 함수들은 지우지 않는다. 기존 include와 CMake 의존성으로 사용하는 API가 이미 제공된다.
 

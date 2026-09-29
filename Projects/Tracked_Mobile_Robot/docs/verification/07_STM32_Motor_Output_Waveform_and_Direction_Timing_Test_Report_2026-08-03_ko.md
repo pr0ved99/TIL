@@ -164,7 +164,7 @@ Evidence indexes:
 
 - STM32 [`main.c`](../../03_Firmware/stm32_uart_mvp/Core/Src/main.c): `MOTOR_OUTPUT_PIN_TEST_ENABLED 0U`
 - STM32 [`main.c`](../../03_Firmware/stm32_uart_mvp/Core/Src/main.c): `MOTOR_FAULT_INJECTION_TEST_ENABLED 0U`
-- ESP32 [`hello_world_main.c`](../../03_Firmware/esp32_uart_bridge/main/hello_world_main.c): `BRIDGE_SCRIPTED_TEST_ENABLED 0U`
+- ESP32 [`hello_world_main.c`](../../03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c): `BRIDGE_SCRIPTED_TEST_ENABLED 0U`
 
 복구된 STM32 source의 Debug build는 `0 errors / 0 warnings`로 성공했다. 이어서 safe image를 STM32 보드에 물리적으로 flash/run했고, B1을 눌러도 네 motor-control signal에 출력이 생기지 않는 것을 로직 분석기로 확인했다.
 

@@ -301,13 +301,16 @@ Historical post-trailing safe full-build 원본은
 
 ## 프로젝트 구조
 
+주요 소스는 [main/uart_bridge_main.c](main/uart_bridge_main.c)다.
+2026-09-29에 `hello_world_main.c`에서 이름을 변경했으며, 소스 내용과 `app_main()` 진입점은 유지했다.
+
 ```text
 esp32_uart_bridge/
 ├── CMakeLists.txt
 ├── sdkconfig
 ├── main/
 │   ├── CMakeLists.txt
-│   └── hello_world_main.c
+│   └── uart_bridge_main.c
 └── README.md
 ```
 

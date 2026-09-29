@@ -196,6 +196,7 @@
 | [엔코더 조정부 납땜·전기 검사](verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 후속 결과는 reports 29/30 |
 | [차량 좌우 정정·손회전 확인](verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | 현재 A=left/M1/TIM3, B=right/M2/TIM5; 교환 후 사용자 보고 PASS |
 | [실제 엔코더·전력단 검사 마감](verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | warm reset169TEL, 전압·배터리·S1 CPS 관측과 M1 코드 입력 WIP |
+| [단일 모터 구동·교차시험·DIR 보정](verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | A/M1 회전과 B/M2 양방향·timeout 확인, 현재 시험 이미지와 미완료 범위 |
 
 ## 계측·빌드 원본 자료
 

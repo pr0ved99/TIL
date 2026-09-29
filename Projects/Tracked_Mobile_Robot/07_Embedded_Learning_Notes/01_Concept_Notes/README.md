@@ -13,6 +13,9 @@
 
 ## Index
 
+현재 STM·ESP 구조가 먼저 필요하면 [09 코드 구조와 함수 지도](09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)를 읽고,
+이후 [08 단일 모터 시험 해설](08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 시험 흐름과 연결한다.
+
 | File | Topic |
 | --- | --- |
 | `01_GPIO_Alternate_Function_and_CubeMX_ko.md` | GPIO mode, alternate function, CubeMX code generation |
@@ -22,3 +25,5 @@
 | `05_HAL_LL_Direct_Register_ko.md` | HAL, LL, direct register 접근 전략 |
 | `06_I2C_SPI_IMU_Interface_Choice_ko.md` | BNO08x IMU에서 I2C 우선, SPI fallback 판단 |
 | `07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` | CubeMX 생성 파일, HAL 초기화 코드, 사용자 protocol 코드 경계 |
+| [08 단일 모터 시험 해설](08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) | PC→ESP→STM→모터→엔코더 흐름, 상태·timeout·DIR 보정, 실제 로그와 자기 점검 |
+| [09 STM·ESP 코드 구조와 함수 지도](09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) | 파일별 역할, 초기화·반복문·UART 인터럽트 호출 흐름, 핵심 모듈 함수 사전 |

@@ -17,7 +17,11 @@ Engineering Basis
 
 ## Current Verification Scope
 
-**2026-09-27 마감:** [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 실제 엔코더 LOW/HIGH·정지·warm reset와 전력단·배터리 관측을 보존했다.
+**2026-09-29 현재:** [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 단일 모터 구동·교차시험·오른쪽 DIR 보정과 원본12개를 보존했다.
+B/M2 보정 후 양방향10%/300ms 실제 회전·CPS 부호·timeout 후0 복귀 PASS. A/M1 양수의 실제 전진 방향, 부하/주행과 전체T005A는 남아 있다.
+현재 ESP는 M2 역방향 시험1U이며 safe/default 이미지 복구 상태가 아니다. 아래 날짜별 범위는 당시 이력이다.
+
+**2026-09-27 당시 마감:** [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 실제 엔코더 LOW/HIGH·정지·warm reset와 전력단·배터리 관측을 보존했다.
 M1 수동 시험 코드는 사용자 입력 중이며 새 빌드·플래시·HELP·구동 검증은 하지 않았다.
 
 **2026-09-26 검사 / 9/27 정리:** [report 29](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
@@ -37,8 +41,8 @@ all-hooks-0U safe restore PASS. run06 PC7→PWM last-fall 357.25 µs, run07 25 s
 K1/MDD10A direct rail의 수용 기준 및 실제 모터 gate는 미완료다. 아래 8월~9/8 수치는 해당 시점의 이력이다.
 
 
-현재 검증 완료 범위는 PC-first UART MVP, ESP32 board-only UART bridge MVP와
-motor-disconnected MDD10A/dual-encoder 하위 시험까지 확장됐다.
+현재 검증 범위는 기존 UART·모터 분리 제어 신호 시험에서 섀시 분리 단일 모터의 짧은 구동까지 확장됐다.
+각 시험의 조건과 미완료 항목은 report31과 아래 날짜별 보고서를 따른다.
 
 ```text
 PC Web Serial Dashboard
@@ -107,7 +111,7 @@ artifact/setup provenance가 남아 current bridge release 전체 판정은 `PAR
 
 아직 최종 검증에 포함하지 않은 것:
 
-- 실제 DC motor 구동
+- 실제 DC motor의 부하·반복 기동·장시간 운전 검증(단발 구동 subset은 report31)
 - Physical E-stop과 motor-connected stop
 - MDD10A power-stage shutdown timing과 actual motor response
 - Powered-motor encoder noise와 wheel-speed/odometry
@@ -154,6 +158,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [엔코더 조정부 납땜·전기 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 저항·연결·JENC +5.05V PASS; 실제 엔코더 후속 결과는 reports 29/30 |
 | [차량 좌우 정정·손회전 확인](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | 현재 A=left/M1/TIM3, B=right/M2/TIM5; 교환 후 사용자 보고 PASS |
 | [실제 엔코더·전력단 검사 마감](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | warm reset169TEL, 전압·배터리·S1 CPS 관측과 M1 코드 입력 WIP |
+| [단일 모터 구동·교차시험·DIR 보정](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | A/M1 회전, B/M2 양방향 확인, 현재 시험 이미지와 미확정 오류 증가 |
 
 ## Evidence Files
 

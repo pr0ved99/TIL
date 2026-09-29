@@ -32,12 +32,15 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 최신 기록 — 2026-09-23
+## 최신 기록 — 2026-09-29
 
-- ESP controlled hook 네 개는 현재 소스에서 모두 `0U`다.
-- 최근 보존된 정적 검사 결과는 **30/30 PASS**다. [T004 보고서](../../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)와 [T005A 복구 보고서](../../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)를 근거로 한다.
+- ESP 기존 자동 hook 네 개는0U, 새 BRIDGE_M2_PULSE_TEST_ENABLED는1U다. 현재 M2 역방향10%/300ms 수동 시험 설정이다.
+- 마지막 실제 검사 결과는 **31개 중30 PASS, 1 FAIL**이다. 모든 시험hook=0을 요구하는 검사가 현재1U를 검출했다.
+  시험 종료 후 사용자가0U 복구·빌드·플래시하기 전까지 default-off 전체 통과로 표기하지 않는다.
+- 함수 추출기의 조건식 오인식 회귀 검사1개를 추가했고, 오른쪽 DIR 기대값을 forward SET/reverse RESET으로 보정했다.
+  근거는 [단일 모터 보고서](../../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)다.
 - T004 conditioned firmware/PWM/latch/reset과 시험 후 사용자 빌드·플래시/무출력 복구는 완료됐다. 전체 T005A는 PARTIAL이다.
-- 이 문서 갱신에서 테스트·빌드·플래시를 새로 수행한 것은 아니다. 정적 검사와 소스 설정만으로 현재 보드의 실행 이미지를 증명하지 않는다.
+- 이번 정적 검사는 Codex가 실행했고 보드 빌드·플래시는 사용자가 수행했다. 정적 검사만으로 보드 실행·전기적 동작을 증명하지 않는다.
 
 ## 2026-08-29~30 P-02B / P-02C / P-03 / P-04 기록
 

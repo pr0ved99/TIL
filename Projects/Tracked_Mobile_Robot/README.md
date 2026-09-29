@@ -7,11 +7,12 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계:** 영구 배선을 통한 엔코더 손회전·좌우 대응 확인 후, 첫 단일 모터 시험을 위한 수동 명령 코드를 작성 중이다. 실모터 구동과 주행 검증은 남아 있다.
+- **현재 단계 · 2026-09-29:** 단일 모터 구동 부분 검증. B/오른쪽은 방향 보정 후 실제 양방향 회전과 timeout 후 정지를 확인했다. A/왼쪽의 실제 전진 방향, 전력단·비상정지·주행의 전체 검증은 남아 있다.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
-[ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/hello_world_main.c) ·
-[Python 검증 코드](03_Firmware/tests/) · [대표 계측 보고서](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
+[ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) ·
+[Python 검증 코드](03_Firmware/tests/) · [대표 계측 보고서](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) ·
+[완료 범위와 근거](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 
 ## 1. 프로젝트 목표와 범위
 
@@ -22,7 +23,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 | --- | --- |
 | 좌우 구동과 엔코더 | 두 모터 제어, 방향·속도 추정, 전동 구동 중 신호 검증 |
 | 명령 처리와 정지 | timeout 뒤 출력·저장 명령 초기화, 명시적인 재허가와 새 명령으로만 복구 |
-| 전원과 물리 비상정지 | 모터 에너지 차단, 해제만으로 자동 재시작하지 않는 동작 검증 |
+| 전원과 물리 비상정지 | 모터 에너지 차단, 해제만으로 자동 재시작하지 않는 동작, 첫 주행 전 저전압 경고·정지 기준 검증 |
 | 기구 통합과 주행 | 제작 플레이트 장착, 저속 주행, 1 m 직진의 실제·엔코더 거리 오차 기록 |
 
 완료 여부는 [MVP 요구사항·검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에서 추적한다.
@@ -34,17 +35,19 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 *2026-08-14 모듈 배치 확인 단계. 당시 NUCLEO·BNO085·ESP32-S3의 위치를 보여준다.
 9월의 비상정지·측정 헤더 배선 개정 전 사진이며, IMU 동작 검증을 의미하지 않는다.*
 
-아래는 목표 시스템의 핵심 연결 관계다. 점선은 전동 구동·통합 검증이 남은 경로다.
+아래는 시스템의 핵심 연결 관계다. 실선은 명령·감지·피드백, 점선은 전력·모터 구동 경로다.
+연결 여부와 검증 완료 여부를 구분하기 위해, 남은 검증 범위를 각 경로에 표시했다.
 
 ```mermaid
 flowchart LR
     ESP["ESP32-S3<br/>명령 전달 · 상태 수신"] <-->|UART| STM["STM32 NUCLEO-F446RE<br/>명령 검증 · 출력 허용 판단"]
     STM -->|PWM / DIR| DRIVER["MDD10A<br/>2채널 모터 드라이버"]
-    DRIVER -.->|전동 구동 미검증| MOTOR["좌우 궤도 모터"]
-    ENC["엔코더<br/>신호 조정 회로"] -->|A/B 펄스| STM
-    BAT["3S LiPo · 퓨즈"] --> STOP["물리 비상정지 회로<br/>모터 전원 차단"]
-    STOP -.->|전원 차단 통합 검증 예정| DRIVER
-    STOP -->|상태 감지 · 펌웨어/PWM 결합 검증| STM
+    DRIVER -.->|단발 회전 확인 · 주행 미검증| MOTOR["좌우 궤도 모터"]
+    MOTOR -->|축 회전 피드백| ENC["엔코더<br/>신호 조정 회로"]
+    ENC -->|A/B 펄스| STM
+    BAT["3S LiPo · 퓨즈 · 메인 스위치"] -.-> STOP["물리 비상정지 회로<br/>모터 전원 차단"]
+    STOP -.->|전력단 연결·관측 완료 · 전체 수용 미완료| DRIVER
+    STOP -->|감지·펌웨어/PWM 결합 PASS| STM
 ```
 
 ### 핵심 설계 판단
@@ -63,6 +66,17 @@ flowchart LR
 
 각 결과는 아래에 명시한 시험 조건의 결과다. 코드 검사, 로직 핀 계측, 실제 모터 정지를 구분한다.
 
+| 대표 결과 | 확인한 내용 | 시험 범위·근거 |
+| --- | --- | --- |
+| DISARM → PWM 차단 | **23.50 μs** | [STM32 로직 핀 계측](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md). 실제 모터 정지 시간이 아님 |
+| 영구 배선의 PWM/DIR | **19.049 / 19.058 kHz**, 약 **10%**, 방향 전환 전후 약 **2 ms PWM 0** | [모터 분리 MDD10A 입력](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) |
+| 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |
+| 엔코더 환산 | **1,560 counts/rev**, 610개 채널 샘플의 mRPM 환산 불일치 **0건** | [손회전 보정·계산 검증](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md). 절대 속도·주행 거리 검증은 별도 |
+| 실제 모터 방향 보정 | B/M2 **±10%·300 ms** 단발 명령에서 실제 양방향 회전·CPS 부호·정지 확인 | [섀시 분리 단일 모터](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md). A 실제 전진 방향과 전체 안전 검증은 남음 |
+
+<details>
+<summary>각 결과의 검증 문제·방법·관측 한계 펼치기</summary>
+
 ### 3.1 DISARM 명령에 따른 PWM 출력 차단
 
 - **검증 문제:** 상태 로그만으로 알기 어려운 실제 PWM 차단 시점을 확인한다.
@@ -79,7 +93,7 @@ flowchart LR
 - **방법:** 모터를 분리하고 MDD10A 입력에서 두 채널의 PWM과 방향 전환 구간을 계측했다.
 - **결과:** PWM **19.049 / 19.058 kHz**, 약 **10% 듀티**, DIR 전환 전후 약 **2 ms의 PWM 0 구간**을 확인했다.
   시험 설정 복구 후 5초 동안 모든 제어 신호가 LOW인 상태도 확인했다.
-- **범위:** MDD10A 로직 입력까지의 결과다. 전력 출력과 실제 회전 방향·정지는 후속 검증 대상이다.
+- **범위:** 이 시험은 MDD10A 로직 입력까지의 결과다. 이후 실제 회전·방향 관측은 아래 3.5에서 구분해 기록한다.
 
 [시험 보고서와 원본 자료](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)
 
@@ -103,24 +117,43 @@ flowchart LR
 
 [50회전 관찰 기록·환산 검증·로그](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)
 
+### 3.5 실제 단일 모터 구동과 방향 보정
+
+- **검증 문제:** 명령 부호와 실제 모터 방향·엔코더 피드백이 일치하는지 확인한다.
+- **방법·결과:** 보정 전 B/M2의 양수 명령에서 실제 역회전과 음수 CPS가 함께 관측됐다.
+  두 모터를 교차 연결해 회전을 확인한 뒤, 손회전으로 확인한 엔코더 부호를 유지하고 오른쪽 DIR을 HIGH=전진/LOW=후진으로 보정했다.
+  B/M2는 정방향·역방향 각각 **10%·300 ms 단발 명령**에서 회전·CPS 부호·timeout 후 0 복귀를 로그와 육안으로 확인했다.
+- **범위:** 섀시 분리 단일 모터 시험이다. A/M1 양수 명령의 실제 전진 방향과 부하·주행 검증은 남아 있다.
+
+[시험 결과·관측 한계·원본 로그](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)
+
+</details>
+
 ## 4. 현재 검증 범위와 남은 작업
 
-**문서 정리 기준: 2026-09-27.** 아래 상태는 기록된 검증 범위이며 현재 보드의 전원·배선 상태를 대신하지 않는다.
+**검증 기준: 2026-09-29.** 단일 모터의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
+요구사항별 판정은 [검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
 
 | 분야 | 확인된 범위 | 남은 핵심 검증 |
 | --- | --- | --- |
-| 통신·펌웨어 | UART 명령 처리·timeout 복구·비상정지 latch/reset·PWM 차단 및 안전 이미지 복구 | 남은 통합 시험과 실제 구동 조건의 검증 |
-| 구동·피드백 | MCU/드라이버 입력 PWM·DIR, 영구 배선의 실제 엔코더 손회전·좌우 대응·전진 부호 | 실모터 무부하 구동·전동 방향·노이즈 |
-| 물리 비상정지 | 감지–펌웨어–PWM 결합 및 모터 분리 전력단의 하위 시험 | rail-off 수용 기준과 전체 T005A, 실제 모터 정지 |
-| 측정 배선 | UART·CTRL·ENC·IMU 배선, 엔코더 입력 조정부 검사, 양쪽 +5.05V와 실제 A/B LOW0V/HIGH 약2.86V | IMU 전원·모드·센서 동작 |
-| 기구·주행 | 어댑터 플레이트 설계와 제작품 수령 기록 | 실물 장착, 배터리 ADC·저전압 동작, 저속 주행과 1 m 거리 비교 |
+| 통신·펌웨어 | UART·timeout·latch/reset·PWM 차단, 당시 안전 이미지 복구와 수동 단발 콘솔 | 전체 bridge 통합·시험 사이 err 증가 원인·현재 시험 이미지의 정상 모드 복구 |
+| 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
+| 구동·피드백 | A/왼쪽·M1의 양·음수 회전, B/오른쪽·M2의 DIR 보정 후 실제 양방향·CPS 부호·timeout 정지 | A 실제 전진 방향, 구동 중 DISARM 정지·전류·열·반복 기동·노이즈 |
+| 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 모터 분리 전력단의 일부 관측 | 전체 T005A는 PARTIAL. rail-off 수용 기준·단자/배선 release·구동 중 S0 정지 |
+| 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
+| 기구·주행 | 어댑터 플레이트 설계·제작품 수령 기록 | 실물 장착·절연·접근성, 첫 주행 전 배터리 ADC·저전압 경고/정지, 저속 주행·1 m 거리 비교 |
 
-다음 순서는 **M1 수동 시험 코드 완성·콘솔 입력 확인 → 전력단·고정 조건 확인과 단일 모터 시험 →
-양쪽 구동계·기구 통합과 주행 검증**이다. ESP 소스는 현재 사용자 입력 중인 미완성 체크포인트이며 새 빌드·플래시 결과는 없다.
+추가 근거: [보드 전원](docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) ·
+[T004 감지·PWM](docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) ·
+[T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
+[실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-재개 지점과 파일별 검토 범위는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
+다음 관찰 목표는 **A/M1 실제 전진 방향**이다. 이후 전력단·물리 비상정지·단일 모터의 남은 조건을 충족하고
+기구·구동계 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
+
+작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
+현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
 일자별 결과는 [진행 기록](docs/progress/README.md)에서 관리한다.
-
 ## 5. 코드와 문서 안내
 
 ### 구현 코드
@@ -130,11 +163,20 @@ flowchart LR
 | STM32 초기화·주기 처리 | [main.c](03_Firmware/stm32_uart_mvp/Core/Src/main.c) · [CubeMX 설정](03_Firmware/stm32_uart_mvp/stm32_uart_mvp.ioc) |
 | 명령 검증·상태 전이·timeout | [UART 프로토콜](03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c) |
 | 좌우 명령 변환·출력·엔코더 | [명령 변환](03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c) · [PWM/DIR](03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c) · [엔코더](03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c) |
-| ESP32 UART 브리지 | [프로젝트 안내](03_Firmware/esp32_uart_bridge/README.md) · [구현 코드](03_Firmware/esp32_uart_bridge/main/hello_world_main.c) |
+| ESP32 UART 브리지 | [프로젝트 안내](03_Firmware/esp32_uart_bridge/README.md) · [구현 코드](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) |
 | Python 검증 | [검증 코드](03_Firmware/tests/) · [실행 방법](03_Firmware/tests/README.md) |
 
 Python 검사는 소스 계약과 독립 참조 모델을 검사한다. 보드 빌드·실행이나 전기적 계측을 대신하지 않는다.
+현재 설정의 검사 결과와 시험 hook 상태는 [Python 검사 최신 기록](03_Firmware/tests/README.md#최신-기록--2026-09-29)을 확인한다.
 시험용 설정과 빌드·실행 전제는 [현재 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md)과 해당 런북을 따른다.
+
+### 빌드·검사 시작점
+
+- **STM32:** STM32CubeIDE에서 [stm32_uart_mvp 프로젝트](03_Firmware/stm32_uart_mvp/)를 가져와 빌드한다. `.project`와 `.ioc`를 포함한다.
+- **ESP32:** ESP-IDF 환경에서 [빌드 안내](03_Firmware/esp32_uart_bridge/README.md#build)를 따른다. 포트 번호는 연결한 PC에서 확인한다.
+- **호스트 검사:** 보드 연결 없이 [Python 검사 실행 방법](03_Firmware/tests/README.md#실행)을 따른다. 빌드·계측 결과와 구분한다.
+
+ESP 진입 파일은 `uart_bridge_main.c`로 이름을 바꿨다. 내용은 유지했으며, 이름 변경 후 보드 빌드는 아직 확인하지 않았다.
 
 ### 설계·검증·학습 자료
 
@@ -155,7 +197,7 @@ PC–STM32 직접 연결 대시보드는 초기 UART MVP의 시험 도구다.
 | --- | --- |
 | IMU | 센서 통신·자세 데이터 검증과 엔코더 정보 결합. 현재 헤더 배치·GND 검토와 구분해 진행 |
 | CAN | UART로 확인한 명령·상태 계약을 CAN 인터페이스로 확장 |
-| FreeRTOS | 검증된 bare-metal 동작을 태스크·주기·큐 구조로 옮기고 동작 유지 확인 |
+| STM32 FreeRTOS | 검증된 STM32 bare-metal 동작을 태스크·주기·큐 구조로 옮기고 동작 유지 확인. ESP-IDF의 기존 FreeRTOS 환경과 구분 |
 | 선택적 LL 전환 | 계측으로 필요성이 확인된 타이밍 경로의 구현과 성능 비교 |
 | ROS 2 · LiDAR · SLAM/Nav2 | 하위 구동 플랫폼과 상위 명령·상태 연결 후 자율주행으로 확장 |
 

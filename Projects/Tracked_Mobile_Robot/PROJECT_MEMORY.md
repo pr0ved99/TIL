@@ -2,18 +2,20 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-09-27 (bench closeout and partially typed M1 console checkpoint)
+Last updated: 2026-09-29 (single-motor bench and right DIR correction closeout)
 
 ## Current Hardware Checkpoint
 
 이 절과 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)가 아래 과거 시점의
 current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/report에 보존한다.
 
-- **9/26 현재 매핑:** A=왼쪽/M1/JENC_1/TIM3/left, B=오른쪽/M2/JENC_2/TIM5/right.
-  A 동력선 +→M1A, −→M1B 연결 확인; B 동력선은 아직 분리, M2는 계획이다.
+- **9/29 현재 매핑:** A=왼쪽/M1/JENC_1/TIM3/left, B=오른쪽/M2/JENC_2/TIM5/right.
+  교차시험 뒤 원래 연결로 복원했다. A +/−→M1A/M1B, B +/−→M2A/M2B 연결 완료다.
   두 엔코더 커넥터 교환 후 채널 독립성·전진 양수/후진 음수·정지 CPS0 사용자 보고 PASS.
   [report 29](docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)가 현재 기준이다.
-  아래 7월의 A=right/B=left는 당시 기록으로만 보존한다. 전동 구동 방향은 아직 미검증이다.
+  아래 7월의 A=right/B=left는 당시 기록으로만 보존한다.
+  [report31](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md): A/M1 ±10% 회전·CPS 부호·정지, B/M2 DIR 보정 후 실제 양방향10%/300ms 확인.
+  오른쪽 forward=HIGH/reverse=LOW로 사용자 수정·빌드·실행했다. 왼쪽 기존 LOW/HIGH는 유지하며 A의 양수 실제 전진 방향 관찰은 남았다.
 - [9/23 report 28](docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md):
   네 encoder 입력에 1kΩ 직렬+MCU 측 15kΩ GND 풀다운 실제 납땜 사용자 확인.
   저항 8곳 및 전원 연결/단락 6곳 PASS, JENC_1/2 모두 +5.05V. 당시 보류한 실제 encoder 연결은
@@ -22,24 +24,27 @@ current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/r
   JENC_1=C50/R11~14, JENC_2=C54/R5~8; Pin1~4=GND/B/A/AUX_5V.
   좌표·저항 매핑·19개 Flying Wire pad의 정본은 report 28이다.
 - 버스바 두 개로 +/− 분배. MDD B+=K1 87, B−=GND 16 AWG, K1 main leads=14 AWG.
-  현재 모터 A만 M1에 연결했다. 예전 두 모터/MDD B+ disconnected 문장은 해당 날짜의 이력이다.
+  현재 두 모터가 각 M1/M2에 연결됐다. 예전 motor/MDD B+ disconnected 문장은 해당 날짜의 이력이다.
 - T004 firmware/PWM PASS. T005A run01~06과 default-off 복구는
   [report 27](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 보존;
   전체 T005A는 rail-off 수용 기준/release 항목 때문에 PARTIAL이다.
 - 실제 HG-ESP32-S3-DevkitC-1은 왼쪽 BOOT 표기 버튼에서 EN LOW/송신 중단을 관측했다.
   오른쪽 RESET 표기 버튼에서는 GPIO0 LOW이고 송신이 유지됐다. 다른 보드로 일반화하지 않는다.
-- 현재 ESP는 M1 수동 시험 코드를 사용자가 입력 중이다. command까지 입력, 빈 함수3개·호출2곳·오타가 남은 WIP다.
-  기존 네 hook=0U, 새 수동 매크로=1U. 새 빌드/플래시/HELP/전동 구동은 하지 않았다.
-  [코드 안내와 재개 위치](docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)를 따른다.
-  학습 설명은 enum까지 했고 다음은 expected_seq/tel_mark 등 변수다. STM은 좌우 주석만 정정했다.
+- ESP 수동 콘솔은 사용자 입력·빌드·플래시·HELP·실제 시험까지 완료했다.
+  현재 M2 역방향10%/300ms, CMD(-50,-250,300), 수동hook=1U/기존 자동hook 네 개=0U다.
+  종료 뒤 BENCH_FINISHED는 RESET_ESTOP도 차단하며 ESP 재부팅으로 새 시험을 준비한다.
+  ESP는 UART USB 포트 간섭으로 만능기판 밖에 있고 GPIO17/18/GND만 대응 헤더로 연장했다.
+  콘솔은 UART 표기USB/COM5/115200. #1 보드용2P 두 개 분리·절연, STM U5V/JP1 OPEN의USB 구성을 유지한다.
+  [휴식 후 계획](docs/plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)에서 다음 A/M1 전진 방향 확인을 이어간다.
 - [report 30](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md):
   warm STM reset TEL169/16.8초, STM200~17000ms와300/400ms CPS0. 최초0~200ms/cold boot는 미검증이다.
   초기 ESP parser 경고6회는 보존했다. S1 OFF/ON 순간 CPS −10/+10은 즉시0 복귀로 마감했고 필터를 바꾸지 않았다.
 - 사용자 확인 퓨즈는 Littelfuse F1=10A/F2=1A. K1주선14AWG로 진행한다는 결정을 반복해서 묻지 않는다.
   이번 S2 전후 rail0.23→11.78V, S0잠금 뒤5초1.28/30초0.59V는 관측이며 rail-off 전체 PASS가 아니다.
   마지막 셀 보고4.12/4.16/4.16V 및 앞선 배터리 관측은 report30에 보존한다.
-- 과거 사용자 복구 build/flash와 당시 static30/30 PASS는 해당 이미지의 이력이다.
-  현재 미완성 소스와 분리하며, 실제 최종 전원 차단 완료는 별도 사용자 보고가 없다.
+- 마지막 정적 검사31개 중30 PASS, 시험hook 모두0 요구1개 FAIL이다. 현재 시험1U를 default-off 복구 완료로 표기하지 않는다.
+  B 정방향err=0, 역방향err=1439는 각 로그에서 일정하며 그 사이 증가 원인은 미확정이다.
+  마감 S0 잠금/S1 OFF/LiPo·두 USB 분리를 안내했으나 최종 분리 완료 응답은 아직 없다.
 
 ## Project Identity
 
@@ -206,7 +211,8 @@ The current canonical architecture docs are under `01_System_Architecture/*_ko.m
 현재 작업용 문서:
 
 - [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md): 최신 재개 지점과 해석 경계
-- [9/23 진행 기록](docs/progress/2026-09-23_progress.md): 엔코더 조정부 검사 완료 및 다음 작업
+- [9/29 진행 기록](docs/progress/2026-09-29_progress.md): 단일 모터·DIR 보정 마감 및 다음 작업
+- [단일 모터 보고서](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md): 원본12개와 실제 회전·정지·미확정 관측
 - [T005A 보고서](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md): 전력단 연결·관측과 미결 기준
 - [엔코더 조정부 보고서](docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md): 새 배선 좌표·검사 결과·실제 엔코더 연결 순서
 
@@ -488,7 +494,13 @@ Ask the user or verify from hardware only for these:
 - Mounting screw, nut, washer, and insulating-spacer specifications
 - CAD coordinate origin for the manufacturing drawing
 
-## 다음 작업 — 2026-09-26
+## 다음 작업 — 2026-09-29
+
+1. [휴식 후 계획](docs/plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)을 따른다. 현재 ESP는 M2 역방향 시험 이미지다.
+2. 재개 전원 상태와 부팅~READY 로그의err 기준·증가 여부를 확인한 뒤 A/M1 양수 명령의 실제 차량 전진 방향을 관찰한다.
+3. 완료한 B 양방향과 엔코더 기본 검사를 반복하지 않는다. 전체T005A PARTIAL과 부하·주행 미완료를 유지한다.
+
+## 2026-09-26 당시 다음 작업 — 이력
 
 1. 현재 좌우 기준은 report 29와 현재 인수인계를 따른다. A의 M1/JENC_1 연결과 수동 부호 확인을 반복하지 않는다.
 2. 수동 시작·M1만 저듀티·1회 자동 종료하는 시험 코드를 사용자 입력 방식으로 준비한다.

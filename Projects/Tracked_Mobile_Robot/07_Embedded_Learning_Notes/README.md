@@ -42,6 +42,9 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 
 ## Current First Topics
 
+노트북만 있는 날에는 [STM·ESP 코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)로 파일·호출 관계를 먼저 파악한다.
+이후 [단일 모터 시험 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 소스와 로그를 연결한다.
+
 | Topic | Note |
 | --- | --- |
 | GPIO alternate function | `01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md` |
@@ -51,3 +54,5 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 | HAL, LL, direct register | `01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md` |
 | I2C vs SPI for IMU | `01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md` |
 | CubeMX generated code boundary | `01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` |
+| 단일 모터 시험과 로그 이해 | [명령·출력·피드백 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) |
+| STM·ESP 파일과 함수 이해 | [코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) |
