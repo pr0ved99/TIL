@@ -1,67 +1,68 @@
 # Current Session Context
 
-Last updated: 2026-09-30 — 진행 기록 요약·공통 형식·최신 위치 정리로 문서 개편 4단계 마감.
+Last updated: **2026-10-03 — Wi-Fi 설정 확인·ESP 예제 검토와 문서 최신화. 현재는 Wi-Fi 코드 이해를 위한 기초 학습, 이후 ESP 단독 WebSocket 상태 전송**.
 
 ## 바로 이어갈 작업
 
-**현재 사용자는 노트북만 있으며, 합의한 문서 개편 4단계를 마쳤다. 새 물리 시험은 없다.**
-1단계로 [최종 MVP 검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 최신 보고서 25~31과 대조해 정리했다.
-2단계로 [전체 실행 계획](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)의 현재 단계·남은 작업·완료 조건을 정리했다.
-3단계로 [프로젝트 README](../../README.md)의 대표 성과 요약·현재 상태·근거 링크와 빌드 진입점을 정리했다.
-4단계로 [진행 기록 작성 방법·템플릿](../progress/README.md#공통-템플릿)과 [9/30 기록](../progress/2026-09-30_progress.md)을 작성하고 9/29에 당시 요약만 추가했다.
-향후 기록은 목표·기준점·결과·결정·다음 행동을 앞에 두고 상세 관측·이력은 보존한다. 이번 문서 개편의 필수 작업은 마감했다.
-로컬 README의 기존 개요·사진·설계 판단·대표 사례·문서 안내 구조를 유지했다. 문서 개편 후 사용자가 Git 최신화를 요청했으며, 저장 대상은 현재 작업 브랜치 agent/dual-encoder-bringup이다.
-대표 성과는 표로 요약하고 기존 방법·한계 설명을 접기 영역에 보존했다. 실제 보드 전원과 T004/T005A의 검증 범위를 분리했다.
+현재 사용자는 Wi-Fi 코드 이해를 위해 별도 IDE와 `03_Firmware/esp32_examples`를 만들었다. [10/3 검토 기록](../progress/2026-10-03_progress.md)을 따른다. 코드가 있는 것은 01 Hello World이며 02~05는 빈 폴더다. 예제 README에는 01 빌드 성공이 기록돼 있으나 실행 로그는 미확인이다. 먼저 로그·태스크·이벤트의 역할을 익히며 기존 WebSocket 전체 코드 입력을 완료했다고 가정하지 않는다. 예제 README에 실행 안내를 추가했고 생성 파일 Git 제외와 설정 재현은 남아 있다.
 
-검증 매트릭스는 현재 현황·요구사항 표를 앞에 두고 기존 측정·판정 이력을 뒤의 접기 영역에 보존했다.
-MVP-005/006은 단일 모터 구동 근거로 PLANNED→PARTIAL, REQ-ESTOP-009는 감지/PWM·rail DMM 증거를 반영해 BLOCKED→PARTIAL로 정리했다.
-구동 중 S0 정지(T-ESTOP-007)는 여전히 BLOCKED이고 전체 T005A도 PARTIAL이다. 새로운 물리 시험·PASS를 추가한 것은 아니다.
-전체 실행 계획은 최신 단계 표·작업별 완료 조건을 앞에 두고 상세 Gate와 과거 시간·측정 이력을 접기 영역에 보존했다.
-G0는 기존 매트릭스의 물리 E-stop MVP-013을 범위에 포함시켰다. 단일 모터·전력단·주행의 수용 기준을 완화하지 않았다.
-총 잔여시간은 미산정이며 과거 26~52시간을 오늘의 예상 시간으로 사용하지 않는다.
+A의 실제 전진 방향, A active DISARM, A 물리 S0의 PWM/엔코더 관측, A/B 각각10%·3초 제한 구동을 완료했다.
+**이 시험들을 처음부터 반복하지 않는다.** 10/1에는 노트북·ESP로 Wi-Fi를 검증했고, 10/2에는 로봇 배선을 재연결한 뒤 기본 전원·접점 점검을 진행했다.
 
-**하드웨어 재개 지점은 A/M1 양수 명령의 실제 전진 방향 확인이다.**
-앞선 복습 자료는 [STM·ESP 코드 구조와 함수 지도](../../07_Embedded_Learning_Notes/01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) →
-[단일 모터 시험 해설](../../07_Embedded_Learning_Notes/01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) 순서다.
-사용자는 코드 구조와 스스로 목표·역할·인터페이스·작업 순서·통과 기준을 잡는 방법을 복습했다. 이해 완료로 판정하지 않는다.
+- 먼저 [10/2 진행 기록](../progress/2026-10-02_progress.md)을 따른다. 6핀 방수커넥터/JESTOP 유지, F1→S1→Bar+와 K1 30/F2 분기를 사용자 확인했다.
+- 지속 단락음 없음, 연결 도통과 S0/S2 접점 정상 보고. Bar+ 12.11V, XL4015 #1/#2 5.02V/4.95V. MDD는 S0 잠금0.50V→해제만0.48V→S2 후12.11V→S0 잠금5초1.0V/30초0.57V였다.
+- S1 OFF 10초 후 **Bar 0.67V**, S0 해제/S1 재투입/S2 미조작 5초 후 **MDD 0.52V**. 낮은 전압 관측을 0V·전체 rail-off PASS로 확대하지 않는다. 잔류 원인/최종 수용 기준은 미확정이다.
+- 최종 S1 OFF·S0 잠금·LiPo 분리 안내 뒤 사용자가 "분리했고"라고 답해 전원 분리 완료를 확인했다. 같은 마감 질문을 반복하지 않는다.
+- 바탕화면 `전선정리` 사진5장을 확인했다. 배선 정리1차 마무리로 판단하며 금속 슬롯/노출 S1 단자 보호, 현가·궤도 간섭과 홀더 고정은 조립 마감 때 확인한다. 사진상 모터는 섀시 장착, 궤도·STM/ESP 본체는 미장착이다. 자세한 범위는 당일 기록을 따른다.
+- 아래 Wi-Fi/PCB 계획과 9/30 모터 성과는 보존한다. 이번에 새 모터 구동·펌웨어 변경·UART 통합 검증은 하지 않았다.
 
-ESP 소스는 `03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c`로 이름을 변경했다.
-기존 hello_world_main.c와 내용·SHA-256이 같고 app_main()과 시험 설정도 유지했다.
-CMake·Python 검사 경로·문서 링크를 갱신했다. 과거 증거 manifest의 경로·해시는 당시 기록으로 보존한다.
+1. [10/1 마감 기록](../progress/2026-10-01_progress.md)과 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에서 완료 범위를 확인한다.
+2. 전류·온도는 미측정이다. 저가 계측 구성은 정확도/판매품 확인이 부족해 구매 확정하지 않았다.
+   현재10% 무부하의 작은 공급전류를 20A/50mV 션트+XL830L로 정밀하게 잴 수 있다고 단정하지 않는다.
+3. [10/1 노트북·ESP 작업 계획](../plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)을 마련했다.
+   먼저 ESP 단독 접속·HTTP 상태 표시, 이어서 STM TEL 통합과 무선 명령을 단계별로 검증한다.
+   AP·공유기 STA·노트북 핫스폿 가능성을 모두 유지한다.
+   `03_Firmware/esp32_wifi_link` scaffold와 [앱 입력 안내](../plans/2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md)를 준비했다.
+   입력본 검토 뒤 사용자가 오타/누락을 수정하고 빌드·플래시했다. 10/1 AP HTTP 시험 뒤 10/2에는 개인 설정을 STA로 변경하고 사용자가 연결 완료를 보고했다. 현재 소스도 `WIFI_LINK_USE_AP=0`이며 HTTP 폴링을 사용한다.
+   W1 접속·JSON 수신, W2 반복 갱신, W3 연결 해제 표시·재접속 자동 복구를 확인했다. 재플래시 뒤 boot_id는 바뀌며 같은 부팅의 해제·재접속에서는 유지된다.
+   [AP 실측 결과](../progress/2026-10-01_progress.md#wi-fi-ap-실측--w1w2w3-결과)와 [STA 연결 보고](../progress/2026-10-02_progress.md#공유기-sta-연결-확인)를 구분한다. STA 접속 IP/로그는 미수집이며 STA 재접속·WebSocket·STM 통합·무선 명령과 새 PCB CAD는 미검증/미실행이다.
+   [WebSocket 입력 안내](../plans/2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md)에 전체 코드·설정·함수 설명·WS-1~4 기준을 준비했다. 안내 코드의 브라우저 모의 검사 11개 PASS이며 실제 C 소스는 HTTP 폴링 상태다. 사용자는 `CONFIG_HTTPD_WS_SUPPORT=y` 활성화를 확인했다. 기초 예제 학습 후 사용자 입력 → 저장 파일 검토 → 사용자 빌드·플래시 → 실제 WS 검증으로 진행한다. 실제 STM TEL 통합(W4)과 무선 명령(W5)은 이후 별도로 진행한다. 비밀번호는 출력하지 않는다.
+   PCB는 ADC/CAN 확장 회로와 인터페이스부터 설계한다. 10/2 전원 재점검과 STM TEL 통합·모터 시험은 별도 범위다.
 
-문서 마감은 [9/30 진행 기록](../progress/2026-09-30_progress.md)에 있다.
-장비 재개 시 [9/29 모터 시험 기록](../progress/2026-09-29_progress.md)과
-[휴식 후 계획](../plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)에서 해당 조건을 확인한다.
-세부 증거는 [report31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)과
-[원본12개](../../assets/logs/motor_output/2026-09-29_single_motor_bench/README.md)에 있다.
+10/2 점검 종료 뒤 전원 분리 완료는 **사용자 확인**이다. 재개 시 새 전원 연결/배선 변경이 있으면 그 상태를 기준으로 진행한다.
 
-- ESP 수동 콘솔은 완성·사용자 빌드/플래시·실제 구동까지 진행했다. 9/27 빈 함수/오타 WIP를 다시 시작하지 않는다.
-- 현재 ESP는 **M2 역방향10%/300ms 시험 이미지**다. M2_PULSE → CMD(-50,-250,300), 기대PWM0/−100.
-  BRIDGE_M2_PULSE_TEST_ENABLED=1U, 기존 자동 hook 네 개=0U.
-- 성공·실패·STOP 뒤 BENCH_FINISHED로 잠기며 RESET_ESTOP도 거부한다.
-  새 시도는 ESP 재부팅이 필요하다. STM의 ESTOP latch와 별개다.
-- 다음 M1 양수 시험은 코드/HELP/검사 조건을 사용자 입력으로 바꾼 뒤 사용자 ESP 빌드·플래시를 해야 한다.
-  현재 이미지로 M1_PULSE를 보내거나 M2_PULSE를 M1 시험으로 간주하지 않는다.
-- 재개 준비의 부팅~READY/안정 TEL 로그에서err 기준과 증가 여부도 남긴다.
-  마지막 정방향err=0, 역방향err=1439는 각각 일정했고 첨부 사이 증가 원인은 미확정이다.
+## 현재 실행 이미지와 코드
+
+- 마지막으로 연결 완료가 보고된 ESP 앱은 `esp32_wifi_link`, HTTP 상태 페이지, STM 통합 없음이다. 10/1 AP는 COM5/115200 부팅 로그로 확인했다. 10/2 전원 점검 마감 뒤 STA 설정/USB COM4 사용으로 전환하고 사용자가 연결 완료를 보고했다. STA 로그는 미수집이며 UART bridge 복원 보고는 없다. 이후 예제 Hello World의 플래시·실행 로그는 미확인이다.
+- 아래는 **9/30 로봇 시험용 `esp32_uart_bridge` 소스/마지막 실행 이력**이다. 현재 ESP에서 M2_RUN 앱이 실행 중이라는 뜻이 아니다. 로봇 시험 재개 전 대상 앱과 설정을 확인하고 사용자가 빌드·플래시한다.
+- UART bridge: BRIDGE_M2_RUN_TEST_ENABLED=1U, 이전 자동 hook4개=0U.
+- HELP: RESET_ESTOP, M2_RUN, STOP. M2 양수10%, 3초 제한, 500 ms STM watchdog, 100 ms CMD 재전송.
+- CMD(50,+250,500)→left0/right100 permille. 3초 절대 종료 시각은 재전송으로 연장하지 않는다.
+- TEL stale250 ms·응답200 ms·무회전500 ms 감시, DISARM 뒤600 ms 정지 관측.
+- 부팅당1회, 성공/실패/STOP 뒤 잠금. 자동 ARM/구동 없음. all-hooks0 정상 이미지 복구는 미실행.
+- 사용자가 M1→M2 전환만 이번 한 번 Codex 직접 수정을 허용했다. 이후 펌웨어는 기본 사용자 입력 방식.
+- 마지막 계약 검사30 PASS/1 FAIL(default-off 검사, 수동 hook1U). 마감 중 소스 수정·빌드·플래시 없음.
+- 현재 소스/캡처 해시는 [manifest](../../assets/logs/motor_output/2026-09-30_single_motor_run/manifest.json).
+  소스 해시는 마감 작업본이며 각 시험의 바이너리 해시를 대신하지 않는다.
 
 ## 완료한 범위
 
-| 항목 | 확인 결과 |
+| 항목 | 관측과 경계 |
 | --- | --- |
-| A/M1 +5%/300ms | 소리·떨림만, CPS0. 실제 회전 달성 안 됨 |
-| A/M1 ±10%/300ms | 회전·CPS 부호·timeout 후0 복귀. +명령의 실제 전진 방향은 사용자가 보지 못함 |
-| 교차시험 | A를M2에서, B를M1에서 구동 확인. 이때 엔코더도 각 교차 입력 채널로 관측 |
-| B/M2 최초 | 소리만 있고 회전 없음. 원래 연결 복원 뒤 회전하여 재현 안 됨; 원인은 미확정 |
-| B/M2 DIR 보정 후 +10% | 실제 전진 후 정지·A 무동작, right_cps 양수→0 유지8.9초 |
-| B/M2 DIR 보정 후 −10% | 실제 역회전·A 무동작, right_cps 음수→0 유지4.1초;49TEL/4.8초 |
-| 검사 | 정적31개 중30 PASS, 시험hook=0 요구1개 FAIL(현재1U). 공백 검사 PASS |
+| A 양수10%/300 ms | A 실제 전진 후 정지, B 정지. 이전 A 전진 관찰 공백 완료 |
+| A active DISARM | 실제 전진/정지, UART frame end→마지막 PWM 하강364.44 μs. 기계 정지 시간이 아님 |
+| A 물리 S0 | PC7 활성 이후 PWM 재발 없음, FAULT/ESTOP_ACTIVE·CPS0. 정밀 rail/기계 정지 시간·거리 미검증 |
+| A 3초 | PWM2.99828925 s, 약19.059 kHz/10%; 원시1432 ticks=CPS 적분, B 정지 |
+| B 3초 | PWM2.988788 s, 약19.040 kHz/10%; 원시1384 ticks=CPS 적분, A 정지 |
+| 범위 | 두 모터 섀시 분리, 각각 단독. 주행·동시 구동·전류/열·폐루프 정속은 미검증 |
 
-종료 부근의 소수 반대 부호CPS 샘플은 report31에 보존했다. 원인을 역회전/노이즈로 단정하지 않는다.
-100ms TEL로 정확한 PWM 차단 지연이나 물리 정지 시간을 주장하지 않는다.
-B 양방향 확인을 A 전진 방향, 부하·주행·전체 물리 E-stop PASS로 확대하지 않는다.
+B의 구동 중 CPS 상승을 정속 PASS로 쓰지 않는다. A/B 3초 원시 전이에는 반대/동시2비트 전이가 없었다.
+S0 시험의 마지막 엔코더 전이는 PC7 최초 HIGH 후127.32 ms이며 분해능 내 관측이다.
+500 ms 안에 사람이 S0을 누르도록 한 절차는 짧았다는 사용자 지적을 반영했다. 다음 수동 개입 시험은 충분한 조작 시간을 둔다.
+기존 T004 PASS·전체 T005A/T-MOTOR-003 PARTIAL, 정식 T-ESTOP-007 BLOCKED 유지.
+기존 기준을 충족한 것으로 소급하지 않으며 관측 범위만 report32에 보존한다.
 
-## 현재 연결과 코드
+## 9/30 로봇 시험 연결 기준 — 10/2 전원 점검 조건은 당일 기록 참고
 
 | 항목 | 기준 |
 | --- | --- |
@@ -80,17 +81,19 @@ B 양방향 확인을 A 전진 방향, 부하·주행·전체 물리 E-stop PASS
 도면·완료한 조정부 검사는 [report28](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md),
 손회전 방향은 [report29](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)를 따른다.
 
-## 마감 상태와 경계
 
-- 최종 로그는 DISARMED/DISARM, PWM/CPS0이며 ESP는1회 시험 잠금 상태다.
-- S0 잠금/S1 OFF/LiPo·두 보드 USB 분리를 안내했다. **최종 전원 분리 완료 응답은 아직 없다.**
-- 수동 시험1U를 유지했으며 all-hooks0 safe/default 이미지 복구는 하지 않았다.
-- T004 기존 PASS, 전체 T005A PARTIAL 유지. 직접 rail 수용 기준·구동 중 S0 차단·부하/전류/노이즈·기구/주행은 별도다.
-  과거 전압·배터리·S1 순간CPS 결과는 [report30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 보존한다.
-- 소스는 사용자 입력, STM/ESP 빌드·플래시와 물리 작업도 사용자 수행. Codex는 실제 파일 검토·설명·Python 검사·문서화.
-- 완료 검사는 변경·실패 없이 반복하지 않는다. progress는 마감 때 묶어서 갱신한다.
-  사용자 요청 없이 subagent나 전체 과거 대화 아카이브를 사용하지 않는다.
-- 저장소 C:/Users/eyh12/workspace/TIL, 브랜치 agent/dual-encoder-bringup.
-  9/30 사용자 요청으로 64d51ad 이후 수동 콘솔·오른쪽 DIR 보정·소스 이름 변경·시험 증거·문서 개편을 마감 커밋에 포함한다.
-  원격 대상은 origin/agent/dual-encoder-bringup이며 main 병합은 범위에 포함하지 않는다. 재개 시 git status와 최신 커밋으로 동기화 상태를 확인한다.
-  Git 마감 전 Python 검사를 다시 실행해 30 PASS/1 FAIL을 확인했다. 기존 M2 시험 hook=1U에 따른 실패이며 설정은 유지했다.
+## 남은 선택과 사용자 선호
+
+- 전류/온도 구매 후보는 저가 구성의 정확도 문제를 확인해 조건부/보류로 정정했다. 구매·측정 없음.
+- Wi-Fi·PCB·문서 이해를 이번 작업 대상으로 선택했다. ESP 단독 AP HTTP 실측과 STA 연결 사용자 확인은 완료했다. STA 재접속·WebSocket·STM 통합과 PCB CAD는 남아 있다.
+- 무선 제어는 별도 입력/유효시간/연결 유실 검증이 필요하다. PC 명령 유실 시 과거 명령을 계속 재송신하지 않도록 설계.
+- 기존 최상층 만능기판·납땜 부품 유지 선호. ADC/CAN 소형 PCB 설계 범위를 정리했으며 외곽/실측/제작 결정은 아직 미확정.
+- 확장 PCB 후보는 회로/커넥터/실측이 확정된 부분부터. 전체 MCU 캐리어 교체와 모터 주전류 PCB 통합은 별도 후속 범위.
+- 소스 입력·두 보드 빌드·플래시·물리 작업은 사용자. Codex는 설명·저장 파일 검토·Python 검사·문서 보조.
+- 결과는 작업 마감 때 묶어 기록. 사용자 요청 없이 subagent/전체 대화 아카이브를 열지 않는다.
+
+## 저장소
+
+- branch agent/dual-encoder-bringup, HEAD69ca538. 이후 아키텍처47개·확장 검토·ESP 시험 코드·이번 증거/문서가 미커밋.
+- 마지막 푸시 이후 새 commit/push는 이번 대화 마감에 포함되지 않았다. 기존 사용자 변경을 보존했다.
+- 완료한 문서 개편과 과거 핀/전력 이력은 [9/30 기록](../progress/2026-09-30_progress.md), report25~31에 보존돼 있다.

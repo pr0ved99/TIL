@@ -5,18 +5,21 @@
 
 ## 최신 기록
 
-**[2026-09-30 진행 기록](2026-09-30_progress.md)** — 날짜별 요약·공통 템플릿과 인수인계를 정리해 문서 개편 4단계를 마감했다.
-[전체 실행 계획](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)과 [프로젝트 README](../../README.md)의 개편 결과를 유지하며, 새 물리 시험은 하지 않았다.
+**[2026-10-03 Wi-Fi 설정 확인·ESP 예제 검토](2026-10-03_progress.md)** — WebSocket 지원 설정은 활성화됐지만 실제 앱은 HTTP 폴링이다. 01 예제 저장본을 검토했으며 예제 README에 빌드 성공이 기록돼 있다. 02~05 소스와 예제 실행 로그는 없다. 실행 방법과 새 대화 재개 안내를 최신화했고, 설정 재현과 빌드 생성 파일 Git 제외는 후속 보완 대상이다.
 
-마지막 모터 시험은 [9/28 기록](2026-09-28_progress.md)·[9/29 기록](2026-09-29_progress.md)·[report 31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 있다.
-ESP 수동 콘솔은 완성·실행됐고 마지막 이미지는 M2 역방향 10%/300 ms 시험 hook=1U다. 장비 재개 목표는 A/M1 실제 전진 방향 확인이며, [휴식 후 계획](../plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)을 따른다.
-현재는 노트북만 있는 상태로, 장비의 전원 분리 완료를 새로 확인한 것은 아니다.
+**[2026-10-02 재배선 점검](2026-10-02_progress.md)** — 6핀/JESTOP 유지, 전원 분배와 접점 도통 확인. Bar 12.11V, XL4015 출력5.02V/4.95V, S0/S2 및 S1 재투입에 따른 전압 변화를 사용자 보고로 기록했다.
+최종 전원 분리 완료를 사용자 확인했고 바탕화면 배선 사진5장을 검토했다. 배선 정리1차는 마무리, 보호·고정·현가/궤도 간섭은 조립 마감 때 확인한다. 낮은 차단 후 전압을 전체 rail-off PASS로 확대하지 않으며, 새 모터 구동·펌웨어 변경은 없다.
 
-기존 측정·연결 기준도 다음 문서에 보존한다.
+**[2026-10-01 마감 기록](2026-10-01_progress.md)** — 9/30 단일 모터 시험 결과와 계측 구매 검토·PCB 검토 의견을 정리했다.
+[report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 A 전진 방향·active DISARM·S0 관측과 A/B 각각10%·3초 구동을 보존했다.
+현재 휴대한 ESP에는 별도 Wi-Fi 앱을 플래시했다. M2_RUN 시험1U는 로봇 UART bridge의 마지막 시험 설정이며 전류/온도·정상모드 복구·최종 전원 분리 확인은 당시 미완료다.
+재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 이전 계획의 A 방향 확인부터 반복하지 않는다.
 
-- [report 29](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md): A=left/M1/TIM3, B=right/M2/TIM5.
-- [report 30](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md): 입력 전압·손회전·warm reset 169 TEL, S1 전환 순간 CPS ±10 후 즉시 0 복귀. T004 기존 PASS·전체 T005A PARTIAL 유지.
-- [9/8 진행 기록](2026-09-08_progress.md)·[report 25](../verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md): 보드 전원 공급 기준. 9/5 K2/K1 control-only 결과를 전체 Physical E-stop PASS로 확대하지 않는다.
+같은 날 후속으로 노트북·ESP만 있는 환경의 [Wi-Fi·PCB·문서 이해 계획](../plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)을 마련했다.
+이후 사용자 빌드·플래시와 AP HTTP 접속·상태 갱신·연결 해제 표시·재접속 복구를 확인했다.
+STA·WebSocket·STM 통합/무선 명령과 PCB CAD는 남아 있다. 앞선 낡은 현재 안내3곳의 수정 이력도 같은 날 기록에 보존했다.
+
+9/30 전반부 문서 개편·확장 기판 분석은 [9/30 기록](2026-09-30_progress.md), 이전 시험은 report25~31에 있다.
 
 ## 작성 방법
 
@@ -83,7 +86,8 @@ ESP 수동 콘솔은 완성·실행됐고 마지막 이미지는 M2 역방향 10
 
 | 날짜 | 기록 | 당시 작업 요약 |
 | --- | --- | --- |
-| 2026-09-30 | [2026-09-30_progress.md](2026-09-30_progress.md) | 진행 기록 요약·공통 템플릿·인수인계 정리로 문서 개편 4단계 마감; 새 물리 시험 없음 |
+| 2026-10-01 | [2026-10-01_progress.md](2026-10-01_progress.md) | 9/30 모터 시험 증거 마감·계측 구매 한계·PCB 전환 의견 |
+| 2026-09-30 | [2026-09-30_progress.md](2026-09-30_progress.md) | 전반부 문서 개편·공간 분석; 후반부 모터 시험은10/1 기록과 report32로 마감 |
 | 2026-09-29 | [2026-09-29_progress.md](2026-09-29_progress.md) | B 교차시험·오른쪽 DIR 보정·양방향 구동/정지, 노트북 복습·파일명 정리·문서 개편 1~3단계; M2 역방향 시험 이미지 유지 |
 | 2026-09-28 | [2026-09-28_progress.md](2026-09-28_progress.md) | 수동 콘솔·COM5·ESP 세 가닥 연장, A/M1 ±10% 회전, 초기 B/M2 미회전과 A 교차시험 |
 | 2026-09-27 | [2026-09-27_progress.md](2026-09-27_progress.md) | 실제 엔코더·warm reset·좌우 정정·전력단 관측 보존; ESP M1 수동 콘솔 사용자 입력 WIP, 다음 상태 변수 설명 |
