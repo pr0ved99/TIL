@@ -1,5 +1,8 @@
 # Physical E-stop Architecture
 
+> 문서 역할·상태 대조: **2026-09-30** — 비상정지 구조와 현재 범위. Step별 초기 판정을 최신 구현 상태와 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 첫 실제 모터 구동 전에 필요한 Physical E-stop의 설계 경계를 정의한다.
@@ -266,6 +269,18 @@ Hazard/FMEA action을 20개 `REQ-ESTOP-*`와 7개 TBR register item으로 변환
 
 ## 현재 하드웨어 경계
 
+현재 전력 경로는 LiPo→F1→S1→+버스바에서 K1·XL4015 두 개·F2 제어 분기로 나뉜다.
+K1 87은 MDD10A B+로, MDD B−는 GND 버스바로 연결된다. 상세 전원 구조는 [12 전원](12_Power_Distribution_and_Safety_Architecture_ko.md)을 따른다.
+K1/S0/S2/K2 하드웨어 재인가와 S0-B/VO617A/PC7 감지는 조립·제한 검증을 진행했다.
+PC7은 GPIO 입력이며 conditioned firmware/PWM T004 PASS다. 전체 T005A·구동 중 S0 정지·정격 release는 미완료다.
+
+<details>
+<summary>2026-08-10 당시 전원 baseline과 MDD10A 검토</summary>
+
+아래 회로는 K1 추가 전 기록이며 현재 MDD 전원 배선 지시가 아니다.
+
+### 당시 하드웨어 경계
+
 현재 전원 baseline은 다음과 같다.
 
 ```text
@@ -295,6 +310,8 @@ Cytron의 MDD10A 공식 제품 자료는 다음 경계를 명시한다.
 Reference: <https://www.cytron.io/p-10amp-5v-30v-dc-motor-driver-2-channels>
 
 위 수치는 E-stop contact나 contactor의 정격을 자동으로 결정하지 않는다. 실제 motor stall current, 배선, fuse, interrupt device의 DC rating과 regenerative-energy behavior를 별도로 검증해야 한다.
+
+</details>
 
 ## 설계 결정
 
@@ -492,7 +509,9 @@ Physical power cut 뒤 motor가 즉시 zero speed가 된다고 가정하지 않�
 
 `Emergency stop`, `12 V`, `10 A`라는 판매 제목만으로 선정하지 않는다. 반드시 datasheet의 DC switching/breaking rating을 확인한다.
 
-## 구현 순서
+## 초기 구현 순서와 현재 재개
+
+아래는 최초 설계 순서다. 완료된 sense/latch/T004를 반복하지 않고 [현재 실행 계획](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)의 잔여 조건을 따른다.
 
 1. Motor stall/current envelope와 현재 10 A fuse 목적을 다시 확인한다.
 2. `[완료]` Three-wire manual re-enable, downstream rail-sense와 coil protection 기능 구조를
@@ -508,7 +527,13 @@ Physical power cut 뒤 motor가 즉시 zero speed가 된다고 가정하지 않�
 
 상세 수용 기준과 시험 절차는 [`../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md`](../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)를 정본으로 사용한다.
 
-## 현재 판정
+## 현재 판정과 당시 기준점
+
+2026-09-30: 회로·조립·conditioned 전압 기능 및 [T004](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)를 진행했다.
+전체 T005A는 PARTIAL이며 실모터 구동 중 S0 정지·부하/정격/잔여 위험 수용은 미완료다.
+현재 상태는 [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따르고, 아래 8/10 판정을 소급 PASS로 바꾸지 않는다.
+
+### 2026-08-10 당시 판정
 
 ```text
 Safety goal/safe-state definition: BASELINED (2026-08-10)

@@ -1,5 +1,8 @@
 # Physical E-stop FMEA
 
+> 문서 역할·상태 대조: **2026-09-30** — FMEA와 후속 조치 추적. 초기 Step 4 기록을 보존하며 원인/위험을 시험 PASS만으로 삭제하지 않는다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 Physical E-stop을 구성하는 K1 relay, S0 actuator, manual re-enable,
@@ -211,12 +214,12 @@ Telemetry는 진단 증거이며 physical isolation evidence를 대체하지 않
 
 | Action | Owner step | Blocker/status |
 | --- | --- | --- |
-| K1/S0/S2 functional symbols and three-wire control detail | Step 6 | Function/net baseline complete; exact parts TBD |
+| K1/S0/S2 functional symbols and three-wire control detail | Step 6~7 | Functional baseline과 부품 선정·조립 subset 진행. 최신 부품별 범위는 26 문서 및 현재 검증 매트릭스 참조 |
 | Downstream divider/filter/protection and ADC pin | Steps 5~7 | PA4/PB0 target selected; values/protection/threshold TBR |
-| Coil clamp topology | Steps 6~7 | Clamp block/location fixed; exact topology needs K1 coil datasheet |
+| Coil clamp topology | Steps 6~7 | P6KE16CA 선정·K1 병렬 실장 관측. clamp energy와 K2 억제/해제 시간 등 잔여 검증 유지 |
 | K1/fuse/wire/terminal rating | Step 7 | MG540 current data pending |
 | K1 expected-off/rail discrepancy firmware behavior | Step 5 then firmware phase | `REQ-ESTOP-012~014` baselined; not implemented |
-| S0-A/S0-B connector keying/labeling | Step 5~8 | Functional partition baselined; connector parts/harness TBD |
+| S0-A/S0-B connector keying/labeling | Step 5~8 | 6P 조립·도통/절연/retention 및 단선 subset 증거 있음. 최종 표시·전체 수용 조건 별도 |
 | S1 reach and fixture/flat-surface test layout | Steps 8~9 | Physical layout evidence pending |
 
 Step 5 requirement 정본은
@@ -240,7 +243,7 @@ partition을 기능/net 수준으로 고정했다.
 이 residual limitation 때문에 현 단계에서 actual motor power, ground operation, PL/SIL 또는
 산업 안전 인증을 승인하지 않는다.
 
-## Step 4 gate
+## Step 4 종료 당시 기록
 
 ```text
 FMEA scope/functions: BASELINED

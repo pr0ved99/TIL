@@ -1,5 +1,8 @@
 # Physical E-stop Hazard Analysis
 
+> 문서 역할·상태 대조: **2026-09-30** — 위험 분석과 Step 3 당시 근거. 실제 위험 감소·수용 상태는 최신 검증 매트릭스와 연결한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 Physical E-stop을 포함한 첫 powered drivetrain 시험에서 사람, 장비와 환경에
@@ -205,7 +208,7 @@ Step 4 결과 정본은
 [`23_Physical_EStop_FMEA_ko.md`](23_Physical_EStop_FMEA_ko.md)다. 23개 failure mode를
 분석해 three-wire manual re-enable target과 downstream motor-rail diagnostic을 선택했다.
 
-## Step 3 gate
+## Step 3 종료 당시 기록
 
 ```text
 Life-cycle/task boundary: BASELINED

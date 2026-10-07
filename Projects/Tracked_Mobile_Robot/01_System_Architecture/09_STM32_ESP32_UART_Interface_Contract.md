@@ -1,5 +1,9 @@
 # STM32-ESP32 UART Interface Contract
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](09_STM32_ESP32_UART_Interface_Contract_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Applied PWM, reason and command_age_ms telemetry are implemented. Conditioned T004 reset/latch/PWM passed. Current M2 bench hook is 1U; the 9/30 check was 30/31, with the all-hooks-off check failing. Historical 0U/29-test checkpoints are not current image status.
+
 ## Purpose
 
 This document defines the communication contract between the STM32
@@ -747,6 +751,13 @@ requires output/stored-command zero, `DISARMED`, and an accepted `ARM` plus a
 valid `CMD`. This is a state-machine recovery contract, not proof of transport
 freshness or anti-replay.
 
+Current scope: software-applied PWM and reason/age are implemented. Report 26 closes the conditioned motor-disconnected reset/latch/PWM scope. The M2 bench hook remains 1U; default-off restore and full UART/bridge release are not complete.
+
+<details>
+<summary>2026-08-30 P-03/P-04 checkpoint history</summary>
+
+The current/open expressions below describe the August checkpoint, not the present source or test state.
+
 The P-02C-2 historical checkpoint is `25/25`; P-03 reached `26/26` and passed
 the scoped 300/500 ms target timeout/recovery and safe-restore runs. P-04A
 connected software-applied signed PWM to STM32 TEL and the ESP32 parser/log at
@@ -768,6 +779,8 @@ success, and the final hook-zero target reflash/no-command safe runtime are
 open. These UART logs are not measured PWM, conditioned E-stop,
 K1 rail-off, exact artifact
 linkage, physical setup, or motor evidence. Battery telemetry remains P-05.
+
+</details>
 
 CAN remains a required follow-up interface after the UART command and telemetry
 contract is validated.

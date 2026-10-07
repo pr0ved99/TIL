@@ -1,5 +1,8 @@
 # ESP32-S3 기능과 프로젝트 내 역할 분석
 
+> 문서 역할·상태 대조: **2026-09-30** — ESP32 역할 계약과 학습 경로. 수동 bench 콘솔 구현과 일반 forwarding 계획을 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 ESP32-S3의 주요 기능을 정리하고, 궤도형 모바일 로봇 프로젝트에서
@@ -296,7 +299,7 @@ CMD,linear=0.10,angular=0.00,timeout_ms=300
 
 ## 6. ESP32-S3 개발 경로
 
-추천 학습 및 검증 순서:
+초기 학습 경로 참고(현재 완료 목록이나 즉시 실행 순서가 아님):
 
 1. ESP-IDF 환경과 보드 연결 확인
 2. RGB LED와 BOOT button 확인
@@ -347,17 +350,20 @@ MVP에서 제외할 역할:
 
 ## 8. 다음 단계
 
-STM32-ESP32 통신 경계와 production ingress는 ADR-015로 확정됐다. 다음 command-path
-실무 단계는 test hook과 분리된 production `CMD(vx,w)` mapper와 timeout recovery 구현이다.
+STM32-ESP32 통신 경계와 production ingress는 ADR-015로 확정됐다. Production mapper와
+timeout 뒤 output/stored command zero→DISARMED→새 ARM/CMD 동작은 구현됐다.
+9/30 후속 시험에서 A/M1 실제 전진 방향과 A/B 각각10%·3초 제한 구동을 확인했다.
+해당 관측은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 보존하며 같은 방향 확인을 현재 재개 작업으로 반복하지 않는다.
+10/1에는 노트북·ESP 환경에서 [Wi-Fi·확장 PCB·문서 이해 계획](../docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)을 마련했다. 네트워크 펌웨어 구현·STM 통합은 아직 미실행이다.
+상세 시험 범위·이미지·연결은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 현재 기준 문서:
 
 - `09_STM32_ESP32_UART_Interface_Contract_ko.md`
 - `19_Architecture_Decision_Record_ko.md`의 ADR-015
 
-후속 구현에서 닫을 내용:
+현재와 후속 구현의 구분:
 
-- Production `CMD(vx,w)` to left/right PWM/DIR mapper
-- Timeout 시 output/stored command zero와 `DISARMED` 전이
-- 재동작 전 new `ARM` + new `CMD`
-- Optional `PC -> ESP32` forwarding
+- Production `CMD(vx,w)` mapper, timeout 안전 경로와 새 ARM/CMD 요구는 현재 구현을 유지한다.
+- 전체 bridge/UART release의 잔여 시험·증거와 시험 뒤 default-off 복구는 검증 매트릭스로 추적한다.
+- Optional 일반 `PC -> ESP32` forwarding과 Wi-Fi 전달은 후속 계획이다. 수동 단발 bench 콘솔 완료와 구분한다.

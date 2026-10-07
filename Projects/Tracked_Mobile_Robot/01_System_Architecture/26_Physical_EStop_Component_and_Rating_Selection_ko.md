@@ -1,5 +1,8 @@
 # Physical E-stop Component And Rating Selection
 
+> 문서 역할·상태 대조: **2026-09-30** — 부품 선정·정격 근거·잔여 수용 조건. 조립/제한 시험 완료와 정격 release를 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 Step 6 기능 회로를 실제 부품과 정격으로 구체화하는 Step 7 정본이다.
@@ -17,6 +20,13 @@ Step 7의 목표는 catalog 제목의 전류값만 보고 부품을 고르는 �
 같이 검토한다.
 
 ## 현재 판정
+
+2026-09-30: 부품 선정·조립/제어 subset에 더해 report 25 conditioned 전압 기능과 [report 26 T004](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)가 있다.
+전체 T005A PARTIAL, K1 단자/AWG 편차·clamp timing·부하/열·실모터 S0 정지 등 잔여 조건은 유지한다.
+F1=10 A/F2=1 A는 사용자 확인이며 exact physical marking·정격 coordination 전체 수용과 구분한다.
+부품별 완료 증거는 [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)와 해당 보고서를 연결한다.
+
+### 2026-09-05까지의 선정·조립 판정 기록
 
 ```text
 Step 7 overall: PARTIAL / ASSEMBLED UNPOWERED AND MOTOR-DISCONNECTED CONTROL-ONLY SUBSETS PASS / FORMAL POWERED GATES OPEN
@@ -431,14 +441,16 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 - Filter settling time와 `T_RAIL_DECAY_MAX`
 - USB/logic power가 있을 때 ADC clamp를 통한 backfeed
 
-## Step 7 closure checklist
+## Step 7 부품별 closure 추적
 
-| Gate | Status | Closure evidence |
+아래는 9/5까지의 선정·조립 기준점과 요구 증거다. S0-B 전압 기능은 report 25, firmware/PWM은 report 26으로 후속 보완됐다. 표에 남은 powered 항목 전체가 미실시라는 뜻은 아니며 부하·열·정격·전체 rail 수용은 별도다.
+
+| Gate | 선정·조립 기준점 및 후속 확인 | 요구 증거·잔여 조건(이미 완료한 subset은 최신 보고서 참조) |
 | --- | --- | --- |
 | S0 exact model/contact topology | Received `SF2ER-E2R2B-A`; body/contact 2NC-latch와 assembled 6P S0-A/S0-B truth table/isolation PASS | Order suffix trace, powered S0-B와 loaded DC evidence |
 | S2 exact assembly | IDEC `ABW110G`; 6P momentary-NO와 nominal K2/K1 control-only integration PASS | Formal `T-ESTOP-005A`; stuck-closed/5-6 short mitigation is post-MVP `005B` |
 | K2 exact model | No-power screen 2/2, polarity-corrected nominal seal-in/drop/no-auto control-only PASS | `V_K2_COIL_MIN >= 9.0 V`, clamp-installed pickup/dropout timing과 contact drop |
-| S0-B conditioner | Direct PC7 partial / VO617 diode-isolation unpowered screen PASS | S0-B 5 V path, external pull-up, PC7 LOW/HIGH와 wire-open measurement |
+| S0-B conditioner | report 25 conditioned voltage-function; report 26 T004 PWM/latch/reset/wire-open PASS | 전류·계측 근거 및 전체 전력단/실모터 정지 수용은 별도 |
 | K1 | Exact contents/numerical PASS; 18 AWG coil/14 AWG main/P6KE assembly, `91~92.4 ohm` and control-only operation PASS | 14 AWG terminal-range deviation, clamp/dropout timing, motor-load/thermal/rail-off bench |
 | F2 | Received 1 A ATOF/holder; operator-reported unpowered screen PASS | Exact physical marking capture and time-current/drop/thermal coordination |
 | F1/main wire/connectors | F1 no-power screen PASS / powered conditional | Actual 257-vs-ordered identity, AWG 12 common/per-motor AWG 16, connector and start/thermal measurement |
@@ -455,7 +467,7 @@ XL4015 logic/AUX power와 conditioned sense voltage-function subset을 완료했
 
 1. [Report 25](../docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)의
    완료 결과와 evidence 한계를 보존하고 같은 기능 시험을 반복하지 않는다.
-2. `T-ESTOP-004`의 formal firmware latch/PWM/state capture를 실제 conditioned sense path로 닫는다.
+2. `T-ESTOP-004`의 모터 분리 conditioned firmware/PWM/latch/reset PASS를 보존한다. 현재 배선 변경 없이 같은 기능 검사를 반복하지 않는다.
 3. K1 main `280756-4`의 AWG 12~10 범위 대비 as-built 14 AWG 편차를 해소하고 P6KE clamp,
    K1/K2 pickup/drop-out/rail-decay, F1/F2와 loaded voltage-drop/thermal Gate를 닫는다.
 4. Healthy/released S2와 검증된 6P harness로 full `T-ESTOP-005A` direct rail-off,
@@ -465,4 +477,4 @@ XL4015 logic/AUX power와 conditioned sense voltage-function subset을 완료했
 6. `FM-ESTOP-014` mitigation과 S2 stuck/6P pair-short `T-ESTOP-005B`, PA4/PB0 divider/protection은
    MVP 뒤 별도 V-cycle에서 설계·실장·검증한다.
 
-현재 overall 판정은 `PARTIAL / FIRMWARE, DIRECT-RAIL, LOAD AND MOTOR GATES OPEN`이다.
+현재 overall은 PARTIAL이다. 모터 분리 T004는 PASS이고, 전체 direct-rail 수용·부하/열·구동 중 S0 정지 및 정격 release 조건은 남아 있다.

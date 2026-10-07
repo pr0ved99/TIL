@@ -1,5 +1,8 @@
 # Physical E-stop RevB Circuit Architecture
 
+> 문서 역할·상태 대조: **2026-09-30** — 비상정지 회로 기능 계약과 구현 이력. Step 6·도착/검사 기록의 당시 상태를 현재로 소급하지 않는다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 `REQ-ESTOP-001~020`을 RevB 회로도로 옮기기 전에 기능 회로, net, 인터페이스와
@@ -356,7 +359,15 @@ Step 6 종료 당시에는 MG540P30_12V 공식 전류 자료가 없어 K1/F1/mai
 Step 7 current-envelope와 provisional candidate 계산은
 [`../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md`](../09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md)에 기록했다.
 
-## Step 6 gate
+## 현재 연결·검증과 Step 6 이력
+
+2026-09-30: 기존 기능 구조는 K1/S0/S2/K2·VO617A/PC7 조립과 제한 벤치 관측으로 이어졌다.
+9/5 K2 bottom-view 극성 정정·6P 조립은 [26 부품 기록](26_Physical_EStop_Component_and_Rating_Selection_ko.md),
+9/8 conditioned 전원/감지는 report 25, 9/22 firmware/PWM은 [report 26](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)을 따른다.
+전체 T005A·실제 구동 중 S0 정지·부하/정격 수용은 남아 있다. PA4/PB0는 아직 미구현이다.
+아래 Step 6와 날짜별 도착/검사 문단은 당시 상태이며 현재 작업 시작점으로 사용하지 않는다.
+
+## Step 6 종료 당시 기록
 
 ```text
 K1 main-feed topology: BASELINED

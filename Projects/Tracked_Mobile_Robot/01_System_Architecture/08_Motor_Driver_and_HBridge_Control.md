@@ -1,5 +1,9 @@
 # Motor Driver and H-Bridge Control Decision
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](08_Motor_Driver_and_HBridge_Control_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Current mapping: A=left/M1, B=right/M2. Right DIR HIGH=forward/LOW=reverse was verified in bounded pulses. Left actual forward observation remains open; permanent control pull-downs are installed.
+
 ## Purpose
 
 This document defines the first motor-driver decision for the tracked mobile
@@ -233,11 +237,11 @@ STM32 PB7/TIM4_CH2 -> MDD10A PWM2
 STM32 PC9          -> MDD10A DIR2
 STM32 GND          -> MDD10A GND
 
-3S LiPo +   -> fuse -> switch -> MDD10A POWER+
+3S LiPo + -> F1 -> S1 -> positive busbar -> K1 30/87 -> MDD10A POWER+
 3S LiPo -   -> MDD10A POWER-
 
-Output channel 1 -> MDD10A M1A / M1B -> physical side TBD
-Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
+Output channel 1 -> MDD10A M1A / M1B -> Motor A / left
+Output channel 2 -> MDD10A M2A / M2B -> Motor B / right
 ```
 
 Initial wiring rules:
@@ -414,14 +418,14 @@ Main switch requirement:
 
 ## 11. Open Questions
 
-These items must be checked before powered drivetrain testing:
+Remaining checks and already resolved choices are separated below. Bounded motor observations do not close the full drivetrain gate:
 
 - Actual MDD10A revision and terminal labeling.
-- Which physical vehicle side maps to MDD10A channel 1/2.
+- M1=A/left and M2=B/right are connected. B forward/reverse was observed after DIR correction; A actual forward observation remains open.
 - Actual 20 kHz PWM frequency/duty and direction-transition timing.
 - Motor stall current or measured worst-case current.
 - Encoder voltage and signal quality.
-- Whether MG540, JGB37-520, or another motor becomes the first drivetrain motor.
+- MG540 is the current motor path; stall/current and loaded behavior remain to be characterized.
 - Whether measured MDD10A current and heat margin are enough, or whether an
   MDD20A-class upgrade is needed.
 

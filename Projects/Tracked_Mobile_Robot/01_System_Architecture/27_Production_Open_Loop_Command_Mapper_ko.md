@@ -1,5 +1,8 @@
 # Production Open-Loop Command Mapper
 
+> 문서 역할·상태 대조: **2026-09-30** — 현재 open-loop mapper 계약과 당시 빌드/검사 이력. TEL은 현재 적용 PWM을 보고한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 문서 상태
 
 - Work package: `P-02A / P-02B / P-02C-1 / P-02C-2`
@@ -149,13 +152,11 @@ signed request < 0 -> reverse DIR 후보 + abs(request) PWM
 signed request = 0 -> PWM 0
 ```
 
-현재 source naming은 logical left를 `TIM4_CH1/PB6 + PC8`, logical right를
-`TIM4_CH2/PB7 + PC9`에 연결한다. 그러나 이는 **provisional software mapping**이다.
-MDD10A CH1/CH2가 실제 vehicle left/right motor로 이어지는지와 어느 DIR level이 actual
-forward인지는 powered drivetrain evidence가 없다.
+현재 source는 left=`TIM4_CH1/PB6 + PC8`, right=`TIM4_CH2/PB7 + PC9`를 사용한다.
+9/26 좌우 매핑 정정과 [9/29 구동](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에서 A=left/M1, B=right/M2를 연결했다.
+B는 DIR HIGH=전진/LOW=후진으로 보정 후 실제 양방향 단발 구동을 확인했다. A의 양수 실제 전진 방향 관찰은 남아 있다.
 
-P-02C-1은 다음을 상수와 주석으로 명시했으며, lifted low-duty test 전에는 final로
-주장하지 않는다.
+아래는 P-02C-1 당시 provisional 표기 이력이다. 현재 관측 범위는 위 9/29 기록을 따른다.
 
 - logical left -> CH1: `PROVISIONAL`
 - logical right -> CH2: `PROVISIONAL`
@@ -191,7 +192,11 @@ motor_output_stop_all()
 -> return
 ```
 
-## 9. 현재 검증 결과와 다음 단계
+## 9. 현재 구현과 과거 검증 결과
+
+2026-09-30 현재 mapper·signed adapter·production caller·timeout DISARMED·적용 PWM TEL은 구현됐다.
+단일 모터 구동은 report 31의 제한 조건에서 관측했으며 A 실제 전진 방향·전체 안전/부하 수용은 남아 있다.
+아래 검사 개수·ELF·빌드 결과는 8/27 당시 기록이다. 현재 31개 검사/시험 이미지 상태는 [현재 구현 요약](README.md#현재-구현과-검증-범위)을 따른다.
 
 2026-08-27 P-02B 결과:
 
@@ -231,7 +236,7 @@ motor_output_stop_all()
 6. Final ELF link map: `drive_command_map=0x0800067c`,
    `motor_output_set_signed=0x080015dc`; 두 함수 모두 nonzero address로 production caller에 유지됨
 
-다음 단계:
+2026-08-27 당시 다음 단계(이력):
 
 1. `[SOURCE/STATIC/FULL BUILD COMPLETE] P-03`: pre-RX timeout에서 output/stored command
    zero 후 `DISARMED`로 전이하고, `ARM` 시 default 300 ms first-CMD window를 다시 시작한다.
@@ -240,7 +245,12 @@ motor_output_stop_all()
 3. 집 `H-02`에서 motor/LiPo를 분리한 채 UART와 MCU PWM/DIR만 검증한다.
 4. Physical E-stop 선행 Gate 뒤에만 lifted low-duty motor mapping으로 이동한다.
 
-## Evidence Boundary
+## 현재 재개와 과거 증거의 범위
+
+현재는 A 양수 명령의 실제 전진 방향 보완과 전력단·정지 잔여 조건 정리가 재개 목표다.
+아래는 P-02B/C 시험만으로 입증할 수 있었던 범위다. 당시 zero-placeholder·runtime pending 상태를 현재 코드 상태로 읽지 않는다.
+
+### P-02B/C 당시 Evidence Boundary
 
 P-02B는 mapper source, 독립 수학 reference vector, C source 정적 계약과 STM32 full build를,
 P-02C-1은 signed adapter source/static 계약을, P-02C-2는 production caller의 제어 순서와

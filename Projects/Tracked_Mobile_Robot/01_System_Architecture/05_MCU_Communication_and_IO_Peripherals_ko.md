@@ -1,5 +1,8 @@
 # STM32F446RE 통신 및 I/O 주변장치 분석
 
+> 문서 역할·상태 대조: **2026-09-30** — 주변장치 개념과 초기 후보. 현재 production 명령 경로는 ESP↔STM USART1이며 USART2는 bench logger다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트를 위해 STM32F446xC/E 데이터시트의

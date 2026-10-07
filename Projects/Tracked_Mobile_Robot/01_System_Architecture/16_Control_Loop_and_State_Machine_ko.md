@@ -1,5 +1,8 @@
 # Control Loop and State Machine
 
+> 문서 역할·상태 대조: **2026-09-30** — 제어·안전 정책과 확장 목표 상태 모델. 현재 코드의 DISARMED/ARMED/FAULT+reason 표현과 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇의 low-level drivetrain control loop와 safety state machine을 정의한다.
@@ -44,7 +47,10 @@ Motor control loop만 PWM output을 쓴다.
 
 ## 2. State List
 
-초기 safety state enum:
+아래 enum과 전이도는 확장 목표 모델이다. 현재 `uart_mvp_protocol.c`의 state는 `DISARMED/ARMED/FAULT`이며 별도 reason으로 BOOT·CMD_TIMEOUT·ESTOP_ACTIVE·ESTOP_LATCHED 등을 구분한다.
+저전압 상태·ARMING_CHECK·100 Hz 폐루프가 모두 구현됐다는 뜻이 아니다. 현재 계약은 [09 UART](09_STM32_ESP32_UART_Interface_Contract_ko.md)를 따른다.
+
+확장 목표 safety state enum:
 
 ```c
 typedef enum {

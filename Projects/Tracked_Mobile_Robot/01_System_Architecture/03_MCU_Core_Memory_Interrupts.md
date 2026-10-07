@@ -1,5 +1,8 @@
 # STM32F446RE Core, Memory, Interrupt, and Clock Analysis
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](03_MCU_Core_Memory_Interrupts_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document analyzes the first project-relevant part of Section 3 Functional

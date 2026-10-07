@@ -1331,19 +1331,23 @@ static void bridge_uart_startup_step(TickType_t now){
     }
 }
 
-/* Manual bench console: one attempted M2 pulse per ESP boot. */
-#define BRIDGE_M2_PULSE_TEST_ENABLED 1U
+/* Manual bench console: one bounded M2 run per ESP boot. */
+#define BRIDGE_M2_RUN_TEST_ENABLED 1U
 #define BENCH_RESPONSE_MS 200U
 #define BENCH_TELEMETRY_MAX_AGE_MS 250U
 #define BENCH_STOP_OBSERVE_MS 600U
+#define BENCH_CMD_TIMEOUT_MS 500U
+#define BENCH_RUN_MS 3000U
+#define BENCH_REFRESH_MS 100U
+#define BENCH_MOTION_GAP_MS 500U
 
-#if BRIDGE_M2_PULSE_TEST_ENABLED && (BRIDGE_SCRIPTED_TEST_ENABLED || \
+#if BRIDGE_M2_RUN_TEST_ENABLED && (BRIDGE_SCRIPTED_TEST_ENABLED || \
 BRIDGE_MALFORMED_COMMAND_TEST_ENABLED || BRIDGE_P04B_ESTOP_RESET_TEST_ENABLED || \
 BRIDGE_T004_ESTOP_PWM_TEST_ENABLED)
-#error "Disable all automatic bridge test hook for the manual bench console"
+#error "Disable all automatic bridge test hooks for the manual bench console"
 #endif
 
-#if BRIDGE_M2_PULSE_TEST_ENABLED && (!defined(CONFIG_ESP_CONSOLE_UART_NUM) || \
+#if BRIDGE_M2_RUN_TEST_ENABLED && (!defined(CONFIG_ESP_CONSOLE_UART_NUM) || \
 CONFIG_ESP_CONSOLE_UART_NUM != 0)
 #error "The manual bench console requires the UART0 console"
 #endif
@@ -1352,7 +1356,9 @@ typedef enum {
     BENCH_IDLE = 0,
     BENCH_WAIT_RESET,
     BENCH_WAIT_ARM,
-    BENCH_WAIT_STOP,
+    BENCH_RUN,
+    BENCH_WAIT_DISARM,
+    BENCH_WAIT_STILL,
     BENCH_FINISHED
 } bridge_bench_state_t;
 
@@ -1362,9 +1368,14 @@ static uint32_t s_bench_tel_mark;
 static uint32_t s_bench_seen_tel_count;
 static uint32_t s_bench_err_mark;
 static uint32_t s_bench_parse_mark;
+static uint32_t s_bench_stm_err_mark;
 static TickType_t s_bench_phase_tick;
 static TickType_t s_bench_last_tel_tick;
-static bool s_bench_saw_output;
+static TickType_t s_bench_cmd_tick;
+static TickType_t s_bench_last_motion_tick;
+static bool s_bench_cmd_confirmed;
+static bool s_bench_saw_motion;
+static uint32_t s_bench_zero_samples;
 static char s_bench_line[24];
 static size_t s_bench_line_len;
 static bool s_bench_discard_line;
@@ -1396,6 +1407,7 @@ static void bridge_bench_wait(
     s_bench_tel_mark = s_tel_count;
     s_bench_err_mark = s_err_count;
     s_bench_parse_mark = s_parse_error_count;
+    s_bench_stm_err_mark = s_telemetry.err;
     s_bench_phase_tick = now;
 }
 
@@ -1406,8 +1418,8 @@ static void bridge_bench_command(
 ){
     if(strcmp(command, "HELP") == 0){
         ESP_LOGI(TAG,
-            "BENCH: RESET_ESTOP, M2_PULSE, STOP; "
-            "one M2 reverse 10%% / 300ms timeout pulse per boot");
+            "BENCH: RESET_ESTOP, M2_RUN, STOP; "
+            "M2 positive 10%% / 3s auto-DISARM; 100ms refresh, 500ms timeout; once per boot");
         return;
     }
 
@@ -1417,7 +1429,7 @@ static void bridge_bench_command(
     }
 
     if(strcmp(command, "RESET_ESTOP") != 0 &&
-       strcmp(command, "M2_PULSE") != 0){
+       strcmp(command, "M2_RUN") != 0){
         ESP_LOGW(TAG, "BENCH: unknown command; enter HELP");
         return;
     }
@@ -1450,16 +1462,33 @@ static void bridge_bench_command(
 
     if(strcmp(s_telemetry.state, "DISARMED") != 0 ||
        s_telemetry.left_cps != 0 || s_telemetry.right_cps != 0){
-        ESP_LOGW(TAG, "BENCH: M2_PULSE requires DISARMED and CPS=0/0");
+        ESP_LOGW(TAG, "BENCH: M2_RUN requires DISARMED and CPS=0/0");
         return;
     }
 
     uint32_t arm_seq = (*seq)++;
-    s_bench_saw_output = false;
+    s_bench_cmd_confirmed = false;
+    s_bench_saw_motion = false;
+    s_bench_zero_samples = 0U;
     bridge_bench_wait(BENCH_WAIT_ARM, arm_seq, now);
     if(!bridge_uart_send_arm(arm_seq)){
         bridge_bench_finish(seq, "ARM TX failed");
     }
+}
+
+static bool bridge_bench_send_run_cmd(TickType_t now, uint32_t *seq){
+    s_bench_expected_seq = (*seq)++;
+    s_bench_tel_mark = s_tel_count;
+    s_bench_cmd_tick = now;
+    s_bench_cmd_confirmed = false;
+
+    /* Do not change s_bench_phase_tick: it is the absolute run deadline base. */
+    if(!bridge_uart_send_cmd(
+        s_bench_expected_seq, 50, 250, BENCH_CMD_TIMEOUT_MS)){
+        bridge_bench_finish(seq, "CMD TX failed; no retry");
+        return false;
+    }
+    return true;
 }
 
 static void bridge_bench_advance(TickType_t now, uint32_t *seq){
@@ -1469,8 +1498,9 @@ static void bridge_bench_advance(TickType_t now, uint32_t *seq){
 
     if(!bridge_bench_fresh(now) ||
        s_err_count != s_bench_err_mark ||
-       s_parse_error_count != s_bench_parse_mark){
-        bridge_bench_finish(seq, "stale telemetry or RX error");
+       s_parse_error_count != s_bench_parse_mark ||
+       s_telemetry.err != s_bench_stm_err_mark){
+        bridge_bench_finish(seq, "stale telemetry or new communication error");
         return;
     }
 
@@ -1494,7 +1524,7 @@ static void bridge_bench_advance(TickType_t now, uint32_t *seq){
     }
 
     if(strcmp(s_telemetry.state, "FAULT") == 0){
-        bridge_bench_finish(seq, "STM32 FAULT; no retry");
+        bridge_bench_finish(seq, "STM32 FAULT; no refresh or retry");
         return;
     }
 
@@ -1505,49 +1535,152 @@ static void bridge_bench_advance(TickType_t now, uint32_t *seq){
         }
 
         if(matching_tel && strcmp(s_telemetry.state, "ARMED") == 0){
-            if(!bridge_bench_pwm_zero()){
-                bridge_bench_finish(seq, "unexpected PWM before CMD");
+            if(!bridge_bench_pwm_zero() ||
+               s_telemetry.left_cps != 0 || s_telemetry.right_cps != 0){
+                bridge_bench_finish(seq, "unexpected output or motion before CMD");
                 return;
             }
 
-            uint32_t cmd_seq = (*seq)++;
-            bridge_bench_wait(BENCH_WAIT_STOP, cmd_seq, now);
-            if(!bridge_uart_send_cmd(cmd_seq, -50, -250, 300U)){
-                bridge_bench_finish(seq, "CMD TX failed; no retry");
-                return;
+            bridge_bench_wait(BENCH_RUN, *seq, now);
+            s_bench_last_motion_tick = now;
+            if(bridge_bench_send_run_cmd(now, seq)){
+                ESP_LOGW(TAG,
+                    "BENCH: M2 10%% run started; auto-DISARM at 3s; "
+                    "STOP or physical S0 may end it earlier");
             }
-            ESP_LOGW(TAG, "BENCH: single M2 reverse 10%% CMD sent; no refresh");
         }
         return;
     }
 
-    if(s_telemetry.left_pwm != 0 ||
-       (s_telemetry.right_pwm != 0 && s_telemetry.right_pwm != -100)){
-        bridge_bench_finish(seq, "unexpected applied PWM");
+    if(s_telemetry.left_pwm != 0 || s_telemetry.left_cps != 0 ||
+       (s_telemetry.right_pwm != 0 && s_telemetry.right_pwm != 100)){
+        bridge_bench_finish(seq, "unexpected PWM or left encoder activity");
         return;
     }
 
-    if(matching_tel && strcmp(s_telemetry.state, "ARMED") == 0 &&
-       s_telemetry.right_pwm == -100){
-        s_bench_saw_output = true;
-    }
+    if(s_bench_state == BENCH_RUN){
+        /* Check total duration before considering any CMD refresh. */
+        if(elapsed >= pdMS_TO_TICKS(BENCH_RUN_MS)){
+            uint32_t disarm_seq = (*seq)++;
+            bridge_bench_wait(BENCH_WAIT_DISARM, disarm_seq, now);
+            if(!bridge_uart_send_disarm(disarm_seq)){
+                bridge_bench_finish(seq, "scheduled DISARM TX failed");
+            }
+            else{
+                ESP_LOGI(TAG, "BENCH: 3s deadline; DISARM sent, refresh stopped");
+            }
+            return;
+        }
 
-    if(matching_tel && strcmp(s_telemetry.state, "DISARMED") == 0 &&
-       strcmp(s_telemetry.reason, "CMD_TIMEOUT") == 0 &&
-       bridge_bench_pwm_zero()){
-        bridge_bench_finish(seq, s_bench_saw_output
-            ? "PWM 0/-100 then CMD_TIMEOUT 0/0 observed; inspect actual motor"
-            : "timeout observed, active PWM TEL missing; result incomplete");
+        if(strcmp(s_telemetry.state, "ARMED") != 0){
+            bridge_bench_finish(seq, "run left ARMED; no re-arm");
+            return;
+        }
+
+        TickType_t cmd_elapsed = now - s_bench_cmd_tick;
+        if(!s_bench_cmd_confirmed &&
+           cmd_elapsed >= pdMS_TO_TICKS(BENCH_RESPONSE_MS)){
+            bridge_bench_finish(seq, "CMD telemetry confirmation timeout");
+            return;
+        }
+
+        if(matching_tel){
+            if(strcmp(s_telemetry.reason, "NONE") != 0 ||
+               s_telemetry.right_pwm != 100 ||
+               s_telemetry.vx_mmps != 50 || s_telemetry.w_mradps != 250 ||
+               s_telemetry.command_age_ms >= BENCH_CMD_TIMEOUT_MS ||
+               s_telemetry.right_cps < 0){
+                bridge_bench_finish(seq, "unexpected active M2 telemetry");
+                return;
+            }
+
+            /* A matching TEL confirms the preceding CMD before another is sent. */
+            s_bench_cmd_confirmed = true;
+            s_bench_tel_mark = s_tel_count;
+            if(s_telemetry.right_cps > 0){
+                s_bench_saw_motion = true;
+                s_bench_last_motion_tick = now;
+            }
+        }
+
+        if(now - s_bench_last_motion_tick >=
+           pdMS_TO_TICKS(BENCH_MOTION_GAP_MS)){
+            bridge_bench_finish(seq, "no recent forward motion; run incomplete");
+            return;
+        }
+
+        if(s_bench_cmd_confirmed &&
+           cmd_elapsed >= pdMS_TO_TICKS(BENCH_REFRESH_MS)){
+            (void)bridge_bench_send_run_cmd(now, seq);
+        }
         return;
     }
 
-    if(elapsed >= pdMS_TO_TICKS(BENCH_STOP_OBSERVE_MS)){
-        bridge_bench_finish(seq, "stop confirmation missing; check S0");
+    if(s_bench_state == BENCH_WAIT_DISARM){
+        if(elapsed >= pdMS_TO_TICKS(BENCH_RESPONSE_MS)){
+            bridge_bench_finish(seq, "DISARM zero confirmation missing");
+            return;
+        }
+
+        if(matching_tel){
+            if(strcmp(s_telemetry.state, "DISARMED") != 0 ||
+               strcmp(s_telemetry.reason, "DISARM") != 0 ||
+               !bridge_bench_pwm_zero()){
+                bridge_bench_finish(seq, "unexpected result after DISARM");
+                return;
+            }
+
+            s_bench_zero_samples = 0U;
+            bridge_bench_wait(BENCH_WAIT_STILL, s_bench_expected_seq, now);
+            ESP_LOGI(TAG, "BENCH: DISARM/PWM0 confirmed; waiting for CPS0");
+        }
+        return;
     }
+
+    if(s_bench_state == BENCH_WAIT_STILL){
+        if(elapsed >= pdMS_TO_TICKS(BENCH_STOP_OBSERVE_MS)){
+            bridge_bench_finish(seq, "CPS zero not confirmed after DISARM");
+            return;
+        }
+
+        if(!bridge_bench_pwm_zero() ||
+           strcmp(s_telemetry.state, "DISARMED") != 0 ||
+           strcmp(s_telemetry.reason, "DISARM") != 0){
+            bridge_bench_finish(seq, "state or output changed during stop");
+            return;
+        }
+
+        if(!new_tel){
+            return;
+        }
+
+        if(!matching_tel){
+            bridge_bench_finish(seq, "unexpected sequence after DISARM");
+            return;
+        }
+
+        s_bench_tel_mark = s_tel_count;
+        if(s_telemetry.left_cps == 0 && s_telemetry.right_cps == 0){
+            s_bench_zero_samples++;
+        }
+        else{
+            s_bench_zero_samples = 0U;
+        }
+
+        if(s_bench_zero_samples >= 2U){
+            bridge_bench_finish(seq, s_bench_saw_motion
+                ? "bounded M2 run -> DISARM zero -> two CPS0 TEL observed; "
+                  "inspect trace and actual motor"
+                : "run ended without forward motion evidence; incomplete");
+        }
+        return;
+    }
+
+    bridge_bench_finish(seq, "unexpected bench state");
 }
 
 static void bridge_bench_console_init(void){
-    if(BRIDGE_M2_PULSE_TEST_ENABLED == 0U){
+    if(BRIDGE_M2_RUN_TEST_ENABLED == 0U){
         return;
     }
 
@@ -1566,7 +1699,7 @@ static void bridge_bench_console_init(void){
 }
 
 static void bridge_bench_console_poll(TickType_t now, uint32_t *seq){
-    if(BRIDGE_M2_PULSE_TEST_ENABLED == 0U || seq == NULL){
+    if(BRIDGE_M2_RUN_TEST_ENABLED == 0U || seq == NULL){
         return;
     }
 
@@ -1603,6 +1736,7 @@ static void bridge_bench_console_poll(TickType_t now, uint32_t *seq){
     }
     bridge_bench_advance(now, seq);
 }
+
 
 void app_main(void){
     ESP_LOGI(TAG, "ESP UART bridge app start");

@@ -1,0 +1,45 @@
+test_invalid_inputs_zero_output_and_null_is_rejected (test_drive_command_mapper_contract.DriveCommandMapperContractTest.test_invalid_inputs_zero_output_and_null_is_rejected) ... ok
+test_valid_fixed_and_boundary_vectors (test_drive_command_mapper_contract.DriveCommandMapperContractTest.test_valid_fixed_and_boundary_vectors) ... ok
+test_all_bench_hooks_are_present_and_disabled (test_firmware_contract.FirmwareContractTest.test_all_bench_hooks_are_present_and_disabled) ... 
+  test_all_bench_hooks_are_present_and_disabled (test_firmware_contract.FirmwareContractTest.test_all_bench_hooks_are_present_and_disabled) (name='BRIDGE_M2_RUN_TEST_ENABLED') ... FAIL
+test_applied_output_telemetry_contract (test_firmware_contract.FirmwareContractTest.test_applied_output_telemetry_contract) ... ok
+test_boot_outputs_start_in_safe_state (test_firmware_contract.FirmwareContractTest.test_boot_outputs_start_in_safe_state) ... ok
+test_command_timeout_forces_disarmed_contract (test_firmware_contract.FirmwareContractTest.test_command_timeout_forces_disarmed_contract) ... ok
+test_drive_command_mapper_source_contract (test_firmware_contract.FirmwareContractTest.test_drive_command_mapper_source_contract) ... ok
+test_encoder_initialization_and_vehicle_sign_contract (test_firmware_contract.FirmwareContractTest.test_encoder_initialization_and_vehicle_sign_contract) ... ok
+test_esp32_field_parser_requires_exact_field_boundaries (test_firmware_contract.FirmwareContractTest.test_esp32_field_parser_requires_exact_field_boundaries) ... ok
+test_esp32_p04b_estop_reset_test_harness_contract (test_firmware_contract.FirmwareContractTest.test_esp32_p04b_estop_reset_test_harness_contract) ... ok
+test_esp32_t004_coordinator_contract (test_firmware_contract.FirmwareContractTest.test_esp32_t004_coordinator_contract) ... ok
+test_esp32_uart_and_script_guard_contract (test_firmware_contract.FirmwareContractTest.test_esp32_uart_and_script_guard_contract) ... ok
+test_estop_blocks_arm_and_cmd_contract (test_firmware_contract.FirmwareContractTest.test_estop_blocks_arm_and_cmd_contract) ... ok
+test_estop_disarm_reset_and_polling_contract (test_firmware_contract.FirmwareContractTest.test_estop_disarm_reset_and_polling_contract) ... ok
+test_estop_latch_forces_safe_state (test_firmware_contract.FirmwareContractTest.test_estop_latch_forces_safe_state) ... ok
+test_estop_reset_parser_contract (test_firmware_contract.FirmwareContractTest.test_estop_reset_parser_contract) ... ok
+test_generated_estop_input_contract (test_firmware_contract.FirmwareContractTest.test_generated_estop_input_contract) ... ok
+test_generated_pin_aliases_match_contract (test_firmware_contract.FirmwareContractTest.test_generated_pin_aliases_match_contract) ... ok
+test_generated_timer_contract (test_firmware_contract.FirmwareContractTest.test_generated_timer_contract) ... ok
+test_generated_uart_contract (test_firmware_contract.FirmwareContractTest.test_generated_uart_contract) ... ok
+test_ioc_pin_contract (test_firmware_contract.FirmwareContractTest.test_ioc_pin_contract) ... ok
+test_ioc_target_and_required_initializers (test_firmware_contract.FirmwareContractTest.test_ioc_target_and_required_initializers) ... ok
+test_ioc_timer_and_uart_contract (test_firmware_contract.FirmwareContractTest.test_ioc_timer_and_uart_contract) ... ok
+test_motor_output_limits_and_fail_safe_order (test_firmware_contract.FirmwareContractTest.test_motor_output_limits_and_fail_safe_order) ... ok
+test_production_cmd_output_integration_contract (test_firmware_contract.FirmwareContractTest.test_production_cmd_output_integration_contract) ... ok
+test_protocol_limits_and_stop_paths (test_firmware_contract.FirmwareContractTest.test_protocol_limits_and_stop_paths) ... ok
+test_reason_and_command_age_telemetry_contract (test_firmware_contract.FirmwareContractTest.test_reason_and_command_age_telemetry_contract) ... ok
+test_signed_motor_output_adapter_contract (test_firmware_contract.FirmwareContractTest.test_signed_motor_output_adapter_contract) ... ok
+test_conditional_call_is_not_a_function_definition (test_firmware_contract.SourceExtractionTest.test_conditional_call_is_not_a_function_definition) ... ok
+test_malformed_frames_are_rejected (test_uart_frame_contract.UartFrameContractTest.test_malformed_frames_are_rejected) ... ok
+test_valid_exact_frames_and_integer_boundaries (test_uart_frame_contract.UartFrameContractTest.test_valid_exact_frames_and_integer_boundaries) ... ok
+
+======================================================================
+FAIL: test_all_bench_hooks_are_present_and_disabled (test_firmware_contract.FirmwareContractTest.test_all_bench_hooks_are_present_and_disabled) (name='BRIDGE_M2_RUN_TEST_ENABLED')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_firmware_contract.py", line 514, in test_all_bench_hooks_are_present_and_disabled
+    self.assertEqual(value, 0, f"bench-only hook must be disabled: {name}")
+AssertionError: 1 != 0 : bench-only hook must be disabled: BRIDGE_M2_RUN_TEST_ENABLED
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.570s
+
+FAILED (failures=1)

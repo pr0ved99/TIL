@@ -21,9 +21,12 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 9/30 문서 개편 마감·노트북 복습 상태; 장비 재개 목표는 기존 A/M1 방향 확인 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 10/8 W4 상태 전달 PASS·READY 복원, 다음 W5 비구동 명령 설계 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-09-30 | [최신 진행 기록](../progress/2026-09-30_progress.md) / [공통 작성 형식](../progress/README.md#공통-템플릿) | 문서 개편 4단계 마감, 과거 본문 보존과 새 진행 기록 형식 |
+| 2026-10-08 | [최신 마감 기록](../progress/2026-10-08_progress.md) / [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) | 실제 TEL·WS·부팅 상태·리셋 err 근거와 W5 시작점 |
+| 2026-10-06 | [학습·준비 기록](../progress/2026-10-06_progress.md) / [W4 재개 계획](../plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | 예제 완료 범위, 기존 TEL/타이밍 대조, 모의 제안과 실제 UART 연동 순서 |
+| 2026-10-01 | [최신 마감 기록](../progress/2026-10-01_progress.md) / [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) | 단일 모터 증거·계측 한계·PCB 검토 의견 |
+| 2026-09-30 | [문서 작업 기록](../progress/2026-09-30_progress.md) / [공통 작성 형식](../progress/README.md#공통-템플릿) | 문서 개편 4단계 마감, 과거 본문 보존과 새 진행 기록 형식 |
 | 2026-09-29 | [모터 시험·문서 기록](../progress/2026-09-29_progress.md) / [다음 계획](../plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) | 단일 모터 교차시험·DIR 보정·B 양방향 완료와 남은 방향/통신 관측 |
 | 2026-09-28~29 | [report31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | 원본12개·실제 회전·timeout·오류 카운터와 증거 경계 |
 | 2026-09-27 / 이력 | [당시 진행 기록](../progress/2026-09-27_progress.md) / [M1 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 당시 입력 WIP. 완성과 실제 구동은9/28~29 기록을 따름 |

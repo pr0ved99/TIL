@@ -1,5 +1,9 @@
 # Drivetrain Kinematics and Odometry Plan
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Current vehicle mapping supersedes the July checkpoint: A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5. B actual forward/reverse was observed; A actual forward observation remains open.
+
 ## Purpose
 
 This document defines the first kinematics and odometry plan for the tracked
@@ -85,6 +89,8 @@ positive w  -> robot turns left
 ```
 
 Encoder sign must be adjusted so this convention is true.
+
+The following July mapping is historical and is superseded by A=left/M1 and B=right/M2.
 
 2026-07-30 encoder-side checkpoint: Motor A is vehicle right/TIM5 and Motor B
 is vehicle left/TIM3. Right/A clockwise and left/B counter-clockwise are

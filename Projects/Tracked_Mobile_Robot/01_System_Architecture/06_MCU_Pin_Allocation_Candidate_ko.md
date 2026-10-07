@@ -1,9 +1,11 @@
 # STM32F446RE 핀 배정 후보
 
+> 문서 역할·상태 대조: **2026-09-30** — 현재 핀 배정·배선/설정/검증 상태와 후속 예약을 구분한 설계 기준.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
-이 문서는 NUCLEO-F446RE 기반 궤도형 모바일 로봇 MVP를 위한 첫 번째 핀 배정
-후보를 제안한다.
+이 문서는 NUCLEO-F446RE 기반 로봇의 현재 핀 배정과 후속 기능의 예약 후보를 관리한다.
 
 이 문서는 전체 최종 핀맵이 아니다. 후보안에서 시작했으며, 현재 CubeMX와 bench에서
 확인된 항목은 표와 각 절에 `validated`로 구분해 표시한다.
@@ -60,7 +62,7 @@ UM1724에서 사용한 중요한 사실:
 7. 가능하면 같은 timer를 PWM과 encoder에 동시에 쓰지 않는다.
 8. Arduino header 또는 ST morpho header로 접근 가능한 핀을 우선한다.
 
-## 1차 핀 후보표
+## 현재 핀 배정과 후속 후보
 
 | 로봇 기능 | MCU 핀 | 주변장치/기능 | 보드 접근 | 상태 |
 | --- | --- | --- | --- | --- |
@@ -70,17 +72,17 @@ UM1724에서 사용한 중요한 사실:
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
 | IMU interrupt `IMU_INT_N` | PB1 | GPIO input / EXTI1 | ST morpho CN10 pin 24 / H_NUC_UP_R4 Pin12 / C17/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
 | IMU reset `IMU_RST_N` | PC4 | GPIO output | ST morpho CN10 pin 34 / H_NUC_UP_R4 Pin17 / C22/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
-| 왼쪽 모터 PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
-| 오른쪽 모터 PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
+| 왼쪽 모터 PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Configured / 영구 배선·제한 구동 검증 |
+| 오른쪽 모터 PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Configured / 영구 배선·제한 구동 검증 |
 | Encoder channel 1 A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Motor-power-off validated |
 | Encoder channel 1 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Motor-power-off validated |
 | Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Motor-power-off validated |
 | Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Motor-power-off validated |
 | K1 upstream `VBAT_PROTECTED_SENSE` | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Post-MVP diagnostic candidate |
 | K1 downstream `MOTOR_VBAT_SAFE_SENSE` | PB0 | ADC12_IN8 | Arduino A3 / ST morpho access | Post-MVP diagnostic candidate |
-| Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input/EXTI7 candidate | Arduino D9 / ST morpho access | MVP Step 6 candidate |
-| 왼쪽 모터 direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
-| 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
+| Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input (EXTI 미구현) | Arduino D9 / ST morpho access | Configured / 모터 분리 conditioned T004 PASS |
+| 왼쪽 모터 direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Configured / A 양수 실제 전진 방향 관찰 남음 |
+| 오른쪽 모터 direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Configured / HIGH 전진·LOW 후진 제한 구동 확인 |
 | 왼쪽 선택적 power gate/brake | PC6 | GPIO output | ST morpho CN10 pin 4 | Optional |
 | 오른쪽 선택적 power gate/brake | PC5 | GPIO output | ST morpho CN10 pin 6 | Optional |
 | STM32 -> ESP32 production TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Production / bench-validated |
@@ -231,15 +233,15 @@ MVP actual-off 판정은 K1 downstream test point의 direct continuity/voltage �
 
 ### Physical E-stop Sense
 
-PC7은 `ESTOP_SENSE` GPIO/EXTI 후보로 배정한다.
+PC7은 현재 `ESTOP_SENSE` GPIO 입력으로 설정돼 있다. EXTI7은 향후 후보이며 현재 구현은 아니다.
 
 - `5 V -> S0-B NC -> optocoupler LED -> GND` contact loop와
   `3V3 -> external pull-up -> PC7 -> optocoupler transistor -> GND`를 사용한다.
 - Healthy/closed는 LOW, pressed/open/wire break는 HIGH다.
 - 5 V loss도 PC7 HIGH가 되며, PC7에는 3.3 V logic만 연결한다.
-- PC7은 현재 `.ioc`의 PWM/DIR, TIM3/TIM5 encoder, UART와 SWD 배정에 사용되지 않는다.
-- Arduino D9로 접근 가능하지만 CubeMX input 설정, `V_SENSE_LOW_MAX`/
-  `V_SENSE_HIGH_MIN` 계산과 실제 voltage test 전까지 candidate다.
+- 현재 `.ioc`의 `PC7.Signal=GPIO_Input`, `GPIO_PULLUP`과 생성 코드의 `GPIO_MODE_INPUT`을 사용한다.
+- Arduino D9로 접근하며 report 25에서 conditioned 전압 기능, report 26에서 모터 분리 T004 감지·래치·reset·PWM을 검증했다.
+- 전체 전력단 T005A와 실제 구동 중 S0 정지의 잔여 조건은 별도다. [현재 판정과 근거](README.md#현재-구현과-검증-범위)를 따른다.
 - S0-B firmware path는 S0-A/K1 physical power cut를 대체하지 않는다.
 
 상세 기능 회로는
@@ -308,7 +310,7 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 | TIM3 PB4/PB5 encoder | CubeMX 구성과 motor-power-off hand rotation에서 TI12 x4 동작을 확인했다. SWD는 PA13/PA14에 유지한다. |
 | TIM5 PA0/PA1 encoder | A0/A1 ADC 가능 핀을 사용한다. TI12 motor-off hand-count와 TIM3 동시 독립 동작을 확인했다. |
 | PA4/PB0 ADC | 현재 `.ioc`에서 미사용인 post-MVP upstream/downstream diagnostic 후보다. CubeMX ADC configuration deferred. |
-| PC7 GPIO/EXTI | 현재 `.ioc`에서 미사용이며 `ESTOP_SENSE` 후보다. TIM8 대체기능은 사용하지 않는다. |
+| PC7 GPIO input | 현재 `ESTOP_SENSE` 입력으로 사용. EXTI와 TIM8 대체기능은 활성화하지 않았다. |
 | PA13/PA14 | SWD용으로 보존하고 로봇 기능에 배정하지 않는다. |
 
 ## 검증 체크리스트
@@ -328,9 +330,9 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 11. `[x]` PA13/PA14 SWD 유지
 12. `[ ]` 남은 후보까지 포함한 최종 warning/pin-conflict review
 13. `[x]` 현재 검증 범위의 `.ioc` 생성 및 Git 추적
-14. `[ ]` PC7 `ESTOP_SENSE` input/EXTI 후보의 threshold와 latency 시험
+14. `[x]` PC7 GPIO 입력의 conditioned 전압 기능·모터 분리 T004 검증. EXTI 구현·전체 전력단/실모터 정지와 구분
 
-벤치 검증 순서:
+초기 주변장치 bring-up 순서 참고(완료 항목의 반복 지시가 아님):
 
 1. GPIO output toggle test
 2. USART1 ESP32 bridge 회귀와 USART2 bench logger 확인
@@ -346,7 +348,9 @@ PA11/PA12는 CAN1_RX/CAN1_TX 후보로 reserve한다.
 2026-09-26 실물 정정 후 encoder-side mapping은 A=left/JENC_1/TIM3,
 B=right/JENC_2/TIM5이며 커넥터 교환 후 손회전 채널·전진 부호를 확인했다.
 [정정 근거](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)를 따른다.
-M1→A 동력선은 연결했고 M2→B는 계획이다. 실제 전동 구동의 forward polarity는 미검증이다.
+9/29에는 M1→A와 M2→B 동력선이 모두 연결됐고 B는 DIR 보정 후 실제 양방향 단발 구동을 확인했다.
+A의 ±명령 회전은 확인했으나 양수 명령의 실제 전진 방향 관찰은 남아 있다.
+[단일 모터 근거](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)를 따른다.
 
 가장 중요한 설계 선택:
 
@@ -356,7 +360,7 @@ M1→A 동력선은 연결했고 M2→B는 계획이다. 실제 전동 구동의
 - 좌/우 PWM: TIM4 PB6/PB7
 - 엔코더: TIM3 PB4/PB5, TIM5 PA0/PA1
 - K1 upstream/downstream rail ADC 후보: PA4 / PB0
-- Physical E-stop sense 후보: PC7
+- Physical E-stop sense: PC7 GPIO input, 모터 분리 T004 PASS
 - SWD: PA13/PA14 보존
 
 ## 다음 단계
@@ -364,8 +368,8 @@ M1→A 동력선은 연결했고 M2→B는 계획이다. 실제 전동 구동의
 다음 단계는 남은 후보를 순서대로 검증하는 것이다.
 
 1. 완료된 TIM3/TIM5 wrap-safe delta와 speed module을 회귀 기준으로 유지한다.
-2. I2C1 `PB8/PB9`와 MVP PC7 GPIO/EXTI 후보가 기존 확정 핀과 충돌하지 않는지 CubeMX에서
-   확인한다. PA4/PB0 ADC는 post-MVP diagnostic V-cycle에서 확인한다.
+2. IMU 통합 때 `PB8/PB9`, PB1 INT, PC4 RST 설정과 전원·풀업·센서 동작을 검증한다. PC7 입력과 기존 배선은 유지한다.
+   PA4/PB0 두 rail 진단은 post-MVP이며 기본 저전압 경고·정지의 입력 경로는 첫 주행 전에 정한다.
 3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
-4. 현재 A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5와 forward-positive CPS를 유지한다. M2 동력선 연결과 양쪽 전동 구동 방향은 별도 확인한다.
+4. 현재 A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5와 forward-positive CPS를 유지한다. 다음 방향 보완은 A 양수 명령의 실제 전진 관찰이며 선행 조건은 현재 재개 계획을 따른다.
 5. 탈락한 후보는 decision log에 남긴다.

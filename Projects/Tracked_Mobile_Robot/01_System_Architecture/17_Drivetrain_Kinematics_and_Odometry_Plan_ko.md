@@ -1,5 +1,8 @@
 # Drivetrain Kinematics and Odometry Plan
 
+> 문서 역할·상태 대조: **2026-09-30** — 운동학·오도메트리 목표와 현재 좌우 매핑. 주행/거리 보정 완료를 뜻하지 않는다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇의 첫 kinematics와 odometry 계획을 정의한다.
@@ -89,7 +92,9 @@ Encoder sign은 이 convention이 성립하도록 조정해야 한다.
 **현재 기준 — 2026-09-26 정정:** A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5.
 두 엔코더 커넥터 교환 후 손회전 시 해당 쪽 CPS만 변화하고 전진 양수·후진 음수·정지 0을
 사용자가 확인했다. TIM3 부호 반전·TIM5 유지 수식은 그대로 사용한다.
-M1→A 동력선은 연결, M2→B는 계획이며 실제 전동 구동의 전진 방향은 아직 확인하지 않았다.
+9/29에는 M1→A와 M2→B 동력선이 모두 연결됐고 B는 실제 전진·후진과 CPS 부호를 확인했다.
+A의 ±명령 회전·CPS는 관측했으나 양수 명령의 실제 전진 방향 확인은 남아 있다.
+[단일 모터 방향 보정 근거](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md).
 [정정과 새 손회전 근거](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
 
 **아래는 7월 당시 연결과 측정 이력이다. 현재 모터 A/B의 좌우 배선 지시로 사용하지 않는다.**

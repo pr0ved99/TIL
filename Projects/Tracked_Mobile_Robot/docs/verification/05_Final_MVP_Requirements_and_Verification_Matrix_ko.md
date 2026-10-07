@@ -1,6 +1,6 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-판정 기준일: **2026-09-29**. 요구사항·수용 기준은 유지하고 시험 보고서 25~31의 결과를 반영했다.
+판정 기준일: **2026-10-08**. 요구사항·수용 기준은 유지하고9/30 모터 보고서32와10/8 W4 보고서33을 반영했다.
 처음에는 아래 현황을 읽고, 세부 판정은 요구사항 표와 증거 링크에서 확인한다.
 이전 기준일은 2026-09-05다. 당시 설명과 날짜별 측정 이력은 문서 뒤의 **과거 검증 이력**에 보존했다.
 
@@ -8,20 +8,25 @@
 
 | 분야 | 확인한 범위 | 남은 범위 | 최신 근거 |
 | --- | --- | --- | --- |
+| Wi-Fi 상태 전달 | **W4 읽기 전용 PASS**: 실제 TEL·stale/복구·WS 재접속·DISARM/PING 부팅 결과 표시 | W5 브라우저 명령·구동 중 통신 유실/재기동 안전·리셋 오류 전기 원인 | [report33](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) |
 | 통신·명령 처리 | 기존 정상·오류·복구 시험, 실제 S0 감지에 따른 reset 거부/성공과 PWM 차단 | 전체 bridge release의 시험·artifact 연결, 모든 시험 hook을 끈 현재 이미지 복구 | [T004 시험](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md), [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) |
 | 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지 경로·엔코더 전원 | 최종 배선의 전류·전압 강하·발열, 모터 부하 조건, 저전압 정지 기준 | [로직 전원 시험](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md), [엔코더 조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) |
-| 모터 구동 | A/M1 ±10% 회전·CPS 부호·timeout 후 0 복귀. B/M2는 DIR 보정 후 실제 양방향 확인 | A 양수 명령의 실제 전진 방향, active DISARM 정지·전류·열·소음/노이즈 | [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) |
-| 엔코더 | 영구 조정부, 실제 입력 LOW 0 V/HIGH 약 2.86 V, 양쪽 손회전·독립성·전진 부호 | 출력 회로형식·파형·구동 중 노이즈, 외부 기준 속도 정확도 | [엔코더 조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md), [좌우 배치·손회전 검사](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [실제 엔코더·전력단 검사](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) |
-| 물리 비상정지 | T004 감지·latch·reset·PWM 경로 PASS, T005A 전력단 DMM·명령 유실 관측 | 전체 T005A PARTIAL: rail-off 수용 기준·release 항목·실모터 구동 중 S0 정지 | [T004 시험](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md), [T005A 시험](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md), [실제 엔코더·전력단 검사](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) |
+| 모터 구동 | A 실제 전진·active DISARM, A/B 각각10%·3초 구동/정지 | 전류·열·반복/부하 조건·전체 단일 모터 수용 | [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) |
+| 엔코더 | 영구 조정부·손회전, A/B 3초 원시1432/1384 ticks와 CPS 적분 일치; 해당 캡처 반대/동시2비트 전이0 | 외부 기준 속도 정확도·다른 duty/부하의 노이즈 | [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md), [조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) |
+| 물리 비상정지 | T004 기존 PASS, T005A rail DMM, A 구동 중 S0/PWM/엔코더 정지 관측 | 전체 T005A 수용·release, 정식 T-ESTOP-007 시간/거리 증거 | [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md), [T005A](27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) |
 | 기구·주행 | 제작품 입고, 도면·신호 수준 검증 | 실물 장착 검증·양쪽 궤도 주행·1 m 거리 시험 | 아래 기구·주행 요구사항 |
 
 현재 배치는 **A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5**이며 두 모터의 동력선이 연결돼 있다.
 단일 모터 시험은 두 모터를 섀시에서 분리한 조건이었다. 주행이나 전체 MVP 완료를 뜻하지 않는다.
 
 전체 T005A는 실제 단발 구동 당시에도 PARTIAL이었다. 수행한 관측을 보존하되 선행 조건을 충족한 것으로 소급하지 않는다.
-9/22의 all-hooks-0 복구 PASS는 당시 결과다. 현재 ESP는 수동 M2 역방향 시험 hook=1U이며,
-마지막 정적 검사는 31개 중 30 PASS·default-off 요구 1 FAIL이다. 현재 이미지의 정상 모드 복구는 남아 있다.
-오늘의 문서 갱신으로 새로운 물리 시험을 통과 처리하지 않는다.
+9/22의 all-hooks-0 복구 PASS는 당시 결과다. 별도 `esp32_uart_bridge` 소스의9/30 M2_RUN hook=1U와
+정적30 PASS/1 FAIL(default-off)은 이전 모터 시험 기준선이며 해당 소스 복원은 남아 있다.
+10/8 현재 ESP 실행 앱은 `esp32_wifi_link`로 W4 READY·fresh 복원을 확인했다. 브라우저 검사25 PASS로 UART 전체 release를 PASS 처리하지 않는다.
+10/1에는 새 시험 없이 9/30 관측을 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 마감했다. 각 관측을 전체 수용 PASS로 확대하지 않는다.
+
+W4는 MVP-002/T-COM-002에 관련된 상태 보고 경로의 추가 증거다. 일반 PC 명령 전달·브라우저 ARM/CMD는 아직 없으므로
+MVP-001/002 및 전체 UART release의 기존 PARTIAL 판정을 유지한다. 다른 안전·모터·주행 요구사항을 W4 완료로 올리지 않는다.
 
 ## 문서 목적
 
@@ -95,7 +100,7 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` | 보드 전원·MDD 입력 전력단의 관측 완료. 모터 부하·저전압 정지·전체 T005A 수용은 남음 |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` | MCU/MDD 입력 파형·mapper·적용 PWM TEL 확인. report 31의 단일 모터 구동을 추가했으나 A 실제 전진 방향과 전체 출력·안전 조건은 미완료 |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PARTIAL` | 섀시 분리 조건의 10%/300 ms 단발 구동 관측. REQ-MOTOR-005 전체 조건과 선행 T005A는 미충족 |
-| `MVP-006` | 좌우 모터를 개별 제어하고 방향·채널 mapping을 확인한다. | MUST | `PARTIAL` | A/M1·B/M2 개별 구동, B 실제 양방향·다른 모터 무동작 확인. A 양수 명령의 실제 전진 방향 관찰 남음 |
+| `MVP-006` | 좌우 모터를 개별 제어하고 방향·채널 mapping을 확인한다. | MUST | `PARTIAL` | A/M1·B/M2 개별 구동, B 실제 양방향·다른 모터 무동작 확인. A 양수 실제 전진 확인; 궤도 장착/주행은 남음 |
 | `MVP-007` | 좌우 엔코더 A/B를 안전한 전압으로 입력하고 signed count를 얻는다. | MUST | `PARTIAL` | 영구 조정부·실제 입력 전압·손회전 부호·단발 구동 CPS 확인. 파형·출력형식·구동 중 노이즈 검증 남음 |
 | `MVP-008` | TEL에 좌우 count 또는 speed estimate가 포함된다. | MUST | `PASS` | 100 ms CPS TEL·ESP parser 경로. 절대 속도 정확도 검증은 별도 |
 | `MVP-009` | boot/reset/DISARM/timeout/fault에서 실제 motor PWM output이 0이 된다. | MUST | `PARTIAL` | 모터 분리 MCU/MDD 입력 시험과 T004 PASS. 실모터 단발 timeout 관측을 추가했으나 모든 조건의 실제 출력·정지는 미완료 |
@@ -173,13 +178,13 @@ fit과 조립 사진은 아직 확인하지 않았다. A4 종이 대조 결과�
 | `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PASS — motor-disconnected MCU-pin scope` |
 | `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PASS` |
 | `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `CONDITIONAL PASS` |
-| `REQ-MOTOR-005` | 한쪽 모터 no-load에서 전진·후진, timeout/DISARM stop, 전류·열·소음 관찰이 모두 통과해야 한다. | MUST | `PARTIAL` — 단발 회전·timeout subset, 전류/열/소음·별도 active DISARM 정지 미완료 |
+| `REQ-MOTOR-005` | 한쪽 모터 no-load에서 전진·후진, timeout/DISARM stop, 전류·열·소음 관찰이 모두 통과해야 한다. | MUST | `PARTIAL` — 단발·A DISARM·A/B 3초 subset, 전류/열/반복・부하 조건 미완료 |
 
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 
 - `REQ-MOTOR-001 PASS`: `PB6/TIM4_CH1 -> PWM1`, `PC8 -> DIR1`, `PB7/TIM4_CH2 -> PWM2`, `PC9 -> DIR2` routing과 MDD10A A/B LED 반응을 확인했다.
   현재 배치는 A=left/M1/TIM3, B=right/M2/TIM5이며 두 동력선 모두 연결됐다. [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에서
-  B/M2는 오른쪽 DIR 보정 후 실제 전진·후진을 확인했다. A/M1은 양방향 회전·CPS 부호를 확인했으나 양수 명령의 실제 전진 방향 관찰이 남아 있다.
+  B/M2는 오른쪽 DIR 보정 후 실제 전진·후진을 확인했다. A/M1 양수 실제 전진도 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에서 확인했다.
 - `REQ-MOTOR-002 PASS — motor-disconnected MDD10A-input scope`: 2026-08-04 active DISARM은 UART RX frame end부터 두 PWM last-active-edge까지 `23.50 us`였고, 2026-08-12에는 300 ms timeout shutdown, software fault의 다음 PWM pulse 억제와 reset 전 latch를 확인했다. 외부 reset 시 네 motor input이 부동 HIGH가 되는 최초 시험은 FAIL로 보존한다. 이후 각 신호의 외부 10 kΩ pull-down 재시험과 Rev B 영구 만능기판의 continuity·power-up·NRST·hook-0 final capture에서 all-LOW를 확인했다. 이 당시 PASS는 모터 분리 입력 범위다. 이후 T004와 report 31의 추가 관측, 남은 실제 출력·정지는 상위 `MVP-009`와 `T-MOTOR-003`에서 추적한다.
 - `REQ-MOTOR-003 PASS`: 현재 코드는 `PWM 0 -> 최소 1 ms PWM-zero settle -> DIR -> 최소 1 ms post-DIR settle -> PWM` 순서다. 2026-08-03 actual capture에서 CH1 pre/post `1.994/2.03875 ms`, CH2 pre/post `1.54725/~2.040 ms`로 모두 최소 1 ms를 만족했다.
 - `REQ-MOTOR-004 CONDITIONAL PASS`: 2026-08-03의 20.1005 kHz/약 10.05%는 historical
@@ -200,7 +205,7 @@ command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 | --- | --- | --- | --- |
 | `REQ-ESTOP-001~004` | Mechanical-latching actuator의 독립 NC control/sense와 정격에 맞는 K1이 MCU와 독립적으로 motor-energy feed를 차단해야 한다. | MUST | `PARTIAL/BLOCKED` — 6P truth table·K1 제어·무부하 접점 기능과 report 27/30의 MDD rail DMM 관측 완료. rail-off 수용 기준·단자 정격 release·부하/열 시험 미완료 |
 | `REQ-ESTOP-005~008` | 독립 auxiliary NC sense, software latch, boot-safe와 explicit-reset/no-auto-restart를 만족해야 한다. | MUST | `PARTIAL` — report 26 T004 PASS. Report 27/30에 S0 해제/S2 미조작 rail 관측 추가. K1/MDD 결합 no-auto-restart 전체 수용은 미완료 |
-| `REQ-ESTOP-009` | MVP에서 sense/PWM, direct rail-off와 mechanical stop evidence를 분리해 기록해야 한다. 정밀 동기 transient 계측은 post-MVP다. | MUST | `PARTIAL` — sense/PWM와 rail DMM 증거를 분리 보존. T-ESTOP-007의 구동 중 S0에 의한 실제 정지 증거는 BLOCKED |
+| `REQ-ESTOP-009` | MVP에서 sense/PWM, direct rail-off와 mechanical stop evidence를 분리해 기록해야 한다. 정밀 동기 transient 계측은 post-MVP다. | MUST | `PARTIAL` — sense/PWM와 rail DMM 증거를 분리 보존. [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A S0/PWM/엔코더 관측 추가; 정식 T-ESTOP-007 수용은 BLOCKED |
 | `REQ-ESTOP-010` | E-stop asserted/latch/reset-reject 상태를 log 또는 telemetry에서 식별할 수 있어야 한다. | SHOULD | `PARTIAL` — report 26 same-run ACTIVE→LATCHED→RESET·RESET ERR/ACK 확인. K1 rail/discrepancy state 범위는 OPEN |
 | `REQ-ESTOP-011`, `016` | Three-wire manual re-enable과 정격에 맞는 coil suppression이 functional K1 drop-out을 방해하지 않아야 한다. | MUST | `PARTIAL/BLOCKED` — K1/K2 P6KE·healthy-S2 pickup/self-hold/dropout/no-restart 기능과 rail DMM 관측 완료. clamp transient/release timing·전체 rail-off 판정 미완료; FM-ESTOP-014는 post-MVP |
 | `REQ-ESTOP-012~015` | PA4/PB0 dual-rail ADC, discrepancy/plausibility fault와 welded-contact automatic diagnostic을 구현한다. | SHOULD / POST-MVP | `DEFERRED` |
@@ -248,7 +253,7 @@ TEL 정지 0의 관측 길이와 warm reset/cold boot의 범위, S1 전환 때 �
 [좌우 배치·손회전 검사](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)에서 encoder-side 손회전 부호·독립성·정지 0은 PASS다.
 현재 A의 M1A/M1B와 B의 M2A/M2B 동력선은 모두 연결돼 있다.
 [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에서 B/M2는 DIR HIGH=전진/LOW=후진 정의로 보정 후 실제 양방향을 확인했다.
-A/M1 양수 명령의 실제 전진 방향은 아직 보지 못했으므로 `REQ-DRIVE-001` 전체는 PARTIAL이다.
+A/M1 양수 실제 전진은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에서 확인했다. 궤도 장착/차량 구동 수용은 남아 있으므로 `REQ-DRIVE-001` 전체는 PARTIAL이다.
 두 모터는 섀시에서 분리해 시험했으며, 교차시험의 회전 관측을 원래 차량 배치의 방향 검증으로 대신하지 않는다.
 
 ## 요구사항-설계-검증 추적 매트릭스
@@ -265,12 +270,12 @@ A/M1 양수 명령의 실제 전진 방향은 아직 보지 못했으므로 `REQ
 | `REQ-MECH-001` | `DEC-001`, `MECH-001`, `MET-001`, `CM-001` | adapter layout, Rev A preflight | Rev A release | `T-MECH-001` 1:1/vector preflight | release hashes, PDF analysis, user comparison | `PASS` |
 | `REQ-MECH-002~003` | `RISK-001`, `MECH-001`, `MET-001`, `VVT-001` | adapter layout and received-plate mounting audit | fabricated plate and spacers | `T-MECH-002` adapter fit check | Plate `USER-REPORTED RECEIVED`; source identity, measurements and assembly photos TBD | `READY / NOT TESTED` |
 | `REQ-MOTOR-001~004` | `DEC-001`, `RISK-001`, `FMEA-001`, `VVT-001`, `MET-001` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [waveform/shutdown timing procedure](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md), [2026-08-03 waveform report](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md), [2026-08-04 active DISARM report](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md), [2026-08-12 timeout/fault/reset report](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md), [2026-08-18 final perfboard report](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md), [raw captures](../../assets/captures/logic_analyzer/README.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), [fault output-zero/latch evidence](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md), [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md); [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 단발 구동·DIR 보정은 추가 범위 | `MCU PIN + DRIVER INPUT PASS / LOW-DUTY CONDITIONAL / 실제 구동 PARTIAL` |
-| `REQ-MOTOR-005` | `RISK-001`, `PART-001`, `VVT-001`, `MET-001` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 UART 원본·육안 회전 보고; 전류/열·영상·active DISARM 정지는 미확인 | `PARTIAL` |
+| `REQ-MOTOR-005` | `RISK-001`, `PART-001`, `VVT-001`, `MET-001` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 UART 원본·육안 회전 보고; [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM・S0・A/B 3초 추가; 전류/열·정식 영상/거리 미완료 | `PARTIAL` |
 | `SG-ESTOP-001`, `MVP-013`, `REQ-ESTOP-001~020` | `REQ-001`, `RISK-001`, `FMEA-001`, `SAFE-CTRL-001`, `ESTOP-001`, `VVT-001`, `MET-001`, `CM-001` | [`21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md), [`22_Physical_EStop_Hazard_Analysis_ko.md`](../../01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md), [`23_Physical_EStop_FMEA_ko.md`](../../01_System_Architecture/23_Physical_EStop_FMEA_ko.md), [`24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md), [`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md), [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | MVP: K1 relay cut, K2 nominal three-wire re-enable, 5 V/opto PC7 sense, direct rail test point와 latch/reset; post-MVP: FM-014 single-fault extension and PA4/PB0 dual rail diagnostic | MVP `T-ESTOP-001~004`, `005A`, `007`; post-MVP `005B`, `006` | Reports 18/19/24: 부품·제어 경로 이력. Report 26: T004 conditioned PC7/active PWM/latch/reset PASS. Report 27: MDD direct rail DMM와 T005A run01~06 및 safe restore. rail-off 수용 기준, release 항목과 실제 모터 정지는 미완료. FM-ESTOP-014는 post-MVP 잔여 위험 | `PARTIAL / T-ESTOP-005A PARTIAL` |
 | `REQ-ENC-001` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), 기존 DMM log·사진; [엔코더 조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의 영구 회로와 [실제 엔코더·전력단 검사](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)의 실제 LOW/HIGH | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | `REQ-001`, `MET-001`, `VVT-001`, `CM-001` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt), [50-rev calibration summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [vehicle sign record](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md); [좌우 배치·손회전 검사](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | `PARTIAL` |
 | `REQ-ENC-003` | `REQ-001`, `QUAL-001`, `MET-001`, `VVT-001` | odometry design | modular count delta and telemetry | `T-ENC-002` speed telemetry | [2026-07-29 stationary log](../../assets/logs/encoder/2026-07-29_encoder_speed_stationary_pass.txt), [production CPS TEL verification](../../assets/logs/encoder/2026-07-29_dual_encoder_cps_uart_telemetry_verification.md), [50-rev/mRPM summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [mRPM dynamic raw log](../../assets/logs/encoder/2026-07-30_dual_encoder_millirpm_hand_rotation_pass.txt); 현재 차량 좌우는 [좌우 배치·손회전 검사](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | `PASS` |
-| `REQ-DRIVE-001` | `ARCH-001`, `REQ-001`, `MET-001`, `VVT-001` | encoder-side vehicle-frame sign과 powered actuator-side mapping | A=left/M1/TIM3, B=right/M2/TIM5; 두 모터 연결 | 손회전 부호·독립성 PASS; B 전동 방향 HIGH=전진/LOW=후진 확인, A 양수 실제 전진 관찰 남음 | [좌우 정정](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [단일 모터 방향 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | `PARTIAL` |
+| `REQ-DRIVE-001` | `ARCH-001`, `REQ-001`, `MET-001`, `VVT-001` | encoder-side vehicle-frame sign과 powered actuator-side mapping | A=left/M1/TIM3, B=right/M2/TIM5; 두 모터 연결 | 손회전 부호·독립성 PASS; B 전동 방향 HIGH=전진/LOW=후진 확인, A 양수 실제 전진 확인; 궤도 장착/주행은 남음 | [좌우 정정](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [단일 모터 방향 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | `PARTIAL` |
 | `REQ-DRIVE-002~003` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | state machine, kinematics | dual motor path | `T-DRIVE-001` lifted/ground drivetrain and actual stop | video, mapping and fault log | `PLANNED` |
 | `REQ-ODO-001` | `ODO-001`, `MET-001`, `VVT-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
 | `MVP-012` | `LCM-001`, `INFO-001`, `CM-001`, `VVT-001` | master plan and README | documentation package | `T-DOC-001` evidence audit | README, linked evidence matrix | `PARTIAL` |
@@ -294,8 +299,8 @@ A/M1 양수 명령의 실제 전진 방향은 아직 보지 못했으므로 `REQ
 | 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `CONDITIONAL PASS` |
 | 11 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `PARTIAL` |
 | 12 | `T-ESTOP-001~004 + T-ESTOP-005A` | component/schematic, continuity, PC7 sense, latch, nominal no-auto-motion과 direct rail-off | 부품 정격, power/back-power policy, verified healthy S2/harness, DMM/logic analyzer | `PARTIAL` — T004 conditioned PC7/active PWM/latch/reset PASS; T005A run01~06과 MDD rail DMM 및 hook0 복구 보존. rail-off 수용 기준/release 미결, 전체 combined acceptance 미완료 |
-| 13 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, `T-ESTOP-001~004 + T-ESTOP-005A`, dual motor-off count, 전원, 기구 안전 | `PARTIAL` — report31 단발 구동 subset; 전체T005A·전류/열/노이즈 미완료 |
-| 14 | `T-ESTOP-007` | lifted single-motor Physical E-stop time/distance | `T-MOTOR-003`, `T-ESTOP-001~004 + T-ESTOP-005A` | `BLOCKED` |
+| 13 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, `T-ESTOP-001~004 + T-ESTOP-005A`, dual motor-off count, 전원, 기구 안전 | `PARTIAL` — [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM·A/B 3초 subset; 전체T005A·전류/열/반복/부하 조건 미완료 |
+| 14 | `T-ESTOP-007` | lifted single-motor Physical E-stop time/distance | `T-MOTOR-003`, `T-ESTOP-001~004 + T-ESTOP-005A` | BLOCKED — 정식 수용 조건 미완료. [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A S0/PWM/엔코더 관측은 별도 보존 |
 | 후속 | `T-ESTOP-005B` | S2 stuck-closed/6P pair-short single-fault extension | MVP nominal baseline 뒤 mitigation/fault-injection V-cycle | `DEFERRED / POST-MVP` |
 | 후속 | `T-ESTOP-006` | dual-rail ADC plausibility, discrepancy fault와 정밀 rail transient | MVP baseline 뒤 별도 diagnostic V-cycle | `DEFERRED / POST-MVP` |
 | 15 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | single motor와 양 encoder PASS | `PLANNED` |

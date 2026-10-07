@@ -1,5 +1,8 @@
 # FreeRTOS Task Architecture
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](13_FreeRTOS_Task_Architecture_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document defines the FreeRTOS task architecture for the tracked mobile

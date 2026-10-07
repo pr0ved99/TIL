@@ -1,5 +1,8 @@
 # Verification Documentation
 
+최신 통합 관측: [report33](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) — W4 실제 STM TEL·WebSocket·중단/복구·재접속·부팅 결과 분리 표시 PASS. 무선 명령은 W5 미구현이다.
+모터 시험은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A 방향·DISARM·S0·A/B 각각10%·3초 범위다. 전류/열·전체 안전 수용·주행은 남아 있다. 재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+
 이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.
 
 목표는 개인 프로젝트 규모에 맞는 경량 V-model을 적용하는 것이다. 즉, 큰 조직의 절차 문서를 흉내 내는 것이 아니라 다음 흐름을 작게라도 남긴다.
@@ -16,6 +19,12 @@ Engineering Basis
 계획·설계·구현·검증에 사용한 Basis ID, 적용 수준과 인증 주장 경계는 [`../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md)를 정본으로 사용한다.
 
 ## Current Verification Scope
+
+**2026-10-08:** W4 읽기 전용 상태 전달 완료. 두 보드 USB·LiPo 미연결, STM TEL100ms·WS1000ms·TEL stale500ms.
+READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이며 현재 TEL freshness·구동 허가와 별개다.
+마지막 실행은 READY·fresh·FAULT/ESTOP_ACTIVE·출력0·drop0·err1이다. 리셋 순간 err 증가의 완전한 전기 원인은 미확정이다.
+아래 날짜별 `현재/다음/hook` 문구는 해당 시점의 이력이며 현재 Wi-Fi 앱 이미지로 해석하지 않는다.
+
 
 **2026-09-29 현재:** [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 단일 모터 구동·교차시험·오른쪽 DIR 보정과 원본12개를 보존했다.
 B/M2 보정 후 양방향10%/300ms 실제 회전·CPS 부호·timeout 후0 복귀 PASS. A/M1 양수의 실제 전진 방향, 부하/주행과 전체T005A는 남아 있다.
@@ -159,6 +168,8 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 | [차량 좌우 정정·손회전 확인](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) | 현재 A=left/M1/TIM3, B=right/M2/TIM5; 교환 후 사용자 보고 PASS |
 | [실제 엔코더·전력단 검사 마감](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md) | warm reset169TEL, 전압·배터리·S1 CPS 관측과 M1 코드 입력 WIP |
 | [단일 모터 구동·교차시험·DIR 보정](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | A/M1 회전, B/M2 양방향 확인, 현재 시험 이미지와 미확정 오류 증가 |
+| [단일 모터 3초·DISARM·S0·원시 엔코더](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) | A 실제 전진·A/B 각각10%/3초·1432/1384 ticks 대조. 전류/열·주행 미완료 |
+| [W4 실제 UART·WebSocket·부팅 결과](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) | 읽기 전용 PASS, TEL stale/복구·재접속·ACK/PONG 누락 제한 실패·READY/FAILED 분리. err 진단의 한계와 W5 재개점 |
 
 ## Evidence Files
 
@@ -270,7 +281,7 @@ Physical E-stop MVP gate는 2026-08-25부터 `T-ESTOP-001~004 + T-ESTOP-005A`로
 
 ![Timeout output zero](../../assets/screenshots/uart_mvp/2026-07-09_06_cmd_timeout_output_zero.png)
 
-## 다음 검증 순서 — 2026-09-27
+## 과거 검증 순서 — 2026-09-27 당시 계획
 
 1. [M1 수동 코드 안내](../plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)의 사용자 입력을 완성하고 저장 파일을 검토한다. 이후 사용자 ESP 빌드·플래시와 LiPo 분리 HELP 확인을 진행한다. 엔코더 LOW/HIGH·손회전·좌우 정정 검사는 완료했다.
 2. T005A 전체는 PARTIAL이다. [report 30](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)의 추가 rail 관측·Littelfuse 10A/1A 확인과 14AWG 유지 결정을 적용하되, report 27의 전체 수용 판정을 임의로 PASS로 바꾸지 않는다. 확인된 사실을 다시 묻지 않는다.

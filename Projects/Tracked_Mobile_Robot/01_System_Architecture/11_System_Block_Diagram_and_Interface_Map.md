@@ -1,5 +1,9 @@
 # System Block Diagram and Interface Map
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](11_System_Block_Diagram_and_Interface_Map_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: PC7 is configured GPIO input; IMU auxiliary wiring is checked but sensor firmware/runtime remains pending. CAN PA11/PA12 and ADC PA4/PB0 remain unconfigured.
+
 ## Purpose
 
 This document defines the first complete hardware/software interface map for
@@ -112,15 +116,11 @@ the interface-level power model.
     |
     +-- main power switch
     |
-    +-- motor power rail --------------------+
-    |                                        |
-    |                                  MDD10A POWER+
-    |
-    +-- buck converter input
-             |
-             +-- 5 V logic/aux rail candidate
-             |
-             +-- STM32 / ESP32 / sensor supply path
+    +-- positive busbar / protected battery rail
+            +-- K1 pin30 -> pin87 -> MDD10A POWER+
+            +-- XL4015 #1 -> STM32 / ESP32 board 5 V
+            +-- XL4015 #2 -> encoder / S0-B AUX5V
+            +-- F2 -> S0/S2/K2/K1 control
 ```
 
 Common rules:
@@ -176,8 +176,7 @@ Candidate STM32 interfaces for the first MVP:
 
 Pin allocation is not finalized in this document.
 
-The current architecture keeps the pin plan close to PB6/PB7 PWM plus PC8/PC9
-DIR, pending CubeMX and header-access validation.
+PB6/PB7 PWM and PC8/PC9 DIR are configured and permanently wired. PC7 is GPIO input with conditioned motor-disconnected T004 evidence; ADC/CAN and IMU runtime remain pending as specified in the Korean map.
 
 ## 6. ESP32-S3 Interface Map
 
@@ -185,7 +184,7 @@ ESP32-S3 responsibilities:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command and telemetry bridge; optional PC forwarding is planned | Architecture fixed; production mapper/upstream pending |
+| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command and telemetry bridge; optional PC forwarding is planned | Mapper/timeout/manual bench console implemented; general forwarding and full bridge release pending |
 | USB Serial/JTAG | ESP32 <-> PC | Development PC | Flashing and debug | Required |
 | Wi-Fi | ESP32 <-> PC/phone | Dashboard or log bridge | Later |
 | GPIO/RGB LED | ESP32 local | Board test | Already validated in earlier ESP32 practice | Optional |

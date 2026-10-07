@@ -1,5 +1,8 @@
 # 시스템 블록 다이어그램과 인터페이스 맵
 
+> 문서 역할·상태 대조: **2026-09-30** — 시스템 연결·역할 지도. 배선 완료·펌웨어 설정·제한 검증을 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트의 첫 전체 hardware/software interface map을 정의한다.
@@ -115,7 +118,7 @@ ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM3
 
 ## 3. 전원 블록 다이어그램
 
-상세 power architecture는 `12_Power_Distribution_and_Safety_Architecture.md`에서 다룬다.
+상세 power architecture는 [12 전원 구조](12_Power_Distribution_and_Safety_Architecture_ko.md)에서 다룬다.
 이 문서에서는 interface 수준의 power model만 기록한다.
 
 ```text
@@ -133,11 +136,9 @@ ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM3
             |       |
             |       +-- safe motor power rail -> MDD10A POWER+
             |
-            +-- buck converter input
-             |
-             +-- 5 V logic/aux rail candidate
-             |
-             +-- STM32 / ESP32 / sensor supply path
+            +-- XL4015 #1 -> board logic 5 V (STM32 / ESP32)
+            +-- XL4015 #2 -> AUX5V (encoder / S0-B sense)
+            +-- F2 -> S0/S2/K2/K1 coil control
 ```
 
 공통 규칙:
@@ -177,7 +178,7 @@ Motion 허용 여부는 STM32가 결정한다.
 
 ## 5. STM32 Interface Map
 
-첫 MVP를 위한 STM32 후보 interface:
+현재 배정과 후속 interface 후보:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
@@ -187,23 +188,25 @@ Motion 허용 여부는 STM32가 결정한다.
 | Timer encoder input | Motor encoder -> STM32 | Left encoder A/B | Count and direction | Required |
 | Timer encoder input | Motor encoder -> STM32 | Right encoder A/B | Count and direction | Required |
 | ADC input PA4 candidate | `VBAT_PROTECTED` divider -> STM32 | K1 upstream/main battery monitor | Low-voltage and rail reference | Required, unconfigured |
-| ADC input PB0 candidate | `MOTOR_VBAT_SAFE` divider -> STM32 | K1 downstream motor rail | Actual-off/plausibility diagnostic | Required, unconfigured |
-| GPIO/EXTI PC7 candidate | S0-B 5 V loop -> optocoupler -> STM32 | Physical E-stop sense | Safe output/latch request | Required, unconfigured |
+| ADC input PB0 candidate | `MOTOR_VBAT_SAFE` divider -> STM32 | K1 downstream motor rail | Actual-off/plausibility diagnostic | Post-MVP, unconfigured |
+| GPIO input PC7 (EXTI 미구현) | S0-B 5 V loop -> optocoupler -> STM32 | Physical E-stop sense | Safe output/latch request | Required, configured (firmware/PWM PASS) |
 | I2C | STM32 <-> BNO08x | IMU | Yaw/attitude candidate | Motor bring-up 이후 required |
+| GPIO/EXTI 후보 PB1 | BNO08x -> STM32 | IMU INT | Interrupt input | 배선 PASS / 설정·센서 동작 미완료 |
+| GPIO 후보 PC4 | STM32 -> BNO08x | IMU RESET | Hardware reset | 배선 PASS / 설정·센서 동작 미완료 |
 | USART1 | STM32 <-> ESP32 | Production ingress/support controller | Command/telemetry | Required, production |
 | USART2 / ST-LINK USB serial | STM32 -> PC | Development PC | Bench debug/encoder logger; historical PC-first command evidence | Development only, not production ingress |
-| bxCAN | STM32 <-> CAN transceiver | Future CAN bus | 후속 command/telemetry path | Deferred |
+| bxCAN (PA11/PA12 예약) | STM32 <-> CAN transceiver (SN65HVD230 모듈 확정) | Future CAN bus | 후속 command/telemetry path | Deferred |
 
 상세 pin status는 [`06_MCU_Pin_Allocation_Candidate_ko.md`](06_MCU_Pin_Allocation_Candidate_ko.md),
 회로 기능은
 [`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를
 따른다. 부품 후보와 정격 판정은
 [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](26_Physical_EStop_Component_and_Rating_Selection_ko.md)를
-따른다. PC7은 MVP Step 6 target candidate이고 PA4/PB0는 post-MVP diagnostic candidate이며,
-모두 아직 CubeMX/bench 검증 전이다.
+따른다. PC7은 MVP Step 6 target으로 설정 및 벤치 검증(T004)이 완료되었다. PA4/PB0는 post-MVP diagnostic candidate이며,
+아직 검증 전이다.
 
-현재 아키텍처는 MDD10A 경로가 motor 2개에 대해 PWM output 2개와 DIR GPIO 2개를 요구한다.
-따라서 기존 PB6/PB7 PWM, PC8/PC9 direction 후보를 유지할 수 있다.
+MDD10A 제어를 위해 PB6/PB7(PWM), PC8/PC9(DIR) 핀 할당이 확정되었으며,
+현재 영구 배선과 A/M1·B/M2 단발 회전을 관측했다. B 실제 양방향은 확인했고 A 양수 명령의 실제 전진 방향 관찰은 남아 있다. 전체 단일 모터/주행 수용 완료와 구분한다.
 
 ## 6. ESP32-S3 Interface Map
 
@@ -211,7 +214,7 @@ ESP32-S3 책임:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command와 telemetry bridge; optional PC forwarding은 계획 상태 | Architecture fixed; production mapper/upstream pending |
+| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command와 telemetry bridge; optional PC forwarding은 계획 상태 | 현재 기능 구현·제한 runtime 확인; 전체 bridge/UART release는 PARTIAL |
 | USB Serial/JTAG | ESP32 <-> PC | Development PC | Flashing and debug | Required |
 | Wi-Fi | ESP32 <-> PC/phone | Dashboard or log bridge | Wireless telemetry/control bridge | Later |
 | GPIO/RGB LED | ESP32 local | Board test | 이전 ESP32 실습에서 검증됨 | Optional |

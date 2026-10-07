@@ -1,5 +1,8 @@
 # STM32-ESP32 UART 인터페이스 계약
 
+> 문서 역할·상태 대조: **2026-09-30** — 현재 UART frame·timeout·reset 계약. 날짜별 검사/이미지 기록은 당시 증거로 보존한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조
@@ -488,7 +491,8 @@ ESTOP_RESET,seq=45\n
 - 성공한 reset은 robot을 arm하거나 이전 command를 복원하지 않는다. Motion에는 새로 수락된
   `ARM` 뒤 valid `CMD`가 필요하다.
 
-새 TEL schema에서 active-reject와 released-success runtime vector는 P-04B의 OPEN 항목이다.
+후속 [T004 report 26](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)에서 conditioned S0-B/PC7의 active reset 거부·released reset 성공과 PWM을 확인했다.
+전체 전력단·구동 중 S0 정지 검증은 별도다.
 
 ### PING
 
@@ -728,9 +732,18 @@ Safety는 모터를 실제로 멈출 수 있는 가장 낮은 layer에서 강제
 - ESP32가 UI에서 low-speed command request를 보낸다.
 - STM32는 계속 최종 safety gate로 남는다.
 
-## 12. 현재 구현 및 검증 상태
+## 12. 현재 구현 및 과거 검증 기록
 
-2026-08-06 현재 구현·runtime과 source 상태:
+2026-09-30 대조: mapper·timeout DISARMED·applied PWM·reason/command_age_ms와 수동 단발 콘솔은 구현돼 있다.
+Conditioned reset/latch/PWM은 [report 26](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md), 실제 단일 모터 관측은 [report 31](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)을 따른다.
+현재 M2 시험 hook=1U이며 정적 검사는 31개 중 30 PASS/1 FAIL(모든 hook=0 요구)이다. 과거 safe-image 복구와 구분한다.
+전체 통신 수용의 잔여 항목은 [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에서 관리한다.
+
+### 2026-08-06 UART 시험 당시 기록
+
+아래 수치·해시·15개 검사와 이미지 상태는 당시 증거이며 현재 소스/이미지 상태를 뜻하지 않는다.
+
+2026-08-06 당시 구현·runtime과 source 상태:
 
 | 항목 | 결과 | 판정 범위 |
 | --- | --- | --- |
@@ -780,7 +793,7 @@ Current overflow controlled/safe build와 flash 요약은
 이 raw log들은 flash hash와 battery/MDD10A/motor 분리 조건을 자체 증명하지 않으므로
 그 image/physical provenance는 작업자 확인 대기다.
 
-현재 revision의 verification gate는 다음과 같다.
+2026-08-06 당시 후속 verification gate 기록(현재 남은 작업은 검증 매트릭스에서 확인):
 
 1. 완료된 T-BRIDGE-007, T-BRIDGE-008A duplicate-seq/trailing-comma/required-`seq` uint32-overflow와 post-test safe evidence를 보존
 2. T-BRIDGE-008A partial-frame-name response부터 invalid terminator/embedded-control, overlong-line/RX-line-buffer-overflow vectors를 닫는다.
@@ -825,9 +838,8 @@ ESP32:
 recovery 정책은 ADR-015로 닫혔으며 아래 목록의 열린 항목이 아니다.
 
 - Optional `PC -> ESP32` forwarding을 구현할 경우 사용할 upstream transport와 arbitration 방식
-- 고정된 GPIO17/18 <-> PA9/PA10 link의 영구 harness connector, pinout, strain relief와
-  service-disconnect 상세
-- 실제 module에서 level shifting 또는 buffering이 필요한지
+- GPIO17/18 ↔ PA9/PA10 영구 신호 경로는 배선됐다. 현재 ESP 외부 연장 시험과 최종 USB 접근·고정·service-disconnect를 구분해 마감
+- 현재 직접 UART 연결의 검증을 유지하고, 배선 길이·모듈을 바꿀 때 logic level과 signal integrity를 재평가
 - 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
 - 최대 application frame length와 ring buffer size
 - 최종 fault bitmask definition
@@ -846,6 +858,15 @@ motor safety decision을 소유한다.
 Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` + valid `CMD`
 순서다. 이는 state-machine recovery 계약이며 transport freshness/anti-replay 입증은 아니다.
 
+현재 구현·관측은 이 문서 §12의 최신 요약과 [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
+T004의 active reset 거부·released reset 성공은 확인됐으나 전체 UART release, 기본 저전압,
+전력단/구동 중 정지는 각각 남은 조건을 추적한다. 현재 M2 시험 hook=1U는 default-off 복구 상태가 아니다.
+
+<details>
+<summary>2026-08-30 당시 P-03/P-04 검증·빌드 기록</summary>
+
+아래 current/open 표현은 8/30 당시를 가리킨다. 검사 개수·빌드 수치와 미완료 판정을 당시 증거로 보존한다.
+
 Earlier safe UART behavior와 T-BRIDGE-007/008 required runtime scope는 PASS했고 current source의
 controlled hook은 모두 `0U`다. P-02C-2의 historical checkpoint는 `25/25`, P-03 checkpoint는
 `26/26`, P-04A checkpoint는 `27/27`이다. P-04B reason/accepted-command age 단계의
@@ -860,6 +881,8 @@ ESP32 isolated build도 PASS했다. 그러나 harness-enabled board flash/runtim
 target reflash/no-command runtime restore는 남아 P-04B 전체는 `PARTIAL`이다. 이는 software
 cache/UART 증거이며 measured PWM, exact artifact/setup linkage 또는 motor evidence가 아니다.
 다음 telemetry 작업은 P-04B closeout 뒤 P-05 battery다.
+
+</details>
 
 CAN은 UART command와 telemetry contract가 검증된 뒤 반드시 이어서 다룰 후속
 interface로 유지한다.

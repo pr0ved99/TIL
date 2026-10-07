@@ -1,5 +1,8 @@
 # CAN Bus Integration Plan
 
+> 문서 역할·상태 대조: **2026-09-30** — 후속 CAN 통합 계약·frame 정의. PA11/PA12 예약과 모듈 보유는 실제 통신 검증이 아니다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트에 CAN을 어떻게 도입할지 정의한다.
@@ -121,6 +124,8 @@ CAN을 motor command 권한에 연결하기 전에 다음 조건이 만족되어
 CAN debugging이 기본 drivetrain, encoder, power, safety 문제를 가리면 안 된다.
 
 ## 4. 필요한 Hardware
+
+2026-09-30 보유 정보: 사용자는 SN65HVD230 기반 MCU-230 모듈을 보유한다. PA11/PA12 예약을 유지하며 실제 단자·전원·RS·종단과 통신은 미검증이다. USB-CAN 장치의 선정·확인은 별도다.
 
 Required hardware:
 

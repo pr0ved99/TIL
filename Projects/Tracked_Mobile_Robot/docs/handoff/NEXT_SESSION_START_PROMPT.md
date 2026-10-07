@@ -1,3 +1,33 @@
+# Next Session Start Prompt
+
+최신 기준 **2026-10-08 W4 마감**. 아래 내용을 새 대화에 붙여 넣는다.
+
+```text
+Tracked_Mobile_Robot 프로젝트를 이어서 진행해라.
+저장소 C:/Users/eyh12/workspace/TIL, branch agent/dual-encoder-bringup.
+먼저 docs/handoff/CURRENT_SESSION_CONTEXT.md와 docs/progress/2026-10-08_progress.md,
+필요한 경우 docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md만 읽어라.
+
+W4 실제 STM TEL→UART→ESP WebSocket, stale/복구·재접속,
+ACK/PONG 최대3회 제한 실패·READY/FAILED 독립 표시는 완료했다.
+변경 없는 W4·납땜/도통·모터 시험을 처음부터 반복하지 마라.
+현재 ESP 앱은 esp32_wifi_link이며 ARM/CMD와 브라우저 명령 수신은 미구현이다.
+두 보드 만능기판·각 USB, LiPo 미연결이 마지막 시험 조건이다.
+마지막 READY/fresh, PWM/CPS0, drop0, err1. USB 전원 분리는 아직 완료 보고가 없다.
+READY는 이번 ESP 부팅의 확인 이력이며 현재 세션/구동 허가가 아니다.
+리셋 err 추가 조사는 W4에서 멈췄고 캡처·복구·해석 한계는 보고서에 있다.
+
+다음은 W5 설계와 모터 전원 없는 PING/DISARM부터다.
+입력·세션·단일 UART 소유자·seq/응답·유효시간을 정한 뒤 완전한 코드 블록을 제시해라.
+ARM/CMD는 최신 TEL·명령 유효시간·재기동/끊김·명시적 재허가 검증 후 별도로 다뤄라.
+사용자가 펌웨어 입력과 두 보드 빌드·플래시·실측을 한다.
+개인 Wi-Fi 비밀번호를 출력하지 마라. Git commit/push는 별도 요청 때만 진행해라.
+사용자 요청 없이 subagent·전체 대화 아카이브를 열지 마라.
+```
+
+<details>
+<summary>이전 시작 프롬프트 — 10/8 마감 전 이력, 현재 지시 아님</summary>
+
 # 새 대화 시작 프롬프트
 
 2026-10-03 Wi-Fi 설정 확인·ESP 예제 검토 기준. 아래 문장을 새 대화에 붙여 넣고 하려는 작업을 덧붙인다.
@@ -76,5 +106,7 @@ git status와최근커밋을 확인하고 진행 기록은 마감 때 모아서 
 Git 마감 전 Python 재검사도 30 PASS/1 FAIL(M2 시험 hook=1U)이었다. 최신 커밋과 원격 동기화 상태는 git으로 확인해라.
 ```
 
+
+</details>
 
 </details>

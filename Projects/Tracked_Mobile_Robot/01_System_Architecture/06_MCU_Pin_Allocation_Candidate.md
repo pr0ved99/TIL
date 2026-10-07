@@ -1,5 +1,9 @@
 # STM32F446RE Pin Allocation Candidate
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](06_MCU_Pin_Allocation_Candidate_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: PC7 is configured as a GPIO input, not EXTI; conditioned motor-disconnected T004 passed. Both M1/A and M2/B power leads are connected. B powered forward/reverse was observed; A actual forward observation remains open.
+
 > English reference updated for the recorded IMU auxiliary-pin selection on 2026-09-23.
 > The [Korean pin map](06_MCU_Pin_Allocation_Candidate_ko.md) is canonical; candidates and completed wiring are not equivalent to firmware/runtime validation.
 
@@ -8,7 +12,7 @@
 This document proposes the first pin allocation candidate for the NUCLEO-F446RE
 tracked mobile robot MVP.
 
-This is not the final pinout. It is a pre-CubeMX candidate based on:
+This started as a pre-CubeMX candidate. Configured and reserved pins now coexist; use the Korean status table for current implementation and evidence. Reference sources:
 
 - STM32F446xC/E datasheet
 - UM1724 STM32 Nucleo-64 boards user manual
@@ -71,17 +75,17 @@ The first allocation uses these principles:
 | IMU I2C SDA | PB9 | I2C1_SDA | Arduino D14 / ST morpho CN10 pin 5 | Primary |
 | IMU interrupt `IMU_INT_N` | PB1 | GPIO input / EXTI1 | ST morpho CN10 pin 24 / H_NUC_UP_R4 Pin12 / C17/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
 | IMU reset `IMU_RST_N` | PC4 | GPIO output | ST morpho CN10 pin 34 / H_NUC_UP_R4 Pin17 / C22/R4 | 9/19 wiring/unpowered checks user-reported PASS; configuration pending |
-| Left motor PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Candidate |
-| Right motor PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Candidate |
-| Left encoder A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Candidate |
-| Left encoder B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Candidate |
-| Right encoder A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Candidate |
-| Right encoder B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Candidate |
+| Left motor PWM | PB6 | TIM4_CH1 | Arduino D10 / ST morpho CN10 pin 17 | Configured; permanent wiring and bounded motor observations |
+| Right motor PWM | PB7 | TIM4_CH2 | ST morpho CN7 pin 21 | Configured; permanent wiring and bounded motor observations |
+| Left encoder A | PB4 | TIM3_CH1 | Arduino D5 / ST morpho CN10 pin 27 | Configured; conditioned input, hand-rotation and bounded CPS observations |
+| Left encoder B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Configured; conditioned input, hand-rotation and bounded CPS observations |
+| Right encoder A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Configured; conditioned input, hand-rotation and bounded CPS observations |
+| Right encoder B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Configured; conditioned input, hand-rotation and bounded CPS observations |
 | K1 upstream `VBAT_PROTECTED_SENSE` | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Post-MVP diagnostic candidate |
 | K1 downstream `MOTOR_VBAT_SAFE_SENSE` | PB0 | ADC12_IN8 | Arduino A3 / ST morpho access | Post-MVP diagnostic candidate |
-| Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input/EXTI7 candidate | Arduino D9 / ST morpho access | See Korean map and current E-stop reports for implementation status |
-| Left motor direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Candidate |
-| Right motor direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Candidate |
+| Physical E-stop `ESTOP_SENSE` | PC7 | Configured GPIO input; EXTI not implemented | Arduino D9 / ST morpho access | Motor-disconnected conditioned T004 PASS |
+| Left motor direction | PC8 | GPIO output | ST morpho CN10 pin 2 | Configured; actual forward observation pending |
+| Right motor direction | PC9 | GPIO output | ST morpho CN10 pin 1 | Configured; HIGH forward/LOW reverse observed in bounded tests |
 | Optional power gate/brake 1 | PC6 | GPIO output | ST morpho CN10 pin 4 | Candidate only if separate circuit is added |
 | Optional power gate/brake 2 | PC5 | GPIO output | ST morpho CN10 pin 6 | Candidate only if separate circuit is added |
 | STM32 -> ESP32 production TX | PA9 | USART1_TX | Arduino D8 / ST morpho CN10 pin 21 | Production / bench-validated |
@@ -305,7 +309,7 @@ The most important design choices are:
 
 ## Next Stage
 
-The next step is not more datasheet reading. The next step is validation:
+Historical first pin-validation sequence (already completed subsets are not repeat instructions; current actions are in the Korean map):
 
 1. Create a CubeMX `.ioc` pinout based on this candidate.
 2. Export screenshots or notes from CubeMX.

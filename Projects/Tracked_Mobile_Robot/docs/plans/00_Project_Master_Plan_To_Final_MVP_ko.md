@@ -1,12 +1,13 @@
 # 최종 MVP까지의 전체 실행 계획
 
-갱신: **2026-09-29**. 이 문서는 프로젝트의 목표, 현재 위치, 남은 작업과 단계별 완료 조건을 안내한다.
+갱신: **2026-10-08**. 이 문서는 프로젝트의 목표, 현재 위치, 남은 작업과 단계별 완료 조건을 안내한다.
 실제 판정과 수치는 원본 시험 보고서 → [검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다.
 현재 작업을 이어갈 설정·조작은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 날짜별 실행 계획에서 관리한다.
 
-**현재 위치: 단일 모터 구동을 일부 확인했고, 전력단·안전·기구 통합의 남은 조건을 닫는 단계다.**
+**현재 위치: 단일 모터의 일부 구동 시험과 W4 무선 상태 전달을 완료했다. 다음은 W5 비구동 명령 설계이며, 전력단·안전·기구 통합의 잔여 조건은 유지한다.**
+[W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)의 완료는 읽기 전용 범위다. 무선 구동 명령·전체 MVP 완료를 뜻하지 않는다.
 A/M1은 ±10% 회전·CPS 부호·timeout 후 0 복귀, B/M2는 DIR 보정 후 실제 전진·후진을 확인했다.
-A 양수 명령의 실제 전진 방향, 전류·열·노이즈, 전체 물리 비상정지와 차량 주행은 아직 남아 있다.
+9/30에는 A 실제 전진·active DISARM·S0 관측과 A/B 각각10%·3초 구동까지 확인했다. [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md). 전류·열·반복/부하·전체 물리 비상정지와 차량 주행은 남아 있다.
 
 읽는 순서: **MVP 목표 → 현재 단계 → 남은 작업·완료 조건**. 세부 Gate와 과거 계획은 필요한 부분을 펼쳐 읽는다.
 
@@ -41,9 +42,9 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | G2B 제작품·장착 | 도면 PASS / 실물 READY·NOT TESTED | 도면·제조 파일 점검, 제작품 수령 | 실물 식별·치수·체결·절연·접근성 |
 | G3 PWM/DIR | 모터 분리 MCU-pin 범위 PASS | PWM·방향 전환·DISARM/timeout/fault/reset | 후속 실모터 결과를 이 범위와 구분해 G5~G7에서 검증 |
 | G4 드라이버·전원·기구 통합 | PARTIAL | G4A MDD 입력·G4B 로직 전원 범위 PASS, 전력단 관측 추가 | G4C 실물 fit·최종 배선과 전체 전력단/비상정지 수용 |
-| G4~G5 물리 비상정지 | T004 PASS / 전체 T005A PARTIAL | 감지·latch·reset·PWM, 모터 분리 rail DMM·명령 유실 관측 | rail-off 수용 기준·release 항목, T-ESTOP-007 실모터 S0 정지 |
-| G5 엔코더·단일 모터 | PARTIAL | 영구 조정부·실제 입력·손회전·단발 회전 관측 | A 실제 전진 방향, active DISARM 정지·전류·열·소음/노이즈 |
-| G6 양쪽 구동계 | PARTIAL | CPS TEL·현재 좌우 손회전 mapping, B/M2 실제 양방향 | A 방향 마감·양쪽 궤도 동시 구동·저속 주행·실제 정지 |
+| G4~G5 물리 비상정지 | T004 PASS / 전체 T005A PARTIAL | 감지·latch·reset·PWM, rail DMM, A 구동 중 S0/PWM/엔코더 관측 | rail-off 수용 기준·release 항목, T-ESTOP-007 실모터 S0 정지 |
+| G5 엔코더·단일 모터 | PARTIAL | 영구 조정부·손회전·A 전진/DISARM·A/B 3초 원시 엔코더 대조 | 전류·열·소음/진동·반복/부하 조건 |
+| G6 양쪽 구동계 | PARTIAL | CPS TEL·현재 좌우 손회전 mapping, B/M2 실제 양방향 | 양쪽 궤도 동시 구동·저속 주행·실제 정지 |
 | G7 시스템 인수 | PLANNED | 인수 기준 정의 | 모든 MUST PASS, 1 m·fault/stop·최종 증거 점검 |
 | G8 포트폴리오 공개 | PARTIAL | 로컬 README·사진/구성도·검증 문서 정리 | 최종 demo·1 m 결과·한계 설명과 전체 문서 정합성 |
 
@@ -56,8 +57,9 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 현재 좌우는 **A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5**이고 두 동력선 모두 연결돼 있다.
 9/26 손회전과 warm reset 169 TEL은 전동 구동과 다른 범위의 증거다. 두 모터는 섀시에서 분리해 시험했다.
 
-9/22의 all-hooks-0 복구 PASS·정적 30/30은 당시 결과다. 현재 ESP는 M2 역방향 10%/300 ms 수동 시험 hook=1U이고,
-마지막 정적 검사는 31개 중 30 PASS·default-off 요구 1 FAIL이다. 현재 이미지의 정상 모드 복구는 남아 있다.
+9/22의 all-hooks-0 복구 PASS·정적30/30은 당시 결과다. 별도 `esp32_uart_bridge` 소스의9/30 마지막 M2_RUN hook=1U와
+정적30 PASS/1 FAIL(default-off)은 이전 모터 시험 기준선이며 해당 소스 복원은 남아 있다.
+10/8 현재 ESP 실행 앱은 `esp32_wifi_link`로 W4 READY·fresh 복원을 확인했다. 브라우저 검사25 PASS와 UART 전체 release 판정은 다른 범위다.
 
 ## 남은 작업과 완료 조건
 
@@ -66,19 +68,20 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 
 | 작업 묶음 | 지금 남은 일 | 완료 조건·다음 단계 |
 | --- | --- | --- |
-| 단일 모터 기록 마감 | A/M1 양수 명령의 실제 전진 방향 관찰, 부팅~READY의 err 기준 기록 | A 실제 전진·left_cps 양수·B 무동작·timeout 후 0을 함께 기록. 이 결과로 전체 T-MOTOR-003을 통과 처리하지 않음 |
+| Wi-Fi 상태·명령 통합 | W4 읽기 전용 완료. W5 입력·세션·단일 UART 소유자·seq/응답·유효시간 계약부터 진행 | USB·LiPo 미연결의 PING/DISARM 검증 후 구동 명령 안전 조건을 별도 적용. [report33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) |
+| 단일 모터 기록 마감 | [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 A 전진·DISARM·S0·A/B 3초 보존 완료 | 전체 T-MOTOR-003 PASS와 분리. 다음은 계측/후속 조건 선정 |
 | 전력단·비상정지 잔여 조건 | rail-off 전압·판정 시점, 단자/배선 정격 release와 기존 관측의 대응 정리 | 전체 T005A 수용 조건을 충족하고 근거를 연결. 이를 전제로 다음 구동 시험의 범위를 정함 |
-| 단일 모터 전체 수용 | 구동 중 active DISARM·전류·열·소음/진동·엔코더 노이즈, 실제 S0 정지 | REQ-MOTOR-005/T-MOTOR-003과 T-ESTOP-007의 조건·증거 충족. 그 뒤 양쪽 구동 시험 |
+| 단일 모터 전체 수용 | A DISARM/S0·A/B 3초의 완료 범위를 바탕으로 전류·열·반복/부하·정식 정지 증거 보완 | REQ-MOTOR-005/T-MOTOR-003과 T-ESTOP-007의 조건·증거 충족. 그 뒤 양쪽 구동 시험 |
 | 기구·최종 전원 통합 | 받은 plate 식별·fit·절연·USB/단자 접근·케이블 고정, 최종 하네스 검증 | G2B/G4C·전원 요구사항의 미완료 조건 해소. 무전원 fit은 별도 병행 가능 |
 | 첫 주행 준비 | 저전압 경고·정지의 수치/입력 경로, 양쪽 mapping·명령 경로·차량 장착 | 저전압 정책을 첫 주행 전에 확인하고 선행 단일 모터/안전/기구 Gate 충족 |
 | 주행·odometry 인수 | lifted → 저속 지상 전진/후진/제자리 회전, fault/통신 단절 정지, 1 m 실측 | 실제 거리·엔코더 추정·오차와 반복 조건 기록, 모든 MUST PASS |
 | 최종 문서·공개 준비 | 코드/배선 기준점·원본 증거·README·demo·미완료/잔여 위험 연결 | G8 종료 조건 충족. 현재 진행 중인 문서 개편도 이 묶음의 일부 |
 
-직전 하드웨어 재개 목표는 [A/M1 실제 전진 방향 확인](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)이다.
+직전 A 전진 목표와 W4 읽기 전용 상태 전달은 완료했다. 다음 실행은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)의 W5 입력 계약·PING/DISARM이다. 모터 전원은 인가하지 않는다. 계측 구성 선정과 실제 구동 확대는 별도 후속 조건을 따른다.
 해당 계획의 목표와, 전체 모터 시험에 필요한 선행 조건은 구분한다. 기존 전체 T005A가 PARTIAL인 상태에서 수행한 단발 관측은
 report 31에 보존하며, 선행 Gate를 충족한 것으로 소급하지 않는다. 이후 시험 확대에도 기존 선행 조건을 적용한다.
 
-현재는 노트북만 있으므로 문서 개편·코드 구조 복습을 진행한다. 장비가 필요한 동작의 완료 여부를 문서 수정으로 바꾸지 않는다.
+10/7~8에는 STM·ESP를 각각 USB 전원으로 연결해 W4를 실행했다. 다음 재개 때 실제 장비·전원 상태를 기준으로 진행하며, 장비가 필요한 동작의 완료 여부를 문서 수정으로 바꾸지 않는다.
 펌웨어 학습 코드 입력과 STM/ESP 빌드·플래시는 사용자가 수행한다.
 
 **남은 총시간은 아직 재산정하지 않았다.** 기존 29~57시간·26~52시간·2~3주는 과거 계획이며 현재 일정 약속으로 사용하지 않는다.
@@ -280,7 +283,7 @@ FABRICATED PLATE USER-REPORTED RECEIVED
 - MDD10A M1=A/left, M2=B/right
 - 첫 motor는 A/M1. B/M2도 단발 구동 관측을 완료했다.
 - PWM frequency: WHEELTEC `5~20 kHz`; historical 20 kHz baseline `20.1005 kHz`, final nominal `19 kHz`
-- B/M2 DIR HIGH=전진/LOW=후진을 확인했다. A/M1 정의는 LOW=전진/HIGH=후진이며 양수 명령의 실제 전진 방향 관찰은 남았다.
+- B/M2 DIR HIGH=전진/LOW=후진을 확인했다. A/M1 정의는 LOW=전진/HIGH=후진이며 양수 실제 전진은9/30 추가 확인했다.
 
 Bench-confirmed pin mapping:
 
@@ -848,7 +851,7 @@ G0의 기존 MVP-001~012 표기는 이미 매트릭스에 존재하는 물리 E-
 
 ## 문서 기준
 
-- 현재 상태 갱신: **2026-09-29**. 실제 작업 재개는 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md)과 [9/29 진행 기록](../progress/2026-09-29_progress.md)을 따른다. 다음 작업은 [A/M1 실제 전진 방향 확인](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)이다.
+- 현재 상태 갱신: **2026-10-01**. 실제 작업 재개는 [현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md)과 [9/29 진행 기록](../progress/2026-09-29_progress.md)을 따른다. 다음 작업은 [A/M1 실제 전진 방향 확인](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md)이다.
 - 이 문서는 MVP 종료선과 검증 Gate를 보존하는 전체 로드맵이다. 아래 9/5 기준선·잔여시간·직렬 순서는 당시 계획 이력이며, 그 안의 `현재/OPEN/다음`을 오늘의 미완료 항목으로 해석하지 않는다.
 
 | 분야 | 현재 확인된 범위 | 다음 작업과 근거 |

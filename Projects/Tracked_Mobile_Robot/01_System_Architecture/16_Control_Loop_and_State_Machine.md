@@ -1,5 +1,9 @@
 # Control Loop and State Machine
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](16_Control_Loop_and_State_Machine_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: The detailed safety enum below is a target model. Current protocol states are DISARMED/ARMED/FAULT with a separate reason; low-voltage and expanded closed-loop states are not all implemented.
+
 ## Purpose
 
 This document defines the low-level drivetrain control loop and safety state

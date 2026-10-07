@@ -1,5 +1,8 @@
 # Fault Model and Safety Cases
 
+> 문서 역할·상태 대조: **2026-09-30** — 고장별 요구 동작과 검증 계획. 모든 검출·복구 기능이 현재 구현된 것은 아니다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇에서 예상되는 fault case와 각 case의 required safe response를 정의한다.
@@ -51,6 +54,8 @@ Controller가 확신할 수 없으면 motor PWM은 zero가 되고 nonzero motor 
 | Operator faults | Wrong connector polarity, wrong fuse, unsafe battery handling |
 
 ## 3. Fault Response Table
+
+아래는 고장별 요구 동작이다. CAN heartbeat·watchdog·저전압·encoder-stuck 검출까지 현재 펌웨어에 모두 구현됐다는 뜻이 아니다. 구현과 시험 범위는 [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)로 확인한다.
 
 | Fault | Detection method | Immediate response | Recovery |
 | --- | --- | --- | --- |

@@ -1,5 +1,9 @@
 # Motor Driver Selection Comparison
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](20_Motor_Driver_Selection_Comparison_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Both motor power leads are connected: A=left/M1, B=right/M2. K1 is in the motor-positive power path. B direction was verified; A actual forward observation remains open.
+
 ## Purpose
 
 This document records why the first drivetrain MVP moved from a BTS7960-style
@@ -122,16 +126,14 @@ STM32 PB7 / TIM4_CH2 -> MDD10A PWM2
 STM32 PC9            -> MDD10A DIR2
 STM32 GND            -> MDD10A GND
 
-3S LiPo + -> fuse -> switch -> MDD10A POWER+
+3S LiPo + -> F1 -> S1 -> positive busbar -> K1 30/87 -> MDD10A POWER+
 3S LiPo - ------------------> MDD10A POWER-
 
-Output channel 1 -> MDD10A M1A/M1B -> physical side TBD
-Output channel 2 -> MDD10A M2A/M2B -> physical side TBD
+Output channel 1 -> MDD10A M1A/M1B -> Motor A / left
+Output channel 2 -> MDD10A M2A/M2B -> Motor B / right
 ```
 
-The MCU-to-driver routing has passed static/no-motor bench checks. The final
-powered channel 1/2 to physical left/right mapping still requires a motor
-direction test; the encoder-side sign result alone does not close it.
+Permanent MCU-to-driver wiring and both motor connections are recorded. The 9/29 report confirms bounded B/M2 forward/reverse operation; A/M1 actual forward observation remains open. This does not establish full load, driving or physical E-stop acceptance.
 
 ## Validation Impact
 

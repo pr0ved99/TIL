@@ -27,3 +27,4 @@
 | `07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` | CubeMX 생성 파일, HAL 초기화 코드, 사용자 protocol 코드 경계 |
 | [08 단일 모터 시험 해설](08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) | PC→ESP→STM→모터→엔코더 흐름, 상태·timeout·DIR 보정, 실제 로그와 자기 점검 |
 | [09 STM·ESP 코드 구조와 함수 지도](09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) | 파일별 역할, 초기화·반복문·UART 인터럽트 호출 흐름, 핵심 모듈 함수 사전 |
+| [10 Wi-Fi·WebSocket 타이밍과 W4 데이터 흐름](10_ESP32_WiFi_WebSocket_Timing_and_W4_Dataflow_ko.md) | 주기·지연·보장, 실제 TEL/CPS 설정, 배터리 자리표시자, 모의 데이터와 실제 UART의 검증 범위 |

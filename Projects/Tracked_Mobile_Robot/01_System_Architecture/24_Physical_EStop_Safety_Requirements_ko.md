@@ -1,5 +1,8 @@
 # Physical E-stop Safety Requirements
 
+> 문서 역할·상태 대조: **2026-09-30** — 비상정지 요구사항·시험 대응. 모터 분리 T004 PASS와 전체 T005A PARTIAL·구동 중 S0 미완료를 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 Physical E-stop의 safety goal, architecture, hazard analysis와 FMEA에서 도출된
@@ -185,7 +188,9 @@ Step 5 완료는 요구 behavior와 PASS 방법이 고정됐다는 뜻이다. TB
   포트폴리오 claim은 `functional prototype with documented residual risk`로 제한한다.
 - 따라서 actual motor 전원 인가의 MVP 선행 조건은 `T-ESTOP-001~004 + T-ESTOP-005A PASS`다.
 
-## 2026-09-05 as-built integration 상태와 다음 Gate
+## 2026-09-05 당시 as-built integration 상태와 다음 Gate
+
+아래 다음 실행은 9/5 당시 계획이다. 후속 report 25/26/27 결과와 현재 재개 순서는 문서 상단의 최신 판정 링크를 따른다.
 
 - 6P harness는 18 AWG first article, full male/female assembly, terminal retention, intended-pair
   continuity와 unintended-pair isolation을 operator-reported PASS했다. Pin 1/2는 S0-A NC,

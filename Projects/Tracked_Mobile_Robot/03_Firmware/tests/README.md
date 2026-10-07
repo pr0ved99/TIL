@@ -32,7 +32,25 @@ python -m unittest discover `
 외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
 진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
 
-## 최신 기록 — 2026-09-29
+## Wi-Fi W4 브라우저 모의 검사 — 2026-10-08
+
+`test_wifi_websocket_page.js`는 지정한 C 소스 또는 입력 안내 문서에서 PAGE의 JavaScript를 추출해 실행한다.
+**실제 저장본 `wifi_link_main.c`에서25개 PASS**: WebSocket 정상/중단/재접속, 이전 연결 이벤트 무시,
+잘못된 응답, boot_id 변경, 실제 TEL fresh/stale/미수신, READY/FAILED 부팅 이력과 TEL 상태의 독립 표시를 확인했다.
+
+Node.js가 있는 환경에서 **저장소 루트(TIL)**를 기준으로 실행한다.
+
+```powershell
+node Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_websocket_page.js Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c
+```
+
+10/2 안내 문서 기준 코드의11 PASS는 이전 단계 결과다. 위 Python discovery와 JS 검사는 별개이며,
+브라우저 모의 검사는 ESP C 빌드·서버 동시성·실제 네트워크·전기적 동작을 증명하지 않는다.
+사용자 빌드·플래시와 실제 보드 관측은 [W4 보고서33](../../docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)에 구분해 보존했다.
+
+아래 UART bridge 계약 검사·시험 hook 기록은 별도 앱의 날짜별 이력이다. 현재 Wi-Fi 앱의 실행 상태로 해석하지 않는다.
+
+## 로봇 계약 검사 기록 — 2026-09-29 당시
 
 - ESP 기존 자동 hook 네 개는0U, 새 BRIDGE_M2_PULSE_TEST_ENABLED는1U다. 현재 M2 역방향10%/300ms 수동 시험 설정이다.
 - 마지막 실제 검사 결과는 **31개 중30 PASS, 1 FAIL**이다. 모든 시험hook=0을 요구하는 검사가 현재1U를 검출했다.

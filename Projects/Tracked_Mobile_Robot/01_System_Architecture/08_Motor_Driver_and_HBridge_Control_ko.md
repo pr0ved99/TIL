@@ -1,5 +1,8 @@
 # 모터 드라이버와 H-Bridge 제어 결정
 
+> 문서 역할·상태 대조: **2026-09-30** — 드라이버 선택·출력 계약 및 검증 계획. 단발 구동 관측과 전체 구동 수용은 별개다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 > **2026-09-29 실물 방향 확인:** 현재 A=left/M1, B=right/M2, 각 Motor+→MxA/Motor−→MxB 연결이다.
 > 오른쪽은 DIR HIGH=전진, LOW=후진으로 펌웨어를 보정하고 양방향10%/300ms 단발 구동을 확인했다.
 > 왼쪽 정의는 LOW=전진/HIGH=후진을 유지하며, A 양수 명령의 실제 차량 전진 방향 관찰은 남아 있다.
@@ -237,11 +240,11 @@ PC8 / DIR1 -> 10 kΩ -> GND
 PB7 / PWM2 -> 10 kΩ -> GND
 PC9 / DIR2 -> 10 kΩ -> GND
 
-3S LiPo +   -> fuse -> switch -> MDD10A POWER +
+3S LiPo +   -> F1 -> S1 -> + busbar -> K1 30/87 -> MDD10A POWER +
 3S LiPo -   -> MDD10A POWER -
 
-Output channel 1 -> MDD10A M1A / M1B -> physical side TBD
-Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
+Output channel 1 -> MDD10A M1A / M1B -> Motor A / left
+Output channel 2 -> MDD10A M2A / M2B -> Motor B / right
 ```
 
 초기 배선 규칙:
@@ -279,8 +282,8 @@ Output channel 2 -> MDD10A M2A / M2B -> physical side TBD
 
 상세 FAIL/PASS raw evidence와 claim boundary는
 [`../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)를 따른다.
-이 결정은 RevB schematic와 permanent wiring에 반영해야 하며 현재 RevA DRAFT에는 아직
-포함되지 않았다.
+위 8/12 결과 이후 네 풀다운은 영구 배선에 반영됐다. 영구 PWM/DIR 경로와 복구 검증은
+[report 17](../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)을 따른다.
 
 ## 7. Pin Allocation 영향
 
@@ -441,14 +444,13 @@ MDD10A를 선택해도 전원 보호가 없어지는 것은 아니다.
 
 ## 11. 열린 결정 사항
 
-powered drivetrain 시험 전에 다음을 확인해야 한다.
+현재 선택·실장된 항목과 잔여 검증을 구분한다.
 
-- 실제 MDD10A Rev과 terminal labeling
-- MDD10A channel 1/2를 실제 vehicle left/right 중 어느 쪽에 연결할지
-- 네 motor-control `10 kΩ` pull-down의 RevB schematic/실장/continuity 반영
+- 현재 경로는 MDD10A와 MG540 두 모터이며 M1=A/왼쪽, M2=B/오른쪽이다. 네 control pull-down은 영구 배선에 반영됐다.
+- B의 DIR 보정 후 실제 양방향은 확인했고, A 양수 명령의 실제 전진 방향 관찰은 남아 있다.
+- 보드 revision/단자·정격의 release 근거는 전력단 검증 문서에서 추적한다.
 - 모터 stall current 또는 실측 worst-case current
-- Encoder voltage와 signal quality
-- MG540과 JGB37-520 중 첫 drivetrain motor로 무엇을 쓸지
+- Encoder 실제 입력 전압·손회전·단발 CPS는 관측했고, 구동 중 파형·노이즈 검증은 남아 있다.
 - MDD10A 전류 여유가 충분한지, MDD20A급 상향이 필요한지
 
 ## Architecture Decision
@@ -457,5 +459,5 @@ powered drivetrain 시험 전에 다음을 확인해야 한다.
 
 이 결정은 이전 검토의 BTS7960 dual-PWM 전제를 모터당 `PWM + DIR` interface로 교체한다.
 
-다음 architecture 작업은 STM32 pin allocation을 CubeMX에서 검증하고, 전체 궤도 섀시 테스트 전에
-MDD10A logic-only test와 모터 1개 기준 hardware validation plan을 완료하는 것이다.
+다음은 [단일 모터 보고서](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 A 실제 전진 방향 보완과 전력단·정지·부하 잔여 조건 정리다.
+이미 완료한 핀 설정·영구 배선·logic-only 시험을 최초 작업으로 다시 안내하지 않는다.

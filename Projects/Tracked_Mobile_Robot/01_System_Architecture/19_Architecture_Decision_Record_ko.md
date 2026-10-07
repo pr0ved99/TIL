@@ -1,5 +1,8 @@
 # Architecture Decision Record
 
+> 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트에서 내린 주요 architecture decision을 요약한다.
@@ -365,7 +368,7 @@ Consequence:
 
 | Topic | Open question |
 | --- | --- |
-| CAN hardware | 어떤 CAN transceiver와 USB-CAN adapter를 구매할 것인가? |
+| CAN hardware | SN65HVD230 MCU-230 모듈은 보유. 모듈 상세·종단·전원 검증과 USB-CAN 장치 선정/확인은 남음 |
 | Battery voltage divider | 정확한 resistor value와 ADC calibration |
 | Motor current measurement | Current sensor를 추가할지 외부 측정으로 진행할지 |
 | ROS2 bridge path | 학습/시뮬레이션은 ROS 2 Humble에서 시작한다. 실제 command transport는 UART first, CAN later 중 무엇으로 연결할지 |

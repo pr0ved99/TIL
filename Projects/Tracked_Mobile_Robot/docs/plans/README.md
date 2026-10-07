@@ -2,29 +2,22 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-09-30
+## 현재 시작점 — 2026-10-08
 
-**현재는 노트북에서 문서 개편 4단계를 마친 상태다.**
-[전체 실행 계획](00_Project_Master_Plan_To_Final_MVP_ko.md)·[프로젝트 README](../../README.md)·진행 기록 형식의 정리는 [9/30 기록](../progress/2026-09-30_progress.md)에 마감했다.
-
-**하드웨어 재개 목표는 A/M1 양수 명령의 실제 전진 방향 확인이다.**
-[현재 작업 현황](../handoff/CURRENT_SESSION_CONTEXT.md) →
-[9/29 진행 기록](../progress/2026-09-29_progress.md) →
-[휴식 후 계획](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) 순서로 읽는다.
-
-- A/M1 ±10% 회전·CPS 부호·정지, B/M2 DIR 보정 후 실제 양방향 회전·CPS 부호·정지를 확인했다.
-  두 모터 동력선은 원래 A/M1·B/M2 연결로 복원했다. A의 양수 전진 방향 육안 확인만 별도로 남았다.
-- 현재 ESP는 M2 역방향10%/300ms 시험1U 이미지다. 다음 M1 시험 전에 소스·HELP·검사 조건을 함께 변경한다.
-- T004 기존 PASS와 T005A 전체 PARTIAL 유지. 현재 정적31개 중30 PASS, 시험hook=0 요구1개 FAIL이다.
-- 완료한 검사는 변경·실패 없이 반복하지 않는다. 펌웨어 입력과 두 보드의 빌드·플래시는 사용자가 수행한다.
-
-날짜별 계획의 `next/open/current`는 해당 시점의 표현이다. 아래 이력 문서를 현재 작업 지시로 사용하지 않는다.
+[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/8 마감 기록](../progress/2026-10-08_progress.md) → [Wi-Fi 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)의 W5 순서로 읽는다.
+**실제 W4 읽기 전용 TEL·WS·stale/복구·재접속·STARTUP 분리 표시는 완료했다.** 다음은 두 보드 USB·LiPo 미연결에서 PING/DISARM 입력·단일 UART 송신·seq/응답·세션 설계다.
+ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완료다. 이전 학습/납땜/모터 시험을 변경 없이 반복하지 않는다.
+상세 근거는 [보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
-| 2026-09-29 / 현재 재개 | [휴식 후 방향 확인 계획](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) | 현재 M2 역방향 이미지, A/M1 실제 전진 방향, err 관측과 후속 gate |
+| 2026-10-06 작성 / 10/8 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4 완료 근거와 W5 비구동 명령·세션·안전 계약 시작점 |
+| 2026-10-02 / 코드 입력 | [ESP 단독 WebSocket 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md) | 실제 앱 적용 후보, HTTP 작업 예약·버퍼 수명·재접속·WS-1~4 |
+| 2026-10-01 / 작업 범위 | [노트북·ESP 작업 계획](2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md) | ESP 단독 Wi-Fi, ADC/CAN PCB 설계 범위, 문서 수정과 코드 이해 |
+| 2026-10-01 / 코드 입력 | [ESP 단독 Wi-Fi·HTTP 코드](2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md) | AP/STA 설정, 앱 전문·이벤트/HTTP 설명, 사용자 입력·검토·빌드 순서 |
+| 2026-09-29 / 당시 재개 계획 | [휴식 후 방향 확인 계획](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) | 당시 M2 역방향 이미지와 A 방향 확인 계획. 후속 완료 결과는 report32 |
 | 2026-09-27 / 입력 이력 | [M1 수동 1회 시험 코드](2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 당시 WIP와 최초5% 안내. 최신 실행 설정은 현재 인수인계를 따름 |
 | 2026-09-23 / 검사 이력 | [엔코더 조정부 검사와 다음 작업](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 당시 저항·도통·전원 PASS; 후속 실제 엔코더 결과는 reports 29/30 |
 | 2026-09-22 / 후속 결과 있음 | [전원 경로와 T005A 계획](2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md) | 실행 결과는 report 27; 전체 T005A는 PARTIAL |

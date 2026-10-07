@@ -1,5 +1,11 @@
 # ESP32-S3 UART Command Bridge
 
+> **최신 재개 안내 — 2026-10-01:** 아래 8월 검증 표와 절차는 당시 범위의 기록이다.
+> 이후 A/B 단일 모터 시험은 [report32](../../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 보존했다.
+> 현재 소스는 자동 hook 4개가 `0U`, 수동 `BRIDGE_M2_RUN_TEST_ENABLED`가 `1U`인 3초 시험 설정이다.
+> 최신 상태는 [현재 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+> 노트북·ESP 단독 Wi-Fi 작업은 [10/1 작업 계획](../../docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)에서 시작한다.
+
 이 프로젝트는 ESP32-S3 DevKitC를 STM32 NUCLEO-F446RE의 command source,
 telemetry relay, UART logger로 사용하는 ESP-IDF 펌웨어다. ESP32는 motion을
 요청할 수 있지만, MDD10A PWM/DIR 출력과 최종 safety authority는 STM32가
@@ -97,7 +103,7 @@ sequence는 시작하지 않는다.
 모터를 분리한 통제된 Gate C에서만 임시로 사용하며, production 명령 경로로
 간주하지 않는다.
 
-> **Current source/static status — 2026-08-29:** ESP32와 STM32의 모든 controlled hook이
+> **Historical source/static status — 2026-08-29:** 당시 ESP32와 STM32의 모든 controlled hook이
 > `0U`이고 canonical host/static test는 `29/29 PASS`다. P-04B controlled runtime은
 > reason/command-age와 direct-PC7 active/latch UART subset을 확인했다. 이 hook-0 source의
 > 격리 STM32/ESP32 build도 PASS했지만 target reflash/no-command safe runtime은 아직 수행하지 않았다. 따라서 current
@@ -265,7 +271,9 @@ Historical post-trailing safe full-build 원본은
 2026-08-12 Gate C 결과와 current safe evidence index는
 [`verification report 15`](../../docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md)를 따른다.
 
-## 보드 회귀시험 체크리스트
+## 8월 보드 회귀시험 체크리스트 — 당시 기록
+
+아래 완료 범위와 남은 순서는 8월 당시의 기록이다. 현재 미완료 작업이나 반복 시험 지시는 위 최신 재개 안내를 따른다.
 
 완료된 runtime behavior:
 

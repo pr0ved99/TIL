@@ -1,5 +1,9 @@
 # ESP32-S3 Features and Project Role Analysis
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](07_ESP32S3_Features_and_Project_Role_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: The production mapper, timeout DISARMED path and manual bench console are implemented. General PC forwarding and Wi-Fi control remain planned.
+
 ## Purpose
 
 This document summarizes ESP32-S3 features and defines how the ESP32-S3

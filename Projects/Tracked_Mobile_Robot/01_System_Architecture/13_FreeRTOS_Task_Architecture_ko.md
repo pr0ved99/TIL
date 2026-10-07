@@ -1,5 +1,8 @@
 # FreeRTOS Task Architecture
 
+> 문서 역할·상태 대조: **2026-09-30** — STM32의 향후 FreeRTOS 전환 설계. ESP-IDF에서 FreeRTOS를 사용하는 사실과 구분하며 STM32 전환 완료가 아니다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 low-level controller의 FreeRTOS task architecture를 정의한다.

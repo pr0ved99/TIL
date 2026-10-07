@@ -21,6 +21,11 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 
 ## Source And Evidence
 
+추가 공간 검토: [PA4·PB0 전압 측정 회로 배치와 별도 기판 방안](12_Dual_Rail_ADC_Space_Review_2026-09-30_ko.md).
+최신 ENC Conditioning 도면 기준 분석이며, 기존 기판의 재배치나 ADC 회로 실장을 확정한 것은 아니다.
+후속 비교: [10×15 cm 만능기판 2층 확장 가능성](13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md) — 기존 최상층·납땜 부품 유지, 새 하층 Advanced 확장안의 면적·안테나·높이·기계 지지 조건.
+같은 문서의 [층간 연결 초안](13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md#기존-기판과-확장-기판의-연결-초안)은 ADC/CAN 하네스·접점·전원·분리 방법을 정리한다. 핀 순서와 실장 위치는 미확정이다.
+
 | File | Purpose |
 | --- | --- |
 | [RevB-WIP checkpoint README](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/README.md) | Current scope, evidence hashes and remaining safety gates |
