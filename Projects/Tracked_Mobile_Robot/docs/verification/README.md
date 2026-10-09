@@ -1,6 +1,6 @@
 # Verification Documentation
 
-최신 통합 관측: [report33](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) — W4 실제 STM TEL·WebSocket·중단/복구·재접속·부팅 결과 분리 표시 PASS. 무선 명령은 W5 미구현이다.
+최신 통합 관측: [report34](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) — W5 비구동 PING/DISARM·입력 거부·결과/버튼·timeout/복구·재접속 후 자동 재전송 없음 확인. JS57·C21은 별도 PC 검사다. 무선 ARM/CMD는 미구현이다.
 모터 시험은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A 방향·DISARM·S0·A/B 각각10%·3초 범위다. 전류/열·전체 안전 수용·주행은 남아 있다. 재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.
@@ -19,6 +19,8 @@ Engineering Basis
 계획·설계·구현·검증에 사용한 Basis ID, 적용 수준과 인증 주장 경계는 [`../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md)를 정본으로 사용한다.
 
 ## Current Verification Scope
+
+**2026-10-10:** W5 비구동 범위 마감. 각 USB·LiPo 미연결, 현재 WS 상태100ms/TEL100ms/stale500ms. 마지막 재접속 후 수동 PING1 OK·READY/fresh·출력0·drop/err0, 두 USB 분리 완료 사용자 확인. 실제 늦은 UART 주입·태스크 경합·구동 안전·전체 MVP로 확대하지 않는다.
 
 **2026-10-08:** W4 읽기 전용 상태 전달 완료. 두 보드 USB·LiPo 미연결, STM TEL100ms·WS1000ms·TEL stale500ms.
 READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이며 현재 TEL freshness·구동 허가와 별개다.

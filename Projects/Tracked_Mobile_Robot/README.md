@@ -7,9 +7,9 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-08:** 실제 STM UART→ESP Wi-Fi/WebSocket의 읽기 전용 상태 전달(W4)을 완료했다. 정상 TEL·수신 중단/복구·재접속·부팅 응답 확인과 실패 표시를 검증했다. [W4 근거](docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md).
+- **현재 단계 · 2026-10-10:** W4 상태 전달에 이어 W5 **비구동 PING/DISARM**의 요청/응답·입력 거부·timeout/복구·버튼·재접속을 확인했다. [W5 근거](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
   A 전진·DISARM·S0와 A/B 각각10%·3초 구동은 [별도 모터 시험](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)이다.
-  W5 무선 명령·배터리 ADC·전류·열·전체 안전 수용·차량 주행은 남아 있다.
+  무선 ARM/CMD·배터리 ADC·전류·열·전체 안전 수용·차량 주행은 남아 있다.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
 [ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) · [Wi-Fi 상태 전달](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) ·
@@ -43,7 +43,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 ```mermaid
 flowchart LR
     ESP["ESP32-S3<br/>UART 명령 전달 · 상태 수신"] <-->|UART| STM["STM32 NUCLEO-F446RE<br/>명령 검증 · 출력 허용 판단"]
-    ESP -->|Wi-Fi / WebSocket · W4 상태 전달 PASS| WEB["브라우저<br/>W5 명령 입력 미구현"]
+    ESP <-->|Wi-Fi / WebSocket · 상태와 PING/DISARM| WEB["브라우저<br/>W5 비구동 명령 PASS · ARM/CMD 미구현"]
     STM -->|PWM / DIR| DRIVER["MDD10A<br/>2채널 모터 드라이버"]
     DRIVER -.->|단발 회전 확인 · 주행 미검증| MOTOR["좌우 궤도 모터"]
     MOTOR -->|축 회전 피드백| ENC["엔코더<br/>신호 조정 회로"]
@@ -71,7 +71,7 @@ flowchart LR
 
 | 대표 결과 | 확인한 내용 | 시험 범위·근거 |
 | --- | --- | --- |
-| 실제 UART→무선 상태 전달 | **W4 읽기 전용 PASS**: TEL 중단/복구·WS 재접속·부팅 응답 결과 분리 | [두 보드 USB·LiPo 미연결](docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md). STM TEL100ms/WS1000ms/stale500ms. 무선 구동 명령은 미구현 |
+| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 현재 STM TEL/WS100ms·stale500ms. PC JS57·C21은 별도 검사. 무선 구동 명령 미구현 |
 | DISARM → PWM 차단 | **23.50 μs** | [STM32 로직 핀 계측](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md). 실제 모터 정지 시간이 아님 |
 | 영구 배선의 PWM/DIR | **19.049 / 19.058 kHz**, 약 **10%**, 방향 전환 전후 약 **2 ms PWM 0** | [모터 분리 MDD10A 입력](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) |
 | 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |

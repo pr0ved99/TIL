@@ -1,25 +1,29 @@
 # Next Session Start Prompt
 
-최신 기준 **2026-10-08 W4 마감**. 아래 내용을 새 대화에 붙여 넣는다.
+최신 기준 **2026-10-10 W5 비구동 PING/DISARM 마감**. 아래 내용을 새 대화에 붙여 넣는다.
 
 ```text
 Tracked_Mobile_Robot 프로젝트를 이어서 진행해라.
 저장소 C:/Users/eyh12/workspace/TIL, branch agent/dual-encoder-bringup.
-먼저 docs/handoff/CURRENT_SESSION_CONTEXT.md와 docs/progress/2026-10-08_progress.md,
-필요한 경우 docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md만 읽어라.
+먼저 docs/handoff/CURRENT_SESSION_CONTEXT.md와 docs/progress/2026-10-10_progress.md,
+필요하면 docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md를 읽어라.
 
-W4 실제 STM TEL→UART→ESP WebSocket, stale/복구·재접속,
-ACK/PONG 최대3회 제한 실패·READY/FAILED 독립 표시는 완료했다.
-변경 없는 W4·납땜/도통·모터 시험을 처음부터 반복하지 마라.
-현재 ESP 앱은 esp32_wifi_link이며 ARM/CMD와 브라우저 명령 수신은 미구현이다.
-두 보드 만능기판·각 USB, LiPo 미연결이 마지막 시험 조건이다.
-마지막 READY/fresh, PWM/CPS0, drop0, err1. USB 전원 분리는 아직 완료 보고가 없다.
-READY는 이번 ESP 부팅의 확인 이력이며 현재 세션/구동 허가가 아니다.
-리셋 err 추가 조사는 W4에서 멈췄고 캡처·복구·해석 한계는 보고서에 있다.
+W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.
+입력 거부·seq/응답 대응·timeout/복구·요청자별 결과·버튼·재접속 뒤 자동 재전송 없음을 확인했다.
+실제 PAGE JS57 PASS·실제 C 일부 함수 PC21 PASS는 별도 증거다.
+실제 늦은 UART 주입·동시 태스크 경합·무선 시간 보장·모터 안전으로 확대하지 마라.
+변경 없는 W4/W5·납땜/도통·모터 시험을 처음부터 반복하지 마라.
+ESP 앱은 esp32_wifi_link, 브라우저 ARM/CMD 입력은 미구현이다.
+STM TEL100ms/WS 상태100ms/TEL stale500ms/브라우저 무응답4000ms다.
+두 보드 각 USB·LiPo 미연결로 시험했고 두 USB 분리 완료를 사용자가 확인했다.
+마지막 boot1058366263, 재접속 후 수동 PING 요청1 OK, READY/fresh, PWM/CPS0, drop/err0.
+READY·PING OK는 현재 세션/구동 허가가 아니다.
+별도 esp32_uart_bridge의 수동 hook1U·default-off30 PASS/1 FAIL과 전체 안전 PARTIAL은 유지한다.
 
-다음은 W5 설계와 모터 전원 없는 PING/DISARM부터다.
-입력·세션·단일 UART 소유자·seq/응답·유효시간을 정한 뒤 완전한 코드 블록을 제시해라.
-ARM/CMD는 최신 TEL·명령 유효시간·재기동/끊김·명시적 재허가 검증 후 별도로 다뤄라.
+다음은 로봇 없이 ARM/CMD의 세션·명령 유효시간·TEL freshness·명시적 재허가 계약 설계부터다.
+연결 유실·ESP/STM 재기동·stale·오래된 PC 명령 재전송 금지의 수용 기준을 먼저 정해라.
+장비가 필요하면 현재 연결 상태를 확인하고 비구동 검증과 실제 구동 선행 Gate를 구분해라.
+펌웨어 구현을 시작할 때는 이유/상태 흐름/정확한 교체 범위와 완전한 연결 블록을 함께 제시해라.
 사용자가 펌웨어 입력과 두 보드 빌드·플래시·실측을 한다.
 개인 Wi-Fi 비밀번호를 출력하지 마라. Git commit/push는 별도 요청 때만 진행해라.
 사용자 요청 없이 subagent·전체 대화 아카이브를 열지 마라.

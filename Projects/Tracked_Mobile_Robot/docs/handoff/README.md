@@ -21,9 +21,10 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 10/8 W4 상태 전달 PASS·READY 복원, 다음 W5 비구동 명령 설계 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 10/10 W5 비구동 PING/DISARM 마감·두 USB 분리 확인, 다음 ARM/CMD 계약 설계 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-10-08 | [최신 마감 기록](../progress/2026-10-08_progress.md) / [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) | 실제 TEL·WS·부팅 상태·리셋 err 근거와 W5 시작점 |
+| 2026-10-10 | [최신 마감 기록](../progress/2026-10-10_progress.md) / [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) | 실제 요청/결과·버튼·거부·timeout/재접속, JS57·C21과 증거 경계 |
+| 2026-10-08 | [W4 마감 기록](../progress/2026-10-08_progress.md) / [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) | 실제 TEL·WS·부팅 상태·리셋 err 근거와 당시 W5 시작점 |
 | 2026-10-06 | [학습·준비 기록](../progress/2026-10-06_progress.md) / [W4 재개 계획](../plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | 예제 완료 범위, 기존 TEL/타이밍 대조, 모의 제안과 실제 UART 연동 순서 |
 | 2026-10-01 | [최신 마감 기록](../progress/2026-10-01_progress.md) / [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) | 단일 모터 증거·계측 한계·PCB 검토 의견 |
 | 2026-09-30 | [문서 작업 기록](../progress/2026-09-30_progress.md) / [공통 작성 형식](../progress/README.md#공통-템플릿) | 문서 개편 4단계 마감, 과거 본문 보존과 새 진행 기록 형식 |

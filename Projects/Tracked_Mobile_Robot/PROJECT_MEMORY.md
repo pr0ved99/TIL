@@ -2,9 +2,17 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-09-29 (single-motor bench and right DIR correction closeout)
+Last updated: 2026-10-10 (W5 nonmotor PING/DISARM closeout)
 
-## Current Hardware Checkpoint
+## Current Application Checkpoint — 2026-10-10
+
+- 최신 재개 기준은 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [10/10 기록](docs/progress/2026-10-10_progress.md), [W5 보고서34](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)다. 아래9/29 이후의 current/pending 문구는 해당 시점 이력이다.
+- 현재 마지막 실행 ESP 앱은 `esp32_wifi_link`. W4 상태 전달·W5 비구동 PING/DISARM·버튼/결과·거부·timeout/재접속을 마감했다. WS 상태100ms, TEL100ms, stale500ms. 브라우저 ARM/CMD는 미구현이다.
+- 실제 PAGE JS57·실제 C 함수 PC21 PASS는 보드/전기/구동 증거와 별개다. 두 보드 각 USB·LiPo 미연결로 시험했고 **두 USB 분리 완료 사용자 확인**이다. 미보고 탈거/전압은 추정하지 않는다.
+- 다음은 ARM/CMD의 세션·명령 유효시간·freshness·재허가 계약 설계다. READY/PING OK는 구동 허가가 아니다. 기존 `esp32_uart_bridge` 수동 hook1U·default-off30 PASS/1 FAIL과 전체 안전/주행 잔여 조건은 유지한다.
+- 9/30 A 실제 전진·active DISARM·S0·A/B 각각10%·3초 완료 범위는 [report32](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 보존됐다.10/2 전원/배선 이력은 [당일 기록](docs/progress/2026-10-02_progress.md)을 따른다.
+
+## Hardware Checkpoint — 2026-09-29 당시 이력
 
 이 절과 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)가 아래 과거 시점의
 current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/report에 보존한다.

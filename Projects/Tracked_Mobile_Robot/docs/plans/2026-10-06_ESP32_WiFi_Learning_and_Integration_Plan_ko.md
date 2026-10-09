@@ -1,7 +1,7 @@
 # ESP32 Wi-Fi 학습 및 통합 계획
 
-작성일: **2026-10-06**, 갱신일: **2026-10-08**. 상태: **학습 예제 실행 확인 / 실제 앱 W4 읽기 전용 PASS / W5 미구현**.
-완료 근거는 [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)와 [10/8 마감 기록](../progress/2026-10-08_progress.md)을 따른다.
+작성일: **2026-10-06**, 갱신일: **2026-10-10**. 상태: **학습 예제 실행 확인 / W4 상태 전달 PASS / W5 비구동 PING/DISARM 완료 / ARM/CMD 미구현**.
+최신 근거는 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)와 [10/10 마감 기록](../progress/2026-10-10_progress.md), W4 당시 근거는 [보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)다.
 
 ## 1. 목적 및 배경
 
@@ -64,7 +64,7 @@ ESP32 학습은 "Wi-Fi 링크를 이해하고 안전하게 다룰 수 있는 최
 
 `03_Firmware/esp32_wifi_link`에서 WebSocket 상태 전송·재접속과 실제 UART TEL을 결합해 W4를 완료했다.
 사용자가 입력·빌드·플래시하고 Codex가 실제 저장 파일과 브라우저 검사25개를 검토했다.
-[WebSocket 입력 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md)는 ESP 단독 단계의 이력이다. 최신 구현은 실제 C 소스와 W4 보고서를 따른다.
+[WebSocket 입력 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md)는 ESP 단독 단계의 이력이다. 최신 구현은 실제 C 소스와 W5 보고서34를 따른다.
 
 ### 3.2 W4 (텔레메트리 연동) — 2026-10-08 완료
 대상은 `esp32_wifi_link`다. 목표는 기존 STM TEL을 파싱한 최신 상태와 ESP 수신 시각을 snapshot으로 보관하고 브라우저에 전달하는 것이다.
@@ -90,7 +90,7 @@ ESP32 학습은 "Wi-Fi 링크를 이해하고 안전하게 다룰 수 있는 최
 3. 실제 TEL과 화면의 상태·PWM·CPS를 대조한다. STM `t_ms`와 ESP/브라우저 시계를 직접 빼지 않고 ESP의 유효 수신 age로 stale을 판정한다.
 4. UART 수신 중단과 Wi-Fi/브라우저 연결 해제를 구분해 표시하고 복구 후 새 값을 받는지 확인한다. 재접속으로 자동 ARM·구동하지 않는다.
 
-W4는 상태 전달이다. 부팅 안전 동기화의 DISARM/PING과 별개로 ARM/CMD·모터 구동은 W5에서 다룬다. 기존 수동 bench hook을 새 앱에 그대로 옮기지 않는다.
+W4는 상태 전달이다. 사용자 PING/DISARM은 W5 비구동 범위로 완료했으며 ARM/CMD·모터 구동은 후속 범위다. 기존 수동 bench hook을 새 앱에 그대로 옮기지 않는다.
 
 ### 3.3 모의 데이터 제안의 상태
 
@@ -98,17 +98,19 @@ W4는 상태 전달이다. 부팅 안전 동기화의 DISARM/PING과 별개로 A
 
 모의 실험이 필요하면 실제 TEL 형식과 `MOCK` 출처를 사용한다. TEL을 parser에 넣으면 그 이후 경로를, JSON을 직접 보내면 화면·전송만 시험한다. 배선·실제 UART 수신·stale·복구 검증을 대신하지 않으며 “수신 함수 한 줄 교체로 전체 연동 완료”라고 가정하지 않는다.
 
-### 3.4 W5 (무선 명령 및 안전 설계) — 다음 작업
+### 3.4 W5 비구동 명령 완료·다음 구동 계약 — 2026-10-10
 
-첫 범위는 두 보드 USB·LiPo 미연결 상태의 **브라우저 PING/DISARM**이다.
-입력 형식·최대 크기·세션·rate limit·단일 UART 송신 소유자·seq/응답 matching·timeout을 정한 뒤
-정상 응답, 무효 입력·중복·과속·끊김을 검증한다. ARM/CMD와 실제 모터 구동은 이후 별도 범위다.
+사용자가 STM·ESP 두 보드로 PING/DISARM을 구현·빌드·플래시하고 정상/거부/timeout/복구/재접속과 결과·버튼을 확인했다. [두 보드 계획의 마감](2026-10-08_W5_Two_Board_PING_DISARM_Plan_ko.md)과 보고서34를 따른다. 두 USB 분리 완료까지 사용자 확인을 받았다.
+
+완료 범위는 두 보드 USB·LiPo 미연결 상태의 **브라우저 PING/DISARM**이다.
+128byte TEXT·현재 boot/세션·요청 간격500ms·단일 UART 송신 소유자·seq/응답 matching·응답500ms·자동 retry 없음 계약을 적용했다.
+실제 PAGE57·실제 C 함수 PC21 PASS는 보드/전기/태스크 경합 증거와 구분한다. ARM/CMD와 실제 모터 구동은 별도 후속 범위다.
 
 W4의 READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 STM 세션의 유효성이나 구동 허가로 쓰지 않는다.
 구동 전에는 최신 TEL·현재 세션·PC 명령 유효시간·명시적 재허가와 하드웨어 선행 조건을 검증한다.
 
-1.  목표: 클라이언트에서 WebSocket으로 명령 전송 → ESP32 수신 → UART 릴레이 → STM32에서 명령 실행.
-2.  핵심 검증:
+1.  다음 목표: ARM/CMD의 세션·freshness·명령 유효시간·명시적 재허가 조건표와 실패 시험의 수용 기준을 정한다.
+2.  구동 전 핵심 검증:
     *   클라이언트 접속 해제 시 동작.
     *   잘못된 명령 프레임 수신 시 무시 여부.
     *   명령 유효시간 경과(stale) 시 정지 여부.
@@ -121,7 +123,7 @@ W4의 READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 ST
 
 실제 코드에서 STM의 `TEL_PERIOD_MS=100`과 엔코더 CPS 계산 기준 100ms를 확인했다. TEL 약 10Hz는 보고 설정이며 모든 UART 패킷의 주기나 보편적 표준은 아니다. ACK/ERR/PONG은 사건에 대한 응답이다.
 
-W4 WebSocket 상태 전송은1000ms, STM TEL은100ms로 별도 설정했다. 이 설정은 1µs·1ms·수십 ms 이내 도착이나 하드 실시간성을 보장하지 않는다. 현재 STM의1ms PID·0.1ms 전력 차단 구현/실측으로 기록하지 않는다.
+W4 당시 WebSocket 상태 전송1000ms에서 W5에는**100ms**로 변경했다. STM TEL은100ms다. 이 설정은 1µs·1ms·수십 ms 이내 도착이나 하드 실시간성을 보장하지 않는다. 현재 STM의1ms PID·0.1ms 전력 차단 구현/실측으로 기록하지 않는다.
 
 계산·실제 소스·공식 프로토콜 근거는 [타이밍과 W4 데이터 흐름 노트](../../07_Embedded_Learning_Notes/01_Concept_Notes/10_ESP32_WiFi_WebSocket_Timing_and_W4_Dataflow_ko.md)를 따른다. 배터리 ADC·RPM/누적 tick 추가는 별도 계약 확장이다.
 

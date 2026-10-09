@@ -2,18 +2,19 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-10-08
+## 현재 시작점 — 2026-10-10
 
-[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/8 마감 기록](../progress/2026-10-08_progress.md) → [Wi-Fi 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)의 W5 순서로 읽는다.
-**실제 W4 읽기 전용 TEL·WS·stale/복구·재접속·STARTUP 분리 표시는 완료했다.** 다음은 두 보드 USB·LiPo 미연결에서 PING/DISARM 입력·단일 UART 송신·seq/응답·세션 설계다.
+[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/10 W5 마감 기록](../progress/2026-10-10_progress.md) 순서로 읽는다. 두 보드 USB·LiPo 미연결의 PING/DISARM 범위를 마감하고 두 USB 분리 완료를 확인했다.
+**W4 상태 전달·W5 비구동 PING/DISARM은 완료했다.** 다음은 ARM/CMD 세션·freshness·명령 유효시간·재허가 계약 설계다.
 ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완료다. 이전 학습/납땜/모터 시험을 변경 없이 반복하지 않는다.
-상세 근거는 [보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
+상세 근거는 [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
-| 2026-10-06 작성 / 10/8 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4 완료 근거와 W5 비구동 명령·세션·안전 계약 시작점 |
+| 2026-10-08 계획 / 10/10 마감 | [두 보드 W5 PING/DISARM 계획](2026-10-08_W5_Two_Board_PING_DISARM_Plan_ko.md) | 당시 준비/실행 순서 보존, 완료 근거는 report34의 비구동 범위 |
+| 2026-10-06 작성 / 10/10 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4/W5 완료와 다음 ARM/CMD 계약의 경계 |
 | 2026-10-02 / 코드 입력 | [ESP 단독 WebSocket 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md) | 실제 앱 적용 후보, HTTP 작업 예약·버퍼 수명·재접속·WS-1~4 |
 | 2026-10-01 / 작업 범위 | [노트북·ESP 작업 계획](2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md) | ESP 단독 Wi-Fi, ADC/CAN PCB 설계 범위, 문서 수정과 코드 이해 |
 | 2026-10-01 / 코드 입력 | [ESP 단독 Wi-Fi·HTTP 코드](2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md) | AP/STA 설정, 앱 전문·이벤트/HTTP 설명, 사용자 입력·검토·빌드 순서 |

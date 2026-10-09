@@ -48,6 +48,36 @@ node Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_websocket_page.js
 브라우저 모의 검사는 ESP C 빌드·서버 동시성·실제 네트워크·전기적 동작을 증명하지 않는다.
 사용자 빌드·플래시와 실제 보드 관측은 [W4 보고서33](../../docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)에 구분해 보존했다.
 
+## Wi-Fi W5 모의 검사 — 2026-10-10
+
+W5의 현재 PAGE는 `test_wifi_w5_websocket_page.js`로 검사한다. 위 W4의25개는10/8 이력이다.
+현재 저장본의 브라우저 모의 검사 **57 PASS**: 기존 상태/결과 표시와 버튼, 요청 번호,
+접수·거부·완료 구분, 추가 클릭 차단, 브라우저 대기 만료, 늦은 결과와 재접속을 확인했다.
+
+```powershell
+node Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_w5_websocket_page.js Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c
+```
+
+`test_wifi_w5_uart_contract.py`는 저장된 C의 타입·상수·파서·송신/응답/완료 함수를 직접 추출해
+`wifi_w5_host_fixture.c`의 PC용 시간·UART·큐 어댑터와 실행한다. C matching 규칙을 Python으로
+재작성한 모델이 아니다. **21 PASS**: 잘못된/부팅용 seq, 응답 종류/type,500ms 경계,
+늦은 PONG→다음 요청, 이전 연결 정리→새 소유권, seq 소진, 큐·송신 실패와 입력 벡터를 확인했다.
+
+PC에서 실행할 수 있는 TCC/GCC를 준비하고 경로를 지정한다. 외부 Python 패키지는 필요 없다.
+[TCC 공식 문서](https://bellard.org/tcc/tcc-doc.html)는 휴대용 컴파일·실행 방법을 설명한다.
+10/10에는 임시 도구 폴더의 TCC0.9.27 win64를 사용했다. 컴파일러는 저장소에 포함하지 않는다.
+
+```powershell
+$env:W5_HOST_CC = 'C:/path/to/tcc.exe'
+python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p 'test_wifi_w5_uart_contract.py' -v
+```
+
+컴파일러가 없으면 SKIP으로 표시하며 PASS에 포함하지 않는다. 이 검사는 **PC에서 일부 C 함수의
+동작을 검사**한다. ESP 펌웨어 전체 빌드, 실제 UART 주입, RTOS/HTTP 태스크의 실제 경합,
+무선 시간 보장, 모터 안전 검증을 대신하지 않는다. 이전 UART bridge의 default-off FAIL과도 별개다.
+
+실제 보드 관측과 PC 검사·마감 소스의 기준점은 [W5 보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)에 구분해 보존했다.
+
 아래 UART bridge 계약 검사·시험 hook 기록은 별도 앱의 날짜별 이력이다. 현재 Wi-Fi 앱의 실행 상태로 해석하지 않는다.
 
 ## 로봇 계약 검사 기록 — 2026-09-29 당시

@@ -1,11 +1,11 @@
 # 최종 MVP까지의 전체 실행 계획
 
-갱신: **2026-10-08**. 이 문서는 프로젝트의 목표, 현재 위치, 남은 작업과 단계별 완료 조건을 안내한다.
+갱신: **2026-10-10**. 이 문서는 프로젝트의 목표, 현재 위치, 남은 작업과 단계별 완료 조건을 안내한다.
 실제 판정과 수치는 원본 시험 보고서 → [검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다.
 현재 작업을 이어갈 설정·조작은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 날짜별 실행 계획에서 관리한다.
 
-**현재 위치: 단일 모터의 일부 구동 시험과 W4 무선 상태 전달을 완료했다. 다음은 W5 비구동 명령 설계이며, 전력단·안전·기구 통합의 잔여 조건은 유지한다.**
-[W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)의 완료는 읽기 전용 범위다. 무선 구동 명령·전체 MVP 완료를 뜻하지 않는다.
+**현재 위치: 단일 모터의 일부 구동 시험, W4 상태 전달과 W5 비구동 PING/DISARM을 완료했다. 다음은 ARM/CMD 계약 설계이며, 전력단·안전·기구 통합의 잔여 조건은 유지한다.**
+[W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)의 완료는 비구동 범위다. 무선 구동 명령·전체 MVP 완료를 뜻하지 않는다.
 A/M1은 ±10% 회전·CPS 부호·timeout 후 0 복귀, B/M2는 DIR 보정 후 실제 전진·후진을 확인했다.
 9/30에는 A 실제 전진·active DISARM·S0 관측과 A/B 각각10%·3초 구동까지 확인했다. [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md). 전류·열·반복/부하·전체 물리 비상정지와 차량 주행은 남아 있다.
 
@@ -37,7 +37,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | 단계 | 현재 판정 | 완료 범위 | 남은 종료 조건 |
 | --- | --- | --- | --- |
 | G0 요구사항 기준선 | 기준선 작성 PASS | MVP-001~013와 요구사항·시험·증거 연결 | 설계 변경 시 영향 항목 갱신 |
-| G1 UART·명령 안전 | 기초 시험 PASS / 전체 bridge PARTIAL | 기존 정상·오류·복구 시험, T004 reset 실제 경로 | 전체 bridge release의 증거 연결·잔여 시험, 일반 PC 명령 전달 경로 |
+| G1 UART·명령 안전 | 기초 시험 PASS / 전체 bridge PARTIAL | 기존 정상·오류·복구 시험, T004 reset 실제 경로, W5 PC PING/DISARM subset | 전체 bridge release의 증거 연결·잔여 시험, 일반 PC 구동 명령 전달·유실 안전 |
 | G2A 전원 구성품 | CONDITIONAL PASS | fuse/switch·XL4015 전자부하·실제 두 보드 공급 | 최종 하네스 정격·부하·전압 강하·온도 |
 | G2B 제작품·장착 | 도면 PASS / 실물 READY·NOT TESTED | 도면·제조 파일 점검, 제작품 수령 | 실물 식별·치수·체결·절연·접근성 |
 | G3 PWM/DIR | 모터 분리 MCU-pin 범위 PASS | PWM·방향 전환·DISARM/timeout/fault/reset | 후속 실모터 결과를 이 범위와 구분해 G5~G7에서 검증 |
@@ -59,7 +59,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 
 9/22의 all-hooks-0 복구 PASS·정적30/30은 당시 결과다. 별도 `esp32_uart_bridge` 소스의9/30 마지막 M2_RUN hook=1U와
 정적30 PASS/1 FAIL(default-off)은 이전 모터 시험 기준선이며 해당 소스 복원은 남아 있다.
-10/8 현재 ESP 실행 앱은 `esp32_wifi_link`로 W4 READY·fresh 복원을 확인했다. 브라우저 검사25 PASS와 UART 전체 release 판정은 다른 범위다.
+10/10 마지막 ESP 앱은 `esp32_wifi_link`로 W5 비구동 왕복·버튼/결과·거부·timeout/재접속을 마감했다. JS57·실제 C 함수 PC21과 UART 전체 release 판정은 다른 범위다. 두 USB 분리 완료는 사용자 확인이다.
 
 ## 남은 작업과 완료 조건
 
@@ -68,7 +68,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 
 | 작업 묶음 | 지금 남은 일 | 완료 조건·다음 단계 |
 | --- | --- | --- |
-| Wi-Fi 상태·명령 통합 | W4 읽기 전용 완료. W5 입력·세션·단일 UART 소유자·seq/응답·유효시간 계약부터 진행 | USB·LiPo 미연결의 PING/DISARM 검증 후 구동 명령 안전 조건을 별도 적용. [report33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) |
+| Wi-Fi 상태·명령 통합 | W4 상태 전달·W5 비구동 PING/DISARM 완료. 다음 ARM/CMD 세션·freshness·명령 유효시간·재허가 계약 | 구동 명령의 끊김/재기동/오래된 명령 처리 수용 기준·비구동 검사 후 별도 구동 Gate. [report34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) |
 | 단일 모터 기록 마감 | [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 A 전진·DISARM·S0·A/B 3초 보존 완료 | 전체 T-MOTOR-003 PASS와 분리. 다음은 계측/후속 조건 선정 |
 | 전력단·비상정지 잔여 조건 | rail-off 전압·판정 시점, 단자/배선 정격 release와 기존 관측의 대응 정리 | 전체 T005A 수용 조건을 충족하고 근거를 연결. 이를 전제로 다음 구동 시험의 범위를 정함 |
 | 단일 모터 전체 수용 | A DISARM/S0·A/B 3초의 완료 범위를 바탕으로 전류·열·반복/부하·정식 정지 증거 보완 | REQ-MOTOR-005/T-MOTOR-003과 T-ESTOP-007의 조건·증거 충족. 그 뒤 양쪽 구동 시험 |
@@ -77,11 +77,11 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | 주행·odometry 인수 | lifted → 저속 지상 전진/후진/제자리 회전, fault/통신 단절 정지, 1 m 실측 | 실제 거리·엔코더 추정·오차와 반복 조건 기록, 모든 MUST PASS |
 | 최종 문서·공개 준비 | 코드/배선 기준점·원본 증거·README·demo·미완료/잔여 위험 연결 | G8 종료 조건 충족. 현재 진행 중인 문서 개편도 이 묶음의 일부 |
 
-직전 A 전진 목표와 W4 읽기 전용 상태 전달은 완료했다. 다음 실행은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)의 W5 입력 계약·PING/DISARM이다. 모터 전원은 인가하지 않는다. 계측 구성 선정과 실제 구동 확대는 별도 후속 조건을 따른다.
+직전 A 전진 목표·W4 상태 전달·W5 비구동 PING/DISARM은 완료했다. 다음은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)의 ARM/CMD 계약 설계다. 계측 구성 선정과 실제 구동 확대는 별도 후속 조건을 따른다.
 해당 계획의 목표와, 전체 모터 시험에 필요한 선행 조건은 구분한다. 기존 전체 T005A가 PARTIAL인 상태에서 수행한 단발 관측은
 report 31에 보존하며, 선행 Gate를 충족한 것으로 소급하지 않는다. 이후 시험 확대에도 기존 선행 조건을 적용한다.
 
-10/7~8에는 STM·ESP를 각각 USB 전원으로 연결해 W4를 실행했다. 다음 재개 때 실제 장비·전원 상태를 기준으로 진행하며, 장비가 필요한 동작의 완료 여부를 문서 수정으로 바꾸지 않는다.
+10/7~8 W4와 이후 W5는 STM·ESP 각각 USB·LiPo 미연결로 실행했다. W5 마감 때 두 USB 분리 완료를 확인했다. 다음 재개 때 실제 장비·전원 상태를 기준으로 진행하며, 장비가 필요한 동작의 완료 여부를 문서 수정으로 바꾸지 않는다.
 펌웨어 학습 코드 입력과 STM/ESP 빌드·플래시는 사용자가 수행한다.
 
 **남은 총시간은 아직 재산정하지 않았다.** 기존 29~57시간·26~52시간·2~3주는 과거 계획이며 현재 일정 약속으로 사용하지 않는다.

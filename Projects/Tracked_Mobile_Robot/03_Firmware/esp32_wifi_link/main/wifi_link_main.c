@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -6,6 +7,7 @@
 #include <string.h>
 
 #include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include "driver/uart.h"
@@ -39,7 +41,7 @@ static unsigned s_retry_count;
 
 #define STATUS_JSON_SIZE 1024U
 #define WS_MAX_CLIENTS 4U
-#define WS_PERIOD_MS 1000U
+#define WS_PERIOD_MS 100U
 #define STM_TEL_STALE_MS 500U
 
 static const char *TAG = "wifi_link";
@@ -75,6 +77,132 @@ static uint32_t s_stm_tel_count;
 /* RX task publishes a static string; s_stm_lock protects the pointer. */
 static const char *s_stm_startup_status = "SETTLE";
 
+/* WS 사용자 요청의 제한값 */
+#define WIFI_COMMAND_QUEUE_LENGTH 1U
+#define WIFI_COMMAND_MAX_FRAME_SIZE 128U
+#define WIFI_COMMAND_RESPONSE_MS 500U
+#define WIFI_COMMAND_MIN_INTERVAL_MS 500U
+#define WIFI_COMMAND_RESULT_QUEUE_LENGTH WS_MAX_CLIENTS
+
+typedef enum {
+    WIFI_COMMAND_PING,
+    WIFI_COMMAND_DISARM
+} wifi_command_type_t;
+
+typedef struct {
+    wifi_command_type_t type;
+
+    /* 브라우저 요청과 결과를 연결하는 번호. UART seq와 다르다. */
+    uint32_t request_id;
+
+    /* 브라우저가 마지막으로 확인한 ESP 부팅 식별값. */
+    uint32_t expected_boot_id;
+
+    /* 요청한 WebSocket 연결의 식별값. */
+    uint32_t ws_session_id;
+
+    /* 오래된 대기 요청을 실행하기 않기 위한 ESP 접수 시각. */
+    uint64_t accepted_ms;
+} wifi_command_request_t;
+
+/* HTTP 태스크가 넣고 UART 태스크가 꺼낸다. */
+static QueueHandle_t s_wifi_command_queue;
+
+/* UART 태스크가 넣고 HTTP 태스크가 꺼내는 완료 결과. */
+typedef struct {
+    wifi_command_request_t request;
+    uint32_t seq;
+    char status[24];
+} wifi_command_result_t;
+
+static QueueHandle_t s_wifi_command_result_queue;
+
+/* 숫자를 읽고 cursor를 숫자 바로 다음 위치로 이동한다. */
+static bool wifi_command_parse_u32(const char **cursor, uint32_t *out)
+{
+    const char *pos = *cursor;
+
+    if (*pos < '0' || *pos > '9') {
+        return false;
+    }
+
+    uint32_t value = 0U;
+
+    while (*pos >= '0' && *pos <= '9') {
+        const uint32_t digit = (uint32_t)(*pos - '0');
+
+        if (value > (UINT32_MAX - digit) / 10U) {
+            return false;
+        }
+
+        value = value * 10U + digit;
+        ++pos;
+    }
+
+    *cursor = pos;
+    *out = value;
+    return true;
+}
+
+/* 허용한 명령과 정확한 필드 형식만 요청 구조체로 변환한다. */
+static bool wifi_command_parse(
+    const char *text, size_t length,
+    wifi_command_request_t *out)
+{
+    if (text == NULL || out == NULL || length == 0U ||
+        length > WIFI_COMMAND_MAX_FRAME_SIZE) {
+        return false;
+    }
+
+    /* 공백, 줄바꿈, 중간 NUL, 비ASCII 문자를 거부한다. */
+    for (size_t i = 0U; i < length; ++i) {
+        const uint8_t byte = (uint8_t)text[i];
+
+        if (byte < 0x21U || byte > 0x7eU) {
+            return false;
+        }
+    }
+
+    char buffer[WIFI_COMMAND_MAX_FRAME_SIZE + 1U];
+    memcpy(buffer, text, length);
+    buffer[length] = '\0';
+
+    wifi_command_request_t parsed = {0};
+    const char *cursor = buffer;
+
+    if (strncmp(cursor, "PING,", 5U) == 0) {
+        parsed.type = WIFI_COMMAND_PING;
+        cursor += 5U;
+    } else if (strncmp(cursor, "DISARM,", 7U) == 0) {
+        parsed.type = WIFI_COMMAND_DISARM;
+        cursor += 7U;
+    } else {
+        return false;
+    }
+
+    if (strncmp(cursor, "boot_id=", 8U) != 0) {
+        return false;
+    }
+    cursor += 8U;
+
+    if (!wifi_command_parse_u32(&cursor, &parsed.expected_boot_id)) {
+        return false;
+    }
+
+    if (strncmp(cursor, ",request_id=", 12U) != 0) {
+        return false;
+    }
+    cursor += 12U;
+
+    if (!wifi_command_parse_u32(&cursor, &parsed.request_id) ||
+        parsed.request_id == 0U || *cursor != '\0') {
+        return false;
+    }
+
+    *out = parsed;
+    return true;
+}
+
 static const char PAGE[] =
     "<!doctype html><html lang='ko'><head><meta charset='utf-8'>"
     "<meta name='viewport' content='width=device-width,initial-scale=1'>"
@@ -85,11 +213,27 @@ static const char PAGE[] =
     "<p id='startup'>부팅 응답 새 상태 확인 대기</p>"
     "<p>READY는 이번 ESP 부팅 때 응답 확인을 마쳤다는 뜻입니다. "
     "현재 통신 상태는 TEL 표시에서 확인하세요.</p>"
+    "<p><button id='ping' type='button' disabled>PING</button> "
+    "<button id='disarm' type='button' disabled>DISARM</button></p>"
+    "<p id='command_notice'>명령 송신 대기</p>"
+    "<p id='command_result'>명령 결과 수신 대기</p>"
     "<pre id='data'></pre><script>"
     "const link=document.getElementById('link');"
     "const stm=document.getElementById('stm');"
     "const startup=document.getElementById('startup');"
     "const data=document.getElementById('data');"
+    "const commandResult=document.getElementById('command_result');"
+    "const pingButton=document.getElementById('ping');"
+    "const disarmButton=document.getElementById('disarm');"
+    "const commandNotice=document.getElementById('command_notice');"
+    "let currentBootId=null;"
+    "let startupFinished=false;"
+    "let nextRequestId=1;"
+    "let ignoredThroughId=0;"
+    "let pendingCommand=null;"
+    "let commandTimer=null;"
+    "let cooldownTimer=null;"
+    "let nextSendAt=0;"
     "let socket=null;"
     "let retryTimer=null;"
     "let watchdog=null;"
@@ -98,6 +242,119 @@ static const char PAGE[] =
     " WAIT_DISARM_ACK:'DISARM 응답 대기',WAIT_PONG:'PING 응답 대기',"
     " READY:'완료 (READY)',FAILED:'실패 (FAILED)'"
     "};"
+    "const resultLabels={"
+    " OK:'응답 확인',TIMEOUT:'응답 시간 초과',"
+    " STM_ERROR:'STM 명령 거부',TX_ERROR:'UART 송신 실패',"
+    " RX_ERROR:'UART 수신 실패',QUEUE_EXPIRED:'대기 시간 초과',"
+    " BOOT_MISMATCH:'ESP 부팅 식별값 불일치',UNSUPPORTED:'미지원 명령',"
+    " SEQ_EXHAUSTED:'UART 번호 소진',FORMAT_ERROR:'송신 형식 오류',"
+    " CONNECTION_CLOSED:'요청 연결 종료'"
+    "};"
+    "function validCommandResult(r){"
+    " const u32=v=>Number.isInteger(v)&&v>=0&&v<=4294967295;"
+    " return r&&typeof r==='object'&&!Array.isArray(r)&&"
+    "  r.kind==='command_result'&&u32(r.boot_id)&&"
+    "  u32(r.request_id)&&r.request_id>0&&"
+    "  u32(r.session_id)&&r.session_id>0&&u32(r.seq)&&"
+    "  ['PING','DISARM'].includes(r.cmd)&&"
+    "  ['OK','TIMEOUT','STM_ERROR','TX_ERROR','RX_ERROR',"
+    "   'QUEUE_EXPIRED','BOOT_MISMATCH','UNSUPPORTED',"
+    "   'SEQ_EXHAUSTED','FORMAT_ERROR','CONNECTION_CLOSED'].includes(r.status);"
+    "}"
+    "const noticeLabels={"
+    " QUEUED:'ESP 접수 · STM 응답 확인 중',BAD_FORMAT:'명령 형식 오류',"
+    " BOOT_MISMATCH:'ESP 부팅 식별값 불일치',STARTUP_PENDING:'부팅 확인 진행 중',"
+    " DUPLICATE:'이미 접수한 요청 번호',RATE_LIMIT:'요청 간격이 너무 짧음',"
+    " BUSY:'다른 요청 처리 중',QUEUE_FULL:'요청 큐 사용 불가'"
+    "};"
+    "function validCommandNotice(r){"
+    " const u32=v=>Number.isInteger(v)&&v>=0&&v<=4294967295;"
+    " if(!r||typeof r!=='object'||Array.isArray(r)||"
+    "    r.kind!=='command_notice'||!u32(r.boot_id)||!u32(r.session_id))return false;"
+    " const identified=u32(r.request_id)&&r.request_id>0&&"
+    "  ['PING','DISARM'].includes(r.cmd);"
+    " if(r.stage==='ACCEPTED')return identified&&r.session_id>0&&r.reason==='QUEUED';"
+    " return r.stage==='REJECTED'&&"
+    "  ['BAD_FORMAT','BOOT_MISMATCH','STARTUP_PENDING','DUPLICATE',"
+    "   'RATE_LIMIT','BUSY','QUEUE_FULL'].includes(r.reason)&&"
+    "  (r.reason==='BAD_FORMAT'?r.request_id===null&&r.cmd===null:identified);"
+    "}"
+    "function updateButtons(){"
+    " clearTimeout(cooldownTimer);cooldownTimer=null;"
+    " const wait=nextSendAt-performance.now();"
+    " const ready=socket!==null&&socket.readyState===WebSocket.OPEN&&"
+    "  currentBootId!==null&&startupFinished;"
+    " const blocked=!ready||pendingCommand!==null||nextRequestId>4294967295||wait>0;"
+    " pingButton.disabled=blocked;disarmButton.disabled=blocked;"
+    " if(ready&&pendingCommand===null&&wait>0){"
+    "  cooldownTimer=setTimeout(updateButtons,Math.ceil(wait));"
+    " }"
+    "}"
+    "function clearPending(){"
+    " clearTimeout(commandTimer);commandTimer=null;pendingCommand=null;"
+    "}"
+    "function cancelCommand(reason){"
+    " const pending=pendingCommand;clearPending();"
+    " commandResult.textContent=pending?pending.cmd+' 요청 '+pending.id+"
+    "  ': 결과 확인 불가 · '+reason:reason+' · 새 명령 결과 수신 대기';"
+    "}"
+    "function sendCommand(cmd){"
+    " if(!['PING','DISARM'].includes(cmd))return;"
+    " updateButtons();"
+    " if(pingButton.disabled){"
+    "  commandNotice.textContent='지금은 새 요청을 보낼 수 없습니다.';return;"
+    " }"
+    " const ws=socket;"
+    " const pending={id:nextRequestId++,cmd,boot:currentBootId,session:null,accepted:false};"
+    " pendingCommand=pending;nextSendAt=performance.now()+500;"
+    " commandNotice.textContent='브라우저 송신 · ESP 접수 확인 전';"
+    " commandResult.textContent=cmd+' 요청 '+pending.id+': 결과 대기';"
+    " updateButtons();"
+    " commandTimer=setTimeout(()=>{"
+    "  if(socket!==ws||pendingCommand!==pending)return;"
+    "  ignoredThroughId=Math.max(ignoredThroughId,pending.id);clearPending();"
+    "  commandNotice.textContent='명령 결과 전달 확인 불가';"
+    "  commandResult.textContent=cmd+' 요청 '+pending.id+"
+    "   ': 결과 확인 불가 · 브라우저 대기 시간 초과';"
+    "  updateButtons();"
+    " },3000);"
+    " try{ws.send(cmd+',boot_id='+pending.boot+',request_id='+pending.id);}"
+    " catch(error){disconnect(ws,'명령 송신 실패');}"
+    "}"
+    "pingButton.onclick=()=>sendCommand('PING');"
+    "disarmButton.onclick=()=>sendCommand('DISARM');"
+    "function handleCommandNotice(r){"
+    " if(currentBootId===null||r.boot_id!==currentBootId)return;"
+    " if(r.stage==='ACCEPTED'&&r.request_id<=ignoredThroughId)return;"
+    " if(r.request_id!==null)nextRequestId=Math.max(nextRequestId,r.request_id+1);"
+    " const prefix=r.cmd===null?'명령':r.cmd+' 요청 '+r.request_id;"
+    " commandNotice.textContent=prefix+': '+"
+    "  (r.stage==='ACCEPTED'?'접수됨 · ':'거부됨 · ')+noticeLabels[r.reason]+"
+    "  ' ('+r.reason+')';"
+    " const pending=pendingCommand;"
+    " if(pending&&r.request_id===pending.id&&r.cmd===pending.cmd){"
+    "  if(r.stage==='ACCEPTED'){"
+    "   pending.accepted=true;pending.session=r.session_id;"
+    "  }else if(!pending.accepted){"
+    "   ignoredThroughId=Math.max(ignoredThroughId,pending.id);clearPending();"
+    "   commandResult.textContent=prefix+': 요청 거부 ('+r.reason+')';"
+    "  }"
+    " }"
+    " updateButtons();"
+    "}"
+    "function handleCommandResult(r){"
+    " if(currentBootId===null||r.boot_id!==currentBootId||"
+    "    r.request_id<=ignoredThroughId)return;"
+    " const pending=pendingCommand;"
+    " if(pending&&(r.request_id!==pending.id||r.cmd!==pending.cmd||"
+    "    (pending.session!==null&&r.session_id!==pending.session)))return;"
+    " clearPending();ignoredThroughId=r.request_id;"
+    " nextRequestId=Math.max(nextRequestId,r.request_id+1);"
+    " commandNotice.textContent='ESP 명령 처리 결과 수신';"
+    " commandResult.textContent='마지막 명령 결과 · '+r.cmd+"
+    "  ' 요청 '+r.request_id+': '+resultLabels[r.status]+' ('+r.status+')';"
+    " updateButtons();"
+    "}"
     "function validStatus(s){"
     " const u32=v=>Number.isInteger(v)&&v>=0&&v<=4294967295;"
     " const i32=v=>Number.isInteger(v)&&v>=-2147483648&&v<=2147483647;"
@@ -133,7 +390,9 @@ static const char PAGE[] =
     "}"
     "function disconnect(ws,reason){"
     " if(socket!==ws)return;"
-    " socket=null;clearTimeout(watchdog);watchdog=null;"
+    " socket=null;currentBootId=null;clearTimeout(watchdog);watchdog=null;"
+    " startupFinished=false;cancelCommand(reason);"
+    " commandNotice.textContent='연결 끊김 · 명령 송신 대기';updateButtons();"
     " link.textContent=reason+' · 아래 값은 마지막 수신 데이터';"
     " stm.textContent='STM 상태 확인 불가 · 아래 STM 값은 마지막 수신 데이터';"
     " startup.textContent='부팅 응답 확인 불가 · 아래 값은 마지막 수신 데이터';"
@@ -148,17 +407,37 @@ static const char PAGE[] =
     " link.textContent='연결 중 · 기존 표시값은 마지막 수신 데이터';"
     " stm.textContent='STM 새 상태 확인 대기 · 기존 값은 마지막 수신 데이터';"
     " startup.textContent='부팅 응답 새 상태 확인 대기 · 기존 값은 마지막 수신 데이터';"
+    " clearPending();nextRequestId=1;ignoredThroughId=0;nextSendAt=0;"
+    " startupFinished=false;currentBootId=null;"
+    " commandNotice.textContent='새 연결 · 명령 송신 대기';"
+    " commandResult.textContent='새 연결 · 명령 결과 수신 대기';"
     " const ws=new WebSocket('ws://'+location.host+'/ws');"
-    " socket=ws;armWatchdog(ws);"
+    " socket=ws;armWatchdog(ws);updateButtons();"
     " ws.onopen=()=>{"
     "  if(socket!==ws)return;"
-    "  link.textContent='연결됨 · 새 상태 수신 대기';armWatchdog(ws);"
+    "  link.textContent='연결됨 · 새 상태 수신 대기';armWatchdog(ws);updateButtons();"
     " };"
     " ws.onmessage=(event)=>{"
     "  if(socket!==ws)return;"
     "  try{"
     "   const status=JSON.parse(event.data);"
+    "   if(status&&status.kind==='command_result'){"
+    "    if(!validCommandResult(status))throw new Error('invalid result');"
+    "    handleCommandResult(status);return;"
+    "   }"
+    "   if(status&&status.kind==='command_notice'){"
+    "    if(!validCommandNotice(status))throw new Error('invalid notice');"
+    "    handleCommandNotice(status);return;"
+    "   }"
     "   if(!validStatus(status))throw new Error('invalid status');"
+    "   if(currentBootId!==status.boot_id){"
+    "    if(pendingCommand!==null)cancelCommand('ESP 부팅 변경');"
+    "    else commandResult.textContent='이번 ESP 부팅의 명령 결과 수신 대기';"
+    "    currentBootId=status.boot_id;ignoredThroughId=0;"
+    "    commandNotice.textContent='이번 ESP 부팅의 명령 송신 대기';"
+    "   }"
+    "   startupFinished=['READY','FAILED'].includes(status.startup_state);"
+    "   updateButtons();"
     "   data.textContent=JSON.stringify(status,null,2);"
     "   link.textContent='WebSocket 수신 정상 · '+new Date().toLocaleTimeString();"
     "   startup.textContent='이번 ESP 부팅의 응답 확인: '+startupLabels[status.startup_state];"
@@ -274,52 +553,343 @@ static esp_err_t status_get(httpd_req_t *req)
     return httpd_resp_send(req, json, length);
 }
 
+/* 각 WebSocket 연결에 따로 보관하는 정보. */
+typedef struct {
+    uint32_t id;
+    uint32_t last_request_id;
+    uint64_t last_accepted_ms;
+} wifi_ws_session_t;
+
+/* 아래 공유 값은 s_stm_lock으로 보호한다. */
+static uint32_t s_wifi_ws_next_session_id;
+static uint32_t s_wifi_command_owner_session_id;
+
+/* HTTP 서버가 연결을 닫을 때 호출한다. */
+static void wifi_ws_session_free(void *context)
+{
+    wifi_ws_session_t *session = context;
+
+    if (session == NULL) {
+        return;
+    }
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+
+    if (s_wifi_command_owner_session_id == session->id) {
+        s_wifi_command_owner_session_id = 0U;
+
+        /* 아직 큐에 남은 해당 연결의 요청을 버린다. */
+        (void)xQueueReset(s_wifi_command_queue);
+    }
+
+    xSemaphoreGive(s_stm_lock);
+    free(session);
+}
+
+/* 첫 정상 요청 때 연결 식별값을 만들고 이후에는 재사용한다. */
+static wifi_ws_session_t *wifi_ws_session_get(httpd_req_t *req)
+{
+    wifi_ws_session_t *session = req->sess_ctx;
+
+    if (session != NULL) {
+        return session;
+    }
+
+    session = calloc(1U, sizeof(*session));
+
+    if (session == NULL) {
+        return NULL;
+    }
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+
+    /* 같은 ESP 부팅 안에서 연결 식별값을 재사용하지 않는다. */
+    if (s_wifi_ws_next_session_id == UINT32_MAX) {
+        xSemaphoreGive(s_stm_lock);
+        free(session);
+        return NULL;
+    }
+
+    session->id = ++s_wifi_ws_next_session_id;
+
+    xSemaphoreGive(s_stm_lock);
+
+    req->sess_ctx = session;
+    req->free_ctx = wifi_ws_session_free;
+    return session;
+}
+
+/* HTTP 핸들러에서 접수/거부만 즉시 알린다. STM 응답을 기다리지 않는다. */
+static esp_err_t wifi_ws_send_notice(
+    httpd_req_t *req, const wifi_command_request_t *request,
+    const char *stage, const char *reason)
+{
+    char request_id[16] = "null";
+    char command[12] = "null";
+
+    if (request != NULL) {
+        (void)snprintf(request_id, sizeof(request_id), "%" PRIu32, request->request_id);
+        (void)snprintf(
+            command, sizeof(command), "\"%s\"",
+            request->type == WIFI_COMMAND_PING ? "PING" : "DISARM");
+    }
+
+    const wifi_ws_session_t *session = req->sess_ctx;
+    const uint32_t session_id = session == NULL ? 0U : session->id;
+    char json[256];
+    const int length = snprintf(
+        json, sizeof(json),
+        "{\"kind\":\"command_notice\",\"boot_id\":%" PRIu32
+        ",\"session_id\":%" PRIu32 ",\"request_id\":%s,\"cmd\":%s"
+        ",\"stage\":\"%s\",\"reason\":\"%s\"}",
+        s_boot_id, session_id, request_id, command, stage, reason);
+
+    if (length < 0 || (size_t)length >= sizeof(json)) {
+        ESP_LOGE(TAG, "W5 notice JSON buffer error");
+        return ESP_FAIL;
+    }
+
+    httpd_ws_frame_t frame = {
+        .type = HTTPD_WS_TYPE_TEXT,
+        .payload = (uint8_t *)json,
+        .len = (size_t)length
+    };
+    const esp_err_t result = httpd_ws_send_frame(req, &frame);
+
+    if (result != ESP_OK) {
+        ESP_LOGW(TAG, "W5 notice send failed; closing connection");
+    }
+    return result;
+}
+
 static esp_err_t ws_receive(httpd_req_t *req)
 {
-    /* ESP-IDF 6.0.2 handles the handshake, PING and CLOSE internally. */
+    /* ESP-IDF 6.0.2가 handshake, 제어 PING/CLOSE를 처리한다. */
     httpd_ws_frame_t frame = {0};
     esp_err_t result = httpd_ws_recv_frame(req, &frame, 0);
+
     if (result != ESP_OK) {
         return result;
     }
 
-    /* This endpoint publishes status only. No application commands. */
-    if (frame.type != HTTPD_WS_TYPE_PONG || frame.len > 125U) {
+    const bool control_pong =
+        frame.type == HTTPD_WS_TYPE_PONG;
+    
+    /*
+     * 이번 명령은 완전한 TEXT 프레임 하나로만 받는다.
+     * 읽지 않은 큰 payload가 남으면 연결을 닫는다.
+    */
+    if (!frame.final ||
+        (frame.type != HTTPD_WS_TYPE_TEXT && !control_pong) ||
+        frame.len > WIFI_COMMAND_MAX_FRAME_SIZE ||
+        (control_pong && frame.len > 125)) {
+        ESP_LOGW(TAG, "WS unsupported frame; closing connection");
         return ESP_FAIL;
     }
-    uint8_t payload[125];
+
+    uint8_t payload[WIFI_COMMAND_MAX_FRAME_SIZE];
     frame.payload = payload;
-    return frame.len == 0U ? ESP_OK :
-        httpd_ws_recv_frame(req, &frame, sizeof(payload));
+
+    if (frame.len > 0U) {
+        result = httpd_ws_recv_frame(
+            req, &frame, sizeof(payload));
+
+        if (result != ESP_OK) {
+            return result;
+        }
+    }
+
+    /* WebSocket 제어 PONG은 STM 명령 응답과 별개다. */
+    if (control_pong) {
+        return ESP_OK;
+    }
+
+    wifi_command_request_t request = {0};
+
+    if (!wifi_command_parse(
+            (const char *)payload, frame.len, &request)) {
+        ESP_LOGW(TAG, "W5 rejected: BAD_FORMAT");
+        return wifi_ws_send_notice(req, NULL, "REJECTED", "BAD_FORMAT");
+    }
+
+    if (request.expected_boot_id != s_boot_id) {
+        ESP_LOGW(
+            TAG, "W5 rejected: BOOT_MISMATCH request=%" PRIu32,
+            request.request_id);
+        return wifi_ws_send_notice(req, &request, "REJECTED", "BOOT_MISMATCH");
+    }
+
+    wifi_ws_session_t *session = wifi_ws_session_get(req);
+
+    if (session == NULL) {
+        ESP_LOGE(TAG, "W5 session unavailable");
+        return ESP_FAIL;
+    }
+
+    const char *rejection = NULL;
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+
+    const uint64_t now_ms =
+        (uint64_t)esp_timer_get_time() / 1000U;
+    
+    const bool startup_finished =
+        strcmp(s_stm_startup_status, "READY") == 0 ||
+        strcmp(s_stm_startup_status, "FAILED") == 0;
+    
+    if (!startup_finished) {
+        rejection = "STARTUP_PENDING";
+    } else if (request.request_id <= session->last_request_id) {
+        rejection = "DUPLICATE";
+    } else if (session->last_request_id != 0U &&
+               now_ms - session->last_accepted_ms <
+                   WIFI_COMMAND_MIN_INTERVAL_MS) {
+        rejection = "RATE_LIMIT";
+    } else if (s_wifi_command_owner_session_id != 0U) {
+        rejection = "BUSY";
+    } else {
+        request.ws_session_id = session->id;
+        request.accepted_ms = now_ms;
+
+        /* 대기하지 않고 요청 구조체 전체를 큐에 복사한다. */
+        if (xQueueSend(
+                s_wifi_command_queue, &request, 0) != pdPASS) {
+            rejection = "QUEUE_FULL";
+        } else {
+            s_wifi_command_owner_session_id = session->id;
+            session->last_request_id = request.request_id;
+            session->last_accepted_ms = now_ms;
+        }
+    }
+
+    xSemaphoreGive(s_stm_lock);
+
+    if (rejection != NULL) {
+        ESP_LOGW(
+            TAG,
+            "WS rejected: %s request=%" PRIu32,
+            rejection, request.request_id);
+        return wifi_ws_send_notice(req, &request, "REJECTED", rejection);
+    }
+
+    ESP_LOGI(
+        TAG,
+        "W5 QUEUED: %s request=%" PRIu32 " session=%" PRIu32,
+        request.type == WIFI_COMMAND_PING ? "PING" : "DISARM",
+        request.request_id, request.ws_session_id);
+    
+    return wifi_ws_send_notice(req, &request, "ACCEPTED", "QUEUED");
 }
 
-static void ws_broadcast(void *arg)
+/* HTTP 태스크에서만 실행: 결과를 요청했던 연결 하나에 전달한다. */
+static void ws_command_results(httpd_handle_t server)
 {
-    const httpd_handle_t server = (httpd_handle_t)arg;
-    char json[STATUS_JSON_SIZE];
-    const int length = status_json(json, sizeof(json));
-    int clients[WS_MAX_CLIENTS];
-    size_t count = WS_MAX_CLIENTS;
+    wifi_command_result_t result;
 
-    if (length >= 0 &&
-        httpd_get_client_list(server, &count, clients) == ESP_OK) {
+    /* 한 번의 작업에서 처리할 수를 제한해 상태 송신도 계속한다. */
+    for (size_t n = 0U; n < WIFI_COMMAND_RESULT_QUEUE_LENGTH; ++n) {
+        if (xQueueReceive(s_wifi_command_result_queue, &result, 0) != pdPASS) {
+            break;
+        }
+
+        if (result.request.expected_boot_id != s_boot_id) {
+            continue;
+        }
+
+        int clients[WS_MAX_CLIENTS];
+        size_t count = WS_MAX_CLIENTS;
+
+        if (httpd_get_client_list(server, &count, clients) != ESP_OK) {
+            ESP_LOGW(TAG, "W5 result client list unavailable");
+            continue;
+        }
+
+        char json[256];
+        const int length = snprintf(
+            json, sizeof(json),
+            "{\"kind\":\"command_result\",\"boot_id\":%" PRIu32
+            ",\"request_id\":%" PRIu32 ",\"session_id\":%" PRIu32
+            ",\"cmd\":\"%s\",\"seq\":%" PRIu32 ",\"status\":\"%s\"}",
+            result.request.expected_boot_id, result.request.request_id,
+            result.request.ws_session_id,
+            result.request.type == WIFI_COMMAND_PING ? "PING" : "DISARM",
+            result.seq, result.status);
+
+        if (length < 0 || (size_t)length >= sizeof(json)) {
+            ESP_LOGE(TAG, "W5 result JSON buffer error");
+            continue;
+        }
+
+        bool found = false;
+
+        for (size_t i = 0U; i < count; ++i) {
+            if (httpd_ws_get_fd_info(server, clients[i]) !=
+                HTTPD_WS_CLIENT_WEBSOCKET) {
+                continue;
+            }
+
+            const wifi_ws_session_t *session =
+                httpd_sess_get_ctx(server, clients[i]);
+
+            /* fd를 재사용하더라도 연결 식별값은 달라야 한다. */
+            if (session == NULL || session->id != result.request.ws_session_id) {
+                continue;
+            }
+
+            found = true;
             httpd_ws_frame_t frame = {
                 .type = HTTPD_WS_TYPE_TEXT,
                 .payload = (uint8_t *)json,
                 .len = (size_t)length
             };
-            for (size_t i = 0;i < count; ++i) {
-                if (httpd_ws_get_fd_info(server, clients[i]) !=
-                    HTTPD_WS_CLIENT_WEBSOCKET) {
-                    continue;
-                }
-                if (httpd_ws_send_frame_async(server, clients[i], &frame) != ESP_OK) {
-                    ESP_LOGW(TAG, "WS send failed; closing fd=%d", clients[i]);
-                    (void)httpd_sess_trigger_close(server, clients[i]);
-                }
+
+            if (httpd_ws_send_frame_async(server, clients[i], &frame) != ESP_OK) {
+                ESP_LOGW(TAG, "W5 result send failed; closing fd=%d", clients[i]);
+                (void)httpd_sess_trigger_close(server, clients[i]);
+            }
+            break;
+        }
+
+        if (!found) {
+            ESP_LOGI(
+                TAG, "W5 result target closed; discard request=%" PRIu32,
+                result.request.request_id);
+        }
+    }
+}
+
+static void ws_broadcast(void *arg)
+{
+    const httpd_handle_t server = (httpd_handle_t)arg;
+
+    /* 완료 결과는 특정 연결에, TEL 상태는 모든 연결에 보낸다. */
+    ws_command_results(server);
+
+    char json[STATUS_JSON_SIZE];
+    const int length = status_json(json, sizeof(json));
+    int clients[WS_MAX_CLIENTS];
+    size_t count = WS_MAX_CLIENTS;
+
+    if (length >= 0 && httpd_get_client_list(server, &count, clients) == ESP_OK) {
+        httpd_ws_frame_t frame = {
+            .type = HTTPD_WS_TYPE_TEXT,
+            .payload = (uint8_t *)json,
+            .len = (size_t)length
+        };
+
+        for (size_t i = 0U; i < count; ++i) {
+            if (httpd_ws_get_fd_info(server, clients[i]) != HTTPD_WS_CLIENT_WEBSOCKET) {
+                continue;
+            }
+
+            if (httpd_ws_send_frame_async(server, clients[i], &frame) != ESP_OK) {
+                ESP_LOGW(TAG, "WS send failed; closing fd=%d", clients[i]);
+                (void)httpd_sess_trigger_close(server, clients[i]);
             }
         }
-        atomic_store(&s_ws_work_pending, false);
+    }
+
+    atomic_store(&s_ws_work_pending, false);
 }
 
 static void ws_schedule(void)
@@ -792,6 +1362,245 @@ static void stm_startup_step(uint64_t now_ms)
     }
 }
 
+/* 아래 대기 정보와 seq는 UART 태스크만 사용한다. */
+typedef struct {
+    bool active;
+    wifi_command_request_t request;
+    uint32_t seq;
+    uint64_t sent_ms;
+} wifi_uart_pending_t;
+
+static wifi_uart_pending_t s_wifi_uart_pending;
+static uint64_t s_wifi_uart_next_seq;
+
+/* 요청을 끝내고, 살아 있는 소유 연결의 결과만 큐에 복사한다. */
+static void wifi_command_finish(const char *status)
+{
+    if (!s_wifi_uart_pending.active) {
+        return;
+    }
+
+    const wifi_command_request_t request = s_wifi_uart_pending.request;
+    wifi_command_result_t result = {
+        .request = request,
+        .seq = s_wifi_uart_pending.seq
+    };
+    const int length = snprintf(result.status, sizeof(result.status), "%s", status);
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+    const bool owned = s_wifi_command_owner_session_id == request.ws_session_id;
+    bool result_queued = false;
+
+    if (owned) {
+        /* 기다리지 않고 값만 복사한다. 네트워크 송신은 HTTP 태스크의 역할이다. */
+        if (length >= 0 && (size_t)length < sizeof(result.status)) {
+            result_queued = xQueueSend(s_wifi_command_result_queue, &result, 0) == pdPASS;
+        }
+        s_wifi_command_owner_session_id = 0U;
+    }
+    xSemaphoreGive(s_stm_lock);
+
+    s_wifi_uart_pending.active = false;
+
+    ESP_LOGI(
+        TAG,
+        "W5 RESULT: request=%" PRIu32 " session=%" PRIu32
+        " seq=%" PRIu32 " status=%s",
+        request.request_id, request.ws_session_id,
+        result.seq, owned ? status : "CONNECTION_CLOSED");
+
+    if (owned && !result_queued) {
+        ESP_LOGW(TAG, "W5 result queue unavailable; request=%" PRIu32, request.request_id);
+    }
+}
+
+/* 기다리며 멈추는 함수가 아니라, 대기 요청이 유효한지 확인한다. */
+static bool wifi_command_pending_valid(void)
+{
+    if (!s_wifi_uart_pending.active) {
+        return false;
+    }
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+    const bool owned =
+        s_wifi_command_owner_session_id ==
+            s_wifi_uart_pending.request.ws_session_id;
+    xSemaphoreGive(s_stm_lock);
+
+    if (!owned) {
+        wifi_command_finish("CONNECTION_CLOSED");
+        return false;
+    }
+
+    const uint64_t now_ms =
+        (uint64_t)esp_timer_get_time() / 1000U;
+    
+    if (now_ms - s_wifi_uart_pending.sent_ms >=
+        WIFI_COMMAND_RESPONSE_MS) {
+        wifi_command_finish("TIMEOUT");
+        return false;
+    }
+
+    return true;
+}
+
+/* UART 수신 루프에서 호출: 대기 요청 점검 또는 새 요청 한 개 송신. */
+static void wifi_command_step(void)
+{
+    if (s_wifi_uart_pending.active) {
+        (void)wifi_command_pending_valid();
+        return;
+    }
+
+    if (s_stm_startup.state != STM_STARTUP_READY &&
+        s_stm_startup.state != STM_STARTUP_FAILED) {
+        return;
+    }
+
+    wifi_command_request_t request = {0};
+
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+    const BaseType_t received = xQueueReceive(
+        s_wifi_command_queue, &request, 0);
+    const bool owned =
+        received == pdPASS && request.ws_session_id != 0U &&
+        s_wifi_command_owner_session_id == request.ws_session_id;
+    xSemaphoreGive(s_stm_lock);
+
+    if (received != pdPASS || !owned) {
+        return;
+    }
+
+    s_wifi_uart_pending = (wifi_uart_pending_t) {
+        .active = true,
+        .request = request
+    };
+
+    if (request.expected_boot_id != s_boot_id) {
+        wifi_command_finish("BOOT_MISMATCH");
+        return;
+    }
+
+    if (request.type != WIFI_COMMAND_PING &&
+        request.type != WIFI_COMMAND_DISARM) {
+        wifi_command_finish("UNSUPPORTED");
+        return;
+    }
+
+    /* 부팅용 seq를 건너뛰고 같은 부팅 안에서 seq를 재사용하지 않는다. */
+    while (s_wifi_uart_next_seq <= UINT32_MAX &&
+           (s_wifi_uart_next_seq == s_stm_startup.disarm_seq ||
+            s_wifi_uart_next_seq == s_stm_startup.ping_seq)) {
+        ++s_wifi_uart_next_seq;
+    }
+
+    if (s_wifi_uart_next_seq > UINT32_MAX) {
+        wifi_command_finish("SEQ_EXHAUSTED");
+        return;
+    }
+
+    s_wifi_uart_pending.seq = (uint32_t)s_wifi_uart_next_seq++;
+
+    const char *command =
+        request.type == WIFI_COMMAND_PING ? "PING" : "DISARM";
+    char line[48];
+    const int length = snprintf(
+        line, sizeof(line),
+        "%s,seq=%" PRIu32 "\n", command, s_wifi_uart_pending.seq);
+
+    if (length <= 0 || (size_t)length >= sizeof(line)) {
+        wifi_command_finish("FORMAT_ERROR");
+        return;
+    }
+
+    /* 송신 직전에 연결 소유권과 요청 나이를 다시 확인한다. */
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+    const bool still_owned = s_wifi_command_owner_session_id == request.ws_session_id;
+    const uint64_t now_ms = (uint64_t)esp_timer_get_time() / 1000U;
+    const bool expired = now_ms - request.accepted_ms >= WIFI_COMMAND_RESPONSE_MS;
+    int written = -1;
+
+    if (still_owned && !expired) {
+        /* 짧은 수신 호출만 보호한다. 응답 대기는 잠금 밖에서 진행한다. */
+        written = uart_write_bytes(STM_UART_PORT, line, (size_t)length);
+        s_wifi_uart_pending.sent_ms = (uint64_t)esp_timer_get_time() / 1000U;
+    }
+    xSemaphoreGive(s_stm_lock);
+
+    if (!still_owned) {
+        wifi_command_finish("CONNECTION_CLOSED");
+    } else if (expired) {
+        wifi_command_finish("QUEUE_EXPIRED");
+    } else if (written != length) {
+        wifi_command_finish("TX_ERROR");
+    } else {
+        ESP_LOGI(TAG, "W5 TX UART1: %s,seq=%" PRIu32 " request=%" PRIu32 " session=%" PRIu32,
+            command, s_wifi_uart_pending.seq, request.request_id, request.ws_session_id);
+    }
+}
+
+/* 사용자 요청의 ACK/PONG/ERR만 처리한다. TEL은 기존 경로로 보낸다. */
+static bool wifi_command_handle_response(const char *line)
+{
+    const bool pong = strncmp(line, "PONG,", 5U) == 0;
+    const bool ack = strncmp(line, "ACK,", 4U) == 0;
+    const bool error = strncmp(line, "ERR,", 4U) == 0;
+
+    if (!s_wifi_uart_pending.active || (!pong && !ack && !error)) {
+        return false;
+    }
+
+    /* 이미 제한 시간이 지난 응답은 성공으로 인정하지 않는다. */
+    if (!wifi_command_pending_valid()) {
+        return true;
+    }
+
+    unsigned commas = 0U;
+    for (const char *pos = line; *pos != '\0'; ++pos) {
+        if (*pos == ',') {
+            ++commas;
+        }
+    }
+
+    const unsigned expected_commas = pong ? 2U : (ack ? 3U : 4U);
+    const size_t length = strlen(line);
+    uint32_t seq;
+    uint32_t stm_time_ms;
+    char type[16];
+    char code[32];
+
+    if (line[length - 1U] == ',' || strstr(line, ",,") != NULL ||
+        commas != expected_commas ||
+        !stm_parse_u32_field(line, "seq=", &seq) ||
+        !stm_parse_u32_field(line, "t_ms=", &stm_time_ms) ||
+        ((ack || error) && !stm_parse_text_field(line, "type=", type, sizeof(type))) ||
+        (error && !stm_parse_text_field(line, "code=", code, sizeof(code)))) {
+        ESP_LOGW(TAG, "W5 ignored: malformed UART response");
+        return true;
+    }
+
+    if (seq != s_wifi_uart_pending.seq) {
+        ESP_LOGW(TAG, "W5 ignored: non-matching seq=%" PRIu32, seq);
+        return true;
+    }
+
+    const bool ping_request = s_wifi_uart_pending.request.type == WIFI_COMMAND_PING;
+    const char *expected_type = ping_request ? "PING" : "DISARM";
+
+    if (error && strcmp(type, expected_type) == 0) {
+        ESP_LOGW(TAG, "W5 STM ERR: seq=%" PRIu32 " code=%s", seq, code);
+        wifi_command_finish("STM_ERROR");
+    } else if ((pong && ping_request) ||
+               (ack && !ping_request && strcmp(type, "DISARM") == 0)) {
+        ESP_LOGI(TAG, "W5 RX MATCH: seq=%" PRIu32 " t_ms=%" PRIu32, seq, stm_time_ms);
+        wifi_command_finish("OK");
+    } else {
+        ESP_LOGW(TAG, "W5 ignored: response type does not match request");
+    }
+
+    return true;
+}
+
 /* ACK/PONG이면 처리 후 true, 다른 프레임이면 false를 반환한다. */
 static bool stm_startup_handle_response(const char *line)
 {
@@ -847,6 +1656,10 @@ static bool stm_startup_handle_response(const char *line)
 
 static void stm_uart_handle_line(const char *line)
 {
+    if (wifi_command_handle_response(line)) {
+        return;
+    }
+
     if (stm_startup_handle_response(line)) {
         return;
     }
@@ -871,8 +1684,7 @@ static void stm_uart_handle_line(const char *line)
     const uint32_t count = ++s_stm_tel_count;
     xSemaphoreGive(s_stm_lock);
 
-    ESP_LOGI(
-        TAG,
+    ESP_LOGI(TAG,
         "STM TEL #%" PRIu32 " t_ms=%" PRIu32
         " state=%s reason=%s"
         " pwm=%" PRIi32 "/%" PRIi32
@@ -975,15 +1787,20 @@ static void stm_uart_rx_task(void *arg)
     stm_startup_begin();
     stm_startup_publish_status();
 
-    for (;;) {
-        stm_startup_step(
-            (uint64_t)esp_timer_get_time() / 1000U);
+    /* 사용자 요청 seq는 부팅용 PING 다음 값부터 시작한다. */
+    s_wifi_uart_next_seq = (uint32_t)(s_stm_startup.ping_seq + 1U);
+
+    for(;;) {
+        stm_startup_step((uint64_t)esp_timer_get_time() / 1000U);
+        wifi_command_step();
 
         const int count = uart_read_bytes(
             STM_UART_PORT, bytes, sizeof(bytes),
-            pdMS_TO_TICKS(20));
+            pdMS_TO_TICKS(20)
+        );
 
         if (count < 0) {
+            wifi_command_finish("RX_ERROR");
             stm_startup_fail("UART read failed");
             stm_startup_publish_status();
             s_stm_rx_length = 0U;
@@ -996,9 +1813,9 @@ static void stm_uart_rx_task(void *arg)
             stm_uart_handle_byte(bytes[i]);
         }
 
-        stm_startup_step(
-            (uint64_t)esp_timer_get_time() / 1000U);
+        stm_startup_step((uint64_t)esp_timer_get_time() / 1000U);
         stm_startup_publish_status();
+        wifi_command_step();
     }
 }
 
@@ -1051,9 +1868,16 @@ void app_main(void)
 
     s_server_lock = xSemaphoreCreateMutex();
     s_stm_lock = xSemaphoreCreateMutex();
+    s_wifi_command_queue = xQueueCreate(
+        WIFI_COMMAND_QUEUE_LENGTH,
+        sizeof(wifi_command_request_t));
+    s_wifi_command_result_queue = xQueueCreate(
+        WIFI_COMMAND_RESULT_QUEUE_LENGTH,
+        sizeof(wifi_command_result_t));
 
-    if (s_server_lock == NULL || s_stm_lock == NULL) {
-        ESP_LOGE(TAG, "Mutex allocation failed");
+    if (s_server_lock == NULL || s_stm_lock == NULL ||
+        s_wifi_command_queue == NULL || s_wifi_command_result_queue == NULL) {
+        ESP_LOGE(TAG, "Mutex/command/result queue allocation failed");
         return;
     }
 

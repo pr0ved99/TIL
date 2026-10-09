@@ -1,25 +1,36 @@
 # Current Session Context
 
-Last updated: **2026-10-08 — W4 실제 STM TEL·WebSocket·stale/복구·STARTUP 분리 표시 PASS, 정상 READY 복원. 다음은 W5 비구동 명령 설계**.
+Last updated: **2026-10-10 — W5 비구동 PING/DISARM·결과/버튼·입력 거부·timeout/복구·재접속 마감. 두 USB 분리 사용자 확인. 다음은 ARM/CMD 계약 설계**.
 
 ## 바로 이어갈 작업
 
-[10/8 마감 기록](../progress/2026-10-08_progress.md)과 [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)을 먼저 읽는다. **W4 읽기 전용 상태 전달은 완료했다.** 변경 없는 정상/stale/재접속/부팅 실패 시험과 기존 납땜·도통·모터 시험을 처음부터 반복하지 않는다.
+[10/10 마감 기록](../progress/2026-10-10_progress.md)과 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)을 먼저 읽는다. **W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.** 변경 없는 W4/W5·납땜·도통·모터 시험을 처음부터 반복하지 않는다.
 
-1. [Wi-Fi 계획](../plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)의 W5 범위를 읽고 브라우저 입력·세션·단일 UART 송신 소유자·seq/응답·유효시간 계약을 정한다.
-2. 두 보드 USB 전원·LiPo 미연결 조건에서 **PING/DISARM만** 사용자 입력 방식으로 구현·검증한다. 입력 형식/크기·rate limit·중복·끊김·timeout이 첫 기준이다. ARM/CMD는 이후 별도 범위다.
-3. 실제 구동 전에 최신 TEL·현재 세션·PC 명령 유효시간·명시적 재허가를 검증한다. 이번 ESP 부팅의 READY 문자열만으로 구동을 허용하지 않는다.
+1. 다음 작업은 새 대화에서 **ARM/CMD의 세션·명령 유효시간·TEL freshness·명시적 재허가 계약**을 설계하는 것이다. 로봇 없이 가능한 조건표/검사 설계부터 진행한다. 실제 구동 Gate는 별도다.
+2. 마지막 W5 조건은 STM·ESP 각 USB·LiPo 미연결. **두 USB 분리 완료는 사용자 확인**이다. UART 탈거·보드 탈거 등 미보고 물리 동작은 추정하지 않는다. 재개 때 새 연결 상태를 기준으로 진행한다.
+3. READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. PING OK·READY·TEL fresh만으로 구동을 허용하지 않는다. 별도 UART bridge hook 복구·전력단/안전 잔여 조건도 유지한다.
 
-### W4 마감 상태
+### W5 마감 상태 — 현재 기준
 
-- STM·ESP 모두 만능기판 장착, 각각 USB 전원, LiPo 미연결 사용자 확인. 자기 전 USB 전원 분리는 안내 단계이며 완료 보고는 아직 없다.
+- ESP `esp32_wifi_link`의 `/ws`가 상태 JSON과 PING/DISARM 입력·notice/result를 전달한다. 사용자가 코드 입력·빌드·플래시·모니터 성공을 보고했고 실제 왕복/거부/timeout/복구를 확인했다.
+- strict TEXT128byte, 같은 연결 요청 간격500ms, 전체1개 소유권, 사용자 응답500ms·자동 retry 없음. UART 담당 태스크가 송신/응답을 소유하고 HTTP는 요청/결과를 값으로 전달한다.
+- `command_notice`의 접수/거부와 `command_result`의 완료를 구분한다. 마지막 결과는 요청자별이며 TEL과 독립이다. 브라우저 추가 대기3000ms 만료는 결과 확인 불가로 표시한다.
+- STM TEL100ms / WS 상태**100ms** / TEL stale500ms / 브라우저 상태 무응답4000ms. 아래 W4의1000ms는10/8 당시 이력이다.
+- W5-24: 같은 boot1058366263, 재접속 후 송신/결과 대기 초기화,3초 새 QUEUED/TX 없음 사용자 확인. 이후 **수동 PING 요청1 OK**, age3ms, TEL28982, STM1908300ms, seq3438979499, READY·fresh·FAULT/ESTOP_ACTIVE, PWM/CPS0·drop0·err0.
+- 요청5 TIMEOUT은 요청4 TIMEOUT 뒤 별도 수동 클릭이었다는 사용자 정정을 반영했다. 빠른 연속 클릭이 두 요청을 접수했다는 증거로 쓰지 않는다.
+- 실제 PAGE JS57 PASS·실제 C 함수 PC21 PASS. 실제 늦은 UART 주입·동시 태스크 경합·무선 시간 보장·모터 안전 시험을 대신하지 않는다. 상세 W5-01~24 증거 경계는 보고서34를 따른다.
+- [마감 manifest](../../assets/logs/wifi_link/2026-10-10_w5_closeout/manifest.json): 공개 소스 snapshot·로그 발췌·화면/사용자 확인 전사. 원본 PNG/전체 serial/binary hash는 미기록. C SHA256 `dfe9a97e77453378a4f5a0cc64b3dfa642244c93ec6d6259cb4742bba8d5d2b4`.
+
+### W4 마감 상태 — 10/8 당시 이력
+
+- 당시 STM·ESP 모두 만능기판 장착, 각각 USB 전원, LiPo 미연결 사용자 확인. 당시 미보고였던 USB 마감과 최신 상태는 위10/10 W5 기준을 따른다.
 - 현재 ESP 앱은 `esp32_wifi_link`, STA. 이번 IP는 `192.168.0.17`이며 다음 DHCP/COM 번호로 고정하지 않는다. GPIO17→STM PA10, STM PA9→GPIO18, 공통 GND, 115200/8N1.
 - STM TEL100ms / ESP WS 상태1000ms / TEL stale 기준500ms / 브라우저 무응답4000ms. 실제 TEL14필드와 ESP 수신 age를 사용하며 배터리 값은 null/사용 불가다. Dummy Task는 사용하지 않았다.
 - DISARM ACK→PING/PONG→READY, ACK/PONG 누락의 최대3회 실패, 실패 후 TEL 수신, STM RESET stale/복구와 WS 재접속을 확인했다. 실제 저장본 브라우저 검사25 PASS는 C 빌드·전기적 증거와 구분한다.
 - 마지막 화면: boot_id=102159163, READY, connected=true/stale=false, TEL age51ms, tel_count90, FAULT/ESTOP_ACTIVE, PWM/CPS=0/0, drop0, err1. 모터 구동 허가나 전체 MVP 완료를 뜻하지 않는다.
 - PA10 내부 pull-up은 `usart.c` USER CODE에 유지. STM PONG 누락 시험 hook과 stale PONG hook은0U로 복원·확인했다. USB 모니터 재실행 시 boot_id가 바뀌었으나 err은 증가하지 않았다는 사용자 정정을 반영한다.
 - 리셋 때 GPIO17 기동 LOW·0xFC/BAD_TYPE/err 증가와 이후 정상 복구를 캡처3개로 기록했다. 완전한 원인/FE·NE·ORE 확정은 아니며 W4에서 추가 조사는 멈췄다. PCB 기동 핀 검토와 구동 중 재기동/통신 유실은 후속 범위다.
-- READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. TEL freshness와 독립이다. 현재 `/ws`는 상태 전달용이며 W5 브라우저 명령 입력은 아직 없다.
+- READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이며 TEL freshness와 독립이다.10/8 당시 `/ws`는 상태 전달용이었고, 이후 W5 입력/결과 구현은 위 최신 기준을 따른다.
 - 원본·발췌·화면 전사·소스 snapshot은 [마감 manifest](../../assets/logs/wifi_link/2026-10-08_w4_closeout/manifest.json). 소스 해시는 플래시 바이너리 동일성을 증명하지 않는다.
 
 ## 이전 완료 범위와 전원·기구 이력
@@ -45,8 +56,8 @@ A의 실제 전진 방향, A active DISARM, A 물리 S0의 PWM/엔코더 관측,
 
 ## 현재 실행 이미지와 코드
 
-- 10/8 현재 ESP는 `esp32_wifi_link`: 실제 TEL/STARTUP JSON·WebSocket, 부팅 DISARM/PING만 실행. 사용자 빌드·플래시와 READY/fresh 복원 확인. ESP 단독 HTTP였던 10/6 설명은 당시 이력이다.
-- STM은 PA10 pull-up을 포함하며 PONG 시험 hook0U. 두 보드 USB·LiPo 미연결. 현재 GUI의 READY는 구동 허가가 아니다.
+- 10/10 마지막 ESP는 `esp32_wifi_link`: 실제 TEL/STARTUP·WS 상태, 브라우저 PING/DISARM·notice/result·버튼. ARM/CMD 입력은 미구현이다. 사용자 빌드·플래시와 마지막 수동 PING OK를 확인했다.
+- STM은 PA10 pull-up·PONG 시험 hook0U와 기존 명령 계약을 유지했다. 시험은 각 USB·LiPo 미연결이며 현재 두 USB 분리 완료다. GUI의 READY는 구동 허가가 아니다.
 - 아래는 **별도 `esp32_uart_bridge`의 9/30 소스·마지막 모터 시험 이력**이다. 현재 ESP 플래시 앱으로 해석하지 않는다. 기존 수동 hook의 소스 복원은 별도이며 W4 완료로 UART 전체 release를 PASS 처리하지 않는다.
 
 - UART bridge: BRIDGE_M2_RUN_TEST_ENABLED=1U, 이전 자동 hook4개=0U.
@@ -99,7 +110,7 @@ S0 시험의 마지막 엔코더 전이는 PC7 최초 HIGH 후127.32 ms이며 �
 ## 남은 선택과 사용자 선호
 
 - 전류/온도 구매 후보는 저가 구성의 정확도 문제를 확인해 조건부/보류로 정정했다. 구매·측정 없음.
-- Wi-Fi·PCB·문서 이해를 선택했다. 10/6 예제에 이어 실제 앱 W4 상태 전달은 완료했다. W5 무선 명령과 PCB CAD는 미실행이다.
+- Wi-Fi·PCB·문서 이해를 선택했다. W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다. 무선 ARM/CMD·PCB CAD는 미실행이다.
 - 무선 제어는 별도 입력/유효시간/연결 유실 검증이 필요하다. PC 명령 유실 시 과거 명령을 계속 재송신하지 않도록 설계.
 - 기존 최상층 만능기판·납땜 부품 유지 선호. ADC/CAN 소형 PCB 설계 범위를 정리했으며 외곽/실측/제작 결정은 아직 미확정.
 - 확장 PCB 후보는 회로/커넥터/실측이 확정된 부분부터. 전체 MCU 캐리어 교체와 모터 주전류 PCB 통합은 별도 후속 범위.
@@ -108,6 +119,6 @@ S0 시험의 마지막 엔코더 전이는 PC7 최초 HIGH 후127.32 ms이며 �
 
 ## 저장소
 
-- branch agent/dual-encoder-bringup, 10/8 확인 HEAD `cffae11`. 아키텍처·확장 검토·ESP 시험 코드·증거·이번 문서 등 기존 미커밋 작업이 있다.
-- 이번 문서 정리에서 새 commit/push는 수행하지 않았다. 기존 사용자 변경을 보존했다.
+- branch agent/dual-encoder-bringup. W5 시험 기준 HEAD는 `77b6a06cdc87c4653177baf68b6484d7120e681c`이며 manifest에 보존했다. 최신 커밋은 `git log -1`로 확인한다.
+- 10/10 후속 사용자 요청으로 W5 코드/검사/증거/문서를 커밋·원격 반영 대상으로 정리했다. 상세 범위는10/10 진행 기록의 Git 갱신 절을 따른다. 기존 Hello World tracked build 산출물 변경은 커밋에서 제외하고 작업 폴더에 보존한다.
 - 완료한 문서 개편과 과거 핀/전력 이력은 [9/30 기록](../progress/2026-09-30_progress.md), report25~31에 보존돼 있다.

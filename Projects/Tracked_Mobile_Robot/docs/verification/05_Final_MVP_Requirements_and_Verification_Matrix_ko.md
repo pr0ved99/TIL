@@ -1,6 +1,6 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-판정 기준일: **2026-10-08**. 요구사항·수용 기준은 유지하고9/30 모터 보고서32와10/8 W4 보고서33을 반영했다.
+판정 기준일: **2026-10-10**. 요구사항·수용 기준은 유지하고9/30 모터 보고서32,10/8 W4 보고서33,10/10 W5 비구동 보고서34를 반영했다.
 처음에는 아래 현황을 읽고, 세부 판정은 요구사항 표와 증거 링크에서 확인한다.
 이전 기준일은 2026-09-05다. 당시 설명과 날짜별 측정 이력은 문서 뒤의 **과거 검증 이력**에 보존했다.
 
@@ -8,7 +8,7 @@
 
 | 분야 | 확인한 범위 | 남은 범위 | 최신 근거 |
 | --- | --- | --- | --- |
-| Wi-Fi 상태 전달 | **W4 읽기 전용 PASS**: 실제 TEL·stale/복구·WS 재접속·DISARM/PING 부팅 결과 표시 | W5 브라우저 명령·구동 중 통신 유실/재기동 안전·리셋 오류 전기 원인 | [report33](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) |
+| Wi-Fi 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 실제 왕복·입력 거부·결과/버튼·timeout/복구·재접속 후 자동 재전송 없음. JS57·C21은 별도 PC 검사 | 브라우저 ARM/CMD·구동 중 통신 유실/재기동 안전·실제 경합·리셋 오류 전기 원인 | [report34](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md), [report33](33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) |
 | 통신·명령 처리 | 기존 정상·오류·복구 시험, 실제 S0 감지에 따른 reset 거부/성공과 PWM 차단 | 전체 bridge release의 시험·artifact 연결, 모든 시험 hook을 끈 현재 이미지 복구 | [T004 시험](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md), [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) |
 | 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지 경로·엔코더 전원 | 최종 배선의 전류·전압 강하·발열, 모터 부하 조건, 저전압 정지 기준 | [로직 전원 시험](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md), [엔코더 조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) |
 | 모터 구동 | A 실제 전진·active DISARM, A/B 각각10%·3초 구동/정지 | 전류·열·반복/부하 조건·전체 단일 모터 수용 | [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) |
@@ -22,11 +22,11 @@
 전체 T005A는 실제 단발 구동 당시에도 PARTIAL이었다. 수행한 관측을 보존하되 선행 조건을 충족한 것으로 소급하지 않는다.
 9/22의 all-hooks-0 복구 PASS는 당시 결과다. 별도 `esp32_uart_bridge` 소스의9/30 M2_RUN hook=1U와
 정적30 PASS/1 FAIL(default-off)은 이전 모터 시험 기준선이며 해당 소스 복원은 남아 있다.
-10/8 현재 ESP 실행 앱은 `esp32_wifi_link`로 W4 READY·fresh 복원을 확인했다. 브라우저 검사25 PASS로 UART 전체 release를 PASS 처리하지 않는다.
+10/10 마지막 ESP 앱은 `esp32_wifi_link`. W5 비구동 왕복·표시와 두 USB 분리 확인을 마감했다. 실제 PAGE57·실제 C 함수 PC21 PASS로 UART 전체 release를 PASS 처리하지 않는다.
 10/1에는 새 시험 없이 9/30 관측을 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 마감했다. 각 관측을 전체 수용 PASS로 확대하지 않는다.
 
-W4는 MVP-002/T-COM-002에 관련된 상태 보고 경로의 추가 증거다. 일반 PC 명령 전달·브라우저 ARM/CMD는 아직 없으므로
-MVP-001/002 및 전체 UART release의 기존 PARTIAL 판정을 유지한다. 다른 안전·모터·주행 요구사항을 W4 완료로 올리지 않는다.
+W4/W5는 MVP-002/T-COM-002의 상태 보고·PC PING/DISARM 경로에 대한 추가 증거다. 브라우저 ARM/CMD와 일반 구동 명령 전달·유실 안전은 미완료이므로
+MVP-001/002 및 전체 UART release의 기존 PARTIAL 판정을 유지한다. 다른 안전·모터·주행 요구사항을 W5 완료로 올리지 않는다.
 
 ## 문서 목적
 
@@ -96,7 +96,7 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 | ID | 수용 기준 | 우선순위 | 현재 상태 | 확인한 범위와 남은 작업 |
 | --- | --- | --- | --- | --- |
 | `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` | 기존 Gate A/B·T-BRIDGE-007/008·P-03/P-04와 report 26의 실제 reset ERR/ACK/TEL 확인. 전체 UART release의 증거 연결·잔여 시험은 아래 통신 항목에서 추적 |
-| `MVP-002` | ESP32가 유일한 production command ingress로 동작하고, optional PC control은 ESP32 upstream client로만 연결돼야 한다. | MUST | `PARTIAL` | ESP startup·오류 복구와 수동 단발 콘솔 확인. 일반 PC 명령 전달·전체 bridge release·현재 default-off 이미지 복구는 미완료 |
+| `MVP-002` | ESP32가 유일한 production command ingress로 동작하고, optional PC control은 ESP32 upstream client로만 연결돼야 한다. | MUST | `PARTIAL` | ESP startup·오류 복구·수동 콘솔과 [W5 PC PING/DISARM subset](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) 확인. 일반 구동 명령 전달·전체 bridge release·별도 bridge default-off 이미지 복구는 미완료 |
 | `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` | 보드 전원·MDD 입력 전력단의 관측 완료. 모터 부하·저전압 정지·전체 T005A 수용은 남음 |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` | MCU/MDD 입력 파형·mapper·적용 PWM TEL 확인. report 31의 단일 모터 구동을 추가했으나 A 실제 전진 방향과 전체 출력·안전 조건은 미완료 |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PARTIAL` | 섀시 분리 조건의 10%/300 ms 단발 구동 관측. REQ-MOTOR-005 전체 조건과 선행 T005A는 미충족 |
