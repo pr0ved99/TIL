@@ -1,12 +1,16 @@
 # Next Session Start Prompt
 
-최신 기준 **2026-10-10 W5 비구동 PING/DISARM 마감**. 아래 내용을 새 대화에 붙여 넣는다.
+최신 기준 **2026-10-11 parser PC15·ticket PC12·owner PC9 실제 저장본 PASS / owner 포함 ESP 전체 빌드 성공 사용자 확인 / 다음 phase·기한 관리**. 새 대화로 옮길 때 아래 내용을 붙여 넣는다.
 
 ```text
 Tracked_Mobile_Robot 프로젝트를 이어서 진행해라.
 저장소 C:/Users/eyh12/workspace/TIL, branch agent/dual-encoder-bringup.
-먼저 docs/handoff/CURRENT_SESSION_CONTEXT.md와 docs/progress/2026-10-10_progress.md,
+먼저 docs/handoff/CURRENT_SESSION_CONTEXT.md와 docs/progress/2026-10-11_progress.md,
 필요하면 docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md를 읽어라.
+다음 구현의 기준은 docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md다.
+첫 입력 안내는 docs/plans/2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md다.
+다음 입력 안내는 docs/plans/2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md다.
+현재 입력 안내는 docs/plans/2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md다.
 
 W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.
 입력 거부·seq/응답 대응·timeout/복구·요청자별 결과·버튼·재접속 뒤 자동 재전송 없음을 확인했다.
@@ -20,12 +24,34 @@ STM TEL100ms/WS 상태100ms/TEL stale500ms/브라우저 무응답4000ms다.
 READY·PING OK는 현재 세션/구동 허가가 아니다.
 별도 esp32_uart_bridge의 수동 hook1U·default-off30 PASS/1 FAIL과 전체 안전 PARTIAL은 유지한다.
 
-다음은 로봇 없이 ARM/CMD의 세션·명령 유효시간·TEL freshness·명시적 재허가 계약 설계부터다.
-연결 유실·ESP/STM 재기동·stale·오래된 PC 명령 재전송 금지의 수용 기준을 먼저 정해라.
+ARM/CMD 초기 설계안과 AC-H/B/S 수용 기준을 작성했다. 제어 실행 경로·보드 시험은 미실행이다.
+사용자가 main/wifi_control_contract.h/.c와 CMake를 입력했다. header 선언과 CMake 등록은 맞다.
+최초 source 오류5곳은 사용자 수정 완료다. 실제 저장본 PC 검사15개가 모두 PASS다.
+안내 후보 C15 PASS·최초 저장본 컴파일 실패0 tests/ERROR1과 구분해 후속 결과를 기록했다.
+parser ESP 전체 빌드 성공을 사용자가 확인했다. 빌드 로그/바이너리 hash·새 플래시는 미확인이다.
+ticket 후보PC12 PASS와 입력 전 기본0 tests/SKIP1은 준비 이력이다. 사용자 .h/.c·CMake가 저장됐다.
+header/CMake는 맞고 source46줄 UINT32_NAX→UINT32_MAX,74줄 puepose→purpose 사용자 수정 완료다.
+최초 저장본0 tests/ERROR1 이후 수정본 실제 PC12 PASS(SAVED TICKET C ONLY)를 확인했다.
+10/11 ticket 포함 ESP 전체 빌드 성공을 사용자가 확인했다. 원본 로그/바이너리 hash·새 플래시/보드 동작은 미확인이다.
+owner 후보PC9 PASS·입력 전 기본0 tests/SKIP1 이후 사용자 .h/.c·CMake를 검토해 실제PC9 PASS다.
+SAVED OWNER AND TICKET C ONLY 모드이며 소유권 기록/새 control ID/대조·취소만 검사했다.
+10/11 owner 포함 ESP 전체 빌드 성공을 사용자가 확인했다. 원본 로그/바이너리 hash·새 플래시/보드 동작은 미확인이다.
+다음은 phase/기한·ACK/TEL·취소/정지 흐름의 완결된 입력 블록과 PC 검사 준비다. 기존 parser/ticket/owner/main C hash는 유지한다.
+owner 예약/대조는 제어 허가가 아니다. 제어 FSM/접수·UART 기한/ACK/TEL/큐 연결은 후속 블록이다.
+STOPPING/BLOCKED에서는 owner가 없어도 예약하지 마라. 취소 때 ticket/owner 둘 다 무효화하고 번호 공급기는 유지해라.
+ticket 성공은 제어 허가가 아니며 pool을 같은 ESP 부팅의 연결 종료 때 초기화하지 마라.
+아직 UART ARM/CMD 송신을 연결하지 말고 첫 모드는 zero-only로 설계해라.
+CMD 목표100ms/STM timeout300ms, 일회용ticket150ms, 제어 TEL age250ms는 초기 설계값이다.
+W5 요청500ms/표시 stale500ms/브라우저4000ms를 제어 watchdog으로 재사용하지 마라.
+끊김/만료 때 허가·미송신 큐를 폐기하고 priority DISARM, 재접속 후 새 수동 ARM을 요구한다.
+PC7 pull-up/HIGH=active이므로 낱개 보드 FAULT를 우회하지 마라.
+AC-B는 거부 경로, AC-S는 정상 conditioned sense 조건의 비구동 Gate다. 모두 아직 미실행이다.
+ESP ticket의 방어를 이미 송신된 UART 프레임 회수나 STM replay 차단으로 확대하지 마라.
 장비가 필요하면 현재 연결 상태를 확인하고 비구동 검증과 실제 구동 선행 Gate를 구분해라.
 펌웨어 구현을 시작할 때는 이유/상태 흐름/정확한 교체 범위와 완전한 연결 블록을 함께 제시해라.
 사용자가 펌웨어 입력과 두 보드 빌드·플래시·실측을 한다.
 개인 Wi-Fi 비밀번호를 출력하지 마라. Git commit/push는 별도 요청 때만 진행해라.
+W5 마감·후속 구현 시작 기준은 d9bf801이다.10/11 Git 마감 범위는 기초 모듈·검사·관련 문서이며 최신 git log와 진행 기록으로 반영 상태를 확인해라. 다른 Hello World build 변경을 보존해라.
 사용자 요청 없이 subagent·전체 대화 아카이브를 열지 마라.
 ```
 

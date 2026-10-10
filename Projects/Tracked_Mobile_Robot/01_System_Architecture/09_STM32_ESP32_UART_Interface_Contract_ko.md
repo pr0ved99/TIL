@@ -3,6 +3,8 @@
 > 문서 역할·상태 대조: **2026-09-30** — 현재 UART frame·timeout·reset 계약. 날짜별 검사/이미지 기록은 당시 증거로 보존한다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
+> **2026-10-11 후속 구현:** [Wi-Fi ARM/CMD 초기 계약·검증 계획](../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)에 persistent controller, 일회용ticket, 만료/정지 순서와 zero-only Gate를 작성했다. parser·ticket·owner 실제PC15/12/9 PASS, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. ESP ARM/CMD의 상태/기한·UART 실행 경로와 새 보드 시험은 미완료다. 초기 CMD100ms와 제어 TEL age250ms는 실측 전 설계값이며, 아래 UART frame·STM timeout300ms·ADR-015를 변경한 구현 증거가 아니다. STM RX 자체의 session/seq freshness는 여전히 별도다.
+
 ## 목적
 
 이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조

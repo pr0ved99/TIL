@@ -2,10 +2,10 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-10-10
+## 현재 시작점 — 2026-10-11
 
-[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/10 W5 마감 기록](../progress/2026-10-10_progress.md) 순서로 읽는다. 두 보드 USB·LiPo 미연결의 PING/DISARM 범위를 마감하고 두 USB 분리 완료를 확인했다.
-**W4 상태 전달·W5 비구동 PING/DISARM은 완료했다.** 다음은 ARM/CMD 세션·freshness·명령 유효시간·재허가 계약 설계다.
+[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/11 빌드 확인 기록](../progress/2026-10-11_progress.md) 순서로 읽는다. 두 보드 USB·LiPo 미연결의 PING/DISARM 범위와 두 USB 분리 완료는 [10/10 W5 마감 기록](../progress/2026-10-10_progress.md)에 보존했다.
+**W4 상태 전달·W5 비구동 PING/DISARM은 완료했다.** 이후 [ARM/CMD 초기 계약·검증 계획](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했다. parser PC15·ticket PC12·owner PC9는 실제 저장본 PASS, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이며 UART 연결·새 보드 시험은 미실행이다.
 ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완료다. 이전 학습/납땜/모터 시험을 변경 없이 반복하지 않는다.
 상세 근거는 [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
 
@@ -13,6 +13,10 @@ ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완�
 
 | Date range | File | Scope |
 | --- | --- | --- |
+| 2026-10-11 / PC·빌드 확인 완료 | [ARM/CMD owner 코드 안내](2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md) | 한 연결 예약·control ID·대조/취소. 실제PC9 PASS, ESP 전체 빌드 성공 사용자 확인. FSM/기한·UART 미연결 |
+| 2026-10-10 작성 / 10/11 빌드 확인 | [ARM/CMD ticket 코드 안내](2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md) | 연결/용도·150ms·한 번 소비·번호 소진. 실제PC12 PASS, ESP 전체 빌드 성공 사용자 확인 |
+| 2026-10-10 / parser 확인 완료 | [ARM/CMD parser 코드 안내](2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md) | 새 header/source·CMake, 실제PC15 PASS·ESP 빌드 성공 사용자 확인. UART 미연결 |
+| 2026-10-10 / 초기 설계안 | [Wi-Fi ARM/CMD 제어 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) | 지속 소유권·ticket·기한·priority DISARM·zero-only, AC-H/B/S 기준. parser PC15 PASS 이후 제어 연결·보드 시험은 미실행 |
 | 2026-10-08 계획 / 10/10 마감 | [두 보드 W5 PING/DISARM 계획](2026-10-08_W5_Two_Board_PING_DISARM_Plan_ko.md) | 당시 준비/실행 순서 보존, 완료 근거는 report34의 비구동 범위 |
 | 2026-10-06 작성 / 10/10 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4/W5 완료와 다음 ARM/CMD 계약의 경계 |
 | 2026-10-02 / 코드 입력 | [ESP 단독 WebSocket 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md) | 실제 앱 적용 후보, HTTP 작업 예약·버퍼 수명·재접속·WS-1~4 |

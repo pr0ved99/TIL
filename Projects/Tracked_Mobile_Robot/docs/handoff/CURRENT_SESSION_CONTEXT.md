@@ -1,14 +1,26 @@
 # Current Session Context
 
-Last updated: **2026-10-10 — W5 비구동 PING/DISARM·결과/버튼·입력 거부·timeout/복구·재접속 마감. 두 USB 분리 사용자 확인. 다음은 ARM/CMD 계약 설계**.
+Last updated: **2026-10-11 — parser PC15·ticket PC12·owner PC9 실제 저장본 PASS, owner 포함 ESP 전체 빌드 성공 사용자 확인, 다음 phase/기한 관리**.
 
 ## 바로 이어갈 작업
 
-[10/10 마감 기록](../progress/2026-10-10_progress.md)과 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)을 먼저 읽는다. **W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.** 변경 없는 W4/W5·납땜·도통·모터 시험을 처음부터 반복하지 않는다.
+[10/11 빌드 확인 기록](../progress/2026-10-11_progress.md)을 먼저 읽고 W5 근거가 필요하면 [10/10 마감 기록](../progress/2026-10-10_progress.md)과 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다. **W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.** 변경 없는 W4/W5·납땜·도통·모터 시험을 처음부터 반복하지 않는다.
 
-1. 다음 작업은 새 대화에서 **ARM/CMD의 세션·명령 유효시간·TEL freshness·명시적 재허가 계약**을 설계하는 것이다. 로봇 없이 가능한 조건표/검사 설계부터 진행한다. 실제 구동 Gate는 별도다.
+1. [ARM/CMD 초기 설계안](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 따른다. parser PC15·ticket PC12·[owner](../plans/2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md) PC9는 실제 저장본 PASS다.10/11 owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름의 완결된 입력 블록과 PC 검사 준비다. owner는 식별 기록만 담당하며 기존 main C와 UART ARM/CMD 미연결 상태를 유지한다.
 2. 마지막 W5 조건은 STM·ESP 각 USB·LiPo 미연결. **두 USB 분리 완료는 사용자 확인**이다. UART 탈거·보드 탈거 등 미보고 물리 동작은 추정하지 않는다. 재개 때 새 연결 상태를 기준으로 진행한다.
 3. READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. PING OK·READY·TEL fresh만으로 구동을 허용하지 않는다. 별도 UART bridge hook 복구·전력단/안전 잔여 조건도 유지한다.
+
+### ARM/CMD 설계 작업 — 구현 상태와 구분
+
+- 소스 대조로 W5 요청500ms와 STM timeout300ms의 차이, 반복 ARM의 타이머 갱신, CMD-only watchdog을 확인했다. 초기 CMD 목표100ms·STM timeout300ms·제어 TEL age250ms를 별도로 제안했다.
+- 제어 연결1개를 ACK 뒤에도 유지하고, 연결/control ID에 묶인 일회용150ms ticket으로 늦게 도착한 입력을 거부한다. 접수와 UART 송신 직전에 마감/소유권을 재검사한다. 초기 수치는 실측 전 설계값이다.
+- ARM→zero CMD ACK/TEL→ACTIVE. 끊김·만료·fault는 허가/미송신 큐 폐기와 priority DISARM. 재접속 시 자동 ARM/CMD0, 새 수동 ARM 필요. 첫 구현은 zero-only다.
+- PC7은 pull-up/HIGH=active다. sense 회로 없는 낱개 보드의 FAULT를 우회하지 않는다. AC-B는 거부 경로, AC-S는 정상 conditioned sense 조건의 별도 비구동 Gate다. AC-H 전체는 미완료며 AC-B/S는 미실행이다.
+- ESP ticket은 이미 UART에 보낸 프레임을 회수하거나 STM RX replay ARM+CMD를 막지 않는다. STM epoch/seq freshness와 실제 nonzero 정지/주행 증거는 별도다.
+- 설계 단계에서는 소스 변경이 없었고, 이후 사용자가 parser `.h/.c`와 CMake를 입력했다. ESP 전체 빌드 성공은 사용자 확인이다. 새 플래시·하드웨어 상태 변경은 미보고다. W5 마감·후속 구현 시작 기준은 `d9bf801`이다.10/11 사용자 요청으로 기초 모듈·검사·문서를 Git 마감 범위로 묶으며 최종 반영 기준은 최신 `git log`와 [진행 기록](../progress/2026-10-11_progress.md)을 따른다.
+- 후속 parser 저장본 검토: 안내 후보15 PASS → 최초 저장본0 tests/ERROR1 → 사용자 수정본 실제 PC15 PASS 순서다. source의 `boll`·변수명2곳·함수 정의 뒤 `;`·숫자 반복 조건이 수정됐다. Codex가 펌웨어를 직접 수정하지 않았다. owner/deadline/FSM 연결은 다음 구현이다.
+- ticket 모듈은 후보12 PASS → 최초 저장본0 tests/ERROR1 → 사용자 수정본 실제 PC12 PASS 순서다.46줄 `UINT32_MAX`·74줄 `purpose`가 수정됐고 header/CMake는 맞다. boot/session/용도/세대·149/150ms·한 번 소비/취소·번호 소진 등을 검사했다.10/11 ticket 포함 ESP 전체 빌드 성공은 사용자 확인이며 원본 로그/바이너리 hash는 미제공이다. 새 플래시·보드 동작은 미확인이다. owner/FSM·UART 송신/큐/경합은 미연결이며 pool은 연결 종료 때 초기화하지 않는다.
+- owner 모듈은 후보9 PASS·입력 전 기본0 tests/SKIP1 이후 사용자 저장본 실제9 PASS다. header/source·CMake 네 source 등록은 맞고 공백/끝줄 차이만 있다. 연결 한 개 예약·control ID 비재사용·취소/식별 대조와 저장된 ticket 소비 뒤 기록 유지 범위다.10/11 owner 포함 ESP 전체 빌드 성공은 사용자 확인이며 원본 로그/바이너리 hash는 미제공이다. 새 플래시·보드 동작은 미확인이다. 예약/대조 성공은 제어 허가가 아니며 STOPPING/BLOCKED에서 재예약하지 않도록 후속 FSM이 검사해야 한다. ACK/TEL·기한/큐·UART TX0·경합은 미증명이다.
 
 ### W5 마감 상태 — 현재 기준
 

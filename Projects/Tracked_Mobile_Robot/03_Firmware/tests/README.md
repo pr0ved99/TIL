@@ -80,6 +80,95 @@ python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -
 
 아래 UART bridge 계약 검사·시험 hook 기록은 별도 앱의 날짜별 이력이다. 현재 Wi-Fi 앱의 실행 상태로 해석하지 않는다.
 
+## Wi-Fi ARM/CMD parser PC 검사 — 2026-10-10
+
+`test_wifi_control_parser.py`는 `wifi_control_contract.h/.c` 전체를 native C로 컴파일하고,
+`wifi_control_parser_host_fixture.c`에서 실제 parser/zero-only helper를 호출한다.
+UART/태스크/시간 모형은 없으며 제어 소유권·ticket 유효시간·송신을 검사하지 않는다.
+
+준비 당시 [입력 안내](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md)의
+두 C 블록을 명시적으로 선택한 **입력 후보 검사15 PASS**였고, 파일이 없던 기본 실행은 **0 tests / SKIP1**이었다.
+이후 사용자 저장본으로 기본 실행을 시도했으나 source49줄의 `boll` 때문에 컴파일이 실패했다.
+첫 결과는 **0 tests / ERROR1**이었다. 이후 source의 컴파일 오류4곳·숫자 반복 조건 오류1곳을
+사용자가 수정했고 실제 저장본을 재검사해 **15 tests / PASS**를 확인했다(`SAVED PARSER C ONLY`).
+후보 결과와 구분하며, parser 자체의 PASS를 AC-H 전체나 ESP 전체 빌드 PASS로 합치지 않는다.
+
+검사한 실제 파일 SHA256:
+
+- `.h`: `9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8`
+- `.c`: `26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4`
+
+사용자 저장 후 실제 파일 검사는 저장소 루트에서 다음과 같이 실행한다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/tcc.exe'
+Remove-Item Env:WIFI_CONTROL_INPUT_GUIDE -ErrorAction SilentlyContinue
+python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p 'test_wifi_control_parser.py' -v
+```
+
+입력 후보를 검사할 때만 `WIFI_CONTROL_INPUT_GUIDE`에 안내 Markdown 경로를 지정한다.
+stdout에 `CANDIDATE GUIDE ONLY`와 `SAVED PARSER C ONLY`를 구분한다.
+컴파일러 또는 실제 입력 파일이 없으면 SKIP이다. 형식/ID/속도 경계, 실제 바이트 길이,
+중간NUL·비ASCII,128byte 경계, signed overflow, 실패 시 output 유지와 형식 정상/zero-only 구분을 검사한다.
+PC 검사 결과는 ESP 전체 빌드·플래시·하드웨어 ARM 수락·구동 안전을 증명하지 않는다.
+
+## Wi-Fi ARM/CMD ticket 검사 — 2026-10-10
+
+parser 저장본 PC15 PASS 이후 ESP 전체 빌드 성공은 사용자 확인이다. 빌드 로그/바이너리 hash는 미제공이다.
+[ticket 입력 안내](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md)의 두 C 블록을 선택해
+`test_wifi_control_ticket.py`/`wifi_control_ticket_host_fixture.c`로 컴파일·실행한 **후보12 PASS**다.
+입력 전 파일이 없던 기본 실행은 **0 tests / SKIP1**이었다.
+최초 실제 `.h/.c`·CMake 저장본은 header/CMake가 맞고 source46줄 `UINT32_NAX`,74줄 `puepose`가
+컴파일 오류여서 **0 tests / ERROR1**이었다. 사용자가 각각 `UINT32_MAX`, `purpose`로 수정했다.
+수정본 실제 파일 선택(`SAVED TICKET C ONLY`) 실행은 TCC `-Wall -Werror`로 **12 tests / PASS**다.
+ticket header SHA256은 `ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea`,
+source는 `415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94`다.
+10/11 ticket 포함 ESP 전체 빌드 성공을 사용자가 확인했다. 원본 로그/바이너리 hash·새 플래시/보드 동작은 미확인이다.
+후보/최초 오류/수정본 PC 결과와 사용자 ESP 빌드 확인을 구분한다.
+
+boot/session/purpose/control ID/번호 대응,149/150ms, 유효 ticket 유지, 재사용·취소,
+u32 번호 소진·u64 만료 overflow·발급 이전 시각·null/부적합 인자를 검사한다.
+번호 공급기 공유는 caller가 같은 lock으로 보호해야 하며 이 검사는 실제 태스크 경합을 만들지 않는다.
+제어 owner/FSM·큐·UART 송신·보드 시간과 정지 결과는 검사하지 않는다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/tcc.exe'
+Remove-Item Env:WIFI_CONTROL_TICKET_GUIDE -ErrorAction SilentlyContinue
+python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p 'test_wifi_control_ticket.py' -v
+```
+
+입력 후보만 검사할 때 `WIFI_CONTROL_TICKET_GUIDE`에 안내 Markdown 경로를 지정한다.
+출력의 `CANDIDATE TICKET GUIDE ONLY`와 `SAVED TICKET C ONLY`를 구분한다.
+검사 의존 request header는 실제 저장된 `wifi_control_contract.h`다.
+
+## Wi-Fi ARM/CMD owner 검사 — 2026-10-11
+
+[owner 입력 안내](../../docs/plans/2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md)의 두 C 블록과
+**실제 저장된 ticket `.h/.c`·parser header**를 임시 폴더에 복사해 TCC `-Wall -Werror`로 검사한 **후보9 PASS**다.
+`test_wifi_control_owner.py`/`wifi_control_owner_host_fixture.c`가 실제 C 함수를 호출한다.
+입력 전 owner 파일이 없던 기본 실행은 **0 tests / SKIP1**이었다.
+후속 사용자 `.h/.c`·CMake 검토 후 후보 선택 환경 변수를 제거한 기본 실행은
+`SAVED OWNER AND TICKET C ONLY` 모드의 **실제9 PASS**다. TCC `-Wall -Werror` 컴파일·실행 결과다.
+owner header SHA256은 `3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af`,
+source는 `707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd`다.
+10/11 owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 원본 로그/바이너리 hash는 미제공이다.
+후보/저장본 PC 검사와 사용자 ESP 빌드 결과를 구분하며 새 플래시·보드 동작은 미확인이다.
+
+한 연결만 예약, 실패 시 상태/out 유지, boot/session/control 대응, 같은/다른 연결의 재허가에서 새 번호,
+취소 뒤 이전 식별값 거부,256회 번호 비재사용, 번호 소진, NULL/0 인자를 검사한다.
+현재 저장된 ticket C에서 CMD ticket을 발급·소비해도 owner가 유지되는지 확인한다.
+owner 취소와 ticket 취소는 별도 호출이며 둘 다 수행해야 한다는 경계도 확인한다.
+이 검사는 ARM 접수 조건·ACK 수신·상태 전이·시간/큐·UART 송신0·RTOS 경합을 증명하지 않는다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/tcc.exe'
+Remove-Item Env:WIFI_CONTROL_OWNER_GUIDE -ErrorAction SilentlyContinue
+python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p 'test_wifi_control_owner.py' -v
+```
+
+입력 후보만 검사할 때 `WIFI_CONTROL_OWNER_GUIDE`에 안내 Markdown 경로를 지정한다.
+후보 결과는 owner 포함 ESP 전체 빌드·보드 동작 결과가 아니다. parser PC15/ticket PC12는 반복하지 않았다.
+
 ## 로봇 계약 검사 기록 — 2026-09-29 당시
 
 - ESP 기존 자동 hook 네 개는0U, 새 BRIDGE_M2_PULSE_TEST_ENABLED는1U다. 현재 M2 역방향10%/300ms 수동 시험 설정이다.

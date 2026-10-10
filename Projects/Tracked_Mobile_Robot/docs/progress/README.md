@@ -5,7 +5,9 @@
 
 ## 최신 기록
 
-**[2026-10-10 W5 비구동 PING/DISARM 마감](2026-10-10_progress.md)** — 명령 왕복·입력 거부·timeout/복구·요청자별 결과·버튼·재접속 후 자동 재전송 없음 확인. JS57·실제 C 함수 PC21 PASS는 별도 증거다. 마지막 수동 PING1 OK, 두 USB 분리 완료 사용자 확인. 다음은 ARM/CMD 계약 설계다. [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
+**[2026-10-11 owner PC·ESP 빌드 확인](2026-10-11_progress.md)** — 실제 parser PC15·ticket PC12·owner PC9 PASS, owner 포함 ESP 전체 빌드 성공 사용자 확인. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이다. 큐/UART 연결과 새 보드 동작은 미실행이다.
+
+**[2026-10-10 W5 마감·ARM/CMD 초기 설계](2026-10-10_progress.md)** — W5 왕복·거부·timeout/복구·결과/버튼·재접속 마감과 Git 반영. JS57·C21은 별도 증거, 두 USB 분리 완료 사용자 확인. 후속 [ARM/CMD 계약·검증 계획](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했고 다음은 ESP 데이터/입력 검사 구현이다. 새 제어 송신·보드 시험은 미실행이다. [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
 
 **[2026-10-08 W4 실제 TEL·WebSocket·STARTUP 마감](2026-10-08_progress.md)** — 실제 TEL 전달·stale/복구·WS 재접속·ACK/PONG 제한 실패·READY/FAILED 독립 표시 PASS. PA10 pull-up과 리셋 err의 관측·해석 한계를 보존했다. 마지막 READY/fresh 복원, 다음 W5는 비구동 PING/DISARM부터다. [보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md).
 
@@ -95,7 +97,8 @@ STA·WebSocket·STM 통합/무선 명령과 PCB CAD는 남아 있다. 앞선 낡
 
 | 날짜 | 기록 | 당시 작업 요약 |
 | --- | --- | --- |
-| 2026-10-10 | [2026-10-10_progress.md](2026-10-10_progress.md) | W5 비구동 요청/결과·버튼·timeout/재접속, JS57·C21·두 USB 분리 확인 마감 |
+| 2026-10-11 | [2026-10-11_progress.md](2026-10-11_progress.md) | owner 실제PC9 PASS·owner 포함 ESP 전체 빌드 성공 사용자 확인, 제어 UART 미연결 |
+| 2026-10-10 | [2026-10-10_progress.md](2026-10-10_progress.md) | W5 마감·Git 반영 / ARM/CMD 설계·parser/ticket 실제 PC 검사와 parser 빌드 확인, 제어 UART 미연결 |
 | 2026-10-08 | [2026-10-08_progress.md](2026-10-08_progress.md) | 10/7~8 W4 통합·리셋 진단·부팅/TEL 상태 분리·정상 복원 마감 |
 | 2026-10-01 | [2026-10-01_progress.md](2026-10-01_progress.md) | 9/30 모터 시험 증거 마감·계측 구매 한계·PCB 전환 의견 |
 | 2026-09-30 | [2026-09-30_progress.md](2026-09-30_progress.md) | 전반부 문서 개편·공간 분석; 후반부 모터 시험은10/1 기록과 report32로 마감 |
