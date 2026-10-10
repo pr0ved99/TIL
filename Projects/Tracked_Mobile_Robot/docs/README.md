@@ -65,17 +65,19 @@
 | [`08_Adapter_Plate_Fit_Check.md`](../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md) | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
 | [`09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`](../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md) | Motor-output PWM/DIR, active shutdown and reset-boot logic-analyzer results with remaining power-stage boundary |
 
-## 펌웨어와 Python 검증
+## 펌웨어와 PC 검증
 
 | 문서 | 내용 |
 | --- | --- |
+| [펌웨어 앱·모듈 목차](../03_Firmware/README.md) | 마지막 보드 실행·기초 모듈 준비·다음 구현, 앱별 빌드 폴더 구분 |
 | [STM32 프로젝트](../03_Firmware/stm32_uart_mvp/) | CubeMX 설정과 HAL 기반 펌웨어 |
 | [STM32 제어·통신 코드](../03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c) | 명령 검증, 상태 전이, timeout, E-stop latch/reset |
 | [PWM/DIR 출력](../03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c) | 출력 허용 조건과 채널별 구동 신호 |
 | [엔코더 처리](../03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c) | 카운트 차이, 누적값과 속도 환산 |
 | [ESP32 UART 브리지](../03_Firmware/esp32_uart_bridge/README.md) | ESP-IDF 프로젝트와 통신 흐름 |
-| [Python 검증 코드](../03_Firmware/tests/) | 소스 계약 검사와 독립 참조 모델 |
-| [검증 실행 안내](../03_Firmware/tests/README.md) | 실행 방법과 과거 시험 기록; 현재 설정은 최신 현황 문서 참조 |
+| [현재 ESP Wi-Fi 앱](../03_Firmware/esp32_wifi_link/README.md) | W4/W5 실제 TEL/WS·비구동 PING/DISARM, 기초 제어 모듈과 미연결 실행 경로 |
+| [PC 검증 코드](../03_Firmware/tests/) | 정적 소스/참조 모델·실제 C 함수/모듈·PAGE JavaScript 모의 검사 |
+| [검증 종류·실행 안내](../03_Firmware/tests/README.md#검사-종류와-선택) | Python/C·Node.js 선택, PASS/SKIP과 사용자 빌드·보드 증거 구분 |
 
 ## PC 도구와 대시보드
 
@@ -138,7 +140,8 @@
 
 ## 실행 계획
 
-현재 재개는 [9/27 진행 기록](progress/2026-09-27_progress.md), [M1 수동 코드 안내](plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)와 [작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)을 따른다. ESP 코드 입력 WIP이며 실제 회전은 미실행이다. 아래 날짜별 계획은 당시의 순서다.
+현재 재개는 [10/11 진행 기록](progress/2026-10-11_progress.md), [ARM/CMD 초기 계약](plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)와 [작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)을 따른다.
+W4/W5 비구동과 단일 모터의 제한된 관측은 완료했다. parser/ticket/owner 실제PC15/12/9 PASS·ESP 빌드 성공 사용자 확인 이후 상태·시간 제한·ACK/TEL·취소/정지 흐름이 다음 작업이다. 큐/UART·브라우저 제어 연결과 새 보드 시험은 남아 있다. 아래 날짜별 계획은 당시 순서다.
 
 | 문서 | 내용 |
 | --- | --- |
@@ -166,6 +169,7 @@
 | 문서 | 내용 |
 | --- | --- |
 | [`docs/verification/README.md`](../docs/verification/README.md) | Lightweight V-model verification index |
+| [시험·빌드 증거 보존 절차](verification/EVIDENCE_CAPTURE_GUIDE_ko.md) | 원본/발췌·소스/빌드/플래시 식별값·조건·판정·마감 기록 방법. 과거 원본 부재는 유지 |
 | [`docs/verification/01_UART_MVP_Requirements_ko.md`](../docs/verification/01_UART_MVP_Requirements_ko.md) | UART MVP requirements and acceptance criteria |
 | [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](../docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
 | [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](../docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 STM32 + Web Serial UART MVP test report |

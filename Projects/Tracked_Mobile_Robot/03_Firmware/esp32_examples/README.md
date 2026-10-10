@@ -2,6 +2,11 @@
 
 `esp32_wifi_link` 코드를 이해하기 위한 단계별 예제 모음입니다.
 
+**상태 안내 갱신: 2026-10-11.** 아래 학습 순서와 실행 결과는10/6 당시 기록이다.
+실제 앱은 이후 WebSocket·STM TEL의 W4와 비구동 PING/DISARM의 W5를 완료했다.
+현재는 ARM/CMD parser·ticket·owner PC15/12/9 PASS·ESP 전체 빌드 성공 사용자 확인 이후 상태·시간 제한 흐름을 준비한다.
+[실제 앱 안내](../esp32_wifi_link/README.md)와 [현재 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 재개 기준으로 사용한다.
+
 ## 학습 순서 — 2026-10-06
 
 | 단계 | 폴더 | 핵심 개념 | wifi_link 코드와의 연결 | 상태 |
@@ -14,7 +19,7 @@
 
 01~05 모두 소스·CMake와 `GUIDE.md`가 있다. 01의 빌드 성공과 02/03 실행 확인은 기존 README 기록이며, 04/05의 오늘 결과는 사용자 대화 보고다. 원본 실행 로그·바이너리 해시는 이번 문서 정리에서 확인하지 않았다.
 
-현재 `esp32_wifi_link`는 HTTP 폴링이다. 05의 `broadcast_text()`는 예제의 메시지 전달이며 실제 앱의 WebSocket·STM TEL·무선 명령 완료가 아니다. [오늘 기록](../../docs/progress/2026-10-06_progress.md)과 [W4 재개 계획](../../docs/plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)을 따른다.
+10/6 당시 `esp32_wifi_link`는 HTTP 폴링이었다. 05의 `broadcast_text()`는 예제의 메시지 전달이며 예제 PASS 자체가 실제 앱의 UART·명령 검증을 증명하지 않는다. 당시 준비 과정은 [10/6 기록](../../docs/progress/2026-10-06_progress.md), 후속 완료 범위는 [W5 보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다.
 
 ## 환경
 
@@ -31,11 +36,11 @@
 01의 현재 설정은 UART 기본 콘솔·USB Serial/JTAG 보조 콘솔, 115200 baud다.
 이 예제를 플래시하면 ESP에서 실행하는 앱이 Hello World로 바뀐다. Wi-Fi 기능을 다시 시험하려면 `esp32_wifi_link`를 별도로 빌드·플래시한다.
 
-## 다음 할 일 — 실제 앱으로 연결
+## 실제 앱으로 연결한 결과와 다음 작업
 
-1. `esp32_wifi_link`에 ESP 단독 WebSocket 상태 전송을 적용한다.
-2. 집에서 STM/ESP의 현재 앱·UART·전원 조건을 확인하고 실제 TEL을 snapshot과 화면에 연결한다.
-3. 수신 중단·stale·재접속을 확인한 뒤 W5 무선 명령으로 진행한다.
+1. **완료:** 실제 STM TEL → ESP snapshot → WebSocket, 수신 중단/stale·복구와 부팅 응답 이력 표시(W4).
+2. **완료:** 브라우저 PING/DISARM → UART 응답 → 요청자별 결과·버튼, 거부·timeout·재접속 뒤 자동 재전송 없음(W5).
+3. **다음:** [ARM/CMD 초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)의 기초 모듈 이후 상태·시간 제한·ACK/TEL·취소/정지 흐름. 큐/UART·브라우저 연결과 새 보드 시험은 남아 있다.
 
 TAG의 역할, `vTaskDelay`의 대기, `ESP_LOGI`와 `ESP_LOGE`, Wi-Fi 이벤트·HTTP handler·브로드캐스트의 호출 흐름은 각 GUIDE로 복습한다. 이미 확인한 04/05 기본 실행을 다시 필수 시험으로 요구하지 않는다.
 

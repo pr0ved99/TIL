@@ -5,6 +5,10 @@
 Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, 주문 업체에 전달한 도면, 제작 후 실물 검증을
 서로 구분해 기록하는 것이 목적이다.
 
+**상태 대조: 2026-10-11.** 플레이트 revision 동일성·fit은 계속 미확인이다.
+10/2 배선 사진의 모터 섀시 장착 모습과 하네스 조립 관측을 정식 기구 release로 확대하지 않는다.
+재개 상태는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+
 ## Current Baseline
 
 | 항목 | 현재 값 |
@@ -36,11 +40,15 @@ custom PC plate가 이미 도착했다고 확인했다. 이 도착품이 해당 
 
 2026-08-28 K1 assembly, S0, S2, VO617A-3, P6KE16CA x3와 F2의 지정된 무전원 component screen은 PASS했다.
 6P는 완성 harness가 아니라 loose male/female housing, terminal, seal, secondary lock와 별도
-18 AWG 전선으로 확인됐다. 이 품목들의 mechanical dry-fit은 지금 가능하지만 실제 service
-access/retention PASS는 아니다. 2026-08-30 `VH-30J + WX-03B` 압착 공구 세트도 사용자 보고
-기준으로 도착했다. Exact 구성·상태·die fit과 first-article crimp/pull/continuity/retention은
-미검증이고 6P도 미조립이므로 S2 cutout/rear-depth, clamp placement와 final harness routing은
-아직 동결하지 않는다.
+18 AWG 전선으로 확인됐다. 2026-08-30 `VH-30J + WX-03B` 압착 공구 세트 도착도 사용자 보고다.
+후속 [report24](../docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md)에서
+6P 양쪽18 AWG 조립·retention·pair truth table/continuity를 사용자 보고로 확인했다. 따라서 6P 미조립 안내는 과거 상태다.
+이 결과는 모든 부품의 mechanical dry-fit·service access, seal/IP 등급·정식 압착 강도/공구 적합성 release가 아니다.
+S2 cutout/rear-depth, clamp placement와 final harness routing은 아직 동결하지 않는다.
+
+후속 [10/2 기록](../docs/progress/2026-10-02_progress.md)과 [배선 사진](../assets/photos/wiring/README.md)에서는
+모터 섀시 장착·배선 정리1차 상태를 확인했다. 당시 궤도·STM/ESP 본체는 미장착이며, 이후 W4/W5 보드 시험 배치와 별개다.
+금속 슬롯·노출 단자 보호, 현가/궤도 간섭, 홀더 고정과 플레이트 동일성/fit은 조립 마감 때 확인한다.
 
 ## Document Index
 

@@ -7,9 +7,10 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-10:** W4 상태 전달에 이어 W5 **비구동 PING/DISARM**의 요청/응답·입력 거부·timeout/복구·버튼·재접속을 확인했다. [W5 근거](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
+- **현재 단계 · 2026-10-11:** W4 상태 전달과 W5 **비구동 PING/DISARM**의 요청/응답·입력 거부·timeout/복구·버튼·재접속을 확인했다. [W5 근거](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
+  ARM/CMD parser·ticket·owner 독립 모듈의 실제 PC 검사 **15/12/9 PASS**, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 상태·시간 제한·ACK/TEL·취소/정지 흐름이다. [최신 기록](docs/progress/2026-10-11_progress.md).
   A 전진·DISARM·S0와 A/B 각각10%·3초 구동은 [별도 모터 시험](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)이다.
-  무선 ARM/CMD·배터리 ADC·전류·열·전체 안전 수용·차량 주행은 남아 있다.
+  ARM/CMD 모듈은 아직 main·큐·UART·브라우저에 연결하지 않았다. 새 모듈의 플래시/보드 실행, 배터리 ADC·전류·열·전체 안전 수용·차량 주행은 남아 있다.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
 [ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) · [Wi-Fi 상태 전달](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) ·
@@ -135,15 +136,15 @@ flowchart LR
 
 ## 4. 현재 검증 범위와 남은 작업
 
-**검증 기준: 2026-09-29.** 단일 모터의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
+**상태 대조: 2026-10-11.** 날짜별 시험의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
 요구사항별 판정은 [검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
 
 | 분야 | 확인된 범위 | 남은 핵심 검증 |
 | --- | --- | --- |
-| 통신·펌웨어 | UART·timeout·latch/reset·PWM 차단, 당시 안전 이미지 복구와 수동 단발 콘솔 | 전체 bridge 통합·시험 사이 err 증가 원인·현재 시험 이미지의 정상 모드 복구 |
+| 통신·펌웨어 | UART·timeout·latch/reset·PWM 차단, W4/W5 비구동 왕복과 복구. ARM/CMD 기초 모듈 PC15/12/9 PASS·ESP 빌드 성공 사용자 확인 | ARM/CMD 상태/기한·큐/UART/브라우저 연결과 AC-H/B/S, 전체 bridge release·리셋 err 원인. 별도 UART bridge hook1U 복구는 후속 |
 | 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
 | 구동·피드백 | A 전진/DISARM·S0 관측, B 방향 보정, A/B 각각10%·3초 구동과원시1432/1384 ticks·CPS 일치 | 전류·열·반복 기동·부하 조건·주행 |
-| 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 모터 분리 전력단의 일부 관측 | 전체 T005A는 PARTIAL. rail-off 수용 기준·단자/배선 release·구동 중 S0 정지 |
+| 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 전력단 일부 관측과 A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A·T-MOTOR-003 PARTIAL, 정식 T-ESTOP-007 BLOCKED. rail-off·단자/배선 release·기계 정지 시간/거리 수용 |
 | 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
 | 기구·주행 | 어댑터 플레이트 설계·제작품 수령 기록 | 실물 장착·절연·접근성, 첫 주행 전 배터리 ADC·저전압 경고/정지, 저속 주행·1 m 거리 비교 |
 
@@ -152,8 +153,8 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-A/M1 실제 전진 확인은 완료했다. 다음에는 계측 방법을 정하고 전력단·물리 비상정지·단일 모터의 남은 조건을 충족한 뒤
-기구·구동계 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
+A/M1 실제 전진 확인은 완료했다. 당장 이어갈 소프트웨어 작업은 ARM/CMD 상태·시간 제한·ACK/TEL·취소/정지 흐름이며 이후 zero-only 경로와 장비 조건별 검증을 진행한다.
+실제 구동 확대는 계측 방법·전력단·물리 비상정지·단일 모터의 남은 조건을 충족한 뒤 기구 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
@@ -168,19 +169,23 @@ A/M1 실제 전진 확인은 완료했다. 다음에는 계측 방법을 정하�
 | 명령 검증·상태 전이·timeout | [UART 프로토콜](03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c) |
 | 좌우 명령 변환·출력·엔코더 | [명령 변환](03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c) · [PWM/DIR](03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c) · [엔코더](03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c) |
 | ESP32 UART 브리지 | [프로젝트 안내](03_Firmware/esp32_uart_bridge/README.md) · [구현 코드](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) |
-| Python 검증 | [검증 코드](03_Firmware/tests/) · [실행 방법](03_Firmware/tests/README.md) |
+| 현재 ESP Wi-Fi 앱 | [프로젝트 안내](03_Firmware/esp32_wifi_link/README.md) · [구현 코드](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) |
+| ARM/CMD 독립 기초 모듈 | [역할·구현 상태](03_Firmware/README.md#armcmd-모듈과-실행-경로) · [초기 계약](docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) |
+| PC 검사 | [검증 코드](03_Firmware/tests/) · [종류·선택·실행 방법](03_Firmware/tests/README.md#검사-종류와-선택) |
 
-Python 검사는 소스 계약과 독립 참조 모델을 검사한다. 보드 빌드·실행이나 전기적 계측을 대신하지 않는다.
-현재 설정의 검사 결과와 시험 hook 상태는 [Python 검사 최신 기록](03_Firmware/tests/README.md#최신-기록--2026-09-29)을 확인한다.
+PC 검사는 정적 소스/참조 모델, 실제 C 함수·모듈 실행, PAGE JavaScript 모의 실행으로 구분한다. 보드 빌드·실행이나 전기적 계측을 대신하지 않는다.
+현재 검사 범위와 별도 UART bridge의 과거 hook 기록은 [검사 안내](03_Firmware/tests/README.md#검사-종류와-선택)를 확인한다.
 시험용 설정과 빌드·실행 전제는 [현재 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md)과 해당 런북을 따른다.
 
 ### 빌드·검사 시작점
 
 - **STM32:** STM32CubeIDE에서 [stm32_uart_mvp 프로젝트](03_Firmware/stm32_uart_mvp/)를 가져와 빌드한다. `.project`와 `.ioc`를 포함한다.
-- **ESP32:** ESP-IDF 환경에서 [빌드 안내](03_Firmware/esp32_uart_bridge/README.md#build)를 따른다. 포트 번호는 연결한 PC에서 확인한다.
-- **호스트 검사:** 보드 연결 없이 [Python 검사 실행 방법](03_Firmware/tests/README.md#실행)을 따른다. 빌드·계측 결과와 구분한다.
+- **ESP32 현재 Wi-Fi 앱:** ESP-IDF 환경에서 [esp32_wifi_link 빌드 안내](03_Firmware/esp32_wifi_link/README.md#빌드검사)를 따른다. 별도 [UART bridge 빌드 안내](03_Firmware/esp32_uart_bridge/README.md#build)와 프로젝트 폴더를 혼동하지 않는다. 포트 번호는 연결한 PC에서 확인한다.
+- **호스트 검사:** 보드 연결 없이 [검사 종류와 선택](03_Firmware/tests/README.md#검사-종류와-선택)을 먼저 읽고 해당 Python/C 또는 Node.js 검사를 실행한다. 빌드·계측 결과와 구분한다.
+- **시험 기록:** [증거 보존 절차](docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)에 따라 원본 로그·화면·빌드/플래시 식별값과 관측 범위를 연결한다.
 
-ESP 진입 파일은 `uart_bridge_main.c`로 이름을 바꿨다. 내용은 유지했으며, 이름 변경 후 보드 빌드는 아직 확인하지 않았다.
+펌웨어 앱별 역할·빌드 폴더·마지막 실행과 새 모듈 준비 상태는 [펌웨어 목차](03_Firmware/README.md)를 따른다.
+별도 UART bridge 진입 파일은 `uart_bridge_main.c`로 이름을 바꿨다. 이름 변경 후 해당 앱의 보드 빌드는 아직 확인하지 않았으며 Wi-Fi 앱 빌드 성공과 구분한다.
 
 ### 설계·검증·학습 자료
 

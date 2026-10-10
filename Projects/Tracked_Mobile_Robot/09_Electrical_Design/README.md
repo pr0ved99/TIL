@@ -2,7 +2,10 @@
 
 이 폴더는 전원·모터 드라이버·엔코더·MCU의 기능 회로를 KiCad로, 만능기판 배치·배선을 VeroRoute로 관리한다.
 
-## 도면별 기준과 현재 구현 — 2026-09-27
+## 도면별 기준과 확인된 구현 — 2026-10-11
+
+소스 도면과 날짜별 실물 관측을 구분한다. 이번 변경은 후속 기록의 상태 대조이며 새 배선·실측·설계 release가 아니다.
+새 작업의 연결·전원 상태는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 - Revision: `RevB-WIP`
 - Status: `PULL-DOWN CHECKPOINT / ERC PASS`
@@ -15,7 +18,9 @@
   저항·연결 검사와 JENC_1/2 +5.05V는 사용자 보고 PASS다. 이후 실제 엔코더 네 A/B LOW0V/HIGH 약2.86V와 손회전·좌우 정정 검사를 통과했다. [report 30](../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)을 따른다.
 - 전원/E-stop: conditioned PC7 전압 기능과 T004 firmware/PWM PASS. 두 버스바 및
   MDD B+=K1 87/B−=GND 연결 상태의 T005A 관측은 보존했으며 전체 판정은 PARTIAL이다.
-  두 모터는 섀시에서 분리돼 있다. A 동력선은 M1에 연결했고 B 동력선은 분리 유지다. 부하·온도·rail-off 판정과 실제 모터 정지는 미완료다.
+  9/30에는 A/M1·B/M2 동력선을 연결해 각각 단독 구동했고 A 전진·DISARM/S0 정지와 A/B10%·3초 관측을 마쳤다.
+  [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 범위 PASS이며 부하·전류/열·rail-off와 정식 기계 정지 수용은 미완료다.
+  이후10/2 전원/배선 점검과 사진에서는 모터가 섀시에 장착된 모습이 확인됐다. [10/2 기록](../docs/progress/2026-10-02_progress.md)과 [사진 색인](../assets/photos/wiring/README.md)을 따르며 최종 장착/절연/주행 PASS로 확대하지 않는다.
 
 ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻이다. 전류 용량, 실제 배선, noise, footprint와 제조 적합성을 증명하지 않는다.
 
@@ -61,6 +66,8 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 - [T004 감지·펌웨어·PWM 시험](../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)
 - [T005A 전력단 연결·전압·복구](../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)
 - [엔코더 영구 조정부 검사](../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)
+- [단일 모터 DISARM/S0·3초 구동](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)
+- [10/2 전원·배선 점검](../docs/progress/2026-10-02_progress.md) / [원본 배선 사진](../assets/photos/wiring/README.md)
 
 ## Captured Interfaces
 
@@ -82,7 +89,7 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 
 - F1 10 A/F2 1 A 선정값의 실물 식별과 최종 보호 협조; F1 ordered 287/actual 257 대조
 - XL4015 #1/#2 connector/wire current, voltage-drop and temperature release evidence; retain the fixed no-USB buck-only policy
-- MDD10A powered motor-output channel 1/2 to vehicle left/right assignment and forward polarity
+- MDD10A A=left/M1·B=right/M2와 전진 부호는 reports29/31/32에서 확인. 최종 하네스/기구 통합 후 조건이 바뀐 경우의 대조·양쪽 동시 구동/주행은 미완료
 - BNO085 power and I2C wiring
 - 버스바·실제 선재/단자 접속부의 전류·전압강하·온도 적합성; 현재 연결·AWG는 report 27에 기록
 - Powered-motor encoder noise and input-filter validation

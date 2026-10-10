@@ -8,6 +8,7 @@
 **W4 상태 전달·W5 비구동 PING/DISARM은 완료했다.** 이후 [ARM/CMD 초기 계약·검증 계획](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했다. parser PC15·ticket PC12·owner PC9는 실제 저장본 PASS, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이며 UART 연결·새 보드 시험은 미실행이다.
 ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완료다. 이전 학습/납땜/모터 시험을 변경 없이 반복하지 않는다.
 상세 근거는 [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
+앱/모듈 역할은 [펌웨어 목차](../../03_Firmware/README.md), 새 시험의 원본·빌드/플래시 식별값은 [증거 보존 절차](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
 
 ## Index
 
@@ -16,12 +17,15 @@ ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완�
 | 2026-10-11 / PC·빌드 확인 완료 | [ARM/CMD owner 코드 안내](2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md) | 한 연결 예약·control ID·대조/취소. 실제PC9 PASS, ESP 전체 빌드 성공 사용자 확인. FSM/기한·UART 미연결 |
 | 2026-10-10 작성 / 10/11 빌드 확인 | [ARM/CMD ticket 코드 안내](2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md) | 연결/용도·150ms·한 번 소비·번호 소진. 실제PC12 PASS, ESP 전체 빌드 성공 사용자 확인 |
 | 2026-10-10 / parser 확인 완료 | [ARM/CMD parser 코드 안내](2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md) | 새 header/source·CMake, 실제PC15 PASS·ESP 빌드 성공 사용자 확인. UART 미연결 |
-| 2026-10-10 / 초기 설계안 | [Wi-Fi ARM/CMD 제어 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) | 지속 소유권·ticket·기한·priority DISARM·zero-only, AC-H/B/S 기준. parser PC15 PASS 이후 제어 연결·보드 시험은 미실행 |
+| 2026-10-10 작성 / 10/11 갱신 | [Wi-Fi ARM/CMD 제어 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) | 지속 소유권·ticket·기한·priority DISARM·zero-only, AC-H/B/S 기준. 기초 모듈PC15/12/9 PASS·ESP 빌드 성공 사용자 확인, 제어 실행 경로 미연결 |
 | 2026-10-08 계획 / 10/10 마감 | [두 보드 W5 PING/DISARM 계획](2026-10-08_W5_Two_Board_PING_DISARM_Plan_ko.md) | 당시 준비/실행 순서 보존, 완료 근거는 report34의 비구동 범위 |
-| 2026-10-06 작성 / 10/10 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4/W5 완료와 다음 ARM/CMD 계약의 경계 |
+| 2026-10-06 작성 / 10/11 갱신 | [ESP 학습·W4·W5 통합 계획](2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | W4/W5 완료와 ARM/CMD 기초 모듈 이후 상태/기한·실행 연결의 경계 |
 | 2026-10-02 / 코드 입력 | [ESP 단독 WebSocket 안내](2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md) | 실제 앱 적용 후보, HTTP 작업 예약·버퍼 수명·재접속·WS-1~4 |
 | 2026-10-01 / 작업 범위 | [노트북·ESP 작업 계획](2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md) | ESP 단독 Wi-Fi, ADC/CAN PCB 설계 범위, 문서 수정과 코드 이해 |
 | 2026-10-01 / 코드 입력 | [ESP 단독 Wi-Fi·HTTP 코드](2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md) | AP/STA 설정, 앱 전문·이벤트/HTTP 설명, 사용자 입력·검토·빌드 순서 |
+| 2026-09-30 / 완료 시험의 입력 이력 | [M1 active DISARM 안내](2026-09-30_M1_Active_DISARM_Console_Code_Guide_ko.md) | 당시 입력 블록. 실제 관측은 report32, 현재 앱의 대체 소스나 재실행 지시가 아님 |
+| 2026-09-30 / 완료 시험의 입력 이력 | [M1 물리 S0 정지 안내](2026-09-30_M1_Physical_S0_Stop_Console_Code_Guide_ko.md) | 당시 S0 관측 절차. report32 범위와 정식 T-ESTOP-007 BLOCKED 구분 |
+| 2026-09-30 / 완료 시험의 입력 이력 | [M1 3초 구동 안내](2026-09-30_M1_Three_Second_Run_Console_Code_Guide_ko.md) | A/B 제한 구동의 시작 코드 이력. 현재 UART bridge의 M2_RUN 소스 상태와 구분 |
 | 2026-09-29 / 당시 재개 계획 | [휴식 후 방향 확인 계획](2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md) | 당시 M2 역방향 이미지와 A 방향 확인 계획. 후속 완료 결과는 report32 |
 | 2026-09-27 / 입력 이력 | [M1 수동 1회 시험 코드](2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md) | 당시 WIP와 최초5% 안내. 최신 실행 설정은 현재 인수인계를 따름 |
 | 2026-09-23 / 검사 이력 | [엔코더 조정부 검사와 다음 작업](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) | 당시 저항·도통·전원 PASS; 후속 실제 엔코더 결과는 reports 29/30 |

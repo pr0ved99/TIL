@@ -5,7 +5,7 @@
 
 ## 최신 기록
 
-**[2026-10-11 owner PC·ESP 빌드 확인](2026-10-11_progress.md)** — 실제 parser PC15·ticket PC12·owner PC9 PASS, owner 포함 ESP 전체 빌드 성공 사용자 확인. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이다. 큐/UART 연결과 새 보드 동작은 미실행이다.
+**[2026-10-11 owner PC·ESP 빌드 확인과 문서 정합성 마감](2026-10-11_progress.md)** — 실제 parser PC15·ticket PC12·owner PC9 PASS, owner 포함 ESP 전체 빌드 성공 사용자 확인. 프로젝트/앱/분야 목차·Memory의 현재 요약을 대조하고 펌웨어 목차·증거 보존 절차를 추가했다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이다. 큐/UART 연결과 새 보드 동작은 미실행이다.
 
 **[2026-10-10 W5 마감·ARM/CMD 초기 설계](2026-10-10_progress.md)** — W5 왕복·거부·timeout/복구·결과/버튼·재접속 마감과 Git 반영. JS57·C21은 별도 증거, 두 USB 분리 완료 사용자 확인. 후속 [ARM/CMD 계약·검증 계획](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했고 다음은 ESP 데이터/입력 검사 구현이다. 새 제어 송신·보드 시험은 미실행이다. [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
 

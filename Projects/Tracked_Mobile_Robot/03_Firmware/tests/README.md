@@ -1,10 +1,11 @@
 # Firmware Safety Contract Tests
 
-이 디렉터리의 테스트는 STM32와 ESP32 펌웨어 사이에서 이미 확정한 핀,
-UART, timer, encoder sign, motor-output safety 설정이 소스 변경이나 CubeMX
-재생성으로 조용히 달라지는 것을 막는 정적 preflight 검사다.
+이 디렉터리는 정적 소스/독립 참조 모델 검사, 실제 C 함수·모듈의 PC 실행 검사,
+브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
+보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.
 
-이 테스트는 단순한 핀 번호 확인을 넘어, ESP32 bridge가 부팅 중
+기존 정적 검사는 핀·UART·timer·encoder sign·motor-output safety 설정이 소스 변경이나
+CubeMX 재생성으로 달라지는 것을 막고, ESP32 bridge가 부팅 중
 다음 안전 순서를 구조적으로 유지하는지도 검사한다.
 
 ```text
@@ -29,8 +30,26 @@ python -m unittest discover `
   -v
 ```
 
-외부 Python 패키지는 필요하지 않다. 실패가 발생하면 firmware build나 flash를
-진행하기 전에 변경된 `.ioc`, generated source, user-code contract를 확인한다.
+Python 검사에는 외부 Python 패키지가 필요 없다. native C 검사를 실행하려면 아래 안내대로 TCC/GCC가 필요하며 PAGE 검사는 Node.js로 별도 실행한다.
+전체 Python discovery는 서로 다른 앱/시점의 검사를 포함하고 Node.js 검사를 실행하지 않는다.
+별도 UART bridge 수동 hook1U의 default-off FAIL은 알려진 잔여 조건이다. 전체 실행을 현재 Wi-Fi 앱만의 판정으로 해석하지 않는다.
+예상하지 않은 실패가 발생하면 해당 앱의 변경된 `.ioc`, source, contract를 확인한다.
+
+## 검사 종류와 선택
+
+상태 대조: **2026-10-11**. 아래 개수는 해당 날짜에 확인한 결과이며 이번 문서 정리에서 재실행하지 않았다.
+
+| 목적·종류 | 실행 파일·필요 도구 | 확인한 결과와 한계 |
+| --- | --- | --- |
+| 로봇/기존 UART bridge 소스·참조 모델 | `test_firmware_contract.py`, Python | 별도 앱의9/30 정적30 PASS/1 FAIL(default-off hook1U) 이력. 당시 설정/보드 시험은 아래 날짜별 기록 참조 |
+| W5 브라우저 PAGE 모의 실행 | `test_wifi_w5_websocket_page.js`, Node.js | 실제 main에서 추출한 JS57 PASS. 모의 DOM/WebSocket/시계이며 실제 네트워크/서버 경합은 아님 |
+| W5 선택 C 함수 실행 | `test_wifi_w5_uart_contract.py`, Python+TCC/GCC | 실제 main에서 추출한 C21 PASS. UART/시간/큐 PC 어댑터이며 전체 ESP 실행은 아님 |
+| ARM/CMD 실제 C 모듈 실행 | `test_wifi_control_parser.py`, `test_wifi_control_ticket.py`, `test_wifi_control_owner.py`, Python+TCC/GCC | 저장본15/12/9 PASS. 초기 AC-H01 및 H02/H03 일부 검사이며 제어 FSM·전체 AC-H/B/S는 미완료 |
+| ESP 전체 빌드·보드 실행 | 사용자 ESP-IDF 빌드/플래시·해당 Gate 관측 | owner 포함 빌드 성공 사용자 확인. 새 모듈 플래시/보드 실행·구동 안전 미확인 |
+
+현재 Wi-Fi 검사만 필요하면 아래 해당 Python 파일의 `-p` 명령과 W5 Node.js 명령을 선택한다.
+입력 후보의 GUIDE 환경 변수를 제거해 실제 저장본 모드인지 확인한다. 컴파일러/파일 부재의 SKIP이나0 tests는 PASS가 아니다.
+앱과 모듈 역할은 [펌웨어 목차](../README.md), 결과의 원본/전사·빌드 식별값 보존은 [증거 기록 절차](../../docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
 
 ## Wi-Fi W4 브라우저 모의 검사 — 2026-10-08
 

@@ -21,9 +21,10 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 10/10 W5 비구동 PING/DISARM 마감·두 USB 분리 확인, 다음 ARM/CMD 계약 설계 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: W4/W5 비구동 마감, ARM/CMD parser·ticket·owner 실제 PC15/12/9 PASS·ESP 빌드 성공 사용자 확인. 다음 상태·기한·ACK/TEL·취소/정지 흐름 |
+| 2026-10-11 | [최신 구현·문서 마감 기록](../progress/2026-10-11_progress.md) / [ARM/CMD 초기 계약](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) | 기초 모듈·사용자 빌드와 아직 미연결인 실행 경로, 안내 문서 상태 대조·증거 보존 절차 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
-| 2026-10-10 | [최신 마감 기록](../progress/2026-10-10_progress.md) / [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) | 실제 요청/결과·버튼·거부·timeout/재접속, JS57·C21과 증거 경계 |
+| 2026-10-10 | [W5 마감 기록](../progress/2026-10-10_progress.md) / [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) | 실제 요청/결과·버튼·거부·timeout/재접속, JS57·C21과 증거 경계 |
 | 2026-10-08 | [W4 마감 기록](../progress/2026-10-08_progress.md) / [W4 보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md) | 실제 TEL·WS·부팅 상태·리셋 err 근거와 당시 W5 시작점 |
 | 2026-10-06 | [학습·준비 기록](../progress/2026-10-06_progress.md) / [W4 재개 계획](../plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md) | 예제 완료 범위, 기존 TEL/타이밍 대조, 모의 제안과 실제 UART 연동 순서 |
 | 2026-10-01 | [최신 마감 기록](../progress/2026-10-01_progress.md) / [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) | 단일 모터 증거·계측 한계·PCB 검토 의견 |

@@ -29,9 +29,12 @@ Before moving to a new conversation:
 
 1. Update the dated progress/evidence documents once.
 2. Replace the status and next action in `CURRENT_SESSION_CONTEXT.md`.
-3. Update `docs/progress/README.md` or `docs/handoff/README.md` only when their current pointer changed.
+3. Update `docs/progress/README.md` and `docs/handoff/README.md` when their current pointer changed. Reconcile the project/app/domain READMEs, `PROJECT_MEMORY.md` and plan index when their current status or next action changed; preserve dated historical evidence.
 4. Commit/push only when requested for that work block.
 5. Start the next conversation with `NEXT_SESSION_START_PROMPT.md`.
+
+Use [firmware app/module overview](../../03_Firmware/README.md) to distinguish the last flashed app from compiled but unconnected modules.
+Use [evidence capture guide](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md) for source/build/flash identity, raw logs and observations. Missing past originals remain missing; documentation edits do not upgrade verification status.
 
 ## Conversation Archive
 

@@ -6,6 +6,8 @@ Last updated: **2026-10-11 — parser PC15·ticket PC12·owner PC9 실제 저장
 
 [10/11 빌드 확인 기록](../progress/2026-10-11_progress.md)을 먼저 읽고 W5 근거가 필요하면 [10/10 마감 기록](../progress/2026-10-10_progress.md)과 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다. **W4 상태 전달과 W5 비구동 PING/DISARM은 완료했다.** 변경 없는 W4/W5·납땜·도통·모터 시험을 처음부터 반복하지 않는다.
 
+10/11 전체 문서 점검 후 프로젝트/앱/분야 안내·Memory를 같은 기준으로 정리했다. 앱과 모듈 역할은 [펌웨어 목차](../../03_Firmware/README.md), 새 빌드/시험의 원본·식별값 보존은 [기록 절차](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 참고한다. 누락된 과거 원본이나 새 보드 증거를 문서 정리로 채운 것은 아니다.
+
 1. [ARM/CMD 초기 설계안](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 따른다. parser PC15·ticket PC12·[owner](../plans/2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md) PC9는 실제 저장본 PASS다.10/11 owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름의 완결된 입력 블록과 PC 검사 준비다. owner는 식별 기록만 담당하며 기존 main C와 UART ARM/CMD 미연결 상태를 유지한다.
 2. 마지막 W5 조건은 STM·ESP 각 USB·LiPo 미연결. **두 USB 분리 완료는 사용자 확인**이다. UART 탈거·보드 탈거 등 미보고 물리 동작은 추정하지 않는다. 재개 때 새 연결 상태를 기준으로 진행한다.
 3. READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. PING OK·READY·TEL fresh만으로 구동을 허용하지 않는다. 별도 UART bridge hook 복구·전력단/안전 잔여 조건도 유지한다.
@@ -43,7 +45,7 @@ Last updated: **2026-10-11 — parser PC15·ticket PC12·owner PC9 실제 저장
 - PA10 내부 pull-up은 `usart.c` USER CODE에 유지. STM PONG 누락 시험 hook과 stale PONG hook은0U로 복원·확인했다. USB 모니터 재실행 시 boot_id가 바뀌었으나 err은 증가하지 않았다는 사용자 정정을 반영한다.
 - 리셋 때 GPIO17 기동 LOW·0xFC/BAD_TYPE/err 증가와 이후 정상 복구를 캡처3개로 기록했다. 완전한 원인/FE·NE·ORE 확정은 아니며 W4에서 추가 조사는 멈췄다. PCB 기동 핀 검토와 구동 중 재기동/통신 유실은 후속 범위다.
 - READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이며 TEL freshness와 독립이다.10/8 당시 `/ws`는 상태 전달용이었고, 이후 W5 입력/결과 구현은 위 최신 기준을 따른다.
-- 원본·발췌·화면 전사·소스 snapshot은 [마감 manifest](../../assets/logs/wifi_link/2026-10-08_w4_closeout/manifest.json). 소스 해시는 플래시 바이너리 동일성을 증명하지 않는다.
+- 원본/발췌 식별값·화면 전사·마감 소스 hash는 [마감 manifest](../../assets/logs/wifi_link/2026-10-08_w4_closeout/manifest.json). W4의 소스 hash 기록은 byte snapshot 보존이나 플래시 바이너리 동일성을 증명하지 않는다. W5의 별도 byte snapshot과 구분한다.
 
 ## 이전 완료 범위와 전원·기구 이력
 

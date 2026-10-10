@@ -2,12 +2,17 @@
 
 STM32의 실제 UART TEL을 ESP32-S3가 브라우저에 전달하고, WebSocket PING/DISARM 요청을 UART 응답과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-10
+## 현재 상태 — 2026-10-11
 
 **W4 상태 전달·W5 비구동 PING/DISARM PASS.** 실제 요청/응답, 입력 거부, 요청자별 결과·버튼,
 timeout/복구와 재접속 후 자동 재전송 없음을 확인했다.
 [W5 보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)와
 [마감 기록](../../docs/progress/2026-10-10_progress.md)이 시험 조건과 증거의 기준이다.
+
+이후 ARM/CMD parser·ticket·owner 독립 모듈의 실제 PC 검사 **15/12/9 PASS**와
+owner 포함 ESP 전체 빌드 성공을 사용자 보고로 확인했다. [10/11 기록](../../docs/progress/2026-10-11_progress.md).
+세 모듈은 CMake에 등록돼 있지만 `wifi_link_main.c`에서 호출하지 않는다. 새 모듈의 플래시·보드 실행은 미확인이다.
+[펌웨어 목차](../README.md#armcmd-모듈과-실행-경로)에서 모듈 역할과 현재 실행 경로를 구분한다.
 
 현재 `/ws`는 상태 전달과 PING/DISARM 입력·notice/result를 처리한다. 브라우저 ARM/CMD 입력은 미구현이다.
 부팅 때 UART로 보내는 DISARM/PING은 별도 응답 확인 순서이며 자동 구동하지 않는다.
@@ -63,7 +68,9 @@ idf.py -p COM번호 flash monitor
 
 `COM번호`는 실제 장치 포트로 바꾼다. 코드 입력·보드 빌드·플래시는 사용자가 수행한다.
 실제 PAGE JS57 PASS·실제 C 일부 함수 PC21 PASS와 보드 실행은 별도 증거다.
+parser/ticket/owner PC15/12/9와 사용자 전체 빌드 성공도 별도로 기록하며 ARM/CMD 보드 동작으로 확대하지 않는다.
 [검사 안내](../tests/README.md)와 [다음 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+새 시험의 원본 로그·화면·빌드/플래시 식별값은 [증거 보존 절차](../../docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
 
 ## 이전 단계와 남은 범위
 
@@ -72,6 +79,7 @@ idf.py -p COM번호 flash monitor
 - [HTTP 입력 안내](../../docs/plans/2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md)와 [ESP 단독 WS 입력 안내](../../docs/plans/2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md)는 이전 단계 코드다. 현재 실행 소스의 대체본으로 사용하지 않는다.
 - [기존 UART bridge](../esp32_uart_bridge/README.md)는 별도 프로젝트다. 그 수동 모터 시험 hook을 이 앱의 실행 상태로 해석하지 않는다.
 
-다음은 [전체 학습·통합 계획](../../docs/plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)의
-ARM/CMD 세션·명령 유효시간·TEL freshness·명시적 재허가 계약 설계다. PING/DISARM의 비구동 PASS를 구동 허가로 쓰지 않는다.
+ARM/CMD의 초기 계약과 기초 모듈 준비는 마쳤다. 다음은 [초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)에 따른
+상태·시간 제한·ACK/TEL·취소/정지 흐름이다. 이후 큐/UART·브라우저 zero-only 연결, AC-H 전체와 장비 조건별 AC-B/S로 진행한다.
+PING/DISARM의 비구동 PASS와 모듈 PC 검사·빌드 성공을 구동 허가로 쓰지 않는다.
 리셋 순간 UART err 증가의 완전한 전기 원인, 실제 구동 중 통신 유실 안전, 배터리 ADC·전류·열·주행은 미완료다.

@@ -3,6 +3,9 @@
 최신 통합 관측: [report34](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) — W5 비구동 PING/DISARM·입력 거부·결과/버튼·timeout/복구·재접속 후 자동 재전송 없음 확인. JS57·C21은 별도 PC 검사다. 무선 ARM/CMD는 미구현이다.
 모터 시험은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A 방향·DISARM·S0·A/B 각각10%·3초 범위다. 전류/열·전체 안전 수용·주행은 남아 있다. 재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
+최신 PC·빌드 준비 상태는 [10/11 기록](../progress/2026-10-11_progress.md)과 [검사 종류·선택](../../03_Firmware/tests/README.md#검사-종류와-선택)을 따른다.
+원본 로그·화면·빌드/플래시 식별값·관측 조건은 [증거 보존 절차](EVIDENCE_CAPTURE_GUIDE_ko.md)로 기록한다.
+
 이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.
 
 목표는 개인 프로젝트 규모에 맞는 경량 V-model을 적용하는 것이다. 즉, 큰 조직의 절차 문서를 흉내 내는 것이 아니라 다음 흐름을 작게라도 남긴다.
@@ -20,6 +23,9 @@ Engineering Basis
 
 ## Current Verification Scope
 
+**2026-10-11:** ARM/CMD parser·ticket·owner 실제 저장본 PC15/12/9 PASS. owner 포함 ESP 전체 빌드 성공은 사용자 확인이다.
+기초 모듈은 main·큐/UART·브라우저에 미연결이며 새 플래시/보드 실행은 미확인이다. AC-H 전체·AC-B/S와 nonzero 구동 증거로 확대하지 않는다.
+
 **2026-10-10:** W5 비구동 범위 마감. 각 USB·LiPo 미연결, 현재 WS 상태100ms/TEL100ms/stale500ms. 마지막 재접속 후 수동 PING1 OK·READY/fresh·출력0·drop/err0, 두 USB 분리 완료 사용자 확인. 실제 늦은 UART 주입·태스크 경합·구동 안전·전체 MVP로 확대하지 않는다.
 
 **2026-10-08:** W4 읽기 전용 상태 전달 완료. 두 보드 USB·LiPo 미연결, STM TEL100ms·WS1000ms·TEL stale500ms.
@@ -28,7 +34,7 @@ READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이며 현재 TEL fresh
 아래 날짜별 `현재/다음/hook` 문구는 해당 시점의 이력이며 현재 Wi-Fi 앱 이미지로 해석하지 않는다.
 
 
-**2026-09-29 현재:** [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 단일 모터 구동·교차시험·오른쪽 DIR 보정과 원본12개를 보존했다.
+**2026-09-29 당시:** [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 단일 모터 구동·교차시험·오른쪽 DIR 보정과 원본12개를 보존했다.
 B/M2 보정 후 양방향10%/300ms 실제 회전·CPS 부호·timeout 후0 복귀 PASS. A/M1 양수의 실제 전진 방향, 부하/주행과 전체T005A는 남아 있다.
 현재 ESP는 M2 역방향 시험1U이며 safe/default 이미지 복구 상태가 아니다. 아래 날짜별 범위는 당시 이력이다.
 
@@ -53,19 +59,28 @@ K1/MDD10A direct rail의 수용 기준 및 실제 모터 gate는 미완료다. �
 
 
 현재 검증 범위는 기존 UART·모터 분리 제어 신호 시험에서 섀시 분리 단일 모터의 짧은 구동까지 확장됐다.
-각 시험의 조건과 미완료 항목은 report31과 아래 날짜별 보고서를 따른다.
+각 시험의 조건과 미완료 항목은 reports31/32와 아래 날짜별 보고서를 따른다. 현재 W5 경로와 초기 직접-PC 시험 경로를 구분한다.
 
 ```text
+현재 W5 비구동 경로
+브라우저 WebSocket <-> ESP32 esp32_wifi_link
+<-> ESP UART1 GPIO17/GPIO18 <-> STM USART1 PA10/PA9
+<-> PING/PONG/DISARM/ACK/ERR/TEL
+
+초기 UART MVP의 직접-PC 시험 경로 (과거 ingress)
 PC Web Serial Dashboard
 <-> ST-LINK Virtual COM Port
 <-> STM32 USART2
 <-> UART MVP parser / safety state machine
 
+별도 esp32_uart_bridge의 시험/콘솔 경로
 ESP32 USB Monitor
 <-> ESP32-S3 UART1 GPIO17/GPIO18
 <-> STM32 USART1 PA10/PA9
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
+
+현재 production 명령 진입점은 ESP32이며 STM USART2는 bench logger다. 기초 모듈 빌드만으로 Wi-Fi 경로에 ARM/CMD가 연결된 것은 아니다.
 
 ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing과
 scripted safety sequence를 PASS했고, 2026-08-03~12에는 response-gated Gate A/B와

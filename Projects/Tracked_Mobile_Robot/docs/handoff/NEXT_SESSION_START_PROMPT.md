@@ -48,6 +48,8 @@ PC7 pull-up/HIGH=active이므로 낱개 보드 FAULT를 우회하지 마라.
 AC-B는 거부 경로, AC-S는 정상 conditioned sense 조건의 비구동 Gate다. 모두 아직 미실행이다.
 ESP ticket의 방어를 이미 송신된 UART 프레임 회수나 STM replay 차단으로 확대하지 마라.
 장비가 필요하면 현재 연결 상태를 확인하고 비구동 검증과 실제 구동 선행 Gate를 구분해라.
+앱/모듈 구분이 필요하면 03_Firmware/README.md를 참고해라.
+새 빌드/시험 기록은 docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md를 따르며 과거 원본 미보존 상태는 유지해라.
 펌웨어 구현을 시작할 때는 이유/상태 흐름/정확한 교체 범위와 완전한 연결 블록을 함께 제시해라.
 사용자가 펌웨어 입력과 두 보드 빌드·플래시·실측을 한다.
 개인 Wi-Fi 비밀번호를 출력하지 마라. Git commit/push는 별도 요청 때만 진행해라.
