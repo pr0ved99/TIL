@@ -1,5 +1,9 @@
 # Architecture Decision Record
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](19_Architecture_Decision_Record_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: The Korean ADR includes later ADR-013 through ADR-015, including the single ESP-to-STM USART1 production ingress. This English edition is not a complete synchronized decision log.
+
 ## Purpose
 
 This document summarizes the major architecture decisions made for the tracked
@@ -297,7 +301,7 @@ Consequence:
 | Full ROS2 autonomy first | Deferred | Low-level drivetrain and safety must be validated first |
 | Generic LiPo BMS board | Rejected for this phase | Balance charger, fuse, alarm, firmware monitor, and procedure are preferred |
 
-## Open Decisions
+## Original Open Decisions (See Korean ADR for Current Status)
 
 | Topic | Open question |
 | --- | --- |

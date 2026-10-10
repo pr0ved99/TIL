@@ -65,6 +65,8 @@ void Error_Handler(void);
 #define USART_RX_GPIO_Port GPIOA
 #define LD2_Pin GPIO_PIN_5
 #define LD2_GPIO_Port GPIOA
+#define ESTOP_SENSE_Pin GPIO_PIN_7
+#define ESTOP_SENSE_GPIO_Port GPIOC
 #define MOTOR_LEFT_DIR_Pin GPIO_PIN_8
 #define MOTOR_LEFT_DIR_GPIO_Port GPIOC
 #define MOTOR_RIGHT_DIR_Pin GPIO_PIN_9

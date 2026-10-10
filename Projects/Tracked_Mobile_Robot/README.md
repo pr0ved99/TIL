@@ -1,298 +1,208 @@
 # Tracked Mobile Robot
 
-STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바일 로봇 플랫폼을 만드는 프로젝트다.
+STM32와 ESP32-S3를 기반으로 **궤도형 모바일 로봇의 하위 구동 플랫폼**을 개발하는 프로젝트다.
+UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 회로를 단계적으로 구현·검증한다.
+목표는 저속 주행과 정지 동작을 검증하고, 이후 ROS 2 기반 상위 시스템으로 확장하는 것이다.
 
-초기 목표는 자율주행 전체 시스템이 아니라, 자율주행으로 확장 가능한 안정적인 하위 구동 플랫폼을 만드는 것이다. 먼저 전원계, 모터 제어, 엔코더, IMU, UART 통신을 검증하고, 이후 FreeRTOS, CAN, LL Driver 전환, ROS2, LiDAR로 확장한다.
+- **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
+  전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
+- **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
+- **현재 단계 · 2026-10-10:** W4 상태 전달에 이어 W5 **비구동 PING/DISARM**의 요청/응답·입력 거부·timeout/복구·버튼·재접속을 확인했다. [W5 근거](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
+  A 전진·DISARM·S0와 A/B 각각10%·3초 구동은 [별도 모터 시험](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)이다.
+  무선 ARM/CMD·배터리 ADC·전류·열·전체 안전 수용·차량 주행은 남아 있다.
 
-## Current Handoff Snapshot
+**바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
+[ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) · [Wi-Fi 상태 전달](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) ·
+[Python 검증 코드](03_Firmware/tests/) · [대표 계측 보고서](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) ·
+[완료 범위와 근거](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 
-Last updated: 2026-07-26
+## 1. 프로젝트 목표와 범위
 
-작업을 이어받는 Codex나 사람이 먼저 읽을 순서:
+첫 MVP는 UART 명령으로 전진·후진·제자리 회전하는 저속 궤도형 플랫폼이다.
+명령 유실과 비상정지 상황에서 출력을 차단하고, 엔코더 기반 속도·거리 추정 결과를 실제 움직임과 비교한다.
 
-1. [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md)
-2. [`AGENTS.md`](AGENTS.md)
-3. [`docs/handoff/README.md`](docs/handoff/README.md)
-4. [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md)
-5. [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md)
-6. [`02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md)
-7. [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
-8. [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)
-9. [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md)
-10. [`08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md)
-11. [`08_Mechanical_Design/releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md)
-12. [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md)
-13. [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md)
-14. [`08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md`](08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md)
-15. [`docs/verification/README.md`](docs/verification/README.md)
-16. [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md)
-17. [`04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md)
+| 첫 MVP에 포함 | 완료 판단 기준 |
+| --- | --- |
+| 좌우 구동과 엔코더 | 두 모터 제어, 방향·속도 추정, 전동 구동 중 신호 검증 |
+| 명령 처리와 정지 | timeout 뒤 출력·저장 명령 초기화, 명시적인 재허가와 새 명령으로만 복구 |
+| 전원과 물리 비상정지 | 모터 에너지 차단, 해제만으로 자동 재시작하지 않는 동작, 첫 주행 전 저전압 경고·정지 기준 검증 |
+| 기구 통합과 주행 | 제작 플레이트 장착, 저속 주행, 1 m 직진의 실제·엔코더 거리 오차 기록 |
 
-현재 바로 이어갈 작업:
+완료 여부는 [MVP 요구사항·검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에서 추적한다.
 
-```text
-[PASS] ESP32-STM32 UART bridge and scripted command safety
-[PASS] XL4015 #1/#2 bench load validation
-[PARTIAL] STM32 PWM/DIR + MDD10A powered/no-motor static validation
-[PARTIAL] MG540-A/B encoder conditioning + TIM3 motor-off hand-count
--> CURRENT NEXT: TIM5 PA0/PA1 motor-power-off hand-count
--> wrap-safe count delta / accumulator / speed telemetry module
--> direction-change sequence correction and active timeout/DISARM output-zero
--> STM32 UART CMD path를 PWM/DIR output path와 연결
+## 2. 하드웨어와 시스템 구조
+
+<img src="assets/photos/perfboard/2026-08-14_04_perfboard_component_side_modules_installed_scale_grid_top.jpg" alt="2026년 8월 14일 만능기판 위 NUCLEO-F446RE, BNO085, ESP32-S3 모듈 배치" width="640">
+
+*2026-08-14 모듈 배치 확인 단계. 당시 NUCLEO·BNO085·ESP32-S3의 위치를 보여준다.
+9월의 비상정지·측정 헤더 배선 개정 전 사진이며, IMU 동작 검증을 의미하지 않는다.*
+
+아래는 시스템의 핵심 연결 관계다. 실선은 명령·감지·피드백, 점선은 전력·모터 구동 경로다.
+연결 여부와 검증 완료 여부를 구분하기 위해, 남은 검증 범위를 각 경로에 표시했다.
+
+```mermaid
+flowchart LR
+    ESP["ESP32-S3<br/>UART 명령 전달 · 상태 수신"] <-->|UART| STM["STM32 NUCLEO-F446RE<br/>명령 검증 · 출력 허용 판단"]
+    ESP <-->|Wi-Fi / WebSocket · 상태와 PING/DISARM| WEB["브라우저<br/>W5 비구동 명령 PASS · ARM/CMD 미구현"]
+    STM -->|PWM / DIR| DRIVER["MDD10A<br/>2채널 모터 드라이버"]
+    DRIVER -.->|단발 회전 확인 · 주행 미검증| MOTOR["좌우 궤도 모터"]
+    MOTOR -->|축 회전 피드백| ENC["엔코더<br/>신호 조정 회로"]
+    ENC -->|A/B 펄스| STM
+    BAT["3S LiPo · 퓨즈 · 메인 스위치"] -.-> STOP["물리 비상정지 회로<br/>모터 전원 차단"]
+    STOP -.->|전력단 연결·관측 완료 · 전체 수용 미완료| DRIVER
+    STOP -->|감지·펌웨어/PWM 결합 PASS| STM
 ```
 
-병행 중인 mechanical integration:
+### 핵심 설계 판단
 
-```text
-tracked chassis hole-pattern DWG import
--> 174 x 208.93379 mm adapter plate geometry captured
--> XL4015 x2 / MDD10A / universal PCB / MCU / IMU placement Draft captured
--> acrylic 3T and nominal 3.3 mm small mounting holes selected for Rev A
--> Rev A DWG/DXF/PDF/SVG release files preserved
--> A4 1:1 chassis comparison and final vector PDF validation passed
--> Multimaker upload blocked by vendor server directory permission error
--> contact vendor and submit order through repaired upload or alternate channel
--> fabricated plate fit check
-```
-
-주의:
-
-- STM32 UART MVP는 2026-07-09에 실제 NUCLEO-F446RE + Web Serial dashboard로 검증했다.
-- 검증 증거는 `docs/verification`과 `04_PC_Serial_Control/logs`에 있다.
-- 모터 하드웨어 투입 전, ESP32-S3와 NUCLEO-F446RE만으로 UART command bridge를 먼저 검증할 수 있다.
-- MDD10A, DC motor, LiPo main power는 아직 UART MVP 검증에 포함하지 않았다.
-- MDD10A 무전원 inspection과 XL4015 #1/#2 무부하 5 V 보정은 2026-07-10에 완료했다.
-- ESP32-S3 ESP-IDF v6.0.2 환경 bring-up, `COM4` build/flash/monitor 검증은 2026-07-14에 완료했다.
-- ESP32 UART1 GPIO17/GPIO18 loopback과 STM32 USART1 PA9/PA10 `TEL/PING/PONG` bridge 검증은 2026-07-14에 완료했다.
-- ESP32 parser는 `TEL`, `PONG`, `ACK`, `ERR`, `UNKNOWN`을 분류하며, `TEL`의 전체 핵심 field와 `PONG seq`를 저장한다.
-- `TEL` 세부 field 구조화는 2026-07-18에 실제 STM32 link로 검증했다.
-- ESP32 scripted `CMD before ARM`, `ARM`, valid/invalid `CMD`, `DISARM` 및 STM32 timeout-zero는 2026-07-20에 PASS했다.
-- bridge 최종 evidence는 `assets/screenshots/esp32_uart_bridge/2026-07-20_esp32_stm32_scripted_safety_sequence_pass.png`와 `assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt`다.
-- STM32 PWM/DIR 핀 단독 DMM과 MDD10A powered/no-motor 6-step LED routing은 2026-07-26에 통과했다. Exact PWM/timing과 active timeout/DISARM output-zero는 아직 `PARTIAL`이다.
-- MG540-A raw encoder A/B에서 약 0/5 V를 관찰했으므로 raw direct STM32 연결을 금지한다. 채널별 `1 kΩ series + MCU-side 15 kΩ pull-down` 조건의 HIGH 3.06~3.07 V와 TIM3 PB4/PB5의 두 motor 순차 hand-count를 통과했다. 출력축 1회전당 1560 count는 잠정값이며 TIM5, powered-noise와 차량 sign은 미검증이다.
-- Rev A 주문 파일과 1:1 벡터 검증은 완료했지만 멀티메이커 서버 오류로 주문은 아직 접수되지 않았다.
-- 제작품 실물 fit과 업체 kerf·공차는 아직 검증하지 않았다. 3D Assembly의 참조 표시는 이번 2D 발주 범위에서 제외했다.
-
-## Project Direction
-
-- Start point: STM32 motor control and encoder validation
-- Main platform: tracked mobile robot chassis
-- Low-level controller: NUCLEO-F446RE
-- Support controller: ESP32-S3 DevKitC
-- Main power: 3S LiPo battery
-- Initial communication: UART / USB Serial
-- Required later communication: CAN bus
-- Required firmware experience: FreeRTOS task architecture
-- Advanced firmware goal: HAL to LL Driver migration
-- Deferred autonomy stack: ROS2, LiDAR, SLAM, Nav2
-
-## Current Architecture Status
-
-2026-07-26 기준 시스템 아키텍처와 검증 상태의 핵심은 다음과 같다.
-
-- STM32가 motor output, command timeout, safety gate의 최종 authority다.
-- 첫 motor driver path는 MDD10A dual-channel PWM+DIR driver다.
-- UART/USB serial은 첫 command/telemetry path다.
-- PC-first UART MVP는 ST-LINK Virtual COM Port / USART2로 먼저 검증한다.
-- PC-first UART MVP는 2026-07-09에 Web Serial dashboard와 CSV/screenshot evidence로 검증 완료했다.
-- ESP32 board-only UART bridge의 loopback, `PING/PONG`, `TEL` relay는 2026-07-14에 검증 완료했다.
-- STM32 firmware project 생성은 STM32CubeMX Board Selector에서 `NUCLEO-F446RE`를 선택한 뒤 CubeIDE로 open/import하는 흐름을 사용한다.
-- CAN과 FreeRTOS는 첫 bring-up 이후 필수 후속 phase다.
-- ROS 2 Humble, RViz2, Gazebo classic 11은 노트북 학습/시뮬레이션 baseline으로 준비됐다.
-- CAN, FreeRTOS, ROS 2는 별도 A-to-Z 학습 지도와 실습 경로를 통해 진행한다.
-- Rev A 어댑터 플레이트 기준은 174 x 208.93379 mm, 아크릴 3T, 소형 체결 홀 nominal 3.3 mm다.
-- A4 1:1 셰시 대조와 주문 PDF의 39개 벡터 경로 및 원본 대비 배율 검증을 완료했다.
-- 3D 전장 Assembly Draft의 참조 오류 표시는 사용자 지시에 따라 이번 2D 플레이트 release 범위에서 제외했다.
-- 멀티메이커 서버가 업로드 폴더를 만들지 못해 주문 상태는 `NOT SUBMITTED`다.
-
-작업을 이어가기 전에 먼저 읽을 기준 파일:
-
-- [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md): 반복 질문을 줄이기 위한 고정 프로젝트 정보
-- [`AGENTS.md`](AGENTS.md): 이 프로젝트에서 Codex가 따라야 할 작업 지침
-- [`docs/progress/README.md`](docs/progress/README.md): 진행 로그 사용 방법과 날짜별 index
-
-최신 학습 지도:
-
-- [`ROS 2 Project A-to-Z`](../../Robotics/ROS2/00_A_to_Z/01_Project_ROS2_A_to_Z_Learning_Map.md)
-- [`NUCLEO-F446RE CAN A-to-Z`](../../Embedded/STM32/CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md)
-- [`NUCLEO-F446RE FreeRTOS A-to-Z`](../../Embedded/STM32/RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md)
-
-## Structure
-
-- `00_Project_Charter`: project goal, scope, requirements, inventory
-- `01_System_Architecture`: block diagram, interface map, control architecture
-- `02_Hardware_Validation`: power, motor, driver, wiring, safety validation
-- `03_Firmware`: STM32 firmware design and implementation notes
-- `04_PC_Serial_Control`: PC-side serial test scripts and protocol notes
-- `05_ROS2_Integration`: ROS2 bridge, topic mapping, RViz validation
-- `06_Test_Report`: bench, load, chassis, and field test reports
-- `07_Embedded_Learning_Notes`: concept notes, STM32/ESP32 practice logs, protocol labs, measurement notes
-- `08_Mechanical_Design`: adapter plate, electronics layout, manufacturing-release rules
-- `assets`: photos, wiring diagrams, screenshots, plots
-- `docs/handoff`: continuation notes for future work
-- `docs/plans`: short-term execution plans for hardware sessions
-- `docs/portfolio`: portfolio positioning, system-integration strengths, and evidence gaps
-- `docs/progress`: dated project progress logs
-- `docs/verification`: lightweight V-model requirements, verification matrix, and test evidence
-
-## Document Index
-
-### 00_Project_Charter
-
-| Document | Purpose |
+| 판단 | 이유와 구현 방향 |
 | --- | --- |
-| [`PROJECT_MEMORY.md`](PROJECT_MEMORY.md) | Stable project memory, fixed decisions, open decisions, next actions |
-| [`AGENTS.md`](AGENTS.md) | Project-specific Codex instructions |
-| [`01_Goal_and_Scope.md`](00_Project_Charter/01_Goal_and_Scope.md) | Project goal, scope, MVP boundary, learning goals |
-| [`02_Component_Inventory.md`](00_Project_Charter/02_Component_Inventory.md) | Available components, missing items, purchase status |
-| [`03_Initial_Purchase_and_Safety.md`](00_Project_Charter/03_Initial_Purchase_and_Safety.md) | Initial purchase list, LiPo safety, fuse/switch decisions |
+| **최종 출력 허용 판단은 STM32가 담당** | 외부 명령이 들어와도 명령 유효성, 제어 상태, timeout과 비상정지 조건을 STM32에서 확인한 뒤 출력한다. ESP32는 명령 전달과 상태 수신을 맡는다. |
+| **명령 유실 뒤 이전 주행 명령을 자동 복원하지 않음** | 통신 복구만으로 예기치 않게 다시 움직이지 않도록 출력과 저장 명령을 0으로 만들고 `DISARMED`로 전환한다. 새 `ARM`과 유효한 `CMD`를 모두 받아야 출력할 수 있다. |
+| **물리 전원 차단과 펌웨어 상태 감지를 함께 사용** | MCU 소프트웨어와 독립된 모터 에너지 차단 경로를 두고, STM32도 비상정지 상태를 감지·유지해 재허가 조건을 검사한다. 두 경로를 결합한 전체 검증은 진행 중이다. |
 
-### 01_System_Architecture
+세부 계약: [UART 인터페이스](01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md) ·
+[상태 머신](01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md) ·
+[물리 비상정지 설계](01_System_Architecture/21_Physical_EStop_Architecture_ko.md)
 
-| Document | Purpose |
+## 3. 대표 구현과 검증 성과
+
+각 결과는 아래에 명시한 시험 조건의 결과다. 코드 검사, 로직 핀 계측, 실제 모터 정지를 구분한다.
+
+| 대표 결과 | 확인한 내용 | 시험 범위·근거 |
+| --- | --- | --- |
+| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 현재 STM TEL/WS100ms·stale500ms. PC JS57·C21은 별도 검사. 무선 구동 명령 미구현 |
+| DISARM → PWM 차단 | **23.50 μs** | [STM32 로직 핀 계측](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md). 실제 모터 정지 시간이 아님 |
+| 영구 배선의 PWM/DIR | **19.049 / 19.058 kHz**, 약 **10%**, 방향 전환 전후 약 **2 ms PWM 0** | [모터 분리 MDD10A 입력](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) |
+| 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |
+| 엔코더 환산 | **1,560 counts/rev**, 610개 채널 샘플의 mRPM 환산 불일치 **0건** | [손회전 보정·계산 검증](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md). 절대 속도·주행 거리 검증은 별도 |
+| 실제 모터 방향 보정 | B/M2 **±10%·300 ms** 단발 명령에서 실제 양방향 회전·CPS 부호·정지 확인 | [섀시 분리 단일 모터](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md). A 실제 전진도9/30 확인. 전체 안전 수용·주행은 남음 |
+
+<details>
+<summary>각 결과의 검증 문제·방법·관측 한계 펼치기</summary>
+
+### 3.1 DISARM 명령에 따른 PWM 출력 차단
+
+- **검증 문제:** 상태 로그만으로 알기 어려운 실제 PWM 차단 시점을 확인한다.
+- **방법:** 유효한 `DISARM` 프레임 수신 완료와 두 PWM의 마지막 active edge를 같은 4 MHz 로직 캡처에서 비교했다.
+- **결과:** 두 PWM 출력이 비활성화되기까지 **23.50 μs**를 측정했다.
+- **범위:** STM32 MCU 로직 핀 계측 결과다. 실제 모터 정지 시간은 측정하지 않았으며,
+  당시 전원·모터 분리 상태의 증거 보완은 보고서에 남아 있다.
+
+[시험 조건·파형·원본 캡처](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)
+
+### 3.2 영구 배선을 통한 PWM/DIR 전달
+
+- **검증 문제:** 만능기판의 pull-down과 하네스를 거쳐도 제어 신호가 드라이버 입력에 전달되는지 확인한다.
+- **방법:** 모터를 분리하고 MDD10A 입력에서 두 채널의 PWM과 방향 전환 구간을 계측했다.
+- **결과:** PWM **19.049 / 19.058 kHz**, 약 **10% 듀티**, DIR 전환 전후 약 **2 ms의 PWM 0 구간**을 확인했다.
+  시험 설정 복구 후 5초 동안 모든 제어 신호가 LOW인 상태도 확인했다.
+- **범위:** 이 시험은 MDD10A 로직 입력까지의 결과다. 이후 실제 회전·방향 관측은 아래 3.5에서 구분해 기록한다.
+
+[시험 보고서와 원본 자료](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)
+
+### 3.3 명령 유실 후 정지와 명시적 복구
+
+- **검증 문제:** 명령이 끊긴 뒤 과거 명령이나 `ARM`만으로 출력이 되살아나는 것을 막는다.
+- **방법:** 모터·LiPo 분리 조건에서 `timeout_ms=500`인 명령을 사용하고 UART와 PWM/DIR을 같은 캡처로 비교했다.
+- **결과:** timeout 뒤 출력·저장 명령 0과 `DISARMED` 전환, `CMD` 단독 거부,
+  `ARM`만으로 이전 출력이 복원되지 않음, **새 `ARM` + 새 `CMD`에 의한 복구**를 확인했다.
+- **범위:** 보드의 UART·제어 신호·상태 복구 검증이며, 실제 모터나 물리 비상정지 시험은 포함하지 않는다.
+
+[500 ms timeout·복구 시험](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)
+
+### 3.4 수동 회전 기반 엔코더 환산 검증
+
+- **검증 문제:** 모터 출력축 회전량과 펌웨어의 카운트·속도 환산을 연결한다.
+- **방법:** 두 모터의 출력축을 방향별 50회전시킨 관찰 기록과 별도의 수동 회전 로그를 사용했다.
+- **결과:** 출력축 기준 **1,560 counts/rev**로 보정했다.
+  별도 로그의 **610개 채널 샘플**에서 카운트/초(CPS) → 0.001 rpm 단위(mRPM) 환산 불일치는 0건이었다.
+- **범위:** 수동 회전 기반 기능 검증이다. 전동 구동 중 노이즈, 외부 회전계 비교와 실제 주행 거리 검증은 남아 있다.
+
+[50회전 관찰 기록·환산 검증·로그](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)
+
+### 3.5 실제 단일 모터 구동과 방향 보정
+
+- **검증 문제:** 명령 부호와 실제 모터 방향·엔코더 피드백이 일치하는지 확인한다.
+- **방법·결과:** 보정 전 B/M2의 양수 명령에서 실제 역회전과 음수 CPS가 함께 관측됐다.
+  두 모터를 교차 연결해 회전을 확인한 뒤, 손회전으로 확인한 엔코더 부호를 유지하고 오른쪽 DIR을 HIGH=전진/LOW=후진으로 보정했다.
+  B/M2는 정방향·역방향 각각 **10%·300 ms 단발 명령**에서 회전·CPS 부호·timeout 후 0 복귀를 로그와 육안으로 확인했다.
+- **범위:** 섀시 분리 단일 모터 시험이다. A/M1 양수 실제 전진은9/30 추가 확인했으며 부하·주행 검증은 남아 있다.
+
+[시험 결과·관측 한계·원본 로그](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)
+
+</details>
+
+## 4. 현재 검증 범위와 남은 작업
+
+**검증 기준: 2026-09-29.** 단일 모터의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
+요구사항별 판정은 [검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
+
+| 분야 | 확인된 범위 | 남은 핵심 검증 |
+| --- | --- | --- |
+| 통신·펌웨어 | UART·timeout·latch/reset·PWM 차단, 당시 안전 이미지 복구와 수동 단발 콘솔 | 전체 bridge 통합·시험 사이 err 증가 원인·현재 시험 이미지의 정상 모드 복구 |
+| 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
+| 구동·피드백 | A 전진/DISARM·S0 관측, B 방향 보정, A/B 각각10%·3초 구동과원시1432/1384 ticks·CPS 일치 | 전류·열·반복 기동·부하 조건·주행 |
+| 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 모터 분리 전력단의 일부 관측 | 전체 T005A는 PARTIAL. rail-off 수용 기준·단자/배선 release·구동 중 S0 정지 |
+| 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
+| 기구·주행 | 어댑터 플레이트 설계·제작품 수령 기록 | 실물 장착·절연·접근성, 첫 주행 전 배터리 ADC·저전압 경고/정지, 저속 주행·1 m 거리 비교 |
+
+추가 근거: [보드 전원](docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) ·
+[T004 감지·PWM](docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) ·
+[T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
+[실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
+
+A/M1 실제 전진 확인은 완료했다. 다음에는 계측 방법을 정하고 전력단·물리 비상정지·단일 모터의 남은 조건을 충족한 뒤
+기구·구동계 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
+
+작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
+현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
+일자별 결과는 [진행 기록](docs/progress/README.md)에서 관리한다.
+## 5. 코드와 문서 안내
+
+### 구현 코드
+
+| 살펴볼 내용 | 진입점 |
 | --- | --- |
-| [`01_MCU_Datasheet_Reading_Map_ko.md`](01_System_Architecture/01_MCU_Datasheet_Reading_Map_ko.md) | STM32 datasheet reading map and project-relevant sections |
-| [`02_MCU_Introduction_and_Description_ko.md`](01_System_Architecture/02_MCU_Introduction_and_Description_ko.md) | STM32F446RE feature summary and project fit |
-| [`03_MCU_Core_Memory_Interrupts_ko.md`](01_System_Architecture/03_MCU_Core_Memory_Interrupts_ko.md) | Core, memory, interrupt, clock implications |
-| [`04_MCU_Timers_and_Watchdogs_ko.md`](01_System_Architecture/04_MCU_Timers_and_Watchdogs_ko.md) | Timer, PWM, encoder, watchdog architecture |
-| [`05_MCU_Communication_and_IO_Peripherals_ko.md`](01_System_Architecture/05_MCU_Communication_and_IO_Peripherals_ko.md) | UART, I2C, SPI, bxCAN, GPIO, ADC analysis |
-| [`06_MCU_Pin_Allocation_Candidate_ko.md`](01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md) | First STM32 pin allocation candidate |
-| [`07_ESP32S3_Features_and_Project_Role_ko.md`](01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md) | ESP32-S3 features and support-controller role |
-| [`08_Motor_Driver_and_HBridge_Control_ko.md`](01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md) | MDD10A decision and PWM+DIR control model |
-| [`09_STM32_ESP32_UART_Interface_Contract_ko.md`](01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md) | UART command/telemetry contract |
-| [`10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md`](01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md) | CAN, FreeRTOS, LL Driver roadmap |
-| [`11_System_Block_Diagram_and_Interface_Map_ko.md`](01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md) | Hardware/software interface map |
-| [`12_Power_Distribution_and_Safety_Architecture_ko.md`](01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md) | Power domains, fuse, switch, buck, grounding |
-| [`13_FreeRTOS_Task_Architecture_ko.md`](01_System_Architecture/13_FreeRTOS_Task_Architecture_ko.md) | RTOS task ownership, timing, queue model |
-| [`14_CAN_Bus_Integration_Plan_ko.md`](01_System_Architecture/14_CAN_Bus_Integration_Plan_ko.md) | CAN hardware, IDs, frames, validation plan |
-| [`15_HAL_to_LL_Driver_Migration_Strategy_ko.md`](01_System_Architecture/15_HAL_to_LL_Driver_Migration_Strategy_ko.md) | HAL baseline and LL migration strategy |
-| [`16_Control_Loop_and_State_Machine_ko.md`](01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md) | Safety state machine and motor control loop |
-| [`17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md`](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) | Tracked drivetrain kinematics and odometry |
-| [`18_Fault_Model_and_Safety_Cases_ko.md`](01_System_Architecture/18_Fault_Model_and_Safety_Cases_ko.md) | Fault cases, detection, safe responses |
-| [`19_Architecture_Decision_Record_ko.md`](01_System_Architecture/19_Architecture_Decision_Record_ko.md) | Accepted, deferred, rejected architecture decisions |
-| [`20_Motor_Driver_Selection_Comparison_ko.md`](01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md) | BTS7960 to MDD10A decision history and driver comparison |
+| STM32 초기화·주기 처리 | [main.c](03_Firmware/stm32_uart_mvp/Core/Src/main.c) · [CubeMX 설정](03_Firmware/stm32_uart_mvp/stm32_uart_mvp.ioc) |
+| 명령 검증·상태 전이·timeout | [UART 프로토콜](03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c) |
+| 좌우 명령 변환·출력·엔코더 | [명령 변환](03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c) · [PWM/DIR](03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c) · [엔코더](03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c) |
+| ESP32 UART 브리지 | [프로젝트 안내](03_Firmware/esp32_uart_bridge/README.md) · [구현 코드](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) |
+| Python 검증 | [검증 코드](03_Firmware/tests/) · [실행 방법](03_Firmware/tests/README.md) |
 
-### 02_Hardware_Validation
+Python 검사는 소스 계약과 독립 참조 모델을 검사한다. 보드 빌드·실행이나 전기적 계측을 대신하지 않는다.
+현재 설정의 검사 결과와 시험 hook 상태는 [Python 검사 최신 기록](03_Firmware/tests/README.md#최신-기록--2026-09-29)을 확인한다.
+시험용 설정과 빌드·실행 전제는 [현재 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md)과 해당 런북을 따른다.
 
-| Document | Purpose |
+### 빌드·검사 시작점
+
+- **STM32:** STM32CubeIDE에서 [stm32_uart_mvp 프로젝트](03_Firmware/stm32_uart_mvp/)를 가져와 빌드한다. `.project`와 `.ioc`를 포함한다.
+- **ESP32:** ESP-IDF 환경에서 [빌드 안내](03_Firmware/esp32_uart_bridge/README.md#build)를 따른다. 포트 번호는 연결한 PC에서 확인한다.
+- **호스트 검사:** 보드 연결 없이 [Python 검사 실행 방법](03_Firmware/tests/README.md#실행)을 따른다. 빌드·계측 결과와 구분한다.
+
+ESP 진입 파일은 `uart_bridge_main.c`로 이름을 바꿨다. 내용은 유지했으며, 이름 변경 후 보드 빌드는 아직 확인하지 않았다.
+
+### 설계·검증·학습 자료
+
+| 읽는 목적 | 문서 |
 | --- | --- |
-| [`README.md`](02_Hardware_Validation/README.md) | Hardware validation sequence and evidence policy |
-| [`00_MDD10A_Visual_and_Multimeter_Inspection.md`](02_Hardware_Validation/00_MDD10A_Visual_and_Multimeter_Inspection.md) | MDD10A unpowered visual inspection and hard-short check |
-| [`01_Power_Bringup_Checklist.md`](02_Hardware_Validation/01_Power_Bringup_Checklist.md) | Battery, fuse, switch, wiring, and no-load power checks |
-| [`02_Buck_Converter_Calibration_Log.md`](02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md) | XL4015 output calibration and load checks |
-| [`03_MDD10A_Logic_Input_Test.md`](02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md) | MDD10A PWM/DIR logic input and safe output behavior test |
-| [`04_Encoder_Signal_Safety_Test.md`](02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) | Encoder voltage, pull-up, direction, and STM32-safe input checks |
-| [`05_First_Motor_No_Load_Test.md`](02_Hardware_Validation/05_First_Motor_No_Load_Test.md) | One-motor lifted/no-load low-duty validation |
-| [`06_Left_Right_Drivetrain_Test.md`](02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md) | Left/right drivetrain low-speed chassis validation |
-| [`07_STM32_ESP32_UART_Wiring_Checklist.md`](02_Hardware_Validation/07_STM32_ESP32_UART_Wiring_Checklist.md) | STM32 + ESP32 board-only UART wiring checklist |
-| [`08_Adapter_Plate_Fit_Check.md`](02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md) | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
+| 전체 구조와 설계 결정 | [시스템 인터페이스 맵](01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md) · [설계 결정 기록](01_System_Architecture/19_Architecture_Decision_Record_ko.md) |
+| 전기·기구 설계 확인 | [VeroRoute](09_Electrical_Design/VeroRoute/README.md) · [KiCad](09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/README.md) · [기구 설계](08_Mechanical_Design/README.md) |
+| 요구사항과 근거 추적 | [검증 문서](docs/verification/README.md) · [하드웨어 검증 절차](02_Hardware_Validation/README.md) |
+| PC 시험 도구와 초기 UART MVP | [PC Serial 도구](04_PC_Serial_Control/README.md) · [Web Serial 대시보드](04_PC_Serial_Control/web_serial_dashboard/README.md) |
+| 학습 과정과 전체 자료 탐색 | [임베디드 학습 노트](07_Embedded_Learning_Notes/README.md) · [분야별 전체 문서 색인](docs/README.md) |
 
-### 04_PC_Serial_Control
+PC–STM32 직접 연결 대시보드는 초기 UART MVP의 시험 도구다.
+현재 MVP의 외부 명령 경로는 ESP32 → STM32이며, STM32 USART2는 벤치 진단용으로 구분한다.
 
-| Document | Purpose |
+## 6. MVP 이후 확장 계획
+
+| 확장 | 목적 |
 | --- | --- |
-| [`README.md`](04_PC_Serial_Control/README.md) | PC-side UART command, telemetry logging, and dashboard mock direction |
-| [`tools/UartMvpTool.ps1`](04_PC_Serial_Control/tools/UartMvpTool.ps1) | Windows PowerShell UART MVP frame builder, sender, monitor, and logger |
-| [`tools/uart_mvp_tool.sh`](04_PC_Serial_Control/tools/uart_mvp_tool.sh) | Ubuntu/Linux Bash UART MVP frame builder, sender, monitor, and logger |
-| [`tools/uart_mvp_tool.py`](04_PC_Serial_Control/tools/uart_mvp_tool.py) | PC-side UART MVP frame builder, sender, monitor, and logger |
-| [`tools/ServeWebDashboard.ps1`](04_PC_Serial_Control/tools/ServeWebDashboard.ps1) | Windows localhost server for the browser Web Serial dashboard |
-| [`tools/serve_web_dashboard.sh`](04_PC_Serial_Control/tools/serve_web_dashboard.sh) | Ubuntu/Linux localhost server for the browser Web Serial dashboard |
-| [`web_serial_dashboard`](04_PC_Serial_Control/web_serial_dashboard/README.md) | Browser-based Web Serial UART MVP dashboard |
-| [`docs/01_PC_UART_MVP_Test_Tool_ko.md`](04_PC_Serial_Control/docs/01_PC_UART_MVP_Test_Tool_ko.md) | PC-side UART MVP test tool usage guide |
-| [`docs/02_STM32_UART_MVP_Firmware_Guide_ko.md`](04_PC_Serial_Control/docs/02_STM32_UART_MVP_Firmware_Guide_ko.md) | STM32 USART2/ring-buffer/parser firmware guide for the PC-first UART MVP |
-| [`docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md`](04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md) | Ubuntu PC-side UART MVP test tool usage guide |
-| [`docs/04_Web_Serial_Dashboard_ko.md`](04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md) | Web Serial UART MVP dashboard usage guide |
-| [`docs/05_UART_MVP_Runbook_ko.md`](04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md) | End-to-end UART MVP execution guide |
-| [`docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md`](04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md) | STM32CubeMX-first detailed firmware implementation guide for UART MVP |
+| IMU | 센서 통신·자세 데이터 검증과 엔코더 정보 결합. 현재 헤더 배치·GND 검토와 구분해 진행 |
+| CAN | UART로 확인한 명령·상태 계약을 CAN 인터페이스로 확장 |
+| STM32 FreeRTOS | 검증된 STM32 bare-metal 동작을 태스크·주기·큐 구조로 옮기고 동작 유지 확인. ESP-IDF의 기존 FreeRTOS 환경과 구분 |
+| 선택적 LL 전환 | 계측으로 필요성이 확인된 타이밍 경로의 구현과 성능 비교 |
+| ROS 2 · LiDAR · SLAM/Nav2 | 하위 구동 플랫폼과 상위 명령·상태 연결 후 자율주행으로 확장 |
 
-### 07_Embedded_Learning_Notes
-
-| Document | Purpose |
-| --- | --- |
-| [`README.md`](07_Embedded_Learning_Notes/README.md) | Embedded learning note policy and folder map |
-| [`01_Concept_Notes/README.md`](07_Embedded_Learning_Notes/01_Concept_Notes/README.md) | Concept note index |
-| [`01_GPIO_Alternate_Function_and_CubeMX_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md) | GPIO alternate function and CubeMX-generated initialization |
-| [`02_UART_Interrupt_Ring_Buffer_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/02_UART_Interrupt_Ring_Buffer_ko.md) | UART RX interrupt, ISR, ring buffer, parser split |
-| [`03_Timer_Encoder_Mode_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/03_Timer_Encoder_Mode_ko.md) | Timer encoder mode and A/B quadrature counting |
-| [`04_DMA_Interrupt_Timer_Comparison_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/04_DMA_Interrupt_Timer_Comparison_ko.md) | DMA, interrupt, and timer role comparison |
-| [`05_HAL_LL_Direct_Register_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md) | HAL, LL, direct-register development strategy |
-| [`06_I2C_SPI_IMU_Interface_Choice_ko.md`](07_Embedded_Learning_Notes/01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md) | I2C-first and SPI-fallback IMU interface rationale |
-| [`02_STM32_Board_Practice/README.md`](07_Embedded_Learning_Notes/02_STM32_Board_Practice/README.md) | NUCLEO-F446RE practice log index |
-| [`03_ESP32_Board_Practice/README.md`](07_Embedded_Learning_Notes/03_ESP32_Board_Practice/README.md) | ESP32-S3 practice log index |
-| [`03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md`](07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md) | ESP32 UART command source and telemetry relay practice |
-| [`04_Interface_Protocol_Practice/README.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/README.md) | UART/CAN command and telemetry protocol practice |
-| [`001_UART_Command_Telemetry_Protocol_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/001_UART_Command_Telemetry_Protocol_ko.md) | UART command/telemetry frame, required fields, ACK/ERR, safety-state behavior |
-| [`002_PC_Telemetry_Dashboard_Mock_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/002_PC_Telemetry_Dashboard_Mock_ko.md) | PC-side telemetry dashboard mock plan |
-| [`003_Optional_WebSocket_AI_Log_Diagnosis_ko.md`](07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/003_Optional_WebSocket_AI_Log_Diagnosis_ko.md) | Optional WebSocket dashboard and AI-assisted log diagnosis extension |
-| [`05_Debugging_Measurement/README.md`](07_Embedded_Learning_Notes/05_Debugging_Measurement/README.md) | Measurement and debugging evidence index |
-
-### 08_Mechanical_Design
-
-| Document | Purpose |
-| --- | --- |
-| [`README.md`](08_Mechanical_Design/README.md) | Mechanical design index, revision policy, and current release gate |
-| [`01_Adapter_Plate_and_Electronics_Layout_ko.md`](08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md) | Adapter plate geometry, electronics placement, Draft history, and Rev A state |
-| [`02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md`](08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md) | Rev A dimension, A4 1:1, vector PDF, and vendor-order preflight report |
-| [`source/chassis/README.md`](08_Mechanical_Design/source/chassis/README.md) | Preserved R3 tracked-chassis hole-pattern DWG and SHA-256 |
-| [`releases/revA/README.md`](08_Mechanical_Design/releases/revA/README.md) | Rev A DWG, DXF, SVG, PDF release artifacts and SHA-256 index |
-| [`references/vendor_templates/README.md`](08_Mechanical_Design/references/vendor_templates/README.md) | Preserved Multimaker source template and SHA-256 |
-
-### docs
-
-| Document | Purpose |
-| --- | --- |
-| [`docs/plans/README.md`](docs/plans/README.md) | Short-term execution plan index |
-| [`docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | Current V-model gate roadmap to the portfolio-ready final MVP |
-| [`docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md`](docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md) | Fuse soldering, MDD10A inspection, and Wednesday parts follow-up plan |
-| [`docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md`](docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md) | STM32 + ESP32 board-only UART bridge plan |
-| [`docs/portfolio/README.md`](docs/portfolio/README.md) | Portfolio strategy index |
-| [`docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md`](docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md) | Robotics system-integration engineer strengths to emphasize |
-| [`docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | Current project portfolio strengths, gaps, and next additions |
-| [`docs/verification/README.md`](docs/verification/README.md) | Lightweight V-model verification index |
-| [`docs/verification/01_UART_MVP_Requirements_ko.md`](docs/verification/01_UART_MVP_Requirements_ko.md) | UART MVP requirements and acceptance criteria |
-| [`docs/verification/02_UART_MVP_Verification_Matrix_ko.md`](docs/verification/02_UART_MVP_Verification_Matrix_ko.md) | UART MVP requirements-to-evidence verification matrix |
-| [`docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md`](docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md) | 2026-07-09 STM32 + Web Serial UART MVP test report |
-| [`docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md`](docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md) | ESP32 -> STM32 UART bridge verification plan |
-| [`docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) | Project-wide power, mechanical, motor, encoder, drivetrain, and acceptance traceability matrix |
-| [`docs/progress/README.md`](docs/progress/README.md) | Progress log policy and index |
-| [`docs/progress/2026-06-08_progress.md`](docs/progress/2026-06-08_progress.md) | Current project progress snapshot |
-| [`docs/progress/2026-06-21_progress.md`](docs/progress/2026-06-21_progress.md) | MDD10A/BTS7960 document consistency update |
-| [`docs/progress/2026-06-22_progress.md`](docs/progress/2026-06-22_progress.md) | STM32CubeMX-first UART MVP firmware implementation guide update |
-| [`docs/progress/2026-07-09_progress.md`](docs/progress/2026-07-09_progress.md) | STM32 UART MVP Web Serial validation, evidence capture, and verification docs |
-| [`docs/progress/2026-07-10_progress.md`](docs/progress/2026-07-10_progress.md) | MDD10A inspection, fused power path validation, XL4015 #1/#2 no-load calibration |
-| [`docs/progress/2026-07-14_progress.md`](docs/progress/2026-07-14_progress.md) | ESP-IDF setup, ESP32 UART loopback, STM32 `TEL/PING/PONG`, ESP32 frame classification |
-| [`docs/progress/2026-07-18_progress.md`](docs/progress/2026-07-18_progress.md) | ESP32 structured telemetry parser and XL4015 load validation |
-| [`docs/progress/2026-07-20_progress.md`](docs/progress/2026-07-20_progress.md) | ESP32 scripted safety sequence, timeout-zero, and UART bridge closeout |
-| [`docs/progress/2026-07-23_progress.md`](docs/progress/2026-07-23_progress.md) | Adapter plate Draft, electronics placement, Onshape Version, and mechanical-layout evidence |
-| [`docs/progress/2026-07-24_progress.md`](docs/progress/2026-07-24_progress.md) | Rev A preflight/vendor blocker and project-wide V-model roadmap refresh |
-| [`docs/progress/2026-07-26_progress.md`](docs/progress/2026-07-26_progress.md) | STM32/MDD10A static routing, encoder conditioning, and TIM3 hand-count checkpoint |
-| [`docs/handoff/README.md`](docs/handoff/README.md) | Handoff index and continuation reading order |
-| [`docs/handoff/NEXT_SESSION_START_PROMPT.md`](docs/handoff/NEXT_SESSION_START_PROMPT.md) | Prompt to paste into a new Codex session |
-| [`docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md`](docs/handoff/2026-07-20_esp32_stm32_uart_bridge_closeout_handoff.md) | Current bridge closeout handoff and MDD10A logic-test continuation point |
-| [`docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md`](docs/handoff/2026-07-14_esp32_stm32_uart_bridge_handoff.md) | Historical handoff from the validated bridge link to structured TEL parsing |
-| [`docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md`](docs/handoff/2026-06-22_tracked_mobile_robot_handoff.md) | Historical STM32CubeMX-first UART MVP handoff |
-
-## Initial MVP
-
-The first MVP is complete when:
-
-1. STM32 controls left/right motors with PWM.
-2. Encoder signals are read reliably.
-3. Left/right motor speeds are estimated.
-4. A simple UART command changes robot motion.
-5. The tracked chassis can move forward, backward, and rotate at low speed.
-6. Power safety rules are documented and followed.
-
-## Current Strategy
-
-- Use BMS: no
-- Use CAN now: no
-- Use CAN later as required learning goal: yes
-- Use UART first: yes
-- Use FreeRTOS immediately: no
-- Use FreeRTOS after bare-metal bring-up: yes
-- Use LL Driver immediately: no
-- Migrate timing-critical paths to LL later: yes
-- Use fuse and main switch: yes
-- Use LiPo balance charger: yes
-- Use low-voltage alarm and STM32 voltage monitoring: yes
+단계별 범위와 완료 기준은 [프로젝트 마스터 플랜](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)을 따른다.

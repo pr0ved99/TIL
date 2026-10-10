@@ -1,0 +1,13 @@
+I (276) app_init: Project name:     esp32_wifi_link
+I (285) app_init: Compile time:     Oct  3 2026 15:43:05
+I (290) app_init: ELF file SHA256:  e621c10af...
+I (294) app_init: ESP-IDF:          v6.0.2
+I (469) wifi_link: ESP-only Wi-Fi test: mode=STA boot_id=56815410
+I (519) wifi:mode : sta (<mac-redacted>)
+I (519) wifi:enable tsf
+W (2939) wifi_link: STA reconnect attempt 1/5
+W (5349) wifi_link: STA reconnect attempt 2/5
+W (7759) wifi_link: STA reconnect attempt 3/5
+W (10179) wifi_link: STA reconnect attempt 4/5
+W (12589) wifi_link: STA reconnect attempt 5/5
+E (14999) wifi_link: STA retry limit reached; reboot to retry

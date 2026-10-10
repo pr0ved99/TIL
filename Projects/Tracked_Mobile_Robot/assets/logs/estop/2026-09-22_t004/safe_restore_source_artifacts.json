@@ -1,0 +1,125 @@
+{
+  "attachment": "assets/logs/esp32_uart_bridge/2026-09-22_t004_safe_restore_usb_monitor.txt",
+  "sha256": "54a2fe5fec918419514117702c5094cd02402fa05596f3050d6bb406d8f5d5d9",
+  "telemetry_count": 155,
+  "first_tel": {
+    "t_ms": "4600",
+    "state": "FAULT",
+    "reason": "ESTOP_ACTIVE",
+    "command_age_ms": "4294967295",
+    "last_seq": "3073830142",
+    "vx": "0",
+    "w": "0",
+    "left_pwm": "0",
+    "right_pwm": "0",
+    "left_cps": "0",
+    "right_cps": "0",
+    "err": "0",
+    "tel_count": "1"
+  },
+  "last_tel": {
+    "t_ms": "20000",
+    "state": "FAULT",
+    "reason": "ESTOP_ACTIVE",
+    "command_age_ms": "4294967295",
+    "last_seq": "509170162",
+    "vx": "0",
+    "w": "0",
+    "left_pwm": "0",
+    "right_pwm": "0",
+    "left_cps": "0",
+    "right_cps": "0",
+    "err": "0",
+    "tel_count": "155"
+  },
+  "telemetry_counters": {
+    "state": {
+      "FAULT": 155
+    },
+    "reason": {
+      "ESTOP_ACTIVE": 155
+    },
+    "left_pwm": {
+      "0": 155
+    },
+    "right_pwm": {
+      "0": 155
+    },
+    "left_cps": {
+      "0": 155
+    },
+    "right_cps": {
+      "0": 155
+    },
+    "err": {
+      "0": 155
+    }
+  },
+  "tx_lines": [
+    "I (876) esp32_uart_bridge: TX UART1: DISARM,seq=509170161",
+    "I (876) esp32_uart_bridge: TX UART1: PING,seq=509170162"
+  ],
+  "boot_and_handshake": [
+    "I (172) app_init: Compile time:     Sep 22 2026 00:09:53",
+    "I (177) app_init: ELF file SHA256:  7bc5eca6f...",
+    "I (276) esp32_uart_bridge: Scripted UART safety sequence disabled",
+    "I (276) esp32_uart_bridge: P-04B controlled ESTOP reset test disabled",
+    "I (776) esp32_uart_bridge: STARTUP: line sync sent",
+    "I (876) esp32_uart_bridge: RX ACK: seq=509170161 type=DISARM ack_count=1",
+    "I (876) esp32_uart_bridge: STARTUP: DISARM acknowledged",
+    "I (886) esp32_uart_bridge: RX PONG: seq=509170162 pong_count=1",
+    "I (886) esp32_uart_bridge: STARTUP READY: DISARM ACK and PONG verified"
+  ],
+  "warning_error_lines": [
+    "--- Warning: GDB cannot open serial ports accessed as COMx",
+    "W (230) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header."
+  ],
+  "artifacts": [
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_uart_bridge\\main\\hello_world_main.c",
+      "size": 44378,
+      "mtime": 1790015747.061229,
+      "sha256": "ecc304898b7f61ba1c28a8f01fa69b2fe9b11eb196bfaf02fb911d003ef000e4"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_uart_bridge\\build\\esp32_uart_bridge.elf",
+      "size": 3418972,
+      "mtime": 1790015769.7961884,
+      "sha256": "7bc5eca6f89a5eb0b14cb9ffe12a36edf8edf3d3ee5f5e931c705c2f49b1e29c"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_uart_bridge\\build\\esp32_uart_bridge.bin",
+      "size": 176960,
+      "mtime": 1790015770.6820037,
+      "sha256": "36146ccce5c099a88e3ec96b31160c027cea6f70b70abfe8c419f14c77ad41f1"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c",
+      "size": 21162,
+      "mtime": 1787940633.68487,
+      "sha256": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Debug\\stm32_uart_mvp.elf",
+      "size": 1252056,
+      "mtime": 1789016373.5980537,
+      "sha256": "f18233268a190764b56b90cf3776045753388c010adc626e67141467c7c54bac"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_firmware_contract.py",
+      "size": 64678,
+      "mtime": 1788954396.3275387,
+      "sha256": "ac1c7c4d4e7f193f750495bb332b1bfdcde06cc2f05bd2e059f64eedd1c0681d"
+    }
+  ],
+  "nonlog_tail": [],
+  "static_validation": {
+    "command": "python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p test_*.py",
+    "tests": 30,
+    "result": "PASS",
+    "elapsed_s": 0.514,
+    "git_diff_check": "PASS"
+  },
+  "STM_build_flash": "User explicitly confirmed both STM32 build and flash succeeded on 2026-09-22.",
+  "ESP_runtime_image": "Boot log ELF SHA prefix 7bc5eca6f matches current local ELF SHA256; complete build/flash console transcript not included."
+}

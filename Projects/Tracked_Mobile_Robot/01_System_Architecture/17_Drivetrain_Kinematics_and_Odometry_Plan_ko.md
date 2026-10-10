@@ -1,5 +1,8 @@
 # Drivetrain Kinematics and Odometry Plan
 
+> 문서 역할·상태 대조: **2026-09-30** — 운동학·오도메트리 목표와 현재 좌우 매핑. 주행/거리 보정 완료를 뜻하지 않는다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇의 첫 kinematics와 odometry 계획을 정의한다.
@@ -84,12 +87,34 @@ positive w  -> robot turns left
 
 Encoder sign은 이 convention이 성립하도록 조정해야 한다.
 
-### Bench encoder sign convention
+### Bench와 vehicle-frame encoder sign convention
+
+**현재 기준 — 2026-09-26 정정:** A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5.
+두 엔코더 커넥터 교환 후 손회전 시 해당 쪽 CPS만 변화하고 전진 양수·후진 음수·정지 0을
+사용자가 확인했다. TIM3 부호 반전·TIM5 유지 수식은 그대로 사용한다.
+9/29에는 M1→A와 M2→B 동력선이 모두 연결됐고 B는 실제 전진·후진과 CPS 부호를 확인했다.
+A의 ±명령 회전·CPS는 관측했으나 양수 명령의 실제 전진 방향 확인은 남아 있다.
+[단일 모터 방향 보정 근거](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md).
+[정정과 새 손회전 근거](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+
+**아래는 7월 당시 연결과 측정 이력이다. 현재 모터 A/B의 좌우 배선 지시로 사용하지 않는다.**
 
 2026-07-26 motor-power-off 시험에서는 output shaft end를 정면에서 본 기준으로
 clockwise 회전 시 TIM3 count가 증가하고 counter-clockwise 회전 시 감소했다.
-이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench wiring 결과일 뿐이며,
-차량 forward와 left/right encoder sign은 motor 장착 후 별도로 확정한다.
+이 부호는 `PB4 = CH1/A`, `PB5 = CH2/B`인 bench raw-sign 결과다.
+
+2026-07-30 motor-off 수동 회귀에서는 encoder-side 장착 관계를 다음과 같이
+확정했다.
+
+| Vehicle side | Motor / timer | Output-shaft forward rotation | Raw sign on forward | Production normalization |
+| --- | --- | --- | --- | --- |
+| Right | MG540-A / TIM5 | Clockwise | Positive | Keep |
+| Left | MG540-B / TIM3 | Counter-clockwise | Negative | Invert TIM3/left CPS |
+
+따라서 당시 production `left_cps/right_cps`는 모두 차량 전진에서 양수가 되었다. 이
+검증은 **당시 encoder-side vehicle-frame mapping과 부호**만 닫는다. MDD10A powered
+channel 1/2가 실제 좌·우 motor로 이어지는 관계와 command-driven forward
+polarity는 첫 powered drivetrain 시험에서 별도로 확인한다.
 
 ## 3. Differential Drive Approximation
 
@@ -146,7 +171,7 @@ distance = delta_count * distance_per_count
 | Gear ratio | Motor model datasheet 또는 manual count test |
 | Output sprocket circumference | 직접 측정 또는 track movement로 추정 |
 | Effective track width | Chassis 측정, rotation test로 tune |
-| Encoder sign | Bench sign과 별개로 low-speed vehicle-forward command에서 확인 |
+| Encoder sign | Encoder-side 수동 회귀는 완료; powered vehicle-forward command에서 재확인 |
 
 Motor label의 nominal 정보만으로 정확한 odometry가 가능하다고 가정하지 않는다.
 
@@ -157,12 +182,34 @@ Motor label의 nominal 정보만으로 정확한 odometry가 가능하다고 가
 | MG540-A | 약 +1560 | 약 -(1560~1570) | 약 1560 |
 | MG540-B | +1562 | -1560 | 약 1560 |
 
-`1560 counts/output rev`는 motor-power-off 1회전 수동 측정의 provisional scale이다.
-Powered/noise 조건, 반복 측정, TIM5와 실제 drivetrain scale 검증 전에는 final
-odometry constant로 고정하지 않는다. Raw serial log는 MG540-A의 정지 안정성과
+`1560 counts/output rev`는 이 시점의 motor-power-off 1회전 수동 측정에서 얻은
+provisional scale이었다. Powered/noise 조건과 반복 측정 전에는 final odometry
+constant로 고정하지 않았다. Raw serial log는 MG540-A의 정지 안정성과
 방향별 count 증감만 직접 보여 주며, 위 1회전 수치와 MG540-B 결과는 같은 bench
 session의 별도 측정 보고다. Evidence는
 [`../assets/logs/encoder/README.md`](../assets/logs/encoder/README.md)에 정리한다.
+
+### 2026-07-30 50-Revolution Calibration
+
+위 2026-07-26 provisional scale을 보완하기 위해 표시한 출력축을 motor별·방향별
+50회전시켰다.
+
+| Bench motor | Direction | Absolute total count | Counts/output rev |
+| --- | --- | ---: | ---: |
+| MG540-A | CW | 77,998 | 1559.96 |
+| MG540-A | CCW | 78,001 | 1560.02 |
+| MG540-B | CW | 78,000 | 1560.00 |
+| MG540-B | CCW | 78,000 | 1560.00 |
+
+현재 STM32 quadrature x4 기준 firmware 변환 상수는 `1560 counts/output rev`로
+확정한다. Signed CPS -> mRPM은 `trunc(CPS * 60000 / 1560)`으로 계산하며 boot
+self-test와 305-row dual hand-rotation log에서 계산·방향·정지 복귀가 통과했다.
+
+이 결정은 count-to-output-revolution scale을 닫은 것이다. Track odometry의
+`distance_per_count`는 effective sprocket/track travel, track slip과 powered
+vehicle-forward command regression을 측정하기 전까지 확정하지 않는다. External tachometer 기반 절대
+RPM 정확도와 powered-motor noise도 별도 시험 대상이다. 상세 evidence는
+[`../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md`](../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md)에 있다.
 
 ## 5. Speed Estimation
 

@@ -1,0 +1,341 @@
+[
+  {
+    "capture": "2026-10-07_W4_ESP_Reset_UART_Desync_run01",
+    "files": [
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-07_W4_ESP_Reset_UART_Desync_run01.sr",
+        "bytes": 264307,
+        "sha256": "37218c8b43828ae3edea6e80fab158193dc5445eb430fb3f2a57e612f4612742"
+      },
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-07_W4_ESP_Reset_UART_Desync_run01.pvs",
+        "bytes": 2695,
+        "sha256": "41a09e8039b01b45a5c78d6f1799b1f9a127bd0c672881f5529b97f495252cd4"
+      }
+    ],
+    "analysis_provenance": "subset of saved analysis from earlier in this session; waveform decode not rerun at closeout",
+    "sample_rate_hz": 4000000,
+    "sample_count": 100000000,
+    "duration_s": 25.0,
+    "channel_map": {
+      "4": "ESP GPIO17 TX -> STM PA10 RX",
+      "5": "STM PA9 TX -> ESP GPIO18 RX"
+    },
+    "tx_startup_low_runs": [
+      {
+        "start_s": 3.026689,
+        "end_s": 3.02896725,
+        "duration_us": 2278.25
+      }
+    ],
+    "tx_decoded_lines": [
+      {
+        "start_s": 3.026689,
+        "end_s": 4.034742055555555,
+        "text": "\u0000\u0000\u0000\u0000\\xff",
+        "stop_ok": false
+      },
+      {
+        "start_s": 4.134711,
+        "end_s": 4.136620805555555,
+        "text": "DISARM,seq=4093467110",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.17508975,
+        "end_s": 4.176825805555556,
+        "text": "PING,seq=4093467111",
+        "stop_ok": true
+      }
+    ],
+    "reset_low_runs": [],
+    "stm_responses": [
+      {
+        "start_s": 4.05171725,
+        "end_s": 4.054575555555555,
+        "text": "ERR,seq=0,type=RX,code=RX_DESYNC",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.15175075,
+        "end_s": 4.155476305555555,
+        "text": "ACK,seq=4093467110,type=DISARM,t_ms=127526",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.17691075,
+        "end_s": 4.179681805555555,
+        "text": "PONG,seq=4093467111,t_ms=127551",
+        "stop_ok": true
+      }
+    ],
+    "tel_count": 250,
+    "err_distribution": {
+      "1": 30,
+      "2": 220
+    },
+    "first_tel_for_each_err": [
+      {
+        "start_s": 0.03225975,
+        "end_s": 0.04811555555555556,
+        "text": "TEL,t_ms=123400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=915341472,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+        "stop_ok": true
+      },
+      {
+        "start_s": 3.0277975,
+        "end_s": 3.043652805555556,
+        "text": "TEL,t_ms=126400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=915341472,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2",
+        "stop_ok": true
+      }
+    ],
+    "all_tel_drop_zero": true,
+    "all_tel_pwm_cps_zero": true,
+    "all_tel_fault_estop_active": true
+  },
+  {
+    "capture": "2026-10-07_W4_ESP_Reset_UART_PA10_Pullup_run01",
+    "files": [
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-07_W4_ESP_Reset_UART_PA10_Pullup_run01.sr",
+        "bytes": 263193,
+        "sha256": "d19559e675c005f8857ccebd931b10afb2437336001005054859f07ae6394994"
+      },
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-07_W4_ESP_Reset_UART_PA10_Pullup_run01.pvs",
+        "bytes": 2695,
+        "sha256": "6157336729796e8d065c5978206b2cc8f9fffa92020bc760b699dc700a69ce5d"
+      }
+    ],
+    "analysis_provenance": "subset of saved analysis from earlier in this session; waveform decode not rerun at closeout",
+    "sample_rate_hz": 4000000,
+    "sample_count": 100000000,
+    "duration_s": 25.0,
+    "channel_map": {
+      "4": "ESP GPIO17 TX -> STM PA10 RX",
+      "5": "STM PA9 TX -> ESP GPIO18 RX"
+    },
+    "tx_startup_low_runs": [
+      {
+        "start_s": 3.2342205,
+        "end_s": 3.23424525,
+        "duration_us": 24.75
+      }
+    ],
+    "tx_decoded_lines": [
+      {
+        "start_s": 3.2342205,
+        "end_s": 4.233300805555555,
+        "text": "\\xfc",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.33326,
+        "end_s": 4.335169555555555,
+        "text": "DISARM,seq=1557700219",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.35292425,
+        "end_s": 4.354660305555555,
+        "text": "PING,seq=1557700220",
+        "stop_ok": true
+      }
+    ],
+    "reset_low_runs": [],
+    "stm_responses": [
+      {
+        "start_s": 4.233381,
+        "end_s": 4.237623305555555,
+        "text": "ERR,seq=0,type=UNKNOWN,code=BAD_TYPE,t_ms=122632",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.335267,
+        "end_s": 4.338990305555555,
+        "text": "ACK,seq=1557700219,type=DISARM,t_ms=122734",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.35474325,
+        "end_s": 4.3575145555555554,
+        "text": "PONG,seq=1557700220,t_ms=122753",
+        "stop_ok": true
+      }
+    ],
+    "tel_count": 251,
+    "err_distribution": {
+      "0": 43,
+      "1": 208
+    },
+    "first_tel_for_each_err": [
+      {
+        "start_s": 0.0092245,
+        "end_s": 0.024383805555555554,
+        "text": "TEL,t_ms=118400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.3012285,
+        "end_s": 4.316381555555555,
+        "text": "TEL,t_ms=122700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+        "stop_ok": true
+      }
+    ],
+    "all_tel_drop_zero": true,
+    "all_tel_pwm_cps_zero": true,
+    "all_tel_fault_estop_active": true
+  },
+  {
+    "capture": "2026-10-08_W4_ESP_Reset_EN_UART_PA10_Pullup_run01",
+    "files": [
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-08_W4_ESP_Reset_EN_UART_PA10_Pullup_run01.sr",
+        "bytes": 265914,
+        "sha256": "9fe3a3d56c68f1241ea42efc29d3166cc76998939fd95acd66c0fd4d7bdfb3a3"
+      },
+      {
+        "path": "assets/captures/logic_analyzer/2026-10-08_W4_ESP_Reset_EN_UART_PA10_Pullup_run01.pvs",
+        "bytes": 2691,
+        "sha256": "a8a7308ac88194dbfe1ece8956d727e65f7c2c0da784d737a8e3ed269181343b"
+      }
+    ],
+    "analysis_provenance": "subset of saved analysis from earlier in this session; waveform decode not rerun at closeout",
+    "sample_rate_hz": 4000000,
+    "sample_count": 100000000,
+    "duration_s": 25.0,
+    "channel_map": {
+      "4": "ESP GPIO17 TX -> STM PA10 RX",
+      "5": "STM PA9 TX -> ESP GPIO18 RX",
+      "6": "ESP EN / CHIP_PU"
+    },
+    "tx_startup_low_runs": [
+      {
+        "start_s": 3.86484725,
+        "end_s": 3.864871,
+        "duration_us": 23.75
+      },
+      {
+        "start_s": 14.37513525,
+        "end_s": 14.37516475,
+        "duration_us": 29.5
+      }
+    ],
+    "tx_decoded_lines": [
+      {
+        "start_s": 3.86484725,
+        "end_s": 4.872789055555555,
+        "text": "\\xfc",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.972748,
+        "end_s": 4.974657805555555,
+        "text": "DISARM,seq=1753918597",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.9931395,
+        "end_s": 4.994875555555555,
+        "text": "PING,seq=1753918598",
+        "stop_ok": true
+      },
+      {
+        "start_s": 14.37513525,
+        "end_s": 15.393389305555557,
+        "text": "\\xfc",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.4933545,
+        "end_s": 15.495264055555555,
+        "text": "DISARM,seq=1720987084",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.51373975,
+        "end_s": 15.515476055555556,
+        "text": "PING,seq=1720987085",
+        "stop_ok": true
+      }
+    ],
+    "reset_low_runs": [
+      {
+        "start_s": 3.70071025,
+        "end_s": 3.86498025,
+        "duration_us": 164270.0
+      },
+      {
+        "start_s": 11.55413325,
+        "end_s": 14.375275,
+        "duration_us": 2821141.75
+      }
+    ],
+    "stm_responses": [
+      {
+        "start_s": 4.87286825,
+        "end_s": 4.877290305555555,
+        "text": "ERR,seq=0,type=UNKNOWN,code=BAD_TYPE,t_ms=11137048",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.974751,
+        "end_s": 4.978654805555555,
+        "text": "ACK,seq=1753918597,type=DISARM,t_ms=11137150",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.99495725,
+        "end_s": 4.997906055555555,
+        "text": "PONG,seq=1753918598,t_ms=11137171",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.3934665,
+        "end_s": 15.397889555555556,
+        "text": "ERR,seq=0,type=UNKNOWN,code=BAD_TYPE,t_ms=11147576",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.49535975,
+        "end_s": 15.499264555555555,
+        "text": "ACK,seq=1720987084,type=DISARM,t_ms=11147678",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.5155545,
+        "end_s": 15.518504555555555,
+        "text": "PONG,seq=1720987085,t_ms=11147699",
+        "stop_ok": true
+      }
+    ],
+    "tel_count": 250,
+    "err_distribution": {
+      "1": 49,
+      "2": 105,
+      "3": 96
+    },
+    "first_tel_for_each_err": [
+      {
+        "start_s": 0.02894,
+        "end_s": 0.045073555555555554,
+        "text": "TEL,t_ms=11132200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3254077913,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+        "stop_ok": true
+      },
+      {
+        "start_s": 4.92400175,
+        "end_s": 4.940131805555555,
+        "text": "TEL,t_ms=11137100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3254077913,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2",
+        "stop_ok": true
+      },
+      {
+        "start_s": 15.41661375,
+        "end_s": 15.432745055555555,
+        "text": "TEL,t_ms=11147600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1753918598,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=3",
+        "stop_ok": true
+      }
+    ],
+    "all_tel_drop_zero": true,
+    "all_tel_pwm_cps_zero": true,
+    "all_tel_fault_estop_active": true
+  }
+]

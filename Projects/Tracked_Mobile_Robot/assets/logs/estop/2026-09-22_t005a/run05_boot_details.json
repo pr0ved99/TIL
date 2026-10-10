@@ -1,0 +1,20 @@
+{
+  "invalid_stop_candidate_times_s": {
+    "D4": [
+      1.27407425,
+      1.27417525,
+      1.27673625
+    ],
+    "D5": [
+      1.27673625
+    ]
+  },
+  "nonzero_encoder_telemetry": [
+    {
+      "start_s": 1.65521575,
+      "end_s": 1.6702183055555555,
+      "text": "TEL,t_ms=300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=10,batt_mv=0,drop=0,err=0"
+    }
+  ],
+  "limit": "EN, S2 and motor rail voltage are not captured channels."
+}

@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-09-23 session closeout",
+  "artifacts": [
+    {
+      "path": "03_Firmware/esp32_uart_bridge/main/hello_world_main.c",
+      "bytes": 44378,
+      "sha256": "ecc304898b7f61ba1c28a8f01fa69b2fe9b11eb196bfaf02fb911d003ef000e4"
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp32_uart_bridge.bin",
+      "bytes": 176960,
+      "sha256": "3c3f0895f00b58b341ab1c2d997cb0edecfe15a757cd5ddf7f0e1c9276aba7c1"
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp32_uart_bridge.elf",
+      "bytes": 3418972,
+      "sha256": "3c5b64553806aab7c0c9a202dc425c16c4e7328127deb37ae12a67f2b5de1ca6"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "bytes": 21162,
+      "sha256": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127"
+    }
+  ],
+  "limits": "File identities only; ESP restored build/flash was operator-reported. STM unchanged in resumed session; static 30/30 result carried from restored-source verification, not rerun for documentation."
+}
