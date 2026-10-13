@@ -2,9 +2,16 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-11 (ARM/CMD foundation modules and documentation reconciliation)
+Last updated: 2026-10-13 (zero-only integration and textbook)
 
-## Current Application Checkpoint — 2026-10-11
+## Current Application Checkpoint — 2026-10-13
+
+- 현재 앱은 `esp32_wifi_link`. 다섯 제어 모듈과 main/브라우저가 연결돼 있고 속도 0 전용 ARM/CMD를 처리한다. 최신 main C42·PAGE JS46 PC PASS와 사용자 빌드/플래시·관측은 [10/13 기록](docs/progress/2026-10-13_progress.md)에 구분한다.
+- 대화에서 ARM/zero ACTIVE, 수동 DISARM, 포커스 상실 정지 등을 확인했다. 전체 AC-B/S·nonzero 구동·전체 안전/주행은 미완료다. 최신 바이너리 hash와 종료 전원 상태는 미확인이다. 초기 전원 분리 뒤 조건 변경 보고가 있으므로 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+- [교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)는 단계별 학습·PC 예제 자료이며 공식 아키텍처 계약을 대체하지 않는다. 별도 UART bridge hook 복구 등 기존 미완료 범위는 유지한다.
+- 아래 체크포인트의 ‘미연결/미실행/현재’는 당시 이력이다.
+
+## Historical Application Checkpoint — 2026-10-11
 
 - 최신 재개 기준은 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [10/11 기록](docs/progress/2026-10-11_progress.md), [W5 보고서34](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)다. 아래9/29 이후의 current/pending 문구는 해당 시점 이력이다.
 - 현재 마지막 실행 ESP 앱은 `esp32_wifi_link`. W4 상태 전달·W5 비구동 PING/DISARM·버튼/결과·거부·timeout/재접속을 마감했다. WS 상태100ms, TEL100ms, stale500ms. 브라우저 ARM/CMD는 미구현이다.

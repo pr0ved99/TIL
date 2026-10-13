@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "wifi_control_owner.c" "wifi_control_ticket.c"
+    SRCS "wifi_control_executor.c" "wifi_control_state.c" "wifi_control_owner.c" "wifi_control_ticket.c"
          "wifi_link_main.c" "wifi_control_contract.c"
     INCLUDE_DIRS "."
     PRIV_REQUIRES

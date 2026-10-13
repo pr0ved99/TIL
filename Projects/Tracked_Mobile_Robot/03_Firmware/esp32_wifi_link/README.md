@@ -1,53 +1,42 @@
-# ESP32 Wi-Fi · STM UART 상태와 PING/DISARM
+# ESP32 Wi-Fi · STM UART 상태와 zero-only 제어
 
-STM32의 실제 UART TEL을 ESP32-S3가 브라우저에 전달하고, WebSocket PING/DISARM 요청을 UART 응답과 연결하는 ESP-IDF 프로젝트다.
+STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 속도 0 전용 ARM/CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-11
+## 현재 상태 — 2026-10-13
 
-**W4 상태 전달·W5 비구동 PING/DISARM PASS.** 실제 요청/응답, 입력 거부, 요청자별 결과·버튼,
-timeout/복구와 재접속 후 자동 재전송 없음을 확인했다.
-[W5 보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)와
-[마감 기록](../../docs/progress/2026-10-10_progress.md)이 시험 조건과 증거의 기준이다.
+W4 상태 전달·W5 비구동 PING/DISARM 완료 이후 다섯 제어 모듈과 main/브라우저 연결을 구현했다. 통합 빌드·플래시·모니터와 ARM/zero ACTIVE·수동/포커스 상실 정지는 사용자 관측이다. 최신 저장 main의 선택 C 함수42·PAGE46 PC 검사도 통과했다.
 
-이후 ARM/CMD parser·ticket·owner 독립 모듈의 실제 PC 검사 **15/12/9 PASS**와
-owner 포함 ESP 전체 빌드 성공을 사용자 보고로 확인했다. [10/11 기록](../../docs/progress/2026-10-11_progress.md).
-세 모듈은 CMake에 등록돼 있지만 `wifi_link_main.c`에서 호출하지 않는다. 새 모듈의 플래시·보드 실행은 미확인이다.
-[펌웨어 목차](../README.md#armcmd-모듈과-실행-경로)에서 모듈 역할과 현재 실행 경로를 구분한다.
+[10/13 진행 기록](../../docs/progress/2026-10-13_progress.md)과 [최신 PC 근거](../../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)를 따른다. 최신 바이너리 hash·전체 AC-B/S·nonzero 구동 안전은 미확인이다. 과거 W5 근거는 [보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)에 보존한다.
 
-현재 `/ws`는 상태 전달과 PING/DISARM 입력·notice/result를 처리한다. 브라우저 ARM/CMD 입력은 미구현이다.
-부팅 때 UART로 보내는 DISARM/PING은 별도 응답 확인 순서이며 자동 구동하지 않는다.
-READY/FAILED는 **이번 ESP 부팅의 응답 확인 이력**이다. 현재 STM 연결·구동 허가는 TEL freshness와 별도로 판단해야 한다.
+READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 STM TEL freshness와 제어 조건은 별도로 판단한다. 새 연결과 포커스 복귀가 자동 ARM을 일으키지 않는다.
 
 ## 데이터 흐름과 조건
 
 ```text
-STM UART TEL → ESP RX 줄 조립/파싱 → mutex snapshot
-→ HTTP 서버 작업에서 JSON 전송 → WebSocket → 브라우저
-
-브라우저 PING/DISARM → HTTP 입력 검사·요청 큐
-→ UART 태스크의 송신·seq/응답 대응 → 결과 큐
-→ HTTP 서버 작업 → 요청한 WS session의 브라우저
+STM UART TEL → ESP RX 파싱 → mutex snapshot → HTTP 작업 → WebSocket → 브라우저
+PING → 요청 큐 → UART 태스크 → PONG → 요청자별 결과
+ARM/CMD → 형식·ticket·owner·상태 검사 → executor → UART 태스크 → ACK/TEL
+DISARM/취소 → 제어 허가와 미송신 입력 폐기 → DISARM → ACK와 새 정지 TEL
 ```
 
 - ESP GPIO17 TX→STM PA10 RX, STM PA9 TX→ESP GPIO18 RX, 공통 GND, 115200/8N1.
-- 마감 시험: 두 보드 각각 USB 전원, LiPo 미연결. STM PA10 내부 pull-up 유지. 종료 후 두 USB 분리 사용자 확인.
-- STM TEL100ms / WebSocket 상태100ms / TEL stale500ms / 브라우저 무응답4000ms.
-- 유효 TEL을 받은 ESP 시각으로 age를 계산한다. ACK/PONG은 TEL freshness를 갱신하지 않는다.
-- `batt_mv=null`, `battery_available=false`: 배터리 ADC 미구현. CPS는 counts/s이며 RPM과 다르다.
-- 마지막 화면은 재접속 후 수동 PING1 OK, READY·fresh·FAULT/ESTOP_ACTIVE·PWM/CPS0·drop/err0이었다. err는 누적 오류이며 특정 하드웨어 오류 코드가 아니다.
+- STM TEL/WS 상태 목표100ms, 제어 처리 목표20ms. 표시 stale500ms와 제어용 TEL age250ms는 구분한다.
+- zero-only ARM→zero CMD ACK와 새 일치 TEL→ACTIVE. ticket150ms·큐50ms·ACK150ms·source200ms 등 서로 다른 기한을 검사한다.
+- 브라우저는 ticket 전송 여유50ms와 수동 ARM의 미송신 준비 대기 최대200ms를 사용한다. blur/hidden/끊김은 준비 대기·제어 의도를 취소한다.
+- `batt_mv=null`, `battery_available=false`: 배터리 ADC 미구현. CPS는 counts/s다.
+- 현재 물리 조건은 [인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 확인한다. W5 종료 때 USB 분리 조건을 이후 시험의 현재 조건으로 사용하지 않는다.
 
 ## 경로와 설정
 
 | 경로 | 용도 |
 | --- | --- |
-| GET `/` | 로봇 상태·PING/DISARM 버튼·명령 접수/거부/완료 표시 |
-| GET `/api/status` | 같은 상태 JSON의 개별 조회. 화면 반복 갱신은 WebSocket |
-| `/ws` | 상태 JSON·command_notice/result 수신, final TEXT PING/DISARM 요청 송신 |
+| GET `/` | 로봇 상태·PING/ARM 속도0/DISARM 버튼·결과·제어 상태 |
+| GET `/api/status` | STM 상태 JSON 개별 조회 |
+| `/ws` | 상태·notice/result·control_state 수신, HELLO 및 명령 입력 |
 
-명령은 `PING,boot_id=<u32>,request_id=<positive u32>` 또는 `DISARM,...`이다.
-최대128byte·같은 연결 간격500ms·전체 진행1개·UART 응답500ms·자동 retry 없음.
-부팅 확인 진행 중 사용자 명령은 거부한다. 접수(ACCEPTED)는 STM 성공(OK)이 아니다.
-브라우저 추가 결과 대기3000ms 만료는 ‘결과 확인 불가’이며 STM TIMEOUT과 구분한다.
+HELLO는 연결 등록이며 UART 명령이 아니다. PING/DISARM은 boot_id·request_id를 사용하고, ARM은 ticket, CMD는 control_id·ticket·속도0 필드를 추가한다. 접수 성공은 실행 완료가 아니다. DISARM OK는 ACK뿐 아니라 새 비무장/출력0 TEL까지 확인한 결과다.
+
+정확한 형식·타이밍·취소 경계는 [실제 main](main/wifi_link_main.c), [검사 안내](../tests/README.md), [교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)를 참조한다.
 
 `main/wifi_link_config.h`에서 AP/STA를 선택한다. 개인 header는 Git에서 제외하며
 [설정 예시](main/wifi_link_config.h.example)를 참고한다. 공유기 STA 주소는 DHCP 할당 로그로 확인한다.
@@ -67,8 +56,8 @@ idf.py -p COM번호 flash monitor
 ```
 
 `COM번호`는 실제 장치 포트로 바꾼다. 코드 입력·보드 빌드·플래시는 사용자가 수행한다.
-실제 PAGE JS57 PASS·실제 C 일부 함수 PC21 PASS와 보드 실행은 별도 증거다.
-parser/ticket/owner PC15/12/9와 사용자 전체 빌드 성공도 별도로 기록하며 ARM/CMD 보드 동작으로 확대하지 않는다.
+최신 저장본 C42·PAGE46 PC 결과와 사용자 보드 관측은 별도 증거다.
+모듈별 PC 검사·사용자 빌드 성공을 전체 구동 안전으로 확대하지 않는다.
 [검사 안내](../tests/README.md)와 [다음 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 새 시험의 원본 로그·화면·빌드/플래시 식별값은 [증거 보존 절차](../../docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
 
@@ -79,7 +68,7 @@ parser/ticket/owner PC15/12/9와 사용자 전체 빌드 성공도 별도로 기
 - [HTTP 입력 안내](../../docs/plans/2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md)와 [ESP 단독 WS 입력 안내](../../docs/plans/2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md)는 이전 단계 코드다. 현재 실행 소스의 대체본으로 사용하지 않는다.
 - [기존 UART bridge](../esp32_uart_bridge/README.md)는 별도 프로젝트다. 그 수동 모터 시험 hook을 이 앱의 실행 상태로 해석하지 않는다.
 
-ARM/CMD의 초기 계약과 기초 모듈 준비는 마쳤다. 다음은 [초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)에 따른
-상태·시간 제한·ACK/TEL·취소/정지 흐름이다. 이후 큐/UART·브라우저 zero-only 연결, AC-H 전체와 장비 조건별 AC-B/S로 진행한다.
+ARM/CMD zero-only 실행 연결은 구현됐고 일부 보드 관측을 마쳤다. [초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)의
+전체 AC-H/B/S 수용은 PC·보드·출력 근거를 나누어 미완료 항목만 이어간다.
 PING/DISARM의 비구동 PASS와 모듈 PC 검사·빌드 성공을 구동 허가로 쓰지 않는다.
 리셋 순간 UART err 증가의 완전한 전기 원인, 실제 구동 중 통신 유실 안전, 배터리 ADC·전류·열·주행은 미완료다.

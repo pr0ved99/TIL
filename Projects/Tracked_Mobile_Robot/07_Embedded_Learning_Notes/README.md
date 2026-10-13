@@ -14,6 +14,7 @@
 | `03_ESP32_Board_Practice` | ESP32-S3 보조 컨트롤러 실습 일지 |
 | `04_Interface_Protocol_Practice` | UART/CAN/telemetry protocol 설계와 검증 기록 |
 | `05_Debugging_Measurement` | DMM, logic analyzer, oscilloscope, serial log 기반 측정 기록 |
+| [`06_STM32_ESP32_Firmware_Textbook`](06_STM32_ESP32_Firmware_Textbook/README.md) | 기초 C부터 현재 STM·ESP 제어 코드까지 이어지는 한 권의 교과서와 PC 예제 |
 | `_templates` | 새 개념 노트와 실습 일지 작성 템플릿 |
 
 ## How To Use
@@ -41,6 +42,10 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 ```
 
 ## Current First Topics
+
+처음부터 순서대로 공부하려면 **[STM32·ESP32 펌웨어 교과서](06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)**를 읽는다.
+C·GPIO·시간·UART에서 시작해 STM 출력/상태, ESP 태스크/네트워크, ticket/owner/state/executor와 브라우저 취소까지 다룬다.
+각 장의 예제·문제·해설과 별도 PC 실행 예제 5개가 있다. 실제 소스의 2026-10-13 기준이며 공식 설계·검증 문서를 대체하지 않는다.
 
 노트북만 있는 날에는 [STM·ESP 코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)로 파일·호출 관계를 먼저 파악한다.
 이후 [단일 모터 시험 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 소스와 로그를 연결한다.

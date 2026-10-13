@@ -4,6 +4,19 @@
 브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
 보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.
 
+## 현재 ARM/CMD main 검사 — 2026-10-13
+
+최신 저장 `esp32_wifi_link/main/wifi_link_main.c`를 대상으로 선택 C 함수 **42 PASS**, 내장 PAGE **46 PASS**를 확인했다. [원본 출력·소스 manifest](../../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)를 따른다. 아래 날짜별 W4/W5 및 초기 C42/JS27 기록은 당시 구현에 대한 이력이다.
+
+저장소 루트에서, `W5_HOST_CC`에 PC용 TCC/GCC 경로를 지정한 후 실행한다.
+
+```powershell
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_control_main.py Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c
+node Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_control_main_page.js Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c
+```
+
+실제 저장된 제어 모듈과 main에서 추출한 함수/PAGE가 검사 대상이다. RTOS/UART/HTTP와 브라우저 DOM·시계·WebSocket은 mock이며 보드 빌드·무선/전기적 검증을 대신하지 않는다. 초기 안내의 후보 검증 기록은 [C42/JS27](../../assets/logs/wifi_link/2026-10-13_main_candidate/README.md)에 남아 있다.
+
 기존 정적 검사는 핀·UART·timer·encoder sign·motor-output safety 설정이 소스 변경이나
 CubeMX 재생성으로 달라지는 것을 막고, ESP32 bridge가 부팅 중
 다음 안전 순서를 구조적으로 유지하는지도 검사한다.
@@ -187,6 +200,24 @@ python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -
 
 입력 후보만 검사할 때 `WIFI_CONTROL_OWNER_GUIDE`에 안내 Markdown 경로를 지정한다.
 후보 결과는 owner 포함 ESP 전체 빌드·보드 동작 결과가 아니다. parser PC15/ticket PC12는 반복하지 않았다.
+
+## ARM/CMD state C 후보 검사 — 2026-10-11
+
+[state 입력 안내](../../docs/plans/2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md)의 header/source 두 블록과 실제 저장된 owner C를 TCC `-Wall -Werror`로 실행해 **후보27 PASS**다.
+후보 환경 변수를 제거한 기본 실행은 state 파일 미입력으로 **0 tests/SKIP1**이다. 실제 저장본·ESP 빌드/보드 실행 PASS가 아니다.
+[원본 PC 출력과 검사한 소스](../../assets/logs/wifi_link/2026-10-11_state_candidate/README.md)를 보존했다.
+
+검사는 ARM/zero ACK와 새 TEL의 순서, owner·seq/type,50/150/200/250ms와 정지300ms 경계,
+늦은 응답·FAULT/zero-only·STM wrap/재기동 의심·정체·취소/정지 실패·수동 재확인 범위다.
+큐/ticket 원자성·실제 UART TX0·RTOS/HTTP 경합·브라우저 흐름과 AC-H 전체·AC-B/S는 후속이다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/tcc.exe'
+Remove-Item Env:WIFI_CONTROL_STATE_GUIDE -ErrorAction SilentlyContinue
+python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p 'test_wifi_control_state.py' -v
+```
+
+입력 후보만 검사할 때 `WIFI_CONTROL_STATE_GUIDE`에 안내 Markdown 경로를 지정한다. 기존 parser/ticket/owner 검사는 변경이 없어 반복하지 않았다.
 
 ## 로봇 계약 검사 기록 — 2026-09-29 당시
 

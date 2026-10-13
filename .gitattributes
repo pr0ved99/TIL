@@ -14,3 +14,18 @@ Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/*.json -text wh
 Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/*.txt -text whitespace=cr-at-eol,-blank-at-eol
 Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/decode_sr.py text eol=lf
 Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-09-23_perfboard_conditioning/esp32_stationary_monitor.txt -text whitespace=cr-at-eol,-blank-at-eol
+
+# Keep the ARM/CMD validation snapshots byte-exact for their SHA-256 manifests.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-11_state_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-12_executor_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-12_state_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_executor_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_git_closeout/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Dated input guides preserve the originally reviewed code blocks.
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

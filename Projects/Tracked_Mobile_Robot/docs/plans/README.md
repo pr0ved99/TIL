@@ -2,18 +2,20 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-10-11
+## 현재 시작점 — 2026-10-13
 
-[현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) → [10/11 빌드 확인 기록](../progress/2026-10-11_progress.md) 순서로 읽는다. 두 보드 USB·LiPo 미연결의 PING/DISARM 범위와 두 USB 분리 완료는 [10/10 W5 마감 기록](../progress/2026-10-10_progress.md)에 보존했다.
-**W4 상태 전달·W5 비구동 PING/DISARM은 완료했다.** 이후 [ARM/CMD 초기 계약·검증 계획](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했다. parser PC15·ticket PC12·owner PC9는 실제 저장본 PASS, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이며 UART 연결·새 보드 시험은 미실행이다.
-ARM/CMD·전류/열·전체 안전 수용·주행·새 PCB CAD는 별도 미완료다. 이전 학습/납땜/모터 시험을 변경 없이 반복하지 않는다.
-상세 근거는 [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md), 기존 단일 모터 범위는 [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)를 따른다.
-앱/모듈 역할은 [펌웨어 목차](../../03_Firmware/README.md), 새 시험의 원본·빌드/플래시 식별값은 [증거 보존 절차](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
+zero-only ARM/CMD의 모듈·main·브라우저 연결과 사용자 빌드/플래시·일부 보드 관측까지 진행했다. 최신 main C42·PAGE JS46 PC PASS와 증거 한계는 [10/13 기록](../progress/2026-10-13_progress.md), 재개점은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 전체 AC-B/S·nonzero 구동·전체 안전/주행은 미완료다.
+
+학습은 [STM·ESP 교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)로 이어간다. 아래 입력 안내와 표의 후보/미입력/검사 수는 해당 작성 시점 이력이다. 10/13 main 입력 안내 이후 ticket 시간 여유·수동 ARM 준비 대기·버튼 표시 보완이 있어 최신 소스의 대체본으로 사용하지 않는다.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
+| 2026-10-13 / 저장본 C42·JS27·ESP 빌드 확인 | [main·브라우저 전체 교체 안내](2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md) | HTTP/ticket·UART/seq·ACK/TEL·기한/취소·zero-only UI. 실제 main 저장/PC 검사·ESP 빌드 확인, 새 플래시/보드 시험 대기 |
+| 2026-10-12 / 후보PC17 PASS | [UART executor 입력 안내](2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md) | ticket 접수·한 슬롯·송신 계획·취소/우선 DISARM·결과. 사용자 파일/ESP 빌드·main 연결은 미실행 |
+| 2026-10-12 / 수정 대기 | [ARM/CMD state 일괄 수정 안내](2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md) | 최초 실제 저장본 컴파일 실패 0 tests/ERROR1. 정확한 위치·이유·header/source 완성본, CMake 유지 |
+| 2026-10-11 / 후보 PC27 PASS | [ARM/CMD state 코드 안내](2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md) | phase·기한·ACK/TEL·취소/정지 판단. 사용자 파일 미입력·실제 저장본/전체 ESP 빌드·실행 adapter 미검증 |
 | 2026-10-11 / PC·빌드 확인 완료 | [ARM/CMD owner 코드 안내](2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md) | 한 연결 예약·control ID·대조/취소. 실제PC9 PASS, ESP 전체 빌드 성공 사용자 확인. FSM/기한·UART 미연결 |
 | 2026-10-10 작성 / 10/11 빌드 확인 | [ARM/CMD ticket 코드 안내](2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md) | 연결/용도·150ms·한 번 소비·번호 소진. 실제PC12 PASS, ESP 전체 빌드 성공 사용자 확인 |
 | 2026-10-10 / parser 확인 완료 | [ARM/CMD parser 코드 안내](2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md) | 새 header/source·CMake, 실제PC15 PASS·ESP 빌드 성공 사용자 확인. UART 미연결 |

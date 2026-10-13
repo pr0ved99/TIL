@@ -5,6 +5,10 @@
 
 ## 최신 기록
 
+**[2026-10-13 zero-only 통합·교과서·Git 정리](2026-10-13_progress.md)** — 사용자 빌드/플래시와 ARM/zero·정지 관측, 최신 저장 main C42·PAGE JS46 PASS. STM·ESP 교과서와 예제 5개, 12개 학습 단위 완료. 전체 AC-B/S·nonzero 구동은 미완료이며 종료 전원 상태는 미보고다.
+
+**[2026-10-12 state 저장본·ESP 빌드 확인](2026-10-12_progress.md)** — 최종 실제 .h/.c 안내 일치·PC27 PASS、ESP 전체 빌드 성공 사용자 확인. STM·ESP는 만능기판 장착·USB 공급·XL4015 분리 사용자 보고다. 다음은 main의 제어 실행 adapter 연결이다.
+
 **[2026-10-11 owner PC·ESP 빌드 확인과 문서 정합성 마감](2026-10-11_progress.md)** — 실제 parser PC15·ticket PC12·owner PC9 PASS, owner 포함 ESP 전체 빌드 성공 사용자 확인. 프로젝트/앱/분야 목차·Memory의 현재 요약을 대조하고 펌웨어 목차·증거 보존 절차를 추가했다. 다음은 phase/기한·ACK/TEL·취소/정지 흐름이다. 큐/UART 연결과 새 보드 동작은 미실행이다.
 
 **[2026-10-10 W5 마감·ARM/CMD 초기 설계](2026-10-10_progress.md)** — W5 왕복·거부·timeout/복구·결과/버튼·재접속 마감과 Git 반영. JS57·C21은 별도 증거, 두 USB 분리 완료 사용자 확인. 후속 [ARM/CMD 계약·검증 계획](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)을 작성했고 다음은 ESP 데이터/입력 검사 구현이다. 새 제어 송신·보드 시험은 미실행이다. [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md).
@@ -97,6 +101,7 @@ STA·WebSocket·STM 통합/무선 명령과 PCB CAD는 남아 있다. 앞선 낡
 
 | 날짜 | 기록 | 당시 작업 요약 |
 | --- | --- | --- |
+| 2026-10-12 | [2026-10-12_progress.md](2026-10-12_progress.md) | state 실제PC27 PASS·ESP 전체 빌드 성공 사용자 확인, 보드 장착·USB/XL4015 조건 기록 |
 | 2026-10-11 | [2026-10-11_progress.md](2026-10-11_progress.md) | owner 실제PC9 PASS·owner 포함 ESP 전체 빌드 성공 사용자 확인, 제어 UART 미연결 |
 | 2026-10-10 | [2026-10-10_progress.md](2026-10-10_progress.md) | W5 마감·Git 반영 / ARM/CMD 설계·parser/ticket 실제 PC 검사와 parser 빌드 확인, 제어 UART 미연결 |
 | 2026-10-08 | [2026-10-08_progress.md](2026-10-08_progress.md) | 10/7~8 W4 통합·리셋 진단·부팅/TEL 상태 분리·정상 복원 마감 |

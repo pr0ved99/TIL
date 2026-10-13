@@ -7,6 +7,8 @@
 [현재 작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)과 [최신 진행 기록](progress/README.md)을 따른다.
 아키텍처의 한국어 `_ko.md` 문서를 우선 참조한다.
 
+기초부터 실제 코드를 공부하려면 [STM32·ESP32 펌웨어 교과서](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)를 읽는다. 순차 본문·PC 예제·문제 해설·소스 지도를 포함하며, 현재 상태를 판정하는 검증 보고서와는 별도다.
+
 ## 기획과 요구사항
 
 | 문서 | 내용 |
