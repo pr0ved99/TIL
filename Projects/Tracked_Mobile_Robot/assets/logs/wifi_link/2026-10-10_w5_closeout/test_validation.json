@@ -1,0 +1,50 @@
+{
+  "documented_on": "2026-10-10",
+  "provenance": "Transcription of successful tool executions in this W5 work block; not a saved full console stream. Tests were not rerun solely to capture output.",
+  "production_c_sha256": "dfe9a97e77453378a4f5a0cc64b3dfa642244c93ec6d6259cb4742bba8d5d2b4",
+  "browser": {
+    "test": "03_Firmware/tests/test_wifi_w5_websocket_page.js",
+    "execution": "Actual PAGE JavaScript in a VM with mock DOM/WebSocket/time; VS Code Electron ELECTRON_RUN_AS_NODE=1.",
+    "executed_from": "C:/Users/eyh12/.codex/tmp/test_w5_button_ui.js; validated byte-identical repository copy before a usage-comment filename correction.",
+    "passed": 57,
+    "exit_code": 0,
+    "scope": "25 state checks + 11 result checks + 21 button/notice checks; not ESP server/network/hardware validation."
+  },
+  "uart_c_host": {
+    "test": "03_Firmware/tests/test_wifi_w5_uart_contract.py",
+    "fixture": "03_Firmware/tests/wifi_w5_host_fixture.c",
+    "execution": "python -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p test_wifi_w5_uart_contract.py -v",
+    "summary": "Ran 21 tests in 1.198s; OK",
+    "passed": 21,
+    "exit_code": 0,
+    "cases": [
+      "ping_before_deadline",
+      "disarm_ack_before_deadline",
+      "wrong_and_startup_sequences",
+      "wrong_response_kind_and_ack_type",
+      "matching_stm_error_is_failure",
+      "nonmatching_error_is_ignored",
+      "malformed_response_vectors",
+      "no_pending_and_duplicate_responses",
+      "telemetry_is_not_a_command_response",
+      "response_at_and_after_deadline",
+      "late_response_cannot_complete_next_request",
+      "closed_connection_has_no_result_delivery",
+      "old_cleanup_preserves_new_owner",
+      "orphaned_queued_request_is_not_transmitted",
+      "expired_queue_request_is_not_transmitted",
+      "startup_gate_and_failed_diagnostics",
+      "sequence_exhaustion_never_wraps",
+      "full_result_queue_releases_request",
+      "short_uart_write_has_no_retry",
+      "wrong_boot_and_unsupported_command",
+      "websocket_request_parser_vectors"
+    ],
+    "compiler": "TCC 0.9.27 win64, -Wall -Werror, temporary tools directory only",
+    "compiler_source": "https://download.savannah.gnu.org/releases/tinycc/tcc-0.9.27-win64-bin.zip",
+    "compiler_archive_sha256": "34a721949a2583fdff725312da092fa0f5f1f284b702e6f811c6954714faabb2",
+    "scope": "Actual saved C functions/types/constants; only time/UART/queue/semaphore services stubbed. Not a full ESP build, hardware UART injection or actual RTOS/HTTP concurrency."
+  },
+  "separate_legacy_bridge": "Existing 30 PASS/1 FAIL default-off baseline unchanged; no all-discovery PASS claim.",
+  "firmware_build_flash": "User success report plus runtime excerpts; no assistant ESP/STM build or flash, no binary hash recorded."
+}

@@ -1,5 +1,8 @@
 # FreeRTOS Task Architecture
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](13_FreeRTOS_Task_Architecture_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document defines the FreeRTOS task architecture for the tracked mobile
@@ -224,18 +227,24 @@ typedef struct {
 } motion_command_t;
 ```
 
-Minimal safety state:
+Target safety state, shared with `16_Control_Loop_and_State_Machine.md`:
 
 ```c
 typedef enum {
     SAFETY_BOOT = 0,
     SAFETY_DISARMED,
-    SAFETY_ARMED,
-    SAFETY_TIMEOUT,
-    SAFETY_LOW_VOLTAGE,
-    SAFETY_FAULT
+    SAFETY_ARMING_CHECK,
+    SAFETY_ARMED_IDLE,
+    SAFETY_ARMED_ACTIVE,
+    SAFETY_LOW_VOLTAGE_STOP,
+    SAFETY_ESTOP_LATCHED,
+    SAFETY_FAULT_LATCHED
 } safety_state_t;
 ```
+
+Under ADR-015, command timeout zeros the output and stored command, then enters
+`SAFETY_DISARMED`. A new `ARM` followed by a new `CMD` is required; no separate
+timeout state is part of the target enum.
 
 Rules:
 
@@ -388,7 +397,8 @@ Responsibilities:
 
 Safety output:
 
-- `SAFETY_ARMED` allows limited motor output.
+- Only `SAFETY_ARMED_ACTIVE` may allow nonzero motor output;
+  `SAFETY_ARMED_IDLE` keeps output at zero.
 - Any unsafe state forces PWM zero and driver disable through the motor-control
   output path.
 

@@ -1,5 +1,8 @@
 # 전원 분배와 안전 아키텍처
 
+> 문서 역할·상태 대조: **2026-09-30** — 현재 전원 분배와 안전 경계. 초기 RevA 경로는 과거 비교 자료로 보존한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트의 첫 power distribution과 safety architecture를 정의한다.
@@ -49,7 +52,35 @@ Robot은 초기 기준으로 세 개의 power domain을 가진다.
 신호가 domain을 넘나드는 지점에서는 기준 ground를 공유해야 하지만, 실제 current path는 가능한 한
 물리적으로 분리한다.
 
-## 3. Main Power Path
+## 3. 현재 전원 경로와 초기 설계 이력
+
+2026-09-30 연결 기준(최종 정격·구동 수용 완료를 뜻하지 않음):
+
+```text
+LiPo+ -> F1(사용자 확인 10 A) -> S1 -> + busbar / VBAT_PROTECTED
+                                      +-> K1 pin30 -> pin87 -> MDD10A B+
+                                      +-> XL4015 #1 IN+ -> 보드용 5 V
+                                      +-> XL4015 #2 IN+ -> AUX5V
+                                      +-> F2(사용자 확인 1 A) -> S0/S2/K2/K1 제어
+LiPo- -> GND busbar -> MDD10A B- / 두 XL4015 IN- / 공통 신호 기준
+```
+
+K1 주선은 사용자 구성 14 AWG, MDD B− 귀환은 16 AWG다. 부품/단자 정격 편차와 부하·열 검증은 별도다.
+K1은 S0/S2/K2 제어 경로로 모터 전원을 차단·수동 재인가하며 두 buck 입력은 K1 전단에서 분기한다.
+S0 감지와 STM32 래치/PWM 경로는 전력 차단 경로와 구분한다. 세부 계약은 [25 회로](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를 따른다.
+
+최신 USB bench에서는 #1 보드용 2P 두 개를 분리·절연하고 두 보드를 USB로 공급한다.
+이 시험 연결을 위 최종 전원 분배 구조와 혼동하지 않는다. 실제 재개는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+
+모터 전류는 만능기판 패드로 흐르지 않으며, fuse/극성/접속 경로와 전력단 잔여 수용 조건은 유지한다.
+전체 T005A는 PARTIAL이다. PA4/PB0 자동 rail 진단은 post-MVP이며 현재 직접 rail 관측을 대체하지 않는다.
+
+<details>
+<summary>초기 RevA 전원 경로와 RevB 전환 목표 기록</summary>
+
+이 절의 초기/현재/target 표현은 당시 설계 시점을 가리킨다. 현재 배선에는 위 K1 경로를 적용한다.
+
+### 초기 Main Power Path
 
 초기 power path:
 
@@ -95,6 +126,36 @@ Notes:
 - Motor current는 perfboard copper trace로 흘리지 않는다.
 - 첫 전원 투입 전에 XT60 polarity를 확인한다.
 
+### Physical E-stop RevB target boundary
+
+현재 RevA는 `VBAT_SW`에서 MDD10A와 XL4015 두 개가 함께 분기된다. Physical E-stop을
+추가하는 RevB에서는 motor와 logic branch의 제어 경계를 다음과 같이 분리한다.
+
+```text
+VBAT_RAW -> F1 -> S1 MAIN_DC_SWITCH -> VBAT_PROTECTED
+                                         +-> K1 relay main contact
+                                         |    -> MOTOR_VBAT_SAFE
+                                         |         -> MDD10A POWER+
+                                         |
+                                         +-> XL4015 logic/aux branch
+```
+
+K1은 de-energized 때 main contact가 open되는 DC power relay 기능 블록이다. E-stop actuator는
+motor current를 직접 차단하지 않고 K1 coil permission을 제거한다. Logic branch는 E-stop
+상태 기록을 위해 살아 있을 수 있지만 USB, PWM/DIR 또는 buck을 통한 motor-rail 역급전이
+없어야 한다.
+
+상세 시스템 경계, sense path와 아직 결정하지 않은 항목은
+[`21_Physical_EStop_Architecture_ko.md`](21_Physical_EStop_Architecture_ko.md)의 Step 2를 정본으로 한다.
+K1/S0/S2/K2 three-wire control, 5 V/opto PC7 S0-B sense, direct rail test point와 connector의
+MVP Step 6 기능 회로는
+[`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를 정본으로 한다.
+PA4/PB0 dual rail-sense는 post-MVP diagnostic option이다.
+Step 7 부품 후보, 최소 부하와 정격 gate는
+[`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](26_Physical_EStop_Component_and_Rating_Selection_ko.md)를 정본으로 한다.
+
+</details>
+
 ## 4. LiPo Operating Envelope
 
 3S LiPo pack은 cell 3개가 직렬로 연결된 battery다.
@@ -135,7 +196,9 @@ Initial voltage policy:
 Fuse는 주로 wiring을 보호하고 fault 상황의 fire risk를 줄이기 위한 부품이다. Motor driver나 MCU가
 모든 fault에서 살아남도록 보장하지 않는다.
 
-Initial blade fuse plan:
+현재 사용자 확인은 Littelfuse F1=10 A/F2=1 A다. 아래는 초기 비교 후보이며 시험 단계에 따라 퓨즈를 자동 증대하는 지시가 아니다.
+
+초기 blade fuse 후보표(이력):
 
 | Test stage | Fuse candidate | Reason |
 | --- | --- | --- |
@@ -174,12 +237,12 @@ nonzero motor output을 차단해야 한다.
 
 ## 7. Buck Converter Architecture
 
-초기 converter 역할:
+현재 converter 역할과 시험 연결:
 
-| Converter | Initial role | Notes |
+| Converter | 현재 역할 | Notes |
 | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V candidate | 연결 전 output 확인 |
-| XL4015 #2 | sensor 또는 auxiliary 5 V candidate | noise/aux load를 분리 |
+| XL4015 #1 | STM32/ESP32 보드용 5 V | 전원 통합 관측 있음. 현재 USB bench에서는 보드용 두 2P 분리·절연 |
+| XL4015 #2 | AUX5V: 엔코더·S0-B 감지 | 공통 GND 유지, 로직 전원과 역할 구분 |
 
 Current inventory note:
 
@@ -270,7 +333,7 @@ STM32에 직접 연결하기 전에 encoder voltage를 측정해야 한다.
 
 ## 11. Battery Voltage Sensing Plan
 
-STM32는 나중에 resistor divider와 ADC를 통해 battery voltage를 monitoring한다.
+PA4/PB0 분압·보호·ADC는 아직 미구현이다. 기본 배터리 저전압 경고·정지는 첫 주행 전에 준비하며 입력 경로·수치를 별도로 정한다. 두 rail 자동 진단은 post-MVP다.
 
 Initial plan:
 
@@ -415,7 +478,7 @@ Decision:
 
 ## 16. Items Deferred From First Power Bring-Up
 
-Deferred:
+현재 후속 항목:
 
 - CAN bus power integration
 - LiDAR power integration
@@ -423,7 +486,7 @@ Deferred:
 - custom power distribution PCB
 - high-load driving
 - battery current sensor
-- fully integrated emergency-stop circuit
+- 비상정지 잔여 전력단·구동 중 정지 검증(감지·래치·PWM T004는 모터 분리 조건 PASS이며 최초 미구현 상태가 아님)
 
 Reason:
 
@@ -432,7 +495,7 @@ motor의 기본 동작을 검증하는 단계다.
 
 ## 17. Exit Criteria
 
-이 architecture는 다음 조건을 만족하면 HAL bare-metal drivetrain bring-up으로 넘어갈 준비가 된다.
+아래는 초기 전원 bring-up의 필요 조건이다. 현재 구동 재개·전체 수용에는 [최종 검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)의 T005A·정지·부하 조건까지 적용한다.
 
 - Main battery path가 fused and switched 상태다.
 - Buck converter output을 MCU 연결 전에 측정했다.

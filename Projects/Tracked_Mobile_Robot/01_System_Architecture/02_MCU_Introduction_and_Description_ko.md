@@ -1,5 +1,8 @@
 # STM32F446RE Introduction and Description 분석
 
+> 문서 역할·상태 대조: **2026-09-30** — MCU 기능과 요구사항의 개념 검토. 기능 보유와 실제 구현 완료를 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 STM32F446xC/E 데이터시트의 다음 범위를 읽고, NUCLEO-F446RE가

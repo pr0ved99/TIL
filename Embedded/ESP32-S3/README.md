@@ -29,6 +29,8 @@ ESP32-S3 DevKitC-1 기반 임베디드 실습을 정리하는 공간이다.
 
 ## Practice Index
 
+- [STM32·ESP32 로봇 펌웨어 교과서](../../Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md): 기초부터 태스크·Wi-Fi·WebSocket·ticket·제어 상태·브라우저 정지까지 실제 통합 코드를 단계적으로 이해하는 자료.
+
 - `Practice/00_ESP32S3_DevKitC1_Setup.md`: 보드 연결 확인과 ESP-IDF 첫 실습 준비
 - `Practice/01_ESP32S3_RGB_LED.md`: 내장 RGB LED 제어와 `GPIO38` 확인
 

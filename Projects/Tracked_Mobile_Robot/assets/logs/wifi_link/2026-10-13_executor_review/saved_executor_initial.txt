@@ -1,0 +1,17 @@
+setUpClass (test_wifi_control_executor.WifiControlExecutorTest) ... ERROR
+
+======================================================================
+ERROR: setUpClass (test_wifi_control_executor.WifiControlExecutorTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_wifi_control_executor.py", line 70, in setUpClass
+    raise AssertionError("host compilation failed:\n" + result.stdout + result.stderr)
+AssertionError: host compilation failed:
+In file included from C:/Users/eyh12/AppData/Local/Temp/wifi-control-executor-e76q3t5n/wifi_control_executor.c:1:
+C:/Users/eyh12/AppData/Local/Temp/wifi-control-executor-e76q3t5n/wifi_control_executor.h:13: error: '}' expected (got ".")
+
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.149s
+
+FAILED (errors=1)

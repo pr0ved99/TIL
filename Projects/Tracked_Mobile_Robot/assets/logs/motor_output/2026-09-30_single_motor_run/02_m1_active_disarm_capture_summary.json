@@ -1,0 +1,188 @@
+{
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-30_M1_Active_DISARM_10pct_500ms_Backup.sr",
+  "sha256": "d3d057718466fd56eb5e086c2fbc062315419fe980ed3e66241447efd736a485",
+  "fs": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "D0": {
+      "high_runs": 0,
+      "high_samples": 0,
+      "high_at_start": false,
+      "high_at_end": false,
+      "high_intervals_s": []
+    },
+    "D1": {
+      "high_runs": 3688,
+      "high_samples": 77504,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": [
+        {
+          "start_s": 12.24347175,
+          "end_s": 12.43714425,
+          "pulses": 3688,
+          "mean_hz": 19037.808405912718,
+          "mean_duty_percent": 10.00207830699305
+        }
+      ]
+    },
+    "D2": {
+      "high_runs": 0,
+      "high_samples": 0,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": []
+    },
+    "D4": {
+      "decoded_bytes": 46205,
+      "invalid_stop_bits": 0,
+      "lines": 254,
+      "trailing_partial_bytes": 156,
+      "message_counts": {
+        "TEL": 250,
+        "ACK": 4
+      },
+      "telemetry_distributions": {
+        "state": {
+          "DISARMED": 247,
+          "ARMED": 3
+        },
+        "reason": {
+          "ESTOP_RESET": 122,
+          "NONE": 3,
+          "DISARM": 125
+        },
+        "left_pwm": {
+          "0": 248,
+          "100": 2
+        },
+        "right_pwm": {
+          "0": 250
+        },
+        "left_cps": {
+          "0": 247,
+          "130": 1,
+          "270": 1,
+          "180": 1
+        },
+        "right_cps": {
+          "0": 250
+        },
+        "err": {
+          "1619": 250
+        },
+        "drop": {
+          "0": 250
+        }
+      },
+      "state_transitions": [
+        {
+          "start_s": 0.03391775,
+          "end_s": 0.050113055555555557,
+          "text": "TEL,t_ms=12079913,state=DISARMED,reason=ESTOP_RESET,command_age_ms=147772,last_seq=1695094155,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1619"
+        },
+        {
+          "start_s": 12.2106615,
+          "end_s": 12.225992305555556,
+          "text": "TEL,t_ms=12092113,state=ARMED,reason=NONE,command_age_ms=159972,last_seq=1695094156,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1619"
+        },
+        {
+          "start_s": 12.510096,
+          "end_s": 12.525779555555555,
+          "text": "TEL,t_ms=12092413,state=DISARMED,reason=DISARM,command_age_ms=267,last_seq=1695094158,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=270,right_cps=0,batt_mv=0,drop=0,err=1619"
+        }
+      ],
+      "selected_commands_responses": [
+        {
+          "start_s": 12.177435,
+          "end_s": 12.181072305555556,
+          "text": "ACK,seq=1695094156,type=ARM,t_ms=12092079"
+        },
+        {
+          "start_s": 12.43721625,
+          "end_s": 12.441115555555555,
+          "text": "ACK,seq=1695094158,type=DISARM,t_ms=12092340"
+        },
+        {
+          "start_s": 12.73597325,
+          "end_s": 12.739872555555555,
+          "text": "ACK,seq=1695094159,type=DISARM,t_ms=12092639"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.03391775,
+          "end_s": 0.050113055555555557,
+          "text": "TEL,t_ms=12079913,state=DISARMED,reason=ESTOP_RESET,command_age_ms=147772,last_seq=1695094155,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1619"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.88654875,
+          "end_s": 24.902231305555556,
+          "text": "TEL,t_ms=12104813,state=DISARMED,reason=DISARM,command_age_ms=12667,last_seq=1695094159,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1619"
+        }
+      ]
+    },
+    "D5": {
+      "decoded_bytes": 122,
+      "invalid_stop_bits": 0,
+      "lines": 4,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 1,
+        "DISARM": 2
+      },
+      "telemetry_distributions": {},
+      "state_transitions": [],
+      "selected_commands_responses": [
+        {
+          "start_s": 12.175696,
+          "end_s": 12.177345305555557,
+          "text": "ARM,seq=1695094156"
+        },
+        {
+          "start_s": 12.43487025,
+          "end_s": 12.436779805555556,
+          "text": "DISARM,seq=1695094158"
+        },
+        {
+          "start_s": 12.7338385,
+          "end_s": 12.735748305555555,
+          "text": "DISARM,seq=1695094159"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 12.175696,
+          "end_s": 12.177345305555557,
+          "text": "ARM,seq=1695094156"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 12.7338385,
+          "end_s": 12.735748305555555,
+          "text": "DISARM,seq=1695094159"
+        }
+      ]
+    }
+  },
+  "uart_roles": {
+    "D4": "STM32 TX / ESP32 RX (inferred from TEL/ACK/ERR)",
+    "D5": "ESP32 TX / STM32 RX (inferred from commands)"
+  },
+  "command_response_check": {
+    "complete_commands": 4,
+    "matched": 4,
+    "missing_seqs": [],
+    "type_mismatches": []
+  },
+  "limits": [
+    "This digital capture contains no analog MDD rail voltage.",
+    "A PWM last falling edge before PC7 assertion does not measure negative or exact-zero shutdown latency.",
+    "Physical operating steps and analog measurements require operator reports."
+  ]
+}

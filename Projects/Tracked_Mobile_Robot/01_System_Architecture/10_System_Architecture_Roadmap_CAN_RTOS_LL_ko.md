@@ -1,5 +1,8 @@
 # 시스템 아키텍처 로드맵: CAN, RTOS, LL Driver
 
+> 문서 역할·상태 대조: **2026-09-30** — 단계별 목표와 진입 조건. 현재 실행 순서는 최신 master plan과 인수인계를 따른다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 다음 세 가지 필수 학습 목표를 기준으로 프로젝트 아키텍처 로드맵을 갱신한다.
@@ -316,7 +319,25 @@ PC USB/UART command
 | Odometry | Straight-line and turn test record |
 | Architecture | Block diagram, interface contract, decision record |
 
-## 6. Current Position
+## 6. 현재 단계와 다음 작업
+
+2026-09-30 기준 핀 설정·영구 신호 배선·로직 전원·UART mapper/timeout·T004 및 제한 단일 모터 관측까지 진행했다.
+각 완료 범위와 남은 조건은 [현재 구현 요약](README.md#현재-구현과-검증-범위)과 [전체 실행 계획](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)을 따른다.
+
+1. 장비 재개: 현재 이미지와 선행 조건을 확인하고 A/M1 양수 명령의 실제 전진 방향을 보완한다.
+2. 전체 T005A 수용 조건, active DISARM·구동 중 S0·전류/열/노이즈 등 단일 모터 잔여 시험을 정리한다.
+3. 첫 주행 전 기본 저전압 경고·정지, 기구 장착·하네스와 양쪽 매핑을 준비한다.
+4. CAN·STM32 FreeRTOS·선택적 LL은 기존 진입 조건을 충족한 뒤 진행한다. 보유 MCU-230 모듈은 CAN 통합 완료가 아니다.
+5. 2층 확장·ADC/CAN 층간 연결은 현재 배치 제안이다. 실제 부품·높이·전원·보호 검토 없이 확정 회로로 취급하지 않는다.
+
+실행 순서는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)와 최신 재개 계획을 따른다.
+
+<details>
+<summary>초기 로드맵 작성 당시 진행 위치와 다음 행동</summary>
+
+현재 실행 지시가 아닌 당시 계획이다.
+
+### 초기 Current Position 기록
 
 현재 상태:
 
@@ -339,6 +360,8 @@ PC USB/UART command
 5. UART command/telemetry와 timeout stop을 먼저 검증한다.
 6. CAN transceiver와 USB-CAN adapter 후보는 drivetrain baseline 이후 확정한다.
 7. FreeRTOS는 bare-metal baseline 증거가 생긴 뒤 task 구조로 전환한다.
+
+</details>
 
 ## Final Roadmap Decision
 
