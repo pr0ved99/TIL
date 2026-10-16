@@ -2,13 +2,13 @@
 
 STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 속도 0 전용 ARM/CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-13
+## 현재 상태 — 2026-10-17
 
-W4 상태 전달·W5 비구동 PING/DISARM 완료 이후 다섯 제어 모듈과 main/브라우저 연결을 구현했다. 통합 빌드·플래시·모니터와 ARM/zero ACTIVE·수동/포커스 상실 정지는 사용자 관측이다. 최신 저장 main의 선택 C 함수42·PAGE46 PC 검사도 통과했다.
+UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [보고서37](../../docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)과 [진행 기록](../../docs/progress/2026-10-17_progress.md)을 따른다.
 
-[10/13 진행 기록](../../docs/progress/2026-10-13_progress.md)과 [최신 PC 근거](../../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)를 따른다. 최신 바이너리 hash·전체 AC-B/S·nonzero 구동 안전은 미확인이다. 과거 W5 근거는 [보고서34](../../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)에 보존한다.
+부팅 및 모든 DISARM 앞의 ASCII CAN+LF는 STM 잔여 줄을 실행 없이 폐기한다. ESP 시험 mode1/2/3은 부분 CMD/ARM·timeout 검증용이며 현재 WIFI_UART_PARTIAL_TEST_MODE=0U로 비활성이다. 사용자 정상 이미지 복원과 수동 ARM/zero/DISARM을 확인했다.
 
-READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 STM TEL freshness와 제어 조건은 별도로 판단한다. 새 연결과 포커스 복귀가 자동 ARM을 일으키지 않는다.
+READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 TEL freshness와 제어 조건은 별도로 판단한다. 새 연결·포커스 복귀는 자동 ARM하지 않으며 B는 한 페이지의 내부 WebSocket으로 시험할 수 있다. 공개 소스 hash는 플래시 바이너리 readback을 대신하지 않는다.
 
 ## 데이터 흐름과 조건
 

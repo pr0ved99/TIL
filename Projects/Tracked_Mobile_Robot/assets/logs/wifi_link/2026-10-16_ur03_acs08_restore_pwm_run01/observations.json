@@ -1,0 +1,135 @@
+{
+  "test": "UR03_ACS08_NORMAL_MODE_RESTORE_PWM_RUN01",
+  "verdict": "PASS_MODE0_RESTORE_ZERO_OUTPUT",
+  "capture_name": "2026-10-16_UR03_ACS08_RESTORE_PWM_run01.sr",
+  "capture_sha256": "2aff27e0390a515711b3665bdeb32c844c64003a4bf0426984d680d84fbf7bbe",
+  "duration_s": 17.352192,
+  "samples": 69408768,
+  "samplerate_hz": 4000000.0,
+  "saved_source": {
+    "stm_normalized_text_sha256": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "all_13_STM_test_macros_zero": true,
+    "ESP_partial_test_mode": 0,
+    "ESP_main_normalized_text_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+    "MCU_build_not_run_by_agent": true,
+    "flashed_binary_hash_not_independently_verified": true
+  },
+  "boot_evidence": {
+    "first_tel": {
+      "start_s": 0.0728125,
+      "end_s": 0.08745780555555556,
+      "text": "TEL,t_ms=87200,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "meaning": "Fresh STM BOOT and last_seq=0 before first ARM; distinguishes mode restoration from an already-consumed one-shot hook."
+  },
+  "uart": {
+    "command_counts": {
+      "ARM": 1,
+      "CMD": 69,
+      "DISARM": 1
+    },
+    "matching_ack_count": 71,
+    "cancel_prefix": "CAN (0x18) + LF",
+    "disarm": {
+      "start_s": 11.33169575,
+      "end_s": 11.333605305555556,
+      "text": "DISARM,seq=3385206038"
+    },
+    "ack": {
+      "start_s": 11.33370325,
+      "end_s": 11.337342555555557,
+      "text": "ACK,seq=3385206038,type=DISARM,t_ms=98476"
+    },
+    "tx_start_to_ack_start_ms": 2.007499999999496,
+    "tx_end_to_ack_start_ms": 0.09794444444288786,
+    "TEST_ACK_DELAY_count": 0,
+    "invalid_stop_bits": 0,
+    "post_disarm_commands": 0
+  },
+  "telemetry": {
+    "valid_count": 173,
+    "state_counts": {
+      "DISARMED": 97,
+      "ARMED": 76
+    },
+    "reason_counts": {
+      "BOOT": 37,
+      "NONE": 76,
+      "DISARM": 60
+    },
+    "all_velocity_PWM_CPS_drop_err_zero": true,
+    "post_ack_count": 60,
+    "post_ack_capture_s": 6.014849444444442,
+    "first_post_ack": {
+      "start_s": 11.35926675,
+      "end_s": 11.374262305555556,
+      "text": "TEL,t_ms=98502,state=DISARMED,reason=DISARM,command_age_ms=103,last_seq=3385206038,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "last_post_ack": {
+      "start_s": 17.2516165,
+      "end_s": 17.266782555555555,
+      "text": "TEL,t_ms=104402,state=DISARMED,reason=DISARM,command_age_ms=6003,last_seq=3385206038,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    }
+  },
+  "logic_levels": {
+    "D4": {
+      "samples": 69408768,
+      "high_samples": 0,
+      "low_samples": 69408768,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 69408768,
+      "high_samples": 0,
+      "low_samples": 69408768,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 69408768,
+      "high_samples": 0,
+      "low_samples": 69408768,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "physical_mapping": {
+    "D4": "PB6 left PWM",
+    "D6": "PC7 E-stop sense",
+    "D7": "PB7 right PWM"
+  },
+  "browser_confirmation": {
+    "source": "User text reply to missing-screen question; no screenshot supplied",
+    "verbatim": "IDLE DISARMED 확인 DISARM 요청 71 OK 확인",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "disarm_request": 71,
+    "result": "OK"
+  },
+  "monitor": {
+    "file": "esp_monitor.txt",
+    "sha256": "cd1d9f3c7b8adc535dab7cfe0b191bdeefb0bfb5152fa3cf0337262c156006d9",
+    "session": 3,
+    "disarm_request": 71,
+    "tx_esp_log_ms": 732639,
+    "matched_ack_esp_log_ms": 732659,
+    "seq": 3385206038
+  },
+  "capture_boundary": "Trailing TEL,t_ms fragment is excluded; 173 full valid TEL records used.",
+  "limits": [
+    "Zero-output and sampled digital levels only; no powered/moving motor stopping-time or analog/sub-sample claim.",
+    "Browser end state is user-reported; no continuous UI trace or independently verified flashed ELF hash.",
+    "Closes this delayed DISARM ACK / manual recovery / mode0 restore sequence, not all AC-S04 or AC-S08 branches."
+  ],
+  "next_action": "No repeat of this completed subcase. Aggregate with other bench results when the user closes the work block."
+}

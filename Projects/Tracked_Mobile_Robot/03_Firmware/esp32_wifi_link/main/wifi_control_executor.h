@@ -5,6 +5,8 @@
 #include "wifi_control_ticket.h"
 
 #define WIFI_CONTROL_UART_FRAME_SIZE 96U
+/* ASCII CAN + LF: discard the pending STM line before a new stop command. */
+#define WIFI_CONTROL_UART_CANCEL "\x18\n"
 
 typedef enum {
     WIFI_EXEC_ACCEPTED,
@@ -39,7 +41,6 @@ typedef struct {
     bool waiting;
     bool prepared;
     bool inputs_cleared;
-    bool need_line_sync;
     wifi_control_op_t prepared_op;
     uint32_t prepared_seq;
     size_t prepared_length;

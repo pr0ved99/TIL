@@ -7,7 +7,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-13:** W4 상태 전달·W5 비구동 PING/DISARM 이후, Wi-Fi **속도 0 전용 ARM/CMD**를 main·UART·브라우저에 연결했다. 최신 저장본 C42·PAGE JS46 PC 검사를 통과했다. 사용자 빌드/플래시와 ARM/zero·수동 및 포커스 상실 정지 관측은 [최신 기록](docs/progress/2026-10-13_progress.md)에 구분했다.
+- **현재 단계 · 2026-10-17:** UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [최신 기록](docs/progress/2026-10-17_progress.md), [항목별 결과와 경계](docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md).
   전체 AC-B/S·nonzero Wi-Fi 구동·배터리 ADC·전류/열·전체 안전 수용·차량 주행은 미완료다. A 전진·DISARM·S0와 A/B 각각10%·3초는 [별도 모터 시험](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 범위다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 

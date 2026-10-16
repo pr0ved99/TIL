@@ -1,8 +1,12 @@
 # Wi-Fi ARM/CMD 제어 계약과 비구동 검증 계획
 
-작성일: **2026-10-10**. 갱신: **2026-10-11**. 상태: **초기 설계안 / parser·ticket·owner 실제PC15/12/9 PASS·ESP 전체 빌드 성공 사용자 확인 / 제어 실행 경로 미연결**.
+> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.
 
-W5의 PING/DISARM 다음에 구현할 규칙이다. 현재 ESP 앱에 ARM/CMD가 추가된 것으로 해석하지 않는다.
+작성일: **2026-10-10**. 현재 상태 갱신: **2026-10-16 — zero-only 기능 관측·UART 줄 폐기 반영·재연결 첫 정지 확인 / 부분 명령 실물 수용 및 AC-S PARTIAL**.
+
+현재 ESP 앱에는 ARM/zero CMD와 제어 상태·브라우저가 연결돼 있다. [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)에 기능 관측/이전 실패를, [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 CAN+LF 보완과 후속 PC/실물 근거를 분리했다. 다음은 [UR-02 부분 명령 통제 주입 준비](2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md)다.
+
+아래 초기 구현 설명과9절 구현 순서는10/10~11 설계 이력이다. 현재 미구현 목록으로 읽지 않는다. 수용 기준은 유지하며 문서 갱신만으로 PASS를 올리지 않는다.
 UART의 정본은 [인터페이스 계약09](../../01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md),
 완료한 비구동 범위는 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)다.
 아래 시간값은 첫 구현·측정의 기준이며 무선 지연이나 실제 정지 시간을 보장하는 수치가 아니다.
@@ -292,4 +296,4 @@ zero 입력의 출력0만으로 nonzero 중 timeout 정지를 입증할 수 없�
 
 코드는 사용자가 입력한다. 단계마다 정확한 교체 범위와 완전한 연결 블록을 제공하고,
 저장본을 다시 확인한다. 사용자 두 보드 빌드·플래시·계측, Codex host 검사 원칙을 유지한다.
-새 펌웨어·보드 증거 전까지 ARM/CMD 상태는 미구현/미검증이다. Git commit/push는 별도 요청 때만 한다.
+초기 설계 뒤 zero-only 구현·보드 기능 관측을 진행했으며 최신 판정은 상단 보고서35를 따른다. 전체 AC-S·nonzero 구동은 미완료다. Git commit/push는 별도 요청 때만 한다.

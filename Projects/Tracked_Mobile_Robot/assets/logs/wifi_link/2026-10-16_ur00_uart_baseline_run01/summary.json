@@ -1,0 +1,238 @@
+{
+  "source_name": "2026-10-16_ur00_uart_baseline_run01.sr",
+  "sha256": "e3a825af06c8cc7279296046da2b79320fd513127500b0cb99c304b810b00f3d",
+  "samplerate_hz": 4000000.0,
+  "samples": 68033536,
+  "duration_s": 17.008384,
+  "decode": "115200 baud, 8N1, LSB-first, non-inverted",
+  "channels": {
+    "D0": {
+      "role": "STM PA9 TX / JDBG_UART Pin1",
+      "decoded_bytes": 30593,
+      "complete_lf_lines": 171,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "TEL,t_ms=6104900,state=DISARMED,reason=DISARM,command_age_ms=5092229,last_seq=2760658635,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm",
+      "message_counts": {
+        "TEL": 170,
+        "PONG": 1
+      },
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 170
+        },
+        "reason": {
+          "DISARM": 170
+        },
+        "left_pwm": {
+          "0": 170
+        },
+        "right_pwm": {
+          "0": 170
+        },
+        "left_cps": {
+          "0": 170
+        },
+        "right_cps": {
+          "0": 170
+        },
+        "drop": {
+          "0": 170
+        },
+        "err": {
+          "1": 170
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 1.90365825,
+          "end_s": 1.9065173055555555,
+          "text": "PONG,seq=2760658635,t_ms=6089774"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 0.031987,
+          "end_s": 0.04749280555555555,
+          "text": "TEL,t_ms=6087900,state=DISARMED,reason=DISARM,command_age_ms=5075229,last_seq=2760658634,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 16.897286,
+          "end_s": 16.912787805555556,
+          "text": "TEL,t_ms=6104800,state=DISARMED,reason=DISARM,command_age_ms=5092129,last_seq=2760658635,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ]
+    },
+    "D1": {
+      "role": "STM PA10 RX / JDBG_UART Pin2",
+      "decoded_bytes": 20,
+      "complete_lf_lines": 1,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "PING": 1
+      },
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ]
+    },
+    "D2": {
+      "role": "ESP GPIO18 RX",
+      "decoded_bytes": 30593,
+      "complete_lf_lines": 171,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "TEL,t_ms=6104900,state=DISARMED,reason=DISARM,command_age_ms=5092229,last_seq=2760658635,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm",
+      "message_counts": {
+        "TEL": 170,
+        "PONG": 1
+      },
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 170
+        },
+        "reason": {
+          "DISARM": 170
+        },
+        "left_pwm": {
+          "0": 170
+        },
+        "right_pwm": {
+          "0": 170
+        },
+        "left_cps": {
+          "0": 170
+        },
+        "right_cps": {
+          "0": 170
+        },
+        "drop": {
+          "0": 170
+        },
+        "err": {
+          "1": 170
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 1.90365825,
+          "end_s": 1.9065173055555555,
+          "text": "PONG,seq=2760658635,t_ms=6089774"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 0.031987,
+          "end_s": 0.04749280555555555,
+          "text": "TEL,t_ms=6087900,state=DISARMED,reason=DISARM,command_age_ms=5075229,last_seq=2760658634,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 16.897286,
+          "end_s": 16.912787805555556,
+          "text": "TEL,t_ms=6104800,state=DISARMED,reason=DISARM,command_age_ms=5092129,last_seq=2760658635,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ]
+    },
+    "D3": {
+      "role": "ESP GPIO17 TX",
+      "decoded_bytes": 20,
+      "complete_lf_lines": 1,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "PING": 1
+      },
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 1.9018465,
+          "end_s": 1.9035825555555554,
+          "text": "PING,seq=2760658635"
+        }
+      ]
+    }
+  },
+  "pairs": {
+    "D0_D2": {
+      "differing_samples": 1516,
+      "mismatch_runs": 1516,
+      "longest_mismatch_us": 0.25,
+      "decoded_bytes_equal": true,
+      "excursion_runs_by_channel": {},
+      "transition_skew_runs": 1516
+    },
+    "D3_D1": {
+      "differing_samples": 643,
+      "mismatch_runs": 643,
+      "longest_mismatch_us": 0.25,
+      "decoded_bytes_equal": true,
+      "excursion_runs_by_channel": {
+        "D1": 641
+      },
+      "transition_skew_runs": 2
+    }
+  },
+  "limits": [
+    "Digital UART observations only; no PWM, PC7 or analog power probes.",
+    "A capture boundary may truncate a line. Bytes are decoded at nominal baud.",
+    "Matching sampled logic does not establish analog signal integrity.",
+    "Telemetry reports firmware values, not physical motor output measurements."
+  ]
+}

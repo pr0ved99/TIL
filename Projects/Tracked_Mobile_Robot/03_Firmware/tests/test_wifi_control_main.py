@@ -18,10 +18,16 @@ MODULES = HERE.parent / 'esp32_wifi_link/main'
 
 def host(source):
     clean = strip_c_comments(source)
+    partial_test = 'WIFI_UART_PARTIAL_TEST_MODE' in clean
     constants = ['WS_MAX_CLIENTS','WIFI_COMMAND_QUEUE_LENGTH','WIFI_COMMAND_MAX_FRAME_SIZE',
                  'WIFI_COMMAND_RESPONSE_MS','WIFI_COMMAND_MIN_INTERVAL_MS','WIFI_COMMAND_RESULT_QUEUE_LENGTH']
     types = ['wifi_command_type_t','wifi_command_request_t','wifi_command_result_t',
              'stm_startup_state_t','stm_startup_t','wifi_uart_pending_t','wifi_ws_session_t']
+    if partial_test:
+        constants.append('WIFI_UART_PARTIAL_TEST_MODE')
+    watchdog_test = 'wifi_watchdog_step' in clean
+    if watchdog_test:
+        types.append('stm_telemetry_t')
     definitions = ['#include "wifi_control_executor.h"']
     definitions += [re.search(r'^#define\s+'+n+r'\s+[^\n]+',clean,re.M)[0] for n in constants]
     definitions += [c_type(clean,n) for n in types]
@@ -39,7 +45,11 @@ def host(source):
     globals_end = clean.index('static uint64_t wifi_control_now(', globals_start)
     declarations = clean[globals_start:globals_end].replace('static uint32_t s_wifi_command_owner_session_id;','')
     declarations += '\nstatic const char *s_stm_startup_status = "READY";\n'
-    declarations += 'typedef struct {void *sess_ctx; void (*free_ctx)(void *);} httpd_req_t;\n'
+    declarations += 'typedef struct {void *sess_ctx; void (*free_ctx)(void *); size_t content_len;} httpd_req_t;\n'
+    if partial_test:
+        declarations += 'static void wifi_uart_test_cancel_locked(void);\n'
+    if watchdog_test:
+        declarations += 'static stm_telemetry_t s_stm_telemetry;\nstatic uint32_t s_stm_tel_count;\n'
     fixture = fixture.replace('static uint64_t mock_now_ms;', declarations+'\nstatic unsigned mock_lock_depth;\nstatic void (*mock_write_hook)(void);\nstatic uint64_t mock_now_ms;')
     fixture = fixture.replace('(void)semaphore; (void)wait; return pdPASS;', '(void)semaphore; (void)wait; CHECK(mock_lock_depth++ == 0U); return pdPASS;')
     fixture = fixture.replace('(void)semaphore; return pdPASS;', '(void)semaphore; CHECK(mock_lock_depth-- == 1U); return pdPASS;')
@@ -93,6 +103,14 @@ static BaseType_t xQueueReset(QueueHandle_t q) {
     CHECK(q == s_wifi_command_queue); mock_request_present = false; return pdPASS;
 }
 '''+'\n'.join(c_function(clean,n) for n in functions))
+    if partial_test:
+        block = source.split('/* UART_PARTIAL_TEST_BEGIN', 1)[1].split('/* UART_PARTIAL_TEST_END */', 1)[0]
+        block = block.split('*/', 1)[1]
+        http = (HERE/'uart_partial_http_host_fixture.c').read_text(encoding='utf-8')
+        fixture = fixture.replace('static void wifi_control_step(', http+'\n'+block+'\nstatic void wifi_control_step(')
+        fixture = fixture.replace('    mock_now_ms = 1000U;',
+            '    s_uart_test_phase = UART_TEST_UNUSED; s_uart_test_at_ms = 0U;\n'
+            '    s_uart_test_prefix_full = false;\n    mock_now_ms = 1000U;')
     fixture = fixture.replace('    mock_now_ms = 1000U;', '''    mock_now_ms = 1000U;
     mock_lock_depth = 0U; mock_write_hook = NULL;
     mock_ws_type=HTTPD_WS_TYPE_TEXT;mock_ws_final=true;mock_ws_send_fail=false;mock_network_count=0;

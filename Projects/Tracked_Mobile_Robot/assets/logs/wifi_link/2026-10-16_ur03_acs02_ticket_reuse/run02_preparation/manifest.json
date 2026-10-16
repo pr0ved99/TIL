@@ -1,0 +1,23 @@
+{
+  "test": "UR03_ACS02_VALID_A_TICKET_FROM_B",
+  "state": "REVISION_2_PREPARED_NOT_RUN_ON_BOARD",
+  "saved_main_normalized_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+  "files_sha256": {
+    "console_test.js": "63211a345160b7e82aac4204790bc53c45655bf3d9fee6d55511c55f553905f2",
+    "check_console_test.js": "f2d2cecb31b1fef9fef100b6875870f177d795b2e5d386f444fc79d80926204b",
+    "pc_check.json": "24720188a010bbe02630b4cd72363de640c721bba90c01d3a4320e6a040dc5cd"
+  },
+  "pc_execution": "functions.exec V8 new Function(page, helper, check_console_test.js); saved PAGE extracted from C string initializer",
+  "constraints": [
+    "No automatic ARM; user clicks page ARM",
+    "One copied CMD attempt from B before forwarding the identical ticket via A",
+    "Zero-only; minimum CMD gap 60ms for probe vs server 50ms minimum",
+    "Held CMD discarded on deadline/focus/identity/stop failure",
+    "6-second active test limit; 3.5-second stop confirmation wait",
+    "Application checks are not a UART or PWM PASS"
+  ],
+  "capture_name": "2026-10-16_UR03_ACS02_VALID_TICKET_PWM_run02.sr",
+  "revision_reason": "Run01 helper misclassified an in-flight pre-ARM IDLE snapshot as established control loss. Ignore only while the exact manual ARM request is pending and no ARM success/owner exists.",
+  "pc_checks_passed": 16,
+  "previous_preparation": "run01_preparation/"
+}

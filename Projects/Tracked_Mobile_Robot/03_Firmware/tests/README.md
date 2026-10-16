@@ -4,6 +4,65 @@
 브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
 보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.
 
+## UR-02 수동 부분 명령 주입 후보 — 2026-10-16
+
+[입력 가이드](../../docs/plans/2026-10-16_UART_Partial_Command_Test_Code_Guide_ko.md)의
+기본 비활성 HTTP 접수·단일 UART 태스크·고정 prefix·기존 DISARM 연결을 검사한다.
+현재 저장본과 실물 검증은 완료했다. 이 절의 후보 절차는 입력 이력이며 현재 검사는 --saved를 사용한다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/native/tcc.exe'
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_uart_partial_test.py --candidate
+# 사용자 입력·저장 뒤 실제 파일 검토:
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_uart_partial_test.py --saved
+```
+
+- `0U`: 비활성 handler/dispatch와 기존 W5/main adapter 42개 검사.
+- 실제 PAGE C 초기화 구문도 native 컴파일한다. 주석·banner 매크로를 포함해
+  mode0/1/2에서 완전한 HTML/script가 생성되는지 확인한다. 함수 추출만으로는 잡지 못하는
+  PAGE 전체 주석 처리·종결 세미콜론 누락을 검사한다.
+- 임시 사본 `1U/2U`: 실제 STM stream/parser에 고정 prefix와 CAN+LF/DISARM을 전달.
+  입력 형식·boot·단일 시도·fresh/zero·50ms 기한·정지 경합·부분 쓰기·ACK 유실·번호 소진 확인.
+- LF-only 반례는 오래된 ARM ACK를 검출한다. 마지막 DISARM 성공만으로 합격하지 않는다.
+- `--output <검토용 경로/wifi_link_main.c>`는 통과한 후보·출력·manifest를 보존한다.
+  정상 입력 가이드의 0U 상태만 `--saved` 검토하며, 실제 모드 변경·빌드·플래시는 사용자 수행이다.
+- [후보 검사 근거](../../assets/logs/wifi_link/2026-10-16_uart_partial_candidate/README.md).
+  native PC mock 검사이며 SDK 전체 빌드·RTOS 실경합·실제 UART·모터 안전 근거가 아니다.
+- [첫 저장본 PAGE 오류와 수정 검토](../../assets/logs/wifi_link/2026-10-16_uart_partial_saved/README.md).
+  별도 수정 사본은 `--source <copy.c>`로 검사할 수 있다. 실제 펌웨어 저장본을 대신하지 않는다.
+
+## UART 재연결 실패 진단 — 2026-10-16
+
+`reproduce_uart_reconnect.py`는 실제 STM protocol/stream/parser/ring/mapper와 ESP control 모듈을 PC에서 실행한다. HAL·모터·IRQ는 mock이며 보드 IO는 없다. 기존 실패를 보존하는 진단이므로 자동 `test_*.py` 수용 검사와 분리했다.
+
+```powershell
+$env:WIFI_CONTROL_HOST_CC = 'C:/path/to/tcc.exe'
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/reproduce_uart_reconnect.py
+```
+
+10/16에는 잔여 CMD가 첫 DISARM을 흡수하는 실패와 두 번째 성공을 재현했다. CMD prefix54/54, 단순 선행LF로 오래된 ARM이 실행되는 반례, 정상 분할 수신과 timeout/CMD-only 거부·HAL 오류 경로를 확인했다. **exit0은 예상한 진단 현상 재현이며 수정 완료 PASS가 아니다.** 현재 CAN+LF 수정본의 수용 검사로 이 이전 실패 진단을 실행하지 않는다. 수정본은 아래 `--saved`를 사용한다. [보고서35](../../docs/verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md).
+
+## UART 줄 폐기 복구 저장본 검사 — 2026-10-16
+
+[코드 입력 가이드](../../docs/plans/2026-10-16_UART_Line_Cancel_Recovery_Code_Guide_ko.md)는
+CAN `0x18` + LF로 남은 줄을 실행 없이 폐기한 뒤 새 DISARM을 처리하는 변경이다.
+사용자 입력·오류 수정 뒤 실제 저장본 검사를 통과했다. 현재는 `--saved`를 사용한다. `uart_recovery_candidate.py`의 `--candidate`는 입력 전 baseline용이며 지금 수정본에 다시 적용하지 않는다.
+
+```powershell
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_uart_recovery.py --saved
+```
+
+`WIFI_CONTROL_HOST_CC` 또는 `W5_HOST_CC`에 PC 컴파일러 경로를 지정한다.
+513개 prefix/state 조합, 실제 STM stream의 분할·overflow·HAL 오류 복구,
+E-stop·timeout·CMD-only 거부, 실제 ESP 부팅 함수, executor17/main42 회귀를 검사한다.
+후보와 미변경 baseline의 기존17/42 검사 후, 최종 저장본도513조합+17+42와 복구 경계 검사를 통과했다. [저장본 출력](../../assets/logs/wifi_link/2026-10-16_uart_cancel_saved/saved_pc.txt), [소스 manifest](../../assets/logs/wifi_link/2026-10-16_uart_cancel_saved/source_manifest.json).
+[원본 후보 출력](../../assets/logs/wifi_link/2026-10-16_uart_cancel_candidate/candidate_pc.txt).
+
+기존 fixture는 새 프로토콜 매크로 유무에 따라 wire 기대값을 선택하므로 사용자 입력 중에도
+baseline 검사를 유지한다. `--saved`는 새 복구 동작 자체를 요구하므로 입력 전 baseline은
+복구 수용 PASS 대상이 아니다. 보드용 빌드·플래시·실물 재검증은 별도다.
+이 runner는 인자를 요구하는 독립 검사이며 `unittest discover` 결과에 포함되지 않는다.
+
 ## 현재 ARM/CMD main 검사 — 2026-10-13
 
 최신 저장 `esp32_wifi_link/main/wifi_link_main.c`를 대상으로 선택 C 함수 **42 PASS**, 내장 PAGE **46 PASS**를 확인했다. [원본 출력·소스 manifest](../../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)를 따른다. 아래 날짜별 W4/W5 및 초기 C42/JS27 기록은 당시 구현에 대한 이력이다.

@@ -62,7 +62,7 @@ static void adapter_normal_and_stop(void)
     zero_start();CHECK(mock_results[0].control_id==1 && mock_results[1].control_id==1);
     wifi_command_request_t r=request(WIFI_COMMAND_DISARM,3);
     CHECK(admit(client,&r)==NULL);CHECK(!client->ticket.valid);
-    wifi_control_step();CHECK(strcmp(mock_uart_line,"DISARM,seq=104\n")==0);
+    wifi_control_step();CHECK(strcmp(mock_uart_line,EXPECT_STOP_PREFIX "DISARM,seq=104\n")==0);
     mock_now_ms+=20;ack("DISARM",104);CHECK(s_manual_stop_pending);
     CHECK(mock_result_count==2);mock_now_ms+=20;tel_at(WIFI_CONTROL_STM_DISARMED,104,UINT32_MAX);
     wifi_control_step();CHECK(!s_manual_stop_pending && s_control.state.phase==WIFI_CONTROL_IDLE);
@@ -136,7 +136,8 @@ static void adapter_partial_write(void)
 {
     setup();offer();wifi_command_request_t r=request(WIFI_COMMAND_ARM,1);CHECK(admit(client,&r)==NULL);
     mock_short_write=true;wifi_control_step();CHECK(s_control.state.phase==WIFI_CONTROL_STOPPING);
-    mock_short_write=false;wifi_control_step();CHECK(mock_uart_line[0]=='\n');
+    mock_short_write=false;wifi_control_step();
+    CHECK(strncmp(mock_uart_line,EXPECT_SHORT_TX_PREFIX,strlen(EXPECT_SHORT_TX_PREFIX))==0);
     CHECK(strstr(mock_uart_line,"DISARM,")!=NULL);result_is(0,"TX_ERROR",1,client->id,102);
 }
 static void adapter_fault_stale_and_zero(void)

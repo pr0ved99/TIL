@@ -3,6 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Keep the saved baseline runnable while the user types the new protocol. */
+#ifdef WIFI_CONTROL_UART_CANCEL
+#define EXPECT_STOP_PREFIX "\x18\n"
+#define EXPECT_SHORT_TX_PREFIX "\x18\n"
+#else
+#define EXPECT_STOP_PREFIX ""
+#define EXPECT_SHORT_TX_PREFIX "\n"
+#endif
+
 #define CHECK(v) do { if (!(v)) { fprintf(stderr, "line %d: %s\n", __LINE__, #v); exit(1); } } while (0)
 static wifi_control_executor_t e;
 static wifi_control_ticket_pool_t pool;
@@ -85,7 +94,7 @@ static void normal(void)
     CHECK(!wifi_control_executor_take_tx(&e, 13U, 161U, &tx));
     wifi_control_executor_inputs_cleared(&e);
     CHECK(wifi_control_executor_take_tx(&e, 13U, 162U, &tx));
-    CHECK(strcmp(tx.bytes, "DISARM,seq=13\n") == 0);
+    CHECK(strcmp(tx.bytes, EXPECT_STOP_PREFIX "DISARM,seq=13\n") == 0);
     CHECK(wifi_control_executor_tx_complete(&e, (int)tx.length, 163U));
     CHECK(wifi_control_executor_reply(&e, WIFI_CONTROL_OP_DISARM, 13U, true, 1065U, 165U));
     CHECK(e.state.phase == WIFI_CONTROL_STOPPING);
@@ -158,7 +167,7 @@ static void cancel_during_tx(void)
     CHECK(!wifi_control_executor_tx_complete(&e, -1, 112U));
     CHECK(e.state.phase == WIFI_CONTROL_STOPPING);
     CHECK(wifi_control_executor_take_tx(&e, 12U, 113U, &tx));
-    CHECK(strcmp(tx.bytes, "\nDISARM,seq=12\n") == 0);
+    CHECK(strcmp(tx.bytes, EXPECT_SHORT_TX_PREFIX "DISARM,seq=12\n") == 0);
 }
 
 static void partial_tx(void)
@@ -170,7 +179,7 @@ static void partial_tx(void)
     CHECK(strcmp(answer.status, "TX_ERROR") == 0);
     wifi_control_executor_inputs_cleared(&e);
     CHECK(wifi_control_executor_take_tx(&e, 12U, 112U, &tx));
-    CHECK(strcmp(tx.bytes, "\nDISARM,seq=12\n") == 0);
+    CHECK(strcmp(tx.bytes, EXPECT_SHORT_TX_PREFIX "DISARM,seq=12\n") == 0);
     CHECK(!wifi_control_executor_tx_complete(&e, -1, 113U));
     CHECK(e.state.phase == WIFI_CONTROL_BLOCKED);
 }

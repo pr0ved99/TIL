@@ -2,9 +2,18 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-13 (zero-only integration and textbook)
+Last updated: 2026-10-17 (selected zero-only AC-S bench closeout)
 
-## Current Application Checkpoint — 2026-10-13
+## Current Application Checkpoint — 2026-10-17
+
+- UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [보고서37](docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)이 현재 범위와 미해결 관측의 기준이다.
+- 현재 앱은 esp32_wifi_link, ESP 시험 mode0·STM 시험 switch14개0U. 마지막 boot3570331004, A6/B7/control8의 B ARM 거부 뒤 A 유지와 최종 DISARM573834470/IDLE/DISARMED를 확인했다. 소스 hash는 보고서37, 실행 바이너리 readback은 미확보다.
+- B DISARM helper의 원본 INCOMPLETE는 보존하고 UART로 확인한 B 정지를 별도 판정했다. AC-S06 복원 run01 자동 정지 원인과 reset D1 transient는 미확정으로 유지한다.
+- 마지막 두 USB·LiPo 연결, S1 ON/S0 해제, #1용 두2핀·MDD10A B+ 분리절연, #2 sense 공급. 종료 전원 분리 완료는 미보고다. 최신 프로브는 D0/D1/D4/D6/D7이며 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+- **장비 원칙:** 보유 기록에 없는 장비는 없는 것으로 계획한다. 별도 USB-UART 구매/보유를 전제하지 않는다. 완료 시험은 변경·실패·사용자 요청 없이 반복하지 않는다.
+- 다음은 전체 MVP 계획에서 다음 Gate의 선행 조건을 선택·검토한다. 자동으로 모터 전원을 연결하거나 nonzero 송신하지 않는다. 아래 날짜별 체크포인트는 과거 이력이다.
+
+## Historical Application Checkpoint — 2026-10-13
 
 - 현재 앱은 `esp32_wifi_link`. 다섯 제어 모듈과 main/브라우저가 연결돼 있고 속도 0 전용 ARM/CMD를 처리한다. 최신 main C42·PAGE JS46 PC PASS와 사용자 빌드/플래시·관측은 [10/13 기록](docs/progress/2026-10-13_progress.md)에 구분한다.
 - 대화에서 ARM/zero ACTIVE, 수동 DISARM, 포커스 상실 정지 등을 확인했다. 전체 AC-B/S·nonzero 구동·전체 안전/주행은 미완료다. 최신 바이너리 hash와 종료 전원 상태는 미확인이다. 초기 전원 분리 뒤 조건 변경 보고가 있으므로 [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.

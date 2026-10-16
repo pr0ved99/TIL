@@ -1,0 +1,12 @@
+{
+  "status": "NORMAL_MODE_SOURCE_CONFIRMED_USER_READY_RESTORE_CAPTURE_PENDING",
+  "stm_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+  "all_14_stm_test_modes_zero": true,
+  "esp_partial_test_mode": 0,
+  "esp_normalized_sha256": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+  "matches_previously_pc_tested_normal_source": true,
+  "user_report": "Ready following normal-mode restore build/download/Run instructions",
+  "device_image_identity_independently_verified": false,
+  "restored_runtime_verified": false,
+  "firmware_edited_by_codex": false
+}

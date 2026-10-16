@@ -1,0 +1,21 @@
+{
+  "count": 13,
+  "results": [
+    "PASS install HELLO only, one internal B, no interception or automatic A ARM",
+    "PASS B ARM waits for two A zero ACKs and uses last B IDLE ARM ticket once",
+    "PASS rejection plus later A ACTIVE/new CMD ACKs/matching TEL and one-second continuity then confirmed cleanup",
+    "PASS B BUSY is incomplete, not ticket/owner proof",
+    "PASS unexpected B acceptance or OK aborts and requests cleanup",
+    "PASS wrong B identity cannot prove rejection",
+    "PASS rejection alone or missing fresh A CMD acknowledgments cannot pass",
+    "PASS owner change, output, counter, reset, stale telemetry and focus loss fail",
+    "PASS A failure or unplanned stop cannot count as owner continuity",
+    "PASS matching cleanup ACK without matching stopped TEL is insufficient",
+    "PASS failed cleanup result stays incomplete despite prior rejection proof",
+    "PASS A or B disconnect and manual cancel fail without retrying ARM",
+    "PASS idle cancel sends no control; early ARM before B readiness cleans up"
+  ],
+  "scope": "Actual saved PAGE and helper with mocked browser/server events; no board or PWM claim",
+  "runtime": "functions.exec V8; saved PAGE plus deterministic DOM/WebSocket/timer mocks",
+  "hardware_executed": false
+}

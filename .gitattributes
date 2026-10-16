@@ -29,3 +29,12 @@ Projects/Tracked_Mobile_Robot/docs/plans/2026-10-11_WiFi_ARM_CMD_State_Code_Guid
 Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 Projects/Tracked_Mobile_Robot/docs/plans/2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve UR bench logs, source snapshots, JSON and capture views byte-for-byte.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-15*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-16*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-1[67]*.pvs -text whitespace=cr-at-eol
+
+# ICS folded lines include significant spaces; preserve original CRLF bytes.
+Projects/Tracked_Mobile_Robot/docs/plans/calendar/*.ics -text whitespace=cr-at-eol,-blank-at-eol

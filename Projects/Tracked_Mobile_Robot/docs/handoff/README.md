@@ -21,8 +21,10 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: zero-only main/브라우저 통합·사용자 관측, 최신 C42/JS46, 교과서 학습 및 남은 검증 범위 |
-| 2026-10-13 | [최신 진행 기록](../progress/2026-10-13_progress.md) | zero-only 관측과 증거 한계·교과서·Git 정리 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: UR-02 및 AC-S01~08 선택 zero-only 시험 완료, 다음 Gate 선택·종료 전원 미보고 |
+| 2026-10-16 | [최신 진행 기록](../progress/2026-10-16_progress.md) / [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md) / [UR 계획](../plans/2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md) | 저장본 PC513+17+42, 사용자 빌드/플래시, UR-00/01/02 캡처. 다음 수동 시험 입력 경로는 미구현 |
+| 2026-10-15 | [실물 기록](../progress/2026-10-15_progress.md) / [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md) | zero-only 정지·리셋·S0·두 연결·UART 단절 기능과 AC-S 미완료 조건 |
+| 2026-10-13 | [이전 진행 기록](../progress/2026-10-13_progress.md) | zero-only 관측과 증거 한계·교과서·Git 정리 |
 | 2026-10-11 | [당시 구현·문서 마감 기록](../progress/2026-10-11_progress.md) / [ARM/CMD 초기 계약](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md) | 기초 모듈·사용자 빌드와 아직 미연결인 실행 경로, 안내 문서 상태 대조·증거 보존 절차 |
 | Current | [`CODEX_CONTEXT_WORKFLOW.md`](CODEX_CONTEXT_WORKFLOW.md) | 작은 컨텍스트, bench 한 단계 진행, closeout와 D: archive lookup 규칙 |
 | 2026-10-10 | [W5 마감 기록](../progress/2026-10-10_progress.md) / [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) | 실제 요청/결과·버튼·거부·timeout/재접속, JS57·C21과 증거 경계 |

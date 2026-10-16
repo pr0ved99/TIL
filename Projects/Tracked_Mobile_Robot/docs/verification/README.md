@@ -1,9 +1,9 @@
 # Verification Documentation
 
-최신 통합 관측: [report34](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md) — W5 비구동 PING/DISARM·입력 거부·결과/버튼·timeout/복구·재접속 후 자동 재전송 없음 확인. JS57·C21은 별도 PC 검사다. 무선 ARM/CMD는 미구현이다.
+최신 통합 관측: [report37](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) — UR-02 및 AC-S01~08 선택 zero-only 시나리오 마감. 실제 PWM/PC7·UART 근거와 실패/미해결 관측을 연결했다. 전체 세부 오류·nonzero/전력/기계 안전·주행 수용은 별도다. 이전 과정은 report35/36에 보존한다.
 모터 시험은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A 방향·DISARM·S0·A/B 각각10%·3초 범위다. 전류/열·전체 안전 수용·주행은 남아 있다. 재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
-최신 PC·빌드 준비 상태는 [10/11 기록](../progress/2026-10-11_progress.md)과 [검사 종류·선택](../../03_Firmware/tests/README.md#검사-종류와-선택)을 따른다.
+최신 코드·PC·계측 상태는 [10/17 기록](../progress/2026-10-17_progress.md)과 [검사 안내](../../03_Firmware/tests/README.md)를 따른다.
 원본 로그·화면·빌드/플래시 식별값·관측 조건은 [증거 보존 절차](EVIDENCE_CAPTURE_GUIDE_ko.md)로 기록한다.
 
 이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.
@@ -22,6 +22,8 @@ Engineering Basis
 계획·설계·구현·검증에 사용한 Basis ID, 적용 수준과 인증 주장 경계는 [`../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md`](../portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md)를 정본으로 사용한다.
 
 ## Current Verification Scope
+
+**2026-10-16 마감:** UR-00/01/02 UART 캡처와 줄 폐기 수정 후 첫 복구 DISARM을 [보고서36](36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 기록했다. 다음은 [UR-02 통제된 부분 명령 주입 준비](../plans/2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md)다. 부분 명령 폐기 실물·실제 PWM/PC7·AC-S 잔여는 미완료다. 아래 날짜별 현재/미연결 표현은 당시 이력이다.
 
 **2026-10-11:** ARM/CMD parser·ticket·owner 실제 저장본 PC15/12/9 PASS. owner 포함 ESP 전체 빌드 성공은 사용자 확인이다.
 기초 모듈은 main·큐/UART·브라우저에 미연결이며 새 플래시/보드 실행은 미확인이다. AC-H 전체·AC-B/S와 nonzero 구동 증거로 확대하지 않는다.
@@ -62,10 +64,10 @@ K1/MDD10A direct rail의 수용 기준 및 실제 모터 gate는 미완료다. �
 각 시험의 조건과 미완료 항목은 reports31/32와 아래 날짜별 보고서를 따른다. 현재 W5 경로와 초기 직접-PC 시험 경로를 구분한다.
 
 ```text
-현재 W5 비구동 경로
+현재 Wi-Fi zero-only 경로
 브라우저 WebSocket <-> ESP32 esp32_wifi_link
 <-> ESP UART1 GPIO17/GPIO18 <-> STM USART1 PA10/PA9
-<-> PING/PONG/DISARM/ACK/ERR/TEL
+<-> PING/PONG/ARM/zero-CMD/DISARM/ACK/ERR/TEL
 
 초기 UART MVP의 직접-PC 시험 경로 (과거 ingress)
 PC Web Serial Dashboard
@@ -80,7 +82,7 @@ ESP32 USB Monitor
 <-> PING/PONG/ARM/CMD/DISARM/ACK/ERR/TEL
 ```
 
-현재 production 명령 진입점은 ESP32이며 STM USART2는 bench logger다. 기초 모듈 빌드만으로 Wi-Fi 경로에 ARM/CMD가 연결된 것은 아니다.
+현재 production 명령 진입점은 ESP32이며 STM USART2는 bench logger다. Wi-Fi ARM/zero-CMD 실행은 연결됐지만 nonzero 구동 수용은 별도다.
 
 ESP32 bridge는 2026-07-20 release baseline에서 loopback, `PING/PONG`, structured `TEL` parsing과
 scripted safety sequence를 PASS했고, 2026-08-03~12에는 response-gated Gate A/B와

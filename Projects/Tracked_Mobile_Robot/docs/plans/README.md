@@ -2,16 +2,20 @@
 
 이 폴더는 전체 로드맵과 날짜별 작업 계획을 보관한다. 실제 수행 결과는 진행 기록과 시험 보고서를 따른다.
 
-## 현재 시작점 — 2026-10-13
+## 현재 시작점 — 2026-10-17
 
-zero-only ARM/CMD의 모듈·main·브라우저 연결과 사용자 빌드/플래시·일부 보드 관측까지 진행했다. 최신 main C42·PAGE JS46 PC PASS와 증거 한계는 [10/13 기록](../progress/2026-10-13_progress.md), 재개점은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 전체 AC-B/S·nonzero 구동·전체 안전/주행은 미완료다.
+UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)과 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
-학습은 [STM·ESP 교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)로 이어간다. 아래 입력 안내와 표의 후보/미입력/검사 수는 해당 작성 시점 이력이다. 10/13 main 입력 안내 이후 ticket 시간 여유·수동 ARM 준비 대기·버튼 표시 보완이 있어 최신 소스의 대체본으로 사용하지 않는다.
+다음은 [전체 MVP 계획](00_Project_Master_Plan_To_Final_MVP_ko.md)의 다음 Gate 선행 조건 검토다. 아래 주입/복구 안내는 완료된 시험의 입력 이력이며 새 실행 지시가 아니다.
+
+아래 날짜별 코드 입력 안내는 당시 판본이며 최신 소스를 덮어쓰는 용도로 사용하지 않는다. 학습 자료는 [STM·ESP 교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)다.
 
 ## Index
 
 | Date range | File | Scope |
 | --- | --- | --- |
+| 2026-10-16~17 / UR-02 및 선택 UR-03 마감 | [UR 실행 계획](2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md) | 부분 CMD/ARM·정상 복원 및 AC-S 선택 실물 근거는 보고서36/37 |
+| 2026-10-16 / 입력·PC·빌드·플래시 완료 | [UART 줄 폐기 코드 안내](2026-10-16_UART_Line_Cancel_Recovery_Code_Guide_ko.md) | STM CAN 폐기·ESP DISARM prefix, saved PC513+17+42, 실물 수용 경계는 보고서36 |
 | 2026-10-13 / 저장본 C42·JS27·ESP 빌드 확인 | [main·브라우저 전체 교체 안내](2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md) | HTTP/ticket·UART/seq·ACK/TEL·기한/취소·zero-only UI. 실제 main 저장/PC 검사·ESP 빌드 확인, 새 플래시/보드 시험 대기 |
 | 2026-10-12 / 후보PC17 PASS | [UART executor 입력 안내](2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md) | ticket 접수·한 슬롯·송신 계획·취소/우선 DISARM·결과. 사용자 파일/ESP 빌드·main 연결은 미실행 |
 | 2026-10-12 / 수정 대기 | [ARM/CMD state 일괄 수정 안내](2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md) | 최초 실제 저장본 컴파일 실패 0 tests/ERROR1. 정확한 위치·이유·header/source 완성본, CMake 유지 |

@@ -1,0 +1,832 @@
+[
+  {
+    "start_s": 0.00012325,
+    "end_s": 0.009814555555555556,
+    "text": "4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.094821,
+    "end_s": 0.10952855555555556,
+    "text": "TEL,t_ms=291300,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.194542,
+    "end_s": 0.20925305555555557,
+    "text": "TEL,t_ms=291400,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.29424475,
+    "end_s": 0.3089550555555556,
+    "text": "TEL,t_ms=291500,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.39395575,
+    "end_s": 0.40867055555555554,
+    "text": "TEL,t_ms=291600,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.49367825,
+    "end_s": 0.5083928055555555,
+    "text": "TEL,t_ms=291700,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.59340675,
+    "end_s": 0.6081225555555555,
+    "text": "TEL,t_ms=291800,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.69314325,
+    "end_s": 0.7078595555555555,
+    "text": "TEL,t_ms=291900,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.7928925,
+    "end_s": 0.8076093055555555,
+    "text": "TEL,t_ms=292000,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.89263475,
+    "end_s": 0.9073478055555555,
+    "text": "TEL,t_ms=292100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 0.9923515,
+    "end_s": 1.0070608055555554,
+    "text": "TEL,t_ms=292200,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.0920495,
+    "end_s": 1.1067608055555556,
+    "text": "TEL,t_ms=292300,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.19178575,
+    "end_s": 1.2065055555555555,
+    "text": "TEL,t_ms=292400,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.291526,
+    "end_s": 1.3062435555555556,
+    "text": "TEL,t_ms=292500,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.391281,
+    "end_s": 1.4059928055555555,
+    "text": "TEL,t_ms=292600,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.49100725,
+    "end_s": 1.5057183055555554,
+    "text": "TEL,t_ms=292700,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.5907135,
+    "end_s": 1.6054270555555554,
+    "text": "TEL,t_ms=292800,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.690412,
+    "end_s": 1.7051165555555554,
+    "text": "TEL,t_ms=292900,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.7900845,
+    "end_s": 1.8047880555555555,
+    "text": "TEL,t_ms=293000,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.889774,
+    "end_s": 1.9044853055555555,
+    "text": "TEL,t_ms=293100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 1.98948075,
+    "end_s": 2.0041893055555553,
+    "text": "TEL,t_ms=293200,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.0891445,
+    "end_s": 2.1038510555555554,
+    "text": "TEL,t_ms=293300,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.18884625,
+    "end_s": 2.2035510555555553,
+    "text": "TEL,t_ms=293400,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.2885465,
+    "end_s": 2.3032540555555556,
+    "text": "TEL,t_ms=293500,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.388243,
+    "end_s": 2.4029545555555556,
+    "text": "TEL,t_ms=293600,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.4879355,
+    "end_s": 2.5026415555555555,
+    "text": "TEL,t_ms=293700,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.58761725,
+    "end_s": 2.6023303055555553,
+    "text": "TEL,t_ms=293800,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.67724025,
+    "end_s": 2.6806153055555555,
+    "text": "ACK,seq=573834405,type=ARM,t_ms=293890"
+  },
+  {
+    "start_s": 2.68733,
+    "end_s": 2.7024763055555554,
+    "text": "TEL,t_ms=293900,state=ARMED,reason=NONE,command_age_ms=4294967295,last_seq=573834405,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.7839485,
+    "end_s": 2.7873240555555556,
+    "text": "ACK,seq=573834406,type=CMD,t_ms=293997"
+  },
+  {
+    "start_s": 2.78748825,
+    "end_s": 2.8018558055555554,
+    "text": "TEL,t_ms=294000,state=ARMED,reason=NONE,command_age_ms=3,last_seq=573834406,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.8800145,
+    "end_s": 2.8833903055555554,
+    "text": "ACK,seq=573834407,type=CMD,t_ms=294093"
+  },
+  {
+    "start_s": 2.88674825,
+    "end_s": 2.9011198055555556,
+    "text": "TEL,t_ms=294100,state=ARMED,reason=NONE,command_age_ms=7,last_seq=573834407,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 2.98001875,
+    "end_s": 2.9833940555555554,
+    "text": "ACK,seq=573834408,type=CMD,t_ms=294193"
+  },
+  {
+    "start_s": 2.986484,
+    "end_s": 3.0008543055555554,
+    "text": "TEL,t_ms=294200,state=ARMED,reason=NONE,command_age_ms=7,last_seq=573834408,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.08001375,
+    "end_s": 3.0833888055555554,
+    "text": "ACK,seq=573834409,type=CMD,t_ms=294293"
+  },
+  {
+    "start_s": 3.0862005,
+    "end_s": 3.1005653055555555,
+    "text": "TEL,t_ms=294300,state=ARMED,reason=NONE,command_age_ms=7,last_seq=573834409,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.18002175,
+    "end_s": 3.1833975555555556,
+    "text": "ACK,seq=573834410,type=CMD,t_ms=294394"
+  },
+  {
+    "start_s": 3.18593325,
+    "end_s": 3.2003023055555553,
+    "text": "TEL,t_ms=294400,state=ARMED,reason=NONE,command_age_ms=6,last_seq=573834410,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.2805335,
+    "end_s": 3.2839100555555554,
+    "text": "ACK,seq=573834411,type=CMD,t_ms=294494"
+  },
+  {
+    "start_s": 3.28567625,
+    "end_s": 3.3000483055555554,
+    "text": "TEL,t_ms=294500,state=ARMED,reason=NONE,command_age_ms=6,last_seq=573834411,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.38544025,
+    "end_s": 3.3999843055555554,
+    "text": "TEL,t_ms=294600,state=ARMED,reason=NONE,command_age_ms=106,last_seq=573834411,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.40033025,
+    "end_s": 3.4037073055555553,
+    "text": "ACK,seq=573834412,type=CMD,t_ms=294615"
+  },
+  {
+    "start_s": 3.485187,
+    "end_s": 3.4996473055555555,
+    "text": "TEL,t_ms=294700,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834412,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.56003775,
+    "end_s": 3.5634120555555553,
+    "text": "ACK,seq=573834413,type=CMD,t_ms=294775"
+  },
+  {
+    "start_s": 3.584925,
+    "end_s": 3.5993773055555556,
+    "text": "TEL,t_ms=294800,state=ARMED,reason=NONE,command_age_ms=25,last_seq=573834413,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.6601835,
+    "end_s": 3.6635583055555556,
+    "text": "ACK,seq=573834414,type=CMD,t_ms=294875"
+  },
+  {
+    "start_s": 3.68463525,
+    "end_s": 3.6990875555555554,
+    "text": "TEL,t_ms=294900,state=ARMED,reason=NONE,command_age_ms=25,last_seq=573834414,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.76045025,
+    "end_s": 3.7638263055555554,
+    "text": "ACK,seq=573834415,type=CMD,t_ms=294976"
+  },
+  {
+    "start_s": 3.784352,
+    "end_s": 3.7987993055555553,
+    "text": "TEL,t_ms=295000,state=ARMED,reason=NONE,command_age_ms=24,last_seq=573834415,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.87999525,
+    "end_s": 3.8833705555555555,
+    "text": "ACK,seq=573834416,type=CMD,t_ms=295096"
+  },
+  {
+    "start_s": 3.8840455,
+    "end_s": 3.8984148055555554,
+    "text": "TEL,t_ms=295100,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834416,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 3.9800235,
+    "end_s": 3.9833995555555557,
+    "text": "ACK,seq=573834417,type=CMD,t_ms=295196"
+  },
+  {
+    "start_s": 3.9837715,
+    "end_s": 3.9981410555555557,
+    "text": "TEL,t_ms=295200,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834417,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.08349375,
+    "end_s": 4.098033555555555,
+    "text": "TEL,t_ms=295300,state=ARMED,reason=NONE,command_age_ms=104,last_seq=573834417,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.099288,
+    "end_s": 4.102663305555556,
+    "text": "ACK,seq=573834418,type=CMD,t_ms=295315"
+  },
+  {
+    "start_s": 4.18321375,
+    "end_s": 4.197665805555556,
+    "text": "TEL,t_ms=295400,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834418,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.19911975,
+    "end_s": 4.202494555555556,
+    "text": "ACK,seq=573834419,type=CMD,t_ms=295416"
+  },
+  {
+    "start_s": 4.28295025,
+    "end_s": 4.297406305555556,
+    "text": "TEL,t_ms=295500,state=ARMED,reason=NONE,command_age_ms=84,last_seq=573834419,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.31182775,
+    "end_s": 4.315204555555556,
+    "text": "ACK,seq=573834420,type=CMD,t_ms=295529"
+  },
+  {
+    "start_s": 4.382705,
+    "end_s": 4.397162055555556,
+    "text": "TEL,t_ms=295600,state=ARMED,reason=NONE,command_age_ms=71,last_seq=573834420,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.4210565,
+    "end_s": 4.424432055555556,
+    "text": "ACK,seq=573834421,type=CMD,t_ms=295638"
+  },
+  {
+    "start_s": 4.48242775,
+    "end_s": 4.496880055555556,
+    "text": "TEL,t_ms=295700,state=ARMED,reason=NONE,command_age_ms=62,last_seq=573834421,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.5210815,
+    "end_s": 4.5244578055555555,
+    "text": "ACK,seq=573834422,type=CMD,t_ms=295738"
+  },
+  {
+    "start_s": 4.582158,
+    "end_s": 4.596615555555556,
+    "text": "TEL,t_ms=295800,state=ARMED,reason=NONE,command_age_ms=62,last_seq=573834422,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.66004175,
+    "end_s": 4.663418305555556,
+    "text": "ACK,seq=573834423,type=CMD,t_ms=295878"
+  },
+  {
+    "start_s": 4.68189,
+    "end_s": 4.696343805555556,
+    "text": "TEL,t_ms=295900,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834423,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.7802365,
+    "end_s": 4.783613805555556,
+    "text": "ACK,seq=573834424,type=CMD,t_ms=295998"
+  },
+  {
+    "start_s": 4.783778,
+    "end_s": 4.798152805555556,
+    "text": "TEL,t_ms=296002,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834424,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.88339375,
+    "end_s": 4.897939305555556,
+    "text": "TEL,t_ms=296102,state=ARMED,reason=NONE,command_age_ms=104,last_seq=573834424,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.89915125,
+    "end_s": 4.902528555555556,
+    "text": "ACK,seq=573834425,type=CMD,t_ms=296117"
+  },
+  {
+    "start_s": 4.98314025,
+    "end_s": 4.997594055555556,
+    "text": "TEL,t_ms=296202,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834425,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 4.99893575,
+    "end_s": 5.002312305555556,
+    "text": "ACK,seq=573834426,type=CMD,t_ms=296217"
+  },
+  {
+    "start_s": 5.082882,
+    "end_s": 5.097338555555556,
+    "text": "TEL,t_ms=296302,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834426,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.121073,
+    "end_s": 5.124449305555556,
+    "text": "ACK,seq=573834427,type=CMD,t_ms=296340"
+  },
+  {
+    "start_s": 5.18262425,
+    "end_s": 5.1970793055555555,
+    "text": "TEL,t_ms=296402,state=ARMED,reason=NONE,command_age_ms=62,last_seq=573834427,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.260039,
+    "end_s": 5.263418305555556,
+    "text": "ACK,seq=573834428,type=CMD,t_ms=296479"
+  },
+  {
+    "start_s": 5.28239225,
+    "end_s": 5.296850555555556,
+    "text": "TEL,t_ms=296502,state=ARMED,reason=NONE,command_age_ms=23,last_seq=573834428,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.36004725,
+    "end_s": 5.363423055555556,
+    "text": "ACK,seq=573834429,type=CMD,t_ms=296579"
+  },
+  {
+    "start_s": 5.3821475,
+    "end_s": 5.396599305555556,
+    "text": "TEL,t_ms=296602,state=ARMED,reason=NONE,command_age_ms=23,last_seq=573834429,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.4600855,
+    "end_s": 5.463464055555556,
+    "text": "ACK,seq=573834430,type=CMD,t_ms=296680"
+  },
+  {
+    "start_s": 5.481908,
+    "end_s": 5.496367805555556,
+    "text": "TEL,t_ms=296702,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834430,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.5600815,
+    "end_s": 5.563457555555556,
+    "text": "ACK,seq=573834431,type=CMD,t_ms=296780"
+  },
+  {
+    "start_s": 5.58167125,
+    "end_s": 5.596130805555556,
+    "text": "TEL,t_ms=296802,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834431,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.66007325,
+    "end_s": 5.663449305555556,
+    "text": "ACK,seq=573834432,type=CMD,t_ms=296880"
+  },
+  {
+    "start_s": 5.6814225,
+    "end_s": 5.695881805555556,
+    "text": "TEL,t_ms=296902,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834432,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.78003825,
+    "end_s": 5.783415555555556,
+    "text": "ACK,seq=573834433,type=CMD,t_ms=297000"
+  },
+  {
+    "start_s": 5.78357975,
+    "end_s": 5.797956805555556,
+    "text": "TEL,t_ms=297004,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834433,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.88008325,
+    "end_s": 5.883461055555556,
+    "text": "ACK,seq=573834434,type=CMD,t_ms=297101"
+  },
+  {
+    "start_s": 5.88362525,
+    "end_s": 5.898004805555556,
+    "text": "TEL,t_ms=297104,state=ARMED,reason=NONE,command_age_ms=3,last_seq=573834434,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 5.98006925,
+    "end_s": 5.983447055555556,
+    "text": "ACK,seq=573834435,type=CMD,t_ms=297201"
+  },
+  {
+    "start_s": 5.98361125,
+    "end_s": 5.997989555555556,
+    "text": "TEL,t_ms=297204,state=ARMED,reason=NONE,command_age_ms=3,last_seq=573834435,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.080061,
+    "end_s": 6.083438555555556,
+    "text": "ACK,seq=573834436,type=CMD,t_ms=297301"
+  },
+  {
+    "start_s": 6.083603,
+    "end_s": 6.0979775555555555,
+    "text": "TEL,t_ms=297305,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834436,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.180054,
+    "end_s": 6.183432555555556,
+    "text": "ACK,seq=573834437,type=CMD,t_ms=297401"
+  },
+  {
+    "start_s": 6.183597,
+    "end_s": 6.197973305555556,
+    "text": "TEL,t_ms=297405,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834437,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.2831535,
+    "end_s": 6.297704555555556,
+    "text": "TEL,t_ms=297505,state=ARMED,reason=NONE,command_age_ms=104,last_seq=573834437,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.298934,
+    "end_s": 6.302310805555556,
+    "text": "ACK,seq=573834438,type=CMD,t_ms=297520"
+  },
+  {
+    "start_s": 6.38293875,
+    "end_s": 6.397401805555556,
+    "text": "TEL,t_ms=297605,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834438,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.39873525,
+    "end_s": 6.402113055555556,
+    "text": "ACK,seq=573834439,type=CMD,t_ms=297620"
+  },
+  {
+    "start_s": 6.4827175,
+    "end_s": 6.497174555555556,
+    "text": "TEL,t_ms=297705,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834439,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.49852525,
+    "end_s": 6.501902055555556,
+    "text": "ACK,seq=573834440,type=CMD,t_ms=297720"
+  },
+  {
+    "start_s": 6.5824735,
+    "end_s": 6.596931305555556,
+    "text": "TEL,t_ms=297805,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834440,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.621091,
+    "end_s": 6.624466805555556,
+    "text": "ACK,seq=573834441,type=CMD,t_ms=297843"
+  },
+  {
+    "start_s": 6.6822255,
+    "end_s": 6.696683555555556,
+    "text": "TEL,t_ms=297905,state=ARMED,reason=NONE,command_age_ms=62,last_seq=573834441,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.76001925,
+    "end_s": 6.763394555555556,
+    "text": "ACK,seq=573834442,type=CMD,t_ms=297983"
+  },
+  {
+    "start_s": 6.7819775,
+    "end_s": 6.796435305555556,
+    "text": "TEL,t_ms=298005,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834442,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.8600795,
+    "end_s": 6.863456555555556,
+    "text": "ACK,seq=573834443,type=CMD,t_ms=298083"
+  },
+  {
+    "start_s": 6.8817445,
+    "end_s": 6.896203555555556,
+    "text": "TEL,t_ms=298105,state=ARMED,reason=NONE,command_age_ms=22,last_seq=573834443,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 6.98009175,
+    "end_s": 6.983468555555556,
+    "text": "ACK,seq=573834444,type=CMD,t_ms=298203"
+  },
+  {
+    "start_s": 6.983633,
+    "end_s": 6.998007555555556,
+    "text": "TEL,t_ms=298207,state=ARMED,reason=NONE,command_age_ms=4,last_seq=573834444,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.08331225,
+    "end_s": 7.097863305555556,
+    "text": "TEL,t_ms=298307,state=ARMED,reason=NONE,command_age_ms=104,last_seq=573834444,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.099119,
+    "end_s": 7.102497305555556,
+    "text": "ACK,seq=573834445,type=CMD,t_ms=298322"
+  },
+  {
+    "start_s": 7.1831175,
+    "end_s": 7.197587305555556,
+    "text": "TEL,t_ms=298407,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834445,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.22128325,
+    "end_s": 7.224661555555556,
+    "text": "ACK,seq=573834446,type=CMD,t_ms=298445"
+  },
+  {
+    "start_s": 7.26736175,
+    "end_s": 7.270999055555556,
+    "text": "ACK,seq=573834447,type=DISARM,t_ms=298491"
+  },
+  {
+    "start_s": 7.28293125,
+    "end_s": 7.297821805555556,
+    "text": "TEL,t_ms=298507,state=DISARMED,reason=DISARM,command_age_ms=62,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.3827055,
+    "end_s": 7.397685055555556,
+    "text": "TEL,t_ms=298607,state=DISARMED,reason=DISARM,command_age_ms=162,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.48249775,
+    "end_s": 7.497487805555556,
+    "text": "TEL,t_ms=298707,state=DISARMED,reason=DISARM,command_age_ms=262,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.58229875,
+    "end_s": 7.597277055555556,
+    "text": "TEL,t_ms=298807,state=DISARMED,reason=DISARM,command_age_ms=362,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.682065,
+    "end_s": 7.697040055555556,
+    "text": "TEL,t_ms=298907,state=DISARMED,reason=DISARM,command_age_ms=462,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.78181275,
+    "end_s": 7.796792555555556,
+    "text": "TEL,t_ms=299007,state=DISARMED,reason=DISARM,command_age_ms=562,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.88156275,
+    "end_s": 7.896546555555556,
+    "text": "TEL,t_ms=299107,state=DISARMED,reason=DISARM,command_age_ms=662,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 7.98133975,
+    "end_s": 7.996316305555556,
+    "text": "TEL,t_ms=299207,state=DISARMED,reason=DISARM,command_age_ms=762,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.081079,
+    "end_s": 8.096057305555556,
+    "text": "TEL,t_ms=299307,state=DISARMED,reason=DISARM,command_age_ms=862,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.18085175,
+    "end_s": 8.195831305555556,
+    "text": "TEL,t_ms=299407,state=DISARMED,reason=DISARM,command_age_ms=962,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.28064325,
+    "end_s": 8.295704305555557,
+    "text": "TEL,t_ms=299507,state=DISARMED,reason=DISARM,command_age_ms=1062,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.38038425,
+    "end_s": 8.395445805555555,
+    "text": "TEL,t_ms=299607,state=DISARMED,reason=DISARM,command_age_ms=1162,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.48012325,
+    "end_s": 8.495178055555556,
+    "text": "TEL,t_ms=299707,state=DISARMED,reason=DISARM,command_age_ms=1262,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.57985,
+    "end_s": 8.594911805555556,
+    "text": "TEL,t_ms=299807,state=DISARMED,reason=DISARM,command_age_ms=1362,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.67958075,
+    "end_s": 8.694636055555556,
+    "text": "TEL,t_ms=299907,state=DISARMED,reason=DISARM,command_age_ms=1462,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.77929675,
+    "end_s": 8.794355305555555,
+    "text": "TEL,t_ms=300007,state=DISARMED,reason=DISARM,command_age_ms=1562,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.87899175,
+    "end_s": 8.894051055555556,
+    "text": "TEL,t_ms=300107,state=DISARMED,reason=DISARM,command_age_ms=1662,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 8.97872025,
+    "end_s": 8.993782555555557,
+    "text": "TEL,t_ms=300207,state=DISARMED,reason=DISARM,command_age_ms=1762,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.0784355,
+    "end_s": 9.093490805555556,
+    "text": "TEL,t_ms=300307,state=DISARMED,reason=DISARM,command_age_ms=1862,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.1781715,
+    "end_s": 9.193233055555556,
+    "text": "TEL,t_ms=300407,state=DISARMED,reason=DISARM,command_age_ms=1962,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.27790525,
+    "end_s": 9.292968055555557,
+    "text": "TEL,t_ms=300507,state=DISARMED,reason=DISARM,command_age_ms=2062,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.377626,
+    "end_s": 9.392679555555556,
+    "text": "TEL,t_ms=300607,state=DISARMED,reason=DISARM,command_age_ms=2162,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.47729975,
+    "end_s": 9.492354305555557,
+    "text": "TEL,t_ms=300707,state=DISARMED,reason=DISARM,command_age_ms=2262,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.57700775,
+    "end_s": 9.592072055555557,
+    "text": "TEL,t_ms=300807,state=DISARMED,reason=DISARM,command_age_ms=2362,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.67673475,
+    "end_s": 9.691791805555557,
+    "text": "TEL,t_ms=300907,state=DISARMED,reason=DISARM,command_age_ms=2462,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.77644325,
+    "end_s": 9.791503555555556,
+    "text": "TEL,t_ms=301007,state=DISARMED,reason=DISARM,command_age_ms=2562,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.87618,
+    "end_s": 9.891244555555556,
+    "text": "TEL,t_ms=301107,state=DISARMED,reason=DISARM,command_age_ms=2662,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 9.975928,
+    "end_s": 9.990993305555556,
+    "text": "TEL,t_ms=301207,state=DISARMED,reason=DISARM,command_age_ms=2762,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.07565925,
+    "end_s": 10.090719305555556,
+    "text": "TEL,t_ms=301307,state=DISARMED,reason=DISARM,command_age_ms=2862,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.17538725,
+    "end_s": 10.190450305555556,
+    "text": "TEL,t_ms=301407,state=DISARMED,reason=DISARM,command_age_ms=2962,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.27513375,
+    "end_s": 10.290201055555556,
+    "text": "TEL,t_ms=301507,state=DISARMED,reason=DISARM,command_age_ms=3062,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.3748685,
+    "end_s": 10.389930805555556,
+    "text": "TEL,t_ms=301607,state=DISARMED,reason=DISARM,command_age_ms=3162,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.47460775,
+    "end_s": 10.489675055555557,
+    "text": "TEL,t_ms=301707,state=DISARMED,reason=DISARM,command_age_ms=3262,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.5743755,
+    "end_s": 10.589441055555556,
+    "text": "TEL,t_ms=301807,state=DISARMED,reason=DISARM,command_age_ms=3362,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.67414525,
+    "end_s": 10.689206305555556,
+    "text": "TEL,t_ms=301907,state=DISARMED,reason=DISARM,command_age_ms=3462,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.77389975,
+    "end_s": 10.788964305555556,
+    "text": "TEL,t_ms=302007,state=DISARMED,reason=DISARM,command_age_ms=3562,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.87365575,
+    "end_s": 10.888722555555557,
+    "text": "TEL,t_ms=302107,state=DISARMED,reason=DISARM,command_age_ms=3662,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 10.97341375,
+    "end_s": 10.988485055555556,
+    "text": "TEL,t_ms=302207,state=DISARMED,reason=DISARM,command_age_ms=3762,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.073193,
+    "end_s": 11.088259055555556,
+    "text": "TEL,t_ms=302307,state=DISARMED,reason=DISARM,command_age_ms=3862,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.17296025,
+    "end_s": 11.188025805555556,
+    "text": "TEL,t_ms=302407,state=DISARMED,reason=DISARM,command_age_ms=3962,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.27272875,
+    "end_s": 11.287795305555555,
+    "text": "TEL,t_ms=302507,state=DISARMED,reason=DISARM,command_age_ms=4062,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.3725225,
+    "end_s": 11.387590805555556,
+    "text": "TEL,t_ms=302607,state=DISARMED,reason=DISARM,command_age_ms=4162,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.47230375,
+    "end_s": 11.487367555555556,
+    "text": "TEL,t_ms=302707,state=DISARMED,reason=DISARM,command_age_ms=4262,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.572084,
+    "end_s": 11.587148805555556,
+    "text": "TEL,t_ms=302807,state=DISARMED,reason=DISARM,command_age_ms=4362,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.67182025,
+    "end_s": 11.686883555555555,
+    "text": "TEL,t_ms=302907,state=DISARMED,reason=DISARM,command_age_ms=4462,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.77156775,
+    "end_s": 11.786630055555555,
+    "text": "TEL,t_ms=303007,state=DISARMED,reason=DISARM,command_age_ms=4562,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.87129375,
+    "end_s": 11.886350555555556,
+    "text": "TEL,t_ms=303107,state=DISARMED,reason=DISARM,command_age_ms=4662,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 11.9710375,
+    "end_s": 11.986100055555555,
+    "text": "TEL,t_ms=303207,state=DISARMED,reason=DISARM,command_age_ms=4762,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 12.0707995,
+    "end_s": 12.085864555555556,
+    "text": "TEL,t_ms=303307,state=DISARMED,reason=DISARM,command_age_ms=4862,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  {
+    "start_s": 12.1705705,
+    "end_s": 12.185634055555555,
+    "text": "TEL,t_ms=303407,state=DISARMED,reason=DISARM,command_age_ms=4962,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  }
+]

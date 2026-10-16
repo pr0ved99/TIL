@@ -1,22 +1,36 @@
 # Current Session Context
 
-Last updated: **2026-10-13 — zero-only ARM/CMD 실행 연결·사용자 관측, 최신 main C42·PAGE JS46 PASS, 교과서와 Git 동기화 준비**.
+Last updated: **2026-10-17 — UR-02 및 AC-S01~08 선택 zero-only 실물 시험 마감**.
 
 ## 현재 기준
 
-- 현재 앱은 `esp32_wifi_link`다. parser·ticket·owner·state·executor와 main/브라우저가 연결돼 있다. CMake는 main 포함 여섯 source를 등록한다. W4/W5 비구동 PING/DISARM 완료 이력은 유지한다.
-- 사용자는 통합 ESP 빌드·플래시·모니터 실행을 보고했다. 대화의 로그/화면으로 startup READY, DISARM OK, 잘못된 ticket/boot 거부, zero ARM 뒤 ACTIVE·ARMED/출력0, 수동 DISARM, 창 전환 뒤 IDLE 및 정상 동작을 확인했다. 최신 바이너리 hash와 연속 원본 캡처는 확보하지 않았으므로 전체 AC-B/S 또는 실제 구동 안전 완료로 확대하지 않는다.
-- ticket 만료 진단과 브라우저 전송 여유·최대 200 ms 수동 ARM 준비 대기 수정 후, 사용자가 IDLE 버튼 깜빡임 해소를 확인했다. 창 포커스 상실은 취소/정지이며 자동 ARM 재개가 아니다.
-- 최신 저장 main SHA256은 `877205e6616a06ae79510e26f39f8e2b0731a928708779b83f00d66ac696afdc`. Git 정리 전 **실제 저장본 선택 C 함수 42개·PAGE JS46개 PASS**를 확인했다. [원본 출력과 manifest](../../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)는 PC mock 결과이며 보드 빌드·RTOS 경합·전기적 측정을 대신하지 않는다. 이전 C42/JS27은 수정 전 이력이다.
-- [STM·ESP 교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)는 본문 0~20장·12개 학습 단위·예제 5개를 제공한다. 전체/개별 실행과 예제 04의 실패 실험을 확인했다. 교재는 아키텍처 계약이나 전체 검증 판정 문서가 아니다.
+- UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다.
+- 첫 읽기: [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)과 [10/17 진행 기록](../progress/2026-10-17_progress.md). 회차별 observations.json과 원시 캡처 링크가 연결돼 있다. 이전 UR-02는 보고서36, 실패 이력은 보고서35를 따른다.
+- AC-S02: A 유효 ticket을 B가 쓰면 거부되고 A 동일 ticket은 성공; B ARM 거부 뒤 A 유지; B DISARM에 의해 A 정지. B ARM은 폐기·만료된 ticket 범위이고 owner-only 분기를 분리한 실물 증거는 아니다.
+- 다른 연결 DISARM helper의 INCOMPLETE 원본은 유지한다. UART에서 B 정지 ACK/TEL이 A 보호 DISARM보다 먼저 확인돼 핵심 시나리오는 완료다. 수정 helper revision2의 PC 검사는 통과했으며 추가 실물 회차는 미실행이다.
+- 현재 ESP WIFI_UART_PARTIAL_TEST_MODE=0U, STM 시험 switch14개=0U. 정상 이미지 복원·수동 ARM/zero/정지는 AC-S04/S06/S08 후속 회차로 확인했다. 마지막 boot3570331004, A6/B7/control8, 최종 DISARM573834470 ACK/TEL·IDLE/DISARMED.
+- 소스 hash는 보고서37에 있다. 사용자 빌드/플래시·실물 관측과 소스 식별을 구분하며 플래시 바이너리 readback은 없다.
+- 미해결: AC-S06 restore run01의 수동 정지 전 자동 정지/명령 전달 공백(사용자 포커스 전환 없음), ESP reset D1 transient, 이전 UART 양끝 단발0.25µs 차이. 후속 PASS로 원인이 해결됐다고 쓰지 않는다.
 
-## 재개 지점과 남은 범위
+## 물리 상태와 장비
 
-1. 학습은 교과서 단위 1과 예제 01에서 시작한다. 별도 펌웨어 파일 추가나 변경 없는 완료 시험 반복을 선행 조건으로 두지 않는다.
-2. 실물 시험을 재개하면 [10/13 기록](../progress/2026-10-13_progress.md)의 관측 범위를 기준으로 미완료 AC-B/S 항목만 고른다. ACTIVE 상태의 WS 단절 등 전체 정지/복구 수용은 별도다. nonzero Wi-Fi 구동·배터리 ADC·전류/열·전체 안전 수용·차량 주행은 미완료다.
-3. 초기에는 STM/ESP USB 공급·XL4015 분리·LiPo/모터 전원 분리였다. 이후 사용자가 PC7 동작에 LiPo가 필요하다고 설명하고 “#1만 분리”를 보고했으며, ESTOP_LATCHED → STM reset 후 DISARMED/BOOT 로그를 제공했다. **시험 종료 시 전원 상태는 미보고**다. 초기 분리 조건을 현재 조건으로 재사용하거나 미보고 전압/배선 상태를 추정하지 않는다.
-4. 별도 `esp32_uart_bridge` 수동 hook1U/default-off 잔여 이력은 해당 앱의 조건이다. 현재 Wi-Fi 앱을 그 설정으로 해석하지 않는다.
-5. 브랜치는 `agent/dual-encoder-bringup`. 사용자 요청으로 코드·검사·근거·교과서를 동기화한다. Hello World의 이미 추적된 build 산출물은 커밋에서 제외하고 작업 폴더에 보존한다. 실제 원격 반영 여부는 Git 조회 결과로 확인한다.
+- 마지막 보고: 두 USB·LiPo 연결, S1 ON/S0 해제, #1 보드용 2핀 두 개와 MDD10A B+ 분리·절연, #2 sense 공급·공통 GND. **종료 전원 분리 완료는 미보고다.** 재개 때 그 이후 변경분만 확인한다.
+- STM 만능기판, ESP 외부 UART 점퍼. PA9→GPIO18, GPIO17→PA10, 115200/8N1.
+- LA 4MHz: D0=JDBG_UART Pin1/PA9 TX, D1=Pin2/PA10 RX, D4=JDBG_CTRL_1 Pin2/PB6, D6=JDBG_CTRL_2 Pin2/PC7, D7=JDBG_CTRL_2 Pin1/PB7. D2/D3 제거, D5 대신 D7. GND=JDBG_UART Pin3.
+- 사용자 지시: 보유 기록에 없는 장비는 없는 것으로 계획. 별도 USB-UART를 전제하거나 다시 묻지 않는다. PC7 FAULT를 우회하지 않는다.
+
+## 다음 작업
+
+1. 이번 선택 zero-only 시험 묶음은 완료. 코드/배선 변경·새 실패·사용자 요청 없이 같은 회차를 반복하지 않는다.
+2. [전체 MVP 계획](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)의 남은 전력·배터리·기구·nonzero 통합 중 다음 Gate와 선행 조건을 검토한다. 아직 다음 실물 Gate는 선택하지 않았다.
+3. 한 번에 한 물리 조작 묶음만 안내한다. 이번 마감이 전력 연결·nonzero 송신·전체 안전 수용을 승인하지 않는다.
+
+## 기록과 작업 원칙
+
+- 사용자 요청으로 문서·Git·Notion 최신화를 진행한다. 게시 결과는 [10/17 기록](../progress/2026-10-17_progress.md)의 마감 항목과 실제 git log를 따른다.
+- branch `agent/dual-encoder-bringup`. Hello World tracked build 산출물과 LA `Session 2` 임시 파일은 기존 작업으로 보존하고 이번 커밋에서 제외한다.
+- firmware 입력·STM/ESP 빌드/플래시·물리 조작은 사용자, PC 검사·문서는 Codex. 사용자 요청 없이 subagent 금지.
+- 별도 esp32_uart_bridge M2_RUN hook1U는 현재 Wi-Fi 앱이 아니다. 자동 플래시하지 않는다. 과거 자료 전체 대신 이 문서·최신 progress·해당 보고서만 읽는다.
 
 ## 이전 단계 이력
 

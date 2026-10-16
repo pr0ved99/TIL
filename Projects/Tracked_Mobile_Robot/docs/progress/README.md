@@ -5,6 +5,12 @@
 
 ## 최신 기록
 
+**[2026-10-17 AC-S 선택 실물시험 마감·Git·Notion 최신화](2026-10-17_progress.md)** — AC-S01~08 zero-only 시나리오 완료. 실패 이력·helper 오판·원인 미확정 관측은 보존. 상세 범위는 [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md).
+
+**[2026-10-16 UART 줄 폐기·부분 명령 실물 시험·일반 이미지 복원](2026-10-16_progress.md)** — UR-02 재연결·부분 CMD·LF 없는 ARM 폐기 및 첫 DISARM 복구 PASS. mode0 복원 뒤 boot3996125447, 시험 배너 없음·READY/IDLE 확인. D1 단발 샘플 차이 원인·전체 AC-S는 미완료. 다음은 UR-03 잔여 항목. [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md).
+
+**[2026-10-15 zero-only 정지·리셋·두 연결·UART 단절](2026-10-15_progress.md)** — 기능 관측을 [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)에 보존. 마지막 DISARM24 OK/IDLE이나 첫 복구 DISARM23 실패는 OPEN. 전체 AC-S 및 실제 PWM 측정 미완료. 문서화10/16.
+
 **[2026-10-13 zero-only 통합·교과서·Git 정리](2026-10-13_progress.md)** — 사용자 빌드/플래시와 ARM/zero·정지 관측, 최신 저장 main C42·PAGE JS46 PASS. STM·ESP 교과서와 예제 5개, 12개 학습 단위 완료. 전체 AC-B/S·nonzero 구동은 미완료이며 종료 전원 상태는 미보고다.
 
 **[2026-10-12 state 저장본·ESP 빌드 확인](2026-10-12_progress.md)** — 최종 실제 .h/.c 안내 일치·PC27 PASS、ESP 전체 빌드 성공 사용자 확인. STM·ESP는 만능기판 장착·USB 공급·XL4015 분리 사용자 보고다. 다음은 main의 제어 실행 adapter 연결이다.

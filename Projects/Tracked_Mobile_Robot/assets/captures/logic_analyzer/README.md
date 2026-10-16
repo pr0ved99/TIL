@@ -15,6 +15,16 @@
 - [Motor Output Waveform And Shutdown Latency Test](../../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md)
 - [Screenshot index](../../screenshots/logic_analyzer/README.md)
 
+## 2026-10-16 UART 양끝·재연결
+
+D0=STM PA9 TX, D1=STM PA10 RX, D2=ESP GPIO18 RX, D3=ESP GPIO17 TX. 이 세 캡처는 PWM/PC7을 측정하지 않는다. 4MHz·UART115200/8N1. [보고서36](../../../docs/verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 판정과 해독/원본 hash를 연결했다.
+
+- [UR-00 baseline](2026-10-16_ur00_uart_baseline_run01.sr): 17.008384초, IDLE/PING 양끝 확인.
+- [UR-01 수정 전 재연결](2026-10-16_ur01_uart_reconnect_run01.sr): 50초, 전체 CMD 유실 후 timeout/첫 수동 DISARM 성공.
+- [UR-02 수정 후 재연결](2026-10-16_ur02_uart_cancel_reconnect_run01.sr): 50초, CAN+LF/첫 DISARM 양끝 일치·ACK/새 TEL/IDLE. 부분 명령 실물 폐기는 미검증.
+
+같은 이름의 `.pvs`를 보존한다. `Session 2`는 사용자 작업 파일이며 이름 있는 원본을 판정 기준으로 사용한다.
+
 ## 2026-09-22 T-ESTOP-004 완료
 
 [report 26](../../../docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) / [decode·summary·hash](../../logs/estop/2026-09-22_t004/README.md).

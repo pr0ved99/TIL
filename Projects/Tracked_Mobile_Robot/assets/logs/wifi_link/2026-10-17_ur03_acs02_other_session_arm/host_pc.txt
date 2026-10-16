@@ -1,0 +1,5 @@
+PASS B ARM with revoked but not yet expired IDLE ticket: UART ARM TX0, A owner/CMD preserved
+PASS B ARM with expired/revoked IDLE ticket: UART ARM TX0, A owner/CMD preserved
+PASS B ARM while A queued CMD: BUSY, A queued CMD preserved; not ticket-specific evidence
+Saved main normalized SHA256: 2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0
+Production inputs unchanged; native PC simulation only.

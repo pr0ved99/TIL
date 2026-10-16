@@ -1,0 +1,11 @@
+MODE SAVED native PC only
+MAIN normalized SHA256 3777cf8a49deb3898cee90dffcbe23a2021d303cf53e62a71352c7d23baddd75
+Traceback (most recent call last):
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_uart_partial_test.py", line 140, in <module>
+    if __name__ == '__main__': run()
+                               ^^^^^
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_uart_partial_test.py", line 69, in run
+    raise RuntimeError(f'PAGE initializer C compile failed (mode={mode}):\n'+r.stdout+r.stderr)
+RuntimeError: PAGE initializer C compile failed (mode=0):
+C:/Users/eyh12/AppData/Local/Temp/uart-partial-ds1opwlt/page.c:259: error: unexpected end of file
+

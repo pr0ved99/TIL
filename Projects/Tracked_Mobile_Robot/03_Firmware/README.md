@@ -1,6 +1,6 @@
 # 펌웨어 앱과 검사 안내
 
-상태 대조: **2026-10-13**. 마지막 보드 실행, 새 모듈 준비, 다음 구현을 구분한다.
+상태 대조: **2026-10-17**. 정상 이미지 복원과 선택 zero-only 실물시험 완료, 전체 구동 수용은 구분한다.
 재개 전에는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)와 [최신 진행 기록](../docs/progress/README.md)을 먼저 읽는다.
 
 ## 앱 선택과 마지막 실행
@@ -28,7 +28,7 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 | [state](esp32_wifi_link/main/wifi_control_state.c) | ARM→zero 확인→ACTIVE, 취소·STOPPING/BLOCKED | 저장본 PC27 이력 |
 | [executor](esp32_wifi_link/main/wifi_control_executor.c) | 접수·프레임 준비·송신 결과·응답 연결 | 저장본 PC17 이력 |
 
-통합 ESP 빌드·플래시·모니터는 사용자 보고이며 ARM/zero·수동 및 포커스 상실 정지 등을 대화에서 확인했다. 최신 바이너리 hash·전체 AC-B/S·nonzero 구동 안전을 증명하지 않는다. [10/13 기록](../docs/progress/2026-10-13_progress.md)과 [최신 PC 출력](../assets/logs/wifi_link/2026-10-13_git_closeout/manifest.json)을 따른다.
+10/16 STM CAN 줄 폐기와 ESP DISARM CAN+LF를 적용하고 부분 CMD/ARM 실물 폐기·복원을 확인했다. 10/17 AC-S01~08 선택 zero-only 실물 시나리오를 마감했다. [보고서37](../docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) 참조. 현재 ESP mode0·STM 시험 switch14개0U이며 source hash와 바이너리 readback은 구분한다. 전체 세부 오류·nonzero 구동 수용은 별도다.
 
 구현 이유와 예제는 [STM·ESP 교과서](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)에 있다. 날짜별 코드 입력 안내는 해당 당시 판본이며 최신 소스를 덮어쓰는 용도로 사용하지 않는다.
 

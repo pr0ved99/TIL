@@ -1,0 +1,19 @@
+{
+  "count": 13,
+  "results": [
+    "PASS installation sends HELLO only; duplicate install rejected",
+    "PASS READY requires live TEL and IDLE offer from test session",
+    "PASS one original ticket sent after TTL plus guard; changed offer never substitutes ticket",
+    "PASS cancel before deadline never releases ARM; start cannot repeat",
+    "PASS stale TEL includes elapsed browser time; no request sent",
+    "PASS blocked event loop cannot send overdue request using stale status",
+    "PASS unexpected acceptance triggers DISARM, no CMD, no PASS even after cleanup",
+    "PASS missing response stops once; late rejection cannot produce PASS",
+    "PASS wrong session/request/reason response cannot pass",
+    "PASS nonzero, ARMED, seq change or reset during observation stops the test",
+    "PASS boot/session changes before send discard request",
+    "PASS closed probe socket after request uses page DISARM fallback",
+    "PASS short TTL still waits full advertised remainder plus 100ms"
+  ],
+  "scope": "Saved PAGE plus test helper in PC browser simulation; no board UART/PWM proof"
+}

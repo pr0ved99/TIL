@@ -1,0 +1,197 @@
+{
+  "test": "UR03_ACS04_CMD_ACK_DROP_NORMAL_RESTORE",
+  "run": "2026-10-17_ur03_acs04_cmd_ack_drop_restore_pwm_run01",
+  "verdict": "PASS_WITHIN_NORMAL_MODE_ZERO_CMD_ACK_AND_DISARM_RESTORATION_SCOPE",
+  "preceding_fault_injection_run": "../2026-10-17_ur03_acs04_cmd_ack_drop_pwm_run01/observations.json",
+  "evidence": {
+    "capture": {
+      "path": "../../../captures/logic_analyzer/2026-10-17_UR03_ACS04_CMD_ACK_DROP_RESTORE_PWM_run01.sr",
+      "sha256": "f331095446044abf106a814f8dbb41df8179cf8dd90b339e01c57f7f301afe12",
+      "samplerate_hz": 4000000.0,
+      "samples": 48780288,
+      "duration_s": 12.195072,
+      "note": "Actual capture is 12.195072s; includes the complete command sequence and more than 3s post-stop."
+    },
+    "esp_monitor": {
+      "file": "esp_monitor.txt",
+      "sha256": "eabef9cc8d1873b4529841c7f83253959a5357a872ef12603f1f7649ed5300d0",
+      "source_attachment_id": "07f780fe-aaf3-4bd5-b2a4-0ddde085eb9b",
+      "copied_byte_for_byte": true,
+      "line_count": 187
+    },
+    "screenshot": {
+      "source": "User-attached screenshot in conversation; transcribed fields, no local image copy",
+      "boot_id": 3570331004,
+      "uptime_ms": 6678619,
+      "startup_state": "READY",
+      "phase": "IDLE",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "request_id": 484,
+      "result": "OK",
+      "last_seq": 573834447,
+      "stm_t_ms": 326607,
+      "stm_age_ms": 52,
+      "command_age_ms": 28162,
+      "all_speed_pwm_cps_zero": true,
+      "drop": 0,
+      "err": 0,
+      "console_note": "Visible observer request 440/441 and OBSERVER_STOPPED belong to prior fault-injection recording, not this restoration run."
+    }
+  },
+  "normal_source": {
+    "stm_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+    "stm_test_switches": {
+      "UART_MVP_OUTPUT_TEST_ENABLED": 0,
+      "UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_STALE_PONG_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_SUPPRESS_PONG_TEST_ENABLED": 0,
+      "UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED": 0,
+      "UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED": 0
+    },
+    "esp_normalized_sha256": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+    "esp_partial_test_mode": 0,
+    "matches_previously_pc_tested_mode0_source": true,
+    "firmware_edited_by_codex": false
+  },
+  "uart": {
+    "arm": {
+      "start_s": 2.6755845,
+      "end_s": 2.6771468055555556,
+      "text": "ARM,seq=573834405"
+    },
+    "arm_seq": 573834405,
+    "zero_cmd_count": 41,
+    "first_cmd_seq": 573834406,
+    "last_cmd_seq": 573834446,
+    "all_cmds_acknowledged": true,
+    "tenth_cmd": {
+      "start_s": 3.755621,
+      "end_s": 3.7603085555555555,
+      "text": "CMD,seq=573834415,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "tenth_cmd_ack": {
+      "start_s": 3.76045025,
+      "end_s": 3.7638263055555554,
+      "text": "ACK,seq=573834415,type=CMD,t_ms=294976"
+    },
+    "drop_marker_count": 0,
+    "line_cancel": {
+      "start_s": 7.2652685,
+      "end_s": 7.265442055555556,
+      "text": "\u0018"
+    },
+    "disarm": {
+      "start_s": 7.265442,
+      "end_s": 7.267265055555556,
+      "text": "DISARM,seq=573834447"
+    },
+    "disarm_ack": {
+      "start_s": 7.26736175,
+      "end_s": 7.270999055555556,
+      "text": "ACK,seq=573834447,type=DISARM,t_ms=298491"
+    },
+    "arm_to_disarm_start_s": 4.5898575,
+    "armed_tel_count": 46,
+    "last_armed_tel_before_stop": {
+      "start_s": 7.1831175,
+      "end_s": 7.197587305555556,
+      "text": "TEL,t_ms=298407,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834445,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "first_disarmed_tel": {
+      "start_s": 7.28293125,
+      "end_s": 7.297821805555556,
+      "text": "TEL,t_ms=298507,state=DISARMED,reason=DISARM,command_age_ms=62,last_seq=573834447,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "post_disarm_ack_observation_s": 4.924072944,
+    "post_stop_tel_count": 50,
+    "post_stop_arm_cmd_count": 0,
+    "complete_tel_count": 122,
+    "all_speed_pwm_cps_zero": true,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ]
+  },
+  "esp_monitor": {
+    "arm_request": 442,
+    "disarm_request": 484,
+    "session_id": 2,
+    "all_43_transmissions_matched": true,
+    "disarm_queue_ms": 6650829,
+    "disarm_tx_ms": 6650839,
+    "disarm_match_ms": 6650859,
+    "disarm_queued_before_single_disarm_tx": true,
+    "timeout_fault_warning_error_lines": []
+  },
+  "logic_levels": {
+    "D4": {
+      "samples": 48780288,
+      "high_samples": 0,
+      "low_samples": 48780288,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 48780288,
+      "high_samples": 0,
+      "low_samples": 48780288,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 48780288,
+      "high_samples": 0,
+      "low_samples": 48780288,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "decode_boundary": {
+    "excluded_leading_partial_tel": {
+      "start_s": 0.00012325,
+      "end_s": 0.009814555555555556,
+      "text": "4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "D0_bad_stop_times_s": [
+      1.95e-05
+    ],
+    "interpretation": "Consistent with starting capture inside an existing TEL frame: one framing diagnostic at 19.5 us precedes the recovered leading partial line. Excluded from complete-frame evidence; no further framing diagnostics after the first complete TEL, including the full ARM/CMD/DISARM interval.",
+    "D1_bad_stop_count": 0
+  },
+  "criteria": {
+    "normal_mode_saved": true,
+    "more_than_ten_zero_cmds_with_all_acks": true,
+    "no_fault_injection_marker": true,
+    "continued_armed_telemetry_until_browser_disarm": true,
+    "browser_disarm_request_ack_and_disarmed_tel_match": true,
+    "final_ready_idle_disarmed_and_disarm_ok": true,
+    "outputs_zero_and_sampled_pins_low": true,
+    "post_stop_no_arm_cmd_at_least_3s": true
+  },
+  "limits": [
+    "Bounded zero-output normal-mode restoration; not a motor stopping performance test or the entire AC-S04 suite.",
+    "Mouse click timestamp is not independently captured; browser-requested DISARM was queued before UART stop TX, consistent with the instructed manual-stop procedure.",
+    "Initial truncated TEL and framing diagnostic are retained explicitly, not counted as complete telemetry.",
+    "No new passive browser JSON was requested for restoration; prior observer console lines are not used as current-run evidence."
+  ]
+}

@@ -12,6 +12,14 @@
 
 /* PRODUCTION_TYPES */
 
+#ifdef WIFI_CONTROL_UART_CANCEL
+#define EXPECT_STOP_PREFIX "\x18\n"
+#define EXPECT_SHORT_TX_PREFIX "\x18\n"
+#else
+#define EXPECT_STOP_PREFIX ""
+#define EXPECT_SHORT_TX_PREFIX "\n"
+#endif
+
 typedef int BaseType_t;
 typedef void *QueueHandle_t;
 typedef void *SemaphoreHandle_t;
@@ -106,7 +114,7 @@ static void start(wifi_command_type_t type)
     wifi_command_step();
     CHECK(s_wifi_uart_pending.active && s_wifi_uart_pending.seq == 102U);
     CHECK(mock_write_count == 1U && mock_result_count == 0U);
-    CHECK(strcmp(mock_uart_line, type == WIFI_COMMAND_PING ? "PING,seq=102\n" : "DISARM,seq=102\n") == 0);
+    CHECK(strcmp(mock_uart_line, type == WIFI_COMMAND_PING ? "PING,seq=102\n" : EXPECT_STOP_PREFIX "DISARM,seq=102\n") == 0);
 }
 static void result_is(size_t index, const char *status, uint32_t request_id, uint32_t session_id, uint32_t seq)
 {

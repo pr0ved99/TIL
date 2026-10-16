@@ -181,8 +181,9 @@ bool wifi_control_executor_take_tx(
         n = snprintf(tx.bytes, sizeof(tx.bytes),
             "CMD,seq=%" PRIu32 ",vx_mmps=0,w_mradps=0,timeout_ms=300\n", seq);
     } else {
+        /* Full UART writes do not prove that STM received every byte. */
         n = snprintf(tx.bytes, sizeof(tx.bytes), "%s%s,seq=%" PRIu32 "\n",
-            op == WIFI_CONTROL_OP_DISARM && e->need_line_sync ? "\n" : "",
+            op == WIFI_CONTROL_OP_DISARM ? WIFI_CONTROL_UART_CANCEL : "",
             op == WIFI_CONTROL_OP_ARM ? "ARM" : "DISARM", seq);
     }
     if (n <= 0 || (size_t)n >= sizeof(tx.bytes)) {
@@ -221,13 +222,10 @@ bool wifi_control_executor_tx_complete(wifi_control_executor_t *e, int written, 
     const bool full = written >= 0 && (size_t)written == e->prepared_length;
     e->prepared = false;
     if (!full) {
-        e->need_line_sync = true;
-        /* An intervening cancel already revoked an old ARM/CMD pending. */
+        /* Every DISARM now cancels a partial line, including after short TX. */
         if (e->state.pending == e->prepared_op && e->state.pending_seq == e->prepared_seq) {
             wifi_control_state_tx_failed(&e->state, now);
         }
-    } else if (e->prepared_op == WIFI_CONTROL_OP_DISARM) {
-        e->need_line_sync = false;
     }
     wifi_control_state_poll(&e->state, e->state.startup_ready, now);
     reconcile(e);

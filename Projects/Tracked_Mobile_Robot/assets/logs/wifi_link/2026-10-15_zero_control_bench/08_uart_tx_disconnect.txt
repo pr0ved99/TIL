@@ -1,0 +1,135 @@
+I (1024069) wifi_link: STM TEL #9431 t_ms=1009400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024169) wifi_link: STM TEL #9432 t_ms=1009500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024269) wifi_link: STM TEL #9433 t_ms=1009600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024369) wifi_link: STM TEL #9434 t_ms=1009700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024469) wifi_link: STM TEL #9435 t_ms=1009800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024569) wifi_link: STM TEL #9436 t_ms=1009900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024669) wifi_link: STM TEL #9437 t_ms=1010000 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024769) wifi_link: STM TEL #9438 t_ms=1010100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024869) wifi_link: STM TEL #9439 t_ms=1010200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1024969) wifi_link: STM TEL #9440 t_ms=1010300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025069) wifi_link: STM TEL #9441 t_ms=1010400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025169) wifi_link: STM TEL #9442 t_ms=1010500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025269) wifi_link: STM TEL #9443 t_ms=1010600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025369) wifi_link: STM TEL #9444 t_ms=1010700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025469) wifi_link: STM TEL #9445 t_ms=1010800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025569) wifi_link: STM TEL #9446 t_ms=1010900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025669) wifi_link: STM TEL #9447 t_ms=1011000 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025769) wifi_link: STM TEL #9448 t_ms=1011100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025869) wifi_link: STM TEL #9449 t_ms=1011200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1025969) wifi_link: STM TEL #9450 t_ms=1011300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026069) wifi_link: STM TEL #9451 t_ms=1011400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026169) wifi_link: STM TEL #9452 t_ms=1011500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026269) wifi_link: STM TEL #9453 t_ms=1011600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026369) wifi_link: STM TEL #9454 t_ms=1011700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026469) wifi_link: STM TEL #9455 t_ms=1011800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026569) wifi_link: STM TEL #9456 t_ms=1011900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026639) wifi_link: WS QUEUED: ARM request=14 session=1
+I (1026649) wifi_link: CONTROL TX: op=1 seq=2760658624 written=19/19
+I (1026649) wifi_link: STM TEL #9457 t_ms=1012000 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1026669) wifi_link: CONTROL RX MATCH: ARM seq=2760658624
+I (1026739) wifi_link: WS QUEUED: CMD request=15 session=1
+I (1026749) wifi_link: CONTROL TX: op=2 seq=2760658625 written=55/55
+I (1026759) wifi_link: STM TEL #9458 t_ms=1012100 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1026779) wifi_link: CONTROL RX MATCH: CMD seq=2760658625
+I (1026849) wifi_link: WS QUEUED: CMD request=16 session=1
+I (1026869) wifi_link: STM TEL #9459 t_ms=1012200 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1026869) wifi_link: CONTROL TX: op=2 seq=2760658626 written=55/55
+I (1026899) wifi_link: CONTROL RX MATCH: CMD seq=2760658626
+I (1026969) wifi_link: STM TEL #9460 t_ms=1012300 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1026979) wifi_link: WS QUEUED: CMD request=17 session=1
+I (1026989) wifi_link: CONTROL TX: op=2 seq=2760658627 written=55/55
+I (1027009) wifi_link: CONTROL RX MATCH: CMD seq=2760658627
+I (1027069) wifi_link: STM TEL #9461 t_ms=1012400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027079) wifi_link: WS QUEUED: CMD request=18 session=1
+I (1027089) wifi_link: CONTROL TX: op=2 seq=2760658628 written=55/55
+I (1027109) wifi_link: CONTROL RX MATCH: CMD seq=2760658628
+I (1027159) wifi_link: STM TEL #9462 t_ms=1012500 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027179) wifi_link: WS QUEUED: CMD request=19 session=1
+I (1027199) wifi_link: CONTROL TX: op=2 seq=2760658629 written=55/55
+I (1027219) wifi_link: CONTROL RX MATCH: CMD seq=2760658629
+I (1027259) wifi_link: STM TEL #9463 t_ms=1012600 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027289) wifi_link: WS QUEUED: CMD request=20 session=1
+I (1027299) wifi_link: CONTROL TX: op=2 seq=2760658630 written=55/55
+I (1027319) wifi_link: CONTROL RX MATCH: CMD seq=2760658630
+I (1027359) wifi_link: STM TEL #9464 t_ms=1012700 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027389) wifi_link: WS QUEUED: CMD request=21 session=1
+I (1027399) wifi_link: CONTROL TX: op=2 seq=2760658631 written=55/55
+I (1027459) wifi_link: STM TEL #9465 t_ms=1012800 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027559) wifi_link: STM TEL #9466 t_ms=1012900 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (1027559) wifi_link: CONTROL TX: op=3 seq=2760658632 written=22/22
+I (1027649) wifi_link: WS QUEUED: DISARM request=22 session=1
+I (1027659) wifi_link: STM TEL #9467 t_ms=1013000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1027759) wifi_link: STM TEL #9468 t_ms=1013100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1027859) wifi_link: STM TEL #9469 t_ms=1013200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1027959) wifi_link: STM TEL #9470 t_ms=1013300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028059) wifi_link: STM TEL #9471 t_ms=1013400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028159) wifi_link: STM TEL #9472 t_ms=1013500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028259) wifi_link: STM TEL #9473 t_ms=1013600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028359) wifi_link: STM TEL #9474 t_ms=1013700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028459) wifi_link: STM TEL #9475 t_ms=1013800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028559) wifi_link: STM TEL #9476 t_ms=1013900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028659) wifi_link: STM TEL #9477 t_ms=1014000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028759) wifi_link: STM TEL #9478 t_ms=1014100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028859) wifi_link: STM TEL #9479 t_ms=1014200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1028959) wifi_link: STM TEL #9480 t_ms=1014300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029059) wifi_link: STM TEL #9481 t_ms=1014400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029159) wifi_link: STM TEL #9482 t_ms=1014500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029259) wifi_link: STM TEL #9483 t_ms=1014600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029359) wifi_link: STM TEL #9484 t_ms=1014700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029459) wifi_link: STM TEL #9485 t_ms=1014800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029559) wifi_link: STM TEL #9486 t_ms=1014900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029659) wifi_link: STM TEL #9487 t_ms=1015000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029759) wifi_link: STM TEL #9488 t_ms=1015100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029859) wifi_link: STM TEL #9489 t_ms=1015200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1029959) wifi_link: STM TEL #9490 t_ms=1015300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030059) wifi_link: STM TEL #9491 t_ms=1015400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030159) wifi_link: STM TEL #9492 t_ms=1015500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030259) wifi_link: STM TEL #9493 t_ms=1015600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030359) wifi_link: STM TEL #9494 t_ms=1015700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030459) wifi_link: STM TEL #9495 t_ms=1015800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030559) wifi_link: STM TEL #9496 t_ms=1015900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030659) wifi_link: STM TEL #9497 t_ms=1016000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030759) wifi_link: STM TEL #9498 t_ms=1016100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030859) wifi_link: STM TEL #9499 t_ms=1016200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1030959) wifi_link: STM TEL #9500 t_ms=1016300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031059) wifi_link: STM TEL #9501 t_ms=1016400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031159) wifi_link: STM TEL #9502 t_ms=1016500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031259) wifi_link: STM TEL #9503 t_ms=1016600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031359) wifi_link: STM TEL #9504 t_ms=1016700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031459) wifi_link: STM TEL #9505 t_ms=1016800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031559) wifi_link: STM TEL #9506 t_ms=1016900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031649) wifi_link: STM TEL #9507 t_ms=1017000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031749) wifi_link: STM TEL #9508 t_ms=1017100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031849) wifi_link: STM TEL #9509 t_ms=1017200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1031949) wifi_link: STM TEL #9510 t_ms=1017300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032049) wifi_link: STM TEL #9511 t_ms=1017400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032149) wifi_link: STM TEL #9512 t_ms=1017500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032249) wifi_link: STM TEL #9513 t_ms=1017600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032349) wifi_link: STM TEL #9514 t_ms=1017700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032449) wifi_link: STM TEL #9515 t_ms=1017800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032549) wifi_link: STM TEL #9516 t_ms=1017900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032649) wifi_link: STM TEL #9517 t_ms=1018000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032749) wifi_link: STM TEL #9518 t_ms=1018100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032849) wifi_link: STM TEL #9519 t_ms=1018200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1032949) wifi_link: STM TEL #9520 t_ms=1018300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033049) wifi_link: STM TEL #9521 t_ms=1018400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033149) wifi_link: STM TEL #9522 t_ms=1018500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033249) wifi_link: STM TEL #9523 t_ms=1018600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033349) wifi_link: STM TEL #9524 t_ms=1018700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033449) wifi_link: STM TEL #9525 t_ms=1018800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033549) wifi_link: STM TEL #9526 t_ms=1018900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033649) wifi_link: STM TEL #9527 t_ms=1019000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033749) wifi_link: STM TEL #9528 t_ms=1019100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033849) wifi_link: STM TEL #9529 t_ms=1019200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1033949) wifi_link: STM TEL #9530 t_ms=1019300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034049) wifi_link: STM TEL #9531 t_ms=1019400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034149) wifi_link: STM TEL #9532 t_ms=1019500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034249) wifi_link: STM TEL #9533 t_ms=1019600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034349) wifi_link: STM TEL #9534 t_ms=1019700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034449) wifi_link: STM TEL #9535 t_ms=1019800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034549) wifi_link: STM TEL #9536 t_ms=1019900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034649) wifi_link: STM TEL #9537 t_ms=1020000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034749) wifi_link: STM TEL #9538 t_ms=1020100 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034849) wifi_link: STM TEL #9539 t_ms=1020200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1034949) wifi_link: STM TEL #9540 t_ms=1020300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
