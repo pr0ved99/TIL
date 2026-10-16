@@ -25,7 +25,7 @@
 현재 앱은 `esp32_wifi_link`, zero-only main/PAGE 통합 상태다.10/10 W5 마감과 당시 USB 분리 확인은 과거 이력이며 현재 전원은 인수인계를 따른다. PC 진단과 기능 관측만으로 UART 전체 release를 PASS 처리하지 않는다.
 10/1에는 새 시험 없이 9/30 관측을 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 마감했다. 각 관측을 전체 수용 PASS로 확대하지 않는다.
 
-W4/W5와 보고서35~36은 MVP-002/T-COM-002의 추가 증거다. CAN+LF 보완과 일반 재연결은 관측했지만 부분 줄 폐기의 실물 수용·AC-S 잔여·일반 구동 명령 유실 안전은 미완료이므로
+W4/W5와 보고서35~37은 MVP-002/T-COM-002의 추가 증거다. 부분 CMD/ARM 폐기와 선택 AC-S zero-only 실물 시나리오는 완료했다. 전체 오류 분기와 일반 구동 명령 유실의 전력·기계 안전은 별도이므로
 MVP-001/002 및 전체 UART release의 기존 PARTIAL 판정을 유지한다. 다른 안전·모터·주행 요구사항을 이 결과로 올리지 않는다.
 
 ## 문서 목적

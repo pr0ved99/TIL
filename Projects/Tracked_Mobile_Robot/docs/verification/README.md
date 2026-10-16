@@ -23,7 +23,7 @@ Engineering Basis
 
 ## Current Verification Scope
 
-**2026-10-16 마감:** UR-00/01/02 UART 캡처와 줄 폐기 수정 후 첫 복구 DISARM을 [보고서36](36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 기록했다. 다음은 [UR-02 통제된 부분 명령 주입 준비](../plans/2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md)다. 부분 명령 폐기 실물·실제 PWM/PC7·AC-S 잔여는 미완료다. 아래 날짜별 현재/미연결 표현은 당시 이력이다.
+**2026-10-17 마감:** UR-02 부분 명령 복구와 AC-S 선택 zero-only 실물시험·PWM/PC7 관측을 [보고서37](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)에 통합했다. 다음은 별도 통합 Gate의 선행 조건 검토다. 아래 날짜별 현재/미연결 표현은 당시 이력이다.
 
 **2026-10-11:** ARM/CMD parser·ticket·owner 실제 저장본 PC15/12/9 PASS. owner 포함 ESP 전체 빌드 성공은 사용자 확인이다.
 기초 모듈은 main·큐/UART·브라우저에 미연결이며 새 플래시/보드 실행은 미확인이다. AC-H 전체·AC-B/S와 nonzero 구동 증거로 확대하지 않는다.

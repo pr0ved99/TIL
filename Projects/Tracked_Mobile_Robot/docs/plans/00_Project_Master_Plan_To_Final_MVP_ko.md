@@ -77,7 +77,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | 주행·odometry 인수 | lifted → 저속 지상 전진/후진/제자리 회전, fault/통신 단절 정지, 1 m 실측 | 실제 거리·엔코더 추정·오차와 반복 조건 기록, 모든 MUST PASS |
 | 최종 문서·공개 준비 | 코드/배선 기준점·원본 증거·README·demo·미완료/잔여 위험 연결 | G8 종료 조건 충족. 현재 진행 중인 문서 개편도 이 묶음의 일부 |
 
-직전 A 전진 목표·W4 상태 전달·W5 비구동 PING/DISARM은 완료했다. 다음은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/16 진행 기록](../progress/2026-10-16_progress.md)의 UART 복구·AC-S 미확인 조건이다. 실제 구동 확대는 별도 후속 조건을 따른다.
+직전 A 전진 목표·W4/W5·UART 복구와 선택 AC-S zero-only 시험을 마감했다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/17 진행 기록](../progress/2026-10-17_progress.md)을 따라 다음 Gate를 선택한다. 실제 구동 확대는 별도 선행 조건을 따른다.
 해당 계획의 목표와, 전체 모터 시험에 필요한 선행 조건은 구분한다. 기존 전체 T005A가 PARTIAL인 상태에서 수행한 단발 관측은
 report 31에 보존하며, 선행 Gate를 충족한 것으로 소급하지 않는다. 이후 시험 확대에도 기존 선행 조건을 적용한다.
 
