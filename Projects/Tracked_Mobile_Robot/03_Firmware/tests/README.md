@@ -4,6 +4,16 @@
 브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
 보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.
 
+## 현재 주행 출력·직진 보정 검사 — 2026-10-18
+
+[test_drive_output_profile.py](test_drive_output_profile.py)는 저장 STM protocol/parser/mapper/motor C를 native PC에서 실행한다. HAL timer/GPIO/UART는 mock이며 보드 빌드·플래시·전기 파형 검사를 대체하지 않는다. 일반 cap150‰/순수 회전200‰와 왼쪽 직진 gain960/930 기준으로 전진144/150, 후진-140/-150, 저속 반올림, 혼합 입력, zero·DISARM·300ms timeout·ESTOP·범위 초과 정지를 검사한다.
+
+```powershell
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_drive_output_profile.py --cc C:/path/to/native/tcc.exe --output C:/path/to/evidence/stm_profile.json
+```
+
+[저장본 검사](../../assets/logs/wifi_link/2026-10-18_straight_trim_saved_review/stm_profile.json), [실물 주행](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json). 브라우저67개와 ESP 양 모드 adapter/core 경계는 기존 nonzero runner로 검사하며 ±200 허용/±201 정지를 포함한다. 실제 직진 개선은 보정 전후 CPS와 사용자 휨 관측 범위다.
+
 ## Wi-Fi nonzero 저장본 검사 — 2026-10-17
 
 [test_wifi_nonzero_core.py](test_wifi_nonzero_core.py)와 [test_wifi_nonzero_main.py](test_wifi_nonzero_main.py)는 현재mode0 복사본과 임시mode1 회귀를 구분한다. [test_wifi_nonzero_page.js](test_wifi_nonzero_page.js)는 방향 입력·release zero·정지·포커스 복구를 mock에서 검사한다. [mode0 근거](../../assets/logs/wifi_link/2026-10-17_nonzero_mode0_saved_review/)에 입력 hash·검사 출력이 있다. 사용자 빌드/플래시와 NZ-01~04 실물 증거는 [보고서38](../../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)을 따른다.

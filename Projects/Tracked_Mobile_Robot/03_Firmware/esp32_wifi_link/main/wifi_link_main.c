@@ -62,7 +62,7 @@ static esp_err_t wifi_uart_test_post(httpd_req_t *req);
 static void wifi_uart_test_cancel_locked(void);
 
 #define WS_MAX_CLIENTS 4U
-#define WS_PERIOD_MS 100U
+#define WS_PERIOD_MS 50U
 #define CONTROL_PUMP_MS 20U
 #define STM_TEL_STALE_MS 500U
 
@@ -232,7 +232,7 @@ static bool wifi_command_parse(
 static const char PAGE[] =
     "<!doctype html><html lang='ko'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>ESP Wi-Fi Link</title></head><body><h1>로봇 상태</h1>"
     WIFI_UART_PARTIAL_TEST_BANNER
-    "<p>STM32 UART → ESP32 Wi-Fi → 브라우저</p><p id='link'>연결 확인 중</p><p id='stm'>STM TEL 수신 대기</p><p id='startup'>부팅 응답 새 상태 확인 대기</p><p>READY는 이번 ESP 부팅 때 응답 확인을 마쳤다는 뜻입니다. 현재 통신 상태는 TEL 표시에서 확인하세요.</p><p><button id='ping' type='button' disabled>PING</button> <button id='arm' type='button' disabled>ARM · 속도 0</button> <button id='disarm' type='button' disabled>DISARM</button></p><p>마우스/터치로 누르는 동안만 방향 명령을 보냅니다. 놓으면 속도 0, DISARM은 무장 해제입니다.</p><p>명령값: 직진 ±50 mm/s · 회전 ±250 mrad/s (실측 속도 아님)</p><p><button id='forward' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>전진</button> <button id='reverse' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>후진</button> <button id='left' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>좌회전</button> <button id='right' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>우회전</button> </p><p id='motion_hint'>방향 입력 대기</p><p id='control'>제어 상태 수신 대기</p><p id='command_notice'>명령 송신 대기</p><p id='command_result'>명령 결과 수신 대기</p><pre id='data'></pre><script>\n"
+    "<p>STM32 UART → ESP32 Wi-Fi → 브라우저</p><p id='link'>연결 확인 중</p><p id='stm'>STM TEL 수신 대기</p><p id='startup'>부팅 응답 새 상태 확인 대기</p><p>READY는 이번 ESP 부팅 때 응답 확인을 마쳤다는 뜻입니다. 현재 통신 상태는 TEL 표시에서 확인하세요.</p><p><button id='ping' type='button' disabled>PING</button> <button id='arm' type='button' disabled>ARM · 속도 0</button> <button id='disarm' type='button' disabled>DISARM</button></p><p>마우스/터치로 누르는 동안만 방향 명령을 보냅니다. 놓으면 속도 0, DISARM은 무장 해제입니다.</p><p>명령값: 전진 +100 / 후진 -100 mm/s · 회전 ±500 mrad/s (실측 속도 아님)</p><p><button id='forward' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>전진</button> <button id='reverse' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>후진</button> <button id='left' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>좌회전</button> <button id='right' type='button' style='touch-action:none;user-select:none;min-width:72px;min-height:48px' disabled>우회전</button> </p><p id='motion_hint'>방향 입력 대기</p><p id='control'>제어 상태 수신 대기</p><p id='command_notice'>명령 송신 대기</p><p id='command_result'>명령 결과 수신 대기</p><pre id='data'></pre><script>\n"
     "const byId=id=>document.getElementById(id);\n"
     "const link=byId('link'), stm=byId('stm'), startup=byId('startup'), data=byId('data');\n"
     "const notice=byId('command_notice'), result=byId('command_result'), control=byId('control');\n"
@@ -245,7 +245,7 @@ static const char PAGE[] =
     "const motionButtons=['forward','reverse','left','right'].map(byId);\n"
     "const motionHint=byId('motion_hint');\n"
     "// Fixed open-loop requests, not calibrated vehicle speeds.\n"
-    "const motionValues={forward:[50,0],reverse:[-50,0],left:[0,250],right:[0,-250]};\n"
+    "const motionValues={forward:[100,0],reverse:[-100,0],left:[0,500],right:[0,-500]};\n"
     "function motionReady(){\n"
     " const age=performance.now()-latestTelAt;\n"
     " return connected()&&intent&&focused()&&controlId>0&&nextId<=4294967295&&\n"
@@ -255,7 +255,7 @@ static const char PAGE[] =
     "  latestTel.stm_connected&&!latestTel.stm_stale&&latestTel.stm_age_ms+age<250&&\n"
     "  latestTel.state==='ARMED'&&latestTel.command_age_ms+age<300&&\n"
     "  Math.abs(latestTel.vx_mmps)<=100&&Math.abs(latestTel.w_mradps)<=500&&\n"
-    "  Math.abs(latestTel.left_pwm)<=100&&Math.abs(latestTel.right_pwm)<=100;\n"
+    "  Math.abs(latestTel.left_pwm)<=200&&Math.abs(latestTel.right_pwm)<=200;\n"
     "}\n"
     "function clearMotion(){\n"
     " const old=motion;motion=null;releaseZero=false;\n"
@@ -377,7 +377,7 @@ static const char PAGE[] =
     "   const move=motion!==null&&!releaseZero&&motionReady();\n"
     "   const vx=move?motion.vx:0,w=move?motion.w:0;\n"
     "   p.releaseZero=releaseZero;\n"
-    "   text+=',vx_mmps='+vx+',w_mradps='+w;nextCmdAt=performance.now()+100;\n"
+    "   text+=',vx_mmps='+vx+',w_mradps='+w;nextCmdAt=performance.now()+80;\n"
     "  }else{clearMotion();intent=true;controlId=0;nextCmdAt=0;}\n"
     " }\n"
     " pending=p;nextPingAt=performance.now()+500;\n"
@@ -840,10 +840,14 @@ static int wifi_control_snapshot(wifi_ws_session_t *session, char *json, size_t 
     const int length = snprintf(json, capacity,
         "{\"kind\":\"control_state\",\"boot_id\":%" PRIu32 ",\"session_id\":%" PRIu32
         ",\"phase\":\"%s\",\"owner_session\":%" PRIu32 ",\"control_id\":%" PRIu32
-        ",\"ticket\":%" PRIu32 ",\"purpose\":\"%s\",\"ttl_ms\":%" PRIu32 ",\"zero_only\":%s}",
-        s_boot_id, session->id, phases[state->phase], state->owner.ws_session_id, state->owner.control_id,
-        valid ? session->ticket.id : 0U, valid ? (arm ? "ARM" : "CMD") : "NONE", ttl,
-        WIFI_CONTROL_ZERO_ONLY ? "true" : "false");
+        ",\"ticket\":%" PRIu32 ",\"purpose\":\"%s\",\"ttl_ms\":%" PRIu32
+        ",\"zero_only\":%s,\"control_reason\":%u}",
+        s_boot_id, session->id, phases[state->phase],
+        state->owner.ws_session_id, state->owner.control_id,
+        valid ? session->ticket.id : 0U,
+        valid ? (arm ? "ARM" : "CMD") : "NONE", ttl,
+        WIFI_CONTROL_ZERO_ONLY ? "true" : "false",
+        (unsigned)state->reason);
     xSemaphoreGive(s_stm_lock);
     return length >= 0 && (size_t)length < capacity ? length : -1;
 }
@@ -2564,6 +2568,10 @@ void app_main(void)
 
     ESP_LOGI(TAG, "Wi-Fi + STM UART RX: mode=%s boot_id=%" PRIu32,
              WIFI_LINK_MODE_NAME, s_boot_id);
+#if !WIFI_LINK_USE_AP
+    ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
+    ESP_LOGI(TAG, "Wi-Fi power save disabled for control latency");
+#endif
     ESP_ERROR_CHECK(esp_wifi_start());
 
     for (;;) {

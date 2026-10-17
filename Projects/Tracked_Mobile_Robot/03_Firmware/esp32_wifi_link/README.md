@@ -2,15 +2,11 @@
 
 STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-17
+## 현재 상태 — 2026-10-18
 
-Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 참조. 현재 ZERO_ONLY=0U, UART 시험 mode0.
+배터리 단독 지상에서 브라우저→ESP→STM 경로의 전·후진·양방향 회전·놓음/DISARM 정지를 확인했다. 현재 ZERO_ONLY=0U·UART 시험 mode0, 일반 PWM cap150‰/순수 회전200‰, STM 직진 왼쪽 gain960/930이다. [최종 주행 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [진행 기록](../../docs/progress/2026-10-18_progress.md). 전체 MVP·정밀 속도/거리·모든 오류/물리 안전 수용은 별도다.
 
-UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [보고서37](../../docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)과 [진행 기록](../../docs/progress/2026-10-17_progress.md)을 따른다.
-
-부팅 및 모든 DISARM 앞의 ASCII CAN+LF는 STM 잔여 줄을 실행 없이 폐기한다. ESP 시험 mode1/2/3은 부분 CMD/ARM·timeout 검증용이며 현재 WIFI_UART_PARTIAL_TEST_MODE=0U로 비활성이다. 사용자 정상 이미지 복원과 수동 ARM/zero/DISARM을 확인했다.
-
-READY/FAILED는 이번 ESP 부팅의 응답 확인 이력이다. 현재 TEL freshness와 제어 조건은 별도로 판단한다. 새 연결·포커스 복귀는 자동 ARM하지 않으며 B는 한 페이지의 내부 WebSocket으로 시험할 수 있다. 공개 소스 hash는 플래시 바이너리 readback을 대신하지 않는다.
+현재 WS 상태50ms·브라우저 CMD80ms(새 ticket/ACK 등 조건 충족 시), STA WIFI_PS_NONE으로 동작한다. 과거 간헐 정지에는 TEL freshness/SOURCE timeout과 구 ESP±150 이미지가 ±200을 거부한 별개 사례가 있었다. 후속 비재현 회차로 영구 신뢰성을 주장하지 않는다. 제어 TEL250ms·SOURCE200ms·STM300ms 제한은 유지했다.
 
 ## 데이터 흐름과 조건
 
@@ -22,7 +18,7 @@ DISARM/취소 → 제어 허가와 미송신 입력 폐기 → DISARM → ACK와
 ```
 
 - ESP GPIO17 TX→STM PA10 RX, STM PA9 TX→ESP GPIO18 RX, 공통 GND, 115200/8N1.
-- STM TEL/WS 상태 목표100ms, 제어 처리 목표20ms. 표시 stale500ms와 제어용 TEL age250ms는 구분한다.
+- STM TEL 목표100ms·WS 상태 목표50ms, 제어 처리 목표20ms. 표시 stale500ms와 제어용 TEL age250ms는 구분한다.
 - ARM→zero CMD ACK와 새 일치 TEL→ACTIVE→현재 방향 CMD. ticket150ms·큐50ms·ACK150ms·source200ms 등 서로 다른 기한을 검사한다.
 - 브라우저는 ticket 전송 여유50ms와 수동 ARM의 미송신 준비 대기 최대200ms를 사용한다. blur/hidden/끊김은 준비 대기·제어 의도를 취소한다.
 - `batt_mv=null`, `battery_available=false`: 배터리 ADC 미구현. CPS는 counts/s다.
@@ -58,7 +54,7 @@ idf.py -p COM번호 flash monitor
 ```
 
 `COM번호`는 실제 장치 포트로 바꾼다. 코드 입력·보드 빌드·플래시는 사용자가 수행한다.
-최신 저장본 mode0 core13/adapter6·PAGE66 PC 결과와 사용자 보드 관측은 별도 증거다.
+마감 PC 검사는 mode0 core14·mode1 추가3·기존 회귀59, adapter 각6·기존 C42, PAGE67과 C 초기화/반례 검사를 구분한다. [현재 검사 근거](../../assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/esp_main.json)와 사용자 보드 관측은 별도 증거다.
 모듈별 PC 검사·사용자 빌드 성공을 전체 구동 안전으로 확대하지 않는다.
 [검사 안내](../tests/README.md)와 [다음 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 새 시험의 원본 로그·화면·빌드/플래시 식별값은 [증거 보존 절차](../../docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.

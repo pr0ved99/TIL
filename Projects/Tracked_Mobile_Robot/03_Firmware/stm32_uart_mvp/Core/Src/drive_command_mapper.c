@@ -7,7 +7,9 @@
 #define DRIVE_COMMAND_VX_MAX_MMPS    100
 #define DRIVE_COMMAND_W_MIN_MRADPS  -500
 #define DRIVE_COMMAND_W_MAX_MRADPS   500
-#define DRIVE_COMMAND_MAX_DUTY_PERMILLE 100U
+#define DRIVE_COMMAND_MAX_DUTY_PERMILLE 200U
+#define DRIVE_COMMAND_LEFT_FORWARD_GAIN_PERMILLE 960
+#define DRIVE_COMMAND_LEFT_REVERSE_GAIN_PERMILLE 930
 
 bool drive_command_map(
     int32_t vx_mmps,
@@ -71,6 +73,21 @@ bool drive_command_map(
     request->right_signed_permille = (int16_t)(
         (raw_right * (int32_t)duty_cap_permille) / peak
     );
+
+    if(w_mradps == 0 && vx_mmps != 0){
+        const int32_t gain_permille = (vx_mmps > 0)
+            ? DRIVE_COMMAND_LEFT_FORWARD_GAIN_PERMILLE
+            : DRIVE_COMMAND_LEFT_REVERSE_GAIN_PERMILLE;
+        int32_t scaled_left =
+            (int32_t)request->left_signed_permille * gain_permille;
+
+        scaled_left += (scaled_left < 0)
+            ? -(DRIVE_COMMAND_NORMALIZED_SCALE / 2)
+            : (DRIVE_COMMAND_NORMALIZED_SCALE / 2);
+        request->left_signed_permille = (int16_t)(
+            scaled_left / DRIVE_COMMAND_NORMALIZED_SCALE
+        );
+    }
 
     return true;
 }

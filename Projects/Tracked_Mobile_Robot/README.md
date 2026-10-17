@@ -7,8 +7,8 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-17:** Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md), [최신 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
-  전체 AC-B/S 세부 경로·실제 Wi-Fi 모터 부하·배터리 ADC·전류/열·차량 주행은 미완료다. 이전 모터 회전 이력과 이번 모터 분리 Wi-Fi 검증을 구분한다.
+- **현재 단계 · 2026-10-18:** 궤도 장착·배터리 단독 Wi-Fi 제어로 전·후진·좌/우회전과 동작 사이 놓음 정지·최종 DISARM을 확인했다. 일반 출력15%/회전20%, 방향별 직진 trim으로 좌우 CPS 차이와 육안 휨을 줄였다. [최종 주행 근거](assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [보정 비교](docs/progress/2026-10-18_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+  1m 실제/엔코더 추정 거리 비교·현재 궤도 구성의 전용 fault-stop 회차·전류/열·최종 수용 audit는 후속이다. ADC 자동 저전압 정지·PID·IMU·ROS2는 post-MVP 범위다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
@@ -43,9 +43,9 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 ```mermaid
 flowchart LR
     ESP["ESP32-S3<br/>UART 명령 전달 · 상태 수신"] <-->|UART| STM["STM32 NUCLEO-F446RE<br/>명령 검증 · 출력 허용 판단"]
-    ESP <-->|Wi-Fi / WebSocket · 상태와 PING/DISARM| WEB["브라우저<br/>W5 비구동 명령 PASS · ARM/CMD 미구현"]
+    ESP <-->|Wi-Fi / WebSocket · 상태와 ARM/CMD/DISARM| WEB["브라우저<br/>방향 입력·놓음 정지·지상 주행 확인"]
     STM -->|PWM / DIR| DRIVER["MDD10A<br/>2채널 모터 드라이버"]
-    DRIVER -.->|단발 회전 확인 · 주행 미검증| MOTOR["좌우 궤도 모터"]
+    DRIVER -.->|일반15%·회전20% 저속 주행 확인| MOTOR["좌우 궤도 모터"]
     MOTOR -->|축 회전 피드백| ENC["엔코더<br/>신호 조정 회로"]
     ENC -->|A/B 펄스| STM
     BAT["3S LiPo · 퓨즈 · 메인 스위치"] -.-> STOP["물리 비상정지 회로<br/>모터 전원 차단"]
@@ -71,12 +71,12 @@ flowchart LR
 
 | 대표 결과 | 확인한 내용 | 시험 범위·근거 |
 | --- | --- | --- |
-| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 현재 STM TEL/WS100ms·stale500ms. PC JS57·C21은 별도 검사. nonzero 명령·모터 분리 검증은 보고서38 참조 |
+| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 당시 STM TEL/WS100ms·stale500ms; 현재 WS50ms·STA 절전 해제. PC JS57·C21은 별도 검사. nonzero 명령·모터 분리 검증은 보고서38 참조 |
 | DISARM → PWM 차단 | **23.50 μs** | [STM32 로직 핀 계측](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md). 실제 모터 정지 시간이 아님 |
 | 영구 배선의 PWM/DIR | **19.049 / 19.058 kHz**, 약 **10%**, 방향 전환 전후 약 **2 ms PWM 0** | [모터 분리 MDD10A 입력](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) |
 | 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |
 | 엔코더 환산 | **1,560 counts/rev**, 610개 채널 샘플의 mRPM 환산 불일치 **0건** | [손회전 보정·계산 검증](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md). 절대 속도·주행 거리 검증은 별도 |
-| 실제 모터 방향 보정 | B/M2 **±10%·300 ms** 단발 명령에서 실제 양방향 회전·CPS 부호·정지 확인 | [섀시 분리 단일 모터](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md). A 실제 전진도9/30 확인. 전체 안전 수용·주행은 남음 |
+| 실제 모터 방향 보정 | B/M2 **±10%·300 ms** 단발 명령에서 실제 양방향 회전·CPS 부호·정지 확인 | [섀시 분리 단일 모터](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md). A 실제 전진도9/30 확인. 10/18 궤도 지상 주행은 별도 최신 근거로 추가; 전체 안전 수용은 별도 |
 
 <details>
 <summary>각 결과의 검증 문제·방법·관측 한계 펼치기</summary>
@@ -135,25 +135,24 @@ flowchart LR
 
 ## 4. 현재 검증 범위와 남은 작업
 
-**상태 대조: 2026-10-11.** 날짜별 시험의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
+**상태 대조: 2026-10-18.** 날짜별 시험의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
 요구사항별 판정은 [검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
 
 | 분야 | 확인된 범위 | 남은 핵심 검증 |
 | --- | --- | --- |
-| 통신·펌웨어 | UART·timeout·latch/reset·PWM 차단, W4/W5 비구동 왕복과 복구. ARM/CMD 기초 모듈 PC15/12/9 PASS·ESP 빌드 성공 사용자 확인 | ARM/CMD 상태/기한·큐/UART/브라우저 연결과 AC-H/B/S, 전체 bridge release·리셋 err 원인. 별도 UART bridge hook1U 복구는 후속 |
+| 통신·펌웨어 | Wi-Fi ARM/CMD·ticket/owner·큐/UART·PAGE 통합, 선택 AC-S/nonzero·실제 궤도 구동/정지 확인 | 현재 최종 구성의 실제 궤도 UART 단절/timeout 전용 회차와 전체 오류 분기 수용 |
 | 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
-| 구동·피드백 | A 전진/DISARM·S0 관측, B 방향 보정, A/B 각각10%·3초 구동과원시1432/1384 ticks·CPS 일치 | 전류·열·반복 기동·부하 조건·주행 |
+| 구동·피드백 | 배터리 단독 지상 전·후진/좌·우회전, 동작 사이 정지·최종 DISARM, 직진 gain0.96/0.93의 CPS/휨 개선 | 전류·열·장시간/부하 조건·1m 실제/추정 거리 비교 |
 | 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 전력단 일부 관측과 A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A·T-MOTOR-003 PARTIAL, 정식 T-ESTOP-007 BLOCKED. rail-off·단자/배선 release·기계 정지 시간/거리 수용 |
 | 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
-| 기구·주행 | 어댑터 플레이트 설계·제작품 수령 기록 | 실물 장착·절연·접근성, 첫 주행 전 배터리 ADC·저전압 경고/정지, 저속 주행·1 m 거리 비교 |
+| 기구·주행 | 플레이트/전장 장착·고정/절연/접근성 사용자 확인, 단축 궤도 구성으로 저속 지상 주행 | 1m 거리·엔코더 추정 오차와 정량 기구/주행 수용. ADC/자동 저전압 정지는 post-MVP |
 
 추가 근거: [보드 전원](docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) ·
 [T004 감지·PWM](docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) ·
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-A/M1 실제 전진 확인은 완료했다. ARM/CMD zero-only와 NZ-01~04 모터 분리 nonzero 검증을 마쳤고, 다음은 별도 lifted 단일 모터 Wi-Fi 회차 준비다.
-실제 구동 확대는 계측 방법·전력단·물리 비상정지·단일 모터의 남은 조건을 충족한 뒤 기구 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
+현재 저속 수동 주행은 선택 회차 범위에서 완료했다. 다음은 누적 엔코더 count·이동거리 환산을 연결하고1m 실측/추정 오차를 기록할 준비다. 현재 구성의 전용 fault-stop·부하/열·전체 요구사항 수용은 별도이며 과거 제외 합의한 항목을 자동으로 재개하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),

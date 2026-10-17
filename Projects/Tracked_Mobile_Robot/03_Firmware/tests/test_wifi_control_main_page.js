@@ -188,9 +188,9 @@ test('No CMD before ARM ACK even if state arrives first',()=>{
  assert.equal(h.sockets[0].sent.length,2);
  h.sockets[0].receive(cmdResult('ARM',1));h.advance(20);assert.equal(h.sockets[0].sent.length,3);
 });
-test('Zero stream observes 100 ms target and needs fresh one-use tickets',()=>{
+test('Zero stream observes 80 ms target and needs fresh one-use tickets',()=>{
  const h=ready();armAck(h);h.advance(20);h.sockets[0].receive(cmdResult('CMD',2));
- h.advance(20);h.sockets[0].receive(cmdState(3,{phase:'ACTIVE'}));h.advance(79);assert.equal(h.sockets[0].sent.length,3);
+ h.advance(20);h.sockets[0].receive(cmdState(3,{phase:'ACTIVE'}));h.advance(59);assert.equal(h.sockets[0].sent.length,3);
  h.advance(1);assert.equal(h.sockets[0].sent.length,4);
  h.sockets[0].receive(cmdResult('CMD',3));h.sockets[0].receive(cmdState(3,{phase:'ACTIVE'}));
  h.advance(100);assert.equal(h.sockets[0].sent.length,4);
@@ -237,7 +237,7 @@ test('Repeated decreasing TTL snapshots reserve the margin only once',()=>{
 });
 test('Zero CMD waits for a new ticket when the send cutoff meets its next interval',()=>{
  const h=ready();armAck(h);h.advance(20);h.sockets[0].receive(cmdResult('CMD',2));
- h.sockets[0].receive(cmdState(3,{phase:'ACTIVE'}));h.advance(100);
+ h.sockets[0].receive(cmdState(3,{phase:'ACTIVE',ttl_ms:130}));h.advance(80);
  assert.equal(h.sockets[0].sent.length,3);
  h.sockets[0].receive(cmdState(4,{phase:'ACTIVE'}));h.advance(20);
  assert.equal(h.sockets[0].sent[3],'CMD,boot_id=123,request_id=3,control_id=1,ticket=4,vx_mmps=0,w_mradps=0');

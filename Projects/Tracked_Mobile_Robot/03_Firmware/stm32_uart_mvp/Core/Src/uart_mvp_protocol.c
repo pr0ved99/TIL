@@ -18,10 +18,11 @@
 #define W_MAX_MRADPS  500
 
 /*
- * 100 permille = 10% initial production output cap.
- * Keep provisional until lifted motor verification.
+ * Supervised drivetrain test:
+ * normal commands: up to 15%, pure rotation: up to 20%.
  */
-#define CMD_OUTPUT_DUTY_CAP_PERMILLE    100U
+#define CMD_OUTPUT_DUTY_CAP_PERMILLE       150U
+#define CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE  200U
 #define UART_FRAME_MAX_LEN              127u
 #define UART_LINE_BUFFER_SIZE           (UART_FRAME_MAX_LEN + 2u)
 #define UART_TX_BUFFER_SIZE             384u
@@ -409,10 +410,15 @@ static void handle_cmd(const uart_frame_t *frame){
         return;
     }
 
+    const uint16_t duty_cap_permille =
+        (frame->vx_mmps == 0 && frame->w_mradps != 0)
+        ? CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE
+        : CMD_OUTPUT_DUTY_CAP_PERMILLE;
+
     if(!drive_command_map(
         frame->vx_mmps,
         frame->w_mradps,
-        CMD_OUTPUT_DUTY_CAP_PERMILLE,
+        duty_cap_permille,
         &request
     )){
         motor_output_stop_all();

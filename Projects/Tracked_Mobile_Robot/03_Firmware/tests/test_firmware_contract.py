@@ -392,7 +392,9 @@ class FirmwareContractTest(unittest.TestCase):
             "DRIVE_COMMAND_VX_MAX_MMPS": 100,
             "DRIVE_COMMAND_W_MIN_MRADPS": -500,
             "DRIVE_COMMAND_W_MAX_MRADPS": 500,
-            "DRIVE_COMMAND_MAX_DUTY_PERMILLE": 100,
+            "DRIVE_COMMAND_MAX_DUTY_PERMILLE": 200,
+            "DRIVE_COMMAND_LEFT_FORWARD_GAIN_PERMILLE": 960,
+            "DRIVE_COMMAND_LEFT_REVERSE_GAIN_PERMILLE": 930,
         }
         for name, value in expected.items():
             with self.subTest(name=name):
@@ -578,7 +580,7 @@ class FirmwareContractTest(unittest.TestCase):
         definitions = parse_defines(self.source["motor_output_c"])
         expected = {
             "MOTOR_OUTPUT_DUTY_SCALE_PERMILLE": 1000,
-            "MOTOR_OUTPUT_MAX_DUTY_PERMILLE": 100,
+            "MOTOR_OUTPUT_MAX_DUTY_PERMILLE": 200,
             "MOTOR_OUTPUT_PWM_ZERO_SETTLE_MS": 1,
             "MOTOR_OUTPUT_DIR_SETTLE_MS": 1,
         }
@@ -870,8 +872,9 @@ class FirmwareContractTest(unittest.TestCase):
                 definitions,
                 "CMD_OUTPUT_DUTY_CAP_PERMILLE",
             ),
-            100,
+            150,
         )
+        self.assertEqual(integer_define(definitions, "CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE"), 200)
 
         body = extract_function(protocol_source, "handle_cmd")
         compact_body = compact_c(body)
@@ -889,7 +892,7 @@ class FirmwareContractTest(unittest.TestCase):
             "if(!drive_command_map("
             "frame->vx_mmps,"
             "frame->w_mradps,"
-            "CMD_OUTPUT_DUTY_CAP_PERMILLE,"
+            "duty_cap_permille,"
             "&request"
             ")){"
             "motor_output_stop_all();"
@@ -959,9 +962,14 @@ class FirmwareContractTest(unittest.TestCase):
             )
 
         success_commit = compact_c(
-            estop_guard + "".join(success_tokens)
+            estop_guard + "".join(success_tokens[:-1])
         )
         self.assertIn(success_commit, compact_body)
+        # Disabled diagnostic blocks may appear between the state commit and ACK.
+        # They are removed by the C preprocessor in the normal image.
+        for name in ("UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED",
+                     "UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED"):
+            self.assertEqual(integer_define(definitions, name), 0)
 
         self.assert_tokens_in_order(
             body,
@@ -975,6 +983,7 @@ class FirmwareContractTest(unittest.TestCase):
             controlled_output_failure,
             production_output,
             success_commit,
+            success_tokens[-1],
         )
 
     def test_estop_reset_parser_contract(self) -> None:

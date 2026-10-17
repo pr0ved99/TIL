@@ -131,11 +131,27 @@ int main(int argc, char **argv)
         wifi_control_executor_inputs_cleared(&e);
         CHECK(wifi_control_executor_take_tx(&e, 14U, 143U, &tx));
         CHECK(strcmp(tx.bytes, "\x18\nDISARM,seq=14\n") == 0);
+    } else if (strcmp(name, "pwm_boundary") == 0) {
+        const int32_t cap = (int32_t)WIFI_CONTROL_PWM_MAX_PERMILLE;
+        for (unsigned side = 0; side < 2; ++side) {
+            for (int sign = -1; sign <= 1; sign += 2) {
+                for (int over = 0; over <= 1; ++over) {
+                    motion_ack();
+                    wifi_control_tel_t t = moving_tel(150U);
+                    t.vx_mmps = 0; t.w_mradps = sign * 500;
+                    t.left_pwm = -sign * cap; t.right_pwm = sign * cap;
+                    if (side == 0) t.left_pwm = -sign * (cap + over);
+                    else t.right_pwm = sign * (cap + over);
+                    wifi_control_executor_tel(&e, &t, 150U);
+                    CHECK(e.state.phase == (over ? WIFI_CONTROL_STOPPING : WIFI_CONTROL_ACTIVE));
+                }
+            }
+        }
     } else if (strcmp(name, "bad_motion_tel") == 0 || strcmp(name, "zero_command_pwm") == 0) {
         motion_ack();
         wifi_control_tel_t t = moving_tel(150U);
         if (strcmp(name, "zero_command_pwm") == 0) { t.vx_mmps = 0; t.w_mradps = 0; }
-        else { t.left_pwm = 101; }
+        else { t.left_pwm = (int32_t)WIFI_CONTROL_PWM_MAX_PERMILLE + 1; }
         wifi_control_executor_tel(&e, &t, 150U);
         CHECK(e.state.phase == WIFI_CONTROL_STOPPING);
     } else if (strcmp(name, "motion_cannot_confirm_stop") == 0) {

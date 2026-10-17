@@ -11,7 +11,7 @@
 #error "WIFI_CONTROL_ZERO_ONLY must be 0 or 1"
 #endif
 /* Must match the STM production output cap. Not a measured speed limit. */
-#define WIFI_CONTROL_PWM_MAX_PERMILLE 100U
+#define WIFI_CONTROL_PWM_MAX_PERMILLE 200U
 #define WIFI_CONTROL_VX_MIN_MMPS (-100)
 #define WIFI_CONTROL_VX_MAX_MMPS 100
 #define WIFI_CONTROL_W_MIN_MRADPS (-500)

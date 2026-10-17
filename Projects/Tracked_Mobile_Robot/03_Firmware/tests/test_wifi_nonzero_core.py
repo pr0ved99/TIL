@@ -28,7 +28,7 @@ CHANGED = {'wifi_control_contract.h', 'wifi_control_state.c', 'wifi_control_exec
 CASES = ('policy', 'first_motion_admission', 'first_motion_at_tx', 'round_trip',
          'queue_expired_motion', 'old_owner', 'ack_timeout', 'source_timeout',
          'owner_close', 'partial_motion_tx', 'bad_motion_tel', 'zero_command_pwm',
-         'motion_cannot_confirm_stop')
+         'motion_cannot_confirm_stop', 'pwm_boundary')
 
 
 def run(command):

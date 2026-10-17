@@ -1,9 +1,8 @@
 # Verification Documentation
 
-최신 통합 관측: [report37](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) — UR-02 및 AC-S01~08 선택 zero-only 시나리오 마감. 실제 PWM/PC7·UART 근거와 실패/미해결 관측을 연결했다. 전체 세부 오류·nonzero/전력/기계 안전·주행 수용은 별도다. 이전 과정은 report35/36에 보존한다.
-모터 시험은 [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A 방향·DISARM·S0·A/B 각각10%·3초 범위다. 전류/열·전체 안전 수용·주행은 남아 있다. 재개는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+최신 통합 관측: **2026-10-18 배터리 단독 지상 수동 주행과 1차 직진 보정 완료**. [통합 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [진행 기록](../progress/2026-10-18_progress.md), [최신 검증 매트릭스](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 전·후진·양방향 회전·놓음/DISARM 정지는 사용자 관측과 TEL로 확인했다. 전체 MVP·1m/정밀 주행·모든 fault-stop 수용과 구분한다.
 
-최신 코드·PC·계측 상태는 [10/17 기록](../progress/2026-10-17_progress.md)과 [검사 안내](../../03_Firmware/tests/README.md)를 따른다.
+이전 비구동 Wi-Fi는 report37/38, 단일 모터는 report32의 해당 조건을 따른다. 현재 코드·PC 검사와 재개점은 [검사 안내](../../03_Firmware/tests/README.md)와 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 사용한다.
 원본 로그·화면·빌드/플래시 식별값·관측 조건은 [증거 보존 절차](EVIDENCE_CAPTURE_GUIDE_ko.md)로 기록한다.
 
 이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.

@@ -5,6 +5,8 @@
 
 ## 최신 기록
 
+**[2026-10-18 배터리 단독 지상 수동 주행·1차 직진 보정 완료](2026-10-18_progress.md)** — 일반15%/회전20%, 직진 왼쪽 gain960/930. 전진→좌회전→전진→우회전→후진과 매 동작 사이 zero/PWM/CPS0·최종 DISARM 확인. 사용자 휨 감소·방향 전환/놓음 정지 문제없음 확인. [최종 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json). 전체 MVP·정밀 주행·장시간 신뢰성 수용은 별도.
+
 **[2026-10-17 AC-S·nonzero NZ-01~04 마감](2026-10-17_progress.md)** — Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 참조. 최신 DISARM436 OK/IDLE/DISARMED, 이번 종료 전원 분리는 미보고.
 
 **[2026-10-16 UART 줄 폐기·부분 명령 실물 시험·일반 이미지 복원](2026-10-16_progress.md)** — UR-02 재연결·부분 CMD·LF 없는 ARM 폐기 및 첫 DISARM 복구 PASS. mode0 복원 뒤 boot3996125447, 시험 배너 없음·READY/IDLE 확인. D1 단발 샘플 차이 원인·전체 AC-S는 미완료. 다음은 UR-03 잔여 항목. [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md).

@@ -1,0 +1,209 @@
+{
+  "effective_tel_age_ms": 270,
+  "effective_cmd_age_ms": 257,
+  "stop": {
+    "ms": 40499.20000000298,
+    "sendStop": true,
+    "intent": true,
+    "focused": true,
+    "motionReady": false,
+    "motion": {
+      "button": "left",
+      "vx": 0,
+      "w": 500
+    },
+    "pending": {
+      "id": 276,
+      "cmd": "CMD"
+    },
+    "offer": {
+      "kind": "control_state",
+      "boot_id": 2911775351,
+      "session_id": 4,
+      "phase": "ACTIVE",
+      "owner_session": 4,
+      "control_id": 10,
+      "ticket": 8944,
+      "purpose": "CMD",
+      "ttl_ms": 111,
+      "zero_only": false
+    },
+    "offer_age_ms": 45.29999999701977,
+    "tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 2911775351,
+      "uptime_ms": 1339129,
+      "free_heap_bytes": 262900,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 97,
+      "stm_age_limit_ms": 500,
+      "tel_count": 13406,
+      "stm_t_ms": 1381444,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": 84,
+      "last_seq": 1404890737,
+      "vx_mmps": 0,
+      "w_mradps": 500,
+      "left_pwm": -150,
+      "right_pwm": 150,
+      "left_cps": -1070,
+      "right_cps": 890,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 0
+    },
+    "tel_local_age_ms": 173,
+    "stack": "Error\n    at stopLocal (<anonymous>:49:51)\n    at controlTick (http://192.168.0.17/:165:50)"
+  },
+  "preceding_timer_delays": [],
+  "last_tel_rx": [
+    {
+      "ms": 40064.5,
+      "event": "TEL_RX",
+      "gap_ms": 139.29999999701977,
+      "esp_uptime_ms": 1338828,
+      "esp_step_ms": 118,
+      "tel_count": 13403,
+      "stm_t_ms": 1381144,
+      "stm_age_ms": 81,
+      "command_age_ms": 39,
+      "last_seq": 1404890735,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    },
+    {
+      "ms": 40154.80000000447,
+      "event": "TEL_RX",
+      "gap_ms": 90.30000000447035,
+      "esp_uptime_ms": 1338928,
+      "esp_step_ms": 100,
+      "tel_count": 13404,
+      "stm_t_ms": 1381244,
+      "stm_age_ms": 81,
+      "command_age_ms": 39,
+      "last_seq": 1404890736,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    },
+    {
+      "ms": 40244.5,
+      "event": "TEL_RX",
+      "gap_ms": 89.69999999552965,
+      "esp_uptime_ms": 1339028,
+      "esp_step_ms": 100,
+      "tel_count": 13405,
+      "stm_t_ms": 1381344,
+      "stm_age_ms": 96,
+      "command_age_ms": 139,
+      "last_seq": 1404890736,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    },
+    {
+      "ms": 40326.40000000596,
+      "event": "TEL_RX",
+      "gap_ms": 81.90000000596046,
+      "esp_uptime_ms": 1339129,
+      "esp_step_ms": 101,
+      "tel_count": 13406,
+      "stm_t_ms": 1381444,
+      "stm_age_ms": 97,
+      "command_age_ms": 84,
+      "last_seq": 1404890737,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    }
+  ],
+  "following_tel_rx": [
+    {
+      "ms": 40504,
+      "event": "TEL_RX",
+      "gap_ms": 177.59999999403954,
+      "esp_uptime_ms": 1339250,
+      "esp_step_ms": 121,
+      "tel_count": 13408,
+      "stm_t_ms": 1381644,
+      "stm_age_ms": 3,
+      "command_age_ms": 55,
+      "last_seq": 1404890739,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    },
+    {
+      "ms": 40624.80000000447,
+      "event": "TEL_RX",
+      "gap_ms": 120.80000000447035,
+      "esp_uptime_ms": 1339369,
+      "esp_step_ms": 119,
+      "tel_count": 13409,
+      "stm_t_ms": 1381744,
+      "stm_age_ms": 37,
+      "command_age_ms": 38,
+      "last_seq": 1404890740,
+      "state": "ARMED",
+      "pwm": [
+        -150,
+        150
+      ]
+    },
+    {
+      "ms": 40774,
+      "event": "TEL_RX",
+      "gap_ms": 149.19999999552965,
+      "esp_uptime_ms": 1339488,
+      "esp_step_ms": 119,
+      "tel_count": 13410,
+      "stm_t_ms": 1381844,
+      "stm_age_ms": 51,
+      "command_age_ms": 138,
+      "last_seq": 1404890741,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    }
+  ],
+  "capture_metadata": {
+    "samplerate_hz": 4000000.0,
+    "duration_s": 50.0,
+    "sha256": "38dd639c91eb0baba45fac61bc4cb32691889f21a5a6cb17a19b6f8940ed213a"
+  },
+  "disarm_frames": [
+    {
+      "start_s": 33.030024,
+      "end_s": 33.03193380555555,
+      "text": "DISARM,seq=1404890741"
+    },
+    {
+      "start_s": 36.00631675,
+      "end_s": 36.00822655555555,
+      "text": "DISARM,seq=1404890742"
+    }
+  ],
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "finding": "Repeated browser TEL-age guard stop while focused and ACTIVE. 100 ms source and periodic status sampling plus delivery jitter exhaust 250 ms budget. No observed >80 ms timer intervals in retained pre-stop history. Wi-Fi/TCP/HTTP queue contribution not isolated; no absolute one-way latency measurement."
+}

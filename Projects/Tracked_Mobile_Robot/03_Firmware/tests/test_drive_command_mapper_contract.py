@@ -16,7 +16,9 @@ VX_MIN_MMPS = -100
 VX_MAX_MMPS = 100
 W_MIN_MRADPS = -500
 W_MAX_MRADPS = 500
-MAX_DUTY_PERMILLE = 100
+MAX_DUTY_PERMILLE = 200
+LEFT_FORWARD_GAIN_PERMILLE = 960
+LEFT_REVERSE_GAIN_PERMILLE = 930
 
 
 @dataclass
@@ -64,23 +66,38 @@ def map_reference(
         raw_right * duty_cap_permille,
         peak,
     )
+    if w_mradps == 0 and vx_mmps != 0:
+        gain = LEFT_FORWARD_GAIN_PERMILLE if vx_mmps > 0 else LEFT_REVERSE_GAIN_PERMILLE
+        magnitude = (abs(request.left_signed_permille) * gain + 500) // 1000
+        request.left_signed_permille = -magnitude if request.left_signed_permille < 0 else magnitude
     return True
 
 
 class DriveCommandMapperContractTest(unittest.TestCase):
     def test_valid_fixed_and_boundary_vectors(self) -> None:
         vectors = (
+            ((100, 0, 150), (144, 150)),
+            ((-100, 0, 150), (-140, -150)),
+            ((50, 0, 150), (72, 75)),
+            ((-50, 0, 150), (-70, -75)),
+            ((1, 0, 150), (1, 1)),
+            ((-1, 0, 150), (-1, -1)),
+            ((1, 0, 50), (0, 0)),
+            ((-1, 0, 50), (0, 0)),
+            ((0, 500, 200), (-200, 200)),
+            ((0, -500, 200), (200, -200)),
+            ((100, 250, 150), (50, 150)),
             ((0, 0, 100), (0, 0)),
-            ((100, 0, 100), (100, 100)),
-            ((-100, 0, 100), (-100, -100)),
-            ((50, 0, 100), (50, 50)),
+            ((100, 0, 100), (96, 100)),
+            ((-100, 0, 100), (-93, -100)),
+            ((50, 0, 100), (48, 50)),
             ((0, 500, 100), (-100, 100)),
             ((0, -500, 100), (100, -100)),
             ((0, 250, 100), (-50, 50)),
             ((100, 250, 100), (33, 100)),
             ((-100, 250, 100), (-100, -33)),
             ((100, 500, 100), (0, 100)),
-            ((100, 0, 50), (50, 50)),
+            ((100, 0, 50), (48, 50)),
             ((100, 500, 0), (0, 0)),
         )
 
@@ -99,7 +116,7 @@ class DriveCommandMapperContractTest(unittest.TestCase):
             (-101, 0, 100),
             (0, 501, 100),
             (0, -501, 100),
-            (0, 0, 101),
+            (0, 0, 201),
         )
 
         for inputs in invalid_vectors:

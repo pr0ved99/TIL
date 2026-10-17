@@ -27,7 +27,7 @@ function active(mode=false) {
 const press = (h,name='forward',extra={}) => h.elements[name].onpointerdown(event(extra));
 const up = h => h.listeners.pointerup(event({buttons:0}));
 const last = h => h.sockets[0].sent.at(-1);
-function moving(name='forward') { const h=active();press(h,name);h.advance(40);return h; }
+function moving(name='forward') { const h=active();press(h,name);h.advance(20);return h; }
 test('Mode 1 leaves all direction buttons disabled and sends zero only',()=>{
     const h=active(true), count=h.sockets[0].sent.length;
     for(const name of ['forward','reverse','left','right']){assert.equal(h.elements[name].disabled,true);press(h,name);}
@@ -45,14 +45,14 @@ test('Direction held before ACTIVE is ignored; first CMD is zero',()=>{
     assert.match(last(h),/vx_mmps=0,w_mradps=0$/);
 });
 test('Each direction sends its signed fixed value under the current ticket',()=>{
-    for(const [name,vx,w] of [['forward',50,0],['reverse',-50,0],['left',0,250],['right',0,-250]]){
+    for(const [name,vx,w] of [['forward',100,0],['reverse',-100,0],['left',0,500],['right',0,-500]]){
         const h=moving(name);
         assert.equal(last(h),`CMD,boot_id=123,request_id=3,control_id=1,ticket=4,vx_mmps=${vx},w_mradps=${w}`);
     }
 });
-test('Held motion needs fresh tickets and respects the 100 ms cadence',()=>{
+test('Held motion needs fresh tickets and respects the 80 ms cadence',()=>{
     const h=moving();const ws=h.sockets[0];ws.receive(cmdResult('CMD',3));h.advance(20);fresh(h,5);
-    h.advance(79);assert.equal(ws.sent.length,4);h.advance(1);assert.match(last(h),/ticket=5,vx_mmps=50,w_mradps=0$/);
+    h.advance(59);assert.equal(ws.sent.length,4);h.advance(1);assert.match(last(h),/ticket=5,vx_mmps=100,w_mradps=0$/);
     ws.receive(cmdResult('CMD',4));fresh(h,5);h.advance(100);assert.equal(ws.sent.length,5);
 });
 test('Release while old CMD is pending forces zero before a new direction',()=>{
@@ -61,7 +61,7 @@ test('Release while old CMD is pending forces zero before a new direction',()=>{
     h.advance(80);assert.match(last(h),/ticket=5,vx_mmps=0,w_mradps=0$/);
     press(h,'reverse');assert.equal(ws.sent.length,5);
     ws.receive(cmdResult('CMD',4));h.advance(20);fresh(h,6);press(h,'reverse');h.advance(80);
-    assert.match(last(h),/vx_mmps=-50,w_mradps=0$/);
+    assert.match(last(h),/vx_mmps=-100,w_mradps=0$/);
 });
 test('Release sends zero on the next eligible CMD without bypassing the interval',()=>{
     const h=moving(),ws=h.sockets[0];ws.receive(cmdResult('CMD',3));h.advance(20);fresh(h,5);up(h);
@@ -101,8 +101,18 @@ test('Lost owner clears motion even when another session is ACTIVE',()=>{
     const h=moving();fresh(h,0,{owner_session:2,control_id:2,purpose:'NONE',ttl_ms:0});
     assert.match(last(h),/^DISARM,/);
 });
-test('Fresh offers cannot keep held motion alive with stale or FAULT telemetry',()=>{
-    for(const t of [{stm_age_ms:250},{state:'FAULT'},{left_pwm:101},{command_age_ms:300}]){
+test('Both turn directions accept signed PWM at the 200 permille boundary',()=>{
+    for(const [name,left,right] of [['left',-200,200],['right',200,-200]]){
+        const h=moving(name);
+        tel(h,{vx_mmps:0,w_mradps:name==='left'?500:-500,left_pwm:left,right_pwm:right});
+        h.advance(20);
+        assert.ok(!h.sockets[0].sent.some(s=>s.startsWith('DISARM,')));
+        assert.equal(h.elements[name].disabled,false);
+    }
+});
+test('Fresh offers cannot keep held motion alive with stale, FAULT or excessive PWM telemetry',()=>{
+    for(const t of [{stm_age_ms:250},{state:'FAULT'},{left_pwm:201},{left_pwm:-201},
+                   {right_pwm:201},{right_pwm:-201},{command_age_ms:300}]){
         const h=moving();tel(h,t);h.advance(20);assert.match(last(h),/^DISARM,/);
     }
 });
@@ -126,7 +136,7 @@ test('Synthetic, nonprimary and nonleft input cannot start motion',()=>{
 test('An unrelated pointer release cannot change the held command',()=>{
     const h=moving();h.listeners.pointerup(event({pointerId:8}));
     h.sockets[0].receive(cmdResult('CMD',3));h.advance(20);fresh(h,5);h.advance(80);
-    assert.match(last(h),/vx_mmps=50,w_mradps=0$/);
+    assert.match(last(h),/vx_mmps=100,w_mradps=0$/);
 });
 test('Reconnection never restores ARM or held values',()=>{
     const h=moving();h.sockets[0].close();h.advance(1000);
