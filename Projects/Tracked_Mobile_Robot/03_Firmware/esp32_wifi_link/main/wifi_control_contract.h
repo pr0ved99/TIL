@@ -6,7 +6,12 @@
 #include <stdint.h>
 
 #define WIFI_CONTROL_MAX_FRAME_SIZE 128U
-#define WIFI_CONTROL_ZERO_ONLY 1U
+#define WIFI_CONTROL_ZERO_ONLY 0U
+#if WIFI_CONTROL_ZERO_ONLY != 0U && WIFI_CONTROL_ZERO_ONLY != 1U
+#error "WIFI_CONTROL_ZERO_ONLY must be 0 or 1"
+#endif
+/* Must match the STM production output cap. Not a measured speed limit. */
+#define WIFI_CONTROL_PWM_MAX_PERMILLE 100U
 #define WIFI_CONTROL_VX_MIN_MMPS (-100)
 #define WIFI_CONTROL_VX_MAX_MMPS 100
 #define WIFI_CONTROL_W_MIN_MRADPS (-500)
@@ -46,5 +51,26 @@ wifi_control_parse_status_t wifi_control_parse(
 /* 파실 성공 요청의 zero-only 적합성만 확인한다. 제어 허가가 아니다. */
 bool wifi_control_zero_only_allows(
     const wifi_control_request_t *request);
+
+/* Value/mode policy only; owner, ticket, phase and time checks are separate. */
+static inline bool wifi_control_request_allows(
+    const wifi_control_request_t *request)
+{
+    if (request == NULL) {
+        return false;
+    }
+    const bool is_zero = request->vx_mmps == 0 && request->w_mradps == 0;
+    if (request->type == WIFI_CONTROL_ARM) {
+        return is_zero;
+    }
+    if (request->type != WIFI_CONTROL_CMD ||
+        request->vx_mmps < WIFI_CONTROL_VX_MIN_MMPS ||
+        request->vx_mmps > WIFI_CONTROL_VX_MAX_MMPS ||
+        request->w_mradps < WIFI_CONTROL_W_MIN_MRADPS ||
+        request->w_mradps > WIFI_CONTROL_W_MAX_MRADPS) {
+        return false;
+    }
+    return WIFI_CONTROL_ZERO_ONLY == 0U || is_zero;
+}
 
 #endif

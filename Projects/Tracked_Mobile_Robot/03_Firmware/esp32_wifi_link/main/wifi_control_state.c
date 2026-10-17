@@ -23,6 +23,22 @@ static bool zero(const wifi_control_tel_t *tel)
         tel->left_pwm == 0 && tel->right_pwm == 0;
 }
 
+/* ACTIVE may carry motion; preparation and stop still require zero. */
+static bool active_tel_valid(const wifi_control_tel_t *tel)
+{
+    const int32_t cap = (int32_t)WIFI_CONTROL_PWM_MAX_PERMILLE;
+    return tel->state == WIFI_CONTROL_STM_ARMED &&
+        tel->command_age_ms < WIFI_CONTROL_STM_TIMEOUT_MS &&
+        tel->vx_mmps >= WIFI_CONTROL_VX_MIN_MMPS &&
+        tel->vx_mmps <= WIFI_CONTROL_VX_MAX_MMPS &&
+        tel->w_mradps >= WIFI_CONTROL_W_MIN_MRADPS &&
+        tel->w_mradps <= WIFI_CONTROL_W_MAX_MRADPS &&
+        tel->left_pwm >= -cap && tel->left_pwm <= cap &&
+        tel->right_pwm >= -cap && tel->right_pwm <= cap &&
+        (WIFI_CONTROL_ZERO_ONLY == 0U || zero(tel)) &&
+        ((tel->vx_mmps != 0 || tel->w_mradps != 0) || zero(tel));
+}
+
 static bool fresh(const wifi_control_state_t *s, uint64_t now)
 {
     return s->have_tel && within(now, s->tel_received_ms, WIFI_CONTROL_TEL_MS);
@@ -152,7 +168,8 @@ bool wifi_control_state_begin_arm(
     if (!event_time(s, now) || s->phase != WIFI_CONTROL_IDLE ||
         !startup_ready || !uart_idle || !fresh(s, now) ||
         s->tel.state != WIFI_CONTROL_STM_DISARMED || !zero(&s->tel) ||
-        r->type != WIFI_CONTROL_ARM || r->expected_boot_id != s->owner.boot_id ||
+        r->type != WIFI_CONTROL_ARM || !wifi_control_request_allows(r) ||
+        r->expected_boot_id != s->owner.boot_id ||
         r->ws_session_id == 0U || r->control_id != 0U ||
         !request_live(r, now)) {
         return false;
@@ -207,7 +224,9 @@ bool wifi_control_state_cmd_sent(
         return false;
     }
     /* Old queue identity cannot cancel a newer owner; a live owner's bad data can. */
-    if (r->type != WIFI_CONTROL_CMD || r->vx_mmps != 0 || r->w_mradps != 0) {
+    if (r->type != WIFI_CONTROL_CMD || !wifi_control_request_allows(r) ||
+        (s->phase == WIFI_CONTROL_ZERO_PENDING &&
+         (r->vx_mmps != 0 || r->w_mradps != 0))) {
         stop_now(s, WIFI_CONTROL_REASON_BAD_INPUT, now);
         return false;
     }
@@ -342,10 +361,8 @@ void wifi_control_state_tel(
             stop_now(s, WIFI_CONTROL_REASON_STM_CLOCK, now);
         } else if (tel->state == WIFI_CONTROL_STM_FAULT) {
             stop_now(s, WIFI_CONTROL_REASON_STM_FAULT, now);
-        } else if (!zero(tel) ||
-            (s->phase == WIFI_CONTROL_ACTIVE &&
-             (tel->state != WIFI_CONTROL_STM_ARMED ||
-              tel->command_age_ms >= WIFI_CONTROL_STM_TIMEOUT_MS))) {
+        } else if ((s->phase != WIFI_CONTROL_ACTIVE && !zero(tel)) ||
+            (s->phase == WIFI_CONTROL_ACTIVE && !active_tel_valid(tel))) {
             stop_now(s, WIFI_CONTROL_REASON_STM_STATE, now);
         }
     }

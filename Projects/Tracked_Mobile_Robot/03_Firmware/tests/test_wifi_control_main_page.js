@@ -29,6 +29,19 @@ function harness() {
         startup: {textContent: ''}, data: {textContent: ''}, command_result: {textContent: ''},
         control: {textContent: ''}, arm: {disabled: true}, command_notice: {textContent: ''}, ping: {disabled: true}, disarm: {disabled: true}
     };
+    // Extra PAGE controls get the same minimal DOM/pointer API as real buttons.
+    for (const [, id] of html.matchAll(/id='([^']+)'/g)) {
+        if (!elements[id]) elements[id] = {textContent: '', disabled: true};
+        Object.assign(elements[id], {id, captured: null,
+            setPointerCapture(pointer) { this.captured = pointer; },
+            releasePointerCapture(pointer) {
+                if (this.captured === pointer) {
+                    this.captured = null;
+                    this.onlostpointercapture?.({pointerId: pointer});
+                }
+            },
+            getBoundingClientRect: () => ({left: 0, right: 100, top: 0, bottom: 100})});
+    }
     const sockets = [];
     const timers = new Map();
     const listeners = {};
@@ -379,7 +392,7 @@ test('Wrong control id cannot complete pending CMD',()=>{
  const h=ready();armAck(h);h.advance(20);h.sockets[0].receive(cmdResult('CMD',2,{control_id:2}));
  h.sockets[0].receive(cmdState(3));h.advance(100);assert.equal(h.sockets[0].sent.length,3);
 });
-test('Malformed control state closes the connection',()=>{
+test('Malformed control state or a changed mode closes the connection',()=>{
  for(const change of [{ttl_ms:151},{zero_only:false},{purpose:'CMD'},{control_id:9},{phase:'unknown'},{ticket:-1}]){
   const h=ready();h.sockets[0].receive(state(change));assert.equal(h.sockets[0].closeCount,1);
  }
@@ -428,8 +441,9 @@ test('Malformed telemetry preserves last data and closes',()=>{
  const h=ready();const last=h.elements.data.textContent;h.sockets[0].receive({...stmStatus(),left_pwm:1001});
  assert.equal(h.sockets[0].closeCount,1);assert.equal(h.elements.data.textContent,last);
 });
-test('No nonzero speed entry or hidden automatic ARM exists',()=>{
+test('Idle never starts ARM/CMD automatically and no speed textbox exists',()=>{
  const h=ready();h.advance(3000);assert.deepEqual(h.sockets[0].sent,['HELLO']);
  assert.ok(!/input[^>]+(?:vx|speed)/i.test(html));
 });
 console.log(passed+' browser cases PASS; simulated DOM/clock/WebSocket only');
+module.exports = {harness, status, stmStatus, state, cmdState, cmdResult, notice};

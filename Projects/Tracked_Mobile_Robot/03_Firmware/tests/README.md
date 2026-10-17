@@ -4,6 +4,10 @@
 브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
 보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.
 
+## Wi-Fi nonzero 저장본 검사 — 2026-10-17
+
+[test_wifi_nonzero_core.py](test_wifi_nonzero_core.py)와 [test_wifi_nonzero_main.py](test_wifi_nonzero_main.py)는 현재mode0 복사본과 임시mode1 회귀를 구분한다. [test_wifi_nonzero_page.js](test_wifi_nonzero_page.js)는 방향 입력·release zero·정지·포커스 복구를 mock에서 검사한다. [mode0 근거](../../assets/logs/wifi_link/2026-10-17_nonzero_mode0_saved_review/)에 입력 hash·검사 출력이 있다. 사용자 빌드/플래시와 NZ-01~04 실물 증거는 [보고서38](../../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)을 따른다.
+
 ## UR-02 수동 부분 명령 주입 후보 — 2026-10-16
 
 [입력 가이드](../../docs/plans/2026-10-16_UART_Partial_Command_Test_Code_Guide_ko.md)의

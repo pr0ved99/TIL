@@ -4,9 +4,7 @@
 
 ## 현재 시작점 — 2026-10-17
 
-UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)과 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
-
-다음은 [전체 MVP 계획](00_Project_Master_Plan_To_Final_MVP_ko.md)의 다음 Gate 선행 조건 검토다. 아래 주입/복구 안내는 완료된 시험의 입력 이력이며 새 실행 지시가 아니다.
+Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)과 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 다음은 마감/전원 종료 확인 후 별도 lifted 단일 모터 회차 준비다. 아래 주입/복구 안내는 완료 시험의 입력 이력이다.
 
 아래 날짜별 코드 입력 안내는 당시 판본이며 최신 소스를 덮어쓰는 용도로 사용하지 않는다. 학습 자료는 [STM·ESP 교과서](../../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md)다.
 

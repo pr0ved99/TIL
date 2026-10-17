@@ -5,7 +5,7 @@
 
 ## 최신 기록
 
-**[2026-10-17 AC-S 선택 실물시험 마감·Git·Notion 최신화](2026-10-17_progress.md)** — AC-S01~08 zero-only 시나리오 완료. 실패 이력·helper 오판·원인 미확정 관측은 보존. 상세 범위는 [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md).
+**[2026-10-17 AC-S·nonzero NZ-01~04 마감](2026-10-17_progress.md)** — Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 참조. 최신 DISARM436 OK/IDLE/DISARMED, 이번 종료 전원 분리는 미보고.
 
 **[2026-10-16 UART 줄 폐기·부분 명령 실물 시험·일반 이미지 복원](2026-10-16_progress.md)** — UR-02 재연결·부분 CMD·LF 없는 ARM 폐기 및 첫 DISARM 복구 PASS. mode0 복원 뒤 boot3996125447, 시험 배너 없음·READY/IDLE 확인. D1 단발 샘플 차이 원인·전체 AC-S는 미완료. 다음은 UR-03 잔여 항목. [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md).
 

@@ -459,6 +459,15 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 | Crimp tooling | `VH-30J`/`WX-03B` 18 AWG first article와 6P assembly use PASS | K1 14 AWG main-terminal deviation closure and released common-path tooling/termination evidence |
 | ADC networks | Deferred / post-MVP | Transient/input/source-impedance calculation and bench sweep; MVP blocker 아님 |
 
+## 2026-10-17 제조사 자료 재검토
+
+**이 절은 검토 이력이다. 사용자 최신 결정으로 후속 조사·조치의 다음 작업 지정은 취소했다. 사용자 요청 없이 재개하거나 진행 조건으로 적용하지 않는다. 현재 실행 범위는 인수인계를 따른다.**
+
+- 기존 [280756-4](https://www.te.com/en/product-280756-4.html)는 12–10 AWG, 탭 9.53×1.22mm용이다. 현재 14 AWG는 단자의 지정 도체 범위를 벗어난다. 이는 압착 조합의 미결 사항이며, 14 AWG 자체의 허용 전류 부족을 확정한 것은 아니다. 사용자 14 AWG 유지 선택은 보존한다.
+- 대체 검토 후보 [962835-3](https://www.te.com/en/product-962835-3.html)는 17–13 AWG, 탭 9.53×1.22mm, 피복 외경 2.4–3.7mm, 길이 27mm다. 기존 280756-4는 길이 29mm·피복 외경 3.4–5.1mm다. 탭 치수 일치만으로 VCF7-1000 소켓 호환을 승인하지 않는다. 소켓 도면의 삽입 깊이·랜스 걸림, 실제 선재 피복 외경, 지정 압착 공구/압착 조건과 전류 조건 대조가 남았다. **구매·교체 확정 부품이 아니다.**
+- [Cytron 제품 페이지](https://sg.cytron.io/p-10amp-5v-30v-dc-motor-driver-2-channels)에서 연결한 [MDD10A User's Manual V2.0](https://docs.google.com/document/d/1ol8nICCTTw5dAHHE_hju08cCVH2GN5_Y3cGC6B4Gbas/edit)은 Rev2.0 입력 범위 5–30V를 제시한다. 이 범위를 전원 차단 수용 임계값으로 전용하지 않는다. 검토한 자료에서 `V_RAIL_OFF_MAX`를 정할 수 있는 수치화된 출력 차단·방전 보증은 확보하지 못했다. 웹 FAQ의 저전압 보호 설명도 구체적인 차단/복귀 임계값을 제공하지 않는다.
+- 따라서 10/17의 30초 0.58V를 사후 임계값으로 PASS 처리하지 않는다. 전압 관측은 마감하고 전체 T005A PARTIAL을 유지한다. 다음 설계 조치는 단자 호환성 대조와 rail-off 수용 근거 확정이며, 같은 DMM 관측의 자동 반복은 아니다. 정밀 과도 파형/시간 T006과 단일고장 확장 005B는 기존 post-MVP 범위를 유지한다.
+
 ## 다음 단계
 
 2026-08-13 Step 8 KiCad RevB functional schematic/ERC `0/0` 뒤, 2026-09-08까지 18 AWG

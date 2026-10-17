@@ -1,6 +1,6 @@
 # 펌웨어 앱과 검사 안내
 
-상태 대조: **2026-10-17**. 정상 이미지 복원과 선택 zero-only 실물시험 완료, 전체 구동 수용은 구분한다.
+상태 대조: **2026-10-17**. mode0 통합과 선택 NZ-01~04 모터 분리 실물시험 완료, 전체 구동 수용은 구분한다.
 재개 전에는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)와 [최신 진행 기록](../docs/progress/README.md)을 먼저 읽는다.
 
 ## 앱 선택과 마지막 실행
@@ -8,7 +8,7 @@
 | 프로젝트 폴더 | 역할·진입점 | 확인한 상태 |
 | --- | --- | --- |
 | [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령 검사·상태/timeout·최종 출력 안전 판단 | W5 실제 PONG/ACK·TEL 관측. PA10 pull-up·PONG 시험 hook0U. 전체 전력단·주행 수용과 별개 |
-| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. W4/W5 완료 이후 zero-only ARM/CMD 연결·사용자 빌드/플래시·일부 보드 관측. 전체 수용은 미완료 |
+| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. nonzero ARM/CMD 통합·사용자 빌드/플래시·NZ-01~04 모터 분리 검증 완료. 실제 Wi-Fi 모터 구동은 별도 |
 | [esp32_uart_bridge](esp32_uart_bridge/README.md) | [uart_bridge_main.c](esp32_uart_bridge/main/uart_bridge_main.c). 기존 UART bring-up·모터 시험 콘솔 | 별도 앱의9/30 M2_RUN 수동 hook1U와 default-off30 PASS/1 FAIL 이력. Wi-Fi 앱의 설정이 아님. hook 복구·해당 앱 재빌드/플래시·release는 별도 |
 | [esp32_examples](esp32_examples/README.md) | Hello World·FreeRTOS·STA·HTTP·WebSocket 단계별 연습 | 각 하위 폴더가 별도 ESP-IDF 프로젝트. 예제 플래시는 ESP의 실행 앱을 바꾸며 실제 Wi-Fi/UART 연동 검증과 구분 |
 
@@ -17,7 +17,7 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 ## ARM/CMD 모듈과 실행 경로
 
-다섯 제어 모듈과 main이 [CMake](esp32_wifi_link/main/CMakeLists.txt)에 등록돼 있고, 브라우저→HTTP 접수→executor→UART→ACK/TEL→브라우저 흐름이 연결돼 있다. 현재 Wi-Fi 제어는 **속도 0 전용**이다.
+다섯 제어 모듈과 main이 [CMake](esp32_wifi_link/main/CMakeLists.txt)에 등록돼 있고, 브라우저→HTTP 접수→executor→UART→ACK/TEL→브라우저 흐름이 연결돼 있다. 현재 Wi-Fi 제어는 **ZERO_ONLY=0U의 방향 입력 모드**다. ARM/첫zero 확인 후 현재 입력을 전달한다. [보고서38](../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 범위의 모터 분리 검증을 마쳤다.
 
 | 파일 | 담당하는 일 | 근거와 범위 |
 | --- | --- | --- |

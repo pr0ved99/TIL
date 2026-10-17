@@ -369,7 +369,7 @@ A의 ±명령 회전은 확인했으나 양수 명령의 실제 전진 방향 �
 
 1. 완료된 TIM3/TIM5 wrap-safe delta와 speed module을 회귀 기준으로 유지한다.
 2. IMU 통합 때 `PB8/PB9`, PB1 INT, PC4 RST 설정과 전원·풀업·센서 동작을 검증한다. PC7 입력과 기존 배선은 유지한다.
-   PA4/PB0 두 rail 진단은 post-MVP이며 기본 저전압 경고·정지의 입력 경로는 첫 주행 전에 정한다.
+   PA4/PB0 ADC와 자동 저전압 정지는 후속 PCB/post-MVP다. 10/17 합의한 현재 MVP 운영 조건은 셀 알람·작업자 감독과 경고 시 즉시 수동 정지·시험 종료다.
 3. 각 검증 결과와 `.ioc`를 함께 업데이트한다.
 4. 현재 A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5와 forward-positive CPS를 유지한다. 다음 방향 보완은 A 양수 명령의 실제 전진 관찰이며 선행 조건은 현재 재개 계획을 따른다.
 5. 탈락한 후보는 decision log에 남긴다.

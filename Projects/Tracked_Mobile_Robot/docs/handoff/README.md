@@ -2,6 +2,10 @@
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
+## 최신 마감 — 2026-10-17
+
+Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)과 [현재 인수인계](CURRENT_SESSION_CONTEXT.md) 참조. 이번 종료 전원 분리는 미보고다.
+
 ## How To Use
 
 새 대화창에서는 작은 현재상태 문서에서 시작한다.

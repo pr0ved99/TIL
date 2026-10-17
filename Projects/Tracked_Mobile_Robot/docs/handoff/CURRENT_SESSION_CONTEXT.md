@@ -1,6 +1,6 @@
 # Current Session Context
 
-Last updated: **2026-10-17 — UR-02 및 AC-S01~08 선택 zero-only 실물 시험 마감**.
+Last updated: **2026-10-17 — NZ-01~04 모터 분리 Wi-Fi nonzero PASS / 문서·Git 마감 / 종료 전원 분리 확인 대기**.
 
 ## 현재 기준
 
@@ -11,19 +11,26 @@ Last updated: **2026-10-17 — UR-02 및 AC-S01~08 선택 zero-only 실물 시�
 - 현재 ESP WIFI_UART_PARTIAL_TEST_MODE=0U, STM 시험 switch14개=0U. 정상 이미지 복원·수동 ARM/zero/정지는 AC-S04/S06/S08 후속 회차로 확인했다. 마지막 boot3570331004, A6/B7/control8, 최종 DISARM573834470 ACK/TEL·IDLE/DISARMED.
 - 소스 hash는 보고서37에 있다. 사용자 빌드/플래시·실물 관측과 소스 식별을 구분하며 플래시 바이너리 readback은 없다.
 - 미해결: AC-S06 restore run01의 수동 정지 전 자동 정지/명령 전달 공백(사용자 포커스 전환 없음), ESP reset D1 transient, 이전 UART 양끝 단발0.25µs 차이. 후속 PASS로 원인이 해결됐다고 쓰지 않는다.
+- 후속 T005A 관측: 모터 4선·MDD 제어 5핀 분리, B+ 복원 조건에서 S2 후 12.03V, S0 후 5초 1.43V/30초 0.58V. S0 해제 뒤 현재값 0.47V, S1 OFF 10초→ON 5초/S2 미조작 뒤 MDD 0.46V·Bar 12.03V. 사용자 DMM 보고이며 잔류 원인·rail-off 수용 기준/단자 적합성은 미확정, 전체 T005A PARTIAL. 상세와 수치의 경계는 [10/17 진행 기록](../progress/2026-10-17_progress.md#후속-t-estop-005a-전압-관측-마감)을 따른다.
 
 ## 물리 상태와 장비
 
-- 마지막 보고: 두 USB·LiPo 연결, S1 ON/S0 해제, #1 보드용 2핀 두 개와 MDD10A B+ 분리·절연, #2 sense 공급·공통 GND. **종료 전원 분리 완료는 미보고다.** 재개 때 그 이후 변경분만 확인한다.
+- **최신 관측:** NZ-04 화면 boot4247124430, DISARM436 OK/seq2197817170, fresh DISARMED/DISARM·ESP IDLE, 출력/CPS/drop/err0. 모터4선/MDD제어5핀/#1보드용2핀 두 개 분리·MDD B+ 복원 조건 유지. 두 USB·LiPo/S1 ON·S0 해제로 안내했고 이후 배선 변경/종료 전원 분리 보고는 없다. 이전 종료 당시 분리 상태를 현재로 재사용하지 않는다.
+- **10/17 전압 관측 종료 뒤 전원 분리 완료 사용자 확인:** S0 잠금·S1 OFF·LiPo 분리, STM/ESP USB와 LA USB 분리. **K1 87→MDD B+는 복원된 연결 상태**, B− 공통 GND 유지. 모터 전력선 4개 분리·각각 절연, MDD 제어 5핀 분리, #1 보드용 2핀 두 개 분리·절연. #2·엔코더·sense 배선 변경은 보고되지 않았다. 이전 AC-S 때의 “B+ 분리”를 현재 상태로 재사용하지 않는다. 종료 후 rail 0V를 실측한 것은 아니다.
 - STM 만능기판, ESP 외부 UART 점퍼. PA9→GPIO18, GPIO17→PA10, 115200/8N1.
-- LA 4MHz: D0=JDBG_UART Pin1/PA9 TX, D1=Pin2/PA10 RX, D4=JDBG_CTRL_1 Pin2/PB6, D6=JDBG_CTRL_2 Pin2/PC7, D7=JDBG_CTRL_2 Pin1/PB7. D2/D3 제거, D5 대신 D7. GND=JDBG_UART Pin3.
+- LA 4MHz: D0=JDBG_UART Pin1/PA9 TX, D1=Pin2/PA10 RX, D4=JDBG_CTRL_1 Pin2/PB6, D6=JDBG_CTRL_2 Pin2/PC7, D7=JDBG_CTRL_2 Pin1/PB7. NZ-02부터 D2=JDBG_CTRL_1 Pin1/PC8(left DIR), D3=JDBG_CTRL_1 Pin3/PC9(right DIR). D2/D3를 과거 ESP UART 관측 채널로 디코드하지 않는다. D5 미사용. GND=JDBG_UART Pin3.
 - 사용자 지시: 보유 기록에 없는 장비는 없는 것으로 계획. 별도 USB-UART를 전제하거나 다시 묻지 않는다. PC7 FAULT를 우회하지 않는다.
 
 ## 다음 작업
 
+**최신 재개점:** Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)에 회차별 원본/판정/한계가 있다. ACK68/194/120/54 모두 일치, 각PWM약5%. NZ-03/04 정지 뒤10.04/10.29초 재출력 없음. 최신 DISARM436 OK/IDLE/DISARMED. 다음은 사용자 전원 종료 확인과 새 대화에서 lifted 단일 모터 Wi-Fi 회차 준비다. 모터/제어선을 지금 복원하지 않는다. 현물 조작은 사용자, firmware 변경/보드 빌드/플래시 없이 마감했다.
+
 1. 이번 선택 zero-only 시험 묶음은 완료. 코드/배선 변경·새 실패·사용자 요청 없이 같은 회차를 반복하지 않는다.
-2. [전체 MVP 계획](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)의 남은 전력·배터리·기구·nonzero 통합 중 다음 Gate와 선행 조건을 검토한다. 아직 다음 실물 Gate는 선택하지 않았다.
-3. 한 번에 한 물리 조작 묶음만 안내한다. 이번 마감이 전력 연결·nonzero 송신·전체 안전 수용을 승인하지 않는다.
+2. **최신 사용자 결정:** 직전 재검토 항목은 이미 넘어가기로 한 범위다. Codex가 문서의 미결 표시를 근거로 다시 꺼낸 것은 잘못된 재개였다. 사용자가 먼저 요청하지 않으면 다시 언급·조사하거나 다음 작업의 진행 조건으로 걸지 않는다. 과거 검증 판정을 PASS로 바꾸는 의미는 아니다.
+3. **G4C 장착 확인 묶음 완료:** 사용자가 섀시 가조립에 “가조립 맞음”, 만능기판·XL4015 2개·MDD10A 고정/휨·납땜면 간격/도체 접촉·STM/ESP USB 및 단자 접근성에 “모두 문제 없어”라고 보고했다. [검사표](../../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md)에 사용자 확인 범위로 기록했다. 치수/제작 revision 식별과 전체 기구 수용으로 확대하지 않는다. 같은 장착 확인은 반복하지 않는다.
+   **10/17 합의 반영:** 사용자는 LiPo 알람 보유와 감독하의 시험 운영 방침에 동의했다. `REQ-POWER-004`는 셀 알람·작업자 감독·경고 시 즉시 수동 정지/시험 종료로 구체화했다. 보유만 확인됐으며 설정·정상 동작·회차 적용은 미확인이다. PA4/PB0 ADC와 자동 저전압 정지는 후속 PCB/post-MVP로 둔다. [Wi-Fi nonzero core 세 파일](../plans/2026-10-17_WiFi_Nonzero_Core_Code_Guide_ko.md)과 [PAGE/모드 표시 두 블록](../plans/2026-10-17_WiFi_Nonzero_PAGE_Code_Guide_ko.md)은 사용자 저장·PC 검사와 mode1 ESP 빌드/플래시·화면 확인을 마쳤다. **현재 actual header는 WIFI_CONTROL_ZERO_ONLY=0U**, UART 시험 mode는0U다. 이전 저장본 PASS 대비 firmware 변경은 header의1U→0U 한 줄뿐이다. 새 PC 검사에서 현재 mode0 core13개/adapter6개, 임시 mode1 회귀59+3+42+6개, 브라우저66개, PAGE C 초기화와 negative control3개 PASS. 증거는 [mode0 저장본 검증 폴더](../../assets/logs/wifi_link/2026-10-17_nonzero_mode0_saved_review/)다. **mode0 ESP 빌드·플래시와 `IDLE · 방향 입력 모드` 확인은 사용자 보고로 완료**다. NZ-01 전진 UART/PWM과 NZ-02 후진·회전 UART/DIR/PWM은 위 증거로 확인됐다. NZ-03/04 nonzero 중 정지 경로도 위 보고서38 범위에서 완료했고, 실제 모터 구동은 별도다. 사용자는 변경 부분을 이해하고 싶다고 명시했으므로 변경 함수·전후 동작·이유를 함께 설명한다.
+4. 사용자는 확인 절차가 너무 빡빡하다고 지적했다. 준비·측정을 과도하게 한 동작씩 나누지 말고 함께 할 수 있는 단위로 묶는다. 결과에 따라 다음 동작이 달라질 때만 멈춘다. 확인된 연결·전원 상태를 다시 묻지 않는다.
+5. 검증 이력과 현재 실행 범위를 구분한다. 사용자 최신 결정을 우선하고, 과거 미결 목록을 자동으로 다음 작업에 복원하지 않는다. 정밀 파형/시간·ADC 진단 T006 및 단일고장 확장 005B는 post-MVP다.
 
 ## 기록과 작업 원칙
 

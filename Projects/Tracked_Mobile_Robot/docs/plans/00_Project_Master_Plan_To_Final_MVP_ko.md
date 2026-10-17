@@ -4,7 +4,7 @@
 실제 판정과 수치는 원본 시험 보고서 → [검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다.
 현재 작업을 이어갈 설정·조작은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 날짜별 실행 계획에서 관리한다.
 
-**현재 위치: UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다.** [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md). 다음은 전력·배터리·기구·nonzero 통합 중 한 Gate의 선행 조건을 검토한다. 완료한 zero-only 회차를 자동 반복하지 않는다.
+**현재 위치: Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다.** [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 참조. 다음은 마감/종료 전원 확인 뒤 별도 lifted 단일 모터 Wi-Fi 회차 준비다.
 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)의 완료는 비구동 범위다. 무선 구동 명령·전체 MVP 완료를 뜻하지 않는다.
 A/M1은 ±10% 회전·CPS 부호·timeout 후 0 복귀, B/M2는 DIR 보정 후 실제 전진·후진을 확인했다.
 9/30에는 A 실제 전진·active DISARM·S0 관측과 A/B 각각10%·3초 구동까지 확인했다. [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md). 전류·열·반복/부하·전체 물리 비상정지와 차량 주행은 남아 있다.
@@ -39,7 +39,7 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | G0 요구사항 기준선 | 기준선 작성 PASS | MVP-001~013와 요구사항·시험·증거 연결 | 설계 변경 시 영향 항목 갱신 |
 | G1 UART·명령 안전 | 기초 시험 PASS / 전체 bridge PARTIAL | 기존 정상·오류·복구 시험, T004 reset 실제 경로, W5 PC PING/DISARM subset | 전체 bridge release의 증거 연결·잔여 시험, 일반 PC 구동 명령 전달·유실 안전 |
 | G2A 전원 구성품 | CONDITIONAL PASS | fuse/switch·XL4015 전자부하·실제 두 보드 공급 | 최종 하네스 정격·부하·전압 강하·온도 |
-| G2B 제작품·장착 | 도면 PASS / 실물 READY·NOT TESTED | 도면·제조 파일 점검, 제작품 수령 | 실물 식별·치수·체결·절연·접근성 |
+| G2B 제작품·장착 | 도면 PASS / 실물 장착 확인 subset PASS | 도면·제조 파일 점검, 수령、10/17 사용자 섀시 가조립·전장 고정/절연 간격/접근성 확인 | 실물 식별·치수와 표의 나머지 범위 |
 | G3 PWM/DIR | 모터 분리 MCU-pin 범위 PASS | PWM·방향 전환·DISARM/timeout/fault/reset | 후속 실모터 결과를 이 범위와 구분해 G5~G7에서 검증 |
 | G4 드라이버·전원·기구 통합 | PARTIAL | G4A MDD 입력·G4B 로직 전원 범위 PASS, 전력단 관측 추가 | G4C 실물 fit·최종 배선과 전체 전력단/비상정지 수용 |
 | G4~G5 물리 비상정지 | T004 PASS / 전체 T005A PARTIAL | 감지·latch·reset·PWM, rail DMM, A 구동 중 S0/PWM/엔코더 관측 | rail-off 수용 기준·release 항목, T-ESTOP-007 실모터 S0 정지 |
@@ -54,8 +54,8 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 - 엔코더: [영구 엔코더 회로 검사](../verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md) → [좌우 정정·손회전 검사](../verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md) → [실제 엔코더·전력단 기록](../verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 - 실제 회전·DIR 보정·timeout 관측: [단일 모터 시험](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md).
 
-현재 좌우는 **A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5**이고 두 동력선 모두 연결돼 있다.
-9/26 손회전과 warm reset 169 TEL은 전동 구동과 다른 범위의 증거다. 두 모터는 섀시에서 분리해 시험했다.
+현재 좌우 매핑은 **A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5**다. **10/17 전압 관측 종료 상태는 모터 전력선 4개·MDD 제어 5핀 분리, MDD B+ 복원, S0 잠금·S1 OFF·LiPo 및 보드/LA USB 분리**다. 현재 배선은 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+9/26 손회전과 warm reset 169 TEL은 전동 구동과 다른 범위의 증거다. 이전 단발 구동 시험에서는 두 모터를 섀시에서 분리했다.
 
 9/22의 all-hooks-0 복구 PASS·정적30/30은 당시 결과다. 별도 `esp32_uart_bridge` 소스의9/30 마지막 M2_RUN hook=1U와
 정적30 PASS/1 FAIL(default-off)은 이전 모터 시험 기준선이며 해당 소스 복원은 남아 있다.
@@ -68,14 +68,18 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 
 | 작업 묶음 | 지금 남은 일 | 완료 조건·다음 단계 |
 | --- | --- | --- |
-| Wi-Fi 상태·명령 통합 | W4/W5·UR-02 및 AC-S01~08 선택 zero-only 실물 시나리오 완료 | [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)의 경계·미해결 관측 유지. 다음 별도 Gate의 전력·배터리·기구·nonzero 선행 조건 검토 |
+| Wi-Fi 상태·명령 통합 | W4/W5·UR-02 및 AC-S01~08 선택 zero-only 실물 시나리오 완료 | [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)의 경계·미해결 관측 유지. NZ-01~04 선택 nonzero 시나리오도 보고서38 범위에서 완료; 다음은 실제 모터 Wi-Fi 회차 준비 |
 | 단일 모터 기록 마감 | [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 A 전진·DISARM·S0·A/B 3초 보존 완료 | 전체 T-MOTOR-003 PASS와 분리. 다음은 계측/후속 조건 선정 |
-| 전력단·비상정지 잔여 조건 | rail-off 전압·판정 시점, 단자/배선 정격 release와 기존 관측의 대응 정리 | 전체 T005A 수용 조건을 충족하고 근거를 연결. 이를 전제로 다음 구동 시험의 범위를 정함 |
+| 전력단·비상정지 기록 | [10/17 관측](../progress/2026-10-17_progress.md#후속-t-estop-005a-전압-관측-마감) 보존. 직전 재검토는 사용자 결정으로 현재 실행 범위에서 제외 | 사용자 요청 없이 해당 검토를 재개하거나 다음 단계의 조건으로 걸지 않음. 과거 검증 판정은 보존. G4C 장착 확인은 사용자 보고로 완료 |
 | 단일 모터 전체 수용 | A DISARM/S0·A/B 3초의 완료 범위를 바탕으로 전류·열·반복/부하·정식 정지 증거 보완 | REQ-MOTOR-005/T-MOTOR-003과 T-ESTOP-007의 조건·증거 충족. 그 뒤 양쪽 구동 시험 |
-| 기구·최종 전원 통합 | 받은 plate 식별·fit·절연·USB/단자 접근·케이블 고정, 최종 하네스 검증 | G2B/G4C·전원 요구사항의 미완료 조건 해소. 무전원 fit은 별도 병행 가능 |
-| 첫 주행 준비 | 저전압 경고·정지의 수치/입력 경로, 양쪽 mapping·명령 경로·차량 장착 | 저전압 정책을 첫 주행 전에 확인하고 선행 단일 모터/안전/기구 Gate 충족 |
+| 기구·최종 전원 통합 | 10/17 사용자 섀시 가조립·전장 고정/절연 간격/접근성 확인 완료. 식별·치수·배선 경로 등 나머지는 검사표 참조 | 완료한 장착 확인은 반복하지 않음. 전체 G2B/G4C 판정과 확인 subset을 구분 |
+| 첫 주행 준비 | 보유 셀 알람·작업자 감독·경고 시 수동 정지/회차 종료 운영, 양쪽 mapping·명령 경로·차량 장착 | 알람 설정·정상 동작과 회차 적용 확인. ADC·자동 저전압 정지는 후속 PCB 단계로 유지 |
 | 주행·odometry 인수 | lifted → 저속 지상 전진/후진/제자리 회전, fault/통신 단절 정지, 1 m 실측 | 실제 거리·엔코더 추정·오차와 반복 조건 기록, 모든 MUST PASS |
 | 최종 문서·공개 준비 | 코드/배선 기준점·원본 증거·README·demo·미완료/잔여 위험 연결 | G8 종료 조건 충족. 현재 진행 중인 문서 개편도 이 묶음의 일부 |
+
+10/17 운영 정리: 전체 T005A 미결은 무전원 장착·설계·소프트웨어 작업의 일괄 중단 조건이 아니다. 정밀 transient/시간·ADC 진단 T006과 단일고장 확장 005B는 기존 계획대로 post-MVP다. 새 실물 측정은 닫으려는 미결 항목과 판정/종료 조건을 먼저 정하고, 준비·측정은 함께 수행 가능한 단위로 묶는다.
+
+10/17 배터리 범위 합의: 사용자는 LiPo 알람 보유와 감독하의 MVP 시험 운영 방침에 동의했다. `REQ-POWER-004`는 셀 알람 설정·정상 동작 확인과 경고 시 즉시 수동 정지·시험 종료의 운영 조건으로 구체화한다. ADC 분압/보호·펌웨어 자동 저전압 정지는 후속 PCB 단계이며, 아래 과거 P-05 구현 순서를 현재 MVP 선행 작업으로 복원하지 않는다. 구현/모터 분리 검증을 마친 범위는 [Wi-Fi nonzero 통합](2026-10-17_WiFi_Nonzero_Control_Integration_Plan_ko.md)이다.
 
 직전 A 전진 목표·W4/W5·UART 복구와 선택 AC-S zero-only 시험을 마감했다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/17 진행 기록](../progress/2026-10-17_progress.md)을 따라 다음 Gate를 선택한다. 실제 구동 확대는 별도 선행 조건을 따른다.
 해당 계획의 목표와, 전체 모터 시험에 필요한 선행 조건은 구분한다. 기존 전체 T005A가 PARTIAL인 상태에서 수행한 단발 관측은

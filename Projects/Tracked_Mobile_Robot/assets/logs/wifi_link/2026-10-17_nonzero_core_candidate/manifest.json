@@ -1,0 +1,20 @@
+{
+  "scope": "Review candidate only; production untouched; zero-only remains 1",
+  "files": [
+    {
+      "name": "wifi_control_contract.h",
+      "base_sha256": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8",
+      "candidate_sha256": "628eeb154159f63e0bbcdb86bf5f30c94eaa529a7cfc1e7f08eb6b94dbd4e516"
+    },
+    {
+      "name": "wifi_control_state.c",
+      "base_sha256": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23",
+      "candidate_sha256": "adb7017e44e90f51b7523be77448f4a15a87e4f74da0bc0b30f97efe015a2c71"
+    },
+    {
+      "name": "wifi_control_executor.c",
+      "base_sha256": "be2f88f0e284f934402630292576b3c433a4c5273c5c77da92d64586c2caa109",
+      "candidate_sha256": "1450aa42cd2d4b86e5422a98027b5a4c5401fe1f9a991f50430d393ea7fc5490"
+    }
+  ]
+}

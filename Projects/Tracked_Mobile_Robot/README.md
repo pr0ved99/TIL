@@ -7,8 +7,8 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-17:** UR-02 부분 CMD/ARM 폐기·첫 DISARM 복구와 UR-03 AC-S01~08의 선택한 zero-only 실물 시나리오를 마감했다. 모터 동력 차단 상태에서 UART·실제 PWM·PC7을 대조했다. 전체 오류 분기·nonzero 구동·전력/기계 안전·주행 수용은 별도다. [최신 기록](docs/progress/2026-10-17_progress.md), [항목별 결과와 경계](docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md).
-  전체 AC-B/S·nonzero Wi-Fi 구동·배터리 ADC·전류/열·전체 안전 수용·차량 주행은 미완료다. A 전진·DISARM·S0와 A/B 각각10%·3초는 [별도 모터 시험](docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 범위다.
+- **현재 단계 · 2026-10-17:** Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md), [최신 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+  전체 AC-B/S 세부 경로·실제 Wi-Fi 모터 부하·배터리 ADC·전류/열·차량 주행은 미완료다. 이전 모터 회전 이력과 이번 모터 분리 Wi-Fi 검증을 구분한다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
@@ -71,7 +71,7 @@ flowchart LR
 
 | 대표 결과 | 확인한 내용 | 시험 범위·근거 |
 | --- | --- | --- |
-| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 현재 STM TEL/WS100ms·stale500ms. PC JS57·C21은 별도 검사. 무선 구동 명령 미구현 |
+| 실제 UART↔무선 상태·비구동 명령 | **W4 상태 전달·W5 PING/DISARM PASS**: 요청자별 결과·입력 거부·timeout/복구·재접속 후 자동 재전송 없음 | [두 보드 USB·LiPo 미연결](docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md). 현재 STM TEL/WS100ms·stale500ms. PC JS57·C21은 별도 검사. nonzero 명령·모터 분리 검증은 보고서38 참조 |
 | DISARM → PWM 차단 | **23.50 μs** | [STM32 로직 핀 계측](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md). 실제 모터 정지 시간이 아님 |
 | 영구 배선의 PWM/DIR | **19.049 / 19.058 kHz**, 약 **10%**, 방향 전환 전후 약 **2 ms PWM 0** | [모터 분리 MDD10A 입력](docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) |
 | 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |
@@ -152,7 +152,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-A/M1 실제 전진 확인은 완료했다. 당장 이어갈 소프트웨어 작업은 ARM/CMD 상태·시간 제한·ACK/TEL·취소/정지 흐름이며 이후 zero-only 경로와 장비 조건별 검증을 진행한다.
+A/M1 실제 전진 확인은 완료했다. ARM/CMD zero-only와 NZ-01~04 모터 분리 nonzero 검증을 마쳤고, 다음은 별도 lifted 단일 모터 Wi-Fi 회차 준비다.
 실제 구동 확대는 계측 방법·전력단·물리 비상정지·단일 모터의 남은 조건을 충족한 뒤 기구 통합, 저속 주행과 1 m 시험으로 이어간다. 수행한 단발 구동은 전체 T005A의 선행 조건 충족을 뜻하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),

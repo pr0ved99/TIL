@@ -95,7 +95,7 @@ wifi_control_submit_status_t wifi_control_executor_submit(
     }
     if (r->request_id == 0U || r->ws_session_id == 0U ||
         (r->type != WIFI_CONTROL_ARM && r->type != WIFI_CONTROL_CMD) ||
-        !wifi_control_zero_only_allows(r)) {
+        !wifi_control_request_allows(r)) {
         return reject(e, r, WIFI_EXEC_BAD_INPUT, WIFI_CONTROL_REASON_BAD_INPUT, now);
     }
     if (e->queued || e->waiting || e->prepared) {
@@ -127,6 +127,8 @@ wifi_control_submit_status_t wifi_control_executor_submit(
         accepted.control_id = id;
     } else if (!uart_idle ||
         (e->state.phase != WIFI_CONTROL_ZERO_PENDING && e->state.phase != WIFI_CONTROL_ACTIVE) ||
+        (e->state.phase == WIFI_CONTROL_ZERO_PENDING &&
+         (accepted.vx_mmps != 0 || accepted.w_mradps != 0)) ||
         !wifi_control_owner_matches(&e->state.owner, accepted.expected_boot_id,
                                    accepted.ws_session_id, accepted.control_id)) {
         return reject(e, r, WIFI_EXEC_NOT_READY, WIFI_CONTROL_REASON_BAD_INPUT, now);
@@ -179,7 +181,10 @@ bool wifi_control_executor_take_tx(
     int n;
     if (op == WIFI_CONTROL_OP_CMD) {
         n = snprintf(tx.bytes, sizeof(tx.bytes),
-            "CMD,seq=%" PRIu32 ",vx_mmps=0,w_mradps=0,timeout_ms=300\n", seq);
+            "CMD,seq=%" PRIu32 ",vx_mmps=%" PRIi32
+            ",w_mradps=%" PRIi32 ",timeout_ms=%" PRIu32 "\n",
+            seq, e->request.vx_mmps, e->request.w_mradps,
+            (uint32_t)WIFI_CONTROL_STM_TIMEOUT_MS);
     } else {
         /* Full UART writes do not prove that STM received every byte. */
         n = snprintf(tx.bytes, sizeof(tx.bytes), "%s%s,seq=%" PRIu32 "\n",
