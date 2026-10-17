@@ -152,7 +152,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-현재 저속 수동 주행은 선택 회차 범위에서 완료했다. 다음은 누적 엔코더 count·이동거리 환산을 연결하고1m 실측/추정 오차를 기록할 준비다. 현재 구성의 전용 fault-stop·부하/열·전체 요구사항 수용은 별도이며 과거 제외 합의한 항목을 자동으로 재개하지 않는다.
+현재 저속 수동 주행은 선택 회차 범위에서 완료했다. 다음은 **부하·발열 계측 장비 선정**이다. 보유 장비의 정격·기능을 먼저 확인하고 DC 전류/온도 측정 수단과 관측 절차를 정한다. 이후 부하·발열 기록, 누적 엔코더 count·거리 환산과1m 실측/추정 오차 기록을 이어간다. 현재 구성의 전용 fault-stop·부하/열·전체 요구사항 수용은 별도이며 과거 제외 합의한 항목을 자동으로 재개하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
