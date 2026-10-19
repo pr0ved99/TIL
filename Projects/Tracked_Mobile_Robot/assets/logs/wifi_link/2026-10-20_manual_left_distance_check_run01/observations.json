@@ -1,0 +1,115 @@
+{
+  "date": "2026-10-20",
+  "source": "User typed manual checkpoints; later clarified field=left_count",
+  "measurement_method": "Manually rolled from reported0 to15cm and back; no powered drive results claimed",
+  "channel": "left_count",
+  "reference_zero": "User reported 0cm count0; absolute-vs-subtracted zero not independently verified",
+  "checkpoints": [
+    {
+      "leg": "outward",
+      "reported_position_mm": 0,
+      "reported_relative_left_count": "0",
+      "initial_estimate_mm": 0.0,
+      "error_mm": 0.0,
+      "error_percent": null
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 10,
+      "reported_relative_left_count": "115",
+      "initial_estimate_mm": 8.403846153846153,
+      "error_mm": -1.5961538461538463,
+      "error_percent": -15.961538461538462
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 50,
+      "reported_relative_left_count": "572",
+      "initial_estimate_mm": 41.8,
+      "error_mm": -8.2,
+      "error_percent": -16.4
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 100,
+      "reported_relative_left_count": "1162",
+      "initial_estimate_mm": 84.91538461538461,
+      "error_mm": -15.084615384615384,
+      "error_percent": -15.084615384615384
+    },
+    {
+      "leg": "turnaround",
+      "reported_position_mm": 150,
+      "reported_relative_left_count": "1736",
+      "initial_estimate_mm": 126.86153846153846,
+      "error_mm": -23.138461538461538,
+      "error_percent": -15.425641025641026
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 100,
+      "reported_relative_left_count": "1154",
+      "initial_estimate_mm": 84.33076923076923,
+      "error_mm": -15.669230769230769,
+      "error_percent": -15.669230769230769
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 50,
+      "reported_relative_left_count": "570",
+      "initial_estimate_mm": 41.65384615384615,
+      "error_mm": -8.346153846153847,
+      "error_percent": -16.692307692307693
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 10,
+      "reported_relative_left_count": "114",
+      "initial_estimate_mm": 8.330769230769231,
+      "error_mm": -1.6692307692307693,
+      "error_percent": -16.692307692307693
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 0,
+      "reported_relative_left_count": "1",
+      "initial_estimate_mm": 0.07307692307692308,
+      "error_mm": 0.07307692307692308,
+      "error_percent": null
+    }
+  ],
+  "initial_coefficient": {
+    "rational": "19/260",
+    "mm_per_count": 0.07307692307692308,
+    "source": "Previously recorded approximate9.5mm pitch x12 /1560"
+  },
+  "diagnostic_candidates_not_applied": {
+    "longest_outward_mm_per_count": 0.08640552995391705,
+    "return_full_span_mm_per_count": 0.08645533141210375,
+    "all_nonzero_checkpoints_fit": {
+      "model": "count = slope * position_mm through reported origin",
+      "counts_per_mm": 11.559538784067087,
+      "mm_per_count": 0.08650864179618782,
+      "relative_scale_increase_percent": 18.38024666846754,
+      "note": "Correlated checkpoints from one out/back series, not independent repeated trials"
+    },
+    "equivalent_pitch_if_only_pitch_were_wrong_mm": 11.232718894009217,
+    "equivalent_pitch_caution": "Conditional only; cannot identify true link pitch or distinguish slip, mapping, measurement error or counts/rev error from these data"
+  },
+  "same_position_return_minus_outward_counts": {
+    "1cm": -1,
+    "5cm": -2,
+    "10cm": -8,
+    "0cm": 1
+  },
+  "reported_return_closure_count": 1,
+  "interpretation": "Initial geometric coefficient underestimates this left-channel manual distance by about15-17%; numeric out/back repeatability looks close, but ground accuracy and causality not established",
+  "not_verified": [
+    "No start/end raw telemetry, boot/sample ticks, local freshness or control state supplied",
+    "Right encoder counts not provided",
+    "Measurement tool/resolution, straightness and no-slip rolling not independently verified",
+    "S0/power/reassembly conditions were instructed but not explicitly confirmed in this checkpoint report"
+  ],
+  "decision": "Do not change firmware gains, global/side distance coefficient or archived geometry/model/report inputs based on this single-channel manual series",
+  "next": "Repeat one100mm manual forward displacement while recording complete start/end latestTel for both channels; no zero reset required."
+}

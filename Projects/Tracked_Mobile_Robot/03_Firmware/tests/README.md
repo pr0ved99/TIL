@@ -590,3 +590,57 @@ current safe restore 원본은
 
 이 checkpoint는 source/configuration contract와 final logic input all-LOW를 닫는다. 실제 motor,
 MDD10A power-stage와 Physical E-stop은 증명하지 않는다.
+
+## 누적 count STM 후보/저장본 검사 — 2026-10-19
+
+`encoder_count_candidate.py`는 실제 source에 입력할9개 블록을 임시 후보로 구성하며 firmware를 수정하지 않는다. 입력 안내는 [오도메트리 문서](../../01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md#stm-누적-count-입력-묶음--2026-10-19)를 따른다.
+
+`test_encoder_count_candidate.py --cc <native-compiler> --output <report.json>`는 후보를, `--saved` 추가 시 사용자가 저장한 실제 STM source를 검사한다. `--guide <path>`는 후보 검사가 통과한 경우에만 입력 안내를 생성한다. native TCC/GCC와 HAL 모의 전용이며 target build/flash나 UART/모터 I/O는 없다. 컴파일러 오류/부재를 PASS로 처리하지 않는다.
+
+기존 mapper/motor/timeout/E-stop fixture와 실제 main의 count publish 블록을 실행한다. 초기/ARM0·새ARM·거부ARM/DISARM/reset 구간, 부호·CPS, int64 직렬화/INT64_MIN 반전 방어,20필드/LF 및512-byte 길이 여유를 확인한다. [10/19 후보 결과](../../assets/logs/wifi_link/2026-10-19_encoder_count_candidate_review/stm_candidate.json)는14개 PASS이며 ESP 연결·실제 입력·target 실행 검증은 별도다.
+
+## 누적 count ESP 후보와 관찰 스크립트 검사 — 2026-10-20
+
+`encoder_count_esp_candidate.py`는 ESP 한 파일의6개 입력 블록을 준비하며 실제 firmware를 수정하지 않는다. [입력 안내](../../01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md#esp-누적-count-입력-묶음--2026-10-20)를 따른다. `test_encoder_esp_candidate.py --cc <native-compiler> --node <node-runtime> --output <report.json>`는 후보를 검사하고, `--source <actual-wifi_link_main.c>`를 추가하면 실제 저장본을 검사한다. VS Code의 Node runtime을 사용하면 호출 환경에 `ELECTRON_RUN_AS_NODE=1`이 필요하다.
+
+실제 i64/TEL parser·status_json C를 native HAL/RTOS 대역과 실행하고 그 JSON을 실제 PAGE 검증/표시 및 관찰v5에 전달한다. native9·신규PAGE/관찰8·기존PAGE46 PASS, stress JSON775/1024 bytes다. 별도로 기존 `test_wifi_nonzero_main.py <source> --cc <native-compiler> --node <node-runtime> --output <report.json>`의 PAGE/제어mode1/0 회귀를 수행했다. 겹치는 사례가 있어 합계를 독립 사례 수로 세지 않는다.
+
+[결과](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/esp_count_candidate.json), [기존 제어 회귀](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/esp_control_candidate.json), [관찰v5](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/console_encoder_observe.js). 실제 UART 시각/지연·보드 build/flash·주행은 PC 결과 범위에 포함하지 않는다.
+
+## STM nano 출력 호환 수정 후보 — 2026-10-20
+
+`encoder_nano_format_candidate.py --cc <native-compiler> --output <report.json> --guide <guide.md>`는 아직 입력 전인 STM 저장본에서 helper+send_tel 교체 후보를 만든다. 실제 firmware는 수정하지 않는다. 수동 십진 변환9개 값(0/부호/32비트 초과/2^53 초과/int64 끝값)과 출력 경계 byte를 검사하고 기존 STM native 회귀를 실행한다. 입력 후에는 기존 runner의 `--saved`로 실제 저장본을 검사한다.
+
+실제 STM nano printf에서 PRId64가 `ld`를 보낸 결함이 발견됐다. native libc printf PASS로 target libc 지원을 증명할 수 없다. 새 후보는 count를 `%s`로 보내지만, target build/flash와 실제 숫자 TEL 수락은 사용자 보드 검증이 필요하다. [입력 안내](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/stm_nano_format_typing.md).
+
+`encoder_nano_format_candidate.py --saved --cc <native-compiler> --output <report.json>`는 실제 저장된 helper를 추출해 동일9개 변환/경계 byte와 기존 STM native 회귀를 검사한다. `--guide`는 필요 없다.
+
+## 관찰 v5 구간 거리 분석 — 2026-10-20
+
+`analyze_encoder_distance.py`는 저장한 관찰v5 JSON을 PC에서 읽고 ARM별 거리 추정을 생성한다. Python 표준 라이브러리만 사용하며 네트워크/serial/보드 I/O가 없다. 사용자는 firmware를 추가 입력할 필요가 없다.
+
+저장소 root 기준 실행:
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/analyze_encoder_distance.py <browser_report.json> --output <distance_report.json>
+python -X utf8 -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p test_encoder_distance_analysis.py -v
+```
+
+기본 입력은 [실물14톱니 정정 모델](../../assets/logs/wifi_link/2026-10-20_track_geometry_14t_revision/geometry_model.json)이다. 피치9.62~9.66mm의 중간값9.64mm와14톱니·1560counts/output rev로 `9.64×14/1560=1687/19500≈0.08651282mm/count`를 좌우 공통 초기값으로 사용한다. `--model <json>`으로 같은 구조의 모델을 명시할 수 있다. 모델 경로/hash·피치 범위·톱니 수·cpr를 결과에 남긴다. 지상 실측 보정 전이며 `side_coefficients`를 읽는 도구는 아니다.
+
+동작/보수적 판정:
+
+- count는 canonical int64 십진 문자열로 검사하고 Python int로 차이를 계산한다. Fraction으로 계수를 적용하며 JSON의 count/차이와 거리 표시도 문자열이다. 거리6자리 표시는 계산 출력 형식이며 실제 측정 정밀도가 아니다.
+- 같은 ESP boot/TEL counter의 반복 방송을 제거한다. 같은 번호의 내용 충돌이나 이전 TEL 재생은 구간을 무효화한다.
+- `(ESP boot_id, 성공 ARM UART seq)`별로 **ARM ACK 후250ms 안의 최초 valid·정지 sample**을 시작점으로 사용한다. ARM 직후 정지 상태의 일시적 invalid sample은 정상이며 그 동안 움직임이 있으면 제외한다. ARM seq0도 유효하다.
+- **DISARM OK ACK 후 valid·DISARMED/DISARM·CMD/PWM/CPS0 sample**을 끝점으로 사용한다. 마지막 정지 frame을 재구성하거나 ACK만으로 정지를 추정하지 않는다.
+- STM TEL/sample freshness200ms, 브라우저 수신 간격250ms, source TEL counter의 연속성·STM/sample tick 역행/wrap·FAULT·drop/err·비정상 CONTROL stop 등을 검사한다. 이 값은 offline 계산 수용 조건이고 firmware timeout 변경이 아니다.
+- 중간 단절/무효 sample이 생기면 그 ARM 구간 전체를 REJECTED로 표시하고 `distance_estimate_mm=null`로 남긴다. 같은 ARM에서 자동 재개하지 않는다. 새 ARM 응답과 정상 기준점이 있어야 새 구간을 시작한다.
+- 관찰 ring의 `telemetry_dropped`는 오래된 브라우저 행 제거이며 STM `drop`과 구분한다. ACK/기준점/끝점이 잘리면 해당 구간을 계산하지 않는다. 역방향 count 감소/0 통과는 정상이다.
+- 입력과 모델의 SHA256을 결과에 남기고 원본 덮어쓰기를 거부한다. 정상 실행 exit0은 분석 보고서 생성 성공이지 모든 구간 수용/지상 정확도 PASS가 아니다. 입력 형식 오류는 exit2다.
+
+기존 native fixture와 독립된 [검사 코드](test_encoder_distance_analysis.py)는36개 method다. 큰 정수/끝값·중복·단절/재개 금지·reset/wrap·무효/FAULT·ACK 누락·정지 끝점·실제3회차 재생과14톱니 모델/피치 범위를 확인한다. [정정 검증](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/validation.json): unittest36·CLI3·덮어쓰기/구버전 거부2 PASS, 원본 hash·구간 판정·delta count 불변.
+
+[정지 ARM](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/arm_zero.json):0mm. [공중 전진](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/forward_air.json):좌222.078410/우205.381436/평균213.729923mm. [공중 후진](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/reverse_air.json):좌-253.050000/우-235.055333/평균-244.052667mm. 후진 파일에 남은 과거 전진 ARM은 ACK가 잘려 REJECTED이며 별도 전진 원본에서는 수용된다. 기존12톱니 모델의 [분석 결과](../../assets/logs/wifi_link/2026-10-20_encoder_distance_analysis_review/validation.json)는 가정 이력으로 보존했다.
+
+모두 encoder 상당 궤도 이동량이다. 실제 지상 차체 거리/슬립/정지 시간·거리 수용이나 전체 MVP 완료 판정은 하지 않는다. 현재 firmware/제어 설정 변경과 새 물리 시험은 없다.

@@ -1,0 +1,169 @@
+{
+  "test": "TK-MVP-03-04 ARM zero interval and DISARM retention subset",
+  "status": "PASS",
+  "source_sha256": "d9652b5cb332ef17109a30adc07f845269b6ebb395b86073aa569f9492586e2c",
+  "observer_version": 5,
+  "telemetry_rows": 1053,
+  "unique_source_tel": 633,
+  "telemetry_dropped": 0,
+  "boot_id": 1794076624,
+  "arm_seq": 525914433,
+  "disarm_seq": 525914492,
+  "command_results": {
+    "ARM": 1,
+    "CMD": 58,
+    "DISARM": 1
+  },
+  "all_results_OK": true,
+  "arm_to_disarm_ack_ms": 5790.5,
+  "first_post_ARM_invalid_sample": {
+    "ms": 51471.699999999255,
+    "boot_id": 1794076624,
+    "gap_ms": 60.5,
+    "esp_uptime_ms": 804108,
+    "esp_step_ms": 60,
+    "tel_count": 8045,
+    "stm_t_ms": 139700,
+    "stm_age_ms": 50,
+    "command_age_ms": 4294967295,
+    "last_seq": 525914433,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": false,
+    "encoder_t_ms": 139623,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": false,
+    "encoder_arm_seq": 0,
+    "drop": 0,
+    "err": 0
+  },
+  "first_valid_ARM_sample": {
+    "ms": 51542.39999999851,
+    "boot_id": 1794076624,
+    "gap_ms": 70.69999999925494,
+    "esp_uptime_ms": 804174,
+    "esp_step_ms": 66,
+    "tel_count": 8046,
+    "stm_t_ms": 139800,
+    "stm_age_ms": 16,
+    "command_age_ms": 62,
+    "last_seq": 525914434,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 139724,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914433,
+    "drop": 0,
+    "err": 0
+  },
+  "first_DISARM_retained_sample": {
+    "ms": 57121.89999999851,
+    "boot_id": 1794076624,
+    "gap_ms": 69.09999999962747,
+    "esp_uptime_ms": 809759,
+    "esp_step_ms": 60,
+    "tel_count": 8102,
+    "stm_t_ms": 145401,
+    "stm_age_ms": 11,
+    "command_age_ms": 134,
+    "last_seq": 525914492,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 145325,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914433,
+    "drop": 0,
+    "err": 0
+  },
+  "last_sample": {
+    "ms": 63173.5,
+    "boot_id": 1794076624,
+    "gap_ms": 61.5,
+    "esp_uptime_ms": 815818,
+    "esp_step_ms": 59,
+    "tel_count": 8162,
+    "stm_t_ms": 151401,
+    "stm_age_ms": 80,
+    "command_age_ms": 6134,
+    "last_seq": 525914492,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 151325,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914433,
+    "drop": 0,
+    "err": 0
+  },
+  "all_command_pwm_cps_zero": true,
+  "all_counts_zero_decimal_strings": true,
+  "drop_err_zero": true,
+  "unexpected_focused_motion_stop_captured": null,
+  "stops": {
+    "count": 2,
+    "interpretation": "Both after DISARM, intent=false/motion=null/focused=false; not an active-motion stop"
+  },
+  "physical_user_report": "Both tracks supported clear of ground; LiPo connected/S1 ON/S0 already released; S2 operation not yet reported",
+  "limits": [
+    "Zero-count interval lifecycle only; physical nonzero counts/sign, second ARM relabel without reset, distance unverified",
+    "S2 operation/motor power restoration not yet reported"
+  ],
+  "next": "With tracks supported, user presses S2 once and confirms no motion plus DISARMED/PWM0 before first nonzero command."
+}

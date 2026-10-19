@@ -1,0 +1,40 @@
+{
+  "mode": "CANDIDATE MAIN",
+  "scope": "PAGE/main + saved core in both modes; legacy C baseline forced to mode 1; native mocks only, no board build/flash/runtime",
+  "source": "C:\\Users\\eyh12\\.codex\\tmp\\encoder_esp_typo_corrected_20261020.c",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "node": "C:/Users/eyh12/AppData/Local/Programs/Microsoft VS Code/Code.exe",
+  "inputs": {
+    "C:\\Users\\eyh12\\.codex\\tmp\\encoder_esp_typo_corrected_20261020.c": "2c5b2abf2e9a2b5e1be4e4e5fea748e27253448908481a1fa69464b047943d27",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "13325297a8934925d5b68ffc9a4572fda565c6d388aae41207f5872e229ec7aa",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "95291ee26c63f3ab0bdd9a838a073e32398f3f939e97458a18e0474723c4820a",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "bcf57445e1fa9229f70323f4e616e39d0675b2961c5eda87773ced8fafdbcc95",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_main.py": "492b537afed9d364631744d6f8c89aa36a13fd039e73b10af4563216c10caef7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main.py": "e4ad6d5f7b861ffca8d88dfcd3331d6628fecf66048eca0bfee427c38a6ebd96",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main_page.js": "259c5004cc3bac464d52a8a6a7b1ea614648c5f8a18417dc331dca2242fe7941",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_page.js": "3587beb0803c15e89117c83135e32d273afcc7eff34106149a261a4d4aff496d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_nonzero_main_host_fixture.c": "480c874e5870a515ac41bd5ae86a02c1e3110f9fd00099a67e1f0f89d3d42af5",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_main_host_fixture.c": "1ba4de19604f7c25be0b040ea4c788cf728a23943f18b9b8d105025777954fa7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_w5_host_fixture.c": "aa54632e427c82d97ec01625b6cf7cf9e5e6e26512cf286a2026e867d8e51bc4"
+  },
+  "checks": {
+    "browser": 67,
+    "baseline_mode_1_existing_c": 42,
+    "mode_1_adapter": 6,
+    "mode_0_adapter": 6,
+    "page_c_initializer": 1,
+    "negative_controls_detected": 2
+  },
+  "input_zero_only": 0,
+  "status": "PASS",
+  "scope_note": "Only a temporary copy has the three ESP saved-input corrections. Current saved ESP still requires correction.",
+  "saved_review": "esp_saved_review_01.json"
+}

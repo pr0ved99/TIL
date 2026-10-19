@@ -2,7 +2,11 @@
 
 STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-18
+## 현재 상태 — 2026-10-20
+
+STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다. [10/20 기록](../../docs/progress/2026-10-20_progress.md). count는 JSON 문자열, encoder sample/ARM metadata는 별도로 보존하며 MCU 정지 제한·모터 출력 설정은 유지한다.
+
+### 10/18 기본 주행 이력
 
 배터리 단독 지상에서 브라우저→ESP→STM 경로의 전·후진·양방향 회전·놓음/DISARM 정지를 확인했다. 현재 ZERO_ONLY=0U·UART 시험 mode0, 일반 PWM cap150‰/순수 회전200‰, STM 직진 왼쪽 gain960/930이다. [최종 주행 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [진행 기록](../../docs/progress/2026-10-18_progress.md). 전체 MVP·정밀 속도/거리·모든 오류/물리 안전 수용은 별도다.
 
@@ -69,4 +73,4 @@ idf.py -p COM번호 flash monitor
 ARM/CMD nonzero 통합과 NZ-01~04 모터 분리 검증을 마쳤다. [초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)의
 전체 AC-H/B/S 수용은 PC·보드·출력 근거를 나누어 미완료 항목만 이어간다.
 PING/DISARM의 비구동 PASS와 모듈 PC 검사·빌드 성공을 구동 허가로 쓰지 않는다.
-리셋 순간 UART err 증가의 완전한 전기 원인, 실제 구동 중 통신 유실 안전, 배터리 ADC·전류·열·주행은 미완료다.
+리셋 순간 UART err 증가의 완전한 전기 원인, 현재 구성의 전용 통신 유실/timeout·외부 온도·지상1m는 미완료다. 정량 전류/전압 ADC와 자동 저전압 정지는 후속 범위다.

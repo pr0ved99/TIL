@@ -280,9 +280,17 @@ static void encoder_speed_log_process(void){
    * Motor A/left: JENC_1 -> TIM3; invert raw sign for forward-positive CPS.
    * Motor B/right: JENC_2 -> TIM5; keep raw sign for forward-positive CPS.
   */
-  uart_mvp_set_encoder_cps(
+  /* Vehicle-forward count uses the same sign as production CPS. */
+  const bool encoder_sample_valid =
+    s_encoder_tim3.accumulated_count != INT64_MIN;
+
+  uart_mvp_set_encoder_sample(
     encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
-    encoder_cps_to_i32(s_encoder_tim5.counts_per_second)
+    encoder_cps_to_i32(s_encoder_tim5.counts_per_second),
+    encoder_sample_valid ? -s_encoder_tim3.accumulated_count : 0,
+    s_encoder_tim5.accumulated_count,
+    now_ms,
+    encoder_sample_valid
   );
 
   len = snprintf(

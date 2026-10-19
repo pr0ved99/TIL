@@ -1,6 +1,6 @@
 # 펌웨어 앱과 검사 안내
 
-상태 대조: **2026-10-17**. mode0 통합과 선택 NZ-01~04 모터 분리 실물시험 완료, 전체 구동 수용은 구분한다.
+상태 대조: **2026-10-20**. STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다.
 재개 전에는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)와 [최신 진행 기록](../docs/progress/README.md)을 먼저 읽는다.
 
 ## 앱 선택과 마지막 실행
@@ -8,7 +8,7 @@
 | 프로젝트 폴더 | 역할·진입점 | 확인한 상태 |
 | --- | --- | --- |
 | [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령 검사·상태/timeout·최종 출력 안전 판단 | W5 실제 PONG/ACK·TEL 관측. PA10 pull-up·PONG 시험 hook0U. 전체 전력단·주행 수용과 별개 |
-| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. nonzero ARM/CMD 통합·사용자 빌드/플래시·NZ-01~04 모터 분리 검증 완료. 실제 Wi-Fi 모터 구동은 별도 |
+| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 배터리 지상 주행, 10/20 확장20필드 TEL/count 문자열·ARM metadata 연동 및 공중 전후진 subset 확인 |
 | [esp32_uart_bridge](esp32_uart_bridge/README.md) | [uart_bridge_main.c](esp32_uart_bridge/main/uart_bridge_main.c). 기존 UART bring-up·모터 시험 콘솔 | 별도 앱의9/30 M2_RUN 수동 hook1U와 default-off30 PASS/1 FAIL 이력. Wi-Fi 앱의 설정이 아님. hook 복구·해당 앱 재빌드/플래시·release는 별도 |
 | [esp32_examples](esp32_examples/README.md) | Hello World·FreeRTOS·STA·HTTP·WebSocket 단계별 연습 | 각 하위 폴더가 별도 ESP-IDF 프로젝트. 예제 플래시는 ESP의 실행 앱을 바꾸며 실제 Wi-Fi/UART 연동 검증과 구분 |
 
@@ -17,7 +17,7 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 ## ARM/CMD 모듈과 실행 경로
 
-다섯 제어 모듈과 main이 [CMake](esp32_wifi_link/main/CMakeLists.txt)에 등록돼 있고, 브라우저→HTTP 접수→executor→UART→ACK/TEL→브라우저 흐름이 연결돼 있다. 현재 Wi-Fi 제어는 **ZERO_ONLY=0U의 방향 입력 모드**다. ARM/첫zero 확인 후 현재 입력을 전달한다. [보고서38](../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 범위의 모터 분리 검증을 마쳤다.
+다섯 제어 모듈과 main이 [CMake](esp32_wifi_link/main/CMakeLists.txt)에 등록돼 있고, 브라우저→HTTP 접수→executor→UART→ACK/TEL→브라우저 흐름이 연결돼 있다. 현재 Wi-Fi 제어는 **ZERO_ONLY=0U의 방향 입력 모드**다. 누적 count는 signed64 값의 JSON10진 문자열이며 sample/ARM 유효성·시각·seq를 같이 전달한다. STM newlib-nano 제약은 수동 int64 문자열 변환과 `%s`로 대응했다. ARM/첫zero 확인 후 현재 입력을 전달한다. [보고서38](../docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md) 범위의 모터 분리 검증을 마쳤다.
 
 | 파일 | 담당하는 일 | 근거와 범위 |
 | --- | --- | --- |
@@ -41,6 +41,6 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 ## 다음 작업
 
-학습은 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)에서 시작한다. 실물 검증은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에 따라 미완료 항목만 이어간다. 전체 AC-B/S·nonzero 구동·전력단·주행은 별도이며 PC7 FAULT를 우회하지 않는다.
+학습은 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)에서 시작한다. 실물 검증은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에 따라 미완료 항목만 이어간다. 전용 유실/timeout·온도·지상 거리와 전체 안전 수용은 별도이며 PC7 FAULT를 우회하지 않는다.
 
 코드/배선 변경이나 실패가 없는 완료 시험은 반복하지 않는다.

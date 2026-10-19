@@ -7,8 +7,8 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-18:** 궤도 장착·배터리 단독 Wi-Fi 제어로 전·후진·좌/우회전과 동작 사이 놓음 정지·최종 DISARM을 확인했다. 일반 출력15%/회전20%, 방향별 직진 trim으로 좌우 CPS 차이와 육안 휨을 줄였다. [최종 주행 근거](assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [보정 비교](docs/progress/2026-10-18_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
-  1m 실제/엔코더 추정 거리 비교·현재 궤도 구성의 전용 fault-stop 회차·전류/열·최종 수용 audit는 후속이다. ADC 자동 저전압 정지·PID·IMU·ROS2는 post-MVP 범위다.
+- **현재 단계 · 2026-10-20:** STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다. [오늘 기록](docs/progress/2026-10-20_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+  MVP는 기본 무선 주행/정지·엔코더 거리 비교·외부 온도 관측이다. 정량 전류·전류/전압 ADC·자동 저전압 정지·IMU/PID/ROS2는 post-MVP이며 IMU 기본 검증을 첫 후속으로 둔다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
@@ -142,7 +142,7 @@ flowchart LR
 | --- | --- | --- |
 | 통신·펌웨어 | Wi-Fi ARM/CMD·ticket/owner·큐/UART·PAGE 통합, 선택 AC-S/nonzero·실제 궤도 구동/정지 확인 | 현재 최종 구성의 실제 궤도 UART 단절/timeout 전용 회차와 전체 오류 분기 수용 |
 | 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
-| 구동·피드백 | 배터리 단독 지상 전·후진/좌·우회전, 동작 사이 정지·최종 DISARM, 직진 gain0.96/0.93의 CPS/휨 개선 | 전류·열·장시간/부하 조건·1m 실제/추정 거리 비교 |
+| 구동·피드백 | 배터리 단독 지상 전·후진/좌·우회전, 동작 사이 정지·최종 DISARM, 직진 gain0.96/0.93의 CPS/휨 개선 | 외부 온도·전용 유실/timeout 정지·1m 실제/추정 거리 비교; 정량 전류/ADC는 후속 |
 | 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 전력단 일부 관측과 A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A·T-MOTOR-003 PARTIAL, 정식 T-ESTOP-007 BLOCKED. rail-off·단자/배선 release·기계 정지 시간/거리 수용 |
 | 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
 | 기구·주행 | 플레이트/전장 장착·고정/절연/접근성 사용자 확인, 단축 궤도 구성으로 저속 지상 주행 | 1m 거리·엔코더 추정 오차와 정량 기구/주행 수용. ADC/자동 저전압 정지는 post-MVP |
@@ -152,7 +152,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-현재 저속 수동 주행은 선택 회차 범위에서 완료했다. 다음은 **부하·발열 계측 장비 선정**이다. 보유 장비의 정격·기능을 먼저 확인하고 DC 전류/온도 측정 수단과 관측 절차를 정한다. 이후 부하·발열 기록, 누적 엔코더 count·거리 환산과1m 실측/추정 오차 기록을 이어간다. 현재 구성의 전용 fault-stop·부하/열·전체 요구사항 수용은 별도이며 과거 제외 합의한 항목을 자동으로 재개하지 않는다.
+다음 세션 첫 작업은 `TK-MVP-03-04`의 현재 STM/ESP source·기존 build 산출물 식별값 대조와 인수 기준점 정리다. 새로 빌드/플래시하기 전에 현재 증거를 먼저 확인한다. 이후 전용 유실/timeout 정지 → GM-1312 외부 온도 → 조건 충족 후 지상1m 순서다. 완료한 count/부호·기본 방향·놓음 시험은 자동 반복하지 않는다. GM-1312는 선택했으나 구매/수령은 미확인이다. 전류 측정 장비/ADC 구현을 MVP 진입 조건으로 복원하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),

@@ -1,9 +1,12 @@
 # Current Session Context
 
-Last updated: **2026-10-18 — 배터리 단독 지상 수동 주행·회전 20%·1차 직진 보정 통합 확인 완료**.
+Last updated: **2026-10-20 — 누적 count 실물·14톱니 정정 모델·offline 분석기36 PASS**. 실제 하중의 기본 주행·정지와 외부 온도는 MVP, 정량 전류/전압 ADC 모니터링은 후속이다. 최신 지상 주행 근거는10/18, 최신 공중 count/전후진·놓음 검증은10/20이다.
+
+**10/20 세션 마감:** 사용자가 오늘 작업을 여기까지 마치고 자고 일어나서 이어가기로 했다. 다음 세션 첫 작업은 `TK-MVP-03-04`의 현재 STM/ESP source·기존 build 산출물 식별값 대조와 인수 기준점 정리다. 새로 빌드/플래시하기 전에 현재 증거를 먼저 확인한다. 이후 전용 유실/timeout 정지 → GM-1312 외부 온도 → 조건 충족 후 지상1m 순서다. 완료한 count/부호·기본 방향·놓음 시험은 자동 반복하지 않는다. 종료 전원 분리/궤도 재조립은 미보고이며 마감 문서가 물리 종료를 대신하지 않는다. Git/Notion 게시 결과는 오늘 progress의 마감 기록과 실제 원격 상태를 따른다.
 
 ## 현재 기준
 
+- **최신 MVP 종료선:** 기본 주행/정지·엔코더 이동량/1 m·외부 GM-1312 온도 관측과 증거 정리다. MVP-014/REQ-MON/T-MON은 DEFERRED / POST-MVP, MVP-015/T-LOAD는 ADC 없이 수행하는 외부 온도 범위다. [마스터 플랜](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)과 [검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다. 기존 PASS/PARTIAL과 IMU 첫 후속 순서는 유지한다.
 - **최신 완료 범위:** 궤도 장착·배터리 단독 지상에서 전진 → 좌회전 → 전진 → 우회전 → 후진의 선택 수동 주행 묶음 완료. [최종 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json): 실제 저장 소스에 대응하는 TEL PWM 144/150, -200/+200, 144/150, +200/-200, -140/-150; 매 동작 사이 zero CMD/PWM과 양 CPS0 확인. 사용자 방향 전환·놓음 정지 문제없음 확인. 전체 MVP·정밀 주행 수용 완료로 확대하지 않는다.
 - 현재 STM: 일반 CMD cap150‰, 순수 회전(vx=0,w≠0) cap200‰. mapper에서 직진(w=0,vx≠0) 왼쪽만 전진 gain960‰·후진930‰와 부호 대칭 반올림. ESP/PAGE PWM 허용 ±200; 요청 vx±100/w±500은 실측 속도가 아니다. zero-only0, UART 시험 mode0, STM 시험 hook0 유지.
 - 15% 지상 회전에서 오른쪽 CPS가 지속 0이었으나 공중에서는 양방향 지속 회전했다. 회전20% 적용 후 [지상 회차](../../assets/logs/wifi_link/2026-10-18_ground_turn20_run02/observations.json)에서 오른쪽 CPS 지속·실제 양방향 차체 회전을 확인했다. 오른쪽이 느린 차이는 남는다. 궤도 구성 변경이나 회전용 고정 속도비 보정은 하지 않는다.
@@ -11,21 +14,35 @@ Last updated: **2026-10-18 — 배터리 단독 지상 수동 주행·회전 20%
 - 통신 후속 설정: WS TEL50ms, 브라우저 CMD80ms(티켓/ACK 조건 충족 시), STA WIFI_PS_NONE. TEL250ms·SOURCE200ms·STM300ms 제한은 유지했다. [PS_NONE 회차](../../assets/logs/wifi_link/2026-10-18_unexpected_stop_psnone_run01/observations.json)와 이후 주행에서 누르는 중 비정상 정지는 관측되지 않았으나, 과거 간헐 정지의 영구 해결을 뜻하지 않는다.
 - 20% 첫 회차는 STM±200 직후 ESP STM_STATE(reason8) 정지. [원본 및 역어셈블](../../assets/logs/wifi_link/2026-10-18_ground_turn20_stale_esp_run01/observations.json)에서 로컬 ESP 구 ELF가 ±150임을 확인했다. 사용자 재빌드 뒤 ELF±200과 후속 런 지속 회전 확인. 소스 저장·빌드·플래시·실물 검증을 구분한다.
 - 최종 boot4138288356/session3, DISARM request374/seq3518121891 OK. 마지막 TEL DISARMED/DISARM·CMD/PWM/CPS0·drop/err0. 종료 전원 분리는 미보고다. PC 결과: [20% 저장본 검사](../../assets/logs/wifi_link/2026-10-18_turn20_saved_review/esp_main.json), [직진 보정 저장본 native C](../../assets/logs/wifi_link/2026-10-18_straight_trim_saved_review/stm_profile.json). 사용자 STM 빌드·플래시/다운로드 검증 후 실물 PWM으로 보정 적용 확인.
-- 최신 요약은 [10/18 진행 기록](../progress/2026-10-18_progress.md)을 먼저 읽는다. 아래 이전 gate의 cap10%·공중 시험 전·USB 공급·속도 보정 미실행 표현은 당시 이력이다. 사용자 요청으로 이번 Git 게시 묶음을 정리한다. 실제 게시 결과는 git log와 원격 branch 비교로 확인하며 Notion 반영은 별도다.
+- 최신 요약은 [10/20 진행 기록](../progress/2026-10-20_progress.md)을 먼저 읽는다. 아래 이전 gate의 cap10%·공중 시험 전·USB 공급·속도 보정 미실행 표현은 당시 이력이다. 사용자 요청으로 이번 Git 게시 묶음을 정리한다. 실제 게시 결과는 git log와 원격 branch 비교로 확인하며 Notion 반영은 별도다.
 
 ## 물리 상태와 장비
 
+- **10/20 초기 전원 정정 이력:** 앞선 정지 count/FAULT 관측 시 LiPo는 분리돼 있었고 S0는 원래 해제 상태였다. 이후 사용자가 LiPo 연결·S1 ON을 보고했다. S2 조작·새 STM TEL은 아직 미보고다. 현재 ESP control_state는 같은 boot1794076624/session1의 IDLE·owner0·reason0. ESTOP_ACTIVE는 STM sense 입력 판정이며 S0 물리 잠금으로 단정하지 않는다. LiPo 분리와 입력 활성의 회로 인과는 이 보고만으로 실측 확정하지 않는다. 이후 S2 복원·reset·공중 전후진까지 진행했으며 아래 최신 상태를 따른다.
+
 - **최신 시험 구성:** A=왼쪽 M1/JENC_1, B=오른쪽 M2/JENC_2, 모터 차체 장착·정상 M1/M2/JENC/J5 연결, 두 궤도 각각 한 링크 단축 상태 유지. 사용자는 sprocket 헛돎 방지 때문에 이 구성을 기준으로 진행하기로 했다. 지상 부하 시험을 수행했으며 장력/마찰의 기여는 정량 분리하지 않았다.
-- **배터리 단독:** XL4015 #1의 보드 전원용2핀 두 개 복원, STM JP5 E5V(JP1 기존 OPEN), USB/LA 분리 안내 후 무선 주행 회차 진행. 사용자 LiPo 연결·S1 ON·S0 해제·S2 누름·STM RESET 후 READY/DISARMED/IDLE 확인. 전원 차단 완료 보고는 없다. 마지막 개별 셀 보고3.94/3.97/3.95V(시험 전 값, 현재 전압 아님); LiPo 알람·감독하 운용, ADC/자동 저전압 정지는 post-MVP PCB 범위.
+- **배터리 단독:** XL4015 #1의 보드 전원용2핀 두 개 복원, STM JP5 E5V(JP1 기존 OPEN), USB/LA 분리 안내 후 무선 주행 회차 진행. 사용자 LiPo 연결·S1 ON·S0 해제·S2 누름·STM RESET 후 READY/DISARMED/IDLE 확인. 전원 차단 완료 보고는 없다. 마지막 개별 셀 보고3.94/3.97/3.95V(시험 전 값, 현재 전압 아님); LiPo 알람·감독하 운용 유지. 10/19 재판단으로 관측용 ADC와 자동 저전압 정지는 후속이다.
 - STM 만능기판, ESP 외부 UART 점퍼. PA9→GPIO18, GPIO17→PA10, 115200/8N1.
 - LA 4MHz: D0=JDBG_UART Pin1/PA9 TX, D1=Pin2/PA10 RX, D4=JDBG_CTRL_1 Pin2/PB6, D6=JDBG_CTRL_2 Pin2/PC7, D7=JDBG_CTRL_2 Pin1/PB7. NZ-02부터 D2=JDBG_CTRL_1 Pin1/PC8(left DIR), D3=JDBG_CTRL_1 Pin3/PC9(right DIR). D2/D3를 과거 ESP UART 관측 채널로 디코드하지 않는다. D5 미사용. GND=JDBG_UART Pin3.
 - 사용자 지시: 보유 기록에 없는 장비는 없는 것으로 계획. 별도 USB-UART를 전제하거나 다시 묻지 않는다. PC7 FAULT를 우회하지 않는다.
+- **10/19 계측 장비 대조:** XL830L·일반 프로브, FX2 8채널 LA, LiPo 셀 알람과 과거5V buck 시험에 사용한 KEWEISI USB Detector/USB 저항 부하 보드가 기록돼 있다. 사용자10/1 이후 추가 구매 없음 확인. 별도 온도계·DC 클램프·션트/RC 와트미터·절연 악어클립/고정 전류 리드는 없는 것으로 계획한다. USB 장비 모델/정격과 XL830L 정확도/허용 전류 측정 시간은 미확정이며3S 전체 전류 측정에 적용하지 않았다. [계측 목록](../../00_Project_Charter/02_Component_Inventory.md#계측-장비--2026-10-19-기록-대조), [10/19 기록](../progress/2026-10-19_progress.md) 참조. GM-1312 선택과 전류/전압 ADC 검토를 거쳐, 전류/전압 회로·기준 계측 검토는 후속이며 온도 관측/잔여 인수와 분리한다.
+
+## 최신 연동 상태 — 2026-10-20
+
+**최신 모델 정정:** 실물 톱니 **14개** 확인. 연속6개 링크 동일 형상1→6의5간격48.1~48.3mm에서 피치9.62~9.66mm, 대표값9.64mm. 기존 실측1560counts/output rev 유지 →134.96mm/rev, 좌우 공통 초기 k=1687/19500≈0.08651282mm/count. 대표값은 측정 범위 중간값이며 수동 checkpoint 회귀 보정값이 아니다. 윗쪽 직선 궤도 수동 이동100/150mm의 좌우 평균 환산은100.138590/150.532308mm다. 기존12톱니 가정이 공통 scale 차이를 대부분 설명한다. 공중 궤도 이동 비교이며 지상 차체 거리 정확도·슬립/전체 MVP PASS는 아니다. [정정 모델](../../assets/logs/wifi_link/2026-10-20_track_geometry_14t_revision/geometry_model.json)·[검증](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/validation.json). unittest36·CLI3·거부2 PASS, 입력 hash·구간 판정·count 불변. 분석기 기본값 갱신, 공중 평균 전진213.729923/후진-244.052667mm. 아래12톱니/34개 검사/180.54mm 등의 수치는 정정 전 이력이다. firmware/출력 gain 변경·새 보드 시험 없음. 다음은 현재 source/실행 이미지의 인수 기준점 대조·고정이다. 이후 전용 유실/timeout 정지·GM-1312 외부 온도·조건 충족 후 지상1m 순서로 진행한다. 이미 통과한 공중 count/부호 시험은 자동 반복하지 않는다. 현재 전원/분해·재조립 상태는 미확인이다.
+
+누적 count 정지 전달/reset·ARM 구간 생성·전후진/놓음 정지·재ARM 비영 누적 보존 subset 확인 완료. 공중 전진0/0→2567/2374(ARM525914493), 후진 새 ARM525914564에서 같은 시작값 유지→끝점-358/-343(delta-2925/-2717), DISARM525914655 OK 뒤 구간/끝점 보존. 사용자 양쪽 실제 전후진/놓음 정지 확인, STM drop/err0. 마지막 CMD 취소1건은 수동 DISARM 접수 직후 outstanding 취소이며 구동 중 비정상 정지로 세지 않는다. [최신 후진 근거](../../assets/logs/wifi_link/2026-10-20_encoder_count_reverse_air_run01/observations.json). 최종 DISARMED/DISARM·CMD/PWM/CPS0. LiPo/S1 ON·S0 해제·S2 복원·양쪽 공중 지지로 시험했으며 종료 전원 분리는 미보고. 추가 사용자 보고 p≈9.5mm/61개/둘레≈579mm/두께≈5mm, 산술61×9.5=579.5mm. 초기 좌우 k=12×9.5/1560≈0.0731mm/count, 이상적1m delta≈13,684count를 [기록](../../assets/logs/wifi_link/2026-10-20_track_pitch_initial_model/geometry_model.json)했다. 측정 방법/오차·반대편 수·전원 차단/분리/재조립은 미확인이고 지상 보정은 미실행. offline 거리 분석기 구현/검증 완료: [사용법](../../03_Firmware/tests/README.md#관찰-v5-구간-거리-분석--2026-10-20), [검증](../../assets/logs/wifi_link/2026-10-20_encoder_distance_analysis_review/validation.json). unittest34·CLI3·거부2 PASS, 실제 공중 전진 평균180.536538mm/후진-206.150000mm 상당값. ACK/정지 기준·끝점과 연속성을 검사하고 끊긴 ARM은 전체 제외한다. 다음은 현재 source/이미지 인수 기준점 대조. 인수 이미지 고정·전용 정지/온도/지상1m·전체 MVP는 별도 미완료다.
 
 ## 다음 작업
 
+**업무 실행 목록:** `TK-MVP-05-01` [미결 감사](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#tk-mvp-05-01-감사-결과--2026-10-19) 완료. REQ-MECH-002는 기존10/17 사용자 근거로 PASS 정합화, REQ-MECH-003/T-MECH-002는 확인된 subset과 미기록을 나눠 PARTIAL로 정정했다. 활성 미결·제외 조사·후속은 감사표에 보존했고 전체 안전/MVP PASS로 올리지 않았다. 현재 `TK-MVP-03-01`은 실물14톱니·피치9.62~9.66mm(대표9.64mm)로 초기 모델을 정정했다(좌우0.08651282mm/count, 지상 보정 전). 지름38mm는 휠 몸통 보고치다. 병행 `TK-MVP-03-02`는 STM 오타 수정 후 [실제 저장본 native14 PASS](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/stm_saved_after_typo_fix.json)와 사용자 STM build/Run 성공 보고까지 확인했다. ESP는20필드 입력 후 저장본 PC 검사가 통과했고 실물 수신 검증 전이다. [ESP 입력6개 블록](../../01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md#esp-누적-count-입력-묶음--2026-10-20)의 후보 count/JSON/PAGE·기존 제어 검사가 통과했고 ESP 수정3곳(buffer512, negative, encoder_valid의 독립 저장)을 확인했고 [실제 저장본 count/PAGE·제어 PC 검사](../progress/2026-10-20_progress.md#esp-수정-후-실제-저장본-pass)가 통과했다. 사용자 ESP build/flash/monitor 보고 후 부팅·handshake는 성공했으나 STM의 `left_count=ld,right_count=ld`로 TEL343건 모두 거부됐다. nano.specs/libc_nano long-long printf 미지원에 대응하는 [STM 문자열 변환 입력 안내](../../assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/stm_nano_format_typing.md)와 후보 PC 검사를 준비했다. 이후 사용자 STM 입력·저장본 검사·실행 이미지 갱신 후 실제 정지 TEL/브라우저 count 수신을 확인했다. 당시 FAULT/ESTOP_ACTIVE였으며 최신 공중 시험 종료값은 DISARMED/DISARM이다. count는 int64/JSON10진 문자열, sample/ARM 유효성·(ESP boot_id, ARM UART seq) 구간 기준을 사용한다. 측정 flag=false 자체로 제어 TEL을 거부하지 않는다.
+
+**날짜 배치:** [10/19 시작 일자별 초안](../plans/README.md#일자별-실행안--2026-10-19-시작)은 하루 약2시간, 오늘 감사30~60분 가정이다. 10/23 인수 이미지·10/24 정지·10/25 조건부 온도·10/26 조건부1 m·10/28 인수 검토, 10/29~30 보완 기간을 목표로 한다. 사용자 가용 시간·GM-1312 납기·활성 미결 분량은 미확정이며 첫 감사 뒤 수정한다. 계획된 작업을 완료로 표시하지 않았고 외부 일정 등록은 없다.
+
+**계측 최신 상태:** 온도계는 사용자 선택 **BENETECH GM-1312**다. 합계5만 원 제한은 철회됐지만 사용자는 **8만 원대UT210E를 비용으로 거절**하고 **아날로그 전류 센서→STM32 ADC**를 제안했다. 현재 방향은센서/ADC 관측·UART/ESP/브라우저 로그이며 Codex 우선 후보는 **Pololu #5241 ACS71240KEXBLT-030B3(±30A,3.3V)**다. 국내 모듈 표시가VAT 포함9,240원, 배송/부속/실재고/납기는미확정. 첫 위치는K1 87→센서→MDD B+의드라이버 입력 분기, ADC 후보는PC0/ADC1_IN10이다. `.ioc`에ADC/PC0 배정은 없고PA0/PA1은엔코더 사용 중이다. PC0의보드/기판 연결·모듈/RC·샘플링·영점/감도·TEL 계약 검토가 남는다. 모델 구매·코드/배선 변경·새 측정은없다. UT210E와이전5만 원/션트 비교는이력이며 [10/19 ADC 방향 검토](../progress/2026-10-19_progress.md#stm32-adc-전류-센서-방향-검토)를 따른다. 자동 과전류 차단/배터리 저전압/rail 진단의구현 완료를 뜻하지 않는다.
+
 1. 선택 수동 주행 검증 묶음은 완료했다. 현재 전진 gain960/후진930·일반15%/회전20%를 기준으로 유지한다. 같은 조건의 방향/놓음/탭 전환 시험을 자동 반복하지 않는다.
-2. 최종 계획·검증 매트릭스 대조 완료: MVP-006/010·REQ-DRIVE-001/002 PASS, REQ-DRIVE-003·전체G6 PARTIAL. 다음 우선 작업은 **부하·발열 계측 장비 선정**이다. 보유 장비 기록의 모델·정격·온도 측정 지원을 확인하고, 배터리 전체 DC 전류와 모터·MDD10A·전원부 온도의 측정 방법·범위·연결/고정 방식을 정한다. 부족한 기능에 대해서만 추가 장비를 선정한다. 장비/방법과 관측·중단 기준을 정한 뒤 현재 출력 조건의 부하·발열 관측, 거리 모델·누적 count 전달과1m 실제/추정 거리 비교를 이어간다. 이번 결과를 전체 MVP 완료, 장시간 신뢰성, 정밀 속도/거리/각도 보정으로 확대하지 않는다.
-3. 사용자가 제외한 과거 재검토 항목을 다시 진행 조건으로 삼지 않는다. 펌웨어 입력·두 보드 빌드/플래시·물리 조작은 사용자, Codex는 PC 검사·증거/문서 관리. Git 게시는 사용자 요청 범위이며 Notion 게시·종료 전원 분리는 수행·확인되지 않았다.
+2. 5피치48.1~48.3mm·실물14톱니 확인과 PC 기본 모델 정정을 완료했다. 다음은 현재 source/실행 이미지의 인수 기준점 대조·고정이다. 이후 전용 유실/timeout 정지·GM-1312 외부 온도·조건 충족 후 지상1m 순서로 진행한다. 이미 통과한 공중 count/부호 시험은 자동 반복하지 않는다. 현재 전원/분해·재조립 상태는 미확인이다.
 
 ## 기록과 작업 원칙
 

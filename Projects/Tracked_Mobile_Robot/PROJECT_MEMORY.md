@@ -2,9 +2,19 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-17 (Wi-Fi nonzero NZ-01~04 motor-disconnected closeout)
+Last updated: 2026-10-20 (encoder count path and actual14-tooth geometry closeout)
 
-## Current Application Checkpoint — 2026-10-17
+## Current Application Checkpoint — 2026-10-20
+
+- STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다.
+- A=left/M1/JENC1/TIM3 부호 반전, B=right/M2/JENC2/TIM5 부호 유지.
+- 일반150‰·순수 회전200‰·직진 왼쪽 gain960/930, ZERO_ONLY0·UART시험mode0·기존 안전 제한 유지. 최신 구동 끝점은 DISARMED/DISARM·CMD/PWM/CPS0였으나 이후 수동 치수 측정 뒤 현재 전원/궤도 재조립 상태는 미확인이다.
+- 실물 톱니14개가 과거12개 보고를 대체한다. 38mm는 몸통 지름이며 pitch diameter로 쓰지 않는다. 61링크×9.64=588.04mm 피치선 둘레와 기존579mm 보고는 측정 기준/독립성이 미확정이다. 수동 upper straight track 이동은 지상 차체 거리 검증이 아니다.
+- MVP는 기본 주행/정지·거리1m 비교·GM-1312 외부 온도. 정량 전류/전압 ADC·자동 저전압 정지는 post-MVP, IMU 기본 검증은 첫 후속이다. 온도계 구매/수령은 미확인.
+- 다음 세션 첫 작업은 `TK-MVP-03-04`의 현재 STM/ESP source·기존 build 산출물 식별값 대조와 인수 기준점 정리다. 새로 빌드/플래시하기 전에 현재 증거를 먼저 확인한다. 이후 전용 유실/timeout 정지 → GM-1312 외부 온도 → 조건 충족 후 지상1m 순서다. 완료한 count/부호·기본 방향·놓음 시험은 자동 반복하지 않는다.
+- [최신 진행 기록](docs/progress/2026-10-20_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md). 아래 날짜의 현재/다음은 해당 시점 이력이다.
+
+## Historical Application Checkpoint — 2026-10-17
 
 - Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md).
 - 앱 esp32_wifi_link, ZERO_ONLY=0U/UART시험mode0·STM 시험switch14개0U. 마지막 boot4247124430, DISARM436 OK/seq2197817170, IDLE/DISARMED·출력/CPS/drop/err0. 소스 식별은 PC근거와 대조하며 바이너리 readback은 없다.

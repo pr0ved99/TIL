@@ -1,0 +1,25 @@
+{
+  "user_report": "ESP build/flash/monitor completed",
+  "monitor_evidence": {
+    "startup_ready": true,
+    "tel_rejected": 343,
+    "tel_accepted": 0,
+    "count_pairs": [
+      [
+        "ld",
+        "ld"
+      ]
+    ],
+    "state_reason_pairs": [
+      [
+        "FAULT",
+        "ESTOP_ACTIVE"
+      ]
+    ]
+  },
+  "input_sha256": "59b5052784bf56694525b6eda8fb058a05010b8f09ef07a1f6ce2b80ccb31808",
+  "cause": "STM nano.specs/libc_nano formatted I/O lacks long-long printf; PRId64 produces literal ld",
+  "next": "User enters manual int64 decimal helper and send_tel replacement, saved-source review before STM build/flash",
+  "target_fix_status": "PENDING; candidate native PC only",
+  "motion": "ESTOP_ACTIVE observed; no ARM or motion requested"
+}

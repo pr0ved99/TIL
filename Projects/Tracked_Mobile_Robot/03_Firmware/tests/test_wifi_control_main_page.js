@@ -120,6 +120,10 @@ function status(bootId = 123, uptime = 1000) {
     if (startupPage) {
         value.startup_state = 'SETTLE';
     }
+    if (script.includes('encoder_arm_valid')) {
+        Object.assign(value, {encoder_valid:null, encoder_t_ms:null,
+            left_count:null, right_count:null, encoder_arm_valid:null, encoder_arm_seq:null});
+    }
     return value;
 }
 
@@ -132,6 +136,9 @@ function stmStatus(age = 50) {
         command_age_ms: 4294967295, last_seq: 0,
         vx_mmps: 0, w_mradps: 0, left_pwm: 0, right_pwm: 0,
         left_cps: 0, right_cps: 0, batt_mv: null,
+        ...(script.includes('encoder_arm_valid') ? {
+            encoder_valid:true, encoder_t_ms:1470300, left_count:'0', right_count:'0',
+            encoder_arm_valid:false, encoder_arm_seq:0} : {}),
         battery_available: false, drop: 0, err: 7
     };
 }

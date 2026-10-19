@@ -1,32 +1,48 @@
 # 최종 MVP까지의 전체 실행 계획
 
-갱신: **2026-10-18**. 프로젝트 목표, 현재 위치, 남은 작업과 단계별 완료 조건을 안내한다.
+갱신: **2026-10-19 재판단**. 실제 하중의 기본 주행·정지와 외부 온도 관측은 MVP, 정량 전류 측정·전류/전압 ADC 모니터링은 post-MVP로 분리했다. 기존 실물 판정은 유지한다.
 실제 판정과 수치는 원본 시험 보고서 → [검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다.
 현재 작업을 이어갈 설정·조작은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 날짜별 실행 계획에서 관리한다.
 
 **현재 위치: 배터리 단독 지상에서 전·후진·양방향 회전과 놓음/DISARM 정지를 확인했고, 1차 직진 보정의 CPS 차이·육안 휨 감소까지 확인했다.** [최종 통합 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [10/18 기록](../progress/2026-10-18_progress.md). 현재 일반 cap15%/순수 회전20%, 직진 왼쪽 gain0.96/0.93을 유지한다.
 
-MVP-006/010·REQ-DRIVE-001/002는 해당 mapping/저속 주행 범위 PASS다. G6 전체는 실제 궤도 UART 단절·timeout의 전용 정지 증거가 남아 PARTIAL이다. 다음 우선 작업은 **부하·발열 계측 장비 선정**이다. 보유 장비의 모델·정격·온도 측정 지원을 대조하고 배터리 전체 DC 전류 및 모터/MDD10A/전원부 온도의 측정 수단을 정한다. 부족한 기능만 추가 선정한 뒤 관측 절차·중단 기준을 정하고 부하·발열 기록과 누적 count·distance-per-count 모델/1m 실제·추정 거리 비교를 진행한다. 전체 MVP 수용과 구분한다. 이전에 완료한 방향·놓음·탭 전환을 자동 반복하지 않는다.
+MVP-006/010·REQ-DRIVE-001/002의 기본 mapping/저속 주행 PASS를 유지한다. 최종 구성의 UART 단절·timeout 정지, 거리 모델·누적 count와1 m 비교, 한정된 주행의 외부 온도 기록이 남는다. GM-1312는 선택/구매 준비 상태다. 전류 센서·ADC·브라우저 구현은 MVP-014의 후속 기능이며 이번 인수의 선행 조건이 아니다.
 
 읽는 순서: **MVP 목표 → 현재 단계 → 남은 작업·완료 조건**. 세부 Gate와 과거 계획은 필요한 부분을 펼쳐 읽는다.
 
+**실행 단위:** [스토리·태스크 백로그](README.md#스토리태스크-백로그)에 MVP 5개 스토리·개별 작업을 정리했다. `TK-MVP-05-01` [미결 감사](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#tk-mvp-05-01-감사-결과--2026-10-19)는 완료했고 현재 `TK-MVP-03-01` 거리 모델/원시 count 계약을 진행한다. 실제 미결 해소·전체 인수는 별도다. 범위는 이 계획, 판정은 검증 매트릭스가 정본이며 후속 기능을 이번 MVP에 합치지 않는다.
+
+**일자별 배치:** [10/19 시작 실행안](README.md#일자별-실행안--2026-10-19-시작)은 하루 약2시간을 가정해10/28 인수 검토·10/29~30 보완 기간으로 잡았다. 10/25 외부 온도 이후는 장비·선행 시험 조건부이며 납기는 미확정이다. 날짜는 목표 배치이고 전체 MUST의 실제 판정을 대체하지 않는다. 첫 감사의 결과에 따라 재계획한다.
+
 ## 최종 MVP 종료선
 
-1차 종료선은 명령을 받아 저속으로 움직이고 정지하는 하위 구동 플랫폼의 검증이다.
+1차 종료선은 **무선 명령으로 저속 주행·정지하고 엔코더 이동량을 검증할 수 있는 궤도형 하위 플랫폼**이다. 실제 궤도 하중의 기본 동작과 한정된 운용 조건의 발열 관측을 포함한다.
 
 ```text
-STM32 기반 하위 구동 플랫폼이
-ESP32-S3 단일 production ingress의 속도 명령을 받아
-안전 상태머신을 거쳐 좌우 모터를 제어하고
-엔코더 기반 속도·이동량 telemetry를 생성하며
-저속 전진·후진·제자리 회전과 1 m 측정 시험을 통과하고
-요구사항부터 실제 증거까지 추적 가능한 상태
+ESP32-S3 단일 production ingress → STM32 안전 상태머신 → 좌우 모터 제어
+전·후진/양방향 회전과 실제 정지, 엔코더 속도·이동량 및 1 m 오차 기록
+한정된 저속 주행의 외부 온도 관측과 요구사항-증거 연결
 ```
 
-즉, 최종 MVP는 다음 두 가지가 동시에 완성돼야 한다.
+### 2026-10-19 부하 측정 범위 재판단
 
-1. 실제로 안전하게 움직이는 궤도형 하위 플랫폼
-2. 설계 결정과 검증 결과를 재현할 수 있는 embedded system integration evidence
+| 묶음 | 이번 MVP 완료 조건 | 현재 상태 |
+| --- | --- | --- |
+| 실제 하중의 기능 | 현재 궤도·차체 무게를 받는 지상에서 전·후진/양방향 회전·놓음/DISARM, 전용 통신 유실/timeout 정지 | 기본 주행 PASS, 전용 fault-stop PARTIAL |
+| 엔코더·거리 | CPS와 누적 이동량, 1 m 실제/추정 거리 및 절대·백분율 오차 | CPS PASS, 거리 모델·누적 count 전달·시험 미완료 |
+| 외부 온도 관측 | GM-1312로 정해진 짧은 주행 조건의 위치별 표면 온도·상승량·이상 여부 기록 | MVP-015 / PLANNED; 전류 ADC 없이 수행 가능 |
+| 인수·공개 | 적용 MUST의 증거, 변경 기준점·재현 절차·demo·한계 연결 | PARTIAL |
+| 정량 전류·전압 모니터링 | 회로·보정·ADC→UART→ESP→브라우저·로그 통합 | MVP-014 / DEFERRED, post-MVP |
+
+**재판단 이유:** 원래 가치는 하위 구동 플랫폼의 주행·정지·이동량이다. 전류 측정 기능은 구매·전력 배선 변경·아날로그 회로·ADC 수집/보정·통신 계약·웹 구현을 새로 요구한다. 이를 MVP 필수로 추가하면 기본 구동 인수가 새 상태 모니터링 기능에 종속된다. 전기 부하를 수치로 검증할 필요성과 로봇 내장 계측 기능을 먼저 완성해야 한다는 요구는 구분한다. 단순히 장비가 없어서 검증 항목을 PASS로 바꾸는 결정이 아니다.
+
+- 실제 궤도 하중에서 기본 동작·정지·반복 관측은 MVP에 남긴다. 기존 지상 회차를 사용하고 변경/미결 범위만 추가 확인한다.
+- 정량 전류 비교·전력 여유·온도와 전류의 동시 분석은 후속 계측 단계다. MVP에서는 이를 검증했다고 주장하지 않는다. 외부 GM-1312 온도 기록은 ADC 작업 없이 독립적으로 진행한다.
+- 전류·온도·전압의 정량 특성 없이 장시간 연속 운전, 출력/적재량 확대나 전체 정격 수용을 주장하지 않는다. 미확인 범위와 시험한 운용 조건을 최종 한계에 적는다.
+- 후속 전류 후보는 K1→MDD B+ 분기 합계 DC 입력, 전압 후보는 S1 뒤/K1 앞 주전원이다. PC0/PA4·Pololu #5241은 후보이며 구매·설치·구현은 없다. 이 구상은 폐기하지 않고 별도 기능 단계로 보존한다.
+- LiPo 셀 알람·감독하 경고 시 수동 정지 운영과 기존 안전 요구사항은 유지한다. 과거 PARTIAL을 PASS로 소급하거나 제외 합의한 재검토를 자동 재개하지 않는다.
+
+다음 인수 작업은 **잔여 정지·거리 시험 준비와 GM-1312 외부 온도 관측 계획**이다. 센서 구매나 ADC 구현을 기다릴 필요가 없는 작업부터 진행한다. MVP 이후 첫 IMU 기본 검증 순서는 유지하고, 전류/전압 모니터링은 별도 후속 묶음으로 진행한다.
 
 ## 현재 단계와 완료 범위
 
@@ -35,16 +51,16 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 
 | 단계 | 현재 판정 | 완료 범위 | 남은 종료 조건 |
 | --- | --- | --- | --- |
-| G0 요구사항 기준선 | 기준선 작성 PASS | MVP-001~013와 요구사항·시험·증거 연결 | 설계 변경 시 영향 항목 갱신 |
+| G0 요구사항 기준선 | 기준선 작성·10/19 범위 갱신 | MVP-001~015와 요구사항·시험·증거 연결 | MVP 외부 온도 조건과 후속 전류 계측 기준을 구분 |
 | G1 UART·명령 안전 | 기초 시험 PASS / 전체 bridge PARTIAL | 기존 정상·오류·복구 시험, T004 reset 실제 경로, W5 PC PING/DISARM subset | 전체 bridge release의 증거 연결·잔여 시험, 일반 PC 구동 명령 전달·유실 안전 |
 | G2A 전원 구성품 | CONDITIONAL PASS | fuse/switch·XL4015 전자부하·실제 두 보드 공급 | 최종 하네스 정격·부하·전압 강하·온도 |
 | G2B 제작품·장착 | 도면 PASS / 실물 장착 확인 subset PASS | 도면·제조 파일 점검, 수령、10/17 사용자 섀시 가조립·전장 고정/절연 간격/접근성 확인 | 실물 식별·치수와 표의 나머지 범위 |
 | G3 PWM/DIR | 모터 분리 MCU-pin 범위 PASS | PWM·방향 전환·DISARM/timeout/fault/reset | 후속 실모터 결과를 이 범위와 구분해 G5~G7에서 검증 |
 | G4 드라이버·전원·기구 통합 | PARTIAL | G4A MDD 입력·G4B 로직 전원 범위 PASS, 전력단 관측 추가 | G4C 실물 fit·최종 배선과 전체 전력단/비상정지 수용 |
 | G4~G5 물리 비상정지 | T004 PASS / 전체 T005A PARTIAL | 감지·latch·reset·PWM, rail DMM, A 구동 중 S0/PWM/엔코더 관측 | rail-off 수용 기준·release 항목, T-ESTOP-007 실모터 S0 정지 |
-| G5 엔코더·단일 모터 | PARTIAL | 영구 조정부·손회전·A 전진/DISARM·A/B 3초 원시 엔코더 대조 | 전류·열·소음/진동·반복/부하 조건 |
+| G5 엔코더·단일 모터 | PARTIAL | 영구 조정부·손회전·A 전진/DISARM·A/B 3초 원시 엔코더 대조 | 기능/정지·기본 열·소음/진동·반복 조건. 정량 전류는 후속 |
 | G6 양쪽 구동계 | 기본 주행 PASS / 전체 PARTIAL | 공중/지상 네 방향·놓음/DISARM·양 CPS·1차 직진 trim | 현재 실제 궤도의 UART 단절/timeout 전용 정지 근거 |
-| G7 시스템 인수 | PARTIAL | 인수 기준·현재 production 경로의 기본 지상 주행/놓음/DISARM 확인 | 1m 거리 비교·전용 fault-stop·부하/열과 전체 MUST 증거 대조 |
+| G7 시스템 인수 | PARTIAL | 인수 기준·현재 production 경로의 기본 지상 주행/놓음/DISARM 확인 | 외부 발열, 1m 거리 비교·전용 fault-stop과 전체 MUST 증거 대조 |
 | G8 포트폴리오 공개 | PARTIAL | 로컬 README·사진/구성도·검증 문서 정리 | 최종 demo·1 m 결과·한계 설명과 전체 문서 정합성 |
 
 근거를 찾을 때는 다음 보고서 묶음을 사용한다.
@@ -70,15 +86,17 @@ ESP32-S3 단일 production ingress의 속도 명령을 받아
 | Wi-Fi 상태·명령 통합 | W4/W5·UR-02 및 AC-S01~08 선택 zero-only 실물 시나리오 완료 | [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)의 경계·미해결 관측 유지. NZ-01~08와10/18 실제 양 궤도 지상 수동 주행 완료. 현재 설정과 증거는10/18 기록을 사용 |
 | 단일 모터 기록 마감 | [report32](../verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)로 A 전진·DISARM·S0·A/B 3초 보존 완료 | 전체 T-MOTOR-003 PASS와 분리. 후속 지상 주행은10/18 실제 회차 근거를 사용 |
 | 전력단·비상정지 기록 | [10/17 관측](../progress/2026-10-17_progress.md#후속-t-estop-005a-전압-관측-마감) 보존. 직전 재검토는 사용자 결정으로 현재 실행 범위에서 제외 | 사용자 요청 없이 해당 검토를 재개하거나 다음 단계의 조건으로 걸지 않음. 과거 검증 판정은 보존. G4C 장착 확인은 사용자 보고로 완료 |
-| 단일 모터 전체 수용 | A DISARM/S0·A/B 3초의 완료 범위를 바탕으로 전류·열·반복/부하·정식 정지 증거 보완 | REQ-MOTOR-005/T-MOTOR-003과 T-ESTOP-007의 조건·증거 충족. 이미 수행한 양쪽 구동 회차와 별도 범위로 추적 |
+| 단일 모터 수용 | A DISARM/S0·A/B 3초의 완료 범위에서 기능/정지·기본 열·소음/반복 증거 보완 | REQ-MOTOR-005/T-MOTOR-003의 정량 전류는 후속으로 분리. 기존 PARTIAL·T-ESTOP-007 증거 경계 보존 |
 | 기구·최종 전원 통합 | 10/17 사용자 섀시 가조립·전장 고정/절연 간격/접근성 확인 완료. 식별·치수·배선 경로 등 나머지는 검사표 참조 | 완료한 장착 확인은 반복하지 않음. 전체 G2B/G4C 판정과 확인 subset을 구분 |
-| 첫 주행 준비 | 보유 셀 알람·작업자 감독·경고 시 수동 정지/회차 종료 운영, 양쪽 mapping·명령 경로·차량 장착 | 알람 설정·정상 동작과 회차 적용 확인. ADC·자동 저전압 정지는 후속 PCB 단계로 유지 |
+| 주행 운영 조건 | 셀 알람·작업자 감독·경고 시 수동 정지/종료 운영 | 알람 설정·동작/회차 적용 확인. 관측 ADC와 자동 저전압 구현은 후속 |
+| 전류·전압 관측 — 후속 | PC0/PA4 후보 회로·부품·보정 기준, 수집·TEL·브라우저/로그 | REQ-MON-001~003 / T-MON-001~003는 post-MVP. 이번 인수 선행 조건 아님 |
+| 외부 발열 | GM-1312·프로브 고정, 짧은 주행의 시간/출력·측정 위치와 판정 기준 | REQ-THERM-001 / T-LOAD-001. 전류 ADC 불필요, 정량 전기 부하 검증과 구분 |
 | 주행·odometry 인수 | 기본 공중/지상 네 방향·놓음/DISARM 완료. 현재 실제 궤도 fault/통신 단절 정지 전용 증거와1m 실제/추정 거리 비교 남음 | 실제 거리·엔코더 추정·오차와 반복 조건 기록, 모든 MUST PASS |
 | 최종 문서·공개 준비 | 코드/배선 기준점·원본 증거·README·demo·미완료/잔여 위험 연결 | G8 종료 조건 충족. 현재 진행 중인 문서 개편도 이 묶음의 일부 |
 
 10/17 운영 정리: 전체 T005A 미결은 무전원 장착·설계·소프트웨어 작업의 일괄 중단 조건이 아니다. 정밀 transient/시간·ADC 진단 T006과 단일고장 확장 005B는 기존 계획대로 post-MVP다. 새 실물 측정은 닫으려는 미결 항목과 판정/종료 조건을 먼저 정하고, 준비·측정은 함께 수행 가능한 단위로 묶는다.
 
-10/17 배터리 범위 합의: 사용자는 LiPo 알람 보유와 감독하의 MVP 시험 운영 방침에 동의했다. `REQ-POWER-004`는 셀 알람 설정·정상 동작 확인과 경고 시 즉시 수동 정지·시험 종료의 운영 조건으로 구체화한다. ADC 분압/보호·펌웨어 자동 저전압 정지는 후속 PCB 단계이며, 아래 과거 P-05 구현 순서를 현재 MVP 선행 작업으로 복원하지 않는다. 구현/모터 분리 검증을 마친 범위는 [Wi-Fi nonzero 통합](2026-10-17_WiFi_Nonzero_Control_Integration_Plan_ko.md)이다.
+10/17 배터리 운영과10/19 재판단: REQ-POWER-004의 셀 알람·감독하 수동 정지는 유지한다. 관측용 PC0/PA4를 잠시 MVP 필수로 추가했던 안은 이번 재판단으로 post-MVP로 돌렸다. ADC/자동 보호의 과거 P-05 순서를 MVP 선행 조건으로 복원하지 않는다.
 
 직전 A 전진 목표·W4/W5·UART 복구와 선택 AC-S zero-only 시험을 마감했다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/17 진행 기록](../progress/2026-10-17_progress.md)을 따라 다음 Gate를 선택한다. 실제 구동 확대는 별도 선행 조건을 따른다.
 해당 계획의 목표와, 전체 모터 시험에 필요한 선행 조건은 구분한다. 기존 전체 T005A가 PARTIAL인 상태에서 수행한 단발 관측은
@@ -105,18 +123,22 @@ report 31에 보존하며, 선행 Gate를 충족한 것으로 소급하지 않�
 - lifted/no-load 단일 motor 시험
 - 좌우 궤도 저속 전진, 후진과 제자리 회전
 - 1 m 직진 실제 거리와 encoder 추정 거리 오차 기록
+- GM-1312 외부 온도와 선언한 주행 조건을 연결한 기본 발열 관측
 - 어댑터 플레이트 fit, 절연, 접근성과 배선 경로 검증
 - README, 로그, 사진과 영상의 요구사항-증거 연결
 
 ### 이번 종료선을 막지 않는 후속 범위
 
-- BNO08x IMU 통합
+- MVP-014 전류·전압 ADC와 UART/ESP/브라우저 상태 모니터링, 정량 전기 부하 분석
+
+- BNO08x IMU 통합: MVP 직후 첫 확장. 정지 상태 통신·축·시각 검증 → 짧은 구동의 encoder/IMU 비교 → 필요 시 제어/RTOS에 통합
 - closed-loop PID 속도 제어 고도화
 - STM32의 FreeRTOS task architecture 전환
 - CAN transceiver와 command/telemetry 통합
 - HAL-to-LL migration
 - ROS 2 bridge, LiDAR, SLAM과 Nav2
 - PA4/PB0 이중 rail ADC plausibility, welded-contact discrepancy 자동 진단
+- 자동 저전압/과전류 보호와 온보드 온도 감시
 - 정밀 `t0~t3` rail-transient 분포와 확장 fault-injection campaign
 - `FM-ESTOP-014`의 S2 stuck-closed/6P S2-pair short 단일고장 내성 및 `T-ESTOP-005B`
 - Force-guided/safety relay, ISO 13849 PL 또는 IEC 62061/61508 SIL 적합성·인증
@@ -140,7 +162,7 @@ ESP-IDF에서 이미 쓰는 FreeRTOS 환경과 향후 STM32 RTOS 전환을 구�
 
 | 왼쪽 설계 단계 | 프로젝트 산출물 | 오른쪽 검증 단계 |
 | --- | --- | --- |
-| 목표와 사용 시나리오 | charter, `MVP-001~013` | 최종 기본 동작, Physical E-stop, 1 m, 문서 인수시험 |
+| 목표와 사용 시나리오 | charter, `MVP-001~015` | 기본 동작·정지, 1 m, 전류/전압 관측·외부 발열, 문서 인수시험 |
 | 시스템 요구사항 | UART, power, mechanical, motor, encoder, drive requirement | fault stop, drivetrain, telemetry 시험 |
 | 아키텍처와 interface | controller ownership, pin map, UART, power, MDD10A contract | ESP32-USART1 production ingress, STM32-MDD10A, encoder 통합시험 |
 | 상세 설계 | CubeMX pin/timer, motor-output module, CAD Rev, harness | 핀 파형, DMM, 치수와 fit 시험 |
@@ -451,7 +473,8 @@ Exit criteria:
 7. invalid command가 이전 safe output을 훼손하지 않음
 8. UART disconnect actual stop
 9. 1 m straight actual distance 대 encoder estimate
-10. power, driver, motor와 wiring heat observation
+10. `T-LOAD-001`: ADC와 독립적인 GM-1312 외부 온도 관측과 선언한 주행 조건의 판정
+후속: `T-MON-001~003` 전류/전압 회로·보정·유효성·브라우저 로그는 MVP 종료를 막지 않는다.
 
 Exit criteria:
 
@@ -463,7 +486,7 @@ Exit criteria:
 상태:
 
 ```text
-PARTIAL — 기본 production ingress/저속 주행·놓음/DISARM 확인. 1m 거리·전용 fault-stop·부하/열·전체 MUST 최종 audit는 미완료.
+PARTIAL — 기본 production ingress/저속 주행·놓음/DISARM 확인. 외부 발열, 1m 거리·전용 fault-stop·전체 MUST 최종 audit는 미완료.
 ```
 
 ### G8. Portfolio release
@@ -554,7 +577,7 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [x] K1 downstream motor-rail DMM·back-power 관측 기록(report 27/30)
 - [ ] final K1 rail-off 수용 기준·release 조건 마감
 - [x] 단일 모터 단발 구동·교차시험·DIR 보정 보고서(report 31)
-- [ ] REQ-MOTOR-005의 전진/후진·timeout/active DISARM·전류/열/소음 전체 시험 보고서
+- [ ] REQ-MOTOR-005의 전진/후진·timeout/active DISARM·기본 열/소음 증거. 정량 전류는 후속으로 구분
 - [x] motor-off encoder voltage, dual count와 speed telemetry evidence
 - [ ] powered encoder noise와 external speed evidence
 - [ ] dual drivetrain low-speed report
@@ -570,6 +593,8 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 - [ ] 현재 M2 수동 시험 hook=1U를 끈 정상 모드 이미지 복구·무구동 확인
 - [ ] integrated physical E-stop `T-ESTOP-001~004 + T-ESTOP-005A`와 actual motor-stop report
 - [ ] 1 m distance/odometry report
+- [ ] 후속: MVP-014 / T-MON-001~003 전류·전압 모니터링 증거 — MVP 필수 아님
+- [ ] MVP-015 / T-LOAD-001 GM-1312 외부 온도와 주행 조건 결과표
 - [x] 로컬 README의 소개·역할·사진/구성도·검증 결과 배치
 - [ ] 전체 문서 정합성·최종 demo까지 포함한 portfolio release
 
@@ -581,7 +606,8 @@ STM32와 ESP32 firmware는 다음 사이클을 기본으로 한다.
 STM32F446RE 기반 하위 구동 제어기를 구현하고,
 UART command/telemetry protocol과 safety state machine,
 ESP32 command bridge, MDD10A PWM/DIR motor output,
-encoder feedback, 전원·기구 통합과 fault validation을
+encoder feedback, 한정된 지상 주행·외부 발열 관측,
+전원·기구 통합과 fault validation을
 요구사항부터 실제 증거까지 추적한 tracked mobile robot platform
 ```
 

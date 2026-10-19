@@ -2,9 +2,9 @@
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
-## 최신 마감 — 2026-10-17
+## 최신 마감 — 2026-10-20
 
-Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 UART/DIR/PWM 시험을 완료했다. 방향 입력·놓음 zero·출력 중 DISARM·창 전환 정지/자동 재무장 방지의 선택 시나리오 PASS다. 실제 모터 부하·주행은 다음 별도 회차다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)과 [현재 인수인계](CURRENT_SESSION_CONTEXT.md) 참조. 이번 종료 전원 분리는 미보고다.
+STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다. [오늘 기록](../progress/2026-10-20_progress.md)과 [현재 인수인계](CURRENT_SESSION_CONTEXT.md)를 따른다. 다음 세션 첫 작업은 `TK-MVP-03-04`의 현재 STM/ESP source·기존 build 산출물 식별값 대조와 인수 기준점 정리다. 새로 빌드/플래시하기 전에 현재 증거를 먼저 확인한다. 이후 전용 유실/timeout 정지 → GM-1312 외부 온도 → 조건 충족 후 지상1m 순서다. 완료한 count/부호·기본 방향·놓음 시험은 자동 반복하지 않는다. 종료 전원 분리는 미보고다.
 
 ## How To Use
 
@@ -25,7 +25,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: UR-02 및 AC-S01~08 선택 zero-only 시험 완료, 다음 Gate 선택·종료 전원 미보고 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: count·14톱니 초기 모델 마감, 다음은 실행 이미지 기준점 대조·종료 전원 미보고 |
 | 2026-10-17 | [최신 진행 기록](../progress/2026-10-17_progress.md) / [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) | AC-S01~08 선택 zero-only 마감·Git/Notion 최신화·미해결 관측 |
 | 2026-10-16 | [진행 기록](../progress/2026-10-16_progress.md) / [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md) | UART 줄 취소·부분 CMD/ARM 실물 검증과 mode0 복원 이력 |
 | 2026-10-15 | [실물 기록](../progress/2026-10-15_progress.md) / [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md) | zero-only 정지·리셋·S0·두 연결·UART 단절 기능과 AC-S 미완료 조건 |

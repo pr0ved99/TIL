@@ -1,0 +1,66 @@
+{
+  "date": "2026-10-20",
+  "status": "INITIAL_APPROXIMATE_GEOMETRIC_MODEL_NOT_GROUND_CALIBRATED",
+  "source": "User-reported approximate measurements in chat",
+  "reported": {
+    "track_loop_mm_approx": 579,
+    "link_pitch_mm_approx": 9.5,
+    "track_thickness_mm_approx": 5,
+    "link_count_one_track": 61
+  },
+  "previously_confirmed": {
+    "sprocket_teeth": 12,
+    "encoder_counts_per_output_rev": 1560,
+    "reported_sprocket_body_diameter_mm": 38
+  },
+  "assumptions": [
+    "Output shaft directly drives sprocket",
+    "One tooth advances one link pitch",
+    "No skipping/slip in the drive connection"
+  ],
+  "arithmetic": {
+    "links_times_pitch_mm": 579.5,
+    "difference_from_reported_loop_mm": 0.5,
+    "ideal_track_advance_mm_per_output_rev": 114.0,
+    "initial_mm_per_count": 0.07307692307692308,
+    "given_9_5_mm_rational_mm_per_count": "19/260",
+    "ideal_counts_per_1_m": 13684.21052631579
+  },
+  "side_coefficients": {
+    "left_initial_mm_per_count": 0.07307692307692308,
+    "right_initial_mm_per_count": 0.07307692307692308,
+    "separately_ground_calibrated": false
+  },
+  "uncertainties": [
+    "Measurement tool, pitch endpoints/photo and measurement uncertainty not supplied",
+    "Track loop inner/outer/pin-center reference not specified; numerical consistency is not independent physical proof",
+    "Link count of the other track not separately confirmed",
+    "Disassembly, power-off and reassembly status not reported; no new power/assembly readiness claim"
+  ],
+  "thickness_use": "Reference geometry only; do not add thickness to pitch-based advance or substitute body diameter circumference",
+  "next": "Use provisional coefficient in offline interval analysis; acceptance image/stop/temperature gates and actual-distance calibration remain per plan.",
+  "offline_existing_air_log_examples": {
+    "forward_air": {
+      "source_report": "assets/logs/wifi_link/2026-10-20_encoder_count_forward_air_run01/observations.json",
+      "delta_counts": [
+        2567,
+        2374
+      ],
+      "left_encoder_equivalent_mm": 187.58846153846153,
+      "right_encoder_equivalent_mm": 173.48461538461538,
+      "center_encoder_equivalent_mm": 180.53653846153847,
+      "interpretation": "Airborne encoder-equivalent track travel; not measured chassis displacement"
+    },
+    "reverse_air": {
+      "source_report": "assets/logs/wifi_link/2026-10-20_encoder_count_reverse_air_run01/observations.json",
+      "delta_counts": [
+        -2925,
+        -2717
+      ],
+      "left_encoder_equivalent_mm": -213.75,
+      "right_encoder_equivalent_mm": -198.55,
+      "center_encoder_equivalent_mm": -206.15,
+      "interpretation": "Airborne encoder-equivalent track travel; not measured chassis displacement"
+    }
+  }
+}

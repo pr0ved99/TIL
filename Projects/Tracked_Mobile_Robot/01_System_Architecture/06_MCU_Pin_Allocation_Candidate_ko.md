@@ -78,6 +78,7 @@ UM1724에서 사용한 중요한 사실:
 | Encoder channel 1 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Motor-power-off validated |
 | Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Motor-power-off validated |
 | Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Motor-power-off validated |
+| 드라이버 입력 전류 관측 | PC0 | ADC1_IN10 후보 | 기본 연결 Arduino A5 / ST morpho CN7 pin 38; 만능기판 인출 검토 전 | 10/19 사용자 센서/ADC 방향 제안; `.ioc` 미배정·센서/회로/구현 미확정 |
 | K1 upstream `VBAT_PROTECTED_SENSE` | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Post-MVP diagnostic candidate |
 | K1 downstream `MOTOR_VBAT_SAFE_SENSE` | PB0 | ADC12_IN8 | Arduino A3 / ST morpho access | Post-MVP diagnostic candidate |
 | Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input (EXTI 미구현) | Arduino D9 / ST morpho access | Configured / 모터 분리 conditioned T004 PASS |
@@ -91,6 +92,35 @@ UM1724에서 사용한 중요한 사실:
 | 향후 CAN TX | PA12 | CAN1_TX | ST morpho CN10 pin 12 | Reserve |
 | SWDIO | PA13 | SWDIO | ST-LINK / ST morpho CN7 pin 13 | Preserve |
 | SWCLK | PA14 | SWCLK | ST-LINK / ST morpho CN7 pin 15 | Preserve |
+
+2026-10-19 전류 관측용으로 PC0/ADC1_IN10을 후보에 추가했다. [STM32F446 데이터시트](https://www.st.com/resource/en/datasheet/stm32f446re.pdf)의 PC0/ADC123_IN10과 현재 `.ioc` 미배정을 대조했다. 보드 커넥터의 기본 매핑은 아래 UM1724 대조 결과를 따르며, 실제 보드 solder bridge·만능기판 인출·CubeMX 설정은 미검증이다. PA0/PA1 엔코더와 PA4/PB0의 기존 예약을 보존하는 후보다. [후보/측정 경계](../docs/progress/2026-10-19_progress.md#stm32-adc-전류-센서-방향-검토)를 따른다.
+
+### ADC 입력 수와 현재 여유 — 2026-10-19
+
+STM32F446RE의 LQFP64 패키지에서 외부 ADC 입력 가능 핀은 **16개: PA0~PA7, PB0~PB1, PC0~PC5**다. ADC 변환기 3개와 외부 입력 핀 수는 다른 개념이며 내부 온도/VREF 등의 채널은 외부 핀에 더하지 않는다. 근거는 DS10693 Rev11 Table10의 LQFP64 열과 [UM1724 Rev17 Table19/29](https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf)다. Arduino A0~A5만 세면 6개지만 ST morpho까지 포함하면 추가 ADC 가능 핀에 접근할 수 있다.
+
+| 현재 분류 | 핀 | 개수 | ADC 계획에서의 처리 |
+| --- | --- | --- | --- |
+| 펌웨어에서 다른 기능 사용 | PA0/PA1 엔코더, PA2/PA3 USART2, PA5 LD2 | 5 | 기존 기능 보존 |
+| IMU 배선 완료, GPIO 설정 대기 | PB1 INT, PC4 RESET | 2 | `.ioc` 미배정이어도 빈 핀으로 계산하지 않음 |
+| 전압 ADC 예약 | PA4 K1 upstream, PB0 downstream | 2 | 전압 측정용으로 보존 |
+| 선택 기능 예약 | PC5 power gate/brake | 1 | 현재 필수 사용은 아니지만 예약을 보존해 계산 |
+| 추가 ADC 후보 | PA6, PA7, PC0, PC1, PC2, PC3 | 6 | PC0 전류 후보 포함; 설치·입력 회로·ADC 설정 검토 필요 |
+
+따라서 `.ioc`만 보면 미배정 11개지만, 기존 IMU 배선과 예약을 보존한 **신규 ADC 후보는 6개**다. PA4/PB0 전압 예약을 포함하면 총 8개를 ADC 용도로 계획할 여지가 있다. PC0에 전류 센서 1채널을 배정하면 신규 여유는 5개다. PC5 예약을 해제한다면 1개를 추가 검토할 수 있으나 이번에는 변경하지 않는다. 현재 ADC 초기화·측정이 구현된 채널은 0개다.
+
+| 추가 후보 | ADC1 채널 | 보드 접근 위치 |
+| --- | --- | --- |
+| PC0 | IN10 | CN7 pin38 / Arduino A5(CN8 pin6), 기본 solder bridge 연결 기준 |
+| PC1 | IN11 | CN7 pin36 / Arduino A4(CN8 pin5), 기본 solder bridge 연결 기준 |
+| PC2 | IN12 | CN7 pin35 |
+| PC3 | IN13 | CN7 pin37 |
+| PA6 | IN6 | CN10 pin13 / Arduino D12 |
+| PA7 | IN7 | CN10 pin15 / Arduino D11 |
+
+이는 핀 기능과 설계 예약의 집계이며 6개 모두 현재 만능기판에서 바로 배선 가능한 상태라는 뜻은 아니다. 특히 A4/A5는 보드 solder bridge 선택에 따라 PB9/PB8 경로가 될 수 있어 실제 연결을 확인한다. ADC 입력은 아날로그 기준 전압 범위에 맞춰야 하며, 현재 3.3V 보드에서 5V 출력이나 3S LiPo 전압을 그대로 넣지 않는다.
+
+### IMU 보조 핀 배정 이력
 
 2026-09-15 IMU 보조 핀 선정 당시 `.ioc`와 VRT에서 PB1/PC4는 미사용이었다.
 PB1은 JDBG_IMU Pin2의 INT(Net24), PC4는 Pin1의 RESET(Net23)에 연결할 설계 핀으로 선정했다.
@@ -208,8 +238,8 @@ MCU input node -> 15 kΩ -> common GND
 
 PA4는 기존 battery ADC 기능을 K1 upstream `VBAT_PROTECTED_SENSE`의 ADC12_IN4 후보로
 구체화한다. PB0/ADC12_IN8은 K1 downstream `MOTOR_VBAT_SAFE_SENSE` 후보로 추가한다.
-두 채널은 post-MVP automatic diagnostic 후보이며 첫 motor 시험의 선행 조건이 아니다.
-MVP actual-off 판정은 K1 downstream test point의 direct continuity/voltage 측정을 사용한다.
+**2026-10-19 재판단:** PA4 관측 전압과 PC0 전류의 MVP-014는 post-MVP로 둔다. ADC 설정·실물 배선·분압/보호/필터 값은 미확정이다. PB0 downstream 자동 진단도 후속이며, 기본 주행 인수를 ADC 구현에 종속시키지 않는다.
+관측 ADC가 physical actual-off 검증을 대신하지 않는다. MVP actual-off 근거는 K1 downstream test point의 직접 측정과 해당 시험 보고서의 범위를 따른다.
 
 이유:
 

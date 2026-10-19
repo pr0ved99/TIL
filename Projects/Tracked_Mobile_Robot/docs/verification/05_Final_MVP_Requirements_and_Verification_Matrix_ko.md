@@ -1,16 +1,25 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-판정 기준일: **2026-10-18**. 기존 수용 기준을 유지하며 배터리 단독 지상 수동 주행·1차 직진 보정의 회차 증거와 사용자 관측을 반영했다.
+범위 갱신일: **2026-10-19 재판단**, 최신 실물 근거: **2026-10-18**. 정량 전류/전압 모니터링은 post-MVP로 옮기고 외부 온도 관측은 ADC와 독립적인 MVP 항목으로 유지했다. 기존 실물 PASS/PARTIAL은 보존한다.
 처음에는 아래 현황을 읽고, 세부 판정은 요구사항 표와 증거 링크에서 확인한다.
+실행 순서와 업무 분해는 [스토리·태스크 백로그](../plans/README.md#스토리태스크-백로그)의 `ST-MVP-01~05`를 따른다. 업무 ID는 기존 Requirement/Test ID를 대체하거나 PARTIAL을 PASS로 바꾸지 않는다. 백로그 첫 감사에서 전체 적용 MUST·기존 제외 근거를 대조한다.
 이전 기준일은 2026-09-05다. 당시 설명과 날짜별 측정 이력은 문서 뒤의 **과거 검증 이력**에 보존했다.
+
+## 2026-10-19 MVP 범위 재판단
+
+- 실제 궤도 하중의 기본 주행·정지, 엔코더 이동량·1 m 비교와 외부 온도 관측은 이번 MVP다. 정량 전류 측정과 로봇 내장 전류/전압 모니터링은 후속이다. [마스터 플랜](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md)과 [변경 기록](../progress/2026-10-19_progress.md#부하-측정의-mvp-필수-여부-재판단)을 따른다.
+- `MVP-014`, `REQ-MON-001~003`, `T-MON-001~003`은 SHOULD / POST-MVP, DEFERRED다. 구매·회로·ADC/보정·TEL·웹 구현의 새 의존성으로 기존 구동 MVP 종료를 막지 않는다. 상세 후보와 후속 검증 기준은 보존한다.
+- `MVP-015`, `REQ-THERM-001`, `T-LOAD-001`은 외부 GM-1312 온도와 한정된 주행 조건을 기록하는 범위로 좁힌다. 전류·전압 ADC/동시 로그를 선행 조건에서 제거했다. 온도 기록만으로 전력 여유·정격·장시간 연속 운전을 검증했다고 판정하지 않는다.
+- REQ-MOTOR-005의 전류 수치 수용은 후속으로 분리하되 기능·정지·기본 열/소음 관측의 PARTIAL은 유지한다. 기존 ID·증거를 보존하고 미측정 전류나 기존 미결을 PASS로 바꾸지 않는다. 사용자가 제외한 과거 재검토도 자동 재개하지 않는다.
+- IMU는 MVP 이후 첫 기본 검증이다. 전류/전압 모니터링은 별도 후속 묶음으로 진행한다.
 
 ## 2026-10-18 지상 주행 후속 판정
 
 - **MVP-010·REQ-DRIVE-001/002 PASS:** A=왼쪽/M1/TIM3, B=오른쪽/M2/TIM5의 차량 전진 부호와 공중/저속 지상 전·후진·양방향 회전 확인. [공중 후진/회전](../../assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/observations.json), [지상 회전20%](../../assets/logs/wifi_link/2026-10-18_ground_turn20_run02/observations.json), [최종 통합 주행](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json). 회전각·병진 오차를 계측한 정밀 제자리 회전 수용은 아니다.
 - 현재 일반 cap150‰/순수 회전200‰, 직진 왼쪽 gain960/930. 최종 회차는 전진→좌회전→전진→우회전→후진 순서, 매 동작 사이 zero CMD/PWM·양 CPS0, 최종 DISARM374/seq3518121891 OK와 drop/err0. 사용자 방향 전환·놓음 정지 문제없음 확인. [보정 전](../../assets/logs/wifi_link/2026-10-18_ground_linear15_baseline_run01/observations.json) 대비 [보정 후](../../assets/logs/wifi_link/2026-10-18_ground_straight_trim_run01/observations.json) 오른쪽 CPS 부족분 전진4.1→2.5%, 후진7.1→4.9%; 사용자 휨 감소 확인. 정밀 속도/거리 보정은 별도다.
 - **REQ-DRIVE-003·T-DRIVE-001은 PARTIAL:** 실제 궤도 DISARM/놓음 정지는 확인했으나 UART 물리 단절·명령 timeout을 현재 최종 구성의 실제 궤도 정지와 연결한 전용 회차는 아직 없다. 다른 회차의 PC/native·단일 모터 근거를 전체 fault-stop PASS로 확대하지 않는다.
-- **MVP-011·REQ-ODO-001/T-ODO-001은 PLANNED:** 1m 실측 거리·엔코더 추정 거리·절대/백분율 오차가 아직 없다. 현재 Wi-Fi TEL은 CPS이며 누적 이동량을 보내지 않는다. 거리 시험 준비에는 effective sprocket/track 1회전 이동량과 기존1560 counts/output rev를 연결하는 distance-per-count 모델·누적 count 전달이 필요하다. **현재 우선 작업은 부하·발열 계측 장비 선정**이며, 보유 장비의 모델/정격/온도 지원을 확인해 배터리 전체 DC 전류와 모터·MDD10A·전원부 온도 측정 방법을 정한다. 장비 선정·관측 방법/중단 기준·현재 출력의 부하·발열 기록을 먼저 정리하고1m 정량 인수를 이어간다.
-- LiPo 셀 알람 연결·셀 전압과 감독하 주행 운영은 사용자 보고로 확인했다. 알람 임계값·경고 시 정지의 전용 회차는 미기록이라 전원 요구사항 전체 판정은 유지한다. ADC/자동 저전압 정지, PID·IMU·ROS2는 기존 post-MVP 범위다.
+- **MVP-011·REQ-ODO-001/T-ODO-001은 PLANNED:** 1m 실측 거리·엔코더 추정 거리·절대/백분율 오차가 아직 없다. 현재 Wi-Fi TEL은 CPS이며 누적 이동량을 보내지 않는다. effective sprocket/track 1회전 이동량과 기존1560 counts/output rev를 연결하는 distance-per-count 모델·누적 count 전달이 필요하다. 외부 온도 관측과 잔여 정지/거리 인수를 준비한다. 전류/전압 ADC 구현을 기다리지 않는다.
+- LiPo 셀 알람 연결·셀 전압과 감독하 주행 운영은 사용자 보고로 확인했다. 알람 임계값·경고 시 정지의 전용 회차는 미기록이라 전원 요구사항 전체 판정은 유지한다. 10/19 재판단으로 관측용 ADC·자동 저전압 정지와 PID·IMU·ROS2는 post-MVP다.
 - 과거 제외 합의한 항목을 이 표의 미결 표시만으로 다시 현재 작업의 진행 조건으로 삼지 않는다. 정밀 거리·최종 fault/stop·부하/열 기록·최종 문서 audit를 선택 주행 완료와 구분한다. [10/18 기록](../progress/2026-10-18_progress.md)과 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 최신 재개점으로 사용한다.
 
 ## 2026-10-17 nonzero 후속 판정 — 당시 범위
@@ -40,6 +49,33 @@ Wi-Fi nonzero core/PAGE 통합·mode0 사용자 빌드/플래시와 NZ-01~04 모
 
 W4/W5와 보고서35~37은 MVP-002/T-COM-002의 추가 증거다. 부분 CMD/ARM 폐기와 선택 AC-S zero-only 실물 시나리오는 완료했다. 전체 오류 분기와 일반 구동 명령 유실의 전력·기계 안전은 별도이므로
 MVP-001/002 및 전체 UART release의 기존 PARTIAL 판정을 유지한다. 다른 안전·모터·주행 요구사항을 이 결과로 올리지 않는다.
+
+## TK-MVP-05-01 감사 결과 — 2026-10-19
+
+**업무 감사 완료, 실물 인수는 별도다.** 현재 요구사항·보고서37/38·10/17 장착/제외 결정·10/18 지상 주행 근거를 대조했다. 기존 증거로 확인된 범위, 활성 미결, 사용자 제외 조사, 후속 기능을 아래처럼 분류했다. 이 감사로 새 시험을 수행하거나 전체 MVP를 PASS로 올리지 않았다.
+
+| 감사 항목 | 연결 범위 | 확인된 근거와 현재 판정 | 처리·연결 태스크 |
+| --- | --- | --- | --- |
+| AUD-01 기본 주행 | MVP-006, MVP-010, REQ-DRIVE-001~002 | [최종 지상 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json)와 사용자 방향/놓음 정지 확인. 기존 선택 범위 PASS 유지 | 완료 증거 보존. 같은 조건을 다시 시작하지 않음 |
+| AUD-02 UART/명령 소유권 | MVP-001~002, REQ-UART-001~006, REQ-SAFE-001~007 | [보고서37](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md), [보고서38](38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)와10/18 생산 경로 근거가 추가돼 있음. 기존 SAFE의 MCU/UART 범위 PASS 유지, UART 전체 release는 PARTIAL | TK-MVP-05-02/03에서 당시 bench와 현재 ESP production 경로의 증거를 구분·연결. 전체 오류 조합을 새 필수로 추가하지 않음. 옛 별도 esp32_uart_bridge hook1을 현재 Wi-Fi 앱의 미복구 상태로 취급하지 않음 |
+| AUD-03 전원 | MVP-003, REQ-POWER-001~003 | fused/switched 경로 PASS, buck 시험 CONDITIONAL, [보고서25](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)의 실제 두 보드 공급 PASS와10/18 배터리 단독 구동 확인. USB 개발/standalone 분리 규칙 존재. 최종 정격·열 전체는 미수용 | TK-MVP-05-02에서 공급/전원 규칙 증거 연결과 기존 조건부의 경계를 정리. 배터리 단독·USB 개발 규칙을 전체 정격 PASS로 확대하지 않음. 제외한 정격 조사는 AUD-12와 같이 재개하지 않음 |
+| AUD-04 셀 알람 운영 | REQ-POWER-004 | 알람 보유·셀 전압·감독하 주행은 확인. 셀별 경고 설정/정상 표시·경고 시 종료 운영의 기록은 미완료 | 활성 운영 미결로 TK-MVP-05-02에 연결. 다음 실제 준비에서 확인할 항목이며 과방전 유발·ADC 구현을 요구하지 않음 |
+| AUD-05 기구 장착 | REQ-MECH-001~003 | 도면 PASS. [10/17 사용자 확인](../progress/2026-10-17_progress.md#g4c-장착-확인-묶음-완료)과 [fit 체크리스트](../../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md)에 자연스러운 체결·고정/휨 없음·하부 간격·USB/단자 접근성 확인 존재 | REQ-MECH-002를 USER-REPORTED PASS로 정정. REQ-MECH-003은 확인된 접근/간격 PASS와 미기록 케이블 경로를 나눠 PARTIAL로 정정. 전체 fit의 치수/제작 revision은 미기록 유지. TK-MVP-05-02에서 남은 기록만 대조 |
+| AUD-06 PWM/단일 모터 | MVP-004~005, MVP-009, REQ-MOTOR-001~005 | MCU 핀 출력/방향 전환의 기존 PASS와 report31/32·10/18 실제 회전/놓음/DISARM 근거 유지. 제한 변경15%/20%의 저장본·실물 이력은10/18에 있음. 전체 fault/열 수용은 PARTIAL | TK-MVP-05-02/03에서 완료 subset 연결. 현재 명령 유실 정지는 ST-MVP-02, 열 관측은 ST-MVP-04로 보완. 이미 마친 최초10% 시험을 자동 반복하거나 정량 전류를 복원하지 않음 |
+| AUD-07 최종 구성의 유실 정지 | REQ-DRIVE-003 | 현 궤도 놓음/DISARM은 확인. UART 유실·명령 timeout을 최종 이미지의 실제 궤도 정지에 연결한 전용 회차 없음 | 활성 실물 미결: TK-MVP-02-01~04. 거리 TEL 변경을 반영한 이미지가 정해진 뒤 수행 |
+| AUD-08 엔코더 | MVP-007~008, REQ-ENC-001~003 | 입력 전압/조정부·1560 counts/rev·손회전 부호/독립성·CPS 경로의 기존 증거 존재. ENC-003 PASS 유지. output type/파형·powered noise 전체는 CONDITIONAL/PARTIAL | TK-MVP-05-02에서 기존 전압/부호와 미확인 신호 항목을 구분. 실제 구동 count 검토와 필요한 범위의 관찰을 계획하되 파형을 본 것으로 기록하지 않음 |
+| AUD-09 거리 | MVP-011, REQ-ODO-001 | 실제1 m·추정 거리·오차 미기록. STM 누적 count는 존재하지만 생산 TEL은 CPS만 제공 | 활성 구현/실측: TK-MVP-03-01~05. 기존 누적기를 재작성하지 않고 전달/모델부터 설계 |
+| AUD-10 외부 온도 | MVP-015, REQ-THERM-001 | GM-1312 선택, 구매/수령·온도 데이터 미확인 | 활성 장비/실물 미결: TK-MVP-04-01~04. 전류 ADC 없이 독립 진행 |
+| AUD-11 최종 인수 자료 | MVP-012 | 소개/구성도·기존 보고서는 있으나 최종 기준점·1 m·온도·활성 미결·한계의 통합 audit 미완료 | TK-MVP-05-03~05. 새 결과가 생긴 뒤 정리하고 미결은 명시 |
+| AUD-12 기존 E-stop 정밀 수용/제외 조사 | MVP-013, REQ-ESTOP-001~011, REQ-ESTOP-016~020 | T004 감지/latch/reset/PWM PASS, T005A와 A 단발 S0 관측 존재. 정식 rail-off 기준·release/정격·실모터 T-ESTOP-007 전체는 기존 PARTIAL/BLOCKED. [10/17 진행 범위 정정](../progress/2026-10-17_progress.md#진행-범위-정정과-g4c-재개)에서 해당 정격/도면 재검토를 사용자 제외 | 제외 조사 재개·새 진행 조건으로 연결하지 않음. 이를 전체 안전 요구 PASS나 E-stop 기능 우회 승인으로 바꾸지 않음. 정식 전체 안전 수용과 현재 실행 범위의 차이는 최종 인수 문서의 OPEN 경계로 보존. 코드/설계·현재 준비 작업은 계속 가능 |
+| AUD-13 후속 기능 | MVP-014, REQ-MON-001~003, REQ-CTRL-001, REQ-ESTOP-012~015 | 전류/전압 ADC·정량 전류, PID, dual-rail 자동 진단은 후속 | DEFERRED 유지. 오늘 구현/구매·MVP 선행 조건에 넣지 않음 |
+
+감사 결론:
+
+- `TK-MVP-05-01`은 **분류·근거표 작성 완료**다. 활성 미결을 닫는 `TK-MVP-05-02`와 최종 인수는 완료하지 않았다. 새로 확인된 실물 결과가 아닌 기구 장착의 기존 사용자 보고만 표에 정합화했다.
+- 명확한 신규 구현/검증 묶음은 **누적 count 전달·거리 모델, 최종 구성의 유실 정지, 외부 온도, 운영/증거 미결 정리**다. 기존 엔코더 신호 미결·케이블 경로·전원 조건부도 감사표에 남기고 누락하지 않는다.
+- 현재 표의 모든 MUST가 PASS인 것은 아니다. 특히 AUD-12의 정식 전체 수용과 제외 조사 사이의 경계는 아직 OPEN이며,10/28 목표일이나 이번 감사만으로 해소되지 않는다. 사용자가 제외한 조사를 자동 복원하지 않고 최종 판정의 한계/근거로 명시한다.
+- 다음 PC 작업은 `TK-MVP-03-01` 거리 모델/원시 count 계약이다. [현재 소스 대조](../../01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md#2026-10-19-거리-데이터-경로-대조)를 이어간다. 새 통전·분해·배선 변경을 시작한 기록은 없다.
 
 ## 문서 목적
 
@@ -94,15 +130,19 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 - UART command, ACK/ERR와 telemetry
 - 저속 전진, 후진, 제자리 회전과 1 m 측정 시험
 - 어댑터 플레이트를 포함한 안전한 기구·전장 장착
+- 외부 GM-1312를 사용한 한정된 저속 주행의 온도 관측
 
 최종 MVP 종료를 막지 않는 후속 범위:
 
-- BNO08x IMU 통합
+- MVP-014 전류·전압 ADC와 UART/ESP/브라우저 모니터링, 정량 전기 부하 분석
+
+- BNO08x IMU 통합 — MVP 완료 직후 첫 확장
 - closed-loop PID 속도 제어 고도화
 - FreeRTOS 전환
 - CAN command/telemetry
 - HAL-to-LL 전환
 - ROS 2, LiDAR, SLAM과 Nav2
+- 온보드 온도 감시, 자동 저전압/과전류 정지, 이중 rail 자동 진단과 장시간 내구성 보증
 
 ## 최상위 인수 기준
 
@@ -110,7 +150,7 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 | --- | --- | --- | --- | --- |
 | `MVP-001` | STM32가 UART command를 수신하고 ACK/ERR/TEL을 반환한다. | MUST | `PARTIAL` | 기존 Gate A/B·T-BRIDGE-007/008·P-03/P-04와 report 26의 실제 reset ERR/ACK/TEL 확인. 전체 UART release의 증거 연결·잔여 시험은 아래 통신 항목에서 추적 |
 | `MVP-002` | ESP32가 유일한 production command ingress로 동작하고, optional PC control은 ESP32 upstream client로만 연결돼야 한다. | MUST | `PARTIAL` | Wi-Fi/PAGE→ESP→STM의 실제 nonzero 구동·놓음/DISARM·선택 AC-S 확인. 10/18 최종 주행 근거 추가; 전체 UART release·모든 오류 분기 수용은 별도 |
-| `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` | 배터리 단독 보드 공급·셀 알람 연결·감독하 지상 주행 확인. 전류/열·경고 운영의 미기록 범위는 별도; ADC/자동 저전압 정지는 후속 PCB |
+| `MVP-003` | 전원 경로와 MDD10A가 단계적으로 안전 검증된다. | MUST | `PARTIAL` | 배터리 단독 보드 공급·셀 알람 연결·감독하 지상 주행 확인. 전류/열·경고 운영의 미기록 범위는 별도. 관측 ADC는 후속 MVP-014, 외부 온도는 MVP-015로 추적하며 자동 저전압 정지는 후속 |
 | `MVP-004` | STM32가 좌우 MDD10A용 PWM/DIR 신호를 안전 규칙에 맞게 생성한다. | MUST | `PARTIAL` | 기존 MCU/MDD 파형과 실제 양 궤도 방향·놓음/DISARM·적용 PWM TEL 확인. 모든 fault·전력/기계 조건의 수용은 별도 |
 | `MVP-005` | 한쪽 모터를 lifted/no-load 저 duty 조건에서 안전하게 구동한다. | MUST | `PARTIAL` | 섀시 분리 조건의 10%/300 ms 단발 구동 관측. REQ-MOTOR-005 전체 조건과 선행 T005A는 미충족 |
 | `MVP-006` | 좌우 모터를 개별 제어하고 방향·채널 mapping을 확인한다. | MUST | `PASS` | 기존 개별 모터 시험과 10/18 공중/지상 네 방향·CPS 부호·사용자 관측을 연결. A=left/M1, B=right/M2; 정밀 회전/속도 정확도는 별도 |
@@ -121,6 +161,8 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 | `MVP-011` | 1 m 직진에서 실제 거리와 엔코더 추정 거리의 오차를 기록한다. | MUST | `PLANNED` | 거리 시험 미실행 |
 | `MVP-012` | README에서 구조, 사용자 역할, 검증 증거, 한계와 다음 단계를 찾을 수 있다. | MUST | `PARTIAL` | 로컬 README 개편은 반영됨. 문서 간 최신 판정 정합성·최종 증거 audit는 진행 중 |
 | `MVP-013` | MCU/software와 독립적인 Physical E-stop이 motor energy를 차단하고 release 후에도 explicit reset과 new ARM 전까지 재시작을 막는다. | MUST | `PARTIAL` | T004 PASS, T005A run01~06·DMM 관측 완료. rail-off 수용 기준·release·실모터 S0 정지는 미완료. FM-ESTOP-014 단일고장 내성은 post-MVP |
+| `MVP-014` | 구동계 입력 전류·주전원 전압을 ADC로 수집·보정하고, 시각/유효성과 함께 브라우저에 표시·로그로 저장한다. | SHOULD / POST-MVP | `DEFERRED` | PC0/PA4 후보와 REQ-MON/T-MON 기준 보존. 이번 MVP의 선행 조건 아님 |
+| `MVP-015` | 선언한 짧은 저속 주행 조건에서 GM-1312로 위치별 온도·상승량·이상 여부를 기록한다. | MUST | `PLANNED` | REQ-THERM-001/T-LOAD-001. 전류 ADC 없이 수행 가능, 정량 전력/장시간 정격 검증과 구분 |
 
 `MVP-003`에는 2026-07-26 battery 12.36 V/MDD10A input 12.35 V의 모터 미연결 검사,
 2026-08-16 보드 power/back-power 검사와 9/8 두 보드 실제 공급 시험이 포함된다. 각 전원 구성은 시험 보고서에서 구분한다.
@@ -161,9 +203,9 @@ Engineering Basis ID, 적용 수준과 과거 작업의 retrospective alignment/
 | `REQ-POWER-001` | 3S LiPo 양극 경로가 fuse와 DC main switch를 통과하고, switch OFF에서 부하측 0 V, ON에서 정상 극성 전압이어야 한다. | MUST | `PASS` |
 | `REQ-POWER-002` | XL4015 두 개는 5 V no-load 조정 후 약 1 A 5분을 유지하고, 약 1.8 A 3분 시험 결과와 전압 강하를 기록해야 한다. | MUST | `CONDITIONAL PASS` |
 | `REQ-POWER-003` | USB와 buck 동시 연결 시 back-powering을 방지하는 보드별 전원 연결 규칙을 확정해야 한다. | MUST | `PARTIAL — current logic-power scope PASS / final integrated harness rule pending` |
-| `REQ-POWER-004` | MVP 주행 시험은 셀별 LiPo 알람과 작업자 감독하에 수행한다. 사용 장치의 경고 설정을 기록하고, 경고 시 즉시 수동 정지·시험 종료한다. 배터리 ADC 연동·자동 저전압 정지는 후속 PCB 단계다. | MUST (시험 운영 조건) | `PARTIAL — 10/17 운영 방침 합의·알람 보유 사용자 확인; 설정/정상 동작과 회차 적용은 미확인` |
+| `REQ-POWER-004` | MVP 주행 시험은 셀별 LiPo 알람과 작업자 감독하에 수행한다. 사용 장치의 경고 설정을 기록하고, 경고 시 즉시 수동 정지·시험 종료한다. 관측 ADC는 후속 REQ-MON에서 검증하며 자동 저전압 정지는 후속이다. | MUST (시험 운영 조건) | `PARTIAL — 알람 연결·셀 전압·감독하 주행 확인; 임계값/경고 정지 전용 회차 미기록` |
 
-10/17 범위 결정: 이 요구는 감독하에 수행하는 짧은 MVP 시험의 운영 조건이다. ADC 회로·보정·필터·자동 저전압 정지 구현 또는 별도 과방전 유발 시험을 MVP 선행 조건으로 추가하지 않는다. 알람 보유 확인만으로 설정·경고 동작·회차 적용을 PASS 처리하지 않는다. 무인·장시간 운용의 배터리 보호 수용으로 확대하지 않는다.
+10/17의 셀 알람·수동 정지 운영을 유지한다. 10/19 재판단으로 관측용 ADC도 post-MVP다. 알람 보유만으로 경고 동작을 PASS 처리하지 않으며 과방전 유발 시험·자동 보호 구현을 MVP에 추가하지 않는다.
 
 `REQ-POWER-002`의 전자부하 시험에서는 고부하 발열과 USB 경로 전압 강하가 남아 CONDITIONAL PASS로 기록했다.
 이후 실제 보드·배선 경로는 [로직 전원 시험](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)에서 검증했다. 두 보드 동시 공급에서 OUT 4.95 V,
@@ -179,8 +221,8 @@ NUC E5V 4.94 V/3V3 3.30 V, ESP 5V 4.95 V/3V3 3.27 V였고, 개별 공급·전원
 | ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
 | --- | --- | --- | --- |
 | `REQ-MECH-001` | Rev A 도면은 셰시 홀 패턴과 1:1로 일치하고 제조 파일의 형상 배율이 유지되어야 한다. | MUST | `PASS` |
-| `REQ-MECH-002` | 제작품은 억지 가공이나 휨 없이 셰시에 체결되고, 만능기판·XL4015 x2·MDD10A가 장착돼야 한다. | MUST | `READY / NOT TESTED` |
-| `REQ-MECH-003` | USB, 단자대와 공구 접근이 가능하고 기판 하부·금속부 사이 절연 간격과 케이블 경로가 확보돼야 한다. | MUST | `READY / NOT TESTED` |
+| `REQ-MECH-002` | 제작품은 억지 가공이나 휨 없이 셰시에 체결되고, 만능기판·XL4015 x2·MDD10A가 장착돼야 한다. | MUST | `PASS — 10/17 사용자 가조립/고정·휨 없음 확인; 치수/revision 식별 수용과 구분` |
+| `REQ-MECH-003` | USB, 단자대와 공구 접근이 가능하고 기판 하부·금속부 사이 절연 간격과 케이블 경로가 확보돼야 한다. | MUST | `PARTIAL — 10/17 접근·하부 간격/접촉 없음 사용자 확인. 케이블 경로는 미기록; 전체 fit/절연저항 계측 아님` |
 
 `REQ-MECH-002`와 `REQ-MECH-003`의 제작 plate는 입고됐지만 physical identity, 실측 치수,
 fit과 조립 사진은 아직 확인하지 않았다. A4 종이 대조 결과로 대체하지 않는다.
@@ -193,7 +235,7 @@ fit과 조립 사진은 아직 확인하지 않았다. A4 종이 대조 결과�
 | `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PASS — motor-disconnected MCU-pin scope` |
 | `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PASS` |
 | `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `CONDITIONAL PASS` |
-| `REQ-MOTOR-005` | 한쪽 모터 no-load에서 전진·후진, timeout/DISARM stop, 전류·열·소음 관찰이 모두 통과해야 한다. | MUST | `PARTIAL` — 단발·A DISARM·A/B 3초 subset, 전류/열/반복・부하 조건 미완료 |
+| `REQ-MOTOR-005` | 한쪽 모터 no-load의 전진·후진, timeout/DISARM stop과 기본 열·소음 관측을 충족한다. 전류 수치/정량 부하 수용은10/19 재판단으로 후속 REQ-MON에 분리한다. | MUST | `PARTIAL` — 단발·A DISARM·A/B 3초 subset 보존; 기능/정지·열/반복 범위의 잔여 증거 필요 |
 
 command 변수 zero와 실제 PWM pin zero는 별도 검증 항목이다.
 
@@ -256,6 +298,23 @@ V_RAIL_OFF_MAX와 판정 시점, 단자·배선 적합성은 남아 있다. 구�
 과거 A=right/TIM5·B=left/TIM3 및 CW/CCW 설명은 당시 연결·관측 기준이다. 현재 실물 배선 지시로 사용하지 않는다.
 TEL 정지 0의 관측 길이와 warm reset/cold boot의 범위, S1 전환 때 일시적 CPS ±10은 report 28/30의 조건대로 해석한다.
 
+### 전류·전압 상태 관측과 외부 발열 — 2026-10-19 추가
+
+| ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
+| --- | --- | --- | --- |
+| `REQ-MON-001` | PA4 후보의 S1 뒤/K1 앞 전압 채널을 분압·보호·필터로 구성한다. 선언한 입력 범위/전원 순서에서 ADC 입력 조건을 만족하고 기준 전압 측정과 비교한 보정값·오차가 시험 전 정한 허용치 안에 있어야 한다. | SHOULD / POST-MVP | `DEFERRED` |
+| `REQ-MON-002` | PC0 후보로 K1→MDD 입력 분기 전류를 수집한다. 실제 무전류 영점과 선언한 운용 범위의 비영점 기준 전류를 비교해 보정·오차를 기록하고 시험 전 허용치를 충족해야 한다. DISARM 소비전류를 영점으로 간주하지 않는다. | SHOULD / POST-MVP | `DEFERRED` |
+| `REQ-MON-003` | STM ADC raw·환산값·측정 시각·유효성을 UART→ESP JSON→브라우저·저장 로그까지 보존한다. PWM/CPS와 시간 관계를 확인하고 결측/오래된 값을 유효한 최신값으로 표시하지 않는다. 수집·전송 부하를 추가해도 기존 정지/timeout 계약을 충족해야 한다. | SHOULD / POST-MVP | `DEFERRED` |
+| `REQ-THERM-001` | GM-1312로 대기·전진·후진·양방향 회전의 한정된 조건별 온도·상승량을 기록한다. 측정 위치/부착·주위 온도·전원/궤도 상태·PWM/CPS·구동/휴지 시간·최고 관측값과 시험 전 정한 온도 중단/판정 기준을 남긴다. 전류·전압 ADC는 선행 조건이 아니다. | MUST | `PLANNED` |
+
+수치 기준과 증거의 경계 — 전기 계측은 post-MVP, 외부 온도는 이번 MVP:
+
+- 회로 확정 시 운용 범위·예상 ADC 입력·필터/샘플링·로그 주기를 기록한다. 기준 계측의 정확도와 센서/ADC 오차를 고려해 **전압·전류 허용 오차 수치를 실측 전에 확정**한다. 영점만 맞추거나 명목 감도로 계산한 값은 전체 전류 정확도 검증이 아니다. 독립 기준 전류를 만드는 방법/장비는 아직 미확정이며 별도 고가 전류계 구매를 필수로 지정하지 않는다.
+- 선언한 범위를 포함하는 복수 전압/전류 지점에서 기준값·raw·환산값·오차 표를 남긴다. 포화/범위 밖과 오래된 데이터는 유효성 처리로 검증한다. 단선처럼 정상 범위 출력과 구별할 수 없는 고장은 검출 가능하다고 약속하지 않고 한계를 명시한다.
+- ADC 순차 변환과 필터 지연을 기록한다. 평균화한 입력 전류는 PWM 순간 피크·권선 RMS가 아니다. 측정 위치가 다른 전압×전류를 로봇 전체 소비전력으로 표기하지 않는다.
+- MVP 외부 온도 관측의 지속/휴지 시간·반복 수와 온도 중단·수용 기준은 부품 정격/자료, 주변 조건과 측정 위치를 근거로 시험 전에 확정한다. 현재 수치는 미정이다. GM-1312의 두 채널로 모든 위치를 동시에 읽었다고 기록하지 않으며, 나눠 측정하면 각 회차 조건을 남긴다.
+- MVP 저장 증거는 주행/온도 결과표·원시 로그와 firmware 기준점이다. 후속 전기 계측에서 회로/핀 배정·보정/오차 표를 추가한다. 기존 검증 증거와 합쳐 사용할 때도 no-load와 지상 부하, 소프트웨어 PWM 값과 실제 출력 관측의 범위를 구분한다.
+
 ### 주행과 odometry
 
 | ID | 요구사항과 수용 기준 | 우선순위 | 상태 |
@@ -281,11 +340,11 @@ A/M1 양수 실제 전진의 기존 report32와 10/18 모터/궤도 장착 공�
 | `REQ-POWER-001` | `RISK-001`, `FMEA-001`, `PART-001`, `MET-001` | `12_Power_Distribution_and_Safety_Architecture_ko.md` | fuse/switch harness | `T-PWR-001` power bring-up | DMM log, wiring photos | `PASS` |
 | `REQ-POWER-002` | `RISK-001`, `PART-001`, `MET-001`, `VVT-001` | power architecture | XL4015 #1/#2 | `T-PWR-002` buck load test | calibration log, load photos | `CONDITIONAL PASS` |
 | `REQ-POWER-003` | `RISK-001`, `FMEA-001`, `PART-001`, `VVT-001` | power architecture | final board power harness | `T-PWR-003` USB/buck back-power check | 2026-08-16 로직 전원 검사 및 [로직 전원 시험](25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md)의 실제 두 보드 공급 PASS; 최종 하네스 정격·부하 검증 남음 | `PARTIAL` |
-| `REQ-POWER-004` | `REQ-001`, `RISK-001`, `FMEA-001`, `VVT-001` | supervised MVP battery operation | cell alarm + operator stop policy; ADC/automatic stop post-MVP | `T-PWR-004` operating check | 10/17 사용자 방침 승인·알람 보유 확인 | `PARTIAL` |
+| `REQ-POWER-004` | `REQ-001`, `RISK-001`, `FMEA-001`, `VVT-001` | supervised MVP battery operation | cell alarm + operator stop; automatic stop and observation ADC post-MVP | `T-PWR-004` operating check | 셀 알람·감독하 주행 확인, 경고 정지 전용 회차 미기록 | `PARTIAL` |
 | `REQ-MECH-001` | `DEC-001`, `MECH-001`, `MET-001`, `CM-001` | adapter layout, Rev A preflight | Rev A release | `T-MECH-001` 1:1/vector preflight | release hashes, PDF analysis, user comparison | `PASS` |
 | `REQ-MECH-002~003` | `RISK-001`, `MECH-001`, `MET-001`, `VVT-001` | adapter layout and received-plate mounting audit | fabricated plate and spacers | `T-MECH-002` adapter fit check | Plate `USER-REPORTED RECEIVED`; source identity, measurements and assembly photos TBD | `READY / NOT TESTED` |
 | `REQ-MOTOR-001~004` | `DEC-001`, `RISK-001`, `FMEA-001`, `VVT-001`, `MET-001` | motor driver contract, pin allocation, state machine | TIM4 CH1/CH2, PC8/PC9, motor output module | `T-MOTOR-001` MCU pin signal; `T-MOTOR-002` MDD10A logic input | [`03_MDD10A_Logic_Input_Test.md`](../../02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md), [waveform/shutdown timing procedure](../../02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md), [2026-08-03 waveform report](07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md), [2026-08-04 active DISARM report](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md), [2026-08-12 timeout/fault/reset report](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md), [2026-08-18 final perfboard report](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md), [raw captures](../../assets/captures/logic_analyzer/README.md), [active safety summary](../../assets/logs/esp32_uart_bridge/2026-07-29_active_motor_output_safety_verification.md), [fault output-zero/latch evidence](../../assets/logs/motor_output/2026-07-30_fault_injection_output_zero_latch_verification.md), [교정 전/후 wiring photos](../../assets/photos/mdd10a/README.md); [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 단발 구동·DIR 보정은 추가 범위 | `MCU PIN + DRIVER INPUT PASS / LOW-DUTY CONDITIONAL / 실제 구동 PARTIAL` |
-| `REQ-MOTOR-005` | `RISK-001`, `PART-001`, `VVT-001`, `MET-001` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 UART 원본·육안 회전 보고; [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM・S0・A/B 3초 추가; 전류/열·정식 영상/거리 미완료 | `PARTIAL` |
+| `REQ-MOTOR-005` | `RISK-001`, `PART-001`, `VVT-001`, `MET-001` | motor driver contract | MDD10A + one motor | `T-MOTOR-003` first motor no-load | [report31](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)의 UART 원본·육안 회전 보고; [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM・S0・A/B 3초 추가; 기본 열·반복/정지 증거 미완료, 정량 전류는 후속 | `PARTIAL` |
 | `SG-ESTOP-001`, `MVP-013`, `REQ-ESTOP-001~020` | `REQ-001`, `RISK-001`, `FMEA-001`, `SAFE-CTRL-001`, `ESTOP-001`, `VVT-001`, `MET-001`, `CM-001` | [`21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md), [`22_Physical_EStop_Hazard_Analysis_ko.md`](../../01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md), [`23_Physical_EStop_FMEA_ko.md`](../../01_System_Architecture/23_Physical_EStop_FMEA_ko.md), [`24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md), [`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md), [`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](../../01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md) | MVP: K1 relay cut, K2 nominal three-wire re-enable, 5 V/opto PC7 sense, direct rail test point와 latch/reset; post-MVP: FM-014 single-fault extension and PA4/PB0 dual rail diagnostic | MVP `T-ESTOP-001~004`, `005A`, `007`; post-MVP `005B`, `006` | Reports 18/19/24: 부품·제어 경로 이력. Report 26: T004 conditioned PC7/active PWM/latch/reset PASS. Report 27: MDD direct rail DMM와 T005A run01~06 및 safe restore. rail-off 수용 기준, release 항목과 실제 모터 정지는 미완료. FM-ESTOP-014는 post-MVP 잔여 위험 | `PARTIAL / T-ESTOP-005A PARTIAL` |
 | `REQ-ENC-001` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | timer/pin map, power architecture | encoder power/interface | `T-ENC-001` encoder signal safety | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), 기존 DMM log·사진; [엔코더 조정부 검사](28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)의 영구 회로와 [실제 엔코더·전력단 검사](30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)의 실제 LOW/HIGH | `CONDITIONAL PASS` |
 | `REQ-ENC-002` | `REQ-001`, `MET-001`, `VVT-001`, `CM-001` | timer encoder design | TIM3/TIM5 | `T-ENC-002` count/sign | [`04_Encoder_Signal_Safety_Test.md`](../../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md), [encoder log index](../../assets/logs/encoder/README.md), [TIM3/TIM5 dual raw log](../../assets/logs/encoder/2026-07-27_tim3_tim5_dual_encoder_independent_hand_rotation_raw.txt), [50-rev calibration summary](../../assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md), [vehicle sign record](../../assets/logs/encoder/2026-07-30_vehicle_frame_encoder_sign_verification.md); [좌우 배치·손회전 검사](29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md), [단일 모터 구동 시험](31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md) | `PARTIAL` |
@@ -294,11 +353,13 @@ A/M1 양수 실제 전진의 기존 report32와 10/18 모터/궤도 장착 공�
 | `REQ-DRIVE-002~003` | `REQ-001`, `RISK-001`, `MET-001`, `VVT-001` | state machine, kinematics | dual motor path | lifted/ground 기본 주행·놓음/DISARM | [최종 통합 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json); UART 단절/timeout 실제 궤도 전용 회차는 남음 | `002 PASS / 003 PARTIAL` |
 | `REQ-ODO-001` | `ODO-001`, `MET-001`, `VVT-001` | drivetrain kinematics | distance estimator | `T-ODO-001` 1 m straight test | measurement table, plot/video | `PLANNED` |
 | `MVP-012` | `LCM-001`, `INFO-001`, `CM-001`, `VVT-001` | master plan and README | documentation package | `T-DOC-001` evidence audit | README, linked evidence matrix | `PARTIAL` |
+| `MVP-014`, `REQ-MON-001~003` | 후속 전기 상태 관측 | [핀 후보](../../01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md), [계측 검토](../progress/2026-10-19_progress.md) | PC0/PA4, ADC→UART→ESP→브라우저 | `T-MON-001~003` | 후보·기준 보존, 이번 인수 선행 조건 아님 | `DEFERRED / POST-MVP` |
+| `MVP-015`, `REQ-THERM-001` | 외부 온도 관측 | [MVP 종료선](../plans/00_Project_Master_Plan_To_Final_MVP_ko.md) | GM-1312·주행 조건/PWM/CPS | `T-LOAD-001` | 구매/수령·온도 기준·실측 미완료; 전류 ADC 의존성 없음 | `PLANNED` |
 
 ## Test ID와 현재 실행 순서
 
 아래 순서는 계획된 시험 의존성을 뜻한다. 이미 끝난 하위 검사를 처음부터 반복하는 목록이 아니다.
-현재 재개점은 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/18 기록](../progress/2026-10-18_progress.md)을 따른다. 과거 미실행 표시만으로 완료 시험을 반복하지 않는다.
+현재 재개점은 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [10/19 기록](../progress/2026-10-19_progress.md)을 따른다. 과거 미실행 표시만으로 완료 시험을 반복하지 않는다.
 
 | 순서 | Test ID | 시험 | 선행 조건 | 상태 |
 | --- | --- | --- | --- | --- |
@@ -310,18 +371,24 @@ A/M1 양수 실제 전진의 기존 report32와 10/18 모터/궤도 장착 공�
 | 6 | `T-MOTOR-001` | STM32 PWM/DIR 핀 단독 시험 | pin/frequency/channel 결정, motor와 driver power 분리 | `PASS — motor-disconnected MCU-pin scope` |
 | 7 | `T-MOTOR-002` | MDD10A logic input 시험 | `T-MOTOR-001` static routing 확인 | `PASS — motor-disconnected MDD10A-input scope` |
 | 8 | `T-PWR-003` | 실제 보드 power/back-power 시험 | board power policy 확정 | `PASS — current logic-power scope` |
-| 9 | `T-MECH-002` | 제작품 identity/fit check | Received plate, all power disconnected | `READY / NOT TESTED` |
+| 9 | `T-MECH-002` | 제작품 identity/fit check | Received plate, all power disconnected | `PARTIAL — 10/17 사용자 장착·간격·접근 확인, 치수/identity·배선 경로 등 미기록은 fit 체크리스트 참조` |
 | 10 | `T-ENC-001` | encoder 전압·출력형식 안전 시험 | encoder 식별 | `CONDITIONAL PASS` |
 | 11 | `T-ENC-002` | encoder count·부호·speed TEL | `T-ENC-001`; first stage는 motor-power-off hand rotation | `PARTIAL` |
 | 12 | `T-ESTOP-001~004 + T-ESTOP-005A` | component/schematic, continuity, PC7 sense, latch, nominal no-auto-motion과 direct rail-off | 부품 정격, power/back-power policy, verified healthy S2/harness, DMM/logic analyzer | `PARTIAL` — T004 conditioned PC7/active PWM/latch/reset PASS; T005A run01~06과 MDD rail DMM 및 hook0 복구 보존. rail-off 수용 기준/release 미결, 전체 combined acceptance 미완료 |
-| 13 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, `T-ESTOP-001~004 + T-ESTOP-005A`, dual motor-off count, 전원, 기구 안전 | `PARTIAL` — [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM·A/B 3초 subset; 전체T005A·전류/열/반복/부하 조건 미완료 |
+| 13 | `T-MOTOR-003` | 한쪽 motor lifted/no-load + powered encoder noise 관찰 | `T-MOTOR-002`, `T-ESTOP-001~004 + T-ESTOP-005A`, dual motor-off count, 전원, 기구 안전 | `PARTIAL` — [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A DISARM·A/B 3초 subset; 전체T005A·기본 열/반복·구동/정지 범위 미완료; 정량 전류는 후속 |
 | 14 | `T-ESTOP-007` | lifted single-motor Physical E-stop time/distance | `T-MOTOR-003`, `T-ESTOP-001~004 + T-ESTOP-005A` | BLOCKED — 정식 수용 조건 미완료. [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md) A S0/PWM/엔코더 관측은 별도 보존 |
 | 후속 | `T-ESTOP-005B` | S2 stuck-closed/6P pair-short single-fault extension | MVP nominal baseline 뒤 mitigation/fault-injection V-cycle | `DEFERRED / POST-MVP` |
 | 후속 | `T-ESTOP-006` | dual-rail ADC plausibility, discrepancy fault와 정밀 rail transient | MVP baseline 뒤 별도 diagnostic V-cycle | `DEFERRED / POST-MVP` |
 | 15 | `T-DRIVE-001` | 좌우 lifted/저속 지상 주행 | 실제 mapping·양 encoder·감독하 시험 조건 | `PARTIAL` — 기본 주행/놓음/DISARM PASS, 실제 궤도 UART 단절/timeout 범위 별도 |
-| 16 | `T-PWR-004` | MVP 셀 알람 설정·정상 동작 확인과 경고 시 작업자 정지/시험 종료 운영 | 알람·작업자 감독; ADC/자동 정지·과방전 유발 시험은 범위 밖 | `PARTIAL` — 셀 알람 연결/전압·감독하 주행 적용 확인; 임계값/경고 정지 전용 회차 미기록 |
+| 16 | `T-PWR-004` | MVP 셀 알람 설정·정상 동작 확인과 경고 시 작업자 정지/시험 종료 운영 | 알람·작업자 감독; 자동 정지·과방전 유발은 범위 밖, 관측 ADC는 후속 T-MON | `PARTIAL` — 셀 알람 연결/전압·감독하 주행 적용 확인; 임계값/경고 정지 전용 회차 미기록 |
 | 17 | `T-ODO-001` | 1 m 직진 odometry | dual drivetrain와 telemetry PASS | `PLANNED` |
 | 18 | `T-DOC-001` | 최종 추적성·증거 audit | 모든 MUST 시험 종료 | `PLANNED` |
+| 후속 | `T-MON-001` | 전압 입력 범위·보호·보정/기준 계측 대비 오차 | 회로·기준 계측 방법·수치 허용치 확정 | `DEFERRED / POST-MVP` |
+| 후속 | `T-MON-002` | 실제 무전류 영점·비영점 전류 비교·보정/오차 | 전류 경로·모듈·ADC·기준 전류 방법·수치 허용치 확정 | `DEFERRED / POST-MVP` |
+| 후속 | `T-MON-003` | 2채널 TEL/브라우저/로그·유효성·기존 정지 경로 영향 | `T-MON-001/002`, 수집/메시지 계약과 변경 영향 검사 | `DEFERRED / POST-MVP` |
+| 추가 | `T-LOAD-001` | 선언한 짧은 주행의 GM-1312 외부 온도 관측 | 온도계·프로브 고정·주행/온도 프로파일·판정 기준. ADC 구현 불필요 | `PLANNED` |
+
+10/19 재판단: 이번 MVP는 외부 온도 관측과 잔여 실제 fault-stop·T-ODO-001을 준비하고 T-DOC-001에서 대조한다. T-MON-001~003은 MVP 이후 별도 계측 단계다. 기존 시험 번호는 재시험 지시가 아니다.
 
 `T-MOTOR-001`의 MCU-pin 정적·timing·shutdown 시험과 `T-MOTOR-002`의 permanent MDD10A-input routing/continuity, CH1/CH2 19.049/19.058 kHz·약 10%, direction 전후 약 2 ms zero, MDD10A LED 순서와 hook-0 final all-LOW를 통과했다. 이 판정은 motor-disconnected input scope이며 MDD10A motor output과 실제 stop을 포함하지 않는다. 2026-08-18 최종 근거는 [`17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md`](17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md)에 있고 이전 timeout/fault/reset 근거는 [`16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)에서 추적한다. `T-ENC-002`의 TIM3/TIM5 dual motor-off independent hand-count, modular delta/counts/s, 50회전 `1560 counts/output rev`, mRPM 계산, production `TEL` -> ESP32 parse와 encoder-side vehicle/forward-positive sign subtest는 통과했지만 external tachometer/wheel-speed calibration과 powered-motor noise가 남아 있어 전체 Test ID는 `PARTIAL`이다. Physical E-stop 선행 gate 통과 후 powered-motor 시험으로 들어간다는 기존 조건은 유지한다. Report 31의 단발 구동은 전체 T005A가 PARTIAL인 상태에서 수행됐으므로 조건 충족으로 소급하지 않으며, 전체 T-MOTOR-003 PASS로 처리하지 않는다.
 
@@ -334,6 +401,7 @@ A/M1 양수 실제 전진의 기존 report32와 10/18 모터/궤도 장착 공�
 3. 각 `PASS`에는 저장소 안의 log, photo, screenshot, video index 또는 measurement table이 연결돼야 한다.
 4. 안전 관련 요구사항은 정상 동작 영상만으로 대체할 수 없다.
 5. 설계 변경 시 해당 requirement, test와 evidence 영향을 함께 갱신한다.
+6. MVP-015 외부 온도 관측의 조건/기준·증거가 필요하다. MVP-014/REQ-MON/T-MON은 post-MVP로 이번 종료를 막지 않는다. 후속 분리는 미측정 전류나 과거 미결을 PASS로 바꾸는 근거가 아니다.
 
 ## 변경 관리
 

@@ -85,6 +85,12 @@ typedef struct {
     int32_t right_pwm;
     int32_t left_cps;
     int32_t right_cps;
+    bool encoder_valid;
+    uint32_t encoder_t_ms;
+    int64_t left_count;
+    int64_t right_count;
+    bool encoder_arm_valid;
+    uint32_t encoder_arm_seq;
     uint32_t batt_mv;
     uint32_t drop;
     uint32_t err;
@@ -472,7 +478,40 @@ static const char PAGE[] =
     " }\n"
     " updateButtons();\n"
     "}\n"
-    "function validStatus(s){ const u32=v=>Number.isInteger(v)&&v>=0&&v<=4294967295; const i32=v=>Number.isInteger(v)&&v>=-2147483648&&v<=2147483647; const ms=v=>Number.isSafeInteger(v)&&v>=0; if(!s||typeof s!=='object'||Array.isArray(s)||    !['ESP_ONLY','STM_UART'].includes(s.source)||    !['AP','STA'].includes(s.mode)||    !['SETTLE','SYNC_WAIT','WAIT_DISARM_ACK',      'WAIT_PONG','READY','FAILED'].includes(s.startup_state)||    !u32(s.boot_id)||!ms(s.uptime_ms)||!u32(s.free_heap_bytes)||    !u32(s.tel_count)||!u32(s.stm_age_limit_ms)||s.stm_age_limit_ms===0||    typeof s.stm_connected!=='boolean'||typeof s.stm_stale!=='boolean'||    s.batt_mv!==null||s.battery_available!==false)return false; if(s.source==='ESP_ONLY'){  return !s.stm_connected&&!s.stm_stale&&s.stm_age_ms===null&&   s.tel_count===0&&['stm_t_ms','state','reason','command_age_ms',   'last_seq','vx_mmps','w_mradps','left_pwm','right_pwm',   'left_cps','right_cps','drop','err'].every(k=>s[k]===null); } return ms(s.stm_age_ms)&&  s.stm_connected===(s.stm_age_ms<=s.stm_age_limit_ms)&&  s.stm_stale===!s.stm_connected&&u32(s.stm_t_ms)&&  ['DISARMED','ARMED','FAULT'].includes(s.state)&&  typeof s.reason==='string'&&/^[A-Z0-9_]{1,31}$/.test(s.reason)&&  ['command_age_ms','last_seq','drop','err'].every(k=>u32(s[k]))&&  ['vx_mmps','w_mradps','left_pwm','right_pwm',   'left_cps','right_cps'].every(k=>i32(s[k]))&&  Math.abs(s.left_pwm)<=1000&&Math.abs(s.right_pwm)<=1000;}\n"
+    "function validStatus(s){\n"
+    " const u32=v=>Number.isInteger(v)&&v>=0&&v<=4294967295;\n"
+    " const i32=v=>Number.isInteger(v)&&v>=-2147483648&&v<=2147483647;\n"
+    " const ms=v=>Number.isSafeInteger(v)&&v>=0;\n"
+    " const i64text=v=>{\n"
+    "  if(typeof v!=='string'||! /^-?(0|[1-9][0-9]{0,18})$/.test(v)||v==='-0')return false;\n"
+    "  const negative=v[0]==='-', digits=negative?v.slice(1):v;\n"
+    "  const limit=negative?'9223372036854775808':'9223372036854775807';\n"
+    "  return digits.length<limit.length||(digits.length===limit.length&&digits<=limit);\n"
+    " };\n"
+    " if(!s||typeof s!=='object'||Array.isArray(s)||\n"
+    "  !['ESP_ONLY','STM_UART'].includes(s.source)||!['AP','STA'].includes(s.mode)||\n"
+    "  !['SETTLE','SYNC_WAIT','WAIT_DISARM_ACK','WAIT_PONG','READY','FAILED'].includes(s.startup_state)||\n"
+    "  !u32(s.boot_id)||!ms(s.uptime_ms)||!u32(s.free_heap_bytes)||!u32(s.tel_count)||\n"
+    "  !u32(s.stm_age_limit_ms)||s.stm_age_limit_ms===0||\n"
+    "  typeof s.stm_connected!=='boolean'||typeof s.stm_stale!=='boolean'||\n"
+    "  s.batt_mv!==null||s.battery_available!==false)return false;\n"
+    " if(s.source==='ESP_ONLY'){\n"
+    "  return !s.stm_connected&&!s.stm_stale&&s.stm_age_ms===null&&s.tel_count===0&&\n"
+    "   ['stm_t_ms','state','reason','command_age_ms','last_seq','vx_mmps','w_mradps',\n"
+    "    'left_pwm','right_pwm','left_cps','right_cps','drop','err',\n"
+    "    'encoder_valid','encoder_t_ms','left_count','right_count',\n"
+    "    'encoder_arm_valid','encoder_arm_seq'].every(k=>s[k]===null);\n"
+    " }\n"
+    " return ms(s.stm_age_ms)&&s.stm_connected===(s.stm_age_ms<=s.stm_age_limit_ms)&&\n"
+    "  s.stm_stale===!s.stm_connected&&u32(s.stm_t_ms)&&\n"
+    "  ['DISARMED','ARMED','FAULT'].includes(s.state)&&\n"
+    "  typeof s.reason==='string'&&/^[A-Z0-9_]{1,31}$/.test(s.reason)&&\n"
+    "  ['command_age_ms','last_seq','drop','err'].every(k=>u32(s[k]))&&\n"
+    "  ['vx_mmps','w_mradps','left_pwm','right_pwm','left_cps','right_cps'].every(k=>i32(s[k]))&&\n"
+    "  Math.abs(s.left_pwm)<=1000&&Math.abs(s.right_pwm)<=1000&&\n"
+    "  typeof s.encoder_valid==='boolean'&&typeof s.encoder_arm_valid==='boolean'&&\n"
+    "  u32(s.encoder_t_ms)&&u32(s.encoder_arm_seq)&&i64text(s.left_count)&&i64text(s.right_count);\n"
+    "}\n"
     "function scheduleReconnect(){if(retry===null)retry=setTimeout(()=>{retry=null;connect();},1000);}\n"
     "function disconnect(ws,reason){\n"
     " if(socket!==ws||ws===null)return;\n"
@@ -573,6 +612,9 @@ static int status_json(char *json, size_t capacity)
             "\"vx_mmps\":null,\"w_mradps\":null,"
             "\"left_pwm\":null,\"right_pwm\":null,"
             "\"left_cps\":null,\"right_cps\":null,"
+            "\"encoder_valid\":null,\"encoder_t_ms\":null,"
+            "\"left_count\":null,\"right_count\":null,"
+            "\"encoder_arm_valid\":null,\"encoder_arm_seq\":null,"
             "\"batt_mv\":null,\"battery_available\":false,"
             "\"drop\":null,\"err\":null}",
             WIFI_LINK_MODE_NAME, s_boot_id, uptime_ms,
@@ -592,6 +634,9 @@ static int status_json(char *json, size_t capacity)
             "\"vx_mmps\":%" PRIi32 ",\"w_mradps\":%" PRIi32 ","
             "\"left_pwm\":%" PRIi32 ",\"right_pwm\":%" PRIi32 ","
             "\"left_cps\":%" PRIi32 ",\"right_cps\":%" PRIi32 ","
+            "\"encoder_valid\":%s,\"encoder_t_ms\":%" PRIu32 ","
+            "\"left_count\":\"%" PRId64 "\",\"right_count\":\"%" PRId64 "\","
+            "\"encoder_arm_valid\":%s,\"encoder_arm_seq\":%" PRIu32 ","
             "\"batt_mv\":null,\"battery_available\":false,"
             "\"drop\":%" PRIu32 ",\"err\":%" PRIu32 "}",
             WIFI_LINK_MODE_NAME, s_boot_id, uptime_ms,
@@ -600,7 +645,11 @@ static int status_json(char *json, size_t capacity)
             age_ms, STM_TEL_STALE_MS, tel_count, tel.t_ms,
             tel.state, tel.reason, tel.command_age_ms, tel.last_seq,
             tel.vx_mmps, tel.w_mradps, tel.left_pwm, tel.right_pwm,
-            tel.left_cps, tel.right_cps, tel.drop, tel.err);
+            tel.left_cps, tel.right_cps,
+            tel.encoder_valid ? "true" : "false", tel.encoder_t_ms,
+            tel.left_count, tel.right_count,
+            tel.encoder_arm_valid ? "true" : "false", tel.encoder_arm_seq,
+            tel.drop, tel.err);
     }
 
     if (length < 0 || (size_t)length >= capacity) {
@@ -1128,7 +1177,7 @@ static void server_start(void)
 #define STM_UART_TX_PIN 17
 #define STM_UART_RX_PIN 18
 #define STM_UART_RX_BUFFER_SIZE 1024
-#define STM_UART_LINE_SIZE 384U
+#define STM_UART_LINE_SIZE 512U
 
 /* 이 수신 상태는 stm_uart_rx_task만 사용한다. */
 static char s_stm_rx_line[STM_UART_LINE_SIZE];
@@ -1257,6 +1306,44 @@ static bool stm_parse_i32_field(
     return true;
 }
 
+static bool stm_parse_i64_field(
+    const char *line, const char *key, int64_t *out)
+{
+    const char *pos = stm_find_field_value(line, key);
+    if (pos == NULL) {
+        return false;
+    }
+
+    const bool negative = *pos == '-';
+    if (negative) {
+        ++pos;
+    }
+    if (*pos < '0' || *pos > '9') {
+        return false;
+    }
+
+    const uint64_t limit = negative
+        ? (uint64_t)INT64_MAX + 1U : (uint64_t)INT64_MAX;
+    uint64_t magnitude = 0U;
+    while (*pos >= '0' && *pos <= '9') {
+        const uint64_t digit = (uint64_t)(*pos - '0');
+        if (magnitude > (limit - digit) / 10U) {
+            return false;
+        }
+        magnitude = magnitude * 10U + digit;
+        ++pos;
+    }
+    if (*pos != ',' && *pos != '\0') {
+        return false;
+    }
+
+    *out = negative
+        ? (magnitude == (uint64_t)INT64_MAX + 1U
+            ? INT64_MIN : -(int64_t)magnitude)
+        : (int64_t)magnitude;
+    return true;
+}
+
 static bool stm_parse_text_field(
     const char *line, const char *key,
     char *out, size_t capacity)
@@ -1298,17 +1385,19 @@ static bool stm_parse_tel(
         return false;
     }
 
-    /* 현재 TEL 계약은 14개 필드다. */
+    /* 확장 TEL 계약은 20개 필드다. */
     size_t field_count = 0U;
     for (const char *pos = line; *pos != '\0'; ++pos) {
         if (*pos == ',') {
             ++field_count;
         }
     }
-    if (field_count != 14U) {
+    if (field_count != 20U) {
         return false;
     }
 
+    uint32_t encoder_valid;
+    uint32_t encoder_arm_valid;
     const bool fields_ok =
         stm_parse_u32_field(line, "t_ms=", &out->t_ms) &&
         stm_parse_text_field(
@@ -1324,13 +1413,22 @@ static bool stm_parse_tel(
         stm_parse_i32_field(line, "right_pwm=", &out->right_pwm) &&
         stm_parse_i32_field(line, "left_cps=", &out->left_cps) &&
         stm_parse_i32_field(line, "right_cps=", &out->right_cps) &&
+        stm_parse_u32_field(line, "encoder_valid=", &encoder_valid) &&
+        stm_parse_u32_field(line, "encoder_t_ms=", &out->encoder_t_ms) &&
+        stm_parse_i64_field(line, "left_count=", &out->left_count) &&
+        stm_parse_i64_field(line, "right_count=", &out->right_count) &&
+        stm_parse_u32_field(line, "encoder_arm_valid=", &encoder_arm_valid) &&
+        stm_parse_u32_field(line, "encoder_arm_seq=", &out->encoder_arm_seq) &&
         stm_parse_u32_field(line, "batt_mv=", &out->batt_mv) &&
         stm_parse_u32_field(line, "drop=", &out->drop) &&
         stm_parse_u32_field(line, "err=", &out->err);
 
-    if (!fields_ok) {
+    if (!fields_ok || encoder_valid > 1U || encoder_arm_valid > 1U) {
         return false;
     }
+
+    out->encoder_valid = encoder_valid != 0U;
+    out->encoder_arm_valid = encoder_arm_valid != 0U;
 
     const bool state_ok =
         strcmp(out->state, "DISARMED") == 0 ||

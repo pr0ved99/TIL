@@ -23,6 +23,9 @@
 
 ```text
 HAL bare-metal drivetrain
+-> external thermal observation and final drive acceptance (MVP)
+-> BNO08x basic bring-up and encoder comparison (first post-MVP)
+-> current/voltage monitoring (separate post-MVP milestone)
 -> FreeRTOS task architecture
 -> CAN standalone validation
 -> CAN command/telemetry integration
@@ -36,6 +39,12 @@ HAL bare-metal drivetrain
 - FreeRTOS는 firmware에 여러 periodic job이 생긴 뒤 가치가 커진다.
 - CAN은 command와 telemetry model이 명확해진 뒤 적용하는 편이 안전하다.
 - LL Driver 전환은 비교할 수 있는 HAL baseline이 있어야 의미가 있다.
+
+### 2026-10-19 실행 순서 보완
+
+현재 MVP는 기본 주행/정지·엔코더 거리와 GM-1312 외부 온도 관측이다. 정량 전류 측정과 전류/전압 ADC→브라우저 기능은 별도 post-MVP로 재분류했다. [최신 종료선](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)과 [검증 기준](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)을 따른다. ADC 구현은 외부 온도 관측이나 기존 구동 인수의 선행 조건이 아니다.
+
+MVP 다음 첫 확장은 **보유 BNO08x의 정지 상태 통신·센서 식별·축/부호·샘플 시각 검증**이다. 그 뒤 짧은 주행에서 encoder와 IMU 각속도/자세 변화를 비교하고, 제어 보정이나 FreeRTOS task 통합 여부를 정한다. 현재 헤더/I2C 보조 배선 기록은 센서 동작 완료를 뜻하지 않는다. PID·센서 융합·자동 보정을 이 첫 bring-up의 완료 조건으로 묶지 않는다. 아래 기존 phase는 장기 구조를 설명하며 최신 실행 순서는 이 문단을 우선한다.
 
 ### 2026-06-08 최신 반영
 

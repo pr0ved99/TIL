@@ -5,6 +5,7 @@
 #include "ring_buffer.h"
 #include "uart_frame_parser.h"
 
+#include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
 
@@ -25,7 +26,7 @@
 #define CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE  200U
 #define UART_FRAME_MAX_LEN              127u
 #define UART_LINE_BUFFER_SIZE           (UART_FRAME_MAX_LEN + 2u)
-#define UART_TX_BUFFER_SIZE             384u
+#define UART_TX_BUFFER_SIZE             512u
 #define TEL_PERIOD_MS                   100u
 #define COMMAND_AGE_INVALID_MS          0xFFFFFFFFu
 
@@ -146,6 +147,19 @@ static uint32_t s_error_count;
 static int32_t s_left_cps;
 static int32_t s_right_cps;
 
+typedef struct {
+    int64_t left_count;
+    int64_t right_count;
+    uint32_t sample_ms;
+    uint32_t arm_seq;
+    bool valid;
+    bool arm_valid;
+} encoder_sample_t;
+
+static encoder_sample_t s_encoder_sample;
+static uint32_t s_encoder_arm_seq;
+static bool s_encoder_arm_valid;
+
 #if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
 static uint8_t s_cmd_ack_drop_used;
 static uint8_t s_cmd_ack_drop_zero_count;
@@ -248,16 +262,49 @@ static void send_err(uint32_t seq, const char *type, const char *code){
                 (unsigned long)HAL_GetTick());
 }
 
+/* int64 needs at most 20 decimal characters, including its sign. */
+static void i64_to_decimal(int64_t value, char out[21])
+{
+    char reversed[20];
+    unsigned int digits = 0U;
+    unsigned int pos = 0U;
+    const bool negative = value < 0;
+    uint64_t magnitude = negative
+        ? (uint64_t)(-(value + 1)) + 1U
+        : (uint64_t)value;
+
+    do {
+        reversed[digits++] = (char)('0' + magnitude % 10U);
+        magnitude /= 10U;
+    } while (magnitude != 0U);
+
+    if (negative) {
+        out[pos++] = '-';
+    }
+    while (digits != 0U) {
+        out[pos++] = reversed[--digits];
+    }
+    out[pos] = '\0';
+}
+
 static void send_tel(void){
     uint32_t now_ms = HAL_GetTick();
     motor_output_applied_t applied =
         motor_output_get_applied();
+
+    char left_count[21];
+    char right_count[21];
+    i64_to_decimal(s_encoder_sample.left_count, left_count);
+    i64_to_decimal(s_encoder_sample.right_count, right_count);
 
     uart_sendf("TEL,t_ms=%lu,state=%s,reason=%s,"
                "command_age_ms=%lu,last_seq=%lu,"
                "vx_mmps=%ld,w_mradps=%ld,"
                "left_pwm=%ld,right_pwm=%ld,"
                "left_cps=%ld,right_cps=%ld,"
+               "encoder_valid=%u,encoder_t_ms=%lu,"
+               "left_count=%s,right_count=%s,"
+               "encoder_arm_valid=%u,encoder_arm_seq=%lu,"
                "batt_mv=0,drop=%lu,err=%lu\n",
                 (unsigned long)now_ms,
                 state_name(s_state),
@@ -270,6 +317,12 @@ static void send_tel(void){
                 (long)applied.right_signed_permille,
                 (long)s_left_cps,
                 (long)s_right_cps,
+                s_encoder_sample.valid ? 1U : 0U,
+                (unsigned long)s_encoder_sample.sample_ms,
+                left_count,
+                right_count,
+                s_encoder_sample.arm_valid ? 1U : 0U,
+                (unsigned long)s_encoder_sample.arm_seq,
                 (unsigned long)ring_buffer_dropped(&s_rx_rb),
                 (unsigned long)s_error_count);
 }
@@ -729,6 +782,12 @@ static void handle_line(const char *line, size_t line_len){
             s_state = ROBOT_ARMED;
             s_reason = ROBOT_REASON_NONE;
             s_last_seq = frame.seq;
+            /* New measurement interval; wait for a post-ARM sample. */
+            s_encoder_arm_seq = frame.seq;
+            s_encoder_arm_valid = true;
+            s_encoder_sample.valid = false;
+            s_encoder_sample.arm_valid = false;
+            s_encoder_sample.arm_seq = 0U;
             send_ack(frame.seq, "ARM");
             return;
 
@@ -804,6 +863,9 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_error_count = 0u;
     s_left_cps = 0;
     s_right_cps = 0;
+    s_encoder_sample = (encoder_sample_t){0};
+    s_encoder_arm_seq = 0U;
+    s_encoder_arm_valid = false;
 
     s_vx_mmps = 0;
     s_w_mradps = 0;
@@ -812,12 +874,26 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     (void)estop_enforce_latch();
 }
 
-void uart_mvp_set_encoder_cps(
+void uart_mvp_set_encoder_sample(
     int32_t left_cps,
-    int32_t right_cps
+    int32_t right_cps,
+    int64_t left_count,
+    int64_t right_count,
+    uint32_t sample_ms,
+    bool valid
 ){
+    /* Both paths run in the main loop, not in the UART RX interrupt. */
     s_left_cps = left_cps;
     s_right_cps = right_cps;
+
+    s_encoder_sample = (encoder_sample_t){
+        .left_count = valid ? left_count : 0,
+        .right_count = valid ? right_count : 0,
+        .sample_ms = sample_ms,
+        .arm_seq = s_encoder_arm_valid ? s_encoder_arm_seq : 0U,
+        .valid = valid,
+        .arm_valid = s_encoder_arm_valid
+    };
 }
 
 void uart_mvp_start_rx(void){
