@@ -36,6 +36,7 @@ typedef struct {
     uint32_t ticket;
     int32_t vx_mmps;
     int32_t w_mradps;
+    uint32_t distance_mm; /* 0: ordinary CMD; 50/100/150/200: forward goal. */
 
     /* ESP가 나중에 채울 값. 브라우저 문자열에서 읽지 않는다. */
     uint32_t ws_session_id;
@@ -52,6 +53,13 @@ wifi_control_parse_status_t wifi_control_parse(
 bool wifi_control_zero_only_allows(
     const wifi_control_request_t *request);
 
+/* Distance is optional: zero means an ordinary CMD, not a zero-length move. */
+static inline bool wifi_control_distance_goal_valid(uint32_t distance_mm)
+{
+    return distance_mm == 50U || distance_mm == 100U ||
+        distance_mm == 150U || distance_mm == 200U;
+}
+
 /* Value/mode policy only; owner, ticket, phase and time checks are separate. */
 static inline bool wifi_control_request_allows(
     const wifi_control_request_t *request)
@@ -61,7 +69,7 @@ static inline bool wifi_control_request_allows(
     }
     const bool is_zero = request->vx_mmps == 0 && request->w_mradps == 0;
     if (request->type == WIFI_CONTROL_ARM) {
-        return is_zero;
+        return is_zero && request->distance_mm == 0U;
     }
     if (request->type != WIFI_CONTROL_CMD ||
         request->vx_mmps < WIFI_CONTROL_VX_MIN_MMPS ||
@@ -70,7 +78,13 @@ static inline bool wifi_control_request_allows(
         request->w_mradps > WIFI_CONTROL_W_MAX_MRADPS) {
         return false;
     }
-    return WIFI_CONTROL_ZERO_ONLY == 0U || is_zero;
+    if (request->distance_mm != 0U &&
+        (!wifi_control_distance_goal_valid(request->distance_mm) ||
+         request->vx_mmps != 100 || request->w_mradps != 0)) {
+        return false;
+    }
+    return WIFI_CONTROL_ZERO_ONLY == 0U ||
+        (is_zero && request->distance_mm == 0U);
 }
 
 #endif

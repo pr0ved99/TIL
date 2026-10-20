@@ -644,3 +644,93 @@ python -X utf8 -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware
 [정지 ARM](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/arm_zero.json):0mm. [공중 전진](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/forward_air.json):좌222.078410/우205.381436/평균213.729923mm. [공중 후진](../../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/reverse_air.json):좌-253.050000/우-235.055333/평균-244.052667mm. 후진 파일에 남은 과거 전진 ARM은 ACK가 잘려 REJECTED이며 별도 전진 원본에서는 수용된다. 기존12톱니 모델의 [분석 결과](../../assets/logs/wifi_link/2026-10-20_encoder_distance_analysis_review/validation.json)는 가정 이력으로 보존했다.
 
 모두 encoder 상당 궤도 이동량이다. 실제 지상 차체 거리/슬립/정지 시간·거리 수용이나 전체 MVP 완료 판정은 하지 않는다. 현재 firmware/제어 설정 변경과 새 물리 시험은 없다.
+
+### 외부 실측 거리와 비교 — 2026-10-20
+
+실제 지상 회차와 독립 거리 측정을 확보한 뒤 다음 명령을 사용한다. 꺾쇠 항목은 실제 파일/값으로 바꾼다. 현재 공중 로그에 목표1,000mm를 넣어 지상 측정 결과로 만들지 않는다.
+
+```text
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/analyze_encoder_distance.py <browser_report.json> --output <comparison.json> --actual-distance-mm <실측_부호있는_mm> --boot-id <ESP_boot_id> --arm-seq <ARM_seq> --measurement-note "<측정방법과 세션 기록 경로>"
+```
+
+- 전진 실측은 양수, 후진은 음수다. 목표 거리 대신 같은 시작/끝 차체 기준점의 실제 변위를 넣는다. 0·NaN/무한대·지수/분수 표기는 받지 않는다.
+- `--actual-distance-mm`에는 `--boot-id`와 `--arm-seq`가 모두 필요하다. 해당 ID의 유일한 ACCEPTED 구간에만 비교를 허용한다. 구간 없음/중복/REJECTED는 exit2이며 기존 출력 파일을 쓰기 전에 중단한다.
+- 출력 `external_distance_comparison`에 실측 입력·측정 메모·구간 ID·좌/우/평균 추정 거리와 **평균 추정−실측**의 부호 있는 오차, 절대 오차, 절대 백분율 오차를 남긴다. 백분율 분모는 실측 절댓값이다.
+- 오차는 반올림된 표시값이 아니라 원시 count 차이와 유리수 거리 계수로 계산한다. 기존 입력/모델 SHA256, ARM 구간 판정과 기본 출력은 유지한다. 비교 옵션을 생략하면 기존 거리 분석만 수행한다.
+- 외부 측정의 정확성·구간 일치·직진성은 도구가 자동 검증하지 않는다. 결과 상태는 `CALCULATED_NOT_PHYSICAL_ACCEPTANCE`다. 자동1m 정지·모터 gain 변경·거리 계수 보정·정확도 PASS 판정은 수행하지 않는다.
+
+관련 검사:
+
+```powershell
+python -X utf8 -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p "test_encoder_distance*.py" -v
+```
+
+기존36개와 [비교 검사9개](test_encoder_distance_comparison.py), 총45개 PASS. 기존 공중 원본3건 재생과 별도 합성 fixture의 실측 입력/CLI 검증을 포함한다. 합성 수치는 새 지상 측정값이 아니다. [PC 검증 기록](../../assets/logs/wifi_link/2026-10-20_encoder_actual_distance_comparison_review/validation.json).
+
+## 공중 목표 거리 차단 모듈 후보 — 2026-10-20
+
+[distance_move_candidate](distance_move_candidate/distance_move.h)의 `.h/.c`는 사용자 입력 전 독립 C 후보다. 전진50/100/150/200mm를 상대 목표 count로 바꾸고 좌우 도달/중단 시 출력 허용을 해제한다. `test_distance_move_candidate.py`는 실제 후보 C와 [합성 fixture](distance_move_host_fixture.c)를 PC에서 컴파일/실행한다.
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_distance_move_candidate.py --cc <PC용-C-컴파일러> --output <결과.json>
+```
+
+사용자가 `Core/Inc/distance_move.h`, `Core/Src/distance_move.c`를 입력한 뒤에는 `--saved`를 추가해 실제 저장본을 검사한다.25개 시나리오 묶음(120회 합성 목표 구동 포함) PASS. [전체 입력 코드·상태 흐름·연결 조건](../../assets/logs/wifi_link/2026-10-20_distance_move_candidate_review/stm_distance_move_typing_ko.md), [후보 검증 기록](../../assets/logs/wifi_link/2026-10-20_distance_move_candidate_review/validation.json).
+
+후보는 HAL/통신/모터 I/O가 없으며 생산 펌웨어에는 연결하지 않았다.100ms count 갱신·blocking UART는 다음 통합 단계의 해결 대상이다. PC PASS는 보드의 제어 주기·실제 정지/거리 정확도 근거가 아니며 TARGET_REACHED는 출력 차단 조건이다.
+
+## 거리 제어 주기와 UART 후보 — 2026-10-21
+
+`distance_timing_candidate.py`는5개 STM 파일의 입력 후보를 메모리에서만 만든다. `test_distance_timing_candidate.py`는 그 C와 실제 parser/mapper/motor/encoder C를 native PC에서 실행한다. 지연된 TX 완료·HAL 실패·큐 포화·E-stop/timeout을 mock하며, count5ms/CPS100ms·ARM 기준점·FIFO/버퍼 수명·RX 처리 예산을 검사한다. [전체 입력 안내](../../assets/logs/wifi_link/2026-10-21_distance_timing_candidate_review/stm_distance_timing_typing_ko.md), [후보 PASS](../../assets/logs/wifi_link/2026-10-21_distance_timing_candidate_review/validation.json).
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_distance_timing_candidate.py --cc <PC용-C-컴파일러> --output <결과.json>
+```
+
+사용자 입력 후에는 `--saved`로 실제 저장본을 실행한다. 기존 `HAL_UART_Transmit()` 동기 mock만으로는 이 경로를 검사할 수 없다. 보드 build/flash나 명령 송신은 수행하지 않으며 실제 IRQ 지연/자동 거리 정지는 후속이다.
+
+## STM 목표 거리 명령과 출력 차단 후보 — 2026-10-21
+
+`distance_control_candidate.py`는 optional distance CMD parser와 STM 거리/PWM 연결을 메모리에서 준비한다. `test_distance_control_candidate.py`는 앞선 timing fixture에 실제 `distance_move.c`와 목표/중단 시나리오를 연결해 native 실행한다. [전체 입력 안내](../../assets/logs/wifi_link/2026-10-21_distance_control_candidate_review/stm_distance_control_typing_ko.md), [후보 PASS](../../assets/logs/wifi_link/2026-10-21_distance_control_candidate_review/validation.json).
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_distance_control_candidate.py --cc <PC용-C-컴파일러> --output <결과.json>
+```
+
+입력 후 `--saved`로 실제 parser/protocol/거리/출력 C를 검사한다. 네 목표와 좌우 도달 순서·재시작 방지·잘못된 명령/센서·정지 기준점·무진행/기한·기존 안전/송신 회귀를 포함한다. timing runner의 선택 확장 설정은 기본 timing 검사 동작을 바꾸지 않고 이 연결 검사를 추가한다. ESP/브라우저 거리 입력과 실제 보드 주기·정지 정확도는 후속이다.
+
+## ESP 거리 명령 공통 계층 후보 — 2026-10-21
+
+`wifi_distance_core_candidate.py`는3개 ESP 파일의 parser/값 정책/UART 전송 변경을 메모리상으로 준비한다. `test_wifi_distance_core_candidate.py`는 기존 일반 주행/zero-only 회귀와4개 거리의 parser→ticket/owner/state→UART 경로, 오류·만료·전송 중단을 native PC에서 실행한다. 생산 파일은 수정하지 않는다. [전체 입력 안내](../../assets/logs/wifi_link/2026-10-21_wifi_distance_core_candidate_review/esp_distance_core_typing_ko.md), [후보 결과](../../assets/logs/wifi_link/2026-10-21_wifi_distance_core_candidate_review/validation.json).
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_core_candidate.py --cc <PC용-C-컴파일러> --output <결과.json>
+# 사용자3개 파일 입력·저장 후 실제 소스 검사:
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_core_candidate.py --saved --cc <PC용-C-컴파일러> --output <저장본-결과.json>
+```
+
+`--guide <경로.md>`는 후보 입력 안내와3개 검토 소스 사본을 해당 artifact 폴더에 생성한다. 기존 후보 생성은 입력 전 source를 전제로 하므로 입력 후에는 `--saved`를 쓴다. 브라우저 거리 UI는 아직 미연결이고 보드 build/flash·실제 UART/RTOS·물리 이동거리 PASS가 아니다.
+
+## 브라우저 거리 제어 PAGE 후보 — 2026-10-21
+
+`wifi_distance_page_candidate.py`는 실제 main에서 PAGE만 메모리상으로 교체한다. `wifi_distance_page.js`는 후보 helper이며 ESP에 별도 파일로 추가하는 대상이 아니다. [전체 PAGE 입력 안내](../../assets/logs/wifi_link/2026-10-21_wifi_distance_page_candidate_review/esp_distance_page_typing_ko.md), [후보 결과](../../assets/logs/wifi_link/2026-10-21_wifi_distance_page_candidate_review/validation.json).
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_page_candidate.py --cc <PC용-C-컴파일러> --node <node.exe> --output <결과.json> --guide <안내.md>
+# 사용자 실제 PAGE 입력·저장 후:
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_page_candidate.py --saved --cc <PC용-C-컴파일러> --node <node.exe> --output <저장본-결과.json>
+```
+
+기존 main/PAGE 회귀, 새 거리 DOM/clock/WebSocket 모의16개, 실제 main WS 수신→저장 공통 계약/제어권/전송부→UART를 양 모드에서 검사한다. 네 목표, post-ARM 정지·중복 TEL, ACK/TEL 순서, 중단/도달 후 재시작 방지, 관성 final 분리·로그 상한과 오류 주입 검출을 다룬다. 후보 생성은 입력 전 PAGE를 전제하므로 입력 후에는 `--saved`를 사용한다. 실제 ESP/STM build/flash·물리 정지/거리 정확도는 별도다.
+
+## 거리 실행 버튼 깜박임 회귀 — 2026-10-21
+
+`wifi_distance_button_candidate.py`는 입력된 PAGE에서 관련5개 함수만 메모리상으로 교정한다. `test_wifi_distance_button_candidate.py`는 기존 PAGE/main 회귀와 확장된 거리23개 시나리오를 실행한다. [교정 안내](../../assets/logs/wifi_link/2026-10-21_distance_button_flicker_review/esp_distance_button_correction_ko.md), [저장본 재현 FAIL](../../assets/logs/wifi_link/2026-10-21_distance_button_flicker_review/saved_validation.json), [교정 후보 PASS](../../assets/logs/wifi_link/2026-10-21_distance_button_flicker_review/candidate_validation.json).
+
+```powershell
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_button_candidate.py --cc <PC용-C-컴파일러> --node <node.exe> --output <결과.json> --guide <교정안내.md>
+# 사용자 실제5개 함수 교정·저장 후:
+python -X utf8 Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_distance_button_candidate.py --saved --cc <PC용-C-컴파일러> --node <node.exe> --output <저장본-결과.json>
+```
+
+기존16개는 ACK 사이 정지 준비 시점을 확인했으며, 추가7개는 zero CMD pending/ACK·ticket 소진·갱신 중 버튼 상태, trusted hold의 지연 전송, 전송 전 release·200ms 기한·정지 조건 변화 취소를 검사한다. 실제 WebSocket/UART RTT·브라우저 화면·모터 움직임의 실물 PASS는 아니다. 이전 saved PAGE PASS는 당시 검사 범위의 이력이며 새23개 검사 PASS와 구분한다.

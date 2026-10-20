@@ -2,9 +2,11 @@
 
 ## Status
 
-`USER-REPORTED MOUNTING / INSULATION / ACCESS CHECKS PASS (2026-10-17)`
+`USER-REPORTED MOUNTING / INSULATION / ACCESS CHECKS PASS (2026-10-17); WIRING PATH CHECK PASS (2026-10-20)`
 
 10/17 사용자가 섀시 가조립에 “가조립 맞음”, 전장부 고정·휨·납땜면 간격/접촉·USB/단자 접근성 묶음에 “모두 문제 없어”라고 보고했다. 아래 완료 항목은 사용자 육안·가조립 확인 범위다. 재료/치수·제작 revision 식별, 사진, 개별 지지점 상세와 배선 경로는 별도 미기록이며 이번 결과로 확대하지 않는다.
+
+10/20 후속: 사용자 “esp 복원 완료”, 이어서 “배선 확인 완료” 보고. 안내한 회전부 간섭·커넥터/단자 당김·남는 선 고정·전력선과 UART/엔코더 신호선 분리 배치 확인을 사용자 보고 범위로 반영한다. 아래 배선 경로를 갱신했으며 새 사진·치수·절연저항 측정 근거는 아니다. 이후 알람·로봇 주전원 분리 완료도 사용자 확인했다.
 
 2026-08-26 사용자가 custom PC adapter plate 수령을 보고했다. 이 문서는 도착 plate가 RevB
 주문 후보와 같은지 식별하고, chassis 체결, 전장 모듈 조립, 접근성과 절연 간격을 실물로
@@ -54,7 +56,7 @@
 | ESP32 USB | 최종 조립 상태에서 필요한 USB 포트에 케이블을 연결할 수 있다. | 접근 공간 USER-REPORTED PASS 10/17 |
 | Perfboard underside | 납땜부가 플레이트에 닿지 않고 스페이서가 기판 응력을 막는다. | 간격·도체 접촉 없음 USER-REPORTED PASS 10/17 |
 | IMU location | 고정이 단단하고 차량 기준축을 표시할 수 있다. | NOT TESTED |
-| Wiring path | 고전류선과 신호선을 분리해 고정할 공간이 있다. | NOT TESTED |
+| Wiring path | 고전류선과 신호선을 분리해 고정할 공간이 있다. | USER-REPORTED PASS 10/20 — ESP 복원 후 회전부 간섭·당김·남는 선 고정·전력/신호선 분리 배치 확인 |
 
 ## Evidence To Collect
 
@@ -69,7 +71,7 @@
 
 ## Result
 
-- Overall result: `PARTIAL — 사용자 장착·절연 간격·접근성 확인 완료; 치수/식별과 나머지 항목은 위 표 참조`
+- Overall result: `PARTIAL — 사용자 장착·절연 간격·접근성·배선 경로 확인 완료; 치수/식별과 나머지 항목은 위 표 참조`
 - Tested revision: `TBD`
 - Source-to-part identity: `TBD`
 - Required CAD revision: `TBD`

@@ -184,6 +184,7 @@ uart_frame_parse_result_t uart_frame_parse(
     frame->vx_mmps = 0;
     frame->w_mradps = 0;
     frame->timeout_ms = 0u;
+    frame->distance_mm = 0u;
 
     if(line == NULL){
         return UART_FRAME_PARSE_NULL_ARGUMENT;
@@ -272,7 +273,26 @@ uart_frame_parse_result_t uart_frame_parse(
         return UART_FRAME_PARSE_INVALID_NUMBER;
     }
     if(cursor.position != cursor.length){
-        return UART_FRAME_PARSE_EXTRA_DATA;
+        if(!consume_literal(&cursor, ",distance_mm=")){
+            return UART_FRAME_PARSE_EXTRA_DATA;
+        }
+        number_result = parse_u32_value(&cursor, &frame->distance_mm);
+        if(number_result == NUMBER_PARSE_OUT_OF_RANGE){
+            return UART_FRAME_PARSE_DISTANCE_OUT_OF_RANGE;
+        }
+        if(number_result != NUMBER_PARSE_OK){
+            return UART_FRAME_PARSE_INVALID_NUMBER;
+        }
+        if(cursor.position != cursor.length){
+            return UART_FRAME_PARSE_EXTRA_DATA;
+        }
+        if(frame->distance_mm != 50U && frame->distance_mm != 100U &&
+            frame->distance_mm != 150U && frame->distance_mm != 200U){
+            return UART_FRAME_PARSE_DISTANCE_OUT_OF_RANGE;
+        }
+        if(frame->vx_mmps != 100 || frame->w_mradps != 0){
+            return UART_FRAME_PARSE_VELOCITY_OUT_OF_RANGE;
+        }
     }
 
     return UART_FRAME_PARSE_OK;

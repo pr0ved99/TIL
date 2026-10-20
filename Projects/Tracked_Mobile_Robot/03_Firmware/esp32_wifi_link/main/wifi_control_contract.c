@@ -142,6 +142,16 @@ wifi_control_parse_status_t wifi_control_parse(
             !control_read_i32(&cursor, &parsed.w_mradps)) {
             return WIFI_CONTROL_PARSE_BAD_FORMAT;
         }
+        if (*cursor != '\0') {
+            if (!control_take_literal(&cursor, ",distance_mm=") ||
+                !control_read_u32(&cursor, &parsed.distance_mm) || *cursor != '\0') {
+                return WIFI_CONTROL_PARSE_BAD_FORMAT;
+            }
+            if (!wifi_control_distance_goal_valid(parsed.distance_mm) ||
+                parsed.vx_mmps != 100 || parsed.w_mradps != 0) {
+                return WIFI_CONTROL_PARSE_OUT_OF_RANGE;
+            }
+        }
     }
 
     if (*cursor != '\0') {
@@ -165,5 +175,6 @@ bool wifi_control_zero_only_allows(
     return request != NULL &&
         (request->type == WIFI_CONTROL_ARM ||
             request->type == WIFI_CONTROL_CMD) &&
-        request->vx_mmps == 0 && request->w_mradps == 0;
+        request->vx_mmps == 0 && request->w_mradps == 0 &&
+        request->distance_mm == 0U;
 }

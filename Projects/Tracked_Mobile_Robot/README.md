@@ -7,7 +7,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-20:** STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다. [오늘 기록](docs/progress/2026-10-20_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+- **현재 단계 · 2026-10-21:** 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다. [오늘 기록](docs/progress/2026-10-21_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
   MVP는 기본 무선 주행/정지·엔코더 거리 비교·외부 온도 관측이다. 정량 전류·전류/전압 ADC·자동 저전압 정지·IMU/PID/ROS2는 post-MVP이며 IMU 기본 검증을 첫 후속으로 둔다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 

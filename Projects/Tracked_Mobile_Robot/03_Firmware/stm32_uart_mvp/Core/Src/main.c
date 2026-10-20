@@ -44,6 +44,7 @@
 #define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
 #define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
 #define ENCODER_SPEED_SAMPLE_PERIOD_MS      100U
+#define ENCODER_COUNT_SAMPLE_PERIOD_MS      5U
 
 #if MOTOR_FAULT_INJECTION_TEST_ENABLED && !MOTOR_OUTPUT_PIN_TEST_ENABLED
 #error "Fault injection requires the motor output pin test"
@@ -67,6 +68,7 @@ static uint32_t s_motor_output_test_button_change_ms;
 
 static encoder_speed_t s_encoder_tim3;
 static encoder_speed_t s_encoder_tim5;
+static uint32_t s_encoder_last_publish_ms;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -203,124 +205,48 @@ static bool encoder_millirpm_self_test(void){
   );
 }
 
-static const char *encoder_delta_direction(
-  int64_t delta_count
-){
-  if (delta_count > 0){
-    return "POS";
-  }
-
-  if (delta_count < 0){
-    return "NEG";
-  }
-
-  return "STOP";
-}
-
 static int32_t encoder_cps_to_i32(int64_t cps){
-  if (cps > (int64_t)INT32_MAX){
-    return INT32_MAX;
-  }
-
-  if (cps < (int64_t)INT32_MIN){
-    return INT32_MIN;
-  }
-
-  return (int32_t)cps;
+    if (cps > (int64_t)INT32_MAX){
+        return INT32_MAX;
+    }
+    if (cps < (int64_t)INT32_MIN){
+        return INT32_MIN;
+    }
+    return (int32_t)cps;
 }
 
 static void encoder_speed_log_process(void){
-  char tx[256];
-  uint32_t now_ms;
-  uint32_t raw3_count;
-  uint32_t raw5_count;
-  bool tim3_updated;
-  bool tim5_updated;
-  int32_t tim3_millirpm;
-  int32_t tim5_millirpm;
-  int len;
+    uint32_t now_ms = HAL_GetTick();
+    uint32_t raw3;
+    uint32_t raw5;
+    int64_t left_raw_count;
+    int64_t right_count;
+    bool valid;
 
-  now_ms = HAL_GetTick();
+    /* Name retained for the existing loop call; runtime USB logging removed. */
+    if ((uint32_t)(now_ms - s_encoder_last_publish_ms) <
+        ENCODER_COUNT_SAMPLE_PERIOD_MS){
+        return;
+    }
+    s_encoder_last_publish_ms = now_ms;
+    raw3 = __HAL_TIM_GET_COUNTER(&htim3);
+    raw5 = __HAL_TIM_GET_COUNTER(&htim5);
+    (void)encoder_speed_update(&s_encoder_tim3, raw3, now_ms);
+    (void)encoder_speed_update(&s_encoder_tim5, raw5, now_ms);
 
-  raw3_count = __HAL_TIM_GET_COUNTER(&htim3);
-  raw5_count = __HAL_TIM_GET_COUNTER(&htim5);
-
-  tim3_updated = encoder_speed_update(
-    &s_encoder_tim3,
-    raw3_count,
-    now_ms
-  );
-
-  tim5_updated = encoder_speed_update(
-    &s_encoder_tim5,
-    raw5_count,
-    now_ms
-  );
-
-  if (!tim3_updated || !tim5_updated){
-      return;
-  }
-
-  if (
-    !encoder_speed_cps_to_millirpm(
-      s_encoder_tim3.counts_per_second,
-      ENCODER_COUNTS_PER_OUTPUT_REV,
-      &tim3_millirpm
-    ) ||
-    !encoder_speed_cps_to_millirpm(
-      s_encoder_tim5.counts_per_second,
-      ENCODER_COUNTS_PER_OUTPUT_REV,
-      &tim5_millirpm
-    )
-  ){
-    Error_Handler();
-  }
-
-  /* Vehicle mapping corrected and hand-checked on 2026-09-26.
-   * Motor A/left: JENC_1 -> TIM3; invert raw sign for forward-positive CPS.
-   * Motor B/right: JENC_2 -> TIM5; keep raw sign for forward-positive CPS.
-  */
-  /* Vehicle-forward count uses the same sign as production CPS. */
-  const bool encoder_sample_valid =
-    s_encoder_tim3.accumulated_count != INT64_MIN;
-
-  uart_mvp_set_encoder_sample(
-    encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
-    encoder_cps_to_i32(s_encoder_tim5.counts_per_second),
-    encoder_sample_valid ? -s_encoder_tim3.accumulated_count : 0,
-    s_encoder_tim5.accumulated_count,
-    now_ms,
-    encoder_sample_valid
-  );
-
-  len = snprintf(
-    tx,
-    sizeof(tx),
-    "ENC3,raw=%lu,delta=%ld,total=%ld,cps=%ld,mrpm=%ld,dir=%s;"
-    "ENC5,raw=%lu,delta=%ld,total=%ld,cps=%ld,mrpm=%ld,dir=%s\r\n",
-    (unsigned long)raw3_count,
-    (long)s_encoder_tim3.delta_count,
-    (long)s_encoder_tim3.accumulated_count,
-    (long)s_encoder_tim3.counts_per_second,
-    (long)tim3_millirpm,
-    encoder_delta_direction(s_encoder_tim3.delta_count),
-    (unsigned long)raw5_count,
-    (long)s_encoder_tim5.delta_count,
-    (long)s_encoder_tim5.accumulated_count,
-    (long)s_encoder_tim5.counts_per_second,
-    (long)tim5_millirpm,
-    encoder_delta_direction(s_encoder_tim5.delta_count)
-  );
-
-  if ((len > 0) && (len < (int)sizeof(tx))){
-    (void)HAL_UART_Transmit(
-      &huart2,
-      (uint8_t *)tx,
-      (uint16_t)len,
-      50U
+    valid = encoder_speed_snapshot(&s_encoder_tim3, raw3, &left_raw_count) &&
+        encoder_speed_snapshot(&s_encoder_tim5, raw5, &right_count) &&
+        left_raw_count != INT64_MIN;
+    uart_mvp_set_encoder_sample(
+        encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
+        encoder_cps_to_i32(s_encoder_tim5.counts_per_second),
+        valid ? -left_raw_count : 0,
+        valid ? right_count : 0,
+        now_ms,
+        valid
     );
-  }
 }
+
 static void motor_output_pin_test_process(void){
     GPIO_PinState button_now;
     uint32_t now_ms;
@@ -609,6 +535,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_uart_error(huart);
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+  uart_mvp_on_tx_complete(huart);
 }
 /* USER CODE END 4 */
 

@@ -180,11 +180,21 @@ bool wifi_control_executor_take_tx(
     wifi_control_tx_t tx = {.op = op, .seq = seq};
     int n;
     if (op == WIFI_CONTROL_OP_CMD) {
-        n = snprintf(tx.bytes, sizeof(tx.bytes),
-            "CMD,seq=%" PRIu32 ",vx_mmps=%" PRIi32
-            ",w_mradps=%" PRIi32 ",timeout_ms=%" PRIu32 "\n",
-            seq, e->request.vx_mmps, e->request.w_mradps,
-            (uint32_t)WIFI_CONTROL_STM_TIMEOUT_MS);
+        if (e->request.distance_mm != 0U) {
+            n = snprintf(tx.bytes, sizeof(tx.bytes),
+                "CMD,seq=%" PRIu32 ",vx_mmps=%" PRIi32
+                ",w_mradps=%" PRIi32 ",timeout_ms=%" PRIu32
+                ",distance_mm=%" PRIu32 "\n",
+                seq, e->request.vx_mmps,
+                e->request.w_mradps, (uint32_t)WIFI_CONTROL_STM_TIMEOUT_MS,
+                e->request.distance_mm);
+        } else {
+            n = snprintf(tx.bytes, sizeof(tx.bytes),
+                "CMD,seq=%" PRIu32 ",vx_mmps=%" PRIi32
+                ",w_mradps=%" PRIi32 ",timeout_ms=%" PRIu32 "\n",
+                seq, e->request.vx_mmps, e->request.w_mradps,
+                (uint32_t)WIFI_CONTROL_STM_TIMEOUT_MS);
+        }
     } else {
         /* Full UART writes do not prove that STM received every byte. */
         n = snprintf(tx.bytes, sizeof(tx.bytes), "%s%s,seq=%" PRIu32 "\n",

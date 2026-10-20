@@ -25,7 +25,8 @@ typedef enum {
     UART_FRAME_PARSE_INVALID_NUMBER,
     UART_FRAME_PARSE_VELOCITY_OUT_OF_RANGE,
     UART_FRAME_PARSE_TIMEOUT_OUT_OF_RANGE,
-    UART_FRAME_PARSE_EXTRA_DATA
+    UART_FRAME_PARSE_EXTRA_DATA,
+    UART_FRAME_PARSE_DISTANCE_OUT_OF_RANGE
 } uart_frame_parse_result_t;
 
 typedef struct {
@@ -34,6 +35,7 @@ typedef struct {
     int32_t vx_mmps;
     int32_t w_mradps;
     uint32_t timeout_ms;
+    uint32_t distance_mm; /* 0: ordinary CMD, optional suffix absent. */
 } uart_frame_t;
 
 /*

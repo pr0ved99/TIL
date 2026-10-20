@@ -160,6 +160,31 @@ bool encoder_speed_update(
     return true;
 }
 
+bool encoder_speed_snapshot(
+    const encoder_speed_t *state,
+    uint32_t current_raw,
+    int64_t *count
+){
+    int64_t delta;
+    if (count == NULL){
+        return false;
+    }
+    *count = 0;
+    if (state == NULL || !state->initialized ||
+        !encoder_counter_width_is_valid(state->counter_width)){
+        return false;
+    }
+    delta = encoder_calculate_delta(state->counter_width,
+        encoder_normalize_raw(state->counter_width, current_raw),
+        state->previous_raw);
+    if ((delta > 0 && state->accumulated_count > INT64_MAX - delta) ||
+        (delta < 0 && state->accumulated_count < INT64_MIN - delta)){
+        return false;
+    }
+    *count = state->accumulated_count + delta;
+    return true;
+}
+
 bool encoder_speed_cps_to_millirpm(
     int64_t counts_per_second,
     uint32_t counts_per_revolution,

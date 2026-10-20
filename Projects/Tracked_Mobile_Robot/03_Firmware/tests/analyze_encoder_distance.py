@@ -1,4 +1,4 @@
-"""Offline observer-v5 distance estimates. No network, serial or motor I/O."""
+"""Offline observer-v5 distance estimates/comparison. No network, serial or motor I/O."""
 import argparse
 from collections import Counter
 from decimal import Decimal, localcontext
@@ -309,12 +309,70 @@ def analyze(report, mm_per_count, *, source_limit_ms=200, local_limit_ms=250):
             'Encoder displacement cannot detect track/surface or sprocket slip'])
 
 
+def compare_actual_distance(result, actual_distance_mm, *, boot_id, arm_seq,
+                            measurement_note=None):
+    """Compare one explicitly selected valid window with signed external displacement.
+
+    This computes an error; it cannot verify the measurement, straightness or
+    physical acceptance. The analyzed windows and geometric model are unchanged.
+    """
+    if (not isinstance(actual_distance_mm, str) or len(actual_distance_mm) > 64
+            or not re.fullmatch(r'[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?', actual_distance_mm)):
+        raise ValueError('Actual distance must be a finite signed decimal in mm')
+    measured = Fraction(actual_distance_mm)
+    if measured == 0:
+        raise ValueError('Actual distance must be nonzero for percentage comparison')
+    if not u32(boot_id) or not u32(arm_seq):
+        raise ValueError('Explicit uint32 boot_id and arm_seq required for comparison')
+    matches = [w for w in result['windows']
+               if (w['boot_id'], w['arm_seq']) == (boot_id, arm_seq)]
+    if len(matches) != 1:
+        raise ValueError('Comparison requires exactly one window matching boot_id/arm_seq')
+    window = matches[0]
+    if window['status'] != 'ACCEPTED':
+        raise ValueError(f"Selected window is not ACCEPTED: {window['reason']}")
+
+    # Use exact count deltas/coefficient, not rounded display distances.
+    model = result['coefficient']
+    k = Fraction(int(model['numerator']), int(model['denominator']))
+    left = int(window['delta_count']['left']) * k
+    right = int(window['delta_count']['right']) * k
+    center = (left + right) / 2
+    error = center - measured
+    return dict(
+        format_version=1, status='CALCULATED_NOT_PHYSICAL_ACCEPTANCE',
+        boot_id=boot_id, arm_seq=arm_seq, disarm_seq=window['disarm_seq'],
+        measurement=dict(signed_displacement_mm=actual_distance_mm,
+            origin='USER_SUPPLIED_EXTERNAL_MEASUREMENT', note=measurement_note,
+            convention='Forward positive, reverse negative; same start/end as selected window'),
+        distance_estimate_mm=dict(left=decimal_text(left), right=decimal_text(right),
+            center=decimal_text(center)),
+        center_signed_error_mm=decimal_text(error),
+        center_absolute_error_mm=decimal_text(abs(error)),
+        center_absolute_error_percent=decimal_text(100 * abs(error) / abs(measured)),
+        limitations=[
+            'External measurement and matching of physical endpoints are user supplied',
+            'Straightness, lateral drift, slip and measurement uncertainty require external observations',
+            'Net encoder travel is not chassis path length or automatic target-distance stopping',
+            'No PASS threshold, gain change or distance-coefficient calibration is applied'])
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('input', type=Path)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--model', type=Path, default=DEFAULT_MODEL)
+    parser.add_argument('--actual-distance-mm',
+        help='Measured signed chassis displacement in mm (forward +, reverse -); not target distance')
+    parser.add_argument('--boot-id', type=int, help='ESP boot_id of the measured ARM window')
+    parser.add_argument('--arm-seq', type=int, help='ARM UART seq of the measured window')
+    parser.add_argument('--measurement-note', help='External measurement method/session reference')
     args = parser.parse_args()
+    if args.actual_distance_mm is None:
+        if any(v is not None for v in (args.boot_id, args.arm_seq, args.measurement_note)):
+            parser.error('Comparison selectors/note require --actual-distance-mm')
+    elif args.boot_id is None or args.arm_seq is None:
+        parser.error('--actual-distance-mm requires both --boot-id and --arm-seq')
     if args.output.resolve() in (args.input.resolve(), args.model.resolve()):
         parser.error('Output must differ from input and model')
     try:
@@ -328,11 +386,17 @@ def main():
             pitch_mm_reading_range=model['reported'].get('link_pitch_mm_range'),
             sprocket_teeth=model['previously_confirmed']['sprocket_teeth'],
             counts_per_output_rev=model['previously_confirmed']['encoder_counts_per_output_rev'])
+        if args.actual_distance_mm is not None:
+            result['external_distance_comparison'] = compare_actual_distance(result,
+                args.actual_distance_mm, boot_id=args.boot_id, arm_seq=args.arm_seq,
+                measurement_note=args.measurement_note)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     except (ValueError, KeyError, TypeError, OSError) as error:
         parser.exit(2, f'Analysis failed: {error}\n')
     print(json.dumps(result['summary']))
+    if 'external_distance_comparison' in result:
+        print(json.dumps(result['external_distance_comparison'], ensure_ascii=False))
 
 
 if __name__ == '__main__':

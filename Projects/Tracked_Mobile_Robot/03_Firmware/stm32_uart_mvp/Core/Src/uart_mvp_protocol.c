@@ -1,6 +1,7 @@
 #include "uart_mvp_protocol.h"
 
 #include "drive_command_mapper.h"
+#include "distance_move.h"
 #include "motor_output.h"
 #include "ring_buffer.h"
 #include "uart_frame_parser.h"
@@ -8,6 +9,7 @@
 #include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 #define CMD_TIMEOUT_DEFAULT_MS 300u
 #define CMD_TIMEOUT_MIN_MS      50u
@@ -103,7 +105,10 @@ typedef enum {
     ROBOT_REASON_ESTOP_ACTIVE,
     ROBOT_REASON_ESTOP_LATCHED,
     ROBOT_REASON_ESTOP_RESET,
-    ROBOT_REASON_OUTPUT_ERROR
+    ROBOT_REASON_OUTPUT_ERROR,
+    ROBOT_REASON_DISTANCE_RUNNING,
+    ROBOT_REASON_DISTANCE_REACHED,
+    ROBOT_REASON_DISTANCE_ABORTED
 } robot_reason_t;
 
 static UART_HandleTypeDef *s_uart;
@@ -159,6 +164,9 @@ typedef struct {
 static encoder_sample_t s_encoder_sample;
 static uint32_t s_encoder_arm_seq;
 static bool s_encoder_arm_valid;
+static distance_move_t s_distance_move;
+static uint32_t s_distance_mm;
+static uint32_t s_distance_still_since_ms;
 
 #if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
 static uint8_t s_cmd_ack_drop_used;
@@ -190,6 +198,23 @@ static const char *state_name(robot_state_t state){
     }
 }
 
+static const char *distance_abort_name(void){
+    switch (s_distance_move.reason){
+        case DISTANCE_MOVE_REASON_CANCELLED: return "DISTANCE_CANCELLED";
+        case DISTANCE_MOVE_REASON_NOT_PERMITTED: return "DISTANCE_NOT_PERMITTED";
+        case DISTANCE_MOVE_REASON_BAD_SAMPLE: return "DISTANCE_BAD_SAMPLE";
+        case DISTANCE_MOVE_REASON_STALE_SAMPLE: return "DISTANCE_STALE_SAMPLE";
+        case DISTANCE_MOVE_REASON_POLL_GAP: return "DISTANCE_POLL_GAP";
+        case DISTANCE_MOVE_REASON_COUNT_REVERSED: return "DISTANCE_REVERSED";
+        case DISTANCE_MOVE_REASON_COUNT_RANGE: return "DISTANCE_COUNT_RANGE";
+        case DISTANCE_MOVE_REASON_RUN_TIMEOUT: return "DISTANCE_RUN_TIMEOUT";
+        case DISTANCE_MOVE_REASON_NO_PROGRESS: return "DISTANCE_NO_PROGRESS";
+        case DISTANCE_MOVE_REASON_BAD_TARGET: return "DISTANCE_BAD_TARGET";
+        case DISTANCE_MOVE_REASON_NONE:
+        default: return "DISTANCE_ABORTED";
+    }
+}
+
 static const char *reason_name(robot_reason_t reason){
     switch (reason){
         case ROBOT_REASON_BOOT:
@@ -208,6 +233,13 @@ static const char *reason_name(robot_reason_t reason){
             return "ESTOP_RESET";
         case ROBOT_REASON_OUTPUT_ERROR:
             return "OUTPUT_ERROR";
+        case ROBOT_REASON_DISTANCE_RUNNING:
+            return "DISTANCE_RUNNING";
+        case ROBOT_REASON_DISTANCE_REACHED:
+            return "DISTANCE_REACHED";
+        case ROBOT_REASON_DISTANCE_ABORTED:
+            return distance_abort_name();
+
         default:
             return "UNKNOWN";
     }
@@ -221,29 +253,133 @@ static uint32_t command_age_ms(uint32_t now_ms){
     return now_ms - s_last_accepted_cmd_ms;
 }
 
+/* One in-flight frame, four FIFO responses, one coalesced pending TEL. */
+#define UART_TX_RESPONSE_SLOTS 4U
+#define UART_TX_DEADLINE_MS 100U
+#define UART_RX_POLL_BYTE_BUDGET 64U
+static uint8_t s_tx_frame[UART_TX_BUFFER_SIZE];
+static uint8_t s_tx_responses[UART_TX_RESPONSE_SLOTS][UART_TX_BUFFER_SIZE];
+static uint16_t s_tx_response_len[UART_TX_RESPONSE_SLOTS];
+static uint8_t s_tx_head;
+static uint8_t s_tx_count;
+static uint8_t s_tx_tel[UART_TX_BUFFER_SIZE];
+static uint16_t s_tx_tel_len;
+static uint32_t s_tx_tel_ms;
+static uint32_t s_tx_started_ms;
+static volatile uint8_t s_tx_active;
+static uint8_t s_tx_fault;
+static volatile uint8_t s_tx_completed;
+
+static void uart_tx_force_safe(void){
+    if (s_tx_fault == 0U){
+        s_error_count++;
+    }
+    s_tx_fault = 1U;
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    if (s_estop_latched == 0U){
+        s_state = ROBOT_DISARMED;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+    }
+}
+
+void uart_mvp_on_tx_complete(UART_HandleTypeDef *huart){
+    if (huart == s_uart && s_tx_active != 0U){
+        /* ISR only publishes completion; queue and motor state belong to main. */
+        s_tx_completed = 1U;
+    }
+}
+
+static void uart_tx_enqueue(const uint8_t *data, uint16_t length, bool telemetry){
+    uint8_t slot;
+    if (s_tx_fault != 0U){
+        uart_tx_force_safe();
+        return;
+    }
+    if (data == NULL || length == 0U || length >= UART_TX_BUFFER_SIZE){
+        uart_tx_force_safe();
+        return;
+    }
+    if (telemetry){
+        memcpy(s_tx_tel, data, length);
+        s_tx_tel_len = length;
+        s_tx_tel_ms = HAL_GetTick();
+        return;
+    }
+    if (s_tx_count >= UART_TX_RESPONSE_SLOTS){
+        /* A missing control response must not leave motion enabled. */
+        uart_tx_force_safe();
+        return;
+    }
+    slot = (uint8_t)((s_tx_head + s_tx_count) % UART_TX_RESPONSE_SLOTS);
+    memcpy(s_tx_responses[slot], data, length);
+    s_tx_response_len[slot] = length;
+    s_tx_count++;
+}
+
+static void uart_tx_poll(void){
+    uint16_t length;
+    uint32_t now_ms = HAL_GetTick();
+    if (s_tx_fault != 0U){
+        uart_tx_force_safe();
+        return;
+    }
+    if (s_tx_active != 0U){
+        if (s_tx_completed == 0U){
+            if ((uint32_t)(now_ms - s_tx_started_ms) >= UART_TX_DEADLINE_MS){
+                uart_tx_force_safe();
+            }
+            return;
+        }
+        s_tx_active = 0U;
+        s_tx_completed = 0U;
+    }
+    if (s_tx_count != 0U){
+        length = s_tx_response_len[s_tx_head];
+        memcpy(s_tx_frame, s_tx_responses[s_tx_head], length);
+        s_tx_head = (uint8_t)((s_tx_head + 1U) % UART_TX_RESPONSE_SLOTS);
+        s_tx_count--;
+    }
+    else if (s_tx_tel_len != 0U){
+        length = s_tx_tel_len;
+        s_tx_tel_len = 0U;
+        /* Do not transmit a TEL that aged behind a response burst. */
+        if ((uint32_t)(now_ms - s_tx_tel_ms) > 50U){
+            return;
+        }
+        memcpy(s_tx_frame, s_tx_tel, length);
+    }
+    else{
+        return;
+    }
+    s_tx_started_ms = now_ms;
+    s_tx_completed = 0U;
+    s_tx_active = 1U;
+    if (HAL_UART_Transmit_IT(s_uart, s_tx_frame, length) != HAL_OK){
+        uart_tx_force_safe();
+    }
+}
+
 static void uart_sendf(const char *fmt, ...){
     char tx[UART_TX_BUFFER_SIZE];
     va_list args;
     int len;
-
-    if(s_uart == NULL){
+    if (s_uart == NULL){
         return;
     }
-
     va_start(args, fmt);
     len = vsnprintf(tx, sizeof(tx), fmt, args);
     va_end(args);
-
-    if(len <= 0){
+    if (len <= 0 || (size_t)len >= sizeof(tx)){
+        uart_tx_force_safe();
         return;
     }
-
-    if((size_t)len >= sizeof(tx)){
-        len = (int)sizeof(tx) - 1;
-    }
-
-    HAL_UART_Transmit(s_uart, (uint8_t *)tx, (uint16_t)len, 100);
+    uart_tx_enqueue((const uint8_t *)tx, (uint16_t)len,
+        strncmp(tx, "TEL,", 4U) == 0);
 }
+
 
 static void send_ack(uint32_t seq, const char *type){
     uart_sendf("ACK,seq=%lu,type=%s,t_ms=%lu\n",
@@ -344,6 +480,8 @@ static const char *parse_error_code(uart_frame_parse_result_t result){
 
         case UART_FRAME_PARSE_TIMEOUT_OUT_OF_RANGE:
             return "TIMEOUT_OUT_OF_RANGE";
+        case UART_FRAME_PARSE_DISTANCE_OUT_OF_RANGE:
+            return "DISTANCE_OUT_OF_RANGE";
 
         case UART_FRAME_PARSE_NULL_ARGUMENT:
         case UART_FRAME_PARSE_EMPTY:
@@ -377,6 +515,7 @@ static uint8_t estop_input_active(void) {
 static void estop_latch_and_force_safe(void) {
     uint8_t input_active = estop_input_active();
 
+    distance_move_cancel(&s_distance_move);
     motor_output_stop_all();
     s_vx_mmps = 0;
     s_w_mradps = 0;
@@ -406,6 +545,7 @@ static void command_timeout_enforce(void) {
         return;
     }
 
+    distance_move_cancel(&s_distance_move);
     motor_output_stop_all();
     s_vx_mmps = 0;
     s_w_mradps = 0;
@@ -439,6 +579,158 @@ static uint8_t drop_cmd_ack_once(uint32_t seq)
 }
 #endif
 
+static distance_move_sample_t distance_sample_now(void){
+    distance_move_sample_t sample = {
+        .left_count = s_encoder_sample.left_count,
+        .right_count = s_encoder_sample.right_count,
+        .sample_ms = s_encoder_sample.sample_ms,
+        .valid = s_encoder_sample.valid && s_encoder_sample.arm_valid &&
+            s_encoder_arm_valid && s_encoder_sample.arm_seq == s_encoder_arm_seq
+    };
+    return sample;
+}
+
+static void distance_abort_output(void){
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_DISTANCE_ABORTED;
+}
+
+static void distance_motion_enforce(void){
+    drive_command_request_t request;
+    distance_move_sample_t sample;
+    distance_move_output_t gate;
+    uint32_t now_ms;
+    if (s_distance_mm == 0U){
+        return;
+    }
+    /* Preserve the E-stop/timeout/transport reason after their immediate stop. */
+    if (s_state != ROBOT_ARMED || s_estop_latched != 0U || s_tx_fault != 0U){
+        distance_move_cancel(&s_distance_move);
+        motor_output_stop_all();
+        return;
+    }
+    now_ms = HAL_GetTick();
+    sample = distance_sample_now();
+    distance_move_update(&s_distance_move, &sample, now_ms,
+        (uint32_t)(now_ms - s_last_cmd_ms) < s_cmd_timeout_ms);
+    if (s_distance_move.phase == DISTANCE_MOVE_ABORTED){
+        if (s_distance_move.reason == DISTANCE_MOVE_REASON_CANCELLED){
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            s_reason = ROBOT_REASON_DISTANCE_ABORTED;
+            return;
+        }
+        distance_abort_output();
+        return;
+    }
+    if (s_distance_move.phase == DISTANCE_MOVE_TARGET_REACHED){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = ROBOT_REASON_DISTANCE_REACHED;
+        return;
+    }
+    if (s_distance_move.phase != DISTANCE_MOVE_RUNNING ||
+        !drive_command_map(100, 0, CMD_OUTPUT_DUTY_CAP_PERMILLE, &request)){
+        distance_abort_output();
+        return;
+    }
+    gate = distance_move_output(&s_distance_move);
+    if (!gate.left_run){ request.left_signed_permille = 0; }
+    if (!gate.right_run){ request.right_signed_permille = 0; }
+    if (estop_enforce_latch() != 0U){
+        return;
+    }
+    const motor_output_applied_t applied = motor_output_get_applied();
+    if ((applied.left_signed_permille != request.left_signed_permille ||
+         applied.right_signed_permille != request.right_signed_permille) &&
+        motor_output_set_signed(request.left_signed_permille,
+                                request.right_signed_permille) != HAL_OK){
+        distance_abort_output();
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+        return;
+    }
+    if (estop_enforce_latch() != 0U){
+        return;
+    }
+    s_vx_mmps = 100;
+    s_w_mradps = 0;
+    s_reason = ROBOT_REASON_DISTANCE_RUNNING;
+}
+
+/* handle_cmd already checked ranges, ARM and E-stop before entering here. */
+static void handle_distance_cmd(const uart_frame_t *frame){
+    const uint32_t now_ms = HAL_GetTick();
+    const bool zero = frame->vx_mmps == 0 && frame->w_mradps == 0;
+    distance_move_sample_t sample = distance_sample_now();
+    if (UART_MVP_OUTPUT_TEST_ENABLED != 0U){
+        distance_abort_output();
+        send_err(frame->seq, "CMD", "DISTANCE_TEST_MODE");
+        return;
+    }
+    if (s_distance_mm != 0U && zero && frame->distance_mm == 0U){
+        distance_move_cancel(&s_distance_move);
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = s_distance_move.phase == DISTANCE_MOVE_TARGET_REACHED
+            ? ROBOT_REASON_DISTANCE_REACHED : ROBOT_REASON_DISTANCE_ABORTED;
+        /* Keep ARM for the stop ACK; nonzero commands stay locked this epoch. */
+    }
+    else{
+        if (frame->distance_mm == 0U || frame->vx_mmps != 100 ||
+            frame->w_mradps != 0 ||
+            (s_distance_mm != 0U && frame->distance_mm != s_distance_mm)){
+            distance_abort_output();
+            send_err(frame->seq, "CMD", "DISTANCE_LOCKED");
+            return;
+        }
+        if (s_distance_mm == 0U){
+            const motor_output_applied_t applied = motor_output_get_applied();
+            if (!sample.valid ||
+                (uint32_t)(now_ms - sample.sample_ms) > DISTANCE_MOVE_MAX_SAMPLE_AGE_MS ||
+                (uint32_t)(now_ms - s_distance_still_since_ms) < 100U ||
+                s_left_cps != 0 || s_right_cps != 0 ||
+                s_vx_mmps != 0 || s_w_mradps != 0 ||
+                applied.left_signed_permille != 0 || applied.right_signed_permille != 0){
+                distance_abort_output();
+                send_err(frame->seq, "CMD", "DISTANCE_NOT_STILL");
+                return;
+            }
+            s_distance_mm = frame->distance_mm;
+            if (!distance_move_start(&s_distance_move, frame->distance_mm,
+                                     &sample, now_ms, true)){
+                distance_abort_output();
+                send_err(frame->seq, "CMD", "DISTANCE_START_FAILED");
+                return;
+            }
+        }
+        else if (s_distance_move.phase == DISTANCE_MOVE_ABORTED){
+            distance_abort_output();
+            send_err(frame->seq, "CMD", "DISTANCE_REARM_REQUIRED");
+            return;
+        }
+    }
+    s_last_seq = frame->seq;
+    s_cmd_timeout_ms = frame->timeout_ms;
+    s_last_cmd_ms = now_ms;
+    s_last_accepted_cmd_ms = now_ms;
+    s_has_accepted_cmd = 1U;
+    if (s_distance_move.phase != DISTANCE_MOVE_ABORTED){
+        distance_motion_enforce();
+    }
+    if (s_state != ROBOT_ARMED){
+        send_err(frame->seq, "CMD", "DISTANCE_STOPPED");
+        return;
+    }
+    send_ack(frame->seq, "CMD");
+}
+
 static void handle_cmd(const uart_frame_t *frame){
     drive_command_request_t request;
     if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
@@ -460,6 +752,11 @@ static void handle_cmd(const uart_frame_t *frame){
 
     if (estop_enforce_latch() != 0U) {
         send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
+
+    if (frame->distance_mm != 0U || s_distance_mm != 0U){
+        handle_distance_cmd(frame);
         return;
     }
 
@@ -601,6 +898,12 @@ static void handle_line(const char *line, size_t line_len){
         return;
     }
 
+    if (s_tx_fault != 0U &&
+        (frame.type == UART_FRAME_TYPE_ARM || frame.type == UART_FRAME_TYPE_CMD)){
+        uart_tx_force_safe();
+        return;
+    }
+
     if(((frame.type == UART_FRAME_TYPE_ARM) ||
         (frame.type == UART_FRAME_TYPE_CMD)) &&
        (estop_enforce_latch() != 0U)) {
@@ -610,7 +913,8 @@ static void handle_line(const char *line, size_t line_len){
             "ESTOP_LATCHED"
         );
         return;
-       }
+    }
+
 
     switch(frame.type){
         case UART_FRAME_TYPE_PING:
@@ -640,6 +944,7 @@ static void handle_line(const char *line, size_t line_len){
             delay_disarm_ack = delayed_disarm_ack_eligible();
             s_delayed_disarm_ack.zero_cmd_seen = 0U;
 #endif
+            distance_move_cancel(&s_distance_move);
             motor_output_stop_all();
             s_vx_mmps = 0;
             s_w_mradps = 0;
@@ -773,6 +1078,14 @@ static void handle_line(const char *line, size_t line_len){
 #if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
             s_cmd_ack_drop_zero_count = 0U;
 #endif
+            if (s_distance_mm != 0U && frame.seq == s_encoder_arm_seq){
+                distance_abort_output();
+                send_err(frame.seq, "ARM", "DISTANCE_DUPLICATE_ARM");
+                return;
+            }
+            distance_move_init(&s_distance_move);
+            s_distance_mm = 0U;
+            s_distance_still_since_ms = HAL_GetTick();
             motor_output_stop_all();
 
             s_vx_mmps = 0;
@@ -790,7 +1103,6 @@ static void handle_line(const char *line, size_t line_len){
             s_encoder_sample.arm_seq = 0U;
             send_ack(frame.seq, "ARM");
             return;
-
 
         case UART_FRAME_TYPE_ESTOP_RESET:
             motor_output_stop_all();
@@ -828,6 +1140,12 @@ static void handle_line(const char *line, size_t line_len){
 void uart_mvp_init(UART_HandleTypeDef *huart){
     s_uart = huart;
     s_rx_byte = 0u;
+    s_tx_head = 0U;
+    s_tx_count = 0U;
+    s_tx_tel_len = 0U;
+    s_tx_active = 0U;
+    s_tx_completed = 0U;
+    s_tx_fault = 0U;
 
     ring_buffer_init(&s_rx_rb);
 
@@ -866,6 +1184,9 @@ void uart_mvp_init(UART_HandleTypeDef *huart){
     s_encoder_sample = (encoder_sample_t){0};
     s_encoder_arm_seq = 0U;
     s_encoder_arm_valid = false;
+    distance_move_init(&s_distance_move);
+    s_distance_mm = 0U;
+    s_distance_still_since_ms = HAL_GetTick();
 
     s_vx_mmps = 0;
     s_w_mradps = 0;
@@ -882,6 +1203,13 @@ void uart_mvp_set_encoder_sample(
     uint32_t sample_ms,
     bool valid
 ){
+    /* Count must remain still for100ms after a fresh post-ARM baseline. */
+    if (!valid || !s_encoder_sample.valid || left_cps != 0 || right_cps != 0 ||
+        left_count != s_encoder_sample.left_count ||
+        right_count != s_encoder_sample.right_count ||
+        (uint32_t)(sample_ms - s_encoder_sample.sample_ms) > DISTANCE_MOVE_MAX_SAMPLE_AGE_MS){
+        s_distance_still_since_ms = sample_ms;
+    }
     /* Both paths run in the main loop, not in the UART RX interrupt. */
     s_left_cps = left_cps;
     s_right_cps = right_cps;
@@ -928,10 +1256,13 @@ void uart_mvp_on_uart_error(UART_HandleTypeDef *huart){
 
 void uart_mvp_process(void){
     uint8_t byte;
+    uint32_t budget = UART_RX_POLL_BYTE_BUDGET;
 
-    for(;;){
+    uart_tx_poll();
+    for(; budget != 0U; budget--){
         (void)estop_enforce_latch();
         command_timeout_enforce();
+        distance_motion_enforce();
 
         if(s_rx_desync_pending != 0u){
             begin_rx_resynchronization();
@@ -1008,4 +1339,5 @@ void uart_mvp_process(void){
         s_last_tel_ms = HAL_GetTick();
         send_tel();
     }
+    uart_tx_poll();
 }

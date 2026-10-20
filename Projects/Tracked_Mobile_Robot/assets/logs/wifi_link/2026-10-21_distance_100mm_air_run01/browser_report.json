@@ -1,0 +1,1227 @@
+{
+  "version": 1,
+  "kind": "airborne_distance_trials",
+  "coefficient_mm_per_count": "1687/19500",
+  "note": "TEL baseline/cutoff/final observations; measure actual left/right link travel separately",
+  "runs_dropped": 0,
+  "runs": [
+    {
+      "goal_mm": 100,
+      "boot_id": 1070385225,
+      "control_id": 2,
+      "arm_seq": 1201006582,
+      "phase": "STILL_OBSERVED",
+      "started_ms": 108588.10000000149,
+      "first_goal_sent_ms": 108620.89999999851,
+      "baseline": {
+        "ms": 108588.10000000149,
+        "tel_count": 1151,
+        "stm_t_ms": 198800,
+        "encoder_t_ms": 198799,
+        "encoder_arm_seq": 1201006582,
+        "last_seq": 1201006600,
+        "state": "ARMED",
+        "reason": "NONE",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "0",
+        "right_count": "0",
+        "stm_age_ms": 21,
+        "drop": 0,
+        "err": 0
+      },
+      "accepted_seqs": [
+        1201006603,
+        1201006604,
+        1201006605,
+        1201006606,
+        1201006607,
+        1201006608,
+        1201006609,
+        1201006610,
+        1201006611,
+        1201006612,
+        1201006613,
+        1201006614,
+        1201006615,
+        1201006616,
+        1201006617
+      ],
+      "samples": [
+        {
+          "ms": 108679.89999999851,
+          "tel_count": 1152,
+          "stm_t_ms": 198900,
+          "encoder_t_ms": 198899,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006601,
+          "state": "ARMED",
+          "reason": "NONE",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "0",
+          "right_count": "0",
+          "stm_age_ms": 52,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 108749.69999999553,
+          "tel_count": 1153,
+          "stm_t_ms": 199000,
+          "encoder_t_ms": 198999,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006602,
+          "state": "ARMED",
+          "reason": "NONE",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "0",
+          "right_count": "0",
+          "stm_age_ms": 11,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 108840.19999999553,
+          "tel_count": 1154,
+          "stm_t_ms": 199100,
+          "encoder_t_ms": 199099,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006603,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "49",
+          "right_count": "40",
+          "stm_age_ms": 32,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 108959.5,
+          "tel_count": 1155,
+          "stm_t_ms": 199200,
+          "encoder_t_ms": 199199,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006604,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            530,
+            430
+          ],
+          "left_count": "134",
+          "right_count": "108",
+          "stm_age_ms": 53,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109040.29999999702,
+          "tel_count": 1156,
+          "stm_t_ms": 199300,
+          "encoder_t_ms": 199299,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006605,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            850,
+            680
+          ],
+          "left_count": "226",
+          "right_count": "182",
+          "stm_age_ms": 11,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109119.39999999851,
+          "tel_count": 1157,
+          "stm_t_ms": 199400,
+          "encoder_t_ms": 199399,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006606,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            920,
+            740
+          ],
+          "left_count": "318",
+          "right_count": "256",
+          "stm_age_ms": 32,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109239.79999999702,
+          "tel_count": 1158,
+          "stm_t_ms": 199500,
+          "encoder_t_ms": 199499,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006607,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            930,
+            750
+          ],
+          "left_count": "411",
+          "right_count": "330",
+          "stm_age_ms": 52,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109339.79999999702,
+          "tel_count": 1159,
+          "stm_t_ms": 199600,
+          "encoder_t_ms": 199599,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006608,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            930,
+            730
+          ],
+          "left_count": "507",
+          "right_count": "408",
+          "stm_age_ms": 12,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109420.69999999553,
+          "tel_count": 1160,
+          "stm_t_ms": 199700,
+          "encoder_t_ms": 199699,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006609,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            960,
+            780
+          ],
+          "left_count": "605",
+          "right_count": "487",
+          "stm_age_ms": 35,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109500.19999999553,
+          "tel_count": 1161,
+          "stm_t_ms": 199800,
+          "encoder_t_ms": 199799,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006610,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            980,
+            800
+          ],
+          "left_count": "704",
+          "right_count": "564",
+          "stm_age_ms": 2,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109620.19999999553,
+          "tel_count": 1162,
+          "stm_t_ms": 199900,
+          "encoder_t_ms": 199899,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006611,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            990,
+            770
+          ],
+          "left_count": "805",
+          "right_count": "644",
+          "stm_age_ms": 25,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109741.29999999702,
+          "tel_count": 1163,
+          "stm_t_ms": 200000,
+          "encoder_t_ms": 199999,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006612,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            1010,
+            800
+          ],
+          "left_count": "907",
+          "right_count": "723",
+          "stm_age_ms": 32,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109900.10000000149,
+          "tel_count": 1164,
+          "stm_t_ms": 200100,
+          "encoder_t_ms": 200099,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006613,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            1020,
+            790
+          ],
+          "left_count": "1007",
+          "right_count": "802",
+          "stm_age_ms": 53,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 109929.29999999702,
+          "tel_count": 1165,
+          "stm_t_ms": 200200,
+          "encoder_t_ms": 200199,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006614,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            144,
+            150
+          ],
+          "cps": [
+            1010,
+            790
+          ],
+          "left_count": "1108",
+          "right_count": "878",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110059.79999999702,
+          "tel_count": 1166,
+          "stm_t_ms": 200300,
+          "encoder_t_ms": 200299,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006614,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            0,
+            150
+          ],
+          "cps": [
+            1000,
+            760
+          ],
+          "left_count": "1184",
+          "right_count": "957",
+          "stm_age_ms": 45,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110139.69999999553,
+          "tel_count": 1167,
+          "stm_t_ms": 200400,
+          "encoder_t_ms": 200399,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006615,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            0,
+            150
+          ],
+          "cps": [
+            720,
+            790
+          ],
+          "left_count": "1187",
+          "right_count": "1036",
+          "stm_age_ms": 52,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110210.89999999851,
+          "tel_count": 1168,
+          "stm_t_ms": 200500,
+          "encoder_t_ms": 200499,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006616,
+          "state": "ARMED",
+          "reason": "DISTANCE_RUNNING",
+          "command": [
+            100,
+            0
+          ],
+          "pwm": [
+            0,
+            150
+          ],
+          "cps": [
+            20,
+            790
+          ],
+          "left_count": "1187",
+          "right_count": "1115",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110350.60000000149,
+          "tel_count": 1169,
+          "stm_t_ms": 200600,
+          "encoder_t_ms": 200599,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006617,
+          "state": "ARMED",
+          "reason": "DISTANCE_REACHED",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            790
+          ],
+          "left_count": "1187",
+          "right_count": "1180",
+          "stm_age_ms": 40,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110410.29999999702,
+          "tel_count": 1170,
+          "stm_t_ms": 200700,
+          "encoder_t_ms": 200699,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006618,
+          "state": "ARMED",
+          "reason": "DISTANCE_REACHED",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            610
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 11,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110530.5,
+          "tel_count": 1171,
+          "stm_t_ms": 200800,
+          "encoder_t_ms": 200799,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            -30
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 21,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110660.29999999702,
+          "tel_count": 1172,
+          "stm_t_ms": 200900,
+          "encoder_t_ms": 200899,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 50,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110710.39999999851,
+          "tel_count": 1173,
+          "stm_t_ms": 201000,
+          "encoder_t_ms": 200999,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110819.69999999553,
+          "tel_count": 1174,
+          "stm_t_ms": 201100,
+          "encoder_t_ms": 201099,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 110939.89999999851,
+          "tel_count": 1175,
+          "stm_t_ms": 201200,
+          "encoder_t_ms": 201199,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 50,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111000.10000000149,
+          "tel_count": 1176,
+          "stm_t_ms": 201300,
+          "encoder_t_ms": 201299,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111110.29999999702,
+          "tel_count": 1177,
+          "stm_t_ms": 201400,
+          "encoder_t_ms": 201399,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111230.29999999702,
+          "tel_count": 1178,
+          "stm_t_ms": 201500,
+          "encoder_t_ms": 201499,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 50,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111300,
+          "tel_count": 1179,
+          "stm_t_ms": 201600,
+          "encoder_t_ms": 201599,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111419.5,
+          "tel_count": 1180,
+          "stm_t_ms": 201700,
+          "encoder_t_ms": 201699,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111539.69999999553,
+          "tel_count": 1181,
+          "stm_t_ms": 201800,
+          "encoder_t_ms": 201799,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 50,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111599.69999999553,
+          "tel_count": 1182,
+          "stm_t_ms": 201900,
+          "encoder_t_ms": 201899,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 11,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111721.10000000149,
+          "tel_count": 1183,
+          "stm_t_ms": 202000,
+          "encoder_t_ms": 201999,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111890.89999999851,
+          "tel_count": 1184,
+          "stm_t_ms": 202100,
+          "encoder_t_ms": 202099,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 50,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 111949.39999999851,
+          "tel_count": 1185,
+          "stm_t_ms": 202200,
+          "encoder_t_ms": 202199,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112059.39999999851,
+          "tel_count": 1186,
+          "stm_t_ms": 202300,
+          "encoder_t_ms": 202299,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112180.29999999702,
+          "tel_count": 1187,
+          "stm_t_ms": 202400,
+          "encoder_t_ms": 202399,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 51,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112239.29999999702,
+          "tel_count": 1188,
+          "stm_t_ms": 202500,
+          "encoder_t_ms": 202499,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 10,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112349.29999999702,
+          "tel_count": 1189,
+          "stm_t_ms": 202600,
+          "encoder_t_ms": 202599,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112479.69999999553,
+          "tel_count": 1190,
+          "stm_t_ms": 202700,
+          "encoder_t_ms": 202699,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 51,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112529.69999999553,
+          "tel_count": 1191,
+          "stm_t_ms": 202800,
+          "encoder_t_ms": 202799,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 11,
+          "drop": 0,
+          "err": 0
+        },
+        {
+          "ms": 112650,
+          "tel_count": 1192,
+          "stm_t_ms": 202900,
+          "encoder_t_ms": 202899,
+          "encoder_arm_seq": 1201006582,
+          "last_seq": 1201006619,
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command": [
+            0,
+            0
+          ],
+          "pwm": [
+            0,
+            0
+          ],
+          "cps": [
+            0,
+            0
+          ],
+          "left_count": "1187",
+          "right_count": "1177",
+          "stm_age_ms": 30,
+          "drop": 0,
+          "err": 0
+        }
+      ],
+      "samples_dropped": 0,
+      "cutoff": {
+        "ms": 110350.60000000149,
+        "tel_count": 1169,
+        "stm_t_ms": 200600,
+        "encoder_t_ms": 200599,
+        "encoder_arm_seq": 1201006582,
+        "last_seq": 1201006617,
+        "state": "ARMED",
+        "reason": "DISTANCE_REACHED",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          790
+        ],
+        "left_count": "1187",
+        "right_count": "1180",
+        "stm_age_ms": 40,
+        "drop": 0,
+        "err": 0
+      },
+      "final": {
+        "ms": 110819.69999999553,
+        "tel_count": 1174,
+        "stm_t_ms": 201100,
+        "encoder_t_ms": 201099,
+        "encoder_arm_seq": 1201006582,
+        "last_seq": 1201006619,
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "1187",
+        "right_count": "1177",
+        "stm_age_ms": 30,
+        "drop": 0,
+        "err": 0
+      },
+      "stop_reason": "DISTANCE_REACHED"
+    }
+  ]
+}

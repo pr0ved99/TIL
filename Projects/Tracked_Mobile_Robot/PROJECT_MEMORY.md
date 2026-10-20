@@ -2,9 +2,18 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-20 (encoder count path and actual14-tooth geometry closeout)
+Last updated: 2026-10-21 (airborne target-distance trials and session closeout)
 
-## Current Application Checkpoint — 2026-10-20
+## Current Application Checkpoint — 2026-10-21
+
+- 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다.
+- 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다.
+- STM count5ms/CPS100ms·USART1 비동기 송신·거리 supervisor/명령과 ESP/PAGE 연결을 적용했다. 저장본 STM 통합·ESP core/PAGE PC 검사를 통과했다. 실제 바이너리 readback과 PC 검사는 구분한다.
+- GM-1312는10/20 주문 완료, 수령/프로브·수치 온도 기준·실측은 미보고다. 다음은 현재 source/증거와 이전 실행 이미지 차이 정리 → GM-1312 준비 → 외부 온도 판정 → 조건 충족 후 지상1m다. 완료 시험을 자동 반복하거나20cm를 다시 요구하지 않는다.
+- 마지막15cm 로그는 DISARMED/DISARM·요청/PWM/CPS0이며 종료 전원 분리는 미보고다. 좌우 최종 거리가 비슷해도 주행 중 속도 동기화/직진성 검증은 아니다.
+- [최신 진행 기록](docs/progress/2026-10-21_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md). 아래 당시 현재/다음 표현은 이력이다.
+
+## Historical Application Checkpoint — 2026-10-20
 
 - STM→ESP→브라우저의 누적 count·시각·ARM 구간 전달과 공중 전후진/놓음·DISARM 보존 subset을 확인했다. 실물14톱니·5피치48.1~48.3mm(대표 피치9.64mm), 기존1560counts/output rev로 초기 k≈0.08651282mm/count를 정정했고 PC 분석기36개 검사와 실제 로그3회차 재계산이 통과했다. 지상 거리 보정·최종 실행 이미지 고정·전용 유실/timeout 정지·외부 온도·1m 인수는 미완료다.
 - A=left/M1/JENC1/TIM3 부호 반전, B=right/M2/JENC2/TIM5 부호 유지.

@@ -36,6 +36,13 @@ bool encoder_speed_update(
     uint32_t now_ms
 );
 
+/* Read current accumulated count without changing the 100ms CPS window. */
+bool encoder_speed_snapshot(
+    const encoder_speed_t *state,
+    uint32_t current_raw,
+    int64_t *count
+);
+
 bool encoder_speed_cps_to_millirpm(
     int64_t counts_per_second,
     uint32_t counts_per_revolution,
