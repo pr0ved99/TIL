@@ -16,5 +16,6 @@
       "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-21_wifi_distance_page_candidate_review/wifi_link_main_candidate.c"
     ],
     "handling": "Preserved exact historical candidate/typing artifacts; do not rewrite source snapshots whose original hashes are evidence. Current source/tests/docs pass staged diff --check."
-  }
+  },
+  "evidence_git_attributes": "Scoped -text and intentional snapshot whitespace rules added in root .gitattributes; original evidence bytes verified in closing index."
 }

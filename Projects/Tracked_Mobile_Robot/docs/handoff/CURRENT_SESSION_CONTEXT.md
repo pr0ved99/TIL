@@ -33,6 +33,7 @@ Last updated: **2026-10-21 — 공중 목표 거리·UI 및 문서/Git/Notion/�
 
 ## 기록과 게시
 
+- 구현·검사·실측·문서134개 파일은 `9d1d327`로 개발 브랜치에 push하고 원격 일치를 확인했다. Notion6페이지·Calendar12개 일정과 Git 링크를 재조회했다. 원본 byte 보존 속성/마감 기록의 후속 커밋은 같은 브랜치 git log를 따른다. [게시 확인](../../assets/logs/wifi_link/2026-10-21_session_closeout/git_publish.json).
 - branch `agent/dual-encoder-bringup`. 이 마감의 실제 commit/push·Notion·Calendar 반영 상태는 [오늘 기록](../progress/2026-10-21_progress.md)과 [마감 근거](../../assets/logs/wifi_link/2026-10-21_session_closeout/)에서 확인한다. main merge/릴리스·전체 MVP 완료와 구분한다.
 - Hello World build 산출물, LA `Session 2`, 과거 `2026-10-13_main_review/source_snapshot/wifi_control_executor.c`의 별도 수정과 과거 ESP monitor log는 보존하고 이번 게시에서 제외한다.
 - 펌웨어 입력·두 MCU 빌드/플래시·물리 조작은 사용자, PC 검사·문서는 Codex. 명시적 직접 편집 위임 범위는 적용할 수 있다. 사용자 요청 없이 subagent를 쓰지 않는다.

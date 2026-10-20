@@ -38,3 +38,12 @@ Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-1[67]*.pvs 
 
 # ICS folded lines include significant spaces; preserve original CRLF bytes.
 Projects/Tracked_Mobile_Robot/docs/plans/calendar/*.ics -text whitespace=cr-at-eol,-blank-at-eol
+
+# Preserve newly published dated evidence, raw browser reports and reviewed source hashes.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_acceptance_image_identity_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_distance_move_candidate_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_encoder_actual_distance_comparison_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_uart_tx_disconnect_timeout_air_run01/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_uart_tx_reconnect_recovery_air_run01/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-21*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/handoff/archive/2026-10-21_pre_closeout_context.txt -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
