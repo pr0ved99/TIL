@@ -2,9 +2,17 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-21 (airborne target-distance trials and session closeout)
+Last updated: 2026-10-22 (sensor and measurement equipment purchases)
 
-## Current Application Checkpoint — 2026-10-21
+## Current Application Checkpoint — 2026-10-22
+
+- 10/22 사용자 보고로 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료. 수령·주문 SKU·구성·최종 납기는 미확인이다. 모터별 전류/케이스 온도 각 2채널을 우선하며, 외부 계측과 후속 ADC 연속 모니터링을 구분한다. 오늘 새 실측·펌웨어 변경은 없다.
+- 이전 GM-1312 주문은 재고 취소됐고 이번 구매 완료가 최신이다. 선정 후보는 온도 SEMITEC103JT-025·전류 Pololu#5241이며 실제 주문 SKU 대조는 수령 후다. 열전대 여분 수량·판매처/결제액은 추정하지 않는다.
+- 다음은 수령 상태/구성 확인과 source·증거/이미지 대조, 측정 위치·절연·범위·기록/수치 중단 기준 준비다. 미수령이면 문서·회로 준비만 진행한다. 기본 외부 전류/온도 관측과 후속 내장 ADC 연속 모니터링을 구분한다.
+- ADS1115·PSU·탑재 컴퓨터는 이번 구매 목록에 없다. 센서 구현을 새 MVP 선행 조건으로 추가하지 않는다.10/21 공중 거리 결과/계수·미완료 범위·종료 전원 미보고를 유지한다.
+- [최신 기록](docs/progress/2026-10-22_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [준비 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
+
+## Historical Application Checkpoint — 2026-10-21
 
 - 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다.
 - 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다.

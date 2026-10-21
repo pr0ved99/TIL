@@ -7,7 +7,8 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 단계 · 2026-10-21:** 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다. [오늘 기록](docs/progress/2026-10-21_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+- **현재 구매·준비 · 2026-10-22:** 10/22 사용자 보고로 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료. 수령·주문 SKU·구성·최종 납기는 미확인이다. 모터별 전류/케이스 온도 각 2채널을 우선하며, 외부 계측과 후속 ADC 연속 모니터링을 구분한다. 오늘 새 실측·펌웨어 변경은 없다. [구매/마감 기록](docs/progress/2026-10-22_progress.md), [모터 모니터링 준비](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
+- **최근 실물 결과 · 2026-10-21:** 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다. [오늘 기록](docs/progress/2026-10-21_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
   MVP는 기본 무선 주행/정지·엔코더 거리 비교·외부 온도 관측이다. 정량 전류·전류/전압 ADC·자동 저전압 정지·IMU/PID/ROS2는 post-MVP이며 IMU 기본 검증을 첫 후속으로 둔다.
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 
@@ -152,7 +153,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-다음 세션 첫 작업은 `TK-MVP-03-04`의 현재 STM/ESP source·기존 build 산출물 식별값 대조와 인수 기준점 정리다. 새로 빌드/플래시하기 전에 현재 증거를 먼저 확인한다. 이후 전용 유실/timeout 정지 → GM-1312 외부 온도 → 조건 충족 후 지상1m 순서다. 완료한 count/부호·기본 방향·놓음 시험은 자동 반복하지 않는다. GM-1312는 선택했으나 구매/수령은 미확인이다. 전류 측정 장비/ADC 구현을 MVP 진입 조건으로 복원하지 않는다.
+다음 세션은 구매품 수령 상태·실제 센서 모델/측정기 구성을 확인하고 source/증거·실행 이미지 차이와 계측 위치/범위/중단 기준을 정리한다. GM-1312·UT210E의 기본 외부 관측은 준비 완료 후, 지상1m는 기존 온도/정지 등 선행 조건 충족 후다. 센서 ADC 연속 모니터링은 후속 구현이다. 완료한 count/부호·단절/복구 시험이나20cm를 자동 반복하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
