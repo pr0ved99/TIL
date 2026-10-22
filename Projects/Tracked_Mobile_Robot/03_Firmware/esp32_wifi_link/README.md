@@ -6,7 +6,7 @@ STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 
 
 지상1m 실제/추정·오차 기록 범위 PASS. run03/04 사용자 실측1002mm에 평균1002.640333/1000.953333mm, 종료 DISARM OK·IDLE·정지 TEL을 확인했다. PC 관찰기v5.1은 재접속/실제 송신/수동 클릭/focus loss를 추적하며 MCU코드/빌드·플래시 변경은 없다. run02의 간헐 DISARM/UI 원인은 OPEN, 전체 인수는 미완료다. [최신 판정](../../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [관찰기](../../assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js). 기존k/cap/gain 유지, 외부 온도는 후속 미실시다.
 
-**이후 추가 운전의 미결:** 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다.
+**최신 전원 재설정 후 관측:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. MCU 소스/제한값·빌드/플래시 변경 없음. 전체 인수와 별개다.
 
 ### 10/21 공중 거리 — 당시 이력
 

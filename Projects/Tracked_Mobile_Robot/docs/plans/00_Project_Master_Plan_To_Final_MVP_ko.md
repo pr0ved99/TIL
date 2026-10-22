@@ -6,7 +6,7 @@
 
 **적용 범위:** 기존 MG540 유지, 온도 `MVP-015 / REQ-THERM-001 / T-LOAD-001 / ST-MVP-04`는 DEFERRED / NOT_RUN. 전류/ADC도 후속이며 장비 배송·열 기준을 MVP 선행으로 복원하지 않는다.10/17 사용자 제외한 정격/도면 조사는 재개하지 않는다. 미검증을 PASS로 바꾸거나 장시간/정격 운전 적합성을 주장하지 않는다.
 
-**다음:** 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다. 이후 [백로그](README.md#스토리태스크-백로그)의 TK-MVP-05 최종 인수 범위를 대조한다. 리포 알람은 REQ-POWER-004/T-PWR-004 USER-REPORTED PASS이며 UART 전체 release·전원 전체 수용·엔코더 신호·물리 E-stop 정식 수용 경계는 남는다. run02 수동 DISARM/UI 원인은 별개 OPEN이다.
+**다음:** 다음은 새 비교 결과를 포함한 통신 미결·TK-MVP-05 최종 인수 범위 대조다. 필요하면 ESP 전송 대기/Wi-Fi·TCP/노트북·브라우저를 구분할 최소 관측 계획을 준비한다. 기존200/250/300ms 제한을 유지하고 추가 주행·완료91 PC 감사·거리 시험을 자동 반복하지 않는다. 최신 전원5.02V·중량3.25kg 조건에서153초/16동작 지연성DISARM0건을 관측했으나 전압 인과·연속운전/전체MVP는미완료다. [비교](../../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md).
 
 실제 판정은 원본 시험 자료 → [검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [오늘 기록](../progress/2026-10-23_progress.md)이 재개점이다. 완료한 거리·단절/복구·공중5/10/15cm 및 로컬 이미지 감사를 반복하지 않으며20cm는 사용자 요청 미실시로 남긴다. 아래 날짜별 계획은 당시 이력이고 현재 수행 지시가 아니다.
 

@@ -25,13 +25,19 @@ Use `PROJECT_MEMORY.md`, older handoffs, and archived conversations only to reso
 
 ## Session Closeout
 
+On 2026-10-23 the user explicitly defined “정리” as documentation, progress updates, Git updates,
+Calendar updates, and Notion updates. Treat this shorthand as a request for all five actions within the
+current work block. Do not ask again whether to perform those already requested actions. Preserve unrelated
+changes, existing page children and calendar times; verify actual publication and report any incomplete part.
+
 Before moving to a new conversation:
 
 1. Update the dated progress/evidence documents once.
 2. Replace the status and next action in `CURRENT_SESSION_CONTEXT.md`.
 3. Update `docs/progress/README.md` and `docs/handoff/README.md` when their current pointer changed. Reconcile the project/app/domain READMEs, `PROJECT_MEMORY.md` and plan index when their current status or next action changed; preserve dated historical evidence.
 4. Commit/push only when requested for that work block.
-5. Start the next conversation with `NEXT_SESSION_START_PROMPT.md`.
+5. Update the relevant existing Notion project/tasks and Calendar events when closeout includes them; “정리” includes both. Read back the affected content/properties and preserve calendar start/end boundaries unless a change was requested.
+6. Start the next conversation with `NEXT_SESSION_START_PROMPT.md`.
 
 Use [firmware app/module overview](../../03_Firmware/README.md) to distinguish the last flashed app from compiled but unconnected modules.
 Use [evidence capture guide](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md) for source/build/flash identity, raw logs and observations. Missing past originals remain missing; documentation edits do not upgrade verification status.

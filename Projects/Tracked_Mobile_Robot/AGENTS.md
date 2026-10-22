@@ -77,6 +77,12 @@ Apply these rules:
 
 ## Progress Logging
 
+User shorthand confirmed on 2026-10-23: “정리” means all five closeout actions — documentation,
+current-progress/handoff reconciliation, scoped Git commit/push with remote verification, relevant Calendar
+updates, and relevant Notion updates with readback. Proceed with that authorized work without asking again.
+Preserve unrelated changes and existing calendar time boundaries unless the user requests a time change.
+Record unavailable connectors or failed writes as incomplete; do not claim them synchronized.
+
 For meaningful project work, update `docs/progress/YYYY-MM-DD_progress.md` or create a new dated progress file.
 
 Record:

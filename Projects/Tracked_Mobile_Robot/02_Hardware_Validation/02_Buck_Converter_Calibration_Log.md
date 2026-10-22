@@ -1,5 +1,14 @@
 # Buck Converter Calibration Log
 
+## 최신 추가 관측 — 2026-10-23
+
+XL4015 #1 조정 전 무부하5.03V/두 보드 연결4.96V. 사용자가 무부하5.10V 목표를 제시한 뒤 세팅/연결 완료5.02V를 보고했다. 최종 실제 무부하 값은 미보고다.
+
+기존 USB전류계와 약1A 저항 부하를 사용한 관측은 XL OUT5.00V, USB4.85~4.87V/0.93A다. 제공된배치도기준좌상단CC LED꺼짐을 사용자 확인했다. 같은배치/정상LED 조건에서 해당부하의전류제한비작동과일치하지만 정확설정A·순간부하수용은미확인이다. 두계기의전압차를경로저항으로단정하지않는다. 모터전류/새장비수령·열/정격승인은별도다.
+
+새운전153초에서지연정지미재현을관측했지만재부팅도동반되어전압원인확정은아니다. [비교](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md), [관측값](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/session_observations.json). 아래7월수치는당시조건의이력으로보존한다.
+
+
 ## 목적
 
 이 문서는 XL4015 buck converter의 출력 전압을 실제 board 연결 전에 조정하고 검증하는 기록이다.
