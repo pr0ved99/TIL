@@ -36,5 +36,5 @@ Last updated: **2026-10-23 전원 재설정 후 최종 마감 — 개선 관측,
 ## 정리 규칙과 게시
 
 - **“정리”는 문서화·진행상황·Git·Calendar·Notion 다섯 항목 전체를 뜻한다.** 이번 사용자 명시를 루트/프로젝트 AGENTS와 [workflow](CODEX_CONTEXT_WORKFLOW.md)에 반영했다. 별도 수행 여부를 다시 묻지 않는다.
-- [오늘 최신 기록](../progress/2026-10-23_progress.md#전원-재설정중량-정정-후-최종-마감), [다음 대화 프롬프트](NEXT_SESSION_START_PROMPT.md), branch `agent/dual-encoder-bringup`. 이번 마감 게시 영수증은 `assets/logs/wifi_link/2026-10-23_power_adjusted_closeout/`를 따른다. 이전1차 마감66b321f/c27c250와 구분한다.
+- [오늘 최신 기록](../progress/2026-10-23_progress.md#전원-재설정중량-정정-후-최종-마감), [다음 대화 프롬프트](NEXT_SESSION_START_PROMPT.md), branch `agent/dual-encoder-bringup`. 이번 다섯 항목 정리를 완료했고28파일을b81034a로commit/push·원격일치 확인했다. Notion4페이지/Calendar7일정 재조회 완료. 이번 마감 게시 영수증은 `assets/logs/wifi_link/2026-10-23_power_adjusted_closeout/`를 따른다. 이전1차 마감66b321f/c27c250와 구분한다.
 - HelloWorld build·LA Session2·과거 source_snapshot·10/18 monitorlogs의 별도 변경17개를 보존한다. 전체 일괄 stage하지 않는다. 서브에이전트는 사용자 요청 없이 사용하지 않는다.
