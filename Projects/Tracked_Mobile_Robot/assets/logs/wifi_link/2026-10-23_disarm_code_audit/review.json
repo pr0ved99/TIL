@@ -1,0 +1,141 @@
+{
+  "date": "2026-10-23",
+  "status": "REVIEW_COMPLETE_HISTORICAL_CAUSE_UNDETERMINED_NOT_REPRODUCED",
+  "source_page_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+  "analysis_script_sha256": "2da964d6e841565313f7038c1dd25788d0da4cadcd921c9ca4cdec8f6bc6253c",
+  "reports": {
+    "2026-10-23_ground_1m_run02": {
+      "source": "../2026-10-23_ground_1m_run02/browser_report.json",
+      "sha256": "afdce8c84989f7d2145bd6ab2d5159719fa5083c96b3fb687052bc3c6f92e5b3",
+      "observer_revision": "5-original-fixed-socket",
+      "history_dropped": 0,
+      "telemetry_dropped": 0,
+      "last_original_socket_tel": {
+        "ms": 85272.20000000298,
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 2670355404,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "11741",
+        "right_count": "11489"
+      },
+      "last_original_socket_control_ms": 85272.5,
+      "disarm_notices_or_results_recorded": 0,
+      "first_stop_wrapper_snapshot": {
+        "ms": 97679,
+        "intent": false,
+        "focused": false,
+        "session": 3,
+        "phase": "IDLE",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "tel_local_age_ms": 46.29999999701977,
+        "stack": "Error\n    at stopLocal (<anonymous>:68:51)\n    at http://192.168.0.17/:488:36"
+      },
+      "element_blur_after_socket_gap": [
+        {
+          "ms": 90981.60000000149,
+          "event": "blur",
+          "target": "disarm",
+          "hidden": false
+        },
+        {
+          "ms": 94725.90000000596,
+          "event": "blur",
+          "target": "disarm",
+          "hidden": false
+        }
+      ],
+      "interpretation": "The wrapper takes this snapshot BEFORE the original stopLocal call. The first retained window-blur stop call already sees intent=false and recent DISARMED TEL. It therefore does not establish that this screen switch initiated the first stop. Element blur proves focus interaction, not a click/send/ACK. The gap still prevents identifying the stop cause."
+    },
+    "2026-10-23_disarm_stationary_run01": {
+      "source": "../2026-10-23_disarm_stationary_run01/browser_report.json",
+      "sha256": "0913e66b710f77850c5697321fda5a3bf473a254b35e0e8026ac4022966470b4",
+      "observer_revision": "5.1-reconnect-disarm",
+      "history_dropped": 0,
+      "telemetry_dropped": 0,
+      "connections_seen": 1,
+      "trace_errors": 0,
+      "manual_click_ms": 15809.30000000447,
+      "request_id": 15,
+      "session_id": 4,
+      "wire": "DISARM,boot_id=1339414435,request_id=15",
+      "directions_disabled_after_handler": true,
+      "handler_completion_after_click_ms": 0.6,
+      "result_after_click_ms": 188.5,
+      "status": "OK",
+      "limitation": "Browser event timestamps, not electrical/physical stop latency."
+    },
+    "2026-10-23_ground_1m_run03": {
+      "source": "../2026-10-23_ground_1m_run03/browser_report.json",
+      "sha256": "7a08035edb09554a020b182ea41dd34b82b2dde55c16bfe857e9d016f00f47d1",
+      "observer_revision": "5.1-reconnect-disarm",
+      "history_dropped": 0,
+      "telemetry_dropped": 0,
+      "connections_seen": 1,
+      "trace_errors": 0,
+      "manual_click_ms": 48611,
+      "request_id": 260,
+      "session_id": 5,
+      "wire": "DISARM,boot_id=1339414435,request_id=260",
+      "directions_disabled_after_handler": true,
+      "handler_completion_after_click_ms": 0.4,
+      "result_after_click_ms": 187.4,
+      "status": "OK",
+      "limitation": "Browser event timestamps, not electrical/physical stop latency."
+    },
+    "2026-10-23_ground_1m_run04": {
+      "source": "../2026-10-23_ground_1m_run04/browser_report.json",
+      "sha256": "fbf50bac48d05a45d45cc59ca1873d8508786249991da36927c6de73d59eba89",
+      "observer_revision": "5.1-reconnect-disarm",
+      "history_dropped": 0,
+      "telemetry_dropped": 0,
+      "connections_seen": 1,
+      "trace_errors": 0,
+      "manual_click_ms": 28886.10000000149,
+      "request_id": 279,
+      "session_id": 7,
+      "wire": "DISARM,boot_id=1339414435,request_id=279",
+      "directions_disabled_after_handler": true,
+      "handler_completion_after_click_ms": 0.3,
+      "result_after_click_ms": 130.2,
+      "status": "OK",
+      "limitation": "Browser event timestamps, not electrical/physical stop latency."
+    }
+  },
+  "pc_checks": {
+    "path": "pc_checks.json",
+    "sha256": "dd9f89e683d22f91660e7c0ba27287368b8b65fe23f1213a792082d79b74d596",
+    "additional_cases": 24,
+    "existing_cases": 67
+  },
+  "code_findings": [
+    "Forward release requests CMD0 while retaining ARM intent; directions enabled after release ACK is expected.",
+    "DISARM admission in PAGE clears intent/controlId/motion/timer and supersedes the pending request before ws.send; direction DOM flags update before the synchronous handler returns, not after STM ACK.",
+    "Delayed CMD/ARM ACK, DISARM rejection/timeout and retained ACTIVE snapshots do not set intent=true again in the tested paths.",
+    "Disconnect/reconnect clears local control; old socket messages are ignored and the replacement socket sends only HELLO until manual input.",
+    "Server manual DISARM bypasses normal PING/CMD rate and busy gates; its dedicated stop-result slot may return BUSY, which does not reenable local intent.",
+    "Closing the owning session invokes executor stop, so DISARMED alone cannot identify a manual button cause."
+  ],
+  "decision": {
+    "historical_cause": "UNDETERMINED: run02 has no click/send/disconnect trace for the interval in question",
+    "firmware_patch_justified_by_review": false,
+    "firmware_modified_or_built_or_flashed": false,
+    "physical_test_performed": false,
+    "physical_repeat_requested_now": false,
+    "current_manual_disarm_evidence": "Three later independent logs preserve manual click, disabled directions and OK result before focus loss.",
+    "next": "Continue final MVP evidence/scope reconciliation. Keep the historical observation OPEN; do not claim a root-cause fix. If the symptom recurs, preserve the v5.1 trace and screen state instead of repeating distance trials.",
+    "limitations": "Mock tests do not test browser hit-testing/rendering, OS input, every event interleaving, or flashed-image identity. Missing historical events cannot be recovered from these tests."
+  }
+}

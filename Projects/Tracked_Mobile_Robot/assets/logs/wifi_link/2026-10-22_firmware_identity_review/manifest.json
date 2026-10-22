@@ -1,0 +1,333 @@
+{
+  "date": "2026-10-22",
+  "test_id": "TK-MVP-03-04",
+  "status": "LOCAL_RECONCILIATION_COMPLETE_RUNTIME_IMAGE_HASH_UNCONFIRMED",
+  "repository_head": "21c71c7dbb53fe4efe5293804ca9151e83f40e30",
+  "sources": [
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c",
+      "sha256": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h",
+      "sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c",
+      "sha256": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c",
+      "sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\distance_move.h",
+      "sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\encoder_speed.h",
+      "sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h",
+      "sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h",
+      "sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Src\\distance_move.c",
+      "sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Src\\encoder_speed.c",
+      "sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c",
+      "sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c",
+      "sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+      "matches_2026_10_21_pc_baseline": true
+    },
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c",
+      "sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "matches_2026_10_21_pc_baseline": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Debug\\stm32_uart_mvp.elf",
+      "bytes": 1275124,
+      "sha256": "224e21dd8a86ba35c65467db969dcb2ab679d2d1d57424b16248e33c5486ab0d",
+      "baseline_2026_10_20_sha256": "683e785fbc281500d72d699b093ff69296914bc2fec22dc5e97e9561a8ebe766",
+      "matches_2026_10_20": false
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\esp32_wifi_link.elf",
+      "bytes": 9157820,
+      "sha256": "02234cc1c96616c276b9b32d2cb1704abe18564ece218d7dd7331a16bf69944b",
+      "baseline_2026_10_20_sha256": "d1ce1b8a47feec18e28c4587f12517bd84493fdcfd09757c42a1a0df03d71642",
+      "matches_2026_10_20": false
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\esp32_wifi_link.bin",
+      "bytes": 896368,
+      "sha256": "7bc30a13d78a86595a02b553ffde1a23a1e14a56f1010bcef70bcb00bf41144f",
+      "baseline_2026_10_20_sha256": "0da45923e5cbdfbf196eab31271b092b1358300d1cbd2c04ba39fe447c4c839d",
+      "matches_2026_10_20": false
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\bootloader\\bootloader.bin",
+      "bytes": 21056,
+      "sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+      "baseline_2026_10_20_sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+      "matches_2026_10_20": true
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\partition_table\\partition-table.bin",
+      "bytes": 3072,
+      "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "baseline_2026_10_20_sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "matches_2026_10_20": true
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\flasher_args.json",
+      "bytes": 945,
+      "sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+      "baseline_2026_10_20_sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+      "matches_2026_10_20": true
+    }
+  ],
+  "prior_pc_reports": [
+    {
+      "report": "stm_distance_validation.json",
+      "recorded_status": "PASS",
+      "matched_input_count": 24,
+      "rerun": false
+    },
+    {
+      "report": "esp_core_validation.json",
+      "recorded_status": "PASS",
+      "matched_input_count": 10,
+      "rerun": false
+    },
+    {
+      "report": "esp_page_validation.json",
+      "recorded_status": "PASS",
+      "matched_input_count": 11,
+      "rerun": false
+    }
+  ],
+  "prior_pc_input_sha256": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\drive_command_mapper.c": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\motor_output.c": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\encoder_speed.c": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\encoder_speed.h": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\distance_move.c": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\distance_move.h": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+    "03_Firmware\\tests\\distance_timing_candidate.py": "9c962fcce0a3118ca5460d6a7ecf85bb91daa54e43af748927cec894165a71c9",
+    "03_Firmware\\tests\\drive_output_profile_host_fixture.c": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b",
+    "03_Firmware\\tests\\distance_timing_guide_intro_ko.md": "27ed04292e556b89a265907d6251462de6ee1698fbcfa3f9989cdced763e26d9",
+    "03_Firmware\\tests\\distance_timing_host_fixture.c": "dd494197e5ba6d0e990faae84828715b64fb88ac9ca81977f3ccc8edaa179ffd",
+    "03_Firmware\\tests\\test_distance_timing_candidate.py": "349b817020f42cb002a73f1d026f1b21fbb3a881fb08ea639248a9a65450d127",
+    "03_Firmware\\tests\\distance_control_candidate.py": "6dafc268081e88886af21088f56e761a40bddf355b8894dfa4d68b7fc653e1ca",
+    "03_Firmware\\tests\\distance_control_host_fixture.c": "ed4dfd1978bcc3142005e29f068c263d5bff359d8f0d78dc38365aa050c19a85",
+    "03_Firmware\\tests\\test_distance_control_candidate.py": "a6b137ad5c9b42f51c35f406dc04b41d40cfa708887682d46235ba56d784dada",
+    "03_Firmware\\tests\\distance_control_guide_intro_ko.md": "c766b61e4f3840cf5709a0e522eafd531e0cf1896553ff5bd7a67c103273d500",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40"
+  },
+  "stm_elf": {
+    "machine": 40,
+    "distance_symbols": [
+      "distance_move_cancel",
+      "distance_move_init",
+      "distance_move_output",
+      "distance_move_start",
+      "distance_move_target_counts",
+      "distance_move_update"
+    ],
+    "async_uart_symbol_present": true,
+    "limit": "Symbol inclusion is not a complete source-to-binary build attestation or target readback."
+  },
+  "esp_bin": {
+    "app_description": {
+      "version": "9bc9e97-dirty",
+      "project": "esp32_wifi_link",
+      "compile_time": "03:11:02",
+      "compile_date": "Oct 21 2026",
+      "idf": "v6.0.2",
+      "embedded_elf_sha256": "02234cc1c96616c276b9b32d2cb1704abe18564ece218d7dd7331a16bf69944b"
+    },
+    "embedded_hash_matches_local_elf": true,
+    "elf_page_matches_bin_page": true,
+    "source_page_sha256": "03c9a18c9e7f473331c5ad7402817ae642619c46de417c18c15f047e81b547bf",
+    "elf_page_sha256": "03c9a18c9e7f473331c5ad7402817ae642619c46de417c18c15f047e81b547bf",
+    "source_page_matches_local_elf": true,
+    "page_bytes": 34271,
+    "runtime_readback": "NOT_PERFORMED"
+  },
+  "source_settings": [
+    {
+      "source": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "defines": {
+        "MOTOR_OUTPUT_PIN_TEST_ENABLED": "0U",
+        "MOTOR_FAULT_INJECTION_TEST_ENABLED": "0U"
+      },
+      "same_as_2026_10_20": true
+    },
+    {
+      "source": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "defines": {
+        "CMD_TIMEOUT_DEFAULT_MS": "300u",
+        "CMD_OUTPUT_DUTY_CAP_PERMILLE": "150U",
+        "CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE": "200U",
+        "UART_MVP_OUTPUT_TEST_ENABLED": "0U",
+        "UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_STALE_PONG_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_SUPPRESS_PONG_TEST_ENABLED": "0U",
+        "UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED": "0U"
+      },
+      "same_as_2026_10_20": true
+    },
+    {
+      "source": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "defines": {
+        "WIFI_UART_PARTIAL_TEST_MODE": "0U"
+      },
+      "same_as_2026_10_20": true
+    },
+    {
+      "source": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "defines": {
+        "WIFI_CONTROL_ZERO_ONLY": "0U"
+      },
+      "same_as_2026_10_20": true
+    }
+  ],
+  "trials": [
+    {
+      "goal_mm": 100,
+      "browser_raw_sha256": "1950bce8b03bd6fce0757e8ebafdf5e5c3a0aef4c82b4d41cd048fdd5a2eb2db",
+      "observation_raw_hash_matches": true,
+      "identity": {
+        "goal_mm": 100,
+        "boot_id": 1070385225,
+        "control_id": 2,
+        "arm_seq": 1201006582
+      },
+      "assessment": "GOAL_REACHED_AND_STOP_OBSERVED_IN_TEL",
+      "report_root_fields": [
+        "version",
+        "kind",
+        "coefficient_mm_per_count",
+        "note",
+        "runs_dropped",
+        "runs"
+      ],
+      "contains_firmware_hash_identity": false,
+      "limit": "Browser boot/control/ARM IDs do not identify STM or ESP firmware bytes."
+    },
+    {
+      "goal_mm": 150,
+      "browser_raw_sha256": "3911b79c8fd06d33c5ee013135357aeec57a169e681e00b2db199f93f1d54ac2",
+      "observation_raw_hash_matches": true,
+      "identity": {
+        "goal_mm": 150,
+        "boot_id": 1070385225,
+        "control_id": 4,
+        "arm_seq": 1201006635
+      },
+      "assessment": "GOAL_REACHED_AND_STOP_OBSERVED_IN_TEL",
+      "report_root_fields": [
+        "version",
+        "kind",
+        "coefficient_mm_per_count",
+        "note",
+        "runs_dropped",
+        "runs"
+      ],
+      "contains_firmware_hash_identity": false,
+      "limit": "Browser boot/control/ARM IDs do not identify STM or ESP firmware bytes."
+    }
+  ],
+  "published_source_impact": {
+    "comparison_commit": "f11dabc",
+    "functions": [
+      {
+        "function": "command_timeout_enforce",
+        "same_as_f11dabc": false,
+        "same_after_removing_added_distance_cancel": true
+      },
+      {
+        "function": "estop_enforce_latch",
+        "same_as_f11dabc": true,
+        "same_after_removing_added_distance_cancel": true
+      },
+      {
+        "function": "estop_latch_and_force_safe",
+        "same_as_f11dabc": false,
+        "same_after_removing_added_distance_cancel": true
+      },
+      {
+        "function": "uart_mvp_process",
+        "same_as_f11dabc": false,
+        "same_after_removing_added_distance_cancel": false
+      }
+    ],
+    "new_scheduling": "RX budget64, async TX deadline100ms, distance supervision after E-stop/command timeout.",
+    "runtime_limit": "Inherited PC mock results and prior physical timeout evidence are distinct."
+  },
+  "new_build_flash_motion": false,
+  "pc_regression_rerun": false,
+  "limits": [
+    "PC PASS is inherited only for hash-matching recorded inputs.",
+    "Compilation version/mtime/boot_id are not firmware-byte identity.",
+    "Prior UART timeout functional evidence is retained; async UART/distance changes require an impact note.",
+    "No temperature/current/ground1m or whole-MVP acceptance."
+  ],
+  "review_script_sha256": "9fb27e2ba1ef8e18558c1e74dea159be38096087abab03da7d660d79393ac691"
+}

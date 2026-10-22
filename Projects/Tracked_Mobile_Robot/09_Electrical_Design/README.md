@@ -26,6 +26,8 @@ ERC `0 Errors / 0 Warnings`는 KiCad 연결 규칙 검사를 통과했다는 뜻
 
 ## Source And Evidence
 
+10/22 [모터 전류·온도4채널 확장 연결안](14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md): 기존 만능기판 유지·별도 신호 기판 방향, STM 접점/커넥터와전류 RC 계산 후보. 실물 공간·보호/전원·패키지 미확정이며 제작/배선 승인 도면이 아니다.
+
 추가 공간 검토: [PA4·PB0 전압 측정 회로 배치와 별도 기판 방안](12_Dual_Rail_ADC_Space_Review_2026-09-30_ko.md).
 최신 ENC Conditioning 도면 기준 분석이며, 기존 기판의 재배치나 ADC 회로 실장을 확정한 것은 아니다.
 후속 비교: [10×15 cm 만능기판 2층 확장 가능성](13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md) — 기존 최상층·납땜 부품 유지, 새 하층 Advanced 확장안의 면적·안테나·높이·기계 지지 조건.

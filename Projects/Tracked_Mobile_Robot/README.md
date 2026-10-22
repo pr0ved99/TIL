@@ -7,10 +7,13 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
-- **현재 구매·준비 · 2026-10-22:** 10/22 사용자 보고로 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료. 수령·주문 SKU·구성·최종 납기는 미확인이다. 모터별 전류/케이스 온도 각 2채널을 우선하며, 외부 계측과 후속 ADC 연속 모니터링을 구분한다. 오늘 새 실측·펌웨어 변경은 없다. [구매/마감 기록](docs/progress/2026-10-22_progress.md), [모터 모니터링 준비](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
-- **최근 실물 결과 · 2026-10-21:** 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다. [오늘 기록](docs/progress/2026-10-21_progress.md), [거리 모델](01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md).
-  MVP는 기본 무선 주행/정지·엔코더 거리 비교·외부 온도 관측이다. 정량 전류·전류/전압 ADC·자동 저전압 정지·IMU/PID/ROS2는 post-MVP이며 IMU 기본 검증을 첫 후속으로 둔다.
+- **최근 거리 결과 · 2026-10-23:** 지상1m 실제/추정 거리와 오차 기록 완료. run03/04 사용자 실측1002mm에 대해 엔코더 평균1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm다. ARM/종료 ACK와 정지 TEL·count가 보존됐고 drop/err0이다. `MVP-011 / REQ-ODO-001 / T-ODO-001`은 기록 범위 PASS이며 정밀도·직진성 보증은 아니다. [원본·판정·한계](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [진행 기록](docs/progress/2026-10-23_progress.md).
+- **현재 범위:** 기본 무선 주행/정지·엔코더 거리 비교의 선택 기능 근거를 확보했다. 전체 MUST 인수는 미완료이며 기존 PARTIAL/OPEN을 검증표에 남긴다.10/23 사용자 결정으로 외부 온도는 후속 DEFERRED / NOT_RUN, 정량 전류·ADC·자동 저전압·IMU/PID/RTOS/CAN/ROS2도 후속이다. 기존 출력·정지·셀 알람 운영은 유지한다.
+- **기준 설정:** 초기 공통k=1687/19500mm/count, 일반 cap150‰·회전200‰, 왼쪽 gain전진960‰/후진930‰. 지상 비교 후 계수나 출력을 바꾸지 않았다. 현재 ESP 앱은 `esp32_wifi_link`이며 두 MCU의 코드 입력·빌드/플래시와 실물 조작은 사용자가 수행한다.
+- **계측 준비:** 103JT-025×2·Pololu#5241×2·GM1312·UT210E 구매/배송 대기, Vishay100nF10개 구매·수령 미확인이라는 마지막 보고를 유지한다. 장비 수령을 거리/MVP 선행으로 요구하지 않는다. [후속 모니터링 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
+
+**현재 우선 미결 · 10/23:** 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다. [분석 근거](docs/progress/2026-10-23_progress.md#전진좌회전-중-자동-disarm의-실제-지연-관측)
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
 [ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) · [Wi-Fi 상태 전달](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) ·
@@ -78,6 +81,8 @@ flowchart LR
 | 명령 유실과 복구 | **500 ms timeout** 후 출력·저장 명령 0, 새 ARM+CMD에서만 복구 | [모터·LiPo 분리 UART/제어 신호](docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md) |
 | 엔코더 환산 | **1,560 counts/rev**, 610개 채널 샘플의 mRPM 환산 불일치 **0건** | [손회전 보정·계산 검증](assets/logs/encoder/2026-07-30_encoder_output_shaft_calibration_and_millirpm_verification.md). 절대 속도·주행 거리 검증은 별도 |
 | 실제 모터 방향 보정 | B/M2 **±10%·300 ms** 단발 명령에서 실제 양방향 회전·CPS 부호·정지 확인 | [섀시 분리 단일 모터](docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md). A 실제 전진도9/30 확인. 10/18 궤도 지상 주행은 별도 최신 근거로 추가; 전체 안전 수용은 별도 |
+| 지상1m 거리 기록 | 실측1002mm 두 회차, 평균 추정1002.640333/1000.953333mm | [run03/04 비교](assets/logs/wifi_link/2026-10-23_ground_1m_run04/repeat_comparison.json). 실측 불확도 미제공, sub-mm 정확도/직진성 보증 아님 |
+| 수동 DISARM 관찰 | 클릭→방향 비활성→DISARM OK→IDLE/정지 TEL | [정지 상태 회차](assets/logs/wifi_link/2026-10-23_disarm_stationary_run01/observations.json), [지상run04](assets/logs/wifi_link/2026-10-23_ground_1m_run04/observations.json). 이전run02 간헐 UI 원인은 미해결 |
 
 <details>
 <summary>각 결과의 검증 문제·방법·관측 한계 펼치기</summary>
@@ -136,28 +141,36 @@ flowchart LR
 
 ## 4. 현재 검증 범위와 남은 작업
 
-**상태 대조: 2026-10-18.** 날짜별 시험의 관측 결과를 전체 전력단·비상정지·주행 완료로 확대하지 않는다.
-요구사항별 판정은 [검증 매트릭스](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다.
+**상태 대조: 2026-10-23.** 선택 기능/거리 기록의 완료와 전체 전력단·비상정지 인수를 구분한다. [최신 잔여 대조](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#현재-완료-범위와-남은-판단)가 현재 판정의 정본이다.
 
-| 분야 | 확인된 범위 | 남은 핵심 검증 |
+| 분야 | 확인된 범위 | 남은 경계 |
 | --- | --- | --- |
-| 통신·펌웨어 | Wi-Fi ARM/CMD·ticket/owner·큐/UART·PAGE 통합, 선택 AC-S/nonzero·실제 궤도 구동/정지 확인 | 현재 최종 구성의 실제 궤도 UART 단절/timeout 전용 회차와 전체 오류 분기 수용 |
-| 보드 전원 | XL4015 #1의 STM·ESP 개별/동시 공급, #2 감지·엔코더 전원 | 최종 배선의 정격·전류·전압 강하·발열, 모터 부하 조건 |
-| 구동·피드백 | 배터리 단독 지상 전·후진/좌·우회전, 동작 사이 정지·최종 DISARM, 직진 gain0.96/0.93의 CPS/휨 개선 | 외부 온도·전용 유실/timeout 정지·1m 실제/추정 거리 비교; 정량 전류/ADC는 후속 |
-| 물리 비상정지 | 감지–펌웨어–PWM 경로 PASS(T004), 전력단 일부 관측과 A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A·T-MOTOR-003 PARTIAL, 정식 T-ESTOP-007 BLOCKED. rail-off·단자/배선 release·기계 정지 시간/거리 수용 |
-| 측정·센서 배선 | UART·CTRL·ENC·IMU 헤더 배선, 엔코더 조정부·양쪽 +5.05 V, 실제 A/B LOW 0 V/HIGH 약 2.86 V | 엔코더 파형·출력형식·구동 노이즈. IMU 전원·모드·센서 동작은 후속 범위 |
-| 기구·주행 | 플레이트/전장 장착·고정/절연/접근성 사용자 확인, 단축 궤도 구성으로 저속 지상 주행 | 1m 거리·엔코더 추정 오차와 정량 기구/주행 수용. ADC/자동 저전압 정지는 post-MVP |
+| 통신·펌웨어 | Wi-Fi ARM/CMD/DISARM·선택 AC-S/nonzero,10/20 UART 명령선 단절/timeout 실제 정지·수동 복구 | 전체 UART release PARTIAL. run02 DISARM/UI 간헐 현상 원인 OPEN; 후속 정상 회차와 구분 |
+| 보드 전원·운영 | 실제 STM/ESP 공급·USB/standalone 분리 규칙·BX100 설정/표시·과거 주행 중 저전압 경고음→작업자 전원 차단 USER-REPORTED PASS | 감독하 경고 대응 운영 범위 완료. 최종 정격/부하 미수용, 기존 제외 조사 재개 없음 |
+| 구동·거리 | 지상 네 방향/놓음/DISARM,10/23 1m 실제/추정·오차 기록 PASS | 계수 지상 보정·정밀 속도/직진성·슬립·장시간/정격 수용 아님. 전류/온도는 후속 |
+| 물리 비상정지 | T004 감지/latch/reset/PWM PASS, 전력단 일부·A 구동 S0 관측 | 전체 T005A PARTIAL·정식 T-ESTOP-007 BLOCKED. 기존 사용자 제외와 정식 전체 안전 수용 사이 OPEN 경계 보존 |
+| 엔코더·기구 | 입력 전압·손회전/구동 count·정지, 장착/간격/배선 접근 사용자 확인 | 파형/출력형식/노이즈·전체 제작 identity/치수 미기록을 오늘 거리 결과로 소급 통과시키지 않음 |
 
 추가 근거: [보드 전원](docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) ·
 [T004 감지·PWM](docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md) ·
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-다음 세션은 구매품 수령 상태·실제 센서 모델/측정기 구성을 확인하고 source/증거·실행 이미지 차이와 계측 위치/범위/중단 기준을 정리한다. GM-1312·UT210E의 기본 외부 관측은 준비 완료 후, 지상1m는 기존 온도/정지 등 선행 조건 충족 후다. 센서 ADC 연속 모니터링은 후속 구현이다. 완료한 count/부호·단절/복구 시험이나20cm를 자동 반복하지 않는다.
+다음 작업은 잔여 운영 근거와 기존 제외 범위의 최종 인수 처리, 공개할 증거 묶음 정리다. 완료한 거리/단절·복구·공중5/10/15cm를 자동 반복하지 않으며20cm는 사용자 요청으로 미실시다. 전체 MVP 완료나 Git/외부 앱 게시 완료를 의미하지 않는다.
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
 일자별 결과는 [진행 기록](docs/progress/README.md)에서 관리한다.
+### 저장된 지상1m 결과 재현
+
+[run03](assets/logs/wifi_link/2026-10-23_ground_1m_run03/), [run04](assets/logs/wifi_link/2026-10-23_ground_1m_run04/)의 `browser_report.json`은 원본, `source_manifest.json`은 출처/해시, `observations.json`은 사용자 실측·해석, `encoder_analysis.json`은 계산 결과다. 저장소 루트에서 아래 명령으로 새 출력 파일에 계산을 재현할 수 있다. 보드 연결/송신·빌드/플래시를 수행하지 않는다.
+
+```powershell
+python Projects/Tracked_Mobile_Robot/03_Firmware/tests/analyze_encoder_distance.py Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-23_ground_1m_run04/browser_report.json --output ground_run04_recheck.json --actual-distance-mm 1002 --boot-id 1339414435 --arm-seq 2670355801 --measurement-note "10/23 사용자 보고1002mm; 측정 불확도 미제공"
+```
+
+기대 결과는 유효 구간1개·거부0개, 평균1000.953333mm·부호 있는 오차−1.046667mm다. 분석 성공은 실측 정확도 보증이나 전체 MVP 자동 PASS가 아니다. run02의 누락 구간은 같은 정책에서 거부된 원본 그대로 보존한다. [측정 방법/해석 양식](docs/plans/templates/distance_1m_session_template_ko.md)과 [관찰기 PC검사](assets/logs/wifi_link/2026-10-23_ground_distance_preparation/observer_reconnect_check.json)를 함께 볼 수 있다. 새 시연 영상은 이번 기록에 추가하지 않았다.
+
 ## 5. 코드와 문서 안내
 
 ### 구현 코드

@@ -1,6 +1,6 @@
 # STM32F446RE 핀 배정 후보
 
-> 문서 역할·상태 대조: **2026-09-30** — 현재 핀 배정·배선/설정/검증 상태와 후속 예약을 구분한 설계 기준.
+> 문서 역할·상태 대조: **2026-10-22** — 기존 핀 배정과 센서4채널 후속 후보를 구분한다. 새 센서 핀은 미배선/미설정이다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
 ## 목적
@@ -78,7 +78,10 @@ UM1724에서 사용한 중요한 사실:
 | Encoder channel 1 B | PB5 | TIM3_CH2 | Arduino D4 / ST morpho CN10 pin 29 | Motor-power-off validated |
 | Encoder channel 2 A | PA0 | TIM5_CH1 | Arduino A0 / ST morpho CN7 pin 28 | Motor-power-off validated |
 | Encoder channel 2 B | PA1 | TIM5_CH2 | Arduino A1 / ST morpho CN7 pin 30 | Motor-power-off validated |
-| 드라이버 입력 전류 관측 | PC0 | ADC1_IN10 후보 | 기본 연결 Arduino A5 / ST morpho CN7 pin 38; 만능기판 인출 검토 전 | 10/19 사용자 센서/ADC 방향 제안; `.ioc` 미배정·센서/회로/구현 미확정 |
+| 왼쪽 모터 개별 전류 관측 | PC0 | ADC1_IN10 후보 | 기본 연결 Arduino A5 / ST morpho CN7 pin 38; 만능기판 인출 검토 전 | 10/22 Pololu#5241 구매 모델 확인; `.ioc` 미배정·입력 회로/실물 미확정 |
+| 오른쪽 모터 개별 전류 관측 | PC1 | ADC1_IN11 후보 | 기본 연결 Arduino A4 / ST morpho CN7 pin 36; 만능기판 인출 검토 전 | 10/22 Pololu#5241 후보 채널; `.ioc` 미배정·실물 미검증 |
+| 왼쪽 모터 케이스 온도 | PC2 | ADC1_IN12 후보 | ST morpho CN7 pin 35; 만능기판 인출 검토 전 | 10/22 103JT-025 분압 후보; `.ioc` 미배정·실물 미검증 |
+| 오른쪽 모터 케이스 온도 | PC3 | ADC1_IN13 후보 | ST morpho CN7 pin 37; 만능기판 인출 검토 전 | 10/22 103JT-025 분압 후보; `.ioc` 미배정·실물 미검증 |
 | K1 upstream `VBAT_PROTECTED_SENSE` | PA4 | ADC12_IN4 | Arduino A2 / ST morpho CN7 pin 32 | Post-MVP diagnostic candidate |
 | K1 downstream `MOTOR_VBAT_SAFE_SENSE` | PB0 | ADC12_IN8 | Arduino A3 / ST morpho access | Post-MVP diagnostic candidate |
 | Physical E-stop `ESTOP_SENSE` | PC7 | GPIO input (EXTI 미구현) | Arduino D9 / ST morpho access | Configured / 모터 분리 conditioned T004 PASS |
@@ -93,7 +96,7 @@ UM1724에서 사용한 중요한 사실:
 | SWDIO | PA13 | SWDIO | ST-LINK / ST morpho CN7 pin 13 | Preserve |
 | SWCLK | PA14 | SWCLK | ST-LINK / ST morpho CN7 pin 15 | Preserve |
 
-2026-10-19 전류 관측용으로 PC0/ADC1_IN10을 후보에 추가했다. [STM32F446 데이터시트](https://www.st.com/resource/en/datasheet/stm32f446re.pdf)의 PC0/ADC123_IN10과 현재 `.ioc` 미배정을 대조했다. 보드 커넥터의 기본 매핑은 아래 UM1724 대조 결과를 따르며, 실제 보드 solder bridge·만능기판 인출·CubeMX 설정은 미검증이다. PA0/PA1 엔코더와 PA4/PB0의 기존 예약을 보존하는 후보다. [후보/측정 경계](../docs/progress/2026-10-19_progress.md#stm32-adc-전류-센서-방향-검토)를 따른다.
+2026-10-22 구매 모델 확인 뒤 **개별 모터 전류2·케이스 온도2채널** 후보로 갱신했다.10/19 공통 드라이버 입력 전류1채널은 당시 이력이다. 기존 추가 후보6개 중PC0~PC3의4개를 쓰면PA6/PA7의2개가 남는 초안이며, PA4/PB0 전압·PB1/PC4 IMU·PC5 선택 기능 예약은 유지한다. 실제 보드 solder bridge·만능기판 인출·CubeMX 설정은 미검증이다. [연결 초안과 모델/계측 경계](../docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md)를 따른다. 아래10/19 입력 수 계산은 당시 이력이다.
 
 ### ADC 입력 수와 현재 여유 — 2026-10-19
 

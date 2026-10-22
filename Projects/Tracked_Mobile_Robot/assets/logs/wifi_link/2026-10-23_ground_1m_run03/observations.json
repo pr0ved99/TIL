@@ -1,0 +1,204 @@
+{
+  "date": "2026-10-23",
+  "run_id": "2026-10-23_ground_1m_run03",
+  "test_id": "T-ODO-001",
+  "status": "COMPLETE_SINGLE_RUN_DISTANCE_COMPARISON_BOUNDED_SCOPE",
+  "acceptance_scope": "Valid retained ARM-to-stopped-DISARM interval and user-reported 1002mm external forward displacement compared with encoder-equivalent track travel; no new accuracy or straightness threshold applied.",
+  "user_observations": {
+    "forward_displacement_mm": 1002,
+    "forward_original_text": "1002mm이동함",
+    "lateral_offset_mm": null,
+    "lateral_measurement_status": "NOT_MEASURED_BY_USER_CHOICE",
+    "lateral_original_text": "이번에 치우침은 계산 안했어. 어차피 미끄러짐계산이 안되니깐 무의미한듯. 1002mm이동함",
+    "interpretation": "Unmeasured lateral deviation is not zero. External deviation remains useful as total straightness performance including slip, but is not required for the arithmetic distance comparison here.",
+    "measurement_method": "Same fixed chassis-point floor start/end displacement requested in procedure; detailed ruler resolution, images and uncertainty not supplied.",
+    "measurement_resolution_mm": null,
+    "measurement_uncertainty_mm": null,
+    "final_heading_degrees": null,
+    "track_center_spacing_physical_mm_approx": 233,
+    "track_center_spacing_cad_mm": 228.31681,
+    "after_run_cell_voltages_v": null,
+    "power_disconnected": null
+  },
+  "identity": {
+    "boot_id": 1339414435,
+    "arm_seq": 2670355425,
+    "disarm_seq": 2670355684,
+    "session_id": 5
+  },
+  "log_window": {
+    "status": "ACCEPTED",
+    "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+    "start": {
+      "ms": 22899.19999999553,
+      "tel_count": 41570,
+      "stm_t_ms": 37600,
+      "encoder_t_ms": 37595,
+      "left_count": "0",
+      "right_count": "0",
+      "state": "ARMED",
+      "reason": "NONE",
+      "last_seq": 2670355425
+    },
+    "end": {
+      "ms": 48848.10000000149,
+      "tel_count": 41830,
+      "stm_t_ms": 63600,
+      "encoder_t_ms": 63595,
+      "left_count": "11727",
+      "right_count": "11452",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "last_seq": 2670355684
+    },
+    "source_samples": 261,
+    "delta_count": {
+      "left": "11727",
+      "right": "11452"
+    },
+    "max_stm_age_ms": 107,
+    "max_browser_receive_gap_ms": 120.20000000298023,
+    "source_gap_steps": 0,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ]
+  },
+  "distance_comparison": {
+    "format_version": 1,
+    "status": "CALCULATED_NOT_PHYSICAL_ACCEPTANCE",
+    "boot_id": 1339414435,
+    "arm_seq": 2670355425,
+    "disarm_seq": 2670355684,
+    "measurement": {
+      "signed_displacement_mm": "1002",
+      "origin": "USER_SUPPLIED_EXTERNAL_MEASUREMENT",
+      "note": "사용자 보고 실제 전진거리1002mm. 같은 차체 기준점의 시작/종료 바닥 투영 비교를 안내한 회차; 도구 눈금/불확도와 사진은 미제공. 좌우 치우침은 사용자 선택으로 미측정. 단일 회차 거리 비교이며 직진성·반복 정밀도·전체 MVP 자동 PASS가 아님.",
+      "convention": "Forward positive, reverse negative; same start/end as selected window"
+    },
+    "distance_estimate_mm": {
+      "left": "1014.535846",
+      "right": "990.744821",
+      "center": "1002.640333"
+    },
+    "center_signed_error_mm": "0.640333",
+    "center_absolute_error_mm": "0.640333",
+    "center_absolute_error_percent": "0.063906",
+    "limitations": [
+      "External measurement and matching of physical endpoints are user supplied",
+      "Straightness, lateral drift, slip and measurement uncertainty require external observations",
+      "Net encoder travel is not chassis path length or automatic target-distance stopping",
+      "No PASS threshold, gain change or distance-coefficient calibration is applied"
+    ]
+  },
+  "motion": {
+    "forward_output_intervals": 1,
+    "reverse_or_turn_command_seen": false,
+    "transitions": [
+      {
+        "ms": 22899.19999999553,
+        "stm_t_ms": 37600,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "0",
+        "right_count": "0"
+      },
+      {
+        "ms": 29067.19999999553,
+        "stm_t_ms": 43800,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "10",
+        "right_count": "7"
+      },
+      {
+        "ms": 42909.29999999702,
+        "stm_t_ms": 57700,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          830,
+          850
+        ],
+        "left_count": "11727",
+        "right_count": "11454"
+      }
+    ],
+    "left_minus_right_estimated_mm": 23.791026
+  },
+  "manual_disarm": {
+    "trusted_click": true,
+    "focused_at_click": true,
+    "wire_send_failed": false,
+    "request_id": 260,
+    "result_status": "OK",
+    "local_directions_disabled": true,
+    "click_to_handler_after_ms": 0.3999999985098839,
+    "click_to_result_ms": 187.39999999850988,
+    "note": "Browser observed command timing only, not physical stop latency. Focus-loss callback followed completed manual stop with before_intent=false."
+  },
+  "post_disarm": {
+    "samples": 125,
+    "zero_command_pwm_cps": true,
+    "counts_constant": true,
+    "stm_observation_ms": 7500,
+    "final_counts": {
+      "left": "11727",
+      "right": "11452"
+    }
+  },
+  "capture": {
+    "observer_revision": "5.1-reconnect-disarm",
+    "connections_seen": 1,
+    "trace_errors": 0,
+    "history_dropped": 0,
+    "telemetry_dropped": 0,
+    "disconnect_event_count": 0,
+    "command_results_ok": {
+      "OK": 260
+    }
+  },
+  "limits": [
+    "Single physical run; no repeatability or measurement-uncertainty estimate",
+    "Computed +0.640333mm / 0.063906% uses supplied 1002mm; displayed digits are not demonstrated physical accuracy",
+    "Lateral drift and final heading unmeasured in this run; straightness not accepted from encoder mean",
+    "Initial common distance/count coefficient retained; this is not a calibrated slip or effective-width model",
+    "Earlier run02 intermittent DISARM/UI report not reproduced here; original incomplete capture remains unchanged",
+    "Temperature/current and full-rating/long-duration safety remain outside this run; full MVP acceptance and requirement/document reconciliation separate"
+  ],
+  "evidence": {
+    "browser_report": "browser_report.json",
+    "sha256": "7a08035edb09554a020b182ea41dd34b82b2dde55c16bfe857e9d016f00f47d1",
+    "analysis": "encoder_analysis.json",
+    "analysis_tool": "03_Firmware/tests/analyze_encoder_distance.py",
+    "analysis_tool_sha256": "90a0e09c121173e11025aba9881682e285b3f4dea9f6544a4c85dfb88c0be187"
+  }
+}

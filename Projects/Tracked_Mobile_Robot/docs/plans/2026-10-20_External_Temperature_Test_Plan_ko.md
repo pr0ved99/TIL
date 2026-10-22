@@ -1,8 +1,10 @@
 # 외부 온도 관측 계획 — T-LOAD-001
 
+**2026-10-23 최신 상태: DEFERRED / NOT_RUN.** 사용자 결정으로 온도 검증을 이번 MVP 필수에서 후속으로 분리했다. 기존 MG540 모터를 유지하며 본 계획의 장비·온도 기준 대기를 지상1m/MVP 선행 조건으로 사용하지 않는다. 아래 준비 절차와 철회 이력은 재개 참고용이고 열적 적합 PASS 또는 구동 시간/출력 확대 근거가 아니다. [범위 결정](../progress/2026-10-23_progress.md#기존-모터-유지와-온도-검증-후속-분리).
+
 작성: 2026-10-20. 연결: `ST-MVP-04`, `TK-MVP-04-01~04`, `REQ-THERM-001`, `MVP-015`.
 
-**상태: 문서 초안 준비, 장비 수령·실물 부착·온도 기준 확정 대기(10/22 갱신).** 이전 GM-1312 주문은 재고 취소됐고10/22 사용자가 온도센서2·전류센서2·GM-1312·UT210E 구매 완료를 보고했다. 실제 수령·열전대/건전지·부속 구성·최종 납기는 미확인이다. [구매 기록](../progress/2026-10-22_progress.md), [계측/센서 준비](2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md). 아래 절차는 실행 전 후보이며 실제 수행은 준비 확인 후 한 단계씩 안내한다.
+**상태: 근거 없는 온도 수치 초안 철회 / 장비 수령·실물 부착·근거 기반 기준 확정 대기(10/22 갱신).** 이전 GM-1312 주문은 재고 취소됐고10/22 사용자가 온도센서2·전류센서2·GM-1312·UT210E 구매 완료를 보고했다. 실제 수령·열전대/건전지·부속 구성·최종 납기는 미확인이다. [구매 기록](../progress/2026-10-22_progress.md), [계측/센서 준비](2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md). 아래 절차는 실행 전 후보이며 실제 수행은 준비 확인 후 한 단계씩 안내한다.
 
 ## 1. 확인할 것과 현재 기준
 
@@ -76,9 +78,89 @@ GM-1312는 T1/T2 입력과 HOLD·MAX/MIN 기능을 제공한다. 설명서에는
 
 | 대상 | 현재 근거와 남은 일 |
 | --- | --- |
-| MG540P30_12V 모터 | 이번 검토에서 케이스 허용 온도를 정할 제조사 근거를 확보하지 못했다. 표면 관측에 적용할 중단/판정 기준 검토 필요 |
+| MG540P30_12V 모터 | 2026-08-17 제조사 회신 원문에서 온도 데이터 미제공을 명시한 사실을 재확인했다. 8/18 회신에도 온도 조건이 추가되지 않았다. 케이스/권선 한계와 운전 조건 미확정 |
 | MDD10A | 제조사 매뉴얼의 전류 정격은 주위 25°C 시험 조건을 명시한다. 이를 모듈 표면 허용 온도로 해석하지 않는다. [Cytron 매뉴얼, p.5](https://makermotor.com/content/cytron/pn00218-cyt4/MDD10A%20User%27s%20Manual.pdf) |
 | XL4015 모듈 | IC 접합 온도 한계를 모듈 표면 PASS 온도로 사용하지 않는다. IC 외에도 실제 모듈 부품·고정재와 측정점 조건을 확인한다. [XL4015 데이터시트, p.4](https://www.xlsemi.com/datasheet/XL4015-EN.pdf) |
+
+### 수치 초안 철회와 근거 공백 — 2026-10-22
+
+**상태: WITHDRAWN / NOT_RUN / 온도 기준 미확정.** 사용자가 수치의 근거를 질문했다. Codex가 앞서 제안한40/45°C·시작 대비+10/+15°C 및 초기 표면/주위 차이5°C 조건은 제조사 허용값·열모델·실측·정량적인 측정 불확도/여유 계산으로 뒷받침되지 않은 임의 선택이었다. 초기 시험 제한 후보로 제시한 것을 철회한다. 낮게 보이는 숫자라도 안전성이나 적정성을 보증하지 않으며, 실행/합격/중단 기준에 재사용하지 않는다.
+
+[Nidec 열저항 설명](https://www.nidec.com/en/products/small-precision-motors/technology/motor/glossary/item/thermal_resistance/)과 [maxon NTC 측정 설명](https://support.maxongroup.com/hc/en-us/articles/360007861394-Temperature-sensor-NTC)은 권선/표면 온도차와 측정 지연을 설명하는 원리 참고다. 이 로봇의 허용 온도나 위 수치의 근거가 아니다. 다른 제조사 모터의 온도 한계를 MG540에 대입하지 않는다.
+
+확보된 근거는 [사양 요약](../../assets/datasheets/QUICK_REFERENCE_ko.md)의 제조사 회신/부품/계측기 조건까지다. UT210E 정확도 조건23±5°C는 계측기 적용 조건으로 유지하되 모터 열 안전 범위로 사용하지 않는다.
+
+온도 기준을 정하려면 모터의 케이스 또는 권선 허용 온도와 운전 조건을 확보해야 한다. 드라이버/전원부는 실제 측정점과 소자/모듈 한계를 연결하고, 접합/표면 차이·프로브/접촉 오차·응답 지연을 고려해야 한다. 근거가 부족하면 허용 온도 수용 판정을 미결로 남긴다. 추가 자료 없이 다른 숫자로 대체하지 않는다.
+
+기존 각 최대2초 구동·휴지30초 이상·종료 관측120초 이상도 **미실행 프로파일 초안**이다. 온도 제한 철회로 이 시간을 검증/승인한 것으로 해석하지 않는다. 온도/전류의 관측값 기록과 정격 적합성 입증을 구분하고, 계측기 수령만으로 허용 온도 근거가 생긴다고 판단하지 않는다.
+
+### 온도 근거 추가 조사 — 2026-10-22
+
+사용자가 조사를 위임해 기존 제조사 이메일 원문, 공식 공개 자료, 보관 중인 매뉴얼을 대조했다.
+**결론: 현재 측정할 표면에 적용 가능한 숫자 기준을 확보하지 못했다.** 아래 미확보 항목을
+남기고 기존 철회를 유지한다. 조사는 완료했지만 수치 기준 확정과 실물 시험은 완료되지 않았다.
+
+| 대상/자료 | 확인 결과 | 시험에 적용할 수 있는 범위 |
+| --- | --- | --- |
+| WHEELTEC MG540P30_12V | 8/17 원문 7번은 온도 데이터가 현재 없다고 명시한다. 8/18 본문은 정격 표만 재제공한다. [원문 대조 기록](../../assets/vendor/wheeltec/2026-08-17_mg540p30_12v_support_reply_ko.md#2026-10-22-원본-이메일-재확인--온도-자료-미제공) | 12V·정격 1.44A·스톨 9A로 허용 케이스 온도나 연속 운전 시간을 계산할 수 없다 |
+| WHEELTEC 공개 자료 | [공식 모터 목록](https://www.wheeltec.net/product/class/?131.html=), [다운로드 목록](https://www.wheeltec.net/down/class/index.php), [FAQ](https://www.wheeltec.net/page/cjwt/153.php)와 모델명/온도 검색에서 이 모델의 적용 가능한 온도 사양을 확보하지 못했다. 공식 포럼은 도구 접근 오류로 확인하지 못했다 | 조사한 범위의 미확보 결과다. 공개 자료 전체에 없다고 단정하지 않는다 |
+| MDD10A V2.0 | [보관 매뉴얼 p.5](../../assets/datasheets/Cytron_MDD10A_User_Manual.pdf#page=5)는 연속 10A 정격의 주위 25°C 시험 조건을 제시한다. 표면 중단 온도나 표면과 접합 사이 변환값은 제시하지 않는다 | 25°C는 주위 조건이다. MDD10A 표면 한계나 현재 로봇의 열적합 판정값으로 바꾸지 않는다 |
+| XL4015 Rev 2.0 | [제조사 p.4](https://www.xlsemi.com/datasheet/XL4015-EN.pdf#page=4)의 Absolute Maximum Ratings 표에 동작 접합 온도 −40~125°C, 접합-주위 열저항 30°C/W가 있다. 절대최대 조건에서 기능 동작을 보증하지 않는다는 주석도 있다 | 125°C는 IC 내부 접합 기준이며 모듈/몰딩 표면 허용값이 아니다. 30°C/W를 표면-접합 온도차로 사용할 수 없다 |
+
+MDD10A 공식 판매 페이지 FAQ에는 열 차단 등이 있다고 쓰여 있으나, 보관 중인 V2.0 매뉴얼에는
+그 동작 온도·허용오차·복귀 조건이 없다. 이번에는 실제 보드의 보호 기능을 보장한다고 판단하지
+않는다. SHIELD-MDD10·MDDS10 같은 다른 모델의 보호 온도도 전용하지 않는다.
+[Cytron 공식 제품/FAQ](https://www.cytron.io/p-10amp-5v-30v-dc-motor-driver-2-channels).
+
+[TI SPRA953D p.2, p.8~9](https://www.ti.com/lit/an/spra953d/spra953d.pdf)는 주위/접합/패키지 상면 온도의
+구분과 실제 기판·방열 조건에 맞는 열 특성, 손실 전력, 프로브 부착의 필요성을 설명한다.
+이는 해석 방법의 근거이며 XL4015나 MDD10A의 누락된 소자별 계수를 제공하지 않는다.
+따라서 접합 한계에서 임의로 10°C나 20°C를 빼 표면 기준을 만드는 방식은 채택하지 않는다.
+
+### 기준 확정에 필요한 결과와 준비한 문의
+
+가장 직접적인 근거는 **해당 모델의 지정된 케이스 측정점에 대한 허용 온도와 적용 운전 조건**이다.
+제조사가 권선/접합 한계만 제공하면 실제 측정점에서 그 내부 온도를 추정할 열 특성이나
+검증 결과가 더 필요하다. 여기에 실제 프로브·접촉에 의한 과소표시, 응답 지연 및 정지까지의
+추가 온도 상승을 평가해 기준을 정한다. 측정값의 반복성이나 두 채널의 일치만으로 허용 한계가
+새로 생기는 것은 아니다.
+
+다음 문안은 기존 WHEELTEC 문의 스레드에 보낼 수 있도록 준비한 **로컬 초안 / 미발송**이다.
+전체 원본 메일이나 개인 연락처를 저장하지 않고 필요한 기술 내용만 정리했다.
+
+```text
+Subject: MG540P30_12V — case temperature limits and continuous-duty conditions
+
+Hello,
+
+I am following up on your August 17, 2026 reply, which stated that temperature
+data was not available. I use two MG540P30_12V motors (1:30, Hall encoder) in
+a tracked robot and am preparing external case-temperature measurements.
+
+Could your motor supplier or engineering team confirm:
+1. Maximum permissible continuous motor-case temperature, the exact measurement
+   location, and applicable ambient temperature and mounting/cooling conditions?
+   Please distinguish the motor body from the gearbox and encoder limits.
+2. Whether the 12 V / 1.44 A rated operating point is continuous duty, and under
+   what ambient/load/cooling conditions; if intermittent, the permitted run/rest
+   cycle. Are additional restrictions needed for approximately 19 kHz PWM?
+3. If no case limit is available, the maximum winding temperature and any thermal
+   data or validated method that relates case measurements to winding temperature?
+
+Please provide model-specific documentation, or identify which values remain
+unavailable. We do not plan to perform a stall test or treat 9 A as continuous.
+
+Thank you.
+```
+
+MDD10A는 실제 보드 revision과 부품 측정점을 명시해 Cytron에 표면 측정 기반의 권장 제한과
+열 보호 적용 여부/조건을 확인할 필요가 있다. XL4015는 IC 자료에 더해 실제 모듈의 방열 구조와
+다이오드·인덕터 등 부품 식별이 필요하다. 이번 조사에서는 실물 식별이나 신규 제조사 회신을
+확보한 것으로 처리하지 않는다.
+
+제조사가 수치를 제공하지 않으면 허용 온도 적합성은 계속 미확정이다. 관측 가능한 표면의
+온도 이력을 수집하는 목표와 열적합성 입증은 구분하며, 그에 따른 MVP 수용 범위 변경을
+이번 조사만으로 자동 승인하지 않는다. T-LOAD-001은 NOT_RUN, 기존 지상 1m 선행 조건은 유지한다.
 
 결과는 다음처럼 구분한다.
 
@@ -102,4 +184,4 @@ GM-1312는 T1/T2 입력과 HOLD·MAX/MIN 기능을 제공한다. 설명서에는
 
 ## 7. 다음 실행점
 
-지금 완료할 수 있는 것은 이 계획과 양식 준비다. `TK-MVP-04-02`는 **초안 준비 / 실물 부착·수치 기준 미확정**, `TK-MVP-04-01/03`은 장비 대기다. 다음은 GM-1312와 실제 제공 프로브의 구성·절연·고정 가능 면을 확인해 지점 사진과 기준표를 확정하는 일이다. 추가 ADC 구현이나 전류계 구매를 선행 작업으로 넣지 않는다.
+계획·기록 양식·공개 자료 조사와 WHEELTEC 추가 문의 초안은 준비했다. `TK-MVP-04-02`는 **초안 준비 / 실물 부착·수치 기준 미확정**, `TK-MVP-04-01/03`은 장비 대기다. 기준 확정에는 모델별 허용 온도와 운전 조건의 추가 근거가 필요하다. GM-1312 수령 후 프로브·고정재·측정 위치 확인은 별도 준비 항목이며 제조사 근거 공백을 대신하지 않는다. 새 제조사 문의 발송과 실제 구동은 수행하지 않았다. 추가 ADC 구현이나 전류계 구매를 선행 작업으로 넣지 않는다.

@@ -2,12 +2,35 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-22 (sensor and measurement equipment purchases)
+Last updated: 2026-10-23 (session closeout; receive-latency investigation next, overall acceptance open)
 
-## Current Application Checkpoint — 2026-10-22
+## Current Checkpoint — 2026-10-23
 
-- 10/22 사용자 보고로 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료. 수령·주문 SKU·구성·최종 납기는 미확인이다. 모터별 전류/케이스 온도 각 2채널을 우선하며, 외부 계측과 후속 ADC 연속 모니터링을 구분한다. 오늘 새 실측·펌웨어 변경은 없다.
-- 이전 GM-1312 주문은 재고 취소됐고 이번 구매 완료가 최신이다. 선정 후보는 온도 SEMITEC103JT-025·전류 Pololu#5241이며 실제 주문 SKU 대조는 수령 후다. 열전대 여분 수량·판매처/결제액은 추정하지 않는다.
+- 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다.
+
+- 리포 알람: 사용자가 과거 주행 중 셀 전압이 설정값 아래로 내려가 경고음이 울렸고 전원을 껐다고10/23 보고했다. **REQ-POWER-004/T-PWR-004 PASS — USER-REPORTED 감독하 운영 범위**. 관측일/당시 설정·셀 전압·반응시간은 미계측/미보고.10/20 BX100설정3.40V와 소급 동일시하지 않으며 추가 확인/반복 저전압 시험을 요구하지 않는다. 자동 차단·전체 전원 인수·오늘 run04 종료 전원 분리의 근거는 아니다. [기록](docs/progress/2026-10-23_progress.md#리포-알람-실제-경고-동작의-과거-관측-확인).
+- 지상1m 실제/추정·오차 기록 `MVP-011 / REQ-ODO-001 / T-ODO-001` PASS, ST-MVP-03/TK-MVP-03-05 완료. run03/04 사용자 실측1002mm, 평균1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm. 관측 count11727/11452·11680/11460. 소수 정확도/직진성 보증·통제된 반복 정밀도는 아니다. k/gain/cap 유지.
+- v5.1 관찰기는 재접속·실제 송신·수동 DISARM/focus loss를 추적한다. run02 누락 구간은 REJECTED, 간헐 버튼 활성 보고 원인은 OPEN. 이후 정지 상태 및run03/04 수동 클릭→방향 비활성→DISARM OK/IDLE·정지 TEL 확인. 원본은 assets/logs/wifi_link/2026-10-23_*에 보존.
+- 궤도 폭 중심 간격 사용자 실측약233mm, CAD228.31681mm. 유효 skid-steer 폭으로 보정하지 않는다. run01/02 치우침약20/80mm, run03 미측정·run04 미보고, 미측정≠0.
+- 전체 MVP 인수 미완료. 수신 지연 조사 후 TK-MVP-05 잔여 운영 근거/기존 제외 범위를 정리한다. 완료한 거리·단절/복구·공중 시험/로컬 이미지 감사를 자동 반복하지 않는다. [오늘 기록](docs/progress/2026-10-23_progress.md), [현재 상태](docs/handoff/CURRENT_SESSION_CONTEXT.md).
+- 마지막 운전은 좌회전 자동 정지: session8, DISARM844/seq2670357645 OK, IDLE·DISARMED/DISARM·요청/PWM/CPS0·count78657/24721 고정6.3초. 거리 시험의 마지막 회차run04와 구분한다. 초기 셀4.03/4.07/4.04V는 사용자 보고, 종료 전압/전원 분리는 미보고. MCU코드/빌드/플래시 변경 없음. 마감 게시 결과는 [오늘 기록](docs/progress/2026-10-23_progress.md#세션-마감과-다음-재개점)을 따른다.
+
+- 마감 중 추가 사용자 보고: XL4015 #1 OUT4.96V/IN11.49V, LiPo 전체 표시11.4V. 보드 입력·순간 강하·동시 측정은 미확인이다. 정적4.96V를 지연 원인으로 단정하지 않으며 전압 조정/전원 분리 완료는 미보고다. [기록](docs/progress/2026-10-23_progress.md#마감-중-추가-전압-관측).
+
+## Current Scope Decision — 2026-10-23
+
+- 사용자는 MG540 모터가 섀시와 함께 온 세트라고 보고하고 온도를 현재 작업에서 제외하기로 했다. 기존 모터를 유지하며 JGB37-520 교체 탐색은 중단한다. 세트 공급은 사용자 보고이며 열적 적합성 실측 근거와 구분한다.
+- 외부 온도 관측·수치 열 판정 `MVP-015 / REQ-THERM-001 / T-LOAD-001 / ST-MVP-04`는 `DEFERRED / NOT_RUN`. 온도계 수령·열 기준 확정을 지상1m/MVP의 선행 조건으로 다시 요구하지 않는다. 아래 이전 날짜의 온도 대기 순서보다 이 결정이 우선한다.
+- 이번 MVP는 기본 주행·정지·1m 거리 비교와 적용 요구사항의 증거 정리에 집중한다. 기존 출력 제한·정지·셀 알람 운영을 유지하며 열 미검증을 PASS나 장시간/정격 적합성으로 기록하지 않는다. 장비 구매 취소·수령은 보고되지 않았다. 온도 실측은 미실시이며 후속 지상 거리 결과는 위 최신 절을 따른다. [결정 기록](docs/progress/2026-10-23_progress.md#기존-모터-유지와-온도-검증-후속-분리).
+
+## Historical Application Checkpoint — 2026-10-22
+
+- Vishay `K104K15X7RF53H5` 10개 구매 완료(2026-10-22 사용자 보고). 규격은100nF(0.1µF)·50V·X7R·±10%·리드형·피치5mm다. 수령 여부·실제 판매처/결제액·도착일은 미확인이다. 10kΩ·1kΩ·12kΩ 저항은 이미 보유다(수량/허용오차 미보고). 초기 리드형/THT 선택을 유지하며 중복 구매를 요구하지 않는다.100nF 입력 필터 예산4개와 전체 제작 BOM 미확정은 구분한다.
+
+- 사용자 보유 추가 확인: `CANable V2.0 Pro CANbus 트랜시버 CAN2.0 USBCAN`이 집에 있다. PC 측 USB-CAN 어댑터 추가 구매를 제외한다. STM 측 MCU-230도 기존 보유다. CANable 실제 제조사/PCB·펌웨어·USB 모드·절연/단자/종단과 실제 통신은 미검증이며 CAN 작업을 현재 MVP 선행으로 앞당기지 않는다.
+
+- 10/22 사용자 보고로 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료. 후속 사용자 답변으로 네 품목 모두 배송 대기임을 확인했다. 실물 구성·최종 납기는 미확인이다. 모터별 전류/케이스 온도 각 2채널을 우선하며, 외부 계측과 후속 ADC 연속 모니터링을 구분한다. 오늘 새 실측·펌웨어 변경은 없다.
+- 이전 GM-1312 주문은 재고 취소됐고 이번 구매 완료가 최신이다. 후속 사용자 답변으로 구매 모델 온도 SEMITEC103JT-025·전류 Pololu#5241(ACS71240KEXBLT-030B3 ±30A·3.3V)을 확인했다. 실물 구성 대조는 수령 후다. 열전대 여분 수량·판매처/결제액은 추정하지 않는다.
 - 다음은 수령 상태/구성 확인과 source·증거/이미지 대조, 측정 위치·절연·범위·기록/수치 중단 기준 준비다. 미수령이면 문서·회로 준비만 진행한다. 기본 외부 전류/온도 관측과 후속 내장 ADC 연속 모니터링을 구분한다.
 - ADS1115·PSU·탑재 컴퓨터는 이번 구매 목록에 없다. 센서 구현을 새 MVP 선행 조건으로 추가하지 않는다.10/21 공중 거리 결과/계수·미완료 범위·종료 전원 미보고를 유지한다.
 - [최신 기록](docs/progress/2026-10-22_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [준비 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
@@ -121,7 +144,7 @@ current/pending 표현보다 우선한다. 세부 관측은 날짜별 progress/r
 | Electronics carrier | 150 x 100 mm universal PCB, 55 x 37 hole array |
 | CAN controller | STM32 internal bxCAN |
 | CAN transceiver | SN65HVD230-based MCU-230 module, user-reported owned/identified 2026-09-15; module terminal order, RS wiring, termination and dimensions not yet checked |
-| USB-CAN adapter | Not selected yet |
+| USB-CAN adapter | CANable V2.0 Pro CANbus / CAN2.0 USBCAN, user-reported owned 2026-10-22; exact hardware/firmware/USB mode/termination and runtime unverified |
 | DC main switch | Available; fused switch path validated 2026-07-10 and MDD10A input check repeated 2026-07-26 |
 
 ## Fixed Architecture Decisions
@@ -248,8 +271,8 @@ connector footprint depend on the actual module's exposed pins, circuit and dime
 Minimum CAN bring-up parts:
 
 - SN65HVD230-based MCU-230 transceiver module: already owned; the TI transceiver uses nominal 3.3 V supply. Verify actual module terminal order, RS wiring and termination before its hardware connection.
-- SocketCAN-compatible USB-CAN adapter
-- 120 ohm termination resistor x2
+- CANable V2.0 Pro USB-CAN adapter: already owned; verify exact board and slcan/candleLight or other installed firmware/USB mode before selecting host tools.
+- Two bus-end 120 ohm terminations: inspect both modules' onboard termination before buying additional resistors.
 - Twisted pair wire for CANH/CANL
 - Common GND wire for bench prototype
 - Jumper wires or small breadboard/prototype connector
@@ -530,7 +553,7 @@ Ask the user or verify from hardware only for these:
 
 - Vehicle left/right assignment for MDD10A channel 1/2
 - MCU-230 CAN module terminal order, RS wiring, termination and mounting dimensions (SN65HVD230 model identified)
-- Final USB-CAN adapter model
+- CANable V2.0 Pro actual manufacturer/PCB revision, firmware/USB mode, isolation, terminal order and termination (user-reported product name/ownership confirmed 2026-10-22)
 - Battery voltage divider resistor values
 - External-tachometer RPM accuracy and wheel-speed scale; the current firmware output-shaft count constant is 1560
 - Final F1 release after loaded start-waveform, voltage-drop/thermal and protection-coordination evidence; 10 A ATOF remains the prototype candidate

@@ -1,17 +1,19 @@
 # 펌웨어 앱과 검사 안내
 
-상태 대조: **2026-10-21**. 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다.
+상태 대조: **2026-10-23**. 지상1m 실제/추정·오차 기록 범위 PASS: run03/04 실측1002mm, 평균1002.640333/1000.953333mm. [결과/한계](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조). MCU코드·빌드/플래시는 변경하지 않았고 관찰기만v5.1로 수정했다. 초기k/cap/gain 유지, 정밀도·직진성·전체 MVP 인수는 별도다. 온도는 후속 미실시이며 공중20cm는 사용자 요청 미실시로 남긴다.
+
+**이후 추가 운전의 미결:** 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다.
 
 ## 앱 선택과 마지막 실행
 
 | 프로젝트 폴더 | 역할·진입점 | 확인한 상태 |
 | --- | --- | --- |
 | [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령 검사·상태/timeout·최종 출력 안전 판단 | W5 실제 PONG/ACK·TEL 관측. PA10 pull-up·PONG 시험 hook0U. 전체 전력단·주행 수용과 별개 |
-| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 지상 주행·10/20 count/ARM 연동, 10/21 공중 목표 거리·거리 JSON 확인. 반응형 PAGE·복사 기능 적용, 실제 배포 이미지 신원은 별도 |
+| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 지상 주행·10/20 count/ARM 연동, 10/21 공중 목표 거리·거리 JSON,10/23 지상1m count/수동 DISARM 확인. 반응형 PAGE·복사 기능 적용, 실제 배포 이미지 신원은 별도 |
 | [esp32_uart_bridge](esp32_uart_bridge/README.md) | [uart_bridge_main.c](esp32_uart_bridge/main/uart_bridge_main.c). 기존 UART bring-up·모터 시험 콘솔 | 별도 앱의9/30 M2_RUN 수동 hook1U와 default-off30 PASS/1 FAIL 이력. Wi-Fi 앱의 설정이 아님. hook 복구·해당 앱 재빌드/플래시·release는 별도 |
 | [esp32_examples](esp32_examples/README.md) | Hello World·FreeRTOS·STA·HTTP·WebSocket 단계별 연습 | 각 하위 폴더가 별도 ESP-IDF 프로젝트. 예제 플래시는 ESP의 실행 앱을 바꾸며 실제 Wi-Fi/UART 연동 검증과 구분 |
 
-마지막 W5 시험은 STM·ESP 각각 USB 전원, LiPo 미연결이었다. 종료 후 두 USB 분리 완료는 사용자 확인이다.
+과거 W5 시험은 STM·ESP 각각 USB 전원·LiPo 미연결이었고 당시 두 USB 분리를 확인했다. 최신10/23 지상 회차는 배터리 구동이며 종료 전원 분리는 미보고다.
 UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. 전원·배선·플래시 작업은 사용자가 해당 Gate 조건에 맞춰 수행한다.
 
 ## ARM/CMD 모듈과 실행 경로

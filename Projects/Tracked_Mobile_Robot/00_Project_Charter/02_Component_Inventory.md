@@ -5,18 +5,31 @@
 부품 본문 기준: **2026-09-23**, 계측 장비/구매 상태: **2026-10-22**. 보유·사용 여부와 검증 완료 여부는 구분한다.
 [현재 작업 현황](../docs/handoff/CURRENT_SESSION_CONTEXT.md)을 재개 기준으로 사용한다.
 
+**10/22 추가 보유 확인:** 사용자가 `CANable V2.0 Pro CANbus 트랜시버 CAN2.0 USBCAN`을 집에 보유한다고 보고했다. PC 측 USB-CAN 어댑터 보유로 반영하고 추가 구매에서 제외한다. 상품명은 확인됐지만 실제 제조사·PCB 리비전·펌웨어/USB 인식·절연·단자/종단은 미확인이다. STM 측 MCU-230과 역할이 다르며 CAN 통신 검증 완료가 아니다. 아래10/19 USB-CAN 구매 후보는 이 확인 전의 이력이다.
+
 ## 계측 장비와 센서 구매 — 2026-10-22
 
-사용자가 **온도센서 2개·전류센서 2개·BENETECH GM-1312·UNI-T UT210E 구매 완료**를 보고했다. 수령·설치·동작/정확도 검증은 미확인이다. [당일 기록](../docs/progress/2026-10-22_progress.md)을 최신 상태로 사용한다.
+**최신 입력 부속 보유 확인:** Vishay `K104K15X7RF53H5` 10개 구매 완료(2026-10-22 사용자 보고). 규격은100nF(0.1µF)·50V·X7R·±10%·리드형·피치5mm다. 수령 여부·실제 판매처/결제액·도착일은 미확인이다. 10kΩ·1kΩ·12kΩ 저항은 앞서 사용자 보유로 확인됐으며 정확한 수량/허용오차는 미보고다. 저항과 커패시터를 중복 구매 대상으로 안내하지 않는다. 현재 입력 회로 예산은 커패시터 온도2+전류 후보2=4개로, 구매10개 중6개는 이 예산 기준 예비분이다. 전체 제작 BOM 확정은 아니다.
+
+**구매 전 커패시터 검색 이력:** [디바이스마트 상품7223986](https://www.devicemart.co.kr/goods/view?no=7223986)의 Vishay `K104K15X7RF53H5`(100nF·50V·X7R·±10%·리드형/피치5mm)를 구매 후보로 추천했다. 직접 상품 페이지 재조회 기준10개 구간VAT포함275원/개,10개2,750원+기본배송2,700원=5,450원이다. 해외구매대행이며 평균 준비4~5일 표시는 도착/출고 확정일이 아니다. 검색 캐시의 과거 가격/재고와 구분했고 최종 결제 조건은 재확인 대상이다. [검색/가격 근거](../assets/logs/sensor_design/2026-10-22_monitor_expansion/capacitor_purchase_search.json). 위 가격/배송 조건은 구매 전 검색 추정이며 실제 주문 내역으로 간주하지 않는다. 이후 구매 완료 보고는 위 최신 상태를 따른다.
+
+사용자가 **온도센서 2개·전류센서 2개·BENETECH GM-1312·UNI-T UT210E 구매 완료**를 보고했다. 후속 답변으로 네 품목 모두 배송 대기임을 확인했다. 설치·동작/정확도 검증은 미실시다. [당일 기록](../docs/progress/2026-10-22_progress.md)을 최신 상태로 사용한다.
 
 | 구매 품목 | 수량 | 현재 상태와 용도 |
 | --- | ---: | --- |
-| 온도센서 | 2개 | 구매 완료 / 수령 미확인. 좌우 모터 케이스 관측. 대화 선정 후보 SEMITEC `103JT-025`, 실제 주문 SKU 확인 대기 |
-| 전류센서 | 2개 | 구매 완료 / 수령 미확인. 좌우 모터 개별 전류 관측. 대화 선정 후보 Pololu `#5241 / ACS71240KEXBLT-030B3`, 실제 주문 SKU 확인 대기 |
-| BENETECH GM-1312 | 1대 | 구매 완료 / 수령 미확인. 이전 주문 재고 취소 뒤 최종 구매 보고. 실제 K형 프로브·건전지·부속 구성 확인 대기 |
-| UNI-T UT210E | 1대 | 구매 완료 / 수령 미확인. 외부 DC 클램프 전류 관측. 최종 판매처·가격·납기는 미확인 |
+| 온도센서 | 2개 | 구매 완료 / 배송 대기. 좌우 모터 케이스 관측. SEMITEC `103JT-025`, 사용자 구매 모델 확인; 실물 구성 확인 대기 |
+| 전류센서 | 2개 | 구매 완료 / 배송 대기. 좌우 모터 개별 전류 관측. Pololu `#5241 / ACS71240KEXBLT-030B3` ±30A·3.3V, 사용자 구매 모델 확인; 실물 구성 확인 대기 |
+| BENETECH GM-1312 | 1대 | 구매 완료 / 배송 대기. 이전 주문 재고 취소 뒤 최종 구매 보고. 실제 K형 프로브·건전지·부속 구성 확인 대기 |
+| UNI-T UT210E | 1대 | 구매 완료 / 배송 대기. 외부 DC 클램프 전류 관측. 최종 판매처·가격·납기는 미확인 |
+| Vishay `K104K15X7RF53H5` | 10개 | 구매 완료 / 수령 미확인.100nF·50V·X7R·±10%·리드형·피치5mm. 온도2+전류 후보2 입력 필터용 |
 
 GM-1312의 열전대와 모니터링용 온도센서 2개는 별도 품목이다. 여분 열전대 구매 수량은 보고되지 않았다. 검색 후보의 가격·11/12 예정일을 실제 주문 내역으로 기록하지 않는다. 구매한 품목을 다시 구매 대상으로 안내하지 않는다.
+
+**온도 입력 부속 사용자 확인:** 10kΩ·1kΩ은 보유,100nF는 위 Vishay10개 구매 완료로 갱신했다. 저항의 정확한 수량/허용오차는 미확인이다.10kΩ0.1%는 필수가 아니고±1%도 초기 대안이다. [설계와 대체 조건](../docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md).
+
+**4채널 확장 계산 후보:** 전류12kΩ 뒤100nF×2를 포함한100nF 예산은 온도2+전류 후보2=4개다.12kΩ은 보유지만 최종 필터값은 미확정이다. [별도 확장 연결안](../09_Electrical_Design/14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md)의 보호/전원·배치·기판/소켓·고정부속 선정은 남아 있다. 커패시터 구매가 전체 제작 준비 완료를 뜻하지 않는다.
+
+**구매 안내 이력(최신 보유/구매 상태는 위 참조):** 사용자 리드형 선택과 부속 목록 요청으로10kΩ·1kΩ·12kΩ 축형 금속피막1%·1/4W 및100nF 리드형X7R·50V·±10%를 예비 포함 각10개 추천으로 정리했다.12kΩ은 전류 필터 후보의 범용 준비품이며 최종 제작값이 아니다. 같은 규격 보유분은 제외하고 구입하며, 커넥터/소켓·기판·고정부속·보호/전원 부속은 별도 후속 선정한다. 이는 주문 완료 보고가 아니다.
 
 기존 보유 장비 근거는 아래와 같다. 표는 이번에 새 실물 검사한 결과가 아니다.
 
@@ -66,6 +79,7 @@ USB-CAN 사전 조사 근거:
 | MCU | NUCLEO-F446RE | low-level motor controller | STM32 firmware main target |
 | MCU | ESP32-S3 DevKitC | support controller | wireless/UI/sensor test candidate |
 | Communication | SN65HVD230-based MCU-230 CAN transceiver module | future CAN physical interface | USER-REPORTED OWNED / MODEL IDENTIFIED 2026-09-15; nominal 3.3 V transceiver IC; module terminal order, RS wiring, termination and dimensions not yet checked |
+| Communication | CANable V2.0 Pro CANbus / CAN2.0 USBCAN adapter | PC-side USB-CAN node/debugger | USER-REPORTED OWNED 2026-10-22; exact manufacturer/PCB, firmware, USB mode, isolation and termination unverified; no additional adapter purchase |
 | Firmware | STM32 HAL / CubeMX | initial bring-up | validate PWM, encoder, ADC, UART first |
 | Firmware | FreeRTOS | required later firmware architecture | task, queue, timing, safety separation |
 | Firmware | STM32 LL Driver | advanced migration target | timing-critical paths after HAL validation |
@@ -122,7 +136,7 @@ terminal first-article crimp, cavity map, 6x6 continuity/isolation, seal/retenti
 | Component | Reason |
 |---|---|
 | BMS | not used with finished RC LiPo pack in this project phase |
-| USB-CAN adapter | required later for CAN debugging |
+| USB-CAN adapter | CANable V2.0 Pro reported owned 2026-10-22; verify actual device/firmware and CAN communication later, no additional purchase |
 | LiDAR | drivetrain and odometry first |
 | large 5000mAh battery | current 3S LiPo is enough for initial validation |
 

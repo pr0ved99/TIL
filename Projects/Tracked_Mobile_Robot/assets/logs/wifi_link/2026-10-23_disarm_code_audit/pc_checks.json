@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-23",
+  "status": "PASS_PC_PATH_CHECKS_ONLY_HISTORICAL_CAUSE_UNDETERMINED",
+  "source": {
+    "page": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+    "sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "fixture_sha256": "4d02dc0c3f828fdc748c2bc58b5e17ec2a80e529c4eaf432138181ee472abe9f",
+    "test_sha256": "d1e37d14678fb2d0753f94e5eb7c2bbe1ab064c0671e0abea84001ff6ba07c3d"
+  },
+  "checks": [
+    {
+      "observer": "none",
+      "name": "release requests zero and retains ARM; directions become available after zero ACK",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "DISARM preempts moving CMD; late ACK and ACTIVE snapshots cannot restore intent",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "repeated clicks while waiting send one DISARM; retry after result remains stopped",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "BUSY/DUPLICATE/STARTUP_PENDING/BOOT_MISMATCH responses do not reenable directions",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "DISARM result timeout with live ARMED/ACTIVE input never resumes zero or motion stream",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "send failure or close during DISARM clears control; reconnect and old packets cannot arm",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "DISARM before ARM ACK prevents delayed ARM ACK from establishing control",
+      "passed": true
+    },
+    {
+      "observer": "none",
+      "name": "focus loss stops; returning focus and fresh ACTIVE input does not restore directions",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "release requests zero and retains ARM; directions become available after zero ACK",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "DISARM preempts moving CMD; late ACK and ACTIVE snapshots cannot restore intent",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "repeated clicks while waiting send one DISARM; retry after result remains stopped",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "BUSY/DUPLICATE/STARTUP_PENDING/BOOT_MISMATCH responses do not reenable directions",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "DISARM result timeout with live ARMED/ACTIVE input never resumes zero or motion stream",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "send failure or close during DISARM clears control; reconnect and old packets cannot arm",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "DISARM before ARM ACK prevents delayed ARM ACK from establishing control",
+      "passed": true
+    },
+    {
+      "observer": "v5",
+      "name": "focus loss stops; returning focus and fresh ACTIVE input does not restore directions",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "release requests zero and retains ARM; directions become available after zero ACK",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "DISARM preempts moving CMD; late ACK and ACTIVE snapshots cannot restore intent",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "repeated clicks while waiting send one DISARM; retry after result remains stopped",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "BUSY/DUPLICATE/STARTUP_PENDING/BOOT_MISMATCH responses do not reenable directions",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "DISARM result timeout with live ARMED/ACTIVE input never resumes zero or motion stream",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "send failure or close during DISARM clears control; reconnect and old packets cannot arm",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "DISARM before ARM ACK prevents delayed ARM ACK from establishing control",
+      "passed": true
+    },
+    {
+      "observer": "v5.1",
+      "name": "focus loss stops; returning focus and fresh ACTIVE input does not restore directions",
+      "passed": true
+    }
+  ],
+  "check_count": 24,
+  "baseline_case_count": 67,
+  "limitations": [
+    "Simulated DOM, pointer dispatch, WebSocket, clock; not real browser rendering/hit-testing",
+    "No hardware, network, MCU build or flash; no firmware modification",
+    "Cannot reconstruct unrecorded run02 click/send/disconnect events or prove every possible interleaving"
+  ]
+}

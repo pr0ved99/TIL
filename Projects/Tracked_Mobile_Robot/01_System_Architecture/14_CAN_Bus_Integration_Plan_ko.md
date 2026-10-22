@@ -125,6 +125,8 @@ CAN debugging이 기본 drivetrain, encoder, power, safety 문제를 가리면 �
 
 ## 4. 필요한 Hardware
 
+**2026-10-22 사용자 보유 갱신:** `CANable V2.0 Pro CANbus 트랜시버 CAN2.0 USBCAN`이 집에 있다고 확인됐다. PC 측 USB-CAN 어댑터는 새로 구매하지 않는다. 제조사/PCB·펌웨어·실제 USB 모드·절연/종단은 미확인이다. 상품명의Pro/2.0만으로 공식 특정 보드·CAN FD·PCAN/SocketCAN 호환을 확정하지 않는다. [CANable 공식 안내](https://www.canable.io/getting-started.html)의slcan/candleLight 경로는 실제 설치 펌웨어와 대조 후 선택한다. STM측 MCU-230은 기존 보유이며CAN1 PA11/PA12 예약/STM최종 제어 권한은 유지한다. 이번 보고는 소유 확인이며 연결/통신 PASS나CAN 실습 시작이 아니다.
+
 2026-09-30 보유 정보: 사용자는 SN65HVD230 기반 MCU-230 모듈을 보유한다. PA11/PA12 예약을 유지하며 실제 단자·전원·RS·종단과 통신은 미검증이다. USB-CAN 장치의 선정·확인은 별도다.
 
 Required hardware:
@@ -133,7 +135,7 @@ Required hardware:
 | --- | --- | --- |
 | STM32 NUCLEO-F446RE | CAN controller | 내부 bxCAN peripheral 사용 |
 | CAN transceiver module | STM32 logic CAN RX/TX를 CANH/CANL로 변환 | 초기 STM32 test에는 3.3 V-compatible transceiver 권장 |
-| USB-CAN adapter | PC-side CAN node와 debugger | Ubuntu에서는 SocketCAN-compatible adapter가 편리 |
+| USB-CAN adapter | PC-side CAN node와 debugger | CANable V2.0 Pro 사용자 보유 확인10/22. 실제 firmware/USB mode·host 도구·종단/통신 검증 필요, 중복 구매 제외 |
 | 120 ohm resistors | Bus termination | 물리적 bus 양 끝에 하나씩 |
 | Twisted pair wire | CANH/CANL bus wiring | 첫 bench test는 짧은 배선도 가능 |
 | Common ground wire | Node 사이 기준 전위 | Bench prototype에서는 권장 |

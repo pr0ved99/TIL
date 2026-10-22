@@ -1,0 +1,135 @@
+{
+  "format_version": 1,
+  "observer_version": 5,
+  "interpretation": "Initial encoder-equivalent track travel; not measured chassis displacement",
+  "coefficient": {
+    "status": "INITIAL_GEOMETRIC_NOT_GROUND_CALIBRATED",
+    "numerator": "1687",
+    "denominator": "19500",
+    "display_mm_per_count": "0.086512820513",
+    "same_initial_value_for_both_sides": true
+  },
+  "policy": {
+    "stm_source_and_sample_limit_ms": 200,
+    "browser_receive_gap_limit_ms": 250,
+    "start": "ACKed ARM plus first fresh stationary valid sample",
+    "end": "ACKed DISARM plus first fresh valid zero-command/PWM/CPS sample",
+    "gaps": "Reject whole ARM window; never resume it automatically"
+  },
+  "summary": {
+    "telemetry_rows": 939,
+    "unique_source_tel": 566,
+    "browser_evicted_rows": 0,
+    "accepted_windows": 1,
+    "rejected_windows": 0,
+    "command_result_status_counts": {
+      "OK": 260
+    }
+  },
+  "diagnostics": {
+    "INVALID_SAMPLE_OR_ARM": 230,
+    "REPEATED_BROADCAST_IGNORED": 373
+  },
+  "windows": [
+    {
+      "boot_id": 1339414435,
+      "arm_seq": 2670355425,
+      "status": "ACCEPTED",
+      "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+      "arm_ack_ms": 22818.79999999702,
+      "start": {
+        "ms": 22899.19999999553,
+        "tel_count": 41570,
+        "stm_t_ms": 37600,
+        "encoder_t_ms": 37595,
+        "left_count": "0",
+        "right_count": "0",
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 2670355425
+      },
+      "end": {
+        "ms": 48848.10000000149,
+        "tel_count": 41830,
+        "stm_t_ms": 63600,
+        "encoder_t_ms": 63595,
+        "left_count": "11727",
+        "right_count": "11452",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 2670355684
+      },
+      "source_samples": 261,
+      "delta_count": {
+        "left": "11727",
+        "right": "11452"
+      },
+      "distance_estimate_mm": {
+        "left": "1014.535846",
+        "right": "990.744821",
+        "center": "1002.640333"
+      },
+      "last_valid": {
+        "ms": 48848.10000000149,
+        "tel_count": 41830,
+        "stm_t_ms": 63600,
+        "encoder_t_ms": 63595,
+        "left_count": "11727",
+        "right_count": "11452",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 2670355684
+      },
+      "disarm_seq": 2670355684
+    }
+  ],
+  "warnings": [],
+  "limitations": [
+    "No actual-distance calibration or physical stop-time measurement",
+    "No window spans resets, source gaps, tick wrap or ARM identity changes",
+    "Truncated ACK/baseline/endpoint evidence is not reconstructed",
+    "Encoder displacement cannot detect track/surface or sprocket slip"
+  ],
+  "input": {
+    "path": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-23_ground_1m_run03\\browser_report.json",
+    "sha256": "7a08035edb09554a020b182ea41dd34b82b2dde55c16bfe857e9d016f00f47d1"
+  },
+  "model": {
+    "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_track_geometry_14t_revision\\geometry_model.json",
+    "sha256": "15db3b58f412a2fc544d5f2199cbc587921959829f707331e71417c622e1ff48",
+    "pitch_mm_nominal": 9.64,
+    "pitch_mm_reading_range": [
+      9.62,
+      9.66
+    ],
+    "sprocket_teeth": 14,
+    "counts_per_output_rev": 1560
+  },
+  "external_distance_comparison": {
+    "format_version": 1,
+    "status": "CALCULATED_NOT_PHYSICAL_ACCEPTANCE",
+    "boot_id": 1339414435,
+    "arm_seq": 2670355425,
+    "disarm_seq": 2670355684,
+    "measurement": {
+      "signed_displacement_mm": "1002",
+      "origin": "USER_SUPPLIED_EXTERNAL_MEASUREMENT",
+      "note": "사용자 보고 실제 전진거리1002mm. 같은 차체 기준점의 시작/종료 바닥 투영 비교를 안내한 회차; 도구 눈금/불확도와 사진은 미제공. 좌우 치우침은 사용자 선택으로 미측정. 단일 회차 거리 비교이며 직진성·반복 정밀도·전체 MVP 자동 PASS가 아님.",
+      "convention": "Forward positive, reverse negative; same start/end as selected window"
+    },
+    "distance_estimate_mm": {
+      "left": "1014.535846",
+      "right": "990.744821",
+      "center": "1002.640333"
+    },
+    "center_signed_error_mm": "0.640333",
+    "center_absolute_error_mm": "0.640333",
+    "center_absolute_error_percent": "0.063906",
+    "limitations": [
+      "External measurement and matching of physical endpoints are user supplied",
+      "Straightness, lateral drift, slip and measurement uncertainty require external observations",
+      "Net encoder travel is not chassis path length or automatic target-distance stopping",
+      "No PASS threshold, gain change or distance-coefficient calibration is applied"
+    ]
+  }
+}

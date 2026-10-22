@@ -2,7 +2,13 @@
 
 STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-21
+## 현재 상태 — 2026-10-23
+
+지상1m 실제/추정·오차 기록 범위 PASS. run03/04 사용자 실측1002mm에 평균1002.640333/1000.953333mm, 종료 DISARM OK·IDLE·정지 TEL을 확인했다. PC 관찰기v5.1은 재접속/실제 송신/수동 클릭/focus loss를 추적하며 MCU코드/빌드·플래시 변경은 없다. run02의 간헐 DISARM/UI 원인은 OPEN, 전체 인수는 미완료다. [최신 판정](../../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [관찰기](../../assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js). 기존k/cap/gain 유지, 외부 온도는 후속 미실시다.
+
+**이후 추가 운전의 미결:** 전진·좌회전 중 상태 수신 지연으로 자동 DISARM을 관측했다. 직접 조건은 TEL 나이265.2≥250ms / 제어 상태 나이204.9≥200ms이며 현재 PAGE의 PC 재현도 PASS다. 보호 정지는 확인됐지만 지연 발생 구간은 OPEN이다. 다음은200/250/300ms 제한을 유지한 수신 지연 조사이며 추가 주행은 자동 요구하지 않는다.
+
+### 10/21 공중 거리 — 당시 이력
 
 10/21 공중 목표 거리5·10·15cm의 단일 회차 실측을 마감했다. 좌/우 실측은5cm=52/52mm, 10cm=102/101~102mm, 15cm=151~152/151~152mm다. 10·15cm JSON에서 목표 도달→DISARMED·요청/PWM/CPS0·drop/err0과 정지 후 count 유지를 확인했다. 20cm는 사용자 요청으로 미실시다. 현재 k=1687/19500mm/count와 출력/gain을 유지한다. 반복 정밀도·지상 차체 거리/직진성·외부 온도·전체 MVP 수용은 미완료다. 10/20 공중 UART 단절/timeout 정지·복구 기능 근거는 보존하며, 이번 거리 변경 후 실행 이미지 신원/변경 영향은 별도로 연결한다. [10/21 기록](../../docs/progress/2026-10-21_progress.md).
 
