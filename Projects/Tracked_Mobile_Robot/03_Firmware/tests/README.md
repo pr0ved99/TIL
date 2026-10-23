@@ -1,5 +1,13 @@
 # Firmware Safety Contract Tests
 
+## 브라우저 대시보드 표시 검사 — 2026-10-24
+
+[test_wifi_dashboard_page.js](test_wifi_dashboard_page.js)는 실제 PAGE를 읽어 표시10항목을 검사한다. 기존 공통46·거리28·방향21과 합쳐 중복 제외105 PASS. 새 값/지연/무효 엔코더/FAULT/BLOCKED·int64 보존·표시 예외 중 DISARM을 확인한다. [Chrome 배치/실행 방법](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md). MCU 빌드·플래시·실물 검사는 아니다.
+
+```powershell
+node Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_dashboard_page.js Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c
+```
+
 이 디렉터리는 정적 소스/독립 참조 모델 검사, 실제 C 함수·모듈의 PC 실행 검사,
 브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다.
 보드 빌드·플래시·실제 UART·전기/기계 관측은 별도로 기록한다.

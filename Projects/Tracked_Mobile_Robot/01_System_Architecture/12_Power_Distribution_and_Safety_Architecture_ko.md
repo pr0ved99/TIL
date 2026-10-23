@@ -69,8 +69,9 @@ K1 주선은 사용자 구성 14 AWG, MDD B− 귀환은 16 AWG다. 부품/단�
 K1은 S0/S2/K2 제어 경로로 모터 전원을 차단·수동 재인가하며 두 buck 입력은 K1 전단에서 분기한다.
 S0 감지와 STM32 래치/PWM 경로는 전력 차단 경로와 구분한다. 세부 계약은 [25 회로](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를 따른다.
 
-최신 USB bench에서는 #1 보드용 2P 두 개를 분리·절연하고 두 보드를 USB로 공급한다.
-이 시험 연결을 위 최종 전원 분배 구조와 혼동하지 않는다. 실제 재개는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
+과거 USB bench에서는 #1 보드용 2P 두 개를 분리·절연하고 두 보드를 USB로 공급했다.
+10/18 이후 무선 운용 기준은 보드용2P 복원·STM JP5 E5V·배터리 단독이며 USB 전원과 혼용하지 않는다.
+두 전원 모드를 구분하고 실제 재개는 [운용 절차](../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)와 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 모터 전류는 만능기판 패드로 흐르지 않으며, fuse/극성/접속 경로와 전력단 잔여 수용 조건은 유지한다.
 전체 T005A는 PARTIAL이다. PA4/PB0 자동 rail 진단은 post-MVP이며 현재 직접 rail 관측을 대체하지 않는다.
@@ -241,8 +242,10 @@ nonzero motor output을 차단해야 한다.
 
 | Converter | 현재 역할 | Notes |
 | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 보드용 5 V | 전원 통합 관측 있음. 현재 USB bench에서는 보드용 두 2P 분리·절연 |
+| XL4015 #1 | STM32/ESP32 보드용 5 V | 현재 배터리 단독 운용에서 두 2P 연결. 과거 USB bench는 두 2P 분리·절연한 별도 구성 |
 | XL4015 #2 | AUX5V: 엔코더·S0-B 감지 | 공통 GND 유지, 로직 전원과 역할 구분 |
+
+**2026-10-23 후속 확장 설계:** 사용자 요청으로 #2 AUX5V 출력에서 확장 PCB로 병렬 분기해 별도3.3V를 생성하는 안을 검토한다. 기존 #1 STM/ESP 보드 전원과 두 OUT+ 분리를 유지한다. [전원 예산](../09_Electrical_Design/17_Expansion_Power_Budget_2026-10-23_ko.md)은 추가235mA 예산·300mA 연속 설계 목표이며 기존 엔코더 소비전류와 #2 전체 공급 여유는 미정이다. 현재 실물 배선·설정 변경이나 부하/보호 검증 완료가 아니다.
 
 Current inventory note:
 

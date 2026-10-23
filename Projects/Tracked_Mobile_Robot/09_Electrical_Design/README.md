@@ -1,5 +1,19 @@
 # Electrical Design
 
+## 현재 노트북 설계 — 2026-10-23
+
+**2단계 종합 검토본:** [ADC6채널 연결·측정 기준](20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md). PC0/1 전류·PC2/3 온도·PA4/PB0 전압의 포트/핀 순서를 모았다. 전류센서 nonratiometric·NTC VEXC/VDDA 비율·미분압 rail 보호를 구분했다. 구성 검토본 작성 완료이며 승인/실측 PASS는 아니다. 다음3단계 첫 작업은 ADC 기준·NTC 여기·무전원 보호 방식 비교/계산이다.
+
+**CAN 연결 계약 초안:** [GPIO·커넥터 검토](19_CAN_GPIO_and_Connector_Contract_2026-10-23_ko.md). ESP GPIO4 TX/GPIO5 RX와 ESP 가까운 트랜시버 배치를 제안했다. 별도3.3V 전원·논리3선·버스3선,2/3노드 종단 전환을 기록했다. 기존 UART17/18 유지, HG 실물/전원 OFF 보호·커넥터 제품/키는 미확정. 다음은 ADC6채널 포트/기준 계약과2단계 종합 검토다.
+
+**전원 구조 검토안:** [3.3V 공급·조립 검토](18_Expansion_3V3_Supply_Structure_and_Assembly_2026-10-23_ko.md). #2 병렬 분기→단일 LDO→센서/CAN 분배와 TO-220급을 우선 제안한다. 출력 오차 포함 발열 사례0.615W, MCP1825S는 ±2.5%로 초기±1% 탐색 조건에 미달하여 미선정. 무전원 역급전·NTC 기준·#2 전체 여유는 OPEN이다. 다음은 ESP GPIO/커넥터 계약이며 CAD/BOM은 유지한다.
+
+**채택한 목표:** STM 센서/구동 집중 + ESP Wi-Fi–CAN 게이트웨이 + 개발용 CANable. 별도 센서 MCU 추가 없음. 두 MCU용 트랜시버와 각 노드의 전원/핀/배치를 검토한다. 최신 확장 전원은 XL4015 #2 AUX5V 병렬 분기 → 별도3.3V 생성안이다. 추가 부하235mA/연속 설계300mA·LDO 손실약0.51~0.59W 계산안을 검토하며 실제 품번·방열·#2 전체 공급 여유는 미확정이다. [전원 예산 계산](17_Expansion_Power_Budget_2026-10-23_ko.md).
+
+**현재 단계: 2단계 [전체 블록도·인터페이스 초안](16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md) 검토.** [요구조건1차안](15_Expansion_PCB_Requirements_2026-10-23_ko.md)을 바탕으로 기존/신규 기판·외부 모듈의 역할, 신호/전원 흐름, ADC6개+CAN2개 논리 신호를 대조했다. 다음은 같은2단계의 전원 여유·핀 조건·커넥터 계약이다. 아래 기존 CAD는 참고 초안이며 회로·배치 단계로 건너뛰지 않는다.
+
+[TMR Monitor Shield RevA](KiCAD/TMR_Monitor_Shield_RevA/README.md): NUCLEO 상면 확장 쉴드 검토. **현재 CAD는 전류2·온도2채널 센서 부분만 작성된 초안**이며 부품22개·미배선32개다. 전체 범위 대조에서 CAN과 K1 전단·후단 전압2채널의 누락을 확인했다. IMU는 기존 만능기판 위치·배선을 유지하며 중복 실장하지 않는다. LiDAR는 모델별 전원·데이터 연결 조건부터 정하고 PCB 포함 여부를 결정한다. 요구사항 검토 후 전체 기능의 핀·전원·커넥터 계약과 추가 회로를 검토한다. 부품 외형·소켓 높이·실물 간섭은 미확정이며 기존 MVP의 새 선행 조건이 아니다.
+
 ## 최신 보드 전원 관측 — 2026-10-23
 
 XL4015 #1 세팅 후 두 보드 연결 상태5.02V 사용자 보고. 앞선 USB저항 부하에서 XL OUT5.00V·USB4.85~4.87V/0.93A·제공된배치도기준CC LED꺼짐을 확인했다. 정확 CC·최종무부하·각 보드입력/3.3V/순간파형은 미확인이다. 재설정 뒤 운전로그의 지연정지 미재현과 전압의 인과관계는 미확정이다. [관측/한계](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md). 도면/정격 release를 뜻하지 않는다.

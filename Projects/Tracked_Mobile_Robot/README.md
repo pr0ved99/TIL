@@ -13,10 +13,14 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **계측 준비:** 103JT-025×2·Pololu#5241×2·GM1312·UT210E 구매/배송 대기, Vishay100nF10개 구매·수령 미확인이라는 마지막 보고를 유지한다. 장비 수령을 거리/MVP 선행으로 요구하지 않는다. [후속 모니터링 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
 
-**최신 전원·운전 관측 · 10/23:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. [비교/한계](assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md)
+**통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/edit/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 새 두 영상은 시연용0.5초 근사 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
+
+**브라우저 적용:** PAGE 요약판·십자 조작·DISARM·지연 표시의 PC105검사와 Chrome4너비 검증을 완료했다. 사용자 ESP 플래시 성공·새 UI 정상·배터리 단독 확인 및 제출 영상은 [판독](assets/logs/wifi_link/2026-10-24_demo_run01/README.md)에 기록했다. 보드 이미지 readback과 새 UI 처리 비용 계측은 미확인이다.
+
+**관측·운용:** [v5.2 세 조건 분석](assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md), [운용 절차](docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md), [잔여 인수 대조41](docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md)을 보존한다. 과거 통신/UI 원인은OPEN, T005A PARTIAL/T007 BLOCKED를 유지하며 완료 시험·제외 조사를 자동 반복하지 않는다.
 
 **바로 보기:** [STM32 펌웨어](03_Firmware/stm32_uart_mvp/Core/Src/) ·
-[ESP32 UART 브리지](03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c) · [Wi-Fi 상태 전달](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) ·
+[현재 ESP Wi-Fi 앱](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) · [운용·재현 절차](docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md) ·
 [Python 검증 코드](03_Firmware/tests/) · [대표 계측 보고서](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) ·
 [완료 범위와 근거](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
 
@@ -141,7 +145,7 @@ flowchart LR
 
 ## 4. 현재 검증 범위와 남은 작업
 
-**상태 대조: 2026-10-23.** 선택 기능/거리 기록의 완료와 전체 전력단·비상정지 인수를 구분한다. [최신 잔여 대조](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#현재-완료-범위와-남은-판단)가 현재 판정의 정본이다.
+**상태 대조: 2026-10-24.** 선택 기능/거리 기록의 완료와 전체 전력단·비상정지 인수를 구분한다. [최신 잔여 대조](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#현재-완료-범위와-남은-판단)가 현재 판정의 정본이다.
 
 | 분야 | 확인된 범위 | 남은 경계 |
 | --- | --- | --- |

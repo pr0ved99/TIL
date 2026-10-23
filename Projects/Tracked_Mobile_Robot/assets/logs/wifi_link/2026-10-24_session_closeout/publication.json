@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-24",
+  "user_request": "영상 제작을 완료한 뒤 문서·진행·Git·기존 Calendar·Notion 마감",
+  "video": {
+    "path": "../2026-10-24_carpet_s0_demo_run01/edit/TMR_MVP_Final_2026-10-24.mp4",
+    "sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15",
+    "duration_seconds": 149,
+    "validation": "../2026-10-24_carpet_s0_demo_run01/edit/validation.json"
+  },
+  "external_readbacks": [
+    {
+      "service": "notion",
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "verified": true,
+      "progress": "진행 중",
+      "acceptance": "PARTIAL / OPEN preserved"
+    },
+    {
+      "service": "notion",
+      "id": "3fca7326-f87b-81f7-b48e-fbda1ddf38c0",
+      "verified": true,
+      "progress": "진행 중",
+      "acceptance": "PARTIAL / OPEN preserved"
+    },
+    {
+      "service": "calendar",
+      "id": "snjr8tvbbishjba2dut38bmu60",
+      "start": "2026-10-24T12:00:00+09:00",
+      "end": "2026-10-24T14:00:00+09:00",
+      "verified": true,
+      "original_times_preserved": true
+    },
+    {
+      "service": "calendar",
+      "id": "b19r0go3g1bfu87saos6p83rv4",
+      "start": "2026-10-24T14:30:00+09:00",
+      "end": "2026-10-24T16:00:00+09:00",
+      "verified": true,
+      "original_times_preserved": true
+    },
+    {
+      "service": "calendar",
+      "id": "5iobptc8if74bnrm4tbttihh58",
+      "start": "2026-10-24T18:30:00+09:00",
+      "end": "2026-10-24T20:00:00+09:00",
+      "verified": true,
+      "original_times_preserved": true
+    }
+  ],
+  "git": {
+    "status": "pending scoped commit and push"
+  },
+  "formal_acceptance": "unchanged"
+}

@@ -1,0 +1,302 @@
+{
+  "date": "2026-10-24",
+  "assessment": "카펫 지상 주행과 S0 정지, 래치 유지, ARM 재허용, 복구 뒤 재주행을 보여주는 대표 시연 자료로 가치가 높다. 특히 물리 조작과 STM 상태, 브라우저 허가의 연결을 설명할 수 있다.",
+  "user_report": {
+    "carpet_cm": [
+      100,
+      150
+    ],
+    "travel": "1m 이상 주행",
+    "sequence": [
+      "주행 중 S0 push",
+      "S0 해제",
+      "S2 push",
+      "STM reset push",
+      "S0 및 S2 뒤 ARM 비활성화 확인",
+      "STM reset 뒤 DISARMED / IDLE / READY 및 ARM 활성 확인",
+      "짧은 주행"
+    ]
+  },
+  "method": {
+    "base_samples": "두 원본에서 60프레임마다 추출한 약2초 표본, 개요는6초 간격",
+    "detailed_screen_samples": [
+      62,
+      64,
+      66,
+      70,
+      74,
+      78,
+      80,
+      82,
+      82.5,
+      83,
+      83.5,
+      84,
+      102,
+      104,
+      108,
+      112,
+      116,
+      120,
+      122,
+      122.4,
+      122.8,
+      123,
+      123.2,
+      123.4,
+      123.6,
+      123.8,
+      124,
+      126,
+      144,
+      145.6
+    ],
+    "clock": "각 시각은 해당 원본의 재생 시각이며 두 영상의 정밀 동기는 수행하지 않음",
+    "audio_reviewed": false,
+    "continuous_visual_playback_reviewed": false
+  },
+  "camera_observations": [
+    {
+      "seconds": [
+        6,
+        12,
+        18
+      ],
+      "observation": "카펫 한쪽에서 반대쪽으로 실제 차체 이동. 이후 선회와 왕복 이동이 보임. 길이 기준점 측정은 없음."
+    },
+    {
+      "seconds": [
+        62,
+        64,
+        70,
+        72,
+        74,
+        76,
+        80,
+        82,
+        84,
+        86
+      ],
+      "observation": "손으로 로봇 스위치와 보드를 조작하는 장면, 사이의 정지 자세, 복구 뒤 추가 이동이 관측됨. 개별 스위치 명칭과 조작 순서는 사용자 보고에 연결하며 화면 시계와 동일 시각으로 간주하지 않음."
+    },
+    {
+      "seconds": [
+        104,
+        108,
+        112,
+        116,
+        118,
+        120,
+        122,
+        124,
+        126,
+        128
+      ],
+      "observation": "두 번째 물리 조작과 정지 자세, 보드 부근 조작 후 추가 선회가 보임."
+    }
+  ],
+  "screen_observations": [
+    {
+      "seconds": [
+        62
+      ],
+      "state": "ARMED / NONE",
+      "phase": "ACTIVE",
+      "pwm_percent": [
+        14.4,
+        15.0
+      ],
+      "cps": [
+        930,
+        890
+      ]
+    },
+    {
+      "seconds": [
+        64,
+        66,
+        70,
+        74
+      ],
+      "state": "FAULT / ESTOP_ACTIVE",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "비활성 표시",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "seconds": [
+        78,
+        80,
+        82,
+        82.5
+      ],
+      "state": "FAULT / ESTOP_LATCHED",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "비활성 표시",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "seconds": [
+        83,
+        83.5,
+        84
+      ],
+      "state": "DISARMED / BOOT",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "활성 표시",
+      "observation": "리셋 복구 설명과 일치. ARM 활성과 실제 구동 시작은 별개."
+    },
+    {
+      "seconds": [
+        104
+      ],
+      "state": "ARMED / NONE",
+      "phase": "ACTIVE",
+      "pwm_percent": [
+        14.4,
+        15.0
+      ],
+      "cps": [
+        1000,
+        980
+      ]
+    },
+    {
+      "seconds": [
+        108
+      ],
+      "state": "FAULT / ESTOP_ACTIVE",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "비활성 표시",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "seconds": [
+        112,
+        116,
+        120,
+        122
+      ],
+      "state": "FAULT / ESTOP_LATCHED",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "비활성 표시; 116/120/122초 커서 금지 모양",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "seconds": [
+        122.4,
+        122.8,
+        123,
+        123.2,
+        123.4,
+        123.6
+      ],
+      "state": "DISARMED / BOOT",
+      "phase": "IDLE",
+      "startup": "READY",
+      "arm_button": "활성 표시 및 손 모양 커서",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "seconds": [
+        123.8,
+        124,
+        126
+      ],
+      "observation": "ARM 버튼 대기/비활성 표시 뒤 ARMED / ZERO_PENDING, 이어 ARMED / ACTIVE 속도0. 사용자 새 ARM 조작 설명과 일치하며 trusted 클릭 로그는 없음."
+    },
+    {
+      "seconds": [
+        138
+      ],
+      "observation": "후속 우회전 버튼 강조와 PWM +20/-20 표시"
+    },
+    {
+      "seconds": [
+        145.6
+      ],
+      "state": "DISARMED / DISARM",
+      "phase": "IDLE",
+      "startup": "READY",
+      "pwm_percent": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "counts": [
+        239,
+        4215
+      ],
+      "last_result": "DISARM 3625 OK"
+    }
+  ],
+  "interpretation": {
+    "strongest_evidence": "사용자가 보고한 S0/S2/STM reset 순서와 FAULT_ACTIVE → FAULT_LATCHED → DISARMED/BOOT 및 ARM 표시 전환이 일치한다. 정지 상태 유지와 복구 후 재주행을 함께 보여준다.",
+    "ready_meaning": "READY는 이번 ESP 부팅의 응답 확인 상태다. 영상에서도 FAULT 동안 READY/IDLE가 유지되므로 이것만으로 ARM 허용을 판단하지 않는다.",
+    "source_check": "wifi_link_main.c wifi_control_snapshot: fresh TEL, 요청/PWM0, STM DISARMED, IDLE 및 실행기 가용 조건에서 ARM ticket 발행. armReady/updateButtons는 유효한 제어 상태와 연결/포커스/대기 상태를 확인한다.",
+    "source_file": "../../../../03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+    "recovery_boundary": "S2는 K1 전원 재인가, STM 래치 해제와 별도라는 기존 계약을 설명하는 자료다. 이번 보고 순서를 새로운 표준 복구 절차로 변경하지 않았다."
+  },
+  "limits": [
+    "100×150cm 카펫과 1m 이상 이동은 사용자 보고. 영상의 카펫 크기만으로 이동거리 오차나 1m 자동정지 성능을 산출하지 않음.",
+    "원본 TEL/observer JSON 및 동기 계측 없음. 정지 지연, 잔류 전압, 접점 동작, 전수 명령 성공을 산출하지 않음.",
+    "표본 영상 판독으로 전체 안전성 인증, T005A 전체 PASS 또는 T007 정식 수용으로 확대하지 않음.",
+    "STM reset 사이의 누적 count는 서로 이어붙이지 않음.",
+    "최종 전원 분리 및 종료 셀 전압 미보고."
+  ],
+  "suggested_edit": "카펫 연속 주행 → 주행 중 S0 → S0 해제/S2 뒤 래치 및 ARM 차단 유지 → STM reset 뒤 DISARMED 및 ARM 재허용 → 새 ARM/짧은 주행 → DISARM 종료. 두 번째 회차는 ARM 버튼 위 금지/손 커서 전환이 선명하다.",
+  "originals_modified": false,
+  "new_edit_rendered": false,
+  "published": false,
+  "subsequent_edit": {
+    "date": "2026-10-24",
+    "rendered": true,
+    "path": "edit/TMR_MVP_Final_2026-10-24.mp4",
+    "duration_seconds": 149,
+    "evidence": "edit/validation.json",
+    "note": "Initial observation and no-edit fields below are historical."
+  }
+}

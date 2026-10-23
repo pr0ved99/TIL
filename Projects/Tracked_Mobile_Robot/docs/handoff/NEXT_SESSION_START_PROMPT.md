@@ -1,19 +1,24 @@
 # 다음 대화 시작 프롬프트
 
+영상 제작은 완료했다. 바탕화면 `TMR_MVP_Final_2026-10-24.mp4`는149초/1080p30 무음 통합본이다.
+
 ```text
 Projects/Tracked_Mobile_Robot 작업을 이어가자.
-AGENTS.md와 docs/handoff/CURRENT_SESSION_CONTEXT.md, docs/progress/2026-10-23_progress.md의 최신 전원 재설정/최종 마감 절만 먼저 읽어라.
-최신 전원 연결5.02V, 로봇 최종 중량3.25kg 사용자 보고다.3.2/3.1kg은 정정 전 값이다.
-assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md와 comparison.json을 먼저 읽어라.
-새 TEL153.124초/16동작 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL최대126.3ms/비영 명령120ms, control최대80.1ms(남은115초)다.
-이전 전진/좌회전 정지 근처TEL287.9/219.2ms보다 개선됐지만 전압 조정과 재부팅이 함께 이루어져 원인 구간·인과관계는 OPEN이다.
-마지막은 boot2737441136/session2, blur에 따른DISARM1710/seq770061694 OK, IDLE·DISARMED/DISARM·요청/PWM/CPS0·count31912/37642 고정2.9초다.
-최종 전원/배터리 분리·종료 셀 전압은 미보고다. 과거 전원 차단을 이번 종료 확인으로 쓰지 마라.
-다음은 새 비교를 포함한 통신 미결·최종MVP 잔여 인수 범위 대조다. 필요하면 지연 구간 분리용 최소 관측 계획을 준비해라.
-기존200/250/300ms 제한을 유지하고 추가 주행·완료91 PC 감사·거리/단절/공중5·10·15cm·로컬 이미지 감사를 자동 반복하지 마라.20cm는 미실시 유지.
-거리 T-ODO-001 기록 범위 PASS, 리포 알람 REQ-POWER-004/T-PWR-004 USER-REPORTED PASS다. 전체 MVP와 과거 run02 수동 DISARM/UI 원인은 미완료다.
-온도/전류·ADC는 후속, 기존 MG540 유지. 배송/열 기준·10/17 제외한 정격/도면 조사를 선행으로 복원하지 마라.
-k1687/19500·cap150/200‰·gain960/930 유지. MCU 소스/빌드/플래시 변경 없음.
-앞으로 사용자가 정리라고 하면 문서화·진행상황·Git commit/push·캘린더·노션 다섯 항목 전체를 진행해라.
-최신 게시 여부는 assets/logs/wifi_link/2026-10-23_power_adjusted_closeout/ 영수증을 확인해라. 사용자 요청 없이 subagent 사용하지 마라.
+AGENTS.md, docs/handoff/CURRENT_SESSION_CONTEXT.md 상단과 docs/progress/2026-10-24_progress.md의 최신 마감만 먼저 읽어라.
+기존65초 탁상 편집과 새 카펫·S0 복구를 합친149초 영상 제작/검증을 끝냈다. assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md가 편집 명세/한계의 시작점이다.
+완성본 검증은4470프레임 디코딩 오류0·21개 출력 표본·원본/바탕화면 사본 해시다. 새 영상은0.5초 근사 정렬이며 정지 지연·거리 정확도 계측이 아니다.
+사용자 ESP 플래시·새 UI 정상·배터리 단독 확인이 있다. UI105 PC검사와 과거 v5.2 세 조건 분석을 다시 필수로 반복하지 마라. 새 UI 비용/보드 readback은 미확인이다.
+최종 영상 화면은 DISARM3625 OK·IDLE/DISARMED·요청/PWM/CPS0·count239/4215이며 전원 분리/셀 전압은 미보고다.
+영상 완성과 전체 인수를 분리해라. T005A PARTIAL/T007 BLOCKED, 과거 통신/UI 원인OPEN 유지. 완료 거리/유실정지와 제외 rail-off 조사를 재개하지 마라.20cm 미실시 유지.
+다음은 보류 PCB의 실제 회로 상세 검토 또는 사용자가 선택한 후속 작업이다. 추가 촬영을 기본 선행으로 요구하지 마라.
+기존 제한/출력 설정을 유지하고 MCU 빌드·플래시·실물 조작은 사용자가 한다. 사용자 요청 없이 subagent를 쓰지 마라.
+정리는 문서·진행·해당 Git·기존 Calendar/Notion 전체다. 게시 결과는10/24 closeout 영수증을 확인하고 무관한 기존 변경을 보존해라.
 ```
+
+## 별도 PCB 재개점
+
+3단계 첫 블록인 현재 전원·왼쪽NTC 상세 검토를 이어간다. `09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md`와 `reports/current_circuit_walkthrough.json`이 실제 CAD 읽기 기준이다. 현재22부품·미배선32, 전류2/온도2만 있고 CAN·K1 전후 전압2채널·별도 LDO/입력 보호는 미구현이다.20번 문서의 EXP 공급/커넥터 순서는 제안이며 CAD 미적용이다.
+
+실제 CAD는 J1-16 STM_3V3 공통 공급, J3/4는1전원2GND3출력, J5/6은1NTC노드2GND다. J5/R3/R4/C3의25°C1.65V·이상2048·소스6kΩ/0.6ms/265Hz를 설명했다. 다음은 NTC EXP 공급 기존안과 NTC만STM 공급 추천 대안의 기준/역급전·VDDA 경로 비교다. 추천 대안을 자동 채택하거나 사용자의 XL4015 #2 선택을 변경하지 않는다. 실제 부품/연결을 하나씩 설명하고 단계별로 검토한다.
+
+IMU는 기존 만능기판 위치와 배선을 유지한다. ADC6채널+ESP–STM CAN·개발용 CANable 목표 구성은 후속이며 LiDAR 모델/전원/인터페이스는 미정이다. 집에서의 MVP 작업을 PCB 제작 완료 조건으로 바꾸지 않는다.

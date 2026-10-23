@@ -1,0 +1,23 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chapter,Malgun Gothic,22,&H00CBD680,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Action,Malgun Gothic,36,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Detail,Malgun Gothic,24,&H00E8D8C8,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:04.00,Chapter,,0,0,0,,{\pos(72,838)}02 / 카펫 주행
+Dialogue: 0,0:00:00.00,0:00:04.00,Action,,0,0,0,,{\pos(72,881)}ARM · 정지 상태에서 시작
+Dialogue: 0,0:00:00.00,0:00:04.00,Detail,,0,0,0,,{\pos(72,953)}새 ARM 뒤 방향 버튼으로 주행을 시작합니다.
+Dialogue: 0,0:00:04.00,0:00:18.00,Chapter,,0,0,0,,{\pos(72,838)}02 / 카펫 주행
+Dialogue: 0,0:00:04.00,0:00:18.00,Action,,0,0,0,,{\pos(72,881)}연속 전진
+Dialogue: 0,0:00:04.00,0:00:18.00,Detail,,0,0,0,,{\pos(72,953)}실제 궤도 움직임과 PWM / 엔코더 값을 함께 표시
+Dialogue: 0,0:00:18.00,0:00:27.00,Chapter,,0,0,0,,{\pos(72,838)}02 / 카펫 주행
+Dialogue: 0,0:00:18.00,0:00:27.00,Action,,0,0,0,,{\pos(72,881)}선회와 방향 전환
+Dialogue: 0,0:00:18.00,0:00:27.00,Detail,,0,0,0,,{\pos(72,953)}카펫 위 이동을 원래 속도로 확인합니다.

@@ -1,0 +1,629 @@
+{
+  "root_uuid": "ab81a25e-fef6-4674-b67e-a1a5021f20d1",
+  "parts": {
+    "J1": {
+      "uuid": "d1eb1490-9a81-4655-998e-a9d74bf17af7",
+      "value": "CN7_SOCKET",
+      "pins": {
+        "1": [
+          33.02,
+          52.07
+        ],
+        "2": [
+          45.72,
+          52.07
+        ],
+        "3": [
+          33.02,
+          54.61
+        ],
+        "4": [
+          45.72,
+          54.61
+        ],
+        "5": [
+          33.02,
+          57.15
+        ],
+        "6": [
+          45.72,
+          57.15
+        ],
+        "7": [
+          33.02,
+          59.69
+        ],
+        "8": [
+          45.72,
+          59.69
+        ],
+        "9": [
+          33.02,
+          62.23
+        ],
+        "10": [
+          45.72,
+          62.23
+        ],
+        "11": [
+          33.02,
+          64.77
+        ],
+        "12": [
+          45.72,
+          64.77
+        ],
+        "13": [
+          33.02,
+          67.31
+        ],
+        "14": [
+          45.72,
+          67.31
+        ],
+        "15": [
+          33.02,
+          69.85
+        ],
+        "16": [
+          45.72,
+          69.85
+        ],
+        "17": [
+          33.02,
+          72.39
+        ],
+        "18": [
+          45.72,
+          72.39
+        ],
+        "19": [
+          33.02,
+          74.93
+        ],
+        "20": [
+          45.72,
+          74.93
+        ],
+        "21": [
+          33.02,
+          77.47
+        ],
+        "22": [
+          45.72,
+          77.47
+        ],
+        "23": [
+          33.02,
+          80.01
+        ],
+        "24": [
+          45.72,
+          80.01
+        ],
+        "25": [
+          33.02,
+          82.55
+        ],
+        "26": [
+          45.72,
+          82.55
+        ],
+        "27": [
+          33.02,
+          85.09
+        ],
+        "28": [
+          45.72,
+          85.09
+        ],
+        "29": [
+          33.02,
+          87.63
+        ],
+        "30": [
+          45.72,
+          87.63
+        ],
+        "31": [
+          33.02,
+          90.17
+        ],
+        "32": [
+          45.72,
+          90.17
+        ],
+        "33": [
+          33.02,
+          92.71
+        ],
+        "34": [
+          45.72,
+          92.71
+        ],
+        "35": [
+          33.02,
+          95.25
+        ],
+        "36": [
+          45.72,
+          95.25
+        ],
+        "37": [
+          33.02,
+          97.79
+        ],
+        "38": [
+          45.72,
+          97.79
+        ]
+      },
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+      "description": "Bottom female socket; height and mating geometry to be checked"
+    },
+    "J2": {
+      "uuid": "4ca1d113-2208-44bb-990e-338bd0053ebf",
+      "value": "CN10_SOCKET",
+      "pins": {
+        "1": [
+          96.52,
+          52.07
+        ],
+        "2": [
+          109.22,
+          52.07
+        ],
+        "3": [
+          96.52,
+          54.61
+        ],
+        "4": [
+          109.22,
+          54.61
+        ],
+        "5": [
+          96.52,
+          57.15
+        ],
+        "6": [
+          109.22,
+          57.15
+        ],
+        "7": [
+          96.52,
+          59.69
+        ],
+        "8": [
+          109.22,
+          59.69
+        ],
+        "9": [
+          96.52,
+          62.23
+        ],
+        "10": [
+          109.22,
+          62.23
+        ],
+        "11": [
+          96.52,
+          64.77
+        ],
+        "12": [
+          109.22,
+          64.77
+        ],
+        "13": [
+          96.52,
+          67.31
+        ],
+        "14": [
+          109.22,
+          67.31
+        ],
+        "15": [
+          96.52,
+          69.85
+        ],
+        "16": [
+          109.22,
+          69.85
+        ],
+        "17": [
+          96.52,
+          72.39
+        ],
+        "18": [
+          109.22,
+          72.39
+        ],
+        "19": [
+          96.52,
+          74.93
+        ],
+        "20": [
+          109.22,
+          74.93
+        ],
+        "21": [
+          96.52,
+          77.47
+        ],
+        "22": [
+          109.22,
+          77.47
+        ],
+        "23": [
+          96.52,
+          80.01
+        ],
+        "24": [
+          109.22,
+          80.01
+        ],
+        "25": [
+          96.52,
+          82.55
+        ],
+        "26": [
+          109.22,
+          82.55
+        ],
+        "27": [
+          96.52,
+          85.09
+        ],
+        "28": [
+          109.22,
+          85.09
+        ],
+        "29": [
+          96.52,
+          87.63
+        ],
+        "30": [
+          109.22,
+          87.63
+        ],
+        "31": [
+          96.52,
+          90.17
+        ],
+        "32": [
+          109.22,
+          90.17
+        ],
+        "33": [
+          96.52,
+          92.71
+        ],
+        "34": [
+          109.22,
+          92.71
+        ],
+        "35": [
+          96.52,
+          95.25
+        ],
+        "36": [
+          109.22,
+          95.25
+        ],
+        "37": [
+          96.52,
+          97.79
+        ],
+        "38": [
+          109.22,
+          97.79
+        ]
+      },
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+      "description": "Bottom female socket; height and mating geometry to be checked"
+    },
+    "J3": {
+      "uuid": "3e0a53ec-8990-4182-a31a-7363b65230d9",
+      "value": "CURRENT_LEFT",
+      "pins": {
+        "1": [
+          180.34,
+          53.34
+        ],
+        "2": [
+          180.34,
+          55.88
+        ],
+        "3": [
+          180.34,
+          58.42
+        ]
+      },
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+      "description": "JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT"
+    },
+    "R1": {
+      "uuid": "1aeda273-7117-47e5-a51d-7ec72269a087",
+      "value": "12k candidate",
+      "pins": {
+        "1": [
+          224.79,
+          55.88
+        ],
+        "2": [
+          232.41,
+          55.88
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "Output isolation / RC; value and lead spacing remain provisional"
+    },
+    "C1": {
+      "uuid": "3e4b5cba-3cf6-48ed-84f3-4c898c31add5",
+      "value": "100n",
+      "pins": {
+        "1": [
+          248.92,
+          64.77
+        ],
+        "2": [
+          248.92,
+          72.39
+        ]
+      },
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "description": "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional"
+    },
+    "J4": {
+      "uuid": "c8ce9c4d-cf47-41c7-8781-f99dfbb8f13d",
+      "value": "CURRENT_RIGHT",
+      "pins": {
+        "1": [
+          180.34,
+          109.22
+        ],
+        "2": [
+          180.34,
+          111.76
+        ],
+        "3": [
+          180.34,
+          114.3
+        ]
+      },
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+      "description": "JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT"
+    },
+    "R2": {
+      "uuid": "06d98632-cfee-4200-aca0-00f3543cc100",
+      "value": "12k candidate",
+      "pins": {
+        "1": [
+          224.79,
+          111.76
+        ],
+        "2": [
+          232.41,
+          111.76
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "Output isolation / RC; value and lead spacing remain provisional"
+    },
+    "C2": {
+      "uuid": "d6f9361a-4336-417c-9396-a647c489da7e",
+      "value": "100n",
+      "pins": {
+        "1": [
+          248.92,
+          120.65
+        ],
+        "2": [
+          248.92,
+          128.27
+        ]
+      },
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "description": "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional"
+    },
+    "J5": {
+      "uuid": "5a4965ff-f302-44c1-8ab7-e715f8dc5cc0",
+      "value": "NTC_LEFT",
+      "pins": {
+        "1": [
+          302.26,
+          60.96
+        ],
+        "2": [
+          302.26,
+          63.5
+        ]
+      },
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+      "description": "JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025"
+    },
+    "R3": {
+      "uuid": "fc5a4cc6-4e27-4a6b-a418-8b52aa2b7366",
+      "value": "10k",
+      "pins": {
+        "1": [
+          330.2,
+          41.91
+        ],
+        "2": [
+          330.2,
+          49.53
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "NTC divider; actual resistance/tolerance and body size unconfirmed"
+    },
+    "R4": {
+      "uuid": "6fb0bffb-9100-489f-9bcb-3041f54c019c",
+      "value": "1k",
+      "pins": {
+        "1": [
+          344.17,
+          60.96
+        ],
+        "2": [
+          351.79,
+          60.96
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "Draft component"
+    },
+    "C3": {
+      "uuid": "ecad4903-1caf-4816-914d-8d16cb5cf7ff",
+      "value": "100n",
+      "pins": {
+        "1": [
+          368.3,
+          69.85
+        ],
+        "2": [
+          368.3,
+          77.47
+        ]
+      },
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "description": "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional"
+    },
+    "J6": {
+      "uuid": "83020d5a-bafa-4bbb-a0bd-217a1a6e7767",
+      "value": "NTC_RIGHT",
+      "pins": {
+        "1": [
+          302.26,
+          121.92
+        ],
+        "2": [
+          302.26,
+          124.46
+        ]
+      },
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+      "description": "JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025"
+    },
+    "R5": {
+      "uuid": "d89b294d-3462-4a9d-bad1-fecf5620dc6d",
+      "value": "10k",
+      "pins": {
+        "1": [
+          330.2,
+          102.87
+        ],
+        "2": [
+          330.2,
+          110.49
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "NTC divider; actual resistance/tolerance and body size unconfirmed"
+    },
+    "R6": {
+      "uuid": "5b25fd46-e895-41af-8f62-b9d150b09798",
+      "value": "1k",
+      "pins": {
+        "1": [
+          344.17,
+          121.92
+        ],
+        "2": [
+          351.79,
+          121.92
+        ]
+      },
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "description": "Draft component"
+    },
+    "C4": {
+      "uuid": "230c5ebf-11fa-49f1-a8ad-fa4507878b02",
+      "value": "100n",
+      "pins": {
+        "1": [
+          368.3,
+          130.81
+        ],
+        "2": [
+          368.3,
+          138.43
+        ]
+      },
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "description": "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional"
+    },
+    "TP1": {
+      "uuid": "82e0ef7f-fdd9-4026-a6e2-5e877396f582",
+      "value": "STM_3V3",
+      "pins": {
+        "1": [
+          25.4,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    },
+    "TP2": {
+      "uuid": "0617fa42-cf32-4880-bdae-08118a542b01",
+      "value": "GND",
+      "pins": {
+        "1": [
+          83.82,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    },
+    "TP3": {
+      "uuid": "5fb426bb-cdf2-4441-bb9f-2bea09a7017e",
+      "value": "I_LEFT_ADC",
+      "pins": {
+        "1": [
+          142.24,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    },
+    "TP4": {
+      "uuid": "c9677109-bbbb-450e-bf73-9d728c7f32b3",
+      "value": "I_RIGHT_ADC",
+      "pins": {
+        "1": [
+          200.66,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    },
+    "TP5": {
+      "uuid": "69a9131c-9699-487d-8ec1-0516c8862bf4",
+      "value": "T_LEFT_ADC",
+      "pins": {
+        "1": [
+          259.08,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    },
+    "TP6": {
+      "uuid": "6da2e7ed-d44f-4e44-9efb-1115408d21a2",
+      "value": "T_RIGHT_ADC",
+      "pins": {
+        "1": [
+          317.5,
+          185.42
+        ]
+      },
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "description": "Draft component"
+    }
+  }
+}

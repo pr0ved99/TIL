@@ -1,0 +1,87 @@
+{
+  "output": "TMR_MVP_Final_2026-10-24.mp4",
+  "sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15",
+  "bytes": 30847867,
+  "duration_seconds": 149,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "audio_tracks": 0,
+  "parts": [
+    [
+      "intro",
+      3
+    ],
+    [
+      "tabletop",
+      65
+    ],
+    [
+      "ground_card",
+      2
+    ],
+    [
+      "ground",
+      27
+    ],
+    [
+      "safety_card",
+      2
+    ],
+    [
+      "recovery",
+      45
+    ],
+    [
+      "outro",
+      5
+    ]
+  ],
+  "sources": [
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\mvp_cam_long_01.mp4",
+      "sha256": "c20c0c02d323779e844d3fe3abdcf2250156ebf690bd4d3cfc757553e7d90702"
+    },
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\mvp_long_01.mp4",
+      "sha256": "2a125c4e221c01ac2bca0ee397713be6a0cefbb96e149d863d076187caf9db30"
+    },
+    {
+      "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_demo_run01\\edit\\TMR_MVP_Demo_2026-10-24_review.mp4",
+      "sha256": "aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa"
+    }
+  ],
+  "new_pair_alignment": {
+    "equation": "screen time = camera time + 0.5 seconds",
+    "method": "Illustrative approximate pairing of switch/reset stages. No shared clock or common visible UI. Screen audio silent.",
+    "uncertainty": "Not quantified; no subsecond synchronization or latency claim.",
+    "anchors_reviewed": {
+      "camera_s0_hand_contact_seconds": 104,
+      "screen_armed_seconds": 104,
+      "screen_fault_confirmed_seconds": 108,
+      "camera_reset_hand_seconds": 122,
+      "screen_disarmed_observed_seconds": 122.4
+    }
+  },
+  "ground_screen_seconds": [
+    4,
+    31
+  ],
+  "recovery_screen_seconds": [
+    99,
+    144
+  ],
+  "recovery_internal_cuts": 0,
+  "playback_speed": 1,
+  "outro_screen_still_seconds": 145.6,
+  "limitations": [
+    "carpet size and >1m travel are user reports; no distance-accuracy measurement",
+    "no raw telemetry in these recordings",
+    "no physical stop latency claim",
+    "S2/reset order records this demonstration, not a revised operating procedure",
+    "formal MVP acceptance is not upgraded by editing"
+  ],
+  "validation_status": "PASS: full decode, stream metadata, source hashes, 21 visual samples, desktop copy hash"
+}

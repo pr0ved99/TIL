@@ -2,22 +2,18 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-23 (session closeout; receive-latency investigation next, overall acceptance open)
+Last updated: 2026-10-24 (149-second combined demo complete; closeout records linked below).
 
-## Current Checkpoint — 2026-10-23
+## Current Checkpoint — 2026-10-24
 
-- 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다.
+**통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/edit/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 새 두 영상은 시연용0.5초 근사 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
 
-- 리포 알람: 사용자가 과거 주행 중 셀 전압이 설정값 아래로 내려가 경고음이 울렸고 전원을 껐다고10/23 보고했다. **REQ-POWER-004/T-PWR-004 PASS — USER-REPORTED 감독하 운영 범위**. 관측일/당시 설정·셀 전압·반응시간은 미계측/미보고.10/20 BX100설정3.40V와 소급 동일시하지 않으며 추가 확인/반복 저전압 시험을 요구하지 않는다. 자동 차단·전체 전원 인수·오늘 run04 종료 전원 분리의 근거는 아니다. [기록](docs/progress/2026-10-23_progress.md#리포-알람-실제-경고-동작의-과거-관측-확인).
-- 지상1m 실제/추정·오차 기록 `MVP-011 / REQ-ODO-001 / T-ODO-001` PASS, ST-MVP-03/TK-MVP-03-05 완료. run03/04 사용자 실측1002mm, 평균1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm. 관측 count11727/11452·11680/11460. 소수 정확도/직진성 보증·통제된 반복 정밀도는 아니다. k/gain/cap 유지.
-- v5.1 관찰기는 재접속·실제 송신·수동 DISARM/focus loss를 추적한다. run02 누락 구간은 REJECTED, 간헐 버튼 활성 보고 원인은 OPEN. 이후 정지 상태 및run03/04 수동 클릭→방향 비활성→DISARM OK/IDLE·정지 TEL 확인. 원본은 assets/logs/wifi_link/2026-10-23_*에 보존.
-- 궤도 폭 중심 간격 사용자 실측약233mm, CAD228.31681mm. 유효 skid-steer 폭으로 보정하지 않는다. run01/02 치우침약20/80mm, run03 미측정·run04 미보고, 미측정≠0.
-- 전체 MVP 인수 미완료. 수신 지연 조사 후 TK-MVP-05 잔여 운영 근거/기존 제외 범위를 정리한다. 완료한 거리·단절/복구·공중 시험/로컬 이미지 감사를 자동 반복하지 않는다. [오늘 기록](docs/progress/2026-10-23_progress.md), [현재 상태](docs/handoff/CURRENT_SESSION_CONTEXT.md).
-- 마지막 운전은 전원 재설정 후 회차: boot2737441136/session2, DISARM1710/seq770061694 OK, IDLE·DISARMED/DISARM·요청/PWM/CPS0·count31912/37642 고정2.9초. 마지막 stop은motion=null/focus loss 경로, 지연성 정지0건이다. 최종 전원 분리/종료 개별 셀 전압 미보고. 새 MCU코드/빌드/플래시 없음. 게시 결과는 [최신 마감](docs/progress/2026-10-23_progress.md#전원-재설정중량-정정-후-최종-마감)을 따른다.
-
-- 전원: 초기무부하5.03/보드연결4.96V 이후 사용자 세팅·연결완료5.02V. 최종무부하/정확CC값은미보고. USB부하에서USB4.85~4.87V/0.93A·XL OUT5.00V·제공배치도기준CC꺼짐. 순간파형·각보드입력/3.3V 미계측이며 지연과의인과관계는OPEN.
-- 중량 최종3.25kg 사용자보고(3.2→3.1을대체), 저울/불확도·구성품내역미보고. 과거회차소급확정안함.
-- 사용자 정리 요청은 문서화·진행상황·Git commit/push·Calendar·Notion 전체를 뜻한다(10/23명시). 루트/프로젝트AGENTS와workflow에보존했다.
+- 사용자 ESP 플래시 성공·새 UI 정상·배터리 단독 확인. PAGE 표시 변경·PC105검사/Chrome4너비 검증 완료. 보드 이미지 readback과 새 UI 처리 비용은 미확인. v5.2 세 조건 앱최대0.6/0.6/0.8ms는 UI 변경 전 정상 표본이며 과거 지연 원인 해결 증거가 아니다.
+- 새 영상 종료 DISARM3625 OK·IDLE/DISARMED·요청/PWM/CPS0·count239/4215. 리셋 전후 count를 연속 거리로 쓰지 않는다. 최종 전원 분리/셀 전압 미보고.
+- 지상1m T-ODO-001 기록 범위 PASS, 셀 알람 USER-REPORTED 감독하 운영 PASS, README 정보 MVP-012 PASS 유지. 전체 인수/T-DOC-001 미완료, T005A PARTIAL/T007 BLOCKED, 과거 통신/UI 원인OPEN. 완료 시험·10/17 후속 제외 조사를 자동 반복하지 않는다.
+- 기존 전원 연결5.02V·중량3.25kg은 사용자 보고. cap150/200‰·gain960/930·k1687/19500·정지 제한200/250/300ms 유지. MCU 빌드/플래시·실물 조작은 사용자.
+- PCB는 전류2·온도2 초안의3단계 상세 검토 중. CAN/전압2채널/LDO/입력 보호는 미구현이며 배치/제작 승인 아님. 온도·전류/ADC·CAN/IMU/PID/RTOS/ROS2는 후속.
+- 다음은 완성본 재생 확인 또는 보류 PCB 상세 검토다. “정리”는 문서·진행·Git·기존 Calendar/Notion 전체. 게시 영수증은 [10/24 기록](docs/progress/2026-10-24_progress.md), 현재 재개점은 [인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 ## Current Scope Decision — 2026-10-23
 

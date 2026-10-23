@@ -75,6 +75,15 @@ Apply these rules:
 - Keep observed values, units, meter mode, probe endpoints, and the interpretation separate. Never assign a value to an unreported endpoint.
 - Do not expand one reported PASS into a larger gate, safety rating, or evidence claim.
 
+## PCB Design Workflow
+
+For PCB work, proceed in stages requested by the user on 2026-10-23:
+requirements -> system/interfaces/power -> circuit calculations and part selection -> schematic/ERC ->
+mechanical/footprint review -> placement/routing -> fabrication review -> assembly/measurement.
+Present the current stage's concrete result for discussion before moving to the next stage. Mark proposed
+requirements and unresolved values explicitly. Do not treat an existing CAD draft as approved requirements
+or advance to circuit/layout work merely because a starter file exists.
+
 ## Progress Logging
 
 User shorthand confirmed on 2026-10-23: “정리” means all five closeout actions — documentation,

@@ -2,7 +2,13 @@
 
 STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.
 
-## 현재 상태 — 2026-10-23
+## 현재 상태 — 2026-10-24
+
+**후속 적용 확인:** 사용자 ESP 플래시 성공, 새 UI ARM0→DISARM 정상·배터리 단독 보고를 받았다. [새 화면/실물 영상](../../assets/logs/wifi_link/2026-10-24_demo_run01/README.md)에서6개 구동 구간과 마지막 DISARM1512 OK·IDLE/DISARMED/출력0을 확인했다. 아래 보드 적용 대기는 구현 당시 이력이다. 이번 실행 이미지 해시/원본 TEL 로그는 미확보다.
+
+**로컬 UI 보완·보드 적용 대기:** [실제 PAGE 표시 재점검](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md)으로 좌우 PWM%/CPS/count 요약, 십자 방향 버튼, 큰 DISARM, 지연·FAULT 표시와 접이식 JSON을 추가했다. PC105검사와 Chrome4너비 검사 PASS. 기존 제어 코드/제한은 동일하며 새 빌드·플래시는 사용자 수행 대기다. 아래 통신 시간/해시와 “새 펌웨어 없음”은 UI 수정 전 관측 이력이다.
+
+[운용·재현 절차](../../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)에 배터리 단독 전원·UART/구동 연결·펌웨어 기준과 시작~종료/복구 순서를 모았다. v5.2 실제 IDLE/속도0/전진 계측은 [3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)에 완료했다. 원인OPEN/전체 인수 미완료, 새 펌웨어/빌드·플래시는 없다. 아래10/23 전원 관측은 이전 회차이며 새 전압/종료 전원 분리는 미보고다.
 
 지상1m 실제/추정·오차 기록 범위 PASS. run03/04 사용자 실측1002mm에 평균1002.640333/1000.953333mm, 종료 DISARM OK·IDLE·정지 TEL을 확인했다. PC 관찰기v5.1은 재접속/실제 송신/수동 클릭/focus loss를 추적하며 MCU코드/빌드·플래시 변경은 없다. run02의 간헐 DISARM/UI 원인은 OPEN, 전체 인수는 미완료다. [최신 판정](../../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [관찰기](../../assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js). 기존k/cap/gain 유지, 외부 온도는 후속 미실시다.
 
@@ -81,4 +87,4 @@ idf.py -p COM번호 flash monitor
 ARM/CMD nonzero 통합과 NZ-01~04 모터 분리 검증을 마쳤다. [초기 계약](../../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)의
 전체 AC-H/B/S 수용은 PC·보드·출력 근거를 나누어 미완료 항목만 이어간다.
 PING/DISARM의 비구동 PASS와 모듈 PC 검사·빌드 성공을 구동 허가로 쓰지 않는다.
-리셋 순간 UART err 증가의 완전한 전기 원인, 현재 구성의 전용 통신 유실/timeout·외부 온도·지상1m는 미완료다. 정량 전류/전압 ADC와 자동 저전압 정지는 후속 범위다.
+리셋 순간 UART err 증가의 전기 원인·간헐 통신 지연/UI 원인은OPEN이다.10/20 전용 통신 유실/timeout 정지·복구와10/23 지상1m 거리 기록은 해당 기능 범위 완료다. 외부 온도는 후속 DEFERRED/NOT_RUN, 정량 전류/전압 ADC와 자동 저전압 정지도 후속이다. 전체 인수 판정과 구분한다.

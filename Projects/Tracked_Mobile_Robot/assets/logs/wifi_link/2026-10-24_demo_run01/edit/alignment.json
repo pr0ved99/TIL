@@ -1,0 +1,189 @@
+{
+  "method": "Match the same UI button highlight in the direct screen recording and filmed monitor; RGB samples resampled to 24 fps.",
+  "equation": "screen_source_seconds = camera_source_seconds + offset_seconds",
+  "offset_seconds": 0.5416666666666666,
+  "anchors": [
+    {
+      "button": "forward",
+      "occurrence": 1,
+      "edge": "highlight_on",
+      "screen_seconds": 16.916666666666668,
+      "camera_seconds": 16.375,
+      "offset_seconds": 0.5416666666666679,
+      "residual_seconds": 1.2212453270876722e-15
+    },
+    {
+      "button": "forward",
+      "occurrence": 1,
+      "edge": "highlight_off",
+      "screen_seconds": 20.75,
+      "camera_seconds": 20.208333333333332,
+      "offset_seconds": 0.5416666666666679,
+      "residual_seconds": 1.2212453270876722e-15
+    },
+    {
+      "button": "reverse",
+      "occurrence": 1,
+      "edge": "highlight_on",
+      "screen_seconds": 25.416666666666668,
+      "camera_seconds": 24.875,
+      "offset_seconds": 0.5416666666666679,
+      "residual_seconds": 1.2212453270876722e-15
+    },
+    {
+      "button": "reverse",
+      "occurrence": 1,
+      "edge": "highlight_off",
+      "screen_seconds": 27.791666666666668,
+      "camera_seconds": 27.25,
+      "offset_seconds": 0.5416666666666679,
+      "residual_seconds": 1.2212453270876722e-15
+    },
+    {
+      "button": "left",
+      "occurrence": 1,
+      "edge": "highlight_on",
+      "screen_seconds": 31.75,
+      "camera_seconds": 31.208333333333332,
+      "offset_seconds": 0.5416666666666679,
+      "residual_seconds": 1.2212453270876722e-15
+    },
+    {
+      "button": "left",
+      "occurrence": 1,
+      "edge": "highlight_off",
+      "screen_seconds": 33.75,
+      "camera_seconds": 33.208333333333336,
+      "offset_seconds": 0.5416666666666643,
+      "residual_seconds": -2.3314683517128287e-15
+    },
+    {
+      "button": "left",
+      "occurrence": 2,
+      "edge": "highlight_on",
+      "screen_seconds": 45.625,
+      "camera_seconds": 45.083333333333336,
+      "offset_seconds": 0.5416666666666643,
+      "residual_seconds": -2.3314683517128287e-15
+    },
+    {
+      "button": "left",
+      "occurrence": 2,
+      "edge": "highlight_off",
+      "screen_seconds": 52.583333333333336,
+      "camera_seconds": 52.0,
+      "offset_seconds": 0.5833333333333357,
+      "residual_seconds": 0.04166666666666907
+    },
+    {
+      "button": "right",
+      "occurrence": 1,
+      "edge": "highlight_on",
+      "screen_seconds": 37.666666666666664,
+      "camera_seconds": 37.125,
+      "offset_seconds": 0.5416666666666643,
+      "residual_seconds": -2.3314683517128287e-15
+    },
+    {
+      "button": "right",
+      "occurrence": 1,
+      "edge": "highlight_off",
+      "screen_seconds": 41.25,
+      "camera_seconds": 40.75,
+      "offset_seconds": 0.5,
+      "residual_seconds": -0.04166666666666663
+    },
+    {
+      "button": "right",
+      "occurrence": 2,
+      "edge": "highlight_on",
+      "screen_seconds": 55.25,
+      "camera_seconds": 54.708333333333336,
+      "offset_seconds": 0.5416666666666643,
+      "residual_seconds": -2.3314683517128287e-15
+    },
+    {
+      "button": "right",
+      "occurrence": 2,
+      "edge": "highlight_off",
+      "screen_seconds": 62.333333333333336,
+      "camera_seconds": 61.791666666666664,
+      "offset_seconds": 0.5416666666666714,
+      "residual_seconds": 4.773959005888173e-15
+    }
+  ],
+  "median_offset_seconds": 0.5416666666666679,
+  "max_abs_anchor_residual_seconds": 0.04166666666666907,
+  "limitations": "Editing alignment only. Frame quantization, display refresh/capture delay and visual classification remain. Not network, ACK or physical stop latency. No speed correction/time warp.",
+  "audio_alignment": "Not used: the decoded screen audio is silent.",
+  "button_spans": {
+    "camera": {
+      "forward": [
+        [
+          16.375,
+          20.208333333333332
+        ]
+      ],
+      "reverse": [
+        [
+          24.875,
+          27.25
+        ]
+      ],
+      "left": [
+        [
+          31.208333333333332,
+          33.208333333333336
+        ],
+        [
+          45.083333333333336,
+          52.0
+        ]
+      ],
+      "right": [
+        [
+          37.125,
+          40.75
+        ],
+        [
+          54.708333333333336,
+          61.791666666666664
+        ]
+      ]
+    },
+    "screen": {
+      "forward": [
+        [
+          16.916666666666668,
+          20.75
+        ]
+      ],
+      "reverse": [
+        [
+          25.416666666666668,
+          27.791666666666668
+        ]
+      ],
+      "left": [
+        [
+          31.75,
+          33.75
+        ],
+        [
+          45.625,
+          52.583333333333336
+        ]
+      ],
+      "right": [
+        [
+          37.666666666666664,
+          41.25
+        ],
+        [
+          55.25,
+          62.333333333333336
+        ]
+      ]
+    }
+  }
+}
