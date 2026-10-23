@@ -48,7 +48,20 @@
     }
   ],
   "git": {
-    "status": "pending scoped commit and push"
+    "status": "content committed, pushed and remote verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "9bc24995b8402852db7a23a128be7d866fcff1f9",
+    "remote_ref_verified": "9bc24995b8402852db7a23a128be7d866fcff1f9",
+    "files_in_content_commit": 194,
+    "unrelated_changes_preserved": 17,
+    "receipt_note": "This receipt is published in a follow-up commit; final HEAD equality is checked after its push."
   },
-  "formal_acceptance": "unchanged"
+  "formal_acceptance": "unchanged",
+  "five_closeout_actions": {
+    "documentation": "complete",
+    "current_progress_handoff_memory": "complete",
+    "git_content_publication": "complete",
+    "calendar_existing_3_events_readback": "complete; original times preserved",
+    "notion_existing_2_pages_readback": "complete; content commit link also read back"
+  }
 }
