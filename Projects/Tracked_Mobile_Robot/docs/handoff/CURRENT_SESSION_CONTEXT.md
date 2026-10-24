@@ -1,25 +1,28 @@
 # Current Session Context
 
-Last updated: **2026-10-24 통합 시연149초 카펫 동기 수정·재검증 완료**.
+Last updated: **2026-10-25 — 10/24 PCB 학습 회차 문서·Notion 마감**.
 
-## 현재 MVP 재개점
+## 현재 재개점 — 모니터링 입력 설계
+
+- **사용자 요청:** 오늘 작업 종료. 설명을 나중에 이해할 수 있도록 Notion에 저장하고 문서·진행·Git·기존 Calendar·Notion 다섯 항목을 정리한다. 10/24 학습과 10/25 마감 날짜를 구분하며 실제 수행 시각은 추정하지 않는다.
+- **복습 자료:** [16절 학습 노트](../../07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md), [Notion 비공개 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0). 식의 목적·값의 출처·단위·예시·가정을 생략하지 않는다. 문서 작성으로 사용자의 이해도나 설계 승인 여부를 추정하지 않는다.
+- **목표/진행:** 신뢰할 수 있는 모니터링 입력 설계. 측정 범위·오차·갱신·응답·유효성 목표 초안과 NTC/전류 입력의 주요 계산을 정리했다. 요구 채택·부품 확정·구체 시험표는 남았다. 수치 완료율은 산정하지 않는다.
+- **다음 한 묶음:** 채널별 원시 수집 주기와 순서 → PWM/aliasing → 평균 창/지연 → 보정 후 오차 예산을 연결해 12kΩ/100nF 후보를 판단한다. 다음 사용자의 진행 요청 때 이어간다. 이미 설명한 NTC 기본 내용이나 완료한 MVP 시험을 자동 반복하지 않는다.
+- **NTC 결론:** R3/NTC 분압, 공통 여기/기준 전압의 비율 상쇄, R4+(R3||NTC) 필터를 설명했다. NTC STM 공급 B안과 10k/1k/100nF는 추천 후보다. PC2 FT의 무전원 도통을 일반 다이오드 그림으로 확정하지 않는다. R4는 전류 제한·필터의 일부이며 역급전 차단 보증이 아니다. C3의 NTC 쪽 방전 경로와 ADC 쪽 국소 경로를 구분한다.
+- **전류 결론:** #5241 nonratiometric, 44mV/A. 12k/100nF 이상 모델은 fc132.63Hz·1% 잔차5.53ms·19kHz 진폭비0.00698. 누설1µA 한계 모델은 12mV/0.273A이지만 실측·보정 후 오차가 아니다. 이 때문에 필터 성능만으로 부품을 확정하지 않는다.
+- **ADC 결론:** [계산 JSON](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_adc_acquisition.json). 외부 C 없는 모델의 0.25LSB 유효 획득1.23086µs와 외부100nF의 단일 전하 공유0.230984mV/0.2867LSB·회복τ1.2ms는 별개 모델이다. 14MHz/480cycles는 후보, 6채널210.86µs는 트리거/소프트웨어 제외 계산이다. 긴 획득 시간으로 DC 누설 오차를 없앨 수 없다.
+- **CAD/범위:** [쉴드 README](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md). 현재 22부품·미배선32개, 전류2/온도2만 있다. 실제 J1-16 STM_3V3 공통 공급, J3/4=1전원2GND3출력, J5/6=1NTC노드2GND. 전체 목표 ADC6+CAN과 별도 EXP 공급/커넥터 계약은 미적용 부분이 있다. CAN·전압2·LDO·보호 설계/기구 적합성 미완료, 제작용 아님.
+- **작업 경계:** CAD/BOM·펌웨어·MCU 빌드/플래시·실물 조작 없음. 사용자는 기존 진행 순서 유지와 공간 검토 후속을 지정했다. IMU 기존 위치/배선을 유지하며 쉴드 완성을 MVP 선행으로 추가하지 않는다. MCU 코드 입력·빌드/플래시/실물은 사용자, subagent는 명시 요청 없이 사용하지 않는다.
+- **마감 근거:** [10/25 마감 기록](../progress/2026-10-25_progress.md), [10/24 계산 이력](../progress/2026-10-24_progress.md), [게시·검사 영수증](../../assets/logs/pcb_design/2026-10-25_learning_closeout/publication.json). 과거 미게시 문구는 당시 이력이다. 최신 실제 게시 상태는 이 영수증을 따른다.
+
+## 완료한 MVP 시연과 유지할 판정
 
 - **완성본:** [통합 시연149초](../../assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4). 기존65초 탁상 시연 전체 + 카펫 전진/선회 + 두 번째 S0·래치 유지·S2·STM reset·새 ARM·재주행을 같은 디자인으로 연결했다.1080p30/H.264/무음, 전체4470프레임 디코딩 오류0·21표본 검토·원본 보존/바탕화면 사본 해시 동일. [명세·한계](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md).
 - 카펫 동기 수정 완료: 새 두 영상은 화면=카메라−0.7667초이며 기존 편집보다 화면을1.2667초 늦췄다. 원본9구간18전이·출력5구간10전이 대조, 출력 표본 잔차 최대약0.133초다. 공통 시계가 없어 지연 계측·정확한 동기를 주장하지 않는다. 카펫100×150cm/1m 이상은 사용자 보고, 원시 TEL JSON 없음.145.6초 종료 화면은 DISARM3625 OK·IDLE/DISARMED·요청/PWM/CPS0·count239/4215. 리셋 전후 count를 합산하지 않는다. 최종 전원 분리·셀 전압은 미보고다.
 - 사용자가 ESP 플래시 성공·새 UI 정상·배터리 단독을 확인했다. PAGE 밖/기존 제어 JS 보존과 PC105검사·Chrome4너비 검증은 저장되어 있다. 보드 이미지 readback과 새 UI 실시간 비용은 미확인. 이전 v5.2 앱최대0.6/0.6/0.8ms는 UI 수정 전 근거다.
 - **완료:** v5.2 IDLE/속도0/전진 분석, 운용 문서, README 정보 요구사항 MVP-012, 대표 영상 제작. **유지:** 전체 MUST/T-DOC-001 미완료, T005A PARTIAL/T007 BLOCKED, 과거 통신/UI 원인OPEN. rail-off 제조사 검토는10/17 수행·후속 제외됐으므로 반복하지 않는다.
 - 사용자 “영상까지 끝나면 정리”에 따라 문서·진행·해당 Git·기존 Calendar3일정/Notion2페이지를 마감했다. 영상·관련194파일 커밋9bc2499의 원격 일치와 외부 재조회를 확인했다. 실제 게시 결과는 [오늘 마감](../progress/2026-10-24_progress.md)과 closeout 영수증을 따른다. 이전 전원 마감 영수증을 이번 게시 증거로 사용하지 않는다.
-- **다음:** 최종본은 `assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4`로 이동했다. 원본4개는 같은 폴더의 `raw/`에 Git 제외로 보관한다. 파일5개 해시 일치·바탕화면 중복2개 통합·편집/검증 경로 변경을 확인했다. 추가 촬영·완료 시험 재실행 없이 새 대화에서 보류한 PCB 상세 검토 또는 후속 작업을 선택한다. 아래 PCB 재개점은 설계 후보 상태다.
 - control200ms/TEL250ms/STM300ms, cap150/200‰·gain960/930·k1687/19500 유지. MCU 빌드·플래시/실물 조작은 사용자. 사용자 요청 없이 subagent 사용 금지.
-
-## 보류한 노트북 PCB 작업
-
-- **현재는3단계 첫 블록을 실제 회로와 함께 읽는 상세 검토다.** 사용자가 회로가 이미 구성되어 있으니 같이 자세하게 진행하자고 요청했다. 저장 회로도에서 새 netlist를 추출했고 현재10활성 연결은 이전 보고와 같았다. [읽기/명목 계산 기록](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_circuit_walkthrough.json), [회로 설명](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md#3단계-함께-검토--현재-회로의-전원과-왼쪽-ntc). 실제 CAD는 여전히 J1-16 STM_3V3가 J3/4 전류센서·R3/5 NTC를 공급하며 EXP LDO/CAN/전압2채널 없음. 현재 J3/4=1전원2GND3출력, J5/6=1NTC노드2GND로20번 계약 제안과 다르며 미적용을 구분한다. 첫 상세 설명은 J5/R3/R4/C3:25°C1.65V/이상2048, 실제RC소스6kΩ·0.6ms·약265Hz. 다음은 NTC도EXP 공급안(A)을 유지할지, NTC 여기만STM 측에 두는 추천 대안(B)을 비교하고 ADC 보호/net수정을 결정한다. B는0.33mA 명목/단락0.66mA 규모지만 VDDA 경로 확인·기존 전원 계약 변경 전에는 채택하지 않는다. 문서만 늘리거나 CAD를 먼저 바꾸지 말고 실제 부품/선 하나씩 설명한다. MCU/실물·CAD/BOM 변경 없음.
-
-- 사용자가 밖에서 노트북만 가진 동안 PCB 설계를 진행하기로 결정했다. [TMR Monitor Shield RevA](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md)에 전류2·온도2채널 독립 회로도와 부품22개 초기 배치를 만들었다. 설치 KiCad Morpho 템플릿의 헤더 좌표·외곽을 출발점으로 쓰며 모든 부품·기구 적합성은 아직 후보이다.
-- 사용자가 전체 기능과 기존 IMU 배치를 재확인했다. **현재 CAD는 센서 부분 초안이며 CAN·K1 전단/후단 전압2채널이 빠져 있다.** 전체 주요 검토 범위는 ADC6채널(전류2·온도2·전압2)+CAN이다. IMU는 기존 만능기판 위치·PB8/PB9·PB1/PC4 배선을 유지하며 새 PCB에 중복 실장하지 않는다. LiDAR는 모델·전원/데이터 인터페이스 미정이므로 전원/하네스 조건을 관리하고 부품은 임의 확정하지 않는다.
-- ERC0·회로도/PCB 불일치0, 미배선32개는 기존 센서 부분의 결과다. 입력 보호/역급전·전체 전원 여유·ADC 조건·소켓 높이/간섭은 미확정이다. 제작용 파일이나 실물 검사 결과가 아니다. 핀·전원·커넥터 계약은 현재2단계의 후속 작업이고 회로 추가는3단계 이후다. 이번 블록도 작성으로 CAD·BOM은 변경하지 않았다.
-- 저녁 이후 집에서 기존 MVP 작업을 재개한다. 쉴드·온도/전류 ADC 완성을 MVP 선행으로 추가하지 않는다. 이번 노트북 작업의 Git/Calendar/Notion 게시는 아직 수행하지 않았으며 아래 게시 내역은 직전 마감 기록이다.
 
 ## 이전 전원 조정 회차 참고
 
@@ -31,7 +34,7 @@ Last updated: **2026-10-24 통합 시연149초 카펫 동기 수정·재검증 �
 
 ## 보존할 재개 조건과 이전 미결
 
-- **밖/노트북:** 채택한 ESP–STM CAN 구성에서 현재 CAD의 J5/R3/R4/C3부터 함께 읽는3단계 상세 검토다. 다음은 NTC EXP/STM 공급안과 ADC 보호를 비교해 실제 수정할 net을 정한다. 기존 IMU 자리를 유지한다. **집/MVP:** 아래 통신 미결·최종 인수 범위를 이어간다. 사용자는 귀가 시각을 지정하지 않았으므로 임의 일정 시간을 만들지 않는다.
+- **노트북 재개:** 상단의 수집 주기·평균·오차 예산 검토부터 진행한다. **집/MVP:** 기존 인수 판정과 사용자 제외 범위를 유지하며 새 물리 작업 시각은 추정하지 않는다.
 
 - 귀가 후 잔여 인수 대조는 보고서39, 전달 경로/관측 설계는 보고서40에 완료했다. v5.2 구현·PC 검증과 실제 브라우저3조건 관측을10/24 완료했다. 추가 반복 없이 상단의 기존 인수 경계로 복귀한다. 기존200/250/300ms 제한과 완료91 PC 감사·거리/단절 시험 자동 반복 금지를 유지한다.
 - 이전 [전진 자동 정지](../../assets/logs/wifi_link/2026-10-23_forward_auto_disarm_run01/observations.json) TEL나이265.2≥250ms, [좌회전 자동 정지](../../assets/logs/wifi_link/2026-10-23_left_auto_disarm_run01/observations.json) control나이204.9≥200ms 및 실제 PAGE PC 재현 PASS를 보존한다. 이전 좌회전 누적 로그는 전진 사건도 포함해 독립 통계로 합산하지 않는다.
@@ -57,5 +60,5 @@ Last updated: **2026-10-24 통합 시연149초 카펫 동기 수정·재검증 �
 ## 정리 규칙과 게시
 
 - **“정리”는 문서화·진행상황·Git·Calendar·Notion 다섯 항목 전체를 뜻한다.** 이번 사용자 명시를 루트/프로젝트 AGENTS와 [workflow](CODEX_CONTEXT_WORKFLOW.md)에 반영했다. 별도 수행 여부를 다시 묻지 않는다.
-- [현재 진행 기록](../progress/2026-10-24_progress.md), [다음 대화 프롬프트](NEXT_SESSION_START_PROMPT.md), branch `agent/dual-encoder-bringup`. 직전 전원 조정 마감에서는28파일을b81034a로commit/push·원격일치 확인했고 Notion4페이지/Calendar7일정을 재조회했다. 그 게시 영수증은 `assets/logs/wifi_link/2026-10-23_power_adjusted_closeout/`이며 이번 귀가 후/노트북 작업의 추가 게시 증거가 아니다. 이전1차 마감66b321f/c27c250와도 구분한다.
+- [현재 마감 기록](../progress/2026-10-25_progress.md), [다음 대화 프롬프트](NEXT_SESSION_START_PROMPT.md), branch `agent/dual-encoder-bringup`. 직전 전원 조정 마감에서는28파일을b81034a로commit/push·원격일치 확인했고 Notion4페이지/Calendar7일정을 재조회했다. 그 게시 영수증은 `assets/logs/wifi_link/2026-10-23_power_adjusted_closeout/`이며 이번 귀가 후/노트북 작업의 추가 게시 증거가 아니다. 이전1차 마감66b321f/c27c250와도 구분한다.
 - HelloWorld build·LA Session2·과거 source_snapshot·10/18 monitorlogs의 별도 변경17개를 보존한다. 전체 일괄 stage하지 않는다. 서브에이전트는 사용자 요청 없이 사용하지 않는다.

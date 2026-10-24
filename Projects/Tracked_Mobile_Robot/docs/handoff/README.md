@@ -2,11 +2,11 @@
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
-## 현재 재개점 — 2026-10-24 통합 시연 제작 완료
+## 현재 재개점 — 2026-10-25 PCB 학습 마감
 
-[149초 완성본·검증](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md)으로 탁상 기본 조작·카펫 주행·S0 래치/ARM 차단·복구/재주행을 연결했다. 사용자 새 UI 플래시/정상 보고와 제출 영상이 있으며 영상 제작·검증을 완료했다. 전체 인수 판정은 유지한다.
+[상세 학습 노트](../../07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)와 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 10/24 설명·계산을 정리했다. 다음은 수집 주기·PWM/aliasing·평균 지연·보정 후 오차 예산을 연결한 전류 RC 검토다. 요구/부품은 후보, CAD·MCU·실측 변경 없음.
 
-[현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [오늘 마감](../progress/2026-10-24_progress.md)을 따른다. 다음은 완성본 재생 또는 보류 PCB 상세 검토. 추가 촬영/완료 시험 반복을 기본 선행으로 요구하지 않는다. 최종 전원 분리·셀 전압 미보고.
+[현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [마감 기록](../progress/2026-10-25_progress.md)을 따른다. 기존149초 시연 제작 완료와 전체 인수 미완료는 유지한다. 아래 다음 작업은 당시 이력이다.
 
 ## 직전 세션 마감 — 2026-10-23 전원 조정
 

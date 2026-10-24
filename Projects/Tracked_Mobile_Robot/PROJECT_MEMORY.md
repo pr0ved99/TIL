@@ -2,9 +2,16 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-24 (149-second combined demo complete; closeout records linked below).
+Last updated: 2026-10-25 (October 24 PCB learning closeout; current restart below).
 
-## Current Checkpoint — 2026-10-24
+## Current Checkpoint — 2026-10-25 PCB learning closeout
+
+- 10/24 노트북 학습을 종료하고 [상세 설명](07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)과 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 측정 요구·NTC/기준 추종·RC·ADC 내부/외부 C 모델을 보존했다. 설명은 계산 목적·출처·단위·가정·한계를 생략하지 않는다.
+- 다음은 채널별 수집 주기·PWM/aliasing·평균 지연·보정 후 오차 예산을 연결한 전류 RC 판단이다. NTC STM 공급 B안·12k/100nF·14MHz/480cycles와 요구 수치는 후보이며 CAD/BOM·펌웨어·MCU/실물 변경/실측 PASS 없음.
+- 현재 CAD 센서4채널과 전체 ADC6+CAN 목표를 구분한다. 기존 IMU 위치/배선 유지, 공간 검토는 후속, 쉴드 완성을 MVP 선행으로 추가하지 않는다. 수령의 새 보고 없음.
+- 이전149초 영상 제작 완료·전체 인수 미완료·사용자 제외 조사와 고정 구동/정지 설정을 유지한다. [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [마감 기록](docs/progress/2026-10-25_progress.md). 아래 재개/게시 문구는 해당 날짜의 이력이다.
+
+## Previous Checkpoint — 2026-10-24 MVP demo
 
 **통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 사용자 동기 지적을 반영해 카펫 화면을 기존 대비1.2667초 상대 지연했다(화면=카메라−0.7667초). 원본9구간18전이·출력5구간10전이를 대조한 편집 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
 

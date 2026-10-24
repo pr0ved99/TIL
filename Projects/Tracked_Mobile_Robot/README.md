@@ -8,10 +8,11 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
   전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.
 - **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.
 - **최근 거리 결과 · 2026-10-23:** 지상1m 실제/추정 거리와 오차 기록 완료. run03/04 사용자 실측1002mm에 대해 엔코더 평균1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm다. ARM/종료 ACK와 정지 TEL·count가 보존됐고 drop/err0이다. `MVP-011 / REQ-ODO-001 / T-ODO-001`은 기록 범위 PASS이며 정밀도·직진성 보증은 아니다. [원본·판정·한계](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [진행 기록](docs/progress/2026-10-23_progress.md).
-- **현재 범위:** 기본 무선 주행/정지·엔코더 거리 비교의 선택 기능 근거를 확보했다. 전체 MUST 인수는 미완료이며 기존 PARTIAL/OPEN을 검증표에 남긴다.10/23 사용자 결정으로 외부 온도는 후속 DEFERRED / NOT_RUN, 정량 전류·ADC·자동 저전압·IMU/PID/RTOS/CAN/ROS2도 후속이다. 기존 출력·정지·셀 알람 운영은 유지한다.
+- **현재 범위:** 기본 무선 주행/정지·엔코더 거리 비교의 선택 기능 근거를 확보했다. 전체 MUST 인수는 미완료이며 기존 PARTIAL/OPEN을 검증표에 남긴다.10/23 사용자 결정으로 외부 온도는 후속 DEFERRED / NOT_RUN, 정량 전류·ADC·자동 저전압·IMU/PID/STM 스케줄링/CAN/ROS2도 후속이다. ESP는 이미 FreeRTOS 태스크·큐를 사용한다. 기존 출력·정지·셀 알람 운영은 유지한다.
 - **기준 설정:** 초기 공통k=1687/19500mm/count, 일반 cap150‰·회전200‰, 왼쪽 gain전진960‰/후진930‰. 지상 비교 후 계수나 출력을 바꾸지 않았다. 현재 ESP 앱은 `esp32_wifi_link`이며 두 MCU의 코드 입력·빌드/플래시와 실물 조작은 사용자가 수행한다.
 - **계측 준비:** 103JT-025×2·Pololu#5241×2·GM1312·UT210E 구매/배송 대기, Vishay100nF10개 구매·수령 미확인이라는 마지막 보고를 유지한다. 장비 수령을 거리/MVP 선행으로 요구하지 않는다. [후속 모니터링 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
+- **모니터링 설계 학습 · 10/25 정리:** [측정 요구·NTC·RC·ADC 상세 노트](07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)와 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 10/24 설명을 저장했다. 다음은 수집 주기·평균·보정 후 오차 예산이며 부품/요구는 후보, CAD·실측 변경 없음.
 
 **통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 사용자 동기 지적을 반영해 카펫 화면을 기존 대비1.2667초 상대 지연했다(화면=카메라−0.7667초). 원본9구간18전이·출력5구간10전이를 대조한 편집 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
 

@@ -1,0 +1,80 @@
+{
+  "learning_session_date": "2026-10-24",
+  "closeout_date": "2026-10-25",
+  "timezone": "Asia/Seoul",
+  "user_request": "학습 설명을 Notion에 보존하고 문서·진행·Git·Calendar·Notion 전체 마감",
+  "learning_note": {
+    "local": "../../../../07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md",
+    "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0",
+    "creation_mode": "private standalone draft",
+    "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+    "sections_read_back": 16,
+    "tables_read_back": 7,
+    "complete_readback": true,
+    "verbatim_conversation_transcript": false
+  },
+  "notion_existing_pages": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "verified": true
+    },
+    {
+      "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+      "title": "📝 TMR-01 · 전류·온도 센서/측정기 구매·수령·계측 준비",
+      "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6?pvs=204",
+      "verified": true
+    },
+    {
+      "id": "3fca7326f87b81289979cec9503cac85",
+      "title": "🧭 TMR · 기술 자료와 코드 탐색",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+      "verified": true
+    }
+  ],
+  "calendar_existing_events": [
+    {
+      "id": "5iobptc8if74bnrm4tbttihh58",
+      "title": "[TMR] 149초 통합 시연 제작·세션 마감 — 실적 반영",
+      "start": "2026-10-24T18:30:00+09:00",
+      "end": "2026-10-24T20:00:00+09:00",
+      "verified": true,
+      "time_preserved": true,
+      "title_preserved": true,
+      "reminders_preserved": true,
+      "previous_description_preserved_ignoring_whitespace": true,
+      "role": "learning session closeout"
+    },
+    {
+      "id": "19bnchnobsa7j46druji2ndgk8",
+      "title": "[TMR] 주간 근거 정리·다음 작업 선정",
+      "start": "2026-10-25T14:30:00+09:00",
+      "end": "2026-10-25T15:30:00+09:00",
+      "verified": true,
+      "time_preserved": true,
+      "title_preserved": true,
+      "reminders_preserved": true,
+      "previous_description_preserved_ignoring_whitespace": true,
+      "role": "next work, not completed"
+    }
+  ],
+  "git": {
+    "branch": "agent/dual-encoder-bringup",
+    "baseline_head": "40b07568fe24e8791df214feb7f6478c9bcc50c8",
+    "status": "pending scoped commit/push and remote verification"
+  },
+  "five_closeout_actions": {
+    "documentation": "complete",
+    "progress_handoff_memory": "complete",
+    "git": "pending",
+    "notion": "complete; new private note and 3 existing pages read back",
+    "calendar": "complete; 2 existing events read back; time/title/reminders preserved"
+  },
+  "boundaries": [
+    "Proposed requirements and component/settings candidates only; no approval or measured PASS.",
+    "No CAD/BOM, firmware, MCU build/flash or physical test changes.",
+    "Overall MVP acceptance and previously excluded investigations unchanged.",
+    "17 unrelated dirty files must remain unchanged."
+  ]
+}
