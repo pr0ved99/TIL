@@ -35,7 +35,7 @@
   "visual_review": "21 output samples reviewed: layout, captions, FAULT/recovery, final DISARM and outro; no full continuous visual playback claimed.",
   "encoded_alignment_check": "render_alignment_validation.json",
   "source_alignment_recheck": "alignment_recheck.json",
-  "desktop_copies": [
+  "previous_desktop_copies": [
     {
       "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24.mp4",
       "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
@@ -44,5 +44,7 @@
       "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24_syncfix.mp4",
       "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
     }
-  ]
+  ],
+  "current_output": "../../../../videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
+  "relocation_record": "../../../../videos/wifi_mvp/2026-10-24/relocation.json"
 }

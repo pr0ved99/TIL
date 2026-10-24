@@ -1,5 +1,5 @@
 {
-  "output": "TMR_MVP_Final_2026-10-24.mp4",
+  "output": "../../../../videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
   "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
   "bytes": 30714961,
   "duration_seconds": 149,
@@ -41,15 +41,15 @@
   ],
   "sources": [
     {
-      "path": "C:\\Users\\eyh12\\Desktop\\mvp_cam_long_01.mp4",
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_cam_long_01.mp4",
       "sha256": "c20c0c02d323779e844d3fe3abdcf2250156ebf690bd4d3cfc757553e7d90702"
     },
     {
-      "path": "C:\\Users\\eyh12\\Desktop\\mvp_long_01.mp4",
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_long_01.mp4",
       "sha256": "2a125c4e221c01ac2bca0ee397713be6a0cefbb96e149d863d076187caf9db30"
     },
     {
-      "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_demo_run01\\edit\\TMR_MVP_Demo_2026-10-24_review.mp4",
+      "path": "../../2026-10-24_demo_run01/edit/TMR_MVP_Demo_2026-10-24_review.mp4",
       "sha256": "aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa"
     }
   ],
@@ -90,5 +90,6 @@
     "S2/reset order records this demonstration, not a revised operating procedure",
     "formal MVP acceptance is not upgraded by editing"
   ],
-  "validation_status": "PASS: full decode, metadata, source hashes,21 visual samples,10 encoded movement/button edges"
+  "validation_status": "PASS: full decode, metadata, source hashes,21 visual samples,10 encoded movement/button edges",
+  "path_base": "manifest directory"
 }

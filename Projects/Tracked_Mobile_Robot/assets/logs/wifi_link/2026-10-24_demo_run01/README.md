@@ -16,10 +16,10 @@
 
 | 원본 위치 | 길이 | 해상도 | 크기 |
 | --- | --- | --- | --- |
-| `C:/Users/eyh12/Desktop/mvp_cam_01.mp4` | 73.625초 | 1280×720 | 9,767,004 bytes |
-| `C:/Users/eyh12/Desktop/mvp_01.mp4` | 76.8초 | 1920×1080 | 85,385,080 bytes |
+| `assets/videos/wifi_mvp/2026-10-24/raw/mvp_cam_01.mp4` | 73.625초 | 1280×720 | 9,767,004 bytes |
+| `assets/videos/wifi_mvp/2026-10-24/raw/mvp_01.mp4` | 76.8초 | 1920×1080 | 85,385,080 bytes |
 
-[원본 해시·디코더 기록](video_manifest.json), [재현 스크립트](decode_video.js). 원본은 제공된 Desktop 경로에 보존하며 이동·재인코딩·원격 게시하지 않았다. 재현 스크립트는 두 파일만 loopback HTTP로 제공해 별도 Chrome 프로필에서 디코딩한다. 로봇/인터넷 연결은 하지 않는다.
+[원본 해시·디코더 기록](video_manifest.json), [재현 스크립트](decode_video.js). 사용자 요청으로 원본을 위 `raw/` 경로에 바이트 변경 없이 이동했다. [영상 보관 폴더](../../../videos/wifi_mvp/2026-10-24/README.md)를 따르며 원본은 Git에서 제외한다. manifest의 `file`은 최초 제출 경로, `current_file`은 현재 경로다. 재현 스크립트는 두 파일만 loopback HTTP로 제공해 별도 Chrome 프로필에서 디코딩한다. 로봇/인터넷 연결은 하지 않는다.
 
 - 기본1초 간격과 마지막 프레임, 종료67.1~67.9초의0.1초 간격 표본을 추출했다. 모든 프레임을 연속 재생하거나 음성을 청취한 검토가 아니다.
 - 아래 시각은 전부 **화면 녹화 `mvp_01.mp4` 내부 시각**이다. 버튼 강조가 보이는 표본 범위이며 정확한 pointerdown/up 시각이나 실제 동작시간이 아니다.

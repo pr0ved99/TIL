@@ -3,7 +3,8 @@
 const fs=require('node:fs'),path=require('node:path'),os=require('node:os'),http=require('node:http');
 const crypto=require('node:crypto'),{spawn}=require('node:child_process');
 const assert=require('node:assert/strict');
-const input={mvp_cam_01:'C:/Users/eyh12/Desktop/mvp_cam_01.mp4',mvp_01:'C:/Users/eyh12/Desktop/mvp_01.mp4'};
+const raw=path.resolve(__dirname,'../../../videos/wifi_mvp/2026-10-24/raw');
+const input={mvp_cam_01:path.join(raw,'mvp_cam_01.mp4'),mvp_01:path.join(raw,'mvp_01.mp4')};
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 const step=Number(process.argv[2]||1),selected=process.argv[3];
 const explicit=process.argv[4]?.split(',').map(Number);

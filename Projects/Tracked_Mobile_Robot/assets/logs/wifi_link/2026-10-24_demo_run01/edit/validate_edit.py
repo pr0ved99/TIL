@@ -16,11 +16,12 @@ frames=[int(x) for x in re.findall(r'^frame=(\d+)$',decoded.stdout,re.M)]
 assert frames[-1]==1560, frames
 assert 'progress=end' in decoded.stdout
 (BASE/'decode_progress.txt').write_text(decoded.stdout,encoding='utf8')
-originals={s['path']:sha256(Path(s['path']))==s['sha256'] for s in manifest['sources']}
+originals={s['path']:sha256(BASE/s['path'])==s['sha256'] for s in manifest['sources']}
 assert all(originals.values())
 prior=json.loads((BASE.parent/'video_manifest.json').read_text(encoding='utf8'))
 for v in prior['videos']:
-    assert sha256(Path(v['file']))==v['sha256'],v['file']
+    current=BASE.parent/v.get('current_file',v['file'])
+    assert sha256(current)==v['sha256'],str(current)
 times=[0,3,9.25,12,17,21,23,27,29,33,36,40,45,48,50,54,57,61.5,64.8]
 samples=BASE/'output_samples'; samples.mkdir(exist_ok=True)
 for t in times:

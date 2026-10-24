@@ -12,11 +12,11 @@
   "audio_tracks": 0,
   "sources": [
     {
-      "path": "C:\\Users\\eyh12\\Desktop\\mvp_cam_01.mp4",
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_cam_01.mp4",
       "sha256": "0fbe9434591317fe513e0c486c96517e45f265e85e3b77ce729dd965864c9172"
     },
     {
-      "path": "C:\\Users\\eyh12\\Desktop\\mvp_01.mp4",
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_01.mp4",
       "sha256": "feef821386e7bc29c3dd8433e08f91955330d9304832fc7b37000cd1d1bdeb33"
     }
   ],
@@ -133,5 +133,6 @@
     "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Demo_2026-10-24_review.mp4",
     "sha256": "aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa",
     "verified": true
-  }
+  },
+  "path_base": "manifest directory"
 }

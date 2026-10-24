@@ -3,6 +3,7 @@ from pathlib import Path
 import subprocess, json, statistics
 
 BASE = Path(__file__).resolve().parent
+RAW = BASE.parents[3]/'videos/wifi_mvp/2026-10-24/raw'
 FFMPEG = Path('C:/Users/eyh12/AppData/Local/Temp/codex-video-merge-tools/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe')
 FPS = 24
 SETUPS = {
@@ -12,7 +13,7 @@ SETUPS = {
 
 def get_values(setup):
     stem,(x,y,w,h),points=setup
-    raw = subprocess.check_output([str(FFMPEG),'-hide_banner','-loglevel','error','-nostdin','-i',f'C:/Users/eyh12/Desktop/{stem}.mp4',
+    raw = subprocess.check_output([str(FFMPEG),'-hide_banner','-loglevel','error','-nostdin','-i',str(RAW/(stem+'.mp4')),
         '-vf',f'fps={FPS},format=rgb24,crop={w}:{h}:{x}:{y}','-an','-f','rawvideo','pipe:1'])
     stride=w*h*3
     assert len(raw) % stride == 0

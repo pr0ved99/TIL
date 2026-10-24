@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-24",
+  "operation": "Move user-authorized source recordings and final edit into project video folders",
+  "media_root": "Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24",
+  "files": [
+    {
+      "previous_path": "C:\\Users\\eyh12\\Desktop\\mvp_cam_01.mp4",
+      "path": "raw/mvp_cam_01.mp4",
+      "bytes": 9767004,
+      "sha256": "0fbe9434591317fe513e0c486c96517e45f265e85e3b77ce729dd965864c9172",
+      "kind": "raw",
+      "verified": true
+    },
+    {
+      "previous_path": "C:\\Users\\eyh12\\Desktop\\mvp_01.mp4",
+      "path": "raw/mvp_01.mp4",
+      "bytes": 85385080,
+      "sha256": "feef821386e7bc29c3dd8433e08f91955330d9304832fc7b37000cd1d1bdeb33",
+      "kind": "raw",
+      "verified": true
+    },
+    {
+      "previous_path": "C:\\Users\\eyh12\\Desktop\\mvp_long_01.mp4",
+      "path": "raw/mvp_long_01.mp4",
+      "bytes": 162256280,
+      "sha256": "2a125c4e221c01ac2bca0ee397713be6a0cefbb96e149d863d076187caf9db30",
+      "kind": "raw",
+      "verified": true
+    },
+    {
+      "previous_path": "C:\\Users\\eyh12\\Desktop\\mvp_cam_long_01.mp4",
+      "path": "raw/mvp_cam_long_01.mp4",
+      "bytes": 48712029,
+      "sha256": "c20c0c02d323779e844d3fe3abdcf2250156ebf690bd4d3cfc757553e7d90702",
+      "kind": "raw",
+      "verified": true
+    },
+    {
+      "previous_path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_carpet_s0_demo_run01\\edit\\TMR_MVP_Final_2026-10-24.mp4",
+      "path": "final/TMR_MVP_Final_2026-10-24.mp4",
+      "bytes": 30714961,
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+      "kind": "final",
+      "verified": true
+    }
+  ],
+  "identical_desktop_duplicates_removed": [
+    {
+      "previous_path": "C:/Users/eyh12/Desktop/TMR_MVP_Final_2026-10-24.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+      "reason": "Byte-identical duplicate consolidated into final/"
+    },
+    {
+      "previous_path": "C:/Users/eyh12/Desktop/TMR_MVP_Final_2026-10-24_syncfix.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+      "reason": "Byte-identical duplicate consolidated into final/"
+    }
+  ],
+  "original_bytes_unchanged": true,
+  "video_reencoded": false,
+  "external_readbacks": [
+  {
+    "service": "notion",
+    "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+    "verified": true
+  },
+  {
+    "service": "notion",
+    "id": "3fca7326-f87b-81f7-b48e-fbda1ddf38c0",
+    "verified": true
+  },
+  {
+    "service": "calendar",
+    "id": "5iobptc8if74bnrm4tbttihh58",
+    "verified": true,
+    "start": "2026-10-24T18:30:00+09:00",
+    "end": "2026-10-24T20:00:00+09:00"
+  }
+],
+  "validation": {
+    "moved_files_verified": 5,
+    "raw_files_git_ignored": 4,
+    "final_file_git_ignored": false,
+    "desktop_duplicates_absent": 2,
+    "python_files_parsed": 9,
+    "renderer_paths_resolve": true,
+    "manifest_source_hashes_checked": 5,
+    "one_frame_decode_at_new_paths": 5,
+    "local_markdown_targets_checked": 229,
+    "unrelated_changes_hash_preserved": 17,
+    "video_reencoded": false
+  }
+}

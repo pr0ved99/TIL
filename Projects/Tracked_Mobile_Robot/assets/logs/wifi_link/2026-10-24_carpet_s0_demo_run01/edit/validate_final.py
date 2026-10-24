@@ -14,7 +14,7 @@ def main():
     assert '1920x1080' in meta and '30 fps' in meta and 'Audio:' not in meta
     assert 'Duration: 00:02:29.00' in meta
     manifest=json.loads((B/'edit_manifest.json').read_text(encoding='utf8'))
-    for item in manifest['sources']: assert sha(Path(item['path']))==item['sha256']
+    for item in manifest['sources']: assert sha(B/item['path'])==item['sha256']
     assert sha(CAM)=='c20c0c02d323779e844d3fe3abdcf2250156ebf690bd4d3cfc757553e7d90702'
     assert sha(SCR)=='2a125c4e221c01ac2bca0ee397713be6a0cefbb96e149d863d076187caf9db30'
     assert sha(OLD)=='aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa'

@@ -10,8 +10,9 @@ from PIL import Image, ImageDraw, ImageFont
 
 BASE = Path(__file__).resolve().parent
 FFMPEG = Path(os.environ.get('FFMPEG', 'C:/Users/eyh12/AppData/Local/Temp/codex-video-merge-tools/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe'))
-CAMERA = Path('C:/Users/eyh12/Desktop/mvp_cam_01.mp4')
-SCREEN = Path('C:/Users/eyh12/Desktop/mvp_01.mp4')
+RAW = BASE.parents[3]/'videos/wifi_mvp/2026-10-24/raw'
+CAMERA = RAW/'mvp_cam_01.mp4'
+SCREEN = RAW/'mvp_01.mp4'
 OUTPUT = BASE / 'TMR_MVP_Demo_2026-10-24_review.mp4'
 FPS, START, END = 24, 6.0, 71.0
 OFFSET = 13/24  # screen source time = camera source time + this offset
@@ -173,7 +174,7 @@ def main():
     if not args.preview:
         manifest={'date':'2026-10-24','output':str(OUTPUT),'output_sha256':sha256(OUTPUT),'output_bytes':OUTPUT.stat().st_size,
             'resolution':[1920,1080],'fps':FPS,'duration_seconds':END-START,'audio_tracks':0,
-            'sources':[{'path':str(p),'sha256':sha256(p)} for p in [CAMERA,SCREEN]],
+            'sources':[{'path':os.path.relpath(p,BASE).replace('\\','/'),'sha256':sha256(p)} for p in [CAMERA,SCREEN]],
             'screen_interval_seconds':[START,END],'camera_interval_seconds':[START-OFFSET,END-OFFSET],
             'camera_crop_xywh':[250,300,900,420],'blur_in_camera_crop_xywh':[0,0,280,124],
             'blur_mask_polygon_in_region':[[0,0],[279,0],[279,70],[0,123]],

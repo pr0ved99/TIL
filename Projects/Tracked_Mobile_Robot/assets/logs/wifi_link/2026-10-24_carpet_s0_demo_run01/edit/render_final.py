@@ -5,10 +5,11 @@ from PIL import Image, ImageDraw, ImageFont
 
 B = Path(__file__).resolve().parent
 FF = os.environ.get('FFMPEG', 'C:/Users/eyh12/AppData/Local/Temp/codex-video-merge-tools/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe')
-CAM = Path('C:/Users/eyh12/Desktop/mvp_cam_long_01.mp4')
-SCR = Path('C:/Users/eyh12/Desktop/mvp_long_01.mp4')
+MEDIA = B.parents[3]/'videos/wifi_mvp/2026-10-24'
+CAM = MEDIA/'raw/mvp_cam_long_01.mp4'
+SCR = MEDIA/'raw/mvp_long_01.mp4'
 OLD = B.parents[1]/'2026-10-24_demo_run01/edit/TMR_MVP_Demo_2026-10-24_review.mp4'
-OUT = B/'TMR_MVP_Final_2026-10-24.mp4'
+OUT = MEDIA/'final/TMR_MVP_Final_2026-10-24.mp4'
 OFFSET = -23/30  # Screen time = camera time + OFFSET. See alignment_recheck.json.
 RECOVERY_END = 143.2  # Camera ends at 143.9667, inside its 144.0333-second source.
 FONT = 'C:/Windows/Fonts/malgun.ttf'
@@ -113,6 +114,7 @@ def panel(name,start,duration,rows):
          '-filter_complex_script',name+'.filter','-map','[out]','-t',str(duration)]+ENC+[name+'.mp4'],name)
 
 def main():
+    OUT.parent.mkdir(parents=True, exist_ok=True)
     make_art()
     still('intro',3)
     if '--reuse-tabletop' not in sys.argv:
@@ -138,8 +140,8 @@ def main():
     parts=[('intro',3),('tabletop',65),('ground_card',2),('ground',27),('safety_card',2),('recovery',RECOVERY_END-99),('outro',149-RECOVERY_END)]
     (B/'concat.txt').write_text(''.join(f"file '{n}.mp4'\n" for n,_ in parts),encoding='utf8')
     run(['-f','concat','-safe','0','-i','concat.txt','-map','0:v','-c','copy','-movflags','+faststart','-metadata','title=Tracked Mobile Robot - Manual Control, Ground Drive and S0 Recovery',str(OUT)],'concat')
-    manifest={'output':OUT.name,'sha256':sha(OUT),'bytes':OUT.stat().st_size,'duration_seconds':149,'resolution':[1920,1080],'fps':30,'audio_tracks':0,
-        'parts':parts,'sources':[{'path':str(p),'sha256':sha(p)} for p in [CAM,SCR,OLD]],
+    manifest={'output':os.path.relpath(OUT,B).replace('\\','/'),'path_base':'manifest directory','sha256':sha(OUT),'bytes':OUT.stat().st_size,'duration_seconds':149,'resolution':[1920,1080],'fps':30,'audio_tracks':0,
+        'parts':parts,'sources':[{'path':os.path.relpath(p,B).replace('\\','/'),'sha256':sha(p)} for p in [CAM,SCR,OLD]],
         'new_pair_alignment':{'equation':'screen time = camera time - 23/30 seconds','offset_seconds':OFFSET,
             'replaces_offset_seconds':0.5,'relative_screen_delay_from_previous_edit_seconds':0.5-OFFSET,
             'method':'Recorded direction-button highlights vs camera frame-change movement: 9 spans / 18 edges in early and post-reset intervals; 15 fps samples. See alignment_recheck.json.',

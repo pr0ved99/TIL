@@ -5,7 +5,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 BASE=Path(__file__).resolve().parent
 FFMPEG=Path('C:/Users/eyh12/AppData/Local/Temp/codex-video-merge-tools/imageio_ffmpeg/binaries/ffmpeg-win-x86_64-v7.1.exe')
-INPUTS={k:Path('C:/Users/eyh12/Desktop')/(k+'.mp4') for k in ['mvp_long_01','mvp_cam_long_01']}
+RAW=BASE.parents[2]/'videos/wifi_mvp/2026-10-24/raw'
+INPUTS={k:RAW/(k+'.mp4') for k in ['mvp_long_01','mvp_cam_long_01']}
 font=ImageFont.truetype('C:/Windows/Fonts/consola.ttf',19)
 
 def sha(p):
