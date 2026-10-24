@@ -1,0 +1,63 @@
+{
+  "source_file": "esp32_stm_warm_reset_monitor.txt",
+  "source_bytes": 33212,
+  "source_sha256": "5d12fd1be517cd0657ff81225d91ff28d7798e57562e7d6af5071d4b9aca6ed9",
+  "line_count": 175,
+  "tel_count": 169,
+  "stm_t_ms_first": 200,
+  "stm_t_ms_last": 17000,
+  "stm_span_ms": 16800,
+  "stm_step_ms_values": [
+    100
+  ],
+  "tel_counter_first": 4139,
+  "tel_counter_last": 4307,
+  "tel_counter_step_values": [
+    1
+  ],
+  "observed_values": {
+    "state": [
+      "FAULT"
+    ],
+    "reason": [
+      "ESTOP_ACTIVE"
+    ],
+    "command_age_ms": [
+      4294967295
+    ],
+    "last_seq": [
+      0
+    ],
+    "vx": [
+      0
+    ],
+    "w": [
+      0
+    ],
+    "left_pwm": [
+      0
+    ],
+    "right_pwm": [
+      0
+    ],
+    "left_cps": [
+      0
+    ],
+    "right_cps": [
+      0
+    ],
+    "err": [
+      0
+    ]
+  },
+  "includes_stm_300_and_400_ms": true,
+  "rx_warnings": [
+    "W (413406) esp32_uart_bridge: RX control byte rejected: 0x0e",
+    "W (413406) esp32_uart_bridge: RX control byte rejected: 0x00",
+    "W (413406) esp32_uart_bridge: RX control byte rejected: 0x15",
+    "W (413406) esp32_uart_bridge: RX control byte rejected: 0x19",
+    "W (413416) esp32_uart_bridge: RX control byte rejected: 0x14",
+    "W (413426) esp32_uart_bridge: RX embedded CR rejected"
+  ],
+  "scope": "User-reported warm STM32-only reset, stationary encoders powered, S0 locked. Not cold boot, not powered motor noise, not physical PWM measurement."
+}

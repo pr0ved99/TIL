@@ -1,0 +1,511 @@
+{
+  "gate": "UR-03 / AC-S05 STM-reset subcase",
+  "verdict": "PASS within zero-only STM-reset/PWM and manual recovery scope",
+  "source_name": "2026-10-16_UR03_ACS05_STM_RESET_PWM_run01.sr",
+  "source_sha256": "e787f5fdea4948bbaf5384489e88d965749f4d0b2617e548b101951b9f7b5147",
+  "samplerate_hz": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "requested_duration_s": 50,
+  "duration_note": "Saved file is 25 s; contains ARM, reset, manual recovery and 15.14 s after manual DISARM.",
+  "mapping": {
+    "D0": "STM PA9 TX / JDBG_UART Pin1",
+    "D1": "STM PA10 RX / JDBG_UART Pin2",
+    "D4": "PB6 left PWM / JDBG_CTRL_1 Pin2",
+    "D6": "PC7 ESTOP_SENSE / JDBG_CTRL_2 Pin2",
+    "D7": "PB7 right PWM / JDBG_CTRL_2 Pin1"
+  },
+  "esp_boot_identity": {
+    "before": 2634188439,
+    "after": 2634188439,
+    "source": "Prior ESP-reset screenshot and current screenshot; serial uptime also continues."
+  },
+  "tx_counts": {
+    "ARM": 1,
+    "CMD": 31,
+    "DISARM": 2
+  },
+  "matching_ack_count": 32,
+  "unanswered_during_reset": [
+    {
+      "type": "CMD",
+      "seq": 2830180634,
+      "tx_start_s": 5.104845,
+      "tx_end_s": 5.109619305555556
+    },
+    {
+      "type": "DISARM",
+      "seq": 2830180635,
+      "tx_start_s": 5.265042,
+      "tx_end_s": 5.266951805555556
+    }
+  ],
+  "tel_count": 245,
+  "tel_state_transitions": [
+    {
+      "start_s": 0.0185235,
+      "state_reason": [
+        "DISARMED",
+        "DISARM"
+      ],
+      "stm_t_ms": 39600,
+      "last_seq": 2830180602
+    },
+    {
+      "start_s": 1.714924,
+      "state_reason": [
+        "ARMED",
+        "NONE"
+      ],
+      "stm_t_ms": 41300,
+      "last_seq": 2830180603
+    },
+    {
+      "start_s": 5.62773525,
+      "state_reason": [
+        "DISARMED",
+        "BOOT"
+      ],
+      "stm_t_ms": 100,
+      "last_seq": 0
+    },
+    {
+      "start_s": 9.919685,
+      "state_reason": [
+        "DISARMED",
+        "DISARM"
+      ],
+      "stm_t_ms": 4400,
+      "last_seq": 2830180636
+    }
+  ],
+  "stm_reset_observation": {
+    "before": {
+      "start_s": 5.01329975,
+      "end_s": 5.027674055555556,
+      "text": "TEL,t_ms=44604,state=ARMED,reason=NONE,command_age_ms=3,last_seq=2830180633,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+      "kind": "TEL",
+      "fields": {
+        "t_ms": "44604",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "3",
+        "last_seq": "2830180633",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0"
+      }
+    },
+    "after": {
+      "start_s": 5.62773525,
+      "end_s": 5.642201555555556,
+      "text": "TEL,t_ms=100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+      "kind": "TEL",
+      "fields": {
+        "t_ms": "100",
+        "state": "DISARMED",
+        "reason": "BOOT",
+        "command_age_ms": "4294967295",
+        "last_seq": "0",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0"
+      }
+    }
+  },
+  "commands_after_first_boot_tel": [
+    {
+      "type": "DISARM",
+      "seq": 2830180636,
+      "start_s": 9.85609825
+    }
+  ],
+  "manual_disarm": {
+    "request_id": 87,
+    "session_id": 1,
+    "type": "DISARM",
+    "seq": 2830180636,
+    "tx_start_s": 9.85609825,
+    "tx_end_s": 9.858008055555556,
+    "ack_start_s": 9.858096,
+    "ack_end_s": 9.861648805555555,
+    "first_confirming_tel": {
+      "start_s": 9.919685,
+      "end_s": 9.935193805555556,
+      "text": "TEL,t_ms=4400,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=2830180636,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+      "kind": "TEL",
+      "fields": {
+        "t_ms": "4400",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "4294967295",
+        "last_seq": "2830180636",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0"
+      }
+    },
+    "post_confirmation_tel_count": 151,
+    "no_further_uart_tx_s": 15.141991944444444
+  },
+  "blocked_phase_evidence": "User explicitly reported BLOCKED before manual DISARM; UART shows unanswered automatic DISARM then BOOT TEL without control restart.",
+  "telemetry_values": {
+    "state": {
+      "DISARMED": 211,
+      "ARMED": 34
+    },
+    "reason": {
+      "DISARM": 168,
+      "NONE": 34,
+      "BOOT": 43
+    },
+    "left_pwm": {
+      "0": 245
+    },
+    "right_pwm": {
+      "0": 245
+    },
+    "left_cps": {
+      "0": 245
+    },
+    "right_cps": {
+      "0": 245
+    },
+    "drop": {
+      "0": 245
+    },
+    "err": {
+      "0": 245
+    }
+  },
+  "levels": {
+    "D4": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "capture_boundary": {
+    "trailing_partial_tel": "TEL,t_ms=19500,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=2830180636,vx_m",
+    "interpretation": "Capture ends during a TEL; not counted as a malformed complete frame."
+  },
+  "serial_attachment": {
+    "sha256": "2647bc4d97d27564ced369060675363e67de3f12ca7e7f612584970968a91619",
+    "saved_as": "esp_monitor.txt",
+    "lines": 185,
+    "all_control_sequences_match_capture": true
+  },
+  "browser_evidence": "screen_transcription.json",
+  "limits": [
+    "RESET/NRST pin is not captured; reboot is established from user action plus STM t_ms returning to 100 and BOOT TEL.",
+    "Output LOW is a 4 MHz digital sampled observation; analog voltage, sub-sample pulses and powered motor stopping are outside scope.",
+    "Capture starts with err=0; the previous err=1 was already absent before this run. Do not attribute that change to fixing an error cause.",
+    "The last CMD and first automatic DISARM were unanswered during the reset interval; final manual DISARM succeeds.",
+    "No automatic ARM or CMD after first post-reset TEL; exact reset edge relative to the last pre-reboot CMD is not measured."
+  ],
+  "uart_matches": [
+    {
+      "type": "ARM",
+      "seq": 2830180603,
+      "tx_start_s": 1.70484725,
+      "tx_end_s": 1.7064965555555556,
+      "ack_start_s": 1.70659125,
+      "ack_end_s": 1.7099698055555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180604,
+      "tx_start_s": 1.76483625,
+      "tx_end_s": 1.7696105555555555,
+      "ack_start_s": 1.7736855,
+      "ack_end_s": 1.7770630555555555
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180605,
+      "tx_start_s": 1.90476875,
+      "tx_end_s": 1.9095430555555555,
+      "ack_start_s": 1.90967575,
+      "ack_end_s": 1.9130535555555555
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180606,
+      "tx_start_s": 2.0248665,
+      "tx_end_s": 2.0296408055555557,
+      "ack_start_s": 2.03916575,
+      "ack_end_s": 2.0425425555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180607,
+      "tx_start_s": 2.12492025,
+      "tx_end_s": 2.1296945555555555,
+      "ack_start_s": 2.1389595,
+      "ack_end_s": 2.1423353055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180608,
+      "tx_start_s": 2.2248865,
+      "tx_end_s": 2.2296608055555556,
+      "ack_start_s": 2.23876175,
+      "ack_end_s": 2.2421405555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180609,
+      "tx_start_s": 2.3250025,
+      "tx_end_s": 2.3297768055555554,
+      "ack_start_s": 2.338595,
+      "ack_end_s": 2.3419715555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180610,
+      "tx_start_s": 2.44588075,
+      "tx_end_s": 2.4506550555555555,
+      "ack_start_s": 2.45079925,
+      "ack_end_s": 2.4541778055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180611,
+      "tx_start_s": 2.56483875,
+      "tx_end_s": 2.5696130555555556,
+      "ack_start_s": 2.56976,
+      "ack_end_s": 2.5731370555555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180612,
+      "tx_start_s": 2.6648475,
+      "tx_end_s": 2.6696218055555554,
+      "ack_start_s": 2.66976725,
+      "ack_end_s": 2.6731463055555555
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180613,
+      "tx_start_s": 2.76485,
+      "tx_end_s": 2.7696243055555554,
+      "ack_start_s": 2.7697695,
+      "ack_end_s": 2.7731490555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180614,
+      "tx_start_s": 2.904803,
+      "tx_end_s": 2.9095773055555556,
+      "ack_start_s": 2.90971725,
+      "ack_end_s": 2.9130953055555553
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180615,
+      "tx_start_s": 3.00482675,
+      "tx_end_s": 3.0096010555555557,
+      "ack_start_s": 3.00973975,
+      "ack_end_s": 3.0131180555555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180616,
+      "tx_start_s": 3.10484525,
+      "tx_end_s": 3.1096195555555557,
+      "ack_start_s": 3.10976225,
+      "ack_end_s": 3.1131405555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180617,
+      "tx_start_s": 3.2048935,
+      "tx_end_s": 3.2096678055555556,
+      "ack_start_s": 3.209811,
+      "ack_end_s": 3.2131888055555553
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180618,
+      "tx_start_s": 3.3238115,
+      "tx_end_s": 3.3285858055555555,
+      "ack_start_s": 3.3376105,
+      "ack_end_s": 3.3409900555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180619,
+      "tx_start_s": 3.44589925,
+      "tx_end_s": 3.4506735555555554,
+      "ack_start_s": 3.450813,
+      "ack_end_s": 3.4541938055555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180620,
+      "tx_start_s": 3.58482925,
+      "tx_end_s": 3.5896035555555557,
+      "ack_start_s": 3.589746,
+      "ack_end_s": 3.5931240555555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180621,
+      "tx_start_s": 3.68485475,
+      "tx_end_s": 3.6896290555555553,
+      "ack_start_s": 3.689764,
+      "ack_end_s": 3.6931430555555553
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180622,
+      "tx_start_s": 3.784861,
+      "tx_end_s": 3.7896353055555556,
+      "ack_start_s": 3.789771,
+      "ack_end_s": 3.7931498055555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180623,
+      "tx_start_s": 3.9048465,
+      "tx_end_s": 3.9096208055555555,
+      "ack_start_s": 3.9097615,
+      "ack_end_s": 3.9131393055555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180624,
+      "tx_start_s": 4.00485975,
+      "tx_end_s": 4.009634055555556,
+      "ack_start_s": 4.00977125,
+      "ack_end_s": 4.013148305555555
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180625,
+      "tx_start_s": 4.12338575,
+      "tx_end_s": 4.128160055555555,
+      "ack_start_s": 4.137312,
+      "ack_end_s": 4.140690055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180626,
+      "tx_start_s": 4.214849,
+      "tx_end_s": 4.219623305555556,
+      "ack_start_s": 4.2270685,
+      "ack_end_s": 4.230447305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180627,
+      "tx_start_s": 4.323018,
+      "tx_end_s": 4.327792305555556,
+      "ack_start_s": 4.32793625,
+      "ack_end_s": 4.331313805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180628,
+      "tx_start_s": 4.4459025,
+      "tx_end_s": 4.450676805555556,
+      "ack_start_s": 4.45081975,
+      "ack_end_s": 4.454196305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180629,
+      "tx_start_s": 4.54590125,
+      "tx_end_s": 4.550675555555556,
+      "ack_start_s": 4.5508115,
+      "ack_end_s": 4.554189555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180630,
+      "tx_start_s": 4.64590275,
+      "tx_end_s": 4.650677055555556,
+      "ack_start_s": 4.65082025,
+      "ack_end_s": 4.654198555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180631,
+      "tx_start_s": 4.78482175,
+      "tx_end_s": 4.789596055555556,
+      "ack_start_s": 4.789736,
+      "ack_end_s": 4.793115555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180632,
+      "tx_start_s": 4.9048305,
+      "tx_end_s": 4.909604805555556,
+      "ack_start_s": 4.9097485,
+      "ack_end_s": 4.913126555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2830180633,
+      "tx_start_s": 5.00484275,
+      "tx_end_s": 5.009617055555556,
+      "ack_start_s": 5.00975825,
+      "ack_end_s": 5.013135555555556
+    },
+    {
+      "type": "DISARM",
+      "seq": 2830180636,
+      "tx_start_s": 9.85609825,
+      "tx_end_s": 9.858008055555556,
+      "ack_start_s": 9.858096,
+      "ack_end_s": 9.861648805555555
+    }
+  ]
+}

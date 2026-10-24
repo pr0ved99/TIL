@@ -1,0 +1,39 @@
+{
+  "scope": "USER-SAVED snapshot; adapter suites PASS but PAGE initializer invalid",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "candidate_main_sha256": "db78760d646c7633bb280bb2ec6ef0bf7e7e963bbbfd6899a67438c78d935d4a",
+  "production_unchanged": true,
+  "production_inputs": {
+    "esp32_wifi_link/main/wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "esp32_wifi_link/main/wifi_control_contract.h": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8",
+    "esp32_wifi_link/main/wifi_control_executor.c": "be2f88f0e284f934402630292576b3c433a4c5273c5c77da92d64586c2caa109",
+    "esp32_wifi_link/main/wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "esp32_wifi_link/main/wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "esp32_wifi_link/main/wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "esp32_wifi_link/main/wifi_control_state.c": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23",
+    "esp32_wifi_link/main/wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "esp32_wifi_link/main/wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "esp32_wifi_link/main/wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "esp32_wifi_link/main/wifi_link_main.c": "db78760d646c7633bb280bb2ec6ef0bf7e7e963bbbfd6899a67438c78d935d4a",
+    "stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h": "de81fae7318f08052baa57ac7b46f95d65c5b076ac55ff8b53115e5b14c48b0d",
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "1a6a1576dba02a661abcfba2980f734e862329a0ba225b244558808dac9978ad",
+    "stm32_uart_mvp/Core/Inc/uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "stm32_uart_mvp/Core/Src/uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "stm32_uart_mvp/Core/Inc/ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "stm32_uart_mvp/Core/Src/ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "stm32_uart_mvp/Core/Inc/drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "stm32_uart_mvp/Core/Src/drive_command_mapper.c": "fb28cd41efb7df446abfda3c2297aa6acca34a00bd75c1a0180d15fe07d7a234",
+    "stm32_uart_mvp/Core/Inc/motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7"
+  },
+  "test_inputs": {
+    "test_uart_partial_test.py": "3d127be530a2db2212731f1f74525e01691053c21196a611a646fa1a8a4f0325",
+    "uart_partial_test_candidate.py": "298830a53994c1ccc344bac78cd120b17592c0bddd8a1ad513cb9f55f43e34eb",
+    "uart_partial_http_host_fixture.c": "653ed92fbaf732a6f98d09cfe20d37c3e604ef8865d1b0542282a11b1b4413fc",
+    "uart_partial_main_host_fixture.c": "9073c395e1dee7f9f36110d088e81799f3a161abe858f86ebd47765cc02cecfe",
+    "test_wifi_control_main.py": "6b98a4ea8402da89e7010a820712a23931d6ca954a85c3b96c4239327c94ca29",
+    "wifi_control_main_host_fixture.c": "1ba4de19604f7c25be0b040ea4c788cf728a23943f18b9b8d105025777954fa7",
+    "wifi_w5_host_fixture.c": "aa54632e427c82d97ec01625b6cf7cf9e5e6e26512cf286a2026e867d8e51bc4",
+    "stm_uart_stream_host_fixture.c": "5bbf4762e8926d5b9f14efe28e087f76be38a5fa82c9ac5a7806c99b86c6e21b"
+  },
+  "overall_status": "FAIL_PAGE_C_INITIALIZER; correction not yet saved by user"
+}

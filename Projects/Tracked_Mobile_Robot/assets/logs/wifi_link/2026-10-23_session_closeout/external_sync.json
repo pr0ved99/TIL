@@ -1,0 +1,133 @@
+{
+  "date": "2026-10-23",
+  "notion": {
+    "pages": [
+      {
+        "label": "hub",
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "distance",
+        "id": "3fca7326f87b81ce83e5d8aeadea7db2",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "temperature",
+        "id": "3fca7326-f87b-8138-b25f-ebde08057a32",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "equipment",
+        "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "monitor",
+        "id": "3fca7326-f87b-8139-b949-d339de80d870",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "closeout",
+        "id": "3fca7326-f87b-81f7-b48e-fbda1ddf38c0",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      },
+      {
+        "label": "power",
+        "id": "3fca7326f87b815c9165fc8d3b0feb19",
+        "content_verified": true,
+        "children_preserved": true,
+        "properties_verified": true
+      }
+    ]
+  },
+  "calendar": {
+    "calendar_id": "primary",
+    "events": [
+      {
+        "id": "sd0ju6pelpp54fbuh9at3cm9uk",
+        "title": "[TMR] 지상1m 거리 기록·리포 알람 확인 — 실적 반영",
+        "url": "https://www.google.com/calendar/event?eid=c2QwanU2cGVscHA1NGZidWg5YXQzY205dWsgZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-23T12:00:00+09:00",
+        "end": "2026-10-23T14:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "1obai8qsktlon8sr1f5u99jdp8",
+        "title": "[TMR] 전진·좌회전 자동 DISARM 분석·세션 마감",
+        "url": "https://www.google.com/calendar/event?eid=MW9iYWk4cXNrdGxvbjhzcjFmNXU5OWpkcDggZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-23T14:30:00+09:00",
+        "end": "2026-10-23T16:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "snjr8tvbbishjba2dut38bmu60",
+        "title": "[TMR] 수신 지연 구간 조사 — 기존 정지 제한 유지",
+        "url": "https://www.google.com/calendar/event?eid=c25qcjh0dmJiaXNoamJhMmR1dDM4Ym11NjAgZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-24T12:00:00+09:00",
+        "end": "2026-10-24T14:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "b19r0go3g1bfu87saos6p83rv4",
+        "title": "[TMR] 전송·수신 시각과 큐 관측 방법 정리",
+        "url": "https://www.google.com/calendar/event?eid=YjE5cjBnbzNnMWJmdTg3c2FvczZwODNydjQgZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-24T14:30:00+09:00",
+        "end": "2026-10-24T16:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "5iobptc8if74bnrm4tbttihh58",
+        "title": "[TMR] 확인된 지연 원인에 따른 수정·검사 준비",
+        "url": "https://www.google.com/calendar/event?eid=NWlvYnB0YzhpZjc0Ym5ybTR0YnR0aWhoNTggZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-24T18:30:00+09:00",
+        "end": "2026-10-24T20:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "0ui3rf1fa18t8fh4u8ag2uasmo",
+        "title": "[TMR] 통신 미결·MVP 최종 인수 범위 대조",
+        "url": "https://www.google.com/calendar/event?eid=MHVpM3JmMWZhMTh0OGZoNHU4YWcydWFzbW8gZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-25T12:00:00+09:00",
+        "end": "2026-10-25T14:00:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "19bnchnobsa7j46druji2ndgk8",
+        "title": "[TMR] 주간 근거 정리·다음 작업 선정",
+        "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0&ctz=Asia/Seoul",
+        "start": "2026-10-25T14:30:00+09:00",
+        "end": "2026-10-25T15:30:00+09:00",
+        "title_verified": true,
+        "description_verified": true,
+        "time_boundaries_preserved": true
+      }
+    ],
+    "new_events": 0
+  },
+  "scope": "Existing project and affected tasks/events updated for distance results, automatic DISARM latency investigation, deferred monitoring and user voltage observations; no messages sent."
+}

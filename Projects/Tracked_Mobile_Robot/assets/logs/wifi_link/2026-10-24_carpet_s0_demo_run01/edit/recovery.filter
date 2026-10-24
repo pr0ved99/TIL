@@ -1,0 +1,10 @@
+[0:v]setpts=PTS-STARTPTS,fps=30,scale=1100:618:flags=lanczos,setsar=1[cam];
+[1:v]setpts=PTS-STARTPTS,fps=30,split=3[fb][ctrl][state];
+[fb]crop=720:442:860:225,scale=700:430:flags=lanczos,setsar=1[feedback];
+[ctrl]crop=480:258:332:270,setsar=1[controls];
+[state]crop=960:66:640:88,scale=700:48:flags=lanczos,setsar=1[states];
+[2:v][cam]overlay=40:170:shortest=1[v1];
+[v1][states]overlay=1180:170:shortest=1[v2];
+[v2][feedback]overlay=1180:230:shortest=1[v3];
+[v3][controls]overlay=1280:747:shortest=1[v4];
+[v4]ass=recovery.ass,format=yuv420p[out]

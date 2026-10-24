@@ -1,0 +1,38 @@
+Mode: SAVED STATE AND OWNER C ONLY
+wifi_control_state.h SHA256: cd9f25e15267d975b9d06fa1602ffb8ca143fa3ed51a0e6c8482bd87f528e38f
+wifi_control_state.c SHA256: 8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23
+wifi_control_contract.h SHA256: 9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8
+wifi_control_owner.h SHA256: 3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af
+wifi_control_owner.c SHA256: 707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd
+test_ack_boundary (__main__.WifiControlStateTest.test_ack_boundary) ... ok
+test_active_fault_state_age (__main__.WifiControlStateTest.test_active_fault_state_age) ... ok
+test_arm_gates (__main__.WifiControlStateTest.test_arm_gates) ... ok
+test_arm_queue_boundary (__main__.WifiControlStateTest.test_arm_queue_boundary) ... ok
+test_blocked_manual_recovery (__main__.WifiControlStateTest.test_blocked_manual_recovery) ... ok
+test_clock_backward_and_startup (__main__.WifiControlStateTest.test_clock_backward_and_startup) ... ok
+test_cmd_before_arm_ack (__main__.WifiControlStateTest.test_cmd_before_arm_ack) ... ok
+test_cmd_binding (__main__.WifiControlStateTest.test_cmd_binding) ... ok
+test_cmd_queue_boundary (__main__.WifiControlStateTest.test_cmd_queue_boundary) ... ok
+test_err_and_tx_failure (__main__.WifiControlStateTest.test_err_and_tx_failure) ... ok
+test_fault_can_confirm_stop (__main__.WifiControlStateTest.test_fault_can_confirm_stop) ... ok
+test_first_cmd_boundary (__main__.WifiControlStateTest.test_first_cmd_boundary) ... ok
+test_frozen_stm_clock (__main__.WifiControlStateTest.test_frozen_stm_clock) ... ok
+test_initial_arguments (__main__.WifiControlStateTest.test_initial_arguments) ... ok
+test_no_automatic_resume (__main__.WifiControlStateTest.test_no_automatic_resume) ... ok
+test_owner_close_and_late_ack (__main__.WifiControlStateTest.test_owner_close_and_late_ack) ... ok
+test_reply_identity (__main__.WifiControlStateTest.test_reply_identity) ... ok
+test_source_deadline_not_telemetry (__main__.WifiControlStateTest.test_source_deadline_not_telemetry) ... ok
+test_stm_wrap_and_reset (__main__.WifiControlStateTest.test_stm_wrap_and_reset) ... ok
+test_stop_ack_boundary (__main__.WifiControlStateTest.test_stop_ack_boundary) ... ok
+test_stop_confirm_boundary (__main__.WifiControlStateTest.test_stop_confirm_boundary) ... ok
+test_stop_order_and_rearm (__main__.WifiControlStateTest.test_stop_order_and_rearm) ... ok
+test_stop_send_boundary (__main__.WifiControlStateTest.test_stop_send_boundary) ... ok
+test_tel_boundary (__main__.WifiControlStateTest.test_tel_boundary) ... ok
+test_zero_ack_tel_order (__main__.WifiControlStateTest.test_zero_ack_tel_order) ... ok
+test_zero_only_and_single_pending (__main__.WifiControlStateTest.test_zero_only_and_single_pending) ... ok
+test_zero_telemetry_guards (__main__.WifiControlStateTest.test_zero_telemetry_guards) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 1.093s
+
+OK

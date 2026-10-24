@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "Saved STM C on native PC with HAL mocks. No board build, flash or I/O.",
+  "checks": [
+    "PASS UART -> mapper -> motor: linear150, pure-turn200, mixed150, partial turn and zero",
+    "PASS 300ms timeout, no CMD-only rearm, DISARM and ESTOP stop at turn200",
+    "PASS mapper cap201 rejected; signed +/-201 and raw201 stop both outputs"
+  ],
+  "firmware_unchanged": true,
+  "inputs": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "61cba264afb2c3064aabed5aa5c3080ab4c7fa97a584dcedac3c17dacd536d51",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "de81fae7318f08052baa57ac7b46f95d65c5b076ac55ff8b53115e5b14c48b0d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\drive_command_mapper.c": "97dca39817560add884c235f0404312986a0869a1e56813d17499a85e9ffbd6f",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\motor_output.c": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\drive_output_profile_host_fixture.c": "8b74c48f054440730d4f2aae450d6e08aae6f33d5552c2c25cb6bbaa95681618"
+  }
+}

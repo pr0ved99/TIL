@@ -1,0 +1,13 @@
+Source: user-provided DevTools output. VM prefixes omitted; full report JSON not supplied.
+AC-S02 INSTALLED {"ms":0,"event":"INSTALLED","message":"자동 ARM 없음. B READY 대기 중."}
+AC-S02 READY {"ms":119.9,"event":"READY","boot":1797425356,"A":4,"B":5}
+AC-S02 MANUAL_ARM {"ms":3717.1,"event":"MANUAL_ARM","request":1}
+AC-S02 PRE_ARM_IDLE_IGNORED {"ms":3729.4,"event":"PRE_ARM_IDLE_IGNORED","request":1}
+AC-S02 B_COPIED_TICKET_TX {"ms":3931.1,"event":"B_COPIED_TICKET_TX","A":4,"B":5,"a_request":3,"control_id":2,"ticket":9765,"offer_ttl_ms":109,"offer_age_ms":0.7999999988824129,"client_send_budget_ms":58.20000000111759,"ttl_budget_ms":53.20000000111759,"text":"CMD,boot_id=1797425356,request_id=1,control_id=2,ticket=9765,vx_mmps=0,w_mradps=0"}
+AC-S02 ABORT {"ms":3989.4,"event":"ABORT","reason":"ticket 전송 마감까지 B 응답 없음"}
+AC-S02 STOP {"ms":3989.6,"event":"STOP","reason":"ticket 전송 마감까지 B 응답 없음"}
+AC-S02 DISARM_TX {"ms":3989.8,"event":"DISARM_TX","request":4}
+AC-S02 B_RESPONSE {"ms":3990,"event":"B_RESPONSE","kind":"command_notice","boot_id":1797425356,"session_id":5,"request_id":1,"cmd":"CMD","stage":"REJECTED","reason":"TICKET_REJECTED"}
+AC-S02 B_LATE_RESPONSE_IGNORED {"ms":3990.1,"event":"B_LATE_RESPONSE_IGNORED","expected_rejection":true}
+AC-S02 DISARM_RESULT {"ms":4130.8,"event":"DISARM_RESULT","kind":"command_result","boot_id":1797425356,"session_id":4,"request_id":4,"cmd":"DISARM","seq":3522553854,"control_id":0,"status":"OK"}
+AC-S02 INCOMPLETE {"ms":4131.3,"event":"INCOMPLETE","problem":"ticket 전송 마감까지 B 응답 없음","stop_confirmed":true,"bRejected":true,"aConfirmed":false,"activeAfter":false,"armedAfter":false}

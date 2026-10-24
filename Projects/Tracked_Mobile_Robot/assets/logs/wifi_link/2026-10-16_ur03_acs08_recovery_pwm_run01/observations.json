@@ -1,0 +1,111 @@
+{
+  "test": "UR03_ACS08_MANUAL_RECOVERY_PWM_RUN01",
+  "verdict": "PASS_MANUAL_DISARM_RECOVERY_ZERO_OUTPUT_MODE0_RESTORE_PENDING",
+  "capture_name": "2026-10-16_UR03_ACS08_RECOVERY_PWM_run01.sr",
+  "capture_sha256": "37e988f616b16cb4faa53f7925d1c8027fa20c8be4a34e3262ea7998db507931",
+  "duration_s": 7.290752,
+  "samplerate_hz": 4000000.0,
+  "samples": 29163008,
+  "previous_disarm_seq": 3385205966,
+  "recovery_disarm_seq": 3385205967,
+  "uart": {
+    "command_counts": {
+      "DISARM": 1,
+      "ARM": 0,
+      "CMD": 0
+    },
+    "cancel_prefix": "CAN (0x18) + LF",
+    "disarm": {
+      "start_s": 2.38644425,
+      "end_s": 2.3883538055555555,
+      "text": "DISARM,seq=3385205967"
+    },
+    "ack": {
+      "start_s": 2.38845275,
+      "end_s": 2.3921805555555555,
+      "text": "ACK,seq=3385205967,type=DISARM,t_ms=487732"
+    },
+    "tx_start_to_ack_start_ms": 2.0085000000000797,
+    "tx_end_to_ack_start_ms": 0.0989444444443599,
+    "injection_marker_count": 0,
+    "invalid_stop_bits": 0
+  },
+  "telemetry": {
+    "complete_valid_count": 73,
+    "pre_recovery_count": 24,
+    "post_ack_count": 49,
+    "all_state_reason": "DISARMED / DISARM",
+    "all_velocity_PWM_CPS_drop_err_zero": true,
+    "last_seq_changes_only_at_new_DISARM": true,
+    "first_post_ack": {
+      "start_s": 2.4560795,
+      "end_s": 2.4714175555555555,
+      "text": "TEL,t_ms=487800,state=DISARMED,reason=DISARM,command_age_ms=287085,last_seq=3385205967,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "last_post_ack": {
+      "start_s": 7.249682,
+      "end_s": 7.265030305555556,
+      "text": "TEL,t_ms=492600,state=DISARMED,reason=DISARM,command_age_ms=291885,last_seq=3385205967,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "post_ack_capture_s": 4.898571444444444
+  },
+  "logic_levels": {
+    "D4": {
+      "samples": 29163008,
+      "high_samples": 0,
+      "low_samples": 29163008,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 29163008,
+      "high_samples": 0,
+      "low_samples": 29163008,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 29163008,
+      "high_samples": 0,
+      "low_samples": 29163008,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "physical_mapping": {
+    "D4": "PB6 left PWM / JDBG_CTRL_1 Pin2",
+    "D6": "PC7 / JDBG_CTRL_2 Pin2",
+    "D7": "PB7 right PWM / JDBG_CTRL_2 Pin1"
+  },
+  "browser_screenshot": {
+    "source": "User-attached screenshot manually read; image not archived locally",
+    "boot_id": 2094335871,
+    "control_phase": "IDLE",
+    "startup_state": "READY",
+    "result": "DISARM request 42 OK",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_seq": 3385205967,
+    "stm_t_ms": 506100,
+    "stm_age_ms": 91,
+    "drop": 0,
+    "err": 0
+  },
+  "continuity": "Same browser boot as delayed-ACK screenshot; last_seq advances from 3385205966 to 3385205967. Recovery uses a fresh request 42 after failed request 41.",
+  "limits": [
+    "Zero-output test only; no powered/moving motor stopping-time claim.",
+    "Digital samples at 4 MHz; no analog/sub-sample claim.",
+    "No separate ESP monitor provided for recovery; UART capture plus browser screenshot used.",
+    "Not all AC-S04/AC-S08 branches; STM hook remains enabled until restored and rebuilt/flashed."
+  ],
+  "next_action": "User changes UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED to 0U, saves and builds/flashes/runs STM; then normal readiness/response verification."
+}

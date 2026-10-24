@@ -1,0 +1,311 @@
+{
+  "edition": "2026-10-13",
+  "captured_at": "2026-10-12T21:18:23.118551+00:00",
+  "basis": "Current saved working tree; not a flashed binary identity or whole-system PASS. Core application modules and integration analyzed; generated/runtime sources included as supporting inventory. Private Wi-Fi config excluded.",
+  "firmware_and_supporting_sources": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/main/hello_world_main.c",
+      "bytes": 1067,
+      "sha256": "0e98f1612f77d644ba1f258a1a0b94cb568cdbf9aaf7ace32cadefe8831157a2"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/02_freertos_task/main/freertos_task_main.c",
+      "bytes": 3430,
+      "sha256": "417467b4f5d0f48fb47c11c91f5b906c254084cc2ad150660d5c5992112acee8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/03_wifi_sta/main/wifi_sta_main.c",
+      "bytes": 7471,
+      "sha256": "d437bb0dcef41a51413b30749fc3d8dc385f35a8ed728c9450607cdd81b8a59d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/04_http_server/main/http_server_main.c",
+      "bytes": 6391,
+      "sha256": "1d9731b1bdd9f287d5bd0e9df3af4c2bdf6d3f7387ac5e490b8b98bf0178e9db"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/05_websocket/main/websocket_main.c",
+      "bytes": 6169,
+      "sha256": "ad6d27da668651a9c119fad30591f1bbba734c3f8ac45f237205d876ea5a49bb"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c",
+      "bytes": 58144,
+      "sha256": "c26c146cbb0a7fef4cc2ae4da2b70dc3f8541be78fd03475117733ceef8b14e9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/CMakeLists.txt",
+      "bytes": 112,
+      "sha256": "1363a8cca038c3171ef6fefd141ce2f250691c159675e9614aeefc32484abefe"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "bytes": 364,
+      "sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_contract.c",
+      "bytes": 4669,
+      "sha256": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "bytes": 1417,
+      "sha256": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_executor.c",
+      "bytes": 10196,
+      "sha256": "9058c358920028699c8dbc34df0ead9bbe5d79b355b9045a0da9078f0da49a41"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_executor.h",
+      "bytes": 3350,
+      "sha256": "5f169daf33d1334401566705cabf1a5dd36547666020d84428c546ee9dfce4f4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_owner.c",
+      "bytes": 1488,
+      "sha256": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_owner.h",
+      "bytes": 1113,
+      "sha256": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_state.c",
+      "bytes": 13045,
+      "sha256": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_state.h",
+      "bytes": 4733,
+      "sha256": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_ticket.c",
+      "bytes": 2638,
+      "sha256": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_ticket.h",
+      "bytes": 1503,
+      "sha256": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_config.h.example",
+      "bytes": 251,
+      "sha256": "e007370a898d43b4769d0b9b86c563fa2375541f078154a4f25663c23fdee74f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "bytes": 83596,
+      "sha256": "877205e6616a06ae79510e26f39f8e2b0731a928708779b83f00d66ac696afdc"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/sdkconfig.defaults",
+      "bytes": 146,
+      "sha256": "58af640af8305106246f917dcb286ec057ed6cd85b4c1848d74476397325239d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/drive_command_mapper.h",
+      "bytes": 382,
+      "sha256": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h",
+      "bytes": 942,
+      "sha256": "25e6907068abf94109b0dec49ccb258bc6a9ecf7806c6614a294a01e3634e3e7"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/gpio.h",
+      "bytes": 1313,
+      "sha256": "e2d62f964a0b7f238384ed6a20a181d09df9647240a268dc547acf5b35099f74"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/main.h",
+      "bytes": 2816,
+      "sha256": "0181ea50d9be2db2a00c53db594cc11d0a3b753e4b6d556fc3718a53c7980854"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/motor_output.h",
+      "bytes": 675,
+      "sha256": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/ring_buffer.h",
+      "bytes": 717,
+      "sha256": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/stm32f4xx_hal_conf.h",
+      "bytes": 20036,
+      "sha256": "a8e695a54f4644d7d634657223edbe64dc8f3c94c585467d82a12ea67585eb73"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/stm32f4xx_it.h",
+      "bytes": 1988,
+      "sha256": "86ba135b29ebc7e24cc8c0e3c5cbcdee3906bf121cf3d45cf82271f175c8d748"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/tim.h",
+      "bytes": 1521,
+      "sha256": "9ccd55a6d1c9ffe5a92558fd4c1d24b1827a7c34b7742e9043dd095f03cc4f1a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h",
+      "bytes": 1321,
+      "sha256": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h",
+      "bytes": 418,
+      "sha256": "de81fae7318f08052baa57ac7b46f95d65c5b076ac55ff8b53115e5b14c48b0d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/usart.h",
+      "bytes": 1434,
+      "sha256": "b94a18498203c775285481da3bf51527e63929babb6cd47a2b55dbc788e09707"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c",
+      "bytes": 1875,
+      "sha256": "fb28cd41efb7df446abfda3c2297aa6acca34a00bd75c1a0180d15fe07d7a234"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c",
+      "bytes": 4329,
+      "sha256": "bd3fad78f551eb87c3cf434ab20e65b2950a011f802f34dea7112ce1dfad9a70"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/gpio.c",
+      "bytes": 2851,
+      "sha256": "d6830d2f0beb85295964fc955821427febabc245fa869d7358c7a6acc623ec23"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "bytes": 16365,
+      "sha256": "2a6be2ec4870d5064da4292d78084b6a9056ce00999c505332038a5c384df478"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c",
+      "bytes": 6960,
+      "sha256": "81244e57ed24249016de39f661420f641d261b5d3bb6b29b8d330b23b275c466"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/ring_buffer.c",
+      "bytes": 1425,
+      "sha256": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/stm32f4xx_hal_msp.c",
+      "bytes": 2286,
+      "sha256": "61b5f5fc48160d818963bc75268175835832baf21146bc1286904d542c173859"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/stm32f4xx_it.c",
+      "bytes": 6071,
+      "sha256": "edd16743e4aa2514115c2879a93f12c8a62556d6d5e3fce8e6b2b466874beb78"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/syscalls.c",
+      "bytes": 2847,
+      "sha256": "b993ebb4f882e8be21cec8d95983655a0caf4f0eb11348f20f6371f5a5031717"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/sysmem.c",
+      "bytes": 2726,
+      "sha256": "c41145817cc20abd8881c38851745d6e509e5f8c44a5179b125d108e51d1d432"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/system_stm32f4xx.c",
+      "bytes": 26695,
+      "sha256": "a31929eab936ac98db060c18917118acf79dc96e1f03ed4b57d614535dd06d70"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/tim.c",
+      "bytes": 9300,
+      "sha256": "3e98abe006136f94869c942b31ddaa585815e1b9e000e142e376e8b817d59488"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c",
+      "bytes": 7784,
+      "sha256": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "bytes": 21162,
+      "sha256": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/usart.c",
+      "bytes": 5565,
+      "sha256": "95f3f1373dfd4691eed857c69bbba5039259d1de663cb9f40625840e2e7fd88a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Startup/startup_stm32f446retx.s",
+      "bytes": 24403,
+      "sha256": "448435eb5d2ffe063490bcac42b9c861461ce05528141d87e62f8425c00131f8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/stm32_uart_mvp.ioc",
+      "bytes": 8976,
+      "sha256": "def18c6dfdc0d02b428a446dbfa47493331211b9630602ec1040beea86abab46"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/STM32F446RETX_FLASH.ld",
+      "bytes": 5341,
+      "sha256": "12f8b127a236c277a5b92d44a9325a2ca5d589929cbc5960bab47c21da39b4a0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/STM32F446RETX_RAM.ld",
+      "bytes": 5334,
+      "sha256": "88af0c9095699c272a7d8fb4d9b1f76d56bac79029d4759a847750b3cb1466b6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_control_main_page.js",
+      "bytes": 24323,
+      "sha256": "791bd613c960eb411fb41a38c7ef0a8add2dbaa28863dcd2ac308c29e42a8b91"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/wifi_control_executor_host_fixture.c",
+      "bytes": 12593,
+      "sha256": "b817e3ef38316f3ac19728aa7ec58361b7edda0537c901a4a4c722bb91f0ce0a"
+    }
+  ],
+  "pc_lesson_files": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/01_c_and_time.c",
+      "bytes": 1155,
+      "sha256": "008fc57e433c037d848edd455cd24b5c9af6b76ac915e51a418c97163463fa31"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/02_stream_parser.c",
+      "bytes": 2255,
+      "sha256": "2847c3240054b80dcab93d55accf23befe8b939ba9c1e94324a1ebc5ecbf3baa"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/03_output_and_encoder.c",
+      "bytes": 1617,
+      "sha256": "e11d9f4b5bd8bed45ec2a8330a62420c18b149c2f5547d0f4d7f97c32c60f5da"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/04_control_flow.c",
+      "bytes": 5532,
+      "sha256": "ac55f3b361f38b1ceb2b093ecc50ac12c7caf5ef8d7daf184db80f914702dc31"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/05_browser_timing.js",
+      "bytes": 1706,
+      "sha256": "82003235f43ea2ff355b73a92451a1f120b6af8a93efd4f0338371406ccb2587"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/run_examples.py",
+      "bytes": 2826,
+      "sha256": "e8bd4629aa0740174ef0929b98c6dafafd74b04a664c83c427bcb43fbd378ea6"
+    }
+  ],
+  "pc_lessons_revalidated_at": "2026-10-13T03:58:38.027147+00:00",
+  "maintenance_note": "2026-10-13: removed only extra EOF blank line in PAGE test script; reran JS46 PASS. Firmware bytes unchanged."
+}

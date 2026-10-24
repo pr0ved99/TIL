@@ -1,0 +1,61 @@
+Projects/Tracked_Mobile_Robot/assets/logs/**/*.txt -text whitespace=cr-at-eol
+
+# Preserve SHA-256 of the 2026-09-22 T004 capture views and evidence summaries.
+Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_*.pvs -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t004/*.json -text whitespace=cr-at-eol
+
+# Raw monitor padding and decoded empty UART lines are intentional evidence.
+Projects/Tracked_Mobile_Robot/assets/logs/esp32_uart_bridge/2026-09-22_t004_*.txt -text whitespace=cr-at-eol,-blank-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t004/*.txt -text whitespace=cr-at-eol,-blank-at-eol
+
+# Preserve the exact T005A evidence bytes and the encoder monitor attachment.
+Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_*.pvs -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/*.json -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/*.txt -text whitespace=cr-at-eol,-blank-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/estop/2026-09-22_t005a/decode_sr.py text eol=lf
+Projects/Tracked_Mobile_Robot/assets/logs/encoder/2026-09-23_perfboard_conditioning/esp32_stationary_monitor.txt -text whitespace=cr-at-eol,-blank-at-eol
+
+# Keep the ARM/CMD validation snapshots byte-exact for their SHA-256 manifests.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-11_state_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-12_executor_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-12_state_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_executor_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_candidate/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_git_closeout/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Dated input guides preserve the originally reviewed code blocks.
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/plans/2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve UR bench logs, source snapshots, JSON and capture views byte-for-byte.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-15*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-16*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-1[67]*.pvs -text whitespace=cr-at-eol
+
+# ICS folded lines include significant spaces; preserve original CRLF bytes.
+Projects/Tracked_Mobile_Robot/docs/plans/calendar/*.ics -text whitespace=cr-at-eol,-blank-at-eol
+
+# Preserve newly published dated evidence, raw browser reports and reviewed source hashes.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_acceptance_image_identity_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_distance_move_candidate_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_encoder_actual_distance_comparison_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_uart_tx_disconnect_timeout_air_run01/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-20_uart_tx_reconnect_recovery_air_run01/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-21*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/docs/handoff/archive/2026-10-21_pre_closeout_context.txt -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve imported references and dated 10/22-23 observation bytes for manifests.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-22_firmware_identity_review/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-23*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/logs/sensor_design/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/datasheets/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/assets/vendor/jgb37_520/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof,-space-before-tab
+Projects/Tracked_Mobile_Robot/docs/handoff/archive/2026-10-23_pre_ground_closeout_context.txt -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve 10/24 observation receipts and CAD draft evidence bytes.
+Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-24*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

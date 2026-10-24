@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-23",
+  "status": "PC_OBSERVER_RECONNECT_DISARM_CHECK_PASS_NOT_HARDWARE_EVIDENCE",
+  "observer": "console_encoder_observe_1m.js",
+  "observer_sha256": "de9eb6d35910d39987c05bff2e1aa41a7453bc9c76c8f37b1b05e1741fcfbcb2",
+  "page": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+  "page_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+  "test": "test_observer_reconnect.js",
+  "test_sha256": "4d02dc0c3f828fdc748c2bc58b5e17ec2a80e529c4eaf432138181ee472abe9f",
+  "checks": [
+    "installation and export do not initiate commands or change control state",
+    "actual PAGE DISARM disables directions before any server response and sends once",
+    "focus-loss DISARM is distinguishable from a manual button click",
+    "replacement socket captures its first frames and DISARM result without auto ARM",
+    "socket send arguments, return value and original exception survive tracing",
+    "diagnostic console failure cannot prevent application focus-loss stop",
+    "additive trace format retains bounded buffers and original v5 fields"
+  ],
+  "physical_test_performed": false,
+  "mcu_build_or_flash_performed": false
+}

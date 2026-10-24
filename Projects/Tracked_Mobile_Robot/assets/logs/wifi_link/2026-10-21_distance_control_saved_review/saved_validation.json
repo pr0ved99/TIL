@@ -1,0 +1,26 @@
+{
+  "status": "FAIL",
+  "mode": "SAVED",
+  "stage": "native compilation",
+  "error": "uart_mvp_protocol.c:676: error: field not found: distance_mm",
+  "cause": "uart_frame_parser.h:38 declares dietance_mm instead of distance_mm",
+  "command": [
+    "C:/Espressif/tools/python/python.exe",
+    "-X",
+    "utf8",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_distance_control_candidate.py",
+    "--saved",
+    "--cc",
+    "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+    "--output",
+    "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-21_distance_control_saved_review\\validation.json"
+  ],
+  "exit_code": 1,
+  "stderr": "Traceback (most recent call last):\n  File \"C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_distance_control_candidate.py\", line 64, in <module>\n    main()\n  File \"C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_distance_control_candidate.py\", line 49, in main\n    runner.main()\n  File \"C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_distance_timing_candidate.py\", line 113, in main\n    raise RuntimeError(f'{r.returncode}: {logs[-1]}')\nRuntimeError: 1: In file included from C:/Users/eyh12/AppData/Local/Temp/distance-timing-pc-gskq3277/fixture.c:5:\nC:/Users/eyh12/AppData/Local/Temp/distance-timing-pc-gskq3277/uart_mvp_protocol.c:676: error: field not found: distance_mm\n\n",
+  "input_sha256": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h": "da64a1283e706f332c903b7b397761539336f3235a7fa9819e4f7302647e23a4",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2"
+  },
+  "applied_to_core": false
+}

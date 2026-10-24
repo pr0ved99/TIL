@@ -1,0 +1,107 @@
+{
+  "closeout_date": "2026-09-29",
+  "date_basis": "Conversation session dates; pasted logs have relative uptime only.",
+  "raw_logs": [
+    {
+      "file": "01_uart_startup_ready.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "07e5fcc8-9cde-45f2-ad26-33866a7e8d3c",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 24461,
+      "sha256": "434a4db25bf53b64bccbb034d467f330f090d31682e1d35f1aafd0344d712bca"
+    },
+    {
+      "file": "02_manual_estop_reset.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "f6527f34-590d-451b-87a8-7bdf19cc20cb",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 10705,
+      "sha256": "229266e940b404cb92e8c78102e6ec0d110f8353ac00bc568fe752380ac4eb8d"
+    },
+    {
+      "file": "03_m1_a_positive_5pct.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "6552fcaa-9dc4-404f-b12b-ec8241154d84",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 18500,
+      "sha256": "5ac4657a9a4630f3e67ea41db1fd62053eb3a4dd212fa3caea287bcd7314b666"
+    },
+    {
+      "file": "04_m1_a_positive_10pct.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "970c3b46-925d-4b9e-bbfc-2b9ab801d791",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 21353,
+      "sha256": "24c9cd757e5da2f27cebd222ce435ca2764bb0c8fd6523c0df5848a9d22d6d7f"
+    },
+    {
+      "file": "05_m1_a_negative_10pct.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "4afd1d0f-3fba-482b-974f-cefb0ef2e063",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 21378,
+      "sha256": "0407cce59b9a3b5dd139f6a2a94baf0be6c571bc47e31b104fce56a4a85cf35e"
+    },
+    {
+      "file": "06_m2_b_initial_no_rotation.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "fc153506-fd18-4983-ab55-6acd338dda83",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 47660,
+      "sha256": "57129a86b54c334b720e3d0e6823d617a5441fbe3ac439ff83e207c0ec12f20a"
+    },
+    {
+      "file": "07_m2_uncertain_connector_trial.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "af2db740-573a-4ef1-8592-b7bd159e35a1",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 21128,
+      "sha256": "916ed54cb64d749c8471005874eb19d994bc5a16df00892fd4d1df5e241f9309"
+    },
+    {
+      "file": "08_m2_a_cross_test.txt",
+      "session_date": "2026-09-28",
+      "attachment_id": "145b7420-8721-40e5-8cb4-2c5aa9cdd992",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 34479,
+      "sha256": "dfd6cfedd8ff1f36a5787f4906072c04fc58233d9cc5552a0ad4c4266bd8b20a"
+    },
+    {
+      "file": "09_m1_b_cross_test.txt",
+      "session_date": "2026-09-29",
+      "attachment_id": "4707d4eb-2b5f-4230-90f6-48552014d942",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 20551,
+      "sha256": "f4921bd17aa5a3b69278b33b17317529f278c69e114f456c6d9d4f41321f08d3"
+    },
+    {
+      "file": "10_m2_b_positive_before_dir_fix.txt",
+      "session_date": "2026-09-29",
+      "attachment_id": "f6f95f35-f7ab-4992-b754-c60c530ff76a",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 12420,
+      "sha256": "1d128011cd2a3a3f4f7521d592cc02ff55f7919636fa5d81270943746987f990"
+    },
+    {
+      "file": "11_m2_b_forward_after_dir_fix.txt",
+      "session_date": "2026-09-29",
+      "attachment_id": "29385d73-ad8f-43a6-a9f2-418a647ec633",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 19866,
+      "sha256": "3c2e20d6e72952ec3712b7cd2eaa179122c5aa2472645592efc9890bae2ad95c"
+    },
+    {
+      "file": "12_m2_b_reverse_after_dir_fix.txt",
+      "session_date": "2026-09-29",
+      "attachment_id": "11ab3275-b40f-469c-9b69-e0b0596c8ad2",
+      "source_filename": "붙여넣은 텍스트.txt",
+      "bytes": 10361,
+      "sha256": "ea84e938bba9bab748c47b1033733b24bbb681219fb0168d1c79594e0a05eb24"
+    }
+  ],
+  "current_source_hashes": {
+    "03_Firmware/esp32_uart_bridge/main/hello_world_main.c": "d80045c814baf3b82c34363291d7756d7f63d58722e1ff2098700faab9cca365",
+    "03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c": "81244e57ed24249016de39f661420f641d261b5d3bb6b29b8d330b23b275c466",
+    "03_Firmware/tests/test_firmware_contract.py": "cfae4bf6f9f17ade0cc0e500d223a86ceff7277b6a20a978a168515cf317abeb"
+  }
+}

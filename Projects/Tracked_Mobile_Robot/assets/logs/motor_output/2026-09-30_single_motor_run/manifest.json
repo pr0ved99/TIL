@@ -1,0 +1,106 @@
+{
+  "observations_date": "2026-09-30",
+  "archived_date": "2026-10-01",
+  "files": [
+    {
+      "file": "01_m1_positive_timeout_console.txt",
+      "source_attachment_id": "55209850-a356-4b42-9175-4061437d1a61",
+      "sha256": "270796023f5ceed143c1b6e66409a5cb428b2b536856768f5774352c0a12c573"
+    },
+    {
+      "file": "02_m1_active_disarm_console.txt",
+      "source_attachment_id": "e7af5a01-670d-46cb-b6e9-795344eb5d1b",
+      "sha256": "41b8975e33931d0d2fb3738ca4c2afe2c39413b5de2b0a70ca4557a24925b1c6"
+    },
+    {
+      "file": "03_m1_physical_s0_console.txt",
+      "source_attachment_id": "478a44ee-f1cb-40a9-8987-e9faa0e071fc",
+      "sha256": "87d90966ec9145d5f41798af9df08944d05523d8a49b8d8bf5cdd24e9d19de6f"
+    },
+    {
+      "file": "04_m1_three_second_console.txt",
+      "source_attachment_id": "08c22514-a8f4-418e-9a48-729b74456085",
+      "sha256": "984f3587aeae66cdde3e47f81375c97166c141bb3950eba6c362945c0a02d75f"
+    },
+    {
+      "file": "05_m2_three_second_console.txt",
+      "source_attachment_id": "c93c9d6c-74d1-41b1-bc51-50517a1d73e3",
+      "sha256": "b871e6ff80da4e4813dad226f4178ea2b599e08d1e07ce0e222e2223f17c1891"
+    },
+    {
+      "file": "02_m1_active_disarm_timing.json",
+      "kind": "derived analysis created during the bench conversation; original bytes retained",
+      "sha256": "81dbec55be1b9f212d7f1ec65cd450f3ac8b3d64e081a264eedd8d13979ed551"
+    },
+    {
+      "file": "02_m1_active_disarm_capture_summary.json",
+      "kind": "derived analysis created during the bench conversation; original bytes retained",
+      "sha256": "78e3fc422c9c0cefbcfa99baab29a2f77231845aa120f353876a7a57220717aa"
+    },
+    {
+      "file": "03_m1_physical_s0_analysis.json",
+      "kind": "derived analysis created during the bench conversation; original bytes retained",
+      "sha256": "c8c43da32f8b6329b734dd10ff723c98ec657a56dc7345e08570b52d1eee81b0"
+    },
+    {
+      "file": "04_m1_three_second_analysis.json",
+      "kind": "derived analysis created during the bench conversation; original bytes retained",
+      "sha256": "e865a87c9b83e5b1e7972e3b6b0d1e68da1a572c4e8fe457b97a153522172af0"
+    },
+    {
+      "file": "05_m2_three_second_analysis.json",
+      "kind": "derived analysis created during the bench conversation; original bytes retained",
+      "sha256": "4a7eb484abaf96ca7d2fcd07312a1cba326175030736ab38f70cd4675aca4b8a"
+    }
+  ],
+  "captures": [
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_3s_Run_10pct_Encoder_Stability.pvs",
+      "sha256": "5a3a8e6fd16ca260e112f31ba81b4790ecf6ea6c9b9661a0be559a4385754979",
+      "bytes": 2596
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_3s_Run_10pct_Encoder_Stability.sr",
+      "sha256": "9126d331713a2978219e4ac3237f8dda732aae72069a4a876fe24b23a3a81348",
+      "bytes": 376987
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_Active_DISARM_10pct_500ms_Backup.pvs",
+      "sha256": "e77601fdd07cba15feecef01fd43a9a10c6d0102458cbfcfd0ac00763fd63840",
+      "bytes": 2563
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_Active_DISARM_10pct_500ms_Backup.sr",
+      "sha256": "d3d057718466fd56eb5e086c2fbc062315419fe980ed3e66241447efd736a485",
+      "bytes": 270765
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_Physical_S0_Stop_10pct_500ms_Backup.pvs",
+      "sha256": "5cadff7fc876d89c15ad1b762944231d5fbfa44af8b9decfe518cdc1fbf494cf",
+      "bytes": 2831
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M1_Physical_S0_Stop_10pct_500ms_Backup.sr",
+      "sha256": "d1918305fed15773ed6acc7b8fd89a3c1512776ce0a2d1b5a4bf9936559faf6d",
+      "bytes": 276724
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M2_3s_Run_10pct_Encoder_Stability.pvs",
+      "sha256": "c1b31c3207aa0361b9b528d9d3125f84d6922392b5dcfe17447cd3865b679500",
+      "bytes": 2560
+    },
+    {
+      "file": "assets/captures/logic_analyzer/2026-09-30_M2_3s_Run_10pct_Encoder_Stability.sr",
+      "sha256": "a678548e701d5428dfa2510a75efe7b9a826df2068c23d3654f35a61fb8a131f",
+      "bytes": 377015
+    }
+  ],
+  "closeout_source": {
+    "file": "03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c",
+    "sha256": "c26c146cbb0a7fef4cc2ae4da2b70dc3f8541be78fd03475117733ceef8b14e9",
+    "meaning": "closeout working source only; not proof of the flashed binary or of every earlier trial",
+    "active_hook": "BRIDGE_M2_RUN_TEST_ENABLED=1U",
+    "base_commit": "69ca538",
+    "branch": "agent/dual-encoder-bringup"
+  }
+}

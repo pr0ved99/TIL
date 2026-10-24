@@ -1,0 +1,17 @@
+{
+  "status": "SAVED_SOURCE_PC_PASS_TEST_ACTIVATION_PENDING",
+  "saved_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+  "matches_candidate_except_blank_line": true,
+  "duplicate_declaration_removed": true,
+  "stm_ack_drop_mode": 0,
+  "other_stm_test_modes": 0,
+  "esp_partial_test_mode": 0,
+  "pc_results_file": "saved_pc_corrected.txt",
+  "mode0_case_groups": 2,
+  "mode1_case_groups": 6,
+  "combined_modes_rejected": 13,
+  "user_report": "STM build and Run succeeded",
+  "flashed_image_identity_independently_verified": false,
+  "fault_injection_runtime_verified": false,
+  "firmware_edited_by_codex": false
+}

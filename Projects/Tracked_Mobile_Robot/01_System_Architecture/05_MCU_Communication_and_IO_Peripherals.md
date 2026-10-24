@@ -1,5 +1,8 @@
 # STM32F446RE Communication and I/O Peripheral Analysis
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](05_MCU_Communication_and_IO_Peripherals_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document analyzes the communication, GPIO, ADC, and debug-related

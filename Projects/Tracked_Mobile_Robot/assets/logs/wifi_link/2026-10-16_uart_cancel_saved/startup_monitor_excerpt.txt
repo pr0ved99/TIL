@@ -1,0 +1,16 @@
+Provenance: selected exact lines from the user's pasted ESP monitor log after the reported STM/ESP build success and flash instructions. This is not an independently saved full serial capture or flash transcript.
+
+I (480) wifi_link: STM UART RX ready: TX=GPIO17 RX=GPIO18 115200/8N1
+I (490) wifi_link: STARTUP: settle; DISARM seq=1024243097 PING seq=1024243098
+I (490) wifi_link: Wi-Fi + STM UART RX: mode=STA boot_id=2324278617
+I (620) wifi_link: STM TEL #1 t_ms=24700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1000) wifi_link: STARTUP: line cancel sent
+I (1020) wifi_link: STM TEL #5 t_ms=25100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (1100) wifi_link: TX UART1: DISARM,seq=1024243097 attempt=1
+I (1110) wifi_link: STM RX: 0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0
+I (1140) wifi_link: RX ACK: seq=1024243097 type=DISARM
+I (1140) wifi_link: STARTUP: DISARM acknowledged
+I (1140) wifi_link: TX UART1: PING,seq=1024243098 attempt=1
+I (1160) wifi_link: RX PONG: seq=1024243098
+I (1160) wifi_link: STARTUP READY: DISARM ACK and PONG verified
+I (1220) wifi_link: STM TEL #6 t_ms=25300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0

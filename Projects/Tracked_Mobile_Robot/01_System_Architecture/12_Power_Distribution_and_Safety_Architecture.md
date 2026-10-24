@@ -1,5 +1,9 @@
 # Power Distribution and Safety Architecture
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](12_Power_Distribution_and_Safety_Architecture_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Current motor supply is LiPo -> F1 -> S1 -> positive busbar -> K1 30/87 -> MDD B+. The two XL4015 inputs branch before K1. The current USB bench disconnects #1 board-power connectors.
+
 ## Purpose
 
 This document defines the first power distribution and safety architecture for
@@ -55,7 +59,7 @@ current paths should remain physically separated as much as practical.
 
 ## 3. Main Power Path
 
-Initial power path:
+Current distribution (scoped observations are not full electrical release):
 
 ```text
 3S LiPo battery
@@ -70,13 +74,11 @@ Initial power path:
     |
     +-- DC-rated main switch
     |
-    +-- switched battery rail
-            |
-            +-- MDD10A motor driver POWER+
-            |
-            +-- XL4015 #1 input
-            |
-            +-- XL4015 #2 input
+    +-- positive busbar / protected battery rail
+            +-- K1 pin30 -> pin87 -> MDD10A motor driver POWER+
+            +-- XL4015 #1 input -> board logic 5 V
+            +-- XL4015 #2 input -> encoder / S0-B AUX5V
+            +-- F2 -> S0/S2/K2/K1 control
 ```
 
 Battery negative path:
@@ -183,8 +185,8 @@ Initial converter roles:
 
 | Converter | Initial role | Notes |
 | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V candidate | Verify output before connection |
-| XL4015 #2 | sensor or auxiliary 5 V candidate | Keeps noisy/aux load separate |
+| XL4015 #1 | STM32/ESP32 board 5 V | Integrated power observations exist; both board-power 2P connectors are disconnected for the current USB bench |
+| XL4015 #2 | Encoder and S0-B AUX5V | Common ground; distinct from the board logic supply role |
 
 Current inventory note:
 

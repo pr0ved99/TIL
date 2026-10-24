@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-24",
+  "reason": "User reported carpet screen recording about1s early",
+  "supersedes_video_sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15",
+  "video_sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+  "offset_screen_minus_camera_seconds": -0.7666666666666667,
+  "screen_delay_relative_to_old_edit_seconds": 1.2666666666666666,
+  "validation": "validation.json",
+  "source_transition_analysis": "alignment_recheck.json",
+  "encoded_transition_check": "render_alignment_validation.json",
+  "local_markdown_targets_checked": 204,
+  "unrelated_files_hashes_preserved": 17,
+  "notion_existing_pages_readback": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "sync_fix_readback_verified": true
+    },
+    {
+      "id": "3fca7326-f87b-81f7-b48e-fbda1ddf38c0",
+      "sync_fix_readback_verified": true
+    }
+  ],
+  "calendar_existing_event_readback": {
+    "id": "5iobptc8if74bnrm4tbttihh58",
+    "sync_fix_readback_verified": true,
+    "start": "2026-10-24T18:30:00+09:00",
+    "end": "2026-10-24T20:00:00+09:00",
+    "times_preserved": true
+  },
+  "git_previous_head": "fa8b42b3502ed9a1f69f7fc1fc58fc103e98eb83",
+  "formal_acceptance_changed": false
+}

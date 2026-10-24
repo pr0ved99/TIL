@@ -1,5 +1,13 @@
 # First Motor No-Load Test
 
+> **2026-09-26 연결 정정:** 첫 시험 대상은 왼쪽 모터 A다.
+> Motor+→M1A, Motor−→M1B 연결 확인; 엔코더는 JENC_1/TIM3/left_cps다.
+> 오른쪽 B 엔코더는 JENC_2/TIM5/right_cps이며 동력선은 아직 분리한다.
+> 교환 후 손회전 채널·전진 양수/후진 음수·정지 0은 사용자 보고 PASS.
+> [현재 매핑과 확인 범위](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).
+> 실제 전동 구동과 DIR 정방향은 미검증이며, 아래 미결 선행 Gate를 이 손회전 결과로 전체 PASS 처리하지 않는다.
+> 9/27 현재 [M1 수동 코드](../docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)는 사용자 입력 WIP다. 새 빌드·플래시·회전은 미실행이며 [report 30](../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 검사 마감을 보존했다.
+
 ## 목적
 
 이 문서는 motor 1개와 MDD10A 1개 channel을 사용해 첫 low-duty no-load motor test를 수행하는 절차를 정의한다.
@@ -30,23 +38,26 @@
 | Precondition | Source document | Result |
 | --- | --- | --- |
 | Power path checked | `01_Power_Bringup_Checklist.md` | PASS through MDD10A powered/no-motor input |
-| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | CONDITIONAL PASS; board power/back-power TBD |
-| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PARTIAL; active timeout/DISARM and timing closure required |
+| Buck output calibrated if logic uses buck | `02_Buck_Converter_Calibration_Log.md` | PASS for current board-power/back-power scope; STM32 5.00/3.30 V, ESP32 5.00/3.27 V |
+| MDD10A logic input safe | `03_MDD10A_Logic_Input_Test.md` | PASS for motor-disconnected MDD10A-input scope; permanent 10 kΩ pull-down, final 19 kHz/약 10%, DIR settle와 hook-0 all-LOW 확인 |
+| Actual PWM/DIR timing measured | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | PASS for motor-disconnected input scope; active DISARM/timeout/fault edge와 final 19 kHz A/B capture 완료 |
+| Physical E-stop staged verification | `../docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md` | PLANNED/BLOCKED; MVP `T-ESTOP-001~005` must pass first; `T-ESTOP-006` is post-MVP |
 | Encoder signal/input conditioning checked | `04_Encoder_Signal_Safety_Test.md` | CONDITIONAL PASS; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 유지 |
-| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, `../assets/logs/encoder/README.md` | TIM3 PB4/PB5 TI12 x4에서 두 bench motor 순차 PASS; TIM5와 vehicle sign은 pending |
+| Motor-off encoder count/sign | `04_Encoder_Signal_Safety_Test.md`, report 29 | 9/26 현재 A=left/TIM3, B=right/TIM5로 커넥터 교환 후 독립 손회전·forward-positive·정지 0 사용자 보고 PASS |
 | Motor fixed or lifted safely | Physical setup | TBD |
-| 10 A or 15 A fuse selected | Test stage | TBD |
+| Bench fuse selected from validated current envelope | Test stage | TBD; 10 A candidate, no rating increase without root-cause/design review |
 
 Current gate decision: `NOT READY`
 
-Encoder loaded-voltage gate와 TIM3 motor-power-off hand-rotation count/sign은 통과했다. 그러나 이 결과는 powered-motor noise 또는 vehicle-forward sign을 입증하지 않는다. 실제 motor 연결 전 active PWM 상태의 timeout/DISARM output-zero와 의도한 post-DIR settle을 확인해야 한다.
+Encoder loaded-voltage gate, TIM3/TIM5 dual motor-power-off independent count/sign과 encoder-side vehicle-forward sign은 통과했다. 그러나 이 결과는 MDD10A powered channel-to-side mapping이나 powered-motor noise를 입증하지 않는다. Powered/no-motor timeout/DISARM와 software fault output-zero/latch, exact PWM/direction timing, permanent pull-down과 final safe-image 회귀는 통과했다. 실제 motor 연결 전 Physical E-stop `T-ESTOP-001~005`, fuse/current-limit coordination과 lifted setup을 닫아야 한다.
 
 ## Wiring Under Test
 
 ```text
 3S LiPo +
     -> fuse
-    -> switch
+    -> verified Physical E-stop motor-power disconnect
+       (selected T-ESTOP variant, including its main-switch topology)
     -> MDD10A POWER+
 
 3S LiPo -
@@ -64,14 +75,14 @@ Each STM32 input node -> 15 kΩ -> common GND
 
 | Item | Value |
 | --- | --- |
-| Motor under test | TBD |
-| MDD10A channel | TBD |
+| Motor under test | MG540-A, vehicle left, chassis에서 분리 |
+| MDD10A channel | M1: Motor+→M1A, Motor−→M1B |
 | Fuse rating | TBD |
 | Battery voltage before test | TBD |
 | PWM frequency | TBD |
 | Duty limit | TBD |
 | Command timeout | TBD |
-| Encoder connected? | TBD |
+| Encoder connected? | A→JENC_1/TIM3/left_cps, 교환 후 손회전 PASS |
 | Test duration limit | TBD |
 
 Recommended initial limits:

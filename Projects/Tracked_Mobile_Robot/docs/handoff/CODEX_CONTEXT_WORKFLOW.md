@@ -1,0 +1,70 @@
+# Codex Context And Storage Workflow
+
+## Purpose
+
+Keep project continuity in small repository documents instead of relying on one long Codex conversation or
+reloading archived session JSONL files.
+
+## Session Start
+
+1. Read `CURRENT_SESSION_CONTEXT.md`.
+2. Read `../progress/README.md` and the latest progress file.
+3. Read only the plan/report/source file needed for the current gate.
+4. Run `git status --short -- Projects/Tracked_Mobile_Robot` and inspect the latest project commit.
+
+Use `PROJECT_MEMORY.md`, older handoffs, and archived conversations only to resolve a missing fact or conflict.
+
+## During Work
+
+- Keep one gate or tightly connected milestone in one conversation.
+- Store logs, captures, PDFs, and diagrams as files, then discuss their paths and relevant excerpts.
+- Do not attach the same image repeatedly. Do not paste complete build logs when the failing or measured section
+  is enough.
+- For bench work, state the goal once, give one action, wait for the result, and advance after `통과 다음`.
+- Accumulate factual results and write progress/evidence once at the end of the work block.
+
+## Session Closeout
+
+On 2026-10-23 the user explicitly defined “정리” as documentation, progress updates, Git updates,
+Calendar updates, and Notion updates. Treat this shorthand as a request for all five actions within the
+current work block. Do not ask again whether to perform those already requested actions. Preserve unrelated
+changes, existing page children and calendar times; verify actual publication and report any incomplete part.
+
+Before moving to a new conversation:
+
+1. Update the dated progress/evidence documents once.
+2. Replace the status and next action in `CURRENT_SESSION_CONTEXT.md`.
+3. Update `docs/progress/README.md` and `docs/handoff/README.md` when their current pointer changed. Reconcile the project/app/domain READMEs, `PROJECT_MEMORY.md` and plan index when their current status or next action changed; preserve dated historical evidence.
+4. Commit/push only when requested for that work block.
+5. Update the relevant existing Notion project/tasks and Calendar events when closeout includes them; “정리” includes both. Read back the affected content/properties and preserve calendar start/end boundaries unless a change was requested.
+6. Start the next conversation with `NEXT_SESSION_START_PROMPT.md`.
+
+Use [firmware app/module overview](../../03_Firmware/README.md) to distinguish the last flashed app from compiled but unconnected modules.
+Use [evidence capture guide](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md) for source/build/flash identity, raw logs and observations. Missing past originals remain missing; documentation edits do not upgrade verification status.
+
+## Conversation Archive
+
+The raw archive is external to the repository:
+
+- Archived JSONL: `D:\CodexSessionArchive\sessions`
+- Text index: `D:\CodexSessionArchive\indexes\codex_text_index.sqlite`
+- Index builder: `D:\CodexSessionArchive\index_codex_sessions.py`
+
+The 2026-09-08 index covered 185 unique archived/local sessions and 51,249 JSONL messages plus 2,462
+high-quality projected messages from the local thread database. It excluded 36 duplicate session copies and
+large image/state lines. Some older archived Korean text already contains replacement characters; use the
+dated repository documents created from those sessions as the authoritative record.
+
+The project must remain usable when D: is disconnected. Do not make build, test, or documentation links depend
+on the external index.
+
+## Storage Snapshot And Policy
+
+On 2026-09-08 Windows saw only the internal 256 GB NVMe and a 233 GB SanDisk USB drive mounted as D:.
+The separate Ubuntu 500 GB SSD was not visible to Windows. C: had about 70.1 GB free; local Codex JSONL files
+used about 2.68 GB. D: had about 49.8 GB free; the raw Codex archive used about 53.29 GB and the text index
+about 95 MB.
+
+Do not move or delete an active session while Codex is open. Future cleanup should close Codex, identify the
+active rollout, hash-verify the archive copy, then remove only verified old local copies. Raw archive deletion
+or deduplication is a separate storage-maintenance task.

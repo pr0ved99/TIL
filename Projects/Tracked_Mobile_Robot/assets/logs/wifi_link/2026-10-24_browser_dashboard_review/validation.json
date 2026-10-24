@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-24",
+  "source": "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c",
+  "before": {
+    "date": "2026-10-24",
+    "main_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "outside_PAGE_sha256": "a970d0f2b517d83180178bb5ad9730a8c466e4709b1dbed2cbd95b5fd6f79c51",
+    "script_sha256": "66ac348a760a4670189e8b890f2d9591ae1c4ce0093eac18291e6f22576438a4",
+    "source_path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+    "actual_firmware_build": false,
+    "actual_board_flash": false
+  },
+  "after_main_sha256": "37dc255d7caa7f02fc3a536650a3fb9202273300e27139d75f39a311264272b0",
+  "outside_PAGE_unchanged_byte_for_byte": true,
+  "control_script_unchanged_after_removing_dashboard_helpers_and_two_hooks": true,
+  "decoded_PAGE_bytes_before": 34270,
+  "decoded_PAGE_bytes_after": 43408,
+  "unique_browser_unit_cases": 105,
+  "groups": {
+    "shared_control": 46,
+    "distance": 28,
+    "nonzero": 21,
+    "dashboard": 10
+  },
+  "test_environment": "Actual embedded PAGE; Node VM with fake DOM/clock/WebSocket. Shared 46 counted once.",
+  "actual_firmware_build": false,
+  "actual_board_flash": false,
+  "actual_robot_test": false,
+  "previous_board_timing_results_apply_to_this_UI": false
+}

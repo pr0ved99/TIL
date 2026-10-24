@@ -1,0 +1,203 @@
+{
+  "verdict": "PASS_MODE0_RESTORE_MANUAL_REARM_ZERO_AND_MANUAL_DISARM_FROM_ARMED",
+  "gate_status": "AC_S06_ZERO_OUTPUT_TIMEOUT_REJECTION_AND_RESTORE_SCOPE_COMPLETE",
+  "capture_name": "2026-10-17_UR03_ACS06_RESTORE_PWM_run02.sr",
+  "capture_sha256": "5e9f9d1c25e262ee8e8c62587a70c37e58ad938cd540a3f07f0a3f711e565ce3",
+  "duration_s": 6.866048,
+  "samplerate_hz": 4000000.0,
+  "samples": 27464192,
+  "normal_mode_source_matches_reviewed_mode0": true,
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 12,
+    "DISARM": 1
+  },
+  "seq_range": [
+    573833994,
+    573834007
+  ],
+  "matching_ack_count": 14,
+  "uart_ERR_count": 0,
+  "bad_stop_bits_D0_D1": [
+    0,
+    0
+  ],
+  "valid_tel_count": 68,
+  "state_counts": {
+    "DISARMED": 54,
+    "ARMED": 14
+  },
+  "all_valid_tel_vx_w_pwm_cps_drop_zero": true,
+  "err": "1 throughout; no new STM error",
+  "rearm": {
+    "request_id": 31,
+    "session_id": 2,
+    "ARM": {
+      "start_s": 2.79494625,
+      "end_s": 2.7965088055555554,
+      "text": "ARM,seq=573833994"
+    },
+    "ARM_ACK": {
+      "start_s": 2.8092105,
+      "end_s": 2.8125880555555556,
+      "text": "ACK,seq=573833994,type=ARM,t_ms=849633"
+    },
+    "first_armed_tel": {
+      "start_s": 2.88374575,
+      "end_s": 2.8985520555555553,
+      "text": "TEL,t_ms=849708,state=ARMED,reason=NONE,command_age_ms=315942,last_seq=573833994,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "849708",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "315942",
+        "last_seq": "573833994",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "first_zero_CMD": {
+      "start_s": 2.936783,
+      "end_s": 2.9414705555555556,
+      "text": "CMD,seq=573833995,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "last_zero_CMD": {
+      "start_s": 4.12046125,
+      "end_s": 4.125148805555556,
+      "text": "CMD,seq=573834006,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "accepted_zero_CMD_count": 12
+  },
+  "manual_stop": {
+    "request_id": 44,
+    "session_id": 2,
+    "queued_esp_ms": 358599,
+    "tx_esp_ms": 358609,
+    "matched_esp_ms": 358629,
+    "command": {
+      "start_s": 4.21793075,
+      "end_s": 4.219753805555556,
+      "text": "DISARM,seq=573834007"
+    },
+    "ack": {
+      "start_s": 4.219853,
+      "end_s": 4.223491805555556,
+      "text": "ACK,seq=573834007,type=DISARM,t_ms=851047"
+    },
+    "can_prefix": {
+      "start_s": 4.21775725,
+      "end_s": 4.2179308055555556,
+      "text": "\u0018"
+    },
+    "attribution": "The sole DISARM follows WS request 44; no preceding automatic stop in this capture or attached monitor.",
+    "last_pre_stop_tel": {
+      "start_s": 4.183035,
+      "end_s": 4.197497555555556,
+      "text": "TEL,t_ms=851010,state=ARMED,reason=NONE,command_age_ms=58,last_seq=573834006,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "851010",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "58",
+        "last_seq": "573834006",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "first_followup_tel": {
+      "start_s": 4.2828395,
+      "end_s": 4.297827805555556,
+      "text": "TEL,t_ms=851110,state=DISARMED,reason=DISARM,command_age_ms=158,last_seq=573834007,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "851110",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "158",
+        "last_seq": "573834007",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "post_stop_tel_count": 26,
+    "capture_after_ack_s": 2.6425561944444445,
+    "last_CMD_start_to_CAN_start_ms": 97.29600000000005,
+    "ARM_start_to_DISARM_start_ms": 1422.9844999999996,
+    "no_uart_commands_after_stop": true
+  },
+  "physical_levels": {
+    "mapping": "D4/PB6 left PWM, D6/PC7, D7/PB7 right PWM; existing user-confirmed wiring",
+    "all_low": true,
+    "samples_per_channel": 27464192,
+    "duration_s": 6.866048
+  },
+  "browser_screenshot": {
+    "source": "User-attached final screenshot; manually transcribed, not a new browser query",
+    "test_banner": false,
+    "boot_id": 3570331004,
+    "startup_state": "READY",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_result": "DISARM request 44 OK",
+    "uptime_ms": 386429,
+    "stm_t_ms": 879210,
+    "last_seq": 573834007,
+    "command_age_ms": 28258,
+    "stm_age_ms": 12,
+    "outputs_and_cps": 0,
+    "drop": 0,
+    "err": 1
+  },
+  "capture_boundary": {
+    "excluded_first_line": {
+      "start_s": 3.25e-06,
+      "end_s": 0.004508555555555556,
+      "text": "pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+    },
+    "description": "Capture starts inside a TEL line; initial fragment excluded from complete TEL evidence. No invalid stop bits in either UART stream."
+  },
+  "provenance": {
+    "esp_monitor": "Byte-for-byte copy of attached text file",
+    "esp_monitor_sha256": "5a7e928c05dd3cc49e13bb0d24950f9ff447183f3c6f7bef30f22fe5f6856829",
+    "source_attachment": "C:\\Users\\eyh12\\.codex\\attachments\\3be79899-ae48-47ce-8388-9a9156468f0a\\붙여넣은 텍스트.txt",
+    "current_main_normalized_sha256": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+    "current_stm_normalized_sha256": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d"
+  },
+  "related_reviews": {
+    "timeout_and_CMD_only_rejection": "../2026-10-17_ur03_acs06_cmd_timeout_pwm_run01/observations.json",
+    "earlier_restore_with_automatic_stop": "../2026-10-17_ur03_acs06_restore_pwm_run01/observations.json"
+  },
+  "open_observations": [
+    "Cause of the run01 command-delivery gap remains unconfirmed; user reported no focus switch. This successful shorter run does not resolve that observation."
+  ],
+  "limits": [
+    "Zero-output test with isolated motor power; no rotating motor stop-time claim.",
+    "Digital 4 MHz sampling does not establish analog voltage or absence of sub-sample pulses.",
+    "UART evidence establishes ARMED before manual stop; final IDLE and command result are from the screenshot.",
+    "Local source hashes are not independent readback hashes of flashed firmware.",
+    "This completes the bounded AC-S06 timeout/rejection and normal restoration scope, not every AC-S acceptance case."
+  ],
+  "next_action": "No further AC-S06 rerun needed for this scope. Keep ESP mode 0 and STM test switches off; retain run01 command-delivery-gap investigation separately."
+}

@@ -1,0 +1,777 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-10-23T14:22:25",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "PTH inside courtyard",
+            "key": "pth_inside_courtyard"
+        },
+        {
+            "description": "NPTH inside courtyard",
+            "key": "npth_inside_courtyard"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning"
+    ],
+    "kicad_version": "10.0.5",
+    "schematic_parity": [],
+    "source": "TMR_Monitor_Shield_RevA.kicad_pcb",
+    "unconnected_items": [
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_LEFT_RAW]R3",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 97.0
+                    },
+                    "uuid": "6374f32a-4664-4dab-8499-991801e5edc5"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_RAW]R4",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 97.0
+                    },
+                    "uuid": "a6a00fdb-180c-4b57-a10e-e102958c18fa"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_RAW]R4",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 97.0
+                    },
+                    "uuid": "a6a00fdb-180c-4b57-a10e-e102958c18fa"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_RAW]J5",
+                    "pos": {
+                        "x": 155.0,
+                        "y": 97.0
+                    },
+                    "uuid": "27c75253-b60b-47e7-908c-f79391a30bab"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/GND]TP2",
+                    "pos": {
+                        "x": 129.0,
+                        "y": 68.0
+                    },
+                    "uuid": "1c125e19-e1fd-4fb2-9b88-9bde45e0e8af"
+                },
+                {
+                    "description": "20의 PTH 패드[/GND]J1",
+                    "pos": {
+                        "x": 107.29,
+                        "y": 85.1
+                    },
+                    "uuid": "31073dd9-0ac4-4a9b-938a-5d7c58d0a34f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]C1",
+                    "pos": {
+                        "x": 135.0,
+                        "y": 77.0
+                    },
+                    "uuid": "a69b81ed-571a-44fa-93b5-4eea0e4497e4"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]C2",
+                    "pos": {
+                        "x": 135.0,
+                        "y": 87.0
+                    },
+                    "uuid": "e7f5465e-b935-47c7-ba58-d7c52c762ddd"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]C1",
+                    "pos": {
+                        "x": 135.0,
+                        "y": 77.0
+                    },
+                    "uuid": "a69b81ed-571a-44fa-93b5-4eea0e4497e4"
+                },
+                {
+                    "description": "1의 PTH 패드[/GND]TP2",
+                    "pos": {
+                        "x": 129.0,
+                        "y": 68.0
+                    },
+                    "uuid": "1c125e19-e1fd-4fb2-9b88-9bde45e0e8af"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]C2",
+                    "pos": {
+                        "x": 135.0,
+                        "y": 87.0
+                    },
+                    "uuid": "e7f5465e-b935-47c7-ba58-d7c52c762ddd"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]C3",
+                    "pos": {
+                        "x": 149.0,
+                        "y": 97.0
+                    },
+                    "uuid": "0b2d7205-bcd0-4369-ae2f-3de87b290ddf"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]C3",
+                    "pos": {
+                        "x": 149.0,
+                        "y": 97.0
+                    },
+                    "uuid": "0b2d7205-bcd0-4369-ae2f-3de87b290ddf"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]J5",
+                    "pos": {
+                        "x": 157.5,
+                        "y": 97.0
+                    },
+                    "uuid": "2fdaee32-c7a3-47e8-81ad-fcd83f6fca8f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]C4",
+                    "pos": {
+                        "x": 149.0,
+                        "y": 106.0
+                    },
+                    "uuid": "267c69c8-d96a-4b37-b276-e55f54137868"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]J6",
+                    "pos": {
+                        "x": 157.5,
+                        "y": 106.0
+                    },
+                    "uuid": "c388d1eb-7268-43ef-8761-df3fda99a535"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]J4",
+                    "pos": {
+                        "x": 155.5,
+                        "y": 87.0
+                    },
+                    "uuid": "70f6b8dc-42dd-4f48-9b7e-5fd06133e148"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]J3",
+                    "pos": {
+                        "x": 155.5,
+                        "y": 77.0
+                    },
+                    "uuid": "52f92b95-eaaa-40c1-a54e-1af89a897a41"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]J4",
+                    "pos": {
+                        "x": 155.5,
+                        "y": 87.0
+                    },
+                    "uuid": "70f6b8dc-42dd-4f48-9b7e-5fd06133e148"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]J5",
+                    "pos": {
+                        "x": 157.5,
+                        "y": 97.0
+                    },
+                    "uuid": "2fdaee32-c7a3-47e8-81ad-fcd83f6fca8f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/GND]J6",
+                    "pos": {
+                        "x": 157.5,
+                        "y": 106.0
+                    },
+                    "uuid": "c388d1eb-7268-43ef-8761-df3fda99a535"
+                },
+                {
+                    "description": "2의 PTH 패드[/GND]J5",
+                    "pos": {
+                        "x": 157.5,
+                        "y": 97.0
+                    },
+                    "uuid": "2fdaee32-c7a3-47e8-81ad-fcd83f6fca8f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_LEFT_ADC]R4",
+                    "pos": {
+                        "x": 137.62,
+                        "y": 97.0
+                    },
+                    "uuid": "30667de5-0d28-4465-a6ef-b9f73656e1e1"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_ADC]C3",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 97.0
+                    },
+                    "uuid": "8410ae1f-7191-4b02-9efa-4721451ac115"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_LEFT_ADC]R4",
+                    "pos": {
+                        "x": 137.62,
+                        "y": 97.0
+                    },
+                    "uuid": "30667de5-0d28-4465-a6ef-b9f73656e1e1"
+                },
+                {
+                    "description": "35의 PTH 패드[/T_LEFT_ADC]J1",
+                    "pos": {
+                        "x": 104.75,
+                        "y": 105.42
+                    },
+                    "uuid": "aaae7892-c395-47ca-ac33-5479f7edb427"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_ADC]C3",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 97.0
+                    },
+                    "uuid": "8410ae1f-7191-4b02-9efa-4721451ac115"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_LEFT_ADC]TP5",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 92.0
+                    },
+                    "uuid": "03d153a7-1aa3-4d79-ab17-6cb8c0951762"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_RIGHT_RAW]R5",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 106.0
+                    },
+                    "uuid": "8b6b9776-b641-4efb-97a5-e07b87be5b59"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_RAW]R6",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 106.0
+                    },
+                    "uuid": "8f5ff7be-f97a-4502-9789-5cc345e70f25"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_RAW]R6",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 106.0
+                    },
+                    "uuid": "8f5ff7be-f97a-4502-9789-5cc345e70f25"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_RAW]J6",
+                    "pos": {
+                        "x": 155.0,
+                        "y": 106.0
+                    },
+                    "uuid": "16995d62-1b90-4dd1-b30e-10b9f3cdcf0a"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_RIGHT_ADC]R6",
+                    "pos": {
+                        "x": 137.62,
+                        "y": 106.0
+                    },
+                    "uuid": "fc530068-1abb-4bcd-be12-a0b788994bc6"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_ADC]C4",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 106.0
+                    },
+                    "uuid": "80156f9f-568d-4c16-88d7-1264a987219f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/T_RIGHT_ADC]R6",
+                    "pos": {
+                        "x": 137.62,
+                        "y": 106.0
+                    },
+                    "uuid": "fc530068-1abb-4bcd-be12-a0b788994bc6"
+                },
+                {
+                    "description": "37의 PTH 패드[/T_RIGHT_ADC]J1",
+                    "pos": {
+                        "x": 104.75,
+                        "y": 107.96
+                    },
+                    "uuid": "cb3a49bd-8458-4885-8268-a085978dcd12"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_ADC]C4",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 106.0
+                    },
+                    "uuid": "80156f9f-568d-4c16-88d7-1264a987219f"
+                },
+                {
+                    "description": "1의 PTH 패드[/T_RIGHT_ADC]TP6",
+                    "pos": {
+                        "x": 144.0,
+                        "y": 102.0
+                    },
+                    "uuid": "a66d4856-5431-431a-a300-fc9fcb601017"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/I_RIGHT_ADC]R2",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 87.0
+                    },
+                    "uuid": "88496242-e761-4232-bc72-587a38ca7205"
+                },
+                {
+                    "description": "36의 PTH 패드[/I_RIGHT_ADC]J1",
+                    "pos": {
+                        "x": 107.29,
+                        "y": 105.42
+                    },
+                    "uuid": "3febbfaa-b54e-4256-a10e-2139bb2c8cee"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_RIGHT_ADC]C2",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 87.0
+                    },
+                    "uuid": "52adec52-9357-47f4-9b39-7a22f3ccb6f4"
+                },
+                {
+                    "description": "2의 PTH 패드[/I_RIGHT_ADC]R2",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 87.0
+                    },
+                    "uuid": "88496242-e761-4232-bc72-587a38ca7205"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_RIGHT_ADC]TP4",
+                    "pos": {
+                        "x": 141.0,
+                        "y": 87.0
+                    },
+                    "uuid": "a8e13bda-2352-4ab0-91c1-eb53e07d1792"
+                },
+                {
+                    "description": "1의 PTH 패드[/I_RIGHT_ADC]C2",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 87.0
+                    },
+                    "uuid": "52adec52-9357-47f4-9b39-7a22f3ccb6f4"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "16의 PTH 패드[/STM_3V3]J1",
+                    "pos": {
+                        "x": 107.29,
+                        "y": 80.02
+                    },
+                    "uuid": "de9aad49-3c82-425b-aaae-ed7e6bea5988"
+                },
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]R3",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 97.0
+                    },
+                    "uuid": "e01785f4-7fda-4e38-8111-c529278f4519"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]TP1",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 68.0
+                    },
+                    "uuid": "31f3af96-e729-43d8-b74e-7bde19ea8b16"
+                },
+                {
+                    "description": "16의 PTH 패드[/STM_3V3]J1",
+                    "pos": {
+                        "x": 107.29,
+                        "y": 80.02
+                    },
+                    "uuid": "de9aad49-3c82-425b-aaae-ed7e6bea5988"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]R3",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 97.0
+                    },
+                    "uuid": "e01785f4-7fda-4e38-8111-c529278f4519"
+                },
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]R5",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 106.0
+                    },
+                    "uuid": "7f6d3571-ea10-4377-98b5-e2cd39b2ba38"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]J3",
+                    "pos": {
+                        "x": 153.0,
+                        "y": 77.0
+                    },
+                    "uuid": "8b3df47d-38e6-4be8-9e65-883044839515"
+                },
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]TP1",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 68.0
+                    },
+                    "uuid": "31f3af96-e729-43d8-b74e-7bde19ea8b16"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]J4",
+                    "pos": {
+                        "x": 153.0,
+                        "y": 87.0
+                    },
+                    "uuid": "81b1377f-8d75-43d6-8513-2021ac3402aa"
+                },
+                {
+                    "description": "1의 PTH 패드[/STM_3V3]J3",
+                    "pos": {
+                        "x": 153.0,
+                        "y": 77.0
+                    },
+                    "uuid": "8b3df47d-38e6-4be8-9e65-883044839515"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "2의 PTH 패드[/I_LEFT_ADC]R1",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 77.0
+                    },
+                    "uuid": "193f7f72-410b-4ed6-84b7-9f27c7b0becb"
+                },
+                {
+                    "description": "38의 PTH 패드[/I_LEFT_ADC]J1",
+                    "pos": {
+                        "x": 107.29,
+                        "y": 107.96
+                    },
+                    "uuid": "35192bcc-fd99-4308-9557-28a68e103f1f"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_LEFT_ADC]C1",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 77.0
+                    },
+                    "uuid": "73c8a49f-7c25-45f7-83ca-ea62842a9942"
+                },
+                {
+                    "description": "2의 PTH 패드[/I_LEFT_ADC]R1",
+                    "pos": {
+                        "x": 124.62,
+                        "y": 77.0
+                    },
+                    "uuid": "193f7f72-410b-4ed6-84b7-9f27c7b0becb"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_LEFT_ADC]TP3",
+                    "pos": {
+                        "x": 141.0,
+                        "y": 77.0
+                    },
+                    "uuid": "a87e3dae-ce26-4ede-bec1-09c5d0840e49"
+                },
+                {
+                    "description": "1의 PTH 패드[/I_LEFT_ADC]C1",
+                    "pos": {
+                        "x": 130.0,
+                        "y": 77.0
+                    },
+                    "uuid": "73c8a49f-7c25-45f7-83ca-ea62842a9942"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_RIGHT_RAW]R2",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 87.0
+                    },
+                    "uuid": "33af39f5-b48b-4274-b58d-ae8794966554"
+                },
+                {
+                    "description": "3의 PTH 패드[/I_RIGHT_RAW]J4",
+                    "pos": {
+                        "x": 158.0,
+                        "y": 87.0
+                    },
+                    "uuid": "0dd58bda-5896-4627-b1a7-f1a47843ce26"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        },
+        {
+            "description": "Missing connection between items",
+            "items": [
+                {
+                    "description": "1의 PTH 패드[/I_LEFT_RAW]R1",
+                    "pos": {
+                        "x": 117.0,
+                        "y": 77.0
+                    },
+                    "uuid": "17bf627a-67af-402c-8024-fbe695a48f37"
+                },
+                {
+                    "description": "3의 PTH 패드[/I_LEFT_RAW]J3",
+                    "pos": {
+                        "x": 158.0,
+                        "y": 77.0
+                    },
+                    "uuid": "3e7d6659-55b8-4a2f-a750-535ef9037244"
+                }
+            ],
+            "severity": "error",
+            "type": "unconnected_items"
+        }
+    ],
+    "violations": []
+}

@@ -1,0 +1,253 @@
+{
+  "date": "2026-10-23",
+  "run_id": "2026-10-23_ground_1m_run02",
+  "test_id": "T-ODO-001",
+  "status": "PROVISIONAL_COUNTS_ONLY_TERMINAL_CONTINUOUS_CAPTURE_INCOMPLETE",
+  "user_observations": {
+    "forward_displacement_mm_approx": 1005,
+    "forward_original_text": "1005mm정도 움직임",
+    "lateral_offset_mm_approx": 80,
+    "lateral_direction": "right",
+    "lateral_original_text": "이번엔 오른쪽으로 8cm쯤 치우침. pwm, cps가 0인거 확인함/",
+    "zero_pwm_cps_confirmed_by_user": true,
+    "track_center_spacing_physical_mm_approx": 233,
+    "track_center_spacing_definition": "User confirmed width center of each track to width center of opposite track",
+    "track_center_spacing_cad_mm": 228.31681,
+    "stm_reset_between_runs": "User stated intent to return to origin and reset STM. New report starts DISARMED/BOOT and count0/0 with smaller STM tick; user did not separately confirm reset action.",
+    "measurement_resolution_mm": null,
+    "after_run_cell_voltages_v": null,
+    "final_heading_degrees": null,
+    "power_disconnected": null,
+    "disarm_button_clicked_multiple_times": true,
+    "direction_buttons_reported_remained_enabled_after_disarm_clicks": true,
+    "disarm_ui_original_text": "ARM 속도 0을 누르고 전진을 누른 다음에 1005mm이동한 다음에 DISARM을 몇번 누르기는했는데 전후좌우 버튼이 계속 활성화되어 있기는 했어",
+    "disarmed_state_observed_after_switching_screen": true,
+    "screen_switch_original_text": "DISARMED/DISARM이야. 화면을 전환하니깐 나온 결과야"
+  },
+  "identity": {
+    "boot_id": 1339414435,
+    "arm_seq": 2670355140,
+    "initial_session_id": 2,
+    "later_snapshot_session_ids": [
+      3
+    ]
+  },
+  "standard_analysis": {
+    "status": "REJECTED",
+    "reason": "NO_ACKED_STOPPED_DISARM_ENDPOINT",
+    "comparison_not_run": "Standard analyzer has no ACKed stopped DISARM endpoint. Approximate physical result and snapshots are preserved as supplementary evidence without changing acceptance policy."
+  },
+  "provisional_count_difference": {
+    "start": {
+      "ms": 57650.40000000596,
+      "tel_count": 25381,
+      "stm_t_ms": 224100,
+      "encoder_t_ms": 224100,
+      "left_count": "0",
+      "right_count": "0",
+      "state": "ARMED",
+      "reason": "NONE",
+      "last_seq": 2670355140
+    },
+    "end": "Last retained telemetry (ARMED zero-output), not ACKed DISARM endpoint",
+    "end_stm_t_ms": 251700,
+    "delta_count": {
+      "left": "11741",
+      "right": "11489"
+    },
+    "distance_estimate_mm": {
+      "left": 1015.7470256410256,
+      "right": 993.9457948717949,
+      "mean": 1004.8464102564103
+    },
+    "left_minus_right_mm": 21.80123076923077,
+    "mean_minus_approx_1005mm": -0.15358974358969135,
+    "warning": "Conditional arithmetic on retained endpoints, not accepted full-run measurement or demonstrated sub-mm accuracy. Same final counts appear in later DISARMED snapshots; intervening telemetry is unavailable."
+  },
+  "capture_boundary": {
+    "last_recorded_tel_ms": 85272.20000000298,
+    "last_recorded_tel_state": "ARMED",
+    "disarm_command_result_count": 0,
+    "old_session_ids": [
+      2
+    ],
+    "later_snapshots": [
+      {
+        "browser_ms": 97679,
+        "session_id": 3,
+        "phase": "IDLE",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 2670355409,
+        "stm_t_ms": 264100,
+        "left_count": "11741",
+        "right_count": "11489",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "drop": 0,
+        "err": 0
+      },
+      {
+        "browser_ms": 99424.40000000596,
+        "session_id": 3,
+        "phase": "IDLE",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 2670355409,
+        "stm_t_ms": 265900,
+        "left_count": "11741",
+        "right_count": "11489",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "drop": 0,
+        "err": 0
+      }
+    ],
+    "observer_limitation": "Observer attaches message listener to const ws=socket at installation. Later session2 to session3 transition is visible in snapshots, but new socket messages were not captured. Precise reconnect cause/time not recorded. Source history is not reconstructed from snapshots.",
+    "manual_disarm_send_acceptance_and_ack_status": "UNKNOWN: no DISARM transmit/click, admission notice or command result is retained. Terminal DISARMED snapshots cannot identify manual click versus another stop path."
+  },
+  "retained_interval": {
+    "source_samples": 277,
+    "missing_source_tel_steps": 0,
+    "max_stm_age_ms": 107,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ],
+    "forward_output_intervals": 2,
+    "transitions": [
+      {
+        "ms": 57650.40000000596,
+        "stm_t_ms": 224100,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "0",
+        "right_count": "0"
+      },
+      {
+        "ms": 68150,
+        "stm_t_ms": 234600,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "26",
+        "right_count": "25"
+      },
+      {
+        "ms": 81680.90000000596,
+        "stm_t_ms": 248200,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          850,
+          860
+        ],
+        "left_count": "11618",
+        "right_count": "11366"
+      },
+      {
+        "ms": 84291.90000000596,
+        "stm_t_ms": 250800,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "11635",
+        "right_count": "11387"
+      },
+      {
+        "ms": 84471.70000000298,
+        "stm_t_ms": 251000,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          690,
+          610
+        ],
+        "left_count": "11741",
+        "right_count": "11488"
+      }
+    ],
+    "stable_zero_pwm_cps_and_counts_from_stm_t_ms": 251200,
+    "last_stm_t_ms": 251700
+  },
+  "buffer_retention": {
+    "history_dropped": 0,
+    "telemetry_dropped": 0,
+    "note": "Missing termination is a socket coverage gap, not ring-buffer eviction."
+  },
+  "limitations": [
+    "No automatically accepted ARM-to-DISARM window",
+    "Actual forward/lateral distances are approximate user reports; final heading and reference-point offset not supplied",
+    "Single-run lateral deviation does not identify slip, alignment, motor or encoder fault",
+    "CAD/physical spacing is not a calibrated effective skid-steer width",
+    "Temperature/current remain deferred; no MCU code, build, flash or gain changes"
+  ],
+  "evidence": {
+    "browser_report": "browser_report.json",
+    "browser_report_sha256": "afdce8c84989f7d2145bd6ab2d5159719fa5083c96b3fb687052bc3c6f92e5b3",
+    "standard_analysis": "encoder_analysis.json",
+    "conditional_lateral_model": "lateral_model.json"
+  }
+}

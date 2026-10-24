@@ -1,0 +1,31 @@
+{
+  "count": 21,
+  "results": [
+    "PASS installation sends HELLO only and keeps A send untouched",
+    "PASS B non-owner DISARM has no ticket; accepted result and both IDLE plus TEL and observation required",
+    "PASS pre-ARM IDLE does not falsely abort; B waits for two CMD results",
+    "PASS A command cancellation after B stop is allowed as pending-command cleanup",
+    "PASS wrong result session or request cannot establish a stop proof",
+    "PASS B rejection or failed result causes bounded cleanup, never PASS",
+    "PASS matching ACK without matching stopped TEL cannot pass",
+    "PASS matching ACK/TEL without B IDLE cannot pass",
+    "PASS freshness expiry, output change, reset and focus loss abort before B proof",
+    "PASS rearm, output or seq changes during post-stop observation invalidate trial",
+    "PASS A or B disconnect invalidates trial and requests cleanup if possible",
+    "PASS manual cancellation while waiting sends no DISARM or ARM",
+    "PASS early ARM before B readiness cannot be presented as a successful B test",
+    "PASS run01 ordering: PAGE BUSY cleanup, older B TEL after newer A ACK, then matching new TEL",
+    "PASS new stopped TEL may precede A result, but cannot replace B stop TEL proof",
+    "PASS failed or mismatched followup result cannot excuse a sequence change",
+    "PASS unobserved DISARM response cannot authorize an unknown stopped seq",
+    "PASS a new identified stop during observation restarts full 3.1 seconds",
+    "PASS no rearm allowed while an additional stop is settling",
+    "PASS A followup without result remains bounded even with fresh zero telemetry",
+    "PASS ARM after B send or successful CMD after B stop proof cannot hide behind an extra DISARM"
+  ],
+  "scope": "Saved PAGE and helper with mocked browser/server responses; no live UART/PWM result",
+  "runtime": "functions.exec V8, real saved PAGE with deterministic DOM/WebSocket/timer mocks",
+  "helper_revision": 2,
+  "hardware_executed": false,
+  "regression_file": "followup_disarm_regression.json"
+}

@@ -1,0 +1,461 @@
+{
+  "date": "2026-10-23",
+  "status": "RETAINED_ARMED_ZERO_INTERVAL_ACCEPTED_FOCUS_LOSS_DISARM_CONFIRMED",
+  "scope": "Zero-speed command/response observation, not movement or manual DISARM acceptance",
+  "active_until_focus_loss_s": 70.945,
+  "arm_send_until_focus_loss_s": 71.179,
+  "telemetry_retained_span_s": 359.566,
+  "history_retained_span_s": 143.652,
+  "retained_history_first_last_ms": [
+    449952.9000000004,
+    593604.5999999996
+  ],
+  "retained_telemetry_first_last_ms": [
+    234038.59999999963,
+    593604.4000000004
+  ],
+  "history_dropped": 30000,
+  "telemetry_dropped": 3900,
+  "arm_to_disarm_interval_retained": true,
+  "same_recorder_as_idle_baseline": true,
+  "samples": {
+    "tel": 5994,
+    "control": 7176,
+    "active_tel": 1181,
+    "active_control": 3538
+  },
+  "active_tel_receive_gap": {
+    "samples": 1181,
+    "min_ms": 10.5,
+    "median_ms": 60.7,
+    "p95_ms": 90.9,
+    "p99_ms": 108.0,
+    "max_ms": 124.3,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "active_control_receive_gap": {
+    "samples": 3538,
+    "min_ms": 0,
+    "median_ms": 0.9,
+    "p95_ms": 60.8,
+    "p99_ms": 68.426,
+    "max_ms": 80,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "active_esp_timestamp_step": {
+    "samples": 1181,
+    "min_ms": 50,
+    "median_ms": 60.0,
+    "p95_ms": 65.0,
+    "p99_ms": 66.0,
+    "max_ms": 70,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "active_command_age_at_stm_sample": {
+    "samples": 1181,
+    "min_ms": 6,
+    "median_ms": 70.0,
+    "p95_ms": 94.0,
+    "p99_ms": 111.0,
+    "max_ms": 138,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "active_stm_age_at_esp": {
+    "samples": 1181,
+    "min_ms": 2,
+    "median_ms": 50.0,
+    "p95_ms": 90.0,
+    "p99_ms": 100.0,
+    "max_ms": 101,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "active_stm_age_plus_next_interarrival_proxy": {
+    "samples": 1180,
+    "min_ms": 18.5,
+    "median_ms": 110.7,
+    "p95_ms": 160.21,
+    "p99_ms": 183.491,
+    "max_ms": 210.0,
+    "ge_200_ms": 5,
+    "ge_250_ms": 0
+  },
+  "active_command_age_plus_next_interarrival_proxy": {
+    "samples": 1180,
+    "min_ms": 26.9,
+    "median_ms": 124.5,
+    "p95_ms": 174.6,
+    "p99_ms": 191.894,
+    "max_ms": 227.8,
+    "ge_200_ms": 7,
+    "ge_250_ms": 0
+  },
+  "age_proxy_limit": "Not sampled by controlTick; excludes time after final selected TEL and stop interval",
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 724,
+    "DISARM": 1
+  },
+  "result_status_counts": {
+    "OK": 726
+  },
+  "notice_stage_reason_counts": {
+    "ACCEPTED/QUEUED": 726
+  },
+  "cmd_send_intervals": {
+    "samples": 723,
+    "min_ms": 81.2,
+    "median_ms": 83.7,
+    "p95_ms": 146.69,
+    "p99_ms": 148.356,
+    "max_ms": 169.0,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "cmd_send_to_result_round_trip": {
+    "samples": 724,
+    "min_ms": 55.3,
+    "median_ms": 72.9,
+    "p95_ms": 131.955,
+    "p99_ms": 137.354,
+    "max_ms": 150.3,
+    "ge_200_ms": 0,
+    "ge_250_ms": 0
+  },
+  "top_cmd_round_trips": [
+    {
+      "request_id": 576,
+      "cmd": "CMD",
+      "status": "OK",
+      "send_ms": 574402.5999999996,
+      "result_ms": 574552.9000000004,
+      "round_trip_ms": 150.30000000074506
+    },
+    {
+      "request_id": 312,
+      "cmd": "CMD",
+      "status": "OK",
+      "send_ms": 548257.2999999998,
+      "result_ms": 548404.4000000004,
+      "round_trip_ms": 147.1000000005588
+    },
+    {
+      "request_id": 494,
+      "cmd": "CMD",
+      "status": "OK",
+      "send_ms": 566319.7000000002,
+      "result_ms": 566465.7000000002,
+      "round_trip_ms": 146.0
+    },
+    {
+      "request_id": 119,
+      "cmd": "CMD",
+      "status": "OK",
+      "send_ms": 529110.0999999996,
+      "result_ms": 529254,
+      "round_trip_ms": 143.90000000037253
+    },
+    {
+      "request_id": 606,
+      "cmd": "CMD",
+      "status": "OK",
+      "send_ms": 577391.5,
+      "result_ms": 577533.9000000004,
+      "round_trip_ms": 142.40000000037253
+    }
+  ],
+  "arm_round_trip": {
+    "request_id": 1,
+    "cmd": "ARM",
+    "status": "OK",
+    "send_ms": 517690.5,
+    "result_ms": 517753.5999999996,
+    "round_trip_ms": 63.09999999962747
+  },
+  "disarm_round_trip": {
+    "request_id": 726,
+    "cmd": "DISARM",
+    "status": "OK",
+    "send_ms": 588869.9000000004,
+    "result_ms": 589067.7999999998,
+    "round_trip_ms": 197.8999999994412
+  },
+  "disarm_send_to_idle_observed_ms": 198.1,
+  "disarm_send_to_disarmed_tel_observed_ms": 260.3,
+  "post_disarmed_tel_retained_s": 4.474,
+  "stop": {
+    "ms": 588869.2999999998,
+    "sendStop": true,
+    "intent": true,
+    "focused": false,
+    "motionReady": false,
+    "motion": null,
+    "pending": {
+      "id": 725,
+      "cmd": "CMD"
+    },
+    "offer": {
+      "kind": "control_state",
+      "boot_id": 331448985,
+      "session_id": 1,
+      "phase": "ACTIVE",
+      "owner_session": 1,
+      "control_id": 1,
+      "ticket": 0,
+      "purpose": "NONE",
+      "ttl_ms": 0,
+      "zero_only": false,
+      "control_reason": 0
+    },
+    "offer_age_ms": 33.299999999813735,
+    "tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 331448985,
+      "uptime_ms": 982858,
+      "free_heap_bytes": 262788,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 50,
+      "stm_age_limit_ms": 500,
+      "tel_count": 9845,
+      "stm_t_ms": 985000,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": 74,
+      "last_seq": 2142828846,
+      "vx_mmps": 0,
+      "w_mradps": 0,
+      "left_pwm": 0,
+      "right_pwm": 0,
+      "left_cps": 0,
+      "right_cps": 0,
+      "encoder_valid": true,
+      "encoder_t_ms": 984995,
+      "left_count": "0",
+      "right_count": "0",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2142828124,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 0
+    },
+    "tel_local_age_ms": 34.700000000186265,
+    "stack": "Error\n    at stopLocal (<anonymous>:165:51)\n    at http://192.168.0.17/:488:36"
+  },
+  "window_blur": {
+    "ms": 588870.2999999998,
+    "event": "blur",
+    "window_target": true,
+    "hidden": false,
+    "state": {
+      "intent": false,
+      "focused": false,
+      "boot": 331448985,
+      "session": 1,
+      "control_id": 0,
+      "socket_state": 1,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "owner_session": 1,
+      "pending": {
+        "id": 726,
+        "cmd": "DISARM"
+      },
+      "motion": null,
+      "stm_state": "ARMED",
+      "stm_reason": "NONE",
+      "buttons_disabled": {
+        "arm": true,
+        "disarm": true,
+        "forward": true,
+        "reverse": true,
+        "left": true,
+        "right": true
+      }
+    }
+  },
+  "stack_source_crosscheck": {
+    "source": "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c",
+    "source_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "embedded_page_sha256": "ccaba1c5becce550c53e377edf75f418d62fd1ba37479e273e1be9e0d16dcada",
+    "page_line": 488,
+    "callback": "window.addEventListener('blur',()=>stopLocal(true));",
+    "limit": "Matches local PAGE and captured stack; not a new board firmware readback"
+  },
+  "phase_changes": [
+    {
+      "ms": 449952.9000000004,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.40000000037252903,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 4741,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 517753.2999999998,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.599999999627471,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "ARM_PENDING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 517754,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.7000000001862645,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "ZERO_PENDING",
+      "ticket": 5165,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 517924,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.7999999998137355,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 5167,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 588945.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 56.40000000037253,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 1
+    },
+    {
+      "ms": 589068,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 331448985,
+      "session_id": 1,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 5890,
+      "ttl_ms": 150,
+      "control_reason": 0
+    }
+  ],
+  "event_counts": {
+    "CONTROL_RX": 7176,
+    "TEL_RX": 2394,
+    "BUTTON_POINTERDOWN": 1,
+    "BUTTON_POINTERUP": 1,
+    "BUTTON_CLICK": 1,
+    "WS_SEND": 726,
+    "APP_COMMAND": 2,
+    "blur": 3,
+    "command_notice": 726,
+    "command_result": 726,
+    "APP_STOP": 2
+  },
+  "all_retained_command_pwm_cps_zero": true,
+  "counts_fixed_at": [
+    "0",
+    "0"
+  ],
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "boot_ids": [
+    331448985
+  ],
+  "control_session_ids": [
+    1
+  ],
+  "connections_seen": 1,
+  "observer_trace_errors": 0,
+  "disarm_button_events": 0,
+  "observer_final_state": {
+    "intent": false,
+    "focused": false,
+    "boot": 331448985,
+    "session": 1,
+    "control_id": 0,
+    "socket_state": 1,
+    "connection_id": 1,
+    "phase": "IDLE",
+    "owner_session": 0,
+    "pending": null,
+    "motion": null,
+    "stm_state": "DISARMED",
+    "stm_reason": "DISARM",
+    "buttons_disabled": {
+      "arm": true,
+      "disarm": false,
+      "forward": true,
+      "reverse": true,
+      "left": true,
+      "right": true
+    }
+  },
+  "idle_reference": {
+    "telemetry_span_s": 74.702,
+    "tel_receive_gap": {
+      "samples": 1245,
+      "min_ms": 0.5,
+      "median_ms": 59.9,
+      "p95_ms": 90.9,
+      "p99_ms": 109.8,
+      "max_ms": 125.4,
+      "gaps_ge_200_ms": 0,
+      "gaps_ge_250_ms": 0
+    },
+    "control_receive_gap": {
+      "samples": 3737,
+      "min_ms": 0,
+      "median_ms": 0.5,
+      "p95_ms": 61.1,
+      "p99_ms": 69.364,
+      "max_ms": 78.5,
+      "gaps_ge_200_ms": 0,
+      "gaps_ge_250_ms": 0
+    }
+  },
+  "interpretation": [
+    "User reports no manual DISARM; no DISARM button event is retained",
+    "Stop snapshot was unfocused while intent true, motion null, with fresh control and TEL",
+    "Stack points to window blur handler; original handler runs before diagnostic blur recorder",
+    "DISARM request 726 was sent and returned OK, followed by IDLE and DISARMED telemetry",
+    "No unexpected ACTIVE interruption before focus loss in the retained ARM interval"
+  ],
+  "limits": [
+    "Bounded buffers trimmed earlier IDLE history; not a full ten-minute continuous evidence set",
+    "Not a fresh recorder or independent baseline trial; old IDLE sample overlaps this report",
+    "No manual DISARM click tested; old manual-button issue remains OPEN",
+    "No motor driving, electrical waveform or new supply-voltage measurement",
+    "Zero-speed motion=null path does not exercise motionReady TEL/command-age gates as held direction does",
+    "Round trips combine browser, ESP, UART/STM and return transport; they do not locate latency cause",
+    "No timeout/code/build/flash change; no Git or external publication performed"
+  ]
+}

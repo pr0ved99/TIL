@@ -1,0 +1,250 @@
+{
+  "date": "2026-10-23",
+  "run_id": "2026-10-23_ground_1m_run04",
+  "test_id": "T-ODO-001",
+  "status": "COMPLETE_SINGLE_RUN_DISTANCE_COMPARISON_BOUNDED_SCOPE",
+  "user_observations": {
+    "forward_displacement_mm": 1002,
+    "original_text": "1002mm이동함. 한번더 해보고 싶어서 했음",
+    "voluntary_additional_run": true,
+    "lateral_offset_mm": null,
+    "lateral_status": "NOT_REPORTED_FOR_THIS_RUN",
+    "measurement_resolution_mm": null,
+    "measurement_uncertainty_mm": null,
+    "measurement_method": "External fixed-point forward displacement requested in previous instructions; ruler specification and photo not supplied.",
+    "after_run_cell_voltages_v": null,
+    "power_disconnected": null
+  },
+  "identity": {
+    "boot_id": 1339414435,
+    "arm_seq": 2670355801,
+    "disarm_seq": 2670356079,
+    "session_id": 7
+  },
+  "log_window": {
+    "status": "ACCEPTED",
+    "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+    "start": {
+      "ms": 1284.6000000014901,
+      "tel_count": 45023,
+      "stm_t_ms": 4700,
+      "encoder_t_ms": 4695,
+      "left_count": "0",
+      "right_count": "0",
+      "state": "ARMED",
+      "reason": "NONE",
+      "last_seq": 2670355801
+    },
+    "end": {
+      "ms": 29016.60000000149,
+      "tel_count": 45301,
+      "stm_t_ms": 32500,
+      "encoder_t_ms": 32495,
+      "left_count": "11680",
+      "right_count": "11460",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "last_seq": 2670356079
+    },
+    "source_samples": 279,
+    "delta_count": {
+      "left": "11680",
+      "right": "11460"
+    },
+    "max_stm_age_ms": 108,
+    "max_browser_receive_gap_ms": 119.89999999850988,
+    "source_gap_steps": 0,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ]
+  },
+  "distance_comparison": {
+    "format_version": 1,
+    "status": "CALCULATED_NOT_PHYSICAL_ACCEPTANCE",
+    "boot_id": 1339414435,
+    "arm_seq": 2670355801,
+    "disarm_seq": 2670356079,
+    "measurement": {
+      "signed_displacement_mm": "1002",
+      "origin": "USER_SUPPLIED_EXTERNAL_MEASUREMENT",
+      "note": "사용자가 자발적으로 추가 수행한 독립 회차. 실제 전진거리1002mm 보고. 계측 도구 눈금/불확도·시작/끝 사진은 미제공, 이번 회차 치우침은 미보고. 거리 환산값 비교이며 정밀도 보증·직진성 또는 전체 MVP 자동 PASS가 아님.",
+      "convention": "Forward positive, reverse negative; same start/end as selected window"
+    },
+    "distance_estimate_mm": {
+      "left": "1010.469744",
+      "right": "991.436923",
+      "center": "1000.953333"
+    },
+    "center_signed_error_mm": "-1.046667",
+    "center_absolute_error_mm": "1.046667",
+    "center_absolute_error_percent": "0.104458",
+    "limitations": [
+      "External measurement and matching of physical endpoints are user supplied",
+      "Straightness, lateral drift, slip and measurement uncertainty require external observations",
+      "Net encoder travel is not chassis path length or automatic target-distance stopping",
+      "No PASS threshold, gain change or distance-coefficient calibration is applied"
+    ]
+  },
+  "motion": {
+    "forward_output_intervals": 2,
+    "reverse_or_turn_command_seen": false,
+    "transitions": [
+      {
+        "ms": 1284.6000000014901,
+        "stm_t_ms": 4700,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "0",
+        "right_count": "0"
+      },
+      {
+        "ms": 5559,
+        "stm_t_ms": 9000,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "31",
+        "right_count": "24"
+      },
+      {
+        "ms": 19246.19999999553,
+        "stm_t_ms": 22700,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          600,
+          620
+        ],
+        "left_count": "11586",
+        "right_count": "11366"
+      },
+      {
+        "ms": 19726.10000000149,
+        "stm_t_ms": 23200,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "left_count": "11628",
+        "right_count": "11409"
+      },
+      {
+        "ms": 19825.69999999553,
+        "stm_t_ms": 23300,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          450,
+          410
+        ],
+        "left_count": "11678",
+        "right_count": "11460"
+      }
+    ],
+    "left_minus_right_estimated_mm": 19.032821
+  },
+  "manual_disarm": {
+    "trusted_click": true,
+    "focused_at_click": true,
+    "request_id": 279,
+    "result_status": "OK",
+    "local_directions_disabled": true,
+    "click_to_handler_after_ms": 0.29999999701976776,
+    "click_to_result_ms": 130.19999999552965,
+    "note": "Browser command-response timing, not physical stopping latency."
+  },
+  "cancelled_command": {
+    "request_id": 278,
+    "wire_text": "CMD,boot_id=1339414435,request_id=278,control_id=17,ticket=29162,vx_mmps=0,w_mradps=0",
+    "result": {
+      "kind": "command_result",
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "request_id": 278,
+      "cmd": "CMD",
+      "seq": 2670356078,
+      "control_id": 17,
+      "status": "CANCELLED"
+    },
+    "interpretation": "DISARM priority cancelled an outstanding zero-velocity CMD. Executor reconcile() generates CANCELLED on manual stop for queued/waiting request. Not a STM ERR or DISARM failure; final DISARM OK and stopped TEL retained."
+  },
+  "post_disarm": {
+    "samples": 206,
+    "zero_command_pwm_cps": true,
+    "counts_constant": true,
+    "stm_observation_ms": 12300,
+    "final_counts": {
+      "left": "11680",
+      "right": "11460"
+    }
+  },
+  "capture": {
+    "observer_revision": "5.1-reconnect-disarm",
+    "connections_seen": 1,
+    "trace_errors": 0,
+    "history_dropped": 0,
+    "telemetry_dropped": 0,
+    "disconnect_event_count": 0,
+    "command_result_status_counts": {
+      "OK": 278,
+      "CANCELLED": 1
+    }
+  },
+  "limits": [
+    "User-supplied physical displacement with unspecified measurement uncertainty",
+    "Two forward-output intervals, main hold plus brief extra; comparison with run03 is descriptive, not a controlled repeatability statistic",
+    "Lateral drift/final heading not reported; encoder mean does not prove straightness",
+    "No automatic 1m stopping, distance/count retuning or calibrated slip claim",
+    "Earlier run02 intermittent UI/reconnect cause remains unconfirmed",
+    "This run does not establish full MVP, temperature/current, physical E-stop or rated continuous-operation acceptance"
+  ],
+  "evidence": {
+    "browser_report": "browser_report.json",
+    "sha256": "fbf50bac48d05a45d45cc59ca1873d8508786249991da36927c6de73d59eba89",
+    "analysis": "encoder_analysis.json",
+    "analysis_tool": "03_Firmware/tests/analyze_encoder_distance.py",
+    "analysis_tool_sha256": "90a0e09c121173e11025aba9881682e285b3f4dea9f6544a4c85dfb88c0be187"
+  }
+}
