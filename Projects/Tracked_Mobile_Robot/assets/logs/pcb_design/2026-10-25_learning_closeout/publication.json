@@ -11,7 +11,8 @@
     "sections_read_back": 16,
     "tables_read_back": 7,
     "complete_readback": true,
-    "verbatim_conversation_transcript": false
+    "verbatim_conversation_transcript": false,
+    "local_sha256": "1b8ab0dc6a9c933c644aa4bc74b98693a9089e33e9a6986c975c3c9a7e6b20ec"
   },
   "notion_existing_pages": [
     {
@@ -62,12 +63,16 @@
   "git": {
     "branch": "agent/dual-encoder-bringup",
     "baseline_head": "40b07568fe24e8791df214feb7f6478c9bcc50c8",
-    "status": "pending scoped commit/push and remote verification"
+    "status": "content committed, pushed and remote verified",
+    "content_commit": "4391a9cc449e8152c6efacd2776ff0f0dbd460f7",
+    "remote_ref_verified": "4391a9cc449e8152c6efacd2776ff0f0dbd460f7",
+    "files_in_content_commit": 16,
+    "receipt_note": "This receipt is published in a follow-up commit. Final HEAD equality is checked after its push."
   },
   "five_closeout_actions": {
     "documentation": "complete",
     "progress_handoff_memory": "complete",
-    "git": "pending",
+    "git": "complete; content remote verified; receipt follows",
     "notion": "complete; new private note and 3 existing pages read back",
     "calendar": "complete; 2 existing events read back; time/title/reminders preserved"
   },
@@ -76,5 +81,13 @@
     "No CAD/BOM, firmware, MCU build/flash or physical test changes.",
     "Overall MVP acceptance and previously excluded investigations unchanged.",
     "17 unrelated dirty files must remain unchanged."
-  ]
+  ],
+  "validation": {
+    "report": "validation.json",
+    "passed": true,
+    "local_file_links_checked": 558,
+    "unrelated_files_preserved": 17,
+    "protected_firmware_CAD_files_unchanged": 171
+  },
+  "notion_project_content_commit_link_readback": true
 }
