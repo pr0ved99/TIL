@@ -1,7 +1,7 @@
 {
   "output": "TMR_MVP_Final_2026-10-24.mp4",
-  "sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15",
-  "bytes": 30847867,
+  "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+  "bytes": 30714961,
   "duration_seconds": 149,
   "resolution": [
     1920,
@@ -32,11 +32,11 @@
     ],
     [
       "recovery",
-      45
+      44.19999999999999
     ],
     [
       "outro",
-      5
+      5.800000000000011
     ]
   ],
   "sources": [
@@ -54,26 +54,33 @@
     }
   ],
   "new_pair_alignment": {
-    "equation": "screen time = camera time + 0.5 seconds",
-    "method": "Illustrative approximate pairing of switch/reset stages. No shared clock or common visible UI. Screen audio silent.",
-    "uncertainty": "Not quantified; no subsecond synchronization or latency claim.",
-    "anchors_reviewed": {
-      "camera_s0_hand_contact_seconds": 104,
-      "screen_armed_seconds": 104,
-      "screen_fault_confirmed_seconds": 108,
-      "camera_reset_hand_seconds": 122,
-      "screen_disarmed_observed_seconds": 122.4
-    }
+    "equation": "screen time = camera time - 23/30 seconds",
+    "offset_seconds": -0.7666666666666667,
+    "replaces_offset_seconds": 0.5,
+    "relative_screen_delay_from_previous_edit_seconds": 1.2666666666666666,
+    "method": "Recorded direction-button highlights vs camera frame-change movement: 9 spans / 18 edges in early and post-reset intervals; 15 fps samples. See alignment_recheck.json.",
+    "uncertainty": "Visible-response matching includes actuator/UI delays and threshold/sampling error. Not common-clock synchronization or stop-latency measurement.",
+    "speed_adjustment": false,
+    "time_varying_offset": false
   },
   "ground_screen_seconds": [
     4,
     31
   ],
+  "ground_camera_seconds": [
+    4.766666666666667,
+    31.766666666666666
+  ],
   "recovery_screen_seconds": [
     99,
-    144
+    143.2
+  ],
+  "recovery_camera_seconds": [
+    99.76666666666667,
+    143.96666666666667
   ],
   "recovery_internal_cuts": 0,
+  "recovery_end_handling": "Trim both sources before camera EOF; no frozen/padded camera tail. Final DISARM present at screen143.0. Outro extended by0.8s.",
   "playback_speed": 1,
   "outro_screen_still_seconds": 145.6,
   "limitations": [
@@ -83,5 +90,5 @@
     "S2/reset order records this demonstration, not a revised operating procedure",
     "formal MVP acceptance is not upgraded by editing"
   ],
-  "validation_status": "PASS: full decode, stream metadata, source hashes, 21 visual samples, desktop copy hash"
+  "validation_status": "PASS: full decode, metadata, source hashes,21 visual samples,10 encoded movement/button edges"
 }

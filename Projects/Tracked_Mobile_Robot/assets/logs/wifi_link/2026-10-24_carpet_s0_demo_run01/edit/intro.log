@@ -3,9 +3,9 @@ Input #0, png_pipe, from 'intro.png':
   Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1920x1080, 30 fps, 30 tbr, 30 tbn
 Stream mapping:
   Stream #0:0 -> #0:0 (png (native) -> h264 (libx264))
-[libx264 @ 0000017fb50f0ec0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
-[libx264 @ 0000017fb50f0ec0] profile High, level 4.0, 4:2:0, 8-bit
-[libx264 @ 0000017fb50f0ec0] 264 - core 164 r3192 c24e06c - H.264/MPEG-4 AVC codec - Copyleft 2003-2024 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=4 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=19.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+[libx264 @ 00000241ef350ec0] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 00000241ef350ec0] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 00000241ef350ec0] 264 - core 164 r3192 c24e06c - H.264/MPEG-4 AVC codec - Copyleft 2003-2024 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=4 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=19.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
 Output #0, mp4, to 'intro.mp4':
   Metadata:
     encoder         : Lavf61.7.100
@@ -14,24 +14,24 @@ Output #0, mp4, to 'intro.mp4':
         encoder         : Lavc61.19.100 libx264
       Side data:
         cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
-frame=   49 fps=0.0 q=25.0 size=       0KiB time=00:00:01.56 bitrate=   0.2kbits/s speed=3.05x    [mp4 @ 0000017fb50fdc80] Starting second pass: moving the moov atom to the beginning of the file
-[out#0/mp4 @ 0000017fb50f4ec0] video:44KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 4.343932%
-frame=   90 fps=0.0 q=-1.0 Lsize=      46KiB time=00:00:02.93 bitrate= 127.1kbits/s speed= 4.7x    
-[libx264 @ 0000017fb50f0ec0] frame I:1     Avg QP: 8.23  size: 35612
-[libx264 @ 0000017fb50f0ec0] frame P:23    Avg QP: 9.98  size:   137
-[libx264 @ 0000017fb50f0ec0] frame B:66    Avg QP: 9.67  size:    79
-[libx264 @ 0000017fb50f0ec0] consecutive B-frames:  2.2%  0.0%  0.0% 97.8%
-[libx264 @ 0000017fb50f0ec0] mb I  I16..4: 88.7%  3.3%  8.0%
-[libx264 @ 0000017fb50f0ec0] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.9%
-[libx264 @ 0000017fb50f0ec0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.1%  0.0%  0.0%  direct: 0.0%  skip:99.9%  L0:43.8% L1:56.2% BI: 0.0%
-[libx264 @ 0000017fb50f0ec0] 8x8 transform intra:3.3% inter:5.6%
-[libx264 @ 0000017fb50f0ec0] coded y,uvDC,uvAC intra: 4.7% 6.9% 6.3% inter: 0.0% 0.0% 0.0%
-[libx264 @ 0000017fb50f0ec0] i16 v,h,dc,p: 93%  5%  2%  0%
-[libx264 @ 0000017fb50f0ec0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 84%  1% 15%  0%  0%  0%  0%  0%  0%
-[libx264 @ 0000017fb50f0ec0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 43% 23% 19%  2%  3%  3%  3%  3%  2%
-[libx264 @ 0000017fb50f0ec0] i8c dc,h,v,p: 85% 12%  3%  1%
-[libx264 @ 0000017fb50f0ec0] Weighted P-Frames: Y:0.0% UV:0.0%
-[libx264 @ 0000017fb50f0ec0] ref P L0: 98.3%  0.0%  1.1%  0.6%
-[libx264 @ 0000017fb50f0ec0] ref B L0: 44.1% 55.9%
-[libx264 @ 0000017fb50f0ec0] ref B L1: 99.4%  0.6%
-[libx264 @ 0000017fb50f0ec0] kb/s:117.26
+frame=   37 fps=0.0 q=25.0 size=       0KiB time=00:00:01.16 bitrate=   0.3kbits/s speed=2.24x    [mp4 @ 00000241ef35dc80] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 00000241ef354ec0] video:44KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 4.343932%
+frame=   90 fps=0.0 q=-1.0 Lsize=      46KiB time=00:00:02.93 bitrate= 127.1kbits/s speed= 4.4x    
+[libx264 @ 00000241ef350ec0] frame I:1     Avg QP: 8.23  size: 35612
+[libx264 @ 00000241ef350ec0] frame P:23    Avg QP: 9.98  size:   137
+[libx264 @ 00000241ef350ec0] frame B:66    Avg QP: 9.67  size:    79
+[libx264 @ 00000241ef350ec0] consecutive B-frames:  2.2%  0.0%  0.0% 97.8%
+[libx264 @ 00000241ef350ec0] mb I  I16..4: 88.7%  3.3%  8.0%
+[libx264 @ 00000241ef350ec0] mb P  I16..4:  0.0%  0.0%  0.0%  P16..4:  0.1%  0.0%  0.0%  0.0%  0.0%    skip:99.9%
+[libx264 @ 00000241ef350ec0] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  0.1%  0.0%  0.0%  direct: 0.0%  skip:99.9%  L0:43.8% L1:56.2% BI: 0.0%
+[libx264 @ 00000241ef350ec0] 8x8 transform intra:3.3% inter:5.6%
+[libx264 @ 00000241ef350ec0] coded y,uvDC,uvAC intra: 4.7% 6.9% 6.3% inter: 0.0% 0.0% 0.0%
+[libx264 @ 00000241ef350ec0] i16 v,h,dc,p: 93%  5%  2%  0%
+[libx264 @ 00000241ef350ec0] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 84%  1% 15%  0%  0%  0%  0%  0%  0%
+[libx264 @ 00000241ef350ec0] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 43% 23% 19%  2%  3%  3%  3%  3%  2%
+[libx264 @ 00000241ef350ec0] i8c dc,h,v,p: 85% 12%  3%  1%
+[libx264 @ 00000241ef350ec0] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 00000241ef350ec0] ref P L0: 98.3%  0.0%  1.1%  0.6%
+[libx264 @ 00000241ef350ec0] ref B L0: 44.1% 55.9%
+[libx264 @ 00000241ef350ec0] ref B L1: 99.4%  0.6%
+[libx264 @ 00000241ef350ec0] kb/s:117.26

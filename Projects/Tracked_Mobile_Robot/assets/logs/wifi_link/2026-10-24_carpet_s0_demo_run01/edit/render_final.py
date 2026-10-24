@@ -9,7 +9,8 @@ CAM = Path('C:/Users/eyh12/Desktop/mvp_cam_long_01.mp4')
 SCR = Path('C:/Users/eyh12/Desktop/mvp_long_01.mp4')
 OLD = B.parents[1]/'2026-10-24_demo_run01/edit/TMR_MVP_Demo_2026-10-24_review.mp4'
 OUT = B/'TMR_MVP_Final_2026-10-24.mp4'
-OFFSET = 0.5  # Illustrative alignment only; NOT a measured common-clock offset.
+OFFSET = -23/30  # Screen time = camera time + OFFSET. See alignment_recheck.json.
+RECOVERY_END = 143.2  # Camera ends at 143.9667, inside its 144.0333-second source.
 FONT = 'C:/Windows/Fonts/malgun.ttf'
 BOLD = 'C:/Windows/Fonts/malgunbd.ttf'
 FPS = 30
@@ -52,7 +53,7 @@ def make_art():
            ('ground_card','02 / GROUND DRIVE','탁상에서 카펫으로',
             '연속 전진과 선회 · 100 × 150 cm 카펫','카펫 크기는 사용자 제공 · 거리 정밀도 측정 영상이 아닙니다.'),
            ('safety_card','03 / STOP & RECOVERY','주행 중 S0 · 래치 유지 · 복구',
-            '이후의 두 번째 S0 시연 구간으로 이동합니다.','다음 45초는 원본 구간을 중간 편집 없이 재생합니다.')]
+            '이후의 두 번째 S0 시연 구간으로 이동합니다.','다음 구간은 원래 속도로, 중간 편집 없이 재생합니다.')]
     for name,kicker,title,detail,note in cards:
         im,d=base();d.rounded_rectangle((100,250,1820,880),24,fill='#10283c')
         text(d,(160,315),kicker,25,'#80d6cb',True)
@@ -112,30 +113,41 @@ def panel(name,start,duration,rows):
          '-filter_complex_script',name+'.filter','-map','[out]','-t',str(duration)]+ENC+[name+'.mp4'],name)
 
 def main():
-    if '--recovery-only' not in sys.argv:
-        make_art()
-        still('intro',3)
+    make_art()
+    still('intro',3)
+    if '--reuse-tabletop' not in sys.argv:
         run(['-i',str(OLD),'-t','65','-vf','fps=30,setsar=1']+ENC+['tabletop.mp4'],'tabletop')
-        still('ground_card',2)
-        panel('ground',4,27,[(4,8,'02 / 카펫 주행','ARM · 정지 상태에서 시작','새 ARM 뒤 방향 버튼으로 주행을 시작합니다.'),
-            (8,22,'02 / 카펫 주행','연속 전진','실제 궤도 움직임과 PWM / 엔코더 값을 함께 표시'),
-            (22,31,'02 / 카펫 주행','선회와 방향 전환','카펫 위 이동을 원래 속도로 확인합니다.')])
-        still('safety_card',2)
-    panel('recovery',99,45,[(99,105,'03 / 정지와 복구','주행 중 S0 조작','실제 스위치 조작과 화면 상태를 함께 확인'),
+    else:
+        assert (B/'tabletop.mp4').is_file()
+    still('ground_card',2)
+    panel('ground',4,27,[(4,5.8667,'02 / 카펫 주행','ARM · 정지 상태에서 시작','새 ARM 뒤 방향 버튼으로 주행을 시작합니다.'),
+        (5.8667,19.8,'02 / 카펫 주행','연속 전진','실제 궤도 움직임과 PWM / 엔코더 값을 함께 표시'),
+        (19.8,21.8,'02 / 카펫 주행','버튼 해제 · 정지','속도 0 요청과 실제 정지 모습을 확인합니다.'),
+        (21.8,26.6,'02 / 카펫 주행','좌회전','카펫 위 선회를 원래 속도로 확인합니다.'),
+        (26.6,29.6667,'02 / 카펫 주행','버튼 해제 · 정지','다음 방향 입력 전 정지 구간'),
+        (29.6667,31,'02 / 카펫 주행','다시 전진','방향 전환 뒤 전진을 이어 갑니다.')])
+    still('safety_card',2)
+    panel('recovery',99,RECOVERY_END-99,[(99,105,'03 / 정지와 복구','주행 중 S0 조작','실제 스위치 조작과 화면 상태를 함께 확인'),
         (105,111,'03 / S0 정지','FAULT · ARM 차단','화면의 FAULT · PWM / CPS 0 확인'),
         (111,115,'03 / 래치 유지','S0 해제 후에도 FAULT 유지','ESTOP_LATCHED · ARM 비활성 상태'),
         (115,122.4,'03 / 전원 재인가','S2 조작과 ARM 차단 확인','S2는 전원 재인가 · STM32 래치는 별도 유지'),
         (122.4,124,'03 / STM32 리셋','DISARMED / BOOT로 복귀','ARM 버튼이 다시 활성화됩니다.'),
-        (124,127,'03 / 새 ARM','속도 0에서 다시 제어 준비','새 ARM 처리 뒤 ACTIVE 상태 확인'),
-        (127,144,'04 / 복구 후 주행','재주행 · 선회 · DISARM','복구 후 움직임과 마지막 제어 해제를 확인합니다.')])
-    still('outro',5)
-    parts=[('intro',3),('tabletop',65),('ground_card',2),('ground',27),('safety_card',2),('recovery',45),('outro',5)]
+        (124,125.9333,'03 / 새 ARM','속도 0에서 다시 제어 준비','새 ARM 처리 뒤 ACTIVE 상태 확인'),
+        (125.9333,RECOVERY_END,'04 / 복구 후 주행','재주행 · 선회 · DISARM','복구 후 움직임과 마지막 제어 해제를 확인합니다.')])
+    still('outro',149-RECOVERY_END)
+    parts=[('intro',3),('tabletop',65),('ground_card',2),('ground',27),('safety_card',2),('recovery',RECOVERY_END-99),('outro',149-RECOVERY_END)]
     (B/'concat.txt').write_text(''.join(f"file '{n}.mp4'\n" for n,_ in parts),encoding='utf8')
     run(['-f','concat','-safe','0','-i','concat.txt','-map','0:v','-c','copy','-movflags','+faststart','-metadata','title=Tracked Mobile Robot - Manual Control, Ground Drive and S0 Recovery',str(OUT)],'concat')
     manifest={'output':OUT.name,'sha256':sha(OUT),'bytes':OUT.stat().st_size,'duration_seconds':149,'resolution':[1920,1080],'fps':30,'audio_tracks':0,
         'parts':parts,'sources':[{'path':str(p),'sha256':sha(p)} for p in [CAM,SCR,OLD]],
-        'new_pair_alignment':{'equation':'screen time = camera time + 0.5 seconds','method':'Illustrative approximate pairing of switch/reset stages. No shared clock or common visible UI. Screen audio silent.','uncertainty':'Not quantified; no subsecond synchronization or latency claim.','anchors_reviewed':{'camera_s0_hand_contact_seconds':104,'screen_armed_seconds':104,'screen_fault_confirmed_seconds':108,'camera_reset_hand_seconds':122,'screen_disarmed_observed_seconds':122.4}},
-        'ground_screen_seconds':[4,31],'recovery_screen_seconds':[99,144],'recovery_internal_cuts':0,'playback_speed':1,
+        'new_pair_alignment':{'equation':'screen time = camera time - 23/30 seconds','offset_seconds':OFFSET,
+            'replaces_offset_seconds':0.5,'relative_screen_delay_from_previous_edit_seconds':0.5-OFFSET,
+            'method':'Recorded direction-button highlights vs camera frame-change movement: 9 spans / 18 edges in early and post-reset intervals; 15 fps samples. See alignment_recheck.json.',
+            'uncertainty':'Visible-response matching includes actuator/UI delays and threshold/sampling error. Not common-clock synchronization or stop-latency measurement.',
+            'speed_adjustment':False,'time_varying_offset':False},
+        'ground_screen_seconds':[4,31],'ground_camera_seconds':[4-OFFSET,31-OFFSET],
+        'recovery_screen_seconds':[99,RECOVERY_END],'recovery_camera_seconds':[99-OFFSET,RECOVERY_END-OFFSET],
+        'recovery_internal_cuts':0,'recovery_end_handling':'Trim both sources before camera EOF; no frozen/padded camera tail. Final DISARM present at screen143.0. Outro extended by0.8s.', 'playback_speed':1,
         'outro_screen_still_seconds':145.6,'limitations':['carpet size and >1m travel are user reports; no distance-accuracy measurement','no raw telemetry in these recordings','no physical stop latency claim','S2/reset order records this demonstration, not a revised operating procedure','formal MVP acceptance is not upgraded by editing'],
         'validation_status':'pending'}
     (B/'edit_manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')

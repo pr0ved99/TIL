@@ -31,8 +31,18 @@
     148.5
   ],
   "source_hashes_unchanged": true,
-  "output_sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15",
-  "visual_review": "21 output samples reviewed; S0 caption corrected to avoid contradicting the LATCHED state; original full-speed 45-second recovery interval retained.",
-  "desktop_copy": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24.mp4",
-  "desktop_sha256": "a9fbc443d6e0d45badb418e74ea8cd63a2988c0f550d1a6cd2ec61d20ca5dc15"
+  "output_sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+  "visual_review": "21 output samples reviewed: layout, captions, FAULT/recovery, final DISARM and outro; no full continuous visual playback claimed.",
+  "encoded_alignment_check": "render_alignment_validation.json",
+  "source_alignment_recheck": "alignment_recheck.json",
+  "desktop_copies": [
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
+    },
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24_syncfix.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
+    }
+  ]
 }
