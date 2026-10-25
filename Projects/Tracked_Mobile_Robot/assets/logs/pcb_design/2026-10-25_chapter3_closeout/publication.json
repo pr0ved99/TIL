@@ -92,7 +92,12 @@
   },
   "git": {
     "branch": "agent/dual-encoder-bringup",
-    "state": "PENDING_SCOPED_COMMIT_PUSH"
+    "state": "CONTENT_COMMIT_PUSH_VERIFIED",
+    "content_commit": "c82f404d74d826e82f78c2db23df02e2cfa4690f",
+    "verified_remote_commit": "c82f404d74d826e82f78c2db23df02e2cfa4690f",
+    "scoped_content_files": 23,
+    "notion_project_commit_link_readback": true,
+    "receipt_publication": "This receipt is committed separately after the verified content commit; final HEAD is checked against origin after its push."
   },
   "validation": {
     "state": "PASS",
@@ -100,5 +105,12 @@
     "relative_links_checked": 563,
     "protected_firmware_CAD_files": 168,
     "unrelated_dirty_files_preserved": 17
+  },
+  "closeout_actions": {
+    "documentation": "COMPLETE",
+    "progress_handoff_memory": "COMPLETE",
+    "git_content_push": "VERIFIED",
+    "calendar": "VERIFIED",
+    "notion": "VERIFIED"
   }
 }
