@@ -12,7 +12,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **기준 설정:** 초기 공통k=1687/19500mm/count, 일반 cap150‰·회전200‰, 왼쪽 gain전진960‰/후진930‰. 지상 비교 후 계수나 출력을 바꾸지 않았다. 현재 ESP 앱은 `esp32_wifi_link`이며 두 MCU의 코드 입력·빌드/플래시와 실물 조작은 사용자가 수행한다.
 - **계측 준비:** 103JT-025×2·Pololu#5241×2·GM1312·UT210E 구매/배송 대기, Vishay100nF10개 구매·수령 미확인이라는 마지막 보고를 유지한다. 장비 수령을 거리/MVP 선행으로 요구하지 않는다. [후속 모니터링 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
-- **모니터링 설계 학습 · 10/25 정리:** [측정 요구·NTC·RC·ADC 상세 노트](07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)와 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 10/24 설명을 저장했다. 다음은 수집 주기·평균·보정 후 오차 예산이며 부품/요구는 후보, CAD·실측 변경 없음.
+- **모니터링 설계 학습 · 10/26 마감:** [학습 목차](07_Embedded_Learning_Notes/01_Concept_Notes/README.md)에 2장 수집·평균·오차 예산·후보 판단과 **3-1~3-4 검증 학습 노트 네 편**을 정리했다. 다음은 3-1부터 함께 읽기와 미정 기준 검토다. 요구/부품/운용 설정은 후보이며 자료 작성 완료와 실물 검증 NOT_RUN을 구분한다. [마감 근거](docs/progress/2026-10-26_progress.md).
 
 **통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 사용자 동기 지적을 반영해 카펫 화면을 기존 대비1.2667초 상대 지연했다(화면=카메라−0.7667초). 원본9구간18전이·출력5구간10전이를 대조한 편집 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
 

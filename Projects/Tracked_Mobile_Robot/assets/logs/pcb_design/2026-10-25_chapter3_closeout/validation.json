@@ -1,0 +1,41 @@
+{
+  "status": "PASS",
+  "date": "2026-10-26",
+  "scope": "documentation calculations, links, preservation; not hardware validation",
+  "chapters": [
+    {
+      "file": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/15_Verification_Targets_and_Acceptance_ko.md",
+      "sections": 8,
+      "lines": 148,
+      "sha256": "245a9775e696411c44bc7bb6a139bfd07f3b46196bd73fac17ddd80c54f05388"
+    },
+    {
+      "file": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/16_DC_Accuracy_and_Calibration_Verification_ko.md",
+      "sections": 9,
+      "lines": 162,
+      "sha256": "30e4ccfb2533a93ca5ca498bcfe40fc3a939e1e92a3090d5966763fe73c8aeb2"
+    },
+    {
+      "file": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/17_PWM_Sampling_and_Response_Verification_ko.md",
+      "sections": 9,
+      "lines": 144,
+      "sha256": "0803238f694cff010daaf2d77cd0a793eebf212fcd9cc79b90d07e79391ce0a2"
+    },
+    {
+      "file": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/18_Fault_Validity_and_Final_Decision_ko.md",
+      "sections": 9,
+      "lines": 148,
+      "sha256": "f61974919469e6e68bda4dacff37a7321f8b1d7f3330cd7e7f64e1c82218de93"
+    }
+  ],
+  "relative_links_checked": 563,
+  "broken_links": [],
+  "cadence_numeric_checks": 24,
+  "worked_examples": "RC/step/alias/calibration/acceptance examples independently recomputed",
+  "protected_firmware_CAD_files": 168,
+  "protected_content_changes": 0,
+  "unrelated_dirty_files": 17,
+  "unrelated_status_or_content_changes": 0,
+  "markdown_fences": "balanced",
+  "scoped_git_diff_check": "PASS"
+}

@@ -2,14 +2,15 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-25 (October 24 PCB learning closeout; current restart below).
+Last updated: 2026-10-26 (October 25 learning session closeout).
 
-## Current Checkpoint — 2026-10-25 PCB learning closeout
+## Current Checkpoint — 2026-10-26 monitoring learning notes
 
-- 10/24 노트북 학습을 종료하고 [상세 설명](07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)과 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 측정 요구·NTC/기준 추종·RC·ADC 내부/외부 C 모델을 보존했다. 설명은 계산 목적·출처·단위·가정·한계를 생략하지 않는다.
-- 다음은 채널별 수집 주기·PWM/aliasing·평균 지연·보정 후 오차 예산을 연결한 전류 RC 판단이다. NTC STM 공급 B안·12k/100nF·14MHz/480cycles와 요구 수치는 후보이며 CAD/BOM·펌웨어·MCU/실물 변경/실측 PASS 없음.
-- 현재 CAD 센서4채널과 전체 ADC6+CAN 목표를 구분한다. 기존 IMU 위치/배선 유지, 공간 검토는 후속, 쉴드 완성을 MVP 선행으로 추가하지 않는다. 수령의 새 보고 없음.
-- 이전149초 영상 제작 완료·전체 인수 미완료·사용자 제외 조사와 고정 구동/정지 설정을 유지한다. [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [마감 기록](docs/progress/2026-10-25_progress.md). 아래 재개/게시 문구는 해당 날짜의 이력이다.
+- [학습 목차](07_Embedded_Learning_Notes/01_Concept_Notes/README.md): 수집 주기·평균·PWM/alias·보정 후 오차 예산·RC 후보 판단(12~14번)과 검증 계획 **3-1~3-4(15~18번)** 작성 완료. 목적·단위·근거·가상 예시·한계를 포함한다. 2장은 2-6, 3장은 3-4에서 끝낸다.
+- 다음은 3-1부터 사용자와 함께 읽고 목표 채택·입력계 예산·기준 계기/입력원 적합성·실물 연결/보호 계약을 검토한다. 자료 작성과 사용자 학습 완료를 구분한다. 시험표 MON-L01~08은 후속 제안, 실제 시험 NOT_RUN이다.
+- 12kΩ/100nF·ADC 14MHz/12bit/480cycles·NTC STM 공급 B안은 후보다. 채널별 100Hz·100ms 블록 10개 평균은 첫 DC 비교 조건 제안이며 1kHz와 비교한다. 최종 부품/운용 설정 채택·CAD/BOM·펌웨어·MCU/실물 변경 없음.
+- CAD 센서4채널과 목표 ADC6+CAN 구분, IMU 기존 위치·공간 검토 후속 유지. 수령의 새 보고 없음. 149초 영상 제작 완료·전체 인수 미완료·T005A PARTIAL/T007 BLOCKED·통신/UI 원인 OPEN 유지.
+- [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md), [이번 마감](docs/progress/2026-10-26_progress.md). 아래 재개/게시 문구는 해당 날짜의 이력이다.
 
 ## Previous Checkpoint — 2026-10-24 MVP demo
 

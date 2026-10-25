@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-25",
+  "status": "COMPARISON_ONLY; sample rate and averaging not selected",
+  "nominal_inputs": {
+    "ADC_clock_Hz": 14000000.0,
+    "acquisition_cycles": 480,
+    "conversion_cycles": 12,
+    "channels_for_time_comparison": 6,
+    "RC_tau_s": 0.0012,
+    "PWM_timer_clock_Hz": 84000000.0,
+    "PWM_PSC": 0,
+    "PWM_ARR": 4420,
+    "PWM_Hz": 19000.226193168965
+  },
+  "rows": [
+    {
+      "per_channel_rate_Hz": 10,
+      "interval_ms": 100.0,
+      "samples_per_100ms_block": 1,
+      "six_channel_scan_us": 210.85714285714286,
+      "ADC_busy_fraction_excluding_overhead": 0.0021085714285714284,
+      "single_perturbation_remaining_fraction": 6.438625640277599e-37,
+      "mean_sample_age_at_last_sample_ms": 0.0,
+      "PWM_fundamental_alias_Hz": 0.226193168964528,
+      "block_mean_amplitude_gain_for_this_alias": 1.0
+    },
+    {
+      "per_channel_rate_Hz": 100,
+      "interval_ms": 10.0,
+      "samples_per_100ms_block": 10,
+      "six_channel_scan_us": 210.85714285714286,
+      "ADC_busy_fraction_excluding_overhead": 0.021085714285714287,
+      "single_perturbation_remaining_fraction": 0.00024036947641951407,
+      "mean_sample_age_at_last_sample_ms": 45.0,
+      "PWM_fundamental_alias_Hz": 0.226193168964528,
+      "block_mean_amplitude_gain_for_this_alias": 0.9991670180966468
+    },
+    {
+      "per_channel_rate_Hz": 1000,
+      "interval_ms": 1.0,
+      "samples_per_100ms_block": 100,
+      "six_channel_scan_us": 210.85714285714286,
+      "ADC_busy_fraction_excluding_overhead": 0.21085714285714285,
+      "single_perturbation_remaining_fraction": 0.4345982085070782,
+      "mean_sample_age_at_last_sample_ms": 49.5,
+      "PWM_fundamental_alias_Hz": 0.226193168964528,
+      "block_mean_amplitude_gain_for_this_alias": 0.9991586931841244
+    }
+  ],
+  "formulae": {
+    "alias": "abs(fPWM - round(fPWM/fs)*fs)",
+    "mean_amplitude_gain": "abs(sin(pi*N*f_alias/fs)/(N*sin(pi*f_alias/fs)))",
+    "mean_age": "(N-1)/(2*fs), referenced to last sample"
+  },
+  "assumptions": [
+    "Ideal uniform sampling; PWM fundamental sinusoid used only for frequency analysis.",
+    "ADC clock/acquisition settings are prior candidates, not implemented settings.",
+    "Timing comparison assumes all six channels share settings; temperature need not ultimately be sampled at the same rate.",
+    "RC decay models one small isolated perturbation during a free interval, not a complete periodic ADC model.",
+    "Nominal source clock is not measured frequency; oscillator tolerance and actual flashed image are not established.",
+    "Mean gain refers to sampled residual ripple after analog filtering, not the unfiltered sensor amplitude.",
+    "No measured ripple spectrum or amplitude; no current-error or response-target PASS claim."
+  ],
+  "sources": [
+    "Core/Src/main.c SystemClock_Config",
+    "Core/Src/tim.c MX_TIM4_Init",
+    "https://www.st.com/resource/en/application_note/cd00211314.pdf",
+    "https://wiki.analog.com/university/courses/electronics/text/chapter-20"
+  ]
+}

@@ -2,11 +2,11 @@
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
-## 현재 재개점 — 2026-10-25 PCB 학습 마감
+## 현재 재개점 — 2026-10-26 학습 자료 마감
 
-[상세 학습 노트](../../07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)와 [Notion](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에 10/24 설명·계산을 정리했다. 다음은 수집 주기·PWM/aliasing·평균 지연·보정 후 오차 예산을 연결한 전류 RC 검토다. 요구/부품은 후보, CAD·MCU·실측 변경 없음.
+[학습 목차](../../07_Embedded_Learning_Notes/01_Concept_Notes/README.md)에 2장 추가 자료와 3-1~3-4 검증 학습 노트 네 편을 저장했다. 다음은 **3-1부터 함께 읽기**다. 요구 채택·입력계 오차 배분·기준 계기·실물 연결 계약은 미정이며 실제 시험은 NOT_RUN이다. 자료 작성 완료를 학습 완료·실물 PASS로 확대하지 않는다.
 
-[현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [마감 기록](../progress/2026-10-25_progress.md)을 따른다. 기존149초 시연 제작 완료와 전체 인수 미완료는 유지한다. 아래 다음 작업은 당시 이력이다.
+[현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [마감 기록](../progress/2026-10-26_progress.md)을 따른다. CAD·MCU·실물 변경 없음. 기존149초 시연 제작 완료와 전체 인수 미완료는 유지한다. 아래 다음 작업은 당시 이력이다.
 
 ## 직전 세션 마감 — 2026-10-23 전원 조정
 
