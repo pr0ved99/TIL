@@ -11,6 +11,10 @@
 - 실수, 고장, 디버깅 포인트
 - 포트폴리오/면접 설명 문장
 
+## 실제 설계 작업으로 연결
+
+2026-10-27에 [전류 검증 명세22](../../09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도 검증 명세23](../../09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md)를 작성했다. 학습3-1~3-4를 다시 쓰지 않고 시험 조건·오차 배분·장비·보정/독립점·판정을 구체화한 설계 산출물이다. 시험 NOT_RUN.
+
 ## Index
 
 현재 STM·ESP 구조가 먼저 필요하면 [09 코드 구조와 함수 지도](09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)를 읽고,
@@ -36,6 +40,7 @@
 | [3-2 정확도와 보정 검증](16_DC_Accuracy_and_Calibration_Verification_ko.md) | 입력계/센서 구분·전압 대입·영점/감도 보정·독립 검증점 |
 | [3-3 PWM·수집 조건과 응답 검증](17_PWM_Sampling_and_Response_Verification_ko.md) | 평균/RMS·alias·수집률 비교·300ms 응답과 시각 불확도 |
 | [3-4 이상 상태와 최종 판정](18_Fault_Validity_and_Final_Decision_ko.md) | VALID/STALE/INVALID·검출 한계·8항목 시험표·범위별 판정 |
+| [3-1 보충: 전체 측정 정확도와 입력계 정확도](19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md) | 센서 포함/제외 시험의 시작점·단위·오차 예산·보정·가상 예시, 온도/전압의 시험 경계 |
 
 ## 모니터링 입력 설계 학습 순서
 
@@ -46,6 +51,8 @@
 10/25 학습 회차의 추가 자료를 10/26에 정리했다. [최신 마감 기록](../../docs/progress/2026-10-26_progress.md)을 따른다.
 
 ## Notion 복습 자료
+
+10/27 추가: [전체 측정 정확도와 입력 회로 정확도 구분](https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8). 센서 포함 전류 비교와 센서 대신 전압을 대입하는 입력계 비교를 풀어쓴 **3-1 보충 자료**다. 13개 절/예시 저장을 재조회했으며 기존 시작점·3-1 페이지에 연결했다. 새 3-5장이 아니고 실제 시험은 NOT_RUN이다.
 
 10/26에 비공개 독립 페이지로 저장하고 본문·절·표를 재조회했다. 기존 [학습 노트 시작점](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)과 프로젝트·기술 자료 목차에서도 연결된다.
 

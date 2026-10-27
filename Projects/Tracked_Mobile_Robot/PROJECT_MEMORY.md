@@ -2,9 +2,18 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-26 (October 25 learning session closeout).
+Last updated: 2026-10-28 (October 27 design documentation closeout).
 
-## Current Checkpoint — 2026-10-26 monitoring learning notes
+## Current Checkpoint — 2026-10-28 monitoring verification design
+
+- [전류22](09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도23](09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md) 시험 설계 v0.1 작성: 입력계 ±4.4mV/G≤1.1mV와 ±1°C/G≤0.25°C, 보정/독립점·기준 장비 경계·절차·빈 기록 양식. 설계 배분이며 실측/제작 성능 보증 아님, 실제 NOT_RUN.
+- 센서 단독은 기준 전류와 직접 출력 전압, 기준 온도와 실제 NTC 저항을 별도로 비교한다. 기준기/치구·다점 조건/합격 경계는 후속 상세화 대상이다. 전체 오차에서 허용 입력계 오차를 차감해 센서 오차로 확정하지 않는다.
+- 다음은 **NTC 여기/ADC 기준·무전원 보호의 남은 선택 → 전압2채널 분압/보호**다. 학습3-1부터 자동 반복하지 않는다. 현재 CAD/MCU/실물 변경·수령의 새 보고 없음, IMU 기존 위치와 공간 검토 후속 유지.
+- [비교21](09_Electrical_Design/21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md)과 [MVP 평가42](docs/verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md)는 근거/한계를 분석한 문서다. 전체MVP 미완료·T005A PARTIAL/T007 BLOCKED·통신/UI OPEN 유지.
+- AI는 최종 확장 목표다. [노트북 계획](docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)은 문서화만 요청한 후속안, 설치/추론/구동·구매 없음. PCB 다음 작업을 대체하지 않는다.
+- [10/28 마감](docs/progress/2026-10-28_progress.md), [현재 인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md). 아래 다음 작업은 당시 이력이다.
+
+## Previous Checkpoint — 2026-10-26 monitoring learning notes
 
 - [학습 목차](07_Embedded_Learning_Notes/01_Concept_Notes/README.md): 수집 주기·평균·PWM/alias·보정 후 오차 예산·RC 후보 판단(12~14번)과 검증 계획 **3-1~3-4(15~18번)** 작성 완료. 목적·단위·근거·가상 예시·한계를 포함한다. 2장은 2-6, 3장은 3-4에서 끝낸다.
 - 다음은 3-1부터 사용자와 함께 읽고 목표 채택·입력계 예산·기준 계기/입력원 적합성·실물 연결/보호 계약을 검토한다. 자료 작성과 사용자 학습 완료를 구분한다. 시험표 MON-L01~08은 후속 제안, 실제 시험 NOT_RUN이다.

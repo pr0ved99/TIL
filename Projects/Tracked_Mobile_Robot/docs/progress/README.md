@@ -1,5 +1,17 @@
 # 진행 기록
 
+- **[10/28 설계 문서 마감](2026-10-28_progress.md):** 10/27 비교 평가·AI 후속안·정확도 범위·전류/온도 명세를 마감하고 센서 단독 검증 방법/미결을 보충했다. 다음은 전원/보호와 전압2채널, 실물 NOT_RUN. Git·기존 Calendar·Notion의 실제 게시 근거는 해당 기록을 따른다. 아래 각 회차의 다음 작업/미게시 표기는 당시 이력이다.
+
+- **[10/27 전류·온도 검증 명세](2026-10-27_progress.md):** [전류22](../../09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md) · [온도23](../../09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md). 시험용 오차 배분·기준 장비 경계·보정/독립점·회차 기록을 작성했다. 실물 NOT_RUN, 다음은 전원/보호 미결과 전압2채널 설계다. 아래3-1 재개 표기는 당시 이력이다.
+
+- **[10/27 정확도 범위 보충 노트·Notion 저장](2026-10-27_progress.md):** [3-1 보충](../../07_Embedded_Learning_Notes/01_Concept_Notes/19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md) · [Notion](https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8). 센서 포함 전류 시험/센서 제외 전압 대입의 경계·계산·보정·허용치 차이를 설명했다. 본문 재조회·기존 학습 페이지 연결, 실물 NOT_RUN·PCB 3-1 재개점 유지.
+
+- **[10/27 AI 후속 계획 문서화](2026-10-27_progress.md):** [노트북 AI 계획](../plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)에 첫 기능/모델·상태/기한·검증/기록·탑재 판단을 작성했다. 문서화만 요청, 구현/추론 NOT_RUN. 다음은 기존 **PCB 3-1 검증 대상과 합격 기준**, 작업 순서와 MVP 인수 경계 유지.
+
+- **[10/27 MVP 사전 설계·구현 평가](2026-10-27_progress.md):** [평가42](../verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md). 안전 책임·단계적 검증의 강점, K2 사전 대조/지연 여유/인수 조건의 부족을 구분. 기존 판정·후속 범위·재개점 유지, 새 시험 없음.
+
+- **[10/27 유사 프로젝트 비교·평가](2026-10-27_progress.md):** Waveshare UGV01/General Driver·ODrive v3.5·VESC6.5 RevB의 측정 위치/부품/구조 대조. 현재 방향 타당, 전체 입력계 결정·한 채널 검증 필요. [보고서21](../../09_Electrical_Design/21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md). 새 부품 채택·CAD·실측·외부 게시 없음.
+
 - **[10/26 3장 전체 학습 노트 마감](2026-10-26_progress.md):** 3-1~3-4 네 편 작성, 2장 추가 자료까지 정리. 다음은 3-1부터 함께 읽기. 실물 검증 NOT_RUN·후보 유지, 게시 결과는 해당 기록/영수증을 따른다.
 
 아래 10/25 단계별 다음 작업과 미게시 문구는 당시 이력이다.

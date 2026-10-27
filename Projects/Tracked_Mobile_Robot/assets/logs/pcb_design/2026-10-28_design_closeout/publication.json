@@ -1,0 +1,98 @@
+{
+  "closeout_date": "2026-10-28",
+  "work_document_date": "2026-10-27",
+  "documentation": "COMPLETE",
+  "handoff": "UPDATED",
+  "notion": {
+    "verification": "SUCCESS_RESPONSES_WITHOUT_WARNINGS; no redundant fetch per connector instruction",
+    "sensor_scope_updates": [
+      {
+        "id": "406a7326-f87b-8164-9afd-d1dfbc89011b",
+        "response": {
+          "page_id": "406a7326-f87b-8164-9afd-d1dfbc89011b"
+        }
+      },
+      {
+        "id": "406a7326-f87b-816b-a990-dbd4d476a46d",
+        "response": {
+          "page_id": "406a7326-f87b-816b-a990-dbd4d476a46d"
+        }
+      },
+      {
+        "id": "406a7326-f87b-81d0-a897-f34791e226c8",
+        "response": {
+          "page_id": "406a7326-f87b-81d0-a897-f34791e226c8"
+        }
+      }
+    ],
+    "project_task_reference_updates": [
+      {
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "response": {
+          "page_id": "3fca7326-f87b-8124-b0ee-e212822ce80d"
+        }
+      },
+      {
+        "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+        "response": {
+          "page_id": "3fca7326-f87b-8184-a67e-cefc1a1600c6"
+        }
+      },
+      {
+        "id": "3fca7326f87b81289979cec9503cac85",
+        "response": {
+          "page_id": "3fca7326-f87b-8128-9979-cec9503cac85"
+        }
+      }
+    ],
+    "hub_update": {
+      "page_id": "403a7326-f87b-816f-8115-fbe2c995f8f0"
+    },
+    "properties_updated": true,
+    "project_status": "진행 중 (unchanged)",
+    "sensor_task_status": "진행 중 (unchanged)",
+    "sensor_task_verification": "해당 없음 (unchanged)"
+  },
+  "calendar": {
+    "id": "19bnchnobsa7j46druji2ndgk8",
+    "title": "[TMR] 주간 근거 정리·다음 작업 선정",
+    "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0",
+    "start": "2026-10-25T14:30:00+09:00",
+    "end": "2026-10-25T15:30:00+09:00",
+    "preserved": [
+      "start",
+      "end",
+      "summary",
+      "recurrence",
+      "reminders"
+    ],
+    "verification": "FETCH_CONFIRMED",
+    "updated_note": "[실적·다음 작업 갱신 · 2026-10-28 / 작성 회차 10/27]\n전류·온도 검증 명세 v0.1: 입력계 ±4.4mV/G≤1.1mV, ±1°C/G≤0.25°C, 보정점/독립점·장비 적합성·절차·빈 회차 양식 작성. 설계 배분이며 실물 NOT_RUN/준비 NOT_READY.\n센서 단독은 기준 전류↔직접 출력 전압, 기준 온도↔실제 NTC 저항으로 별도 검증한다. 다점 조건·기준기/치구·합격 경계는 후속 상세화 대상이다. 전체 오차에서 허용 입력계 오차를 빼지 않는다.\n외부 프로젝트 비교·MVP 설계 철학 평가·AI 후속 계획도 문서화했다. AI 설치/추론/구동 없음.\n다음 노트북 작업: NTC 여기/ADC 기준·무전원 보호의 남은 선택 → 전압2채널 분압/보호 설계. 학습3-1 반복을 재개 작업으로 삼지 않는다.\nCAD/BOM·MCU 빌드/플래시·실물/추가 구매 없음, 센서 수령 미확인. 전체 MVP/PARTIAL/OPEN 유지.\n기존 일정의 근거 정리/다음 작업 기록만 보충한다. 원래 10/25 14:30–15:30·제목·알림·반복 설정 유지, 실제 수행 시각으로 추정하지 않는다.\nhttps://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/progress/2026-10-28_progress.md\nhttps://app.notion.com/p/406a7326f87b81649afdd1dfbc89011b\nhttps://app.notion.com/p/406a7326f87b816ba990dbd4d476a46d\n\n[아래는 이전 기록]"
+  },
+  "git": {
+    "status": "PENDING_SCOPED_COMMIT_PUSH"
+  },
+  "hardware_tests": "NOT_RUN",
+  "firmware_build_flash": "NOT_PERFORMED",
+  "sensor_only_executable_spec": "NOT_COMPLETE; method and missing prerequisites documented",
+  "formatting_repairs": [
+    {
+      "file": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-10-27_external_benchmark/odrive_v3_5.pdf.txt",
+      "action": "Remove trailing whitespace from derived PDF extraction; original PDF preserved",
+      "before_sha256": "eaa2b1392b87d00957bd7d481236be4c2c771c896b8e00a1a5c1aa9f85b0b2b0",
+      "after_sha256": "83f01de36669109b7612c8c218ec17b35bd19bb8817851a9e43993b15a4e93c7"
+    },
+    {
+      "file": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-10-27_external_benchmark/vesc_6_5_revB.pdf.txt",
+      "action": "Remove trailing whitespace from derived PDF extraction; original PDF preserved",
+      "before_sha256": "faebdb5c593e2bb730ec0ab2bffc49f478b1405c234799ca7bca3f9eb35fccfd",
+      "after_sha256": "537c63720d1c3935e501e75f6b217805d1c8276abe33f77a4242c5f4a0e8c449"
+    },
+    {
+      "file": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-10-27_external_benchmark/waveshare_general_driver.pdf.txt",
+      "action": "Remove trailing whitespace from derived PDF extraction; original PDF preserved",
+      "before_sha256": "d8a980593be4d24a87fb5b66da0778487a0bfc017578a9141b221914e3bdb4dc",
+      "after_sha256": "43553862d01bcddee41f2968393a50393ce8e6c1e02194d0f7b0dca1f7fa273e"
+    }
+  ]
+}

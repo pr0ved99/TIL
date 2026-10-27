@@ -1,5 +1,17 @@
 # Electrical Design
 
+## 전류·온도 시험 설계 기준 — 2026-10-27
+
+Notion: [전류 검증 명세](https://app.notion.com/p/406a7326f87b81649afdd1dfbc89011b) · [온도 검증 명세](https://app.notion.com/p/406a7326f87b816ba990dbd4d476a46d). 두 본문을 재조회했고 기존 학습 시작점에 연결했다.
+
+[전류 검증 명세22](22_Current_Channel_Verification_Spec_2026-10-27_ko.md)와 [온도 검증 명세23](23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md)를 작성했다. 전류 입력계4.4mV/비교 경계1.1mV, 온도 입력계1°C/비교 경계0.25°C를 시험용 기준으로 정하고 보정·독립점·기록·장비 적합성을 구체화했다. 제조사 사양의 성능 보증이나 제작 승인은 아니다. 실제 시험은 NOT_RUN이며 현재 전압 기준 경로·정밀 저항·조립/ADC 수집 구현은 준비 확인 전이다.
+
+다음 설계 작업은 NTC 여기/ADC 기준·무전원 입력 보호의 미결을 비교한 뒤 전압2채널 분압/보호 설계로 이어가는 것이다. 학습3-1부터 반복하지 않는다. [시험표·계산·회차 양식](../assets/logs/pcb_design/2026-10-27_monitoring_verification_spec/README.md).
+
+## 현재 비교 검토 — 2026-10-27
+
+[유사 프로젝트의 측정 회로·시스템 비교](21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md): Waveshare UGV01/General Driver·ODrive v3.5·VESC6.5 RevB의 공식 자료를 대조했다. 현재는 **3단계 입력 회로 상세 검토**다. 홀 센서·표면 NTC·전압 분압 방향은 타당하나 요구 채택·전압2/전원/보호 확정·한 채널 실측은 남았다. 아래10/23의 단계별 “다음”은 당시 이력이며 최신 학습/설계 재개점은 [현재 맥락](../docs/handoff/CURRENT_SESSION_CONTEXT.md)을 따른다. 새 부품 선정·CAD 변경·실측 PASS는 아니다.
+
 ## 현재 노트북 설계 — 2026-10-23
 
 **2단계 종합 검토본:** [ADC6채널 연결·측정 기준](20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md). PC0/1 전류·PC2/3 온도·PA4/PB0 전압의 포트/핀 순서를 모았다. 전류센서 nonratiometric·NTC VEXC/VDDA 비율·미분압 rail 보호를 구분했다. 구성 검토본 작성 완료이며 승인/실측 PASS는 아니다. 다음3단계 첫 작업은 ADC 기준·NTC 여기·무전원 보호 방식 비교/계산이다.

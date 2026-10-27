@@ -1,0 +1,14 @@
+nominal_equivalent_A,target_V,role,tolerance_input_mV,maximum_comparison_guard_mV,status
+-30,0.33,range_only,,,NOT_RUN
+-10,1.21,calibration,4.4,1.1,NOT_RUN
+-7.5,1.32,validation,4.4,1.1,NOT_RUN
+-5,1.43,validation,4.4,1.1,NOT_RUN
+-2,1.562,validation,4.4,1.1,NOT_RUN
+-1,1.606,validation,4.4,1.1,NOT_RUN
+0,1.65,validation,4.4,1.1,NOT_RUN
+1,1.694,validation,4.4,1.1,NOT_RUN
+2,1.738,validation,4.4,1.1,NOT_RUN
+5,1.87,validation,4.4,1.1,NOT_RUN
+7.5,1.98,validation,4.4,1.1,NOT_RUN
+10,2.09,calibration,4.4,1.1,NOT_RUN
+30,2.97,range_only,,,NOT_RUN

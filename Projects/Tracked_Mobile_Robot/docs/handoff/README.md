@@ -2,11 +2,11 @@
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
-## 현재 재개점 — 2026-10-26 학습 자료 마감
+## 현재 재개점 — 2026-10-28 설계 문서 마감
 
-[학습 목차](../../07_Embedded_Learning_Notes/01_Concept_Notes/README.md)에 2장 추가 자료와 3-1~3-4 검증 학습 노트 네 편을 저장했다. 다음은 **3-1부터 함께 읽기**다. 요구 채택·입력계 오차 배분·기준 계기·실물 연결 계약은 미정이며 실제 시험은 NOT_RUN이다. 자료 작성 완료를 학습 완료·실물 PASS로 확대하지 않는다.
+[전류22](../../09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도23](../../09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md) 시험 설계 v0.1을 작성했다. 입력계·센서 단독·전체계의 정확도 범위와 미결을 구분한다. 실제 측정은 NOT_RUN이며 센서 단독 상세 실행 명세도 남았다.
 
-[현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [마감 기록](../progress/2026-10-26_progress.md)을 따른다. CAD·MCU·실물 변경 없음. 기존149초 시연 제작 완료와 전체 인수 미완료는 유지한다. 아래 다음 작업은 당시 이력이다.
+다음은 **NTC 여기 전원/ADC 기준·무전원 보호의 남은 선택 → 전압2채널 설계**다. [현재 인수인계](CURRENT_SESSION_CONTEXT.md), [다음 프롬프트](NEXT_SESSION_START_PROMPT.md), [10/28 마감](../progress/2026-10-28_progress.md)을 따른다. 학습3-1 반복이나 AI 구현을 자동 시작하지 않는다. CAD·MCU·실물 변경 없음, 기존 MVP 인수 경계 유지. 아래 다음 작업은 당시 이력이다.
 
 ## 직전 세션 마감 — 2026-10-23 전원 조정
 
