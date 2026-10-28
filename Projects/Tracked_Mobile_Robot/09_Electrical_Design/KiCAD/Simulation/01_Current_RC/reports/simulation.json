@@ -1,0 +1,39 @@
+{
+  "status": "PASS_IDEAL_RC_MODEL",
+  "run_method": "KiCad-exported SPICE netlists executed directly with bundled ngspice.dll",
+  "gui_run": "NOT_RUN",
+  "hardware_test": "NOT_RUN",
+  "dll_sha256": "c2c103033190aa0429703ad3333ed997a6dfcfe0795a4120f86c3c6f38c9b1dd",
+  "model_netlist_sha256": {
+    "Current_RC_AC": "5916bd26c1a94eb8f94ee669b2a9a50373ea78a03e9b4b6a0c96ae0963f265d2",
+    "Current_RC_Step": "7df712468030ac1dd46af47602ce3510cf99be4d32dd1324b6a7cdad73910563"
+  },
+  "checks": {
+    "ac_complex_gain_max_absolute_error_below_1e-10": true,
+    "step_rising_max_absolute_error_below_10uV": true,
+    "step_99pct_crossing_error_below_2us": true,
+    "no_controlled_exit": true
+  },
+  "tau_s": 0.0012,
+  "ac": {
+    "points": 1201,
+    "fc_theory_hz": 132.62911924324612,
+    "fc_sim_log_interpolation_hz": 132.62692789824047,
+    "max_complex_gain_absolute_error": 2.482534153247273e-16,
+    "nearest_19khz_sample": {
+      "frequency_hz": 19054.607179633596,
+      "magnitude_ratio": 0.006960306517353353,
+      "gain_db": -43.14743269093822
+    },
+    "exact_19khz_theory_ratio": 0.006980309897111645
+  },
+  "step": {
+    "points": 15023,
+    "max_rising_error_vs_finite_ramp_v": 1.8330787276976679e-06,
+    "rise_start_s": 0.001,
+    "rise_duration_s": 1e-06,
+    "99pct_from_rise_start_sim_s": 0.005526698290618577,
+    "99pct_from_rise_start_finite_ramp_theory_s": 0.0055267042579079315
+  },
+  "limits": "Ideal R/C and ideal source only; excludes sensor/ADC/leakage/protection/tolerances/EMI"
+}

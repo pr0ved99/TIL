@@ -1,0 +1,219 @@
+{
+  "date": "2026-10-28",
+  "timezone": "Asia/Seoul",
+  "files": [
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_AC.csv",
+      "bytes": 25660,
+      "sha256": "448623e32d255ad510b4a98d5e5f26bbfa5aefc5eaa40e475014f8e6e2770992"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_AC.kicad_sch",
+      "bytes": 19080,
+      "sha256": "68a5548b910437f366e234d9498b93f6328dc3b5be475654906e08fa5a706b8e"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_AC.png",
+      "bytes": 16929,
+      "sha256": "9bd9f73483272852042357e1c2e6209c9554346b09a0162c3a36a0c846c1ef4c"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_AC.wbk",
+      "bytes": 1181,
+      "sha256": "7564b8cac98b0036acb156e7ac34478984027e683c9fa17335d13b5371d3edd0"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_Step.csv",
+      "bytes": 368376,
+      "sha256": "32d662c47e60f6f45583fc57fce7089dc96561d6bcf9818fe304d60e37b0786d"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_Step.kicad_sch",
+      "bytes": 19110,
+      "sha256": "9b3b7a01fc7d712a7aeeee3706499890d0b5168d1878c10d1edb074361291e88"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_Step.png",
+      "bytes": 16300,
+      "sha256": "bec8c24eacb25c5dac5f6c757c4d0302e81fcf34c6c377805ac5aad6a4289b12"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_Step.wbk",
+      "bytes": 1162,
+      "sha256": "dbe74e1c938e5f84babd715b094788a5aeb4bb41e8b1b7b05c7948cb315b7b6c"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\plot_results.py",
+      "bytes": 3082,
+      "sha256": "e78f6df9c97d193406d7bc08945d4922bf0e2b32757dec3483b8748745a013a7"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\prepare.py",
+      "bytes": 6103,
+      "sha256": "b8dfebd36be8c597e9e50ba6b281db938b960c9e293912821dd1c7ef96e2b6a6"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\README.md",
+      "bytes": 11542,
+      "sha256": "ec99733cf71b3881592d02faa5370d57eda8211b8e9c00d47fe0c4375e7ed490"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\ac.csv",
+      "bytes": 154745,
+      "sha256": "7ba2dbd309245d6ee904751566274d2b34b1163e6b635b09c0baebc50e6e8598"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\Current_RC_AC.cir",
+      "bytes": 139,
+      "sha256": "5916bd26c1a94eb8f94ee669b2a9a50373ea78a03e9b4b6a0c96ae0963f265d2"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\Current_RC_AC.svg",
+      "bytes": 173083,
+      "sha256": "55bded3689ddfd41e028611b533d9818542c617563c9c52c3fb2740f8d93fd7c"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\Current_RC_AC_preview.png",
+      "bytes": 17716,
+      "sha256": "88ab3a639c4e11f92482c389b849b751e9b4a82fc40bf3168149afee4a561201"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\current_rc_results.png",
+      "bytes": 147581,
+      "sha256": "b38203eefdd9d33ed78a916ba22ac00ac0275675f05b0b6b910077fd04aa76ec"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\current_rc_results.svg",
+      "bytes": 149070,
+      "sha256": "c3b4151c908ce269f0dd35406827549b69b11a458a38f67ede223f856d783a69"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\Current_RC_Step.cir",
+      "bytes": 133,
+      "sha256": "7df712468030ac1dd46af47602ce3510cf99be4d32dd1324b6a7cdad73910563"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\Current_RC_Step.svg",
+      "bytes": 174659,
+      "sha256": "546d6e8b7f380ba0a6dcb918e7581827579387b1a94f5891ccf9323696f0ef7d"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\ngspice.log",
+      "bytes": 1461,
+      "sha256": "789b2a35a22bd9ab762757d42a04ae036a3ef4ba15dbcc3af2f5c1d7dd307398"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\preparation.json",
+      "bytes": 1600,
+      "sha256": "43864641f22001056247af05e344dec88fcff7c92eea8ce62c349cdcc226afb9"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\simulation.json",
+      "bytes": 1511,
+      "sha256": "648b03e35b1152c468344a7f294dee610b8b94853ec7deece21df5f87300f29b"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\step.csv",
+      "bytes": 684933,
+      "sha256": "37dca53ad00ac8c547dbcf61f78046c08631c94d7a38f11ed949e2bbfef066a9"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\reports\\validation.json",
+      "bytes": 554,
+      "sha256": "fd0f626d6e4819fb764f4ce9ba849497c70928f6c187b81aa3df846636555514"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\run_simulation.py",
+      "bytes": 7725,
+      "sha256": "73cef731c9b6bc6bea1b09097feb515d57dbf9cd22e01c624f4a44bab6c9d1cf"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\02_NTC.kicad_pcb",
+      "bytes": 79,
+      "sha256": "9732c37867cd081621490a6345db7caeb4599f087175afcdd57d0df064127de4"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\02_NTC.kicad_pro",
+      "bytes": 9100,
+      "sha256": "156a1e240c88d0469e7f1d5e740328a2c068c238620ee23a0832664afd00b774"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\02_NTC.kicad_sch",
+      "bytes": 22997,
+      "sha256": "9307980bbce4e800c25aaa1bffa98836f96aa75cb4f7fc2e8923d739e347339a"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\02_NTC.wbk",
+      "bytes": 1196,
+      "sha256": "0e833021877e2ea13a23252bf3962b0333361c5266d6400da2072c342730ea57"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\NTC_25C_AC.csv",
+      "bytes": 22395,
+      "sha256": "dd360df133b7f519abd315cde3f6665cf6596c1d306f85583ebd36fc7c49c7a9"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\NTC_25C_AC.png",
+      "bytes": 15406,
+      "sha256": "a495ee4a8680565719904b2211b5ec8e6d10c90a3eeba170bd9990cb8ad2e173"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\NTC_50C_AC.csv",
+      "bytes": 22394,
+      "sha256": "1bdd5e8e32dfb794b8d13c9d6c65431e751ed5707939c9239415675e34649e04"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\NTC_50C_AC.png",
+      "bytes": 16854,
+      "sha256": "e06f9cbeaa35801e723ff566ba507a813172cd585f380f5a604821eaf123fe38"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\README.md",
+      "bytes": 1507,
+      "sha256": "be5a2f9a1e620d2b9fff61d5d8c551fc8f9a0583c720b6c3e6ad907ea5a4a920"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_Voltage_Divider.kicad_pcb",
+      "bytes": 79,
+      "sha256": "9732c37867cd081621490a6345db7caeb4599f087175afcdd57d0df064127de4"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_Voltage_Divider.kicad_pro",
+      "bytes": 9114,
+      "sha256": "9a80e3c11928f0d5944f57441e90cfc4cf02b46b133d63184105f2be5a7447cf"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_Voltage_Divider.kicad_sch",
+      "bytes": 24927,
+      "sha256": "0ad8e3cf01d03d7b68e41bc8d3ed3874a27b99a83940bbea7ca6b76bed2c38e9"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_Voltage_Divider.wbk",
+      "bytes": 1197,
+      "sha256": "0680265d3d443cd05469b3eefcf33006f2d7da61e01096a267b30085d5140031"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\README.md",
+      "bytes": 2050,
+      "sha256": "2455bd2545a3d5084a79a1a1bddab9d05d2069b5525f901fbf6211113f56ee9d"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\Voltage_Divider_AC.csv",
+      "bytes": 22374,
+      "sha256": "11d57a9ddfd5760263406a13f9791fbb61d30e0e149430eece65c5dfec8d2a45"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\Voltage_Divider_AC.png",
+      "bytes": 17148,
+      "sha256": "92295dd87e2546a11c3c6f5a83626fc36be99f1d210f3ba151fe5b3caca99f82"
+    },
+    {
+      "path": "09_Electrical_Design\\KiCAD\\Simulation\\README.md",
+      "bytes": 1816,
+      "sha256": "e25701f89a82172b67084e1ac6167e727623a63bced02de62f199a401361a032"
+    }
+  ],
+  "source_scope": "User GUI exports and saved models; 01_Current_RC/reports is the earlier assistant DLL run.",
+  "hardware": "NOT_RUN",
+  "this_audit_simulation_execution": "NOT_PERFORMED"
+}

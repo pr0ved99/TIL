@@ -1,13 +1,24 @@
 # Current Session Context
 
-Last updated: **2026-10-28 — 10/27 설계 문서 마감·센서 단독 검증 범위 보충, 전원/보호 설계로 재개**.
+Last updated: **2026-10-29 — 10/28 사용자 KiCad 실습 마감, 다음 전압 오차 예산·보호 조건**.
 
-## 현재 재개점 — 모니터링 입력 설계
+## 현재 재개점 — 사용자 KiCad 실습 완료
+
+- **완료:** 전류12k/100nF의AC·계단1τ/99%, NTC25/50°C상당OP·AC, 전압12k+12k/4.7k의12.6/16V OP·분압노드100nF/이후1k 추가·AC를 사용자가GUI에서확인했다. 전압fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, PNG/CSV저장완료.
+- **자료:** [학습 노트20](../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계 판단24](../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [원본/검사](../../assets/logs/pcb_design/2026-10-28_simulation_closeout/README.md) · [10/29 마감](../progress/2026-10-29_progress.md).
+- **설계 판단:** NTC두채널만CN7-5 MCU VDD공급기본안·10k/1k/100nF유지·추가다이오드선정보류. 실제쉴드는CN7-16 STM_3V3초안그대로이며전원하강/단선/ADC허용조건미결이다. ADC기준은정확히VDDA다.
+- **다음 첫 작업:** 전압±0.10V의저항공차·보정·VDDA·ADC/보호누설·온도오차예산. 이후정상/고장/MCU OFF보호조건과실제쉴드전압2채널/NTC공급변경을검토한다. ±1%저항만으로목표달성했다고하지않는다.
+- **학습 방식:** 사용자회로작성·GUI실행, Codex가이드/읽기검토/계산/문서화. 이전Codex DLL실행은01_Current_RC/reports의별도이력이다. 새시뮬레이션자동실행·사용자회로재생성·완료실습반복을하지않는다. 전압TRAN·NTC열응답·실제ADC/센서정확도·실물은미실행이다.
+- **보존:** 실제제작쉴드CAD/BOM·MCU·실물·구매변경없음. AI문서후속·IMU기존위치·배치후속·MVP기존진행중/PARTIAL/OPEN유지. 이번다섯항목게시상태는10/29마감영수증을따른다. 아래날짜별다음/NOT_RUN표기는각당시이력이다.
+
+## 이전 재개점 — 추가 GUI 실습 전 이력
+
+- **마감 후 새 작업:** 사용자 제안으로 기존 전원/보호 결정 전에 전류 RC·NTC 모델 확인을 추가했다. [순서·모델·결과](../../09_Electrical_Design/KiCAD/Simulation/01_Current_RC/README.md). 전류 R1=12kΩ/C1=100nF의 독립 KiCad AC/계단 모델을 만들고 내보낸 회로를 내장 ngspice-46 DLL로 실행했다. fc132.6269Hz·상승 99% 도달5.526698ms, 해석해 비교 통과. GUI 실행/실물 NOT_RUN이며 부품 최종 채택은 아니다. 다음은 결과 설명 후 NTC 분압 전체의 DC/시간 응답 비교다. 기존 목표는 유지하고 오늘 순서만 조정했으며 전 단계를 오늘 완료한다고 약속하지 않는다. 이번 추가 작업은 로컬 저장이며 아래 마감의 외부 게시에 포함되지 않는다.
 
 - **이번 마감:** [10/28 기록](../progress/2026-10-28_progress.md). 전류/온도 명세에 센서 단독 검증 방법과 미확정 조건을 보충했다. 입력계·전체계 시험 설계 완료와 센서 단독 실행 명세 미완성/실물 NOT_RUN을 구분한다. [게시 근거](../../assets/logs/pcb_design/2026-10-28_design_closeout/publication.json). 아래 과거 마감/미게시 문구는 당시 이력이다.
 
 - **최신 결과:** 사용자 일괄 작성 요청으로 [전류22](../../09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도23](../../09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md)를 완성했다. 전류 입력계4.4mV/G1.1mV·온도1°C/G0.25°C의 시험용 기준, 보정/독립점·장비 적합성·절차·회차 양식을 정했다. 제조사 달성값이나 제작 승인이 아니다. [계산/시험표](../../assets/logs/pcb_design/2026-10-27_monitoring_verification_spec/README.md), 실물 NOT_RUN. 정밀 전압 기준/기준 저항·조립·ADC 수집 구현은 준비 확인 전이다.
-- **다음 실제 설계:** NTC 여기/ADC 기준과 무전원 입력 보호의 남은 선택을 정리하고 전압2채널 분압/보호로 연결한다. 정밀 장비 확보를 기다리며3-1부터 반복하지 않는다. 현재 CAD/MCU·실물 변경 및 구매 없음.
+- **시뮬레이션 뒤 복귀할 기존 설계:** NTC 여기/ADC 기준과 무전원 입력 보호의 남은 선택을 정리하고 전압2채널 분압/보호로 연결한다. 정밀 장비 확보를 기다리며3-1부터 반복하지 않는다. 독립 시뮬레이션 파일만 추가했으며 기존 쉴드 CAD/BOM·MCU·실물 변경 및 구매 없음.
 
 - **최신 학습 자료:** 사용자 요청으로 [3-1 보충: 전체 측정과 입력계 정확도](../../07_Embedded_Learning_Notes/01_Concept_Notes/19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md)를 [Notion](https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8)에 저장했다. 본문13개 절/가상 예시를 재조회했고 기존 시작점·3-1에 연결했다. 센서 포함 전류 기준과 센서 제외 전압 기준의 범위를 구분한다. 새 3-5장이 아니며 자료 작성·Notion 게시만 완료, 실제 시험 NOT_RUN. 당시 다음은3-1 기준 검토였으며 현재는 상단 명세22/23으로 구체화했다.
 - **최신 요청/결과:** 최종 AI 접목 목표에 대해 [노트북 AI 확장 계획](../plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)을 문서화했다. Ryzen 7 5800H/RTX 3050 Ti 4GB/약16GB RAM 확인, YOLO11n·단일 person 인식/방향 판단·독립 감시·로그/시험 기준을 후속 시작값으로 정했다. 사용자는 **문서화만** 요청했다. 설치·모델/코드·추론·구동·CAD 변경 없음, 성능 미측정. AI 구현을 자동 시작하지 않는다. 현재 PCB 다음 작업은 상단의 전원/보호 설계다. 추가 컴퓨터 구매나 기존 MVP 인수 조건 변경도 없다.
@@ -44,7 +55,7 @@ Last updated: **2026-10-28 — 10/27 설계 문서 마감·센서 단독 검증 
 
 ## 보존할 재개 조건과 이전 미결
 
-- **노트북 재개:** 상단의 전원/보호 미결과 전압2채널 설계로 진행한다. **집/MVP:** 기존 인수 판정과 사용자 제외 범위를 유지하며 새 물리 작업 시각은 추정하지 않는다.
+- **노트북 재개:** 상단 전류 RC 결과 설명 → NTC 모델 비교 → 기존 전원/보호 미결과 전압2채널 설계로 진행한다. **집/MVP:** 기존 인수 판정과 사용자 제외 범위를 유지하며 새 물리 작업 시각은 추정하지 않는다.
 
 - 귀가 후 잔여 인수 대조는 보고서39, 전달 경로/관측 설계는 보고서40에 완료했다. v5.2 구현·PC 검증과 실제 브라우저3조건 관측을10/24 완료했다. 추가 반복 없이 상단의 기존 인수 경계로 복귀한다. 기존200/250/300ms 제한과 완료91 PC 감사·거리/단절 시험 자동 반복 금지를 유지한다.
 - 이전 [전진 자동 정지](../../assets/logs/wifi_link/2026-10-23_forward_auto_disarm_run01/observations.json) TEL나이265.2≥250ms, [좌회전 자동 정지](../../assets/logs/wifi_link/2026-10-23_left_auto_disarm_run01/observations.json) control나이204.9≥200ms 및 실제 PAGE PC 재현 PASS를 보존한다. 이전 좌회전 누적 로그는 전진 사건도 포함해 독립 통계로 합산하지 않는다.

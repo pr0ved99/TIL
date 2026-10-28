@@ -1,5 +1,8 @@
 # TMR Monitor Shield RevA — 노트북 설계 시작점
 
+
+**최신 재개점 · 2026-10-29:** [학습 노트20](../../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계 판단24](../../24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [실습 원본](../Simulation/README.md). 전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다. 기존22부품/미배선32개쉴드와시뮬레이션회로를구분한다. 다음은 **전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토**다. 아래날짜별다음작업은당시이력이다.
+
 **최신 재개점 · 2026-10-27:** [전류 검증 명세22](../../22_Current_Channel_Verification_Spec_2026-10-27_ko.md)와 [온도 검증 명세23](../../23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md)를 작성했다. 전류 입력계4.4mV·온도 입력계1°C를 시험용 기준으로, 비교 경계·보정/독립점·절차·장비 적합성을 구체화했다. RT 표 환산을 시험 기준으로 사용하고 RC는 비교 대상으로 유지한다. 실물 NOT_RUN·제작용 아님. 다음은 NTC 여기/ADC 기준·무전원 보호의 미결과 전압2채널 설계다. 아래 날짜별3-1 재개 표기는 당시 이력이며 반복 지시가 아니다.
 
 **10/27 외부 설계 비교:** [유사 프로젝트 평가](../../21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md)에서 Waveshare·ODrive·VESC의 측정 위치/부품/선정 이유를 비교했다. 현 방향은 타당하나 전압2·전원/보호 결정과 한 채널 검증이 필요하다. 기존 후보·CAD·실측 NOT_RUN은 유지하며, 아래3-1 학습 재개에 연결하는 권고다.

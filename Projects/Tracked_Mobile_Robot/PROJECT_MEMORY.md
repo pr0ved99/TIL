@@ -2,9 +2,17 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-28 (October 27 design documentation closeout).
+Last updated: 2026-10-29 (October 28 user KiCad simulation learning closeout).
 
-## Current Checkpoint — 2026-10-28 monitoring verification design
+## Current Checkpoint — 2026-10-29 simulation learning closeout
+
+- 전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다.
+- [학습20](07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md)와[설계24](09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md),[10/29진행](docs/progress/2026-10-29_progress.md)에원본/계산/미결을분리했다. 저장CSV와해석식대조완료,마감중새시뮬레이션실행없음.
+- 다음은 **전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토**다. 전압±1%저항최악조합의명목환산오차약±0.27V가능,±0.10V목표미달성/보정검토필요.
+- 사용자직접회로작성/GUI실행을유지한다. Codex의초반직접DLL실행은이전별도이력이다. 완료실습을자동반복하거나사용자회로를재생성하지않는다.
+- 기존쉴드CAD/BOM·MCU·실물·구매변경없음, AI문서후속·기구배치후속·MVP기존진행중/PARTIAL/OPEN유지. 아래날짜별다음작업은당시이력이다.
+
+## Previous Checkpoint — 2026-10-28 monitoring verification design
 
 - [전류22](09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도23](09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md) 시험 설계 v0.1 작성: 입력계 ±4.4mV/G≤1.1mV와 ±1°C/G≤0.25°C, 보정/독립점·기준 장비 경계·절차·빈 기록 양식. 설계 배분이며 실측/제작 성능 보증 아님, 실제 NOT_RUN.
 - 센서 단독은 기준 전류와 직접 출력 전압, 기준 온도와 실제 NTC 저항을 별도로 비교한다. 기준기/치구·다점 조건/합격 경계는 후속 상세화 대상이다. 전체 오차에서 허용 입력계 오차를 차감해 센서 오차로 확정하지 않는다.

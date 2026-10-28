@@ -1,0 +1,111 @@
+[
+  {
+    "source": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_AC.kicad_sch",
+    "components": {
+      "C1": "100n",
+      "R1": "12k",
+      "V1": "VSIN"
+    },
+    "nets": {
+      "/VADC": [
+        "C1.1",
+        "R1.2"
+      ],
+      "/VIN": [
+        "R1.1",
+        "V1.1"
+      ],
+      "0": [
+        "C1.2",
+        "V1.2"
+      ]
+    }
+  },
+  {
+    "source": "09_Electrical_Design\\KiCAD\\Simulation\\01_Current_RC\\Current_RC_Step.kicad_sch",
+    "components": {
+      "C1": "100n",
+      "R1": "12k",
+      "V1": "VPULSE"
+    },
+    "nets": {
+      "/VADC": [
+        "C1.1",
+        "R1.2"
+      ],
+      "/VIN": [
+        "R1.1",
+        "V1.1"
+      ],
+      "0": [
+        "C1.2",
+        "V1.2"
+      ]
+    }
+  },
+  {
+    "source": "09_Electrical_Design\\KiCAD\\Simulation\\02_NTC\\02_NTC.kicad_sch",
+    "components": {
+      "C3": "100n",
+      "R3": "10k",
+      "R4": "1k",
+      "R7": "4147",
+      "V1": "3.3"
+    },
+    "nets": {
+      "/VADC": [
+        "C3.1",
+        "R4.2"
+      ],
+      "/VNTC": [
+        "R3.2",
+        "R4.1",
+        "R7.1"
+      ],
+      "0": [
+        "C3.2",
+        "R7.2",
+        "V1.2"
+      ],
+      "Net-(R3-Pad1)": [
+        "R3.1",
+        "V1.1"
+      ]
+    }
+  },
+  {
+    "source": "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_Voltage_Divider.kicad_sch",
+    "components": {
+      "C1": "100n",
+      "R1": "12k",
+      "R2": "12k",
+      "R3": "4.7k",
+      "R4": "1k",
+      "V1": "16"
+    },
+    "nets": {
+      "/VADC": [
+        "R4.1"
+      ],
+      "/VDIV": [
+        "C1.1",
+        "R2.2",
+        "R3.1",
+        "R4.2"
+      ],
+      "/VRAIL": [
+        "R1.1",
+        "V1.1"
+      ],
+      "0": [
+        "C1.2",
+        "R3.2",
+        "V1.2"
+      ],
+      "Net-(R1-Pad2)": [
+        "R1.2",
+        "R2.1"
+      ]
+    }
+  }
+]

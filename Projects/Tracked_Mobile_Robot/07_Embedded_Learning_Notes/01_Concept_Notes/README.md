@@ -1,5 +1,9 @@
 # Concept Notes
 
+## 최신 실습 — 10/28 학습·10/29 마감
+
+[20 KiCad 전류RC·NTC·전압 분압 실습](20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md)은18절로AC1V·dB·A0/상대−3dB·시정수/99%·온도별등가저항·VDD/VDDA·전원차단/다이오드·전압/전류/전력과실제확인값을연결한다. [설계 판단24](../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [마감](../../docs/progress/2026-10-29_progress.md). 기존2장은2-6,3장은3-4그대로이며별도실습노트다. 다음은전압오차예산·보호조건,아래이전학습재개안은당시이력이다.
+
 이 폴더는 보드 실습 전에 개념을 분해해서 이해하는 곳이다.
 
 각 파일은 다음 관점으로 작성한다.
@@ -42,7 +46,7 @@
 | [3-4 이상 상태와 최종 판정](18_Fault_Validity_and_Final_Decision_ko.md) | VALID/STALE/INVALID·검출 한계·8항목 시험표·범위별 판정 |
 | [3-1 보충: 전체 측정 정확도와 입력계 정확도](19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md) | 센서 포함/제외 시험의 시작점·단위·오차 예산·보정·가상 예시, 온도/전압의 시험 경계 |
 
-## 모니터링 입력 설계 학습 순서
+## 기존 모니터링 학습 목차와 당시 진행 순서
 
 2장은 2-6까지, 3장은 **3-1~3-4 총 네 편**이다. 11번은 측정 요구·NTC/RC·ADC 획득의 상세 배경, 12번은 수집 주기·평균·PWM, 13/14번은 2-5/2-6 자료다.
 
