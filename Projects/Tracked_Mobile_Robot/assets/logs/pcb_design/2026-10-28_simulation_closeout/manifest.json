@@ -215,5 +215,8 @@
   ],
   "source_scope": "User GUI exports and saved models; 01_Current_RC/reports is the earlier assistant DLL run.",
   "hardware": "NOT_RUN",
-  "this_audit_simulation_execution": "NOT_PERFORMED"
+  "this_audit_simulation_execution": "NOT_PERFORMED",
+  "learning_date": "2026-10-28",
+  "closeout_date": "2026-10-29",
+  "hash_scope": "Filesystem snapshot SHA256; source/CAD/workbook/prior report bytes are also preserved in Git via Simulation/.gitattributes."
 }

@@ -96,7 +96,7 @@ for p in sorted(SIM.rglob("*")):
         continue
     files.append({"path": str(p.relative_to(PROJECT)), "bytes": p.stat().st_size,
                   "sha256": hashlib.sha256(p.read_bytes()).hexdigest()})
-write_json("manifest.json", {"date": "2026-10-28", "timezone": "Asia/Seoul", "files": files,
+write_json("manifest.json", {"learning_date": "2026-10-28", "closeout_date": "2026-10-29", "timezone": "Asia/Seoul", "files": files,
            "source_scope": "User GUI exports and saved models; 01_Current_RC/reports is the earlier assistant DLL run.",
            "hardware": "NOT_RUN", "this_audit_simulation_execution": "NOT_PERFORMED"})
 

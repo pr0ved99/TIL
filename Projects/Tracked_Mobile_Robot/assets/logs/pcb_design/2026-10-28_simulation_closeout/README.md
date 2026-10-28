@@ -21,3 +21,7 @@ AC CSV의 dB 출력과 이론식 차이는 모두0.000082dB 미만이었다. 전
 [학습 노트20](../../../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계 판단24](../../../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [10/29 마감](../../../../docs/progress/2026-10-29_progress.md).
 
 문서/게시 결과는 별도 publication.json에 기록한다. 원래 쉴드·MCU·실물 변경 및 새 시뮬레이션 실행은 없다. 다음은 전압 오차 예산·보정과 보호 조건이며, 완성 PCB나 전체 MVP의 합격을 뜻하지 않는다.
+
+## 외부 게시 확인
+
+[Notion 학습 노트](https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48)의18절·마지막절·원본그림5개와기존4페이지연결/속성을재조회했다. 기존Calendar시간/제목/알림/반복불변도확인했다. [publication.json](publication.json)에확인응답과내용커밋을저장한다. 노션게시원문은[notion_learning_payload.json](notion_learning_payload.json)이다.

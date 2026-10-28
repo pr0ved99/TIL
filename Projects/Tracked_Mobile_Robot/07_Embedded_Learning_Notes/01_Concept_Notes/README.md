@@ -2,6 +2,8 @@
 
 ## 최신 실습 — 10/28 학습·10/29 마감
 
+[Notion 상세 실습 노트](https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48). 학습18절·원본그래프5개와계산/관측값·다음작업을저장하고본문및기존목차/프로젝트/작업/기술목차연결을재조회했다.
+
 [20 KiCad 전류RC·NTC·전압 분압 실습](20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md)은18절로AC1V·dB·A0/상대−3dB·시정수/99%·온도별등가저항·VDD/VDDA·전원차단/다이오드·전압/전류/전력과실제확인값을연결한다. [설계 판단24](../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [마감](../../docs/progress/2026-10-29_progress.md). 기존2장은2-6,3장은3-4그대로이며별도실습노트다. 다음은전압오차예산·보호조건,아래이전학습재개안은당시이력이다.
 
 이 폴더는 보드 실습 전에 개념을 분해해서 이해하는 곳이다.
