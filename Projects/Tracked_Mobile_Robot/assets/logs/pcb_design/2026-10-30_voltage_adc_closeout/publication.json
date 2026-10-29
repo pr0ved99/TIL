@@ -1,0 +1,102 @@
+{
+  "closeout_date": "2026-10-30",
+  "scope": "Voltage ADC learning: tolerance, calibration, leakage, generic isolation and discharge",
+  "documentation": "Learning note 21, design review 25, raw log/transcription/source manifest/calculations",
+  "notion": [
+    {
+      "key": "hub",
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+      "content_chars": 24008,
+      "new_content_present": true,
+      "learning_link": true,
+      "in_progress": null,
+      "verification": null,
+      "evidence_link": null,
+      "summary": null
+    },
+    {
+      "key": "project",
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "content_chars": 25226,
+      "new_content_present": true,
+      "learning_link": true,
+      "in_progress": "진행 중",
+      "verification": null,
+      "evidence_link": null,
+      "summary": "10/30 전압 ADC 공차·보정·누설·스위치 ON/OFF·VDDA 연동·100pF 방전 학습 마감. 100pF는 학습용 가정, 실제 보호 미검증. 다음 입력용량/차단지연 근거·±0.10V 예산. 실제쉴드/MCU/실물 미변경, 진행 중."
+    },
+    {
+      "key": "task",
+      "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+      "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6?pvs=204",
+      "content_chars": 15563,
+      "new_content_present": true,
+      "learning_link": true,
+      "in_progress": "진행 중",
+      "verification": "해당 없음",
+      "evidence_link": "https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/progress/2026-10-30_progress.md",
+      "summary": null
+    },
+    {
+      "key": "tech",
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+      "content_chars": 13163,
+      "new_content_present": true,
+      "learning_link": true,
+      "in_progress": null,
+      "verification": null,
+      "evidence_link": null,
+      "summary": null
+    },
+    {
+      "key": "learning",
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+      "content_chars": 11259,
+      "new_content_present": true,
+      "learning_link": true,
+      "in_progress": null,
+      "verification": null,
+      "evidence_link": null,
+      "summary": null,
+      "sections": 18
+    }
+  ],
+  "calendar": {
+    "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0",
+    "id": "19bnchnobsa7j46druji2ndgk8",
+    "preserved": {
+      "id": true,
+      "summary": true,
+      "start": true,
+      "end": true,
+      "reminders": true,
+      "recurrence": true,
+      "attendees": true,
+      "status": true,
+      "transparency": true
+    },
+    "old_description_preserved": true,
+    "new_marker": true,
+    "start": "2026-10-25T14:30:00+09:00",
+    "end": "2026-10-25T15:30:00+09:00"
+  },
+  "simulation_run_by_assistant_during_closeout": false,
+  "hardware_or_firmware_build_flash": false,
+  "git": {
+    "status": "CONTENT_COMMIT_PUSHED_AND_REMOTE_VERIFIED",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "65fa50b140a14045a5bf35e6283b4189674d27a1",
+    "remote_verified_commit": "65fa50b140a14045a5bf35e6283b4189674d27a1",
+    "repository": "https://github.com/pr0ved99/TIL",
+    "receipt_commit": "This publication file is committed separately after content verification; final HEAD verified during closeout."
+  },
+  "validation": {
+    "local_checks": "closeout_checks.json",
+    "user_source_git_byte_mismatches": [],
+    "raw_log_git_bytes_match_attachment": true
+  }
+}
