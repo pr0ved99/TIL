@@ -1,5 +1,17 @@
 # Electrical Design
 
+## 현재 설계 위치 — 2026-10-30
+
+전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
+
+03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
+
+100pF·1V/ms·3V 무지연 감시는 학습용 가정이다. τ4.7µs/99%21.6443µs는 계산값이고 두 커서 전압은 미보고다. 실제 보호 성능·ADC 정확도·실물은 미검증이며 제작 쉴드/MCU/구매 변경과 새 시뮬레이션 실행은 없다. 기존 MVP PARTIAL/OPEN·AI/배치 후속을 유지한다.
+
+[학습21](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](../09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](../docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+
+아래날짜별다음작업은당시이력이다.
+
 ## 전류·온도 시험 설계 기준 — 2026-10-27
 
 Notion: [전류 검증 명세](https://app.notion.com/p/406a7326f87b81649afdd1dfbc89011b) · [온도 검증 명세](https://app.notion.com/p/406a7326f87b816ba990dbd4d476a46d). 두 본문을 재조회했고 기존 학습 시작점에 연결했다.

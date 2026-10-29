@@ -1,0 +1,16 @@
+{
+  "preserved_initial_files": 49,
+  "preservation_mismatches": [],
+  "new_broken_local_links": [],
+  "preexisting_missing_link_count": 0,
+  "saved_schematics": 11,
+  "json_and_markdown_fences": "PASS",
+  "final_model_connections": "PASS",
+  "workbook_TRAN_command": "PASS",
+  "raw_user_log_rows": 701,
+  "simulation_execution": false,
+  "whitespace_check": {
+    "authored_and_CAD": "PASS with cr-at-eol for preserved KiCad CRLF",
+    "verbatim_exports": "CLI netlists and user log preserve original whitespace; excluded from whitespace lint"
+  }
+}

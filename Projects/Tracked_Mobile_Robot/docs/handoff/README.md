@@ -1,10 +1,12 @@
 # Handoff Notes
 
-## 현재 재개점 — 2026-10-29 시뮬레이션 실습 마감
+## 현재 재개점 — 2026-10-30 전압 ADC 학습 마감
 
-전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다.
+전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
 
-다음은 **전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토**다. [현재 인수인계](CURRENT_SESSION_CONTEXT.md) · [다음 프롬프트](NEXT_SESSION_START_PROMPT.md) · [10/29 마감](../progress/2026-10-29_progress.md). 사용자직접회로작성/GUI실행을유지하며완료실습을자동반복하지않는다. 아래내용은당시이력이다.
+03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
+
+[현재 인수인계](CURRENT_SESSION_CONTEXT.md) · [다음 프롬프트](NEXT_SESSION_START_PROMPT.md) · [10/30 마감](../progress/2026-10-30_progress.md). 100pF는학습용가정·실제보호미검증, 아래는당시이력이다.
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 
@@ -45,7 +47,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 사용자 RC/NTC/전압 GUI 실습 마감, 다음 전압 오차 예산·보호 조건 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 전압 ADC 차단·방전 마감, 다음 실제 입력용량/지연 근거 |
 | 2026-10-17 | [최신 진행 기록](../progress/2026-10-17_progress.md) / [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) | AC-S01~08 선택 zero-only 마감·Git/Notion 최신화·미해결 관측 |
 | 2026-10-16 | [진행 기록](../progress/2026-10-16_progress.md) / [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md) | UART 줄 취소·부분 CMD/ARM 실물 검증과 mode0 복원 이력 |
 | 2026-10-15 | [실물 기록](../progress/2026-10-15_progress.md) / [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md) | zero-only 정지·리셋·S0·두 연결·UART 단절 기능과 AC-S 미완료 조건 |

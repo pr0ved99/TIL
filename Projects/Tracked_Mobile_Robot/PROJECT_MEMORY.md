@@ -2,15 +2,15 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-29 (October 28 user KiCad simulation learning closeout).
+Last updated: 2026-10-30 (voltage ADC tolerance, isolation and discharge learning closeout).
 
-## Current Checkpoint — 2026-10-29 simulation learning closeout
+## Current Checkpoint — 2026-10-30 voltage ADC
 
-- 전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다.
-- [학습20](07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md)와[설계24](09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md),[10/29진행](docs/progress/2026-10-29_progress.md)에원본/계산/미결을분리했다. 저장CSV와해석식대조완료,마감중새시뮬레이션실행없음.
-- 다음은 **전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토**다. 전압±1%저항최악조합의명목환산오차약±0.27V가능,±0.10V목표미달성/보정검토필요.
-- 사용자직접회로작성/GUI실행을유지한다. Codex의초반직접DLL실행은이전별도이력이다. 완료실습을자동반복하거나사용자회로를재생성하지않는다.
-- 기존쉴드CAD/BOM·MCU·실물·구매변경없음, AI문서후속·기구배치후속·MVP기존진행중/PARTIAL/OPEN유지. 아래날짜별다음작업은당시이력이다.
+- 전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
+- 03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
+- 100pF·1V/ms·3V 무지연 감시는 학습용 가정이다. τ4.7µs/99%21.6443µs는 계산값이고 두 커서 전압은 미보고다. 실제 보호 성능·ADC 정확도·실물은 미검증이며 제작 쉴드/MCU/구매 변경과 새 시뮬레이션 실행은 없다. 기존 MVP PARTIAL/OPEN·AI/배치 후속을 유지한다.
+- [학습21](07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+- 재개파일03_09에B1/V3/C2저장. 중간파일이름/값불일치는실습README를따르며원본보존. 사용자GUI실행을유지하고완료실습을자동반복하지않는다. 아래날짜별다음작업은당시이력이다.
 
 ## Previous Checkpoint — 2026-10-28 monitoring verification design
 

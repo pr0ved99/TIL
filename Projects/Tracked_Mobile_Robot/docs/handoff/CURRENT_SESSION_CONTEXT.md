@@ -1,17 +1,18 @@
 # Current Session Context
 
-Last updated: **2026-10-29 — 10/28 사용자 KiCad 실습 마감, 다음 전압 오차 예산·보호 조건**.
+Last updated: **2026-10-30 — 전압 ADC 공차·보정·차단·방전 학습 마감**.
 
-## 현재 재개점 — 사용자 KiCad 실습 완료
+## 현재 재개점
 
-- **완료:** 전류12k/100nF의AC·계단1τ/99%, NTC25/50°C상당OP·AC, 전압12k+12k/4.7k의12.6/16V OP·분압노드100nF/이후1k 추가·AC를 사용자가GUI에서확인했다. 전압fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, PNG/CSV저장완료.
-- **자료:** [학습 노트20](../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계 판단24](../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [원본/검사](../../assets/logs/pcb_design/2026-10-28_simulation_closeout/README.md) · [10/29 마감](../progress/2026-10-29_progress.md).
-- **설계 판단:** NTC두채널만CN7-5 MCU VDD공급기본안·10k/1k/100nF유지·추가다이오드선정보류. 실제쉴드는CN7-16 STM_3V3초안그대로이며전원하강/단선/ADC허용조건미결이다. ADC기준은정확히VDDA다.
-- **다음 첫 작업:** 전압±0.10V의저항공차·보정·VDDA·ADC/보호누설·온도오차예산. 이후정상/고장/MCU OFF보호조건과실제쉴드전압2채널/NTC공급변경을검토한다. ±1%저항만으로목표달성했다고하지않는다.
-- **학습 방식:** 사용자회로작성·GUI실행, Codex가이드/읽기검토/계산/문서화. 이전Codex DLL실행은01_Current_RC/reports의별도이력이다. 새시뮬레이션자동실행·사용자회로재생성·완료실습반복을하지않는다. 전압TRAN·NTC열응답·실제ADC/센서정확도·실물은미실행이다.
-- **보존:** 실제제작쉴드CAD/BOM·MCU·실물·구매변경없음. AI문서후속·IMU기존위치·배치후속·MVP기존진행중/PARTIAL/OPEN유지. 이번다섯항목게시상태는10/29마감영수증을따른다. 아래날짜별다음/NOT_RUN표기는각당시이력이다.
-
-- **마감 게시:** [Notion 학습18절](https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48)·기존프로젝트/작업/목차·Calendar설명갱신을재조회했다. 내용커밋1aadd3e3원격일치확인,후속영수증은publication.json을따른다.
+- **완료 범위:** 전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
+- **근거:** [학습21](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](../../09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](../../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](../../docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+- **다음 첫 작업:** 03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
+- **모델/측정 구분:** 100pF·1V/ms·3V 무지연 감시는 학습용 가정이다. τ4.7µs/99%21.6443µs는 계산값이고 두 커서 전압은 미보고다. 실제 보호 성능·ADC 정확도·실물은 미검증이며 제작 쉴드/MCU/구매 변경과 새 시뮬레이션 실행은 없다. 기존 MVP PARTIAL/OPEN·AI/배치 후속을 유지한다.
+- **열 파일:** `09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_09_Voltage_ADC_Discharge_TRAN.kicad_sch`. B1·V3·100pF C2가 저장되어 있다. `03_08`은 V2고정, `03_07`은V3가 없는 중간 저장본이다. 공차 파일도 이름/값 불일치가 있어 README의 실제값을 따른다.
+- **설정:** 공통 `03_Voltage_Divider.wbk`에 `.tran 100n 10.35m 10.28m 100n`과VADC커서10.3047/10.32164ms가 저장되어 있다. 전압값 보고는 없으며 과거AC탭은 변경된 보호 회로 성능 근거가 아니다.
+- **이전 기본 실습:** 전류RC·NTC·전압OP/AC와 이전PNG/CSV는 완료 범위를 유지한다. NTC만CN7-5 MCU VDD 공급 기본안이며 실제쉴드는CN7-16초안 그대로다. ADC 기준은VDDA다.
+- **학습 방식:** 사용자가 회로 작성·GUI 실행. Codex는 가이드/읽기검토/계산/문서화. 완료 시험 반복·독자 시뮬레이션·회로 재생성을 하지 않는다. S1 배선의 이전 명시 위임은 해당 범위에만 적용한다.
+- **정리/게시:** 학습 Notion과 기존 진행 항목을 갱신하고 Calendar 시간은 보존한다. Git/외부 게시의 실제 결과는 이번 `publication.json`을 따른다. 아래 날짜별 다음/NOT_RUN은 당시 이력이다.
 
 ## 이전 재개점 — 추가 GUI 실습 전 이력
 

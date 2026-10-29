@@ -1258,6 +1258,16 @@
 				(justify left)
 			)
 		)
+		(property "Sim.Params" "ac=1 ph=0"
+			(at 31.75 69.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "2"
 			(uuid "ab51ed65-4758-4631-bd34-74c847778ebf")
 		)

@@ -1,14 +1,14 @@
 # 실행 계획
 
-**현재 위치 · 2026-10-29:** 전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다. [학습20](../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계24](../../09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [실습 원본](../../09_Electrical_Design/KiCAD/Simulation/README.md). 원래쉴드/MCU/실물은변경하지않았다.
+**현재 위치 · 2026-10-30:** 전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다. [학습21](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](../../09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](../../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](../../docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
 
 **AI 후속 계획 · 문서화만:** [노트북 AI 확장 계획](2026-10-27_Laptop_AI_Integration_Plan_ko.md). 보유 GPU로 단일 대상 인식·방향 판단을 PC에서 먼저 검증하고, 이후 ESP 명령 계약/카메라/실제 구동 통합을 검토한다. 모델·설정·시험 기준은 후속 시작값, 구현/추론 NOT_RUN이다. 사용자의 최신 요청에 따라 현재 작업 순서는 아래 PCB 재개점으로 유지한다.
 
-**다음:** 전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토 순서로 이어간다. 사용자회로작성·GUI실행을유지한다. 전압TRAN은필요성판단후추가하며완료기본실습·3-1학습을자동반복하지않는다.
+**다음:** 03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다. 100pF/1V/ms는학습용가정,실제보호미검증. 완료기본실습자동반복없음.
 
 **기존 완료/경계:** 149초 통합 시연 제작·검증 완료, 전체 MVP는 기존 PARTIAL/OPEN 유지. 센서 구현을 MVP 선행으로 추가하지 않으며 완료 시험·촬영·후속 제외 조사를 자동 반복하지 않는다.
 
-**최신 마감:** [10/29 사용자 실습 정리](../progress/2026-10-29_progress.md). **이전 기록:** [10/28 마감 및 이후 새 작업](../progress/2026-10-28_progress.md), [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md)을 따른다. 각 마감의 실제 게시 상태는 해당 영수증을 따른다. 아래 날짜별 계획은 이력이다.
+**최신 마감:** [10/30 전압 ADC 정리](../progress/2026-10-30_progress.md). 실제 게시 결과는 해당 영수증을 따른다. 아래 날짜별 계획은 이력이다.
 
 ## 10/19 시작점 — 당시 이력
 

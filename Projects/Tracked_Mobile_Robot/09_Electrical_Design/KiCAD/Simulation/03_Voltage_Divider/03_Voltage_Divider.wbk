@@ -35,20 +35,70 @@
           "color": "rgb(228, 26, 28)",
           "cursor1": {
             "position": 1.0,
-            "x_format": "6~Hz",
-            "y_format": "6~dB"
+            "x_format": "6~s",
+            "y_format": "6~V"
           },
           "cursor2": {
             "position": 404.942098,
-            "x_format": "6~Hz",
-            "y_format": "6~dB"
+            "x_format": "6~s",
+            "y_format": "6~V"
           },
           "cursorD": {
-            "x_format": "6~Hz",
-            "y_format": "6~dB"
+            "x_format": "6~s",
+            "y_format": "6~V"
           },
           "signal": "V(/VADC) (게인)",
           "trace_type": 521
+        }
+      ]
+    },
+    {
+      "analysis": "TRAN",
+      "commands": [
+        ".tran 100n 10.35m 10.28m 100n",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": true,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(55, 126, 184)",
+          "cursor1": {
+            "position": 0.0103047,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursor2": {
+            "position": 0.01032164,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VADC)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(77, 175, 74)",
+          "signal": "V(/VCTRL)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(228, 26, 28)",
+          "signal": "V(/VDDA)",
+          "trace_type": 257
         }
       ]
     }
