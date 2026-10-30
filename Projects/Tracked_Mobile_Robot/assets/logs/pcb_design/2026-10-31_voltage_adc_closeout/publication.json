@@ -93,7 +93,14 @@
   },
   "git": {
     "branch": "agent/dual-encoder-bringup",
-    "status": "pending_scoped_commit_push_verification"
+    "status": "content_committed_pushed_and_remote_verified",
+    "content_commit": "879792a9cd484a33f3b1349e23a1350554c4f9ae",
+    "remote_head_verified": "879792a9cd484a33f3b1349e23a1350554c4f9ae",
+    "selected_file_count": 35,
+    "unrelated_initial_files_remaining": 19,
+    "initial_file_hashes_rechecked": 30,
+    "preservation_mismatches": [],
+    "receipt_storage": "Follow-up receipt commit; self hash is intentionally not embedded."
   },
   "remaining": [
     "실제 Nucleo VDDA/VDD 취출 경로",
@@ -101,5 +108,13 @@
     "중간 저전압/MCU 무전원 입력/정착 및 실측 조건",
     "전체 ±0.10V 오차 예산",
     "제작 회로도/ERC·실물 보호 검증"
-  ]
+  ],
+  "closeout_status": {
+    "documentation": "complete",
+    "progress_handoff": "complete",
+    "git_content_publish": "complete",
+    "calendar": "complete_readback",
+    "notion": "complete_readback",
+    "project_work": "IN_PROGRESS / PARTIAL / OPEN"
+  }
 }
