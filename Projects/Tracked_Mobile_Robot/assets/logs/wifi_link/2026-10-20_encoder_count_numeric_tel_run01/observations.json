@@ -1,0 +1,96 @@
+{
+  "scope": "Stationary STM-to-ESP TEL parsing after manual int64 formatter fix",
+  "input_sha256": "5b25ab719cd8aec06692f284a4e701f4cc38127d7b363f32ebfac8efcef62b13",
+  "esp_boot_id": 1794076624,
+  "startup_ready": true,
+  "complete_post_boot_tel_accepted": 105,
+  "sequence_range": [
+    1,
+    105
+  ],
+  "stm_t_ms_range": [
+    3600,
+    14100
+  ],
+  "tel_rejected": 0,
+  "state": "FAULT",
+  "reason": "ESTOP_ACTIVE",
+  "all_pwm_cps_drop_err_zero": true,
+  "pre_boot_partial_line": "Excluded truncated TEL #305 concatenated with ESP-ROM boot banner; not a separate reason EESP",
+  "stm_elf_sha256": "683e785fbc281500d72d699b093ff69296914bc2fec22dc5e97e9561a8ebe766",
+  "stm_elf_count_format": "%s/%s",
+  "result": "PASS: current capture contains accepted TEL through strict20-field ESP parser, no rejections",
+  "limits": [
+    "Only zero counts observed in this physical capture; nonzero values/sign/ARM interval transition not physically verified",
+    "No distance conversion or new driving validation",
+    "Current state remains FAULT/ESTOP_ACTIVE; control phase not provided"
+  ],
+  "next": "Install existing v5 count observer while DISARMED/IDLE; nonzero counts and ARM interval validation remain pending.",
+  "browser_evidence": {
+    "file": "browser_snapshot.json",
+    "origin": "User pasted latestTel snapshot",
+    "same_esp_boot": true,
+    "tel_count": 1098,
+    "sample_age_at_tel_creation_ms": 76,
+    "stm_age_at_esp_status_ms": 72,
+    "count_types": "decimal strings",
+    "encoder_valid": true,
+    "encoder_arm_valid": false,
+    "result": "PASS: stationary zero-count metadata reaches browser; ARM interval not established"
+  },
+  "power_context_correction": {
+    "source": "User clarification after browser/offer snapshot",
+    "during_prior_capture": {
+      "lipo": "disconnected",
+      "S0": "already released"
+    },
+    "latest_report": {
+      "lipo": "connected",
+      "S1": "ON",
+      "S0": "released",
+      "S2": "not reported"
+    },
+    "offer": {
+      "boot_id": 1794076624,
+      "session_id": 1,
+      "phase": "IDLE",
+      "owner_session": 0,
+      "control_reason": 0
+    },
+    "interpretation": "ESTOP_ACTIVE is the sense-input state; does not establish physical S0 lock state."
+  },
+  "recovery": {
+    "source": "User pasted TEL snapshots and power clarification",
+    "after_lipo_connect_S1_ON": {
+      "stm_t_ms": 459900,
+      "state": "FAULT",
+      "reason": "ESTOP_LATCHED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    "intermediate_snapshot": {
+      "stm_t_ms": 560400,
+      "last_seq": 525914432,
+      "interpretation": "No STM tick reset reflected"
+    },
+    "after_actual_stm_reset": {
+      "file": "browser_after_stm_reset.json",
+      "same_esp_boot_id": 1794076624,
+      "stm_t_ms": 3000,
+      "last_seq": 0,
+      "state": "DISARMED",
+      "reason": "BOOT",
+      "counts": [
+        "0",
+        "0"
+      ],
+      "encoder_valid": true,
+      "encoder_arm_valid": false,
+      "all_pwm_cps_drop_err_zero": true
+    },
+    "S2": "No operation reported; do not infer motor power readiness",
+    "result": "PASS: STM restart and DISARMED stationary recovery; browser reset metadata reaches receiver"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "mode": "CANDIDATE",
+  "scope": "Run candidate/saved STM timing C with a simulated UART, encoder and PWM.",
+  "checks": [
+    "PASS UART -> mapper -> motor: straight +144/+150 and -140/-150; rounding at partial/low input; pure-turn200, mixed150 and zero",
+    "PASS 300ms timeout, no CMD-only rearm, DISARM and ESTOP stop at turn200",
+    "PASS mapper cap201 rejected; signed +/-201 and raw201 stop both outputs",
+    "PASS snapshot: 16/32-bit wrap, reverse, no CPS-window mutation, null/overflow rejection",
+    "PASS main sampling: count every5ms, CPS every100ms, TIM3 sign, invalid normalization, no USB wait",
+    "PASS ARM/re-ARM: wait for post-ARM5ms snapshot, preserve accumulated counts and numeric TEL contract",
+    "PASS async TX: frame buffer lifetime, wrong-UART callback, FIFO ACK priority, latest pending TEL",
+    "PASS critical queue overflow: stop and latch rearm refusal; active memory remains intact",
+    "PASS TX missing completion: deadline100ms stops and latches",
+    "PASS HAL TX ERROR/BUSY: immediate latched stop",
+    "PASS command timeout and E-stop enforced while wire transfer is active; E-stop reason preserved",
+    "PASS old pending TEL discarded; RX processing bounded64bytes per poll; no runtime blocking TX",
+    "PASS timing candidate: synthetic PC execution only, no MCU build or motion"
+  ],
+  "production_sources_unchanged_by_runner": true,
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "inputs": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "dd38258c1beacb549e3c17535e11875a63379af98341e08ff867d20568ec5069",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "dc25187ea6710e3196453967e869fe2e231fa7aa4b68cbf63b6be72f3fc85eea",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\drive_command_mapper.c": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\motor_output.c": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\encoder_speed.c": "bd3fad78f551eb87c3cf434ab20e65b2950a011f802f34dea7112ce1dfad9a70",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\encoder_speed.h": "25e6907068abf94109b0dec49ccb258bc6a9ecf7806c6614a294a01e3634e3e7",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "126152c108993fd68f5bf2ad3b8d231a31c7b347b373c901f56f01bc7d2da6c0",
+    "03_Firmware\\tests\\distance_timing_candidate.py": "9c962fcce0a3118ca5460d6a7ecf85bb91daa54e43af748927cec894165a71c9",
+    "03_Firmware\\tests\\drive_output_profile_host_fixture.c": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b",
+    "03_Firmware\\tests\\distance_timing_guide_intro_ko.md": "86ac3953213fbf5b95e6aff0198d951cfd7a0059d015238c0c66a0122978a92d",
+    "03_Firmware\\tests\\distance_timing_host_fixture.c": "dd494197e5ba6d0e990faae84828715b64fb88ac9ca81977f3ccc8edaa179ffd",
+    "03_Firmware\\tests\\test_distance_timing_candidate.py": "f1b0381da4551e25ec69c5b49c6ab42fe7fc62600ad93c668ad601f61d4f632d"
+  },
+  "candidate_hashes": {
+    "Inc\\encoder_speed.h": "6ddb104e8cf273ae06931881bf3043a3a07128be34bd97c25f83968a765f6064",
+    "Src\\encoder_speed.c": "80cdad7fdd6ff2c8cbf3d1b53b176692d33767e33a8fd6081ffb7d0b27df93cb",
+    "Src\\main.c": "9fa2b85f57b7b84cd01f1d2e3f48bd6ba3b850373e6fbefa55448bcc2bf7e070",
+    "Inc\\uart_mvp_protocol.h": "0d08313764869c88e81551fc674e36658a70867e24de877a2defd3f8dd501212",
+    "Src\\uart_mvp_protocol.c": "789d7cf05cf769f850f4e9b1c686f01e175cb2806b3a1a39e0ea5d5cb061531f"
+  },
+  "limitations": [
+    "Host mock does not prove ISR latency, throughput or electrical behavior",
+    "Actual distance command, PWM gating and ESP UI remain to be integrated",
+    "Old blocking host fixtures need an asynchronous HAL adapter for this path"
+  ]
+}

@@ -1,5 +1,8 @@
 # 시스템 아키텍처 로드맵: CAN, RTOS, LL Driver
 
+> 문서 역할·상태 대조: **2026-09-30** — 단계별 목표와 진입 조건. 현재 실행 순서는 최신 master plan과 인수인계를 따른다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 다음 세 가지 필수 학습 목표를 기준으로 프로젝트 아키텍처 로드맵을 갱신한다.
@@ -20,6 +23,9 @@
 
 ```text
 HAL bare-metal drivetrain
+-> external thermal observation and final drive acceptance (MVP)
+-> BNO08x basic bring-up and encoder comparison (first post-MVP)
+-> current/voltage monitoring (separate post-MVP milestone)
 -> FreeRTOS task architecture
 -> CAN standalone validation
 -> CAN command/telemetry integration
@@ -33,6 +39,12 @@ HAL bare-metal drivetrain
 - FreeRTOS는 firmware에 여러 periodic job이 생긴 뒤 가치가 커진다.
 - CAN은 command와 telemetry model이 명확해진 뒤 적용하는 편이 안전하다.
 - LL Driver 전환은 비교할 수 있는 HAL baseline이 있어야 의미가 있다.
+
+### 2026-10-19 실행 순서 보완
+
+현재 MVP는 기본 주행/정지·엔코더 거리와 GM-1312 외부 온도 관측이다. 정량 전류 측정과 전류/전압 ADC→브라우저 기능은 별도 post-MVP로 재분류했다. [최신 종료선](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)과 [검증 기준](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)을 따른다. ADC 구현은 외부 온도 관측이나 기존 구동 인수의 선행 조건이 아니다.
+
+MVP 다음 첫 확장은 **보유 BNO08x의 정지 상태 통신·센서 식별·축/부호·샘플 시각 검증**이다. 그 뒤 짧은 주행에서 encoder와 IMU 각속도/자세 변화를 비교하고, 제어 보정이나 FreeRTOS task 통합 여부를 정한다. 현재 헤더/I2C 보조 배선 기록은 센서 동작 완료를 뜻하지 않는다. PID·센서 융합·자동 보정을 이 첫 bring-up의 완료 조건으로 묶지 않는다. 아래 기존 phase는 장기 구조를 설명하며 최신 실행 순서는 이 문단을 우선한다.
 
 ### 2026-06-08 최신 반영
 
@@ -316,7 +328,25 @@ PC USB/UART command
 | Odometry | Straight-line and turn test record |
 | Architecture | Block diagram, interface contract, decision record |
 
-## 6. Current Position
+## 6. 현재 단계와 다음 작업
+
+2026-09-30 기준 핀 설정·영구 신호 배선·로직 전원·UART mapper/timeout·T004 및 제한 단일 모터 관측까지 진행했다.
+각 완료 범위와 남은 조건은 [현재 구현 요약](README.md#현재-구현과-검증-범위)과 [전체 실행 계획](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)을 따른다.
+
+1. 장비 재개: 현재 이미지와 선행 조건을 확인하고 A/M1 양수 명령의 실제 전진 방향을 보완한다.
+2. 전체 T005A 수용 조건, active DISARM·구동 중 S0·전류/열/노이즈 등 단일 모터 잔여 시험을 정리한다.
+3. 첫 주행 전 기본 저전압 경고·정지, 기구 장착·하네스와 양쪽 매핑을 준비한다.
+4. CAN·STM32 FreeRTOS·선택적 LL은 기존 진입 조건을 충족한 뒤 진행한다. 보유 MCU-230 모듈은 CAN 통합 완료가 아니다.
+5. 2층 확장·ADC/CAN 층간 연결은 현재 배치 제안이다. 실제 부품·높이·전원·보호 검토 없이 확정 회로로 취급하지 않는다.
+
+실행 순서는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)와 최신 재개 계획을 따른다.
+
+<details>
+<summary>초기 로드맵 작성 당시 진행 위치와 다음 행동</summary>
+
+현재 실행 지시가 아닌 당시 계획이다.
+
+### 초기 Current Position 기록
 
 현재 상태:
 
@@ -339,6 +369,8 @@ PC USB/UART command
 5. UART command/telemetry와 timeout stop을 먼저 검증한다.
 6. CAN transceiver와 USB-CAN adapter 후보는 drivetrain baseline 이후 확정한다.
 7. FreeRTOS는 bare-metal baseline 증거가 생긴 뒤 task 구조로 전환한다.
+
+</details>
 
 ## Final Roadmap Decision
 

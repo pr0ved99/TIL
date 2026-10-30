@@ -1,5 +1,19 @@
 # CAN Bus Integration Plan
 
+> 문서 역할·상태 대조: **2026-09-30** — 후속 CAN 통합 계약·frame 정의. PA11/PA12 예약과 모듈 보유는 실제 통신 검증이 아니다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
+
+## 2026-10-23 목표 구성 채택
+
+사용자가 STM32 센서/구동 집중 + ESP32 무선 게이트웨이 + 두 MCU 사이 CAN + 개발용 CANable 관측 구성을 채택했다. 별도 센서 MCU는 추가하지 않는다. STM32가 전류2·온도2·전압2채널과 기존 IMU/엔코더를 처리하고 최종 출력/안전 판단을 유지한다. ESP32는 Wi-Fi와 CAN 사이의 명령/상태 게이트웨이다.
+
+각 MCU에 별도 CAN 트랜시버가 필요하다. STM 측은 보유 MCU-230 활용을 검토하고 ESP 측은 별도 트랜시버를 확보한다. 두 트랜시버는 공통 버스 하나의 노드이며, CANable은 개발 시 같은 버스의 관측/시험 노드다. 평상시 무선 운용에는 CANable을 분리할 수 있다.
+
+기존 UART는 검증 기준으로 유지하고 CAN 상태 송수신 → 명령/단절/오류·복구 검증 → 제어 입력 전환 순서로 구현한다. PC 시험 명령과 ESP 명령, UART/CAN의 동시 제어권을 자동 허용하지 않는다. 이 채택은 후속 목표이며 기존 MVP의 새 선행 조건·펌웨어 변경·CAN 시험 완료가 아니다.
+
+[현재 PCB 전체 구성](../09_Electrical_Design/16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md)의 전원/핀/커넥터 검토를 따른다. [CAN 핀·커넥터 초안](../09_Electrical_Design/19_CAN_GPIO_and_Connector_Contract_2026-10-23_ko.md)은 ESP GPIO4 TX/GPIO5 RX·ESP 가까운 트랜시버·전원/논리/버스 분리와 끝점 종단을 제안한다. 이 후보는 사용자 확정·실물/펌웨어 검증 전이며 두 노드의 전원 여유·무전원 보호·절연·기구 위치는 미확정이다. 아래 초기 PC–STM 두 노드 시험과 ESP 추가 여부 보류 항목은 당시 계획이며 현재 목표 구성은 이 절을 우선한다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트에 CAN을 어떻게 도입할지 정의한다.
@@ -122,13 +136,17 @@ CAN debugging이 기본 drivetrain, encoder, power, safety 문제를 가리면 �
 
 ## 4. 필요한 Hardware
 
+**2026-10-22 사용자 보유 갱신:** `CANable V2.0 Pro CANbus 트랜시버 CAN2.0 USBCAN`이 집에 있다고 확인됐다. PC 측 USB-CAN 어댑터는 새로 구매하지 않는다. 제조사/PCB·펌웨어·실제 USB 모드·절연/종단은 미확인이다. 상품명의Pro/2.0만으로 공식 특정 보드·CAN FD·PCAN/SocketCAN 호환을 확정하지 않는다. [CANable 공식 안내](https://www.canable.io/getting-started.html)의slcan/candleLight 경로는 실제 설치 펌웨어와 대조 후 선택한다. STM측 MCU-230은 기존 보유이며CAN1 PA11/PA12 예약/STM최종 제어 권한은 유지한다. 이번 보고는 소유 확인이며 연결/통신 PASS나CAN 실습 시작이 아니다.
+
+2026-09-30 보유 정보: 사용자는 SN65HVD230 기반 MCU-230 모듈을 보유한다. PA11/PA12 예약을 유지하며 실제 단자·전원·RS·종단과 통신은 미검증이다. USB-CAN 장치의 선정·확인은 별도다.
+
 Required hardware:
 
 | Item | Purpose | Notes |
 | --- | --- | --- |
 | STM32 NUCLEO-F446RE | CAN controller | 내부 bxCAN peripheral 사용 |
 | CAN transceiver module | STM32 logic CAN RX/TX를 CANH/CANL로 변환 | 초기 STM32 test에는 3.3 V-compatible transceiver 권장 |
-| USB-CAN adapter | PC-side CAN node와 debugger | Ubuntu에서는 SocketCAN-compatible adapter가 편리 |
+| USB-CAN adapter | PC-side CAN node와 debugger | CANable V2.0 Pro 사용자 보유 확인10/22. 실제 firmware/USB mode·host 도구·종단/통신 검증 필요, 중복 구매 제외 |
 | 120 ohm resistors | Bus termination | 물리적 bus 양 끝에 하나씩 |
 | Twisted pair wire | CANH/CANL bus wiring | 첫 bench test는 짧은 배선도 가능 |
 | Common ground wire | Node 사이 기준 전위 | Bench prototype에서는 권장 |
@@ -536,9 +554,13 @@ Minimum acceptance evidence:
 
 ## 15. Later Finalization Items
 
+2026-09-15 사용자 확인으로 **SN65HVD230 기반 MCU-230 CAN 트랜시버 모듈 보유·모델 식별**은 완료됐다.
+[부품 목록](../00_Project_Charter/02_Component_Inventory.md)과 [핀 배정](06_MCU_Pin_Allocation_Candidate_ko.md)의
+CAN1 RX=PA11/TX=PA12 예약을 따른다. 모듈 보유는 실제 CAN 배선·통신 시험 완료를 뜻하지 않는다.
+
 나중에 확정할 항목:
 
-- 정확한 CAN transceiver module
+- 보유 MCU-230 모듈의 실제 단자 순서, RS 연결, 내장 종단저항 유무·설정과 실장 치수
 - 정확한 USB-CAN adapter
 - Wiring test 이후 final bitrate
 - CAN을 FreeRTOS 이전에 통합할지 이후에 통합할지

@@ -1,0 +1,183 @@
+{
+  "test": "UNEXPECTED_STOP_15PCT_WS50_run01",
+  "user_report": "No unexpected stop in this trial.",
+  "capture": {
+    "samplerate_hz": 4000000.0,
+    "duration_s": 35.958272,
+    "sha256": "66c736a10fa2376fd7d20118d8bdf86ca6ab9e7d25a46bd976033b99f96992ff"
+  },
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 247,
+    "DISARM": 1
+  },
+  "ack_count": 249,
+  "ordered_ack_match": true,
+  "groups": [
+    {
+      "key": [
+        "ARM",
+        null,
+        null
+      ],
+      "start_s": 2.087346,
+      "count": 1,
+      "end_s": 2.0889083055555555
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "start_s": 2.16848025,
+      "count": 19,
+      "end_s": 4.112111805555555
+    },
+    {
+      "key": [
+        "CMD",
+        "100",
+        "0"
+      ],
+      "start_s": 4.20742075,
+      "count": 55,
+      "end_s": 10.163478805555556
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "start_s": 10.317708,
+      "count": 7,
+      "end_s": 11.102336055555556
+    },
+    {
+      "key": [
+        "CMD",
+        "-100",
+        "0"
+      ],
+      "start_s": 11.21756175,
+      "count": 51,
+      "end_s": 16.866281555555556
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "start_s": 17.01782725,
+      "count": 6,
+      "end_s": 17.622273055555556
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "500"
+      ],
+      "start_s": 17.787659,
+      "count": 32,
+      "end_s": 21.193485055555556
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "start_s": 21.3076215,
+      "count": 6,
+      "end_s": 21.872323055555555
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "-500"
+      ],
+      "start_s": 21.9676365,
+      "count": 38,
+      "end_s": 26.012644555555557
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "start_s": 26.1677255,
+      "count": 33,
+      "end_s": 29.746813055555556
+    },
+    {
+      "key": [
+        "DISARM",
+        null,
+        null
+      ],
+      "start_s": 29.83931725,
+      "count": 1,
+      "end_s": 29.841140055555556
+    }
+  ],
+  "pwm_pairs": {
+    "['0', '0']": 163,
+    "['150', '150']": 61,
+    "['-150', '-150']": 59,
+    "['-150', '150']": 35,
+    "['150', '-150']": 42
+  },
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "no_fault_drop_err": true,
+  "browser_captured": null,
+  "browser_active_stop_count": 0,
+  "retained_browser_moving_tel_count": 0,
+  "retained_browser_stats": {
+    "gap_ms": {
+      "median": 60,
+      "max": 121.19999999552965
+    },
+    "esp_step_ms": {
+      "median": 60,
+      "max": 68
+    },
+    "stm_age_ms": {
+      "median": 51,
+      "max": 95
+    }
+  },
+  "limits": [
+    "Retained browser ring contains only post-motion TELs; timing statistics do not establish active-motion worst-case latency.",
+    "One non-reproduction run does not establish permanent resolution."
+  ],
+  "final_tel": {
+    "start_s": 35.8913605,
+    "end_s": 35.90651180555555,
+    "text": "TEL,t_ms=1932467,state=DISARMED,reason=DISARM,command_age_ms=6158,last_seq=910811989,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "f": {
+      "t_ms": "1932467",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "6158",
+      "last_seq": "910811989",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  }
+}

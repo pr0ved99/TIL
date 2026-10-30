@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-20",
+  "status": "PC_TESTS_PASS_NOT_PHYSICAL_DISTANCE_VALIDATION",
+  "command": "python -X utf8 -m unittest discover -s Projects/Tracked_Mobile_Robot/03_Firmware/tests -p \"test_encoder_distance*.py\" -v",
+  "exit_code": 0,
+  "tests_total": 45,
+  "existing_tests": 36,
+  "comparison_tests": 9,
+  "inputs": [
+    {
+      "path": "03_Firmware/tests/analyze_encoder_distance.py",
+      "sha256": "90a0e09c121173e11025aba9881682e285b3f4dea9f6544a4c85dfb88c0be187"
+    },
+    {
+      "path": "03_Firmware/tests/test_encoder_distance_analysis.py",
+      "sha256": "6a3ad1c2f68b2b560a273fd41abeaf3d21188331558ca7a03e236bed96a64ecc"
+    },
+    {
+      "path": "03_Firmware/tests/test_encoder_distance_comparison.py",
+      "sha256": "03db4e5489dccd4df79befe95f84bf1894b96e9346a7bdf094ea52e53d5e4e2b"
+    }
+  ],
+  "coverage": [
+    "Existing zero/forward/reverse airborne raw replays and unchanged input hashes",
+    "Synthetic signed forward/reverse and decimal actual displacement; zero and nonfinite input rejection",
+    "Exact rational error calculation before display rounding",
+    "Explicit boot/ARM selection, missing/duplicate/rejected-window refusal, ARM sequence zero",
+    "CLI default output compatibility and optional comparison; invalid request preserves existing output",
+    "Input report overwrite refusal"
+  ],
+  "new_ground_measurements": 0,
+  "limits": [
+    "Actual-distance inputs in new tests are synthetic, not measurements from the robot",
+    "No firmware, gain, PWM limit or distance coefficient modification",
+    "No physical straightness, 1m stopping or accuracy acceptance",
+    "User must supply independent signed displacement for the exact selected ARM endpoints"
+  ]
+}

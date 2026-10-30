@@ -2,6 +2,10 @@
 
 이 폴더는 궤도형 모바일 로봇의 전원, 배선, 모터 드라이버, 엔코더, 초기 구동을 실제로 검증한 기록을 남기는 공간이다.
 
+**상태 대조: 2026-10-11.** 단일 모터의 후속 관측은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md),
+비구동 Wi-Fi 통신은 [report34](../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다.
+재개 연결·전원은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에서 확인하며 문서 정리를 새 실측으로 기록하지 않는다.
+
 시스템 아키텍처 문서가 "어떻게 설계할 것인가"를 다룬다면, 이 폴더는 "실제로 안전하게 동작하는지 어떻게 확인했는가"를 다룬다.
 
 ## Validation Principle
@@ -36,6 +40,7 @@ Firmware보다 먼저 확인할 것:
 | 6 | `06_Left_Right_Drivetrain_Test.md` | Left/right drivetrain low-speed validation |
 | 7 | `07_STM32_ESP32_UART_Wiring_Checklist.md` | Board-only STM32/ESP32 UART wiring and bring-up checklist |
 | 8 | `08_Adapter_Plate_Fit_Check.md` | Fabricated adapter plate dimensions, chassis fit, module mounting, and clearance validation |
+| Safety gate | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md` | Logic analyzer 기반 PWM/duty, direction settle, boot/DISARM/timeout/fault actual pin timing 검증 |
 
 ## Evidence Policy
 
@@ -49,6 +54,9 @@ Firmware보다 먼저 확인할 것:
 - Short video or photo of test state
 - Observed heat, smell, noise, vibration
 - Pass/fail decision and next action
+
+Test ID·시험 조건·소스/빌드/플래시 식별값과 원본/발췌 구분은 [증거 보존 절차](../docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md)를 따른다.
+원본이 없는 과거 시험은 그 한계를 유지하고, 새 시험부터 기록한다.
 
 ## Safety Rules
 
@@ -66,15 +74,18 @@ Firmware보다 먼저 확인할 것:
 | --- | --- | --- |
 | MDD10A visual/DMM pre-check | PASS | `00_MDD10A_Visual_and_Multimeter_Inspection.md`, `../assets/photos/mdd10a/2026-07-09_01_mdd10a_unpowered_overview.jpg` |
 | Power path | PASS | `01_Power_Bringup_Checklist.md`; 2026-07-26 battery 12.36 V / MDD10A input 12.35 V powered-no-motor check 포함 |
-| Buck converter output | Conditional PASS | XL4015 #1/#2 no-load 5.03 V; 약 1 A 5분 PASS, 약 1.8 A 3분 conditional PASS; 실제 board power와 USB back-power policy는 TBD |
-| MDD10A logic input | PARTIAL | `03_MDD10A_Logic_Input_Test.md`, 교정 후 6-step LED 및 final safe-state PASS; exact PWM/deadtime와 active timeout/DISARM은 미검증 |
-| Encoder input/count | PARTIAL | `04_Encoder_Signal_Safety_Test.md`; A/B별 1 kΩ series와 MCU-side 15 kΩ-to-GND 조건에서 MG540-A/B를 TIM3 PB4/PB5 TI12 x4로 순차 hand-rotation PASS; TIM5, powered-noise와 vehicle sign은 미검증 |
-| First motor no-load | Not started | TBD |
+| Buck converter output / board power | PASS for XL4015 #1 functional logic-power subset; PARTIAL for XL4015 #2 evidence | 2026-09-08 dual-2P #1 path: 5.02 V pre-connect, 4.97 V individual and 4.95 V combined OUT; NUC E5V 4.94 V/ESP 5V 4.95 V combined, power-off 0 V PASS. #2 J3 5.08 V and conditioned PC7 0.06/3.27 V released/asserted PASS; current/drop/temperature and raw evidence open |
+| MDD10A logic input | PASS — motor-disconnected input scope | `03_MDD10A_Logic_Input_Test.md`; permanent signal별 10 kΩ, final perfboard CH1/CH2 19.049/19.058 kHz active 6-step, pre/post-DIR zero 약 2 ms와 hook-0 all-LOW PASS. Physical E-stop, power stage와 actual motor는 별도 Gate |
+| Encoder input/count | PARTIAL | 1560 counts/rev 보정 이력 유지. 9/26 report 29: A=left/JENC_1/TIM3, B=right/JENC_2/TIM5 교환 후 독립 손회전·전진 부호·정지 0 사용자 보고 PASS; powered-noise와 external RPM/wheel scale 미검증 |
+| First motor no-load | PARTIAL — bounded single-motor observations PASS | reports31/32: B 방향 보정·양방향 단발, A 전진·active DISARM·S0 정지 관측, A/B 각각10%·3초 구동. 전체 T-MOTOR-003의 전류/열·반복/부하 조건 미완료 |
 | Left/right drivetrain | Not started | TBD |
 | STM32/ESP32 UART bridge wiring | PASS | `07_STM32_ESP32_UART_Wiring_Checklist.md`, `../assets/logs/esp32_uart_bridge/2026-07-20_scripted_safety_sequence_pass.txt` |
-| Adapter plate fit | Planned / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md` |
+| Wi-Fi status / nonmotor command | W4/W5 PASS — USB two-board scope | [report34](../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md): 실제 TEL/WS·PING/DISARM·입력 거부·timeout/재접속. ARM/CMD 구동·전체 UART release와 별개 |
+| Physical E-stop integration | T004 PASS / T005A PARTIAL / formal T-ESTOP-007 BLOCKED | reports26/27/32: conditioned sense/latch/reset/PWM, rail 일부 관측, A S0/PWM/CPS 정지 관측. 기계 정지 시간/거리·rail 동시 계측·전력단 수용 미완료 |
+| Adapter plate fit | User-reported received / Ready / Not tested | `08_Adapter_Plate_Fit_Check.md`, `../08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md` |
+| Motor output waveform/timing | PASS — motor-disconnected MCU-pin scope | `09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md`; waveform/direction, active DISARM 23.50 us, 300 ms timeout shutdown, fault next-pulse/latch와 signal별 10 kΩ 적용 external-reset LOW PASS. Driver power stage와 actual motor는 별도 gate |
 
-현재 실행 순서는 다음과 같다.
+완료한 관측과 남은 순서는 다음과 같다. 아래 과거 검사 개수·safe restore는 당시 시험 범위이며 최신 앱 상태는 현재 인수인계를 따른다.
 
 ```text
 STM32 PWM/DIR safe output 구현 완료
@@ -82,8 +93,20 @@ STM32 PWM/DIR safe output 구현 완료
 -> MDD10A powered-no-motor static/LED PASS
 -> encoder loaded-voltage safety CONDITIONAL PASS
 -> TIM3 PB4/PB5 TI12 x4 motor-power-off count/sign PASS
--> TIM5 PA0/PA1 motor-power-off 반복 및 powered-noise 확인
--> exact PWM/direction timing 및 active timeout/DISARM 검증
--> first motor no-load
--> left/right drivetrain
+-> TIM5 PA0/PA1 및 dual independent motor-power-off count/sign PASS
+-> 16/32-bit modular delta, wrap-safe accumulation과 counts/s bench PASS
+-> active timeout/DISARM powered/no-motor LED functional PASS, hook `0U` 복구 PASS
+-> production TEL -> ESP32 dual CPS independent CW/CCW PASS
+-> 방향별 50회전 1560 counts/output-rev + wrap/mRPM self-test·dynamic formula PASS
+-> 7/30 당시 A=right/TIM5, B=left/TIM3 sign PASS; 9/26 현재 A=left/TIM3, B=right/TIM5로 정정하고 손회전 회귀 PASS (report 29)
+-> software fault output-zero/latch와 final button-test `0U` 회귀 PASS
+-> historical 20.1005 kHz 시험 뒤 vendor 상한 margin을 반영해 final perfboard CH1/CH2 19.049/19.058 kHz, 약 10%, direction 전후 약 2 ms zero PASS
+-> active DISARM 23.50 us, timeout scoped baseline, software-fault next-pulse/latch와 external-reset 10 kΩ pull-down MCU-pin PASS
+-> 모든 controlled hook `0U`, contract 15/15, final safe UART post-READY TEL 155/155 over 15.4 s PASS; exact board-artifact/setup provenance pending
+-> RevB/permanent 10 kΩ pull-down continuity + board power/back-power PASS
+-> final perfboard MDD10A-input 19 kHz active DIR/PWM 6-step + restored all-LOW PASS
+-> conditioned physical E-stop T004 PASS / 전체 T005A PARTIAL
+-> 단일 모터 방향·A DISARM/S0·A/B 각각10%/3초 관측 PASS (reports31/32)
+-> 전류/열·반복/부하·powered encoder noise·rail/기계 정지 수용 조건 미완료
+-> 기구 통합·left/right 동시 구동·지상 주행 미실행
 ```

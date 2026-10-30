@@ -1,0 +1,40 @@
+{
+  "mode": "SAVED REVIEW",
+  "status": "FAIL",
+  "findings": [
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c",
+      "line": 161,
+      "actual": "static s_encoder_arm_valid;",
+      "expected": "static bool s_encoder_arm_valid;"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c",
+      "line": 847,
+      "actual": "void uart_mvp_set_encoder_cps(",
+      "expected": "void uart_mvp_set_encoder_sample("
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c",
+      "line": 284,
+      "actual": "encoder_sampel_valid",
+      "expected": "encoder_sample_valid"
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c",
+      "line": 291,
+      "actual": "s_encoder_time5.accumulated_count",
+      "expected": "s_encoder_tim5.accumulated_count"
+    }
+  ],
+  "saved_test_failure": "Legacy setter definition remains; assertion rejected saved input before native execution",
+  "whitespace": [
+    "main.c:286 contains trailing spaces"
+  ],
+  "source_hashes": {
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "dc25187ea6710e3196453967e869fe2e231fa7aa4b68cbf63b6be72f3fc85eea",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "2ac4025fe63deed5a169478e029f360db35cd3f79d522fae6e50203f94ecac31",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "c1b22761f5af9a162a4bb0055a7b571e7109e47438fdc4eea4925060e535c8b2"
+  },
+  "firmware_edited_by_codex": false
+}

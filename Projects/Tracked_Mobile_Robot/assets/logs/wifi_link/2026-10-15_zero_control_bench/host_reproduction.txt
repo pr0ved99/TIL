@@ -1,0 +1,16 @@
+Result excerpt transcribed from the 2026-10-16 native PC diagnostic execution.
+Command: python Projects/Tracked_Mobile_Robot/03_Firmware/tests/reproduce_uart_reconnect.py
+Compiler: TCC 0.9.27 win64, existing local host tool (not committed).
+Return code: 0 (diagnostic observations matched; NOT recovery acceptance PASS).
+Production source hashes: manifest.json. No MCU build, flash or board IO.
+
+MODE: SAVED C DIAGNOSTIC / HAL-MOTOR MOCK / NO BOARD IO
+CHECK fragmented normal frame: ACK only after LF
+OBSERVED ESP first stop length: 22 bytes
+REPRODUCED first DISARM absorbed into stale CMD prefix; MISSING_SEQ
+REPRODUCED second manual DISARM succeeds after first LF clears buffer
+REPRODUCED lost first stop for 54/54 truncated CMD prefixes
+COUNTEREXAMPLE bare sync LF executes an old complete ARM lacking LF
+CHECK timeout at 300 ms rejects CMD alone; new ARM and zero CMD accepted
+CHECK HAL error discards through LF, then accepts next stop
+DIAGNOSTIC COMPLETE: baseline fault reproduced, no production fix applied

@@ -1,0 +1,231 @@
+{
+  "assessment": "GOAL_REACHED_AND_STOP_OBSERVED_IN_TEL",
+  "raw_sha256": "1950bce8b03bd6fce0757e8ebafdf5e5c3a0aef4c82b4d41cd048fdd5a2eb2db",
+  "identity": {
+    "goal_mm": 100,
+    "boot_id": 1070385225,
+    "control_id": 2,
+    "arm_seq": 1201006582
+  },
+  "coefficient_mm_per_count": "1687/19500",
+  "nominal_target_counts_per_side": 1156,
+  "points": {
+    "baseline": {
+      "tel_count": 1151,
+      "stm_t_ms": 198800,
+      "counts": [
+        0,
+        0
+      ],
+      "delta_counts": [
+        0,
+        0
+      ],
+      "encoder_mm": [
+        0.0,
+        0.0
+      ],
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    "cutoff": {
+      "tel_count": 1169,
+      "stm_t_ms": 200600,
+      "counts": [
+        1187,
+        1180
+      ],
+      "delta_counts": [
+        1187,
+        1180
+      ],
+      "encoder_mm": [
+        102.69071794871795,
+        102.0851282051282
+      ],
+      "state": "ARMED",
+      "reason": "DISTANCE_REACHED",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        790
+      ]
+    },
+    "final": {
+      "tel_count": 1174,
+      "stm_t_ms": 201100,
+      "counts": [
+        1187,
+        1177
+      ],
+      "delta_counts": [
+        1187,
+        1177
+      ],
+      "encoder_mm": [
+        102.69071794871795,
+        101.82558974358975
+      ],
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    }
+  },
+  "phase_transitions_observed": [
+    {
+      "tel_count": 1151,
+      "stm_t_ms": 198800,
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "tel_count": 1154,
+      "stm_t_ms": 199100,
+      "state": "ARMED",
+      "reason": "DISTANCE_RUNNING",
+      "pwm": [
+        144,
+        150
+      ],
+      "counts": [
+        49,
+        40
+      ]
+    },
+    {
+      "tel_count": 1166,
+      "stm_t_ms": 200300,
+      "state": "ARMED",
+      "reason": "DISTANCE_RUNNING",
+      "pwm": [
+        0,
+        150
+      ],
+      "counts": [
+        1184,
+        957
+      ]
+    },
+    {
+      "tel_count": 1169,
+      "stm_t_ms": 200600,
+      "state": "ARMED",
+      "reason": "DISTANCE_REACHED",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        1187,
+        1180
+      ]
+    },
+    {
+      "tel_count": 1171,
+      "stm_t_ms": 200800,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        1187,
+        1177
+      ]
+    }
+  ],
+  "checks": {
+    "no_browser_record_drops": true,
+    "tel_generations_contiguous": true,
+    "stm_encoder_steps_100ms": true,
+    "arm_seq_consistent": true,
+    "stm_age_below_250ms": true,
+    "drop_and_err_zero": true,
+    "baseline_armed_and_zero": true,
+    "cutoff_has_matching_accepted_seq": true,
+    "cutoff_goal_reached_zero_output": true,
+    "final_disarmed_zero": true,
+    "final_embedded_in_samples": true,
+    "still_observed_and_goal_reason": true,
+    "no_post_still_change": true,
+    "zero_count_stable_at_least_200ms_before_final": true
+  },
+  "sample_count": 41,
+  "maximum_stm_age_ms": 53,
+  "browser_first_goal_wait_ms": 32.8,
+  "final_encoder_error_from_goal_mm": [
+    2.690717948717949,
+    1.8255897435897437
+  ],
+  "final_count_excess_over_nominal_target": [
+    31,
+    21
+  ],
+  "cutoff_to_final_delta_counts": [
+    0,
+    -3
+  ],
+  "post_final_stable_observation_ms": 1800,
+  "manual_link_travel_mm": {
+    "left": 102,
+    "right_range_inclusive": [
+      101,
+      102
+    ],
+    "source": "User ruler measurement report in this conversation",
+    "verbatim_ko": "왼쪽 102mm 오른쪽 101~102mm 사이"
+  },
+  "limitations": [
+    "Encoder conversion and user ruler measurements concern airborne track-link travel, not ground chassis travel.",
+    "TEL interval is 100 ms; samples do not identify each side's exact threshold-crossing, PWM electrical cutoff, or physical stop time.",
+    "Right count decreases by 3 after cutoff observation; physical relaxation versus measurement cause is not established.",
+    "Single run; no repeatability or overall accuracy acceptance. Current local code was read but flashed image identity was not independently captured."
+  ],
+  "manual_error_from_100mm_goal": {
+    "left_mm": 2,
+    "left_percent": 2,
+    "right_mm_range": [
+      1,
+      2
+    ],
+    "right_percent_range": [
+      1,
+      2
+    ]
+  },
+  "encoder_minus_manual_mm": {
+    "left": 0.6907179487179462,
+    "right_range": [
+      -0.17441025641025476,
+      0.8255897435897452
+    ]
+  },
+  "next_step": "Keep coefficient and output settings; one airborne 150 mm trial with new ARM, full hold until automatic stop, copied report and separate left/right ruler measurements."
+}

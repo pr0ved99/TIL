@@ -1,0 +1,40 @@
+REGRESSION existing_saved_STM
+MODE: SAVED / NATIVE PC ONLY
+COMPILER: C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe
+STM tested text SHA256: 2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf
+PASS startup_immediate
+PASS timeout_and_cancel
+PASS mode_zero_immediate
+PASS mode=0: 3 native case groups; no board evidence
+PASS startup_immediate
+PASS timeout_and_cancel
+PASS delayed_once
+PASS eligibility
+PASS safety_during_wait
+PASS newer_command_not_overwritten
+PASS reset_discards_and_tick_wrap
+PASS esp_blocked_late_ack_manual_recovery
+PASS mode=1: 8 native case groups; no board evidence
+PASS invalid mode rejected
+PASS 12 combined fault/output modes rejected
+Production unchanged. MCU build/flash and physical acceptance are separate.
+REGRESSION new_candidate_default_drop_off
+MODE: SAVED / NATIVE PC ONLY
+COMPILER: C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe
+STM tested text SHA256: a5069d10d51d80b6127213537697dd50cd33a6c32c20c0a435e88de093762d95
+PASS startup_immediate
+PASS timeout_and_cancel
+PASS mode_zero_immediate
+PASS mode=0: 3 native case groups; no board evidence
+PASS startup_immediate
+PASS timeout_and_cancel
+PASS delayed_once
+PASS eligibility
+PASS safety_during_wait
+PASS newer_command_not_overwritten
+PASS reset_discards_and_tick_wrap
+PASS esp_blocked_late_ack_manual_recovery
+PASS mode=1: 8 native case groups; no board evidence
+PASS invalid mode rejected
+PASS 13 combined fault/output modes rejected
+Production unchanged. MCU build/flash and physical acceptance are separate.

@@ -1,0 +1,7 @@
+# Preserve byte identity of user exports, CAD models and prior generated evidence.
+*.csv -text
+*.kicad_sch -text
+*.kicad_pro -text
+*.kicad_pcb -text
+*.wbk -text
+**/reports/** -text

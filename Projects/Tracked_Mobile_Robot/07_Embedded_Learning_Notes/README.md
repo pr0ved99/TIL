@@ -1,5 +1,9 @@
 # Embedded Learning Notes
 
+**최신 · 10/31:** [전압 ADC 학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)에 검출 지연·실부품 조건·ADC/기준 계기/온도 오차·제어 연결·히스테리시스 학습19~29절을 추가했다. 실제 회로는 진행 중이며 다음은 실제 VDDA 전원 경로와 보호 제어 조건이다.
+
+**10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.
+
 이 폴더는 Tracked Mobile Robot 프로젝트를 임베디드 시스템 학습용으로 깊게 정리하는 공간이다.
 
 `01_System_Architecture`는 프로젝트의 공식 설계 결정과 인터페이스 계약을 담고,
@@ -14,6 +18,7 @@
 | `03_ESP32_Board_Practice` | ESP32-S3 보조 컨트롤러 실습 일지 |
 | `04_Interface_Protocol_Practice` | UART/CAN/telemetry protocol 설계와 검증 기록 |
 | `05_Debugging_Measurement` | DMM, logic analyzer, oscilloscope, serial log 기반 측정 기록 |
+| [`06_STM32_ESP32_Firmware_Textbook`](06_STM32_ESP32_Firmware_Textbook/README.md) | 기초 C부터 현재 STM·ESP 제어 코드까지 이어지는 한 권의 교과서와 PC 예제 |
 | `_templates` | 새 개념 노트와 실습 일지 작성 템플릿 |
 
 ## How To Use
@@ -42,6 +47,13 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 
 ## Current First Topics
 
+처음부터 순서대로 공부하려면 **[STM32·ESP32 펌웨어 교과서](06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)**를 읽는다.
+C·GPIO·시간·UART에서 시작해 STM 출력/상태, ESP 태스크/네트워크, ticket/owner/state/executor와 브라우저 취소까지 다룬다.
+각 장의 예제·문제·해설과 별도 PC 실행 예제 5개가 있다. 실제 소스의 2026-10-13 기준이며 공식 설계·검증 문서를 대체하지 않는다.
+
+노트북만 있는 날에는 [STM·ESP 코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)로 파일·호출 관계를 먼저 파악한다.
+이후 [단일 모터 시험 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 소스와 로그를 연결한다.
+
 | Topic | Note |
 | --- | --- |
 | GPIO alternate function | `01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md` |
@@ -51,3 +63,5 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 | HAL, LL, direct register | `01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md` |
 | I2C vs SPI for IMU | `01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md` |
 | CubeMX generated code boundary | `01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` |
+| 단일 모터 시험과 로그 이해 | [명령·출력·피드백 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) |
+| STM·ESP 파일과 함수 이해 | [코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) |

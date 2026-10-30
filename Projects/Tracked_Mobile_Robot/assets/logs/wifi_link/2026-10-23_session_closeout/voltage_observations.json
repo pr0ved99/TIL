@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-23",
+  "source": "user report during session closeout",
+  "readings": [
+    {
+      "endpoint": "XL4015 #1 OUT+ to OUT-",
+      "volts": 4.96
+    },
+    {
+      "endpoint": "XL4015 #1 IN+ to IN-",
+      "volts": 11.49
+    },
+    {
+      "endpoint": "LiPo total voltage display; instrument not specified",
+      "volts": 11.4
+    }
+  ],
+  "measurement_operating_state": "not explicitly reported",
+  "simultaneous_readings": null,
+  "meter_model": null,
+  "board_input_or_3v3_measurement": false,
+  "transient_measurement": false,
+  "voltage_adjustment_confirmed": false,
+  "power_disconnected_confirmed": false,
+  "assessment": "4.96 V is within NUCLEO E5V 4.75-5.25 V. ESP DevKitC 5V pin is specified for 5V; separate min/max not stated in board user guide. Static buck output alone does not establish or exclude supply-related receive latency. Recommend leaving current setting; nominal target 5.00 V if later adjusting with boards and USB disconnected.",
+  "references": [
+    "https://www.st.com/resource/en/user_manual/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf",
+    "https://documentation.espressif.com/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html"
+  ]
+}

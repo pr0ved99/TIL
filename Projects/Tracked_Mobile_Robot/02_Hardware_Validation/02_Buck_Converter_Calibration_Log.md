@@ -1,5 +1,14 @@
 # Buck Converter Calibration Log
 
+## 최신 추가 관측 — 2026-10-23
+
+XL4015 #1 조정 전 무부하5.03V/두 보드 연결4.96V. 사용자가 무부하5.10V 목표를 제시한 뒤 세팅/연결 완료5.02V를 보고했다. 최종 실제 무부하 값은 미보고다.
+
+기존 USB전류계와 약1A 저항 부하를 사용한 관측은 XL OUT5.00V, USB4.85~4.87V/0.93A다. 제공된배치도기준좌상단CC LED꺼짐을 사용자 확인했다. 같은배치/정상LED 조건에서 해당부하의전류제한비작동과일치하지만 정확설정A·순간부하수용은미확인이다. 두계기의전압차를경로저항으로단정하지않는다. 모터전류/새장비수령·열/정격승인은별도다.
+
+새운전153초에서지연정지미재현을관측했지만재부팅도동반되어전압원인확정은아니다. [비교](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md), [관측값](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/session_observations.json). 아래7월수치는당시조건의이력으로보존한다.
+
+
 ## 목적
 
 이 문서는 XL4015 buck converter의 출력 전압을 실제 board 연결 전에 조정하고 검증하는 기록이다.
@@ -166,11 +175,11 @@ STM32/ESP32 연결 전 확인:
 
 | Check | Expected | Result |
 | --- | --- | --- |
-| Board allowed 5 V input path checked | Yes | TBD |
-| USB and buck simultaneous power policy written | Yes | TBD |
-| Buck output voltage measured just before connection | 5.00 V target | TBD |
-| Ground reference planned | Common GND, no motor current through signal GND | TBD |
-| Connector polarity labeled | Yes | TBD |
+| Board allowed 5 V input path checked | Yes | PASS; NUCLEO CN7 E5V with JP5=PWR-E5V/JP1 open, ESP32 header 5V/GND |
+| USB and buck simultaneous power policy written | Yes | PASS; simultaneous use prohibited |
+| Buck output voltage measured just before connection | 5.00 V target | PASS; 5.03 V no-load, 5.00~5.01 V board-connected |
+| Ground reference planned | Common GND, no motor current through signal GND | PASS; XL4015 OUT- logic return branches |
+| Connector polarity labeled | Yes | PASS for tested E5V/5V/GND points |
 
 Power method per test:
 
@@ -199,13 +208,13 @@ Stop immediately if:
 
 | Converter | Approved role | Approved output | Approved for board connection? | Notes |
 | --- | --- | --- | --- | --- |
-| XL4015 #1 | STM32/ESP32 logic 5 V candidate | 5.03 V no-load; terminal stabilized from 4.91 V to 4.93 V at nominal 1 A | Not yet | Nominal 1 A for 5 min PASS; measured 1.76-1.80 A held for 3 min with electronic-load heat; USB/buck simultaneous power policy remains open |
-| XL4015 #2 | Sensor/auxiliary 5 V candidate | 5.03 V no-load; terminal stabilized at 4.90-4.89 V and USB-side 4.90 V at 0.94 A | Not yet | Approximately 1 A sustained load PASS; 1.78-1.80 A held for 3 min at USB-side 4.73 V; need final load assignment and board/sensor power path policy |
+| XL4015 #1 | STM32/ESP32 logic 5 V | 2026-09-08 new path: 5.02 V pre-connect; 4.97 V individual, 4.95 V combined OUT | Yes — buck-only functional subset | Separate 26 AWG dual-2P source branches; NUC E5V 4.94 V and ESP 5V 4.95 V combined, both 3V3 rails nominal, power-off 0 V PASS. All USB disconnected; current/drop/temperature release evidence open |
+| XL4015 #2 | Encoder and Physical E-stop `AUX_5V` | 5.03 V no-load; 5.08 V at J3 during 2026-09-08 sense test | Conditional — functional subset | Both encoder 5 V feeds and R13/S0-B input share `AUX_5V`; conditioned PC7 released 0.06 V, pressed/open 3.27 V PASS. LED current/instrument/raw evidence remains open |
 
 ## Next Step
 
-Buck converter가 안전하게 조정되면 다음 문서로 진행한다.
+Buck converter board-power Gate를 닫았으므로 다음 Gate로 진행한다.
 
 ```text
-03_MDD10A_Logic_Input_Test.md
+Physical E-stop T-ESTOP-001~005 (motor disconnected)
 ```

@@ -1,0 +1,254 @@
+{
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-22_T_ESTOP_005A_run01_active_estop_mdd_powered.sr",
+  "sha256": "6b1c461cd00df305850d1c3d3c9e02d4f6bdc8748014e3f9056de23903069ade",
+  "samples": 100000000,
+  "fs": 4000000,
+  "duration_s": 25.0,
+  "channels": {
+    "D0": {
+      "high_runs": 3,
+      "high_samples": 72445004,
+      "high_at_end": true,
+      "first_high_s": 6.88867,
+      "last_high_end_s": 25.0,
+      "high_intervals_s": [
+        [
+          6.88867,
+          6.8887065
+        ],
+        [
+          6.8887515,
+          6.8887645
+        ],
+        [
+          6.8887985,
+          25.0
+        ]
+      ]
+    },
+    "D1": {
+      "high_runs": 131121,
+      "high_samples": 1378376,
+      "high_at_end": false,
+      "first_high_s": 4.15e-05,
+      "last_high_end_s": 6.8886545,
+      "bursts": [
+        {
+          "start_s": 4.15e-05,
+          "end_s": 6.8886545,
+          "pulses": 131121,
+          "median_hz": 19047.619047619046,
+          "median_duty_percent": 5.238095238095238
+        }
+      ],
+      "mean_hz": 19034.3182792204,
+      "mean_duty_percent": 5.002333380669926
+    },
+    "D2": {
+      "high_runs": 131121,
+      "high_samples": 1378327,
+      "high_at_end": false,
+      "first_high_s": 4.15e-05,
+      "last_high_end_s": 6.8886545,
+      "bursts": [
+        {
+          "start_s": 4.15e-05,
+          "end_s": 6.8886545,
+          "pulses": 131121,
+          "median_hz": 19047.619047619046,
+          "median_duty_percent": 5.238095238095238
+        }
+      ],
+      "mean_hz": 19034.3182792204,
+      "mean_duty_percent": 5.0021555508964965
+    },
+    "D4": {
+      "decoded_bytes": 46829,
+      "invalid_stop_bits": 0,
+      "lines": 322,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "ACK": 69,
+        "TEL": 251,
+        "ERR": 2
+      },
+      "telemetry_fields": [
+        "batt_mv",
+        "command_age_ms",
+        "drop",
+        "err",
+        "last_seq",
+        "left_cps",
+        "left_pwm",
+        "reason",
+        "right_cps",
+        "right_pwm",
+        "state",
+        "t_ms",
+        "vx_mmps",
+        "w_mradps"
+      ],
+      "telemetry_distributions": {
+        "state": {
+          "ARMED": 69,
+          "FAULT": 182
+        },
+        "reason": {
+          "NONE": 69,
+          "ESTOP_ACTIVE": 182
+        },
+        "left_pwm": {
+          "50": 69,
+          "0": 182
+        },
+        "right_pwm": {
+          "50": 69,
+          "0": 182
+        },
+        "left_cps": {
+          "0": 251
+        },
+        "right_cps": {
+          "0": 251
+        },
+        "err": {
+          "0": 70,
+          "1": 1,
+          "2": 180
+        },
+        "drop": {
+          "0": 251
+        }
+      },
+      "state_transitions": [
+        {
+          "time_s": 0.022351,
+          "state": [
+            "ARMED",
+            "NONE"
+          ],
+          "text": "TEL,t_ms=41700,state=ARMED,reason=NONE,command_age_ms=18,last_seq=1816099461,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "time_s": 6.90999975,
+          "state": [
+            "FAULT",
+            "ESTOP_ACTIVE"
+          ],
+          "text": "TEL,t_ms=48600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=85,last_seq=1816099529,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "selected_commands_responses": [
+        {
+          "start_s": 6.92566275,
+          "end_s": 6.930686555555556,
+          "text": "ERR,seq=1816099530,type=CMD,code=ESTOP_LATCHED,t_ms=48615"
+        },
+        {
+          "start_s": 7.0283745,
+          "end_s": 7.034003305555556,
+          "text": "ERR,seq=1816099531,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=48718"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.00476125,
+          "end_s": 0.008141805555555555,
+          "text": "ACK,seq=1816099461,type=CMD,t_ms=41682"
+        },
+        {
+          "start_s": 0.022351,
+          "end_s": 0.03707680555555556,
+          "text": "TEL,t_ms=41700,state=ARMED,reason=NONE,command_age_ms=18,last_seq=1816099461,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.8758585,
+          "end_s": 24.891283055555554,
+          "text": "TEL,t_ms=66600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=18085,last_seq=1816099529,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "start_s": 24.9757125,
+          "end_s": 24.991138305555555,
+          "text": "TEL,t_ms=66700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=18185,last_seq=1816099529,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        }
+      ]
+    },
+    "D5": {
+      "decoded_bytes": 3944,
+      "invalid_stop_bits": 0,
+      "lines": 71,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "CMD": 69,
+        "ESTOP_RESET": 1
+      },
+      "telemetry_fields": [],
+      "telemetry_distributions": {},
+      "state_transitions": [],
+      "selected_commands_responses": [],
+      "first_lines": [
+        {
+          "start_s": 1.45e-05,
+          "end_s": 0.004615055555555555,
+          "text": ",seq=1816099461,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "start_s": 0.099755,
+          "end_s": 0.10461605555555556,
+          "text": "CMD,seq=1816099462,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 6.919815,
+          "end_s": 6.9246760555555555,
+          "text": "CMD,seq=1816099530,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "start_s": 7.025911,
+          "end_s": 7.028254805555556,
+          "text": "ESTOP_RESET,seq=1816099531"
+        }
+      ]
+    }
+  },
+  "stop_check": {
+    "pc7_stable_high_s": 6.8887985,
+    "last_pwm_fall_s": 6.8886545,
+    "last_fall_minus_pc7_us": -144.0,
+    "final_low_s": 18.1113455,
+    "high_samples_after_pc7_plus_500ms": {
+      "D1": 0,
+      "D2": 0
+    },
+    "first_pc7_high_s": 6.88867,
+    "last_fall_minus_first_pc7_us": -15.5
+  },
+  "channel_roles": {
+    "D0": "PC7 ESTOP_SENSE (assigned)",
+    "D1": "PB6 PWM1 (assigned)",
+    "D2": "PB7 PWM2 (assigned)",
+    "D4": "STM32 TX / ESP32 RX: TEL/ACK/ERR, inferred from decoded content",
+    "D5": "ESP32 TX / STM32 RX: CMD/ESTOP_RESET, inferred from decoded content"
+  },
+  "limits": [
+    "No analog MDD rail voltage in this digital capture; current-run DMM readings still needed.",
+    "Last PWM falling edge precedes PC7 assertion because PWM was already LOW; do not report negative or exact-zero software shutdown latency.",
+    "Capture begins with a partial CMD frame; initial power-up and S2 action are outside this capture.",
+    "PC7 stays HIGH through capture end; release/reset recovery not captured.",
+    "No exact mechanism established for residual rail voltage."
+  ],
+  "command_response_check": {
+    "complete_commands": 70,
+    "matched": 70,
+    "missing_seqs": [],
+    "type_mismatches": [],
+    "initial_partial_frame": {
+      "start_s": 1.45e-05,
+      "end_s": 0.004615055555555555,
+      "text": ",seq=1816099461,vx_mmps=50,w_mradps=0,timeout_ms=500"
+    }
+  }
+}

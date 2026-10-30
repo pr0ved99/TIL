@@ -2,9 +2,10 @@
 
 ## 목적
 
-이 문서는 `NUCLEO-F446RE` 보드에서 PC Web Serial Dashboard 또는 terminal tool과 UART MVP protocol을 검증하기 위한 STM32 firmware 상세 구현 가이드다.
+이 문서는 `NUCLEO-F446RE` 보드에서 PC Web Serial Dashboard 또는 terminal tool과 UART MVP
+protocol을 검증했던 2026-07-09 historical PC-first STM32 firmware 상세 구현 가이드다.
 
-현재 개발 흐름은 다음을 기준으로 한다.
+그 historical bench 구현 흐름은 다음을 기준으로 했다.
 
 ```text
 STM32CubeMX
@@ -18,6 +19,10 @@ STM32CubeMX
 예전 STM32CubeIDE 버전처럼 `File -> New -> STM32 Project`가 보이지 않는 환경에서는 `STM32CubeIDE Empty Project`를 선택하지 않는다. 이 프로젝트는 `.ioc`, HAL initialization, pin mapping 자동 생성을 활용해야 하므로 standalone `STM32CubeMX`에서 먼저 project를 생성한다.
 
 이 문서는 실제 화면에서 따라 할 수 있도록 메뉴 클릭 기준으로 작성한다.
+
+> 이 문서는 2026-07-09 PC-first USART2 bench 구현 이력을 보존한다. Final MVP production
+> command ingress는 ADR-015의 ESP32 UART1 -> STM32 USART1이고 USART2는 bench-only다.
+> Timeout section은 ADR-015의 즉시 `DISARMED` recovery 기준으로 갱신했다.
 
 ```text
 무엇을 여는지
@@ -912,7 +917,6 @@ STM32F4에서 16-bit index read/write는 이 용도에 충분히 단순하다.
 #define CMD_TIMEOUT_DEFAULT_MS 300u
 #define CMD_TIMEOUT_MIN_MS      50u
 #define CMD_TIMEOUT_MAX_MS     500u
-#define AUTO_DISARM_MS        3000u
 #define TEL_PERIOD_MS          100u
 
 #define VX_MIN_MMPS            -100
@@ -943,7 +947,6 @@ typedef struct {
     uint32_t err_count;
     uint32_t last_rx_ms;
     uint32_t last_tel_ms;
-    uint32_t timeout_started_ms;
 } uart_mvp_stats_t;
 
 void uart_mvp_init(UART_HandleTypeDef *huart);
@@ -1353,7 +1356,6 @@ static void handle_arm(const char *frame)
 
     s_state = ROBOT_ARMED;
     s_cmd.valid = 0u;
-    s_stats.timeout_started_ms = 0u;
 
     send_ack(seq, "ARM");
 }
@@ -1380,7 +1382,6 @@ static void handle_disarm(const char *frame)
     s_right_pwm = 0;
     s_cmd.valid = 0u;
     s_state = ROBOT_DISARMED;
-    s_stats.timeout_started_ms = 0u;
 
     send_ack(seq, "DISARM");
 }
@@ -1461,7 +1462,6 @@ static void handle_cmd(const char *frame)
     s_cmd.timeout_ms = timeout_ms;
     s_cmd.last_valid_ms = HAL_GetTick();
     s_cmd.valid = 1u;
-    s_stats.timeout_started_ms = 0u;
 
     /* Motor power is not connected in this MVP.
        Keep actual PWM output zero. */
@@ -1486,16 +1486,10 @@ void uart_mvp_update_safety(void)
         if ((now - s_cmd.last_valid_ms) > s_cmd.timeout_ms) {
             s_left_pwm = 0;
             s_right_pwm = 0;
+            s_cmd.vx_mmps = 0;
+            s_cmd.w_mradps = 0;
             s_cmd.valid = 0u;
-            s_stats.timeout_started_ms = now;
-        }
-    }
-
-    if (s_state == ROBOT_ARMED && !s_cmd.valid) {
-        if (s_stats.timeout_started_ms != 0u &&
-            (now - s_stats.timeout_started_ms) > AUTO_DISARM_MS) {
             s_state = ROBOT_DISARMED;
-            s_stats.timeout_started_ms = 0u;
         }
     }
 }
@@ -1506,11 +1500,13 @@ void uart_mvp_update_safety(void)
 ```text
 valid CMD 끊김
 -> timeout_ms 후 output zero
--> ARMED 유지
--> AUTO_DISARM_MS 후 DISARMED 전환
+-> stored command zero
+-> 즉시 DISARMED
+-> accepted ARM 뒤 valid CMD 필요
 ```
 
-현재 `AUTO_DISARM_MS=3000`은 lab default다.
+P-03A/P-03B actual source/static/full-build는 timeout 뒤 `DISARMED`와 ARM 시 default 300 ms
+first-CMD window로 이 guide와 정합하다. Flash/board/PWM target runtime은 아직 검증하지 않았다.
 
 ## 20. Telemetry 구현
 
@@ -1773,12 +1769,12 @@ STM32CubeMX generated a NUCLEO-F446RE HAL project with USART2 PA2/PA3 at 115200 
 
 ## 26. 다음 단계
 
-이 MVP가 통과하면 다음 순서로 확장한다.
+이 historical MVP 이후의 완료/잔여 상태는 다음과 같다.
 
-1. `left_pwm/right_pwm`을 실제 PWM target variable과 연결한다.
-2. MDD10A logic input test에서 PWM waveform을 측정한다.
-3. Encoder voltage safety test 후 TIM encoder mode를 연결한다.
-4. `left_cps/right_cps`를 실제 encoder delta로 대체한다.
-5. Battery ADC가 준비되면 `batt_mv`를 실제 값으로 대체한다.
-6. ESP32 USART1 link로 같은 protocol을 옮긴다.
-7. CAN version command/telemetry contract를 later phase에서 설계한다.
+1. `[P-04]` `left_pwm/right_pwm`을 production mapper의 실제 PWM target과 연결한다.
+2. `[COMPLETED — motor-disconnected MDD10A-input scope]` PWM waveform을 측정했다.
+3. `[COMPLETED — encoder-side scope]` Encoder voltage safety와 TIM encoder mode를 검증했다.
+4. `[COMPLETED — encoder-side scope]` `left_cps/right_cps`를 실제 encoder delta로 대체했다.
+5. `[P-05]` Battery ADC가 준비되면 `batt_mv`를 실제 값으로 대체한다.
+6. `[COMPLETED — UART bridge scope]` 같은 protocol을 ESP32 UART1 <-> STM32 USART1에 연결했다.
+7. `[DEFERRED]` CAN version command/telemetry contract를 later phase에서 설계한다.

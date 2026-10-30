@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-23",
+  "relative_links_checked": 943,
+  "broken_links": [],
+  "raw_evidence": [
+    {
+      "label": "forward",
+      "raw_sha256": "5a6f021f44be6f6e5e769f1653915da6bbf8e46e9ca4440f9afe3693ce34e850",
+      "gzip_original_bytes_verified": true
+    },
+    {
+      "label": "left",
+      "raw_sha256": "b5648ebbc2d74fa7124b53a90c61a94110c31c7f1387a165d70b04c35c229f1d",
+      "gzip_original_bytes_verified": true
+    }
+  ],
+  "page_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+  "mcu_sources_unchanged": true,
+  "unrelated_files_preserved": 17,
+  "secret_pattern_scan": "PASS (private-key/GitHub-token/non-placeholder WiFi password patterns)",
+  "existing_checks_reused": "91 PAGE/stop PC checks, observer7, two actual-PAGE trigger boundary replays; no duplicate test run or MCU build/flash.",
+  "scoped_staged_diff_check": "PASS; imported vendor HTML original indentation explicitly preserved",
+  "staged_files": 108,
+  "byte_exact_artifacts": 82,
+  "external_sync_readback": "7 Notion pages,7 Calendar events; verified content/properties/children and unchanged event time boundaries"
+}

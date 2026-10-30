@@ -1,0 +1,20 @@
+{
+  "test": "UR03_ACS02_VALID_A_TICKET_FROM_B",
+  "state": "PREPARED_NOT_RUN_ON_BOARD",
+  "saved_main_normalized_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+  "files_sha256": {
+    "check_console_test.js": "a1186d366e729d1a9afea7b7b765448fe984aa41397ceba23c4df34eacfaf2d3",
+    "console_test.js": "b680d06084884bd55978d787033bc9dd0d50088cd6cd1de7a0cf75b3ec8c4f3b",
+    "pc_check.json": "856a4fb6b1e418d9409cc2496de2e1c1484b0015886af226b4e87fd74b843d71"
+  },
+  "pc_execution": "functions.exec V8 new Function(page, helper, check_console_test.js); saved PAGE extracted from C string initializer",
+  "constraints": [
+    "No automatic ARM; user clicks page ARM",
+    "One copied CMD attempt from B before forwarding the identical ticket via A",
+    "Zero-only; minimum CMD gap 60ms for probe vs server 50ms minimum",
+    "Held CMD discarded on deadline/focus/identity/stop failure",
+    "6-second active test limit; 3.5-second stop confirmation wait",
+    "Application checks are not a UART or PWM PASS"
+  ],
+  "capture_name": "2026-10-16_UR03_ACS02_VALID_TICKET_PWM_run01.sr"
+}

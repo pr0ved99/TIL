@@ -1,0 +1,144 @@
+{
+  "format_version": 1,
+  "observer_version": 5,
+  "interpretation": "Initial encoder-equivalent track travel; not measured chassis displacement",
+  "coefficient": {
+    "status": "INITIAL_GEOMETRIC_NOT_GROUND_CALIBRATED",
+    "numerator": "1687",
+    "denominator": "19500",
+    "display_mm_per_count": "0.086512820513",
+    "same_initial_value_for_both_sides": true
+  },
+  "policy": {
+    "stm_source_and_sample_limit_ms": 200,
+    "browser_receive_gap_limit_ms": 250,
+    "start": "ACKed ARM plus first fresh stationary valid sample",
+    "end": "ACKed DISARM plus first fresh valid zero-command/PWM/CPS sample",
+    "gaps": "Reject whole ARM window; never resume it automatically"
+  },
+  "summary": {
+    "telemetry_rows": 2850,
+    "unique_source_tel": 1713,
+    "browser_evicted_rows": 5100,
+    "accepted_windows": 1,
+    "rejected_windows": 1,
+    "command_result_status_counts": {
+      "OK": 91,
+      "CANCELLED": 1
+    }
+  },
+  "diagnostics": {
+    "REPEATED_BROADCAST_IGNORED": 1137,
+    "INVALID_SAMPLE_OR_ARM": 2,
+    "MISSING_OR_CONFLICTING_ARM_ACK": 1
+  },
+  "windows": [
+    {
+      "boot_id": 1794076624,
+      "arm_seq": 525914493,
+      "status": "REJECTED",
+      "reason": "MISSING_OR_CONFLICTING_ARM_ACK",
+      "arm_ack_ms": null,
+      "start": {
+        "ms": 328328.5,
+        "tel_count": 10818,
+        "stm_t_ms": 417001,
+        "encoder_t_ms": 416925,
+        "left_count": "0",
+        "right_count": "0",
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 525914494
+      },
+      "end": {
+        "ms": 328328.5,
+        "tel_count": 10818,
+        "stm_t_ms": 417001,
+        "encoder_t_ms": 416925,
+        "left_count": "0",
+        "right_count": "0",
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 525914494
+      },
+      "source_samples": 0,
+      "delta_count": null,
+      "distance_estimate_mm": null
+    },
+    {
+      "boot_id": 1794076624,
+      "arm_seq": 525914564,
+      "status": "ACCEPTED",
+      "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+      "arm_ack_ms": 464761.5,
+      "start": {
+        "ms": 465009.7999999989,
+        "tel_count": 12187,
+        "stm_t_ms": 553901,
+        "encoder_t_ms": 553830,
+        "left_count": "2567",
+        "right_count": "2374",
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 525914565
+      },
+      "end": {
+        "ms": 473780.3999999985,
+        "tel_count": 12275,
+        "stm_t_ms": 562701,
+        "encoder_t_ms": 562631,
+        "left_count": "-358",
+        "right_count": "-343",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 525914655
+      },
+      "source_samples": 89,
+      "delta_count": {
+        "left": "-2925",
+        "right": "-2717"
+      },
+      "distance_estimate_mm": {
+        "left": "-253.050000",
+        "right": "-235.055333",
+        "center": "-244.052667"
+      },
+      "last_valid": {
+        "ms": 473780.3999999985,
+        "tel_count": 12275,
+        "stm_t_ms": 562701,
+        "encoder_t_ms": 562631,
+        "left_count": "-358",
+        "right_count": "-343",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 525914655
+      },
+      "disarm_seq": 525914655
+    }
+  ],
+  "warnings": [
+    "Older browser rows were evicted; this is not the STM UART drop counter"
+  ],
+  "limitations": [
+    "No actual-distance calibration or physical stop-time measurement",
+    "No window spans resets, source gaps, tick wrap or ARM identity changes",
+    "Truncated ACK/baseline/endpoint evidence is not reconstructed",
+    "Encoder displacement cannot detect track/surface or sprocket slip"
+  ],
+  "input": {
+    "path": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_encoder_count_reverse_air_run01\\browser_report.json",
+    "sha256": "954387851b3cc5327e192484859d029deaa472512efb927821d5fe7606259728"
+  },
+  "model": {
+    "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_track_geometry_14t_revision\\geometry_model.json",
+    "sha256": "15db3b58f412a2fc544d5f2199cbc587921959829f707331e71417c622e1ff48",
+    "pitch_mm_nominal": 9.64,
+    "pitch_mm_reading_range": [
+      9.62,
+      9.66
+    ],
+    "sprocket_teeth": 14,
+    "counts_per_output_rev": 1560
+  }
+}

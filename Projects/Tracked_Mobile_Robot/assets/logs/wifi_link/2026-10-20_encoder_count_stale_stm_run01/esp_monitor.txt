@@ -1,0 +1,243 @@
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link> $env:IDF_PATH = 'C:\esp\v6.0.2\esp-idf';
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link>  & 'C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe' 'C:\esp\v6.0.2\esp-idf\tools\idf_monitor.py' -p COM4 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --make '''C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe'' ''C:\esp\v6.0.2\esp-idf\tools\idf.py''' --target esp32s3 'c:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link\build\esp32_wifi_link.elf'
+--- Warning: GDB cannot open serial ports accessed as COMx
+--- Using \\.\COM4 instead...
+--- esp-idf-monitor 1.9.0 on \\.\COM4 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4037b3ca
+--- 0x4037b3ca: esp_cpu_wait_for_intr at C:/esp/v6.0.2/esp-idf/components/esp_hw_support/cpu.c:64
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xda0
+load:0x403cb700,len:0x2f54
+entry 0x403c8908
+I (24) boot: ESP-IDF v6.0.2 2nd stage bootloader
+I (24) boot: compile time Oct  2 2026 20:06:23
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (27) boot: efuse block revision: v1.3
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 2MB
+I (42) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (62) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (75) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=256b8h (153272) map
+I (114) esp_image: segment 1: paddr=000356e0 vaddr=3fc98500 size=0509ch ( 20636) load
+I (119) esp_image: segment 2: paddr=0003a784 vaddr=40374000 size=05894h ( 22676) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=98dc0h (626112) map
+I (240) esp_image: segment 4: paddr=000d8de8 vaddr=40379894 size=0ec30h ( 60464) load
+I (254) esp_image: segment 5: paddr=000e7a20 vaddr=50000000 size=00024h (    36) load
+I (263) boot: Loaded app from partition at offset 0x10000
+I (263) boot: Disabling RNG early entropy source...
+I (273) cpu_start: Multicore app
+I (282) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (283) cpu_start: Pro cpu start user code
+I (283) cpu_start: cpu freq: 160000000 Hz
+I (284) app_init: Application information:
+I (288) app_init: Project name:     esp32_wifi_link
+I (292) app_init: App version:      6240886-dirty
+I (297) app_init: Compile time:     Oct 20 2026 01:21:39
+I (302) app_init: ELF file SHA256:  d1ce1b8a4...
+I (306) app_init: ESP-IDF:          v6.0.2
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99 
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCA19C0 len 00047D50 (287 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (344) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: generic
+I (353) spi_flash: flash io: dio
+W (356) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (368) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (374) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (381) main_task: Started on CPU0
+I (381) main_task: Calling app_main()
+I (391) pp: pp rom version: e7ae62f
+I (401) net80211: net80211 rom version: e7ae62f
+I (411) wifi:wifi driver task: 3fceed4c, prio:23, stack:6656, core=0
+I (411) wifi:wifi firmware version: 00ad238
+I (411) wifi:wifi certification version: v7.0
+I (411) wifi:config NVS flash: enabled
+I (411) wifi:config nano formatting: disabled
+I (421) wifi:Init data frame dynamic rx buffer num: 32
+I (421) wifi:Init static rx mgmt buffer num: 5
+I (421) wifi:Init management short buffer num: 32
+I (431) wifi:Init dynamic tx buffer num: 32
+I (431) wifi:Init static tx FG buffer num: 2
+I (441) wifi:Init static rx buffer size: 1600
+I (441) wifi:Init static rx buffer num: 10
+I (451) wifi:Init dynamic rx buffer num: 32
+I (451) wifi_init: rx ba win: 6
+I (451) wifi_init: accept mbox: 6
+I (451) wifi_init: tcpip mbox: 32
+I (461) wifi_init: udp mbox: 6
+I (461) wifi_init: tcp mbox: 6
+I (461) wifi_init: tcp tx win: 5760
+I (471) wifi_init: tcp rx win: 5760
+I (471) wifi_init: tcp mss: 1440
+I (471) wifi_init: WiFi IRAM OP enabled
+I (481) wifi_init: WiFi RX IRAM OP enabled
+I (481) wifi_link: STM UART RX ready: TX=GPIO17 RX=GPIO18 115200/8N1
+I (491) wifi_link: STARTUP: settle; DISARM seq=3685374557 PING seq=3685374558
+I (491) wifi_link: Wi-Fi + STM UART RX: mode=STA boot_id=57578602
+I (501) wifi:Set ps type: 0, coexist: 0
+
+I (501) wifi_link: Wi-Fi power save disabled for control latency
+I (511) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (561) wifi:mode : sta (20:6e:f1:b4:b5:5c)
+I (561) wifi:enable tsf
+I (641) wifi:new:<1,1>, old:<1,0>, ap:<255,255>, sta:<1,1>, prof:1, snd_ch_cfg:0x0
+I (641) wifi:state: init -> auth (0xb0)
+I (641) wifi:state: auth -> assoc (0x0)
+I (651) wifi:Association refused temporarily time 2000, comeback time 2100 (TUs)
+W (681) wifi_link: STM TEL rejected: TEL,t_ms=499600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1481893081,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=499525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (771) wifi_link: STM TEL rejected: TEL,t_ms=499700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1481893081,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=499625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (871) wifi_link: STM TEL rejected: TEL,t_ms=499800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1481893081,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=499725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (971) wifi_link: STM TEL rejected: TEL,t_ms=499900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1481893081,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=499825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (1001) wifi_link: STARTUP: line cancel sent
+W (1071) wifi_link: STM TEL rejected: TEL,t_ms=500000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=1481893081,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=499925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (1101) wifi_link: TX UART1: DISARM,seq=3685374557 attempt=1
+I (1121) wifi_link: RX ACK: seq=3685374557 type=DISARM
+I (1121) wifi_link: STARTUP: DISARM acknowledged
+I (1121) wifi_link: TX UART1: PING,seq=3685374558 attempt=1
+I (1141) wifi_link: RX PONG: seq=3685374558
+I (1141) wifi_link: STARTUP READY: DISARM ACK and PONG verified
+W (1171) wifi_link: STM TEL rejected: TEL,t_ms=500100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1271) wifi_link: STM TEL rejected: TEL,t_ms=500200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1371) wifi_link: STM TEL rejected: TEL,t_ms=500300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1471) wifi_link: STM TEL rejected: TEL,t_ms=500400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1571) wifi_link: STM TEL rejected: TEL,t_ms=500500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1671) wifi_link: STM TEL rejected: TEL,t_ms=500600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1771) wifi_link: STM TEL rejected: TEL,t_ms=500700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1871) wifi_link: STM TEL rejected: TEL,t_ms=500800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (1971) wifi_link: STM TEL rejected: TEL,t_ms=500900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2071) wifi_link: STM TEL rejected: TEL,t_ms=501000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=500925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2171) wifi_link: STM TEL rejected: TEL,t_ms=501100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2271) wifi_link: STM TEL rejected: TEL,t_ms=501200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2371) wifi_link: STM TEL rejected: TEL,t_ms=501300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2471) wifi_link: STM TEL rejected: TEL,t_ms=501400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2571) wifi_link: STM TEL rejected: TEL,t_ms=501500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2671) wifi_link: STM TEL rejected: TEL,t_ms=501600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2771) wifi_link: STM TEL rejected: TEL,t_ms=501700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (2801) wifi:state: assoc -> assoc (0x0)
+I (2811) wifi:state: assoc -> run (0x10)
+W (2871) wifi_link: STM TEL rejected: TEL,t_ms=501800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (2971) wifi_link: STM TEL rejected: TEL,t_ms=501900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3071) wifi_link: STM TEL rejected: TEL,t_ms=502000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=501925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3171) wifi_link: STM TEL rejected: TEL,t_ms=502100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3271) wifi_link: STM TEL rejected: TEL,t_ms=502200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3371) wifi_link: STM TEL rejected: TEL,t_ms=502300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3471) wifi_link: STM TEL rejected: TEL,t_ms=502400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3571) wifi_link: STM TEL rejected: TEL,t_ms=502500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3671) wifi_link: STM TEL rejected: TEL,t_ms=502600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3771) wifi_link: STM TEL rejected: TEL,t_ms=502700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3871) wifi_link: STM TEL rejected: TEL,t_ms=502800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (3971) wifi_link: STM TEL rejected: TEL,t_ms=502900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4071) wifi_link: STM TEL rejected: TEL,t_ms=503000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=502925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4171) wifi_link: STM TEL rejected: TEL,t_ms=503100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4271) wifi_link: STM TEL rejected: TEL,t_ms=503200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4371) wifi_link: STM TEL rejected: TEL,t_ms=503300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4471) wifi_link: STM TEL rejected: TEL,t_ms=503400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4571) wifi_link: STM TEL rejected: TEL,t_ms=503500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4671) wifi_link: STM TEL rejected: TEL,t_ms=503600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4771) wifi_link: STM TEL rejected: TEL,t_ms=503700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (4841) wifi:connected with pvd_2G, aid = 2, channel 1, 40U, bssid = b0:38:6c:08:df:a6
+I (4841) wifi:security: WPA2-PSK, phy: bgn, rssi: -49, cipher(pairwise:0x3, group:0x3), pmf:1
+I (4841) wifi:pm start, type: 0
+
+I (4851) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (4851) wifi:set rx beacon pti, rx_bcn_pti: 0, bcn_timeout: 25000, mt_pti: 0, mt_time: 10000
+W (4871) wifi_link: STM TEL rejected: TEL,t_ms=503800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (4971) wifi_link: STM TEL rejected: TEL,t_ms=503900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5071) wifi_link: STM TEL rejected: TEL,t_ms=504000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=503925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (5091) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+W (5171) wifi_link: STM TEL rejected: TEL,t_ms=504100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5271) wifi_link: STM TEL rejected: TEL,t_ms=504200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5371) wifi_link: STM TEL rejected: TEL,t_ms=504300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5471) wifi_link: STM TEL rejected: TEL,t_ms=504400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5571) wifi_link: STM TEL rejected: TEL,t_ms=504500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5671) wifi_link: STM TEL rejected: TEL,t_ms=504600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5771) wifi_link: STM TEL rejected: TEL,t_ms=504700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5871) wifi_link: STM TEL rejected: TEL,t_ms=504800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (5971) wifi_link: STM TEL rejected: TEL,t_ms=504900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6071) wifi_link: STM TEL rejected: TEL,t_ms=505000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=504925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6171) wifi_link: STM TEL rejected: TEL,t_ms=505100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6271) wifi_link: STM TEL rejected: TEL,t_ms=505200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6361) wifi_link: STM TEL rejected: TEL,t_ms=505300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6461) wifi_link: STM TEL rejected: TEL,t_ms=505400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6561) wifi_link: STM TEL rejected: TEL,t_ms=505500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6661) wifi_link: STM TEL rejected: TEL,t_ms=505600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6761) wifi_link: STM TEL rejected: TEL,t_ms=505700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6861) wifi_link: STM TEL rejected: TEL,t_ms=505800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (6961) wifi_link: STM TEL rejected: TEL,t_ms=505900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7061) wifi_link: STM TEL rejected: TEL,t_ms=506000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=505925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7161) wifi_link: STM TEL rejected: TEL,t_ms=506100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7261) wifi_link: STM TEL rejected: TEL,t_ms=506200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7361) wifi_link: STM TEL rejected: TEL,t_ms=506300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7461) wifi_link: STM TEL rejected: TEL,t_ms=506400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7561) wifi_link: STM TEL rejected: TEL,t_ms=506500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7661) wifi_link: STM TEL rejected: TEL,t_ms=506600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7761) wifi_link: STM TEL rejected: TEL,t_ms=506700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7861) wifi_link: STM TEL rejected: TEL,t_ms=506800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (7961) wifi_link: STM TEL rejected: TEL,t_ms=506900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8061) wifi_link: STM TEL rejected: TEL,t_ms=507000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=506925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8161) wifi_link: STM TEL rejected: TEL,t_ms=507100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8261) wifi_link: STM TEL rejected: TEL,t_ms=507200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8361) wifi_link: STM TEL rejected: TEL,t_ms=507300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8461) wifi_link: STM TEL rejected: TEL,t_ms=507400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8561) wifi_link: STM TEL rejected: TEL,t_ms=507500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8661) wifi_link: STM TEL rejected: TEL,t_ms=507600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8761) wifi_link: STM TEL rejected: TEL,t_ms=507700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8861) wifi_link: STM TEL rejected: TEL,t_ms=507800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (8961) wifi_link: STM TEL rejected: TEL,t_ms=507900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9061) wifi_link: STM TEL rejected: TEL,t_ms=508000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=507925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9161) wifi_link: STM TEL rejected: TEL,t_ms=508100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9261) wifi_link: STM TEL rejected: TEL,t_ms=508200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9361) wifi_link: STM TEL rejected: TEL,t_ms=508300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (9391) esp_netif_handlers: sta ip: 192.168.0.17, mask: 255.255.255.0, gw: 192.168.0.1
+I (9391) wifi_link: Open http://192.168.0.17/
+I (9391) wifi_link: WebSocket status: /ws, period=50 ms
+W (9461) wifi_link: STM TEL rejected: TEL,t_ms=508400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9561) wifi_link: STM TEL rejected: TEL,t_ms=508500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9661) wifi_link: STM TEL rejected: TEL,t_ms=508600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9761) wifi_link: STM TEL rejected: TEL,t_ms=508700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9861) wifi_link: STM TEL rejected: TEL,t_ms=508800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (9961) wifi_link: STM TEL rejected: TEL,t_ms=508900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10061) wifi_link: STM TEL rejected: TEL,t_ms=509000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=508925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10161) wifi_link: STM TEL rejected: TEL,t_ms=509100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10261) wifi_link: STM TEL rejected: TEL,t_ms=509200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10361) wifi_link: STM TEL rejected: TEL,t_ms=509300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10461) wifi_link: STM TEL rejected: TEL,t_ms=509400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10561) wifi_link: STM TEL rejected: TEL,t_ms=509500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10661) wifi_link: STM TEL rejected: TEL,t_ms=509600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10761) wifi_link: STM TEL rejected: TEL,t_ms=509700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10861) wifi_link: STM TEL rejected: TEL,t_ms=509800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (10961) wifi_link: STM TEL rejected: TEL,t_ms=509900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11061) wifi_link: STM TEL rejected: TEL,t_ms=510000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=509925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11151) wifi_link: STM TEL rejected: TEL,t_ms=510100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11251) wifi_link: STM TEL rejected: TEL,t_ms=510200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11351) wifi_link: STM TEL rejected: TEL,t_ms=510300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11451) wifi_link: STM TEL rejected: TEL,t_ms=510400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11551) wifi_link: STM TEL rejected: TEL,t_ms=510500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11651) wifi_link: STM TEL rejected: TEL,t_ms=510600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11751) wifi_link: STM TEL rejected: TEL,t_ms=510700,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510625,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11851) wifi_link: STM TEL rejected: TEL,t_ms=510800,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510725,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (11951) wifi_link: STM TEL rejected: TEL,t_ms=510900,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510825,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12051) wifi_link: STM TEL rejected: TEL,t_ms=511000,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=510925,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12151) wifi_link: STM TEL rejected: TEL,t_ms=511100,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511025,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12251) wifi_link: STM TEL rejected: TEL,t_ms=511200,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511125,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12351) wifi_link: STM TEL rejected: TEL,t_ms=511300,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511225,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12451) wifi_link: STM TEL rejected: TEL,t_ms=511400,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511325,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12551) wifi_link: STM TEL rejected: TEL,t_ms=511500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511425,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+W (12651) wifi_link: STM TEL rejected: TEL,t_ms=511600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=4294967295,last_seq=3685374558,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=511525,left_count=ld,right_count=ld,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0

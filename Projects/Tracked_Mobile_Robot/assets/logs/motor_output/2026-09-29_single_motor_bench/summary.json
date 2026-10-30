@@ -1,0 +1,1555 @@
+[
+  {
+    "file": "01_uart_startup_ready.txt",
+    "telemetry_count": 100,
+    "events": [
+      "ESP-ROM:esp32s3-20210327",
+      "Build:Mar 27 2021",
+      "rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)",
+      "SPIWP:0xee",
+      "mode:DIO, clock div:1",
+      "load:0x3fce2820,len:0x14f0",
+      "load:0x403c8700,len:0xda0",
+      "load:0x403cb700,len:0x2f54",
+      "entry 0x403c8908",
+      "I (24) boot: ESP-IDF v6.0.2 2nd stage bootloader",
+      "I (25) boot: compile time Jul 14 2026 18:44:33",
+      "I (25) boot: Multicore bootloader",
+      "I (25) boot: chip revision: v0.2",
+      "I (28) boot: efuse block revision: v1.3",
+      "I (31) boot.esp32s3: Boot SPI Speed : 80MHz",
+      "I (35) boot.esp32s3: SPI Mode       : DIO",
+      "I (39) boot.esp32s3: SPI Flash Size : 2MB",
+      "I (43) boot: Enabling RNG early entropy source...",
+      "I (47) boot: Partition Table:",
+      "I (50) boot: ## Label            Usage          Type ST Offset   Length",
+      "I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000",
+      "I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000",
+      "I (69) boot:  2 factory          factory app      00 00 00010000 00100000",
+      "I (76) boot: End of partition table",
+      "I (79) esp_image: segment 0: paddr=00010020 vaddr=3c020020 size=096dch ( 38620) map",
+      "I (93) esp_image: segment 1: paddr=00019704 vaddr=3fc90700 size=02f08h ( 12040) load",
+      "I (96) esp_image: segment 2: paddr=0001c614 vaddr=40374000 size=03a04h ( 14852) load",
+      "I (105) esp_image: segment 3: paddr=00020020 vaddr=42000020 size=13400h ( 78848) map",
+      "I (123) esp_image: segment 4: paddr=00033428 vaddr=40377a04 size=08c08h ( 35848) load",
+      "I (132) esp_image: segment 5: paddr=0003c038 vaddr=50000000 size=00024h (    36) load",
+      "I (137) boot: Loaded app from partition at offset 0x10000",
+      "I (137) boot: Disabling RNG early entropy source...",
+      "I (149) cpu_start: Multicore app",
+      "I (158) cpu_start: GPIO 44 and 43 are used as console UART I/O pins",
+      "I (158) cpu_start: Pro cpu start user code",
+      "I (159) cpu_start: cpu freq: 160000000 Hz",
+      "I (160) app_init: Application information:",
+      "I (164) app_init: Project name:     esp32_uart_bridge",
+      "I (169) app_init: App version:      64d51ad-dirty",
+      "I (173) app_init: Compile time:     Sep 28 2026 18:01:18",
+      "I (178) app_init: ELF file SHA256:  744cf4bf5...",
+      "I (182) app_init: ESP-IDF:          v6.0.2",
+      "I (186) efuse_init: Min chip rev:     v0.0",
+      "I (190) efuse_init: Max chip rev:     v0.99 ",
+      "I (194) efuse_init: Chip rev:         v0.2",
+      "I (198) heap_init: Initializing. RAM available for dynamic allocation:",
+      "I (204) heap_init: At 3FC941D0 len 00055540 (341 KiB): RAM",
+      "I (209) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM",
+      "I (214) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM",
+      "I (220) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM",
+      "I (226) spi_flash: detected chip: generic",
+      "I (229) spi_flash: flash io: dio",
+      "W (232) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.",
+      "I (244) sleep_gpio: Configure to isolate all GPIO pins in sleep state",
+      "I (250) sleep_gpio: Enable automatic switching of GPIO sleep configuration",
+      "I (257) mainI (267) esp32_uart_bridge: BENCH manual console ready on UART0; enter HELP",
+      "I (267) esp32_uart_bridge: UART1 init done: TX=GPIO17 RX=GPIO18 baud=115200",
+      "I (267) esp32_uart_bridge: Scripted UART safety sequence disabled",
+      "I (277) esp32_uart_bridge: P-04B controlled ESTOP reset test disabled",
+      "I (777) esp32_uart_bridge: STARTUP: line sync sent",
+      "W (777) esp32_uart_bridge: RX ERR: ERR,seq=0,type=RX,code=RX_DESYNC",
+      "I (877) esp32_uart_bridge: TX UART1: DISARM,seq=3335085462",
+      "I (877) esp32_uart_bridge: RX ACK: seq=3335085462 type=DISARM ack_count=1",
+      "I (877) esp32_uart_bridge: STARTUP: DISARM acknowledged",
+      "I (877) esp32_uart_bridge: TX UART1: PING,seq=3335085463",
+      "I (887) esp32_uart_bridge: RX PONG: seq=3335085463 pong_count=1",
+      "I (887) esp32_uart_bridge: STARTUP READY: DISARM ACK and PONG verified"
+    ],
+    "first_t_ms": 124180652,
+    "last_t_ms": 124190552,
+    "span_ms": 9900,
+    "states": [
+      [
+        "FAULT",
+        "ESTOP_ACTIVE"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        22790
+      ]
+    },
+    "active_rows": [],
+    "first_timeout": null
+  },
+  {
+    "file": "02_manual_estop_reset.txt",
+    "telemetry_count": 49,
+    "events": [
+      "I (583787) esp32_uart_bridge: TX UART1: ESTOP_RESET,seq=3335085464",
+      "I (583817) esp32_uart_bridge: RX ACK: seq=3335085464 type=ESTOP_RESET ack_count=2",
+      "I (583907) esp32_uart_bridge: BENCH: reset confirmed; no ARM/CMD sent"
+    ],
+    "first_t_ms": 124765252,
+    "last_t_ms": 124770052,
+    "span_ms": 4800,
+    "states": [
+      [
+        "DISARMED",
+        "ESTOP_RESET"
+      ],
+      [
+        "FAULT",
+        "ESTOP_LATCHED"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        22790
+      ]
+    },
+    "active_rows": [],
+    "first_timeout": null
+  },
+  {
+    "file": "03_m1_a_positive_5pct.txt",
+    "telemetry_count": 88,
+    "events": [
+      "I (799867) esp32_uart_bridge: TX UART1: ARM,seq=3335085465",
+      "I (799867) esp32_uart_bridge: RX ACK: seq=3335085465 type=ARM ack_count=3",
+      "I (799927) esp32_uart_bridge: TX UART1: CMD,seq=3335085466,vx_mmps=25,w_mradps=-125,timeout_ms=300",
+      "W (799937) esp32_uart_bridge: BENCH: single M1 5% CMD sent; no refresh",
+      "I (799937) esp32_uart_bridge: RX ACK: seq=3335085466 type=CMD ack_count=4",
+      "I (800327) esp32_uart_bridge: TX UART1: DISARM,seq=3335085467",
+      "W (800327) esp32_uart_bridge: BENCH LOCKED: PWM 50/0 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (800337) esp32_uart_bridge: RX ACK: seq=3335085467 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 124981852,
+    "last_t_ms": 124990552,
+    "span_ms": 8700,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0,
+        50
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        22790
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "124981952",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "69",
+        "last_seq": "3335085466",
+        "vx": "25",
+        "w": "-125",
+        "left_pwm": "50",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "22790",
+        "tel_count": "8014"
+      },
+      {
+        "t_ms": "124982052",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "169",
+        "last_seq": "3335085466",
+        "vx": "25",
+        "w": "-125",
+        "left_pwm": "50",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "22790",
+        "tel_count": "8015"
+      },
+      {
+        "t_ms": "124982152",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "269",
+        "last_seq": "3335085466",
+        "vx": "25",
+        "w": "-125",
+        "left_pwm": "50",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "22790",
+        "tel_count": "8016"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "124982252",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "369",
+      "last_seq": "3335085466",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "22790",
+      "tel_count": "8017"
+    }
+  },
+  {
+    "file": "04_m1_a_positive_10pct.txt",
+    "telemetry_count": 102,
+    "events": [
+      "I (268517) esp32_uart_bridge: TX UART1: ARM,seq=3252433030",
+      "I (268517) esp32_uart_bridge: RX ACK: seq=3252433030 type=ARM ack_count=3",
+      "I (268557) esp32_uart_bridge: TX UART1: CMD,seq=3252433031,vx_mmps=50,w_mradps=-250,timeout_ms=300",
+      "W (268567) esp32_uart_bridge: BENCH: single M1 10% CMD sent; no refresh",
+      "I (268577) esp32_uart_bridge: RX ACK: seq=3252433031 type=CMD ack_count=4",
+      "I (268957) esp32_uart_bridge: TX UART1: DISARM,seq=3252433032",
+      "W (268967) esp32_uart_bridge: BENCH LOCKED: PWM 100/0 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (268977) esp32_uart_bridge: RX ACK: seq=3252433032 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 125789726,
+    "last_t_ms": 125799826,
+    "span_ms": 10100,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0,
+        100
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        0,
+        10,
+        150,
+        220,
+        300,
+        360
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        23192
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "125789826",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "71",
+        "last_seq": "3252433031",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "23192",
+        "tel_count": "2688"
+      },
+      {
+        "t_ms": "125789926",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "171",
+        "last_seq": "3252433031",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "150",
+        "right_cps": "0",
+        "err": "23192",
+        "tel_count": "2689"
+      },
+      {
+        "t_ms": "125790026",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "271",
+        "last_seq": "3252433031",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "300",
+        "right_cps": "0",
+        "err": "23192",
+        "tel_count": "2690"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "125790126",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "371",
+      "last_seq": "3252433031",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "360",
+      "right_cps": "0",
+      "err": "23192",
+      "tel_count": "2691"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "125790326",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "571",
+      "last_seq": "3252433032",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "10",
+      "right_cps": "0",
+      "err": "23192",
+      "tel_count": "2693"
+    },
+    "first_final_zero": {
+      "t_ms": "125790426",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "671",
+      "last_seq": "3252433032",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "23192",
+      "tel_count": "2694"
+    },
+    "final_zero_span_ms": 9400
+  },
+  {
+    "file": "05_m1_a_negative_10pct.txt",
+    "telemetry_count": 102,
+    "events": [
+      "I (225727) esp32_uart_bridge: TX UART1: ARM,seq=2907608060",
+      "I (225747) esp32_uart_bridge: RX ACK: seq=2907608060 type=ARM ack_count=3",
+      "I (225837) esp32_uart_bridge: TX UART1: CMD,seq=2907608061,vx_mmps=-50,w_mradps=250,timeout_ms=300",
+      "W (225847) esp32_uart_bridge: BENCH: single M1 reverse 10% CMD sent; no refresh",
+      "I (225857) esp32_uart_bridge: RX ACK: seq=2907608061 type=CMD ack_count=4",
+      "I (226237) esp32_uart_bridge: TX UART1: DISARM,seq=2907608062",
+      "W (226247) esp32_uart_bridge: BENCH LOCKED: PWM -100/0 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (226257) esp32_uart_bridge: RX ACK: seq=2907608062 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 126865952,
+    "last_t_ms": 126876052,
+    "span_ms": 10100,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ],
+      [
+        "DISARMED",
+        "ESTOP_RESET"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        -100,
+        0
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        -320,
+        -300,
+        -220,
+        -150,
+        -10,
+        0
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        23798
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "126866152",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "65",
+        "last_seq": "2907608061",
+        "vx": "-50",
+        "w": "250",
+        "left_pwm": "-100",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "23798",
+        "tel_count": "2261"
+      },
+      {
+        "t_ms": "126866252",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "165",
+        "last_seq": "2907608061",
+        "vx": "-50",
+        "w": "250",
+        "left_pwm": "-100",
+        "right_pwm": "0",
+        "left_cps": "-150",
+        "right_cps": "0",
+        "err": "23798",
+        "tel_count": "2262"
+      },
+      {
+        "t_ms": "126866352",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "265",
+        "last_seq": "2907608061",
+        "vx": "-50",
+        "w": "250",
+        "left_pwm": "-100",
+        "right_pwm": "0",
+        "left_cps": "-300",
+        "right_cps": "0",
+        "err": "23798",
+        "tel_count": "2263"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "126866452",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "365",
+      "last_seq": "2907608061",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "-320",
+      "right_cps": "0",
+      "err": "23798",
+      "tel_count": "2264"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "126866652",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "565",
+      "last_seq": "2907608062",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "-10",
+      "right_cps": "0",
+      "err": "23798",
+      "tel_count": "2266"
+    },
+    "first_final_zero": {
+      "t_ms": "126866752",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "665",
+      "last_seq": "2907608062",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "23798",
+      "tel_count": "2267"
+    },
+    "final_zero_span_ms": 9300
+  },
+  {
+    "file": "06_m2_b_initial_no_rotation.txt",
+    "telemetry_count": 231,
+    "events": [
+      "I (226767) esp32_uart_bridge: TX UART1: ARM,seq=1270720217",
+      "I (226767) esp32_uart_bridge: RX ACK: seq=1270720217 type=ARM ack_count=3",
+      "I (226807) esp32_uart_bridge: TX UART1: CMD,seq=1270720218,vx_mmps=50,w_mradps=250,timeout_ms=300",
+      "W (226817) esp32_uart_bridge: BENCH: single M2 10% CMD sent; no refresh",
+      "I (226817) esp32_uart_bridge: RX ACK: seq=1270720218 type=CMD ack_count=4",
+      "I (227207) esp32_uart_bridge: TX UART1: DISARM,seq=1270720219",
+      "W (227207) esp32_uart_bridge: BENCH LOCKED: PWM 0/100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (227217) esp32_uart_bridge: RX ACK: seq=1270720219 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 128361744,
+    "last_t_ms": 128384744,
+    "span_ms": 23000,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0,
+        100
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        -20,
+        0,
+        20
+      ],
+      "err": [
+        25149
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "128361844",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "69",
+        "last_seq": "1270720218",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "25149",
+        "tel_count": "2271"
+      },
+      {
+        "t_ms": "128361944",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "169",
+        "last_seq": "1270720218",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "-20",
+        "err": "25149",
+        "tel_count": "2272"
+      },
+      {
+        "t_ms": "128362044",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "269",
+        "last_seq": "1270720218",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "25149",
+        "tel_count": "2273"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "128362144",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "369",
+      "last_seq": "1270720218",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "25149",
+      "tel_count": "2274"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "128362244",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "469",
+      "last_seq": "1270720219",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "20",
+      "err": "25149",
+      "tel_count": "2275"
+    },
+    "first_final_zero": {
+      "t_ms": "128362344",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "569",
+      "last_seq": "1270720219",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "25149",
+      "tel_count": "2276"
+    },
+    "final_zero_span_ms": 22400
+  },
+  {
+    "file": "07_m2_uncertain_connector_trial.txt",
+    "telemetry_count": 102,
+    "events": [
+      "I (44477) esp32_uart_bridge: TX UART1: ARM,seq=1500849631",
+      "I (44477) esp32_uart_bridge: RX ACK: seq=1500849631 type=ARM ack_count=3",
+      "I (44517) esp32_uart_bridge: TX UART1: CMD,seq=1500849632,vx_mmps=50,w_mradps=250,timeout_ms=300",
+      "W (44517) esp32_uart_bridge: BENCH: single M2 10% CMD sent; no refresh",
+      "I (44527) esp32_uart_bridge: RX ACK: seq=1500849632 type=CMD ack_count=4",
+      "I (44917) esp32_uart_bridge: TX UART1: DISARM,seq=1500849633",
+      "W (44917) esp32_uart_bridge: BENCH LOCKED: PWM 0/100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (44927) esp32_uart_bridge: RX ACK: seq=1500849633 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 128974772,
+    "last_t_ms": 128984872,
+    "span_ms": 10100,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0,
+        100
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        27069
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "128974872",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "71",
+        "last_seq": "1500849632",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "27069",
+        "tel_count": "445"
+      },
+      {
+        "t_ms": "128974972",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "171",
+        "last_seq": "1500849632",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "27069",
+        "tel_count": "446"
+      },
+      {
+        "t_ms": "128975072",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "271",
+        "last_seq": "1500849632",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "27069",
+        "tel_count": "447"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "128975172",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "371",
+      "last_seq": "1500849632",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "27069",
+      "tel_count": "448"
+    }
+  },
+  {
+    "file": "08_m2_a_cross_test.txt",
+    "telemetry_count": 168,
+    "events": [
+      "I (33427) esp32_uart_bridge: TX UART1: ARM,seq=1691895585",
+      "I (33457) esp32_uart_bridge: RX ACK: seq=1691895585 type=ARM ack_count=3",
+      "I (33547) esp32_uart_bridge: TX UART1: CMD,seq=1691895586,vx_mmps=50,w_mradps=250,timeout_ms=300",
+      "W (33557) esp32_uart_bridge: BENCH: single M2 10% CMD sent; no refresh",
+      "I (33557) esp32_uart_bridge: RX ACK: seq=1691895586 type=CMD ack_count=4",
+      "I (33947) esp32_uart_bridge: TX UART1: DISARM,seq=1691895587",
+      "W (33947) esp32_uart_bridge: BENCH LOCKED: PWM 0/100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (33967) esp32_uart_bridge: RX ACK: seq=1691895587 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 129549270,
+    "last_t_ms": 129565970,
+    "span_ms": 16700,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ],
+      [
+        "DISARMED",
+        "ESTOP_RESET"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0,
+        100
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        -320,
+        -290,
+        -230,
+        -120,
+        0,
+        20
+      ],
+      "err": [
+        27419
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "129549470",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "71",
+        "last_seq": "1691895586",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "27419",
+        "tel_count": "335"
+      },
+      {
+        "t_ms": "129549570",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "171",
+        "last_seq": "1691895586",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "-120",
+        "err": "27419",
+        "tel_count": "336"
+      },
+      {
+        "t_ms": "129549670",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "271",
+        "last_seq": "1691895586",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "-290",
+        "err": "27419",
+        "tel_count": "337"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "129549770",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "371",
+      "last_seq": "1691895586",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "-320",
+      "err": "27419",
+      "tel_count": "338"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "129549970",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "571",
+      "last_seq": "1691895587",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "20",
+      "err": "27419",
+      "tel_count": "340"
+    },
+    "first_final_zero": {
+      "t_ms": "129550070",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "671",
+      "last_seq": "1691895587",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "27419",
+      "tel_count": "341"
+    },
+    "final_zero_span_ms": 15900
+  },
+  {
+    "file": "09_m1_b_cross_test.txt",
+    "telemetry_count": 98,
+    "events": [
+      "I (250267) esp32_uart_bridge: TX UART1: ARM,seq=3261777816",
+      "I (250297) esp32_uart_bridge: RX ACK: seq=3261777816 type=ARM ack_count=3",
+      "I (250387) esp32_uart_bridge: TX UART1: CMD,seq=3261777817,vx_mmps=50,w_mradps=-250,timeout_ms=300",
+      "W (250397) esp32_uart_bridge: BENCH: single M1 10% CMD sent; no refresh",
+      "I (250407) esp32_uart_bridge: RX ACK: seq=3261777817 type=CMD ack_count=4",
+      "I (250787) esp32_uart_bridge: TX UART1: DISARM,seq=3261777818",
+      "W (250797) esp32_uart_bridge: BENCH LOCKED: PWM 100/0 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (250807) esp32_uart_bridge: RX ACK: seq=3261777818 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 146549476,
+    "last_t_ms": 146559176,
+    "span_ms": 9700,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ],
+      [
+        "DISARMED",
+        "ESTOP_RESET"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0,
+        100
+      ],
+      "right_pwm": [
+        0
+      ],
+      "left_cps": [
+        -30,
+        0,
+        60,
+        230,
+        300,
+        380
+      ],
+      "right_cps": [
+        0
+      ],
+      "err": [
+        30057
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "146549676",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "71",
+        "last_seq": "3261777817",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "30057",
+        "tel_count": "2505"
+      },
+      {
+        "t_ms": "146549776",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "171",
+        "last_seq": "3261777817",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "60",
+        "right_cps": "0",
+        "err": "30057",
+        "tel_count": "2506"
+      },
+      {
+        "t_ms": "146549876",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "271",
+        "last_seq": "3261777817",
+        "vx": "50",
+        "w": "-250",
+        "left_pwm": "100",
+        "right_pwm": "0",
+        "left_cps": "300",
+        "right_cps": "0",
+        "err": "30057",
+        "tel_count": "2507"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "146549976",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "371",
+      "last_seq": "3261777817",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "380",
+      "right_cps": "0",
+      "err": "30057",
+      "tel_count": "2508"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "146550176",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "571",
+      "last_seq": "3261777818",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "-30",
+      "right_cps": "0",
+      "err": "30057",
+      "tel_count": "2510"
+    },
+    "first_final_zero": {
+      "t_ms": "146550276",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "671",
+      "last_seq": "3261777818",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "30057",
+      "tel_count": "2511"
+    },
+    "final_zero_span_ms": 8900
+  },
+  {
+    "file": "10_m2_b_positive_before_dir_fix.txt",
+    "telemetry_count": 58,
+    "events": [
+      "I (255877) esp32_uart_bridge: TX UART1: ARM,seq=2219255318",
+      "I (255887) esp32_uart_bridge: RX ACK: seq=2219255318 type=ARM ack_count=3",
+      "I (255907) esp32_uart_bridge: TX UART1: CMD,seq=2219255319,vx_mmps=50,w_mradps=250,timeout_ms=300",
+      "W (255907) esp32_uart_bridge: BENCH: single M2 10% CMD sent; no refresh",
+      "I (255917) esp32_uart_bridge: RX ACK: seq=2219255319 type=CMD ack_count=4",
+      "I (256307) esp32_uart_bridge: TX UART1: DISARM,seq=2219255320",
+      "W (256307) esp32_uart_bridge: BENCH LOCKED: PWM 0/100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (256317) esp32_uart_bridge: RX ACK: seq=2219255320 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 147352821,
+    "last_t_ms": 147358521,
+    "span_ms": 5700,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0,
+        100
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        -310,
+        -277,
+        -190,
+        -130,
+        0,
+        40
+      ],
+      "err": [
+        30661
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "147352921",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "70",
+        "last_seq": "2219255319",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "30661",
+        "tel_count": "2562"
+      },
+      {
+        "t_ms": "147353021",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "170",
+        "last_seq": "2219255319",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "-130",
+        "err": "30661",
+        "tel_count": "2563"
+      },
+      {
+        "t_ms": "147353121",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "270",
+        "last_seq": "2219255319",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "-277",
+        "err": "30661",
+        "tel_count": "2564"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "147353221",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "370",
+      "last_seq": "2219255319",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "-310",
+      "err": "30661",
+      "tel_count": "2565"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "147353521",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "670",
+      "last_seq": "2219255320",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "40",
+      "err": "30661",
+      "tel_count": "2568"
+    },
+    "first_final_zero": {
+      "t_ms": "147353621",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "770",
+      "last_seq": "2219255320",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "30661",
+      "tel_count": "2569"
+    },
+    "final_zero_span_ms": 4900
+  },
+  {
+    "file": "11_m2_b_forward_after_dir_fix.txt",
+    "telemetry_count": 98,
+    "events": [
+      "I (212367) esp32_uart_bridge: TX UART1: ARM,seq=3236182835",
+      "I (212387) esp32_uart_bridge: RX ACK: seq=3236182835 type=ARM ack_count=3",
+      "I (212477) esp32_uart_bridge: TX UART1: CMD,seq=3236182836,vx_mmps=50,w_mradps=250,timeout_ms=300",
+      "W (212487) esp32_uart_bridge: BENCH: single M2 10% CMD sent; no refresh",
+      "I (212497) esp32_uart_bridge: RX ACK: seq=3236182836 type=CMD ack_count=4",
+      "I (212877) esp32_uart_bridge: TX UART1: DISARM,seq=3236182837",
+      "W (212887) esp32_uart_bridge: BENCH LOCKED: PWM 0/100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (212897) esp32_uart_bridge: RX ACK: seq=3236182837 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 212300,
+    "last_t_ms": 222000,
+    "span_ms": 9700,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ],
+      [
+        "DISARMED",
+        "ESTOP_RESET"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        0,
+        100
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        -50,
+        0,
+        100,
+        280,
+        350,
+        420
+      ],
+      "err": [
+        0
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "212500",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "68",
+        "last_seq": "3236182836",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "0",
+        "tel_count": "2125"
+      },
+      {
+        "t_ms": "212600",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "168",
+        "last_seq": "3236182836",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "100",
+        "err": "0",
+        "tel_count": "2126"
+      },
+      {
+        "t_ms": "212700",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "268",
+        "last_seq": "3236182836",
+        "vx": "50",
+        "w": "250",
+        "left_pwm": "0",
+        "right_pwm": "100",
+        "left_cps": "0",
+        "right_cps": "350",
+        "err": "0",
+        "tel_count": "2127"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "212800",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "368",
+      "last_seq": "3236182836",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "420",
+      "err": "0",
+      "tel_count": "2128"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "213000",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "568",
+      "last_seq": "3236182837",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "-50",
+      "err": "0",
+      "tel_count": "2130"
+    },
+    "first_final_zero": {
+      "t_ms": "213100",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "668",
+      "last_seq": "3236182837",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "0",
+      "tel_count": "2131"
+    },
+    "final_zero_span_ms": 8900
+  },
+  {
+    "file": "12_m2_b_reverse_after_dir_fix.txt",
+    "telemetry_count": 49,
+    "events": [
+      "I (120787) esp32_uart_bridge: TX UART1: ARM,seq=994996304",
+      "I (120797) esp32_uart_bridge: RX ACK: seq=994996304 type=ARM ack_count=3",
+      "I (120887) esp32_uart_bridge: TX UART1: CMD,seq=994996305,vx_mmps=-50,w_mradps=-250,timeout_ms=300",
+      "W (120897) esp32_uart_bridge: BENCH: single M2 reverse 10% CMD sent; no refresh",
+      "I (120897) esp32_uart_bridge: RX ACK: seq=994996305 type=CMD ack_count=4",
+      "I (121287) esp32_uart_bridge: TX UART1: DISARM,seq=994996306",
+      "W (121287) esp32_uart_bridge: BENCH LOCKED: PWM 0/-100 then CMD_TIMEOUT 0/0 observed; inspect actual motor; DISARM TX=OK",
+      "I (121307) esp32_uart_bridge: RX ACK: seq=994996306 type=DISARM ack_count=5"
+    ],
+    "first_t_ms": 984629,
+    "last_t_ms": 989429,
+    "span_ms": 4800,
+    "states": [
+      [
+        "ARMED",
+        "NONE"
+      ],
+      [
+        "DISARMED",
+        "CMD_TIMEOUT"
+      ],
+      [
+        "DISARMED",
+        "DISARM"
+      ]
+    ],
+    "values": {
+      "left_pwm": [
+        0
+      ],
+      "right_pwm": [
+        -100,
+        0
+      ],
+      "left_cps": [
+        0
+      ],
+      "right_cps": [
+        -410,
+        -330,
+        -240,
+        -80,
+        0,
+        30
+      ],
+      "err": [
+        1439
+      ]
+    },
+    "active_rows": [
+      {
+        "t_ms": "984729",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "72",
+        "last_seq": "994996305",
+        "vx": "-50",
+        "w": "-250",
+        "left_pwm": "0",
+        "right_pwm": "-100",
+        "left_cps": "0",
+        "right_cps": "0",
+        "err": "1439",
+        "tel_count": "1207"
+      },
+      {
+        "t_ms": "984829",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "172",
+        "last_seq": "994996305",
+        "vx": "-50",
+        "w": "-250",
+        "left_pwm": "0",
+        "right_pwm": "-100",
+        "left_cps": "0",
+        "right_cps": "-80",
+        "err": "1439",
+        "tel_count": "1208"
+      },
+      {
+        "t_ms": "984929",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "272",
+        "last_seq": "994996305",
+        "vx": "-50",
+        "w": "-250",
+        "left_pwm": "0",
+        "right_pwm": "-100",
+        "left_cps": "0",
+        "right_cps": "-330",
+        "err": "1439",
+        "tel_count": "1209"
+      }
+    ],
+    "first_timeout": {
+      "t_ms": "985029",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "372",
+      "last_seq": "994996305",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "-410",
+      "err": "1439",
+      "tel_count": "1210"
+    },
+    "last_nonzero_cps": {
+      "t_ms": "985229",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "572",
+      "last_seq": "994996306",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "30",
+      "err": "1439",
+      "tel_count": "1212"
+    },
+    "first_final_zero": {
+      "t_ms": "985329",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "672",
+      "last_seq": "994996306",
+      "vx": "0",
+      "w": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "err": "1439",
+      "tel_count": "1213"
+    },
+    "final_zero_span_ms": 4100
+  }
+]

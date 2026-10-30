@@ -1,0 +1,31 @@
+{
+  "monitor_sha256": "227257b38124c87d3442d4338a8568abb29ba06449d6da2bcde2f9bae293c7f8",
+  "tel_accepted": 0,
+  "tel_rejected": 121,
+  "literal_ld": 121,
+  "state_reason_pairs": [
+    [
+      "FAULT",
+      "ESTOP_ACTIVE"
+    ]
+  ],
+  "files": {
+    "Core/Src/uart_mvp_protocol.c": {
+      "mtime_local": "2026-10-20T01:31:09",
+      "sha256": "dd38258c1beacb549e3c17535e11875a63379af98341e08ff867d20568ec5069",
+      "count_format": "%s"
+    },
+    "Debug/Core/Src/uart_mvp_protocol.o": {
+      "mtime_local": "2026-10-20T00:17:37",
+      "sha256": "513ebaa0c8a199caaba6561f26a3cc0e50e84c62b7b975abad03e339a5cdef79",
+      "count_format": "%lld"
+    },
+    "Debug/stm32_uart_mvp.elf": {
+      "mtime_local": "2026-10-20T00:17:38",
+      "sha256": "e9fc0cc3173a93ee569f4e95eb77cd9c6e9f4c82132390a78e811f99f694fec1",
+      "count_format": "%lld"
+    }
+  },
+  "conclusion": "Saved STM source uses fixed %s formatter; current Debug object and ELF still contain old %lld formatter. Runtime still sends ld. Updated STM image deployment not established.",
+  "next": "User builds STM stm32_uart_mvp project; review new artifact before proceeding to flash/Run. Keep E-stop and zero motion."
+}

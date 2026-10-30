@@ -1,0 +1,8 @@
+#pragma once
+
+// 1: ESP creates an AP. 0: ESP joins a router or laptop hotspot.
+#define WIFI_LINK_USE_AP 1
+
+// Local settings only. Do not commit the actual wifi_link_config.h.
+#define WIFI_LINK_SSID "TMR-ESP32"
+#define WIFI_LINK_PASSWORD "CHANGE_ME"

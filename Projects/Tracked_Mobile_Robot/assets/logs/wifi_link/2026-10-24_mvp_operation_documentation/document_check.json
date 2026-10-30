@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-24",
+  "mechanically_updated_documents": [
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "docs/handoff/README.md",
+    "PROJECT_MEMORY.md",
+    "docs/plans/README.md",
+    "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md"
+  ],
+  "requirements_table_rows_before_sha256": "fad7be557a40e197a6af43acacbddbfdb752e9cd087e023f830d2064da162d45",
+  "requirements_table_rows_after_sha256": "fad7be557a40e197a6af43acacbddbfdb752e9cd087e023f830d2064da162d45",
+  "requirements_table_rows_unchanged": true,
+  "validation_complete": true,
+  "reviewed_documents": [
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "docs/handoff/README.md",
+    "PROJECT_MEMORY.md",
+    "docs/plans/README.md",
+    "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+    "docs/progress/2026-10-24_progress.md",
+    "docs/progress/README.md",
+    "README.md",
+    "01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md",
+    "docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+    "docs/plans/2026-10-24_MVP_Demo_Outline_ko.md",
+    "docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md",
+    "docs/verification/40_WS_Delivery_Path_and_Minimal_Observation_2026-10-23_ko.md",
+    "03_Firmware/esp32_wifi_link/README.md"
+  ],
+  "relative_file_links_checked": 834,
+  "missing_file_links": [],
+  "new_document_missing_heading_links": [],
+  "baseline_files_rechecked": 27,
+  "baseline_mismatches": [],
+  "scoped_git_diff_check_exit_code": 0,
+  "scoped_git_diff_check_output": "warning: in the working copy of 'Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/handoff/NEXT_SESSION_START_PROMPT.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/handoff/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/plans/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/progress/README.md', LF will be replaced by CRLF the next time Git touches it\nwarning: in the working copy of 'Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md', LF will be replaced by CRLF the next time Git touches it\n",
+  "no_build_flash_or_hardware_test": true,
+  "no_git_or_external_publication": true
+}

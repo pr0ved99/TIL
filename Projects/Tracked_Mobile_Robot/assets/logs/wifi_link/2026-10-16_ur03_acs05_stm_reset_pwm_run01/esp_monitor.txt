@@ -1,0 +1,185 @@
+I (563374) wifi_link: STM TEL #5632 t_ms=40900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (563474) wifi_link: STM TEL #5633 t_ms=41000 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (563574) wifi_link: STM TEL #5634 t_ms=41100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (563674) wifi_link: STM TEL #5635 t_ms=41200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (563724) wifi_link: WS QUEUED: ARM request=55 session=1
+I (563734) wifi_link: CONTROL TX: op=1 seq=2830180603 written=19/19
+I (563754) wifi_link: CONTROL RX MATCH: ARM seq=2830180603
+I (563774) wifi_link: STM TEL #5636 t_ms=41300 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (563784) wifi_link: WS QUEUED: CMD request=56 session=1
+I (563794) wifi_link: CONTROL TX: op=2 seq=2830180604 written=55/55
+I (563824) wifi_link: CONTROL RX MATCH: CMD seq=2830180604
+I (563874) wifi_link: STM TEL #5637 t_ms=41400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (563924) wifi_link: WS QUEUED: CMD request=57 session=1
+I (563934) wifi_link: CONTROL TX: op=2 seq=2830180605 written=55/55
+I (563954) wifi_link: CONTROL RX MATCH: CMD seq=2830180605
+I (563974) wifi_link: STM TEL #5638 t_ms=41500 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564034) wifi_link: WS QUEUED: CMD request=58 session=1
+I (564054) wifi_link: CONTROL TX: op=2 seq=2830180606 written=55/55
+I (564064) wifi_link: STM TEL #5639 t_ms=41600 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564094) wifi_link: CONTROL RX MATCH: CMD seq=2830180606
+I (564134) wifi_link: WS QUEUED: CMD request=59 session=1
+I (564154) wifi_link: CONTROL TX: op=2 seq=2830180607 written=55/55
+I (564164) wifi_link: STM TEL #5640 t_ms=41700 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564194) wifi_link: CONTROL RX MATCH: CMD seq=2830180607
+I (564244) wifi_link: WS QUEUED: CMD request=60 session=1
+I (564254) wifi_link: CONTROL TX: op=2 seq=2830180608 written=55/55
+I (564264) wifi_link: STM TEL #5641 t_ms=41800 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564284) wifi_link: CONTROL RX MATCH: CMD seq=2830180608
+I (564344) wifi_link: WS QUEUED: CMD request=61 session=1
+I (564354) wifi_link: CONTROL TX: op=2 seq=2830180609 written=55/55
+I (564364) wifi_link: STM TEL #5642 t_ms=41900 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564384) wifi_link: CONTROL RX MATCH: CMD seq=2830180609
+I (564454) wifi_link: WS QUEUED: CMD request=62 session=1
+I (564474) wifi_link: STM TEL #5643 t_ms=42000 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564474) wifi_link: CONTROL TX: op=2 seq=2830180610 written=55/55
+I (564504) wifi_link: CONTROL RX MATCH: CMD seq=2830180610
+I (564574) wifi_link: STM TEL #5644 t_ms=42100 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564574) wifi_link: WS QUEUED: CMD request=63 session=1
+I (564594) wifi_link: CONTROL TX: op=2 seq=2830180611 written=55/55
+I (564614) wifi_link: CONTROL RX MATCH: CMD seq=2830180611
+I (564674) wifi_link: STM TEL #5645 t_ms=42200 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564684) wifi_link: WS QUEUED: CMD request=64 session=1
+I (564694) wifi_link: CONTROL TX: op=2 seq=2830180612 written=55/55
+I (564714) wifi_link: CONTROL RX MATCH: CMD seq=2830180612
+I (564774) wifi_link: STM TEL #5646 t_ms=42300 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564784) wifi_link: WS QUEUED: CMD request=65 session=1
+I (564794) wifi_link: CONTROL TX: op=2 seq=2830180613 written=55/55
+I (564814) wifi_link: CONTROL RX MATCH: CMD seq=2830180613
+I (564874) wifi_link: STM TEL #5647 t_ms=42400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (564914) wifi_link: WS QUEUED: CMD request=66 session=1
+I (564934) wifi_link: CONTROL TX: op=2 seq=2830180614 written=55/55
+I (564944) wifi_link: CONTROL RX MATCH: CMD seq=2830180614
+I (564974) wifi_link: STM TEL #5648 t_ms=42500 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565014) wifi_link: WS QUEUED: CMD request=67 session=1
+I (565034) wifi_link: CONTROL TX: op=2 seq=2830180615 written=55/55
+I (565044) wifi_link: CONTROL RX MATCH: CMD seq=2830180615
+I (565074) wifi_link: STM TEL #5649 t_ms=42600 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565114) wifi_link: WS QUEUED: CMD request=68 session=1
+I (565134) wifi_link: CONTROL TX: op=2 seq=2830180616 written=55/55
+I (565144) wifi_link: CONTROL RX MATCH: CMD seq=2830180616
+I (565174) wifi_link: STM TEL #5650 t_ms=42701 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565214) wifi_link: WS QUEUED: CMD request=69 session=1
+I (565234) wifi_link: CONTROL TX: op=2 seq=2830180617 written=55/55
+I (565244) wifi_link: CONTROL RX MATCH: CMD seq=2830180617
+I (565274) wifi_link: STM TEL #5651 t_ms=42801 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565344) wifi_link: WS QUEUED: CMD request=70 session=1
+I (565344) wifi_link: CONTROL TX: op=2 seq=2830180618 written=55/55
+I (565364) wifi_link: STM TEL #5652 t_ms=42901 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565384) wifi_link: CONTROL RX MATCH: CMD seq=2830180618
+I (565464) wifi_link: WS QUEUED: CMD request=71 session=1
+I (565474) wifi_link: STM TEL #5653 t_ms=43001 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565474) wifi_link: CONTROL TX: op=2 seq=2830180619 written=55/55
+I (565504) wifi_link: CONTROL RX MATCH: CMD seq=2830180619
+I (565574) wifi_link: STM TEL #5654 t_ms=43101 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565594) wifi_link: WS QUEUED: CMD request=72 session=1
+I (565614) wifi_link: CONTROL TX: op=2 seq=2830180620 written=55/55
+I (565634) wifi_link: CONTROL RX MATCH: CMD seq=2830180620
+I (565674) wifi_link: STM TEL #5655 t_ms=43201 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565694) wifi_link: WS QUEUED: CMD request=73 session=1
+I (565714) wifi_link: CONTROL TX: op=2 seq=2830180621 written=55/55
+I (565734) wifi_link: CONTROL RX MATCH: CMD seq=2830180621
+I (565774) wifi_link: STM TEL #5656 t_ms=43301 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565794) wifi_link: WS QUEUED: CMD request=74 session=1
+I (565814) wifi_link: CONTROL TX: op=2 seq=2830180622 written=55/55
+I (565834) wifi_link: CONTROL RX MATCH: CMD seq=2830180622
+I (565874) wifi_link: STM TEL #5657 t_ms=43401 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (565924) wifi_link: WS QUEUED: CMD request=75 session=1
+I (565934) wifi_link: CONTROL TX: op=2 seq=2830180623 written=55/55
+I (565944) wifi_link: CONTROL RX MATCH: CMD seq=2830180623
+I (565974) wifi_link: STM TEL #5658 t_ms=43502 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566024) wifi_link: WS QUEUED: CMD request=76 session=1
+I (566034) wifi_link: CONTROL TX: op=2 seq=2830180624 written=55/55
+I (566044) wifi_link: CONTROL RX MATCH: CMD seq=2830180624
+I (566074) wifi_link: STM TEL #5659 t_ms=43602 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566134) wifi_link: WS QUEUED: CMD request=77 session=1
+I (566144) wifi_link: CONTROL TX: op=2 seq=2830180625 written=55/55
+I (566164) wifi_link: STM TEL #5660 t_ms=43702 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566184) wifi_link: CONTROL RX MATCH: CMD seq=2830180625
+I (566234) wifi_link: WS QUEUED: CMD request=78 session=1
+I (566244) wifi_link: CONTROL TX: op=2 seq=2830180626 written=55/55
+I (566254) wifi_link: STM TEL #5661 t_ms=43802 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566274) wifi_link: CONTROL RX MATCH: CMD seq=2830180626
+I (566334) wifi_link: WS QUEUED: CMD request=79 session=1
+I (566344) wifi_link: CONTROL TX: op=2 seq=2830180627 written=55/55
+I (566354) wifi_link: STM TEL #5662 t_ms=43902 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566374) wifi_link: CONTROL RX MATCH: CMD seq=2830180627
+I (566464) wifi_link: WS QUEUED: CMD request=80 session=1
+I (566474) wifi_link: STM TEL #5663 t_ms=44002 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566474) wifi_link: CONTROL TX: op=2 seq=2830180628 written=55/55
+I (566504) wifi_link: CONTROL RX MATCH: CMD seq=2830180628
+I (566564) wifi_link: WS QUEUED: CMD request=81 session=1
+I (566574) wifi_link: STM TEL #5664 t_ms=44102 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566574) wifi_link: CONTROL TX: op=2 seq=2830180629 written=55/55
+I (566604) wifi_link: CONTROL RX MATCH: CMD seq=2830180629
+I (566664) wifi_link: WS QUEUED: CMD request=82 session=1
+I (566674) wifi_link: STM TEL #5665 t_ms=44202 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566674) wifi_link: CONTROL TX: op=2 seq=2830180630 written=55/55
+I (566704) wifi_link: CONTROL RX MATCH: CMD seq=2830180630
+I (566774) wifi_link: STM TEL #5666 t_ms=44302 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566794) wifi_link: WS QUEUED: CMD request=83 session=1
+I (566814) wifi_link: CONTROL TX: op=2 seq=2830180631 written=55/55
+I (566834) wifi_link: CONTROL RX MATCH: CMD seq=2830180631
+I (566874) wifi_link: STM TEL #5667 t_ms=44402 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (566914) wifi_link: WS QUEUED: CMD request=84 session=1
+I (566934) wifi_link: CONTROL TX: op=2 seq=2830180632 written=55/55
+I (566944) wifi_link: CONTROL RX MATCH: CMD seq=2830180632
+I (566974) wifi_link: STM TEL #5668 t_ms=44504 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (567024) wifi_link: WS QUEUED: CMD request=85 session=1
+I (567034) wifi_link: CONTROL TX: op=2 seq=2830180633 written=55/55
+I (567044) wifi_link: CONTROL RX MATCH: CMD seq=2830180633
+I (567074) wifi_link: STM TEL #5669 t_ms=44604 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (567124) wifi_link: WS QUEUED: CMD request=86 session=1
+I (567134) wifi_link: CONTROL TX: op=2 seq=2830180634 written=55/55
+I (567294) wifi_link: CONTROL TX: op=3 seq=2830180635 written=24/24
+I (567684) wifi_link: STM TEL #5670 t_ms=100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (567784) wifi_link: STM TEL #5671 t_ms=200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (567884) wifi_link: STM TEL #5672 t_ms=300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (567984) wifi_link: STM TEL #5673 t_ms=400 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568084) wifi_link: STM TEL #5674 t_ms=500 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568184) wifi_link: STM TEL #5675 t_ms=600 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568284) wifi_link: STM TEL #5676 t_ms=700 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568384) wifi_link: STM TEL #5677 t_ms=800 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568484) wifi_link: STM TEL #5678 t_ms=900 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568584) wifi_link: STM TEL #5679 t_ms=1000 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568684) wifi_link: STM TEL #5680 t_ms=1100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568784) wifi_link: STM TEL #5681 t_ms=1200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568884) wifi_link: STM TEL #5682 t_ms=1300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (568984) wifi_link: STM TEL #5683 t_ms=1400 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569084) wifi_link: STM TEL #5684 t_ms=1500 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569184) wifi_link: STM TEL #5685 t_ms=1600 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569284) wifi_link: STM TEL #5686 t_ms=1700 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569384) wifi_link: STM TEL #5687 t_ms=1800 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569484) wifi_link: STM TEL #5688 t_ms=1900 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569584) wifi_link: STM TEL #5689 t_ms=2000 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569684) wifi_link: STM TEL #5690 t_ms=2100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569784) wifi_link: STM TEL #5691 t_ms=2200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569884) wifi_link: STM TEL #5692 t_ms=2300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (569984) wifi_link: STM TEL #5693 t_ms=2400 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570084) wifi_link: STM TEL #5694 t_ms=2500 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570184) wifi_link: STM TEL #5695 t_ms=2600 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570284) wifi_link: STM TEL #5696 t_ms=2700 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570384) wifi_link: STM TEL #5697 t_ms=2800 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570484) wifi_link: STM TEL #5698 t_ms=2900 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570584) wifi_link: STM TEL #5699 t_ms=3000 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570684) wifi_link: STM TEL #5700 t_ms=3100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570784) wifi_link: STM TEL #5701 t_ms=3200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570884) wifi_link: STM TEL #5702 t_ms=3300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (570984) wifi_link: STM TEL #5703 t_ms=3400 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571084) wifi_link: STM TEL #5704 t_ms=3500 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571184) wifi_link: STM TEL #5705 t_ms=3600 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571284) wifi_link: STM TEL #5706 t_ms=3700 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571384) wifi_link: STM TEL #5707 t_ms=3800 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571484) wifi_link: STM TEL #5708 t_ms=3900 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571584) wifi_link: STM TEL #5709 t_ms=4000 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571684) wifi_link: STM TEL #5710 t_ms=4100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571784) wifi_link: STM TEL #5711 t_ms=4200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571874) wifi_link: WS QUEUED: DISARM request=87 session=1
+I (571884) wifi_link: STM TEL #5712 t_ms=4300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (571884) wifi_link: CONTROL TX: op=3 seq=2830180636 written=24/24
+I (571904) wifi_link: CONTROL RX MATCH: DISARM seq=2830180636
+I (571984) wifi_link: STM TEL #5713 t_ms=4400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (572084) wifi_link: STM TEL #5714 t_ms=4500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (572184) wifi_link: STM TEL #5715 t_ms=4600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (572284) wifi_link: STM TEL #5716 t_ms=4700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (572384) wifi_link: STM TEL #5717 t_ms=4800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0

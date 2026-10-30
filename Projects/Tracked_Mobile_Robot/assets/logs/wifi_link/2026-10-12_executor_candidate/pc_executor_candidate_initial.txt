@@ -1,0 +1,32 @@
+Mode: CANDIDATE EXECUTOR WITH SAVED CONTROL MODULES
+2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md SHA256: 54be9fd377c188e9513b0792811504a33becd4174974b9d3291156231e22eb22
+wifi_control_contract.h SHA256: 9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8
+wifi_control_contract.c SHA256: 26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4
+wifi_control_ticket.h SHA256: ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea
+wifi_control_ticket.c SHA256: 415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94
+wifi_control_owner.h SHA256: 3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af
+wifi_control_owner.c SHA256: 707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd
+wifi_control_state.h SHA256: e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0
+wifi_control_state.c SHA256: 8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23
+test_ack_deadline (__main__.WifiControlExecutorTest.test_ack_deadline) ... ok
+test_admission (__main__.WifiControlExecutorTest.test_admission) ... ok
+test_cancel_during_tx (__main__.WifiControlExecutorTest.test_cancel_during_tx) ... ok
+test_cancel_order (__main__.WifiControlExecutorTest.test_cancel_order) ... ok
+test_cmd_queue_expiry (__main__.WifiControlExecutorTest.test_cmd_queue_expiry) ... ok
+test_connection_identity (__main__.WifiControlExecutorTest.test_connection_identity) ... ok
+test_long_tx_completion (__main__.WifiControlExecutorTest.test_long_tx_completion) ... ok
+test_normal (__main__.WifiControlExecutorTest.test_normal) ... ok
+test_output_and_copy (__main__.WifiControlExecutorTest.test_output_and_copy) ... ok
+test_partial_tx (__main__.WifiControlExecutorTest.test_partial_tx) ... ok
+test_queue_expiry (__main__.WifiControlExecutorTest.test_queue_expiry) ... ok
+test_response_identity (__main__.WifiControlExecutorTest.test_response_identity) ... ok
+test_seq_zero (__main__.WifiControlExecutorTest.test_seq_zero) ... ok
+test_source_and_blocked (__main__.WifiControlExecutorTest.test_source_and_blocked) ... ok
+test_ticket_expiry (__main__.WifiControlExecutorTest.test_ticket_expiry) ... ok
+test_ticket_reuse_and_startup (__main__.WifiControlExecutorTest.test_ticket_reuse_and_startup) ... ok
+test_zero_only_and_old_owner (__main__.WifiControlExecutorTest.test_zero_only_and_old_owner) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 1.074s
+
+OK

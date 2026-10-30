@@ -1,5 +1,9 @@
 # ESP32-S3 Features and Project Role Analysis
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](07_ESP32S3_Features_and_Project_Role_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: The production mapper, timeout DISARMED path and manual bench console are implemented. General PC forwarding and Wi-Fi control remain planned.
+
 ## Purpose
 
 This document summarizes ESP32-S3 features and defines how the ESP32-S3
@@ -151,7 +155,7 @@ The project should use STM32 and ESP32-S3 for different jobs.
 | Motor fail-safe | Primary | Support only |
 | Battery low-voltage motor shutdown | Primary | Telemetry only |
 | IMU integration | Candidate primary | Good prototype candidate |
-| PC serial command | Primary first path | Optional bridge later |
+| External command ingress | Request validation/execution and final safety authority | Final MVP production ingress owner; optional arbitration/forwarding planned |
 | Wireless control | Not suitable | Primary |
 | Web UI or mobile UI | Not suitable | Primary |
 | Debug telemetry over Wi-Fi | Not suitable | Primary |
@@ -317,12 +321,24 @@ Recommended learning and validation order:
 ESP32-S3 is suitable as a support controller, not as the first low-level motor
 controller.
 
-Initial role:
+Final MVP role:
 
 - Wireless dashboard
-- UART bridge
+- Production external command ingress and UART bridge
 - IMU/sensor prototype platform
 - UI and development utility controller
+
+The fixed production path is:
+
+```text
+optional PC control -> ESP32-S3 -> UART1 GPIO17/GPIO18
+                                   <-> STM32 USART1 PA9/PA10
+```
+
+The STM32 USART2 PA2/PA3 PC-first path is historical bench evidence only and
+does not accept Final MVP production commands. ESP32 owns ingress, while STM32
+still owns motor output and safety permission. `PC -> ESP32` forwarding is not
+implemented yet.
 
 Deferred role:
 
@@ -339,24 +355,17 @@ Rejected for MVP:
 
 ## 8. Next Stage
 
-The next practical step is not more feature listing. The project must first
-lock down the low-level drivetrain interface and then define the STM32-ESP32
-communication boundary.
+ADR-015 fixes the STM32-ESP32 boundary and production ingress. The next
+command-path work is the production `CMD(vx,w)` mapper and timeout recovery.
 
-Immediate next document:
-
-- `08_Motor_Driver_and_HBridge_Control.md`
-
-Later document candidate:
+Current reference documents:
 
 - `09_STM32_ESP32_UART_Interface_Contract.md`
+- ADR-015 in `19_Architecture_Decision_Record_ko.md`
 
-The later UART contract should define:
+Follow-up implementation must close:
 
-- UART pins
-- Baud rate
-- Message direction
-- Command timeout
-- Telemetry fields
-- Safety ownership
-- Error handling
+- Production `CMD(vx,w)` to left/right PWM/DIR mapping
+- Output/stored-command zero and `DISARMED` on timeout
+- New `ARM` followed by new `CMD` before motion resumes
+- Optional `PC -> ESP32` forwarding

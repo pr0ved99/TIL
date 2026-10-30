@@ -1,0 +1,7 @@
+MODE CANDIDATE native PC only
+MAIN normalized SHA256 215cd704f66ccb15a520a0397675d3a553ebf61be887d797dfa96a2b972302b7
+PASS mode=0: disabled handler/dispatch + 42 W5/main adapter regressions
+PASS mode=1: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+NEGATIVE CONTROL detected: LF-only executes old ARM even though final DISARM succeeds
+PASS mode=2: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+Production inputs unchanged; board build/flash/LA capture remain unverified.

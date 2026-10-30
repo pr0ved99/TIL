@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-20",
+  "source": "User clarification: 방금 보낸건 좌우 모터를 직접 손으로 돌려서 얻은 결과야",
+  "method_confirmed": "Left and right motors manually rotated by hand",
+  "distance_reference": "UNKNOWN: what1/5/10/15cm refers to and how measured",
+  "capture_synchronization": "Independent manual motor turns possible; paired simultaneous chassis displacement not established",
+  "prior_reports": [
+    "2026-10-20_manual_left_distance_check_run01/observations.json",
+    "2026-10-20_manual_both_distance_check_run02/observations.json"
+  ],
+  "current_disposition": "WITHHOLD_ACTUAL_CHASSIS_DISTANCE_ERROR_AND_CALIBRATION_CONCLUSION",
+  "retained": "Reported count tables and conditional arithmetic remain historical records",
+  "withdrawn_as_current_claims": [
+    "About15% actual chassis-distance underestimation",
+    "About11.2mm effective pitch inferred as physical evidence",
+    "A common new distance coefficient ready for application"
+  ],
+  "unchanged": [
+    "Raw reported counts",
+    "Verified1560 counts/output rev evidence",
+    "Initial approximate9.5mm geometry model remains uncalibrated",
+    "Firmware and analyzer coefficients have not been changed"
+  ],
+  "next": "Ask what physically moved by the reported cm and how that distance was measured; do not repeat tests or change constants until reference clarified."
+}

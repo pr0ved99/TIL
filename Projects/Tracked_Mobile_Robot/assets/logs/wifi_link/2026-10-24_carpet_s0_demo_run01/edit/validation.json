@@ -1,0 +1,50 @@
+{
+  "full_decode_exit": 0,
+  "decode_errors": "",
+  "decoded_frames": 4470,
+  "duration_seconds": 149,
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "audio_tracks": 0,
+  "sample_times_seconds": [
+    1,
+    10,
+    40,
+    66,
+    69,
+    72,
+    80,
+    94,
+    98,
+    101,
+    106,
+    109,
+    114,
+    118,
+    122.5,
+    123.8,
+    127,
+    135,
+    143,
+    146,
+    148.5
+  ],
+  "source_hashes_unchanged": true,
+  "output_sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+  "visual_review": "21 output samples reviewed: layout, captions, FAULT/recovery, final DISARM and outro; no full continuous visual playback claimed.",
+  "encoded_alignment_check": "render_alignment_validation.json",
+  "source_alignment_recheck": "alignment_recheck.json",
+  "previous_desktop_copies": [
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
+    },
+    {
+      "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Final_2026-10-24_syncfix.mp4",
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
+    }
+  ],
+  "current_output": "../../../../videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
+  "relocation_record": "../../../../videos/wifi_mvp/2026-10-24/relocation.json"
+}

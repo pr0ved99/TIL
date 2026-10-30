@@ -1,0 +1,36 @@
+{
+  "scope": "Candidate PAGE/main + saved core; native mocks only, no board build/flash/runtime",
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-17_nonzero_page_candidate\\source\\wifi_link_main.c",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "node": "C:/Users/eyh12/AppData/Local/stm32cube/bundles/node/22.22.0+st.1/node/bin/node.exe",
+  "inputs": {
+    "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-17_nonzero_page_candidate\\source\\wifi_link_main.c": "8832e891db7e20af7e696ea18874e50cae988c4f98bd4d34fd4c48dc2ca7823d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "ddb38e7b9ce1b47f3f040779376e263558553be8ca7a8cd3c285a6ed3fa2faae",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "f5e503d580534a564faf9d2003bb9e5298523a26402ea27d3025525d9b323773",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "bcf57445e1fa9229f70323f4e616e39d0675b2961c5eda87773ced8fafdbcc95",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_main.py": "31f8435d0f1e2e0079d3185fd749442a507e14ec20fc5bd00ea3502493b1a43e",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main.py": "e4ad6d5f7b861ffca8d88dfcd3331d6628fecf66048eca0bfee427c38a6ebd96",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main_page.js": "1de31999cc3a1b8db1a429e7d0405607495efa467a022498a83284ca1b1c9ae0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_page.js": "fcdb685b2433e4b7aa6e17331f00b0967a893b9b415ca34fbac33d8f9a917e0f",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_nonzero_main_host_fixture.c": "480c874e5870a515ac41bd5ae86a02c1e3110f9fd00099a67e1f0f89d3d42af5",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_main_host_fixture.c": "1ba4de19604f7c25be0b040ea4c788cf728a23943f18b9b8d105025777954fa7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_w5_host_fixture.c": "aa54632e427c82d97ec01625b6cf7cf9e5e6e26512cf286a2026e867d8e51bc4"
+  },
+  "checks": {
+    "existing_c": 42,
+    "browser": 66,
+    "mode_1_adapter": 6,
+    "mode_0_adapter": 6,
+    "page_c_initializer": 1,
+    "negative_controls_detected": 2
+  },
+  "status": "PASS"
+}

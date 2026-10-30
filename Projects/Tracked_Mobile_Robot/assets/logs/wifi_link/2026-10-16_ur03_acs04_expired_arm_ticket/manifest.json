@@ -1,0 +1,41 @@
+{
+  "test": "UR03_ACS04_EXPIRED_ARM_TICKET",
+  "state": "RUN01_EXPIRED_OBSOLETE_ARM_SUBCASE_PASS",
+  "date": "2026-10-16",
+  "saved_main_normalized_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+  "files_sha256": {
+    "console_test.js": "45dbba8ecd28d721f3116ab7f5615b234db85bb5cd501d53b5257beaa203f3e2",
+    "check_console_test.js": "498a4e95aff046dd71a9986bf6becec1a26da5c4879998db6215e17a3bf7863c",
+    "pc_check.json": "9ad858f1c714f61d8383729db8b693cff21b3cd59ac850e928c315b9566565b9"
+  },
+  "pc_checks_passed": 13,
+  "pc_execution": "functions.exec V8 new Function(page,helper,sharedFixturePrefix+check_console_test.js). Actual PAGE extracted from saved C initializer; no board connection/build/flash.",
+  "shared_fixture": "../2026-10-16_ur03_acs02_ticket_reuse/check_console_test.js prefix before function setup(",
+  "shared_fixture_file_sha256": "022bcc4f939a77acc8cd75045915b4dbdddc668ca7918734859b0160f23ccc9e",
+  "purpose": "A previously valid ARM ticket from the same test session is submitted only after its advertised remaining TTL plus 100 ms. The obsolete request must not ARM the STM.",
+  "steps": [
+    "Refresh normal robot page; READY / IDLE / fresh DISARMED and all zero required.",
+    "Paste console_test.js once; installation only sends HELLO. Wait for AC-S04 READY.",
+    "Start LA D0/D1 UART plus D4/D6/D7 capture at 4 MHz, 100M samples / 25 seconds.",
+    "Manually execute ur03Acs04.start() in Console. Do not click page ARM.",
+    "Expected TICKET_REJECTED, 1 second fresh IDLE/DISARMED observation, APP_CHECKS_OK_CAPTURE_REQUIRED.",
+    "Save a unique 2026-10-16_UR03_ACS04_EXPIRED_ARM_PWM_run01.sr; paste copy(ur03Acs04.report()) result."
+  ],
+  "constraints": [
+    "No firmware edit or build; no new wiring.",
+    "Existing zero-only bench: motor B+ and board power plugs remain disconnected as previously confirmed.",
+    "No CMD and no ARM retry; one manual start per page; cancel discards unsent request.",
+    "Unexpected acceptance, changed identity/state/output/counters or missing response makes result INCOMPLETE; post-send failure attempts DISARM.",
+    "Capture must confirm no ARM/CMD on D1, DISARMED/zero TEL on D0, D4/PB6 and D7/PB7 LOW, D6/PC7 LOW."
+  ],
+  "limits": [
+    "This covers the expired/obsolete ARM ticket subcase only, not all AC-S04.",
+    "Periodic snapshots may replace the expired ticket ID before submission. TICKET_REJECTED alone cannot isolate the EXPIRED branch from MISMATCH after replacement; helper logs current and frozen IDs.",
+    "No exact 149/150 ms boundary, selective ACK loss/delay, late UART ACK, CMD-only watchdog recovery, RF loss or powered-motor stopping claim.",
+    "Firmware source identity checked; flashed binary readback is not available."
+  ],
+  "capture_name": "2026-10-16_UR03_ACS04_EXPIRED_ARM_PWM_run01.sr",
+  "latest_observations": "../2026-10-16_ur03_acs04_expired_arm_pwm_run01/observations.json",
+  "latest_browser_report": "../2026-10-16_ur03_acs04_expired_arm_pwm_run01/browser_report.json",
+  "next_action": "No repeat of this passed subcase. Preserve overall AC-S04 as partial; selective ACK delay/loss and late replies need separate evidence."
+}

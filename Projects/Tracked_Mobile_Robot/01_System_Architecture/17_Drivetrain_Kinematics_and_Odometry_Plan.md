@@ -1,5 +1,9 @@
 # Drivetrain Kinematics and Odometry Plan
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Current vehicle mapping supersedes the July checkpoint: A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5. B actual forward/reverse was observed; A actual forward observation remains open.
+
 ## Purpose
 
 This document defines the first kinematics and odometry plan for the tracked
@@ -86,6 +90,14 @@ positive w  -> robot turns left
 
 Encoder sign must be adjusted so this convention is true.
 
+The following July mapping is historical and is superseded by A=left/M1 and B=right/M2.
+
+2026-07-30 encoder-side checkpoint: Motor A is vehicle right/TIM5 and Motor B
+is vehicle left/TIM3. Right/A clockwise and left/B counter-clockwise are
+forward, so production TIM3/left CPS is inverted while TIM5/right keeps the
+raw sign. This manual motor-off result does not establish the powered MDD10A
+channel 1/2 to physical-side mapping or command-driven motor polarity.
+
 ## 3. Differential Drive Approximation
 
 Let:
@@ -143,7 +155,7 @@ Open parameters to measure:
 | Gear ratio | Motor model datasheet or manual count test |
 | Output sprocket circumference | Measure or infer from track movement |
 | Effective track width | Measure from chassis, tune with rotation test |
-| Encoder sign | Confirm by low-speed forward command |
+| Encoder sign | Motor-off encoder-side mapping confirmed; recheck with powered forward command |
 
 Do not assume the nominal motor label gives enough information for accurate
 odometry.

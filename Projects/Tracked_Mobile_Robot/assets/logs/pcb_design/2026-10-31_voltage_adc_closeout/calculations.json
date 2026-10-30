@@ -1,0 +1,133 @@
+{
+  "scope": "Algebraic comparisons; no SPICE rerun, no hardware, no final safety/accuracy PASS",
+  "nominal": {
+    "A": 0.14820953621351404,
+    "K": 6.747204164780444,
+    "vadc_at_16V": 2.3713525794162247,
+    "vadc_at_12p6V": 1.867440156290277,
+    "req_adc_ohm": 4463.8631067214665
+  },
+  "corners": [
+    {
+      "condition": "max_0p1pct",
+      "R_ohm": [
+        11988,
+        11988,
+        4704.7,
+        999,
+        47047
+      ],
+      "calculated_vadc_V": 2.375471678857131,
+      "user_reported_vadc_V": 2.37547,
+      "reported_minus_calculated_V": -1.678857131093281e-06,
+      "rail_error_full_precision_V": 0.027792404902829304,
+      "rail_error_from_rounded_user_V": 0.027781077311001212
+    },
+    {
+      "condition": "min_0p1pct",
+      "R_ohm": [
+        12012,
+        12012,
+        4695.3,
+        1001,
+        46953
+      ],
+      "calculated_vadc_V": 2.3672392317241635,
+      "user_reported_vadc_V": 2.36724,
+      "reported_minus_calculated_V": 7.682758362825837e-07,
+      "rail_error_full_precision_V": -0.027753596679064074,
+      "rail_error_from_rounded_user_V": -0.027748412965141966
+    }
+  ],
+  "ron_2_to_4p5_only": {
+    "vadc_V": 2.371238428983425,
+    "rail_delta_V": -0.0007701962755959357,
+    "limit": "2 ohm is typical, not minimum; not a full bound"
+  },
+  "on_leakage_single_50nA": {
+    "adc_abs_delta_V": 0.00022319315533607333,
+    "rail_abs_delta_V": 0.0015059297872340425
+  },
+  "off_current_times_R5": {
+    "10nA_V": 0.00047,
+    "2uA_V": 0.094,
+    "limit": "VD=0 vendor test; floating output/MCU off IV not modeled"
+  },
+  "fast_fall_assumption": {
+    "slope_V_per_ms": 25,
+    "trip_ms": 10.012,
+    "off_ms": 10.042,
+    "cross_ms": 10.03714589682335,
+    "sample_ms": 10.04,
+    "vdda_V": 2.3,
+    "vdda_minus_vadc_V": -0.07135257941622486,
+    "user_reported_delta_V": -0.0713526,
+    "limit": "Chosen PWL, not measured Nucleo power fall"
+  },
+  "discharge_assumption": {
+    "R5_ohm": 47000,
+    "C2_F": 1e-10,
+    "tau_s": 4.7e-06,
+    "99pct_s": 2.1644299874144032e-05
+  },
+  "adc_scale_3p3V_12bit": {
+    "adc_lsb_V": 0.0008056640625,
+    "rail_lsb_V": 0.005435979917913932,
+    "rail_4LSB_V": 0.021743919671655728,
+    "rail_3LSB_V": 0.016307939753741795
+  },
+  "vrefint_hypothetical_Ncal1500": [
+    {
+      "Nref": 1496,
+      "estimated_vdda_V": 3.3088235294117645,
+      "rail_error_at16V": 0.042780748663101775
+    },
+    {
+      "Nref": 1499,
+      "estimated_vdda_V": 3.3022014676450966,
+      "rail_error_at16V": 0.01067378252168183
+    },
+    {
+      "Nref": 1501,
+      "estimated_vdda_V": 3.2978014656895405,
+      "rail_error_at16V": -0.010659560293138526
+    },
+    {
+      "Nref": 1504,
+      "estimated_vdda_V": 3.291223404255319,
+      "rail_error_at16V": -0.0425531914893611
+    }
+  ],
+  "resistor_TCR_assumptions_not_kit_specs": [
+    {
+      "assumed_abs_TCR_ppm_per_C": 25,
+      "delta_T_C": 5,
+      "min_rail_error_V": -0.003471320246330123,
+      "max_rail_error_V": 0.0034719266245346603
+    },
+    {
+      "assumed_abs_TCR_ppm_per_C": 50,
+      "delta_T_C": 5,
+      "min_rail_error_V": -0.006942034272848119,
+      "max_rail_error_V": 0.006944459785728441
+    },
+    {
+      "assumed_abs_TCR_ppm_per_C": 100,
+      "delta_T_C": 5,
+      "min_rail_error_V": -0.01388164429975447,
+      "max_rail_error_V": 0.013891346352149725
+    }
+  ],
+  "UT210E_DC20V_spec_bound": [
+    {
+      "reading_V": 12.6,
+      "resolution_V": 0.01,
+      "bound_V": 0.1182
+    },
+    {
+      "reading_V": 16,
+      "resolution_V": 0.01,
+      "bound_V": 0.14200000000000002
+    }
+  ]
+}

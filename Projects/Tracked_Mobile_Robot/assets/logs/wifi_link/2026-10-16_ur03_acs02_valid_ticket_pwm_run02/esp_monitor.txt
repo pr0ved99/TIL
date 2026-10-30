@@ -1,0 +1,22 @@
+I (385519) wifi_link: STM TEL #3858 t_ms=1867200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (385619) wifi_link: STM TEL #3859 t_ms=1867300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (385639) wifi_link: WS QUEUED: ARM request=1 session=2
+I (385659) wifi_link: CONTROL TX: op=1 seq=3522553848 written=19/19
+I (385679) wifi_link: CONTROL RX MATCH: ARM seq=3522553848
+I (385719) wifi_link: STM TEL #3860 t_ms=1867400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (385719) wifi_link: WS QUEUED: CMD request=2 session=2
+I (385739) wifi_link: CONTROL TX: op=2 seq=3522553849 written=55/55
+I (385769) wifi_link: CONTROL RX MATCH: CMD seq=3522553849
+I (385819) wifi_link: STM TEL #3861 t_ms=1867500 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (385859) wifi_link: WS QUEUED: CMD request=3 session=2
+I (385879) wifi_link: CONTROL TX: op=2 seq=3522553850 written=55/55
+I (385889) wifi_link: CONTROL RX MATCH: CMD seq=3522553850
+I (385919) wifi_link: STM TEL #3862 t_ms=1867601 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+W (385939) wifi_link: WS rejected: TICKET_REJECTED request=1
+W (385939) wifi_link: TICKET DEBUG: cmd=CMD request=1 got=2407 expected=2404 valid=0/0 check_ms=385590..385590 issued_ms=385199 expires_ms=385349 boot=1797425356/1797425356 session=3/3 control=1/0 purpose=1/0
+I (386009) wifi_link: WS QUEUED: DISARM request=5 session=2
+I (386019) wifi_link: STM TEL #3863 t_ms=1867701 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (386019) wifi_link: CONTROL TX: op=3 seq=3522553851 written=24/24
+I (386039) wifi_link: CONTROL RX MATCH: DISARM seq=3522553851
+I (386119) wifi_link: STM TEL #3864 t_ms=1867801 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (386219) wifi_link: STM TEL #3865 t_ms=1867901 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0

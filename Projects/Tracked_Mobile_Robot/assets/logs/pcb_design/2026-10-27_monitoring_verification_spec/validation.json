@@ -1,0 +1,20 @@
+{
+  "status": "DOCUMENT_AND_CALCULATION_CHECK_PASS",
+  "hardware_tests": "NOT_RUN",
+  "documents_checked": 11,
+  "local_links_checked": 356,
+  "missing_local_links": [],
+  "calculation_assertions": "RT interpolation/inversion, direction, decision boundaries, budget sum and independent-point separation passed",
+  "test_matrix_rows": 10,
+  "current_cad_matches_saved_review_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "92cff6762f46624bb71abe86d0ae7478b44a2413104e939072aa94258b7ba3cd",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "reports/netlist.xml": "50e3a8f11b22784c22fa91728ec93d061b0c2374393fead9f778f28210337fb0"
+  },
+  "source_doc_sha256": {
+    "09_Electrical_Design\\22_Current_Channel_Verification_Spec_2026-10-27_ko.md": "c9bd729005961ec477ba52bd3159e93813979f5da6d1bcf8f6622748c2537993",
+    "09_Electrical_Design\\23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md": "1a958fc348cdddf2aea0423d97a9c8cdd44b55f08bc647a5eb4221e54189a16c"
+  },
+  "git_diff_check": "PASS",
+  "firmware_build_flash_and_physical_changes": "NOT_PERFORMED"
+}

@@ -1,5 +1,8 @@
 # ESP32-S3 기능과 프로젝트 내 역할 분석
 
+> 문서 역할·상태 대조: **2026-09-30** — ESP32 역할 계약과 학습 경로. 수동 bench 콘솔 구현과 일반 forwarding 계획을 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 ESP32-S3의 주요 기능을 정리하고, 궤도형 모바일 로봇 프로젝트에서
@@ -147,7 +150,7 @@ cryptographic acceleration 같은 hardware security 기능을 제공한다.
 | Motor fail-safe | Primary | 보조만 가능 |
 | Battery low-voltage motor shutdown | Primary | Telemetry만 가능 |
 | IMU integration | Primary 후보 | Prototype 후보 |
-| PC serial command | 첫 primary path | 나중에 bridge 가능 |
+| External command ingress | 요청 검증·실행과 최종 safety authority | Final MVP production ingress owner; optional arbitration/forwarding planned |
 | Wireless control | 부적합 | Primary |
 | Web UI 또는 mobile UI | 부적합 | Primary |
 | Debug telemetry over Wi-Fi | 부적합 | Primary |
@@ -296,7 +299,7 @@ CMD,linear=0.10,angular=0.00,timeout_ms=300
 
 ## 6. ESP32-S3 개발 경로
 
-추천 학습 및 검증 순서:
+초기 학습 경로 참고(현재 완료 목록이나 즉시 실행 순서가 아님):
 
 1. ESP-IDF 환경과 보드 연결 확인
 2. RGB LED와 BOOT button 확인
@@ -314,12 +317,23 @@ CMD,linear=0.10,angular=0.00,timeout_ms=300
 ESP32-S3는 이 프로젝트에서 support controller로 적합하다. 첫 low-level motor
 controller로 두는 것은 적절하지 않다.
 
-초기 역할:
+Final MVP 역할:
 
 - Wireless dashboard
-- UART bridge
+- Production external command ingress와 UART bridge
 - IMU/sensor prototype platform
 - UI 및 개발 편의 controller
+
+고정된 production 경로는 다음과 같다.
+
+```text
+optional PC control -> ESP32-S3 -> UART1 GPIO17/GPIO18
+                                   <-> STM32 USART1 PA9/PA10
+```
+
+STM32 USART2 PA2/PA3의 PC-first command 경로는 역사적 bench evidence로만 보존하며
+Final MVP production command를 받지 않는다. ESP32는 ingress를 소유하지만 motor output과
+safety permission은 계속 STM32가 소유한다. 현재 `PC -> ESP32` forwarding은 미구현이다.
 
 후순위 역할:
 
@@ -336,23 +350,20 @@ MVP에서 제외할 역할:
 
 ## 8. 다음 단계
 
-다음 실무 단계는 더 많은 기능 나열이 아니다. 먼저 low-level drivetrain interface를
-확정하고, 그 다음 STM32-ESP32 통신 경계를 정의한다.
+STM32-ESP32 통신 경계와 production ingress는 ADR-015로 확정됐다. Production mapper와
+timeout 뒤 output/stored command zero→DISARMED→새 ARM/CMD 동작은 구현됐다.
+9/30 후속 시험에서 A/M1 실제 전진 방향과 A/B 각각10%·3초 제한 구동을 확인했다.
+해당 관측은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 보존하며 같은 방향 확인을 현재 재개 작업으로 반복하지 않는다.
+10/1에는 노트북·ESP 환경에서 [Wi-Fi·확장 PCB·문서 이해 계획](../docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)을 마련했다. 네트워크 펌웨어 구현·STM 통합은 아직 미실행이다.
+상세 시험 범위·이미지·연결은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
-즉시 이어지는 문서:
+현재 기준 문서:
 
-- `08_Motor_Driver_and_HBridge_Control.md`
+- `09_STM32_ESP32_UART_Interface_Contract_ko.md`
+- `19_Architecture_Decision_Record_ko.md`의 ADR-015
 
-후속 문서 후보:
+현재와 후속 구현의 구분:
 
-- `09_STM32_ESP32_UART_Interface_Contract.md`
-
-후속 UART contract에서 정의할 내용:
-
-- UART pins
-- Baud rate
-- Message direction
-- Command timeout
-- Telemetry fields
-- Safety ownership
-- Error handling
+- Production `CMD(vx,w)` mapper, timeout 안전 경로와 새 ARM/CMD 요구는 현재 구현을 유지한다.
+- 전체 bridge/UART release의 잔여 시험·증거와 시험 뒤 default-off 복구는 검증 매트릭스로 추적한다.
+- Optional 일반 `PC -> ESP32` forwarding과 Wi-Fi 전달은 후속 계획이다. 수동 단발 bench 콘솔 완료와 구분한다.

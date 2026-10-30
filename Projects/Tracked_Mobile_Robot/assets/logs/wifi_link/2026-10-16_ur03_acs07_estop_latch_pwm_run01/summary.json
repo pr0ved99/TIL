@@ -1,0 +1,517 @@
+{
+  "source_name": "2026-10-16_UR03_ACS07_ESTOP_LATCH_PWM_run01.sr",
+  "sha256": "3680612c0d426e647a4acb54d8e4137edb81c8b0ef0b5fc02f886f4c8766ce0f",
+  "samplerate_hz": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "decode": "115200 baud, 8N1, LSB-first, non-inverted",
+  "channels": {
+    "D0": {
+      "role": "STM PA9 TX / JDBG_UART Pin1",
+      "decoded_bytes": 45071,
+      "complete_lf_lines": 279,
+      "invalid_stop_bits": 1,
+      "invalid_stop_times_s": [
+        15.191991
+      ],
+      "trailing_partial_text": "TEL,t_ms=9600,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=2830180668,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,",
+      "message_counts": {
+        "TEL": 247,
+        "ACK": 32
+      },
+      "valid_tel_lines": 246,
+      "malformed_tel_lines": [
+        {
+          "start_s": 15.190952,
+          "end_s": 15.516491305555556,
+          "text": "TEL,t_ms=104TEL,t_ms=100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 116,
+          "ARMED": 32,
+          "FAULT": 98
+        },
+        "reason": {
+          "DISARM": 80,
+          "NONE": 32,
+          "ESTOP_ACTIVE": 48,
+          "ESTOP_LATCHED": 50,
+          "BOOT": 36
+        },
+        "left_pwm": {
+          "0": 246
+        },
+        "right_pwm": {
+          "0": 246
+        },
+        "left_cps": {
+          "0": 246
+        },
+        "right_cps": {
+          "0": 246
+        },
+        "drop": {
+          "0": 246
+        },
+        "err": {
+          "0": 246
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.14245325,
+          "end_s": 2.1460060555555556,
+          "text": "ACK,seq=2830180637,type=ARM,t_ms=1029032"
+        },
+        {
+          "start_s": 2.2079585,
+          "end_s": 2.2115110555555555,
+          "text": "ACK,seq=2830180638,type=CMD,t_ms=1029098"
+        },
+        {
+          "start_s": 2.3260045,
+          "end_s": 2.3295590555555554,
+          "text": "ACK,seq=2830180639,type=CMD,t_ms=1029216"
+        },
+        {
+          "start_s": 2.447315,
+          "end_s": 2.4508683055555553,
+          "text": "ACK,seq=2830180640,type=CMD,t_ms=1029337"
+        },
+        {
+          "start_s": 2.5645555,
+          "end_s": 2.5681098055555553,
+          "text": "ACK,seq=2830180641,type=CMD,t_ms=1029455"
+        },
+        {
+          "start_s": 2.66455475,
+          "end_s": 2.6681088055555553,
+          "text": "ACK,seq=2830180642,type=CMD,t_ms=1029555"
+        },
+        {
+          "start_s": 2.764601,
+          "end_s": 2.7681543055555555,
+          "text": "ACK,seq=2830180643,type=CMD,t_ms=1029655"
+        },
+        {
+          "start_s": 2.884552,
+          "end_s": 2.8881073055555553,
+          "text": "ACK,seq=2830180644,type=CMD,t_ms=1029775"
+        },
+        {
+          "start_s": 2.9845545,
+          "end_s": 2.9881073055555554,
+          "text": "ACK,seq=2830180645,type=CMD,t_ms=1029875"
+        },
+        {
+          "start_s": 3.0845645,
+          "end_s": 3.0881185555555555,
+          "text": "ACK,seq=2830180646,type=CMD,t_ms=1029975"
+        },
+        {
+          "start_s": 3.184574,
+          "end_s": 3.1881280555555556,
+          "text": "ACK,seq=2830180647,type=CMD,t_ms=1030075"
+        },
+        {
+          "start_s": 3.284629,
+          "end_s": 3.2881833055555556,
+          "text": "ACK,seq=2830180648,type=CMD,t_ms=1030176"
+        },
+        {
+          "start_s": 3.40557,
+          "end_s": 3.4091233055555556,
+          "text": "ACK,seq=2830180649,type=CMD,t_ms=1030297"
+        },
+        {
+          "start_s": 3.5645735,
+          "end_s": 3.5681280555555555,
+          "text": "ACK,seq=2830180650,type=CMD,t_ms=1030456"
+        },
+        {
+          "start_s": 3.64563325,
+          "end_s": 3.6491868055555554,
+          "text": "ACK,seq=2830180651,type=CMD,t_ms=1030537"
+        },
+        {
+          "start_s": 3.7456355,
+          "end_s": 3.7491878055555556,
+          "text": "ACK,seq=2830180652,type=CMD,t_ms=1030637"
+        },
+        {
+          "start_s": 3.84566025,
+          "end_s": 3.8492135555555556,
+          "text": "ACK,seq=2830180653,type=CMD,t_ms=1030737"
+        },
+        {
+          "start_s": 3.984561,
+          "end_s": 3.9881145555555557,
+          "text": "ACK,seq=2830180654,type=CMD,t_ms=1030877"
+        },
+        {
+          "start_s": 4.10456725,
+          "end_s": 4.108121305555556,
+          "text": "ACK,seq=2830180655,type=CMD,t_ms=1030997"
+        },
+        {
+          "start_s": 4.2045575,
+          "end_s": 4.208110055555556,
+          "text": "ACK,seq=2830180656,type=CMD,t_ms=1031097"
+        },
+        {
+          "start_s": 4.304573,
+          "end_s": 4.308126305555556,
+          "text": "ACK,seq=2830180657,type=CMD,t_ms=1031197"
+        },
+        {
+          "start_s": 4.404609,
+          "end_s": 4.408161305555556,
+          "text": "ACK,seq=2830180658,type=CMD,t_ms=1031297"
+        },
+        {
+          "start_s": 4.5046205,
+          "end_s": 4.508174805555556,
+          "text": "ACK,seq=2830180659,type=CMD,t_ms=1031397"
+        },
+        {
+          "start_s": 4.60493275,
+          "end_s": 4.608486305555556,
+          "text": "ACK,seq=2830180660,type=CMD,t_ms=1031498"
+        },
+        {
+          "start_s": 4.72352125,
+          "end_s": 4.727077055555556,
+          "text": "ACK,seq=2830180661,type=CMD,t_ms=1031617"
+        },
+        {
+          "start_s": 4.884606,
+          "end_s": 4.888161055555556,
+          "text": "ACK,seq=2830180662,type=CMD,t_ms=1031778"
+        },
+        {
+          "start_s": 4.98464075,
+          "end_s": 4.988194555555556,
+          "text": "ACK,seq=2830180663,type=CMD,t_ms=1031878"
+        },
+        {
+          "start_s": 5.0846405,
+          "end_s": 5.088194305555556,
+          "text": "ACK,seq=2830180664,type=CMD,t_ms=1031978"
+        },
+        {
+          "start_s": 5.222767,
+          "end_s": 5.226319055555556,
+          "text": "ACK,seq=2830180665,type=CMD,t_ms=1032116"
+        },
+        {
+          "start_s": 5.345655,
+          "end_s": 5.349208805555556,
+          "text": "ACK,seq=2830180666,type=CMD,t_ms=1032240"
+        },
+        {
+          "start_s": 5.442968,
+          "end_s": 5.446782305555556,
+          "text": "ACK,seq=2830180667,type=DISARM,t_ms=1032337"
+        },
+        {
+          "start_s": 19.17222825,
+          "end_s": 19.175780805555554,
+          "text": "ACK,seq=2830180668,type=DISARM,t_ms=3777"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 0.0128445,
+          "end_s": 0.028618305555555553,
+          "text": "TEL,t_ms=1026900,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=2830180636,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 24.88570075,
+          "end_s": 24.901215055555557,
+          "text": "TEL,t_ms=9500,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=2830180668,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ]
+    },
+    "D1": {
+      "role": "STM PA10 RX / JDBG_UART Pin2",
+      "decoded_bytes": 1662,
+      "complete_lf_lines": 34,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 29,
+        "\u0018": 2,
+        "DISARM": 2
+      },
+      "valid_tel_lines": 0,
+      "malformed_tel_lines": [],
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.140711,
+          "end_s": 2.1423603055555556,
+          "text": "ARM,seq=2830180637"
+        },
+        {
+          "start_s": 2.19964225,
+          "end_s": 2.2044165555555555,
+          "text": "CMD,seq=2830180638,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.31968775,
+          "end_s": 2.3244620555555553,
+          "text": "CMD,seq=2830180639,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.4424005,
+          "end_s": 2.4471748055555556,
+          "text": "CMD,seq=2830180640,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.55963925,
+          "end_s": 2.5644135555555554,
+          "text": "CMD,seq=2830180641,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.65963525,
+          "end_s": 2.6644095555555554,
+          "text": "CMD,seq=2830180642,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.75968,
+          "end_s": 2.7644543055555557,
+          "text": "CMD,seq=2830180643,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.8796375,
+          "end_s": 2.8844118055555557,
+          "text": "CMD,seq=2830180644,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.9796405,
+          "end_s": 2.9844148055555557,
+          "text": "CMD,seq=2830180645,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.0796485,
+          "end_s": 3.0844228055555556,
+          "text": "CMD,seq=2830180646,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.17965875,
+          "end_s": 3.1844330555555556,
+          "text": "CMD,seq=2830180647,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.2797155,
+          "end_s": 3.2844898055555554,
+          "text": "CMD,seq=2830180648,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.400651,
+          "end_s": 3.4054253055555557,
+          "text": "CMD,seq=2830180649,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.5596585,
+          "end_s": 3.5644328055555556,
+          "text": "CMD,seq=2830180650,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.64071525,
+          "end_s": 3.6454895555555553,
+          "text": "CMD,seq=2830180651,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.7407175,
+          "end_s": 3.7454918055555555,
+          "text": "CMD,seq=2830180652,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.84074125,
+          "end_s": 3.8455155555555556,
+          "text": "CMD,seq=2830180653,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.97964925,
+          "end_s": 3.9844235555555554,
+          "text": "CMD,seq=2830180654,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.09965225,
+          "end_s": 4.1044265555555555,
+          "text": "CMD,seq=2830180655,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.19964275,
+          "end_s": 4.204417055555556,
+          "text": "CMD,seq=2830180656,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.299657,
+          "end_s": 4.304431305555556,
+          "text": "CMD,seq=2830180657,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.39969525,
+          "end_s": 4.404469555555556,
+          "text": "CMD,seq=2830180658,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.49970275,
+          "end_s": 4.504477055555556,
+          "text": "CMD,seq=2830180659,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.6000175,
+          "end_s": 4.604791805555556,
+          "text": "CMD,seq=2830180660,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.7186025,
+          "end_s": 4.723376805555556,
+          "text": "CMD,seq=2830180661,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.87968975,
+          "end_s": 4.884464055555556,
+          "text": "CMD,seq=2830180662,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.9797325,
+          "end_s": 4.984506805555556,
+          "text": "CMD,seq=2830180663,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.0797295,
+          "end_s": 5.084503805555556,
+          "text": "CMD,seq=2830180664,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.217849,
+          "end_s": 5.2226233055555555,
+          "text": "CMD,seq=2830180665,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.340735,
+          "end_s": 5.345509305555556,
+          "text": "CMD,seq=2830180666,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.44078475,
+          "end_s": 5.440958305555556,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 5.44095825,
+          "end_s": 5.4428680555555555,
+          "text": "DISARM,seq=2830180667"
+        },
+        {
+          "start_s": 19.170057,
+          "end_s": 19.170230555555555,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 19.1702305,
+          "end_s": 19.172140305555555,
+          "text": "DISARM,seq=2830180668"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 2.140711,
+          "end_s": 2.1423603055555556,
+          "text": "ARM,seq=2830180637"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 19.1702305,
+          "end_s": 19.172140305555555,
+          "text": "DISARM,seq=2830180668"
+        }
+      ]
+    }
+  },
+  "pairs": {},
+  "logic_levels": {
+    "D4": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 100000000,
+      "high_samples": 19199837,
+      "low_samples": 80800163,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 5,
+      "falling_edges": 5,
+      "high_runs_first_20": [
+        {
+          "start_s": 5.350059,
+          "end_s": 10.149888,
+          "samples": 19199316
+        },
+        {
+          "start_s": 10.14992225,
+          "end_s": 10.14996,
+          "samples": 151
+        },
+        {
+          "start_s": 10.1500345,
+          "end_s": 10.150047,
+          "samples": 50
+        },
+        {
+          "start_s": 10.1500915,
+          "end_s": 10.15016575,
+          "samples": 297
+        },
+        {
+          "start_s": 10.15020575,
+          "end_s": 10.1502115,
+          "samples": 23
+        }
+      ]
+    },
+    "D7": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "limits": [
+    "Sampled digital levels only; physical endpoints require user verification.",
+    "A capture boundary may truncate a line. Bytes are decoded at nominal baud.",
+    "Matching sampled logic does not establish analog signal integrity.",
+    "Telemetry reports firmware values, not physical motor output measurements."
+  ]
+}
