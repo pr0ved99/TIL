@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-31",
+  "scope": "오늘 회차만 마감; 전체 작업/프로젝트 진행 중",
+  "documentation": {
+    "learning_note": "07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+    "added_sections": "19-29",
+    "design_review": "09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md",
+    "new_simulation_executed": false,
+    "firmware_build_flash": false,
+    "production_CAD_changed": false
+  },
+  "notion": {
+    "skill": "notion:notion-spec-to-implementation",
+    "status": "updated_and_read_back",
+    "pages": [
+      {
+        "key": "learning",
+        "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+        "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+        "title": "전압 ADC 실습 · 공차·차단·실부품 조건·전원 제어 초안 (10/31 진행 중)",
+        "readback_today": true,
+        "child_entity_links_preserved": true,
+        "status": null
+      },
+      {
+        "key": "hub",
+        "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+        "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+        "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+        "readback_today": true,
+        "child_entity_links_preserved": true,
+        "status": null
+      },
+      {
+        "key": "project",
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+        "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+        "readback_today": true,
+        "child_entity_links_preserved": true,
+        "status": "진행 중"
+      },
+      {
+        "key": "task",
+        "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+        "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6?pvs=204",
+        "title": "📝 TMR-01 · 전류·온도 센서/측정기 구매·수령·계측 준비",
+        "readback_today": true,
+        "child_entity_links_preserved": true,
+        "status": "진행 중"
+      },
+      {
+        "key": "technical",
+        "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+        "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+        "title": "🧭 TMR · 기술 자료와 코드 탐색",
+        "readback_today": true,
+        "child_entity_links_preserved": true,
+        "status": null
+      }
+    ],
+    "learning_sections_19_through_29_verified": true,
+    "validation_retry": "insert_content first failed for missing content parameter; retried with content, succeeded and read back. No duplicate insertion."
+  },
+  "calendar": {
+    "status": "updated_and_read_back",
+    "event_id": "19bnchnobsa7j46druji2ndgk8",
+    "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0",
+    "summary": "[TMR] 주간 근거 정리·다음 작업 선정",
+    "start": "2026-10-25T14:30:00+09:00",
+    "end": "2026-10-25T15:30:00+09:00",
+    "untouched_fields_verified": [
+      "summary",
+      "start",
+      "end",
+      "attendees",
+      "reminders",
+      "recurrence",
+      "status",
+      "transparency",
+      "visibility",
+      "location",
+      "color_id",
+      "organizer",
+      "guests_can_modify",
+      "locked",
+      "recurring_event_id",
+      "original_start_time"
+    ],
+    "field_differences": [],
+    "previous_description_preserved": true,
+    "time_not_inferred_from_work": true
+  },
+  "git": {
+    "branch": "agent/dual-encoder-bringup",
+    "status": "pending_scoped_commit_push_verification"
+  },
+  "remaining": [
+    "실제 Nucleo VDDA/VDD 취출 경로",
+    "MR/CT/SEL/디커플링 및 전원 시작/차단/복귀 조건",
+    "중간 저전압/MCU 무전원 입력/정착 및 실측 조건",
+    "전체 ±0.10V 오차 예산",
+    "제작 회로도/ERC·실물 보호 검증"
+  ]
+}

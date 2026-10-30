@@ -1,6 +1,23 @@
 # 전압 분압과 RC — 사용자 GUI 실습
 
-## 최신 — 2026-10-30 차단·방전 실습 마감
+## 최신 — 2026-10-31 부품 조건·제어 초안 검토 마감
+
+[설계26](../../../26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [학습21 19~29절](../../../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [오늘 근거/해시](../../../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md).
+
+| 저장 회로(.kicad_sch) | 저장 값 / 사용자 결과 |
+| --- | --- |
+| 03_10_Voltage_ADC_DetectDelay_TRAN | V3 10~13.3ms에3.3→0V(1V/ms), VTRIP→VCTRL 고정30µs. 사용자 전이 약10.300/10.330ms |
+| 03_11_Voltage_ADC_FastFall_TRAN | V3 10~10.132ms(25V/ms). 사용자10.040ms에서 VADC2.37135258V/VDDA2.3V |
+| 03_12_Voltage_ADC_Loaded_Tolerance_Max_OP | R1/2=11988,R3=4704.7,R4=999,R5=47047Ω. 사용자 OP VADC2.37547V |
+| 03_13_Voltage_ADC_Loaded_Tolerance_Min_OP | R1/2=12012,R3=4695.3,R4=1001,R5=46953Ω. 사용자 OP VADC2.36724V |
+
+네 회로 모두 일반 스위치 ron2/roff1G, B1 비교, C1=100nF(VDIV), C2=100pF(VADC), [고정 지연 helper](detector_delay_30us.cir)를 사용한다. 실제 TPS3840/TMUX 제조사 모델이 아니다. 원본 회로는 마감 중 수정하지 않았다.
+
+공통 워크북의 현재 TRAN은 `.tran 100n 10.1m 9.99m 100n`, VADC/VDDA 커서 둘 다10.040ms다. 03_12/13은 OP를 선택한다. 과거 AC/TRAN 설정이 모든 파일에 맞는 것은 아니며 새 실행은 하지 않았다.
+
+다음은 반복 실습이 아니라 실제 보드 VDDA/VDD 전원 경로와 후보 부품의 MR/CT/SEL/전원 순서 검토다. 임의 하강 조건은 실제 고장 증거가 아니고 0.1%는 구매 결정이 아니다. 아래10/30 재개점은 당시 이력이다.
+
+## 이전 — 2026-10-30 차단·방전 실습 마감
 
 다음에 열 회로는 [03_09_Voltage_ADC_Discharge_TRAN.kicad_sch](03_09_Voltage_ADC_Discharge_TRAN.kicad_sch)다. B1 VDDA연동·V3 PWL·C2=100pF가 저장되어 있다. [워크북](03_Voltage_Divider.wbk)의TRAN은 `.tran 100n 10.35m 10.28m 100n`이며, 기존OP/AC탭은각회차이력이다. 워크북커서시각은실측전압기록이아니다.
 

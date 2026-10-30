@@ -1,18 +1,20 @@
 # Current Session Context
 
-Last updated: **2026-10-30 — 전압 ADC 공차·보정·차단·방전 학습 마감**.
+Last updated: **2026-10-31 — 전압 ADC 부품 조건·전원 제어 초안, 진행 중 마감**.
 
 ## 현재 재개점
 
-- **완료 범위:** 전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
-- **근거:** [학습21](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](../../09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](../../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](../../docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
-- **다음 첫 작업:** 03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
-- **모델/측정 구분:** 100pF·1V/ms·3V 무지연 감시는 학습용 가정이다. τ4.7µs/99%21.6443µs는 계산값이고 두 커서 전압은 미보고다. 실제 보호 성능·ADC 정확도·실물은 미검증이며 제작 쉴드/MCU/구매 변경과 새 시뮬레이션 실행은 없다. 기존 MVP PARTIAL/OPEN·AI/배치 후속을 유지한다.
-- **열 파일:** `09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_09_Voltage_ADC_Discharge_TRAN.kicad_sch`. B1·V3·100pF C2가 저장되어 있다. `03_08`은 V2고정, `03_07`은V3가 없는 중간 저장본이다. 공차 파일도 이름/값 불일치가 있어 README의 실제값을 따른다.
-- **설정:** 공통 `03_Voltage_Divider.wbk`에 `.tran 100n 10.35m 10.28m 100n`과VADC커서10.3047/10.32164ms가 저장되어 있다. 전압값 보고는 없으며 과거AC탭은 변경된 보호 회로 성능 근거가 아니다.
-- **이전 기본 실습:** 전류RC·NTC·전압OP/AC와 이전PNG/CSV는 완료 범위를 유지한다. NTC만CN7-5 MCU VDD 공급 기본안이며 실제쉴드는CN7-16초안 그대로다. ADC 기준은VDDA다.
-- **학습 방식:** 사용자가 회로 작성·GUI 실행. Codex는 가이드/읽기검토/계산/문서화. 완료 시험 반복·독자 시뮬레이션·회로 재생성을 하지 않는다. S1 배선의 이전 명시 위임은 해당 범위에만 적용한다.
-- **정리/게시:** 학습 Notion과 기존 진행 항목을 갱신하고 Calendar 시간은 보존한다. Git/외부 게시의 실제 결과는 이번 `publication.json`을 따른다. 아래 날짜별 다음/NOT_RUN은 당시 이력이다.
+- **오늘 한 일:** 사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다.
+- **마지막 학습:** VIT−는 하강 문턱, VIT+는 복귀 문턱. PL30 명목3.0/3.1V, 하강 tP_HL 뒤 RESET LOW, 복귀 tD 뒤 HIGH. 완전 OFF의 tSTRT와 CT-open tD 중복 가산 금지.
+- **다음 첫 작업:** Nucleo의 실제 VDDA/VDD 전원 경로와 취출 지점을 확인하고, TPS3840PL30–TMUX1511 연결 초안의 MR/CT/SEL/디커플링·시작/하강/복귀 조건을 정리한다. 이후 후보 채택/남은 실측 조건 → 전체 ±0.10V 오차 예산 → 준비된 제작 회로도/ERC로 이어간다.
+- **현재 연결 초안:** 실제 STM ADC rail VDDA → TPS3840PL30.VDD/TMUX1511.VDD, PL RESET → SEL1/2. 실제 Nucleo 취출/필터 경로는 아직 미확인; 임의 전원 합선/NRST 연결 지시가 아니다.
+- **검증 경계:** 회로 계산·부품 조건 검토 단계로 진행 중이다. 실제 VDDA 파형·무전원 핀 보호·전체 정확도·제작 회로도는 미완료다. 0.1% 저항은 비교 조건이며 구매 결정이 아니고, C2=100pF와 전원 하강 기울기는 학습용 가정이다. 제작 쉴드/MCU·빌드/플래시·실물·구매 변경 없이 기존 MVP PARTIAL/OPEN과 AI/배치 후속을 유지한다.
+- **저장 모델:** 03_10 느린 검출 지연, 03_11 빠른 하강, 03_12/13 보호 부하 포함 최대/최소 OP. 공통 워크북 TRAN은 `.tran 100n 10.1m 9.99m 100n`, VADC/VDDA커서10.040ms. 원본은 그대로 보존했다. 03_12/13 공차 비교는 OP다.
+- **계산/부품:** K6.747204165; 공차 환산 +27.7924/−27.7536mV. RON2typ/4.5maxΩ, IPOFF10nA@25°C 행과2µA 전 온도 행 구분. 2µA×47k=94mV로 보호 PASS 판정 금지. UT210E만으로±0.10V 입증 불충분.
+- **학습 방식:** 사용자 GUI 실행, Codex 근거/계산/읽기검토. 완료 RC·공차·두 점 보정 반복과 독자 시뮬레이션/빌드 없음. 데이터시트는 판본·쪽·표/행·조건까지 안내한다. 사용자 요청 없는 subagent 사용 금지.
+- **남은 구현:** 실제 ADC 취득/보정·NTC 공급안·전압2채널 보호의 제작 쉴드 반영은 미완료. 센서/계기 수령 새 보고 없음.
+- **근거:** [학습21 · 19~29절](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](../../09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [근거/저장 모델](../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md) · [10/31 마감](../progress/2026-10-31_progress.md) · [Notion 학습](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+- **정리:** 문서·인수인계·선택 Git/push·기존 Calendar 시간 보존·Notion 전체. 실제 게시 결과는10/31 근거의 publication.json을 따른다. 아래는 당시 이력이다.
 
 ## 이전 재개점 — 추가 GUI 실습 전 이력
 

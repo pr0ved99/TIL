@@ -1,14 +1,14 @@
 # 실행 계획
 
-**현재 위치 · 2026-10-30:** 전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다. [학습21](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계25](../../09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md) · [원본/모델 대조](../../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md) · [10/30 마감](../../docs/progress/2026-10-30_progress.md) · [Notion 학습 노트](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+**현재 위치 · 2026-10-31:** 사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다. [학습21 · 19~29절](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](../../09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [근거/저장 모델](../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md) · [10/31 마감](../progress/2026-10-31_progress.md) · [Notion 학습](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
 
 **AI 후속 계획 · 문서화만:** [노트북 AI 확장 계획](2026-10-27_Laptop_AI_Integration_Plan_ko.md). 보유 GPU로 단일 대상 인식·방향 판단을 PC에서 먼저 검증하고, 이후 ESP 명령 계약/카메라/실제 구동 통합을 검토한다. 모델·설정·시험 기준은 후속 시작값, 구현/추론 NOT_RUN이다. 사용자의 최신 요청에 따라 현재 작업 순서는 아래 PCB 재개점으로 유지한다.
 
-**다음:** 03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다. 100pF/1V/ms는학습용가정,실제보호미검증. 완료기본실습자동반복없음.
+**다음:** Nucleo의 실제 VDDA/VDD 전원 경로와 취출 지점을 확인하고, TPS3840PL30–TMUX1511 연결 초안의 MR/CT/SEL/디커플링·시작/하강/복귀 조건을 정리한다. 이후 후보 채택/남은 실측 조건 → 전체 ±0.10V 오차 예산 → 준비된 제작 회로도/ERC로 이어간다. 회로 계산·부품 조건 검토 단계로 진행 중이다. 실제 VDDA 파형·무전원 핀 보호·전체 정확도·제작 회로도는 미완료다. 0.1% 저항은 비교 조건이며 구매 결정이 아니고, C2=100pF와 전원 하강 기울기는 학습용 가정이다. 제작 쉴드/MCU·빌드/플래시·실물·구매 변경 없이 기존 MVP PARTIAL/OPEN과 AI/배치 후속을 유지한다.
 
 **기존 완료/경계:** 149초 통합 시연 제작·검증 완료, 전체 MVP는 기존 PARTIAL/OPEN 유지. 센서 구현을 MVP 선행으로 추가하지 않으며 완료 시험·촬영·후속 제외 조사를 자동 반복하지 않는다.
 
-**최신 마감:** [10/30 전압 ADC 정리](../progress/2026-10-30_progress.md). 실제 게시 결과는 해당 영수증을 따른다. 아래 날짜별 계획은 이력이다.
+**최신 마감:** [10/31 전압 ADC 진행 중 마감](../progress/2026-10-31_progress.md). 실제 게시 결과는 해당 영수증을 따른다. 아래 날짜별 계획은 이력이다.
 
 ## 10/19 시작점 — 당시 이력
 

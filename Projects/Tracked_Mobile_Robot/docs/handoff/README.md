@@ -1,12 +1,16 @@
 # Handoff Notes
 
-## 현재 재개점 — 2026-10-30 전압 ADC 학습 마감
+## 현재 재개점 — 2026-10-31 진행 중 마감
 
-전압 분압의 공차·보정·가정한1µA 누설과 일반 스위치 ON/OFF·VDDA 연동·C2 방전을 사용자 GUI에서 확인했다. ON/OFF VADC는2.37135V/123.143µV, 마지막 TRAN은701행과 지수형 하강을 관찰했다.
+사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다.
 
-03_09 저장 모델에서 실제 ADC 쪽 정전용량과 감지/차단 지연의 근거·적용 조건부터 정리한다. 이후 보호 구조에 맞는 환산비와 ±0.10V 오차 예산으로 복귀한다.
+**다음 첫 작업:** Nucleo의 실제 VDDA/VDD 전원 경로와 취출 지점을 확인하고, TPS3840PL30–TMUX1511 연결 초안의 MR/CT/SEL/디커플링·시작/하강/복귀 조건을 정리한다. 이후 후보 채택/남은 실측 조건 → 전체 ±0.10V 오차 예산 → 준비된 제작 회로도/ERC로 이어간다.
 
-[현재 인수인계](CURRENT_SESSION_CONTEXT.md) · [다음 프롬프트](NEXT_SESSION_START_PROMPT.md) · [10/30 마감](../progress/2026-10-30_progress.md). 100pF는학습용가정·실제보호미검증, 아래는당시이력이다.
+회로 계산·부품 조건 검토 단계로 진행 중이다. 실제 VDDA 파형·무전원 핀 보호·전체 정확도·제작 회로도는 미완료다. 0.1% 저항은 비교 조건이며 구매 결정이 아니고, C2=100pF와 전원 하강 기울기는 학습용 가정이다. 제작 쉴드/MCU·빌드/플래시·실물·구매 변경 없이 기존 MVP PARTIAL/OPEN과 AI/배치 후속을 유지한다.
+
+[학습21 · 19~29절](../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](../../09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [근거/저장 모델](../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md) · [10/31 마감](../progress/2026-10-31_progress.md) · [Notion 학습](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+
+아래 날짜별 다음 작업은 당시 이력이며 현재 재개점은 위 내용을 따른다.
 
 이 폴더는 `Tracked_Mobile_Robot` 프로젝트를 다른 Codex 세션이나 사람이 이어받을 때 필요한 인수인계 문서를 저장한다.
 

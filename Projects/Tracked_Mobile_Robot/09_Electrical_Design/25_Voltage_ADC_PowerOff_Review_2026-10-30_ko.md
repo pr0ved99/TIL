@@ -1,5 +1,7 @@
 # 전압 ADC 공차·무전원 차단 검토
 
+> 10/31 후속 검토는 [설계26](26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md)을 따른다. 아래는10/30 판단과 당시 재개점이다.
+
 2026-10-30 마감. 설계 단계는 **회로 계산·보호 후보 검토**다. [학습 노트21](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)과 [근거](../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md)에 사용자 결과·계산·가정을 분리했다.
 
 ## 이번에 좁힌 판단

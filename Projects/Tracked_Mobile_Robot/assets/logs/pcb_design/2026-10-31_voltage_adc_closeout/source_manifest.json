@@ -1,0 +1,370 @@
+{
+  "scope": "Read saved component properties, include, workbook and SHA256; no netlist/ERC/SPICE execution",
+  "files": [
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_10_Voltage_ADC_DetectDelay_TRAN.kicad_sch",
+      "bytes": 54980,
+      "sha256": "d940ba179c1ef8f4d5133246ffc98176072ab420f557364cf0d2e8e04b8a93fb",
+      "saved_placed_properties": [
+        {
+          "Reference": "B1",
+          "Value": "BSOURCE",
+          "Sim.Params": "type=\"B\" model=\"v=V(/VDDA) > 3 ? V(/VDDA) : 0\""
+        },
+        {
+          "Reference": "C1",
+          "Value": "100n"
+        },
+        {
+          "Reference": "R1",
+          "Value": "12k"
+        },
+        {
+          "Reference": "R2",
+          "Value": "12k"
+        },
+        {
+          "Reference": "V1",
+          "Value": "16",
+          "Sim.Params": "ac=1 ph=0"
+        },
+        {
+          "Reference": "R3",
+          "Value": "4.7k"
+        },
+        {
+          "Reference": "S1",
+          "Value": "SWITCH",
+          "Sim.Params": "thr=1.65 ron=2 roff=1G"
+        },
+        {
+          "Reference": "V3",
+          "Value": "VPWL",
+          "Sim.Params": "pwl=\"0 3.3 10m 3.3 13.3m 0 15m 0\""
+        },
+        {
+          "Reference": "R5",
+          "Value": "47k"
+        },
+        {
+          "Reference": "R4",
+          "Value": "1k"
+        },
+        {
+          "Reference": "C2",
+          "Value": "100p"
+        }
+      ],
+      "delay_include_present": true
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_11_Voltage_ADC_FastFall_TRAN.kicad_sch",
+      "bytes": 54937,
+      "sha256": "6b89aba79d888fcd15c1749f427a47f35d041dc253425a4edace054acfe26b4d",
+      "saved_placed_properties": [
+        {
+          "Reference": "B1",
+          "Value": "BSOURCE",
+          "Sim.Params": "type=\"B\" model=\"v=V(/VDDA) > 3 ? V(/VDDA) : 0\""
+        },
+        {
+          "Reference": "C1",
+          "Value": "100n"
+        },
+        {
+          "Reference": "R1",
+          "Value": "12k"
+        },
+        {
+          "Reference": "R2",
+          "Value": "12k"
+        },
+        {
+          "Reference": "V1",
+          "Value": "16",
+          "Sim.Params": "ac=1 ph=0"
+        },
+        {
+          "Reference": "R3",
+          "Value": "4.7k"
+        },
+        {
+          "Reference": "S1",
+          "Value": "SWITCH",
+          "Sim.Params": "thr=1.65 ron=2 roff=1G"
+        },
+        {
+          "Reference": "V3",
+          "Value": "VPWL",
+          "Sim.Params": "pwl=\"0 3.3 10m 3.3 10.132m 0 15m 0\""
+        },
+        {
+          "Reference": "R5",
+          "Value": "47k"
+        },
+        {
+          "Reference": "R4",
+          "Value": "1k"
+        },
+        {
+          "Reference": "C2",
+          "Value": "100p"
+        }
+      ],
+      "delay_include_present": true
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_12_Voltage_ADC_Loaded_Tolerance_Max_OP.kicad_sch",
+      "bytes": 55096,
+      "sha256": "78cab62a3ff67233b61462d93842517a807c17829daefb1cb8d2dc169761468d",
+      "saved_placed_properties": [
+        {
+          "Reference": "B1",
+          "Value": "BSOURCE",
+          "Sim.Params": "type=\"B\" model=\"v=V(/VDDA) > 3 ? V(/VDDA) : 0\""
+        },
+        {
+          "Reference": "C1",
+          "Value": "100n"
+        },
+        {
+          "Reference": "R1",
+          "Value": "11988"
+        },
+        {
+          "Reference": "R2",
+          "Value": "11988"
+        },
+        {
+          "Reference": "V1",
+          "Value": "16",
+          "Sim.Params": "ac=1 ph=0"
+        },
+        {
+          "Reference": "R3",
+          "Value": "4704.7"
+        },
+        {
+          "Reference": "S1",
+          "Value": "SWITCH",
+          "Sim.Params": "thr=1.65 ron=2 roff=1G"
+        },
+        {
+          "Reference": "V3",
+          "Value": "VPWL",
+          "Sim.Params": "pwl=\"0 3.3 10m 3.3 10.132m 0 15m 0\""
+        },
+        {
+          "Reference": "R5",
+          "Value": "47047"
+        },
+        {
+          "Reference": "R4",
+          "Value": "999"
+        },
+        {
+          "Reference": "C2",
+          "Value": "100p"
+        }
+      ],
+      "delay_include_present": true
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_13_Voltage_ADC_Loaded_Tolerance_Min_OP.kicad_sch",
+      "bytes": 55097,
+      "sha256": "c9ad8fc6e206ec9833053c49ecc00143867e07be5533547de4a34331ea4bdb61",
+      "saved_placed_properties": [
+        {
+          "Reference": "B1",
+          "Value": "BSOURCE",
+          "Sim.Params": "type=\"B\" model=\"v=V(/VDDA) > 3 ? V(/VDDA) : 0\""
+        },
+        {
+          "Reference": "C1",
+          "Value": "100n"
+        },
+        {
+          "Reference": "R1",
+          "Value": "12012"
+        },
+        {
+          "Reference": "R2",
+          "Value": "12012"
+        },
+        {
+          "Reference": "V1",
+          "Value": "16",
+          "Sim.Params": "ac=1 ph=0"
+        },
+        {
+          "Reference": "R3",
+          "Value": "4695.3"
+        },
+        {
+          "Reference": "S1",
+          "Value": "SWITCH",
+          "Sim.Params": "thr=1.65 ron=2 roff=1G"
+        },
+        {
+          "Reference": "V3",
+          "Value": "VPWL",
+          "Sim.Params": "pwl=\"0 3.3 10m 3.3 10.132m 0 15m 0\""
+        },
+        {
+          "Reference": "R5",
+          "Value": "46953"
+        },
+        {
+          "Reference": "R4",
+          "Value": "1001"
+        },
+        {
+          "Reference": "C2",
+          "Value": "100p"
+        }
+      ],
+      "delay_include_present": true
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_10_Voltage_ADC_DetectDelay_TRAN.kicad_pro",
+      "bytes": 9188,
+      "sha256": "ff74d1e918403da1488224bc503ab785dc83dfc1a3ec15703f6d9ce2f3da62c6"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_11_Voltage_ADC_FastFall_TRAN.kicad_pro",
+      "bytes": 9182,
+      "sha256": "489318e444a4136ee5fd999dbece51f85c2e946961afae8b31a42c7b47b62311"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_12_Voltage_ADC_Loaded_Tolerance_Max_OP.kicad_pro",
+      "bytes": 9202,
+      "sha256": "80849a20c250da8e1033aa2df12cfbde341f62e8f563b8c4a0db0c5c5129fe72"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_13_Voltage_ADC_Loaded_Tolerance_Min_OP.kicad_pro",
+      "bytes": 9202,
+      "sha256": "2687610740a47153be77c4be3a1adcbabd460d3ac04a3eade646403f581dad72"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/detector_delay_30us.cir",
+      "bytes": 150,
+      "sha256": "ac61e19c3aa5cde0c17c4dc84b5ecc1dc27f928691c576647440adf5409cc71b"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_Voltage_Divider.wbk",
+      "bytes": 2571,
+      "sha256": "6bfab9482a343ad1efb2c7197b1c56cbe3ae8f10f8a9525c65fa6a884149a167"
+    }
+  ],
+  "workbook_tabs": [
+    {
+      "analysis": "OP",
+      "commands": [
+        ".op",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ]
+    },
+    {
+      "analysis": "AC",
+      "commands": [
+        ".ac dec 200 1 1Meg",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": true,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(228, 26, 28)",
+          "cursor1": {
+            "position": 1.0,
+            "x_format": "9~s",
+            "y_format": "9~V"
+          },
+          "cursor2": {
+            "position": 404.942098,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VADC) (게인)",
+          "trace_type": 521
+        }
+      ]
+    },
+    {
+      "analysis": "TRAN",
+      "commands": [
+        ".tran 100n 10.1m 9.99m 100n",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": true,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(55, 126, 184)",
+          "cursor1": {
+            "position": 0.010039999999999999,
+            "x_format": "9~s",
+            "y_format": "9~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VADC)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(77, 175, 74)",
+          "signal": "V(/VCTRL)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(228, 26, 28)",
+          "cursor2": {
+            "position": 0.010039999999999999,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VDDA)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(152, 78, 163)",
+          "signal": "V(/VTRIP)",
+          "trace_type": 1
+        }
+      ]
+    }
+  ]
+}

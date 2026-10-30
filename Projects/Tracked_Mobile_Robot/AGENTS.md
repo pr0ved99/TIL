@@ -84,6 +84,11 @@ Present the current stage's concrete result for discussion before moving to the 
 requirements and unresolved values explicitly. Do not treat an existing CAD draft as approved requirements
 or advance to circuit/layout work merely because a starter file exists.
 
+When guiding work from a datasheet, give the manufacturer/document revision, printed page number
+(and PDF page index if different), section or table/figure, and exact parameter/row to read. Link the
+primary datasheet and explain relevant test conditions and typical/maximum distinctions. The user
+explicitly requested these reading locations on 2026-10-30.
+
 ## Progress Logging
 
 User shorthand confirmed on 2026-10-23: “정리” means all five closeout actions — documentation,

@@ -1,5 +1,7 @@
 # Embedded Learning Notes
 
+**최신 · 10/31:** [전압 ADC 학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)에 검출 지연·실부품 조건·ADC/기준 계기/온도 오차·제어 연결·히스테리시스 학습19~29절을 추가했다. 실제 회로는 진행 중이며 다음은 실제 VDDA 전원 경로와 보호 제어 조건이다.
+
 **10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.
 
 이 폴더는 Tracked Mobile Robot 프로젝트를 임베디드 시스템 학습용으로 깊게 정리하는 공간이다.

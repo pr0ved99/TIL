@@ -1,8 +1,16 @@
 # Concept Notes
 
-## 최신 실습 — 2026-10-30 마감
+## 최신 학습 — 2026-10-31, 기존21에 19~29절 추가
 
-[21 전압 ADC 공차·보정·무전원 차단·방전](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [Notion](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455). 18절로모델/실측/가정구분, R5부하와OFF누설, B1연동,100pF선정이유와TRAN단위오류를연결했다. 기존2장/3장번호는유지한다. 다음은실제ADC쪽용량/지연근거이며아래이전재개안은당시이력이다.
+사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다.
+
+**다음 첫 작업:** Nucleo의 실제 VDDA/VDD 전원 경로와 취출 지점을 확인하고, TPS3840PL30–TMUX1511 연결 초안의 MR/CT/SEL/디커플링·시작/하강/복귀 조건을 정리한다. 이후 후보 채택/남은 실측 조건 → 전체 ±0.10V 오차 예산 → 준비된 제작 회로도/ERC로 이어간다.
+
+회로 계산·부품 조건 검토 단계로 진행 중이다. 실제 VDDA 파형·무전원 핀 보호·전체 정확도·제작 회로도는 미완료다. 0.1% 저항은 비교 조건이며 구매 결정이 아니고, C2=100pF와 전원 하강 기울기는 학습용 가정이다. 제작 쉴드/MCU·빌드/플래시·실물·구매 변경 없이 기존 MVP PARTIAL/OPEN과 AI/배치 후속을 유지한다.
+
+[학습21 · 19~29절](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](../../09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [근거/저장 모델](../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md) · [10/31 마감](../../docs/progress/2026-10-31_progress.md) · [Notion 학습](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+
+아래 날짜별 다음 작업은 당시 이력이며 현재 재개점은 위 내용을 따른다.
 
 ## 이전 실습 — 10/28 학습·10/29 마감
 

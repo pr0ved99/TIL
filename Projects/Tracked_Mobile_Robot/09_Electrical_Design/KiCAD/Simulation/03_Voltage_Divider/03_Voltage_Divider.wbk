@@ -35,8 +35,8 @@
           "color": "rgb(228, 26, 28)",
           "cursor1": {
             "position": 1.0,
-            "x_format": "6~s",
-            "y_format": "6~V"
+            "x_format": "9~s",
+            "y_format": "9~V"
           },
           "cursor2": {
             "position": 404.942098,
@@ -55,7 +55,7 @@
     {
       "analysis": "TRAN",
       "commands": [
-        ".tran 100n 10.35m 10.28m 100n",
+        ".tran 100n 10.1m 9.99m 100n",
         ".kicad adjustpaths",
         ".save all",
         ".probe alli",
@@ -74,14 +74,9 @@
         {
           "color": "rgb(55, 126, 184)",
           "cursor1": {
-            "position": 0.0103047,
-            "x_format": "6~s",
-            "y_format": "6~V"
-          },
-          "cursor2": {
-            "position": 0.01032164,
-            "x_format": "6~s",
-            "y_format": "6~V"
+            "position": 0.010039999999999999,
+            "x_format": "9~s",
+            "y_format": "9~V"
           },
           "cursorD": {
             "x_format": "6~s",
@@ -97,8 +92,22 @@
         },
         {
           "color": "rgb(228, 26, 28)",
+          "cursor2": {
+            "position": 0.010039999999999999,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
           "signal": "V(/VDDA)",
           "trace_type": 257
+        },
+        {
+          "color": "rgb(152, 78, 163)",
+          "signal": "V(/VTRIP)",
+          "trace_type": 1
         }
       ]
     }
