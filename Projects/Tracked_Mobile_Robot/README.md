@@ -12,7 +12,7 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 - **기준 설정:** 초기 공통k=1687/19500mm/count, 일반 cap150‰·회전200‰, 왼쪽 gain전진960‰/후진930‰. 지상 비교 후 계수나 출력을 바꾸지 않았다. 현재 ESP 앱은 `esp32_wifi_link`이며 두 MCU의 코드 입력·빌드/플래시와 실물 조작은 사용자가 수행한다.
 - **계측 준비:** 103JT-025×2·Pololu#5241×2·GM1312·UT210E 구매/배송 대기, Vishay100nF10개 구매·수령 미확인이라는 마지막 보고를 유지한다. 장비 수령을 거리/MVP 선행으로 요구하지 않는다. [후속 모니터링 계획](docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md).
 - **학습 자료:** [STM32·ESP32 펌웨어 교과서](07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md) — 기초 C부터 현재 구현까지, 예제 5개와 12개 학습 단위.
-- **모니터링 설계 · 10/31 진행 중 마감:** 사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다. 다음은 실제 VDDA 경로와 보호 제어 연결 조건이다. 제작/실물 보호 미검증, 0.1% 구매 미결. [학습21 · 19~29절](07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [근거/저장 모델](assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md) · [10/31 마감](docs/progress/2026-10-31_progress.md) · [Notion 학습](https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455)
+- **모니터링 설계 · 11/3 학습·11/4 마감:** 11/3 필기30~35에서 전원 경로·핀 연결·전원 상태·후보 판단 자료를 작성했다. TPS3840PL30–TMUX1511을 후속 계산 후보로 유지하고 최종 부품/제작 승인은 보류한다. CT-open tD는 지정 조건 MAX50µs(MIN/TYP 공란)로 정정했다. 다음36절 전체 전압 오차 예산. 실제 보호/정확도/제작 쉴드는 미검증이다. [학습21 · 30~35절](07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [설계26](09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [점검·마감](docs/progress/2026-11-04_progress.md).
 - **이전 모니터링 설계 · 10/28 첫 마감:** [전류 검증 명세](09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md)·[온도 검증 명세](09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md)에 시험용 오차 배분·보정/독립점·장비 경계·절차를 정했다. 센서 단독/입력계/전체계 범위를 구분하며 실물 NOT_RUN이다. 다음은 전원/보호 미결과 전압2채널 설계. [마감 기록](docs/progress/2026-10-28_progress.md), [학습 목차](07_Embedded_Learning_Notes/01_Concept_Notes/README.md). AI 후속안은 문서화만 완료했다.
 
 **통합 시연 완성 · 2026-10-24:** [2분29초 MP4](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)는 기존65초 탁상 편집본과 카펫 주행·S0/래치/ARM 차단·S2·STM 리셋·재주행을 연결한다.1080p30·무음, 전체4470프레임 디코딩 오류0·21개 표본 검토·원본 해시 보존. [편집 근거와 한계](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 사용자 동기 지적을 반영해 카펫 화면을 기존 대비1.2667초 상대 지연했다(화면=카메라−0.7667초). 원본9구간18전이·출력5구간10전이를 대조한 편집 정렬이며 정지 지연/거리 정확도 계측이 아니다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.
@@ -25,6 +25,8 @@ UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 �
 [현재 ESP Wi-Fi 앱](03_Firmware/esp32_wifi_link/main/wifi_link_main.c) · [운용·재현 절차](docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md) ·
 [Python 검증 코드](03_Firmware/tests/) · [대표 계측 보고서](docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) ·
 [완료 범위와 근거](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)
+
+[프로젝트 파일 관리 기준·보관본 링크 탐색표](docs/handoff/PROJECT_FILE_MANAGEMENT_ko.md) · [11/4 문서·폴더 점검](docs/progress/2026-11-04_progress.md). 현재 소스·제작 CAD·학습 모델·원본 근거·생성 산출물의 역할을 구분한다.
 
 ## 1. 프로젝트 목표와 범위
 

@@ -2,9 +2,16 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-10-31 (component conditions/control draft; work remains in progress).
+Last updated: 2026-11-04 (11/3 learning closeout and project management audit; design remains in progress).
 
-## Current Checkpoint — 2026-10-31 voltage ADC
+## Current Checkpoint — 2026-11-04 closeout / 11-03 learning
+
+- 11/3 필기30~35에서 전원 경로·핀 연결·전원 상태·후보 판단 자료를 작성했다. TPS3840PL30–TMUX1511을 후속 계산 후보로 유지하고 최종 부품/제작 승인은 보류한다. CT-open tD는 지정 조건 MAX50µs(MIN/TYP 공란)로 정정했다.
+- 다음36절 전체 전압 오차 예산: 0~16V DC·보정 후±0.10V·주위20~30°C·결과10Hz 제안을 기준으로 저항 비율·RON/누설·ADC·VDDA 추정·온도/잡음/정착의 기여량·근거·보정 전후·미정을 정리한다. 기준 계기는 별도 검증 경계이며 중복 합산/미정0처리를 피한다.
+- CN10-7/AVDD는 공식 보드 문서에서 식별한 공급 후보다. 실제 보드 상태·부하/잡음·전원 과도·무전원 보호·ADC 유효화·정확도·제작 쉴드 반영은 미검증이다. 0.1%는 비교 조건,100pF와고정30µs는 학습 가정이다. 새 SPICE/MCU 빌드·플래시/실물/구매 변경 없이 기존 MVP PARTIAL/OPEN을 유지한다.
+- [점검·마감](docs/progress/2026-11-04_progress.md)의 게시 영수증을 따른다. 아래 다음 작업은 날짜별 당시 이력이다.
+
+## Previous Checkpoint — 2026-10-31 voltage ADC
 
 - 사용자 TRAN에서 고정30µs 검출 지연과 가정한 빠른 하강을 확인했고, 보호 부하 포함 ±0.1% OP 최대/최소 VADC2.37547/2.36724V를 확인했다. TMUX1511·STM32·TPS3840의 조건별 규격, 기준 계기/온도 오차, VIT−/VIT+·하강/복귀 지연을 학습했다.
 - Nucleo의 실제 VDDA/VDD 전원 경로와 취출 지점을 확인하고, TPS3840PL30–TMUX1511 연결 초안의 MR/CT/SEL/디커플링·시작/하강/복귀 조건을 정리한다. 이후 후보 채택/남은 실측 조건 → 전체 ±0.10V 오차 예산 → 준비된 제작 회로도/ERC로 이어간다.

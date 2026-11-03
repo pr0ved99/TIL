@@ -2,7 +2,20 @@
 
 2026-10-31 작업 마감. **진행 중 — 회로 계산·부품 조건 검토 단계**다. 실제 보호 회로 완성, 제작 쉴드 반영, 실물 검증을 의미하지 않는다. [설계25](25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md)의 후속이며 [학습21의 19절 이후](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md#19-1031-추가-학습--검출과-차단-사이의-시간), [사용자 결과·저장 파일](../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md), [진행 기록](../docs/progress/2026-10-31_progress.md)에 근거를 분리했다.
 
-## 오늘 좁힌 판단
+## 2026-11-03 후속 연결·전원 상태·후보 판단 — 필기30~35
+
+[학습21의30~33절](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md#33-tmux1511의-두-측정-채널과-제어-핀-연결하기)에 연결 후보를 구체화했다. 아래10/31 본문의 후속 항목은 당시 이력이며 최신 재개점은 [11/3 진행](../docs/progress/2026-11-03_progress.md)을 따른다.
+
+- 공식 C04/UM1724에서 AVDD 취출 후보CN10-7을 식별하고 TPS/TMUX 공통 공급 후보를 유지했다. 실제 보드 상태·부하·잡음 적합성은 미검증이다.
+- TPS MR/CT 개방, RESET→TMUX SEL1/2, 각 IC 가까이 전원100nF 후보다. CT-open tD는 지정 조건 **MAX50µs**, MIN/TYP 공란으로 정정했다.
+- TMUX PW/TSSOP 기준으로 배터리/모터 공급 신호의 두 분압 경로→S1/D1·S2/D2, 미사용 SEL3/4 및 S3/D3/S4/D4 접지 후보를 작성했다. 패키지/구매 확정과 다르며 미사용 S/D 접지는 프로젝트 선택이다. TPS VOH/VOL과 TMUX VIH/VIL을 유효 공급/부하 조건에서 대조했다. 전체 전원 상태·방전·ADC 유효화 검증은 남는다.
+- [학습34절](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md#34-전원-시작정상하강완전-off복귀를-연결하기)에 상태 흐름을 작성했다. TPS 최소 동작 전압 미만의 기동/재기동과 얕은 저전압 복귀를 구분하고 CT-open tD 중복 가산을 배제했다. VPOR 아래 RESET 미정과 TMUX 자체 무전원 보호를 구분했다. 전원 과도·저전압 출력 부하·ADC 노드 잔류/정착·측정 유효화는 미검증이며, 후속35절에서 후보 유지/보류와 필요한 증거를 정리했다.
+- **35절 판단:** 위 구조를 후속 계산의 기준 후보로 유지하고 최종 부품/제작 승인은 보류했다. 공급 취출/부하, 하강 중 MCU 핀 조건, 완전OFF 누설/비의도 급전, 복귀 후 유효 측정, 정확도별 필요한 증거와 판정 경계를 [학습35절](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md#35-설계-후보를-유지하고-남은-검증을-정하기)에 남겼다. 각 항목은 미검증이며 후보 유지가 PASS를 의미하지 않는다.
+- **현재 다음 작업:** 전체 전압 오차 예산. 기존0~16V DC·보정 후±0.10V·20~30°C 제안과 보호 부하 포함 모델을 기준으로 기여량/근거/보정 전후/미정을 합친다. 기준 계기의 검증 경계를 별도로 두며 실제 저항/용량/파형을 새로 확정하지 않는다. 준비된 회로도/ERC는 이후 단계다.
+
+11/4 문서 점검: 아래10/31 당시 미확인/후속 항목과11/3 문서상 확인을 구분한다. 현재 재개점은36절이며 실제 보드/보호 검증은 계속 미완료다.
+
+## 10/31에 좁힌 판단 — 당시 검토 이력
 
 | 항목 | 오늘 확인한 범위 | 아직 확정하지 않은 것 |
 | --- | --- | --- |
@@ -62,7 +75,7 @@ TPS의 MR/CT와 전원 디커플링, TMUX 미사용 채널·SEL 기본 상태, V
 
 | 자료 | 읽을 위치 | 적용 조건과 주의 |
 | --- | --- | --- |
-| [TI TPS3840 SNVSB03E Rev.E, 2026-05](https://www.ti.com/lit/ds/symlink/tps3840.pdf) | p3 출력 변형, p4 §5 핀, p6 §6.5 VIT−/VHYS/VOH/VOL, p7 §6.6 tP_HL/tD/tSTRT와 각주, p9 Fig6-2 | tP_HL typ15/max30µs는 지정 전압 스텝·CL10pF·slew 조건. CT-open tD nominal50µs; startup100/220/350µs와 중복 가산 금지 |
+| [TI TPS3840 SNVSB03E Rev.E, 2026-05](https://www.ti.com/lit/ds/symlink/tps3840.pdf) | p3 출력 변형, p4 §5 핀, p6 §6.5 VIT−/VHYS/VOH/VOL, p7 §6.6 tP_HL/tD/tSTRT와 각주, p9 Fig6-2 | tP_HL typ15/max30µs는 지정 전압 스텝·CL10pF·slew 조건. CT-open tD **MAX50µs**(11/3 원문 열 대조로 nominal 표기 정정); startup100/220/350µs와 중복 가산 금지 |
 | 같은 TPS3840 | p18 §7.3.2 CT, p19–20 §7.4 전원 상태, p28 §8.3/8.4 디커플링, p30 Table9-2 PL30 | 명목 VIT−3.0V·히스테리시스100mV. 출력 보증 최저 전압도 부하·slew 조건이 있음 |
 | [TI TMUX1511 SCDS390B Rev.B, 2025-03](https://www.ti.com/lit/ds/symlink/tmux1511.pdf) | p3 핀, p4 §5.3, p6 §5.5 RON/IS(ID)/IPOFF/VIH/VIL, p7 tTRAN | RON typ2/max4.5Ω. IPOFF ±10nA는 VDD=0, VS≤3V, TA25°C; ±2µA 행은 VS≤3.6V, −40~125°C. 두 행 모두 VD=0 |
 | 같은 TMUX1511 | p14 Fig6-3 누설 시험, p15 Fig6-5 전이, p22 §7.3.4–7.5 및 Table7-1, p26 전원 | 정상 OFF·ON·전원 OFF를 구분. VDD=0 규격으로 0~1.5V 구간 전체를 보증하지 않음 |
@@ -70,7 +83,7 @@ TPS의 MR/CT와 전원 디커플링, TMUX 미사용 채널·SEL 기본 상태, V
 | [ST AN4899 Rev4, 2026-05](https://www.st.com.cn/resource/en/application_note/an4899-guidelines-for-gpio-hardware-settings-and-lowpower-consumption-on-stm32-mcus-stmicroelectronics.pdf) | p12 Fig2, p19 §5.2.2, p26 §6.3 | 아날로그 기능 사용 시 FT 일반화 금지, 무전원 전압은 개별 MCU 조건 우선 |
 | [UNI-T UT210E 설명서 MAY2018 REV2](../assets/datasheets/UNI-T_UT210E_User_Manual.pdf) | PDF p2 IX Technical index → 1 DC voltage → 20.00V 행 | 분해능10mV, ±(0.7% reading+3digits), 23±5°C·RH<75%·1년 조건 |
 
-## 다음 재개 순서와 완료 조건
+## 10/31 당시 다음 재개 순서와 완료 조건
 
 1. **먼저 실제 Nucleo VDDA/VDD 경로와 취출 가능 지점을 문서/회로도로 대조한다.** 감시기와 TMUX가 어느 전원을 실제로 공유할지 결정 근거를 남긴다.
 2. MR/CT/SEL/미사용 채널/디커플링과 시작·하강·복귀·완전 OFF 조건표를 완성한다. 정상 동작 영역 밖에서 보장이 끊기는 구간을 명시한다.
