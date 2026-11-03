@@ -54,7 +54,10 @@
         "readback": true
       }
     ],
-    "correction": "TPS3840 Rev.E p7 CT-open tD MAX50µs; MIN/TYP blank. Prior nominal50µs corrected; original learning history retained."
+    "correction": "TPS3840 Rev.E p7 CT-open tD MAX50µs; MIN/TYP blank. Prior nominal50µs corrected; original learning history retained.",
+    "learning_sections_30_to_35_verified": true,
+    "3fca7326-f87b-8124-b0ee-e212822ce80d_child_tags_preserved": true,
+    "403a7326-f87b-816f-8115-fbe2c995f8f0_child_tags_preserved": true
   },
   "calendar": {
     "status": "existing_record_updated_readback",
@@ -68,18 +71,20 @@
     "note": "No separate TMR time block found for Oct26–Nov10 in bounded primary-calendar search. Updated the existing evidence-review description with explicit learning/closeout dates, without inventing actual execution times or creating new slots."
   },
   "git": {
-    "status": "pending_content_commit",
+    "status": "content_pushed_remote_verified",
     "branch": "agent/dual-encoder-bringup",
-    "content_commit": null,
-    "remote_verified": false,
-    "receipt_policy": "A follow-up receipt commit records the content commit and observed remote equality; it does not embed its own SHA."
+    "content_commit": "92f6933d6dfc7dc2f7c8d1623d5f77366a2f6181",
+    "remote_verified": true,
+    "receipt_policy": "A follow-up receipt commit records the content commit and observed remote equality; it does not embed its own SHA.",
+    "content_files": 38,
+    "content_url": "https://github.com/pr0ved99/TIL/commit/92f6933d6dfc7dc2f7c8d1623d5f77366a2f6181"
   },
   "management": {
     "initial_snapshot": "audit.json",
     "after_snapshot": "audit_after.json",
     "original_unrelated_files": 19,
     "preserved_hashes": "preserved_worktree.json",
-    "preservation_verified": false,
+    "preservation_verified": true,
     "known_snapshot_missing_links": 3,
     "actions": "Updated current documentation pointers; added project ignore for newly generated artifacts. Kept original snapshots, tracked build artifacts and two CAD wrappers."
   },
