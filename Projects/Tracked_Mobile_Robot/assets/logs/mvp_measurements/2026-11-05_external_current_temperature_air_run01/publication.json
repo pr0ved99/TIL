@@ -61,7 +61,13 @@
     }
   ],
   "git": {
-    "status": "pending"
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "d994b0bd0cddbd9e60c17b5b0f2e797e33aa8a5e",
+    "remote_verified_commit": "d994b0bd0cddbd9e60c17b5b0f2e797e33aa8a5e",
+    "verification_method": "git ls-remote origin refs/heads/agent/dual-encoder-bringup",
+    "unrelated_worktree_paths_preserved": 19,
+    "receipt_commit": "This receipt is committed after the verified content commit; its own hash is in Git history."
   },
   "notebooklm": {
     "packet_verified": true,
@@ -71,6 +77,8 @@
     "hash_mismatches": 0,
     "uploaded": false,
     "video_generated": false,
+    "unit01_guide_prepared": true,
+    "unit01_guide": "assets/logs/pcb_design/2026-11-05_notebooklm_units/README.md",
     "next": "01_목표와_시스템_아키텍처의 7개 TXT로 프로듀서 메모 검토"
   },
   "scope": {
