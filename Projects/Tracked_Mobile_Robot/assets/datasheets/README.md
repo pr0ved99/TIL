@@ -19,6 +19,19 @@
 | Pololu#5241 | [Overview 전체 캡처](Pololu_5241_Overview_Unclipped.png) | 기능 설명 문장 끝까지 시각 확인 |
 | Pololu 전류센서 비교표 | [왼쪽](Pololu_Current_Sensor_Comparison_Left.png) · [오른쪽](Pololu_Current_Sensor_Comparison_Right.png) | 가로 스크롤 표를 나눈 보조 자료. ACS71240 열은 왼쪽에 있음 |
 
+## 2026-11-04 추가 — 보드·ADC 참고 자료
+
+사용자가 프로젝트와 바탕화면 NotebookLM 자료집에 저장한 다음4개 PDF를 확인했다. PDF 열림/전체 페이지 텍스트 읽기와 각 위치의 SHA256 일치를 확인했다. 바탕화면 UM1724의 `(1)` 접미사는 내용 차이를 뜻하지 않는다. [확인 기록](../logs/pcb_design/2026-11-04_notebooklm_source_packet/user_pdf_check.json).
+
+| 문서 | 로컬 파일 | 확인한 판본·분량 | 사용할 범위 |
+| --- | --- | --- | --- |
+| NUCLEO-64 사용 설명서 | [UM1724](um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf) | Rev17,2025-09,91쪽 | 보드 전원·점퍼·헤더 |
+| NUCLEO 보드 회로도 | [MB1136](mb1136-default-c04_schematic.pdf) | C04,2022-08-17,5쪽 | Sheet2/3/5의 전원·MCU·확장 접점; 실제 보드 변형은 별도 대조 |
+| GPIO 하드웨어 지침 | [AN4899](an4899-guidelines-for-gpio-hardware-settings-and-lowpower-consumption-on-stm32-mcus-stmicroelectronics.pdf) | Rev4,2026-05,33쪽 | GPIO/아날로그 입력 모드·전원 조건 |
+| ADC 정확도 지침 | [AN2834](cd00211314-how-to-optimize-the-adc-accuracy-in-the-stm32-mcus-stmicroelectronics.pdf) | Rev10,2024-10,현 보유 PDF | ADC 오차·외부 회로·취득 조건. 사용자가 갱신한 판본을 사용하며 STM32F446 개별 수치는 DS10693 해당 판본으로 확인 |
+
+기존 [STM32F446 PDF](../stm32f446mc.pdf)는 DS10693 Rev10이다. 별도 웹 판본은 이번 설명 자료의 필수 보충 대상에서 제외했다. 위4개는 이제 로컬 PDF가 있으므로 초기 다운로드 timeout 기록을 현재 미확보 상태로 읽지 않는다. 이번 확인은 자료 확보/동일성 확인이며 새로운 회로·실물 검증이 아니다.
+
 ## 공개 참조 위치
 
 아래는 대조에 사용한 공개 참조이며 사용자 파일별 실제 다운로드 출처를 보증하는 기록은 아니다.
@@ -36,3 +49,5 @@
 MG540P30_12V 모터의 케이스 허용 온도·연속 운전 조건을 명시한 자료는 이번 묶음에 없다. [기존 제조사 회신](../vendor/wheeltec/2026-08-17_mg540p30_12v_support_reply_ko.md)을 보존하며 미확보 온도 사양을 추정하지 않는다. 실제 수령 프로브·고정재의 사양과 전기적 절연도 별도 확인 대상이다.
 
 문서 확보·파일 보존 확인은 온도/전류 실측이나 MVP 검증 완료가 아니다. [외부 온도 관측 계획](../../docs/plans/2026-10-20_External_Temperature_Test_Plan_ko.md)의 수치 중단/판정 기준은 아직 미확정이다.
+
+11/5 마감 점검: AN2834의 이전 Rev2 파일명 링크를 실제 보유 Rev10 파일명으로 정정했다. 과거 복제 영수증은 생성 당시 판본/해시 이력으로 보존한다.

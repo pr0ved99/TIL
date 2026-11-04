@@ -2,9 +2,21 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-04 (11/3 learning closeout and project management audit; design remains in progress).
+Last updated: 2026-11-05 (external air-run observations closed; user confirmed power disconnected; PCB learning resumes at 37-4).
 
-## Current Checkpoint — 2026-11-04 closeout / 11-03 learning
+## Current Checkpoint — 2026-11-05
+
+- GM1312 실물 모델·두 열전대 사용 확인. T1=A/T2=B. UT210E20A DC/0.01A 표시로 모터별 한 도선 관측. #5241·103JT-025는 수령 보고이고 센서 ADC 구현은 미실행이다.
+- 짧은 공중 전진/후진 전류 표시 M1B−0.18/+0.18A, M2B+0.20/−0.23A. 두 설치 무구동−0.01A. 최종 T1/T2=26.9/27.0°C, 마지막 이상 없음, 전원 분리 완료 사용자 보고. [조건/정정/미결](assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md).
+- 장시간 열적 수용·정격 부하·PWM 피크/RMS·전체 정확도는 미완료. T005A PARTIAL/T007 BLOCKED와 후속 분리 유지. 온도 중단 수치는 미정이며 과거 철회 기준을 복원하지 않는다.
+- 학습 자료37-3까지, 사용자 필기36-19까지. 다음37-4→38→39. 사용자 설명 길이 자체를 축소 요구로 해석하지 않는다.14MHz/480cycles 등은 미구현 후보다.
+- 사용자 요청으로 마감 후 NotebookLM01단원 안내. Desktop14단원170파일 복제 완료, 실제 업로드/생성 미실행.11/9·10 휴무/기존 일정 시간 유지. [최신 실적/게시](docs/progress/2026-11-05_progress.md).
+
+## Previous Checkpoint — 2026-11-04 closeout / 11-03 learning
+
+- **추가 보유 확인:** 사용자가 온도 측정기도 있다고 확인했다. 기존 구매 기록의 모델은 GM-1312이며 실물 모델/프로브 구성·정상 표시는 별도 미확인이다. 아래 직전 수령 목록에 온도계가 없다는 문구는 이 후속 보고 전의 상태다. 사용자 MVP 잔여 작업 재개 질문에 대해, PCB/내장 ADC를 기다리지 않고 UT210E·외부 온도계로 기존 로봇의 관측 준비를 할 수 있음을 확인했다.10/23 전류·온도 후속 분리 결정과 report41의 제외 범위는 유지한다. 완료4방향/1m/S0 관측을 자동 반복하거나 T005A/T007 미결을 닫지 않는다. 첫 실물 단계는 온도계/프로브 표시와 부착 준비 확인이며 아직 주행/열적합 시험은 실시하지 않았다.
+
+- **11/4 후속 수령 보고:** 사용자가 Pololu #5241(ACS71240KEXBLT-030B3 ±30A·3.3V), SEMITEC103JT-025, UNI-T UT210E 도착을 보고했다. 아래 배송 대기/수령 미확인은 이전 이력이다. 세 품목의 수령 보고와 실물 라벨·수량·구성/동작 검사는 구분하며 후자는 아직 미보고다. GM-1312·100nF 커패시터 도착은 이번 보고에 포함되지 않았다. 이제 NTC 저항/반응, 준비된3.3V 공급에서 전류센서 무전류 출력, 적합한 DC 부하가 준비된 뒤 센서/클램프 비교를 진행할 수 있다. ADC 회로/펌웨어·정량 정확도·PWM 피크/필터 감쇠·열 안전은 미검증이다. 학습36은 온도 영향까지 작성했고 다음 잡음/정착/취득 조건과 구분한다. [수령 및 가능한 시험](docs/progress/2026-11-04_progress.md#추가--센서측정기-3종-수령-보고와-실물-확인-범위).
 
 - 11/3 필기30~35에서 전원 경로·핀 연결·전원 상태·후보 판단 자료를 작성했다. TPS3840PL30–TMUX1511을 후속 계산 후보로 유지하고 최종 부품/제작 승인은 보류한다. CT-open tD는 지정 조건 MAX50µs(MIN/TYP 공란)로 정정했다.
 - 다음36절 전체 전압 오차 예산: 0~16V DC·보정 후±0.10V·주위20~30°C·결과10Hz 제안을 기준으로 저항 비율·RON/누설·ADC·VDDA 추정·온도/잡음/정착의 기여량·근거·보정 전후·미정을 정리한다. 기준 계기는 별도 검증 경계이며 중복 합산/미정0처리를 피한다.

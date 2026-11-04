@@ -84,6 +84,12 @@ Present the current stage's concrete result for discussion before moving to the 
 requirements and unresolved values explicitly. Do not treat an existing CAD draft as approved requirements
 or advance to circuit/layout work merely because a starter file exists.
 
+For learning notes, organize sections around the design question and the decision or evidence they produce,
+not a fixed length. The user clarified on 2026-11-04 that long explanations are acceptable when their purpose
+and basis are clear. Explain the requirement, source and applicable conditions, assumptions, calculation or
+observation, and resulting decision or unresolved evidence. Do not interpret remarks about chapter length
+as requests to shorten, omit reasoning, or change the plan without that intent being stated.
+
 When guiding work from a datasheet, give the manufacturer/document revision, printed page number
 (and PDF page index if different), section or table/figure, and exact parameter/row to read. Link the
 primary datasheet and explain relevant test conditions and typical/maximum distinctions. The user

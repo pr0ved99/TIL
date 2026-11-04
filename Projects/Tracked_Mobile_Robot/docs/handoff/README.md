@@ -1,14 +1,12 @@
 # Handoff Notes
 
-## 현재 위치 — 2026-11-04 마감 / 11-03 학습
+## 현재 위치 — 2026-11-05 마감
 
-11/3 필기30~35에서 전원 경로·핀 연결·전원 상태·후보 판단 자료를 작성했다. TPS3840PL30–TMUX1511을 후속 계산 후보로 유지하고 최종 부품/제작 승인은 보류한다. CT-open tD는 지정 조건 MAX50µs(MIN/TYP 공란)로 정정했다.
+외부 UT210E/GM1312로 짧은 공중 전진·후진 4건을 관측하고 사용자가 전원 분리 완료를 보고했다. M1B 전진 −0.18A/후진 +0.18A, M2B 전진 +0.20A/후진 −0.23A. 최종 T1(A) 26.9°C/T2(B) 27.0°C, 마지막 이상 없음. 장시간 열적 수용·센서 정확도·전체 MVP 완료로 확대하지 않는다. T005A PARTIAL/T007 BLOCKED 유지.
 
-**다음 첫 작업:** 다음36절 전체 전압 오차 예산: 0~16V DC·보정 후±0.10V·주위20~30°C·결과10Hz 제안을 기준으로 저항 비율·RON/누설·ADC·VDDA 추정·온도/잡음/정착의 기여량·근거·보정 전후·미정을 정리한다. 기준 계기는 별도 검증 경계이며 중복 합산/미정0처리를 피한다.
+**다음 요청:** 바탕화면 단원별 자료의 NotebookLM 01단원 영상 준비. 실제 업로드/영상 생성은 아직 미실행이다. **PCB 학습 재개점:** 자료 37-3까지 작성, 사용자 필기 확인 36-19까지. 다음 37-4 잡음·평균·10Hz 처리 → 38 기준 계기/보정 계수 → 39 전체 오차 예산 판단. 11/9·10 휴무 유지.
 
-CN10-7/AVDD는 공식 보드 문서에서 식별한 공급 후보다. 실제 보드 상태·부하/잡음·전원 과도·무전원 보호·ADC 유효화·정확도·제작 쉴드 반영은 미검증이다. 0.1%는 비교 조건,100pF와고정30µs는 학습 가정이다. 새 SPICE/MCU 빌드·플래시/실물/구매 변경 없이 기존 MVP PARTIAL/OPEN을 유지한다.
-
-[11/4 점검·마감](../progress/2026-11-04_progress.md). 실제 게시 여부는 마감 영수증을 따른다.
+[11/5 실적·게시 기록](../progress/2026-11-05_progress.md) · [외부 관측 근거](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md) · [현재 인수인계](CURRENT_SESSION_CONTEXT.md). TPS3840PL30–TMUX1511은 후속 계산 후보이며 전체 보호/정확도/제작 승인은 미완료다.
 
 아래 날짜별 다음 작업은 당시 이력이며 현재 재개점은 위 내용을 따른다.
 
@@ -53,7 +51,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 전압 ADC 차단·방전 마감, 다음 실제 입력용량/지연 근거 |
+| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 11/5 외부 관측 종료·NotebookLM 01단원, PCB 다음 37-4 |
 | 2026-10-17 | [최신 진행 기록](../progress/2026-10-17_progress.md) / [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) | AC-S01~08 선택 zero-only 마감·Git/Notion 최신화·미해결 관측 |
 | 2026-10-16 | [진행 기록](../progress/2026-10-16_progress.md) / [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md) | UART 줄 취소·부분 CMD/ARM 실물 검증과 mode0 복원 이력 |
 | 2026-10-15 | [실물 기록](../progress/2026-10-15_progress.md) / [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md) | zero-only 정지·리셋·S0·두 연결·UART 단절 기능과 AC-S 미완료 조건 |
