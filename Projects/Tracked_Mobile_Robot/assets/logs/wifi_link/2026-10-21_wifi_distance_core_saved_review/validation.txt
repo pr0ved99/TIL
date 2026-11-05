@@ -1,0 +1,59 @@
+Mode: SAVED PARSER C ONLY
+wifi_control_contract.h SHA256: f6d3371d443f1806db2e5265147b8ce6fbc69646d4900c5af8935cf1d9e02316
+wifi_control_contract.c SHA256: e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 1.679s
+
+OK
+Mode: SAVED STATE AND OWNER C ONLY
+wifi_control_state.h SHA256: e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0
+wifi_control_state.c SHA256: 8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba
+wifi_control_contract.h SHA256: f6d3371d443f1806db2e5265147b8ce6fbc69646d4900c5af8935cf1d9e02316
+wifi_control_owner.h SHA256: 3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af
+wifi_control_owner.c SHA256: 707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 0.947s
+
+OK
+Mode: SAVED EXECUTOR AND CONTROL MODULES ONLY
+wifi_control_executor.h SHA256: 6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d
+wifi_control_executor.c SHA256: bcf57445e1fa9229f70323f4e616e39d0675b2961c5eda87773ced8fafdbcc95
+wifi_control_contract.h SHA256: f6d3371d443f1806db2e5265147b8ce6fbc69646d4900c5af8935cf1d9e02316
+wifi_control_contract.c SHA256: e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2
+wifi_control_ticket.h SHA256: ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea
+wifi_control_ticket.c SHA256: 415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94
+wifi_control_owner.h SHA256: 3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af
+wifi_control_owner.c SHA256: 707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd
+wifi_control_state.h SHA256: e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0
+wifi_control_state.c SHA256: 8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba
+.................
+----------------------------------------------------------------------
+Ran 17 tests in 0.839s
+
+OK
+mode=1 PASS policy
+mode=1 PASS first_motion_admission
+mode=1 PASS first_motion_at_tx
+mode=0 PASS policy
+mode=0 PASS first_motion_admission
+mode=0 PASS first_motion_at_tx
+mode=0 PASS round_trip
+mode=0 PASS queue_expired_motion
+mode=0 PASS old_owner
+mode=0 PASS ack_timeout
+mode=0 PASS source_timeout
+mode=0 PASS owner_close
+mode=0 PASS partial_motion_tx
+mode=0 PASS bad_motion_tel
+mode=0 PASS zero_command_pwm
+mode=0 PASS motion_cannot_confirm_stop
+mode=0 PASS pwm_boundary
+
+
+PASS parsing
+
+PASS distance_policy
+
+line 94: strcmp(tx.bytes, expected) == 0 && tx.length == strlen(expected)

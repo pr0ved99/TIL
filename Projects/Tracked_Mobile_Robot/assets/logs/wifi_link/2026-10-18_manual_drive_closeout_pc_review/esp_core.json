@@ -1,0 +1,51 @@
+{
+  "mode": "SAVED CORE",
+  "scope": "Native PC copies in both modes; legacy baseline forced to mode 1; no firmware build/flash or hardware acceptance",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "inputs": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "95291ee26c63f3ab0bdd9a838a073e32398f3f939e97458a18e0474723c4820a",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "bcf57445e1fa9229f70323f4e616e39d0675b2961c5eda87773ced8fafdbcc95"
+  },
+  "fixtures": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_nonzero_core_host_fixture.c": "508017e097b1947be14a35e153ea1f83b273e33354b9ebea162c302e0d204e37",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_executor_host_fixture.c": "253ad6fbaecf292c2fd57ed3c79584116ef400f84490c32e1e5ef6ed53abd069",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_state_host_fixture.c": "562bd91bd24e56c81dc1986a0e0d5486e31f388c7697e7ad9fb9ebe6551cdc14",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_parser_host_fixture.c": "4ec833667e94fd816cde550aaf44791b38a9ff2ab254974b8cbc8fc599d96bec"
+  },
+  "checks": [
+    {
+      "name": "baseline_mode_1_parser",
+      "passed": 15
+    },
+    {
+      "name": "baseline_mode_1_state",
+      "passed": 27
+    },
+    {
+      "name": "baseline_mode_1_executor",
+      "passed": 17
+    },
+    {
+      "name": "mode_1_new_vectors",
+      "passed": 3
+    },
+    {
+      "name": "mode_0_new_vectors",
+      "passed": 14
+    },
+    {
+      "name": "zero_tx_negative_control_detected",
+      "passed": 1
+    }
+  ],
+  "input_zero_only": 0,
+  "status": "PASS"
+}

@@ -1,0 +1,155 @@
+{
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-22_T_ESTOP_005A_run06_safe_restore_released_boot.sr",
+  "sha256": "fb0f2a3ee8f41ab1c92712113a41000063c60f3b17e2a767ff86adb92b919116",
+  "fs": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "D0": {
+      "high_runs": 1,
+      "high_samples": 251,
+      "high_at_start": false,
+      "high_at_end": false,
+      "high_intervals_s": [
+        [
+          4.47864,
+          4.47870275
+        ]
+      ]
+    },
+    "D1": {
+      "high_runs": 0,
+      "high_samples": 0,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": []
+    },
+    "D2": {
+      "high_runs": 0,
+      "high_samples": 0,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": []
+    },
+    "D4": {
+      "decoded_bytes": 36605,
+      "invalid_stop_bits": 1,
+      "lines": 206,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "TEL": 204,
+        "ACK": 1,
+        "PONG": 1
+      },
+      "telemetry_distributions": {
+        "state": {
+          "DISARMED": 204
+        },
+        "reason": {
+          "BOOT": 7,
+          "DISARM": 197
+        },
+        "left_pwm": {
+          "0": 204
+        },
+        "right_pwm": {
+          "0": 204
+        },
+        "left_cps": {
+          "0": 204
+        },
+        "right_cps": {
+          "0": 203,
+          "10": 1
+        },
+        "err": {
+          "0": 204
+        },
+        "drop": {
+          "0": 204
+        }
+      },
+      "state_transitions": [
+        {
+          "start_s": 4.65967875,
+          "end_s": 4.674173805555556,
+          "text": "TEL,t_ms=100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "start_s": 5.36234025,
+          "end_s": 5.377768555555556,
+          "text": "TEL,t_ms=803,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=3685675849,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "selected_commands_responses": [
+        {
+          "start_s": 5.35870725,
+          "end_s": 5.362175555555556,
+          "text": "ACK,seq=3685675849,type=DISARM,t_ms=799"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 4.65967875,
+          "end_s": 4.674173805555556,
+          "text": "TEL,t_ms=100,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.9236825,
+          "end_s": 24.939276805555554,
+          "text": "TEL,t_ms=20403,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=3685675850,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ]
+    },
+    "D5": {
+      "decoded_bytes": 43,
+      "invalid_stop_bits": 1,
+      "lines": 3,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "DISARM": 1,
+        "PING": 1
+      },
+      "telemetry_distributions": {},
+      "state_transitions": [],
+      "selected_commands_responses": [
+        {
+          "start_s": 5.356699,
+          "end_s": 5.358608805555556,
+          "text": "DISARM,seq=3685675849"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 5.25661,
+          "end_s": 5.256696805555556,
+          "text": ""
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 5.37016575,
+          "end_s": 5.371901805555556,
+          "text": "PING,seq=3685675850"
+        }
+      ]
+    }
+  },
+  "uart_roles": {
+    "D4": "STM32 TX / ESP32 RX (inferred from TEL/ACK/ERR)",
+    "D5": "ESP32 TX / STM32 RX (inferred from commands)"
+  },
+  "command_response_check": {
+    "complete_commands": 2,
+    "matched": 2,
+    "missing_seqs": [],
+    "type_mismatches": []
+  },
+  "limits": [
+    "This digital capture contains no analog MDD rail voltage.",
+    "A PWM last falling edge before PC7 assertion does not measure negative or exact-zero shutdown latency.",
+    "Physical operating steps and analog measurements require operator reports."
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "scope": "T-ESTOP-005A motor-disconnected captures and derived evidence; paths relative to project root",
+  "files": [
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run01_summary.json",
+      "bytes": 7634,
+      "sha256": "8bf0fda27580a06b3bfb62496c82c9ce8cfeae7cefa96d4f616483899104ead1"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run01_D4_lines.json",
+      "bytes": 75007,
+      "sha256": "9fc6c8e438fe040362b5e60d8a1b4793890bfe88a555d559730934207ff79c98"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run01_D5_lines.json",
+      "bytes": 10120,
+      "sha256": "de78e31862739eeb46d77d6b21d06d7cf4116a3ddf162d6ad7497a56765d23ac"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run01_D4.txt",
+      "bytes": 55181,
+      "sha256": "994a798dd3f9b245f6f71d6e0f3bcc7983873c9a0b2540d5e968fe3e2e8b99fe"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run01_D5.txt",
+      "bytes": 5719,
+      "sha256": "6b38d76cfd642924904826f3150071eb3f93cf7c9d92e2756cb49198e90da4af"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run01_active_estop_mdd_powered.sr",
+      "bytes": 489404,
+      "sha256": "6b1c461cd00df305850d1c3d3c9e02d4f6bdc8748014e3f9056de23903069ade"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run01_active_estop_mdd_powered.pvs",
+      "bytes": 2600,
+      "sha256": "cae371dd8f91b48c517b94bc7d5f3d0a56b727b33a40634f9aa2e61937e85fbf"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run02_summary.json",
+      "bytes": 8585,
+      "sha256": "0ea1f63498fe1c81ff5c20c6080e3bbce1d5b249a759cbab49c90b5f7301684e"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run02_D4_lines.json",
+      "bytes": 72734,
+      "sha256": "8ae60ed6862623689dc41155bdf4508169be21135ec1887b9c9637ec4d2373e6"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run02_D5_lines.json",
+      "bytes": 7750,
+      "sha256": "3c25fb99874d1a7181ada0e336079cd43199b85c059eccf02db748f3c5372a3e"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run02_D4.txt",
+      "bytes": 53873,
+      "sha256": "8cb031febb487211412b156c72297464b092d32e21ca70384c2c3ca18f4c7114"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run02_D5.txt",
+      "bytes": 4334,
+      "sha256": "5b8203c9a877368e9c2946fd48802ab46294dbaaee5e6035a0d87b2d134650a9"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run02_release_no_s2.sr",
+      "bytes": 427341,
+      "sha256": "4739bab0a678b14b2e92345c36612966a6fbfa611ced52a378b45ae7a7852a82"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run02_release_no_s2.pvs",
+      "bytes": 2564,
+      "sha256": "5075ec2040bfd380a9d9e539c8e9dfac16a9320e31b87a40d1a9bf27cc64c835"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run03_summary.json",
+      "bytes": 5815,
+      "sha256": "5cb2c3d12048647fcb99557ca472df22c1360fa9583b8647acd1ee7ab15afc4c"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run03_D4_lines.json",
+      "bytes": 82203,
+      "sha256": "e02b8c4ccf4cd07e1cd7715d7d001f1e148795c45ca912d0e494a40f3cc2f322"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run03_D5_lines.json",
+      "bytes": 18863,
+      "sha256": "12ff13aab84b5f0355082a8462e5e0c01637fa1da26a29ac275e04c4ea24d63d"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run03_D4.txt",
+      "bytes": 58656,
+      "sha256": "c1089789394fecd771515f85f154c165f64887444fda3a61acc6ba7d7eba6158"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run03_D5.txt",
+      "bytes": 10727,
+      "sha256": "b0d0589b46c52f9c6ade3ddc2cb0d26c49707259cd6f50da8e70da5ca8a7e90b"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run03_esp_reset_hold_estop.sr",
+      "bytes": 695100,
+      "sha256": "e74e1edde3020236b72e321e98e56c0046842b64d1f426ce90d00f5683d591af"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run03_esp_reset_hold_estop.pvs",
+      "bytes": 2564,
+      "sha256": "5075ec2040bfd380a9d9e539c8e9dfac16a9320e31b87a40d1a9bf27cc64c835"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run04_summary.json",
+      "bytes": 5497,
+      "sha256": "111bb2b29d2c9d1294a48e5f5a81333a093eb7de653ab4a838201756835ac975"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run04_D4_lines.json",
+      "bytes": 72151,
+      "sha256": "d1ecb0daf5ced3ba9788ae3852f3a72feaec3ea16c81e16af5485fc88c5883a5"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run04_D5_lines.json",
+      "bytes": 6997,
+      "sha256": "563297b54e2725f264cdfdd0a3b0add0413c63c7be3004b3cf172b225576c2cd"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run04_D4.txt",
+      "bytes": 53695,
+      "sha256": "1bf0dc76233c9341deb7b7cd670032fc8cffb9f36b122bdc762d7f3d4eacfe36"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run04_D5.txt",
+      "bytes": 3920,
+      "sha256": "1a494f387c7d9a32db4897da66420ddb6663b69c690662419ee23f68b00dcc6e"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run04_esp_en_hold_estop.sr",
+      "bytes": 427719,
+      "sha256": "0230d75337644127d24ad84fe0f113fe72bf0209400cebf9acaffded9cb9f592"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run04_esp_en_hold_estop.pvs",
+      "bytes": 2564,
+      "sha256": "5075ec2040bfd380a9d9e539c8e9dfac16a9320e31b87a40d1a9bf27cc64c835"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_summary.json",
+      "bytes": 5002,
+      "sha256": "b344b47b95b6e78e4f8851ae89aa5e760cc5a08a4dde620dcef58a6599e7b138"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_D4_lines.json",
+      "bytes": 64057,
+      "sha256": "9bfef01c5064255d3d14b709312835b6b9c88781b9f97b60b12da00f54ad2238"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_D5_lines.json",
+      "bytes": 310,
+      "sha256": "918f8e4b8d605acc8d46b8eb2fb928ae4c9a5a4bddec6227ddbf2e106d92c65c"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_D4.txt",
+      "bytes": 49462,
+      "sha256": "10cb88b736db77046ccb8932318d70d3e58a796054927cf7a28b3f9651100152"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_D5.txt",
+      "bytes": 118,
+      "sha256": "7b64d5912ffddc585c4b499eef6cb8f37592dcc48cfd645dba653c0eb01543ef"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run05_boot_details.json",
+      "bytes": 545,
+      "sha256": "04fa41d8f1391e825730aca5329f759c92059c0c60645f70e331bf1741541492"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run05_safe_restore_active_boot_s2.sr",
+      "bytes": 251292,
+      "sha256": "3fbd82c206faa9cb42c71885e34074e74a26b5bb3e0d466856c8d26fbb5e053a"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run05_safe_restore_active_boot_s2.pvs",
+      "bytes": 2564,
+      "sha256": "5075ec2040bfd380a9d9e539c8e9dfac16a9320e31b87a40d1a9bf27cc64c835"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_summary.json",
+      "bytes": 4430,
+      "sha256": "5300483dcee0d40e6589f4bceae2edb2a1f18d7edefe4df65a4f29d888fecefb"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_D4_lines.json",
+      "bytes": 54676,
+      "sha256": "2d6460c394c282eb30e01bf6daf821cca182902c2b7b121b859b1fe06e5e577b"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_D5_lines.json",
+      "bytes": 302,
+      "sha256": "bfc3fd08f8ed3d4e742fe35a8dbcfae2671cac6d013932a7a71a937f1ff7ee7a"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_D4.txt",
+      "bytes": 42055,
+      "sha256": "cb6e774c9b41f53fb59e51c2e52656bbc43e1730ed91eeb149991c72c9448c97"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_D5.txt",
+      "bytes": 118,
+      "sha256": "48c3892cf088e22900d47ebdda17282006456d8397733d4dfce45fdbda35c88e"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/run06_boot_details.json",
+      "bytes": 698,
+      "sha256": "1d36675b9f1a8f4a7fdee5f118e29378da88e31aba6639b19056c1e52b8de692"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run06_safe_restore_released_boot.sr",
+      "bytes": 230499,
+      "sha256": "fb0f2a3ee8f41ab1c92712113a41000063c60f3b17e2a767ff86adb92b919116"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_005A_run06_safe_restore_released_boot.pvs",
+      "bytes": 2564,
+      "sha256": "5075ec2040bfd380a9d9e539c8e9dfac16a9320e31b87a40d1a9bf27cc64c835"
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t005a/decode_sr.py",
+      "bytes": 6553,
+      "sha256": "3e2cfcd81709200c74caa470fa410d46602ac09cdddac2d0ab9e53bb965cec4e"
+    }
+  ]
+}

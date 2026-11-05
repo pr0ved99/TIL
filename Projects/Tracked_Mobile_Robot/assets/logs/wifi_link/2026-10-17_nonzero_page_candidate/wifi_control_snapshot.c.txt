@@ -1,0 +1,39 @@
+static int wifi_control_snapshot(wifi_ws_session_t *session, char *json, size_t capacity)
+{
+    static const char *const phases[] = {"IDLE", "ARM_PENDING", "ZERO_PENDING", "ACTIVE", "STOPPING", "BLOCKED"};
+    xSemaphoreTake(s_stm_lock, portMAX_DELAY);
+    const uint64_t now = wifi_control_now();
+    wifi_control_executor_poll(&s_control, wifi_control_ready_locked(), now);
+    wifi_control_cleanup_locked();
+    const wifi_control_state_t *state = &s_control.state;
+    const bool available = WIFI_UART_PARTIAL_TEST_MODE == 0U && !s_manual_stop_pending && s_wifi_command_owner_session_id == 0U &&
+        !s_control.queued && !s_control.waiting && !s_control.prepared && !s_control.have_result;
+    const bool fresh = state->have_tel && now >= state->tel_received_ms &&
+        now - state->tel_received_ms < WIFI_CONTROL_TEL_MS;
+    const bool zero = fresh && state->tel.vx_mmps == 0 && state->tel.w_mradps == 0 &&
+        state->tel.left_pwm == 0 && state->tel.right_pwm == 0;
+    const bool arm = available && wifi_control_ready_locked() && state->phase == WIFI_CONTROL_IDLE &&
+        zero && state->tel.state == WIFI_CONTROL_STM_DISARMED;
+    const bool cmd = available && (state->phase == WIFI_CONTROL_ZERO_PENDING || state->phase == WIFI_CONTROL_ACTIVE) &&
+        state->owner.ws_session_id == session->id;
+    if (!arm && !cmd) {
+        wifi_control_ticket_invalidate(&session->ticket);
+    } else {
+        const wifi_control_type_t purpose = arm ? WIFI_CONTROL_ARM : WIFI_CONTROL_CMD;
+        const uint32_t control_id = arm ? 0U : state->owner.control_id;
+        if (session->ticket.purpose != purpose || session->ticket.control_id != control_id)
+            wifi_control_ticket_invalidate(&session->ticket);
+        (void)wifi_control_ticket_issue(&s_ticket_pool, &session->ticket, session->id, purpose, control_id, now);
+    }
+    const bool valid = session->ticket.valid && now < session->ticket.expires_ms;
+    const uint32_t ttl = valid ? (uint32_t)(session->ticket.expires_ms - now) : 0U;
+    const int length = snprintf(json, capacity,
+        "{\"kind\":\"control_state\",\"boot_id\":%" PRIu32 ",\"session_id\":%" PRIu32
+        ",\"phase\":\"%s\",\"owner_session\":%" PRIu32 ",\"control_id\":%" PRIu32
+        ",\"ticket\":%" PRIu32 ",\"purpose\":\"%s\",\"ttl_ms\":%" PRIu32 ",\"zero_only\":%s}",
+        s_boot_id, session->id, phases[state->phase], state->owner.ws_session_id, state->owner.control_id,
+        valid ? session->ticket.id : 0U, valid ? (arm ? "ARM" : "CMD") : "NONE", ttl,
+        WIFI_CONTROL_ZERO_ONLY ? "true" : "false");
+    xSemaphoreGive(s_stm_lock);
+    return length >= 0 && (size_t)length < capacity ? length : -1;
+}

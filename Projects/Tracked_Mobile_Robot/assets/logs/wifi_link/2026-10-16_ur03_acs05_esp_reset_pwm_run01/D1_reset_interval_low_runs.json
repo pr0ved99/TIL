@@ -1,0 +1,23 @@
+{
+  "window_s": [
+    11.6,
+    12.78
+  ],
+  "source_sha256": "efc1aeed720825ef9921a49d5edbbb98eef17038f1b5f7277e20785718aafe0b",
+  "D1_low_runs": [
+    {
+      "start_s": 11.78936175,
+      "end_s": 11.7893795,
+      "samples": 71,
+      "low_us": 17.75
+    },
+    {
+      "start_s": 11.78937975,
+      "end_s": 11.789386,
+      "samples": 25,
+      "low_us": 6.25
+    }
+  ],
+  "physical_mapping": "STM PA10 RX, JDBG_UART Pin2",
+  "limit": "ESP EN is not probed; cause and exact relation to reset edge are not established."
+}

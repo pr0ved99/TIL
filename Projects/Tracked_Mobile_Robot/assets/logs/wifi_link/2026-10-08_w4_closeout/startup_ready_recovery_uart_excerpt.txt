@@ -1,0 +1,70 @@
+I (123599) wifi_link: STM TEL #1136 t_ms=113600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+--- Error: ClearCommError failed (PermissionError(13, '?μ튂媛 紐낅졊?? ?몄떇?섏? ?딆뒿?덈떎.', None, 22))
+--- Waiting for the device to reconnect
+I (479) wifi_link: STM UART RX ready: TX=GPIO17 RX=GPIO18 115200/8N1
+I (489) wifi_link: STARTUP: settle; DISARM seq=3434734853 PING seq=3434734854
+I (489) wifi_link: Wi-Fi + STM UART RX: mode=STA boot_id=106722675
+I (639) wifi_link: STM TEL #1 t_ms=114400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (739) wifi_link: STM TEL #2 t_ms=114500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (839) wifi_link: STM TEL #3 t_ms=114600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (939) wifi_link: STM TEL #4 t_ms=114700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (999) wifi_link: STARTUP: line sync sent
+I (1009) wifi_link: STM RX: ERR,seq=0,type=UNKNOWN,code=BAD_TYPE,t_ms=114793
+I (1039) wifi_link: STM TEL #5 t_ms=114800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1099) wifi_link: TX UART1: DISARM,seq=3434734853 attempt=1
+I (1109) wifi_link: RX ACK: seq=3434734853 type=DISARM
+I (1109) wifi_link: STARTUP: DISARM acknowledged
+I (1109) wifi_link: TX UART1: PING,seq=3434734854 attempt=1
+I (1129) wifi_link: STM TEL #6 t_ms=114900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1149) wifi_link: RX PONG: seq=3434734854
+I (1149) wifi_link: STARTUP READY: DISARM ACK and PONG verified
+I (1239) wifi_link: STM TEL #7 t_ms=115000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1339) wifi_link: STM TEL #8 t_ms=115100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1439) wifi_link: STM TEL #9 t_ms=115200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1539) wifi_link: STM TEL #10 t_ms=115300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1639) wifi_link: STM TEL #11 t_ms=115400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1739) wifi_link: STM TEL #12 t_ms=115500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1839) wifi_link: STM TEL #13 t_ms=115600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (1939) wifi_link: STM TEL #14 t_ms=115700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2039) wifi_link: STM TEL #15 t_ms=115800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2139) wifi_link: STM TEL #16 t_ms=115900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2239) wifi_link: STM TEL #17 t_ms=116000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2339) wifi_link: STM TEL #18 t_ms=116100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2439) wifi_link: STM TEL #19 t_ms=116200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2539) wifi_link: STM TEL #20 t_ms=116300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2639) wifi_link: STM TEL #21 t_ms=116400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2739) wifi_link: STM TEL #22 t_ms=116500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2839) wifi_link: STM TEL #23 t_ms=116600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (2939) wifi_link: STM TEL #24 t_ms=116700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3039) wifi_link: STM TEL #25 t_ms=116800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3139) wifi_link: STM TEL #26 t_ms=116900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3239) wifi_link: STM TEL #27 t_ms=117000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3339) wifi_link: STM TEL #28 t_ms=117100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3439) wifi_link: STM TEL #29 t_ms=117200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3539) wifi_link: STM TEL #30 t_ms=117300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3639) wifi_link: STM TEL #31 t_ms=117400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3739) wifi_link: STM TEL #32 t_ms=117500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3839) wifi_link: STM TEL #33 t_ms=117600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (3939) wifi_link: STM TEL #34 t_ms=117700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4039) wifi_link: STM TEL #35 t_ms=117800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4139) wifi_link: STM TEL #36 t_ms=117900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4239) wifi_link: STM TEL #37 t_ms=118000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4339) wifi_link: STM TEL #38 t_ms=118100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4439) wifi_link: STM TEL #39 t_ms=118200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4539) wifi_link: STM TEL #40 t_ms=118300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4639) wifi_link: STM TEL #41 t_ms=118400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4739) wifi_link: STM TEL #42 t_ms=118500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4839) wifi_link: STM TEL #43 t_ms=118600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (4939) wifi_link: STM TEL #44 t_ms=118700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5039) wifi_link: STM TEL #45 t_ms=118800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5139) wifi_link: STM TEL #46 t_ms=118900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5239) wifi_link: STM TEL #47 t_ms=119000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5339) wifi_link: STM TEL #48 t_ms=119100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5439) wifi_link: STM TEL #49 t_ms=119200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5539) wifi_link: STM TEL #50 t_ms=119300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5639) wifi_link: STM TEL #51 t_ms=119400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5739) wifi_link: STM TEL #52 t_ms=119500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5839) wifi_link: STM TEL #53 t_ms=119600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1
+I (5899) wifi_link: Open http://192.168.0.17/
+I (5899) wifi_link: WebSocket status: /ws, period=1000 ms
+I (5939) wifi_link: STM TEL #54 t_ms=119700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=1

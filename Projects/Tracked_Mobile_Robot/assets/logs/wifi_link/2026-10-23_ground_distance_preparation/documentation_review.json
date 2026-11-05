@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-23",
+  "status": "PASS_DOCUMENT_AND_EVIDENCE_CONSISTENCY_ONLY",
+  "scope": "Ground-distance acceptance documentation; no firmware, new physical test or full MVP acceptance",
+  "documents": [
+    "README.md",
+    "03_Firmware/README.md",
+    "03_Firmware/esp32_wifi_link/README.md",
+    "PROJECT_MEMORY.md",
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "docs/handoff/README.md",
+    "docs/progress/README.md",
+    "docs/progress/2026-10-23_progress.md",
+    "docs/plans/README.md",
+    "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+    "docs/plans/templates/distance_1m_session_template_ko.md",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md"
+  ],
+  "local_path_links_checked": 729,
+  "missing_local_paths": 0,
+  "scoped_git_diff_check": "PASS",
+  "numerical_checks": [
+    {
+      "run": "2026-10-23_ground_1m_run03",
+      "input_sha256": "7a08035edb09554a020b182ea41dd34b82b2dde55c16bfe857e9d016f00f47d1",
+      "window": "ACCEPTED",
+      "external_distance_mm": 1002,
+      "calculation_matches": true
+    },
+    {
+      "run": "2026-10-23_ground_1m_run04",
+      "input_sha256": "fbf50bac48d05a45d45cc59ca1873d8508786249991da36927c6de73d59eba89",
+      "window": "ACCEPTED",
+      "external_distance_mm": 1002,
+      "calculation_matches": true
+    }
+  ],
+  "mcu_build_or_flash": false,
+  "git_commit_or_push": false,
+  "external_app_updates": false,
+  "full_mvp_accepted": false,
+  "limits": [
+    "Existing generated HelloWorld build whitespace is outside the changed documentation scope and preserved",
+    "No physical measurement uncertainty/straightness or full safety acceptance inferred",
+    "Existing run02 gap/UI cause remains open"
+  ],
+  "new_section_anchor_check": "PASS"
+}

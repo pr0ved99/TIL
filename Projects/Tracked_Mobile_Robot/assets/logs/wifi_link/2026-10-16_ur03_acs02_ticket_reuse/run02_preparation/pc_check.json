@@ -1,0 +1,22 @@
+{
+  "count": 16,
+  "results": [
+    "PASS installation does not ARM; B HELLO only; one-time installation",
+    "PASS B rejection precedes A same-ticket success; active observation and confirmed stop required",
+    "PASS missing B response drops held CMD and sends DISARM; late notice cannot release it",
+    "PASS late B notice with blocked JS event loop is rejected before timer runs",
+    "PASS unexpected B acceptance aborts instead of releasing A",
+    "PASS focus loss while held cannot send stored CMD",
+    "PASS page manual stop while held discards original CMD",
+    "PASS B close or A close cannot release held CMD",
+    "PASS ARM before B readiness is not transmitted",
+    "PASS different session rejection is not mistaken for proof",
+    "PASS TTL consumption by A failure does not become a PASS",
+    "PASS held original cannot survive ESP boot change",
+    "PASS in-flight pre-ARM IDLE does not cancel the pending manual ARM",
+    "PASS ignored pre-ARM IDLE cannot extend the existing ARM response timeout",
+    "PASS IDLE after successful ARM is still treated as control loss",
+    "PASS STOPPING and BLOCKED while waiting for ARM are never ignored"
+  ],
+  "scope": "PC browser simulation against saved PAGE; no live UART/PWM claim"
+}

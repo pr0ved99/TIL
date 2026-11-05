@@ -1,0 +1,72 @@
+{
+  "review_date": "2026-10-23",
+  "timezone": "Asia/Seoul",
+  "status": "REFERENCE_ONLY_NOT_SELECTED_OR_INSTALLED",
+  "requested_item_url": "https://ko.aliexpress.com/item/1005009007548500.html",
+  "requested_item_manufacturer_and_exact_variant": "UNCONFIRMED",
+  "files": [
+    {
+      "file": "xyt_product.html",
+      "source_url": "https://xytmotors.com/zh_cn/bianmaqi/151.html",
+      "bytes": 365750,
+      "sha256": "ba3416fefe25c6b2a756283548407805e1e0561e3578f3b386581ed2309e0f62"
+    },
+    {
+      "file": "xyt_drawing_6.jpg",
+      "source_url": "https://xytmotors.com/web/userfiles/product/bianmaqi/JGB37_520/6.jpg",
+      "bytes": 134984,
+      "sha256": "94aa88fffcff2ac40dc25c460b503aa05005fbb75c3a22b971058cafd1a81f18"
+    },
+    {
+      "file": "xyt_drawing_7.jpg",
+      "source_url": "https://xytmotors.com/web/userfiles/product/bianmaqi/JGB37_520/7.jpg",
+      "bytes": 69099,
+      "sha256": "d437a8e1872c51bad223de29e9050d99aa44efe4fb2c5a38a145f5b7fd4cec9d"
+    },
+    {
+      "file": "aslong_product.html",
+      "source_url": "https://www.aslongdcmotor.com/quality-14413568-jgb37-520-brushed-dc-geared-motor-6v-12v-24v-960rpm-for-electric-bicycle",
+      "bytes": 267913,
+      "sha256": "c3d8ed5da545a70c5b6c75b36ede39ddd8c7e33dd03d612f8aeead0c7f9fb9e2"
+    }
+  ],
+  "findings": {
+    "xyt_12v_ratio_30_examples": [
+      {
+        "model": "JGB37-520-1260",
+        "no_load_rpm": 200,
+        "rated_rpm": 160,
+        "rated_current_A": 0.15,
+        "rated_torque_kgf_cm": 0.45
+      },
+      {
+        "model": "JGB37-520-12100",
+        "no_load_rpm": 333,
+        "rated_rpm": 250,
+        "rated_current_A": 1.0,
+        "rated_torque_kgf_cm": 1.0
+      }
+    ],
+    "aslong_temperature": {
+      "published_operating_range_C": [
+        -10,
+        50
+      ],
+      "published_storage_range_C": [
+        -20,
+        60
+      ],
+      "interpretation": "Operating temperature appears with humidity under Standard Operating Conditions; interpreted as environment condition, not a stated case or winding limit. Exact ambient wording is not explicit."
+    },
+    "case_limit_C": null,
+    "winding_limit_C": null,
+    "continuous_duty_conditions": null,
+    "scope_of_missing_data": "Not found in the inspected primary product pages and XYT drawings; not a claim about all products or all manufacturer documents.",
+    "quality_limitations": [
+      "Manufacturer pages contain differing variants and apparently incomplete/inconsistent rows. Do not combine values across variants or use this table as purchase approval.",
+      "XYT download link targets /web/userfiles/productfile/ without a filename; no downloadable datasheet PDF was obtained from that link.",
+      "Drawing dimensions belong to the published XYT example; fit and encoder compatibility with the current robot are unverified."
+    ],
+    "decision": "Temperature-documentation benefit of replacing MG540 with the linked JGB37-520 has not been established. No motor change or new numerical thermal threshold approved."
+  }
+}

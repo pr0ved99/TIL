@@ -1,0 +1,220 @@
+{
+  "date": "2026-10-24",
+  "user_reported_actions": [
+    "DISARM",
+    "ARM",
+    "전진 짧게",
+    "후진 짧게",
+    "좌회전 짧게",
+    "우회전 짧게",
+    "좌회전 길게",
+    "우회전 길게"
+  ],
+  "user_reported_context": {
+    "ESP_flash_success": true,
+    "new_UI_ARM_zero_DISARM_normal": true,
+    "both_board_USB_disconnected": true,
+    "battery_only": true
+  },
+  "video_review_method": "Chrome decoded still frames at 1 s plus end sample; final DISARM 67.1..67.9 s at 0.1 s; visual review of overview and detailed crops. No continuous all-frame/audio review.",
+  "time_basis": "mvp_01.mp4 playback seconds, not synchronized camera/MCU clock",
+  "button_highlight_samples_s": {
+    "forward": [
+      17,
+      18,
+      19,
+      20
+    ],
+    "reverse": [
+      26,
+      27
+    ],
+    "left_short": [
+      32,
+      33
+    ],
+    "right_short": [
+      38,
+      39,
+      40,
+      41
+    ],
+    "left_long": [
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52
+    ],
+    "right_long": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62
+    ]
+  },
+  "telemetry_display_samples": [
+    {
+      "action": "forward",
+      "s": 18,
+      "pwm_percent": [
+        14.4,
+        15.0
+      ],
+      "cps": [
+        870,
+        860
+      ],
+      "count": [
+        "664",
+        "670"
+      ],
+      "vx_mmps_request": 100,
+      "w_mradps_request": 0
+    },
+    {
+      "action": "reverse",
+      "s": 27,
+      "pwm_percent": [
+        -14.0,
+        -15.0
+      ],
+      "cps": [
+        -820,
+        -860
+      ],
+      "count": [
+        "2393",
+        "2383"
+      ],
+      "vx_mmps_request": -100,
+      "w_mradps_request": 0
+    },
+    {
+      "action": "left_short",
+      "s": 33,
+      "pwm_percent": [
+        -20,
+        20
+      ],
+      "cps": [
+        -1160,
+        1080
+      ],
+      "count": [
+        "422",
+        "2459"
+      ],
+      "vx_mmps_request": 0,
+      "w_mradps_request": 500
+    },
+    {
+      "action": "right_short",
+      "s": 39,
+      "pwm_percent": [
+        20,
+        -20
+      ],
+      "cps": [
+        1200,
+        -1130
+      ],
+      "count": [
+        "476",
+        "2532"
+      ],
+      "vx_mmps_request": 0,
+      "w_mradps_request": -500
+    },
+    {
+      "action": "left_long",
+      "s": 51,
+      "pwm_percent": [
+        -20,
+        20
+      ],
+      "cps": [
+        -1190,
+        1220
+      ],
+      "count": [
+        "-2616",
+        "5468"
+      ],
+      "vx_mmps_request": 0,
+      "w_mradps_request": 500
+    },
+    {
+      "action": "right_long",
+      "s": 60,
+      "pwm_percent": [
+        20,
+        -20
+      ],
+      "cps": [
+        1220,
+        -1170
+      ],
+      "count": [
+        "662",
+        "2548"
+      ],
+      "vx_mmps_request": 0,
+      "w_mradps_request": -500
+    }
+  ],
+  "zero_output_after_each_motion_samples_s": [
+    23,
+    29,
+    35,
+    42,
+    54,
+    63
+  ],
+  "final_DISARM": {
+    "cursor_over_DISARM_s": 67.1,
+    "pending_visible_s": 67.2,
+    "OK_DISARMED_visible_s": 67.3,
+    "request_id": 1512,
+    "manual_click_consistent": true,
+    "trusted_event_log_available": false,
+    "counts": [
+      "3886",
+      "-564"
+    ],
+    "zero_counts_equal_sample_seconds": [
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69,
+      70,
+      71,
+      72,
+      73,
+      74,
+      75,
+      76,
+      76.72
+    ]
+  },
+  "camera_observations": "Tabletop translation in two directions, turns in both directions, pauses and final stopped pose; not a new floor-distance/angle test",
+  "limits": {
+    "synchronization_offset_seconds": null,
+    "physical_stop_latency_ms": null,
+    "observer_JSON_available": false,
+    "audio_reviewed": false,
+    "post_session_power_off_reported": false,
+    "new_20cm_distance_test": false,
+    "full_acceptance_changed": false,
+    "video_edited": false,
+    "published": false
+  }
+}

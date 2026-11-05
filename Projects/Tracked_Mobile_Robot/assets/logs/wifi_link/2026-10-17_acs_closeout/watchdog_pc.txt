@@ -1,0 +1,16 @@
+AC-S06 SAVED native PC, no physical I/O
+MAIN normalized SHA256 2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0
+MODE REVIEW COPY native PC only
+MAIN normalized SHA256 2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0
+PASS real PAGE C initializer + complete HTML/script, modes 0/1/2
+PASS mode=0: disabled handler/dispatch + 42 W5/main adapter regressions
+PASS mode=1: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+NEGATIVE CONTROL detected: LF-only executes old ARM even though final DISARM succeeds
+PASS mode=2: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+Production inputs unchanged; board build/flash/LA capture remain unverified.
+PASS real mode 3 PAGE initializer; invalid mode 4 compile rejected
+PASS real wire path: ARM/zero -> CMD_TIMEOUT -> NOT_ARMED unchanged seq -> observed stop -> cleanup; separate rearm
+PASS admission: full telemetry, current boot, normal control disabled, no auto start
+PASS cancellation: queued, committed write race, transport loss across phases
+PASS failures: queue expiry, sequence reserve, missing ACK/TEL, wrong probe ACK, missing watchdog, E-stop, outputs/counters/clock, short writes, cleanup loss
+Production inputs unchanged. Target build/flash, LA, restore/manual re-arm remain unverified.

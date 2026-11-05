@@ -1,0 +1,40 @@
+{
+  "verdict": "PARTIAL_B_REJECTED_A_SAME_TICKET_NOT_SENT",
+  "capture_sha256": "0759e6165aa6b78f2b6409edc373c6fdcda7825ecbcd738be84d414f48d2f418",
+  "duration_s": 11.547904,
+  "samplerate_hz": 4000000.0,
+  "boot_id": 1797425356,
+  "A_session": 2,
+  "B_session": 3,
+  "control_id": 1,
+  "copied_ticket": 2407,
+  "B_request_id": 1,
+  "held_A_request_id": 4,
+  "stop_A_request_id": 5,
+  "console_B_round_trip_ms": 79.8,
+  "helper_fixed_wait_cap_ms": 70,
+  "helper_abort_elapsed_ms": 70.3,
+  "B_rejection": "TICKET_REJECTED confirmed by ESP and browser, after helper stop began",
+  "held_A_request": "Not transmitted; no A acceptance with the copied ticket, so validity at B processing is not proven",
+  "debug_interpretation": "expected=2404 valid=0/0 expires_ms=385349 describe B session 3 ticket slot, not A ticket 2407 expiry",
+  "uart": {
+    "ARM": 3522553848,
+    "CMD": [
+      3522553849,
+      3522553850
+    ],
+    "DISARM": 3522553851,
+    "matching_ACKs": 4,
+    "invalid_stop_bits": 0
+  },
+  "valid_tel_count": 116,
+  "tel_states": {
+    "DISARMED": 112,
+    "ARMED": 4
+  },
+  "PWM_CPS_drop_err": "all zero in valid telemetry",
+  "physical_levels": "D4/PB6, D7/PB7, D6/PC7 LOW for entire 11.547904 s",
+  "helper_stop_confirmed": true,
+  "scope": "B rejection and zero-output stop observed; AC-S02 valid-ticket ownership proof incomplete. No nonzero/powered-motor claim.",
+  "next": "Revision 3 removes only the arbitrary 70 ms cap, retains PAGE 50 ms transit margin plus 5 ms guard and exact deadline checks. Late B replies are recorded but cannot release held CMD. No firmware change."
+}

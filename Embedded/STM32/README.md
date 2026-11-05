@@ -21,6 +21,8 @@ NUCLEO-F446RE 기반 MCU, peripheral, firmware architecture 학습 기록을 정
 
 ## Core Learning Maps
 
+- [STM32·ESP32 로봇 펌웨어 교과서](../../Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md): 기초 C·UART·상태·PWM·엔코더에서 실제 두 보드 통합 코드까지 이어지는 학습서. 예제와 해설 포함.
+
 - [`CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md`](./CAN/00_A_to_Z/01_NUCLEO_F446RE_CAN_A_to_Z_Learning_Map.md): NUCLEO-F446RE CAN A-to-Z 학습 지도
 - [`RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md`](./RTOS/00_A_to_Z/01_NUCLEO_F446RE_FreeRTOS_A_to_Z_Learning_Map.md): NUCLEO-F446RE FreeRTOS A-to-Z 학습 지도
 - [`Theory/05_STM32_CAN_LL_FreeRTOS_Roadmap.md`](./Theory/05_STM32_CAN_LL_FreeRTOS_Roadmap.md): CAN, LL, FreeRTOS 통합 로드맵

@@ -1,0 +1,259 @@
+{
+  "test": "TK-MVP-03-04 nonzero forward count/sign and released stop subset",
+  "status": "PASS",
+  "user_observation": "Both tracks rotated and both stopped after button release; tracks supported clear of ground",
+  "source_sha256": "8e49afe9c85f58cfcf9c558dd60e744c767e49785ef294232e8757bc27fbf17a",
+  "observer_version": 5,
+  "boot_id": 1794076624,
+  "telemetry_rows": 2709,
+  "unique_source_tel": 1628,
+  "browser_telemetry_evicted_rows": 3000,
+  "eviction_scope": "Observer ring buffer evicted old rows, not STM UART drop; this whole motion interval is retained",
+  "arm_seq": 525914493,
+  "disarm_seq": 525914563,
+  "all_retained_command_results_OK": true,
+  "command_result_counts": {
+    "ARM": 1,
+    "CMD": 69,
+    "DISARM": 1
+  },
+  "baseline": {
+    "ms": 330118.0999999996,
+    "boot_id": 1794076624,
+    "gap_ms": 60.40000000037253,
+    "esp_uptime_ms": 1082769,
+    "esp_step_ms": 61,
+    "tel_count": 10836,
+    "stm_t_ms": 418801,
+    "stm_age_ms": 41,
+    "command_age_ms": 134,
+    "last_seq": 525914511,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 418725,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "first_powered_tel": {
+    "ms": 330207.0999999996,
+    "boot_id": 1794076624,
+    "gap_ms": 89,
+    "esp_uptime_ms": 1082831,
+    "esp_step_ms": 62,
+    "tel_count": 10837,
+    "stm_t_ms": 418901,
+    "stm_age_ms": 13,
+    "command_age_ms": 66,
+    "last_seq": 525914512,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      100,
+      0
+    ],
+    "pwm": [
+      144,
+      150
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 418825,
+    "left_count": "0",
+    "right_count": "0",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "last_powered_tel": {
+    "ms": 332988.3999999985,
+    "boot_id": 1794076624,
+    "gap_ms": 51,
+    "esp_uptime_ms": 1085649,
+    "esp_step_ms": 61,
+    "tel_count": 10865,
+    "stm_t_ms": 421701,
+    "stm_age_ms": 40,
+    "command_age_ms": 36,
+    "last_seq": 525914540,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      100,
+      0
+    ],
+    "pwm": [
+      144,
+      150
+    ],
+    "cps": [
+      980,
+      890
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 421626,
+    "left_count": "2424",
+    "right_count": "2242",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "first_zero_output_tel": {
+    "ms": 333068.0999999996,
+    "boot_id": 1794076624,
+    "gap_ms": 79.70000000111759,
+    "esp_uptime_ms": 1085711,
+    "esp_step_ms": 62,
+    "tel_count": 10866,
+    "stm_t_ms": 421801,
+    "stm_age_ms": 3,
+    "command_age_ms": 54,
+    "last_seq": 525914541,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      970,
+      920
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 421726,
+    "left_count": "2521",
+    "right_count": "2334",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "first_stopped_tel": {
+    "ms": 333367.2999999989,
+    "boot_id": 1794076624,
+    "gap_ms": 77.40000000037253,
+    "esp_uptime_ms": 1086010,
+    "esp_step_ms": 61,
+    "tel_count": 10869,
+    "stm_t_ms": 422101,
+    "stm_age_ms": 2,
+    "command_age_ms": 55,
+    "last_seq": 525914544,
+    "state": "ARMED",
+    "reason": "NONE",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 422026,
+    "left_count": "2567",
+    "right_count": "2374",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "final_tel": {
+    "ms": 342467.19999999925,
+    "boot_id": 1794076624,
+    "gap_ms": 49.69999999925494,
+    "esp_uptime_ms": 1095118,
+    "esp_step_ms": 60,
+    "tel_count": 10960,
+    "stm_t_ms": 431201,
+    "stm_age_ms": 29,
+    "command_age_ms": 7451,
+    "last_seq": 525914563,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "encoder_valid": true,
+    "encoder_t_ms": 431130,
+    "left_count": "2567",
+    "right_count": "2374",
+    "encoder_arm_valid": true,
+    "encoder_arm_seq": 525914493,
+    "drop": 0,
+    "err": 0
+  },
+  "net_counts": [
+    2567,
+    2374
+  ],
+  "count_peaks": [
+    2568,
+    2379
+  ],
+  "count_decrease_after_peak": [
+    1,
+    5
+  ],
+  "post_zero_negative_cps_samples": [
+    {
+      "encoder_t_ms": 421926,
+      "counts": [
+        "2567",
+        "2374"
+      ],
+      "cps": [
+        -10,
+        -50
+      ]
+    }
+  ],
+  "powered_tel_span_to_first_zero_ms": 2900,
+  "timing_limit": "TEL sample/command observation interval only; no precise electrical or mechanical stop-time claim",
+  "captured": null,
+  "all_stops_after_manual_disarm_or_no_intent": true,
+  "limits": [
+    "Post-stop small negative count changes (-1/-5 from peaks) observed; mechanical relaxation vs sensing cause not isolated",
+    "No ground distance/track pitch/speed calibration acceptance",
+    "New ARM begins from zero counts here, so preserving nonzero accumulators across reARM still to be tested"
+  ],
+  "next": "Same supported-air setup: new ARM zero -> reverse about1s -> release -> stopped -> DISARM; verify same counts at new ARM, decreasing signed counts during reverse and retained DISARM endpoint."
+}

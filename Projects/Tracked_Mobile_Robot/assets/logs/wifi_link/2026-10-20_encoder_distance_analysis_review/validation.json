@@ -1,0 +1,214 @@
+{
+  "status": "PASS",
+  "scope": "PC offline analyzer only; no firmware/board/network I/O",
+  "unit_test_methods": 34,
+  "failures": 0,
+  "errors": 0,
+  "cli_negative_controls": {
+    "input_overwrite_blocked": true,
+    "invalid_version_no_output": true
+  },
+  "archived_capture_replay": {
+    "arm_zero": {
+      "summary": {
+        "telemetry_rows": 1053,
+        "unique_source_tel": 633,
+        "browser_evicted_rows": 0,
+        "accepted_windows": 1,
+        "rejected_windows": 0,
+        "command_result_status_counts": {
+          "OK": 60
+        }
+      },
+      "accepted": [
+        {
+          "boot_id": 1794076624,
+          "arm_seq": 525914433,
+          "status": "ACCEPTED",
+          "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+          "arm_ack_ms": 51331.199999999255,
+          "start": {
+            "ms": 51542.39999999851,
+            "tel_count": 8046,
+            "stm_t_ms": 139800,
+            "encoder_t_ms": 139724,
+            "left_count": "0",
+            "right_count": "0",
+            "state": "ARMED",
+            "reason": "NONE",
+            "last_seq": 525914434
+          },
+          "end": {
+            "ms": 57121.89999999851,
+            "tel_count": 8102,
+            "stm_t_ms": 145401,
+            "encoder_t_ms": 145325,
+            "left_count": "0",
+            "right_count": "0",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914492
+          },
+          "source_samples": 57,
+          "delta_count": {
+            "left": "0",
+            "right": "0"
+          },
+          "distance_estimate_mm": {
+            "left": "0.000000",
+            "right": "0.000000",
+            "center": "0.000000"
+          },
+          "last_valid": {
+            "ms": 57121.89999999851,
+            "tel_count": 8102,
+            "stm_t_ms": 145401,
+            "encoder_t_ms": 145325,
+            "left_count": "0",
+            "right_count": "0",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914492
+          },
+          "disarm_seq": 525914492
+        }
+      ]
+    },
+    "forward_air": {
+      "summary": {
+        "telemetry_rows": 2709,
+        "unique_source_tel": 1628,
+        "browser_evicted_rows": 3000,
+        "accepted_windows": 1,
+        "rejected_windows": 0,
+        "command_result_status_counts": {
+          "OK": 71
+        }
+      },
+      "accepted": [
+        {
+          "boot_id": 1794076624,
+          "arm_seq": 525914493,
+          "status": "ACCEPTED",
+          "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+          "arm_ack_ms": 328127.3999999985,
+          "start": {
+            "ms": 328328.5,
+            "tel_count": 10818,
+            "stm_t_ms": 417001,
+            "encoder_t_ms": 416925,
+            "left_count": "0",
+            "right_count": "0",
+            "state": "ARMED",
+            "reason": "NONE",
+            "last_seq": 525914494
+          },
+          "end": {
+            "ms": 335109.3999999985,
+            "tel_count": 10886,
+            "stm_t_ms": 423801,
+            "encoder_t_ms": 423730,
+            "left_count": "2567",
+            "right_count": "2374",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914563
+          },
+          "source_samples": 69,
+          "delta_count": {
+            "left": "2567",
+            "right": "2374"
+          },
+          "distance_estimate_mm": {
+            "left": "187.588462",
+            "right": "173.484615",
+            "center": "180.536538"
+          },
+          "last_valid": {
+            "ms": 335109.3999999985,
+            "tel_count": 10886,
+            "stm_t_ms": 423801,
+            "encoder_t_ms": 423730,
+            "left_count": "2567",
+            "right_count": "2374",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914563
+          },
+          "disarm_seq": 525914563
+        }
+      ]
+    },
+    "reverse_air": {
+      "summary": {
+        "telemetry_rows": 2850,
+        "unique_source_tel": 1713,
+        "browser_evicted_rows": 5100,
+        "accepted_windows": 1,
+        "rejected_windows": 1,
+        "command_result_status_counts": {
+          "OK": 91,
+          "CANCELLED": 1
+        }
+      },
+      "accepted": [
+        {
+          "boot_id": 1794076624,
+          "arm_seq": 525914564,
+          "status": "ACCEPTED",
+          "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+          "arm_ack_ms": 464761.5,
+          "start": {
+            "ms": 465009.7999999989,
+            "tel_count": 12187,
+            "stm_t_ms": 553901,
+            "encoder_t_ms": 553830,
+            "left_count": "2567",
+            "right_count": "2374",
+            "state": "ARMED",
+            "reason": "NONE",
+            "last_seq": 525914565
+          },
+          "end": {
+            "ms": 473780.3999999985,
+            "tel_count": 12275,
+            "stm_t_ms": 562701,
+            "encoder_t_ms": 562631,
+            "left_count": "-358",
+            "right_count": "-343",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914655
+          },
+          "source_samples": 89,
+          "delta_count": {
+            "left": "-2925",
+            "right": "-2717"
+          },
+          "distance_estimate_mm": {
+            "left": "-213.750000",
+            "right": "-198.550000",
+            "center": "-206.150000"
+          },
+          "last_valid": {
+            "ms": 473780.3999999985,
+            "tel_count": 12275,
+            "stm_t_ms": 562701,
+            "encoder_t_ms": 562631,
+            "left_count": "-358",
+            "right_count": "-343",
+            "state": "DISARMED",
+            "reason": "DISARM",
+            "last_seq": 525914655
+          },
+          "disarm_seq": 525914655
+        }
+      ]
+    }
+  },
+  "inputs_unchanged": true,
+  "tool_hashes": {
+    "analyze_encoder_distance.py": "ddff8e19d6874fef90c3330d0b3e644de32ed03890c20f8749f3cae7c6c9bcd3",
+    "test_encoder_distance_analysis.py": "3afc88087757d7838b08ad3c834a6f8d77571e1c2dc190e1237a0308100b9d94"
+  }
+}

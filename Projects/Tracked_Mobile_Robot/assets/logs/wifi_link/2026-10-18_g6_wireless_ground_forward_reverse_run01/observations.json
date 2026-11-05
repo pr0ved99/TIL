@@ -1,0 +1,71 @@
+{
+  "test": "BATTERY_ONLY_WIRELESS_GROUND_FORWARD_REVERSE",
+  "status": "SHORT_MOTION_AND_FINAL_STOP_CONFIRMED",
+  "visual": "15.04 s video sampled at 2fps: chassis moves toward top of image, pauses, moves toward bottom, then remains stationary. No obvious track derailment in reviewed frames.",
+  "browser_captured": null,
+  "active_stop_count": 0,
+  "pwm_pairs": {
+    "[150, 150]": 43,
+    "[0, 0]": 181,
+    "[-150, -150]": 68
+  },
+  "non_ok_results": [
+    {
+      "ms": 13534.89999999851,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 3432731077,
+        "session_id": 3,
+        "request_id": 127,
+        "cmd": "CMD",
+        "seq": 187612913,
+        "control_id": 5,
+        "status": "CANCELLED"
+      }
+    }
+  ],
+  "stop_reason_values": [
+    1
+  ],
+  "final_tel": {
+    "ms": 21225,
+    "event": "TEL_RX",
+    "gap_ms": 58.899999998509884,
+    "esp_uptime_ms": 560128,
+    "esp_step_ms": 60,
+    "tel_count": 5602,
+    "stm_t_ms": 286825,
+    "stm_age_ms": 51,
+    "command_age_ms": 7686,
+    "last_seq": 187612914,
+    "state": "DISARMED",
+    "pwm": [
+      0,
+      0
+    ]
+  },
+  "disarm_results": [
+    {
+      "ms": 13597.10000000149,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 3432731077,
+        "session_id": 3,
+        "request_id": 128,
+        "cmd": "DISARM",
+        "seq": 187612914,
+        "control_id": 0,
+        "status": "OK"
+      }
+    }
+  ],
+  "video_sha256": "068a955461076700d47bf9b364ec875f97586c5879fdbef36d452a8281f3ef67",
+  "interpretation": "CMD127 CANCELLED occurs with STOPPING reason1 MANUAL_STOP and successful DISARM128; consistent with DISARM preempting pending CMD, not SOURCE_TIMEOUT.",
+  "limits": [
+    "No synchronized pointer/video timestamps, measured distance, calibrated speed, stopping latency, or heading error.",
+    "Browser ring retains only recent history.",
+    "No serial/LA capture in cable-free configuration."
+  ]
+}

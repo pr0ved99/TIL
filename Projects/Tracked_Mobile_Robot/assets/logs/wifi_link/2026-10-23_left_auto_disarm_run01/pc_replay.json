@@ -1,0 +1,14 @@
+{
+  "status": "PASS_CAPTURED_BROWSER_FRESHNESS_TRIGGER_REPLAY",
+  "failed_gate": "CONTROL_STATE_AGE",
+  "page_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+  "captured_combined_tel_age_ms": 221.29999999701977,
+  "boundary_checks_ms": {
+    "200": false,
+    "199.9": true
+  },
+  "captured_control_tick_sent": "DISARM,boot_id=1339414435,request_id=844",
+  "local_intent_cleared": true,
+  "all_direction_buttons_disabled": true,
+  "limitations": "Only snapshot predicates and local command dispatch are replayed in mocks; no real socket, MCU, clock alignment, packet-delay cause, build or flash."
+}

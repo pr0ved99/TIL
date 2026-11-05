@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-13",
+  "mode": "SAVED EXECUTOR AND CONTROL MODULES ONLY",
+  "compiler": "TCC 0.9.27 x64 -Wall -Werror",
+  "exit_code": 0,
+  "scope": "Native saved C tests only. No ESP/STM firmware build, flash, main/browser integration or physical UART test.",
+  "files": [
+    {
+      "path": "pc_executor_saved.txt",
+      "bytes": 2852,
+      "sha256": "47bbdbff83b7b24b08df25bc7d8e2191bc751cfbfa80bceef5abe1e3301b9fc9"
+    },
+    {
+      "path": "source_snapshot/CMakeLists.txt",
+      "bytes": 364,
+      "sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2"
+    },
+    {
+      "path": "source_snapshot/test_wifi_control_executor.py",
+      "bytes": 4221,
+      "sha256": "4e47733a023b57434287734e18bc2d08c97a35ec3f58134db62bbc137ff51914"
+    },
+    {
+      "path": "source_snapshot/wifi_control_contract.c",
+      "bytes": 4669,
+      "sha256": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4"
+    },
+    {
+      "path": "source_snapshot/wifi_control_contract.h",
+      "bytes": 1417,
+      "sha256": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8"
+    },
+    {
+      "path": "source_snapshot/wifi_control_executor.c",
+      "bytes": 10196,
+      "sha256": "9058c358920028699c8dbc34df0ead9bbe5d79b355b9045a0da9078f0da49a41"
+    },
+    {
+      "path": "source_snapshot/wifi_control_executor.h",
+      "bytes": 3350,
+      "sha256": "5f169daf33d1334401566705cabf1a5dd36547666020d84428c546ee9dfce4f4"
+    },
+    {
+      "path": "source_snapshot/wifi_control_executor_host_fixture.c",
+      "bytes": 12593,
+      "sha256": "b817e3ef38316f3ac19728aa7ec58361b7edda0537c901a4a4c722bb91f0ce0a"
+    },
+    {
+      "path": "source_snapshot/wifi_control_owner.c",
+      "bytes": 1488,
+      "sha256": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd"
+    },
+    {
+      "path": "source_snapshot/wifi_control_owner.h",
+      "bytes": 1113,
+      "sha256": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af"
+    },
+    {
+      "path": "source_snapshot/wifi_control_state.c",
+      "bytes": 13045,
+      "sha256": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23"
+    },
+    {
+      "path": "source_snapshot/wifi_control_state.h",
+      "bytes": 4733,
+      "sha256": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0"
+    },
+    {
+      "path": "source_snapshot/wifi_control_ticket.c",
+      "bytes": 2638,
+      "sha256": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94"
+    },
+    {
+      "path": "source_snapshot/wifi_control_ticket.h",
+      "bytes": 1503,
+      "sha256": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea"
+    }
+  ]
+}

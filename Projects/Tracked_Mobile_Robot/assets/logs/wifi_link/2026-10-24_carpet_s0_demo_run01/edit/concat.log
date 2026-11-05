@@ -1,0 +1,28 @@
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b978dc40] Auto-inserting h264_mp4toannexb bitstream filter
+Input #0, concat, from 'concat.txt':
+  Duration: N/A, start: 0.000000, bitrate: 119 kb/s
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, 119 kb/s, 30 fps, 30 tbr, 15360 tbn
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.100 libx264
+Stream mapping:
+  Stream #0:0 -> #0:0 (copy)
+Output #0, mp4, to 'C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\assets\logs\wifi_link\2026-10-24_carpet_s0_demo_run01\edit\TMR_MVP_Final_2026-10-24.mp4':
+  Metadata:
+    title           : Tracked Mobile Robot - Manual Control, Ground Drive and S0 Recovery
+    encoder         : Lavf61.7.100
+  Stream #0:0(und): Video: h264 (High) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080, q=2-31, 119 kb/s, 30 fps, 30 tbr, 15360 tbn
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : Lavc61.19.100 libx264
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b984dd00] Auto-inserting h264_mp4toannexb bitstream filter
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b97f3f00] Auto-inserting h264_mp4toannexb bitstream filter
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b97f3980] Auto-inserting h264_mp4toannexb bitstream filter
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b97ebcc0] Auto-inserting h264_mp4toannexb bitstream filter
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b97eb740] Auto-inserting h264_mp4toannexb bitstream filter
+[mov,mp4,m4a,3gp,3g2,mj2 @ 000001a1b9790000] Auto-inserting h264_mp4toannexb bitstream filter
+[mp4 @ 000001a1b9e7e040] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 000001a1b977fb80] video:29941KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.179269%
+frame= 4470 fps=0.0 q=-1.0 Lsize=   29995KiB time=00:02:28.93 bitrate=1649.9kbits/s speed= 933x    

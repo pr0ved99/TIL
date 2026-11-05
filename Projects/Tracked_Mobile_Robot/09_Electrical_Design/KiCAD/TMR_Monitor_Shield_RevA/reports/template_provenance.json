@@ -1,0 +1,29 @@
+{
+  "status": "UNROUTED_PLACEMENT_STARTER_NOT_FOR_FABRICATION",
+  "kicad_version": "10.0.5",
+  "template_name": "STM32_Nucleo-64_Morpho",
+  "template_author": "TiZed (2021)",
+  "template_license": "CC0",
+  "template_pcb_sha256": "dae732d6a14176cb6b166fe66ab6a242cd52eb3f9897d6bcd8dd64e5f7769a07",
+  "template_geometry": "Header pad positions and outline retained; sockets updated to installed library; mounting holes removed pending actual support design.",
+  "header_positions_mm": {
+    "J1_CN7_pin1": [
+      104.75,
+      62.24
+    ],
+    "J2_CN10_pin1": [
+      165.71,
+      62.24
+    ]
+  },
+  "header_side": "B.Cu / female sockets; unchanged from installed template",
+  "all_component_footprints_provisional": true,
+  "tracks": 0,
+  "zones": 0,
+  "footprints": 22,
+  "electrical_sources": [
+    "ST UM1724 Rev17 table29 p59",
+    "project 14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md"
+  ],
+  "physical_fit_verified": false
+}

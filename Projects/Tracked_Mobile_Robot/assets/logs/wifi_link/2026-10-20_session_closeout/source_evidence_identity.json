@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-20",
+  "scope": "Session closeout source/evidence identity; not firmware readback or final acceptance image",
+  "source_sha256": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "126152c108993fd68f5bf2ad3b8d231a31c7b347b373c901f56f01bc7d2da6c0",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "dd38258c1beacb549e3c17535e11875a63379af98341e08ff867d20568ec5069",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "dc25187ea6710e3196453967e869fe2e231fa7aa4b68cbf63b6be72f3fc85eea",
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "2c5b2abf2e9a2b5e1be4e4e5fea748e27253448908481a1fa69464b047943d27"
+  },
+  "existing_pc_validation_identity": [
+    {
+      "evidence": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_encoder_count_saved_review\\stm_nano_format_saved.json",
+      "status": "PASS",
+      "input_count": 14,
+      "hash_mismatches": []
+    },
+    {
+      "evidence": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_encoder_count_saved_review\\esp_control_saved.json",
+      "status": "PASS",
+      "input_count": 19,
+      "hash_mismatches": []
+    }
+  ],
+  "esp_count_native_page_evidence_matches_source": true,
+  "new_board_build_flash_motion_performed_by_codex": false,
+  "physical_shutdown_confirmed": false,
+  "next_task": "TK-MVP-03-04 source/build/flash/runtime identity reconciliation"
+}

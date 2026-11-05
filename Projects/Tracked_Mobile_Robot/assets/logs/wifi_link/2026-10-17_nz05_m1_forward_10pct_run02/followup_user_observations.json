@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-17",
+  "evidence_type": "User report in conversation; no new capture or console attachment",
+  "setting": "Saved PAGE forward=[100,0], existing PWM cap100permille; latest run02 capture independently measured10.003%",
+  "observations": [
+    "B motor body ran when attached to M1 test harness in cross-test.",
+    "A motor body ran after reconnecting it to its original M1 harness.",
+    "B was then connected to its encoder connector and M2A/M2B.",
+    "Both motor bodies ran in the expected forward direction on a forward command.",
+    "User confirmed both motors stopped when the forward button was released.",
+    "User confirmed neither motor restarted after DISARM.",
+    "At current reverse request -50 (5%), user observed only motor A rotating.",
+    "During forward user visually estimated B about 3/4 revolution per A revolution; corrected the earlier 4/3 wording. No CPS-based ratio measured."
+  ],
+  "prior_measurements_user_reported": {
+    "mdd_body_Bplus_to_Bminus_DC_V": 11.9,
+    "M1A_to_M1B_during_forward_DC_V_approx": 1.1,
+    "A_motor_plus_harness_ohm": 31.6,
+    "A_motor_body_ohm": 31.4,
+    "B_motor_body_ohm": 23.1
+  },
+  "current_physical_report": "Motor bodies remain detached from robot. Both M1/M2 power paths and B encoder connection restored; control J5 restored. Latest user report did not explicitly repeat B encoder header number; canonical B assignment is JENC_2.",
+  "pending": [
+    "New simultaneous-run UART/CPS/PWM evidence, if saved."
+  ],
+  "limits": [
+    "Initial5% and10% NO_ROTATION trials remain unchanged.",
+    "Reseating/cross-test was followed by normal operation; no proven root cause or guaranteed10% startup.",
+    "Both-motor bench rotation is not chassis driving or mechanical stopping-distance acceptance."
+  ],
+  "status": "USER_REPORTED_PASS_FORWARD_RELEASE_DISARM",
+  "user_scope_decision": "Speed compensation deferred. Continue original reverse/turn direction and stop checks. Proposed uniform10% test request profile is pending user firmware input; not per-motor calibration."
+}

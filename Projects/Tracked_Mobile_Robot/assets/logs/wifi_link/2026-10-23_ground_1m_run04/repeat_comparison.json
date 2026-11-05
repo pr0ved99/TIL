@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-23",
+  "status": "DESCRIPTIVE_TWO_RUN_COMPARISON_NOT_PRECISION_QUALIFICATION",
+  "runs": [
+    {
+      "run_id": "2026-10-23_ground_1m_run03",
+      "actual_forward_mm": "1002",
+      "left_estimate_mm": "1014.535846",
+      "right_estimate_mm": "990.744821",
+      "mean_estimate_mm": "1002.640333",
+      "signed_error_mm": "0.640333",
+      "absolute_reported_reference_error_percent": "0.063906",
+      "window_status": "ACCEPTED",
+      "source_sha256": "7a08035edb09554a020b182ea41dd34b82b2dde55c16bfe857e9d016f00f47d1"
+    },
+    {
+      "run_id": "2026-10-23_ground_1m_run04",
+      "actual_forward_mm": "1002",
+      "left_estimate_mm": "1010.469744",
+      "right_estimate_mm": "991.436923",
+      "mean_estimate_mm": "1000.953333",
+      "signed_error_mm": "-1.046667",
+      "absolute_reported_reference_error_percent": "0.104458",
+      "window_status": "ACCEPTED",
+      "source_sha256": "fbf50bac48d05a45d45cc59ca1873d8508786249991da36927c6de73d59eba89"
+    }
+  ],
+  "mean_estimate_difference_mm": 1.6870000000000118,
+  "limits": [
+    "Both physical displacements reported as1002mm; measurement resolution/uncertainty unspecified",
+    "Run03 used one forward-output interval; run04 used two",
+    "No gain/coefficient change between these recorded calculations; no calibration or accuracy threshold applied",
+    "No lateral-deviation result for either of these comparison rows",
+    "Additional controlled repetitions are not imposed as a new MVP prerequisite"
+  ]
+}

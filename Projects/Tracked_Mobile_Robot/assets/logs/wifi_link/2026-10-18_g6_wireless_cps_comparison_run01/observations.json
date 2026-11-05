@@ -1,0 +1,111 @@
+{
+  "test": "WIRELESS_GROUND_CPS_COMPARISON",
+  "motion": [
+    {
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        150,
+        150
+      ],
+      "source_samples": 30,
+      "steady_samples": 25,
+      "steady_abs_cps_median": [
+        810,
+        760
+      ],
+      "right_left_ratio": 0.9382716049382716,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -150,
+        150
+      ],
+      "source_samples": 41,
+      "steady_samples": 36,
+      "steady_abs_cps_median": [
+        375.0,
+        0.0
+      ],
+      "right_left_ratio": 0.0,
+      "steady_zero_cps_counts": [
+        0,
+        35
+      ]
+    },
+    {
+      "command": [
+        0,
+        -500
+      ],
+      "pwm": [
+        150,
+        -150
+      ],
+      "source_samples": 39,
+      "steady_samples": 34,
+      "steady_abs_cps_median": [
+        320.0,
+        0.0
+      ],
+      "right_left_ratio": 0.0,
+      "steady_zero_cps_counts": [
+        0,
+        28
+      ]
+    }
+  ],
+  "telemetry_dropped": 0,
+  "unique_source_samples": 376,
+  "unexpected_stop_capture": null,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 37461.60000000149,
+    "boot_id": 3432731077,
+    "gap_ms": 60.20000000298023,
+    "esp_uptime_ms": 1167359,
+    "esp_step_ms": 60,
+    "tel_count": 11685,
+    "stm_t_ms": 895177,
+    "stm_age_ms": 2,
+    "command_age_ms": 10723,
+    "last_seq": 187613365,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "visual": "Video samples show forward travel and both rotational senses with translation, then stationary.",
+  "limits": [
+    "CPS measures encoder rotation, not motor torque or ground velocity.",
+    "Right zero CPS under turning load is compatible with stalled output or missing encoder counts; physical belt observation is required to distinguish.",
+    "Median ratio from forward motion must not be used as a general compensation factor for turns."
+  ]
+}

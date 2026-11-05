@@ -1,0 +1,16 @@
+Source: user-provided DevTools output. VM prefixes and pasted trailing backslashes omitted.
+AC-S02 INSTALLED {"ms":0.1,"event":"INSTALLED","message":"자동 ARM 없음. B READY 대기 중."}
+AC-S02 READY {"ms":131.2,"event":"READY","boot":1797425356,"A":2,"B":3}
+AC-S02 MANUAL_ARM {"ms":4010.7,"event":"MANUAL_ARM","request":1}
+AC-S02 PRE_ARM_IDLE_IGNORED {"ms":4012.3,"event":"PRE_ARM_IDLE_IGNORED","request":1}
+AC-S02 PRE_ARM_IDLE_IGNORED {"ms":4012.7,"event":"PRE_ARM_IDLE_IGNORED","request":1}
+AC-S02 PRE_ARM_IDLE_IGNORED {"ms":4012.9,"event":"PRE_ARM_IDLE_IGNORED","request":1}
+AC-S02 PRE_ARM_IDLE_IGNORED {"ms":4031.8,"event":"PRE_ARM_IDLE_IGNORED","request":1}
+AC-S02 B_COPIED_TICKET_TX {"ms":4312.1,"event":"B_COPIED_TICKET_TX","A":2,"B":3,"a_request":4,"control_id":1,"ticket":2407,"ttl_budget_ms":70,"text":"CMD,boot_id=1797425356,request_id=1,control_id=1,ticket=2407,vx_mmps=0,w_mradps=0"}
+AC-S02 ABORT {"ms":4382.4,"event":"ABORT","reason":"B 거부 응답 대기 시간 초과"}
+AC-S02 STOP {"ms":4382.5,"event":"STOP","reason":"B 거부 응답 대기 시간 초과"}
+AC-S02 DISARM_TX {"ms":4382.8,"event":"DISARM_TX","request":5}
+AC-S02 B_RESPONSE {"ms":4391.9,"event":"B_RESPONSE","kind":"command_notice","boot_id":1797425356,"session_id":3,"request_id":1,"cmd":"CMD","stage":"REJECTED","reason":"TICKET_REJECTED"}
+AC-S02 ABORT {"ms":4392.1,"event":"ABORT","reason":"B 응답이 기대한 거부와 다름"}
+AC-S02 DISARM_RESULT {"ms":4592.3,"event":"DISARM_RESULT","kind":"command_result","boot_id":1797425356,"session_id":2,"request_id":5,"cmd":"DISARM","seq":3522553851,"control_id":0,"status":"OK"}
+AC-S02 INCOMPLETE {"ms":4593.7,"event":"INCOMPLETE","problem":"B 거부 응답 대기 시간 초과","stop_confirmed":true,"bRejected":false,"aConfirmed":false,"activeAfter":false,"armedAfter":false}

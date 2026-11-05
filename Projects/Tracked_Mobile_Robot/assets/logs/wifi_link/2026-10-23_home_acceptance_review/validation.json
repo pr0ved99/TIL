@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-23",
+  "status": "PASS",
+  "existing_must_requirement_rows_unchanged": 24,
+  "local_report_links_resolved": 9,
+  "documentation_files_verified": 11,
+  "scoped_git_diff_check": "PASS",
+  "firmware_source_diff": "EMPTY",
+  "utf8_and_unexpected_cjk_scan": "PASS; historical middle-dot punctuation preserved",
+  "raw_archive_hash_validation": "3 archives verified when review.json was created",
+  "file_sha256": {
+    "docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md": "77b19a6072a7c8b9fd02284c2aa6c2190d6f443baac10fdb2aaf085278b0bef3",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md": "1032ba3eee3ad451e65ff58c32c91fd006f55448bbe4fc2cfd5956b9e7760502",
+    "docs/progress/2026-10-23_progress.md": "81075aae6ee0b953fd1c59f8de5e7612217e0730f75e23652cc68cb3f6d64666",
+    "docs/progress/README.md": "cb84291bb26d7a382a2bda3f750c3b2fa57095bdc269df51b7c43262eef1ccdf",
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md": "242d4712c08e246758b7dd5bfc881f56344355ec172f63c6ebed49b8722977ac",
+    "docs/handoff/NEXT_SESSION_START_PROMPT.md": "873c506abe009355a8f058cf8b350d4335955a8d36d8734c1f337b13cd9494bf",
+    "docs/handoff/README.md": "f6d72bc62645b33908ee61a14acf1fe960638b98f913973bb43b514a79db12bb",
+    "docs/plans/README.md": "ac93f717ef2ed8ebab8052dce70e347d5147665cb118d345c202e5f7087d54c8",
+    "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md": "9602acb75b76352a007c2d28e0ba764107baee8ea6693b41698c4a914e9f6351",
+    "README.md": "997b643e07a0bbe26885c8177531cc1898d5fc0be0c0cccf854c895ab375c690",
+    "PROJECT_MEMORY.md": "60575ba63633a524875af8a779a6bb57954ea7b0c3905e8c6c3461c3739e7f8c"
+  },
+  "overall_mvp_accepted": false,
+  "commit_push_calendar_notion_performed": false
+}

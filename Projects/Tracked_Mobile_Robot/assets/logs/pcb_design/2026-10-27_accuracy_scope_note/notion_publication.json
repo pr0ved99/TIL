@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-27",
+  "task": "전체 측정 정확도와 입력계 정확도 구분 학습 노트",
+  "notion": {
+    "page_id": "406a7326-f87b-81d0-a897-f34791e226c8",
+    "url": "https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8",
+    "title": "TMR 학습 노트 · 3-1 보충: 전체 측정 정확도와 입력 회로 정확도 구분",
+    "creation_mode": "draft",
+    "create_confirmed": true,
+    "new_page_readback_confirmed": true,
+    "section_count": 13,
+    "examples_checked": [
+      "1.738V → 1.742V = +4mV",
+      "4mV / 44mV/A ≈ 0.0909A",
+      "2.12A - 2.00A = +0.12A"
+    ],
+    "linked_pages": [
+      {
+        "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+        "method": "insert_content start",
+        "update_acknowledged": true
+      },
+      {
+        "id": "404a7326-f87b-81b7-bf78-c03a54178726",
+        "method": "insert_content start",
+        "update_acknowledged": true
+      }
+    ]
+  },
+  "evidence_boundary": "설명용 가상 예시·계획. 실물 시험 NOT_RUN. 새 Git/Calendar 게시 없음.",
+  "source": "07_Embedded_Learning_Notes/01_Concept_Notes/19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md",
+  "local_document_validation": {
+    "files": 6,
+    "local_links_checked": 213,
+    "missing": [],
+    "example_calculations": {
+      "nominal_2A_V": "1.738",
+      "input_residual_mV": "4.000",
+      "equivalent_input_A": "0.09090909090909090909090909091",
+      "whole_difference_A": "0.12",
+      "whole_budget_mV": "8.80"
+    },
+    "local_source_sha256": "5a1eda84a7afee6b7efb643af7bd4cdecd6d669b828be36b657c1822d0c472c7"
+  }
+}

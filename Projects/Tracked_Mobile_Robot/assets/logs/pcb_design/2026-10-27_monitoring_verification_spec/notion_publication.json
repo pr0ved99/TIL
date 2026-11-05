@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-27",
+  "scope": "Current and temperature verification specifications, v0.1",
+  "pages": [
+    {
+      "id": "406a7326-f87b-8164-9afd-d1dfbc89011b",
+      "url": "https://app.notion.com/p/406a7326f87b81649afdd1dfbc89011b?pvs=204",
+      "properties": {
+        "title": "TMR 전류 측정 채널 검증 명세"
+      }
+    },
+    {
+      "id": "406a7326-f87b-816b-a990-dbd4d476a46d",
+      "url": "https://app.notion.com/p/406a7326f87b816ba990dbd4d476a46d?pvs=204",
+      "properties": {
+        "title": "TMR 온도 측정 채널 검증 명세"
+      }
+    }
+  ],
+  "private_draft_pages": true,
+  "hub_update": {
+    "page_id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+    "command": "insert_content",
+    "acknowledged": true
+  },
+  "readback": [
+    {
+      "page_id": "406a7326-f87b-8164-9afd-d1dfbc89011b",
+      "verified": true,
+      "checked_terms": [
+        "4.4mV",
+        "1.1mV",
+        "14.55mV",
+        "MON-L01",
+        "MON-L02",
+        "NOT",
+        "500ms"
+      ],
+      "headings": 11,
+      "content_characters": 11127
+    },
+    {
+      "page_id": "406a7326-f87b-816b-a990-dbd4d476a46d",
+      "verified": true,
+      "checked_terms": [
+        "0.25°C",
+        "0.776°C",
+        "MON-L05",
+        "CHARACTERIZATION",
+        "3000ms",
+        "10000"
+      ],
+      "headings": 12,
+      "content_characters": 11490
+    }
+  ]
+}

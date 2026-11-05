@@ -1,0 +1,11 @@
+#pragma once
+
+/* 이 파일을 wifi_config.h 로 복사한 뒤 값을 채우세요.
+ * wifi_config.h 는 .gitignore 에 등록되어 Git에 올라가지 않습니다.
+ *
+ * 주의: ESP32-S3 는 2.4GHz 만 지원합니다.
+ *   - 공유기: 2.4GHz SSID 사용
+ *   - iPhone 핫스팟: "호환성 극대화" ON
+ */
+#define WIFI_STA_SSID "YOUR_2.4GHZ_SSID"
+#define WIFI_STA_PASSWORD "CHANGE_ME"

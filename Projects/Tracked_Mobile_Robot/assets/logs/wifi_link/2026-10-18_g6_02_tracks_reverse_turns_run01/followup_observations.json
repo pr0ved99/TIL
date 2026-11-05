@@ -1,0 +1,69 @@
+{
+  "scope": "Follow-up console begins after ARM; no new LA analysis",
+  "tx_count": 94,
+  "ack_count": 95,
+  "transitions": [
+    {
+      "esp_ms": 1504101,
+      "key": [
+        "ARMED",
+        "NONE",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    },
+    {
+      "esp_ms": 1506801,
+      "key": [
+        "ARMED",
+        "NONE",
+        "-100",
+        "100"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    },
+    {
+      "esp_ms": 1509191,
+      "key": [
+        "ARMED",
+        "NONE",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "-440",
+        "360"
+      ]
+    },
+    {
+      "esp_ms": 1514591,
+      "key": [
+        "DISARMED",
+        "DISARM",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    }
+  ],
+  "drop_err_zero": true,
+  "user_report": "Held left turn without unexpected stop; stopped normally on release.",
+  "prior_unexpected_disarm": "Not reproduced; original trigger unresolved.",
+  "captured_tx_ack_match": true,
+  "initial_ack_without_captured_tx": [
+    [
+      "CMD",
+      "4005823255"
+    ]
+  ]
+}

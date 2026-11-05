@@ -1,5 +1,8 @@
 # STM32F446RE Timers and Watchdogs Analysis
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](04_MCU_Timers_and_Watchdogs_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document analyzes the timer and watchdog part of the STM32F446xC/E

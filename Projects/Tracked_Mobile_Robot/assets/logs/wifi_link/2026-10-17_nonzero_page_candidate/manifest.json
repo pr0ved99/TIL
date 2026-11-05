@@ -1,0 +1,9 @@
+{
+  "scope": "Review only; production unchanged; default mode 1 retained in saved core",
+  "base_sha256": "ddb38e7b9ce1b47f3f040779376e263558553be8ca7a8cd3c285a6ed3fa2faae",
+  "candidate_sha256": "8832e891db7e20af7e696ea18874e50cae988c4f98bd4d34fd4c48dc2ca7823d",
+  "replacements": [
+    "entire static const char PAGE[] declaration",
+    "entire wifi_control_snapshot function"
+  ]
+}

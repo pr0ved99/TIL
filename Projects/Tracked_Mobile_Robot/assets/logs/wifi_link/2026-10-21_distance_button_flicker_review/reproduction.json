@@ -1,0 +1,14 @@
+{
+  "status": "REPRODUCED",
+  "source": "actual saved PAGE on native Node DOM/clock/WebSocket mocks",
+  "main_sha256": "9014532a1984927d798e73cadb5f603c9e3f32ee14d974e1076a44b28103a1ca",
+  "test_sha256": "f3cfefd62b72a57ee5735bb328c465fdf52c830ab46010df9aa2472553891a4f",
+  "command": [
+    "C:/Users/eyh12/.codex/tmp/w5_host_tools/node-v22.20.0.exe",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page.js",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c"
+  ],
+  "exit_code": 1,
+  "observed": "Distance run button disabled while stationary, solely because a recurring zero CMD awaits ACK",
+  "stderr": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: pending zero CMD must not flicker the distance button\n\ntrue !== false\n\n    at C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page.js:153:9\n    at test (C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page.js:6:25)\n    at Object.<anonymous> (C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page.js:150:1)\n    at Module._compile (node:internal/modules/cjs/loader:1706:14)\n    at Object..js (node:internal/modules/cjs/loader:1839:10)\n    at Module.load (node:internal/modules/cjs/loader:1441:32)\n    at Function._load (node:internal/modules/cjs/loader:1263:12)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5) {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: true,\n  expected: false,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v22.20.0\n"
+}

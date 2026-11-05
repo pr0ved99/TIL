@@ -1,0 +1,104 @@
+{
+  "method": "Compare original single-point decode with raw 3/5/7-sample majority at each bit center; no raw samples modified.",
+  "samplerate_hz": 4000000,
+  "window_results": [
+    {
+      "samples_per_bit_center": 1,
+      "D1_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 24 31 37 32 36 39 0a",
+      "D3_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "equal": false,
+      "D1_invalid_stop": 0,
+      "D3_invalid_stop": 0,
+      "start_indices_equal": true
+    },
+    {
+      "samples_per_bit_center": 3,
+      "D1_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "D3_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "equal": true,
+      "D1_invalid_stop": 0,
+      "D3_invalid_stop": 0,
+      "start_indices_equal": true
+    },
+    {
+      "samples_per_bit_center": 5,
+      "D1_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "D3_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "equal": true,
+      "D1_invalid_stop": 0,
+      "D3_invalid_stop": 0,
+      "start_indices_equal": true
+    },
+    {
+      "samples_per_bit_center": 7,
+      "D1_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "D3_hex": "43 4d 44 2c 73 65 71 3d 18 0a 44 49 53 41 52 4d 2c 73 65 71 3d 33 35 34 32 36 31 37 32 36 39 0a",
+      "equal": true,
+      "D1_invalid_stop": 0,
+      "D3_invalid_stop": 0,
+      "start_indices_equal": true
+    }
+  ],
+  "single_point_mismatches": [
+    {
+      "byte_index": 25,
+      "start_s": 2.1433535,
+      "D1_hex": "24",
+      "D3_hex": "36",
+      "bits": [
+        {
+          "data_bit": 1,
+          "sample_index": 8573501,
+          "D1_9_samples": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "D3_9_samples": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "data_bit": 4,
+          "sample_index": 8573605,
+          "D1_9_samples": [
+            1,
+            1,
+            1,
+            1,
+            0,
+            1,
+            1,
+            1,
+            1
+          ],
+          "D3_9_samples": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

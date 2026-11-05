@@ -1,0 +1,98 @@
+{
+  "test": "GROUND_TURN20_RUN02",
+  "motion": [
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -200,
+        200
+      ],
+      "source_samples": 34,
+      "steady_samples": 29,
+      "steady_abs_cps_median": [
+        830,
+        550
+      ],
+      "right_left_ratio": 0.6626506024096386,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "command": [
+        0,
+        -500
+      ],
+      "pwm": [
+        200,
+        -200
+      ],
+      "source_samples": 34,
+      "steady_samples": 29,
+      "steady_abs_cps_median": [
+        820,
+        540
+      ],
+      "right_left_ratio": 0.6585365853658537,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    }
+  ],
+  "telemetry_dropped": 0,
+  "unique_source_samples": 239,
+  "unexpected_stop_capture": null,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 23795.20000000298,
+    "boot_id": 3247739665,
+    "gap_ms": 60.80000000447035,
+    "esp_uptime_ms": 77168,
+    "esp_step_ms": 60,
+    "tel_count": 769,
+    "stm_t_ms": 77410,
+    "stm_age_ms": 31,
+    "command_age_ms": 8086,
+    "last_seq": 2655455553,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "visual": "User confirmed that the right track kept rotating and the chassis turned in both directions during this run. Operator report; no new video supplied.",
+  "limits": [
+    "CPS measures encoder rotation, not motor torque or ground velocity.",
+    "Right CPS stayed nonzero after the initial 500ms in both turns; chassis yaw and track traction still require operator observation.",
+    "Median ratio from forward motion must not be used as a general compensation factor for turns."
+  ],
+  "status": "GROUND_TURN20_SUSTAINED_TRACK_ROTATION_AND_CHASSIS_YAW_CONFIRMED",
+  "local_elf_pwm_limit": 200,
+  "local_elf_sha256": "62bcb5b7eb6c6ade29cfe2ad48e598e565ad4ed98321807a802ce35d8be4ce92",
+  "operator_confirmation": {
+    "both_turns_right_track_continuous": true,
+    "both_turns_chassis_yaw": true,
+    "source": "User replied yes to the paired observation question after telemetry review."
+  }
+}

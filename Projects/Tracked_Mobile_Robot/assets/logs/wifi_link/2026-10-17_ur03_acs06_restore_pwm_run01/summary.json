@@ -1,0 +1,459 @@
+{
+  "source_name": "2026-10-17_UR03_ACS06_RESTORE_PWM_run01.sr",
+  "sha256": "90fe0f070298786d75e727f30c47adf15a7fbe7dbf06424498ce1d3afd713345",
+  "samplerate_hz": 4000000.0,
+  "samples": 50000000,
+  "duration_s": 12.5,
+  "decode": "115200 baud, 8N1, LSB-first, non-inverted",
+  "channels": {
+    "D0": {
+      "role": "STM PA9 TX / JDBG_UART Pin1",
+      "decoded_bytes": 22771,
+      "complete_lf_lines": 155,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "TEL": 125,
+        "ACK": 30
+      },
+      "valid_tel_lines": 125,
+      "malformed_tel_lines": [],
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 93,
+          "ARMED": 32
+        },
+        "reason": {
+          "DISARM": 93,
+          "NONE": 32
+        },
+        "left_pwm": {
+          "0": 125
+        },
+        "right_pwm": {
+          "0": 125
+        },
+        "left_cps": {
+          "0": 125
+        },
+        "right_cps": {
+          "0": 125
+        },
+        "drop": {
+          "0": 125
+        },
+        "err": {
+          "1": 125
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 3.888084,
+          "end_s": 3.8914655555555555,
+          "text": "ACK,seq=573833964,type=ARM,t_ms=530757"
+        },
+        {
+          "start_s": 3.97845675,
+          "end_s": 3.9818365555555557,
+          "text": "ACK,seq=573833965,type=CMD,t_ms=530848"
+        },
+        {
+          "start_s": 4.11120575,
+          "end_s": 4.114586805555556,
+          "text": "ACK,seq=573833966,type=CMD,t_ms=530980"
+        },
+        {
+          "start_s": 4.23122875,
+          "end_s": 4.234610055555556,
+          "text": "ACK,seq=573833967,type=CMD,t_ms=531101"
+        },
+        {
+          "start_s": 4.33120325,
+          "end_s": 4.334585305555556,
+          "text": "ACK,seq=573833968,type=CMD,t_ms=531201"
+        },
+        {
+          "start_s": 4.431275,
+          "end_s": 4.434656805555556,
+          "text": "ACK,seq=573833969,type=CMD,t_ms=531301"
+        },
+        {
+          "start_s": 4.5314545,
+          "end_s": 4.534833305555556,
+          "text": "ACK,seq=573833970,type=CMD,t_ms=531401"
+        },
+        {
+          "start_s": 4.65956125,
+          "end_s": 4.662941055555556,
+          "text": "ACK,seq=573833971,type=CMD,t_ms=531529"
+        },
+        {
+          "start_s": 4.7912555,
+          "end_s": 4.794635805555556,
+          "text": "ACK,seq=573833972,type=CMD,t_ms=531661"
+        },
+        {
+          "start_s": 4.89127175,
+          "end_s": 4.894649805555556,
+          "text": "ACK,seq=573833973,type=CMD,t_ms=531761"
+        },
+        {
+          "start_s": 4.991266,
+          "end_s": 4.994646305555556,
+          "text": "ACK,seq=573833974,type=CMD,t_ms=531862"
+        },
+        {
+          "start_s": 5.111228,
+          "end_s": 5.114605555555556,
+          "text": "ACK,seq=573833975,type=CMD,t_ms=531982"
+        },
+        {
+          "start_s": 5.2312455,
+          "end_s": 5.234624555555556,
+          "text": "ACK,seq=573833976,type=CMD,t_ms=532102"
+        },
+        {
+          "start_s": 5.3312345,
+          "end_s": 5.334612805555556,
+          "text": "ACK,seq=573833977,type=CMD,t_ms=532202"
+        },
+        {
+          "start_s": 5.43127875,
+          "end_s": 5.434656555555556,
+          "text": "ACK,seq=573833978,type=CMD,t_ms=532302"
+        },
+        {
+          "start_s": 5.55892325,
+          "end_s": 5.562302055555556,
+          "text": "ACK,seq=573833979,type=CMD,t_ms=532430"
+        },
+        {
+          "start_s": 5.69124,
+          "end_s": 5.694615555555556,
+          "text": "ACK,seq=573833980,type=CMD,t_ms=532563"
+        },
+        {
+          "start_s": 5.81151925,
+          "end_s": 5.814897055555556,
+          "text": "ACK,seq=573833981,type=CMD,t_ms=532684"
+        },
+        {
+          "start_s": 5.91129625,
+          "end_s": 5.914673055555556,
+          "text": "ACK,seq=573833982,type=CMD,t_ms=532784"
+        },
+        {
+          "start_s": 6.01129775,
+          "end_s": 6.014675555555556,
+          "text": "ACK,seq=573833983,type=CMD,t_ms=532884"
+        },
+        {
+          "start_s": 6.13131525,
+          "end_s": 6.134693305555556,
+          "text": "ACK,seq=573833984,type=CMD,t_ms=533004"
+        },
+        {
+          "start_s": 6.2312455,
+          "end_s": 6.234622805555556,
+          "text": "ACK,seq=573833985,type=CMD,t_ms=533104"
+        },
+        {
+          "start_s": 6.3591915,
+          "end_s": 6.362569305555556,
+          "text": "ACK,seq=573833986,type=CMD,t_ms=533232"
+        },
+        {
+          "start_s": 6.458897,
+          "end_s": 6.462274805555556,
+          "text": "ACK,seq=573833987,type=CMD,t_ms=533332"
+        },
+        {
+          "start_s": 6.558683,
+          "end_s": 6.562059805555556,
+          "text": "ACK,seq=573833988,type=CMD,t_ms=533432"
+        },
+        {
+          "start_s": 6.658473,
+          "end_s": 6.661851305555556,
+          "text": "ACK,seq=573833989,type=CMD,t_ms=533532"
+        },
+        {
+          "start_s": 6.79127475,
+          "end_s": 6.794650555555556,
+          "text": "ACK,seq=573833990,type=CMD,t_ms=533665"
+        },
+        {
+          "start_s": 6.891262,
+          "end_s": 6.894639055555556,
+          "text": "ACK,seq=573833991,type=CMD,t_ms=533766"
+        },
+        {
+          "start_s": 7.0885275,
+          "end_s": 7.092166305555556,
+          "text": "ACK,seq=573833992,type=DISARM,t_ms=533963"
+        },
+        {
+          "start_s": 9.0985615,
+          "end_s": 9.102202805555557,
+          "text": "ACK,seq=573833993,type=DISARM,t_ms=535977"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 0.03839125,
+          "end_s": 0.05364555555555556,
+          "text": "TEL,t_ms=526902,state=DISARMED,reason=DISARM,command_age_ms=403557,last_seq=573833963,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 12.42409975,
+          "end_s": 12.439177305555557,
+          "text": "TEL,t_ms=539308,state=DISARMED,reason=DISARM,command_age_ms=5542,last_seq=573833993,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ]
+    },
+    "D1": {
+      "role": "STM PA10 RX / JDBG_UART Pin2",
+      "decoded_bytes": 1522,
+      "complete_lf_lines": 32,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 27,
+        "\u0018": 2,
+        "DISARM": 2
+      },
+      "valid_tel_lines": 0,
+      "malformed_tel_lines": [],
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 3.8864285,
+          "end_s": 3.8879910555555557,
+          "text": "ARM,seq=573833964"
+        },
+        {
+          "start_s": 3.96966875,
+          "end_s": 3.9743560555555555,
+          "text": "CMD,seq=573833965,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.106383,
+          "end_s": 4.111070305555556,
+          "text": "CMD,seq=573833966,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.22639725,
+          "end_s": 4.231084805555556,
+          "text": "CMD,seq=573833967,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.32638275,
+          "end_s": 4.331070305555556,
+          "text": "CMD,seq=573833968,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.4264465,
+          "end_s": 4.431134055555556,
+          "text": "CMD,seq=573833969,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.526629,
+          "end_s": 4.531316305555556,
+          "text": "CMD,seq=573833970,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.65101425,
+          "end_s": 4.655701805555556,
+          "text": "CMD,seq=573833971,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.7864325,
+          "end_s": 4.791119805555556,
+          "text": "CMD,seq=573833972,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.8864455,
+          "end_s": 4.891133055555556,
+          "text": "CMD,seq=573833973,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 4.986439,
+          "end_s": 4.991126555555556,
+          "text": "CMD,seq=573833974,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.106394,
+          "end_s": 5.111081555555556,
+          "text": "CMD,seq=573833975,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.226421,
+          "end_s": 5.231108555555556,
+          "text": "CMD,seq=573833976,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.32641275,
+          "end_s": 5.331100305555556,
+          "text": "CMD,seq=573833977,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.4264495,
+          "end_s": 5.431136805555556,
+          "text": "CMD,seq=573833978,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.55017125,
+          "end_s": 5.554858805555556,
+          "text": "CMD,seq=573833979,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.6864135,
+          "end_s": 5.691101055555556,
+          "text": "CMD,seq=573833980,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.80669425,
+          "end_s": 5.811381805555556,
+          "text": "CMD,seq=573833981,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 5.906465,
+          "end_s": 5.911152305555556,
+          "text": "CMD,seq=573833982,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.00646825,
+          "end_s": 6.011155805555556,
+          "text": "CMD,seq=573833983,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.126484,
+          "end_s": 6.131171555555556,
+          "text": "CMD,seq=573833984,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.2264255,
+          "end_s": 6.231113055555556,
+          "text": "CMD,seq=573833985,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.34539125,
+          "end_s": 6.350078805555556,
+          "text": "CMD,seq=573833986,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.445228,
+          "end_s": 6.449915555555556,
+          "text": "CMD,seq=573833987,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.5499225,
+          "end_s": 6.554609805555556,
+          "text": "CMD,seq=573833988,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.64976075,
+          "end_s": 6.654448305555556,
+          "text": "CMD,seq=573833989,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.7864465,
+          "end_s": 6.791134055555556,
+          "text": "CMD,seq=573833990,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 6.88643,
+          "end_s": 6.891117555555556,
+          "text": "CMD,seq=573833991,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 7.0864345,
+          "end_s": 7.086608055555556,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 7.086608,
+          "end_s": 7.088431055555556,
+          "text": "DISARM,seq=573833992"
+        },
+        {
+          "start_s": 9.096478,
+          "end_s": 9.096651555555557,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 9.0966515,
+          "end_s": 9.098474555555557,
+          "text": "DISARM,seq=573833993"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 3.8864285,
+          "end_s": 3.8879910555555557,
+          "text": "ARM,seq=573833964"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 9.0966515,
+          "end_s": 9.098474555555557,
+          "text": "DISARM,seq=573833993"
+        }
+      ]
+    }
+  },
+  "pairs": {},
+  "logic_levels": {
+    "D4": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "limits": [
+    "Sampled digital levels only; physical endpoints require user verification.",
+    "A capture boundary may truncate a line. Bytes are decoded at nominal baud.",
+    "Matching sampled logic does not establish analog signal integrity.",
+    "Telemetry reports firmware values, not physical motor output measurements."
+  ]
+}

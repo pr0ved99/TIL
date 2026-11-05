@@ -1,5 +1,8 @@
 # Motor Driver Selection Comparison
 
+> 문서 역할·상태 대조: **2026-09-30** — MDD10A 선택 근거와 현재 배선. BTS7960 비교는 과거 선택 이력이다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 첫 drivetrain MVP에서 BTS7960 대신 MDD10A를 선택하게 된 과정을 정리한다.
@@ -128,15 +131,18 @@ STM32 PB7 / TIM4_CH2 -> MDD10A PWM2
 STM32 PC9            -> MDD10A DIR2
 STM32 GND            -> MDD10A GND
 
-3S LiPo + -> fuse -> switch -> MDD10A POWER+
+3S LiPo + -> F1 -> S1 -> + busbar -> K1 30/87 -> MDD10A POWER+
 3S LiPo - ------------------> MDD10A POWER-
 
-Left motor  -> MDD10A M1A/M1B
-Right motor -> MDD10A M2A/M2B
+Output channel 1 -> MDD10A M1A/M1B -> Motor A / left (connected)
+Output channel 2 -> MDD10A M2A/M2B -> Motor B / right (connected)
 ```
 
-최종 left/right channel mapping은 bench wiring 후 확정한다. 문서에서는 `PWM1/DIR1 = left`를 후보로
-두되, 실제 motor direction과 encoder sign test 결과로 결정한다.
+MCU-to-driver routing은 static/no-motor bench에서 확인했다. 위 연결 기준은
+[9/26 실물 좌우 정정](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md)을 따른다.
+A의 엔코더는 JENC_1/TIM3/left_cps, B는 JENC_2/TIM5/right_cps이며 손회전 부호 확인은 통과했다.
+9/29 M2→B 연결과 DIR 보정 후 B 실제 양방향 단발 구동을 확인했다. A 양수 명령의 실제 전진 방향 관찰은 남아 있다.
+[후속 구동 근거](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)를 따른다.
 
 ## Validation 영향
 

@@ -1,0 +1,16 @@
+{
+  "status": "CALCULATED_CANDIDATE_NOT_HARDWARE_VALIDATED",
+  "series_resistor_ohm": 12000.0,
+  "cap_after_resistor_F": 1e-07,
+  "series_resistor_min_1pct_ohm": 11880.0,
+  "sensor_datasheet_resistive_load_min_ohm": 10000,
+  "sensor_direct_capacitance_max_F": 4.7e-09,
+  "nominal_fc_Hz": 132.62911924324612,
+  "nominal_tau_ms": 1.2,
+  "nominal_10_to_90pct_ms": 2.6366694928034633,
+  "ideal_attenuation_at_19000Hz_dB": -43.1225059211243,
+  "full_scale_settle_half_LSB_ms_R1pct_Cmax120nF": 13.105472372282994,
+  "two_ntc_divider_max_mA_R1pct_short": 0.6666666666666666,
+  "two_current_IC_max_mA_no_output_load": 24,
+  "scope": "first-order RC math only; output stability, cable capacitance, leakage, protection and ADC schedule pending"
+}

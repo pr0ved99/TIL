@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-17",
+  "branch": "agent/dual-encoder-bringup",
+  "evidence_commit": "8c7e20aaa89bdfa09bd01e8ecddd00e4143a11e6",
+  "remote_evidence_commit_verified": true,
+  "notion_pages": [
+    {
+      "page_id": "3bba7326-f87b-803d-b34a-fab526f55bf7",
+      "url": "https://app.notion.com/p/3bba7326f87b803db34afab526f55bf7?pvs=204",
+      "content_verified": true,
+      "child_pages_and_attachments_preserved": true
+    },
+    {
+      "page_id": "3faa7326-f87b-81d6-ae14-e64ce21019ca",
+      "url": "https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca?pvs=204",
+      "content_verified": true,
+      "child_pages_and_attachments_preserved": true
+    },
+    {
+      "page_id": "3faa7326-f87b-81ea-8108-eeef0aedd8f8",
+      "url": "https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8?pvs=204",
+      "content_verified": true,
+      "child_pages_and_attachments_preserved": true
+    },
+    {
+      "page_id": "3faa7326-f87b-81fd-9005-efd004459423",
+      "url": "https://app.notion.com/p/3faa7326f87b81fd9005efd004459423?pvs=204",
+      "content_verified": true,
+      "child_pages_and_attachments_preserved": true
+    },
+    {
+      "page_id": "3faa7326f87b8122b119d7a9de00fe50",
+      "url": "https://app.notion.com/p/3faa7326f87b8122b119d7a9de00fe50?pvs=204",
+      "content_verified": true,
+      "child_pages_and_attachments_preserved": true
+    }
+  ],
+  "scope": "Selected zero-only AC-S01 through AC-S08 scenarios. Historical failures and unresolved observations retained.",
+  "evidence_index_byte_comparisons": 383,
+  "evidence_index_mismatches": 0,
+  "parsed_json_files": 172,
+  "notion_verification": "Fetched after update; content and existing child-page/file references verified. Visual rendering not inspected.",
+  "excluded_local_work": [
+    "03_Firmware/esp32_examples/01_hello_world/build/",
+    "assets/captures/logic_analyzer/Session 2"
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "closeout_date_kst": "2026-11-04",
+  "learning_date": "2026-11-03",
+  "scope": "Learning note 21 sections 30–35, associated design/context documentation, project file-management audit; design remains IN_PROGRESS. No physical test, simulation, MCU build or flash.",
+  "documentation": "complete",
+  "progress_handoff": "complete",
+  "notion": {
+    "status": "complete_readback",
+    "pages": [
+      {
+        "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+        "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455",
+        "title": "전압 ADC 학습 · 공차·보호·전원/핀/상태·후보 판단 (35절까지, 설계 진행 중)",
+        "has_latest": true,
+        "has_next36": true,
+        "ct_old_nominal_absent": true,
+        "section35_present": true,
+        "readback": true
+      },
+      {
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d",
+        "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+        "has_latest": true,
+        "has_next36": true,
+        "ct_old_nominal_absent": true,
+        "readback": true
+      },
+      {
+        "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+        "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6",
+        "title": "📝 TMR-01 · 전류·온도 센서/측정기 구매·수령·계측 준비",
+        "has_latest": true,
+        "has_next36": true,
+        "ct_old_nominal_absent": true,
+        "readback": true
+      },
+      {
+        "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+        "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0",
+        "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+        "has_latest": true,
+        "has_next36": true,
+        "ct_old_nominal_absent": true,
+        "readback": true
+      },
+      {
+        "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+        "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85",
+        "title": "🧭 TMR · 기술 자료와 코드 탐색",
+        "has_latest": true,
+        "has_next36": true,
+        "ct_old_nominal_absent": true,
+        "readback": true
+      }
+    ],
+    "correction": "TPS3840 Rev.E p7 CT-open tD MAX50µs; MIN/TYP blank. Prior nominal50µs corrected; original learning history retained.",
+    "learning_sections_30_to_35_verified": true,
+    "3fca7326-f87b-8124-b0ee-e212822ce80d_child_tags_preserved": true,
+    "403a7326-f87b-816f-8115-fbe2c995f8f0_child_tags_preserved": true
+  },
+  "calendar": {
+    "status": "existing_record_updated_readback",
+    "event_id": "19bnchnobsa7j46druji2ndgk8",
+    "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0",
+    "start": "2026-10-25T14:30:00+09:00",
+    "end": "2026-10-25T15:30:00+09:00",
+    "preserved_fields": true,
+    "latest_present": true,
+    "separate_current_time_block": false,
+    "note": "No separate TMR time block found for Oct26–Nov10 in bounded primary-calendar search. Updated the existing evidence-review description with explicit learning/closeout dates, without inventing actual execution times or creating new slots."
+  },
+  "git": {
+    "status": "content_pushed_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "92f6933d6dfc7dc2f7c8d1623d5f77366a2f6181",
+    "remote_verified": true,
+    "receipt_policy": "A follow-up receipt commit records the content commit and observed remote equality; it does not embed its own SHA.",
+    "content_files": 38,
+    "content_url": "https://github.com/pr0ved99/TIL/commit/92f6933d6dfc7dc2f7c8d1623d5f77366a2f6181"
+  },
+  "management": {
+    "initial_snapshot": "audit.json",
+    "after_snapshot": "audit_after.json",
+    "original_unrelated_files": 19,
+    "preserved_hashes": "preserved_worktree.json",
+    "preservation_verified": true,
+    "known_snapshot_missing_links": 3,
+    "actions": "Updated current documentation pointers; added project ignore for newly generated artifacts. Kept original snapshots, tracked build artifacts and two CAD wrappers."
+  },
+  "next": "36. 전체 전압 오차 예산; 0–16V DC / after-calibration ±0.10V / 20–30°C / 10Hz are review proposals; actual protection, calibration and fabrication approval remain open."
+}

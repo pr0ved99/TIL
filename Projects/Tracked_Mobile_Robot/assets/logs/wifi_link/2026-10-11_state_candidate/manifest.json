@@ -1,0 +1,74 @@
+{
+  "documented_on": "2026-10-11",
+  "scope": "User UART reentry excerpt and candidate state C PC tests; no new app build/flash or AC-B/S proof.",
+  "git_branch": "agent/dual-encoder-bringup",
+  "git_head": "b04e667e95a5c999ef0f235d3ec5aab1b3bdd458",
+  "working_tree_dirty": true,
+  "candidate_tests": 27,
+  "saved_tests": 0,
+  "saved_skips": 1,
+  "compiler": "TCC 0.9.27 x64, -Wall -Werror",
+  "source_attachment_sha256": "f4fd26fec102f978e2ae4ad10f45be32afc5f4e2d6221e93d48eace29742168b",
+  "source_attachment_bytes": 14164,
+  "excerpt_selection": "Only wifi_link tagged lines; Wi-Fi SSID/BSSID/network stack and favicon 404 omitted.",
+  "physical_condition": "User reports only ESP32 and STM32 with UART connected; encoder not present. USB power was instructed, not separately reported.",
+  "flashed_binary_identity": "unconfirmed",
+  "files": [
+    {
+      "path": "pc_state_candidate.txt",
+      "bytes": 3347,
+      "sha256": "d31490a1e01516324a8e1510fe58d3bb278151bfbda1d03f08a774f70f143926"
+    },
+    {
+      "path": "pc_state_saved_unavailable.txt",
+      "bytes": 233,
+      "sha256": "ce9bae1097f1890ab2959e92d97f7f9f525277ee0bc11c1cb57643e68a142aae"
+    },
+    {
+      "path": "uart_reentry_user_excerpt.txt",
+      "bytes": 12943,
+      "sha256": "f8e9b219f5f7e7ce874a8efdb275f12d1ad56497ede10b6345a49f749a618b08"
+    },
+    {
+      "path": "source_snapshot/wifi_control_state.h",
+      "bytes": 4591,
+      "sha256": "134e69e993bff5a30c1c58f56c2a02814fa8dfd70d2119964b46812b771e938d"
+    },
+    {
+      "path": "source_snapshot/wifi_control_state.c",
+      "bytes": 12654,
+      "sha256": "564d235382da76de3ca621ff2909f64c24af2309a1e4f69807d6a8521fd5654e"
+    },
+    {
+      "path": "source_snapshot/wifi_control_contract.h",
+      "bytes": 1417,
+      "sha256": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8"
+    },
+    {
+      "path": "source_snapshot/wifi_control_owner.h",
+      "bytes": 1113,
+      "sha256": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af"
+    },
+    {
+      "path": "source_snapshot/wifi_control_owner.c",
+      "bytes": 1488,
+      "sha256": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd"
+    },
+    {
+      "path": "source_snapshot/test_wifi_control_state.py",
+      "bytes": 4398,
+      "sha256": "10e6022e6125b5425f08668b3b1e88fb3e71996d7b48c742b189ee5fd7ca37e6"
+    },
+    {
+      "path": "source_snapshot/wifi_control_state_host_fixture.c",
+      "bytes": 22965,
+      "sha256": "562bd91bd24e56c81dc1986a0e0d5486e31f388c7697e7ad9fb9ebe6551cdc14"
+    },
+    {
+      "path": "cps_floor_contact_user_confirmation.txt",
+      "bytes": 115,
+      "sha256": "e62c53ebdba8f36082b46b63774a2fe9b7f18930305db24261898cf8f32f3b6a"
+    }
+  ],
+  "cps_followup": "User reports pin contact with floor; elevated boards no longer show CPS spikes. Exact post-change CPS not reported."
+}

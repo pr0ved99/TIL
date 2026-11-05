@@ -1,0 +1,193 @@
+{
+  "date": "2026-10-24",
+  "task_ids": [
+    "TK-MVP-05-03",
+    "TK-MVP-05-04"
+  ],
+  "scope": "Local file identity and documentation only; no build, flash, hardware commands or new runtime test",
+  "reference_manifest": "assets/logs/wifi_link/2026-10-22_firmware_identity_review/manifest.json",
+  "reference_manifest_sha256": "8ddbc41fe4e5aef8a7687e28a5cbb1254ea71975ddb5abdb9661fc8ae4343a35",
+  "repository_head": "1fbd565ca4ef8d60b3367a54f9d1f6095c77abb8",
+  "repository_head_is_complete_worktree_identity": false,
+  "runtime_image_hash_verified": false,
+  "sources": [
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c",
+      "bytes": 5188,
+      "sha256": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+      "reference_sha256": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "bytes": 3038,
+      "sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "reference_sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c",
+      "bytes": 10883,
+      "sha256": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+      "reference_sha256": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "bytes": 127975,
+      "sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+      "reference_sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/distance_move.h",
+      "bytes": 2743,
+      "sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+      "reference_sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h",
+      "bytes": 1137,
+      "sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+      "reference_sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h",
+      "bytes": 1438,
+      "sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+      "reference_sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h",
+      "bytes": 615,
+      "sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+      "reference_sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/distance_move.c",
+      "bytes": 5957,
+      "sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+      "reference_sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c",
+      "bytes": 5085,
+      "sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+      "reference_sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "bytes": 15322,
+      "sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "reference_sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c",
+      "bytes": 8629,
+      "sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+      "reference_sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "bytes": 42820,
+      "sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "reference_sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "matches_reference": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Debug/stm32_uart_mvp.elf",
+      "bytes": 1275124,
+      "sha256": "224e21dd8a86ba35c65467db969dcb2ab679d2d1d57424b16248e33c5486ab0d",
+      "reference_sha256": "224e21dd8a86ba35c65467db969dcb2ab679d2d1d57424b16248e33c5486ab0d",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/build/esp32_wifi_link.elf",
+      "bytes": 9157820,
+      "sha256": "02234cc1c96616c276b9b32d2cb1704abe18564ece218d7dd7331a16bf69944b",
+      "reference_sha256": "02234cc1c96616c276b9b32d2cb1704abe18564ece218d7dd7331a16bf69944b",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/build/esp32_wifi_link.bin",
+      "bytes": 896368,
+      "sha256": "7bc30a13d78a86595a02b553ffde1a23a1e14a56f1010bcef70bcb00bf41144f",
+      "reference_sha256": "7bc30a13d78a86595a02b553ffde1a23a1e14a56f1010bcef70bcb00bf41144f",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/build/bootloader/bootloader.bin",
+      "bytes": 21056,
+      "sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+      "reference_sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/build/partition_table/partition-table.bin",
+      "bytes": 3072,
+      "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "reference_sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "matches_reference": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/build/flasher_args.json",
+      "bytes": 945,
+      "sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+      "reference_sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+      "matches_reference": true
+    }
+  ],
+  "additional_reference_files": [
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/main.h",
+      "bytes": 2816,
+      "sha256": "0181ea50d9be2db2a00c53db594cc11d0a3b753e4b6d556fc3718a53c7980854"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c",
+      "bytes": 2572,
+      "sha256": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c",
+      "bytes": 6958,
+      "sha256": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/stm32_uart_mvp.ioc",
+      "bytes": 8976,
+      "sha256": "def18c6dfdc0d02b428a446dbfa47493331211b9630602ec1040beea86abab46"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/sdkconfig.defaults",
+      "bytes": 146,
+      "sha256": "58af640af8305106246f917dcb286ec057ed6cd85b4c1848d74476397325239d"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_config.h.example",
+      "bytes": 251,
+      "sha256": "e007370a898d43b4769d0b9b86c563fa2375541f078154a4f25663c23fdee74f"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js",
+      "bytes": 9476,
+      "sha256": "de9eb6d35910d39987c05bff2e1aa41a7453bc9c76c8f37b1b05e1741fcfbcb2"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/console_encoder_observe_1m_v5_2.js",
+      "bytes": 13700,
+      "sha256": "5c2cad7b016cc2cce1a974f4e1aad1c0b37df4ddf2946e68490b48e012a81ccb"
+    }
+  ],
+  "additional_files_note": "Captured now for identification; no claim of comparison to the 2026-10-22 list. Private Wi-Fi settings excluded."
+}

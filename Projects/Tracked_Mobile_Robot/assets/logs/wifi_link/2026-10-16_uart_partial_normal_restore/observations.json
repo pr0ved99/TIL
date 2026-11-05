@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-16",
+  "mode": 0,
+  "source": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+  "source_normalized_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+  "source_equals_previous_pc_pass": true,
+  "attachment_sha256": "46be18bf77bb0027052419d751fff6d29cebefca385c3f784d9f940708dd498a",
+  "boot_id": 3996125447,
+  "startup_disarm_seq": 451258570,
+  "startup_ping_seq": 451258571,
+  "startup_ready": true,
+  "tel_count_in_excerpt": 54,
+  "all_tel_disarmed_zero_drop0_err0": true,
+  "screen": {
+    "source": "user screenshot in conversation; original image not saved locally",
+    "test_banner_absent": true,
+    "startup_state": "READY",
+    "control_state": "IDLE",
+    "stm_stale": false,
+    "stm_age_ms": 72,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_seq": 451258571,
+    "pwm_cps_zero": true,
+    "drop": 0,
+    "err": 0
+  },
+  "limits": [
+    "No full build/flash transcript or binary readback provided.",
+    "ELF SHA shown in monitor is abbreviated ec4db3d1a...; not a full binary identity match.",
+    "No new motor, PWM pin, PC7 or analog power measurements.",
+    "No power-off completion reported."
+  ]
+}

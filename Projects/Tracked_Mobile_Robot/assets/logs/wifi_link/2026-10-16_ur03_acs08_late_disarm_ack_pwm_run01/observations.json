@@ -1,0 +1,110 @@
+{
+  "test": "UR03_ACS08_LATE_DISARM_ACK_PWM_RUN01",
+  "verdict": "PASS_LATE_ACK_IGNORED_ZERO_OUTPUT_SUBCASE_MANUAL_RECOVERY_PENDING",
+  "capture_name": "2026-10-16_UR03_ACS08_LATE_DISARM_ACK_PWM_run01.sr",
+  "capture_sha256": "f65e262593d4860f53970ad80bfd1ec8b7bb517ba5dc4126162948d0210a115d",
+  "samplerate_hz": 4000000.0,
+  "samples": 57638400,
+  "duration_s": 14.4096,
+  "identity": {
+    "browser_boot_id": 2094335871,
+    "session_from_monitor": 2,
+    "disarm_request": 41,
+    "disarm_seq": 3385205966,
+    "processed_stm_ms": 200745
+  },
+  "wire": {
+    "disarm": {
+      "start_s": 5.970445,
+      "end_s": 5.972354555555556,
+      "text": "DISARM,seq=3385205966"
+    },
+    "marker": {
+      "start_s": 5.97246125,
+      "end_s": 5.977228805555556,
+      "text": "TEST_ACK_DELAY,seq=3385205966,t_ms=200745,delay_ms=500"
+    },
+    "delayed_ack": {
+      "start_s": 6.4709645,
+      "end_s": 6.474692555555556,
+      "text": "ACK,seq=3385205966,type=DISARM,t_ms=200745"
+    },
+    "tx_start_to_ack_start_ms": 500.5195000000002,
+    "tx_end_to_ack_start_ms": 498.6099444444436,
+    "post_ack_capture_s": 7.934907444444443,
+    "commands_after_disarm": 0,
+    "matching_ack_count": 41,
+    "command_counts": {
+      "ARM": 1,
+      "CMD": 39,
+      "DISARM": 1
+    },
+    "invalid_stop_bits": 0
+  },
+  "telemetry": {
+    "valid_count": 144,
+    "state_counts": {
+      "DISARMED": 100,
+      "ARMED": 44
+    },
+    "all_velocity_PWM_CPS_drop_err_zero": true,
+    "post_disarm_count": 84,
+    "post_ack_count": 79,
+    "post_disarm_state_reason": "DISARMED / DISARM",
+    "post_disarm_last_seq": 3385205966,
+    "first_post_disarm": {
+      "start_s": 6.02658675,
+      "end_s": 6.041588305555556,
+      "text": "TEL,t_ms=200800,state=DISARMED,reason=DISARM,command_age_ms=85,last_seq=3385205966,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "last_post_disarm": {
+      "start_s": 14.3144595,
+      "end_s": 14.329627305555556,
+      "text": "TEL,t_ms=209100,state=DISARMED,reason=DISARM,command_age_ms=8385,last_seq=3385205966,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    }
+  },
+  "physical_levels": {
+    "mapping": {
+      "D4": "PB6 left PWM / JDBG_CTRL_1 Pin2",
+      "D6": "PC7 / JDBG_CTRL_2 Pin2",
+      "D7": "PB7 right PWM / JDBG_CTRL_2 Pin1"
+    },
+    "all_low_entire_capture": true,
+    "samples_per_channel": 57638400
+  },
+  "browser_screenshot": {
+    "source": "User-attached screenshot manually read; image not archived locally",
+    "startup_state": "READY",
+    "control_phase": "BLOCKED",
+    "result": "DISARM request 41 STOP_UNCONFIRMED",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_seq": 3385205966,
+    "stm_t_ms": 241900,
+    "stm_age_ms": 22,
+    "drop": 0,
+    "err": 0
+  },
+  "monitor": {
+    "file": "esp_monitor.txt",
+    "sha256": "4ef78530918953311d025c0c38a30139acd79375af66dedb058f8ca637253b24",
+    "disarm_tx_esp_log_ms": 116839,
+    "late_ack_esp_log_ms": 117359,
+    "late_ack_matched_control": false,
+    "late_ack_log": "RX ACK then STARTUP: ignored non-matching ACK",
+    "last_inflight_CMD_ack": {
+      "start_s": 5.941684,
+      "end_s": 5.945152805555556,
+      "text": "ACK,seq=3385205965,type=CMD,t_ms=200715"
+    },
+    "note": "Final CMD ACK ignored after manual stop queued. It precedes DISARM on wire and is not a post-stop command."
+  },
+  "limits": [
+    "Digital 4 MHz levels; no analog voltage or sub-sample pulse claim.",
+    "Output zero throughout; no powered/moving motor stopping-time claim.",
+    "Final browser screenshot only; precise BLOCKED transition time and continuous UI state not captured.",
+    "Second manual DISARM and mode 0 restoration still pending.",
+    "Bounded delayed DISARM ACK subcase, not all AC-S04/AC-S08."
+  ],
+  "next_action": "New capture, manual DISARM once, verify new seq ACK + fresh DISARMED/zero TEL and browser IDLE. Restore STM mode 0 after recovery review."
+}

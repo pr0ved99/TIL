@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-24",
+  "attachment_id": "5df7483d-057c-4cc8-8ab0-3b5e6dccbf10",
+  "original_filename": "붙여넣은 텍스트.txt",
+  "raw_bytes": 3478144,
+  "raw_sha256": "4e8a9d011c68e98dc50dd4176041c423945933a7f70dbeb3fe6fde1e26b1f0b1",
+  "archive": "browser_report.json.gz",
+  "archive_bytes": 156102,
+  "archive_sha256": "697c7f91ba8952cbd92106e14c55040b9e91a0b418c82c283e2d04b5126740b2",
+  "observer_revision": "5.2-handler-timing",
+  "local_observer_source": "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/console_encoder_observe_1m_v5_2.js",
+  "local_observer_sha256_at_analysis": "5c2cad7b016cc2cce1a974f4e1aad1c0b37df4ddf2946e68490b48e012a81ccb",
+  "source_hash_scope": "Local reference, not an attestation of installed browser code",
+  "condition": "Requested fresh v5.2 ARM speed-zero 30-second capture followed by manual DISARM. Actual duration calculated from events. No new physical voltage/current measurements."
+}

@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-24",
+  "attachment_id": "e75c70a0-b79b-43c3-8f99-95992d53130f",
+  "original_filename": "붙여넣은 텍스트.txt",
+  "raw_bytes": 4116520,
+  "raw_sha256": "a3f6d3babc915b8a79b4d5b33aaf64d897a2abbc724b2b7e2fe54feb2c0307d3",
+  "archive": "browser_report.json.gz",
+  "archive_bytes": 192358,
+  "archive_sha256": "8ec5920386f524140243b753e55c1a35e0fbb78bbe26c6a01b7235bb6e726401",
+  "observer_revision": "5.2-handler-timing",
+  "local_reference_hashes_at_analysis": {
+    "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/console_encoder_observe_1m_v5_2.js": "5c2cad7b016cc2cce1a974f4e1aad1c0b37df4ddf2946e68490b48e012a81ccb",
+    "assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js": "de9eb6d35910d39987c05bff2e1aa41a7453bc9c76c8f37b1b05e1741fcfbcb2",
+    "03_Firmware/esp32_wifi_link/main/wifi_link_main.c": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md": "1032ba3eee3ad451e65ff58c32c91fd006f55448bbe4fc2cfd5956b9e7760502"
+  },
+  "source_hash_scope": "Local references, not attestations of flashed firmware or installed browser source",
+  "condition": "User submitted forward-motion report after discussion of optional v5.2 supported-tracks observation. Physical support setup follows instructions, not independently verified. Actual forward-send to capture-release interval is calculated; do not assume requested 20s.",
+  "physical_measurements": "No new voltage/current/temperature or ground-distance measurement supplied"
+}

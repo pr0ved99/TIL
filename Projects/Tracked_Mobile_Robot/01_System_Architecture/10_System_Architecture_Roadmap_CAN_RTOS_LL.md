@@ -1,5 +1,9 @@
 # System Architecture Roadmap: CAN, RTOS, and LL Driver
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+> Current scope: Pin configuration, permanent wiring, logic-power and bounded single-motor observations have progressed beyond the initial roadmap. Follow the current master plan for remaining gates.
+
 ## Purpose
 
 This document updates the project architecture roadmap based on three required
@@ -306,7 +310,7 @@ The project should produce evidence for each learning goal.
 | Odometry | straight-line and turn test records |
 | Architecture | block diagrams, interface contracts, decision records |
 
-## 6. Current Position
+## 6. Initial Roadmap Checkpoint (Historical)
 
 Current state:
 

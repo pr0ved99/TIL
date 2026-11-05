@@ -1,0 +1,99 @@
+{
+  "test": "G6-04",
+  "status": "GROUND_TRANSLATION_CONFIRMED_BY_USER_DISTANCE_NOT_MEASURED",
+  "user_contact_confirmation": "Tracks contact desk and support chassis weight, not lifted.",
+  "tx_count": 85,
+  "ack_count": 85,
+  "ordered_captured_tx_ack_match": true,
+  "full_uart_writes": true,
+  "transitions": [
+    {
+      "esp_ms": 2616161,
+      "state_reason_pwm": [
+        "DISARMED",
+        "BOOT",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    },
+    {
+      "esp_ms": 2616751,
+      "state_reason_pwm": [
+        "ARMED",
+        "NONE",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    },
+    {
+      "esp_ms": 2618151,
+      "state_reason_pwm": [
+        "ARMED",
+        "NONE",
+        "100",
+        "100"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    },
+    {
+      "esp_ms": 2622851,
+      "state_reason_pwm": [
+        "ARMED",
+        "NONE",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "320",
+        "260"
+      ]
+    },
+    {
+      "esp_ms": 2625851,
+      "state_reason_pwm": [
+        "DISARMED",
+        "DISARM",
+        "0",
+        "0"
+      ],
+      "cps": [
+        "0",
+        "0"
+      ]
+    }
+  ],
+  "moving_cps_range": {
+    "left": [
+      0,
+      330
+    ],
+    "right": [
+      0,
+      260
+    ]
+  },
+  "drop_err_zero": true,
+  "limits": [
+    "Encoder rotation is not proof of track belt movement, traction, distance, or mechanical coupling integrity.",
+    "No synchronized pointer timestamps or new LA capture; no exact release latency claim."
+  ],
+  "video_sha256": "b51f78358fde9559692b4a740d0dc234c742e2b9d59872599bad74bf735a6929",
+  "initial_visual_review": "17.71 s video sampled at 2 fps; no clear chassis translation. Track belt motion/slip cannot be reliably distinguished from overview frames.",
+  "operator_followup": {
+    "ground_contact": true,
+    "translation": "User reported movement greater than 3 cm and approximately 1-2 cm/s; not instrument-measured.",
+    "turning": "User reported forward/reverse possible but insufficient turning force at 10%.",
+    "source": "Follow-up user correction after initial video overview review."
+  }
+}

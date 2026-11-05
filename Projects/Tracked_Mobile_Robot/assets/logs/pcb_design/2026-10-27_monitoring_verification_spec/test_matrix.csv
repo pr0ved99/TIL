@@ -1,0 +1,11 @@
+test_id,scope,baseline,readiness,status,missing_execution_evidence
+MON-L01,each current input channel,4.4mV with comparison guard <=1.1mV,NOT_READY,NOT_RUN,reference voltage path and assembly and acquisition firmware
+MON-L02,each sensor plus current input channel,low range +/-1.8A first; full target +/-10A not covered,NOT_READY,NOT_RUN,validated DC source/load and received sensor/meter and calibration
+MON-L03,current sampling and PWM,100Hz versus 1kHz fixed coefficients; waveform separate,NOT_READY,NOT_RUN,acquisition firmware and waveform/reference strategy
+MON-L04-I,current electrical response,300ms plus 1s persistence; both directions five times,NOT_READY,NOT_RUN,input settling marker and common-time mapping
+MON-L04-T,temperature resistor-step response,2s plus 2s persistence; both directions five times,NOT_READY,NOT_RUN,resistor switch settling marker and common-time mapping
+MON-L05,each temperature electrical input,1degC with comparison guard <=0.25degC,NOT_READY,NOT_RUN,known resistor standards and assembly and acquisition firmware
+MON-T-OBS,installed NTC and GM1312 surface comparison,CHARACTERIZATION only; not +/-1degC total,NOT_READY,NOT_RUN,received probes and mounting and corresponding surface conditions
+MON-L06,voltage divider inputs,existing planned test retained,NOT_READY,NOT_RUN,voltage divider and protection circuit not designed
+MON-L07,current and temperature quality processing,monitor-only STALE 500ms and 3000ms; prior control limits unchanged,NOT_READY,NOT_RUN,measurement software and PC fixtures
+MON-L08,current/NTC electrical fault detection,documented detectable faults only; rail diagnostic candidates,NOT_READY,NOT_RUN,assembled topology and fault/protection review

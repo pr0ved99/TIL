@@ -1,0 +1,219 @@
+{
+  "audit_date_kst": "2026-11-04",
+  "scope": "All physical project files enumerated. Local Markdown targets checked outside generated/vendor folders; anchors, remote URLs, absolute links and electrical/code behavior are not validated.",
+  "files": 13495,
+  "bytes": 2140840328,
+  "top_level": {
+    "00_Project_Charter": {
+      "files": 3,
+      "bytes": 30012
+    },
+    "01_System_Architecture": {
+      "files": 49,
+      "bytes": 830502
+    },
+    "02_Hardware_Validation": {
+      "files": 12,
+      "bytes": 119729
+    },
+    "03_Firmware": {
+      "files": 10917,
+      "bytes": 1192338184
+    },
+    "04_PC_Serial_Control": {
+      "files": 26,
+      "bytes": 3756168
+    },
+    "05_ROS2_Integration": {
+      "files": 1,
+      "bytes": 2
+    },
+    "06_Test_Report": {
+      "files": 1,
+      "bytes": 2
+    },
+    "07_Embedded_Learning_Notes": {
+      "files": 50,
+      "bytes": 567309
+    },
+    "08_Mechanical_Design": {
+      "files": 18,
+      "bytes": 744999
+    },
+    "09_Electrical_Design": {
+      "files": 208,
+      "bytes": 9021140
+    },
+    "AGENTS.md": {
+      "files": 1,
+      "bytes": 8598
+    },
+    "PROJECT_MEMORY.md": {
+      "files": 1,
+      "bytes": 112062
+    },
+    "README.md": {
+      "files": 1,
+      "bytes": 26267
+    },
+    "assets": {
+      "files": 2004,
+      "bytes": 930440174
+    },
+    "docs": {
+      "files": 203,
+      "bytes": 2845180
+    }
+  },
+  "tracked_files": 2708,
+  "tracked_build_artifacts": 344,
+  "tracked_build_examples": [
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeCache.txt",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeASMCompiler.cmake",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeCCompiler.cmake",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeCXXCompiler.cmake",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeDetermineCompilerABI_C.bin",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeDetermineCompilerABI_CXX.bin",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CMakeSystem.cmake",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CompilerIdC/CMakeCCompilerId.c",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/4.0.3/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+  ],
+  "markdown_files_checked": 445,
+  "relative_targets_checked": 4135,
+  "missing_relative_targets": [
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 5,
+      "target": "2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md"
+    },
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 5,
+      "target": "2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md"
+    },
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 507,
+      "target": "../../assets/logs/wifi_link/2026-10-12_executor_candidate/README.md"
+    }
+  ],
+  "large_files": [
+    {
+      "path": "assets/videos/uart_mvp/2026-06-22_uart_mvp_web_serial_demo.mp4",
+      "bytes": 186196078
+    },
+    {
+      "path": "assets/videos/wifi_mvp/2026-10-24/raw/mvp_long_01.mp4",
+      "bytes": 162256280
+    },
+    {
+      "path": "assets/videos/wifi_mvp/2026-10-24/raw/mvp_01.mp4",
+      "bytes": 85385080
+    },
+    {
+      "path": "assets/videos/wifi_mvp/2026-10-24/raw/mvp_cam_long_01.mp4",
+      "bytes": 48712029
+    },
+    {
+      "path": "assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
+      "bytes": 30714961
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp-idf/mbedtls/mbedtls/library/libmbedcrypto.a",
+      "bytes": 28872602
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp-idf/mbedtls/mbedtls/library/libtfpsacrypto.a",
+      "bytes": 28872602
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp-idf/mbedtls/mbedtls/tf-psa-crypto/core/libtfpsacrypto.a",
+      "bytes": 28872602
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-10_07_xl4015_02_output_5v03.jpg",
+      "bytes": 16758544
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-10_04_xl4015_01_output_5v03.jpg",
+      "bytes": 16671221
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-10_05_xl4015_01_repower_output_5v03.jpg",
+      "bytes": 15646512
+    },
+    {
+      "path": "assets/datasheets/BENETECH_GM1312_User_Manual.pdf",
+      "bytes": 13565831
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/edit/recovery.mp4",
+      "bytes": 12414205
+    },
+    {
+      "path": "assets/datasheets/UNI-T_UT210E_User_Manual.pdf",
+      "bytes": 11479846
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-10_02_power_path_switch_on_12v49.jpg",
+      "bytes": 11449266
+    },
+    {
+      "path": "03_Firmware/esp32_uart_bridge/build/esp-idf/mbedtls/mbedtls/tf-psa-crypto/drivers/builtin/libmbed-builtin.a",
+      "bytes": 11074886
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-24_demo_run01/edit/TMR_MVP_Demo_2026-10-24_review.mp4",
+      "bytes": 11035476
+    },
+    {
+      "path": "assets/datasheets/BENETECH_GM1312_User_Manual_Alternate_Scan.pdf",
+      "bytes": 10697036
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/edit/tabletop.mp4",
+      "bytes": 10489398
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-10_01_power_path_switch_off_0v.jpg",
+      "bytes": 10322593
+    }
+  ],
+  "exact_duplicate_groups_at_least_1MiB": [],
+  "ambiguous_cad_names": [
+    "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch",
+    "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch"
+  ],
+  "git_status": [
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map",
+    " M Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json",
+    " M Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+    " M Projects/Tracked_Mobile_Robot/09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md",
+    " M \"Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2\"",
+    " M Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c",
+    " M Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    " M Projects/Tracked_Mobile_Robot/docs/progress/README.md",
+    "?? Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt",
+    "?? Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt",
+    "?? Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt",
+    "?? Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch",
+    "?? Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch",
+    "?? Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-03_nucleo_power_path/",
+    "?? Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-04_document_management_closeout/",
+    "?? Projects/Tracked_Mobile_Robot/docs/progress/2026-11-03_progress.md"
+  ],
+  "actions": "Read-only inventory. No source, evidence, CAD, build output or duplicates deleted/moved."
+}

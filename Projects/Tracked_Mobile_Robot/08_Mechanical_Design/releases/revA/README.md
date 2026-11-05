@@ -4,8 +4,10 @@
 
 `RELEASE FILES PREPARED / ORDER NOT SUBMITTED`
 
-이 폴더는 어댑터 플레이트 Rev A의 제조 기준 파일과 검증용 파일을 보관한다. 현재 제작 후보 사양은
-아크릴 3T이며, 멀티메이커 주문 페이지의 서버 업로드 오류 때문에 실제 주문은 아직 접수되지 않았다.
+이 폴더는 어댑터 플레이트 Rev A의 제조 기준 파일과 검증용 파일을 보관한다. 당시 제작 후보 사양은
+아크릴 3T이며, 2026-07-24 멀티메이커 주문 페이지의 서버 업로드 오류 때문에 실제 주문은 접수되지 않았다.
+현재 RevB 주문 후보와 engineering hold는
+[`../../03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](../../03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)에서 별도로 관리한다.
 
 ## Release Baseline
 
@@ -13,7 +15,8 @@
 | --- | --- |
 | 외곽 nominal | 174 x 208.93379 mm |
 | 프로젝트 내 반올림 표기 | 174 x 209 mm |
-| 소형 체결 홀 | nominal diameter 3.3 mm |
+| 소형 홀 group A | 21 x diameter 3.3 mm |
+| 소형 홀 group B | 8 x diameter 2.2 mm |
 | 제작 후보 재질 | 아크릴 3T |
 | 수량 | 1개 후보 |
 | 주문용 정본 | `2026-07-24_adapter_plate_revA_multimaker_order.pdf` |

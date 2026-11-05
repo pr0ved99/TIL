@@ -1,0 +1,67 @@
+{
+  "verdict": "PASS_ACS02_VALID_A_TICKET_FROM_B_ZERO_OUTPUT_SUBCASE",
+  "capture_sha256": "af1fc30ff6829415e5b203e7bd1f799ea8679e438aaac3cd710b6e3f07996ceb",
+  "duration_s": 13.014144,
+  "samplerate_hz": 4000000.0,
+  "boot_id": 1797425356,
+  "A_session": 6,
+  "B_session": 7,
+  "control_id": 3,
+  "copied_ticket": 30870,
+  "B_request_id": 1,
+  "A_same_ticket_request_id": 4,
+  "stop_A_request_id": 15,
+  "browser_evidence": "B TICKET_REJECTED observed before A sends identical ticket 30870; A result OK, same owner/control ACTIVE and STM ARMED observed afterward; final DISARM, fresh matching stopped TEL and IDLE confirmed.",
+  "B_round_trip_ms": 58.69999999925494,
+  "A_client_send_budget_ms": 41,
+  "A_ticket_validity": "A success after B rejection establishes the copied ticket remained usable for A. No deadline or production TTL change in this run.",
+  "uart": {
+    "ARM": 3522553855,
+    "CMD": [
+      3522553856,
+      3522553857,
+      3522553858,
+      3522553859,
+      3522553860,
+      3522553861,
+      3522553862,
+      3522553863,
+      3522553864,
+      3522553865,
+      3522553866,
+      3522553867
+    ],
+    "DISARM": 3522553868,
+    "matching_ACKs": 14,
+    "invalid_stop_bits": 0,
+    "same_ticket_CMD": {
+      "start_s": 1.828932,
+      "end_s": 1.8337063055555556,
+      "text": "CMD,seq=3522553858,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "same_ticket_ACK": {
+      "start_s": 1.8428435,
+      "end_s": 1.8463973055555556,
+      "text": "ACK,seq=3522553858,type=CMD,t_ms=6413828"
+    },
+    "no_additional_UART_command_observed": "Continuous ARM/CMD/DISARM sequence 3522553855..3522553868. B rejection is established by browser report; UART does not carry WebSocket ticket/session IDs."
+  },
+  "valid_tel_count": 130,
+  "tel_states": {
+    "DISARMED": 117,
+    "ARMED": 13
+  },
+  "vx_w_PWM_CPS_drop_err": "all zero in every complete valid TEL",
+  "physical_levels": "D4/PB6 left PWM, D7/PB7 right PWM and D6/PC7 all LOW throughout 13.014144 s; endpoint mapping from user-confirmed wiring.",
+  "fresh_stop_tel": {
+    "start_s": 2.917762,
+    "end_s": 2.9329343055555555,
+    "text": "TEL,t_ms=6414904,state=DISARMED,reason=DISARM,command_age_ms=104,last_seq=3522553868,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  "post_stop_tel_count": 101,
+  "no_post_stop_ARM_CMD": true,
+  "capture_boundary": "Last TEL is truncated by the end of capture and excluded from 130 complete valid TEL records.",
+  "esp_monitor": "No separate ESP monitor transcript supplied for this run; browser sequence correlation and raw UART inspected.",
+  "scope": "PASS applies to valid A ticket attempted from B, continued A authority, zero-output behavior and confirmed stop. Does not close every AC-S02 branch or prove nonzero/powered-motor stopping.",
+  "next_action": "Do not repeat this passed subcase. Retain other unverified acceptance cases as pending; aggregate progress/handoff at bench block closeout."
+}

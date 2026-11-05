@@ -1,0 +1,58 @@
+{
+  "status": "CONDITIONAL_IDEAL_KINEMATIC_CALCULATION_NOT_MEASURED_POSE",
+  "source_report_sha256": "afdce8c84989f7d2145bd6ab2d5159719fa5083c96b3fb687052bc3c6f92e5b3",
+  "standard_window_status": "REJECTED",
+  "standard_window_reason": "NO_ACKED_STOPPED_DISARM_ENDPOINT",
+  "count_window_start": {
+    "ms": 57650.40000000596,
+    "tel_count": 25381,
+    "stm_t_ms": 224100,
+    "encoder_t_ms": 224100,
+    "left_count": "0",
+    "right_count": "0",
+    "state": "ARMED",
+    "reason": "NONE",
+    "last_seq": 2670355140
+  },
+  "count_window_last_retained_tel": {
+    "ms": 85212.20000000298,
+    "tel_count": 25657,
+    "stm_t_ms": 251700,
+    "encoder_t_ms": 251700,
+    "left_count": "11741",
+    "right_count": "11489",
+    "state": "ARMED",
+    "reason": "NONE"
+  },
+  "delta_count": {
+    "left": "11741",
+    "right": "11489"
+  },
+  "coefficient_mm_per_count": "1687/19500",
+  "method": "Chronological unique TEL count increments; ds=(dL+dR)/2; dtheta=(dR-dL)/B; exact constant-twist arc per sample with initial x=y=theta=0. Right output is -y. No source gaps reconstructed.",
+  "assumptions": [
+    "Physical/CAD spacing temporarily substituted for uncalibrated effective width",
+    "No longitudinal/lateral slip and accurate equal side distance-per-count",
+    "Initial heading aligned with measurement axis",
+    "Pose point is drivetrain midpoint; actual marked point offset not supplied",
+    "Difference-of-counts heading is not independent IMU or measured heading"
+  ],
+  "models": [
+    {
+      "assumed_effective_width_mm": 228.31681,
+      "spacing_source": "USER_REPORTED_3D_MODEL_TRACK_CENTER_SPACING",
+      "forward_mm": 1002.6631450375845,
+      "right_offset_mm": 60.9470015559547,
+      "final_right_heading_deg": 5.470987927992126
+    },
+    {
+      "assumed_effective_width_mm": 233.0,
+      "spacing_source": "USER_REPORTED_APPROXIMATE_PHYSICAL_TRACK_CENTER_SPACING",
+      "forward_mm": 1002.7499845726961,
+      "right_offset_mm": 59.72419150766593,
+      "final_right_heading_deg": 5.3610236535093225
+    }
+  ],
+  "reported_right_offset_mm_approx": 80,
+  "observations": "Multiple forward/zero transitions retained; no angle correction is applied."
+}

@@ -1,0 +1,97 @@
+{
+  "test": "GROUND_LINEAR15_BASELINE_RUN01",
+  "motion": [
+    {
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        150,
+        150
+      ],
+      "source_samples": 55,
+      "steady_samples": 50,
+      "steady_abs_cps_median": [
+        860.0,
+        825.0
+      ],
+      "right_left_ratio": 0.9593023255813954,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "command": [
+        -100,
+        0
+      ],
+      "pwm": [
+        -150,
+        -150
+      ],
+      "source_samples": 59,
+      "steady_samples": 54,
+      "steady_abs_cps_median": [
+        850.0,
+        790.0
+      ],
+      "right_left_ratio": 0.9294117647058824,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    }
+  ],
+  "telemetry_dropped": 0,
+  "unique_source_samples": 252,
+  "unexpected_stop_capture": null,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 25043.80000000447,
+    "boot_id": 3247739665,
+    "gap_ms": 71,
+    "esp_uptime_ms": 238529,
+    "esp_step_ms": 61,
+    "tel_count": 2383,
+    "stm_t_ms": 238835,
+    "stm_age_ms": 42,
+    "command_age_ms": 7104,
+    "last_seq": 2655456235,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "visual": "No video or explicit curvature observation supplied for this run; forward/reverse ground test follows preceding instruction.",
+  "limits": [
+    "CPS measures encoder rotation, not motor torque or ground velocity.",
+    "Both encoders remained nonzero after the first 500ms. Forward and reverse wheel-rate mismatch differs; curvature requires physical observation.",
+    "CPS ratios are initial tuning evidence; PWM-to-speed response, battery voltage, load and track slip prevent treating them as calibrated gains."
+  ],
+  "status": "LINEAR15_CPS_AND_CURVATURE_DIRECTION_CONFIRMED",
+  "held_unexpected_stops": [],
+  "operator_confirmation": {
+    "forward_nose_yaws": "right",
+    "reverse_nose_yaws": "left",
+    "source": "User confirmation"
+  }
+}

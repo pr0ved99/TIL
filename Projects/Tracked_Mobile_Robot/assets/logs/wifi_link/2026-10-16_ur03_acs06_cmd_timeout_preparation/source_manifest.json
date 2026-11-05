@@ -1,0 +1,51 @@
+{
+  "status": "AC_S06_ZERO_OUTPUT_TIMEOUT_REJECTION_AND_RESTORE_SCOPE_COMPLETE",
+  "candidate_normalized_sha256": "915ee1db64c952a8a48efaf8dbe3e435db648731f668da14f07e3a781646c1fa",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "board_build_flash_runtime": "Mode 3 timeout/NOT_ARMED subcase and mode 0 restoration/manual rearm/stop reviewed using captures, monitor logs and final screenshots; source hashes are not independent flashed-image readback.",
+  "default_mode": 0,
+  "test_mode": 3,
+  "production_unchanged": true,
+  "production_inputs": {
+    "esp32_wifi_link/main/wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "esp32_wifi_link/main/wifi_control_contract.h": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8",
+    "esp32_wifi_link/main/wifi_control_executor.c": "be2f88f0e284f934402630292576b3c433a4c5273c5c77da92d64586c2caa109",
+    "esp32_wifi_link/main/wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "esp32_wifi_link/main/wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "esp32_wifi_link/main/wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "esp32_wifi_link/main/wifi_control_state.c": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23",
+    "esp32_wifi_link/main/wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "esp32_wifi_link/main/wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "esp32_wifi_link/main/wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "esp32_wifi_link/main/wifi_link_main.c": "2df00d35539203ac62b2eedae8b76d4a5399c6cb41db6f5a275e34c1faa74a94",
+    "stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h": "de81fae7318f08052baa57ac7b46f95d65c5b076ac55ff8b53115e5b14c48b0d",
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "stm32_uart_mvp/Core/Inc/uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "stm32_uart_mvp/Core/Src/uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "stm32_uart_mvp/Core/Inc/ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "stm32_uart_mvp/Core/Src/ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "stm32_uart_mvp/Core/Inc/drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "stm32_uart_mvp/Core/Src/drive_command_mapper.c": "fb28cd41efb7df446abfda3c2297aa6acca34a00bd75c1a0180d15fe07d7a234",
+    "stm32_uart_mvp/Core/Inc/motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7"
+  },
+  "test_inputs": {
+    "test_uart_watchdog.py": "974a5855cf56c907a63cd60045f32d56142a1179af7437264f1fbc02d7d34210",
+    "uart_watchdog_candidate.py": "df13db9a2dbeff2cc0622cd2c7621469ae136d3c908dd48392e06bd834950700",
+    "uart_watchdog_test_block.c": "884bba57816aea690429c6234d9af34999e6f662d188231b738370ce4942adb2",
+    "uart_watchdog_host_fixture.c": "6eb93601c60207c342b6c02d19c44a5b36c9a3978fe816212af3ccb59cd9861b",
+    "test_uart_partial_test.py": "f0f544a90d207ff1d91296eedcecb20c7170392efbb81e30e025d34f5efe60b3",
+    "test_wifi_control_main.py": "e4ad6d5f7b861ffca8d88dfcd3331d6628fecf66048eca0bfee427c38a6ebd96",
+    "stm_uart_stream_host_fixture.c": "5bbf4762e8926d5b9f14efe28e087f76be38a5fa82c9ac5a7806c99b86c6e21b"
+  },
+  "guide_normalized_sha256": "9359bd108689e512b89c8ba8e713c7963f1787ee75b1caed0a08d00f0e067888",
+  "pending": [],
+  "runtime_review": "../2026-10-17_ur03_acs06_cmd_timeout_pwm_run01/observations.json",
+  "restore_review": "../2026-10-17_ur03_acs06_restore_pwm_run02/observations.json",
+  "earlier_restore_review": "../2026-10-17_ur03_acs06_restore_pwm_run01/observations.json",
+  "open_observations": [
+    {
+      "review": "../2026-10-17_ur03_acs06_restore_pwm_run01/observations.json",
+      "description": "Cause of run01 command-delivery gap remains unconfirmed; no focus switch reported. Run02 proves manual rearm/stop but does not diagnose the earlier gap."
+    }
+  ]
+}

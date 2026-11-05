@@ -1,0 +1,23 @@
+﻿Reference,Value,Footprint_candidate,Status,Notes
+J1,CN7_SOCKET,Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,Bottom female socket; height and mating geometry to be checked
+J2,CN10_SOCKET,Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,Bottom female socket; height and mating geometry to be checked
+J3,CURRENT_LEFT,Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,"JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT"
+R1,12k candidate,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,Output isolation / RC; value and lead spacing remain provisional
+C1,100n,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,PART_PURCHASED_BODY_FOOTPRINT_NOT_VERIFIED,Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional
+J4,CURRENT_RIGHT,Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,"JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT"
+R2,12k candidate,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,Output isolation / RC; value and lead spacing remain provisional
+C2,100n,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,PART_PURCHASED_BODY_FOOTPRINT_NOT_VERIFIED,Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional
+J5,NTC_LEFT,Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025
+R3,10k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,NTC divider; actual resistance/tolerance and body size unconfirmed
+R4,1k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,Draft component
+C3,100n,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,PART_PURCHASED_BODY_FOOTPRINT_NOT_VERIFIED,Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional
+J6,NTC_RIGHT,Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025
+R5,10k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,NTC divider; actual resistance/tolerance and body size unconfirmed
+R6,1k,Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal,VALUE_OWNED_BODY_TOLERANCE_NOT_VERIFIED,Draft component
+C4,100n,Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm,PART_PURCHASED_BODY_FOOTPRINT_NOT_VERIFIED,Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional
+TP1,STM_3V3,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+TP2,GND,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+TP3,I_LEFT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+TP4,I_RIGHT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+TP5,T_LEFT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+TP6,T_RIGHT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component

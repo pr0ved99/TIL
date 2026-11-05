@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-05",
+  "source": "User reports and corrections in conversation; not instrument-generated telemetry",
+  "session_closed": true,
+  "power_disconnection": "User confirmed: 전원 분리 완료",
+  "current_instrument": {
+    "model": "UNI-T UT210E",
+    "requested_mode": "20A DC",
+    "display_resolution_A": 0.01,
+    "initial_empty_before_zero_A": 0.14,
+    "empty_after_zero_A": 0,
+    "reported_10s_min_max": null
+  },
+  "temperature_instrument": {
+    "model": "GM1312",
+    "T1": "motor A",
+    "T2": "motor B",
+    "initial_same_unpowered_object_C": [
+      27.2,
+      27.3
+    ],
+    "mounted_baseline_C": [
+      26.7,
+      26.9
+    ],
+    "attachment": "User-confirmed polyimide tape sandwich; contact/insulation rating not independently verified"
+  },
+  "standby_60s": {
+    "conductor": "M1B",
+    "display_A": -0.01,
+    "T1_A_C": 26.7,
+    "T2_B_C": 26.7,
+    "no_motion_confirmed": true,
+    "no_anomaly_confirmed": true
+  },
+  "M2_pre_run": {
+    "empty_zero_A": 0,
+    "reclamped_A": -0.01,
+    "latest_T1_A_C": 26.8,
+    "latest_T2_B_C": 26.8
+  },
+  "observations": [
+    {
+      "id": "AIR01",
+      "conductor": "M1B",
+      "motor": "A",
+      "command": "forward",
+      "current_display_A": -0.18,
+      "T1_A_C": 26.7,
+      "T2_B_C": 26.7,
+      "temperature_timing": "30 seconds after stop; follow-up confirmation",
+      "stop_disarm_confirmed": true,
+      "no_anomaly_confirmed": true,
+      "note": "First report called this voltage; unit A identifies current.",
+      "requested_max_duration_s": 1,
+      "actual_duration_s": null,
+      "zero_residual_display_A": -0.01
+    },
+    {
+      "id": "AIR02",
+      "conductor": "M1B",
+      "motor": "A",
+      "command": "reverse",
+      "current_display_A": 0.18,
+      "T1_A_C": 26.7,
+      "T2_B_C": null,
+      "temperature_timing": "T1 26.6 during observation, 26.7 after stop; exact delay not reported",
+      "stop_disarm_confirmed": null,
+      "no_anomaly_confirmed": null,
+      "note": "Stop reported; later user specified T1 only changed. No separate full DISARM checklist confirmation.",
+      "requested_max_duration_s": 1,
+      "actual_duration_s": null,
+      "zero_residual_display_A": -0.01
+    },
+    {
+      "id": "AIR03",
+      "conductor": "M2B",
+      "motor": "B",
+      "command": "forward",
+      "current_display_A": 0.2,
+      "T1_A_C": 26.9,
+      "T2_B_C": 27.0,
+      "temperature_timing": "30 seconds after stop",
+      "stop_disarm_confirmed": true,
+      "no_anomaly_confirmed": true,
+      "note": "Initial T1 27.0/T2 26.9 corrected by user: temperatures swapped, not probe wiring.",
+      "requested_max_duration_s": 1,
+      "actual_duration_s": null,
+      "zero_residual_display_A": -0.01
+    },
+    {
+      "id": "AIR04",
+      "conductor": "M2B",
+      "motor": "B",
+      "command": "reverse",
+      "current_display_A": -0.23,
+      "T1_A_C": 26.9,
+      "T2_B_C": 27.0,
+      "temperature_timing": "30 seconds after stop",
+      "stop_disarm_confirmed": true,
+      "no_anomaly_confirmed": true,
+      "note": "Raw current report: -00.23 A / 미포착. Final user supplement: 마지막은 이상 없음.",
+      "requested_max_duration_s": 1,
+      "actual_duration_s": null,
+      "zero_residual_display_A": -0.01
+    }
+  ],
+  "limits": [
+    "Actual actuation durations and running PWM not logged",
+    "Not peak, RMS, stable mean, sensor calibration or absolute temperature accuracy evidence",
+    "Full T-LOAD-001 acceptance incomplete; T005A PARTIAL/T007 BLOCKED unchanged",
+    "Conversation photos not archived as local originals"
+  ],
+  "next": "NotebookLM unit 01; PCB learning resumes at 37-4"
+}

@@ -1,0 +1,24 @@
+{
+  "status": "FAIL",
+  "scope": "Current saved ESP source review; production file not edited",
+  "findings": [
+    {
+      "line": 1180,
+      "actual": "#define STM_UART_LINE_SIZE 384U",
+      "expected": "#define STM_UART_LINE_SIZE 512U"
+    },
+    {
+      "line": 1318,
+      "actual": "if (negaive) {",
+      "expected": "if (negative) {"
+    },
+    {
+      "line": 1416,
+      "actual": "stm_parse_u32_field(line, \"encoder_valid=\", &encoder_arm_valid)",
+      "expected": "stm_parse_u32_field(line, \"encoder_valid=\", &encoder_valid)"
+    }
+  ],
+  "source_sha256": "13325297a8934925d5b68ffc9a4572fda565c6d388aae41207f5872e229ec7aa",
+  "saved_test": "Stopped at RX512 buffer assertion; native execution of saved file did not run",
+  "firmware_edited_by_codex": false
+}

@@ -1,0 +1,32 @@
+{
+  "scope": "Read-only STA connection diagnosis; no firmware edit, build, flash, router change, or electrical measurement performed by Codex.",
+  "source_monitor": "03_Firmware/esp32_wifi_link/build/log/idf_py_stdout_output_23280",
+  "saved_monitor_mtime_kst": "2026-10-03T15:51:33.921634+09:00",
+  "saved_monitor_elf_sha256_prefix": "e621c10af",
+  "current_elf_sha256": "ba7c9a56321517838da4fc6726344b154343567e2a45cc122668d5b13d8f4471",
+  "current_bin_sha256": "14972ccb183131a74d40e1a163fc8b4931869b344609c152cce5c4c0885dd222",
+  "latest_flash_log": "03_Firmware/esp32_wifi_link/build/log/idf_py_stdout_output_32016",
+  "latest_flash_log_mtime_kst": "2026-10-03T15:52:21.677896+09:00",
+  "latest_flash_log_observation": "COM4; bootloader, partition table, and app data verified; latest app runtime monitor not present among inspected logs.",
+  "static_config_checks": {
+    "mode": "STA",
+    "ssid_format_valid": true,
+    "password_format_valid": true,
+    "current_config_strings_present_in_built_bin": true,
+    "password_matches_ap": "not verified"
+  },
+  "pc_wlan_observation": {
+    "source": "netsh wlan show interfaces / show networks mode=bssid",
+    "connected": true,
+    "band": "5 GHz",
+    "channel": 153,
+    "auth": "WPA2-Personal",
+    "cipher": "CCMP",
+    "signal_percent": 80,
+    "configured_ssid_matches_pc_connected_ssid": false,
+    "configured_ssid_visible_in_pc_query": false,
+    "ssid_block_count_in_pc_query": 1,
+    "boundary": "PC WLAN query does not establish ESP scan visibility or absence of all 2.4 GHz APs."
+  },
+  "assessment": "AP discovery / configuration filtering is suspected; missing disconnect reason prevents confirmation. Saved failures are from an image preceding the latest build/flash."
+}

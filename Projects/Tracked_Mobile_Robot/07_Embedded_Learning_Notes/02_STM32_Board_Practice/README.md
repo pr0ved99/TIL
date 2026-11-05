@@ -18,4 +18,4 @@ NUCLEO-F446RE에서 직접 수행하는 실습 일지를 보관한다.
 | --- | --- | --- |
 | `000_Practice_Log_Index.md` | Active | STM32 실습 목록과 진행 상태 |
 | `001_USART2_RX_Interrupt_Ring_Buffer_ko.md` | Planned | USART2 RX interrupt와 ring buffer 확인 |
-| `002_TIM_Encoder_Mode_Bringup_ko.md` | Partial | TIM3 motor-power-off count/sign PASS; TIM5와 powered-noise pending |
+| `002_TIM_Encoder_Mode_Bringup_ko.md` | Partial | TIM3/TIM5 dual motor-power-off independent count/sign PASS; speed와 powered-noise pending |

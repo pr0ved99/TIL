@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-23",
+  "task": "TK-MVP-05-02/03 retained-evidence and acceptance-boundary reconciliation",
+  "review_complete": true,
+  "overall_mvp_accepted": false,
+  "new_hardware_test_authorized": false,
+  "firmware_or_timeout_change": false,
+  "external_publication_performed": false,
+  "requirement_matrix_before_sha256": "75fc565ed4ad7c73b331d2eb597f5047ebb5a250abea55954ec0a90947c27a5d",
+  "original_must_requirement_rows": [
+    "| `REQ-POWER-001` | 3S LiPo 양극 경로가 fuse와 DC main switch를 통과하고, switch OFF에서 부하측 0 V, ON에서 정상 극성 전압이어야 한다. | MUST | `PASS` |",
+    "| `REQ-POWER-002` | XL4015 두 개는 5 V no-load 조정 후 약 1 A 5분을 유지하고, 약 1.8 A 3분 시험 결과와 전압 강하를 기록해야 한다. | MUST | `CONDITIONAL PASS` |",
+    "| `REQ-POWER-003` | USB와 buck 동시 연결 시 back-powering을 방지하는 보드별 전원 연결 규칙을 확정해야 한다. | MUST | `PARTIAL — current logic-power scope PASS / final integrated harness rule pending` |",
+    "| `REQ-POWER-004` | MVP 주행 시험은 셀별 LiPo 알람과 작업자 감독하에 수행한다. 사용 장치의 경고 설정을 기록하고, 경고 시 즉시 수동 정지·시험 종료한다. 관측 ADC는 후속 REQ-MON에서 검증하며 자동 저전압 정지는 후속이다. | MUST (시험 운영 조건) | `PASS — USER-REPORTED 감독하 운영 범위. 설정/표시·기존 주행 근거, 과거 주행 중 설정값 미만 경고음→작업자 전원 차단을10/23 확인. 반응시간 계측·자동 차단 수용 아님` |",
+    "| `REQ-MECH-001` | Rev A 도면은 셰시 홀 패턴과 1:1로 일치하고 제조 파일의 형상 배율이 유지되어야 한다. | MUST | `PASS` |",
+    "| `REQ-MECH-002` | 제작품은 억지 가공이나 휨 없이 셰시에 체결되고, 만능기판·XL4015 x2·MDD10A가 장착돼야 한다. | MUST | `PASS — 10/17 사용자 가조립/고정·휨 없음 확인; 치수/revision 식별 수용과 구분` |",
+    "| `REQ-MECH-003` | USB, 단자대와 공구 접근이 가능하고 기판 하부·금속부 사이 절연 간격과 케이블 경로가 확보돼야 한다. | MUST | `PASS — USER-REPORTED: 10/17 접근·하부 간격/접촉 없음 +10/20 ESP 복원·배선 경로 확인. 전체 fit/절연저항 계측 아님` |",
+    "| `REQ-MOTOR-001` | STM32는 MDD10A channel 1/2별 PWM과 DIR을 생성하고 MCU-to-driver routing을 문서화해야 한다. | MUST | `PASS` |",
+    "| `REQ-MOTOR-002` | boot/reset/DISARM/timeout/fault에서 실제 PWM 핀은 0이어야 한다. | MUST | `PASS — motor-disconnected MCU-pin scope` |",
+    "| `REQ-MOTOR-003` | 방향 변경은 `PWM 0 -> DIR 변경 -> PWM 재개` 순서로만 수행해야 한다. | MUST | `PASS` |",
+    "| `REQ-MOTOR-004` | 첫 logic/no-load 시험은 5~10% 저 duty 제한으로 시작하고, 제한 해제 조건을 기록해야 한다. | MUST | `CONDITIONAL PASS` |",
+    "| `REQ-MOTOR-005` | 한쪽 모터 no-load의 전진·후진, timeout/DISARM stop과 소음 관측을 충족한다. 전류 수치/정량 부하는10/19 후속 REQ-MON으로, 기본 열 관측은10/23 사용자 결정으로 후속 REQ-THERM으로 분리한다. | MUST | `PARTIAL` — 단발·A DISARM·A/B 3초 subset 보존; 전체 no-load 조건·신호/소음·반복 범위의 잔여 증거는 기존 PARTIAL 유지. 온도는10/23 후속 보류 |",
+    "| `REQ-ESTOP-001~004` | Mechanical-latching actuator의 독립 NC control/sense와 정격에 맞는 K1이 MCU와 독립적으로 motor-energy feed를 차단해야 한다. | MUST | `PARTIAL/BLOCKED` — 6P truth table·K1 제어·무부하 접점 기능과 report 27/30의 MDD rail DMM 관측 완료. rail-off 수용 기준·단자 정격 release·부하/열 시험 미완료 |",
+    "| `REQ-ESTOP-005~008` | 독립 auxiliary NC sense, software latch, boot-safe와 explicit-reset/no-auto-restart를 만족해야 한다. | MUST | `PARTIAL` — report 26 T004 PASS. Report 27/30에 S0 해제/S2 미조작 rail 관측 추가. K1/MDD 결합 no-auto-restart 전체 수용은 미완료 |",
+    "| `REQ-ESTOP-009` | MVP에서 sense/PWM, direct rail-off와 mechanical stop evidence를 분리해 기록해야 한다. 정밀 동기 transient 계측은 post-MVP다. | MUST | `PARTIAL` — sense/PWM와 rail DMM 증거를 분리 보존. [report32](32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)의 A S0/PWM/엔코더 관측 추가; 정식 T-ESTOP-007 수용은 BLOCKED |",
+    "| `REQ-ESTOP-011`, `016` | Three-wire manual re-enable과 정격에 맞는 coil suppression이 functional K1 drop-out을 방해하지 않아야 한다. | MUST | `PARTIAL/BLOCKED` — K1/K2 P6KE·healthy-S2 pickup/self-hold/dropout/no-restart 기능과 rail DMM 관측 완료. clamp transient/release timing·전체 rail-off 판정 미완료; FM-ESTOP-014는 post-MVP |",
+    "| `REQ-ESTOP-017~020` | Back-power 방지, harness 식별, 안전한 시험환경과 완전한 evidence record를 만족해야 한다. | MUST | `PARTIAL/BLOCKED` — report 26/27의 capture/UART/hash·rail/back-power 관측 보존. Tool/connector/wire release와 실제 모터 수용, 완전한 증거 연결은 미완료 |",
+    "| `REQ-ENC-001` | STM32 연결 전에 encoder 전원, A/B high voltage와 output type을 측정해 3.3 V input 안전성을 판정해야 한다. | MUST | `CONDITIONAL PASS` |",
+    "| `REQ-ENC-002` | 좌우 encoder를 timer encoder mode로 읽고 방향에 따라 signed count가 일관돼야 한다. | MUST | `PARTIAL` |",
+    "| `REQ-ENC-003` | 일정 주기 count delta를 CPS 또는 wheel speed로 변환해 TEL에 포함해야 한다. | MUST | `PASS` |",
+    "| `REQ-DRIVE-001` | 좌우 motor/encoder channel과 차량 전진 기준의 부호를 문서화해야 한다. | MUST | `PASS` — 기존 손회전/개별 모터 근거와 10/18 공중·지상 방향/CPS 부호 연결 |",
+    "| `REQ-DRIVE-002` | lifted 상태와 저속 지상에서 전진, 후진, 제자리 회전이 command mapping과 일치해야 한다. | MUST | `PASS` — 선택 저속 방향·사용자 회전 관측 범위; 거리·각도 정확도 미계측 |",
+    "| `REQ-DRIVE-003` | UART 단절, timeout과 DISARM에서 실제 궤도가 정지해야 한다. | MUST | `PASS` — 기존 놓음/DISARM +10/20 공중 GPIO17 단절→STM CMD_TIMEOUT 실제 정지·재연결 자동 재구동 없음·수동 DISARM 복구. 위 최신 근거의 기능 범위 |",
+    "| `REQ-ODO-001` | 1 m 직진 시험에서 실제 거리, encoder 추정 거리, 절대 및 백분율 오차를 기록해야 한다. | MUST | `PASS — 10/23 run03/04 실제/추정·오차 기록 범위, 직진성/정밀도 보증 아님` |"
+  ],
+  "evidence": [
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_home_idle_baseline_run01",
+      "raw_sha256": "22f3bdb5c67c0a7b4b04f2800db1160c593ab547d50f7795ca70f416637a90e3",
+      "archive_sha256": "6a8fe89d25b8b066156a2e41bc34104cf1cd6d62f9a3fed244e130e1dff7c21d",
+      "summary_sha256": "e3ef80b02db55af76bd3e650fc4a69c99ad9805376a0b3fccb0b745c51f64365",
+      "status": "IDLE_BASELINE_CAPTURE_ACCEPTED_NO_LONG_GAP_OBSERVED"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_home_armed_zero_run01",
+      "raw_sha256": "05e506a4f593c4fe9d179ff8e34ce70cd20f9190c3e106da7aa738a8090e0db1",
+      "archive_sha256": "7477fefe4f921a79a28fbea416ad2c16e49be4ad5293f42faa9d01ec872d1c06",
+      "summary_sha256": "69c28b283e0975ca4f87f98317901b42f7ccf86817f427b0d9de69a8701c940d",
+      "status": "RETAINED_ARMED_ZERO_INTERVAL_ACCEPTED_FOCUS_LOSS_DISARM_CONFIRMED"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_home_air_forward_run01",
+      "raw_sha256": "8a749ff8b2aef6b4188298d376259bcd1076ab4eaa66fa55a649483b94e92bd8",
+      "archive_sha256": "5248a95dd45f2f0727fc6962bfb28c4d80d1ba9135597ce69faae455ede4049d",
+      "summary_sha256": "87c2dbb1abe8ed05f781f9ff1a6bbba93163f741c2f143e8c6c7632f034cbc85",
+      "status": "BOUNDED_FORWARD_OBSERVATION_ACCEPTED_RELEASE_ZERO_AND_MANUAL_DISARM_CONFIRMED"
+    }
+  ],
+  "current_user_reported_mass_kg": 3.25,
+  "new_supply_voltage_v": null,
+  "current_final_observation": {
+    "boot_id": 331448985,
+    "session_id": 2,
+    "disarm_request_id": 267,
+    "disarm_seq": 2142829116,
+    "state": "IDLE / DISARMED / DISARM",
+    "command_pwm_cps": [
+      0,
+      0
+    ],
+    "counts": [
+      "25291",
+      "24968"
+    ],
+    "post_disarmed_tel_span_s": 8.256,
+    "power_disconnected_reported": false
+  },
+  "remaining_items": [
+    {
+      "id": "ACC-COM-01",
+      "class": "ACTIVE_INVESTIGATION",
+      "state": "OPEN",
+      "next": "Locate retained delay evidence in ESP send queue / transport / browser processing; define minimal additional observation before any new trial; retain200/250/300ms limits"
+    },
+    {
+      "id": "ACC-UI-01",
+      "class": "HISTORICAL_UNREPRODUCED",
+      "state": "OPEN",
+      "next": "Preserve missing-click evidence boundary; investigate with v5.1 if it recurs; no arbitrary fix or forced repetition"
+    },
+    {
+      "id": "ACC-REL-01",
+      "class": "EXISTING_ACCEPTANCE_BOUNDARY",
+      "state": "PARTIAL",
+      "next": "Link existing UART/bridge images, setups and accepted subsets; do not fabricate old missing evidence"
+    },
+    {
+      "id": "ACC-PWR-01",
+      "class": "EXISTING_ACCEPTANCE_BOUNDARY",
+      "state": "CONDITIONAL/PARTIAL",
+      "next": "Retain supply/back-power/final-harness boundary; do not reopen user-excluded rating investigations"
+    },
+    {
+      "id": "ACC-MOT-01",
+      "class": "EXISTING_ACCEPTANCE_BOUNDARY",
+      "state": "CONDITIONAL/PARTIAL",
+      "next": "Preserve motor disconnected-pin and limited no-load/motion scopes; temperature/current remain deferred"
+    },
+    {
+      "id": "ACC-ENC-01",
+      "class": "EXISTING_ACCEPTANCE_BOUNDARY",
+      "state": "CONDITIONAL/PARTIAL",
+      "next": "Preserve voltage/count evidence versus unverified signal-shape/output-type/noise scope"
+    },
+    {
+      "id": "ACC-ESTOP-01",
+      "class": "EXISTING_ACCEPTANCE_BOUNDARY_WITH_EXCLUDED_INVESTIGATION",
+      "state": "PARTIAL/BLOCKED",
+      "next": "Keep T004/single-event/rail-DMM evidence distinct from full T005A/007 acceptance; no scope waiver or automatic excluded-test revival"
+    },
+    {
+      "id": "ACC-DOC-01",
+      "class": "FINAL_DELIVERABLE",
+      "state": "IN_PROGRESS",
+      "next": "Finalize README/demo/reproduction/firmware-evidence and release-file set once acceptance boundaries are resolved"
+    }
+  ]
+}

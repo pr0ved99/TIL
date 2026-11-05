@@ -1,0 +1,236 @@
+{
+  "file": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run05_boot_sense_open.sr",
+  "sha256": "21878eaa3bcf793257e40d24bb15ba0b6b7736a0ab33627c98e7a11aa129fdda",
+  "metadata": "[global]\nsigrok version=0.6.0-git-883c2ac\n\n[device 1]\ncapturefile=logic-1\ntotal probes=8\nsamplerate=4 MHz\ntotal analog=0\nprobe1=D0\nprobe2=D1\nprobe3=D2\nprobe4=D3\nprobe5=D4\nprobe6=D5\nprobe7=D6\nprobe8=D7\nunitsize=1\n",
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "0": {
+      "high_samples": 79716788,
+      "high_runs": 1,
+      "first_intervals_s": [
+        [
+          5.070803,
+          25.0
+        ]
+      ],
+      "last_intervals_s": [
+        [
+          5.070803,
+          25.0
+        ]
+      ],
+      "last_interval_ends_at_capture": true
+    },
+    "1": {
+      "high_samples": 0,
+      "high_runs": 0,
+      "first_intervals_s": [],
+      "last_intervals_s": [],
+      "last_interval_ends_at_capture": false
+    },
+    "2": {
+      "high_samples": 0,
+      "high_runs": 0,
+      "first_intervals_s": [],
+      "last_intervals_s": [],
+      "last_interval_ends_at_capture": false
+    }
+  },
+  "uart": {
+    "4": {
+      "valid_bytes": 145,
+      "invalid_frames": [
+        {
+          "t_s": 5.073215,
+          "value": 0
+        }
+      ],
+      "line_count": 6,
+      "line_types": {
+        "": 1,
+        "DISARM": 1,
+        "PING": 1,
+        "ARM": 1,
+        "CMD": 1,
+        "ESTOP_RESET": 1
+      },
+      "partial_tail": ""
+    },
+    "5": {
+      "valid_bytes": 36310,
+      "invalid_frames": [
+        {
+          "t_s": 5.073215,
+          "value": 0
+        }
+      ],
+      "line_count": 203,
+      "line_types": {
+        "TEL": 198,
+        "ACK": 1,
+        "PONG": 1,
+        "ERR": 3
+      },
+      "partial_tail": ""
+    }
+  },
+  "telemetry": {
+    "count": 198,
+    "transitions": [
+      {
+        "t_ms": "100",
+        "state": "FAULT",
+        "reason": "ESTOP_ACTIVE",
+        "command_age_ms": "4294967295",
+        "last_seq": "0",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "0",
+        "start_s": 5.2517925,
+        "end_s": 5.266720805555556
+      }
+    ],
+    "first": {
+      "t_ms": "100",
+      "state": "FAULT",
+      "reason": "ESTOP_ACTIVE",
+      "command_age_ms": "4294967295",
+      "last_seq": "0",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0",
+      "start_s": 5.2517925,
+      "end_s": 5.266720805555556
+    },
+    "last": {
+      "t_ms": "19803",
+      "state": "FAULT",
+      "reason": "ESTOP_ACTIVE",
+      "command_age_ms": "4294967295",
+      "last_seq": "2636930440",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "3",
+      "start_s": 24.92770675,
+      "end_s": 24.943560305555557
+    },
+    "counters": {
+      "state": {
+        "FAULT": 198
+      },
+      "reason": {
+        "ESTOP_ACTIVE": 198
+      },
+      "left_pwm": {
+        "0": 198
+      },
+      "right_pwm": {
+        "0": 198
+      },
+      "vx_mmps": {
+        "0": 198
+      },
+      "w_mradps": {
+        "0": 198
+      },
+      "err": {
+        "0": 9,
+        "1": 1,
+        "2": 1,
+        "3": 187
+      },
+      "drop": {
+        "0": 198
+      },
+      "left_cps": {
+        "0": 198
+      },
+      "right_cps": {
+        "0": 197,
+        "10": 1
+      }
+    }
+  },
+  "validation": {
+    "command_count": 5,
+    "response_count": 5,
+    "unmatched": [],
+    "telemetry_t_ms_monotonic": true,
+    "D1_D2_zero_entire_capture": true,
+    "fault_active_all_telemetry": true,
+    "commands": [
+      {
+        "start_s": 5.94894025,
+        "end_s": 5.950849805555556,
+        "text": "DISARM,seq=2636930439"
+      },
+      {
+        "start_s": 5.962439,
+        "end_s": 5.964175055555556,
+        "text": "PING,seq=2636930440"
+      },
+      {
+        "start_s": 6.08887425,
+        "end_s": 6.090523555555556,
+        "text": "ARM,seq=2636930441"
+      },
+      {
+        "start_s": 6.18888925,
+        "end_s": 6.193750555555556,
+        "text": "CMD,seq=2636930442,vx_mmps=50,w_mradps=0,timeout_ms=500"
+      },
+      {
+        "start_s": 6.2952575,
+        "end_s": 6.297601305555556,
+        "text": "ESTOP_RESET,seq=2636930443"
+      }
+    ],
+    "responses": [
+      {
+        "start_s": 5.95094675,
+        "end_s": 5.954417305555556,
+        "text": "ACK,seq=2636930439,type=DISARM,t_ms=799"
+      },
+      {
+        "start_s": 5.98035975,
+        "end_s": 5.9828758055555555,
+        "text": "PONG,seq=2636930440,t_ms=829"
+      },
+      {
+        "start_s": 6.090628,
+        "end_s": 6.095486055555556,
+        "text": "ERR,seq=2636930441,type=ARM,code=ESTOP_LATCHED,t_ms=939"
+      },
+      {
+        "start_s": 6.19389775,
+        "end_s": 6.198842055555556,
+        "text": "ERR,seq=2636930442,type=CMD,code=ESTOP_LATCHED,t_ms=1042"
+      },
+      {
+        "start_s": 6.2977225,
+        "end_s": 6.303275305555556,
+        "text": "ERR,seq=2636930443,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=1146"
+      }
+    ]
+  },
+  "physical_setup_user_report": "JESTOP Pin3 conductor disconnected at screw terminal; S0 released per run05 instruction; MDD B+ and motors disconnected."
+}

@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "local_links_checked": 277,
+  "scoped_markdown_files": 6,
+  "scoped_diff_check": "PASS",
+  "schematic_and_simulation_input_hashes": "PASS",
+  "original_shield_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": true,
+    "TMR_Monitor_Shield_RevA.kicad_pcb": true,
+    "reports/netlist.xml": true
+  },
+  "unrelated_preserved_count": 17,
+  "all_unrelated_preserved": true,
+  "simulation_status": "PASS_IDEAL_RC_MODEL",
+  "gui_run": "NOT_RUN",
+  "hardware_test": "NOT_RUN",
+  "new_git_push_calendar_notion_update": "NOT_PERFORMED"
+}
