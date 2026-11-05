@@ -1,6 +1,6 @@
 # Embedded Learning Notes
 
-**최신 · 2026-11-05 후속:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)에37-3 ADC 취득·채널 전환을 작성했다. 내부 CADC TYP4/MAX7pF와 외부100pF 가정을 구분하고 DS10693 Rev10 Equation1·VREFINT MIN10µs를 현재 클록과 연결했다. 명목 ADC14MHz·480cycles는 검증 시작 후보이며 구현/정확도 PASS가 아니다. 다음은37-4 잡음/처리·이후38 기준 계기·39 전체 판정이다. 사용자 필기 완료는36-19까지 보고됐고37절은 미확인이다. 외부 정착의 설명용10mV·약2.68ms와 이번 내부 취득 조건을 구분한다. [11/5 진행 기록](../docs/progress/2026-11-05_progress.md)은 로컬 후속이며30~35절 마감 게시와 다르다.
+**최신 · 11/5 학습/11/6 마감:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의37-4·38-1~3·39-1~3 자료를작성했다. 결론은±0.10V 목표/현재회로를유지하고39-2부품·보정·검증기준으로전압2채널초안을구체화하는것이다. 다음은기존쉴드CAD와계약대조·연결표작성. 자료39-3과사용자필기완료보고36-19를구분한다. 실제ADC/잡음·계수·잔차·보호는후속검증이며구현/PASS가아니다. [마감/다음재개](../docs/progress/2026-11-06_progress.md).
 
 **10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.
 

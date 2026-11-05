@@ -1,0 +1,119 @@
+{
+  "notion": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 5,
+      "page_last_edited_at": "2026-11-05T15:47:25.218Z"
+    },
+    {
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "title": "전압 ADC 학습 · 보호·오차 예산·회로도 인계 (39-3까지, 실측 검증 전)",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-05T15:46:20.998Z",
+      "headings": [
+        "37-4",
+        "38-1",
+        "38-2",
+        "38-3",
+        "39-1",
+        "39-2",
+        "39-3"
+      ]
+    },
+    {
+      "id": "3fca7326-f87b-8139-b949-d339de80d870",
+      "title": "🔧 TMR-04 · 후속 전류·전압 ADC 모니터링·자동 저전압 정지",
+      "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-05T15:47:26.964Z",
+      "properties_verified": {
+        "진행 상태": "진행 중",
+        "검증 판정": "NOT TESTED"
+      }
+    },
+    {
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+      "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 3,
+      "page_last_edited_at": "2026-11-05T15:47:28.265Z"
+    },
+    {
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "title": "🧭 TMR · 기술 자료와 코드 탐색",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-05T15:47:29.137Z"
+    }
+  ],
+  "calendar": [
+    {
+      "id": "d8l5dtuj7t8cvqdo0nt12om4tg",
+      "title": "[TMR] 11/5 실적 · PCB 학습39-3·공중 계측·자료 준비",
+      "url": "https://www.google.com/calendar/event?eid=ZDhsNWR0dWo3dDhjdnFkbzBudDEyb200dGcgZXloMTI1QG0",
+      "start": "2026-11-05T00:00:00",
+      "end": "2026-11-06T00:00:00",
+      "transparency": "transparent",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_and_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "ds2sp7fk6rn7ub9i98gluajkp0",
+      "title": "[TMR] 11/6 재개 · 쉴드 CAD·전압2채널 연결표",
+      "url": "https://www.google.com/calendar/event?eid=ZHMyc3A3Zms2cm43dWI5aTk4Z2x1YWprcDAgZXloMTI1QG0",
+      "start": "2026-11-06T00:00:00",
+      "end": "2026-11-07T00:00:00",
+      "transparency": "transparent",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_and_conference_preserved": true,
+      "description_readback_verified": true
+    }
+  ],
+  "work_date": "2026-11-05",
+  "closeout_date": "2026-11-06",
+  "timezone": "Asia/Seoul",
+  "scope": {
+    "learning_written_through": "39-3",
+    "handwritten_user_confirmed_through": "36-19",
+    "next_work": "11/6 수면 후 기존 쉴드 CAD와 전압 2채널 계약 대조·반영 범위/연결표",
+    "physical_power": "disconnected_user_report_2026-11-05",
+    "new_CAD_ERC_firmware_build_flash_hardware_run": false,
+    "notebooklm": "separate; final video completion unconfirmed",
+    "T005A": "PARTIAL",
+    "T007": "BLOCKED"
+  },
+  "git": {
+    "status": "pending_scoped_commit_push"
+  },
+  "validation": {
+    "status": "passed",
+    "details": "validation.json",
+    "unrelated_worktree_files_preserved": 19,
+    "new_broken_relative_links": 0,
+    "markdown_tables_and_chapter_count": "passed",
+    "git_diff_check": "passed"
+  },
+  "notion_learning_source": {
+    "path": "07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+    "sha256": "da438f450b244dcabcfe78cda6c71feb6050f008795a2e4e660d3f14079055db",
+    "appended_sections": [
+      "37-4",
+      "38-1",
+      "38-2",
+      "38-3",
+      "39-1",
+      "39-2",
+      "39-3"
+    ],
+    "relative_links_converted_to_github": true
+  }
+}

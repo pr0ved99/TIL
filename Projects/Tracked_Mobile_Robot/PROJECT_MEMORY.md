@@ -2,9 +2,18 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-05 (external air-run observations closed; user confirmed power disconnected; PCB learning resumes at 37-4).
+Last updated: 2026-11-06 (closing Nov 5 PCB learning through 39-3; resume after sleep with existing shield CAD versus two-channel contract review).
 
-## Current Checkpoint — 2026-11-05
+## Current Checkpoint — 2026-11-06 closeout / 11-05 PCB learning
+
+- 자료는37-4·38-1~3·39-1~3까지 작성했다. 사용자 필기 완료 보고는36-19까지다. 설명은결론→근거→결과에따른변경 순서로대화에도필기본문을제공한다. 자료작성과필기/이해·실측완료를구분한다.
+- ±0.10V 목표와기존분압/TPS3840PL30/TMUX1511/내장ADC를유지하고전압2채널회로도초안을구체화한다.39-2의저항±0.1%·TCR25ppm/°C 이하·0.1W/25V 이상,14MHz/480cycles·100Hz/10개,1V/15V보정·독립점검증은진행기준이다. 실제품목구매·구현·정확도/보호PASS와구분한다.
+- 자고일어나서11/6첫작업은기존TMR_Monitor_Shield_RevA와전압2채널계약대조·반영범위/연결표다. 전단PA4/CN7-32·후단PB0/CN7-34후보를실제CAD와맞춘다. 이번은파일존재/헤더만확인했고내부net대조·CAD편집/ERC는미실행이다.
+- 실물은11/5전원분리완료사용자보고상태다. 장시간열수용·센서ADC검증은미완료,T005A PARTIAL/T007 BLOCKED와후속분리를유지한다. MCU빌드/플래시·실물·구매·AI를자동시작하지않는다.
+- NotebookLM14단원/39소스는이전스냅샷이며01~07프로듀서메모화면제공과최종영상완료를구분한다. 별도작업으로유지하고원문변경을바탕화면에자동복제하지않는다.11/9·10휴무/일정시간보존.
+- [이번마감/11월6일재개](docs/progress/2026-11-06_progress.md) · [현재인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [게시영수증](assets/logs/pcb_design/2026-11-06_learning_closeout/publication.json).
+
+## Previous Checkpoint — 2026-11-05 external measurement closeout
 
 - GM1312 실물 모델·두 열전대 사용 확인. T1=A/T2=B. UT210E20A DC/0.01A 표시로 모터별 한 도선 관측. #5241·103JT-025는 수령 보고이고 센서 ADC 구현은 미실행이다.
 - 짧은 공중 전진/후진 전류 표시 M1B−0.18/+0.18A, M2B+0.20/−0.23A. 두 설치 무구동−0.01A. 최종 T1/T2=26.9/27.0°C, 마지막 이상 없음, 전원 분리 완료 사용자 보고. [조건/정정/미결](assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md).
