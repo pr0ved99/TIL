@@ -92,7 +92,13 @@
     "T007": "BLOCKED"
   },
   "git": {
-    "status": "pending_scoped_commit_push"
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "7151f40119ac1105b01f0357ab0673854736f95f",
+    "remote_verified_commit": "7151f40119ac1105b01f0357ab0673854736f95f",
+    "verification_method": "git ls-remote origin refs/heads/agent/dual-encoder-bringup",
+    "unrelated_worktree_paths_preserved": 19,
+    "receipt_commit": "This receipt is committed after the verified content commit; its own hash is available in Git history."
   },
   "validation": {
     "status": "passed",
@@ -115,5 +121,12 @@
       "39-3"
     ],
     "relative_links_converted_to_github": true
+  },
+  "closeout_items": {
+    "documentation": "complete",
+    "progress_handoff_memory": "complete",
+    "git_content_publication": "complete",
+    "calendar": "updated_and_readback_verified",
+    "notion": "updated_and_readback_verified"
   }
 }
