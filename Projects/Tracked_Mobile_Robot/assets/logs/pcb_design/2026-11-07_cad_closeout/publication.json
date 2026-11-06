@@ -136,13 +136,28 @@
     }
   ],
   "git": {
-    "status": "pending"
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "4b59efc7a432b989447f1eb57cc3a9efed27a535",
+    "remote_verified_commit": "4b59efc7a432b989447f1eb57cc3a9efed27a535",
+    "verification_method": "git ls-remote origin refs/heads/agent/dual-encoder-bringup",
+    "receipt_commit": "This receipt is committed after the verified content commit; see Git history."
   },
   "closeout_items": {
     "documentation": "complete",
     "progress_handoff_memory": "complete",
-    "git": "pending",
+    "git": "content_pushed_and_remote_verified",
     "calendar": "updated_and_readback_verified",
     "notion": "updated_and_readback_verified"
+  },
+  "validation": {
+    "contract_rows_passed": 14,
+    "BOM_rows_verified": 40,
+    "unrelated_files_preserved": 19,
+    "new_broken_relative_links": 0,
+    "authored_text_diff_check": "passed",
+    "generated_artifact_whitespace": "raw/generated artifacts preserved; details in closeout_validation.json",
+    "mvp_erc": "0 errors / 0 warnings; existing 4 ignored rules",
+    "shield_erc": "0 errors / 0 warnings; existing 4 ignored rules"
   }
 }
