@@ -1,4 +1,4 @@
-﻿Reference,Value,Footprint_candidate,Status,Notes
+Reference,Value,Footprint_candidate,Status,Notes
 J1,CN7_SOCKET,Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,Bottom female socket; height and mating geometry to be checked
 J2,CN10_SOCKET,Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,Bottom female socket; height and mating geometry to be checked
 J3,CURRENT_LEFT,Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical,CANDIDATE_NOT_PURCHASE_ORDER,"JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT"
@@ -21,3 +21,21 @@ TP3,I_LEFT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Dr
 TP4,I_RIGHT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
 TP5,T_LEFT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
 TP6,T_RIGHT_ADC,TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm,BARE_PCB_TEST_PAD,Draft component
+C5,100n,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+C6,100n,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+C7,100n,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+C8,100n,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+J7,VBAT_SENSE,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+J8,VMOTOR_SENSE,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R7,12k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R8,12k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R9,4.7k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R10,1k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R11,47k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R12,12k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R13,12k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R14,4.7k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R15,1k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+R16,47k,,SCHEMATIC_DRAFT_FOOTPRINT_UNASSIGNED,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+U1,TPS3840PL30DBV,Package_TO_SOT_SMD:SOT-23-5,SCHEMATIC_DRAFT_FOOTPRINT_REVIEW_PENDING,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval
+U2,TMUX1511PW,Package_SO:TSSOP-14_4.4x5mm_P0.65mm,SCHEMATIC_DRAFT_FOOTPRINT_REVIEW_PENDING,Connected and ERC checked 2026-11-07; not a purchase order or fabrication approval

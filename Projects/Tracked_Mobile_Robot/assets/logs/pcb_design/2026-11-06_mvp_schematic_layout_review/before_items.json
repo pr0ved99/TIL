@@ -1,0 +1,2332 @@
+[
+  {
+    "kind": "text",
+    "uuid": "3069fb68-1e2d-4f46-be0f-5bda89f2aa54",
+    "at": [
+      "214.122",
+      "120.65",
+      "0"
+    ],
+    "text": "K1 COIL INTERFACE\nPin 1: K1_COIL_P\nPin 2: GND\nK1 part / coil clamp / polarity: TBD\nClamp shall be placed at K1 coil"
+  },
+  {
+    "kind": "text",
+    "uuid": "58c7500e-a4ed-476d-a5af-bfef6bde7eec",
+    "at": [
+      "224.79",
+      "31.75",
+      "0"
+    ],
+    "text": "K1 MAIN CONTACT INTERFACE\nPin 1: VBAT_PROTECTED\nPin 2: MOTOR_VBAT_SAFE\nExternal K1 main NO contact only\nHigh-current / off-perfboard\nPart / rating / connector: TBD"
+  },
+  {
+    "kind": "text",
+    "uuid": "8677b3b2-f9e1-47c1-94e1-39d3be4cec72",
+    "at": [
+      "197.866",
+      "158.242",
+      "0"
+    ],
+    "text": "S0-B SENSE\n5V/contact closed -> opto ON -> PC7 LOW\npressed/open/5V loss -> PC7 HIGH\nCandidate: VO617A-3\nValue/footprint/purchase: HOLD"
+  },
+  {
+    "kind": "text",
+    "uuid": "b971b7dc-ced4-43fe-bda6-ca3afb8fab93",
+    "at": [
+      "126.746",
+      "127.254",
+      "0"
+    ],
+    "text": "K2 CONTROL RELAY\nCandidate: Panasonic TX2-12V\nA1/A2: coil\n11-14: HOLD NO\n21-24: K1 ENABLE NO\n12/22: NC unused\nFootprint / purchase: HOLD"
+  },
+  {
+    "kind": "text_box",
+    "uuid": "d9df0344-ac86-4be9-be59-1adfbd2b2df3",
+    "at": [
+      "31.75",
+      "109.22",
+      "0"
+    ],
+    "text": "DESIGN STATUS\n\nBENCH-VALIDATED\n- Battery -> fuse -> switch power path\n- MDD10A PWM/DIR static routing\n- MDD10A DIR/PWM 10k pull-downs; reset capture PASS\n- Dual encoder conditioning and hand-count\n- STM32 <-> ESP32 UART, 115200 8N1\n\nTBD / CANDIDATE\n- RevB permanent wiring continuity\n- Board power / USB backfeed policy\n- Physical E-stop K1/K2/S0/S2 implementation\n- Final F1/K1/main-wire rating\n- Vehicle left/right powered channel assignment\n- BNO085 power and I2C wiring"
+  },
+  {
+    "kind": "junction",
+    "uuid": "12531b4d-9814-475c-8f56-e0531dfdee57",
+    "at": [
+      "138.43",
+      "31.75"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "1dd15f6e-4f2d-45ab-8ce1-ce4be717b3fc",
+    "at": [
+      "78.74",
+      "66.04"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "26412117-1072-4552-a8f8-480f28662b64",
+    "at": [
+      "114.3",
+      "101.6"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "42ae1434-d2bd-4de4-b546-2575823059f6",
+    "at": [
+      "114.3",
+      "104.14"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "489f6daf-bca0-4905-a8e3-b5057f188d03",
+    "at": [
+      "110.49",
+      "162.56"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "4fb55efd-35d2-4045-83c5-7983b44e5605",
+    "at": [
+      "57.15",
+      "85.09"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "53b79f6d-13d1-4635-9207-2e4b8626a90c",
+    "at": [
+      "71.12",
+      "46.99"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "67689e77-1bf4-4200-847b-fbaff4322092",
+    "at": [
+      "57.15",
+      "82.55"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "f2a05c5c-96b7-4ac4-9e7b-28b6d4f06652",
+    "at": [
+      "78.74",
+      "44.45"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "f4b9563e-f40d-47b8-8260-08d79b1defd9",
+    "at": [
+      "71.12",
+      "68.58"
+    ]
+  },
+  {
+    "kind": "junction",
+    "uuid": "ff8f3680-4745-4e5d-aec5-3e27f5d7f0f4",
+    "at": [
+      "114.3",
+      "106.68"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "uuid": "06cebf06-5480-453a-bb4d-eb741e0ed9fe",
+    "at": [
+      "177.8",
+      "101.6"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "uuid": "4e99b9c3-c726-43c0-9bb8-57f32af76ee2",
+    "at": [
+      "177.8",
+      "111.76"
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "02808e16-6310-4ea4-86bf-710360326875",
+    "pts": [
+      [
+        "xy",
+        "57.15",
+        "85.09"
+      ],
+      [
+        "xy",
+        "63.5",
+        "85.09"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "2a303354-8022-4965-a014-6d9360508283",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "165.1"
+      ],
+      [
+        "xy",
+        "111.76",
+        "165.1"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "2d0ec039-764e-4c79-924f-16645b533545",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "68.58"
+      ],
+      [
+        "xy",
+        "63.5",
+        "68.58"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "30444a3c-a81a-4c4d-8dca-29d0fccbc143",
+    "pts": [
+      [
+        "xy",
+        "78.74",
+        "44.45"
+      ],
+      [
+        "xy",
+        "86.36",
+        "44.45"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "3335a1a8-1a03-49df-85dc-b3b0f444b5c2",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "101.6"
+      ],
+      [
+        "xy",
+        "104.14",
+        "101.6"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "33b14270-ace0-4311-ac53-89e76c4f1e24",
+    "pts": [
+      [
+        "xy",
+        "110.49",
+        "162.56"
+      ],
+      [
+        "xy",
+        "111.76",
+        "162.56"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "347d8101-19d1-495a-8d07-72507b4c86b4",
+    "pts": [
+      [
+        "xy",
+        "137.16",
+        "31.75"
+      ],
+      [
+        "xy",
+        "138.43",
+        "31.75"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "369362b6-e3a0-4eaa-8057-9435a65a733e",
+    "pts": [
+      [
+        "xy",
+        "151.13",
+        "31.75"
+      ],
+      [
+        "xy",
+        "158.75",
+        "31.75"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "3cf2926d-47fe-4039-9ec0-c33fa49e4233",
+    "pts": [
+      [
+        "xy",
+        "137.16",
+        "34.29"
+      ],
+      [
+        "xy",
+        "170.18",
+        "34.29"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "472c2bee-2bf7-4901-a09b-525588ff6799",
+    "pts": [
+      [
+        "xy",
+        "78.74",
+        "66.04"
+      ],
+      [
+        "xy",
+        "86.36",
+        "66.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "5966aeec-ca85-4bd0-bfd7-0811ef9295c0",
+    "pts": [
+      [
+        "xy",
+        "111.76",
+        "99.06"
+      ],
+      [
+        "xy",
+        "114.3",
+        "99.06"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "6c437203-5f8d-4833-a508-e91114224b76",
+    "pts": [
+      [
+        "xy",
+        "168.91",
+        "31.75"
+      ],
+      [
+        "xy",
+        "170.18",
+        "31.75"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "6c68ea24-e9b8-499d-872d-4e52cbb62609",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "66.04"
+      ],
+      [
+        "xy",
+        "71.12",
+        "66.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "76b7c1bb-751d-4d4e-aeaf-e1fd160564c7",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "44.45"
+      ],
+      [
+        "xy",
+        "71.12",
+        "44.45"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "78c78405-d6fb-4ad1-b5b3-adc4427fff34",
+    "pts": [
+      [
+        "xy",
+        "111.76",
+        "106.68"
+      ],
+      [
+        "xy",
+        "114.3",
+        "106.68"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "795c18fb-8951-42db-9bf3-917295f247c3",
+    "pts": [
+      [
+        "xy",
+        "111.76",
+        "101.6"
+      ],
+      [
+        "xy",
+        "114.3",
+        "101.6"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "876b41eb-0244-4937-bd1e-05eeaa866a3e",
+    "pts": [
+      [
+        "xy",
+        "138.43",
+        "31.75"
+      ],
+      [
+        "xy",
+        "143.51",
+        "31.75"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "8e1bcd86-7724-496e-a5f6-d365032eb9fe",
+    "pts": [
+      [
+        "xy",
+        "114.3",
+        "101.6"
+      ],
+      [
+        "xy",
+        "114.3",
+        "104.14"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "9ebb2471-c05c-4352-a32a-77051c1bdbb7",
+    "pts": [
+      [
+        "xy",
+        "111.76",
+        "104.14"
+      ],
+      [
+        "xy",
+        "114.3",
+        "104.14"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "a1037e5d-156e-416d-88be-c703ed9a75d7",
+    "pts": [
+      [
+        "xy",
+        "114.3",
+        "106.68"
+      ],
+      [
+        "xy",
+        "114.3",
+        "109.22"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "a71863d0-1881-40a0-9685-5d00425c331b",
+    "pts": [
+      [
+        "xy",
+        "57.15",
+        "82.55"
+      ],
+      [
+        "xy",
+        "63.5",
+        "82.55"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "a78c28fa-8c2b-4050-8ea4-d4828a6d3393",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "85.09"
+      ],
+      [
+        "xy",
+        "57.15",
+        "85.09"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "c3647fd2-2962-4000-b65e-d6cf172acd9b",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "106.68"
+      ],
+      [
+        "xy",
+        "104.14",
+        "106.68"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "cc526e44-1a7a-4bc0-bd75-6326a9fe7569",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "46.99"
+      ],
+      [
+        "xy",
+        "63.5",
+        "46.99"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "cd46e2bd-abe4-4752-a1b2-c98e9828d9d5",
+    "pts": [
+      [
+        "xy",
+        "71.12",
+        "68.58"
+      ],
+      [
+        "xy",
+        "86.36",
+        "68.58"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "db8bb122-26b7-4549-a004-0ee1adfc85f5",
+    "pts": [
+      [
+        "xy",
+        "71.12",
+        "46.99"
+      ],
+      [
+        "xy",
+        "86.36",
+        "46.99"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "e85523d1-2328-4f9b-80b9-8f82c505a648",
+    "pts": [
+      [
+        "xy",
+        "114.3",
+        "104.14"
+      ],
+      [
+        "xy",
+        "114.3",
+        "106.68"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "f031d211-2357-4e58-886b-8e91858f3f31",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "99.06"
+      ],
+      [
+        "xy",
+        "104.14",
+        "99.06"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "f9b567cb-280b-45fb-9c12-42f00a25e688",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "104.14"
+      ],
+      [
+        "xy",
+        "104.14",
+        "104.14"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "f9f4e504-6c28-46de-9914-0a91c48f52e8",
+    "pts": [
+      [
+        "xy",
+        "97.79",
+        "162.56"
+      ],
+      [
+        "xy",
+        "110.49",
+        "162.56"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "fb9d074c-81fc-4ef1-a2ea-cfe4a7f50c6e",
+    "pts": [
+      [
+        "xy",
+        "114.3",
+        "99.06"
+      ],
+      [
+        "xy",
+        "114.3",
+        "101.6"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "uuid": "fc7c4480-0890-400f-85f8-85b86c04ebed",
+    "pts": [
+      [
+        "xy",
+        "55.88",
+        "82.55"
+      ],
+      [
+        "xy",
+        "57.15",
+        "82.55"
+      ]
+    ]
+  },
+  {
+    "kind": "label",
+    "uuid": "01fca479-0f4d-4a6a-82ff-1bf86caf82c4",
+    "at": [
+      "86.36",
+      "68.58",
+      "0"
+    ],
+    "text": "STM32_PA0_TIM5_CH1"
+  },
+  {
+    "kind": "label",
+    "uuid": "0445ba44-435e-4d4f-9200-c307a50b3dbc",
+    "at": [
+      "248.92",
+      "139.7",
+      "180"
+    ],
+    "text": "ESTOP_SENSE"
+  },
+  {
+    "kind": "label",
+    "uuid": "06f10f1b-0a51-45bc-8ed4-5c36f8d7f2ee",
+    "at": [
+      "97.79",
+      "109.22",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "107e2c2a-0d6e-4629-bea0-7100b9f5e319",
+    "at": [
+      "168.91",
+      "127",
+      "0"
+    ],
+    "text": "S0B_LED_FEED"
+  },
+  {
+    "kind": "label",
+    "uuid": "153c93f3-7e3e-4e8f-8ada-501a854625ed",
+    "at": [
+      "63.5",
+      "82.55",
+      "0"
+    ],
+    "text": "AUX_5V"
+  },
+  {
+    "kind": "label",
+    "uuid": "174181ee-3df5-4099-a11d-f7bc8926e268",
+    "at": [
+      "160.02",
+      "55.88",
+      "180"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "1a8db4b0-363d-4684-87ee-46f4a1e0fc48",
+    "at": [
+      "137.16",
+      "104.14",
+      "180"
+    ],
+    "text": "STM32_PC9_MDD10A_DIR2"
+  },
+  {
+    "kind": "label",
+    "uuid": "23177453-5c78-4639-9e68-a2433413467b",
+    "at": [
+      "255.27",
+      "31.75",
+      "180"
+    ],
+    "text": "MOTOR_VBAT_SAFE"
+  },
+  {
+    "kind": "label",
+    "uuid": "244a7473-d38d-4eff-8681-37f29e4a58a6",
+    "at": [
+      "177.8",
+      "106.68",
+      "180"
+    ],
+    "text": "K2_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "27bc0ee1-b3d8-4231-b316-7025fc907625",
+    "at": [
+      "220.98",
+      "63.5",
+      "0"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "288dca8c-3486-438f-bce4-92d2f672039b",
+    "at": [
+      "135.89",
+      "78.74",
+      "0"
+    ],
+    "text": "ESTOP_CTRL_FUSED"
+  },
+  {
+    "kind": "label",
+    "uuid": "2d274b4a-3042-4551-bad3-a909c0e54a43",
+    "at": [
+      "55.88",
+      "71.12",
+      "0"
+    ],
+    "text": "AUX_5V"
+  },
+  {
+    "kind": "label",
+    "uuid": "2f2f1eb6-a955-4de2-ae28-eab686c13276",
+    "at": [
+      "137.16",
+      "109.22",
+      "180"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "336880f7-5643-4027-b9f2-b8cb4729a2c4",
+    "at": [
+      "111.76",
+      "162.56",
+      "0"
+    ],
+    "text": "XL4015_1_5V_OUT_CANDIDATE"
+  },
+  {
+    "kind": "label",
+    "uuid": "354794ad-bc2e-4679-b029-20542242747d",
+    "at": [
+      "210.82",
+      "34.29",
+      "180"
+    ],
+    "text": "MOTOR_VBAT_SAFE"
+  },
+  {
+    "kind": "label",
+    "uuid": "42792834-9cf3-4d29-8cce-e20fe6338512",
+    "at": [
+      "142.24",
+      "148.59",
+      "180"
+    ],
+    "text": "UART_ESP32_GPIO17_TX_TO_STM32_PA10_RX"
+  },
+  {
+    "kind": "label",
+    "uuid": "449b4c37-22eb-49c1-b88d-c4f884c169ea",
+    "at": [
+      "264.16",
+      "85.09",
+      "180"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "46e5a5c1-3003-4d7a-9e5c-10e4de566330",
+    "at": [
+      "55.88",
+      "46.99",
+      "0"
+    ],
+    "text": "ENC_TIM3_A_RAW"
+  },
+  {
+    "kind": "label",
+    "uuid": "487ee36b-5471-4aaf-bf12-f4aca9f3e054",
+    "at": [
+      "160.02",
+      "140.97",
+      "180"
+    ],
+    "text": "S0B_LED_FEED"
+  },
+  {
+    "kind": "label",
+    "uuid": "48898bdf-8ffa-46b3-a3a5-52800fa10e82",
+    "at": [
+      "97.79",
+      "148.59",
+      "0"
+    ],
+    "text": "UART_ESP32_GPIO17_TX_TO_STM32_PA10_RX"
+  },
+  {
+    "kind": "label",
+    "uuid": "4c05ff01-d1f5-4e01-9b8c-903149234290",
+    "at": [
+      "161.29",
+      "127",
+      "180"
+    ],
+    "text": "AUX_5V"
+  },
+  {
+    "kind": "label",
+    "uuid": "4f97e5f1-75bf-4e39-8b2c-00765130befb",
+    "at": [
+      "160.02",
+      "143.51",
+      "180"
+    ],
+    "text": "S0B_TO_OPTO_ANODE"
+  },
+  {
+    "kind": "label",
+    "uuid": "568e642c-a1fc-40a0-aee7-6acb5533354e",
+    "at": [
+      "152.4",
+      "31.75",
+      "0"
+    ],
+    "text": "VBAT_FUSED"
+  },
+  {
+    "kind": "label",
+    "uuid": "56fd3dbb-2d26-4cb4-b6c5-5eff301948e2",
+    "at": [
+      "198.12",
+      "86.36",
+      "180"
+    ],
+    "text": "S0B_LED_FEED"
+  },
+  {
+    "kind": "label",
+    "uuid": "5903ef5a-416c-4ff7-b7c4-ee44cc2e47ec",
+    "at": [
+      "264.16",
+      "66.04",
+      "180"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "5bf03619-75ed-4814-87ef-5d3888734986",
+    "at": [
+      "111.76",
+      "165.1",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "5f654f2b-a19a-413a-9978-c2a176c8193c",
+    "at": [
+      "97.79",
+      "99.06",
+      "0"
+    ],
+    "text": "STM32_PC8_MDD10A_DIR1"
+  },
+  {
+    "kind": "label",
+    "uuid": "5fe9856a-5042-4ee7-8cb2-b5862504349b",
+    "at": [
+      "55.88",
+      "52.07",
+      "0"
+    ],
+    "text": "MOTOR_TIM3_M_MINUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "62ba1e4d-9363-4d56-ae70-99b60a36a1d6",
+    "at": [
+      "86.36",
+      "66.04",
+      "0"
+    ],
+    "text": "STM32_PA1_TIM5_CH2"
+  },
+  {
+    "kind": "label",
+    "uuid": "62c35e23-09d5-431c-ace5-399a9ea6ca32",
+    "at": [
+      "55.88",
+      "68.58",
+      "0"
+    ],
+    "text": "ENC_TIM5_A_RAW"
+  },
+  {
+    "kind": "label",
+    "uuid": "65b4ec68-cb84-4f62-99a7-a54bcd3b1f10",
+    "at": [
+      "55.88",
+      "63.5",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "69a897e0-91d7-4477-ac7a-934572873cff",
+    "at": [
+      "193.04",
+      "109.22",
+      "0"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "69d79447-d07e-4181-b4d4-a578ac90f4d4",
+    "at": [
+      "264.16",
+      "81.28",
+      "180"
+    ],
+    "text": "ESTOP_SENSE"
+  },
+  {
+    "kind": "label",
+    "uuid": "69fa096b-92af-4d85-9565-3b07726ee1b9",
+    "at": [
+      "223.52",
+      "48.26",
+      "0"
+    ],
+    "text": "MOTOR_VBAT_SAFE"
+  },
+  {
+    "kind": "label",
+    "uuid": "6a72e3e1-c573-4026-b613-979d9cfdc7c0",
+    "at": [
+      "248.92",
+      "137.16",
+      "180"
+    ],
+    "text": "STM32_3V3"
+  },
+  {
+    "kind": "label",
+    "uuid": "6d51e14c-3bb9-4f19-8dbd-55882f85340e",
+    "at": [
+      "264.16",
+      "88.9",
+      "180"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "70202c76-8c24-497b-b449-4a9e690969a1",
+    "at": [
+      "208.28",
+      "81.28",
+      "0"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "71d14cf1-e237-43c7-9c9d-770acbc25267",
+    "at": [
+      "97.79",
+      "87.63",
+      "0"
+    ],
+    "text": "MOTOR_TIM5_M_MINUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "7273424e-92b1-490a-971b-310b604af4ee",
+    "at": [
+      "198.12",
+      "81.28",
+      "180"
+    ],
+    "text": "ESTOP_CTRL_FUSED"
+  },
+  {
+    "kind": "label",
+    "uuid": "765f187f-54a0-48c0-bdd7-6e8b3467444a",
+    "at": [
+      "210.82",
+      "31.75",
+      "180"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "7774c5ca-bf2c-402d-9d94-20c03a939c3f",
+    "at": [
+      "97.79",
+      "104.14",
+      "0"
+    ],
+    "text": "STM32_PC9_MDD10A_DIR2"
+  },
+  {
+    "kind": "label",
+    "uuid": "7b486e1a-ecca-4ffd-ad50-9cb438aa6864",
+    "at": [
+      "195.58",
+      "140.97",
+      "180"
+    ],
+    "text": "S0B_TO_OPTO_ANODE"
+  },
+  {
+    "kind": "label",
+    "uuid": "7c36ad5b-b7d5-4204-8765-0ac3517ef560",
+    "at": [
+      "127",
+      "55.88",
+      "180"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "7d1e18ed-9394-4230-ad90-0908969cbe39",
+    "at": [
+      "142.24",
+      "146.05",
+      "180"
+    ],
+    "text": "UART_STM32_PA9_TX_TO_ESP32_GPIO18_RX"
+  },
+  {
+    "kind": "label",
+    "uuid": "7da982ed-c0a2-4a1c-ab43-7d0bb906bdaa",
+    "at": [
+      "193.04",
+      "99.06",
+      "0"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "7e739e35-ec60-4a6a-b038-48ab706dfc03",
+    "at": [
+      "97.79",
+      "82.55",
+      "0"
+    ],
+    "text": "MOTOR_TIM3_M_MINUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "84ff0c53-02f7-4355-8aaf-9cb3cb95316a",
+    "at": [
+      "234.95",
+      "101.6",
+      "180"
+    ],
+    "text": "K2_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "87b7d6e6-ac96-4b1f-a00b-c0242ecf066a",
+    "at": [
+      "55.88",
+      "41.91",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "8b5ee2d8-0459-4e20-a6f3-ef045a5592e8",
+    "at": [
+      "228.6",
+      "147.32",
+      "0"
+    ],
+    "text": "ESTOP_SENSE"
+  },
+  {
+    "kind": "label",
+    "uuid": "8cb416b4-0d04-4a9f-8d69-2186a3c5ec4e",
+    "at": [
+      "210.82",
+      "140.97",
+      "0"
+    ],
+    "text": "ESTOP_SENSE"
+  },
+  {
+    "kind": "label",
+    "uuid": "8d8b4fca-d75e-4fd6-a9c9-91cae35a6214",
+    "at": [
+      "210.82",
+      "48.26",
+      "0"
+    ],
+    "text": "K1_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "8e25595d-b712-4c58-a904-8cbd70e31b95",
+    "at": [
+      "234.95",
+      "83.82",
+      "180"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "9c16c546-9fe9-4baa-8ad5-794174130421",
+    "at": [
+      "128.27",
+      "78.74",
+      "180"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "a0a10aed-fbd2-4731-9a47-e0c36689ab5e",
+    "at": [
+      "137.16",
+      "99.06",
+      "180"
+    ],
+    "text": "STM32_PC8_MDD10A_DIR1"
+  },
+  {
+    "kind": "label",
+    "uuid": "abef5e37-6474-44d9-a544-32621cb0097b",
+    "at": [
+      "177.8",
+      "119.38",
+      "180"
+    ],
+    "text": "K2_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "acb0eb73-d5a4-4c54-9d9e-4687b9dab4d2",
+    "at": [
+      "55.88",
+      "73.66",
+      "0"
+    ],
+    "text": "MOTOR_TIM5_M_MINUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "af8b9e33-9460-43d7-ab81-3a9270c654d1",
+    "at": [
+      "55.88",
+      "66.04",
+      "0"
+    ],
+    "text": "ENC_TIM5_B_RAW"
+  },
+  {
+    "kind": "label",
+    "uuid": "b1a58528-9b79-4fa4-9beb-070fd78a5ecb",
+    "at": [
+      "170.18",
+      "31.75",
+      "0"
+    ],
+    "text": "VBAT_PROTECTED"
+  },
+  {
+    "kind": "label",
+    "uuid": "b1ce411a-15e7-4993-b4f2-e1a715bcbc79",
+    "at": [
+      "97.79",
+      "80.01",
+      "0"
+    ],
+    "text": "MOTOR_TIM3_M_PLUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "b23f9e86-ffce-465a-b07e-33aa006b2b18",
+    "at": [
+      "97.79",
+      "151.13",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "b3fecd80-197e-4b75-96b3-9f74e097fab6",
+    "at": [
+      "86.36",
+      "46.99",
+      "0"
+    ],
+    "text": "STM32_PB4_TIM3_CH1"
+  },
+  {
+    "kind": "label",
+    "uuid": "b4f80c4b-1c14-4ba1-879c-4e7727fcbdf4",
+    "at": [
+      "55.88",
+      "39.37",
+      "0"
+    ],
+    "text": "MOTOR_TIM3_M_PLUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "b96aebcd-3967-4be0-a166-b1e986fd1a94",
+    "at": [
+      "55.88",
+      "49.53",
+      "0"
+    ],
+    "text": "AUX_5V"
+  },
+  {
+    "kind": "label",
+    "uuid": "b9d00a6a-6a8f-4180-893e-e9cc6d5cdd60",
+    "at": [
+      "209.55",
+      "106.68",
+      "180"
+    ],
+    "text": "K1_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "bd70fdac-f677-4dd3-9059-3ce3beda427d",
+    "at": [
+      "264.16",
+      "73.66",
+      "180"
+    ],
+    "text": "K1_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "c15eaa7f-814b-4546-a467-183a72bd2f41",
+    "at": [
+      "97.79",
+      "85.09",
+      "0"
+    ],
+    "text": "MOTOR_TIM5_M_PLUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "c451666e-03d1-4314-86b0-8d67ca3be1dc",
+    "at": [
+      "142.24",
+      "151.13",
+      "180"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "c530cbdd-f8a1-4096-93a3-e853d5ead708",
+    "at": [
+      "97.79",
+      "106.68",
+      "0"
+    ],
+    "text": "STM32_PB7_TIM4_CH2_MDD10A_PWM2"
+  },
+  {
+    "kind": "label",
+    "uuid": "c6a3d948-10cb-44c0-9377-0d6e5a711e99",
+    "at": [
+      "137.16",
+      "106.68",
+      "180"
+    ],
+    "text": "STM32_PB7_TIM4_CH2_MDD10A_PWM2"
+  },
+  {
+    "kind": "label",
+    "uuid": "ccef07d6-5417-43b2-81b8-a6e028e2ea78",
+    "at": [
+      "228.6",
+      "139.7",
+      "0"
+    ],
+    "text": "STM32_3V3"
+  },
+  {
+    "kind": "label",
+    "uuid": "cd6555b4-3785-4e2d-bd35-67c46a495942",
+    "at": [
+      "264.16",
+      "69.85",
+      "180"
+    ],
+    "text": "MOTOR_VBAT_SAFE"
+  },
+  {
+    "kind": "label",
+    "uuid": "ce313eb5-504e-4297-854f-5d27faf000e1",
+    "at": [
+      "63.5",
+      "85.09",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "uuid": "ce3d6f8a-f686-4ce7-ab2f-1f680bf57a0e",
+    "at": [
+      "86.36",
+      "44.45",
+      "0"
+    ],
+    "text": "STM32_PB5_TIM3_CH2"
+  },
+  {
+    "kind": "label",
+    "uuid": "ced08bc0-b58d-485b-b786-1b9c8be6b9f5",
+    "at": [
+      "264.16",
+      "77.47",
+      "180"
+    ],
+    "text": "K2_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "d2ac2890-c262-45d9-83c2-5496c225c2c3",
+    "at": [
+      "97.79",
+      "101.6",
+      "0"
+    ],
+    "text": "STM32_PB6_TIM4_CH1_MDD10A_PWM1"
+  },
+  {
+    "kind": "label",
+    "uuid": "d6b94b05-d01c-481d-abd5-b01844efe104",
+    "at": [
+      "160.02",
+      "68.58",
+      "180"
+    ],
+    "text": "ESTOP_CTRL_FUSED"
+  },
+  {
+    "kind": "label",
+    "uuid": "d7cc113e-5123-4e64-aaf1-c582540ac4ce",
+    "at": [
+      "208.28",
+      "86.36",
+      "0"
+    ],
+    "text": "S0B_TO_OPTO_ANODE"
+  },
+  {
+    "kind": "label",
+    "uuid": "df4b63e1-7903-4a82-aab5-27f21d910812",
+    "at": [
+      "137.16",
+      "101.6",
+      "180"
+    ],
+    "text": "STM32_PB6_TIM4_CH1_MDD10A_PWM1"
+  },
+  {
+    "kind": "label",
+    "uuid": "e3446e71-ab97-4a80-bcdf-493a3260ef5c",
+    "at": [
+      "177.8",
+      "96.52",
+      "180"
+    ],
+    "text": "K1_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "e4cf65ba-d0c4-4944-b1d3-76693bb61d77",
+    "at": [
+      "234.95",
+      "99.06",
+      "180"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "e86059ba-43c2-4a4f-8965-e9281539ffe9",
+    "at": [
+      "55.88",
+      "60.96",
+      "0"
+    ],
+    "text": "MOTOR_TIM5_M_PLUS"
+  },
+  {
+    "kind": "label",
+    "uuid": "f12da0f9-db80-43db-9c6c-8b24065e069a",
+    "at": [
+      "245.11",
+      "83.82",
+      "0"
+    ],
+    "text": "K2_COIL_P"
+  },
+  {
+    "kind": "label",
+    "uuid": "f76ae5d1-5ae9-42b1-b929-2b6152509e83",
+    "at": [
+      "160.02",
+      "71.12",
+      "180"
+    ],
+    "text": "ESTOP_CONTROL_PERMISSION"
+  },
+  {
+    "kind": "label",
+    "uuid": "fc2bcf49-74c2-4e94-8cb3-31d2651c3dd6",
+    "at": [
+      "139.7",
+      "31.75",
+      "0"
+    ],
+    "text": "VBAT_RAW"
+  },
+  {
+    "kind": "label",
+    "uuid": "fd5271a1-4cd7-4019-9527-9997e27669ea",
+    "at": [
+      "55.88",
+      "44.45",
+      "0"
+    ],
+    "text": "ENC_TIM3_B_RAW"
+  },
+  {
+    "kind": "label",
+    "uuid": "fec2f5ec-332d-4ccc-ad3f-d56192e92874",
+    "at": [
+      "97.79",
+      "146.05",
+      "0"
+    ],
+    "text": "UART_STM32_PA9_TX_TO_ESP32_GPIO18_RX"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "00cfea4e-8725-45b1-86f0-08eef2c70d15",
+    "at": [
+      "74.93",
+      "66.04",
+      "90"
+    ],
+    "ref": "R3",
+    "value": "1k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "0829094f-10ad-4a71-8475-989c38ff04f0",
+    "at": [
+      "193.04",
+      "119.38",
+      "0"
+    ],
+    "ref": "#PWR06",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "0a228cc1-34d6-4b04-bc66-6ca2fdbebe2d",
+    "at": [
+      "78.74",
+      "48.26",
+      "0"
+    ],
+    "ref": "R5",
+    "value": "15k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "0aa8d17d-557b-4aac-b76c-103e03c4991a",
+    "at": [
+      "132.08",
+      "78.74",
+      "90"
+    ],
+    "ref": "F2",
+    "value": "0.5A_TIME_DELAY_CANDIDATE",
+    "lib": "Device:Fuse"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "14bc008d-daf7-4f60-aeee-d630682ab001",
+    "at": [
+      "165.1",
+      "68.58",
+      "0"
+    ],
+    "ref": "J14",
+    "value": "S0_A_NC_CTRL",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "167a85a3-4ea6-4558-855d-e5cba31553a0",
+    "at": [
+      "264.16",
+      "73.66",
+      "270"
+    ],
+    "ref": "TP3",
+    "value": "TP_K1_COIL_P",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "1c45cc17-568f-46c5-a3ff-fc7be95c116c",
+    "at": [
+      "215.9",
+      "31.75",
+      "0"
+    ],
+    "ref": "J19",
+    "value": "K1_MAIN_CONTACT_INTERFACE_TBD",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "1e274a03-77af-462c-a2a0-bfa1f093e4fb",
+    "at": [
+      "209.55",
+      "109.22",
+      "270"
+    ],
+    "ref": "#PWR07",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "1f3f554f-1bf1-4c29-99d1-32a6ab66923c",
+    "at": [
+      "214.63",
+      "106.68",
+      "0"
+    ],
+    "ref": "J17",
+    "value": "K1_COIL_INTERFACE_TBD",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "21da815c-5fe5-4d2e-bc2b-6d874a8c4343",
+    "at": [
+      "240.03",
+      "99.06",
+      "0"
+    ],
+    "ref": "J16",
+    "value": "S2_REENABLE_NO",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "22129d79-0868-4eb3-9db8-4e1ca59dc8f0",
+    "at": [
+      "165.1",
+      "55.88",
+      "0"
+    ],
+    "ref": "J10",
+    "value": "XL4015_2_IN",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "24d586d1-200a-4ff0-81fc-00e6a2b35808",
+    "at": [
+      "107.95",
+      "101.6",
+      "90"
+    ],
+    "ref": "R10",
+    "value": "10k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "250ef7e2-4b8b-49b3-af16-7ec407f0fc61",
+    "at": [
+      "71.12",
+      "72.39",
+      "0"
+    ],
+    "ref": "R8",
+    "value": "15k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "27158c92-0c53-4726-94d1-b99cebb82a97",
+    "at": [
+      "264.16",
+      "77.47",
+      "270"
+    ],
+    "ref": "TP4",
+    "value": "TP_K2_COIL_P",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "2732f51a-7517-4445-9cb3-a491a02ba270",
+    "at": [
+      "138.43",
+      "31.75",
+      "0"
+    ],
+    "ref": "#FLG03",
+    "value": "PWR_FLAG",
+    "lib": "power:PWR_FLAG"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "2a6509ee-cd58-4cdc-ad78-ebcdbb500b2f",
+    "at": [
+      "107.95",
+      "99.06",
+      "90"
+    ],
+    "ref": "R9",
+    "value": "10k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "35008331-9e34-4471-b4b0-dd4fdda029a2",
+    "at": [
+      "132.08",
+      "55.88",
+      "0"
+    ],
+    "ref": "J9",
+    "value": "XL4015_1_IN",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "367f55f7-389c-413c-9d0e-b5cb99f0c491",
+    "at": [
+      "240.03",
+      "83.82",
+      "0"
+    ],
+    "ref": "S2",
+    "value": "REENABLE_MOMENTARY_NO_CANDIDATE",
+    "lib": "Switch:SW_Push"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "433d44fc-3e75-4d1e-a175-b1c0273bdd9b",
+    "at": [
+      "50.8",
+      "44.45",
+      "0"
+    ],
+    "ref": "J1",
+    "value": "ENC_TIM3",
+    "lib": "Connector_Generic:Conn_01x06"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "5179de22-6fa6-4dfa-a90c-1bbd4a033ec4",
+    "at": [
+      "264.16",
+      "88.9",
+      "270"
+    ],
+    "ref": "TP7",
+    "value": "TP_PWR_GND",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "5a367863-758d-4fc8-9e66-d92bc88b6fc4",
+    "at": [
+      "203.2",
+      "81.28",
+      "0"
+    ],
+    "ref": "S0",
+    "value": "A22NE-M-PD02-N_CANDIDATE",
+    "lib": "Switch:SW_Push_Open_Dual"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "5d11284c-0c35-43c8-b58e-2b3c3a0866f2",
+    "at": [
+      "203.2",
+      "143.51",
+      "0"
+    ],
+    "ref": "U1",
+    "value": "VO617A-3_CANDIDATE",
+    "lib": "Isolator:Optocoupler_DC_PhotoNPN_AKEC"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "63f11fd6-f58f-4eb4-aaa4-3bf1809d6e24",
+    "at": [
+      "71.12",
+      "50.8",
+      "0"
+    ],
+    "ref": "R6",
+    "value": "15k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "653f7d83-c2b0-4fae-98a4-697e57beb85a",
+    "at": [
+      "92.71",
+      "148.59",
+      "0"
+    ],
+    "ref": "J11",
+    "value": "STM32_USART1_UART_FUNCTIONAL",
+    "lib": "Connector_Generic:Conn_01x03"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "6f56fcb9-01cb-45d4-9510-d7799be68864",
+    "at": [
+      "165.1",
+      "127",
+      "90"
+    ],
+    "ref": "R13",
+    "value": "680R_CANDIDATE",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "71234f4f-dd65-4ad7-883d-b5ef9d8137b3",
+    "at": [
+      "92.71",
+      "82.55",
+      "0"
+    ],
+    "ref": "J4",
+    "value": "MDD10A_MOTOR_OUT",
+    "lib": "Connector_Generic:Conn_01x04"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "72b58d5d-ef37-46eb-af65-6dce64b95801",
+    "at": [
+      "147.32",
+      "148.59",
+      "0"
+    ],
+    "ref": "J12",
+    "value": "ESP32_UART1_FUNCTIONAL",
+    "lib": "Connector_Generic:Conn_01x03"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "75fbd369-896c-4e0e-8e3a-a93b2273fb06",
+    "at": [
+      "127",
+      "58.42",
+      "0"
+    ],
+    "ref": "#PWR014",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "7602380f-abaf-4604-9e53-350405b880a5",
+    "at": [
+      "185.42",
+      "109.22",
+      "90"
+    ],
+    "ref": "K2",
+    "value": "TX2-12V_CANDIDATE",
+    "lib": "Relay:Relay_DPDT"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "7651214f-013c-473e-b503-5a80f87fe0ef",
+    "at": [
+      "114.3",
+      "109.22",
+      "0"
+    ],
+    "ref": "#PWR05",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "7bd95cff-add2-4303-b2d4-92d772fcd83e",
+    "at": [
+      "255.27",
+      "34.29",
+      "0"
+    ],
+    "ref": "#PWR013",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "7f132ec2-7942-44a9-88a2-544aca992b64",
+    "at": [
+      "163.83",
+      "31.75",
+      "0"
+    ],
+    "ref": "SW1",
+    "value": "MAIN_DC_SWITCH",
+    "lib": "Switch:SW_SPST"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "87fd3816-268c-49a3-b7d6-f1ec584bb17d",
+    "at": [
+      "107.95",
+      "106.68",
+      "90"
+    ],
+    "ref": "R12",
+    "value": "10k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "89d3d7af-4c67-461b-9d5e-31c33b88a540",
+    "at": [
+      "142.24",
+      "104.14",
+      "0"
+    ],
+    "ref": "J6",
+    "value": "STM32_NUCLEO_MOTOR_IO_FUNCTIONAL",
+    "lib": "Connector_Generic:Conn_01x05"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "92479478-e94b-4b77-bd77-959907987e18",
+    "at": [
+      "74.93",
+      "44.45",
+      "90"
+    ],
+    "ref": "R1",
+    "value": "1k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "928a49ec-6e36-41f0-8431-70be6dc5519c",
+    "at": [
+      "254",
+      "139.7",
+      "0"
+    ],
+    "ref": "J18",
+    "value": "STM32_PC7_ESTOP_SENSE_INTERFACE",
+    "lib": "Connector_Generic:Conn_01x03"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "9612c4a0-f8c2-4370-8480-bbd2bdb94504",
+    "at": [
+      "92.71",
+      "162.56",
+      "0"
+    ],
+    "ref": "J13",
+    "value": "XL4015_1_OUT_CANDIDATE",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "983051d7-3ca5-486b-a47c-36733a4294c5",
+    "at": [
+      "165.1",
+      "140.97",
+      "0"
+    ],
+    "ref": "J15",
+    "value": "S0_B_NC_SENSE",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "99a57035-ec45-45fa-948d-98156809bb36",
+    "at": [
+      "210.82",
+      "146.05",
+      "0"
+    ],
+    "ref": "#PWR010",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "9a7d1700-abb0-4bed-b323-60fc74db4134",
+    "at": [
+      "78.74",
+      "52.07",
+      "0"
+    ],
+    "ref": "#PWR01",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "9c03bdc9-75f1-4db2-b975-e17dba4d704e",
+    "at": [
+      "110.49",
+      "162.56",
+      "0"
+    ],
+    "ref": "#FLG04",
+    "value": "PWR_FLAG",
+    "lib": "power:PWR_FLAG"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "9dba87a3-611a-4535-82f1-82da5d8197e1",
+    "at": [
+      "210.82",
+      "63.5",
+      "0"
+    ],
+    "ref": "#PWR016",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "9f8e6266-ba17-4cf1-903d-a26cb51b470b",
+    "at": [
+      "92.71",
+      "104.14",
+      "0"
+    ],
+    "ref": "J5",
+    "value": "MDD10A_LOGIC",
+    "lib": "Connector_Generic:Conn_01x05"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "a4c7818c-6e64-46a0-93b3-02efc21690f4",
+    "at": [
+      "260.35",
+      "31.75",
+      "0"
+    ],
+    "ref": "J7",
+    "value": "MDD10A_POWER_IN",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "a8f9b9eb-5c77-44d9-b874-7bfe716e8b42",
+    "at": [
+      "78.74",
+      "73.66",
+      "0"
+    ],
+    "ref": "#PWR03",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "abf73107-b4a3-40dc-ad1b-a6dce68b95b3",
+    "at": [
+      "170.18",
+      "34.29",
+      "0"
+    ],
+    "ref": "#PWR012",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "afbee2d8-56bc-48b2-9b69-7ad3fb35b50a",
+    "at": [
+      "78.74",
+      "69.85",
+      "0"
+    ],
+    "ref": "R7",
+    "value": "15k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "bca1b747-f399-4ac7-b0de-85d40d667171",
+    "at": [
+      "71.12",
+      "54.61",
+      "0"
+    ],
+    "ref": "#PWR02",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "be174493-52e2-48f0-8bc6-31c6cd7beecc",
+    "at": [
+      "215.9",
+      "55.88",
+      "0"
+    ],
+    "ref": "K1",
+    "value": "12V_COIL_POWER_RELAY_TBD",
+    "lib": "Relay:Relay_SPST-NO"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "bf3215e1-15e6-475a-af64-54b1f2e5401e",
+    "at": [
+      "57.15",
+      "82.55",
+      "0"
+    ],
+    "ref": "#FLG01",
+    "value": "PWR_FLAG",
+    "lib": "power:PWR_FLAG"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "c2e9485d-c6cb-471d-8002-5065de249458",
+    "at": [
+      "160.02",
+      "58.42",
+      "0"
+    ],
+    "ref": "#PWR015",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "c83c22cf-53aa-43e1-b92b-d6374a6b1c75",
+    "at": [
+      "147.32",
+      "31.75",
+      "90"
+    ],
+    "ref": "F1",
+    "value": "FUSE_TBD",
+    "lib": "Device:Fuse"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "c95ed861-3647-4eac-bb81-7fbe3b843fc5",
+    "at": [
+      "107.95",
+      "104.14",
+      "90"
+    ],
+    "ref": "R11",
+    "value": "10k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "ceaeefa9-054f-49ef-ac4b-bbaa97521f7a",
+    "at": [
+      "264.16",
+      "69.85",
+      "270"
+    ],
+    "ref": "TP2",
+    "value": "TP_MOTOR_VBAT_SAFE",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "d1674594-35fb-4443-998f-f99249233094",
+    "at": [
+      "228.6",
+      "143.51",
+      "0"
+    ],
+    "ref": "R14",
+    "value": "10k_CANDIDATE",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "d585e190-1ea7-4179-9161-370421725df0",
+    "at": [
+      "67.31",
+      "68.58",
+      "90"
+    ],
+    "ref": "R4",
+    "value": "1k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "dbe9443b-f6ef-4577-bc95-dd1054c5202a",
+    "at": [
+      "67.31",
+      "46.99",
+      "90"
+    ],
+    "ref": "R2",
+    "value": "1k",
+    "lib": "Device:R"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "e3934c11-db52-4587-afe2-3212255b4da1",
+    "at": [
+      "264.16",
+      "66.04",
+      "270"
+    ],
+    "ref": "TP1",
+    "value": "TP_VBAT_PROTECTED",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "e6b4bb41-cbc1-4c97-bbb2-786ae4d3ab10",
+    "at": [
+      "264.16",
+      "85.09",
+      "270"
+    ],
+    "ref": "TP6",
+    "value": "TP_LOGIC_GND",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "ee35bf0b-5f44-4377-9786-09db95f4e194",
+    "at": [
+      "195.58",
+      "146.05",
+      "0"
+    ],
+    "ref": "#PWR08",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "ee5b94ec-cea9-41c9-bd51-b5567c0f9379",
+    "at": [
+      "57.15",
+      "85.09",
+      "180"
+    ],
+    "ref": "#FLG02",
+    "value": "PWR_FLAG",
+    "lib": "power:PWR_FLAG"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "efadf298-7cb0-4f6f-acdb-b5ce9665e61f",
+    "at": [
+      "248.92",
+      "142.24",
+      "0"
+    ],
+    "ref": "#PWR09",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "f89330d9-55c3-40ef-876f-3207e7e86ce5",
+    "at": [
+      "71.12",
+      "76.2",
+      "0"
+    ],
+    "ref": "#PWR04",
+    "value": "GND",
+    "lib": "power:GND"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "fa5b6264-f11b-4452-92a0-9c744c33e1e1",
+    "at": [
+      "132.08",
+      "31.75",
+      "0"
+    ],
+    "ref": "J8",
+    "value": "LIPO_3S_INPUT",
+    "lib": "Connector_Generic:Conn_01x02"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "fa75bc9b-b6ca-4210-ab42-6d47f6e2976d",
+    "at": [
+      "264.16",
+      "81.28",
+      "270"
+    ],
+    "ref": "TP5",
+    "value": "TP_ESTOP_SENSE",
+    "lib": "Connector:TestPoint"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "fca824a7-a034-448e-b3d2-784dcd6fc367",
+    "at": [
+      "50.8",
+      "66.04",
+      "0"
+    ],
+    "ref": "J2",
+    "value": "ENC_TIM5",
+    "lib": "Connector_Generic:Conn_01x06"
+  },
+  {
+    "kind": "symbol",
+    "uuid": "feec3058-3311-46d9-9cd0-4a3056c7a28a",
+    "at": [
+      "50.8",
+      "82.55",
+      "0"
+    ],
+    "ref": "J3",
+    "value": "XL4015_2_OUT",
+    "lib": "Connector_Generic:Conn_01x02"
+  }
+]

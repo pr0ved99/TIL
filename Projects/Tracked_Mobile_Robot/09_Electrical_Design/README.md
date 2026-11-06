@@ -1,16 +1,14 @@
 # Electrical Design
 
-## 현재 위치 — 11/5 학습·11/6 마감
+## 현재 위치 — 11/6 Shield 연결/ERC 완료·11/7 도면 마감
 
-[학습21](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의39-3까지자료를작성했다. ±0.10V목표와분압/TPS3840PL30/TMUX1511/STM내장ADC를유지하고39-2선정·보정·검증기준으로전압2채널회로도초안을구체화한다. [설계26 최종판단/인계](26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md).
+Shield40부품+PWR_FLAG2개, 전압2채널/공통 연결표 대조와기존설정ERC0/0완료. MVP48부품기능도면은기록된부품명·K2실물대응·상태표를최신화했고연결/ERC0/0을보존했다.
 
-**다음 첫 작업:** 기존TMR_Monitor_Shield_RevA CAD와6채널계약중전압2채널을대조해반영범위·연결표를작성한다. 전단PA4/CN7-32·후단PB0/CN7-34,분압/TMUX/R5와공통공급/SEL을대조한뒤사용자와한채널→두채널→ERC로진행한다.
+[최신 Shield/MVP PDF·검증](../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md) · [설계29 부품별 대조](29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md) · [제품 검토28](28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md).
 
-실제CAD내부연결대조/편집/ERC·ADC구현·잡음/보정잔차·전원OFF보호/제작승인은이번자료완료에포함하지않는다. 저항0.1%는제작선정기준제안이며실제구매품사양은아니다. C2 100pF는모델가정이다. 실물전원분리·기존MVP PARTIAL/OPEN을유지한다.
+**다음은 수집·필터 표 → 포트·전원 조건표**다. 기본 분압/TPS/TMUX/STM내장ADC 구조를 유지하고 필요한 회로 변경을 판단한 뒤기구/풋프린트/PCB로진행한다.100Hz/10개는첫DC비교용이며실제구현/모터운용확정값이아니다. ShieldPCB는기존22풋프린트/구리배선없음,정확도/전원보호/제작승인전이다.
 
-[11/6 마감/게시 근거](../docs/progress/2026-11-06_progress.md).
-
-아래 날짜별 다음 작업은 당시 이력이며 현재 재개점은 위 내용을 따른다.
+[11/7 마감·게시](../docs/progress/2026-11-07_progress.md). 아래 날짜별 다음 작업은 당시 이력이다.
 
 ## 전류·온도 시험 설계 기준 — 2026-10-27
 

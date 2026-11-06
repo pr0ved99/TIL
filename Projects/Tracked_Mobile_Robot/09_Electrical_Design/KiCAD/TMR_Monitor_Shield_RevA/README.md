@@ -1,6 +1,10 @@
 # TMR Monitor Shield RevA — 노트북 설계 시작점
 
-**현재 재개점 · 2026-11-04:** [설계26](../../26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md)의 후속 필기30~35에서 CN10-7/AVDD 공급·TPS/TMUX 핀/전원 상태 초안과 후보 판단을 정리했다. 다음36절 전체 전압 오차 예산. 현재 제작 CAD는 전류2/온도2 초안이며 전압 보호회로를 반영하지 않았다. 실물 보호/정확도/제작 승인은 미완료다. [점검·마감](../../../docs/progress/2026-11-04_progress.md). 아래 다음 작업은 당시 이력이다.
+**현재 재개점 · 2026-11-07:**
+
+전압2채널·공통 제어와PWR_FLAG2개까지 사용자 작성 완료,40부품·활성22net·기존 설정 ERC0/0이다. Codex가 마감 시 오래된 주석/제목란만 갱신했다. [최신 PDF·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 다음은 수집·필터 표와 포트·전원 조건표이며 풋프린트/기구·PCB는 그 뒤다. 후보 BOM은40부품으로 갱신했으나 구매/제작 승인은 아니다. 아래는 당시 이력이다.
+
+**현재 재개점 · 2026-11-06:** TPS=U1·TMUX=U2 추가 후 [24부품을6영역으로 재배치](../../../assets/logs/pcb_design/2026-11-06_schematic_layout_review/README.md)했다. 이후 사용자가 배터리측 J7/R7~R11/C5를 배치해 **현재31부품**이다. J7 위100mil·R9/C5 아래300mil 이동을 실제 저장 파일에서 확인했다. [최신 배치 PDF·검토](../../../assets/logs/pcb_design/2026-11-06_voltage_upstream_placement/README.md). 다음은 사용자가 **전단 분압·필터 배선**→모터 공급측/공통→연결 대조/ERC 순으로 진행한다. [설계27 연결표](../../27_Voltage_2Ch_Schematic_Contract_Comparison_2026-11-06_ko.md)를 따른다. 새7부품14핀과 U1/U2의19핀은 미배선이고 모터 공급측 전압 채널·C7/C8은 미추가다. 활성10net·기존 X70개를 유지한다. 이 쉴드의 새ERC/DRC·PCB 편집은 미실행이며 풋프린트/TI 예시 패드 차이는 후속 검토다. 별도로 수행한 MVP RevB 정돈/ERC와 구분한다. [오늘 진행](../../../docs/progress/2026-11-06_progress.md). 아래 다음 작업은 당시 이력이다.
 
 
 **이전 재개점 · 2026-10-29:** [학습 노트20](../../../07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md) · [설계 판단24](../../24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md) · [실습 원본](../Simulation/README.md). 전류 RC AC/TRAN·NTC25/50°C 상당 OP/AC·전압 분압12.6/16V OP와 AC의 사용자 GUI 실습 및 PNG/CSV 저장을 완료했다. 전압 fc404.942Hz·저주파−15.7157dB·차단점−18.7260dB, NTC VDD(CN7-5) 공급 기본안은 실제 쉴드 미반영이다. 기존22부품/미배선32개쉴드와시뮬레이션회로를구분한다. 다음은 **전압 채널 ±0.10V 목표의 저항 공차·VDDA·ADC/보호 누설·보정 오차 예산 → 정상/고장/무전원 보호 조건 → 준비된 실제 쉴드 변경 검토**다. 아래날짜별다음작업은당시이력이다.

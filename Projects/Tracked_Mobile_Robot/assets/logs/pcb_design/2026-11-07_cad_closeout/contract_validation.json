@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "VBAT_PROTECTED_SENSE_RAW": true,
+    "V_UP_TOP_MID": true,
+    "V_UP_DIV": true,
+    "V_UP_SWITCH_IN": true,
+    "V_UP_ADC": true,
+    "MOTOR_VBAT_SAFE_SENSE_RAW": true,
+    "V_DOWN_TOP_MID": true,
+    "V_DOWN_DIV": true,
+    "V_DOWN_SWITCH_IN": true,
+    "V_DOWN_ADC": true,
+    "STM_AVDD": true,
+    "V_SENSE_EN": true,
+    "GND": true,
+    "NO_CONNECT": true
+  },
+  "bom_rows": 40,
+  "unrelated_files_preserved": 19,
+  "source_hashes_match": true
+}

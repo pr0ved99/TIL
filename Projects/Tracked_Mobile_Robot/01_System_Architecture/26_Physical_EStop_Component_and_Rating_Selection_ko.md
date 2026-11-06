@@ -1,5 +1,9 @@
 # Physical E-stop Component And Rating Selection
 
+**도면 동기화 · 2026-11-07:**
+
+이 문서와report18/19/24/25/30에기록된부품정체성을MVP RevB기능도면에반영했다. [설계29 대조표](../09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md). 새부품선정/실물/정격판정변경은없으며기능핀과실물핀의차이를유지한다.
+
 > 문서 역할·상태 대조: **2026-09-30** — 부품 선정·정격 근거·잔여 수용 조건. 조립/제한 시험 완료와 정격 release를 구분한다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 

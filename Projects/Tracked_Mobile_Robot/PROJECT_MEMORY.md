@@ -2,16 +2,16 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-06 (closing Nov 5 PCB learning through 39-3; resume after sleep with existing shield CAD versus two-channel contract review).
+Last updated: 2026-11-07 (Nov 6 Shield wiring/ERC complete; MVP recorded component identities reconciled).
 
-## Current Checkpoint — 2026-11-06 closeout / 11-05 PCB learning
+## Current Checkpoint — 2026-11-07 closeout / 11-06 CAD
 
-- 자료는37-4·38-1~3·39-1~3까지 작성했다. 사용자 필기 완료 보고는36-19까지다. 설명은결론→근거→결과에따른변경 순서로대화에도필기본문을제공한다. 자료작성과필기/이해·실측완료를구분한다.
-- ±0.10V 목표와기존분압/TPS3840PL30/TMUX1511/내장ADC를유지하고전압2채널회로도초안을구체화한다.39-2의저항±0.1%·TCR25ppm/°C 이하·0.1W/25V 이상,14MHz/480cycles·100Hz/10개,1V/15V보정·독립점검증은진행기준이다. 실제품목구매·구현·정확도/보호PASS와구분한다.
-- 자고일어나서11/6첫작업은기존TMR_Monitor_Shield_RevA와전압2채널계약대조·반영범위/연결표다. 전단PA4/CN7-32·후단PB0/CN7-34후보를실제CAD와맞춘다. 이번은파일존재/헤더만확인했고내부net대조·CAD편집/ERC는미실행이다.
-- 실물은11/5전원분리완료사용자보고상태다. 장시간열수용·센서ADC검증은미완료,T005A PARTIAL/T007 BLOCKED와후속분리를유지한다. MCU빌드/플래시·실물·구매·AI를자동시작하지않는다.
-- NotebookLM14단원/39소스는이전스냅샷이며01~07프로듀서메모화면제공과최종영상완료를구분한다. 별도작업으로유지하고원문변경을바탕화면에자동복제하지않는다.11/9·10휴무/일정시간보존.
-- [이번마감/11월6일재개](docs/progress/2026-11-06_progress.md) · [현재인수인계](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [게시영수증](assets/logs/pcb_design/2026-11-06_learning_closeout/publication.json).
+- Shield40부품+PWR_FLAG2개. 전압2채널/공통 제어 연결표 대조 및 기존 설정 ERC0/0 완료. 새 PCB 배치/배선·실물 정확도/보호 PASS는 아니다.
+- MVP 기능 회로도48부품/전체35net 유지, 부품 Value12건과net 이름1건·실물 K2 대응/상태표 갱신/ERC0/0. [설계29](09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md). 기존19개 무관한 변경 보존.
+- 다음은 수집·필터 표 → 포트·전원 조건표. 기본 분압/TPS/TMUX/STM내장ADC와±0.10V/10Hz 목표 유지.100Hz/10개는 첫 DC 비교안이며 모터 운용 확정값·펌웨어 구현이 아니다.
+- 자료39-3 / 사용자 필기 보고36-19 / 실제 잡음·계수·잔차 미측정. 목적·근거·계산을 설명하고 결론부터 전달한다.
+- 실물11/5전원 분리 보고 유지. 새 MCU빌드/플래시·실물·구매 없음. NotebookLM별도, MVP PARTIAL/OPEN·T005A PARTIAL/T007 BLOCKED·11/9·10휴무 유지.
+- [마감/게시](docs/progress/2026-11-07_progress.md) · [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md).
 
 ## Previous Checkpoint — 2026-11-05 external measurement closeout
 

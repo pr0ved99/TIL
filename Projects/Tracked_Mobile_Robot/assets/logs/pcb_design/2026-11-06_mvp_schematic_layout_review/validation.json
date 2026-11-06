@@ -1,0 +1,59 @@
+{
+  "date": "2026-11-06",
+  "status": "APPLIED_AND_VERIFIED",
+  "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch",
+  "before_sha256": "52bfd10d8ed0951d046d9d030b90505de4f2e7869cbcbc5ca8324bb1b8cc8878",
+  "candidate_sha256": "241e97f06814d0d90501dd6b4d607909ce8f21b82a36485a655aa6514ae8ee9d",
+  "physical_components": 48,
+  "symbols_including_power": 67,
+  "nets": 35,
+  "primitives_preserved": {
+    "wire": 32,
+    "junction": 11,
+    "no_connect": 2,
+    "label": 86
+  },
+  "component_properties_instances_uuids_orientations_identical": true,
+  "embedded_symbol_definitions_identical": true,
+  "original_notes_and_title_block_preserved": true,
+  "all_net_names_and_ref_pin_pinfunction_pintype_members_identical": true,
+  "protected_files_unchanged": 68,
+  "paper": "A2",
+  "visual_review": "Whole sheet and functional-block zooms inspected before application",
+  "erc": {
+    "version": "10.0.5",
+    "before_errors": 0,
+    "before_warnings": 0,
+    "candidate_errors": 0,
+    "candidate_warnings": 0,
+    "ignored_checks_preserved": [
+      {
+        "description": "Global label only appears once in the schematic",
+        "key": "single_global_label"
+      },
+      {
+        "description": "Four connection points are joined together",
+        "key": "four_way_junction"
+      },
+      {
+        "description": "SPICE model issue",
+        "key": "simulation_model_issue"
+      },
+      {
+        "description": "Assigned footprint doesn't match footprint filters",
+        "key": "footprint_filter"
+      }
+    ],
+    "included_severities": [
+      "error",
+      "warning"
+    ],
+    "applied_errors": 0,
+    "applied_warnings": 0
+  },
+  "boundary": "Graphical reorganization of historical RevB-WIP only; not current as-built acceptance, fabrication release, or hardware verification.",
+  "render_pixels_sha256": "1c63389ce98c47eb5792a3dc973fff3d63eb5fa10c05e771189f74c2dc960b6b",
+  "applied_sha256": "241e97f06814d0d90501dd6b4d607909ce8f21b82a36485a655aa6514ae8ee9d",
+  "applied_pdf_sha256": "a225b8b56982c8aba231ad59d072d099ca353860662b98fc0b193138b969400a",
+  "applied_render_identical_to_reviewed_candidate": true
+}

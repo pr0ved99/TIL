@@ -1,0 +1,58 @@
+[
+  {
+    "args": [
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\candidate_erc.json",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\candidate\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "0 개의 위반 발견\nERC 보고서를 C:/Users/eyh12/workspace/TIL/Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/candidate_erc.json에 저장함.\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "sch",
+      "export",
+      "pdf",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\applied.pdf",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Tracked_Mobile_Robot_Wiring_RevB\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\applied.pdf'에 플롯됨.\n완료.\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadxml",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\applied_netlist.xml",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Tracked_Mobile_Robot_Wiring_RevB\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "sch",
+      "erc",
+      "--format",
+      "json",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\applied_erc.json",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Tracked_Mobile_Robot_Wiring_RevB\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "0 개의 위반 발견\nERC 보고서를 C:/Users/eyh12/workspace/TIL/Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/applied_erc.json에 저장함.\n",
+    "stderr": ""
+  }
+]

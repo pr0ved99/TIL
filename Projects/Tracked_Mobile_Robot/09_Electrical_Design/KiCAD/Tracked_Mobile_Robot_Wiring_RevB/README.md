@@ -1,10 +1,20 @@
 # Tracked Mobile Robot Wiring RevB-WIP
 
+## 2026-11-07 부품 표기·상태 최신화
+
+[설계29](../../29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md)에 따라 S0/S2/K1/K2/F1/F2/U1/R13/R14/J13/J17/J19와출력net 이름을 갱신했다. [최신 PDF·변경 전 백업·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md).48부품·전체35net의핀 연결/타입 보존·ERC0/0. K2 기능 핀과 실물 핀 대응을 표시했다. F1 series/F2 exact SKU/정격 release는OPEN. 과거8월 export와하위RevC는역사적자료로보존하며 현재 실물 전면 as-built 승인은 아니다.
+
 이 폴더는 `RevA` 기능 배선을 복사한 뒤, STM32 reset 구간에서 MDD10A 입력이
 부동되지 않도록 네 motor-control 신호에 외부 `10 kΩ` pull-down을 반영한
 `RevB-WIP` 체크포인트다.
 
-## Checkpoint Status
+## 2026-11-06 기능별 재배치 완료
+
+사용자 위임으로 기존48부품·35net의 연결을 보존하며 A2 한 장의9개 구역으로 정돈했다. 전원·모터·엔코더·E-stop 제어/감지·UART·테스트 포인트를 모으고 라벨 겹침과 필드 방향을 정리했다. [적용 PDF](../../../assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/applied.pdf) · [원본 백업·검증](../../../assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/README.md).
+
+KiCad10.0.5와 기존 프로젝트 설정에서 변경 전후 ERC 오류0/경고0이고, 전체 핀 연결·부품 정보·UUID·내장 심벌 정의가 동일하다. 이번은 기존 전기 내용의 시각 정돈이며 이후 실물 변경을 모두 반영한 최종 도면 승인은 아니다. **아래 상태표와 Evidence Boundary는8월 체크포인트 당시 기록**이며, 현재 실물 상태는 [최신 인수인계](../../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 도면의 원래 상태표에도 역사적 기록임을 표시했다.
+
+## Checkpoint Status — 2026-08-12~18 당시
 
 | Item | Result |
 | --- | --- |
