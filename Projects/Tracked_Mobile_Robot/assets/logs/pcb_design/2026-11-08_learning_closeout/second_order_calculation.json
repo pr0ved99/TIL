@@ -1,0 +1,43 @@
+{
+  "source": "03_14 saved nominal model; manual KCL and analytic step/ramp response",
+  "verification": {
+    "nodal_determinant_coefficients_exactly_equal": true,
+    "C2_zero_limit_equals_C1_approximation": true,
+    "ramp_crossing_within_user_bracket": true,
+    "new_simulator_or_hardware_execution": false
+  },
+  "R_T_ohm": 3930.3135888501743,
+  "R_S_ohm": 1002.0,
+  "R_L_ohm": 47000.0,
+  "R_eq_C1_ohm": 3632.8616973554563,
+  "V_thevenin_V": 2.6202090592334493,
+  "VADC_final_V": 2.3713525794162247,
+  "VDIV_final_V": 2.4219077982369703,
+  "K": 6.7472041647804435,
+  "a_s": 0.00036373255604621777,
+  "b_s2": 3.564142926862586e-11,
+  "tau_C1_s": 0.0003632861697355456,
+  "tau_slow_s": 0.00036363454162462465,
+  "tau_fast_s": 9.801442159314463e-08,
+  "slow_difference_percent": 0.09589461920134212,
+  "one_tau_VADC_approx_V": 1.4989807176801255,
+  "one_tau_user_cursor_observed": false,
+  "input_settling_budget_V": 0.01,
+  "ADC_settling_budget_V": 0.0014820953621351406,
+  "ADC_rising_threshold_V": 2.3698704840540894,
+  "settling_C1_ideal_step_s": 0.0026802377750024045,
+  "settling_two_cap_ideal_step_s": 0.002682906006443854,
+  "settling_two_cap_1us_ramp_from_start_s": 0.002683406121027754,
+  "graph_time_ramp_crossing_s": 0.003683406121027754,
+  "user_cursor1_residual_input_V": 0.010094083379828298,
+  "user_cursor2_residual_input_approx_V": 0.009800849886826224,
+  "ADC_3V3_range_usage_percent": 71.85916907321894,
+  "nominal_12bit_3V3_input_LSB_V": 0.005435979917913931,
+  "assumptions": [
+    "R1+R2=24k, R3=4.7k, R4+Ron=1002, R5=47k",
+    "C1=100nF, C2=100pF learning assumption; switch stays ON",
+    "Zero initial voltages; input 0->16V from 1.000 to 1.001ms",
+    "No component tolerance, actual ADC sampling/noise/protection model",
+    "Cursor2 is rounded; no fabricated additional measured precision"
+  ]
+}

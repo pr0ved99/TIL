@@ -1,5 +1,10 @@
 # Handoff Notes
 
+## 현재 위치 — 11/8 실습·필기 마감
+
+14장 방전과37-2 입력 정착 관측을 마쳤고 사용자 위임으로 Notion37-2 필기를 완성했다. 이해 완료와 구분하며 다음은 C2 제외 근사/포함 모델 → VADC 전류식 하나부터 복습이다. [11/8 기록](../progress/2026-11-08_progress.md) · [현재 맥락](CURRENT_SESSION_CONTEXT.md) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md).
+
+11/9·10휴무·기존MVP판정·실물전원분리·NotebookLM별도 유지. 아래 CAD 재개점은 이전 이력이다.
 
 ## 현재 위치 — 11/6 CAD 완료·11/7 마감
 

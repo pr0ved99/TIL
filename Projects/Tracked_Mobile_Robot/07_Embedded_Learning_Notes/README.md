@@ -1,5 +1,7 @@
 # Embedded Learning Notes
 
+**최신 · 11/8 학습 마감:** 14장 방전과37-2 입력 정착 관측을 보완했다. 사용자 위임으로 [37-2 필기·a,b 유도 보충](../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)을 완성했으며 이해 완료와 구분한다. 다음은 C2 제외 근사/포함 모델과VADC 전류식 하나부터 복습이다. 자료40-1의2kHz는 비교 후보이며 구현 전이다. [진행·게시](../docs/progress/2026-11-08_progress.md). 아래 날짜별 다음 작업은 당시 이력이다.
+
 **최신 · 11/5 학습/11/6 마감:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의37-4·38-1~3·39-1~3 자료를작성했다. 결론은±0.10V 목표/현재회로를유지하고39-2부품·보정·검증기준으로전압2채널초안을구체화하는것이다. 다음은기존쉴드CAD와계약대조·연결표작성. 자료39-3과사용자필기완료보고36-19를구분한다. 실제ADC/잡음·계수·잔차·보호는후속검증이며구현/PASS가아니다. [마감/다음재개](../docs/progress/2026-11-06_progress.md).
 
 **10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.

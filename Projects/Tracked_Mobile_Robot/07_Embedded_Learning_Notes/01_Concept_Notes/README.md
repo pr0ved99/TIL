@@ -1,5 +1,7 @@
 # Concept Notes
 
+**11/8 재개점:** [학습21](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의14장·37-2 정량 관측을 보완했고, [Notion37-2 완료 필기](../../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)에 두 커패시터와a,b 유도를 정리했다. 작성 완료와 이해 완료는 다르다. 다음은 C2 제외 근사/포함 모델 → VADC 전류식 복습이다. 아래 학습 순서는 당시 이력이다.
+
 ## 현재 위치 — 11/5 학습·11/6 마감
 
 [학습21](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의39-1~39-3 설명 자료를 작성했다. 최종 판단은±0.10V 목표·현재 분압/보호/내장 ADC 구조를 유지하고39-2 기준으로 전압2채널 회로도 초안을 구체화하는 것이다.39-3에 분석/실측 예산 구분,합격·실패·보류 기준,두 채널 연결과ERC 인계를 모았다. 자료 작성과 사용자 필기/이해·실측 완료는 구분하며 필기 완료 보고는36-19까지다. 설명은 필기 형식으로 대화에도 직접 제공한다.

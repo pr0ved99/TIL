@@ -1,5 +1,15 @@
 # 전압 분압과 RC — 사용자 GUI 실습
 
+## 최신 — 2026-11-08 입력 정착·필기 마감
+
+[03_14 회로](03_14_Voltage_ADC_InputSettling_TRAN.kicad_sch) / [워크북](03_14_InputSettling_Check_2026-11-07.wbk)의분석5와 사용자 커서3.680ms/2.36985654V,3.690ms/약2.36990V를 확인했다. 입력 변화 시작1.000ms 기준2.680~2.690ms 사이에 입력 환산 잔차10mV를 만족한다. [원본 조건/전사](../../../../assets/logs/pcb_design/2026-11-07_input_settling_check/README.md) · [완료 필기/두 노드 계산](../../../../assets/logs/pcb_design/2026-11-08_learning_closeout/README.md).
+
+V1 PWL은`0 0 1m 0 1.001m 16 6m 16`,V3는고정3.3V,TRAN은`.tran 1u 6m 0 100n`. 다음은 C1 근사/C2 포함 모델과VADC 전류식 복습이다. 03_14 PNG/CSV 내보내기·1τ 커서 관측은 미확인이며 새 실행/실물 검증을 했다고 기록하지 않는다. 아래는 이전 이력이다.
+
+## 최신 — 2026-11-07 방전 정량 보완
+
+사용자가03_09를 실행해1τ/약99% 지점의 VADC872.468678mV/23.8408803mV를 관측했다. [워크북](03_09_Discharge_Check_2026-11-07.wbk) 분석4의TRAN과 두 커서 위치, [PNG](03_09_Discharge_Check_2026-11-07.png), [CSV](03_09_Discharge_Check_2026-11-07.csv)701행을 확인했다. 워크북의 분석3은 이전 빠른 하강 설정으로 구분한다. CSV의 시간 반올림 한계와 커서 원문은 [검증 기록](../../../../assets/logs/pcb_design/2026-11-07_discharge_check/README.md)에 남겼다. 기존 두 커서 전압 미보고를 이번 관측으로 보완했으며 아래는 과거 이력이다. 다음은37-2 정상 ON 입력 정착의 새 복사본 준비다.
+
 ## 최신 — 2026-10-31 부품 조건·제어 초안 검토 마감
 
 [설계26](../../../26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md) · [학습21 19~29절](../../../../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md) · [오늘 근거/해시](../../../../assets/logs/pcb_design/2026-10-31_voltage_adc_closeout/README.md).

@@ -2,9 +2,17 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-07 (Nov 6 Shield wiring/ERC complete; MVP recorded component identities reconciled).
+Last updated: 2026-11-08 (37-2 practice notes completed on delegation; two-capacitor derivation review remains).
 
-## Current Checkpoint — 2026-11-07 closeout / 11-06 CAD
+## Current Checkpoint — 2026-11-08 learning closeout
+
+- 14장 방전·37-2 입력 정착 사용자 관측 완료. 37-2는 상승 시작 후2.680~2.690ms 사이에서 입력 환산 잔차10mV 충족. 실제ADC 검증이 아닌 학습모델이다.
+- 사용자 위임으로 Notion37-2 기존1~6절/이미지를 보존하고 나머지 필기·a,b 유도 보충을 완성했다. [완료본](assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md). 필기 작성과 이해 완료를 구분한다.
+- 다음은 C2 제외1차 근사/포함 모델과VADC 전류식 하나부터 복습. 이해를 연결한 뒤 선택36·38→37-4/40-2→수집·필터/포트·전원 조건표. 40-1의2kHz는 비교 후보/미구현이다.
+- 기존 CAD/ERC 상태·MVP PARTIAL/OPEN·T005A PARTIAL·T007 BLOCKED·TMR-04 NOT TESTED 유지. 새 MCU 빌드/플래시·실물 없음. 11/9·10휴무·NotebookLM 별도.
+- [11/8 기록/게시](docs/progress/2026-11-08_progress.md). 무관19파일은 이번 시작 기준 해시로 보존한다. 아래는 이전 체크포인트다.
+
+## Previous Checkpoint — 2026-11-07 closeout / 11-06 CAD
 
 - Shield40부품+PWR_FLAG2개. 전압2채널/공통 제어 연결표 대조 및 기존 설정 ERC0/0 완료. 새 PCB 배치/배선·실물 정확도/보호 PASS는 아니다.
 - MVP 기능 회로도48부품/전체35net 유지, 부품 Value12건과net 이름1건·실물 K2 대응/상태표 갱신/ERC0/0. [설계29](09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md). 기존19개 무관한 변경 보존.
