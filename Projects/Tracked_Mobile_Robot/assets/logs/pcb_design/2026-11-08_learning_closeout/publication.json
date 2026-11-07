@@ -99,13 +99,19 @@
     "preserved": "all returned fields other than summary, description, display_title identical; no time change"
   },
   "git": {
-    "status": "pending_scoped_commit_and_push",
-    "branch": "agent/dual-encoder-bringup"
+    "status": "published_and_remote_head_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "05fee59ab64de6756dd8e5e02bbba93041ac5e24",
+    "remote_head_at_content_verification": "05fee59ab64de6756dd8e5e02bbba93041ac5e24",
+    "receipt_commit": "This publication receipt is stored in the subsequent Git commit; inspect this file history.",
+    "unrelated_files_preserved": 19,
+    "scope_file_count": 37
   },
   "boundaries": [
     "written notes are not proof of learning comprehension",
     "no new simulator run, firmware build/flash, physical test or shield/MVP CAD edit in closeout",
     "MVP PARTIAL/OPEN, T005A PARTIAL, T007 BLOCKED, TMR-04 NOT TESTED preserved",
     "11/9-10 rest days and separate NotebookLM work preserved"
-  ]
+  ],
+  "five_part_closeout": "complete: documentation, progress/handoff, scoped Git push, Calendar and Notion readback"
 }

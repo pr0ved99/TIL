@@ -22,3 +22,7 @@
 ## 로컬 재현
 
 프로젝트 루트에서 `python -X utf8 assets/logs/pcb_design/2026-11-08_learning_closeout/second_order_calculation.py`를 실행하면 같은 폴더의 JSON에 계산 결과를 저장한다. 소수점이 긴 계산은 명목 가정에 대한 수학 결과이며 실물 정확도가 아니다.
+
+## 게시 확인
+
+문서·진행/인수인계·Git·Calendar·Notion 다섯 항목을 완료했다. 내용 커밋 `05fee59ab64de6756dd8e5e02bbba93041ac5e24`의 원격 반영을 확인했으며 게시 영수증은 후속 커밋으로 저장한다. 무관19파일 보존과 계산/실물/이해 경계를 유지했다.
