@@ -63,10 +63,14 @@
     "preserved": "All returned fields except summary, description and display_title identical; no time change"
   },
   "git": {
-    "status": "pending_scoped_commit_and_push",
+    "status": "published_and_remote_head_verified",
     "branch": "agent/dual-encoder-bringup",
     "previous_receipt_commit": "17a70594ca4d1f6c739028feb6adf45371712cfc",
-    "unrelated_files_preserved": 19
+    "unrelated_files_preserved": 19,
+    "content_commit": "a01811b9dc24c68c20521c9f7b308c83bc058793",
+    "remote_head_at_content_verification": "a01811b9dc24c68c20521c9f7b308c83bc058793",
+    "receipt_commit": "This receipt is stored in a subsequent commit; inspect this file history.",
+    "scope_file_count": 28
   },
   "boundaries": [
     "Written materials and bounded user understanding reports are distinct from full handwriting/understanding completion.",
@@ -74,5 +78,6 @@
     "Temperature A baseline retained, B response alternative; ADC settings remain candidates.",
     "MVP PARTIAL/OPEN, T005A PARTIAL, T007 BLOCKED, TMR-04 NOT TESTED unchanged.",
     "Next: port and power condition table. No new sine/PWM/FFT practice; NotebookLM separate."
-  ]
+  ],
+  "five_part_closeout": "complete: documentation, progress/handoff, scoped Git push, Calendar and Notion readback"
 }
