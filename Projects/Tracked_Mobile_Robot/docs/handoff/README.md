@@ -1,5 +1,9 @@
 # Handoff Notes
 
+**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.
+
+[현재 맥락](CURRENT_SESSION_CONTEXT.md) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md) · [11/12 마감](../progress/2026-11-12_progress.md). 아래 재개점은 이전 이력이다.
+
 ## 현재 위치 — 11/8 실습·필기 마감
 
 14장 방전과37-2 입력 정착 관측을 마쳤고 사용자 위임으로 Notion37-2 필기를 완성했다. 이해 완료와 구분하며 다음은 C2 제외 근사/포함 모델 → VADC 전류식 하나부터 복습이다. [11/8 기록](../progress/2026-11-08_progress.md) · [현재 맥락](CURRENT_SESSION_CONTEXT.md) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md).

@@ -2,9 +2,17 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-08 (37-2 practice notes completed on delegation; two-capacitor derivation review remains).
+Last updated: 2026-11-12 (sampling/filter learning closeout; next: port and power conditions).
 
-## Current Checkpoint — 2026-11-08 learning closeout
+## Current Checkpoint — 2026-11-12 sampling/filter closeout
+
+- 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.
+- A/B의 명목 응답 상한 극한은 약1.975/1.487초,0.9Hz ADC 전압 진폭비는10.93%/69.86%이며 모두출력1Hz에서0.1Hz로 보인다. G는 진폭이고 alias는 관측 주파수다. 코드 평균 후 비선형 온도 환산을 적용했으며 실제 정확도/응답 PASS가 아니다.
+- 사용자37-2 수기·τs/τf 이해 보고를 반영한다. 40-2 부분 이해 및 마지막 B안 설명 이해 보고를 전체 수기/모든 개념 이해로 확대하지 않는다. 기본 수집·평균·환산 후보에 FFT 잡음 식별/자동 필터 조정은 포함하지 않는다.
+- 전압·전류2kHz/200개, 온도2kHz/2,000개, 기존100Hz DC시험안은 구현 전 비교안이다. 실제 잡음/보정 잔차/전원 보호 데이터는 남아 있다.
+- 기존 CAD/ERC·MVP PARTIAL/OPEN·T005A PARTIAL·T007 BLOCKED·TMR-04 NOT TESTED,11/5 전원분리 보고,NotebookLM 별도 유지. [실적·다음](docs/progress/2026-11-12_progress.md) · [게시 영수증](assets/logs/pcb_design/2026-11-12_sampling_filter_closeout/README.md).
+
+## Previous Checkpoint — 2026-11-08 learning closeout
 
 - 14장 방전·37-2 입력 정착 사용자 관측 완료. 37-2는 상승 시작 후2.680~2.690ms 사이에서 입력 환산 잔차10mV 충족. 실제ADC 검증이 아닌 학습모델이다.
 - 사용자 위임으로 Notion37-2 기존1~6절/이미지를 보존하고 나머지 필기·a,b 유도 보충을 완성했다. [완료본](assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md). 필기 작성과 이해 완료를 구분한다.

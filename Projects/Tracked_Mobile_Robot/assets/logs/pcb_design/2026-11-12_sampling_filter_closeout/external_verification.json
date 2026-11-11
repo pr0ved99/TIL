@@ -1,0 +1,164 @@
+{
+  "date": "2026-11-12",
+  "notion": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [
+        "요약"
+      ],
+      "contains_new_checkpoint": true,
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Prior content preserved; native references reflect updated master page title."
+    },
+    {
+      "id": "3fca7326-f87b-8139-b949-d339de80d870",
+      "title": "🔧 TMR-04 · 후속 전류·전압 ADC 모니터링·자동 저전압 정지",
+      "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [
+        "근거 링크"
+      ],
+      "contains_new_checkpoint": true,
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Prior content preserved; native references reflect updated master page title."
+    },
+    {
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "title": "🧭 TMR · 기술 자료와 코드 탐색",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [],
+      "contains_new_checkpoint": true,
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Prior content preserved; native references reflect updated master page title."
+    },
+    {
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+      "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [],
+      "contains_new_checkpoint": true,
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Prior content preserved; native references reflect updated master page title."
+    },
+    {
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "title": "전압 ADC 학습 · 보호·오차 예산·수집·필터 (40-3까지, 실측 검증 전)",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [
+        "title"
+      ],
+      "contains_new_checkpoint": true,
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Prior content preserved; native references reflect updated master page title."
+    },
+    {
+      "id": "415a7326-f87b-80be-88d2-e8c2be58968a",
+      "title": "40-3. 수집·필터 조건과 온도 평균 창의 선택",
+      "url": "https://app.notion.com/p/415a7326f87b80be88d2e8c2be58968a?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [],
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Original sections 1–7 and tables preserved; two resistance units rendered as Unicode Ω to avoid escaped inline-math display. Added section 8."
+    },
+    {
+      "id": "415a7326-f87b-8081-b883-c0c92cdd86f5",
+      "title": "40-2. ADC 원시 수집에서 발생하는 Alias",
+      "url": "https://app.notion.com/p/415a7326f87b8081b883c0c92cdd86f5?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [],
+      "images_before": 0,
+      "images_after": 0
+    },
+    {
+      "id": "415a7326-f87b-80e1-9e6f-d53fadd37170",
+      "title": "40-2. 평균 후 10Hz 결과를 만들 때 발생하는 alias",
+      "url": "https://app.notion.com/p/415a7326f87b80e19e6fd53fadd37170?pvs=204",
+      "original_body_preserved": true,
+      "changed_properties": [],
+      "images_before": 0,
+      "images_after": 0,
+      "preservation_note": "Only amplitude unit typo 100ms → 100mV corrected."
+    }
+  ],
+  "calendar": [
+    {
+      "id": "9dftdv9mbviv1j2ocojcehhn44",
+      "title": "[TMR] 실적 · 40-2 평균/alias·40-3 온도 창 비교",
+      "start": "2026-11-11T00:00:00",
+      "end": "2026-11-12T00:00:00",
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "non_content_fields_preserved": true,
+      "marker_present": true
+    },
+    {
+      "id": "4rv6rbftkv74v6e3a1aqm7emkc",
+      "title": "[TMR] 학습 마감 · alias 목적·온도 B안 판단",
+      "start": "2026-11-12T00:00:00",
+      "end": "2026-11-13T00:00:00",
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "non_content_fields_preserved": true,
+      "marker_present": true
+    },
+    {
+      "id": "aci2g46horqsvjtpioi25vuoko",
+      "title": "[TMR] 재개 · 포트·전원 조건표",
+      "start": "2026-11-13T00:00:00",
+      "end": "2026-11-14T00:00:00",
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "non_content_fields_preserved": true,
+      "marker_present": true
+    },
+    {
+      "id": "auav0k6uvleinn1260aidskh98",
+      "title": "[TMR] 포트·전원 미결 · 변경 영향 검토",
+      "start": "2026-11-14T00:00:00",
+      "end": "2026-11-15T00:00:00",
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "non_content_fields_preserved": true,
+      "marker_present": true
+    },
+    {
+      "id": "drm948ao31rgv6phfjfg4nt5ag",
+      "title": "[TMR] 2주차 마감 · 조건표·후속 설계 미결",
+      "start": "2026-11-15T00:00:00",
+      "end": "2026-11-16T00:00:00",
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "non_content_fields_preserved": true,
+      "marker_present": true
+    }
+  ],
+  "notion_readback_verified": true,
+  "calendar_readback_verified": true
+}
