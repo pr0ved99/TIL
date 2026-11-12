@@ -11,9 +11,14 @@
   "git": {
     "branch": "agent/dual-encoder-bringup",
     "remote": "origin",
-    "content_commit": null,
-    "remote_verified": false,
-    "status": "PENDING_SCOPED_COMMIT_PUSH"
+    "content_commit": "bda443378b9750d95884624383920b9bc1c4256f",
+    "remote_verified": true,
+    "status": "CONTENT_PUSH_VERIFIED",
+    "verified_remote_ref": "refs/heads/agent/dual-encoder-bringup",
+    "remote_head_at_content_verification": "bda443378b9750d95884624383920b9bc1c4256f",
+    "scoped_files": 132,
+    "remaining_worktree_files_at_content_verification": 19,
+    "receipt_commit": "Recorded in the subsequent scoped receipt commit; use this file history. The receipt commit hash is intentionally not self-referenced."
   },
   "unrelated_files_preserved": 19,
   "next": "41-6 보호 경로·검증 기준",
@@ -30,5 +35,6 @@
     "NotebookLM": "11 sources uploaded USER_REPORTED; final video NOT_REPORTED; separate workflow"
   },
   "local_verification": "PASS_SCOPED_HASH_LINK_SYNTAX_CHECKS",
-  "local_evidence": "verification.json"
+  "local_evidence": "verification.json",
+  "all_five_closeout_actions": "COMPLETE; receipt publication follows content verification"
 }
