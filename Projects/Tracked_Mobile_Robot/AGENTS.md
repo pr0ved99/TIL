@@ -103,6 +103,12 @@ updates, and relevant Notion updates with readback. Proceed with that authorized
 Preserve unrelated changes and existing calendar time boundaries unless the user requests a time change.
 Record unavailable connectors or failed writes as incomplete; do not claim them synchronized.
 
+As clarified on 2026-11-13, documentation closeout must also check for missed freshness updates across
+affected current documents and derived artifacts, not only the files edited in the current turn.
+Follow the root AGENTS.md freshness rule and the closeout checklist in `docs/handoff/CODEX_CONTEXT_WORKFLOW.md`.
+In particular, reconcile the normal `09_Electrical_Design` exports/reports with their CAD sources;
+a fresh PDF in a dated log folder alone does not make the normal reading path current.
+
 For meaningful project work, update `docs/progress/YYYY-MM-DD_progress.md` or create a new dated progress file.
 
 Record:

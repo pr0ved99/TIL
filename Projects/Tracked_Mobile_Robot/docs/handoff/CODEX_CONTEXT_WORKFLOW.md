@@ -34,10 +34,17 @@ Before moving to a new conversation:
 
 1. Update the dated progress/evidence documents once.
 2. Replace the status and next action in `CURRENT_SESSION_CONTEXT.md`.
-3. Update `docs/progress/README.md` and `docs/handoff/README.md` when their current pointer changed. Reconcile the project/app/domain READMEs, `PROJECT_MEMORY.md` and plan index when their current status or next action changed; preserve dated historical evidence.
+3. Update `docs/progress/README.md` and `docs/handoff/README.md` when their current pointer changed. Reconcile the project/app/domain READMEs, `PROJECT_MEMORY.md` and plan index when their current status or next action changed. Check for missed updates using the freshness checklist below; preserve dated historical evidence.
 4. Commit/push only when requested for that work block.
 5. Update the relevant existing Notion project/tasks and Calendar events when closeout includes them; “정리” includes both. Read back the affected content/properties and preserve calendar start/end boundaries unless a change was requested.
 6. Start the next conversation with `NEXT_SESSION_START_PROMPT.md`.
+
+Freshness checklist, explicitly requested on 2026-11-13:
+
+- Identify affected current guides beyond the edited files: project/domain READMEs, plans, architecture/interface contracts, inventory, verification status, portfolio, memory and resume prompts. Compare their claims and links with the current source evidence; use file lists and targeted searches instead of loading the entire history.
+- Check the normal reading paths, especially `09_Electrical_Design/KiCAD/<project>/exports/` and `reports/`. Compare their source identity/content with current CAD. Refresh affected derived outputs or state why they remain pending. A dated log-folder export is insufficient if the default PDF/report remains stale.
+- Preserve dated logs, historical PDFs and frozen audit copies. Label historical versus current applicability where needed. Keep proposed settings, source facts, user reports and unverified implementation/measurements distinct.
+- Record what was checked, which omissions were corrected and what remains unverified or unsynchronized. Verify changed links and applicable source/output identity; when Notion/Calendar publication is included, read it back. Do not claim an exhaustive audit when only the affected scope was checked.
 
 Use [firmware app/module overview](../../03_Firmware/README.md) to distinguish the last flashed app from compiled but unconnected modules.
 Use [evidence capture guide](../verification/EVIDENCE_CAPTURE_GUIDE_ko.md) for source/build/flash identity, raw logs and observations. Missing past originals remain missing; documentation edits do not upgrade verification status.
