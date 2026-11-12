@@ -4,6 +4,8 @@
 
 판정 정본은 [요구사항·검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md), 최신 시연은 [149초 통합본·S0 복구 관측](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md), UI 변경 전 원시 통신 계측은 [v5.2 전진·3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)다. 영상의 S2→리셋 순서는 시연 관측이며 아래 표준 복구 절차를 대체하지 않는다. 아래 운용 순서는 다음에 실제 사용할 때 참고하며, 완료한 관측을 다시 수행하라는 목록이 아니다.
 
+**11/12 현재 상태 대조:** 이 절차의 원래 구성 기준일은 10/24다. 후속 11/5 외부 전류·온도 제한 관측과 종료 전원 분리 보고는 [회차 기록](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md)을 따른다. 지금은 PCB 학습이며 이 문서 점검이 새 전원 인가/시험 요청은 아니다.
+
 ## 1. 현재 구성과 연결
 
 | 구분 | 현재 기준 | 근거 |

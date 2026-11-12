@@ -1,5 +1,7 @@
 # First Motor No-Load Test
 
+> **현재 안내 대조 · 2026-11-12:** 아래 9/26~27의 동력선 분리·코드 WIP·구동 미검증은 당시 이력이다. 후속 단일 구동은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md), 지상 주행·거리와 현재 판정은 [검증표](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다. 이 초기 시험을 현재 재개 지시로 사용하지 않는다.
+>
 > **2026-09-26 연결 정정:** 첫 시험 대상은 왼쪽 모터 A다.
 > Motor+→M1A, Motor−→M1B 연결 확인; 엔코더는 JENC_1/TIM3/left_cps다.
 > 오른쪽 B 엔코더는 JENC_2/TIM5/right_cps이며 동력선은 아직 분리한다.

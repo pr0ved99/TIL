@@ -10,7 +10,7 @@
   PDF 02:36 export/172,045 bytes. 1kΩ 직렬+15kΩ 풀다운 네 채널, JENC_1/2와 Flying Wire Pad 19개,
   지정 Net 및 Broken Nets 0개 확인. 실제 납땜·저항·전원 검사와 두 +5.05V는 사용자 보고 PASS.
   좌표·pinout·검사 범위는 [report 28](../../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다.
-  실제 엔코더 케이블과 신호 검증은 미완료다. 과거 CTRL/addIMU 파일은 이력으로 보존한다.
+  후속 엔코더 케이블·손회전/신호 관측은 [report30](../../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md), 구동·거리 기록은 [최신 검증표](../../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)를 따른다. 이 VRT/PDF는 9/23 제작 기록이며 최종 실물 전체의 as-built 도면 승인은 아니다. 과거 CTRL/addIMU 파일은 이력으로 보존한다.
 
 ## 과거 CTRL 작업 파일
 

@@ -8,7 +8,7 @@ STM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 
 
 **로컬 UI 보완·보드 적용 대기:** [실제 PAGE 표시 재점검](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md)으로 좌우 PWM%/CPS/count 요약, 십자 방향 버튼, 큰 DISARM, 지연·FAULT 표시와 접이식 JSON을 추가했다. PC105검사와 Chrome4너비 검사 PASS. 기존 제어 코드/제한은 동일하며 새 빌드·플래시는 사용자 수행 대기다. 아래 통신 시간/해시와 “새 펌웨어 없음”은 UI 수정 전 관측 이력이다.
 
-[운용·재현 절차](../../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)에 배터리 단독 전원·UART/구동 연결·펌웨어 기준과 시작~종료/복구 순서를 모았다. v5.2 실제 IDLE/속도0/전진 계측은 [3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)에 완료했다. 원인OPEN/전체 인수 미완료, 새 펌웨어/빌드·플래시는 없다. 아래10/23 전원 관측은 이전 회차이며 새 전압/종료 전원 분리는 미보고다.
+[운용·재현 절차](../../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)에 배터리 단독 전원·UART/구동 연결·펌웨어 기준과 시작~종료/복구 순서를 모았다. v5.2 실제 IDLE/속도0/전진 계측은 [3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)에 완료했다. 원인OPEN/전체 인수 미완료, 새 펌웨어/빌드·플래시는 없다. 아래10/23 전원 관측은 이전 회차다. 후속 11/5 외부 계측 회차에서는 전원 분리 완료를 사용자가 보고했다. [해당 관측](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md). 새 전압·보드 이미지 해시 검증과 구분한다.
 
 지상1m 실제/추정·오차 기록 범위 PASS. run03/04 사용자 실측1002mm에 평균1002.640333/1000.953333mm, 종료 DISARM OK·IDLE·정지 TEL을 확인했다. PC 관찰기v5.1은 재접속/실제 송신/수동 클릭/focus loss를 추적하며 MCU코드/빌드·플래시 변경은 없다. run02의 간헐 DISARM/UI 원인은 OPEN, 전체 인수는 미완료다. [최신 판정](../../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [관찰기](../../assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js). 기존k/cap/gain 유지, 외부 온도는 후속 미실시다.
 

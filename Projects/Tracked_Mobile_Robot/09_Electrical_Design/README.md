@@ -1,5 +1,20 @@
 # Electrical Design
 
+## 최신 회로도 PDF — 2026-11-12 내보내기 동기화
+
+| 도면 | 기본 열람 경로 | 현재 저장 회로도 범위 |
+| --- | --- | --- |
+| Monitor Shield | [최신 회로도 PDF](KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf) | 40부품, 전류·온도·전압 각 2채널, J7/J8 및 TPS/TMUX 포함 |
+| 기존 MVP 기능 회로 | [최신 회로도 PDF](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf) | 48부품, 11/7 부품 표기·상태 정정 반영 |
+
+11/7 갱신본을 검토 로그에만 게시하고 기본 `exports` 경로를 갱신하지 않은 누락을 수정했다. 두 PDF를 현재 `.kicad_sch`에서 다시 생성했으며 11/7 게시본과 본문·렌더링이 일치한다. 제목란의 설계 날짜는 11/7을 유지한다. 회로 변경이나 새 설계 승인이 아니다. [내보내기 확인 기록](../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
+
+이후 회로도 변경 시 해당 프로젝트의 위 고정 경로 PDF와 README를 함께 갱신한다. 날짜가 붙은 검토 로그·체크포인트 PDF는 당시 상태를 보존한다. Shield의 `placement.pdf`는 22풋프린트 PCB 초안으로, 40부품 회로도를 반영한 배치도가 아니다.
+
+**11/13 마감·재개점:** 41-5까지 자료와 기본 exports/reports 최신화를 마감한다. 현재 필기/질문 뒤41-6 보호 경로·검증 기준으로 이어간다. 사용자 수기/이해·실측 완료는 별도다. 아래는 날짜별 당시 이력이다.
+
+**11/12 자료 감사 후속:** 기본 Shield netlist/ERC/DRC·부품 목록/검사기와 MVP netlist/ERC도 최신 저장본으로 갱신했다. [Shield 현재 보고서](KiCAD/TMR_Monitor_Shield_RevA/reports/README.md) · [MVP 현재 보고서](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/README.md) · [전체 누락 점검](../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md). PCB는22풋프린트/미배선 상태이며 회로도 대조21건을 그대로 남긴다.
+
 **현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.
 
 [실적·다음 작업](../docs/progress/2026-11-12_progress.md). 아래 날짜별 재개점은 당시 이력이다.

@@ -10,15 +10,14 @@
 Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, 주문 업체에 전달한 도면, 제작 후 실물 검증을
 서로 구분해 기록하는 것이 목적이다.
 
-**상태 대조: 2026-10-11.** 플레이트 revision 동일성·fit은 계속 미확인이다.
-10/2 배선 사진의 모터 섀시 장착 모습과 하네스 조립 관측을 정식 기구 release로 확대하지 않는다.
+**상태 대조: 2026-11-12.** 10/17 가조립·고정·절연 간격·접근성, 10/20 배선 경로는 사용자 보고 범위 PASS다. [검사 기록](../02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md). 제작 revision·재료/치수·홀 패턴 동일성은 여전히 미확인이고 정식 기구 release가 아니다.
 재개 상태는 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.
 
 ## Current Baseline
 
 | 항목 | 현재 값 |
 | --- | --- |
-| 상태 | `PC PLATE USER-REPORTED RECEIVED / REVISION IDENTITY AND FIT PENDING` |
+| 상태 | `USER-REPORTED MOUNTING/ACCESS CHECKS PASS; SOURCE-TO-PART IDENTITY OPEN` |
 | Onshape 문서 | `01_어댑트_설계도면` |
 | Workspace | `Main` |
 | Historical Draft Version | 화면 표기 `dapter-layout_draft01_2026-07-23` |
@@ -31,7 +30,7 @@ Onshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, �
 | RevA 1:1 출력 대조 | `USER-CONFIRMED PASS` |
 | RevA 주문 PDF | `PASS` - 1 page, 39 vector paths, 0 raster images |
 | RevB source-to-part mapping | `OPEN` - 도착품과 DWG/DXF 동일성 미확인 |
-| 현재 제작 상태 | `USER-REPORTED RECEIVED` - 2026-08-26, 실물 fit은 `NOT TESTED` |
+| 현재 제작 상태 | 수령 보고(8/26), 가조립·고정·간격·접근성 확인 보고(10/17), 배선 경로 확인 보고(10/20). 도면-실물 치수 동일성 미검증 |
 
 2026-07-23 Draft는 전장 배치의 설계 체크포인트로 보존한다. 2026-07-24에는 2D 플레이트 형상을 별도로
 검증해 Rev A 제조 파일을 준비했다. Assembly의 참조 모듈 오류 표시는 사용자 지시에 따라 이번 Rev A

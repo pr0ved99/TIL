@@ -9,6 +9,8 @@
 
 기초부터 실제 코드를 공부하려면 [STM32·ESP32 펌웨어 교과서](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)를 읽는다. 순차 본문·PC 예제·문제 해설·소스 지도를 포함하며, 현재 상태를 판정하는 검증 보고서와는 별도다.
 
+최신 도면은 [전기 설계 기본 PDF 안내](../09_Electrical_Design/README.md), 이번 자료 정합성 결과는 [11/12 점검 기록](../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md)을 따른다. 날짜별 로그 PDF와 초기 검사는 현재 회로/실물 판정으로 재사용하지 않는다.
+
 ## 기획과 요구사항
 
 | 문서 | 내용 |

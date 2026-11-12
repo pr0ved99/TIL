@@ -1,5 +1,9 @@
 # TMR Monitor Shield RevA — 노트북 설계 시작점
 
+**현재 · 2026-11-12:** [기본 경로의 최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 현재 저장 회로도에서 다시 생성했다. 40부품과 PWR_FLAG 2개, J7/J8을 포함한 6개 측정 포트가 반영되어 있다. 왼쪽 아래 `04 VOLTAGE INPUTS – TWO CHANNELS` 영역의 위쪽은 J7/VBAT_SENSE, 아래쪽은 J8/VMOTOR_SENSE다. 11/7 게시본과 본문·렌더링이 일치하며 CAD 원본은 변경하지 않았다. [확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
+
+11/13에41-1~41-5 자료 및 기본 exports/reports 최신화를 마감한다. 현재 필기/질문 뒤41-6 보호 경로·검증 기준으로 이어간다. 실물/ADC 검증 완료가 아니다. 회로도 변경 뒤에는 위 고정 경로의 PDF도 함께 갱신한다. 날짜별 검토 로그는 당시 기록으로 보존한다. 아래 재개점은 각 날짜의 이력이다.
+
 **현재 재개점 · 2026-11-07:**
 
 전압2채널·공통 제어와PWR_FLAG2개까지 사용자 작성 완료,40부품·활성22net·기존 설정 ERC0/0이다. Codex가 마감 시 오래된 주석/제목란만 갱신했다. [최신 PDF·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 다음은 수집·필터 표와 포트·전원 조건표이며 풋프린트/기구·PCB는 그 뒤다. 후보 BOM은40부품으로 갱신했으나 구매/제작 승인은 아니다. 아래는 당시 이력이다.
@@ -56,19 +60,19 @@ MDD10A·XL4015·K1·버스바·퓨즈·배터리는 기존 별도 전력 구역�
 
 1. [KiCad 프로젝트](TMR_Monitor_Shield_RevA.kicad_pro)를 연다.
 2. [회로도](TMR_Monitor_Shield_RevA.kicad_sch)를 먼저 보고, [PCB](TMR_Monitor_Shield_RevA.kicad_pcb)에서 배치를 확인한다.
-3. 편집 없이 확인하려면 [회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)와 [배치 PDF](exports/TMR_Monitor_Shield_RevA_placement.pdf)를 사용한다.
+3. 편집 없이 확인하려면 [최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 사용한다. [PCB 초기 배치 PDF](exports/TMR_Monitor_Shield_RevA_placement.pdf)는 22풋프린트 초안으로, 최신 회로도의 40부품이 모두 반영된 배치도가 아니다.
 
 [부품 후보 CSV](bom_candidates.csv)는 풋프린트 대조용이며 구매·제작 BOM이 아니다.
 
 | 산출물 | 현재 범위 |
 | --- | --- |
-| 회로도 | Morpho 암 소켓 2개, 외부 센서 커넥터 4개, 저항 6개, 필터 커패시터 4개, 시험점 6개 |
+| 회로도 | Morpho 암 소켓 2개, 외부 측정 커넥터 6개, 저항 16개, 커패시터 8개, IC 2개, 시험점 6개: 총 40부품. PWR_FLAG 2개 별도 |
 | PCB | 부품 22개 배치, 구리 배선/영역 0개. 연결선 32개 미배선 |
-| ERC | 위반 0. 모두 수동 소자/커넥터인 초기 회로의 연결 규칙 검사 |
-| DRC | 배치 규칙 위반 0, 회로도와 PCB 불일치 0, 미배선 32. **전체 DRC 통과가 아니다.** |
-| 연결 대조 | 10개 사용 net의 정확한 연결, 회로도/PCB 모든 패드 net, 템플릿 헤더 76개 패드 위치를 검사 |
+| ERC | 11/12 새 추출: 40부품 회로도 오류 0/경고 0, 기존 무시 규칙 4개 유지 |
+| DRC | 11/12 저장 PCB 검사: 배치 위반 0, 회로도 대조 21건(미반영 부품18 + net 충돌3), 미배선32. **전체 DRC PASS가 아님** |
+| 연결 대조 | 11/12 저장 회로도 추출 결과 전체 91net(활성 22개 포함), 11/7 게시본과 동일. 헤더·외부 포트 활성 핀 23개를 대조 |
 
-보고서는 현재 파일 버전의 결과다. 회로/배치 변경 뒤 재생성해야 하며, ERC/DRC는 입력 보호·ADC 성능·실물 간섭의 검증을 대신하지 않는다.
+현재 연결·ERC·PCB 대조·BOM은 [기본 보고서 안내](reports/README.md)와 [검사 결과](reports/design_review.json)를 따른다. 기본 `netlist.xml`/ERC/DRC/부품 목록과 `check_design.py`를 40부품 회로도 기준으로 갱신했다. 계산 기록과 초기 템플릿 근거는 적용 시점을 별도로 표시한다. ERC/DRC는 입력 보호·ADC 성능·실물 간섭의 검증을 대신하지 않는다.
 
 ## 기능과 핀 계약
 
@@ -251,7 +255,7 @@ STM_3V3 ─ R3 10k ─┬─ R4 1k ─┬─ PC2 후보 (CN7-35)
 
 ## 검사 재현과 근거
 
-KiCad CLI로 `sch export netlist --format kicadxml`, `sch erc --format json`, `pcb drc --format json --schematic-parity`를 실행해 각각 `reports/netlist.xml`, `reports/erc.json`, `reports/drc_unrouted.json`을 갱신한다. 그 뒤 KiCad에 포함된 Python으로 [check_design.py](check_design.py)를 실행한다. 이 스크립트는 KiCad Python의 위치에서 설치 템플릿을 찾으며 실행 시 회로도/PCB를 수정하지 않는다. 생성된 [검사 결과](reports/design_review.json)에 파일 hash와 범위를 저장한다.
+KiCad에 포함된 Python으로 [check_design.py](check_design.py)를 실행하면 현재 저장 원본에서 `reports/netlist.xml`, `reports/erc.json`, `reports/drc_unrouted.json`을 먼저 재생성한다. 이어 11/7 검토본과 부품/전체 net·핀 타입, BOM, 초기 헤더 위치를 대조하고 [현재 부품 목록](reports/design_parts.json)과 [검사 결과](reports/design_review.json)를 갱신한다. 회로도·PCB·프로젝트·심벌 원본 해시 보존을 검사한다. PCB의 미반영/충돌/미배선은 별도 OPEN으로 보고하며 스크립트 종료0은 전체 DRC/제작 PASS가 아니다. 회로가 바뀌면 검토를 거쳐 비교 기준을 갱신해야 하며 자동으로 새 회로를 승인하지 않는다.
 
 - [기존 확장 연결안](../../14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md)
 - [NTC 계산안](../../../docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md)

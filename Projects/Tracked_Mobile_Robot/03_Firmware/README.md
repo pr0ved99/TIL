@@ -1,19 +1,19 @@
 # 펌웨어 앱과 검사 안내
 
-상태 대조: **2026-10-23**. 지상1m 실제/추정·오차 기록 범위 PASS: run03/04 실측1002mm, 평균1002.640333/1000.953333mm. [결과/한계](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조). MCU코드·빌드/플래시는 변경하지 않았고 관찰기만v5.1로 수정했다. 초기k/cap/gain 유지, 정밀도·직진성·전체 MVP 인수는 별도다. 온도는 후속 미실시이며 공중20cm는 사용자 요청 미실시로 남긴다.
+상태 대조: **2026-11-12**. 10/23 지상1m 거리 기록, 10/24 새 UI 플래시 사용자 보고와 통합 시연, 11/5 외부 전류·온도 관측을 연결한다. 현재 앱은 STM `stm32_uart_mvp`와 ESP `esp32_wifi_link`이며 이번 점검에서 MCU 소스·빌드/플래시는 변경하지 않았다. ADC 수집/평균은 아직 설계 비교안이다. [현재 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 
-**최신 전원 재설정 후 관측:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. MCU 소스/제한값·빌드/플래시 변경 없음. 전체 인수와 별개다.
+**10/23 전원 재설정 후 관측 이력:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. MCU 소스/제한값·빌드/플래시 변경 없음. 전체 인수와 별개다.
 
 ## 앱 선택과 마지막 실행
 
 | 프로젝트 폴더 | 역할·진입점 | 확인한 상태 |
 | --- | --- | --- |
-| [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령 검사·상태/timeout·최종 출력 안전 판단 | W5 실제 PONG/ACK·TEL 관측. PA10 pull-up·PONG 시험 hook0U. 전체 전력단·주행 수용과 별개 |
-| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 지상 주행·10/20 count/ARM 연동, 10/21 공중 목표 거리·거리 JSON,10/23 지상1m count/수동 DISARM 확인. 반응형 PAGE·복사 기능 적용, 실제 배포 이미지 신원은 별도 |
+| [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령·timeout·출력 안전 판단 | Wi-Fi 경유 지상 주행·정지·count 거리 및 10/24 시연 근거. 전체 인수·ADC 구현과 별개 |
+| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 지상 주행·10/20 count/ARM 연동, 10/21 공중 목표 거리·거리 JSON,10/23 지상1m·10/24 새 UI 플래시/시연·11/5 외부 계측 회차. 보드 이미지 해시 확인은 별도 |
 | [esp32_uart_bridge](esp32_uart_bridge/README.md) | [uart_bridge_main.c](esp32_uart_bridge/main/uart_bridge_main.c). 기존 UART bring-up·모터 시험 콘솔 | 별도 앱의9/30 M2_RUN 수동 hook1U와 default-off30 PASS/1 FAIL 이력. Wi-Fi 앱의 설정이 아님. hook 복구·해당 앱 재빌드/플래시·release는 별도 |
 | [esp32_examples](esp32_examples/README.md) | Hello World·FreeRTOS·STA·HTTP·WebSocket 단계별 연습 | 각 하위 폴더가 별도 ESP-IDF 프로젝트. 예제 플래시는 ESP의 실행 앱을 바꾸며 실제 Wi-Fi/UART 연동 검증과 구분 |
 
-과거 W5 시험은 STM·ESP 각각 USB 전원·LiPo 미연결이었고 당시 두 USB 분리를 확인했다. 최신10/23 지상 회차는 배터리 구동이며 종료 전원 분리는 미보고다.
+과거 W5는 두 보드 USB·LiPo 미연결 시험이었다. 이후 배터리 단독 운용을 확인했고 최근 11/5 회차 종료의 전원 분리 완료를 사용자가 보고했다. [근거](../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md).
 UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. 전원·배선·플래시 작업은 사용자가 해당 Gate 조건에 맞춰 수행한다.
 
 ## ARM/CMD 모듈과 실행 경로
@@ -22,7 +22,7 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 | 파일 | 담당하는 일 | 근거와 범위 |
 | --- | --- | --- |
-| [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c) | 실제 태스크·소켓·UART·내장 PAGE 연결 | 최신 main C42·기존 PAGE67·거리/복사28 PC PASS; 10/21 거리 TEL 관측은 원본과 연결 |
+| [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c) | 실제 태스크·소켓·UART·내장 PAGE 연결 | main C42의 기존 기록과 10/24 PAGE 중복 제외105 PC 검사 기록. 현재 검사 범위는 tests README를 따름 |
 | [contract](esp32_wifi_link/main/wifi_control_contract.c) | 문자열·필드·범위 검사 | 저장본 PC15 이력 |
 | [ticket](esp32_wifi_link/main/wifi_control_ticket.c) | 일회용 제출 기회·식별·만료 검사 | 저장본 PC12 이력 |
 | [owner](esp32_wifi_link/main/wifi_control_owner.c) | 제어 연결·세대 예약/대조/해제 | 저장본 PC9 이력 |
@@ -42,6 +42,6 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 ## 다음 작업
 
-학습은 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)에서 시작한다. 실물 검증은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에 따라 미완료 항목만 이어간다. 10/20 공중 유실/timeout 기능 근거를 재사용하고 거리 변경 영향을 대조한다. 온도·지상 거리와 전체 안전 수용은 별도이며 PC7 FAULT를 우회하지 않는다.
+현재 프로젝트 다음 작업은 [인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)의 41-2 정상 입력·공급 조건표다. 펌웨어 기초를 별도로 복습할 때 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)을 사용한다. 완료한 지상 거리·유실/timeout 시험을 자동 반복하지 않으며 전체 안전·정량 ADC 수용과 구분한다.
 
 코드/배선 변경이나 실패가 없는 완료 시험은 반복하지 않는다.

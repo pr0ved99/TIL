@@ -1,5 +1,13 @@
 # Tracked Mobile Robot Wiring RevB-WIP
 
+## 최신 열람 PDF — 2026-11-12
+
+[현재 MVP 기능 회로도 PDF](exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf)를 이 폴더의 저장 `.kicad_sch`에서 다시 생성했다. 48부품과 11/7 표기 정정이 반영되어 있으며, 11/7 게시 PDF와 본문·렌더링이 일치한다. 회로도 원본과 과거 날짜별 체크포인트는 보존했다. [내보내기 확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
+
+회로도 변경 후에는 위 고정 경로의 PDF도 함께 갱신한다. 아래 8월 PDF와 날짜별 기록은 당시 상태이며, 최신 도면을 대신하지 않는다.
+
+11/12 전체 자료 점검에서 [기본 검사 보고서](reports/README.md)도 추가했다. 현재 저장본의48부품/35net은11/7검토본과 같고 ERC오류0/경고0·기존 무시4규칙을 유지한다. 실제 하네스/부품 정격 수용은 별도다.
+
 ## 2026-11-07 부품 표기·상태 최신화
 
 [설계29](../../29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md)에 따라 S0/S2/K1/K2/F1/F2/U1/R13/R14/J13/J17/J19와출력net 이름을 갱신했다. [최신 PDF·변경 전 백업·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md).48부품·전체35net의핀 연결/타입 보존·ERC0/0. K2 기능 핀과 실물 핀 대응을 표시했다. F1 series/F2 exact SKU/정격 release는OPEN. 과거8월 export와하위RevC는역사적자료로보존하며 현재 실물 전면 as-built 승인은 아니다.

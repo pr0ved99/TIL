@@ -1,5 +1,7 @@
 # PC Serial Control
 
+> **현재 용도 대조 · 2026-11-12:** 이 도구/절차는 초기 PC 직결 UART bench 경로다. 현재 로봇의 production 명령 입구는 ESP Wi-Fi이고 STM USART2는 bench logger다. 최신 펌웨어에 초기 runbook을 그대로 적용하지 않는다. [현재 운용 절차](../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)와 [현재 앱](../03_Firmware/README.md)을 따른다.
+
 This folder contains PC-side UART command, telemetry logging, and dashboard mock tools.
 
 Initial direction:

@@ -1,6 +1,6 @@
 # STM32F446RE 핀 배정 후보
 
-> 문서 역할·상태 대조: **2026-10-22** — 기존 핀 배정과 센서4채널 후속 후보를 구분한다. 새 센서 핀은 미배선/미설정이다.
+> 문서 역할·상태 대조: **2026-11-12** — 현재 Shield 회로도에는 전류 PC0/1, 온도 PC2/3, 전압 PA4/PB0의 6채널이 연결되어 있다. [현재 CAD 포트/핀 대조](../assets/logs/pcb_design/2026-11-12_port_inventory/README.md). 이는 센서 실물 배선·ADC 설정 완료가 아니다. PC0/1의 Nucleo solder bridge와 기존 PB8/PB9 IMU 보존 조건은 검증 전이다. 아래 날짜별 제안/초기 핀 표를 실물 확인으로 확대하지 않는다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
 ## 목적

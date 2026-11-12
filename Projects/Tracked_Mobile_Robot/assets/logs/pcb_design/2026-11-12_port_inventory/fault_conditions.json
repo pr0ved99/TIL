@@ -1,0 +1,109 @@
+{
+  "date": "2026-11-12",
+  "status": "CAD_TOPOLOGY_AND_NOMINAL_ANALYSIS_ONLY",
+  "source_netlist": "09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\reports\\netlist.xml",
+  "source_netlist_sha256": "6a504bd9aa5a0ec3664035fbb6ffdf590166adf4fe8274c0cc51c72cafbf5953",
+  "source_cad_hashes": {
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "b0a9529007e3584cb59c3af3fd5ac3eae82c7b3c8add412b200e3c44514b14e1",
+    "TMR_Monitor_Shield_RevA.kicad_sch": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9"
+  },
+  "assumptions": [
+    "3.3V supply/reference",
+    "common ground intact except explicitly discussed ground faults",
+    "nominal components",
+    "one specified external fault, otherwise intact circuit",
+    "steady state",
+    "ignore ADC input current",
+    "TMUX ON for voltage fault DC comparison"
+  ],
+  "calculations": {
+    "NTC_open_V": 3.3,
+    "NTC_short_V": 0,
+    "NTC_short_current_A": 0.00033,
+    "current_formula_if_forced_0V_A": -37.5,
+    "current_formula_if_forced_3V3_A": 37.5,
+    "NTC_diagnostic_q_low": 0.02,
+    "NTC_diagnostic_q_high": 0.95,
+    "NTC_diagnostic_VREF_V": 3.3,
+    "NTC_diagnostic_low_V": 0.066,
+    "NTC_diagnostic_high_V": 3.135,
+    "NTC_existing_test_raw_rate_Hz": 100,
+    "NTC_existing_test_consecutive_samples": 3
+  },
+  "fault_cases": [
+    {
+      "port": "J5/J6",
+      "fault": "external passive NTC loop open",
+      "prediction": "toward excitation voltage; high rail candidate, not unique root cause"
+    },
+    {
+      "port": "J5/J6",
+      "fault": "external NTC terminals short",
+      "prediction": "toward0V; normal DC3.3V/10kohm path limits steady current to0.33mA"
+    },
+    {
+      "port": "J7/J8",
+      "fault": "RAW wire open",
+      "prediction": "toward0V; indistinguishable from real0V by ADC alone"
+    },
+    {
+      "port": "J7/J8",
+      "fault": "RAW-to-GND short before divider",
+      "prediction": "battery-side fault current may bypass24kohm; source-side energy limitation needed"
+    },
+    {
+      "port": "J3/J4",
+      "fault": "OUT open",
+      "prediction": "DC value indeterminate; no dedicated bias at ADC"
+    },
+    {
+      "port": "J3/J4",
+      "fault": "OUT-to-GND or3V3 short",
+      "prediction": "toward forced rail; sensor output fault current not limited by downstream12kohm"
+    },
+    {
+      "port": "all",
+      "fault": "ground open",
+      "prediction": "depends on remaining return paths; not a fixed ADC value"
+    },
+    {
+      "port": "voltage input",
+      "fault": "polarity reversal",
+      "prediction": "battery+ may connect to commonGND, causing short if another negative return exists; not just negative-divider arithmetic"
+    },
+    {
+      "port": "passive NTC",
+      "fault": "two bare resistor leads swapped",
+      "prediction": "same ideal resistance function"
+    },
+    {
+      "port": "different port types/channels",
+      "fault": "misconnection",
+      "prediction": "may apply incompatible voltage or produce plausible readings under wrong channel labels"
+    }
+  ],
+  "references": [
+    {
+      "file": "09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md",
+      "section": "9",
+      "scope": "existing diagnostic proposal, not implemented"
+    },
+    {
+      "url": "https://www.ti.com/lit/ds/symlink/tmux1511.pdf",
+      "revision": "SCDS390B March2025",
+      "pages": [
+        4,
+        22
+      ],
+      "sections": [
+        "5.3 VS/VD VS_off/VD_off rows and footnotes",
+        "7.3.4 Powered-off Protection"
+      ]
+    }
+  ],
+  "user_handwriting_understanding": "NOT_REPORTED",
+  "new_hardware_simulation_firmware": "NONE",
+  "next": "41-6 protection paths and verification criteria"
+}

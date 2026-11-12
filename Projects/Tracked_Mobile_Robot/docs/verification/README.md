@@ -1,6 +1,6 @@
 # Verification Documentation
 
-최신 통합 관측: **2026-10-18 배터리 단독 지상 수동 주행과 1차 직진 보정 완료**. [통합 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [진행 기록](../progress/2026-10-18_progress.md), [최신 검증 매트릭스](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 전·후진·양방향 회전·놓음/DISARM 정지는 사용자 관측과 TEL로 확인했다. 전체 MVP·1m/정밀 주행·모든 fault-stop 수용과 구분한다.
+최신 관측 대조: **2026-11-12**. 10/23 지상1m 실제/추정 거리·오차 기록, 10/24 149초 통합 시연, 11/5 짧은 공중 외부 전류·온도 표시 관측과 종료 전원 분리 보고를 반영한다. [검증 매트릭스](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [최근 외부 관측](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md). 정밀도·장시간 열적 수용·전체 MUST 인수 완료는 아니다.
 
 이전 비구동 Wi-Fi는 report37/38, 단일 모터는 report32의 해당 조건을 따른다. 현재 코드·PC 검사와 재개점은 [검사 안내](../../03_Firmware/tests/README.md)와 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 사용한다.
 원본 로그·화면·빌드/플래시 식별값·관측 조건은 [증거 보존 절차](EVIDENCE_CAPTURE_GUIDE_ko.md)로 기록한다.

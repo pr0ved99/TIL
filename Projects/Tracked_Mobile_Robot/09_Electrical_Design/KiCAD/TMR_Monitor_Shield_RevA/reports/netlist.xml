@@ -2,14 +2,14 @@
 <export version="E">
   <design>
     <source>C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\09_Electrical_Design\KiCAD\TMR_Monitor_Shield_RevA\TMR_Monitor_Shield_RevA.kicad_sch</source>
-    <date>2026-10-23T14:22:45</date>
+    <date>2026-11-12T16:17:06</date>
     <tool>Eeschema 10.0.5</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>TMR Monitor Shield</title>
         <company/>
-        <rev>RevA.0-DRAFT</rev>
-        <date>2026-10-23</date>
+        <rev>RevA.1-DRAFT</rev>
+        <date>2026-11-07</date>
         <source>TMR_Monitor_Shield_RevA.kicad_sch</source>
         <comment number="1" value="NOT FOR FABRICATION - protection / mechanical review open"/>
         <comment number="2" value=""/>
@@ -115,6 +115,102 @@
       <property name="ki_fp_filters" value="C_*"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>230c5ebf-11fa-49f1-a8ad-fa4507878b02</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C5">
+      <value>100n</value>
+      <description>Unpolarized capacitor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>9497e768-39c5-4490-a209-42675955bca3</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C6">
+      <value>100n</value>
+      <description>Unpolarized capacitor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>7d3f6ea8-e7bb-4875-933a-6d665fdbd4b1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C7">
+      <value>100n</value>
+      <description>Unpolarized capacitor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0ffbf312-311c-40f9-94cd-eeb068513ad1</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="C8">
+      <value>100n</value>
+      <description>Unpolarized capacitor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Unpolarized capacitor</field>
+      </fields>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="cap capacitor"/>
+      <property name="ki_fp_filters" value="C_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>1b6f31d1-6a46-47a9-b425-259933700565</tstamps>
       <units>
         <unit name="A">
           <pins>
@@ -348,6 +444,54 @@
         </unit>
       </units>
     </comp>
+    <comp ref="J7">
+      <value>VBAT_SENSE</value>
+      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x02" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>c8cf3701-ec9e-44bf-b3fd-59b2372fe856</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="J8">
+      <value>VMOTOR_SENSE</value>
+      <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
+      </fields>
+      <libsource lib="Connector_Generic" part="Conn_01x02" description="Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="connector"/>
+      <property name="ki_fp_filters" value="Connector*:*_1x??_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>a589cf8f-d59e-47fe-b9f0-c2f10267f448</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
     <comp ref="R1">
       <value>12k candidate</value>
       <footprint>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal</footprint>
@@ -489,6 +633,246 @@
       <property name="ki_fp_filters" value="R_*"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamps>5b25fd46-e895-41af-8f62-b9d150b09798</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R7">
+      <value>12k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>bb8a9115-4017-4b35-8a9c-24a70af35704</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R8">
+      <value>12k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>3203ca86-8288-43b5-bf8b-3c2dbc33afc8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R9">
+      <value>4.7k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>fcbfe083-bd33-4b4c-8c53-67b536a1349c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R10">
+      <value>1k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>12bc7f4c-853e-45ae-8f33-09965af4ea59</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R11">
+      <value>47k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>2b429b43-81e7-4612-a93b-156738a9be61</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R12">
+      <value>12k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>0f79c011-e677-43ef-a04c-82d8d2e1934c</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R13">
+      <value>12k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>607bc0aa-7a4f-41db-8269-50cc7cfad27f</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R14">
+      <value>4.7k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>276d2225-4cbb-4411-a079-ba9f4cc3f68a</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R15">
+      <value>1k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>32a85aca-1880-4b6d-a2f5-cf467177dae8</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="1"/>
+            <pin num="2"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="R16">
+      <value>47k</value>
+      <description>Resistor</description>
+      <fields>
+        <field name="Footprint"/>
+        <field name="Datasheet"/>
+        <field name="Description">Resistor</field>
+      </fields>
+      <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <property name="ki_keywords" value="R res resistor"/>
+      <property name="ki_fp_filters" value="R_*"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>dd539a6b-1d18-4fd6-b6c5-6bdb63122805</tstamps>
       <units>
         <unit name="A">
           <pins>
@@ -642,6 +1026,69 @@
         </unit>
       </units>
     </comp>
+    <comp ref="U1">
+      <value>TPS3840PL30DBV</value>
+      <footprint>Package_TO_SOT_SMD:SOT-23-5</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tps3840.pdf</datasheet>
+      <description>3.0V voltage supervisor, active-low push-pull reset, SOT-23-5</description>
+      <fields>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-23-5</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps3840.pdf</field>
+        <field name="Description">3.0V voltage supervisor, active-low push-pull reset, SOT-23-5</field>
+      </fields>
+      <libsource lib="TMR_Monitor" part="TPS3840PL30DBV" description="3.0V voltage supervisor, active-low push-pull reset, SOT-23-5"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>e70100f1-c85a-4a5f-aefe-9cd7296bbdfa</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="4"/>
+            <pin num="5"/>
+            <pin num="2"/>
+            <pin num="3"/>
+            <pin num="1"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
+    <comp ref="U2">
+      <value>TMUX1511PW</value>
+      <footprint>Package_SO:TSSOP-14_4.4x5mm_P0.65mm</footprint>
+      <datasheet>https://www.ti.com/lit/ds/symlink/tmux1511.pdf</datasheet>
+      <description>4-channel SPST analog switch with powered-off protection, TSSOP-14</description>
+      <fields>
+        <field name="Footprint">Package_SO:TSSOP-14_4.4x5mm_P0.65mm</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tmux1511.pdf</field>
+        <field name="Description">4-channel SPST analog switch with powered-off protection, TSSOP-14</field>
+      </fields>
+      <libsource lib="TMR_Monitor" part="TMUX1511PW" description="4-channel SPST analog switch with powered-off protection, TSSOP-14"/>
+      <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
+      <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamps>68b6a564-73ba-47a4-997e-6d747c9c3056</tstamps>
+      <units>
+        <unit name="A">
+          <pins>
+            <pin num="2"/>
+            <pin num="1"/>
+            <pin num="5"/>
+            <pin num="4"/>
+            <pin num="9"/>
+            <pin num="10"/>
+            <pin num="12"/>
+            <pin num="13"/>
+            <pin num="14"/>
+            <pin num="7"/>
+            <pin num="3"/>
+            <pin num="6"/>
+            <pin num="8"/>
+            <pin num="11"/>
+          </pins>
+        </unit>
+      </units>
+    </comp>
   </components>
   <libparts>
     <libpart lib="Connector" part="TestPoint">
@@ -783,6 +1230,51 @@
         <pin num="2" name="" type="passive"/>
       </pins>
     </libpart>
+    <libpart lib="TMR_Monitor" part="TMUX1511PW">
+      <description>4-channel SPST analog switch with powered-off protection, TSSOP-14</description>
+      <docs>https://www.ti.com/lit/ds/symlink/tmux1511.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TMUX1511PW</field>
+        <field name="Footprint">Package_SO:TSSOP-14_4.4x5mm_P0.65mm</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tmux1511.pdf</field>
+        <field name="Description">4-channel SPST analog switch with powered-off protection, TSSOP-14</field>
+      </fields>
+      <pins>
+        <pin num="1" name="SEL1" type="input"/>
+        <pin num="2" name="S1" type="passive"/>
+        <pin num="3" name="D1" type="passive"/>
+        <pin num="4" name="SEL2" type="input"/>
+        <pin num="5" name="S2" type="passive"/>
+        <pin num="6" name="D2" type="passive"/>
+        <pin num="7" name="GND" type="power_in"/>
+        <pin num="8" name="D3" type="passive"/>
+        <pin num="9" name="S3" type="passive"/>
+        <pin num="10" name="SEL3" type="input"/>
+        <pin num="11" name="D4" type="passive"/>
+        <pin num="12" name="S4" type="passive"/>
+        <pin num="13" name="SEL4" type="input"/>
+        <pin num="14" name="VDD" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="TMR_Monitor" part="TPS3840PL30DBV">
+      <description>3.0V voltage supervisor, active-low push-pull reset, SOT-23-5</description>
+      <docs>https://www.ti.com/lit/ds/symlink/tps3840.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">TPS3840PL30DBV</field>
+        <field name="Footprint">Package_TO_SOT_SMD:SOT-23-5</field>
+        <field name="Datasheet">https://www.ti.com/lit/ds/symlink/tps3840.pdf</field>
+        <field name="Description">3.0V voltage supervisor, active-low push-pull reset, SOT-23-5</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~{RESET}" type="output"/>
+        <pin num="2" name="VDD" type="power_in"/>
+        <pin num="3" name="GND" type="power_in"/>
+        <pin num="4" name="~{MR}" type="input"/>
+        <pin num="5" name="CT" type="passive"/>
+      </pins>
+    </libpart>
   </libparts>
   <libraries>
     <library logical="Connector">
@@ -794,6 +1286,9 @@
     <library logical="Device">
       <uri>${KICAD10_SYMBOL_DIR}/Device.kicad_sym</uri>
     </library>
+    <library logical="TMR_Monitor">
+      <uri>${KIPRJMOD}/TMR_Monitor.kicad_sym</uri>
+    </library>
   </libraries>
   <nets>
     <net code="1" name="/GND" class="Default">
@@ -801,12 +1296,30 @@
       <node ref="C2" pin="2" pintype="passive"/>
       <node ref="C3" pin="2" pintype="passive"/>
       <node ref="C4" pin="2" pintype="passive"/>
+      <node ref="C5" pin="2" pintype="passive"/>
+      <node ref="C6" pin="2" pintype="passive"/>
+      <node ref="C7" pin="2" pintype="passive"/>
+      <node ref="C8" pin="2" pintype="passive"/>
       <node ref="J1" pin="20" pinfunction="Pin_20_20" pintype="passive"/>
       <node ref="J3" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
       <node ref="J4" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
       <node ref="J5" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
       <node ref="J6" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="J7" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="J8" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
+      <node ref="R11" pin="2" pintype="passive"/>
+      <node ref="R14" pin="2" pintype="passive"/>
+      <node ref="R16" pin="2" pintype="passive"/>
+      <node ref="R9" pin="2" pintype="passive"/>
       <node ref="TP2" pin="1" pinfunction="1_1" pintype="passive"/>
+      <node ref="U1" pin="3" pinfunction="GND_3" pintype="power_in"/>
+      <node ref="U2" pin="10" pinfunction="SEL3_10" pintype="input"/>
+      <node ref="U2" pin="11" pinfunction="D4_11" pintype="passive"/>
+      <node ref="U2" pin="12" pinfunction="S4_12" pintype="passive"/>
+      <node ref="U2" pin="13" pinfunction="SEL4_13" pintype="input"/>
+      <node ref="U2" pin="7" pinfunction="GND_7" pintype="power_in"/>
+      <node ref="U2" pin="8" pinfunction="D3_8" pintype="passive"/>
+      <node ref="U2" pin="9" pinfunction="S3_9" pintype="passive"/>
     </net>
     <net code="2" name="/I_LEFT_ADC" class="Default">
       <node ref="C1" pin="1" pintype="passive"/>
@@ -828,7 +1341,11 @@
       <node ref="J4" pin="3" pinfunction="Pin_3_3" pintype="passive"/>
       <node ref="R2" pin="1" pintype="passive"/>
     </net>
-    <net code="6" name="/STM_3V3" class="Default">
+    <net code="6" name="/MOTOR_VBAT_SAFE_SENSE_RAW" class="Default">
+      <node ref="J8" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="R12" pin="1" pintype="passive"/>
+    </net>
+    <net code="7" name="/STM_3V3" class="Default">
       <node ref="J1" pin="16" pinfunction="Pin_16_16" pintype="passive"/>
       <node ref="J3" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
       <node ref="J4" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
@@ -836,237 +1353,288 @@
       <node ref="R5" pin="1" pintype="passive"/>
       <node ref="TP1" pin="1" pinfunction="1_1" pintype="passive"/>
     </net>
-    <net code="7" name="/T_LEFT_ADC" class="Default">
+    <net code="8" name="/STM_AVDD" class="Default">
+      <node ref="C7" pin="1" pintype="passive"/>
+      <node ref="C8" pin="1" pintype="passive"/>
+      <node ref="J2" pin="7" pinfunction="Pin_7_7" pintype="passive"/>
+      <node ref="U1" pin="2" pinfunction="VDD_2" pintype="power_in"/>
+      <node ref="U2" pin="14" pinfunction="VDD_14" pintype="power_in"/>
+    </net>
+    <net code="9" name="/T_LEFT_ADC" class="Default">
       <node ref="C3" pin="1" pintype="passive"/>
       <node ref="J1" pin="35" pinfunction="Pin_35_35" pintype="passive"/>
       <node ref="R4" pin="2" pintype="passive"/>
       <node ref="TP5" pin="1" pinfunction="1_1" pintype="passive"/>
     </net>
-    <net code="8" name="/T_LEFT_RAW" class="Default">
+    <net code="10" name="/T_LEFT_RAW" class="Default">
       <node ref="J5" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
       <node ref="R3" pin="2" pintype="passive"/>
       <node ref="R4" pin="1" pintype="passive"/>
     </net>
-    <net code="9" name="/T_RIGHT_ADC" class="Default">
+    <net code="11" name="/T_RIGHT_ADC" class="Default">
       <node ref="C4" pin="1" pintype="passive"/>
       <node ref="J1" pin="37" pinfunction="Pin_37_37" pintype="passive"/>
       <node ref="R6" pin="2" pintype="passive"/>
       <node ref="TP6" pin="1" pinfunction="1_1" pintype="passive"/>
     </net>
-    <net code="10" name="/T_RIGHT_RAW" class="Default">
+    <net code="12" name="/T_RIGHT_RAW" class="Default">
       <node ref="J6" pin="1" pinfunction="Pin_1_1" pintype="passive"/>
       <node ref="R5" pin="2" pintype="passive"/>
       <node ref="R6" pin="1" pintype="passive"/>
     </net>
-    <net code="11" name="unconnected-(J1-Pin_1-Pad1)" class="Default">
+    <net code="13" name="/VBAT_PROTECTED_SENSE_RAW" class="Default">
+      <node ref="J7" pin="2" pinfunction="Pin_2_2" pintype="passive"/>
+      <node ref="R7" pin="1" pintype="passive"/>
+    </net>
+    <net code="14" name="/V_DOWN_ADC" class="Default">
+      <node ref="J1" pin="34" pinfunction="Pin_34_34" pintype="passive"/>
+      <node ref="R16" pin="1" pintype="passive"/>
+      <node ref="U2" pin="6" pinfunction="D2_6" pintype="passive"/>
+    </net>
+    <net code="15" name="/V_DOWN_DIV" class="Default">
+      <node ref="C6" pin="1" pintype="passive"/>
+      <node ref="R13" pin="2" pintype="passive"/>
+      <node ref="R14" pin="1" pintype="passive"/>
+      <node ref="R15" pin="1" pintype="passive"/>
+    </net>
+    <net code="16" name="/V_DOWN_SWITCH_IN" class="Default">
+      <node ref="R15" pin="2" pintype="passive"/>
+      <node ref="U2" pin="5" pinfunction="S2_5" pintype="passive"/>
+    </net>
+    <net code="17" name="/V_DOWN_TOP_MID" class="Default">
+      <node ref="R12" pin="2" pintype="passive"/>
+      <node ref="R13" pin="1" pintype="passive"/>
+    </net>
+    <net code="18" name="/V_SENSE_EN" class="Default">
+      <node ref="U1" pin="1" pinfunction="~{RESET}_1" pintype="output"/>
+      <node ref="U2" pin="1" pinfunction="SEL1_1" pintype="input"/>
+      <node ref="U2" pin="4" pinfunction="SEL2_4" pintype="input"/>
+    </net>
+    <net code="19" name="/V_UP_ADC" class="Default">
+      <node ref="J1" pin="32" pinfunction="Pin_32_32" pintype="passive"/>
+      <node ref="R11" pin="1" pintype="passive"/>
+      <node ref="U2" pin="3" pinfunction="D1_3" pintype="passive"/>
+    </net>
+    <net code="20" name="/V_UP_DIV" class="Default">
+      <node ref="C5" pin="1" pintype="passive"/>
+      <node ref="R10" pin="1" pintype="passive"/>
+      <node ref="R8" pin="2" pintype="passive"/>
+      <node ref="R9" pin="1" pintype="passive"/>
+    </net>
+    <net code="21" name="/V_UP_SWITCH_IN" class="Default">
+      <node ref="R10" pin="2" pintype="passive"/>
+      <node ref="U2" pin="2" pinfunction="S1_2" pintype="passive"/>
+    </net>
+    <net code="22" name="/V_UP_TOP_MID" class="Default">
+      <node ref="R7" pin="2" pintype="passive"/>
+      <node ref="R8" pin="1" pintype="passive"/>
+    </net>
+    <net code="23" name="unconnected-(J1-Pin_1-Pad1)" class="Default">
       <node ref="J1" pin="1" pinfunction="Pin_1_1" pintype="passive+no_connect"/>
     </net>
-    <net code="12" name="unconnected-(J1-Pin_2-Pad2)" class="Default">
+    <net code="24" name="unconnected-(J1-Pin_2-Pad2)" class="Default">
       <node ref="J1" pin="2" pinfunction="Pin_2_2" pintype="passive+no_connect"/>
     </net>
-    <net code="13" name="unconnected-(J1-Pin_3-Pad3)" class="Default">
+    <net code="25" name="unconnected-(J1-Pin_3-Pad3)" class="Default">
       <node ref="J1" pin="3" pinfunction="Pin_3_3" pintype="passive+no_connect"/>
     </net>
-    <net code="14" name="unconnected-(J1-Pin_4-Pad4)" class="Default">
+    <net code="26" name="unconnected-(J1-Pin_4-Pad4)" class="Default">
       <node ref="J1" pin="4" pinfunction="Pin_4_4" pintype="passive+no_connect"/>
     </net>
-    <net code="15" name="unconnected-(J1-Pin_5-Pad5)" class="Default">
+    <net code="27" name="unconnected-(J1-Pin_5-Pad5)" class="Default">
       <node ref="J1" pin="5" pinfunction="Pin_5_5" pintype="passive+no_connect"/>
     </net>
-    <net code="16" name="unconnected-(J1-Pin_6-Pad6)" class="Default">
+    <net code="28" name="unconnected-(J1-Pin_6-Pad6)" class="Default">
       <node ref="J1" pin="6" pinfunction="Pin_6_6" pintype="passive+no_connect"/>
     </net>
-    <net code="17" name="unconnected-(J1-Pin_7-Pad7)" class="Default">
+    <net code="29" name="unconnected-(J1-Pin_7-Pad7)" class="Default">
       <node ref="J1" pin="7" pinfunction="Pin_7_7" pintype="passive+no_connect"/>
     </net>
-    <net code="18" name="unconnected-(J1-Pin_8-Pad8)" class="Default">
+    <net code="30" name="unconnected-(J1-Pin_8-Pad8)" class="Default">
       <node ref="J1" pin="8" pinfunction="Pin_8_8" pintype="passive+no_connect"/>
     </net>
-    <net code="19" name="unconnected-(J1-Pin_9-Pad9)" class="Default">
+    <net code="31" name="unconnected-(J1-Pin_9-Pad9)" class="Default">
       <node ref="J1" pin="9" pinfunction="Pin_9_9" pintype="passive+no_connect"/>
     </net>
-    <net code="20" name="unconnected-(J1-Pin_10-Pad10)" class="Default">
+    <net code="32" name="unconnected-(J1-Pin_10-Pad10)" class="Default">
       <node ref="J1" pin="10" pinfunction="Pin_10_10" pintype="passive+no_connect"/>
     </net>
-    <net code="21" name="unconnected-(J1-Pin_11-Pad11)" class="Default">
+    <net code="33" name="unconnected-(J1-Pin_11-Pad11)" class="Default">
       <node ref="J1" pin="11" pinfunction="Pin_11_11" pintype="passive+no_connect"/>
     </net>
-    <net code="22" name="unconnected-(J1-Pin_12-Pad12)" class="Default">
+    <net code="34" name="unconnected-(J1-Pin_12-Pad12)" class="Default">
       <node ref="J1" pin="12" pinfunction="Pin_12_12" pintype="passive+no_connect"/>
     </net>
-    <net code="23" name="unconnected-(J1-Pin_13-Pad13)" class="Default">
+    <net code="35" name="unconnected-(J1-Pin_13-Pad13)" class="Default">
       <node ref="J1" pin="13" pinfunction="Pin_13_13" pintype="passive+no_connect"/>
     </net>
-    <net code="24" name="unconnected-(J1-Pin_14-Pad14)" class="Default">
+    <net code="36" name="unconnected-(J1-Pin_14-Pad14)" class="Default">
       <node ref="J1" pin="14" pinfunction="Pin_14_14" pintype="passive+no_connect"/>
     </net>
-    <net code="25" name="unconnected-(J1-Pin_15-Pad15)" class="Default">
+    <net code="37" name="unconnected-(J1-Pin_15-Pad15)" class="Default">
       <node ref="J1" pin="15" pinfunction="Pin_15_15" pintype="passive+no_connect"/>
     </net>
-    <net code="26" name="unconnected-(J1-Pin_17-Pad17)" class="Default">
+    <net code="38" name="unconnected-(J1-Pin_17-Pad17)" class="Default">
       <node ref="J1" pin="17" pinfunction="Pin_17_17" pintype="passive+no_connect"/>
     </net>
-    <net code="27" name="unconnected-(J1-Pin_18-Pad18)" class="Default">
+    <net code="39" name="unconnected-(J1-Pin_18-Pad18)" class="Default">
       <node ref="J1" pin="18" pinfunction="Pin_18_18" pintype="passive+no_connect"/>
     </net>
-    <net code="28" name="unconnected-(J1-Pin_19-Pad19)" class="Default">
+    <net code="40" name="unconnected-(J1-Pin_19-Pad19)" class="Default">
       <node ref="J1" pin="19" pinfunction="Pin_19_19" pintype="passive+no_connect"/>
     </net>
-    <net code="29" name="unconnected-(J1-Pin_21-Pad21)" class="Default">
+    <net code="41" name="unconnected-(J1-Pin_21-Pad21)" class="Default">
       <node ref="J1" pin="21" pinfunction="Pin_21_21" pintype="passive+no_connect"/>
     </net>
-    <net code="30" name="unconnected-(J1-Pin_22-Pad22)" class="Default">
+    <net code="42" name="unconnected-(J1-Pin_22-Pad22)" class="Default">
       <node ref="J1" pin="22" pinfunction="Pin_22_22" pintype="passive+no_connect"/>
     </net>
-    <net code="31" name="unconnected-(J1-Pin_23-Pad23)" class="Default">
+    <net code="43" name="unconnected-(J1-Pin_23-Pad23)" class="Default">
       <node ref="J1" pin="23" pinfunction="Pin_23_23" pintype="passive+no_connect"/>
     </net>
-    <net code="32" name="unconnected-(J1-Pin_24-Pad24)" class="Default">
+    <net code="44" name="unconnected-(J1-Pin_24-Pad24)" class="Default">
       <node ref="J1" pin="24" pinfunction="Pin_24_24" pintype="passive+no_connect"/>
     </net>
-    <net code="33" name="unconnected-(J1-Pin_25-Pad25)" class="Default">
+    <net code="45" name="unconnected-(J1-Pin_25-Pad25)" class="Default">
       <node ref="J1" pin="25" pinfunction="Pin_25_25" pintype="passive+no_connect"/>
     </net>
-    <net code="34" name="unconnected-(J1-Pin_26-Pad26)" class="Default">
+    <net code="46" name="unconnected-(J1-Pin_26-Pad26)" class="Default">
       <node ref="J1" pin="26" pinfunction="Pin_26_26" pintype="passive+no_connect"/>
     </net>
-    <net code="35" name="unconnected-(J1-Pin_27-Pad27)" class="Default">
+    <net code="47" name="unconnected-(J1-Pin_27-Pad27)" class="Default">
       <node ref="J1" pin="27" pinfunction="Pin_27_27" pintype="passive+no_connect"/>
     </net>
-    <net code="36" name="unconnected-(J1-Pin_28-Pad28)" class="Default">
+    <net code="48" name="unconnected-(J1-Pin_28-Pad28)" class="Default">
       <node ref="J1" pin="28" pinfunction="Pin_28_28" pintype="passive+no_connect"/>
     </net>
-    <net code="37" name="unconnected-(J1-Pin_29-Pad29)" class="Default">
+    <net code="49" name="unconnected-(J1-Pin_29-Pad29)" class="Default">
       <node ref="J1" pin="29" pinfunction="Pin_29_29" pintype="passive+no_connect"/>
     </net>
-    <net code="38" name="unconnected-(J1-Pin_30-Pad30)" class="Default">
+    <net code="50" name="unconnected-(J1-Pin_30-Pad30)" class="Default">
       <node ref="J1" pin="30" pinfunction="Pin_30_30" pintype="passive+no_connect"/>
     </net>
-    <net code="39" name="unconnected-(J1-Pin_31-Pad31)" class="Default">
+    <net code="51" name="unconnected-(J1-Pin_31-Pad31)" class="Default">
       <node ref="J1" pin="31" pinfunction="Pin_31_31" pintype="passive+no_connect"/>
     </net>
-    <net code="40" name="unconnected-(J1-Pin_32-Pad32)" class="Default">
-      <node ref="J1" pin="32" pinfunction="Pin_32_32" pintype="passive+no_connect"/>
-    </net>
-    <net code="41" name="unconnected-(J1-Pin_33-Pad33)" class="Default">
+    <net code="52" name="unconnected-(J1-Pin_33-Pad33)" class="Default">
       <node ref="J1" pin="33" pinfunction="Pin_33_33" pintype="passive+no_connect"/>
     </net>
-    <net code="42" name="unconnected-(J1-Pin_34-Pad34)" class="Default">
-      <node ref="J1" pin="34" pinfunction="Pin_34_34" pintype="passive+no_connect"/>
-    </net>
-    <net code="43" name="unconnected-(J2-Pin_1-Pad1)" class="Default">
+    <net code="53" name="unconnected-(J2-Pin_1-Pad1)" class="Default">
       <node ref="J2" pin="1" pinfunction="Pin_1_1" pintype="passive+no_connect"/>
     </net>
-    <net code="44" name="unconnected-(J2-Pin_2-Pad2)" class="Default">
+    <net code="54" name="unconnected-(J2-Pin_2-Pad2)" class="Default">
       <node ref="J2" pin="2" pinfunction="Pin_2_2" pintype="passive+no_connect"/>
     </net>
-    <net code="45" name="unconnected-(J2-Pin_3-Pad3)" class="Default">
+    <net code="55" name="unconnected-(J2-Pin_3-Pad3)" class="Default">
       <node ref="J2" pin="3" pinfunction="Pin_3_3" pintype="passive+no_connect"/>
     </net>
-    <net code="46" name="unconnected-(J2-Pin_4-Pad4)" class="Default">
+    <net code="56" name="unconnected-(J2-Pin_4-Pad4)" class="Default">
       <node ref="J2" pin="4" pinfunction="Pin_4_4" pintype="passive+no_connect"/>
     </net>
-    <net code="47" name="unconnected-(J2-Pin_5-Pad5)" class="Default">
+    <net code="57" name="unconnected-(J2-Pin_5-Pad5)" class="Default">
       <node ref="J2" pin="5" pinfunction="Pin_5_5" pintype="passive+no_connect"/>
     </net>
-    <net code="48" name="unconnected-(J2-Pin_6-Pad6)" class="Default">
+    <net code="58" name="unconnected-(J2-Pin_6-Pad6)" class="Default">
       <node ref="J2" pin="6" pinfunction="Pin_6_6" pintype="passive+no_connect"/>
     </net>
-    <net code="49" name="unconnected-(J2-Pin_7-Pad7)" class="Default">
-      <node ref="J2" pin="7" pinfunction="Pin_7_7" pintype="passive+no_connect"/>
-    </net>
-    <net code="50" name="unconnected-(J2-Pin_8-Pad8)" class="Default">
+    <net code="59" name="unconnected-(J2-Pin_8-Pad8)" class="Default">
       <node ref="J2" pin="8" pinfunction="Pin_8_8" pintype="passive+no_connect"/>
     </net>
-    <net code="51" name="unconnected-(J2-Pin_9-Pad9)" class="Default">
+    <net code="60" name="unconnected-(J2-Pin_9-Pad9)" class="Default">
       <node ref="J2" pin="9" pinfunction="Pin_9_9" pintype="passive+no_connect"/>
     </net>
-    <net code="52" name="unconnected-(J2-Pin_10-Pad10)" class="Default">
+    <net code="61" name="unconnected-(J2-Pin_10-Pad10)" class="Default">
       <node ref="J2" pin="10" pinfunction="Pin_10_10" pintype="passive+no_connect"/>
     </net>
-    <net code="53" name="unconnected-(J2-Pin_11-Pad11)" class="Default">
+    <net code="62" name="unconnected-(J2-Pin_11-Pad11)" class="Default">
       <node ref="J2" pin="11" pinfunction="Pin_11_11" pintype="passive+no_connect"/>
     </net>
-    <net code="54" name="unconnected-(J2-Pin_12-Pad12)" class="Default">
+    <net code="63" name="unconnected-(J2-Pin_12-Pad12)" class="Default">
       <node ref="J2" pin="12" pinfunction="Pin_12_12" pintype="passive+no_connect"/>
     </net>
-    <net code="55" name="unconnected-(J2-Pin_13-Pad13)" class="Default">
+    <net code="64" name="unconnected-(J2-Pin_13-Pad13)" class="Default">
       <node ref="J2" pin="13" pinfunction="Pin_13_13" pintype="passive+no_connect"/>
     </net>
-    <net code="56" name="unconnected-(J2-Pin_14-Pad14)" class="Default">
+    <net code="65" name="unconnected-(J2-Pin_14-Pad14)" class="Default">
       <node ref="J2" pin="14" pinfunction="Pin_14_14" pintype="passive+no_connect"/>
     </net>
-    <net code="57" name="unconnected-(J2-Pin_15-Pad15)" class="Default">
+    <net code="66" name="unconnected-(J2-Pin_15-Pad15)" class="Default">
       <node ref="J2" pin="15" pinfunction="Pin_15_15" pintype="passive+no_connect"/>
     </net>
-    <net code="58" name="unconnected-(J2-Pin_16-Pad16)" class="Default">
+    <net code="67" name="unconnected-(J2-Pin_16-Pad16)" class="Default">
       <node ref="J2" pin="16" pinfunction="Pin_16_16" pintype="passive+no_connect"/>
     </net>
-    <net code="59" name="unconnected-(J2-Pin_17-Pad17)" class="Default">
+    <net code="68" name="unconnected-(J2-Pin_17-Pad17)" class="Default">
       <node ref="J2" pin="17" pinfunction="Pin_17_17" pintype="passive+no_connect"/>
     </net>
-    <net code="60" name="unconnected-(J2-Pin_18-Pad18)" class="Default">
+    <net code="69" name="unconnected-(J2-Pin_18-Pad18)" class="Default">
       <node ref="J2" pin="18" pinfunction="Pin_18_18" pintype="passive+no_connect"/>
     </net>
-    <net code="61" name="unconnected-(J2-Pin_19-Pad19)" class="Default">
+    <net code="70" name="unconnected-(J2-Pin_19-Pad19)" class="Default">
       <node ref="J2" pin="19" pinfunction="Pin_19_19" pintype="passive+no_connect"/>
     </net>
-    <net code="62" name="unconnected-(J2-Pin_20-Pad20)" class="Default">
+    <net code="71" name="unconnected-(J2-Pin_20-Pad20)" class="Default">
       <node ref="J2" pin="20" pinfunction="Pin_20_20" pintype="passive+no_connect"/>
     </net>
-    <net code="63" name="unconnected-(J2-Pin_21-Pad21)" class="Default">
+    <net code="72" name="unconnected-(J2-Pin_21-Pad21)" class="Default">
       <node ref="J2" pin="21" pinfunction="Pin_21_21" pintype="passive+no_connect"/>
     </net>
-    <net code="64" name="unconnected-(J2-Pin_22-Pad22)" class="Default">
+    <net code="73" name="unconnected-(J2-Pin_22-Pad22)" class="Default">
       <node ref="J2" pin="22" pinfunction="Pin_22_22" pintype="passive+no_connect"/>
     </net>
-    <net code="65" name="unconnected-(J2-Pin_23-Pad23)" class="Default">
+    <net code="74" name="unconnected-(J2-Pin_23-Pad23)" class="Default">
       <node ref="J2" pin="23" pinfunction="Pin_23_23" pintype="passive+no_connect"/>
     </net>
-    <net code="66" name="unconnected-(J2-Pin_24-Pad24)" class="Default">
+    <net code="75" name="unconnected-(J2-Pin_24-Pad24)" class="Default">
       <node ref="J2" pin="24" pinfunction="Pin_24_24" pintype="passive+no_connect"/>
     </net>
-    <net code="67" name="unconnected-(J2-Pin_25-Pad25)" class="Default">
+    <net code="76" name="unconnected-(J2-Pin_25-Pad25)" class="Default">
       <node ref="J2" pin="25" pinfunction="Pin_25_25" pintype="passive+no_connect"/>
     </net>
-    <net code="68" name="unconnected-(J2-Pin_26-Pad26)" class="Default">
+    <net code="77" name="unconnected-(J2-Pin_26-Pad26)" class="Default">
       <node ref="J2" pin="26" pinfunction="Pin_26_26" pintype="passive+no_connect"/>
     </net>
-    <net code="69" name="unconnected-(J2-Pin_27-Pad27)" class="Default">
+    <net code="78" name="unconnected-(J2-Pin_27-Pad27)" class="Default">
       <node ref="J2" pin="27" pinfunction="Pin_27_27" pintype="passive+no_connect"/>
     </net>
-    <net code="70" name="unconnected-(J2-Pin_28-Pad28)" class="Default">
+    <net code="79" name="unconnected-(J2-Pin_28-Pad28)" class="Default">
       <node ref="J2" pin="28" pinfunction="Pin_28_28" pintype="passive+no_connect"/>
     </net>
-    <net code="71" name="unconnected-(J2-Pin_29-Pad29)" class="Default">
+    <net code="80" name="unconnected-(J2-Pin_29-Pad29)" class="Default">
       <node ref="J2" pin="29" pinfunction="Pin_29_29" pintype="passive+no_connect"/>
     </net>
-    <net code="72" name="unconnected-(J2-Pin_30-Pad30)" class="Default">
+    <net code="81" name="unconnected-(J2-Pin_30-Pad30)" class="Default">
       <node ref="J2" pin="30" pinfunction="Pin_30_30" pintype="passive+no_connect"/>
     </net>
-    <net code="73" name="unconnected-(J2-Pin_31-Pad31)" class="Default">
+    <net code="82" name="unconnected-(J2-Pin_31-Pad31)" class="Default">
       <node ref="J2" pin="31" pinfunction="Pin_31_31" pintype="passive+no_connect"/>
     </net>
-    <net code="74" name="unconnected-(J2-Pin_32-Pad32)" class="Default">
+    <net code="83" name="unconnected-(J2-Pin_32-Pad32)" class="Default">
       <node ref="J2" pin="32" pinfunction="Pin_32_32" pintype="passive+no_connect"/>
     </net>
-    <net code="75" name="unconnected-(J2-Pin_33-Pad33)" class="Default">
+    <net code="84" name="unconnected-(J2-Pin_33-Pad33)" class="Default">
       <node ref="J2" pin="33" pinfunction="Pin_33_33" pintype="passive+no_connect"/>
     </net>
-    <net code="76" name="unconnected-(J2-Pin_34-Pad34)" class="Default">
+    <net code="85" name="unconnected-(J2-Pin_34-Pad34)" class="Default">
       <node ref="J2" pin="34" pinfunction="Pin_34_34" pintype="passive+no_connect"/>
     </net>
-    <net code="77" name="unconnected-(J2-Pin_35-Pad35)" class="Default">
+    <net code="86" name="unconnected-(J2-Pin_35-Pad35)" class="Default">
       <node ref="J2" pin="35" pinfunction="Pin_35_35" pintype="passive+no_connect"/>
     </net>
-    <net code="78" name="unconnected-(J2-Pin_36-Pad36)" class="Default">
+    <net code="87" name="unconnected-(J2-Pin_36-Pad36)" class="Default">
       <node ref="J2" pin="36" pinfunction="Pin_36_36" pintype="passive+no_connect"/>
     </net>
-    <net code="79" name="unconnected-(J2-Pin_37-Pad37)" class="Default">
+    <net code="88" name="unconnected-(J2-Pin_37-Pad37)" class="Default">
       <node ref="J2" pin="37" pinfunction="Pin_37_37" pintype="passive+no_connect"/>
     </net>
-    <net code="80" name="unconnected-(J2-Pin_38-Pad38)" class="Default">
+    <net code="89" name="unconnected-(J2-Pin_38-Pad38)" class="Default">
       <node ref="J2" pin="38" pinfunction="Pin_38_38" pintype="passive+no_connect"/>
+    </net>
+    <net code="90" name="unconnected-(U1-CT-Pad5)" class="Default">
+      <node ref="U1" pin="5" pinfunction="CT_5" pintype="passive+no_connect"/>
+    </net>
+    <net code="91" name="unconnected-(U1-~{MR}-Pad4)" class="Default">
+      <node ref="U1" pin="4" pinfunction="~{MR}_4" pintype="input+no_connect"/>
     </net>
   </nets>
 </export>

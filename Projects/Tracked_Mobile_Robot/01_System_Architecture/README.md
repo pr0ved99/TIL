@@ -1,12 +1,12 @@
 # 시스템 아키텍처 문서 안내
 
-상태 대조일: **2026-10-11**. 코드·기존 시험 증거에 맞춘 문서 정리이며 새 하드웨어 시험 결과가 아니다.
+상태 대조일: **2026-11-12**. 기존 코드·시험 기록·현재 CAD를 대조한 문서 갱신이며 새 실물 시험 결과가 아니다.
 
 이 폴더는 **현재 설계 계약과 그 결정 근거**를 관리한다. 한국어 `_ko.md`가 정본이고 영문은 보조 참고본이다.
 초기 후보·과거 시험 기록·향후 계획은 해당 시점과 범위를 표시해 보존한다.
 파일명에 Candidate/Plan이 있거나 작성일이 오래됐다는 이유만으로 폐기된 설계로 취급하지 않는다.
 
-**2026-10-27 AI 후속 계획:** [노트북 인식·판단·후속 통합 계획](../docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)을 문서화했다. 상위 연산은 노트북에서 먼저 검증하고 ESP 단일 명령 입구/STM 최종 출력을 유지하는 방향이다. 구현·실측·기존 인터페이스 계약 변경은 없으며 현재 작업은 PCB 3-1 학습 재개다.
+**2026-10-27 AI 후속 계획:** [노트북 인식·판단·후속 통합 계획](../docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)을 문서화했다. 상위 연산은 노트북에서 먼저 검증하고 ESP 단일 명령 입구/STM 최종 출력을 유지하는 방향이다. 구현·실측·기존 인터페이스 계약 변경은 없으며 현재 PCB 학습은 41-1 포트·GND 자료 작성 뒤 41-2 정상 입력·공급 조건표로 이어진다.
 
 ## 현재 구현과 검증 범위
 
@@ -14,19 +14,18 @@
 | --- | --- | --- |
 | 제어 책임 | STM32가 출력·명령 timeout·최종 안전 판단을 소유. ESP32가 production 명령 진입점 | 일반 PC forwarding, CAN transport, STM32 FreeRTOS/LL 전환 |
 | 통신 | ESP GPIO17/18 ↔ STM USART1 PA9/10. USART2 PA2/3는 bench logger | 전체 UART/bridge release의 잔여 증거·시험 |
-| Wi-Fi·제어 준비 | W4 실제 TEL/WS·W5 비구동 PING/DISARM PASS. ARM/CMD parser·ticket·owner 실제 PC15/12/9 PASS, ESP 전체 빌드 성공 사용자 확인 | 상태·기한·ACK/TEL·취소/정지 흐름, main·큐/UART·브라우저 연결과 AC-H 전체·AC-B/S. 새 모듈 보드 실행 미확인 |
+| Wi-Fi·제어 | 현재 앱 `esp32_wifi_link`의 ARM/CMD·owner/state/executor·UART·브라우저 연결. 10/18 지상 주행, 10/20 유실/timeout 기능, 10/24 새 UI·통합 시연 근거 | 전체 오류 조합/시간 수용과 이미지 식별은 각 시험 범위대로 남김 |
 | 상태·TEL | 현재 코드 state=`DISARMED/ARMED/FAULT`, 원인은 별도 `reason`. 적용 PWM·command age·CPS 보고 | 확장 상태머신·저전압 입력/정지·IMU 통합. TEL PWM은 소프트웨어 적용값이며 실측 출력 피드백이 아님 |
-| 모터 매핑 | A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5.9/30 두 동력선 연결 시험과 A 양수 실제 전진 확인 | 최종 기구 장착·양쪽 동시 구동·실주행 방향/거리 검증 |
+| 모터 매핑 | A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5. 지상 전·후진/양방향 회전 및 10/23 1m 실측·추정 기록 확보 | 정밀도·직진성·다양한 하중/노면 수용 |
 | PWM/DIR | PB6/PC8=M1, PB7/PC9=M2. B DIR HIGH=전진/LOW=후진 보정 뒤 양방향 단발 확인, A active DISARM과 A/B 각각10%·3초 구동 관측 | 부하·전류·온도·노이즈·반복 기동 및 전체 T-MOTOR-003 수용 조건 |
-| 엔코더 | PB4/PB5 및 PA0/PA1, 입력별 1 kΩ 직렬+15 kΩ 풀다운 실장. 손회전·단발 구동 CPS 관측 | 구동 중 파형/노이즈와 외부 기준 속도 검증. 1560 counts/rev는 현재 변환 기준이며 실주행 보정과 별개 |
+| 엔코더 | PB4/PB5·PA0/PA1, 1kΩ 직렬+15kΩ 풀다운. CPS/count 및 10/23 지상1m 기록, k=1687/19500mm/count | 외부 기준 속도·노면/하중별 정확도·전체 구동 잡음 검증 |
 | 비상정지 | PC7은 `GPIO_Input`이며 EXTI 구현이 아님. conditioned sense/latch/reset/PWM의 모터 분리 T004 PASS, A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A PARTIAL·정식 T-ESTOP-007 BLOCKED. 기계 정지 시간/거리·rail 동시 계측과 전력단 잔여 수용 조건 |
-| 전원 | F1→S1→+버스바에서 K1·두 XL4015·F2 제어 분기. K1 87→MDD B+, MDD B−→GND 버스바 | 전류·열·단자 편차·rail-off 수용 기준. 현재 관측을 정격 release로 확대하지 않음 |
+| 전원 | F1→S1→+버스바에서 K1·두 XL4015·F2 제어 분기. K1 87→MDD B+, MDD B−→GND. 11/5 종료 후 전원 분리 보고 | 정격·열·단자/전원 전이 등 기존 인수 미결. 사용자 제외한 rail-off 조사를 새 선행으로 복원하지 않음 |
 | IMU | PB8/PB9 I2C, PB1 INT, PC4 RST 배선·무전원 검사 완료 | CubeMX 설정·센서 전원/모드·풀업·실제 통신과 센서값 |
-| CAN | PA11 RX/PA12 TX 예약, 사용자 보유 SN65HVD230 MCU-230 모듈 | 모듈 상세·전원·종단·버스·펌웨어 검증. 모듈 보유는 CAN 동작 검증이 아님 |
-| ADC·적층 | PA4/PB0 진단 후보. 기존 최상층·새 하층 확장 및 분리형 하네스 검토 | 회로 값·보호·핀 순서·실장·구매 미확정. 기본 저전압 경고/정지는 첫 주행 전 준비 |
+| CAN | STM PA11 RX/PA12 TX 예약, MCU-230 및 CANable V2.0 Pro 보유 보고. 현재 운영은 UART | 실제 모듈·전원·종단·버스/펌웨어 검증, ESP GPIO4/5는 제안 |
+| ADC·Shield | 전류2·온도2·PA4/PB0 전압2의 40부품 회로도, TPS/TMUX 포함. 기본 PDF/연결 목록 최신화 | PCB22풋프린트로 18부품 미반영·미배선. 보호·핀/하네스·기구·ADC/잡음/보정 검증. 자동 저전압은 후속 |
 
-**마지막 보드 실행:** ESP `esp32_wifi_link`의 W5 비구동 시험이다. 각 보드 USB 공급·LiPo 미연결로 실행했고 두 USB 분리 완료는 사용자 확인이다.
-STM PA10 pull-up·PONG 시험 hook0U 유지.10/11 새 기초 모듈은 CMake 등록·사용자 빌드 확인 상태이며 새 플래시/보드 실행은 미확인이다.
+**최근 실물 회차:** 11/5 기존 로봇의 짧은 공중 전진·후진에서 외부 전류/온도를 관측했고 전원 분리 완료를 사용자가 보고했다. [관측·한계](../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md). 최신 ESP 앱은 `esp32_wifi_link`이며 10/24 UI 플래시 사용자 보고가 있다. STM/ESP 새 빌드·플래시를 이번 문서 점검에서 수행하지 않았다.
 
 **9/30 로봇 시험 이력:** 당시 ESP는 기판 밖에 두고 GPIO17·18·GND를 연장했다. 두 보드 USB 공급과 XL4015 #1 보드용2P 분리·절연은 최종 로봇 전원 구조와 구분한다.
 별도 `esp32_uart_bridge`의 M2_RUN 수동 hook1U·기존 자동 hook4개0U, 정적30 PASS/1 FAIL(default-off)은 해당 앱의 마지막 시험 소스 이력이다. 현재 Wi-Fi 플래시 앱의 설정이 아니다.
@@ -39,7 +38,7 @@ STM PA10 pull-up·PONG 시험 hook0U 유지.10/11 새 기초 모듈은 CMake 등
 | MCU 원리 복습 | [01 자료 읽기](01_MCU_Datasheet_Reading_Map_ko.md), [02 개요](02_MCU_Introduction_and_Description_ko.md), [03 코어](03_MCU_Core_Memory_Interrupts_ko.md), [04 타이머](04_MCU_Timers_and_Watchdogs_ko.md), [05 통신·I/O](05_MCU_Communication_and_IO_Peripherals_ko.md) | 개념과 초기 후보를 학습. 실제 배정은 06 기준 |
 | 핀·역할·연결 이해 | [06 핀 배정](06_MCU_Pin_Allocation_Candidate_ko.md), [07 ESP 역할](07_ESP32S3_Features_and_Project_Role_ko.md), [11 블록도](11_System_Block_Diagram_and_Interface_Map_ko.md) | 설정·배선·동작 검증을 구분 |
 | 출력·통신 계약 | [08 드라이버](08_Motor_Driver_and_HBridge_Control_ko.md), [09 UART](09_STM32_ESP32_UART_Interface_Contract_ko.md), [16 상태·제어](16_Control_Loop_and_State_Machine_ko.md), [27 명령 변환](27_Production_Open_Loop_Command_Mapper_ko.md) | 현재 구현 계약과 향후 확장 모델을 구분 |
-| 무선 제어 다음 구현 | [ARM/CMD 초기 계약](../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md), [모듈 역할](../03_Firmware/README.md#armcmd-모듈과-실행-경로) | 기초 모듈 검사와 미연결인 제어 실행 경로, AC-H/B/S 조건을 구분 |
+| 무선 제어 구현 이해 | [초기 계약](../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md), [현재 실행 경로](../03_Firmware/README.md#armcmd-모듈과-실행-경로) | 현재 모듈은 연결되어 있다. 초기 입력 지시를 최신 코드에 덮어쓰지 않고 구현/관측 범위를 대조 |
 | 향후 확장 | [10 로드맵](10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md), [13 FreeRTOS](13_FreeRTOS_Task_Architecture_ko.md), [14 CAN](14_CAN_Bus_Integration_Plan_ko.md), [15 LL](15_HAL_to_LL_Driver_Migration_Strategy_ko.md), [17 주행·오도메트리](17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) | 목표·진입 조건이며 구현 완료 목록이 아님 |
 | 전원·고장·선택 이유 | [12 전원](12_Power_Distribution_and_Safety_Architecture_ko.md), [18 고장 정책](18_Fault_Model_and_Safety_Cases_ko.md), [19 ADR](19_Architecture_Decision_Record_ko.md), [20 드라이버 비교](20_Motor_Driver_Selection_Comparison_ko.md) | 정책과 구현 여부, 당시 선택 이력을 구분 |
 | 물리 비상정지 | [21 구조](21_Physical_EStop_Architecture_ko.md), [22 위험 분석](22_Physical_EStop_Hazard_Analysis_ko.md), [23 FMEA](23_Physical_EStop_FMEA_ko.md), [24 요구사항](24_Physical_EStop_Safety_Requirements_ko.md), [25 회로](25_Physical_EStop_RevB_Circuit_Architecture_ko.md), [26 부품](26_Physical_EStop_Component_and_Rating_Selection_ko.md) | 각 Step 종료 기록은 당시 상태. 최신 시험 범위는 아래 근거와 대조 |

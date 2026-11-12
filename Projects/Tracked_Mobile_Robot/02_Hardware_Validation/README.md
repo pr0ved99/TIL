@@ -2,9 +2,9 @@
 
 이 폴더는 궤도형 모바일 로봇의 전원, 배선, 모터 드라이버, 엔코더, 초기 구동을 실제로 검증한 기록을 남기는 공간이다.
 
-**상태 대조: 2026-10-11.** 단일 모터의 후속 관측은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md),
-비구동 Wi-Fi 통신은 [report34](../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다.
-재개 연결·전원은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에서 확인하며 문서 정리를 새 실측으로 기록하지 않는다.
+**상태 대조: 2026-11-12.** 10/18 지상 주행·10/20 유실/timeout 기능·10/23 1m 거리 기록·10/24 시연과 11/5 외부 전류/온도 관측까지 [최신 검증표](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에 연결한다. 아래 단계별 체크리스트는 초기 시험과 각 회차 기록이다. 완료 시험을 자동 반복하지 않는다.
+
+11/5 전원 분리 보고 이후 새 실물 실행은 없다. 전체 MVP PARTIAL/OPEN, T005A PARTIAL/T007 BLOCKED와 정식 열적 수용 미완료를 유지한다. [재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md)을 따른다.
 
 시스템 아키텍처 문서가 "어떻게 설계할 것인가"를 다룬다면, 이 폴더는 "실제로 안전하게 동작하는지 어떻게 확인했는가"를 다룬다.
 

@@ -2,11 +2,13 @@
 
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-12 (sampling/filter learning closeout; next: port and power conditions).
+Last updated: 2026-11-13 (port/power/fault notes through41-5 and material freshness closeout; next41-6 protection paths and verification criteria).
 
-## Current Checkpoint — 2026-11-12 sampling/filter closeout
+## Current Checkpoint — 2026-11-12 port inventory and material audit
 
-- 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.
+- 11/13 마감: 41-1~5 포트/정상조건/전원 조합/차단·복귀/고장·오접속 자료와 기본 도면·보고서/자료 최신화 누락 수정을 마감한다. 게시 결과는 [마감 영수증](assets/logs/pcb_design/2026-11-13_ports_and_materials_closeout/publication.json)을 따른다. NTC 단선/단락은 높은/낮은 전압 후보, 전압 RAW선 단선은 실제0V와중복, 전류 OUT선 단선은불확정이다. 공통GND 역접속과신호 저항 앞 단락의 에너지 경로를 구분한다. 현재41-5 필기/질문 뒤41-6 보호 경로·검증 기준으로 진행한다. 사용자 수기/이해·실측 완료는 미보고다. [고장 해석·계산](assets/logs/pcb_design/2026-11-12_port_inventory/fault_conditions.json).
+- 11/12 Shield 재검사: 40부품/91net(활성22), BOM40행 일치, 기존 설정 ERC0/0·무시4규칙 유지. PCB22풋프린트/회로도 대조21건/미배선32/구리0은 남은 설계 단계이며 전체 DRC PASS가 아니다.
+- 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **해당 마감 뒤 포트·전원 조건표를 시작했으며 현재41-5 자료 작성 후 다음은 41-6**다. 이후에도 새 정현파/PWM/FFT 실습을 추가하지 않는다.
 - A/B의 명목 응답 상한 극한은 약1.975/1.487초,0.9Hz ADC 전압 진폭비는10.93%/69.86%이며 모두출력1Hz에서0.1Hz로 보인다. G는 진폭이고 alias는 관측 주파수다. 코드 평균 후 비선형 온도 환산을 적용했으며 실제 정확도/응답 PASS가 아니다.
 - 사용자37-2 수기·τs/τf 이해 보고를 반영한다. 40-2 부분 이해 및 마지막 B안 설명 이해 보고를 전체 수기/모든 개념 이해로 확대하지 않는다. 기본 수집·평균·환산 후보에 FFT 잡음 식별/자동 필터 조정은 포함하지 않는다.
 - 전압·전류2kHz/200개, 온도2kHz/2,000개, 기존100Hz DC시험안은 구현 전 비교안이다. 실제 잡음/보정 잔차/전원 보호 데이터는 남아 있다.
