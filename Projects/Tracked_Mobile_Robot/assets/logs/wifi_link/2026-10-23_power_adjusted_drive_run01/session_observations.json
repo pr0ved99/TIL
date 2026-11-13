@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-23",
+  "source": "user reports in this work block; final correction takes precedence",
+  "robot_mass_kg": 3.25,
+  "superseded_mass_reports_kg": [
+    3.2,
+    3.1
+  ],
+  "scale_model_and_accuracy": null,
+  "included_battery_or_payload_breakdown": "not explicitly itemized",
+  "mass_not_assigned_retroactively_to_older_runs": true,
+  "board_connected_supply_voltage_v": 5.02,
+  "voltage_probe_points_not_restated": true,
+  "final_no_load_voltage_v": null,
+  "current_limit_setting_a": null,
+  "latest_log_end_state": "IDLE / DISARMED / DISARM; command/PWM/CPS zero; counts31912/37642 fixed2.9 STM seconds",
+  "final_power_disconnected_confirmed": false,
+  "closeout_preference": "정리 = documentation + progress/handoff updates + scoped Git commit/push + Calendar updates + Notion updates"
+}

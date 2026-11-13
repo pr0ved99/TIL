@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-20",
+  "revision": "14t_pitch_span_48_1_to_48_3_mm",
+  "status": "CORRECTED_GEOMETRY_INITIAL_NOT_GROUND_CALIBRATED",
+  "source": "User confirmed actual sprocket14 teeth after reporting5-pitch span48.1~48.3mm",
+  "reported": {
+    "link_pitch_mm_approx": 9.64,
+    "link_pitch_mm_range": [
+      9.62,
+      9.66
+    ],
+    "five_pitch_span_mm_range": [
+      48.1,
+      48.3
+    ],
+    "link_count_one_track": 61,
+    "track_loop_mm_approx": 579,
+    "track_thickness_mm_approx": 5
+  },
+  "previously_confirmed": {
+    "sprocket_teeth": 14,
+    "encoder_counts_per_output_rev": 1560
+  },
+  "nominal_selection": "9.64mm is midpoint of observed9.62~9.66mm span readings, not a least-squares distance calibration",
+  "measurement_basis": {
+    "pitch": "Same repeated feature1st to6th consecutive link;5 intervals on straight track",
+    "teeth": "User actual sprocket tooth count:14",
+    "cpr": "Existing2026-07-30 user-reported50 revolutions per motor/direction1559.96~1560.02counts/rev"
+  },
+  "supersedes": {
+    "path": "assets/logs/wifi_link/2026-10-20_track_pitch_initial_model/geometry_model.json",
+    "sha256": "dce437f67b445834d0494c73d3b93f910991b1c54bb84150049b3f027b9cbf3e",
+    "old_sprocket_teeth": 12,
+    "old_pitch_mm_approx": 9.5,
+    "reason": "Actual hardware tooth count corrected; multi-link pitch measurement refined; original input and analyses retained"
+  },
+  "assumptions": [
+    "Direct output shaft to sprocket",
+    "One tooth advances one link pitch",
+    "Same geometry provisionally used for both sides; no separately calibrated ground coefficients"
+  ],
+  "arithmetic": {
+    "nominal_advance_mm_per_rev": 134.96,
+    "advance_mm_per_rev_range": [
+      134.68,
+      135.24
+    ],
+    "nominal_mm_per_count": 0.08651282051282051,
+    "rational_from_nominal": "1687/19500",
+    "mm_per_count_range": [
+      0.08633333333333333,
+      0.0866923076923077
+    ],
+    "ideal_counts_per_1m_nominal": 11558.980438648488,
+    "nominal_pitch_line_loop_mm_for61links": 588.04
+  },
+  "manual_straight_upper_track_comparison": {
+    "100mm": {
+      "counts_left": "1153",
+      "counts_right": "1162",
+      "nominal_left_mm": 99.74928205128205,
+      "nominal_right_mm": 100.52789743589743,
+      "nominal_mean_mm": 100.13858974358975,
+      "nominal_mean_error_mm": 0.1385897435897436,
+      "nominal_mean_error_percent": 0.1385897435897436,
+      "from_pitch_reading_range_mm": [
+        99.93083333333334,
+        100.34634615384616
+      ]
+    },
+    "150mm": {
+      "counts_left": "1736",
+      "counts_right": "1744",
+      "nominal_left_mm": 150.18625641025642,
+      "nominal_right_mm": 150.87835897435897,
+      "nominal_mean_mm": 150.53230769230768,
+      "nominal_mean_error_mm": 0.5323076923076923,
+      "nominal_mean_error_percent": 0.3548717948717949,
+      "from_pitch_reading_range_mm": [
+        150.22,
+        150.8446153846154
+      ]
+    }
+  },
+  "limits": [
+    "Pitch reading range is user-observed and not a statistical uncertainty bound",
+    "Reported579mm loop reference/independent measurement remains unresolved;61*9.64=588.04mm refers to link-pitch loop and is a different provisional geometry reference",
+    "Track motion on upper straight run is not ground chassis travel",
+    "No raw telemetry/freshness metadata accompanies manual checkpoints; no final accuracy certification",
+    "Physical power/reassembly state remains user-operated; no new motion test performed by Codex"
+  ]
+}

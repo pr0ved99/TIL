@@ -16,18 +16,23 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 
 ## 3. Primary Goal
 
-1차 MVP에서는 로봇이 PC 또는 ESP32 상위 제어기로부터 속도 명령을 받아 안전하게 전진, 후진, 회전하고, 엔코더 기반 속도와 이동량을 계산하게 한다. BNO08x IMU 기반 회전 검증은 하위 구동계와 엔코더 telemetry가 안정된 뒤의 후속 V-cycle로 진행한다.
+1차 MVP는 **무선 수동 주행·정지와 엔코더 이동량을 검증할 수 있는 궤도형 하위 구동 플랫폼**이다. ESP32-S3를 통해 STM32가 모터를 제어하고 속도·이동량을 전달한다. GM-1312 외부 온도로 한정된 주행 조건의 발열을 관측한다.
+
+2026-10-19 재판단: 전류 정량 측정·전류/전압 ADC 모니터링은 별도 post-MVP 기능이다. 이를 먼저 완성해야 기존 주행 인수를 끝낼 수 있도록 한 범위를 바로잡았다. IMU는 MVP 이후 첫 기본 검증으로 유지한다. [검증 매트릭스](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)가 세부 기준이다.
 
 ## 4. MVP Scope
 
 - STM32가 좌/우 DC 모터를 PWM으로 제어한다.
 - 엔코더로 좌/우 모터 속도를 측정한다.
 - open-loop PWM command와 엔코더 속도 추정·telemetry 구조를 만든다.
-- UART 또는 USB Serial로 명령을 수신한다.
+- ESP32-S3 Wi-Fi/PAGE → UART → STM32 경로로 명령을 수신한다. PC 제어도 ESP32를 경유하며 STM32 USART2는 bench-only다.
 - 3S LiPo 전원계를 퓨즈, 스위치, 저전압 알람과 함께 운용한다.
 - 궤도 섀시에서 저속 전진, 후진, 제자리 회전을 검증한다.
+- 외부 GM-1312로 모터·드라이버·전원부의 온도를 기록해 선언한 부하·시간 조건에서 판정한다. 실시간 온도 telemetry는 이 범위에 포함하지 않는다.
 
 ## 5. Out of Scope for MVP
+
+- 정량 전류 측정과 PC0/PA4 기반 전류·전압 ADC/웹 모니터링; 후보·보정 검증 계획은 별도 후속 단계로 보존
 
 - CAN 통신의 로봇 구동 통합
 - FreeRTOS 기반 전체 firmware 구조
@@ -40,6 +45,9 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 실외 주행
 - BNO08x firmware integration
 - closed-loop PID speed control 고도화
+- 자동 과전류/저전압 정지, PA4/PB0 이중 rail 자동 진단
+- 온보드 온도 센서와 상시 온도 telemetry
+- 전류 파형의 순간 피크/RMS 계측, 장시간 내구성·안전 인증
 
 ## 6. System Boundary
 
@@ -54,6 +62,7 @@ STM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바�
 - 궤도차량 섀시
 - BNO08x IMU hardware placement candidate; firmware integration은 첫 MVP에서 제외
 - UART / USB Serial 통신
+- 외부 검증 장비 GM-1312; 로봇에 내장된 온도 센서와 구분
 
 초기 시스템에서 제외한다.
 
@@ -96,9 +105,12 @@ MVP를 막지 않기 위해 초기 시스템에서 제외할 뿐, 후속 phase�
 6. encoder 전압 안전성과 한쪽 motor no-load
 7. encoder count와 speed telemetry
 8. 좌우 drivetrain과 저속 chassis 주행
-9. fault stop와 1 m system acceptance
-10. requirement-to-evidence audit와 portfolio release
-11. 후속 V-cycle: PID, IMU, FreeRTOS, CAN, LL, ROS2와 LiDAR
+9. 한정된 저속 주행의 GM-1312 외부 온도 관측
+10. 잔여 fault stop와 1 m system acceptance
+11. requirement-to-evidence audit와 portfolio release
+12. 첫 후속 V-cycle: BNO08x 통신·축·시각 검증 → 짧은 주행의 encoder/IMU 비교
+13. 별도 후속: 전류·전압 ADC 회로/수집/보정·브라우저 로그와 정량 부하 분석
+14. 이후 PID, FreeRTOS, CAN, LL, ROS2와 LiDAR 확장
 
 상세 Gate와 현재 상태는 [`../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md`](../docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)를 따른다.
 

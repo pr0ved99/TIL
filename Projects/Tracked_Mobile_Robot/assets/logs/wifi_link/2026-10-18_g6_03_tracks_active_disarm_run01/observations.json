@@ -1,0 +1,281 @@
+{
+  "test": "G6-03_ACTIVE_DISARM_PWM",
+  "status": "PASS",
+  "scope": "Both motors mounted, tracks installed and lifted, connected to M1/M2; STM UART/DIR/PWM/PC7 and TEL CPS; no calibrated mechanical stopping time or distance",
+  "checks": {
+    "command_order_arm_zero_forward_disarm": true,
+    "commands_ack_once": true,
+    "seq_contiguous": true,
+    "clean_complete_uart": true,
+    "nonzero_tel_forward": true,
+    "pwm_active_before_disarm": true,
+    "pwm_ten_percent": true,
+    "forward_dir": true,
+    "no_pwm_after_disarm_ack": true,
+    "stopped_observed_over_3s": true,
+    "stopped_tel": true,
+    "pc7_low": true,
+    "no_fault_errors": true,
+    "command_timeout_300": true,
+    "both_motors_forward_cps_seen": true,
+    "post_disarm_cps_zero_stays_zero": true,
+    "zero_cps_observed_over_5s": true,
+    "esp_log_matches_capture": true
+  },
+  "capture": "2026-10-18_G6_03_TRACKS_ACTIVE_DISARM_10PCT_run01.sr",
+  "capture_sha256": "eca8b6005afc8eca3066c68eccf6dcd3b1a5d64476e77dad0bd217d1ede9e0c0",
+  "esp_log_sha256": "8681ad94313769389c88c3a90ebc1ee436aa1db396e7610271dea511ef5e8aa2",
+  "user_visual_stop_confirmation": "User confirmed both motors stopped after Enter/DISARM.",
+  "sample_rate_hz": 4000000.0,
+  "duration_s": 21.761024,
+  "initial_partial_uart": [],
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 88,
+    "DISARM": 1
+  },
+  "ack_count": 90,
+  "tel_count": 218,
+  "command_groups": [
+    {
+      "key": [
+        "ARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 2.36609025,
+        "end_s": 2.3677395555555556,
+        "text": "ARM,seq=4005823350",
+        "kind": "ARM",
+        "fields": {
+          "seq": "4005823350"
+        }
+      },
+      "last": {
+        "start_s": 2.36609025,
+        "end_s": 2.3677395555555556,
+        "text": "ARM,seq=4005823350",
+        "kind": "ARM",
+        "fields": {
+          "seq": "4005823350"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 41,
+      "first": {
+        "start_s": 2.46613,
+        "end_s": 2.4709043055555555,
+        "text": "CMD,seq=4005823351,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823351",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 6.84885775,
+        "end_s": 6.853632055555556,
+        "text": "CMD,seq=4005823391,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823391",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "100",
+        "0"
+      ],
+      "count": 47,
+      "first": {
+        "start_s": 6.966185,
+        "end_s": 6.971133055555556,
+        "text": "CMD,seq=4005823392,vx_mmps=100,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823392",
+          "vx_mmps": "100",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 12.325199,
+        "end_s": 12.330146805555556,
+        "text": "CMD,seq=4005823438,vx_mmps=100,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823438",
+          "vx_mmps": "100",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "DISARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 12.38552525,
+        "end_s": 12.387435055555557,
+        "text": "DISARM,seq=4005823439",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "4005823439"
+        }
+      },
+      "last": {
+        "start_s": 12.38552525,
+        "end_s": 12.387435055555557,
+        "text": "DISARM,seq=4005823439",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "4005823439"
+        }
+      }
+    }
+  ],
+  "pwm": {
+    "D4": {
+      "pulses": 103074,
+      "first_rise_s": 6.971236,
+      "last_fall_s": 12.3874385,
+      "mean_frequency_hz": 19030.510751800997,
+      "mean_duty_percent": 10.002525295769093,
+      "low_tail_s": 9.3735855,
+      "last_fall_after_disarm_frame_end_ms": 0.0034444444434456045,
+      "max_pulse_gap_us": 52.75,
+      "high_samples_last_50ms_before_disarm": 20010,
+      "high_samples_after_disarm_ack": 0,
+      "dir_levels_during_pwm": {
+        "D2": [
+          0
+        ],
+        "D3": [
+          1
+        ]
+      }
+    },
+    "D7": {
+      "pulses": 103074,
+      "first_rise_s": 6.971236,
+      "last_fall_s": 12.3874385,
+      "mean_frequency_hz": 19030.510751800997,
+      "mean_duty_percent": 10.002465290568951,
+      "low_tail_s": 9.3735855,
+      "last_fall_after_disarm_frame_end_ms": 0.0034444444434456045,
+      "max_pulse_gap_us": 52.75,
+      "high_samples_last_50ms_before_disarm": 20010,
+      "high_samples_after_disarm_ack": 0,
+      "dir_levels_during_pwm": {
+        "D2": [
+          0
+        ],
+        "D3": [
+          1
+        ]
+      }
+    }
+  },
+  "disarm": {
+    "start_s": 12.38552525,
+    "end_s": 12.387435055555557,
+    "text": "DISARM,seq=4005823439",
+    "kind": "DISARM",
+    "fields": {
+      "seq": "4005823439"
+    }
+  },
+  "disarm_ack": {
+    "start_s": 12.3875275,
+    "end_s": 12.391337805555557,
+    "text": "ACK,seq=4005823439,type=DISARM,t_ms=1762014",
+    "kind": "ACK",
+    "fields": {
+      "seq": "4005823439",
+      "type": "DISARM",
+      "t_ms": "1762014"
+    }
+  },
+  "first_disarmed_tel": {
+    "start_s": 12.43378275,
+    "end_s": 12.449278055555556,
+    "text": "TEL,t_ms=1762061,state=DISARMED,reason=DISARM,command_age_ms=104,last_seq=4005823439,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=440,right_cps=390,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "1762061",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "104",
+      "last_seq": "4005823439",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "440",
+      "right_cps": "390",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "stopped_tel_observation_s": 9.2811545,
+  "first_post_disarm_zero_cps_tel": {
+    "start_s": 12.633315,
+    "end_s": 12.648473555555556,
+    "text": "TEL,t_ms=1762261,state=DISARMED,reason=DISARM,command_age_ms=304,last_seq=4005823439,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "1762261",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "304",
+      "last_seq": "4005823439",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "zero_cps_tail_s": 9.081959,
+  "moving_cps_ranges": {
+    "left_cps": [
+      0,
+      490
+    ],
+    "right_cps": [
+      0,
+      450
+    ]
+  },
+  "limits": [
+    "Initial partial fragments, if present, are retained separately; consult clean_complete_uart for framing checks.",
+    "No browser key/pointer timestamps: Enter-to-stop latency and trigger identity are not independently measured.",
+    "Capture proves nonzero CMD directly followed by DISARM without an intervening zero CMD.",
+    "Probe identities follow the instructed map; CPS is encoder evidence, not a measured physical stopping time/distance. User confirmed both motors visibly stopped after Enter/DISARM."
+  ]
+}

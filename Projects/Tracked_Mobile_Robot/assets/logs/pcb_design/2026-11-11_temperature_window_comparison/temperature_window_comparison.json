@@ -1,0 +1,180 @@
+{
+  "purpose": "40-3 nominal comparison of 1 s / recent 0.5 s averages with 1 Hz output",
+  "source": "09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md sections 3,5,7",
+  "assumptions": {
+    "fs_Hz": 2000,
+    "VEXC_V": 3.3,
+    "VREF_V": 3.3,
+    "R_fixed_ohm": 10000.0,
+    "R_series_ohm": 1000.0,
+    "C_F": 1e-07,
+    "t_output_s": "integer seconds",
+    "model": "instant ideal resistor substitution at t_change; capacitor then settles with final Thevenin R",
+    "conversion": "average ideal ADC q -> R -> existing log(R)-linear temperature LUT",
+    "band_C": 0.75,
+    "basis": "1.0 C allowance minus illustrative reference bound 0.25 C; zero other DUT errors",
+    "half_second_window": "latest 1000 samples ending each integer second; earlier half second excluded from published mean",
+    "omitted": [
+      "ADC quantization and errors",
+      "VEXC/VREF drift",
+      "noise",
+      "component tolerance",
+      "trigger/processing/output jitter",
+      "switch bounce",
+      "NTC thermal lag"
+    ],
+    "hardware_or_spice_run": false,
+    "interpretation": "Model timing only, not hardware PASS or finalized acquisition settings"
+  },
+  "conditions": [
+    {
+      "N": 2000,
+      "window_s": 1.0,
+      "output_rate_Hz": 1,
+      "raw_interval_ms": 0.5,
+      "mean_age_ms": 499.75,
+      "gain_at_Hz": {
+        "0": 1.0,
+        "0.1": 0.983631647128489,
+        "0.5": 0.6366198378174329,
+        "0.9": 0.10929244119226728,
+        "1.0": 0.0
+      },
+      "directions": [
+        {
+          "step_C": [
+            25,
+            50
+          ],
+          "external_tau_ms": 0.39313635399731395,
+          "first_output_pass_latest_change_s": 0.02535183677965684,
+          "latency_supremum_s": 1.9746481632203432,
+          "margin_to_2s_ms": 25.351836779656843,
+          "swept_max_latency_s": 1.97455,
+          "phase_sweep_resolution_s": 0.0001,
+          "second_output_max_error_C": 0.005074699931896021,
+          "example_step_at_s": 0.25025,
+          "example_outputs": {
+            "1.0": {
+              "voltage_V": 1.1382635813797333,
+              "temperature_C": 42.921901243317016
+            },
+            "2.0": {
+              "voltage_V": 0.9673499681911358,
+              "temperature_C": 50.0
+            },
+            "3.0": {
+              "voltage_V": 0.9673499681911358,
+              "temperature_C": 50.0
+            }
+          }
+        },
+        {
+          "step_C": [
+            50,
+            25
+          ],
+          "external_tau_ms": 0.6,
+          "first_output_pass_latest_change_s": 0.033404000489242344,
+          "latency_supremum_s": 1.9665959995107576,
+          "margin_to_2s_ms": 33.40400048924234,
+          "swept_max_latency_s": 1.96655,
+          "phase_sweep_resolution_s": 0.0001,
+          "second_output_max_error_C": 0.007856386007063065,
+          "example_step_at_s": 0.25025,
+          "example_outputs": {
+            "1.0": {
+              "voltage_V": 1.4789395178602707,
+              "temperature_C": 30.613662102627522
+            },
+            "2.0": {
+              "voltage_V": 1.65,
+              "temperature_C": 25.0
+            },
+            "3.0": {
+              "voltage_V": 1.65,
+              "temperature_C": 25.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "N": 1000,
+      "window_s": 0.5,
+      "output_rate_Hz": 1,
+      "raw_interval_ms": 0.5,
+      "mean_age_ms": 249.75,
+      "gain_at_Hz": {
+        "0": 1.0,
+        "0.1": 0.9958927393390062,
+        "0.5": 0.9003164087171739,
+        "0.9": 0.6986468177850711,
+        "1.0": 0.6366200341670445
+      },
+      "directions": [
+        {
+          "step_C": [
+            25,
+            50
+          ],
+          "external_tau_ms": 0.39313635399731395,
+          "first_output_pass_latest_change_s": 0.512579335424308,
+          "latency_supremum_s": 1.487420664575692,
+          "margin_to_2s_ms": 512.579335424308,
+          "swept_max_latency_s": 1.48735,
+          "phase_sweep_resolution_s": 0.0001,
+          "second_output_max_error_C": 0.0,
+          "example_step_at_s": 0.25025,
+          "example_outputs": {
+            "1.0": {
+              "voltage_V": 0.9673499681911358,
+              "temperature_C": 50.0
+            },
+            "2.0": {
+              "voltage_V": 0.9673499681911358,
+              "temperature_C": 50.0
+            },
+            "3.0": {
+              "voltage_V": 0.9673499681911358,
+              "temperature_C": 50.0
+            }
+          }
+        },
+        {
+          "step_C": [
+            50,
+            25
+          ],
+          "external_tau_ms": 0.6,
+          "first_output_pass_latest_change_s": 0.516494862487654,
+          "latency_supremum_s": 1.483505137512346,
+          "margin_to_2s_ms": 516.494862487654,
+          "swept_max_latency_s": 1.48345,
+          "phase_sweep_resolution_s": 0.0001,
+          "second_output_max_error_C": 0.0,
+          "example_step_at_s": 0.25025,
+          "example_outputs": {
+            "1.0": {
+              "voltage_V": 1.65,
+              "temperature_C": 25.0
+            },
+            "2.0": {
+              "voltage_V": 1.65,
+              "temperature_C": 25.0
+            },
+            "3.0": {
+              "voltage_V": 1.65,
+              "temperature_C": 25.0
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "validation": {
+    "direct_sample_mean_max_abs_error_q": 5.551115123125783e-17,
+    "phase_sweep": "10000 phases per direction and window",
+    "boundary": "bisection of first-output acceptance; 2 s result within band throughout sweep"
+  }
+}

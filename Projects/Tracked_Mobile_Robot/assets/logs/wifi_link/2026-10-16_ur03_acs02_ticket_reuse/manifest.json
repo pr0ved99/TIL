@@ -1,0 +1,29 @@
+{
+  "test": "UR03_ACS02_VALID_A_TICKET_FROM_B",
+  "state": "REVISION_3_RUN04_VALID_TICKET_SUBCASE_PASS",
+  "saved_main_normalized_sha256": "c6919bccf50713ebce9344ae44a98d7cecb35adbd1b0c4197258cbfd78842515",
+  "files_sha256": {
+    "console_test.js": "a443e191f847b4716cc80ba91b18fcba24b7350c691232074b83bd9646e571b6",
+    "check_console_test.js": "022bcc4f939a77acc8cd75045915b4dbdddc668ca7918734859b0160f23ccc9e",
+    "pc_check.json": "51fffd3257ceba50c062c82a327eeecdafc346b008252c6581f4c4c1f5f3a2cf"
+  },
+  "pc_execution": "functions.exec V8 new Function(page, helper, check_console_test.js); saved PAGE extracted from C string initializer",
+  "constraints": [
+    "No automatic ARM; user clicks page ARM",
+    "One copied CMD attempt from B before forwarding the identical ticket via A",
+    "Zero-only; minimum CMD gap 60ms for probe vs server 50ms minimum",
+    "Held CMD discarded on deadline/focus/identity/stop failure",
+    "6-second active test limit; 3.5-second stop confirmation wait",
+    "Application checks are not a UART or PWM PASS"
+  ],
+  "capture_name": "2026-10-16_UR03_ACS02_VALID_TICKET_PWM_run04.sr",
+  "revision_reason": "Revision 3 removes only the arbitrary 70 ms cap, retains PAGE 50 ms transit margin plus 5 ms guard and exact deadline checks. Late B replies are recorded but cannot release held CMD. No firmware change.",
+  "pc_checks_passed": 19,
+  "previous_preparation": "run02_preparation/",
+  "negative_control": "Revision 2 fails new 79.8 ms response test; revision 3 passes all 19.",
+  "latest_observations": "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/observations.json",
+  "next_action": "Valid A ticket from B subcase passed with browser JSON plus matching UART and sampled PWM. No repeat needed. Other acceptance subcases remain separately pending.",
+  "next_candidate_status": "NOT_IMPLEMENTED_NOT_NEEDED_FOR_PASSED_SUBCASE",
+  "latest_browser_report": "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/browser_report.json",
+  "capture_provenance": "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/capture_provenance.json"
+}

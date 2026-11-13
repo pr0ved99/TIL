@@ -1,0 +1,110 @@
+{
+  "date": "2026-11-08",
+  "timezone": "Asia/Seoul",
+  "readback_checks": [
+    {
+      "service": "calendar",
+      "id": "1r4mgfjqv4o0n1tea1e3m3to80",
+      "preserved": true,
+      "unexpected_changes": [],
+      "marker": true
+    },
+    {
+      "service": "calendar",
+      "id": "q8f53ivlrs6oab2gbov42m7m9k",
+      "preserved": true,
+      "unexpected_changes": [],
+      "marker": true
+    },
+    {
+      "service": "notion",
+      "id": "411a7326-f87b-8029-9d49-ff79364f13ac",
+      "chars": 11868,
+      "preserved_tags": true,
+      "before_tags": 2,
+      "after_tags": 2,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "411a7326-f87b-802b-ab27-c2b01ae0727b",
+      "chars": 5508,
+      "preserved_tags": true,
+      "before_tags": 3,
+      "after_tags": 3,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "chars": 35187,
+      "preserved_tags": true,
+      "before_tags": 5,
+      "after_tags": 5,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "3fca7326-f87b-8139-b949-d339de80d870",
+      "chars": 12092,
+      "preserved_tags": true,
+      "before_tags": 1,
+      "after_tags": 1,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "chars": 20347,
+      "preserved_tags": true,
+      "before_tags": 1,
+      "after_tags": 1,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "chars": 31353,
+      "preserved_tags": true,
+      "before_tags": 3,
+      "after_tags": 3,
+      "current": true
+    },
+    {
+      "service": "notion",
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "chars": 132544,
+      "preserved_tags": true,
+      "before_tags": 1,
+      "after_tags": 1,
+      "current": true
+    }
+  ],
+  "calendar": [
+    {
+      "id": "1r4mgfjqv4o0n1tea1e3m3to80",
+      "title": "[TMR] 실적 · 14장 방전·37-2 입력 정착 관측",
+      "start": "2026-11-07T00:00:00",
+      "end": "2026-11-08T00:00:00",
+      "url": "https://www.google.com/calendar/event?eid=MXI0bWdmanF2NG8wbjF0ZWExZTNtM3RvODAgZXloMTI1QG0",
+      "description_marker": "TMR-CLOSEOUT-20261108"
+    },
+    {
+      "id": "q8f53ivlrs6oab2gbov42m7m9k",
+      "title": "[TMR] 학습 마감 · 37-2 필기·2차 RC 재개점",
+      "start": "2026-11-08T00:00:00",
+      "end": "2026-11-09T00:00:00",
+      "url": "https://www.google.com/calendar/event?eid=cThmNTNpdmxyczZvYWIyZ2JvdjQybTdtOWsgZXloMTI1QG0",
+      "description_marker": "TMR-CLOSEOUT-20261108"
+    }
+  ],
+  "notion_skill": "notion:knowledge-capture",
+  "notion_37_2_url": "https://app.notion.com/p/411a7326f87b80299d49ff79364f13ac",
+  "notion_14_url": "https://app.notion.com/p/411a7326f87b802bab27c2b01ae0727b",
+  "notes": [
+    "7 existing Notion pages read back; existing image/child tags preserved",
+    "2 existing Calendar events: only summary/description changed; other returned fields identical",
+    "14-page negative exponent was already correct when reread before editing; Codex corrected stale observation status and typos",
+    "No completion claim for understanding, hardware testing, firmware build/flash, or actual ADC implementation"
+  ]
+}

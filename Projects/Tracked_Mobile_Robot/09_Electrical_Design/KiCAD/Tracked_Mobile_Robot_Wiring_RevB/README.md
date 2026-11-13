@@ -1,0 +1,90 @@
+# Tracked Mobile Robot Wiring RevB-WIP
+
+## 최신 열람 PDF — 2026-11-12
+
+[현재 MVP 기능 회로도 PDF](exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf)를 이 폴더의 저장 `.kicad_sch`에서 다시 생성했다. 48부품과 11/7 표기 정정이 반영되어 있으며, 11/7 게시 PDF와 본문·렌더링이 일치한다. 회로도 원본과 과거 날짜별 체크포인트는 보존했다. [내보내기 확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
+
+회로도 변경 후에는 위 고정 경로의 PDF도 함께 갱신한다. 아래 8월 PDF와 날짜별 기록은 당시 상태이며, 최신 도면을 대신하지 않는다.
+
+11/12 전체 자료 점검에서 [기본 검사 보고서](reports/README.md)도 추가했다. 현재 저장본의48부품/35net은11/7검토본과 같고 ERC오류0/경고0·기존 무시4규칙을 유지한다. 실제 하네스/부품 정격 수용은 별도다.
+
+## 2026-11-07 부품 표기·상태 최신화
+
+[설계29](../../29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md)에 따라 S0/S2/K1/K2/F1/F2/U1/R13/R14/J13/J17/J19와출력net 이름을 갱신했다. [최신 PDF·변경 전 백업·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md).48부품·전체35net의핀 연결/타입 보존·ERC0/0. K2 기능 핀과 실물 핀 대응을 표시했다. F1 series/F2 exact SKU/정격 release는OPEN. 과거8월 export와하위RevC는역사적자료로보존하며 현재 실물 전면 as-built 승인은 아니다.
+
+이 폴더는 `RevA` 기능 배선을 복사한 뒤, STM32 reset 구간에서 MDD10A 입력이
+부동되지 않도록 네 motor-control 신호에 외부 `10 kΩ` pull-down을 반영한
+`RevB-WIP` 체크포인트다.
+
+## 2026-11-06 기능별 재배치 완료
+
+사용자 위임으로 기존48부품·35net의 연결을 보존하며 A2 한 장의9개 구역으로 정돈했다. 전원·모터·엔코더·E-stop 제어/감지·UART·테스트 포인트를 모으고 라벨 겹침과 필드 방향을 정리했다. [적용 PDF](../../../assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/applied.pdf) · [원본 백업·검증](../../../assets/logs/pcb_design/2026-11-06_mvp_schematic_layout_review/README.md).
+
+KiCad10.0.5와 기존 프로젝트 설정에서 변경 전후 ERC 오류0/경고0이고, 전체 핀 연결·부품 정보·UUID·내장 심벌 정의가 동일하다. 이번은 기존 전기 내용의 시각 정돈이며 이후 실물 변경을 모두 반영한 최종 도면 승인은 아니다. **아래 상태표와 Evidence Boundary는8월 체크포인트 당시 기록**이며, 현재 실물 상태는 [최신 인수인계](../../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다. 도면의 원래 상태표에도 역사적 기록임을 표시했다.
+
+## Checkpoint Status — 2026-08-12~18 당시
+
+| Item | Result |
+| --- | --- |
+| Revision | `RevB-WIP` |
+| Date | `2026-08-12~18` |
+| Schematic pull-down integration | `PASS` |
+| KiCad ERC | `0 Errors / 0 Warnings` |
+| PDF electrical readability review | `PASS / WIP LAYOUT ACCEPTED` |
+| Portfolio-level functional layout | `DEFERRED FOR LEARNING` |
+| Permanent wiring continuity | `PASS` |
+| Board power/back-power | `PASS — current logic-power scope` |
+| Physical E-stop | `NOT TESTED` |
+| First powered motor | `NOT AUTHORIZED` |
+
+## RevB-WIP Change
+
+| Reference | Signal | Connection |
+| --- | --- | --- |
+| R9 | `STM32_PC8_MDD10A_DIR1` | signal to GND, `10 kΩ` |
+| R10 | `STM32_PB6_TIM4_CH1_MDD10A_PWM1` | signal to GND, `10 kΩ` |
+| R11 | `STM32_PC9_MDD10A_DIR2` | signal to GND, `10 kΩ` |
+| R12 | `STM32_PB7_TIM4_CH2_MDD10A_PWM2` | signal to GND, `10 kΩ` |
+
+이 값은 MCU 출력 HIGH에서 부하를 거의 늘리지 않으면서 reset/Hi-Z 동안 입력을 LOW로
+유지하기 위한 engineering baseline이다. Breadboard reset capture에서 네 신호 모두
+5초/20 M samples 동안 transition과 HIGH sample이 0인 것을 확인했다.
+
+## Source And Evidence
+
+| File | Purpose |
+| --- | --- |
+| [KiCad project](Tracked_Mobile_Robot_Wiring_RevB.kicad_pro) | RevB-WIP project settings |
+| [Schematic source](Tracked_Mobile_Robot_Wiring_RevB.kicad_sch) | Pull-down-integrated functional wiring source |
+| [PCB placeholder](Tracked_Mobile_Robot_Wiring_RevB.kicad_pcb) | Board layout 미착수 placeholder |
+| [ERC report](reports/2026-08-12_Tracked_Mobile_Robot_Wiring_RevB_pulldown_checkpoint_erc.rpt) | KiCad ERC `0 Errors / 0 Warnings` |
+| [Review PDF](exports/2026-08-12_Tracked_Mobile_Robot_Wiring_RevB_pulldown_checkpoint.pdf) | Title/status/pull-down 표시 human review export |
+| [Readability checkpoint PDF](exports/2026-08-14_Tracked_Mobile_Robot_Wiring_RevB_readability_checkpoint.pdf) | Functional-block 재배치 학습 전 보존한 readable-layout checkpoint |
+| [Independent netlist review](reports/2026-08-15_Tracked_Mobile_Robot_Wiring_RevB_independent_netlist_review.xml) | KiCad-to-VeroRoute 독립 변환 검토 입력 |
+| [Reset-safety report](../../../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md) | Pull-down 전 FAIL과 breadboard 적용 후 PASS evidence |
+| [Final perfboard active report](../../../docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md) | 영구 배선 continuity, active 19 kHz 6-step과 hook-0 all-LOW evidence |
+
+Evidence hashes:
+
+```text
+ERC SHA-256  39C54ABF30BB7A6AFAEA3DBDFC20DEDA2224F3455FDF7B0BCC061B3BFCA7B244
+PDF SHA-256  E2EA8996EE9FCE02A57D1535C5A0B4A42B210CDAB864769F07B8BD79DCEE90AC
+Readability PDF SHA-256  01A24BDDF71B8FBE8F01F74910BDCE9E8395B738260764D791F0F0518AF52450
+```
+
+## Evidence Boundary
+
+- ERC는 schematic electrical-rule consistency만 검증한다.
+- PDF review는 문서 표기와 사람이 읽을 수 있는 배치만 검토한다.
+- Breadboard reset capture와 permanent perfboard continuity/power-up/NRST/active 6-step/hook-0
+  결과는 각각의 raw evidence 범위에서 PASS다.
+- `K1/K2/F1/S0/S2`의 functional symbols/nets는 회로도에 반영됐지만 actual parts와
+  ratings, wire gauge와 high-current harness는 구현·검증되지 않았다.
+- 따라서 이 revision만으로 LiPo, MDD10A motor power 또는 실제 motor를 연결하지 않는다.
+
+## Next Gate
+
+1. Vendor rated/stall current를 K1/F1/main-wire coordination에 반영한다.
+2. Actual S0/S2/K2/K1/F1 terminal map과 continuity를 확인한다.
+3. Physical E-stop `T-ESTOP-001~005`를 motor-disconnected 상태에서 완료한다.
+4. 그 뒤에만 lifted single-motor 5~10% 시험으로 넘어간다.

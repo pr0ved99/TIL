@@ -1,0 +1,206 @@
+{
+  "test": "UR03_ACS02_NON_OWNER_ARM_REJECTION",
+  "run": "run01",
+  "status": "PASS_BOUNDED_NON_OWNER_ARM_REJECTION_AND_A_CONTINUITY",
+  "browser_verdict": "APP_CHECKS_OK_CAPTURE_REQUIRED",
+  "scope": "Normal zero-only image; B attempts ARM once using its revoked/expired own IDLE ticket while A is ACTIVE. B request is rejected, no additional UART ARM occurs, A keeps control and then completes planned DISARM. Capture and browser/ESP logs match.",
+  "identity": {
+    "boot": 3570331004,
+    "A_session": 6,
+    "B_session": 7,
+    "owner_control_id": 8,
+    "ticket": 67867
+  },
+  "source_normalized_sha256": {
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+    "esp32_wifi_link/main/wifi_link_main.c": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0"
+  },
+  "original_files": {
+    "browser_report.json": "61a6f43bccbeba2fe1b5fdcf959823a26dc98d3a4b895b3e42dd20c2abef26ad",
+    "esp_monitor.txt": "7fe75155e5d70440e78d61cc4d63dba0c6e3f06797f6209e3e6438967f6c38c5",
+    "console_test_used.js": "9b18490fcd1c25b7ded32e4307194f497e92457333ea3babfa09b54c128b0aad",
+    "preparation_at_run.json": "326253ba7fb259b18a2e0f9b74c1e05089d742014fd4e1d42b151b03f2410a77"
+  },
+  "capture": {
+    "path": "../../../captures/logic_analyzer/2026-10-17_UR03_ACS02_OTHER_SESSION_ARM_PWM_run01.sr",
+    "sha256": "f33fc871311e9adc183c03be00d50319cbf9ee4c0346e840207399ff1c476748",
+    "samplerate_hz": 4000000.0,
+    "samples": 41176064,
+    "duration_s": 10.294016,
+    "planned_duration_s": 25,
+    "coverage": "Saved interval is shorter than planned but contains pre-ARM, one B attempt, continuing A control, final DISARM and over 6 seconds after its ACK. No repeat required for this bounded criterion.",
+    "uart_decode": "115200 baud 8N1",
+    "summary": "summary.json"
+  },
+  "browser_evidence": {
+    "B_ARM_TX_ms": 4005.1,
+    "B_rejection": {
+      "ms": 4063,
+      "event": "B_COMMAND_NOTICE",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 3570331004,
+        "session_id": 7,
+        "request_id": 1,
+        "cmd": "ARM",
+        "stage": "REJECTED",
+        "reason": "TICKET_REJECTED"
+      }
+    },
+    "B_response_delay_ms": 57.9,
+    "A_STILL_ACTIVE_ms": 4204.1,
+    "A_still_same_owner_control_id": true,
+    "post_rejection_cmd_ack_seqs_before_cleanup": [
+      573834458,
+      573834459,
+      573834460,
+      573834461,
+      573834462,
+      573834463,
+      573834464,
+      573834465,
+      573834466,
+      573834467,
+      573834468
+    ],
+    "additional_continuity_observation_ms": 1000.9,
+    "planned_cleanup_request_ms": 5205,
+    "final_event": {
+      "ms": 5464.1,
+      "event": "APP_CHECKS_OK_CAPTURE_REQUIRED",
+      "problem": null,
+      "rejected": true,
+      "activeAfter": true,
+      "post_rejection_cmd_seqs": [
+        573834458,
+        573834459,
+        573834460,
+        573834461,
+        573834462,
+        573834463,
+        573834464,
+        573834465,
+        573834466,
+        573834467,
+        573834468
+      ],
+      "proofComplete": true,
+      "stopConfirmed": true,
+      "stopSeq": 573834470
+    },
+    "final_control_state": "IDLE / owner_session=0 / control_id=0 on both connections",
+    "final_tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 3570331004,
+      "uptime_ms": 9209279,
+      "free_heap_bytes": 256420,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 12,
+      "stm_age_limit_ms": 500,
+      "tel_count": 92018,
+      "stm_t_ms": 2863609,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": 207,
+      "last_seq": 573834470,
+      "vx_mmps": 0,
+      "w_mradps": 0,
+      "left_pwm": 0,
+      "right_pwm": 0,
+      "left_cps": 0,
+      "right_cps": 0,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 0
+    },
+    "screenshot": "Not supplied for this run; final state is established by browser JSON and UART telemetry."
+  },
+  "uart_evidence": {
+    "ARM_count": 1,
+    "ARM_seq": 573834455,
+    "additional_ARM_count": 0,
+    "zero_CMD_count": 14,
+    "zero_CMD_seqs": [
+      573834456,
+      573834457,
+      573834458,
+      573834459,
+      573834460,
+      573834461,
+      573834462,
+      573834463,
+      573834464,
+      573834465,
+      573834466,
+      573834467,
+      573834468,
+      573834469
+    ],
+    "all_commands_matching_ACK": true,
+    "ACK_count": 16,
+    "DISARM_count": 1,
+    "DISARM_seq": 573834470,
+    "CAN_LF_before_DISARM": true,
+    "DISARM_tx": {
+      "start_s": 3.4917605,
+      "end_s": 3.4935835555555554,
+      "text": "DISARM,seq=573834470"
+    },
+    "DISARM_ack": {
+      "start_s": 3.502392,
+      "end_s": 3.5061110555555555,
+      "text": "ACK,seq=573834470,type=DISARM,t_ms=2863435"
+    },
+    "first_post_ack_disarmed_tel": {
+      "start_s": 3.57528625,
+      "end_s": 3.5903410555555557,
+      "text": "TEL,t_ms=2863509,state=DISARMED,reason=DISARM,command_age_ms=107,last_seq=573834470,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "post_ack_disarmed_tel_count": 68,
+    "no_ARM_CMD_after_stop_ack_s": 6.787904944,
+    "inflight_at_cleanup": "A CMD request15/seq573834469 result reached the browser after cleanup was requested. On UART its TX precedes DISARM470; it is a zero command already in flight, not replay after revoke.",
+    "last_CMD_to_DISARM_tx_start_ms": 27.85825,
+    "complete_tel_count": 103,
+    "armed_tel_count": 15,
+    "all_tel_speed_pwm_cps_zero": true,
+    "all_tel_drop_err_zero": true,
+    "D0_invalid_stop_bits": 0,
+    "D1_invalid_stop_bits": 0,
+    "boundary_fragment": {
+      "text": "0",
+      "start_s": 1.1e-05,
+      "interpretation": "Initial capture-boundary fragment, retained and excluded from complete protocol/TEL counts."
+    }
+  },
+  "physical_logic": {
+    "D4_PB6_left_PWM": "LOW throughout sampled interval",
+    "D6_PC7_sense": "LOW throughout sampled interval",
+    "D7_PB7_right_PWM": "LOW throughout sampled interval",
+    "all_high_samples": 0
+  },
+  "ticket_limit": {
+    "advertised_ttl_ms": 150,
+    "browser_age_at_probe_ms": 241.19999999552965,
+    "status": "B had no ACTIVE ARM ticket; retained IDLE ticket was revoked and also older than its advertised TTL. This run does not isolate owner-state rejection from expiry or ticket validation.",
+    "native_complement": "../2026-10-17_ur03_acs02_other_session_arm/host_pc.txt covers revoked-but-unexpired ticket and A continuity on actual saved C with mocked IO."
+  },
+  "AC_S02_bounded_evidence": {
+    "non_owner_ARM": "this run",
+    "non_owner_CMD_valid_A_ticket_then_A_same_ticket_OK": "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/observations.json",
+    "non_owner_DISARM_stop_and_revoke": "../2026-10-17_ur03_acs02_other_session_disarm_run01/observations.json",
+    "status": "Evidence is present for the three selected zero-only subcases. Prior DISARM helper INCOMPLETE remains preserved as a checker defect; no full security, multi-device RF or whole AC-S suite claim."
+  },
+  "limits": [
+    "Two WebSocket sessions in one focused browser page; not an independent two-device radio test.",
+    "Digital LOW samples do not prove analog integrity or powered-motor braking performance.",
+    "No live owner-only versus TTL-only isolation is claimed.",
+    "Current source hashes are source identity, not flashed-binary readback."
+  ],
+  "firmware_modified": false,
+  "repeat_required_for_this_scope": false,
+  "next": "Preserve this PASS and continue to a distinct remaining gate or close out the work block. Do not repeat the same unchanged test."
+}

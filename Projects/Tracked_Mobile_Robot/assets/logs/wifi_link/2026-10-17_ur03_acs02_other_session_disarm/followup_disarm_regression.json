@@ -1,0 +1,21 @@
+{
+  "scope": "Normalized sequence identifiers; actual run01 message ordering replayed against saved PAGE. Not a hardware replay.",
+  "original": {
+    "before_new_tel": "observing",
+    "after_new_tel": "cleanup",
+    "problem": "정지 확인 뒤 상태 또는 명령 seq 변경"
+  },
+  "revised": {
+    "before_new_tel": "stopping",
+    "after_new_tel": "observing",
+    "problem": null
+  },
+  "real_run_mapping": {
+    "A": 3,
+    "B": 4,
+    "b_stop_seq": 573834451,
+    "a_followup_request": 5,
+    "a_followup_seq": 573834452
+  },
+  "full_regression_and_guards": "check_console_test.js"
+}

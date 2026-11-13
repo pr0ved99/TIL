@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-13",
+  "timezone": "Asia/Seoul",
+  "scope_files": 132,
+  "scope_bytes": 4893822,
+  "unrelated_files_preserved": 19,
+  "cad_original_hashes_preserved": 74,
+  "shield_report_inputs_match_current": true,
+  "mvp_schematic_report_hash_matches": true,
+  "shield_basic_pdf_has_J7_J8_U1_U2": true,
+  "json_parsed": 36,
+  "python_ast_parsed": 4,
+  "current_markdown_files_checked": 46,
+  "relative_links_checked": 1714,
+  "new_broken_relative_links": [],
+  "frozen_audit_before_copies_excluded_from_link_check": true,
+  "git_diff_check_returncode": 0,
+  "git_diff_check_output": "",
+  "no_new_cad_exports_or_mcu_build_flash_or_hardware_work": true,
+  "external_readback_evidence": "external_verification.json",
+  "method": "Scoped file/hash/link and syntax validation. Reuses previously completed CAD exports/engineering audit; does not rerun one-shot document editors or claim physical acceptance."
+}

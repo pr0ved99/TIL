@@ -1,0 +1,4534 @@
+{
+  "trigger_ms": 2958667.8999999985,
+  "events": [
+    {
+      "ms": 2957223.8999999985,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 520,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957224,
+      "event": "CONTROL_RX",
+      "gap_ms": 58.70000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957224.299999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 59.5,
+      "esp_uptime_ms": 7451478,
+      "esp_step_ms": 59,
+      "tel_count": 74652,
+      "stm_t_ms": 2967600,
+      "stm_age_ms": 10,
+      "command_age_ms": 88,
+      "last_seq": 2670356319,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        830,
+        780
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967597,
+      "left_count": "13922",
+      "right_count": "20114",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957224.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957224.5,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 520,
+        "cmd": "CMD",
+        "seq": 2670356320,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957234.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 10.100000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47543,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957250.3999999985,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=521,control_id=18,ticket=47543,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 521,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957264.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 29.69999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47543,
+      "ttl_ms": 131,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957304.5,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 521,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957304.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 80.5,
+      "esp_uptime_ms": 7451543,
+      "esp_step_ms": 65,
+      "tel_count": 74652,
+      "stm_t_ms": 2967600,
+      "stm_age_ms": 75,
+      "command_age_ms": 88,
+      "last_seq": 2670356319,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        830,
+        780
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967597,
+      "left_count": "13922",
+      "right_count": "20114",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957305.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 40.900000005960464,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957305.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957305.1999999955,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 521,
+        "cmd": "CMD",
+        "seq": 2670356321,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957314.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 9,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47544,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957333.1000000015,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=522,control_id=18,ticket=47544,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 522,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957343.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 38.80000000447035,
+      "esp_uptime_ms": 7451599,
+      "esp_step_ms": 56,
+      "tel_count": 74653,
+      "stm_t_ms": 2967700,
+      "stm_age_ms": 37,
+      "command_age_ms": 67,
+      "last_seq": 2670356320,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        780
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967697,
+      "left_count": "14003",
+      "right_count": "20191",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957343.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 29.69999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47544,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957344,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47544,
+      "ttl_ms": 111,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957404.799999997,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 522,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957405,
+      "event": "CONTROL_RX",
+      "gap_ms": 61,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957405.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 61.599999994039536,
+      "esp_uptime_ms": 7451658,
+      "esp_step_ms": 59,
+      "tel_count": 74653,
+      "stm_t_ms": 2967700,
+      "stm_age_ms": 96,
+      "command_age_ms": 67,
+      "last_seq": 2670356320,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        780
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967697,
+      "left_count": "14003",
+      "right_count": "20191",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957405.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957471.6999999955,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 522,
+        "cmd": "CMD",
+        "seq": 2670356322,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957471.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 66.39999999850988,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47545,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957472.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47545,
+      "ttl_ms": 133,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957472.3999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 67.10000000149012,
+      "esp_uptime_ms": 7451719,
+      "esp_step_ms": 61,
+      "tel_count": 74654,
+      "stm_t_ms": 2967800,
+      "stm_age_ms": 58,
+      "command_age_ms": 74,
+      "last_seq": 2670356321,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        770
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967797,
+      "left_count": "14085",
+      "right_count": "20269",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957472.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47545,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957480.5,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=523,control_id=18,ticket=47545,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 523,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957494,
+      "event": "CONTROL_RX",
+      "gap_ms": 21.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47545,
+      "ttl_ms": 93,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957494.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47545,
+      "ttl_ms": 74,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957545.8999999985,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 523,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957546.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 73.89999999850988,
+      "esp_uptime_ms": 7451778,
+      "esp_step_ms": 59,
+      "tel_count": 74655,
+      "stm_t_ms": 2967900,
+      "stm_age_ms": 10,
+      "command_age_ms": 87,
+      "last_seq": 2670356322,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        820,
+        770
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967897,
+      "left_count": "14166",
+      "right_count": "20349",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957546.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 52.19999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957546.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.30000000447034836,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957546.6999999955,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 523,
+        "cmd": "CMD",
+        "seq": 2670356323,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957554,
+      "event": "CONTROL_RX",
+      "gap_ms": 7.399999998509884,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47546,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957564.8999999985,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=524,control_id=18,ticket=47546,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 524,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957574,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 27.80000000447035,
+      "esp_uptime_ms": 7451839,
+      "esp_step_ms": 61,
+      "tel_count": 74655,
+      "stm_t_ms": 2967900,
+      "stm_age_ms": 71,
+      "command_age_ms": 87,
+      "last_seq": 2670356322,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        820,
+        770
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967897,
+      "left_count": "14166",
+      "right_count": "20349",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957574.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 20.19999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47546,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957625.6000000015,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 524,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957625.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 51.600000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957626.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.8999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957626.799999997,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 524,
+        "cmd": "CMD",
+        "seq": 2670356324,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957627.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 53.19999999552965,
+      "esp_uptime_ms": 7451900,
+      "esp_step_ms": 61,
+      "tel_count": 74656,
+      "stm_t_ms": 2968000,
+      "stm_age_ms": 32,
+      "command_age_ms": 37,
+      "last_seq": 2670356323,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        810,
+        810
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967997,
+      "left_count": "14245",
+      "right_count": "20429",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957673.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 47.20000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47547,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957674.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47547,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957675.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.0999999940395355,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47547,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957690.1999999955,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=525,control_id=18,ticket=47547,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 525,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957704.1000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 76.90000000596046,
+      "esp_uptime_ms": 7451959,
+      "esp_step_ms": 59,
+      "tel_count": 74656,
+      "stm_t_ms": 2968000,
+      "stm_age_ms": 91,
+      "command_age_ms": 37,
+      "last_seq": 2670356323,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        810,
+        810
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2967997,
+      "left_count": "14245",
+      "right_count": "20429",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957704.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 29.100000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47547,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957750.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.600000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47547,
+      "ttl_ms": 71,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957751,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 525,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957752,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.1000000014901161,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957752.1000000015,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 525,
+        "cmd": "CMD",
+        "seq": 2670356325,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957752.299999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 48.19999999552965,
+      "esp_uptime_ms": 7452020,
+      "esp_step_ms": 61,
+      "tel_count": 74657,
+      "stm_t_ms": 2968100,
+      "stm_age_ms": 52,
+      "command_age_ms": 55,
+      "last_seq": 2670356324,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        810
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968097,
+      "left_count": "14327",
+      "right_count": "20509",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957803.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 51.79999999701977,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47548,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957804,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47548,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957804.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47548,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957815.299999997,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=526,control_id=18,ticket=47548,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 526,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957824.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 71.89999999850988,
+      "esp_uptime_ms": 7452078,
+      "esp_step_ms": 58,
+      "tel_count": 74658,
+      "stm_t_ms": 2968200,
+      "stm_age_ms": 10,
+      "command_age_ms": 36,
+      "last_seq": 2670356325,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968197,
+      "left_count": "14409",
+      "right_count": "20591",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957824.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 20.200000002980232,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47548,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957824.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47548,
+      "ttl_ms": 73,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957874,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 526,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957874.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 49.599999994039536,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957875.1000000015,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 526,
+        "cmd": "CMD",
+        "seq": 2670356326,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2957875.299999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 51.100000001490116,
+      "esp_uptime_ms": 7452140,
+      "esp_step_ms": 62,
+      "tel_count": 74658,
+      "stm_t_ms": 2968200,
+      "stm_age_ms": 72,
+      "command_age_ms": 36,
+      "last_seq": 2670356325,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968197,
+      "left_count": "14409",
+      "right_count": "20591",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957875.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.2000000029802322,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47549,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957898.5,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=527,control_id=18,ticket=47549,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 527,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2957903.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 28.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47549,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957904,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47549,
+      "ttl_ms": 113,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957954.1999999955,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 527,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2957955.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 80.30000000447035,
+      "esp_uptime_ms": 7452198,
+      "esp_step_ms": 58,
+      "tel_count": 74659,
+      "stm_t_ms": 2968300,
+      "stm_age_ms": 30,
+      "command_age_ms": 16,
+      "last_seq": 2670356326,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        830,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968297,
+      "left_count": "14490",
+      "right_count": "20673",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2957955.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 51.79999999701977,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2957955.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958013.799999997,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 527,
+        "cmd": "CMD",
+        "seq": 2670356327,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958014,
+      "event": "CONTROL_RX",
+      "gap_ms": 58,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47550,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958015.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 59.599999994039536,
+      "esp_uptime_ms": 7452258,
+      "esp_step_ms": 60,
+      "tel_count": 74659,
+      "stm_t_ms": 2968300,
+      "stm_age_ms": 90,
+      "command_age_ms": 16,
+      "last_seq": 2670356326,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        830,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968297,
+      "left_count": "14490",
+      "right_count": "20673",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958015.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47550,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958015.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47550,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958023.1999999955,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=528,control_id=18,ticket=47550,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 528,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958034.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 18.600000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47550,
+      "ttl_ms": 93,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958094.299999997,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 528,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958094.5,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 79.30000000447035,
+      "esp_uptime_ms": 7452318,
+      "esp_step_ms": 60,
+      "tel_count": 74660,
+      "stm_t_ms": 2968400,
+      "stm_age_ms": 50,
+      "command_age_ms": 16,
+      "last_seq": 2670356327,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        820,
+        840
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968397,
+      "left_count": "14570",
+      "right_count": "20752",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958095.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 61.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958095.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958096,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958154.5,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 528,
+        "cmd": "CMD",
+        "seq": 2670356328,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958155.799999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 61.29999999701977,
+      "esp_uptime_ms": 7452380,
+      "esp_step_ms": 62,
+      "tel_count": 74661,
+      "stm_t_ms": 2968500,
+      "stm_age_ms": 21,
+      "command_age_ms": 116,
+      "last_seq": 2670356327,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        790
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968497,
+      "left_count": "14654",
+      "right_count": "20830",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958155.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 59.899999998509884,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47551,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958156.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.29999999701976776,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47551,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958156.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47551,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958167.6999999955,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=529,control_id=18,ticket=47551,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 529,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958175,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 19.100000001490116,
+      "esp_uptime_ms": 7452439,
+      "esp_step_ms": 59,
+      "tel_count": 74661,
+      "stm_t_ms": 2968500,
+      "stm_age_ms": 80,
+      "command_age_ms": 116,
+      "last_seq": 2670356327,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        790
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968497,
+      "left_count": "14654",
+      "right_count": "20830",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958175.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 19,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47551,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958226.3999999985,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 529,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958226.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 51.30000000447035,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958226.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958226.8999999985,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 529,
+        "cmd": "CMD",
+        "seq": 2670356329,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958227.1000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 52.20000000298023,
+      "esp_uptime_ms": 7452500,
+      "esp_step_ms": 61,
+      "tel_count": 74662,
+      "stm_t_ms": 2968600,
+      "stm_age_ms": 32,
+      "command_age_ms": 95,
+      "last_seq": 2670356328,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        820,
+        770
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968597,
+      "left_count": "14734",
+      "right_count": "20913",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958274.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 47.400000005960464,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47552,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958274.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47552,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958274.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47552,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958293.1999999955,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=530,control_id=18,ticket=47552,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 530,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958304.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 77.5,
+      "esp_uptime_ms": 7452558,
+      "esp_step_ms": 58,
+      "tel_count": 74662,
+      "stm_t_ms": 2968600,
+      "stm_age_ms": 90,
+      "command_age_ms": 95,
+      "last_seq": 2670356328,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        820,
+        770
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968597,
+      "left_count": "14734",
+      "right_count": "20913",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958304.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 30.299999997019768,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47552,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958304.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47552,
+      "ttl_ms": 73,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958354.6999999955,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 530,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958354.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 50,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958356.1999999955,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 530,
+        "cmd": "CMD",
+        "seq": 2670356330,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958356.5,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 51.899999998509884,
+      "esp_uptime_ms": 7452620,
+      "esp_step_ms": 62,
+      "tel_count": 74663,
+      "stm_t_ms": 2968700,
+      "stm_age_ms": 52,
+      "command_age_ms": 54,
+      "last_seq": 2670356329,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        810,
+        830
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968697,
+      "left_count": "14812",
+      "right_count": "20995",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958356.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.7999999970197678,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47553,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958375.6999999955,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=531,control_id=18,ticket=47553,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 531,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958384.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 28.100000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47553,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958385.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.30000000447034836,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47553,
+      "ttl_ms": 113,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958444.799999997,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 531,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958445.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 88.69999999552965,
+      "esp_uptime_ms": 7452678,
+      "esp_step_ms": 58,
+      "tel_count": 74664,
+      "stm_t_ms": 2968800,
+      "stm_age_ms": 10,
+      "command_age_ms": 34,
+      "last_seq": 2670356330,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        790,
+        820
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968797,
+      "left_count": "14893",
+      "right_count": "21075",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958446.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 61.099999994039536,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958446.3999999985,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 531,
+        "cmd": "CMD",
+        "seq": 2670356331,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958446.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.4000000059604645,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47554,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958458.5,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "CMD,boot_id=1339414435,request_id=532,control_id=18,ticket=47554,vx_mmps=100,w_mradps=0",
+      "state": {
+        "intent": true,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 18,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 532,
+          "cmd": "CMD"
+        },
+        "motion": {
+          "button": "forward",
+          "vx": 100,
+          "w": 0
+        },
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958473.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 27.099999994039536,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47554,
+      "ttl_ms": 131,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958473.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 28.700000002980232,
+      "esp_uptime_ms": 7452739,
+      "esp_step_ms": 61,
+      "tel_count": 74664,
+      "stm_t_ms": 2968800,
+      "stm_age_ms": 71,
+      "command_age_ms": 34,
+      "last_seq": 2670356330,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        790,
+        820
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968797,
+      "left_count": "14893",
+      "right_count": "21075",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958474.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.4000000059604645,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47554,
+      "ttl_ms": 110,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958668.3999999985,
+      "event": "WS_SEND",
+      "connection_id": 1,
+      "failed": false,
+      "text": "DISARM,boot_id=1339414435,request_id=533",
+      "state": {
+        "intent": false,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 0,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 533,
+          "cmd": "DISARM"
+        },
+        "motion": null,
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": true,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958668.3999999985,
+      "event": "APP_COMMAND",
+      "cmd": "DISARM",
+      "failed": false,
+      "before": {
+        "intent": false,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 0,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 532,
+          "cmd": "CMD"
+        },
+        "motion": null,
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": false,
+          "forward": false,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      },
+      "after": {
+        "intent": false,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 0,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 533,
+          "cmd": "DISARM"
+        },
+        "motion": null,
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": true,
+          "forward": true,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958668.5,
+      "event": "APP_STOP",
+      "sendStop": true,
+      "before_intent": true,
+      "before_focused": true,
+      "after": {
+        "intent": false,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 0,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 533,
+          "cmd": "DISARM"
+        },
+        "motion": null,
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": true,
+          "forward": true,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958669.3999999985,
+      "event": "lostpointercapture",
+      "target": "forward",
+      "window_target": false,
+      "hidden": false,
+      "state": {
+        "intent": false,
+        "focused": true,
+        "boot": 1339414435,
+        "session": 7,
+        "control_id": 0,
+        "socket_state": 1,
+        "connection_id": 1,
+        "phase": "ACTIVE",
+        "owner_session": 7,
+        "pending": {
+          "id": 533,
+          "cmd": "DISARM"
+        },
+        "motion": null,
+        "stm_state": "ARMED",
+        "stm_reason": "NONE",
+        "buttons_disabled": {
+          "arm": true,
+          "disarm": true,
+          "forward": true,
+          "reverse": true,
+          "left": true,
+          "right": true
+        }
+      }
+    },
+    {
+      "ms": 2958761.1999999955,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 532,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958761.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 287.29999999701977,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958761.5,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 532,
+        "cmd": "CMD",
+        "seq": 2670356332,
+        "control_id": 18,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958761.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958761.799999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 287.8999999985099,
+      "esp_uptime_ms": 7452799,
+      "esp_step_ms": 60,
+      "tel_count": 74665,
+      "stm_t_ms": 2968900,
+      "stm_age_ms": 35,
+      "command_age_ms": 51,
+      "last_seq": 2670356331,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968897,
+      "left_count": "14980",
+      "right_count": "21155",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958761.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.29999999701976776,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 111,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 92,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.299999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 0.5,
+      "esp_uptime_ms": 7452858,
+      "esp_step_ms": 59,
+      "tel_count": 74665,
+      "stm_t_ms": 2968900,
+      "stm_age_ms": 94,
+      "command_age_ms": 51,
+      "last_seq": 2670356331,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        800,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968897,
+      "left_count": "14980",
+      "right_count": "21155",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958762.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.29999999701976776,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 52,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 32,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.6999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 0.3999999985098839,
+      "esp_uptime_ms": 7452918,
+      "esp_step_ms": 60,
+      "tel_count": 74666,
+      "stm_t_ms": 2969000,
+      "stm_age_ms": 50,
+      "command_age_ms": 68,
+      "last_seq": 2670356332,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        870,
+        790
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2968997,
+      "left_count": "15065",
+      "right_count": "21235",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958762.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.29999999701976776,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47555,
+      "ttl_ms": 10,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958762.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "ACTIVE",
+      "ticket": 47556,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958763.1999999955,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 533,
+        "cmd": "DISARM",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 2958763.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958763.6999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 0.9000000059604645,
+      "esp_uptime_ms": 7452979,
+      "esp_step_ms": 61,
+      "tel_count": 74667,
+      "stm_t_ms": 2969100,
+      "stm_age_ms": 18,
+      "command_age_ms": 168,
+      "last_seq": 2670356332,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        860,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969097,
+      "left_count": "15147",
+      "right_count": "21313",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958763.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958763.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958764.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958766.299999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 2.6999999955296516,
+      "esp_uptime_ms": 7453038,
+      "esp_step_ms": 59,
+      "tel_count": 74667,
+      "stm_t_ms": 2969100,
+      "stm_age_ms": 77,
+      "command_age_ms": 168,
+      "last_seq": 2670356332,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        860,
+        800
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969097,
+      "left_count": "15147",
+      "right_count": "21313",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958810.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.79999999701977,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958811,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 2958811.1999999955,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1339414435,
+        "session_id": 7,
+        "request_id": 533,
+        "cmd": "DISARM",
+        "seq": 2670356333,
+        "control_id": 0,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 2958811.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958858.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 91.89999999850988,
+      "esp_uptime_ms": 7453099,
+      "esp_step_ms": 61,
+      "tel_count": 74668,
+      "stm_t_ms": 2969200,
+      "stm_age_ms": 31,
+      "command_age_ms": 268,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        820,
+        790
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969197,
+      "left_count": "15192",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958858.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 47,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 129,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958858.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 110,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958858.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958906.3999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 48.20000000298023,
+      "esp_uptime_ms": 7453158,
+      "esp_step_ms": 59,
+      "tel_count": 74668,
+      "stm_t_ms": 2969200,
+      "stm_age_ms": 90,
+      "command_age_ms": 268,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        820,
+        790
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969197,
+      "left_count": "15192",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958906.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 47.899999998509884,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 69,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958906.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 51,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958950.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 43.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 31,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958950.799999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 44.399999998509884,
+      "esp_uptime_ms": 7453218,
+      "esp_step_ms": 60,
+      "tel_count": 74669,
+      "stm_t_ms": 2969300,
+      "stm_age_ms": 50,
+      "command_age_ms": 368,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        360,
+        410
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969297,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2958951.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.8000000044703484,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47557,
+      "ttl_ms": 9,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958997.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.19999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2958998.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 1,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959042.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 91.80000000447035,
+      "esp_uptime_ms": 7453278,
+      "esp_step_ms": 60,
+      "tel_count": 74670,
+      "stm_t_ms": 2969400,
+      "stm_age_ms": 10,
+      "command_age_ms": 468,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        -10,
+        -10
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969397,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959042.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 44.600000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 107,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959043,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 89,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959043.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959090.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 48,
+      "esp_uptime_ms": 7453338,
+      "esp_step_ms": 60,
+      "tel_count": 74670,
+      "stm_t_ms": 2969400,
+      "stm_age_ms": 70,
+      "command_age_ms": 468,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        -10,
+        -10
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969397,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959091.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 48.70000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 48,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959092.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959148.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 56.099999994039536,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47558,
+      "ttl_ms": 10,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959148.3999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 57.79999999701977,
+      "esp_uptime_ms": 7453398,
+      "esp_step_ms": 60,
+      "tel_count": 74671,
+      "stm_t_ms": 2969500,
+      "stm_age_ms": 30,
+      "command_age_ms": 568,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969497,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959148.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959148.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959195,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.20000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959196.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 47.79999999701977,
+      "esp_uptime_ms": 7453458,
+      "esp_step_ms": 60,
+      "tel_count": 74671,
+      "stm_t_ms": 2969500,
+      "stm_age_ms": 90,
+      "command_age_ms": 568,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969497,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959196.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.2999999970197678,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959241.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 45,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959241.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 52,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959241.6999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 45.400000005960464,
+      "esp_uptime_ms": 7453518,
+      "esp_step_ms": 60,
+      "tel_count": 74672,
+      "stm_t_ms": 2969600,
+      "stm_age_ms": 50,
+      "command_age_ms": 668,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969597,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959241.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959286.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 44.80000000447035,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47559,
+      "ttl_ms": 12,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959287.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 1,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959332.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 91.19999999552965,
+      "esp_uptime_ms": 7453578,
+      "esp_step_ms": 60,
+      "tel_count": 74673,
+      "stm_t_ms": 2969700,
+      "stm_age_ms": 10,
+      "command_age_ms": 768,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969697,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959333.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 45.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 128,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959333.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 110,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959379.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 45.900000005960464,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 89,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959379.5,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 46.70000000298023,
+      "esp_uptime_ms": 7453638,
+      "esp_step_ms": 60,
+      "tel_count": 74673,
+      "stm_t_ms": 2969700,
+      "stm_age_ms": 70,
+      "command_age_ms": 768,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969697,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959379.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5999999940395355,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 68,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959379.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 50,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959427.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 47.899999998509884,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959428,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 48.5,
+      "esp_uptime_ms": 7453698,
+      "esp_step_ms": 60,
+      "tel_count": 74674,
+      "stm_t_ms": 2969800,
+      "stm_age_ms": 30,
+      "command_age_ms": 868,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969797,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959428.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47560,
+      "ttl_ms": 9,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959487.3999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 59.20000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959488.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.8999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959488.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 60.600000001490116,
+      "esp_uptime_ms": 7453758,
+      "esp_step_ms": 60,
+      "tel_count": 74674,
+      "stm_t_ms": 2969800,
+      "stm_age_ms": 90,
+      "command_age_ms": 868,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969797,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959488.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 109,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959534.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 45.70000000298023,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959535.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.7999999970197678,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959580.799999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 92.19999999552965,
+      "esp_uptime_ms": 7453820,
+      "esp_step_ms": 62,
+      "tel_count": 74675,
+      "stm_t_ms": 2969900,
+      "stm_age_ms": 52,
+      "command_age_ms": 968,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969897,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959582.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.80000000447035,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 47,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959582.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959582.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47561,
+      "ttl_ms": 10,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959625.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 45,
+      "esp_uptime_ms": 7453878,
+      "esp_step_ms": 58,
+      "tel_count": 74676,
+      "stm_t_ms": 2970000,
+      "stm_age_ms": 10,
+      "command_age_ms": 1068,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969997,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959626,
+      "event": "CONTROL_RX",
+      "gap_ms": 43.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959626.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959670.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 44.5,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959670.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 45.100000001490116,
+      "esp_uptime_ms": 7453938,
+      "esp_step_ms": 60,
+      "tel_count": 74676,
+      "stm_t_ms": 2970000,
+      "stm_age_ms": 70,
+      "command_age_ms": 1068,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2969997,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959671.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.4000000059604645,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959717.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.69999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 72,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959718.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 52,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959718.1999999955,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 47.29999999701977,
+      "esp_uptime_ms": 7453998,
+      "esp_step_ms": 60,
+      "tel_count": 74677,
+      "stm_t_ms": 2970100,
+      "stm_age_ms": 30,
+      "command_age_ms": 1168,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970097,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959769.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 51.100000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959770.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.3999999985098839,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47562,
+      "ttl_ms": 12,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959770.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959826.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 108.40000000596046,
+      "esp_uptime_ms": 7454059,
+      "esp_step_ms": 61,
+      "tel_count": 74677,
+      "stm_t_ms": 2970100,
+      "stm_age_ms": 91,
+      "command_age_ms": 1168,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970097,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959826.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 56.100000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 128,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959826.8999999985,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 110,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959827.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959871.6000000015,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 45,
+      "esp_uptime_ms": 7454119,
+      "esp_step_ms": 60,
+      "tel_count": 74678,
+      "stm_t_ms": 2970200,
+      "stm_age_ms": 51,
+      "command_age_ms": 1268,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970197,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959872.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 45.399999998509884,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 68,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959872.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 50,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959918.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 46.099999994039536,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959919,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 47.399999998509884,
+      "esp_uptime_ms": 7454178,
+      "esp_step_ms": 59,
+      "tel_count": 74679,
+      "stm_t_ms": 2970300,
+      "stm_age_ms": 10,
+      "command_age_ms": 1368,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970297,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959919.1000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.4000000059604645,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47563,
+      "ttl_ms": 8,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959919.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959964.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 45,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 2959964.799999997,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 45.79999999701977,
+      "esp_uptime_ms": 7454238,
+      "esp_step_ms": 60,
+      "tel_count": 74679,
+      "stm_t_ms": 2970300,
+      "stm_age_ms": 70,
+      "command_age_ms": 1368,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970297,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2959965,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.7000000029802322,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 108,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960010.6000000015,
+      "event": "CONTROL_RX",
+      "gap_ms": 45.600000001490116,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960010.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960061.8999999985,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 97.10000000149012,
+      "esp_uptime_ms": 7454298,
+      "esp_step_ms": 60,
+      "tel_count": 74680,
+      "stm_t_ms": 2970400,
+      "stm_age_ms": 30,
+      "command_age_ms": 1468,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970397,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2960063.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 52.80000000447035,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 48,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960063.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.19999999552965164,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960064,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.30000000447034836,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47564,
+      "ttl_ms": 10,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960118,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 56.100000001490116,
+      "esp_uptime_ms": 7454358,
+      "esp_step_ms": 60,
+      "tel_count": 74680,
+      "stm_t_ms": 2970400,
+      "stm_age_ms": 90,
+      "command_age_ms": 1468,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970397,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2960118.1999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 54.19999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47565,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960119.299999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.1000000014901161,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47565,
+      "ttl_ms": 132,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960119.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47565,
+      "ttl_ms": 112,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960166.5,
+      "event": "TEL_RX",
+      "boot_id": 1339414435,
+      "gap_ms": 48.5,
+      "esp_uptime_ms": 7454418,
+      "esp_step_ms": 60,
+      "tel_count": 74681,
+      "stm_t_ms": 2970500,
+      "stm_age_ms": 50,
+      "command_age_ms": 1568,
+      "last_seq": 2670356333,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 2970497,
+      "left_count": "15191",
+      "right_count": "21361",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 2670356080,
+      "drop": 0,
+      "err": 0
+    },
+    {
+      "ms": 2960166.6999999955,
+      "event": "CONTROL_RX",
+      "gap_ms": 47.19999999552965,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47565,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 2960166.799999997,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "boot_id": 1339414435,
+      "session_id": 7,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "ticket": 47565,
+      "ttl_ms": 72,
+      "control_reason": 0
+    }
+  ]
+}

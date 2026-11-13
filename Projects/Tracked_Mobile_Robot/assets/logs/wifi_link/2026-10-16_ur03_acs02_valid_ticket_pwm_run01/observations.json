@@ -1,0 +1,35 @@
+{
+  "verdict": "INCOMPLETE_NO_CMD_ON_UART",
+  "capture_sha256": "e4bb7d065059774552c1070299c57c1e921dc07d34c96d7eebd0b34d475b99c9",
+  "duration_s": 25.0,
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 0,
+    "DISARM": 1
+  },
+  "arm": {
+    "start_s": 4.8864315,
+    "end_s": 4.888080805555556,
+    "text": "ARM,seq=2830180669"
+  },
+  "disarm": {
+    "start_s": 4.892674,
+    "end_s": 4.894583805555556,
+    "text": "DISARM,seq=2830180670"
+  },
+  "arm_start_to_disarm_start_ms": 6.242500000000817,
+  "ack_count": 2,
+  "tel_count": 250,
+  "tel_state": "DISARMED",
+  "tel_reason": "DISARM",
+  "PWM_CPS_drop_err": "all zero",
+  "physical_levels": "D4/PB6, D7/PB7, D6/PC7 all LOW for 25 s",
+  "console_report": "User DevTools excerpt in console_excerpt.txt; full report JSON not supplied.",
+  "helper_diagnostic": "Console confirms helper abort on IDLE 0.2 ms after MANUAL_ARM, reproduced with an in-flight pre-ARM snapshot on PC. UART shows ARM then DISARM and no CMD. Revision 2 narrows the pre-ARM exception; 16 PC checks passed.",
+  "next": "Reload page; use revision 2 helper and save a new run02 capture. Firmware unchanged.",
+  "confirmed_abort_reason": "A 제어 중단: IDLE",
+  "manual_arm_to_abort_ms": 0.2,
+  "stop_confirmed_by_helper": true,
+  "esp_boot_id": 2634188439,
+  "A_session_id": 2
+}

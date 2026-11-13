@@ -1,0 +1,171 @@
+{
+  "date": "2026-10-20",
+  "status": "DIAGNOSTIC_COMMON_DISTANCE_SCALE_MISMATCH_NOT_CALIBRATION_PASS",
+  "source": "User typed separate right_count and left_count checkpoint tables",
+  "capture_synchronization": "Same reported positions; simultaneous raw samples/timestamps not supplied",
+  "initial_mm_per_count": 0.07307692307692308,
+  "checkpoints": [
+    {
+      "leg": "outward",
+      "reported_position_mm": 0,
+      "left_count": "0",
+      "right_count": "0",
+      "right_minus_left_count": "0",
+      "mean_count": "0",
+      "initial_left_estimate_mm": 0.0,
+      "initial_right_estimate_mm": 0.0,
+      "initial_mean_estimate_mm": 0.0,
+      "initial_mean_error_percent": null
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 10,
+      "left_count": "113",
+      "right_count": "122",
+      "right_minus_left_count": "9",
+      "mean_count": "235/2",
+      "initial_left_estimate_mm": 8.257692307692308,
+      "initial_right_estimate_mm": 8.915384615384616,
+      "initial_mean_estimate_mm": 8.586538461538462,
+      "initial_mean_error_percent": -14.134615384615385
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 50,
+      "left_count": "573",
+      "right_count": "583",
+      "right_minus_left_count": "10",
+      "mean_count": "578",
+      "initial_left_estimate_mm": 41.87307692307692,
+      "initial_right_estimate_mm": 42.603846153846156,
+      "initial_mean_estimate_mm": 42.238461538461536,
+      "initial_mean_error_percent": -15.523076923076923
+    },
+    {
+      "leg": "outward",
+      "reported_position_mm": 100,
+      "left_count": "1153",
+      "right_count": "1162",
+      "right_minus_left_count": "9",
+      "mean_count": "2315/2",
+      "initial_left_estimate_mm": 84.25769230769231,
+      "initial_right_estimate_mm": 84.91538461538461,
+      "initial_mean_estimate_mm": 84.58653846153847,
+      "initial_mean_error_percent": -15.413461538461538
+    },
+    {
+      "leg": "turnaround",
+      "reported_position_mm": 150,
+      "left_count": "1736",
+      "right_count": "1744",
+      "right_minus_left_count": "8",
+      "mean_count": "1740",
+      "initial_left_estimate_mm": 126.86153846153846,
+      "initial_right_estimate_mm": 127.44615384615385,
+      "initial_mean_estimate_mm": 127.15384615384616,
+      "initial_mean_error_percent": -15.23076923076923
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 100,
+      "left_count": "1154",
+      "right_count": "1162",
+      "right_minus_left_count": "8",
+      "mean_count": "1158",
+      "initial_left_estimate_mm": 84.33076923076923,
+      "initial_right_estimate_mm": 84.91538461538461,
+      "initial_mean_estimate_mm": 84.62307692307692,
+      "initial_mean_error_percent": -15.376923076923077
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 50,
+      "left_count": "581",
+      "right_count": "584",
+      "right_minus_left_count": "3",
+      "mean_count": "1165/2",
+      "initial_left_estimate_mm": 42.457692307692305,
+      "initial_right_estimate_mm": 42.676923076923075,
+      "initial_mean_estimate_mm": 42.56730769230769,
+      "initial_mean_error_percent": -14.865384615384615
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 10,
+      "left_count": "115",
+      "right_count": "121",
+      "right_minus_left_count": "6",
+      "mean_count": "118",
+      "initial_left_estimate_mm": 8.403846153846153,
+      "initial_right_estimate_mm": 8.842307692307692,
+      "initial_mean_estimate_mm": 8.623076923076923,
+      "initial_mean_error_percent": -13.76923076923077
+    },
+    {
+      "leg": "return",
+      "reported_position_mm": 0,
+      "left_count": "2",
+      "right_count": "2",
+      "right_minus_left_count": "0",
+      "mean_count": "2",
+      "initial_left_estimate_mm": 0.14615384615384616,
+      "initial_right_estimate_mm": 0.14615384615384616,
+      "initial_mean_estimate_mm": 0.14615384615384616,
+      "initial_mean_error_percent": null
+    }
+  ],
+  "candidate_coefficients_not_applied": {
+    "left": {
+      "origin_fit_mm_per_count": 0.08655730565435145,
+      "outward_15cm_mm_per_count": 0.08640552995391705,
+      "outward_10cm_mm_per_count": 0.08673026886383348
+    },
+    "right": {
+      "origin_fit_mm_per_count": 0.08598002811925448,
+      "outward_15cm_mm_per_count": 0.0860091743119266,
+      "outward_10cm_mm_per_count": 0.08605851979345955
+    },
+    "common_mean": {
+      "origin_fit_mm_per_count": 0.08626770115566165,
+      "outward_15cm_mm_per_count": 0.08620689655172414,
+      "outward_10cm_mm_per_count": 0.08639308855291576
+    }
+  },
+  "side_difference_outward_15cm_percent_of_mean": 0.45977011494252873,
+  "return_minus_outward_counts": {
+    "left": {
+      "1cm": 2,
+      "5cm": 8,
+      "10cm": 1,
+      "0cm": 2
+    },
+    "right": {
+      "1cm": -1,
+      "5cm": 1,
+      "10cm": 0,
+      "0cm": 2
+    }
+  },
+  "conditional_equivalent_pitch_mm_if_only_pitch_differed": 11.206896551724139,
+  "conditional_equivalent_pitch_is_actual_measurement": false,
+  "cpr_evidence_review": {
+    "source": "02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md#test-8-50-revolution-calibration-and-cps-to-mrpm",
+    "date": "2026-07-30",
+    "method": "User-observed50 output revolutions per motor/direction",
+    "counts_per_output_rev_range": [
+      1559.96,
+      1560.02
+    ],
+    "current_constant": 1560,
+    "decision": "Retain verified1560; do not replace it based on this short manual travel series"
+  },
+  "interpretation": "Both channels have similar roughly15% underestimation with the initial coefficient; common geometry/reference/slip scale takes priority over side-specific gain changes",
+  "not_verified": [
+    "Raw boot/sample/time/control/freshness metadata",
+    "Physical distance tool/resolution/straightness and no-slip condition",
+    "Whether9.5mm was hinge-pin center pitch versus overall plastic-link length",
+    "Whether579mm was independently measured and on what reference path"
+  ],
+  "decision": "Preserve archived initial model/CLI results and firmware settings; no calibration values applied",
+  "next": "Inspect where9.5mm was measured using link side photo showing pin/hole locations or measurement marks. Resolve pitch-reference discrepancy before more powered testing or final coefficient selection."
+}

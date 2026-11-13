@@ -1,0 +1,13 @@
+# KiCad local history and per-user/session state
+.history/
+*.kicad_prl
+~*.lck
+
+# KiCad autosave and backup artifacts
+_autosave-*
+*-backups/
+*.kicad_sch-bak
+*.kicad_pcb-bak
+
+# Regenerable verification output
+erc_latest.rpt

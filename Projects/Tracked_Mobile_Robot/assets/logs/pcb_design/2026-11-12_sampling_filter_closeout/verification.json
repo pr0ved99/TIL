@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-12",
+  "scope_file_count": 28,
+  "unrelated_hashes_preserved": 19,
+  "json_files_parsed": 8,
+  "python_files_ast_parsed": 2,
+  "relative_links_checked": 799,
+  "missing_relative_links": [],
+  "numeric_spot_checks": {
+    "A_gain_0_9Hz": 0.10929244119226728,
+    "B_gain_0_9Hz": 0.6986468177850711,
+    "output_alias_Hz": 0.09999999999999998,
+    "sample_age_seconds": 0.04975,
+    "first_block_voltage_V": 12.33
+  },
+  "prior_saved_calculation_checks": {
+    "frequency": {
+      "max_complex_sum_gain_difference": 4.0545444129927885e-14,
+      "synthetic_block_mean_1Hz_component_matches_gain": true,
+      "hardware_or_spice_run": false
+    },
+    "temperature": {
+      "direct_sample_mean_max_abs_error_q": 5.551115123125783e-17,
+      "phase_sweep": "10000 phases per direction and window",
+      "boundary": "bisection of first-output acceptance; 2 s result within band throughout sweep"
+    }
+  },
+  "firmware_build_flash_or_simulator_execution": false,
+  "scoped_diff_check": "passed",
+  "staged_scope_exact_match": true
+}

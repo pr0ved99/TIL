@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-24",
+  "decoder": "Local Chrome HTMLVideoElement seek + canvas; frames are samples, not continuous motion measurement",
+  "audio_reviewed": false,
+  "videos": [
+    {
+      "file": "C:/Users/eyh12/Desktop/mvp_01.mp4",
+      "bytes": 85385080,
+      "sha256": "feef821386e7bc29c3dd8433e08f91955330d9304832fc7b37000cd1d1bdeb33",
+      "duration": 76.8,
+      "width": 1920,
+      "height": 1080,
+      "sample_step_seconds": null,
+      "requested_times": [
+        67.1,
+        67.2,
+        67.3,
+        67.4,
+        67.5,
+        67.6,
+        67.7,
+        67.8,
+        67.9
+      ],
+      "frames": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_demo_run01\\mvp_01_frames"
+    }
+  ]
+}

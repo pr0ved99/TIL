@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-24",
+  "attachment_id": "9ea41563-0409-4176-9801-a0231c9a0d9b",
+  "original_filename": "붙여넣은 텍스트.txt",
+  "raw_bytes": 4872753,
+  "raw_sha256": "a75887413f6f5150a4ac7c2b900f55d8926e78033cda0255d0667b28c6d7811b",
+  "archive": "browser_report.json.gz",
+  "archive_bytes": 211123,
+  "archive_sha256": "ac1ec5ae2e0598d8752c95b084f3342fead465a33c861ec4d544017ea31b0bfc",
+  "encoding": "UTF-8 JSON; original bytes preserved in gzip",
+  "observer_revision": "5.2-handler-timing",
+  "local_observer_source": "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/console_encoder_observe_1m_v5_2.js",
+  "local_observer_sha256_at_analysis": "5c2cad7b016cc2cce1a974f4e1aad1c0b37df4ddf2946e68490b48e012a81ccb",
+  "source_hash_scope": "Local source snapshot reference; the browser report does not attest installed script hash",
+  "operating_condition": "Requested DISARMED/IDLE no-ARM baseline after v5.2 installation; actual TEL span is calculated from report, not assumed 30 seconds",
+  "physical_measurements": "No new supply voltage/current or battery measurement supplied"
+}

@@ -1,0 +1,1143 @@
+{
+  "schema_version": 2,
+  "date": "2026-11-12T16:17:22",
+  "source_sha256": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+  "scope": "Current schematic identity and pin/net inventory; not placement coordinates or a fabrication BOM.",
+  "parts": {
+    "C1": {
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/I_LEFT_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C2": {
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/I_RIGHT_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C3": {
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_LEFT_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C4": {
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_RIGHT_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C5": {
+      "value": "100n",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_UP_DIV",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C6": {
+      "value": "100n",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_DOWN_DIV",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C7": {
+      "value": "100n",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/STM_AVDD",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "C8": {
+      "value": "100n",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/STM_AVDD",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "J1": {
+      "value": "CN7_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "20": {
+          "net": "/GND",
+          "function": "Pin_20_20",
+          "type": "passive"
+        },
+        "38": {
+          "net": "/I_LEFT_ADC",
+          "function": "Pin_38_38",
+          "type": "passive"
+        },
+        "36": {
+          "net": "/I_RIGHT_ADC",
+          "function": "Pin_36_36",
+          "type": "passive"
+        },
+        "16": {
+          "net": "/STM_3V3",
+          "function": "Pin_16_16",
+          "type": "passive"
+        },
+        "35": {
+          "net": "/T_LEFT_ADC",
+          "function": "Pin_35_35",
+          "type": "passive"
+        },
+        "37": {
+          "net": "/T_RIGHT_ADC",
+          "function": "Pin_37_37",
+          "type": "passive"
+        },
+        "34": {
+          "net": "/V_DOWN_ADC",
+          "function": "Pin_34_34",
+          "type": "passive"
+        },
+        "32": {
+          "net": "/V_UP_ADC",
+          "function": "Pin_32_32",
+          "type": "passive"
+        },
+        "1": {
+          "net": "unconnected-(J1-Pin_1-Pad1)",
+          "function": "Pin_1_1",
+          "type": "passive+no_connect"
+        },
+        "2": {
+          "net": "unconnected-(J1-Pin_2-Pad2)",
+          "function": "Pin_2_2",
+          "type": "passive+no_connect"
+        },
+        "3": {
+          "net": "unconnected-(J1-Pin_3-Pad3)",
+          "function": "Pin_3_3",
+          "type": "passive+no_connect"
+        },
+        "4": {
+          "net": "unconnected-(J1-Pin_4-Pad4)",
+          "function": "Pin_4_4",
+          "type": "passive+no_connect"
+        },
+        "5": {
+          "net": "unconnected-(J1-Pin_5-Pad5)",
+          "function": "Pin_5_5",
+          "type": "passive+no_connect"
+        },
+        "6": {
+          "net": "unconnected-(J1-Pin_6-Pad6)",
+          "function": "Pin_6_6",
+          "type": "passive+no_connect"
+        },
+        "7": {
+          "net": "unconnected-(J1-Pin_7-Pad7)",
+          "function": "Pin_7_7",
+          "type": "passive+no_connect"
+        },
+        "8": {
+          "net": "unconnected-(J1-Pin_8-Pad8)",
+          "function": "Pin_8_8",
+          "type": "passive+no_connect"
+        },
+        "9": {
+          "net": "unconnected-(J1-Pin_9-Pad9)",
+          "function": "Pin_9_9",
+          "type": "passive+no_connect"
+        },
+        "10": {
+          "net": "unconnected-(J1-Pin_10-Pad10)",
+          "function": "Pin_10_10",
+          "type": "passive+no_connect"
+        },
+        "11": {
+          "net": "unconnected-(J1-Pin_11-Pad11)",
+          "function": "Pin_11_11",
+          "type": "passive+no_connect"
+        },
+        "12": {
+          "net": "unconnected-(J1-Pin_12-Pad12)",
+          "function": "Pin_12_12",
+          "type": "passive+no_connect"
+        },
+        "13": {
+          "net": "unconnected-(J1-Pin_13-Pad13)",
+          "function": "Pin_13_13",
+          "type": "passive+no_connect"
+        },
+        "14": {
+          "net": "unconnected-(J1-Pin_14-Pad14)",
+          "function": "Pin_14_14",
+          "type": "passive+no_connect"
+        },
+        "15": {
+          "net": "unconnected-(J1-Pin_15-Pad15)",
+          "function": "Pin_15_15",
+          "type": "passive+no_connect"
+        },
+        "17": {
+          "net": "unconnected-(J1-Pin_17-Pad17)",
+          "function": "Pin_17_17",
+          "type": "passive+no_connect"
+        },
+        "18": {
+          "net": "unconnected-(J1-Pin_18-Pad18)",
+          "function": "Pin_18_18",
+          "type": "passive+no_connect"
+        },
+        "19": {
+          "net": "unconnected-(J1-Pin_19-Pad19)",
+          "function": "Pin_19_19",
+          "type": "passive+no_connect"
+        },
+        "21": {
+          "net": "unconnected-(J1-Pin_21-Pad21)",
+          "function": "Pin_21_21",
+          "type": "passive+no_connect"
+        },
+        "22": {
+          "net": "unconnected-(J1-Pin_22-Pad22)",
+          "function": "Pin_22_22",
+          "type": "passive+no_connect"
+        },
+        "23": {
+          "net": "unconnected-(J1-Pin_23-Pad23)",
+          "function": "Pin_23_23",
+          "type": "passive+no_connect"
+        },
+        "24": {
+          "net": "unconnected-(J1-Pin_24-Pad24)",
+          "function": "Pin_24_24",
+          "type": "passive+no_connect"
+        },
+        "25": {
+          "net": "unconnected-(J1-Pin_25-Pad25)",
+          "function": "Pin_25_25",
+          "type": "passive+no_connect"
+        },
+        "26": {
+          "net": "unconnected-(J1-Pin_26-Pad26)",
+          "function": "Pin_26_26",
+          "type": "passive+no_connect"
+        },
+        "27": {
+          "net": "unconnected-(J1-Pin_27-Pad27)",
+          "function": "Pin_27_27",
+          "type": "passive+no_connect"
+        },
+        "28": {
+          "net": "unconnected-(J1-Pin_28-Pad28)",
+          "function": "Pin_28_28",
+          "type": "passive+no_connect"
+        },
+        "29": {
+          "net": "unconnected-(J1-Pin_29-Pad29)",
+          "function": "Pin_29_29",
+          "type": "passive+no_connect"
+        },
+        "30": {
+          "net": "unconnected-(J1-Pin_30-Pad30)",
+          "function": "Pin_30_30",
+          "type": "passive+no_connect"
+        },
+        "31": {
+          "net": "unconnected-(J1-Pin_31-Pad31)",
+          "function": "Pin_31_31",
+          "type": "passive+no_connect"
+        },
+        "33": {
+          "net": "unconnected-(J1-Pin_33-Pad33)",
+          "function": "Pin_33_33",
+          "type": "passive+no_connect"
+        }
+      }
+    },
+    "J2": {
+      "value": "CN10_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "7": {
+          "net": "/STM_AVDD",
+          "function": "Pin_7_7",
+          "type": "passive"
+        },
+        "1": {
+          "net": "unconnected-(J2-Pin_1-Pad1)",
+          "function": "Pin_1_1",
+          "type": "passive+no_connect"
+        },
+        "2": {
+          "net": "unconnected-(J2-Pin_2-Pad2)",
+          "function": "Pin_2_2",
+          "type": "passive+no_connect"
+        },
+        "3": {
+          "net": "unconnected-(J2-Pin_3-Pad3)",
+          "function": "Pin_3_3",
+          "type": "passive+no_connect"
+        },
+        "4": {
+          "net": "unconnected-(J2-Pin_4-Pad4)",
+          "function": "Pin_4_4",
+          "type": "passive+no_connect"
+        },
+        "5": {
+          "net": "unconnected-(J2-Pin_5-Pad5)",
+          "function": "Pin_5_5",
+          "type": "passive+no_connect"
+        },
+        "6": {
+          "net": "unconnected-(J2-Pin_6-Pad6)",
+          "function": "Pin_6_6",
+          "type": "passive+no_connect"
+        },
+        "8": {
+          "net": "unconnected-(J2-Pin_8-Pad8)",
+          "function": "Pin_8_8",
+          "type": "passive+no_connect"
+        },
+        "9": {
+          "net": "unconnected-(J2-Pin_9-Pad9)",
+          "function": "Pin_9_9",
+          "type": "passive+no_connect"
+        },
+        "10": {
+          "net": "unconnected-(J2-Pin_10-Pad10)",
+          "function": "Pin_10_10",
+          "type": "passive+no_connect"
+        },
+        "11": {
+          "net": "unconnected-(J2-Pin_11-Pad11)",
+          "function": "Pin_11_11",
+          "type": "passive+no_connect"
+        },
+        "12": {
+          "net": "unconnected-(J2-Pin_12-Pad12)",
+          "function": "Pin_12_12",
+          "type": "passive+no_connect"
+        },
+        "13": {
+          "net": "unconnected-(J2-Pin_13-Pad13)",
+          "function": "Pin_13_13",
+          "type": "passive+no_connect"
+        },
+        "14": {
+          "net": "unconnected-(J2-Pin_14-Pad14)",
+          "function": "Pin_14_14",
+          "type": "passive+no_connect"
+        },
+        "15": {
+          "net": "unconnected-(J2-Pin_15-Pad15)",
+          "function": "Pin_15_15",
+          "type": "passive+no_connect"
+        },
+        "16": {
+          "net": "unconnected-(J2-Pin_16-Pad16)",
+          "function": "Pin_16_16",
+          "type": "passive+no_connect"
+        },
+        "17": {
+          "net": "unconnected-(J2-Pin_17-Pad17)",
+          "function": "Pin_17_17",
+          "type": "passive+no_connect"
+        },
+        "18": {
+          "net": "unconnected-(J2-Pin_18-Pad18)",
+          "function": "Pin_18_18",
+          "type": "passive+no_connect"
+        },
+        "19": {
+          "net": "unconnected-(J2-Pin_19-Pad19)",
+          "function": "Pin_19_19",
+          "type": "passive+no_connect"
+        },
+        "20": {
+          "net": "unconnected-(J2-Pin_20-Pad20)",
+          "function": "Pin_20_20",
+          "type": "passive+no_connect"
+        },
+        "21": {
+          "net": "unconnected-(J2-Pin_21-Pad21)",
+          "function": "Pin_21_21",
+          "type": "passive+no_connect"
+        },
+        "22": {
+          "net": "unconnected-(J2-Pin_22-Pad22)",
+          "function": "Pin_22_22",
+          "type": "passive+no_connect"
+        },
+        "23": {
+          "net": "unconnected-(J2-Pin_23-Pad23)",
+          "function": "Pin_23_23",
+          "type": "passive+no_connect"
+        },
+        "24": {
+          "net": "unconnected-(J2-Pin_24-Pad24)",
+          "function": "Pin_24_24",
+          "type": "passive+no_connect"
+        },
+        "25": {
+          "net": "unconnected-(J2-Pin_25-Pad25)",
+          "function": "Pin_25_25",
+          "type": "passive+no_connect"
+        },
+        "26": {
+          "net": "unconnected-(J2-Pin_26-Pad26)",
+          "function": "Pin_26_26",
+          "type": "passive+no_connect"
+        },
+        "27": {
+          "net": "unconnected-(J2-Pin_27-Pad27)",
+          "function": "Pin_27_27",
+          "type": "passive+no_connect"
+        },
+        "28": {
+          "net": "unconnected-(J2-Pin_28-Pad28)",
+          "function": "Pin_28_28",
+          "type": "passive+no_connect"
+        },
+        "29": {
+          "net": "unconnected-(J2-Pin_29-Pad29)",
+          "function": "Pin_29_29",
+          "type": "passive+no_connect"
+        },
+        "30": {
+          "net": "unconnected-(J2-Pin_30-Pad30)",
+          "function": "Pin_30_30",
+          "type": "passive+no_connect"
+        },
+        "31": {
+          "net": "unconnected-(J2-Pin_31-Pad31)",
+          "function": "Pin_31_31",
+          "type": "passive+no_connect"
+        },
+        "32": {
+          "net": "unconnected-(J2-Pin_32-Pad32)",
+          "function": "Pin_32_32",
+          "type": "passive+no_connect"
+        },
+        "33": {
+          "net": "unconnected-(J2-Pin_33-Pad33)",
+          "function": "Pin_33_33",
+          "type": "passive+no_connect"
+        },
+        "34": {
+          "net": "unconnected-(J2-Pin_34-Pad34)",
+          "function": "Pin_34_34",
+          "type": "passive+no_connect"
+        },
+        "35": {
+          "net": "unconnected-(J2-Pin_35-Pad35)",
+          "function": "Pin_35_35",
+          "type": "passive+no_connect"
+        },
+        "36": {
+          "net": "unconnected-(J2-Pin_36-Pad36)",
+          "function": "Pin_36_36",
+          "type": "passive+no_connect"
+        },
+        "37": {
+          "net": "unconnected-(J2-Pin_37-Pad37)",
+          "function": "Pin_37_37",
+          "type": "passive+no_connect"
+        },
+        "38": {
+          "net": "unconnected-(J2-Pin_38-Pad38)",
+          "function": "Pin_38_38",
+          "type": "passive+no_connect"
+        }
+      }
+    },
+    "J3": {
+      "value": "CURRENT_LEFT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": "Pin_2_2",
+          "type": "passive"
+        },
+        "3": {
+          "net": "/I_LEFT_RAW",
+          "function": "Pin_3_3",
+          "type": "passive"
+        },
+        "1": {
+          "net": "/STM_3V3",
+          "function": "Pin_1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "J4": {
+      "value": "CURRENT_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": "Pin_2_2",
+          "type": "passive"
+        },
+        "3": {
+          "net": "/I_RIGHT_RAW",
+          "function": "Pin_3_3",
+          "type": "passive"
+        },
+        "1": {
+          "net": "/STM_3V3",
+          "function": "Pin_1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "J5": {
+      "value": "NTC_LEFT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": "Pin_2_2",
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_LEFT_RAW",
+          "function": "Pin_1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "J6": {
+      "value": "NTC_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": "Pin_2_2",
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_RIGHT_RAW",
+          "function": "Pin_1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "J7": {
+      "value": "VBAT_SENSE",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/GND",
+          "function": "Pin_1_1",
+          "type": "passive"
+        },
+        "2": {
+          "net": "/VBAT_PROTECTED_SENSE_RAW",
+          "function": "Pin_2_2",
+          "type": "passive"
+        }
+      }
+    },
+    "J8": {
+      "value": "VMOTOR_SENSE",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/GND",
+          "function": "Pin_1_1",
+          "type": "passive"
+        },
+        "2": {
+          "net": "/MOTOR_VBAT_SAFE_SENSE_RAW",
+          "function": "Pin_2_2",
+          "type": "passive"
+        }
+      }
+    },
+    "R1": {
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/I_LEFT_ADC",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/I_LEFT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R2": {
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/I_RIGHT_ADC",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/I_RIGHT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R3": {
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/STM_3V3",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/T_LEFT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R4": {
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/T_LEFT_ADC",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_LEFT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R5": {
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/STM_3V3",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/T_RIGHT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R6": {
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/T_RIGHT_ADC",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/T_RIGHT_RAW",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R7": {
+      "value": "12k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/VBAT_PROTECTED_SENSE_RAW",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/V_UP_TOP_MID",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R8": {
+      "value": "12k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/V_UP_DIV",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_UP_TOP_MID",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R9": {
+      "value": "4.7k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_UP_DIV",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R10": {
+      "value": "1k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/V_UP_DIV",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/V_UP_SWITCH_IN",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R11": {
+      "value": "47k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_UP_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R12": {
+      "value": "12k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/MOTOR_VBAT_SAFE_SENSE_RAW",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/V_DOWN_TOP_MID",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R13": {
+      "value": "12k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/V_DOWN_DIV",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_DOWN_TOP_MID",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R14": {
+      "value": "4.7k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_DOWN_DIV",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R15": {
+      "value": "1k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/V_DOWN_DIV",
+          "function": null,
+          "type": "passive"
+        },
+        "2": {
+          "net": "/V_DOWN_SWITCH_IN",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "R16": {
+      "value": "47k",
+      "footprint": "",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "2": {
+          "net": "/GND",
+          "function": null,
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_DOWN_ADC",
+          "function": null,
+          "type": "passive"
+        }
+      }
+    },
+    "TP1": {
+      "value": "STM_3V3",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/STM_3V3",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "TP2": {
+      "value": "GND",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/GND",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "TP3": {
+      "value": "I_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/I_LEFT_ADC",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "TP4": {
+      "value": "I_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/I_RIGHT_ADC",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "TP5": {
+      "value": "T_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/T_LEFT_ADC",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "TP6": {
+      "value": "T_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+      "datasheet": "",
+      "uuids": [],
+      "pin_nets": {
+        "1": {
+          "net": "/T_RIGHT_ADC",
+          "function": "1_1",
+          "type": "passive"
+        }
+      }
+    },
+    "U1": {
+      "value": "TPS3840PL30DBV",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5",
+      "datasheet": "https://www.ti.com/lit/ds/symlink/tps3840.pdf",
+      "uuids": [],
+      "pin_nets": {
+        "3": {
+          "net": "/GND",
+          "function": "GND_3",
+          "type": "power_in"
+        },
+        "2": {
+          "net": "/STM_AVDD",
+          "function": "VDD_2",
+          "type": "power_in"
+        },
+        "1": {
+          "net": "/V_SENSE_EN",
+          "function": "~{RESET}_1",
+          "type": "output"
+        },
+        "5": {
+          "net": "unconnected-(U1-CT-Pad5)",
+          "function": "CT_5",
+          "type": "passive+no_connect"
+        },
+        "4": {
+          "net": "unconnected-(U1-~{MR}-Pad4)",
+          "function": "~{MR}_4",
+          "type": "input+no_connect"
+        }
+      }
+    },
+    "U2": {
+      "value": "TMUX1511PW",
+      "footprint": "Package_SO:TSSOP-14_4.4x5mm_P0.65mm",
+      "datasheet": "https://www.ti.com/lit/ds/symlink/tmux1511.pdf",
+      "uuids": [],
+      "pin_nets": {
+        "10": {
+          "net": "/GND",
+          "function": "SEL3_10",
+          "type": "input"
+        },
+        "11": {
+          "net": "/GND",
+          "function": "D4_11",
+          "type": "passive"
+        },
+        "12": {
+          "net": "/GND",
+          "function": "S4_12",
+          "type": "passive"
+        },
+        "13": {
+          "net": "/GND",
+          "function": "SEL4_13",
+          "type": "input"
+        },
+        "7": {
+          "net": "/GND",
+          "function": "GND_7",
+          "type": "power_in"
+        },
+        "8": {
+          "net": "/GND",
+          "function": "D3_8",
+          "type": "passive"
+        },
+        "9": {
+          "net": "/GND",
+          "function": "S3_9",
+          "type": "passive"
+        },
+        "14": {
+          "net": "/STM_AVDD",
+          "function": "VDD_14",
+          "type": "power_in"
+        },
+        "6": {
+          "net": "/V_DOWN_ADC",
+          "function": "D2_6",
+          "type": "passive"
+        },
+        "5": {
+          "net": "/V_DOWN_SWITCH_IN",
+          "function": "S2_5",
+          "type": "passive"
+        },
+        "1": {
+          "net": "/V_SENSE_EN",
+          "function": "SEL1_1",
+          "type": "input"
+        },
+        "4": {
+          "net": "/V_SENSE_EN",
+          "function": "SEL2_4",
+          "type": "input"
+        },
+        "3": {
+          "net": "/V_UP_ADC",
+          "function": "D1_3",
+          "type": "passive"
+        },
+        "2": {
+          "net": "/V_UP_SWITCH_IN",
+          "function": "S1_2",
+          "type": "passive"
+        }
+      }
+    }
+  }
+}

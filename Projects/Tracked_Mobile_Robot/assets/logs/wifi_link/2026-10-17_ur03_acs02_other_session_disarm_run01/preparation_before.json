@@ -1,0 +1,74 @@
+{
+  "test": "UR03_ACS02_NON_OWNER_DISARM",
+  "status": "PREPARED_PC_PASS_BENCH_PENDING",
+  "purpose": "Existing connection A owns zero-only control; distinct non-owner connection B requests DISARM, revokes owner, receives result and leaves both sessions IDLE.",
+  "contract": "docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md AC-S02",
+  "prior_distinct_subcase": "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/observations.json",
+  "firmware_changes": false,
+  "firmware_rebuild_required": false,
+  "source_normalized_sha256": {
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+    "esp32_wifi_link/main/wifi_link_main.c": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0"
+  },
+  "normal_modes": {
+    "all_14_stm_test_switches": 0,
+    "esp_partial_test_mode": 0
+  },
+  "files_sha256": {
+    "browser_pc.json": "079c3e7daaeece9032f810c9c35af3092e04eb3adee248b0cfcba1dc5577cbaa",
+    "check_console_test.js": "8d37a644f71d999cebb2cabf118c5322b8eb50c625e83c219902b3cea6ae4aef",
+    "check_host.py": "5be646876bcf8c9976c9697d133e91a292a0b9be24d0d62e846d1226b12434ad",
+    "console_test.js": "0e1dea1fffbe4d88e1b7a024bdfcd2d9fb42c5038ebd2d877c2ab56959251fc3",
+    "host_cases.c": "68db5ca9253baaee709ef8bfa1962a19998944e920c60f850e755e64bc481639",
+    "host_pc.txt": "3595f6615926fd08a34e48e163348aae4e7f13a24092ba5aca9b822b52bfd4af"
+  },
+  "pc_evidence": {
+    "browser_cases": 13,
+    "browser_file": "browser_pc.json",
+    "native_adapter_cases": 3,
+    "native_cases": [
+      "ACTIVE owner, B without ticket stops and receives matching result after ACK/TEL",
+      "A queued CMD cancelled before UART on B stop",
+      "A in-flight CMD cancelled and DISARM follows"
+    ],
+    "native_file": "host_pc.txt",
+    "post_stop_no_auto_commands_ms": 3100,
+    "scope": "Mocks for browser/server responses and native RTOS/UART; no board/electrical claim"
+  },
+  "script_behavior": {
+    "installation": "Creates B and sends HELLO only; does not alter A send or PAGE control timers",
+    "trigger": "User clicks normal page ARM after B READY",
+    "b_stop": "One ticket-free DISARM after A ARM OK, >=2 zero CMD OK, fresh ARMED/zero and both ACTIVE snapshots with A owner",
+    "confirmation": "B accepted notice and matching OK result, both sessions owner/control_id=0 IDLE, matching fresh DISARMED/zero TEL and 3.1s observation",
+    "failure": "Retain INCOMPLETE; one fallback DISARM if potentially armed; no ARM/CMD replay",
+    "page_result_note": "B receives its DISARM result; A page may retain its preceding CMD result"
+  },
+  "capture_name": "2026-10-17_UR03_ACS02_OTHER_SESSION_DISARM_PWM_run01.sr",
+  "capture_settings": {
+    "samplerate_hz": 4000000,
+    "recommended_samples": 100000000,
+    "uart_channels": [
+      0,
+      1
+    ],
+    "level_channels": [
+      4,
+      6,
+      7
+    ]
+  },
+  "required_evidence": [
+    "copy(ur03OtherStop.report()) JSON",
+    "Matching capture with A ARM/zero CMD then CAN+LF/DISARM/ACK/new stopped TEL",
+    "ESP monitor covering before ARM through stop",
+    "Final READY/IDLE/DISARMED zero state"
+  ],
+  "remaining": [
+    "User live run and matching capture review"
+  ],
+  "limits": [
+    "Uses two WebSocket sessions within one focused page to avoid hidden/blur stopping A before B; not a two-device RF test.",
+    "Does not test non-owner ARM rejection or the entire AC-S02 suite.",
+    "No nonzero motor command or powered-motor stopping performance claim."
+  ]
+}

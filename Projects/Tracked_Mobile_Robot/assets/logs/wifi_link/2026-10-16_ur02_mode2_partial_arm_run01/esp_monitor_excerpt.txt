@@ -1,0 +1,22 @@
+Source: selected verbatim lines from the user-provided ESP monitor log, 2026-10-16.
+Capture: 2026-10-16_UR02_MODE2_PARTIAL_ARM_run01.sr
+Capture SHA256: 189371c7c3928313b893f095891ead65a9cfbd34434fe7ae8d77554a440ef1d6
+User screenshot: boot_id=312894, HTTP 202 QUEUED, READY/IDLE, fresh DISARMED/DISARM, last_seq=1152473123, PWM/CPS=0. Raw screenshot was supplied in chat, not saved here.
+
+I (100659) wifi_link: STM TEL #1003 t_ms=1125703 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (100719) wifi_link: UART TEST: mode=2 reserved_seq=1152473122 prefix=ARM,seq=1152473122 written=18/18 NO_LF
+I (100759) wifi_link: STM TEL #1004 t_ms=1125803 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (100819) wifi_link: CONTROL TX: op=3 seq=1152473123 written=24/24
+I (100839) wifi_link: CONTROL RX MATCH: DISARM seq=1152473123
+I (100859) wifi_link: STM TEL #1005 t_ms=1125903 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (100859) wifi_link: UART TEST: end prefix_full=1 stop_confirmed=1; capture review required
+I (100959) wifi_link: STM TEL #1006 t_ms=1126003 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (102359) wifi_link: STM TEL #1020 t_ms=1127403 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+
+Capture review scope:
+- D3/D1 decoded bytes match: ARM,seq=1152473122 without LF, then CAN+LF and first DISARM,seq=1152473123 with LF.
+- D0/D2 decoded bytes match; only complete non-TEL response is ACK,seq=1152473123,type=DISARM,t_ms=1125894. No ARM ACK or ERR observed.
+- Next TEL t_ms=1125903 has last_seq=1152473123; all 125 complete TEL frames report DISARMED/DISARM, PWM/CPS/drop/err=0.
+- Raw sampled levels are not identical. D1 has 1085 single-sample (0.25 us) excursions relative to D3; cause unresolved. D0/D2 decoder each reports one invalid stop at capture time 0.00000775 s, before the test begins at 1.87050275 s.
+- This verifies the bounded UART cancellation/recovery test, not analog signal integrity, physical PWM, power isolation, or the whole AC-S gate.
+- Restoring mode0 source/build/flash and checking normal-image startup remain pending.

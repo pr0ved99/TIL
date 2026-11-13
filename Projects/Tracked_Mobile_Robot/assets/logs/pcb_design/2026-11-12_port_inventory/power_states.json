@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-12",
+  "status": "DOCUMENTED_AND_NOMINAL_CALCULATION_ONLY",
+  "source_netlist": "09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\reports\\netlist.xml",
+  "source_netlist_sha256": "6a504bd9aa5a0ec3664035fbb6ffdf590166adf4fe8274c0cc51c72cafbf5953",
+  "connections": {
+    "/STM_AVDD": [
+      {
+        "ref": "C7",
+        "pin": "1"
+      },
+      {
+        "ref": "C8",
+        "pin": "1"
+      },
+      {
+        "ref": "J2",
+        "pin": "7"
+      },
+      {
+        "ref": "U1",
+        "pin": "2"
+      },
+      {
+        "ref": "U2",
+        "pin": "14"
+      }
+    ],
+    "/V_SENSE_EN": [
+      {
+        "ref": "U1",
+        "pin": "1"
+      },
+      {
+        "ref": "U2",
+        "pin": "1"
+      },
+      {
+        "ref": "U2",
+        "pin": "4"
+      }
+    ],
+    "unconnected-(U1-CT-Pad5)": [
+      {
+        "ref": "U1",
+        "pin": "5"
+      }
+    ],
+    "unconnected-(U1-~{MR}-Pad4)": [
+      {
+        "ref": "U1",
+        "pin": "4"
+      }
+    ]
+  },
+  "calculation": {
+    "VRAIL_V": 16,
+    "Rupper_ohm": 24000,
+    "Rlower_ohm": 4700,
+    "assumptions": [
+      "TMUX OFF ideal open",
+      "nominal resistors",
+      "steady DC",
+      "ignore leakage"
+    ],
+    "VDIV_OFF_V": 2.6202090592334493
+  },
+  "boundaries": [
+    "MCU-side ON/OFF table assumes supplies are jointly normal/zero; mismatches reviewed separately",
+    "current sensor output when unpowered is not assumed zero",
+    "powered-off protection at VDD=0 is separate from transitions",
+    "C2=100pF is a simulation assumption",
+    "no CAD/firmware/physical change"
+  ],
+  "user_handwriting_understanding": "NOT_REPORTED",
+  "next": "41-4 power-down/recovery transitions"
+}

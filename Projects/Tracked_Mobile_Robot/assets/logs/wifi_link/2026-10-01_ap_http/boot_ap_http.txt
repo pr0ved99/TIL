@@ -1,0 +1,101 @@
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link> $env:IDF_PATH = 'C:\esp\v6.0.2\esp-idf';
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link>  & 'C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe' 'C:\esp\v6.0.2\esp-idf\tools\idf_monitor.py' -p COM5 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --make '''C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe'' ''C:\esp\v6.0.2\esp-idf\tools\idf.py''' --target esp32s3 'c:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link\build\esp32_wifi_link.elf'
+--- Warning: GDB cannot open serial ports accessed as COMx
+--- Using \\.\COM5 instead...
+--- esp-idf-monitor 1.9.0 on \\.\COM5 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO�ESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x1 (POWERON),boot:0x8 (SPI_FAST_FLASH_BOOT)
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xda0
+load:0x403cb700,len:0x2f54
+entry 0x403c8908
+I (24) boot: ESP-IDF v6.0.2 2nd stage bootloader
+I (25) boot: compile time Oct  1 2026 21:26:15
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (28) boot: efuse block revision: v1.3
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 2MB
+I (43) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (63) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (76) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c090020 size=1d380h (119680) map
+I (108) esp_image: segment 1: paddr=0002d3a8 vaddr=3fc97900 size=02c70h ( 11376) load
+I (111) esp_image: segment 2: paddr=00030020 vaddr=42000020 size=8f098h (585880) map
+I (219) esp_image: segment 3: paddr=000bf0c0 vaddr=3fc9a570 size=023e0h (  9184) load
+I (221) esp_image: segment 4: paddr=000c14a8 vaddr=40374000 size=137f4h ( 79860) load
+I (241) esp_image: segment 5: paddr=000d4ca4 vaddr=50000000 size=00024h (    36) load
+I (250) boot: Loaded app from partition at offset 0x10000
+I (250) boot: Disabling RNG early entropy source...
+I (260) cpu_start: Multicore app
+I (268) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (269) cpu_start: Pro cpu start user code
+I (269) cpu_start: cpu freq: 160000000 Hz
+I (271) app_init: Application information:
+I (275) app_init: Project name:     esp32_wifi_link
+I (279) app_init: App version:      69ca538-dirty
+I (284) app_init: Compile time:     Oct  1 2026 21:18:10
+I (289) app_init: ELF file SHA256:  b9d7c5129...
+I (293) app_init: ESP-IDF:          v6.0.2
+I (297) efuse_init: Min chip rev:     v0.0
+I (301) efuse_init: Max chip rev:     v0.99 
+I (305) efuse_init: Chip rev:         v0.2
+I (308) heap_init: Initializing. RAM available for dynamic allocation:
+I (315) heap_init: At 3FCA0800 len 00048F10 (291 KiB): RAM
+I (320) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (325) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (330) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (337) spi_flash: detected chip: generic
+I (339) spi_flash: flash io: dio
+W (342) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (355) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (361) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (368) main_task: Started on CPU0
+I (388) main_task: Calling app_main()
+I (398) pp: pp rom version: e7ae62f
+I (398) net80211: net80211 rom version: e7ae62f
+I (408) wifi:wifi driver task: 3fceea08, prio:23, stack:6656, core=0
+I (408) wifi:wifi firmware version: 00ad238
+I (408) wifi:wifi certification version: v7.0
+I (408) wifi:config NVS flash: enabled
+I (408) wifi:config nano formatting: disabled
+I (418) wifi:Init data frame dynamic rx buffer num: 32
+I (418) wifi:Init static rx mgmt buffer num: 5
+I (428) wifi:Init management short buffer num: 32
+I (428) wifi:Init dynamic tx buffer num: 32
+I (438) wifi:Init static tx FG buffer num: 2
+I (438) wifi:Init static rx buffer size: 1600
+I (438) wifi:Init static rx buffer num: 10
+I (448) wifi:Init dynamic rx buffer num: 32
+I (448) wifi_init: rx ba win: 6
+I (448) wifi_init: accept mbox: 6
+I (458) wifi_init: tcpip mbox: 32
+I (458) wifi_init: udp mbox: 6
+I (458) wifi_init: tcp mbox: 6
+I (468) wifi_init: tcp tx win: 5760
+I (468) wifi_init: tcp rx win: 5760
+I (468) wifi_init: tcp mss: 1440
+I (478) wifi_init: WiFi IRAM OP enabled
+I (478) wifi_init: WiFi RX IRAM OP enabled
+I (548) wifi_link: ESP-only Wi-Fi test: mode=AP boot_id=564440014
+I (548) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (588) wifi:mode : softAP (20:6e:f1:b4:b5:5d)
+I (588) wifi:Total power save buffer number: 16
+I (588) wifi:Init max length of beacon: 752/752
+I (598) wifi:Init max length of beacon: 752/752
+I (598) main_task: Returned from app_main()
+I (598) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1
+I (608) wifi_link: Open http://192.168.4.1/

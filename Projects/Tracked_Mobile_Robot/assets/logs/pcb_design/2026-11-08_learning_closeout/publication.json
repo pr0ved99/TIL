@@ -1,0 +1,117 @@
+{
+  "date": "2026-11-08",
+  "timezone": "Asia/Seoul",
+  "scope": "14장·37-2 실습 정량 보완 및 사용자 위임 Notion 필기 완성, 40-1 후보 기록, 다섯 항목 마감",
+  "documentation": "complete",
+  "progress_reconciliation": "complete",
+  "notion": {
+    "status": "readback_verified",
+    "pages": [
+      {
+        "id": "411a7326-f87b-8029-9d49-ff79364f13ac",
+        "title": "37-2: 정상 ON 상태에서 입력 전압이 변했을 때의 정착 시간",
+        "url": "https://app.notion.com/p/411a7326f87b80299d49ff79364f13ac?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:06.984Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "411a7326-f87b-802b-ab27-c2b01ae0727b",
+        "title": "14장 보완 실습 — 차단 후 잔류 전압의 방전",
+        "url": "https://app.notion.com/p/411a7326f87b802bab27c2b01ae0727b?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:07.560Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+        "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:13.396Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "3fca7326-f87b-8139-b949-d339de80d870",
+        "title": "🔧 TMR-04 · 후속 전류·전압 ADC 모니터링·자동 저전압 정지",
+        "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:13.936Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+        "title": "🧭 TMR · 기술 자료와 코드 탐색",
+        "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:10.705Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+        "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+        "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:11.522Z",
+        "metadata": {
+          "type": "page"
+        }
+      },
+      {
+        "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+        "title": "전압 ADC 학습 · 보호·오차 예산·회로도 인계 (39-3까지, 실측 검증 전)",
+        "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+        "last_edited_at": "2026-11-07T17:33:12.375Z",
+        "metadata": {
+          "type": "page"
+        }
+      }
+    ],
+    "properties": [
+      {
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "changed_fields": [
+          "요약"
+        ],
+        "status": "진행 중"
+      },
+      {
+        "id": "3fca7326-f87b-8139-b949-d339de80d870",
+        "changed_fields": [
+          "근거 링크"
+        ],
+        "status": "진행 중",
+        "verification": "NOT TESTED"
+      }
+    ],
+    "preservation": "existing images and child tags retained; only project summary and task evidence link property changed"
+  },
+  "calendar": {
+    "status": "readback_verified",
+    "event_ids": [
+      "1r4mgfjqv4o0n1tea1e3m3to80",
+      "q8f53ivlrs6oab2gbov42m7m9k"
+    ],
+    "preserved": "all returned fields other than summary, description, display_title identical; no time change"
+  },
+  "git": {
+    "status": "published_and_remote_head_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "05fee59ab64de6756dd8e5e02bbba93041ac5e24",
+    "remote_head_at_content_verification": "05fee59ab64de6756dd8e5e02bbba93041ac5e24",
+    "receipt_commit": "This publication receipt is stored in the subsequent Git commit; inspect this file history.",
+    "unrelated_files_preserved": 19,
+    "scope_file_count": 37
+  },
+  "boundaries": [
+    "written notes are not proof of learning comprehension",
+    "no new simulator run, firmware build/flash, physical test or shield/MVP CAD edit in closeout",
+    "MVP PARTIAL/OPEN, T005A PARTIAL, T007 BLOCKED, TMR-04 NOT TESTED preserved",
+    "11/9-10 rest days and separate NotebookLM work preserved"
+  ],
+  "five_part_closeout": "complete: documentation, progress/handoff, scoped Git push, Calendar and Notion readback"
+}

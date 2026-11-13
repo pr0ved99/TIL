@@ -1,0 +1,105 @@
+{
+  "date": "2026-10-22",
+  "documentation_paths": [
+    "Projects/Tracked_Mobile_Robot/00_Project_Charter/02_Component_Inventory.md",
+    "Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md",
+    "Projects/Tracked_Mobile_Robot/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md",
+    "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-20_External_Temperature_Test_Plan_ko.md",
+    "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md",
+    "Projects/Tracked_Mobile_Robot/docs/plans/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-22_progress.md",
+    "Projects/Tracked_Mobile_Robot/docs/progress/README.md"
+  ],
+  "excluded_existing_changes": [
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+      "sha256": "8ab814ba351d672dab3bbb962d282cf51bc206cf23e07236c7b64c4b72b2a6bb"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+      "sha256": "0f8fa407287c1dc852faab381b905efaf89e67e9f1f957c5ff2fb65577013f5c"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+      "sha256": "0c6f42380dd46ac85bfd0323632926600b4aee89714496c85cc5dcccb9980c8e"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml",
+      "sha256": "3d5d16e5336ac581a174357b8fc635258fbf3c1ec7820a19edd7377c1d8156ac"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref",
+      "sha256": "0d5fee305242c84d4dccb033ebbace561b19431d0de7d82aca34f2af4194bc00"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log",
+      "sha256": "ed0e86350a1d20f8315e19c66aee7d99df467f998fa0e340952a403c0233b74f"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja",
+      "sha256": "338a2c63b9ea4a7b4e6a062f9334a8b9728d3b11d998cb4f16edfa2a364677c9"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json",
+      "sha256": "3f4feb23550ddba60c357d983c30a7b567e9f2b3c62fe831c61c8210f3f335ac"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin",
+      "sha256": "35685286ea5a0c7c56b8bf9ef1276129433af4210d0642ef8e667b343e47b151"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf",
+      "sha256": "249101e678ce40a9a82f39ccb54cb7025d4292b9803d2c6d064083bdd28d8d21"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map",
+      "sha256": "34a63e8603dc4dcc2b2af81b3cde5dfa499235642d487ac43677adf38cb05524"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json",
+      "sha256": "d32fe8027a3f183c27fc0abf6e8bbcaab60642295a7fa69a2bd76fcf6e8faa6b"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2",
+      "sha256": "5f28b410746ce39d0a3dff60d10a3f658717f8edd60cf12032af97cb0283c9d5"
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c",
+      "sha256": "9241c5701bca83987939b4c45e4b282d3626d04ddc644899b7003ddc7315bd1f"
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt",
+      "sha256": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a"
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt",
+      "sha256": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236"
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt",
+      "sha256": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb"
+    }
+  ],
+  "scope": "Documentation and sync receipts only; firmware/build/capture changes preserved."
+}

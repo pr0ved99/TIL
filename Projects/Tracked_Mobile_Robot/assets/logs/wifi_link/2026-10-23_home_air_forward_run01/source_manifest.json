@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-23",
+  "source": "User attachment 9bbecdbd-b7d1-4c5c-bbe4-6809c539f544/\ubd99\uc5ec\ub123\uc740 \ud14d\uc2a4\ud2b8.txt",
+  "raw_bytes": 1907941,
+  "raw_sha256": "8a749ff8b2aef6b4188298d376259bcd1076ab4eaa66fa55a649483b94e92bd8",
+  "archive": "browser_report.json.gz",
+  "archive_sha256": "5248a95dd45f2f0727fc6962bfb28c4d80d1ba9135597ce69faae455ede4049d",
+  "archive_lossless_verified": true,
+  "purpose": "Short supported-tracks forward observation, release-to-zero and manual DISARM; comparison with home idle and armed-zero records",
+  "physical_setup_basis": "User returned report after instructions to support both tracks in air, use battery/XL4015 #1 and no USB supply; topology not independently instrumented",
+  "current_supply_voltage_v": null,
+  "voltage_note": "No new voltage report for this capture; historical 5.02V is not assigned",
+  "firmware_or_timeout_change": false,
+  "recorder_revision": "5.1-reconnect-disarm",
+  "new_observer_session": true,
+  "session_note": "Observer ms restarted near zero; same ESP boot331448985, application session changed from1 to2 after instructed page refresh; no ESP reboot inferred"
+}

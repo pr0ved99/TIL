@@ -1,0 +1,87 @@
+{
+  "date": "2026-10-23",
+  "status": "AUTOMATIC_STOP_TRIGGER_CONFIRMED_TRANSPORT_DELAY_ORIGIN_OPEN",
+  "user_report": "확인해봐. 지금 전진하다가 DISARM 됨",
+  "identity": {
+    "boot_id": 1339414435,
+    "session_id": 7,
+    "control_id": 18,
+    "arm_seq": 2670356080,
+    "disarm_request_id": 533,
+    "disarm_seq": 2670356333
+  },
+  "browser_trigger": {
+    "stack": "Error\n    at stopLocal (<anonymous>:165:51)\n    at controlTick (http://192.168.0.17/:316:50)",
+    "held_button": "forward",
+    "focused": true,
+    "intent": true,
+    "motion_ready": false,
+    "stm_age_at_esp_ms": 71,
+    "local_tel_age_ms": 194.2,
+    "combined_age_ms": 265.2,
+    "required_combined_age_less_than_ms": 250,
+    "offer_age_ms": 193.9,
+    "offer_limit_ms": 200,
+    "combined_command_age_ms": 228.2,
+    "command_age_limit_ms": 300,
+    "explanation": "controlTick invoked stopLocal(true) while holding forward and focused; motionReady rejected stale telemetry. DISARM sent by the application, not a retained manual click."
+  },
+  "delivery_observation": {
+    "browser_tel_receive_gap_ms": 287.9,
+    "adjacent_esp_uptime_step_ms": 60,
+    "queued_tel_arrivals_within_first_5ms": 5,
+    "connections_seen": 1,
+    "trace_errors": 0,
+    "timer_delay_events_near_stop": [],
+    "interpretation": "Frames with approximately 60 ms ESP time steps arrived in a burst after a 287.9 ms browser receive gap. This supports delivery/queueing delay, but does not isolate ESP HTTP task, Wi-Fi/TCP, laptop network stack or browser message dispatch."
+  },
+  "esp_stop": {
+    "control_reason": 13,
+    "decoded_reason": "WIFI_CONTROL_REASON_SOURCE_TIMEOUT",
+    "source_interval_limit_ms": 200,
+    "definition": "Time since the last CMD UART send, not simply WebSocket disconnection.",
+    "note": "ESP stop reason and browser local-stop trace both observed; unsynchronized clocks and buffered delivery do not identify their exact physical ordering."
+  },
+  "result": {
+    "disarm_status": "OK",
+    "result_rx_after_browser_trigger_ms": 143.3,
+    "first_zero_cps_rx_after_browser_trigger_ms": 480.5,
+    "final_state": "DISARMED",
+    "final_reason": "DISARM",
+    "final_command": [
+      0,
+      0
+    ],
+    "final_pwm": [
+      0,
+      0
+    ],
+    "final_cps": [
+      0,
+      0
+    ],
+    "final_counts": [
+      "15191",
+      "21361"
+    ],
+    "zero_and_fixed_count_observed_stm_seconds": 5.7,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ],
+    "timing_limit": "Browser arrival times are not electrical/physical stop latency."
+  },
+  "retention": {
+    "history_dropped": 188400,
+    "telemetry_dropped": 43500,
+    "note": "Recorder was left running from prior run04; old samples were evicted by bounded buffers. The immediate trigger and preceding/following events remain available; this is not a new standalone 1 m accuracy trial."
+  },
+  "decision": {
+    "earlier_run02_cause_resolved": false,
+    "firmware_or_threshold_change": false,
+    "uninterrupted_driving_acceptance": false,
+    "next": "Investigate delivery latency under the existing limits; do not increase timeout thresholds based only on this event. Keep this automatic-stop event separate from the earlier manual-DISARM UI report."
+  }
+}

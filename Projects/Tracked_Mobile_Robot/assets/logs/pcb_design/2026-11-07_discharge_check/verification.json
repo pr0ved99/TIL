@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-07",
+  "scope": "User GUI simulation evidence review; no simulator execution by Codex",
+  "observations": [
+    {
+      "name": "one_tau",
+      "time_s": 0.0103047,
+      "voltage_v": 0.872468678,
+      "source": "user screenshot cursor1",
+      "elapsed_since_model_off_us": 4.699999999999843,
+      "remaining_pct_assuming_static_vf": 36.78874434316866,
+      "csv_literal_time_interpolated_voltage_v": 0.863188,
+      "diagnostic_only_uniform_plus_50ns_interpolated_voltage_v": 0.8724685
+    },
+    {
+      "name": "approximately_99_percent",
+      "time_s": 0.01032164,
+      "voltage_v": 0.0238408803,
+      "source": "user pasted cursor text; later screenshot rounded display",
+      "elapsed_since_model_off_us": 21.639999999999855,
+      "remaining_pct_assuming_static_vf": 1.0002295408414457,
+      "csv_literal_time_interpolated_voltage_v": 0.0235906,
+      "diagnostic_only_uniform_plus_50ns_interpolated_voltage_v": 0.02384091
+    }
+  ],
+  "model_calculation": {
+    "initial_voltage_v": 2.371352579,
+    "static_off_final_voltage_v": 0.000123143,
+    "tau_us": 4.7,
+    "one_tau_static_final_approx_v": 0.8724497028049544,
+    "t99_us": 21.644299874144032,
+    "c2_100pf_is_assumption": true
+  },
+  "csv": {
+    "data_rows": 701,
+    "start_s": 0.01028,
+    "end_s": 0.01035,
+    "columns": [
+      "time",
+      "V(/VADC)",
+      "V(/VCTRL)"
+    ],
+    "strictly_increasing": true,
+    "vadc_monotone_nonincreasing": true,
+    "last_sample_vadc_v": 0.000171652,
+    "last_sample_is_not_infinite_time_final": true
+  },
+  "csv_precision": {
+    "source": "https://github.com/KiCad/kicad-source-mirror/blob/10.0.5/eeschema/tools/simulator_control.cpp#L288",
+    "function": "SIMULATOR_CONTROL::ExportPlotAsCSV",
+    "format": "%g for both time and voltage; default 6 significant digits",
+    "around_10ms_time_rounding_bound_s": 5e-08,
+    "diagnostic_shift_not_applied_to_original": true,
+    "interpretation": "CSV literal-time readings differ from GUI cursors. The format and control ramp are consistent with about 50 ns rounding. Diagnostic shift reproduces cursor readings to CSV voltage precision, but original internal timestamps are unavailable; raw CSV is preserved."
+  },
+  "sources": {
+    "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_09_Voltage_ADC_Discharge_TRAN.kicad_sch": {
+      "sha256": "14807ced55efd9de52a75b972fb81b635e4650d3ec09c38e657fbb32ed0725d6",
+      "bytes": 54749
+    },
+    "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_09_Discharge_Check_2026-11-07.wbk": {
+      "sha256": "c362c43e1787aaf1184f82d751839cd3f67c227246de1b68add92a1a5293401e",
+      "bytes": 3595
+    },
+    "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_09_Discharge_Check_2026-11-07.png": {
+      "sha256": "114319230fdc09fb52ad617f35763aca386c2c990a8dce2ba65359b79182c375",
+      "bytes": 18839
+    },
+    "09_Electrical_Design\\KiCAD\\Simulation\\03_Voltage_Divider\\03_09_Discharge_Check_2026-11-07.csv": {
+      "sha256": "097ac2b87cec3c89b075f5ed805e08550a72c64c140274870a85695fa5dab6df",
+      "bytes": 17694
+    },
+    "assets\\logs\\pcb_design\\2026-11-07_discharge_check\\user_tran_console.txt": {
+      "sha256": "6ad5afe2f0e343b4ddc2d20bb1185036eed26a53beda8a6f432cc7126cf1efe0",
+      "bytes": 5858
+    }
+  },
+  "state": "TWO_GUI_CURSOR_OBSERVATIONS_CONFIRMED; PNG/CSV/WBK reviewed; no physical accuracy/protection PASS"
+}

@@ -1,0 +1,139 @@
+{
+  "date": "2026-10-23",
+  "status": "SAVED_SCHEMATIC_READBACK_AND_NOMINAL_CALCULATION_ONLY",
+  "source_method": "Fresh kicad-cli sch export netlist, then compare active connections with saved report; no schematic/PCB changes",
+  "active_nets": {
+    "/GND": [
+      "C1.2",
+      "C2.2",
+      "C3.2",
+      "C4.2",
+      "J1.20",
+      "J3.2",
+      "J4.2",
+      "J5.2",
+      "J6.2",
+      "TP2.1"
+    ],
+    "/I_LEFT_ADC": [
+      "C1.1",
+      "J1.38",
+      "R1.2",
+      "TP3.1"
+    ],
+    "/I_LEFT_RAW": [
+      "J3.3",
+      "R1.1"
+    ],
+    "/I_RIGHT_ADC": [
+      "C2.1",
+      "J1.36",
+      "R2.2",
+      "TP4.1"
+    ],
+    "/I_RIGHT_RAW": [
+      "J4.3",
+      "R2.1"
+    ],
+    "/STM_3V3": [
+      "J1.16",
+      "J3.1",
+      "J4.1",
+      "R3.1",
+      "R5.1",
+      "TP1.1"
+    ],
+    "/T_LEFT_ADC": [
+      "C3.1",
+      "J1.35",
+      "R4.2",
+      "TP5.1"
+    ],
+    "/T_LEFT_RAW": [
+      "J5.1",
+      "R3.2",
+      "R4.1"
+    ],
+    "/T_RIGHT_ADC": [
+      "C4.1",
+      "J1.37",
+      "R6.2",
+      "TP6.1"
+    ],
+    "/T_RIGHT_RAW": [
+      "J6.1",
+      "R5.2",
+      "R6.1"
+    ]
+  },
+  "active_connections_equal_saved_report": true,
+  "cad_power_source": "CN7/J1 pin16 STM_3V3 supplies J3.1 J4.1 R3.1 R5.1; EXP LDO absent",
+  "cad_pin_order": {
+    "J3_J4": {
+      "1": "STM_3V3",
+      "2": "GND",
+      "3": "VIOUT_RAW"
+    },
+    "J5_J6": {
+      "1": "NTC_NODE",
+      "2": "GND"
+    }
+  },
+  "proposed_contract_pin_order_not_applied": {
+    "CUR_L_CUR_R": {
+      "1": "GND",
+      "2": "EXP_3V3",
+      "3": "VIOUT"
+    },
+    "TEMP_L_TEMP_R": {
+      "1": "GND",
+      "2": "NTC_NODE"
+    }
+  },
+  "ntc_left_calculation": [
+    {
+      "temperature_c": 0,
+      "ntc_ohm_nominal": 27700,
+      "node_v_at_vexc_3v3": 2.424668435013263,
+      "raw_coordinate_at_vref_3v3": 3009.5278514588863,
+      "divider_ma": 0.08753315649867374,
+      "source_ohm_for_rc": 8347.480106100797,
+      "tau_ms": 0.8347480106100796,
+      "fc_hz": 190.66226102842245
+    },
+    {
+      "temperature_c": 25,
+      "ntc_ohm_nominal": 10000,
+      "node_v_at_vexc_3v3": 1.65,
+      "raw_coordinate_at_vref_3v3": 2048.0,
+      "divider_ma": 0.165,
+      "source_ohm_for_rc": 6000.0,
+      "tau_ms": 0.6,
+      "fc_hz": 265.25823848649225
+    },
+    {
+      "temperature_c": 100,
+      "ntc_ohm_nominal": 975.3,
+      "node_v_at_vexc_3v3": 0.2932484761236595,
+      "raw_coordinate_at_vref_3v3": 363.9835630916695,
+      "divider_ma": 0.30067515238763404,
+      "source_ohm_for_rc": 1888.6317458292713,
+      "tau_ms": 0.18886317458292712,
+      "fc_hz": 842.6997133949619
+    }
+  ],
+  "ntc_supply_comparison": {
+    "A_preserve_proposed_exp_source": "Requires VEXC/VDDA ratio treatment and open-sensor/MCU-off protection; no extra ADC or source change selected",
+    "B_proposal_only_stm_ntc_excitation": "Keep NTC pullups on STM_3V3; move active sensor/CAN supplies to EXP. Requires explicit power-contract revision and VDDA/STM_3V3 path check, not adopted",
+    "two_ntc_ma_at_25c": 0.33,
+    "two_ntc_ma_short_at_3v3_10k_nominal": 0.66
+  },
+  "design_hashes": {
+    ".kicad_sch": "92cff6762f46624bb71abe86d0ae7478b44a2413104e939072aa94258b7ba3cd",
+    ".kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d"
+  },
+  "limits": [
+    "Nominal RC ignores capacitor/thermistor/resistor tolerances, ADC leakage and acquisition effects",
+    "No new ERC/DRC acceptance, physical measurement, supply architecture approval or firmware work"
+  ]
+}

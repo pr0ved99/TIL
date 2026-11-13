@@ -1,0 +1,103 @@
+{
+  "format_version": 1,
+  "observer_version": 5,
+  "interpretation": "Initial encoder-equivalent track travel; not measured chassis displacement",
+  "coefficient": {
+    "status": "INITIAL_GEOMETRIC_NOT_GROUND_CALIBRATED",
+    "numerator": "19",
+    "denominator": "260",
+    "display_mm_per_count": "0.073076923077",
+    "same_initial_value_for_both_sides": true
+  },
+  "policy": {
+    "stm_source_and_sample_limit_ms": 200,
+    "browser_receive_gap_limit_ms": 250,
+    "start": "ACKed ARM plus first fresh stationary valid sample",
+    "end": "ACKed DISARM plus first fresh valid zero-command/PWM/CPS sample",
+    "gaps": "Reject whole ARM window; never resume it automatically"
+  },
+  "summary": {
+    "telemetry_rows": 2709,
+    "unique_source_tel": 1628,
+    "browser_evicted_rows": 3000,
+    "accepted_windows": 1,
+    "rejected_windows": 0,
+    "command_result_status_counts": {
+      "OK": 71
+    }
+  },
+  "diagnostics": {
+    "REPEATED_BROADCAST_IGNORED": 1081,
+    "INVALID_SAMPLE_OR_ARM": 1
+  },
+  "windows": [
+    {
+      "boot_id": 1794076624,
+      "arm_seq": 525914493,
+      "status": "ACCEPTED",
+      "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+      "arm_ack_ms": 328127.3999999985,
+      "start": {
+        "ms": 328328.5,
+        "tel_count": 10818,
+        "stm_t_ms": 417001,
+        "encoder_t_ms": 416925,
+        "left_count": "0",
+        "right_count": "0",
+        "state": "ARMED",
+        "reason": "NONE",
+        "last_seq": 525914494
+      },
+      "end": {
+        "ms": 335109.3999999985,
+        "tel_count": 10886,
+        "stm_t_ms": 423801,
+        "encoder_t_ms": 423730,
+        "left_count": "2567",
+        "right_count": "2374",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 525914563
+      },
+      "source_samples": 69,
+      "delta_count": {
+        "left": "2567",
+        "right": "2374"
+      },
+      "distance_estimate_mm": {
+        "left": "187.588462",
+        "right": "173.484615",
+        "center": "180.536538"
+      },
+      "last_valid": {
+        "ms": 335109.3999999985,
+        "tel_count": 10886,
+        "stm_t_ms": 423801,
+        "encoder_t_ms": 423730,
+        "left_count": "2567",
+        "right_count": "2374",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "last_seq": 525914563
+      },
+      "disarm_seq": 525914563
+    }
+  ],
+  "warnings": [
+    "Older browser rows were evicted; this is not the STM UART drop counter"
+  ],
+  "limitations": [
+    "No actual-distance calibration or physical stop-time measurement",
+    "No window spans resets, source gaps, tick wrap or ARM identity changes",
+    "Truncated ACK/baseline/endpoint evidence is not reconstructed",
+    "Encoder displacement cannot detect track/surface or sprocket slip"
+  ],
+  "input": {
+    "path": "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_encoder_count_forward_air_run01\\browser_report.json",
+    "sha256": "8e49afe9c85f58cfcf9c558dd60e744c767e49785ef294232e8757bc27fbf17a"
+  },
+  "model": {
+    "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_track_pitch_initial_model\\geometry_model.json",
+    "sha256": "dce437f67b445834d0494c73d3b93f910991b1c54bb84150049b3f027b9cbf3e"
+  }
+}

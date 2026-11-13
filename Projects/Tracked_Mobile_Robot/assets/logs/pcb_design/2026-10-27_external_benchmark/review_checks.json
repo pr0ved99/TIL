@@ -1,0 +1,35 @@
+{
+  "local_links_checked": 274,
+  "missing_links": [],
+  "official_pdf_hashes_verified": 3,
+  "markdown_files_checked": 6,
+  "hardware_test": "NOT_RUN",
+  "nominal_values": {
+    "status": "NOMINAL_MODEL_NOT_MEASURED",
+    "assumptions": {
+      "adc_reference_V": 3.3,
+      "adc_bits": 12,
+      "hall_sensitivity_V_per_A": 0.044,
+      "hall_zero_V": 1.65
+    },
+    "adc_lsb_mV": 0.8056640625,
+    "current_per_code_mA": 18.310546875,
+    "codes_per_1A": 54.61333333333333,
+    "error_0_2A_mV": 8.8,
+    "error_0_2A_codes": 10.922666666666668,
+    "hall_at_minus30_plus30_V": [
+      0.33000000000000007,
+      2.9699999999999998
+    ],
+    "current_RC_fc_Hz": 132.62911924324612,
+    "leakage_1uA_12k_mV": 12.0,
+    "leakage_1uA_12k_equiv_A": 0.27272727272727276,
+    "odrive_divider_at_16V_V": 1.4545454545454546,
+    "vesc_shunt_amp_sensitivity_mV_per_A": 10.0,
+    "vesc_ideal_RC_1nF_Hz": 159154.94309189534,
+    "vesc_ideal_RC_16nF_Hz": 9947.183943243459
+  },
+  "scoped_tracked_diff_check": "PASS",
+  "repository_wide_diff_check": "Existing unrelated HelloWorld CMakeConfigureLog.yaml whitespace findings; file left unchanged.",
+  "new_document_trailing_whitespace": "PASS"
+}

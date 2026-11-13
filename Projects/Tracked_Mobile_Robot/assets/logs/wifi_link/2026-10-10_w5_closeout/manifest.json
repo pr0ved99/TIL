@@ -1,0 +1,92 @@
+{
+  "documented_on": "2026-10-10",
+  "individual_work_dates": "not recorded for every test",
+  "git_branch": "agent/dual-encoder-bringup",
+  "git_head": "77b6a06cdc87c4653177baf68b6484d7120e681c",
+  "working_tree_modified_and_untracked": true,
+  "scope": "W5 nonmotor PING/DISARM only; no ARM/CMD/ESTOP_RESET or new motor trial.",
+  "evidence_limits": [
+    "Conversation excerpt/transcription, not full serial logs or original PNGs.",
+    "Source snapshots do not establish flashed binary identity.",
+    "Host/JS mocks do not establish physical timing or RTOS/HTTP concurrency."
+  ],
+  "usb_closeout": "Both STM32 and ESP32 USB disconnected, explicitly confirmed by the user.",
+  "source_snapshot": [
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "snapshot": "source_snapshot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "sha256": "dfe9a97e77453378a4f5a0cc64b3dfa642244c93ec6d6259cb4742bba8d5d2b4",
+      "bytes": 65153
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "snapshot": "source_snapshot/03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "sha256": "01ba6a0623b7c2acfb7857b828f8cad1c71916fdb0f75911d570fdf731784529",
+      "bytes": 232
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/sdkconfig.defaults",
+      "snapshot": "source_snapshot/03_Firmware/esp32_wifi_link/sdkconfig.defaults",
+      "sha256": "58af640af8305106246f917dcb286ec057ed6cd85b4c1848d74476397325239d",
+      "bytes": 146
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/usart.c",
+      "snapshot": "source_snapshot/03_Firmware/stm32_uart_mvp/Core/Src/usart.c",
+      "sha256": "95f3f1373dfd4691eed857c69bbba5039259d1de663cb9f40625840e2e7fd88a",
+      "bytes": 5565
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "snapshot": "source_snapshot/03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "sha256": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127",
+      "bytes": 21162
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_w5_websocket_page.js",
+      "snapshot": "source_snapshot/03_Firmware/tests/test_wifi_w5_websocket_page.js",
+      "sha256": "31606cb4456098eb3dcf0801165d79b0d07960032b30225e063f49df54b37935",
+      "bytes": 38292
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_w5_uart_contract.py",
+      "snapshot": "source_snapshot/03_Firmware/tests/test_wifi_w5_uart_contract.py",
+      "sha256": "c04d5a24ad130fe8e552498986a9176ed49950cba17f8f7ff52c69fb1384606e",
+      "bytes": 6512
+    },
+    {
+      "path": "03_Firmware/tests/wifi_w5_host_fixture.c",
+      "snapshot": "source_snapshot/03_Firmware/tests/wifi_w5_host_fixture.c",
+      "sha256": "ee6ed4383ec4ac49060d3b6bef511d473ccca9f9cc80f337a1eee4187746e6c0",
+      "bytes": 15115
+    },
+    {
+      "path": "03_Firmware/tests/test_firmware_contract.py",
+      "snapshot": "source_snapshot/03_Firmware/tests/test_firmware_contract.py",
+      "sha256": "2163ade6db0e049f0875061d30b4c4427aa25b6e0a1b46a905a1a0242a73942b",
+      "bytes": 65510
+    }
+  ],
+  "records": [
+    {
+      "path": "README.md",
+      "sha256": "6b4bbb39633cf31879ba4e8768e57ba174dd317f283d5e7921ae85e46e1d4c67",
+      "bytes": 1176
+    },
+    {
+      "path": "user_log_excerpts.md",
+      "sha256": "acdfac7079fd22ccdacd0481818990b5b1c5177a171f6c950adc88150ec3a332",
+      "bytes": 4656
+    },
+    {
+      "path": "observations.json",
+      "sha256": "8b640c62715592b327a2adc8b7ea8fddcbc1aaae8c27ff9a0bfd588be93b4fe0",
+      "bytes": 4465
+    },
+    {
+      "path": "test_validation.json",
+      "sha256": "2f5b4d10697e4f8f7d159353aa920e48bc64a37de8f2011efbc87fc313c29161",
+      "bytes": 2857
+    }
+  ]
+}

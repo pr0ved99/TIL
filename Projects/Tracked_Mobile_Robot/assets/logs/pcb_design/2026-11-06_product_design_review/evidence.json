@@ -1,0 +1,725 @@
+{
+  "scope": "Present schematic readback and first-order calculations; no physical/EMC qualification",
+  "components": [
+    {
+      "ref": "C1",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C2",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C3",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C4",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C5",
+      "value": "100n",
+      "footprint": ""
+    },
+    {
+      "ref": "C6",
+      "value": "100n",
+      "footprint": ""
+    },
+    {
+      "ref": "C7",
+      "value": "100n",
+      "footprint": ""
+    },
+    {
+      "ref": "C8",
+      "value": "100n",
+      "footprint": ""
+    },
+    {
+      "ref": "J1",
+      "value": "CN7_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical"
+    },
+    {
+      "ref": "J2",
+      "value": "CN10_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical"
+    },
+    {
+      "ref": "J3",
+      "value": "CURRENT_LEFT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J4",
+      "value": "CURRENT_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J5",
+      "value": "NTC_LEFT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J6",
+      "value": "NTC_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J7",
+      "value": "VBAT_SENSE",
+      "footprint": ""
+    },
+    {
+      "ref": "J8",
+      "value": "VMOTOR_SENSE",
+      "footprint": ""
+    },
+    {
+      "ref": "R1",
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R2",
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R3",
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R4",
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R5",
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R6",
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R7",
+      "value": "12k",
+      "footprint": ""
+    },
+    {
+      "ref": "R8",
+      "value": "12k",
+      "footprint": ""
+    },
+    {
+      "ref": "R9",
+      "value": "4.7k",
+      "footprint": ""
+    },
+    {
+      "ref": "R10",
+      "value": "1k",
+      "footprint": ""
+    },
+    {
+      "ref": "R11",
+      "value": "47k",
+      "footprint": ""
+    },
+    {
+      "ref": "R12",
+      "value": "12k",
+      "footprint": ""
+    },
+    {
+      "ref": "R13",
+      "value": "12k",
+      "footprint": ""
+    },
+    {
+      "ref": "R14",
+      "value": "4.7k",
+      "footprint": ""
+    },
+    {
+      "ref": "R15",
+      "value": "1k",
+      "footprint": ""
+    },
+    {
+      "ref": "R16",
+      "value": "47k",
+      "footprint": ""
+    },
+    {
+      "ref": "TP1",
+      "value": "STM_3V3",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP2",
+      "value": "GND",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP3",
+      "value": "I_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP4",
+      "value": "I_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP5",
+      "value": "T_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP6",
+      "value": "T_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "U1",
+      "value": "TPS3840PL30DBV",
+      "footprint": "Package_TO_SOT_SMD:SOT-23-5"
+    },
+    {
+      "ref": "U2",
+      "value": "TMUX1511PW",
+      "footprint": "Package_SO:TSSOP-14_4.4x5mm_P0.65mm"
+    }
+  ],
+  "component_count": 40,
+  "active_nets": {
+    "/GND": [
+      "C1.2",
+      "C2.2",
+      "C3.2",
+      "C4.2",
+      "C5.2",
+      "C6.2",
+      "C7.2",
+      "C8.2",
+      "J1.20",
+      "J3.2",
+      "J4.2",
+      "J5.2",
+      "J6.2",
+      "J7.1",
+      "J8.1",
+      "R11.2",
+      "R14.2",
+      "R16.2",
+      "R9.2",
+      "TP2.1",
+      "U1.3",
+      "U2.7"
+    ],
+    "/I_LEFT_ADC": [
+      "C1.1",
+      "J1.38",
+      "R1.2",
+      "TP3.1"
+    ],
+    "/I_LEFT_RAW": [
+      "J3.3",
+      "R1.1"
+    ],
+    "/I_RIGHT_ADC": [
+      "C2.1",
+      "J1.36",
+      "R2.2",
+      "TP4.1"
+    ],
+    "/I_RIGHT_RAW": [
+      "J4.3",
+      "R2.1"
+    ],
+    "/MOTOR_VBAT_SAFE_SENSE_RAW": [
+      "J8.2",
+      "R12.1"
+    ],
+    "/STM_3V3": [
+      "J1.16",
+      "J3.1",
+      "J4.1",
+      "R3.1",
+      "R5.1",
+      "TP1.1"
+    ],
+    "/STM_AVDD": [
+      "C7.1",
+      "C8.1",
+      "J2.7",
+      "U1.2",
+      "U2.14"
+    ],
+    "/T_LEFT_ADC": [
+      "C3.1",
+      "J1.35",
+      "R4.2",
+      "TP5.1"
+    ],
+    "/T_LEFT_RAW": [
+      "J5.1",
+      "R3.2",
+      "R4.1"
+    ],
+    "/T_RIGHT_ADC": [
+      "C4.1",
+      "J1.37",
+      "R6.2",
+      "TP6.1"
+    ],
+    "/T_RIGHT_RAW": [
+      "J6.1",
+      "R5.2",
+      "R6.1"
+    ],
+    "/VBAT_PROTECTED_SENSE_RAW": [
+      "J7.2",
+      "R7.1"
+    ],
+    "/V_DOWN_ADC": [
+      "J1.34",
+      "R16.1",
+      "U2.6"
+    ],
+    "/V_DOWN_DIV": [
+      "C6.1",
+      "R13.2",
+      "R14.1",
+      "R15.1"
+    ],
+    "/V_DOWN_SWITCH_IN": [
+      "R15.2",
+      "U2.5"
+    ],
+    "/V_DOWN_TOP_MID": [
+      "R12.2",
+      "R13.1"
+    ],
+    "/V_UP_ADC": [
+      "J1.32",
+      "R11.1",
+      "U2.3"
+    ],
+    "/V_UP_DIV": [
+      "C5.1",
+      "R10.1",
+      "R8.2",
+      "R9.1"
+    ],
+    "/V_UP_SWITCH_IN": [
+      "R10.2",
+      "U2.2"
+    ],
+    "/V_UP_TOP_MID": [
+      "R7.2",
+      "R8.1"
+    ]
+  },
+  "unconnected_nets": {
+    "unconnected-(J1-Pin_1-Pad1)": [
+      "J1.1"
+    ],
+    "unconnected-(J1-Pin_2-Pad2)": [
+      "J1.2"
+    ],
+    "unconnected-(J1-Pin_3-Pad3)": [
+      "J1.3"
+    ],
+    "unconnected-(J1-Pin_4-Pad4)": [
+      "J1.4"
+    ],
+    "unconnected-(J1-Pin_5-Pad5)": [
+      "J1.5"
+    ],
+    "unconnected-(J1-Pin_6-Pad6)": [
+      "J1.6"
+    ],
+    "unconnected-(J1-Pin_7-Pad7)": [
+      "J1.7"
+    ],
+    "unconnected-(J1-Pin_8-Pad8)": [
+      "J1.8"
+    ],
+    "unconnected-(J1-Pin_9-Pad9)": [
+      "J1.9"
+    ],
+    "unconnected-(J1-Pin_10-Pad10)": [
+      "J1.10"
+    ],
+    "unconnected-(J1-Pin_11-Pad11)": [
+      "J1.11"
+    ],
+    "unconnected-(J1-Pin_12-Pad12)": [
+      "J1.12"
+    ],
+    "unconnected-(J1-Pin_13-Pad13)": [
+      "J1.13"
+    ],
+    "unconnected-(J1-Pin_14-Pad14)": [
+      "J1.14"
+    ],
+    "unconnected-(J1-Pin_15-Pad15)": [
+      "J1.15"
+    ],
+    "unconnected-(J1-Pin_17-Pad17)": [
+      "J1.17"
+    ],
+    "unconnected-(J1-Pin_18-Pad18)": [
+      "J1.18"
+    ],
+    "unconnected-(J1-Pin_19-Pad19)": [
+      "J1.19"
+    ],
+    "unconnected-(J1-Pin_21-Pad21)": [
+      "J1.21"
+    ],
+    "unconnected-(J1-Pin_22-Pad22)": [
+      "J1.22"
+    ],
+    "unconnected-(J1-Pin_23-Pad23)": [
+      "J1.23"
+    ],
+    "unconnected-(J1-Pin_24-Pad24)": [
+      "J1.24"
+    ],
+    "unconnected-(J1-Pin_25-Pad25)": [
+      "J1.25"
+    ],
+    "unconnected-(J1-Pin_26-Pad26)": [
+      "J1.26"
+    ],
+    "unconnected-(J1-Pin_27-Pad27)": [
+      "J1.27"
+    ],
+    "unconnected-(J1-Pin_28-Pad28)": [
+      "J1.28"
+    ],
+    "unconnected-(J1-Pin_29-Pad29)": [
+      "J1.29"
+    ],
+    "unconnected-(J1-Pin_30-Pad30)": [
+      "J1.30"
+    ],
+    "unconnected-(J1-Pin_31-Pad31)": [
+      "J1.31"
+    ],
+    "unconnected-(J1-Pin_33-Pad33)": [
+      "J1.33"
+    ],
+    "unconnected-(J2-Pin_1-Pad1)": [
+      "J2.1"
+    ],
+    "unconnected-(J2-Pin_2-Pad2)": [
+      "J2.2"
+    ],
+    "unconnected-(J2-Pin_3-Pad3)": [
+      "J2.3"
+    ],
+    "unconnected-(J2-Pin_4-Pad4)": [
+      "J2.4"
+    ],
+    "unconnected-(J2-Pin_5-Pad5)": [
+      "J2.5"
+    ],
+    "unconnected-(J2-Pin_6-Pad6)": [
+      "J2.6"
+    ],
+    "unconnected-(J2-Pin_8-Pad8)": [
+      "J2.8"
+    ],
+    "unconnected-(J2-Pin_9-Pad9)": [
+      "J2.9"
+    ],
+    "unconnected-(J2-Pin_10-Pad10)": [
+      "J2.10"
+    ],
+    "unconnected-(J2-Pin_11-Pad11)": [
+      "J2.11"
+    ],
+    "unconnected-(J2-Pin_12-Pad12)": [
+      "J2.12"
+    ],
+    "unconnected-(J2-Pin_13-Pad13)": [
+      "J2.13"
+    ],
+    "unconnected-(J2-Pin_14-Pad14)": [
+      "J2.14"
+    ],
+    "unconnected-(J2-Pin_15-Pad15)": [
+      "J2.15"
+    ],
+    "unconnected-(J2-Pin_16-Pad16)": [
+      "J2.16"
+    ],
+    "unconnected-(J2-Pin_17-Pad17)": [
+      "J2.17"
+    ],
+    "unconnected-(J2-Pin_18-Pad18)": [
+      "J2.18"
+    ],
+    "unconnected-(J2-Pin_19-Pad19)": [
+      "J2.19"
+    ],
+    "unconnected-(J2-Pin_20-Pad20)": [
+      "J2.20"
+    ],
+    "unconnected-(J2-Pin_21-Pad21)": [
+      "J2.21"
+    ],
+    "unconnected-(J2-Pin_22-Pad22)": [
+      "J2.22"
+    ],
+    "unconnected-(J2-Pin_23-Pad23)": [
+      "J2.23"
+    ],
+    "unconnected-(J2-Pin_24-Pad24)": [
+      "J2.24"
+    ],
+    "unconnected-(J2-Pin_25-Pad25)": [
+      "J2.25"
+    ],
+    "unconnected-(J2-Pin_26-Pad26)": [
+      "J2.26"
+    ],
+    "unconnected-(J2-Pin_27-Pad27)": [
+      "J2.27"
+    ],
+    "unconnected-(J2-Pin_28-Pad28)": [
+      "J2.28"
+    ],
+    "unconnected-(J2-Pin_29-Pad29)": [
+      "J2.29"
+    ],
+    "unconnected-(J2-Pin_30-Pad30)": [
+      "J2.30"
+    ],
+    "unconnected-(J2-Pin_31-Pad31)": [
+      "J2.31"
+    ],
+    "unconnected-(J2-Pin_32-Pad32)": [
+      "J2.32"
+    ],
+    "unconnected-(J2-Pin_33-Pad33)": [
+      "J2.33"
+    ],
+    "unconnected-(J2-Pin_34-Pad34)": [
+      "J2.34"
+    ],
+    "unconnected-(J2-Pin_35-Pad35)": [
+      "J2.35"
+    ],
+    "unconnected-(J2-Pin_36-Pad36)": [
+      "J2.36"
+    ],
+    "unconnected-(J2-Pin_37-Pad37)": [
+      "J2.37"
+    ],
+    "unconnected-(J2-Pin_38-Pad38)": [
+      "J2.38"
+    ],
+    "unconnected-(U1-CT-Pad5)": [
+      "U1.5"
+    ],
+    "unconnected-(U1-~{MR}-Pad4)": [
+      "U1.4"
+    ],
+    "unconnected-(U1-~{RESET}-Pad1)": [
+      "U1.1"
+    ],
+    "unconnected-(U2-D3-Pad8)": [
+      "U2.8"
+    ],
+    "unconnected-(U2-D4-Pad11)": [
+      "U2.11"
+    ],
+    "unconnected-(U2-S3-Pad9)": [
+      "U2.9"
+    ],
+    "unconnected-(U2-S4-Pad12)": [
+      "U2.12"
+    ],
+    "unconnected-(U2-SEL1-Pad1)": [
+      "U2.1"
+    ],
+    "unconnected-(U2-SEL2-Pad4)": [
+      "U2.4"
+    ],
+    "unconnected-(U2-SEL3-Pad10)": [
+      "U2.10"
+    ],
+    "unconnected-(U2-SEL4-Pad13)": [
+      "U2.13"
+    ]
+  },
+  "explicit_no_connect_count": 67,
+  "pcb": {
+    "footprint": 22,
+    "segment": 0,
+    "arc": 0,
+    "via": 0,
+    "zone": 0
+  },
+  "erc_counts_by_type": {
+    "pin_not_connected": 11,
+    "pin_not_driven": 5,
+    "power_pin_not_driven": 2
+  },
+  "erc_counts_by_severity": {
+    "error": 18
+  },
+  "erc_excluded_count": 0,
+  "calculations": {
+    "assumptions": "Ideal sources, nominal R/C, RON=2ohm, no leakage/parasitics/ADC dynamic loading",
+    "fc_hz": {
+      "current": 132.62911924324612,
+      "ntc_25C": 265.25823848649225,
+      "voltage_planned_on": 438.09799643006573
+    },
+    "attenuation_relative_to_channel_dc_gain_db": {
+      "current": {
+        "5": -0.006167911259831617,
+        "50": -0.5771261252379543,
+        "100": -1.9548153640173087,
+        "1000": -17.6229526551783,
+        "19000": -43.1225059211243,
+        "19001": -43.12296303890776
+      },
+      "ntc_25C": {
+        "5": -0.0015427992362868456,
+        "50": -0.15162926719815373,
+        "100": -0.5771261252379543,
+        "1000": -11.821928927044215,
+        "19000": -37.10254078784399,
+        "19001": -37.10299783882192
+      },
+      "voltage_planned_on": {
+        "5": -0.000565657438795531,
+        "50": -0.056204171035927473,
+        "100": -0.220579982802177,
+        "1000": -7.931081637462115,
+        "19000": -32.7459550425202,
+        "19001": -32.74641193967461
+      }
+    },
+    "current_ground_offset_10mV_A": 0.2272727272727273,
+    "current_leakage_example_1uA_V": 0.012,
+    "current_leakage_example_1uA_A": 0.27272727272727276,
+    "voltage_adc_at_16V_on_V": 2.3713525794162247,
+    "voltage_adc_at_12p6V_on_V": 1.867440156290277,
+    "voltage_gain_inverse": 6.747204164780444,
+    "voltage_switch_input_at_16V_off_V": 2.6202090592334493,
+    "voltage_switch_input_3p6V_off_rail_equivalent_V": 21.982978723404255,
+    "voltage_simple_Ipoff_2uA_47k_V": 0.094,
+    "voltage_simple_Ipoff_10nA_47k_V": 0.00047,
+    "voltage_cap_source_resistance_ohm": 3632.8616973554567,
+    "adc_acquisition_480cycles_14MHz_us": 34.285714285714285,
+    "adc_conversion_492cycles_14MHz_us": 35.142857142857146,
+    "alias_example_19001Hz_sampled_100Hz_hz": 1,
+    "alias_report32_19058p568Hz_sampled_100Hz_hz": 41.4320000000007
+  },
+  "commands": [
+    {
+      "args": [
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "10.0.5\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_product_design_review\\current_netlist.xml",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "pdf",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_product_design_review\\current_schematic.pdf",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_product_design_review\\current_schematic.pdf'에 플롯됨.\n완료.\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "erc",
+        "--format",
+        "json",
+        "--severity-all",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_product_design_review\\current_erc.json",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "returncode": 0,
+      "stdout": "18 개의 위반 발견\nERC 보고서를 C:/Users/eyh12/workspace/TIL/Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-06_product_design_review/current_erc.json에 저장함.\n",
+      "stderr": ""
+    }
+  ],
+  "protected_before": {
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": "0b37eec464fc1e6c95a5b736f871cf8acc98313cd1a5de42653039179877c91f",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": "93c2b0c442b6494883a259d33234331b74a5a525f2f7bcd0d735700c38c021a6",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": "b73fa9ca52cfa5d4f1c306a080b6dbdd10ec084de89a986e2966d0aa88738e5c",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6"
+  },
+  "protected_after": {
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": "0b37eec464fc1e6c95a5b736f871cf8acc98313cd1a5de42653039179877c91f",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": "93c2b0c442b6494883a259d33234331b74a5a525f2f7bcd0d735700c38c021a6",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": "b73fa9ca52cfa5d4f1c306a080b6dbdd10ec084de89a986e2966d0aa88738e5c",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6"
+  },
+  "erc_export_time_local": "2026-11-06T22:14:52",
+  "erc_ignored_checks": [
+    {
+      "description": "Global label only appears once in the schematic",
+      "key": "single_global_label"
+    },
+    {
+      "description": "Four connection points are joined together",
+      "key": "four_way_junction"
+    },
+    {
+      "description": "SPICE model issue",
+      "key": "simulation_model_issue"
+    },
+    {
+      "description": "Assigned footprint doesn't match footprint filters",
+      "key": "footprint_filter"
+    }
+  ]
+}

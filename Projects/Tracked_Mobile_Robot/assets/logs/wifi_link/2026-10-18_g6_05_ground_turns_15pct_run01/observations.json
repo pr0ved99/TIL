@@ -1,0 +1,26 @@
+{
+  "test": "G6-05_GROUND_TURNS_15PCT",
+  "user_observation": "Left and right chassis turns worked.",
+  "scope": "ESP console and user observation; no new LA capture or measured turn angle.",
+  "pwm_pairs": {
+    "0/0": 138,
+    "-150/150": 17,
+    "150/-150": 22
+  },
+  "captured_tx_count": 146,
+  "ack_count": 146,
+  "captured_tx_ack_match": true,
+  "all_writes_complete": true,
+  "no_fault_drop_err": true,
+  "final_tel": [
+    "73691",
+    "DISARMED",
+    "DISARM",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+  ]
+}

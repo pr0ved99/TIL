@@ -1,0 +1,30 @@
+[
+  {
+    "args": [
+      "sch",
+      "export",
+      "pdf",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\before.pdf",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Tracked_Mobile_Robot_Wiring_RevB\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\before.pdf'에 플롯됨.\n완료.\n",
+    "stderr": ""
+  },
+  {
+    "args": [
+      "sch",
+      "export",
+      "netlist",
+      "--format",
+      "kicadxml",
+      "--output",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_mvp_schematic_layout_review\\before_netlist.xml",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Tracked_Mobile_Robot_Wiring_RevB\\Tracked_Mobile_Robot_Wiring_RevB.kicad_sch"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

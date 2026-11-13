@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-13",
+  "target": "Actual saved main and control modules; no candidate selection",
+  "native_cases": 42,
+  "browser_cases": 27,
+  "esp_build": "Success reported by user; original build log/binary identity not supplied",
+  "flash": "Not reported",
+  "hardware": "User confirmed LiPo and motor-driver power disconnected; previous STM/ESP USB and XL4015 disconnected report retained",
+  "files": [
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "snapshot": "source_snapshot/wifi_link_main.c",
+      "sha256": "39ab34b9f7c0b8ee3c7a10c3e638bb29fa455fed657a25d2e682ac7d1436714e"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "snapshot": "source_snapshot/CMakeLists.txt",
+      "sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c",
+      "snapshot": "source_snapshot/wifi_control_contract.c",
+      "sha256": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "snapshot": "source_snapshot/wifi_control_contract.h",
+      "sha256": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c",
+      "snapshot": "source_snapshot/wifi_control_executor.c",
+      "sha256": "9058c358920028699c8dbc34df0ead9bbe5d79b355b9045a0da9078f0da49a41"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_executor.h",
+      "snapshot": "source_snapshot/wifi_control_executor.h",
+      "sha256": "5f169daf33d1334401566705cabf1a5dd36547666020d84428c546ee9dfce4f4"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_owner.c",
+      "snapshot": "source_snapshot/wifi_control_owner.c",
+      "sha256": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_owner.h",
+      "snapshot": "source_snapshot/wifi_control_owner.h",
+      "sha256": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_state.c",
+      "snapshot": "source_snapshot/wifi_control_state.c",
+      "sha256": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_state.h",
+      "snapshot": "source_snapshot/wifi_control_state.h",
+      "sha256": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.c",
+      "snapshot": "source_snapshot/wifi_control_ticket.c",
+      "sha256": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.h",
+      "snapshot": "source_snapshot/wifi_control_ticket.h",
+      "sha256": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea"
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_control_main.py",
+      "snapshot": "source_snapshot/test_wifi_control_main.py",
+      "sha256": "627e644518e552c588a6bebf6e617f1d699fec69203a66f86570e5276d876a5a"
+    },
+    {
+      "path": "03_Firmware/tests/wifi_control_main_host_fixture.c",
+      "snapshot": "source_snapshot/wifi_control_main_host_fixture.c",
+      "sha256": "a7355235bc96106accb89e0c0e7f0d9b08104a6c845f68c3557fbed68cb8d8ed"
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_control_main_page.js",
+      "snapshot": "source_snapshot/test_wifi_control_main_page.js",
+      "sha256": "7386daea6004e688ea8ae2f1c0352e09f964d6616f267defb5291a503be46e67"
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_w5_uart_contract.py",
+      "snapshot": "source_snapshot/test_wifi_w5_uart_contract.py",
+      "sha256": "c04d5a24ad130fe8e552498986a9176ed49950cba17f8f7ff52c69fb1384606e"
+    },
+    {
+      "path": "03_Firmware/tests/wifi_w5_host_fixture.c",
+      "snapshot": "source_snapshot/wifi_w5_host_fixture.c",
+      "sha256": "ee6ed4383ec4ac49060d3b6bef511d473ccca9f9cc80f337a1eee4187746e6c0"
+    },
+    {
+      "path": "03_Firmware/tests/test_firmware_contract.py",
+      "snapshot": "source_snapshot/test_firmware_contract.py",
+      "sha256": "2163ade6db0e049f0875061d30b4c4427aa25b6e0a1b46a905a1a0242a73942b"
+    }
+  ]
+}

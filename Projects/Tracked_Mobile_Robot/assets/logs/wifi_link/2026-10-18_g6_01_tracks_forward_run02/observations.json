@@ -1,0 +1,308 @@
+{
+  "test": "G6-01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_RUN02",
+  "status": "PASS",
+  "scope": "Tracks installed and lifted; user reports both tracks forward then stopped; UART/PWM/PC7 and TEL CPS, no ground-driving or calibrated stopping-distance acceptance",
+  "capture": "2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run02.sr",
+  "capture_sha256": "012ada50415c09a415fdfc7938f84a9809feeeb839754ff77595ef112a3b5095",
+  "esp_log_sha256": "8addb1976a3e2ff5d77e1a7f80ae5f9ce793a2930f5aed4a7a1ac71a68551d76",
+  "sample_rate_hz": 4000000.0,
+  "duration_s": 17.969024,
+  "checks": {
+    "uart_no_stop_bit_errors": true,
+    "all_commands_acknowledged_once": true,
+    "sequence_contiguous": true,
+    "expected_command_groups": true,
+    "cmd_timeout_300": true,
+    "zero_keeps_armed": true,
+    "final_disarmed": true,
+    "tel_no_fault_or_errors": true,
+    "both_forward_cps_seen": true,
+    "pc7_low": true,
+    "pwm_ten_percent": true,
+    "no_pwm_after_zero_ack": true,
+    "no_uart_commands_after_disarm": true,
+    "stopped_tel_through_capture": true,
+    "cps_zero_before_disarm": true,
+    "post_disarm_cps_zero": true,
+    "esp_log_matches_capture": true
+  },
+  "initial_uart_fragments": [],
+  "user_observation": "Both tracks rotated forward then stopped; no synchronized pointer-release timestamp.",
+  "moving_cps_ranges": {
+    "left_cps": [
+      0,
+      470
+    ],
+    "right_cps": [
+      0,
+      400
+    ]
+  },
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 72,
+    "DISARM": 1
+  },
+  "ack_count": 74,
+  "tel_count": 180,
+  "command_groups": [
+    {
+      "key": [
+        "ARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 2.91470325,
+        "end_s": 2.9163525555555556,
+        "text": "ARM,seq=4005823021",
+        "kind": "ARM",
+        "fields": {
+          "seq": "4005823021"
+        }
+      },
+      "last": {
+        "start_s": 2.91470325,
+        "end_s": 2.9163525555555556,
+        "text": "ARM,seq=4005823021",
+        "kind": "ARM",
+        "fields": {
+          "seq": "4005823021"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 16,
+      "first": {
+        "start_s": 2.99479075,
+        "end_s": 2.9995650555555553,
+        "text": "CMD,seq=4005823022,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823022",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 4.7147865,
+        "end_s": 4.719560805555556,
+        "text": "CMD,seq=4005823037,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823037",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "100",
+        "0"
+      ],
+      "count": 37,
+      "first": {
+        "start_s": 4.833821,
+        "end_s": 4.838769055555556,
+        "text": "CMD,seq=4005823038,vx_mmps=100,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823038",
+          "vx_mmps": "100",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 8.75590175,
+        "end_s": 8.760849805555557,
+        "text": "CMD,seq=4005823074,vx_mmps=100,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823074",
+          "vx_mmps": "100",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 19,
+      "first": {
+        "start_s": 8.8558945,
+        "end_s": 8.860668805555555,
+        "text": "CMD,seq=4005823075,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823075",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 10.79502725,
+        "end_s": 10.799801555555556,
+        "text": "CMD,seq=4005823093,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "4005823093",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "DISARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 10.83287325,
+        "end_s": 10.834782805555555,
+        "text": "DISARM,seq=4005823094",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "4005823094"
+        }
+      },
+      "last": {
+        "start_s": 10.83287325,
+        "end_s": 10.834782805555555,
+        "text": "DISARM,seq=4005823094",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "4005823094"
+        }
+      }
+    }
+  ],
+  "first_zero_after_motion": {
+    "start_s": 8.8558945,
+    "end_s": 8.860668805555555,
+    "text": "CMD,seq=4005823075,vx_mmps=0,w_mradps=0,timeout_ms=300",
+    "kind": "CMD",
+    "fields": {
+      "seq": "4005823075",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "timeout_ms": "300"
+    }
+  },
+  "zero_tel": {
+    "start_s": 8.92178075,
+    "end_s": 8.936695305555556,
+    "text": "TEL,t_ms=415110,state=ARMED,reason=NONE,command_age_ms=61,last_seq=4005823075,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=430,right_cps=350,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "415110",
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": "61",
+      "last_seq": "4005823075",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "430",
+      "right_cps": "350",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "disarm": {
+    "start_s": 10.83287325,
+    "end_s": 10.834782805555555,
+    "text": "DISARM,seq=4005823094",
+    "kind": "DISARM",
+    "fields": {
+      "seq": "4005823094"
+    }
+  },
+  "disarm_tel": {
+    "start_s": 10.92163875,
+    "end_s": 10.936729055555556,
+    "text": "TEL,t_ms=417112,state=DISARMED,reason=DISARM,command_age_ms=122,last_seq=4005823094,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "417112",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "122",
+      "last_seq": "4005823094",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "pwm": {
+    "D4": {
+      "pulses": 76512,
+      "first_rise_s": 4.838878,
+      "last_fall_s": 8.86072825,
+      "burst_span_s": 4.02185025,
+      "mean_frequency_hz": 19023.855966602394,
+      "mean_duty_percent": 10.002641822347703,
+      "period_range_us": [
+        52.25,
+        52.75
+      ],
+      "high_width_range_us": [
+        5.25,
+        5.5
+      ],
+      "high_samples_after_zero_ack": 0,
+      "low_tail_s": 9.10829575
+    },
+    "D7": {
+      "pulses": 76512,
+      "first_rise_s": 4.838878,
+      "last_fall_s": 8.86072825,
+      "burst_span_s": 4.02185025,
+      "mean_frequency_hz": 19023.855966602394,
+      "mean_duty_percent": 10.00279100760969,
+      "period_range_us": [
+        52.25,
+        52.75
+      ],
+      "high_width_range_us": [
+        5.0,
+        5.5
+      ],
+      "high_samples_after_zero_ack": 0,
+      "low_tail_s": 9.10829575
+    }
+  },
+  "stopped_tel_observation_s": 6.99413925,
+  "limits": [
+    "Probe identities follow the established channel map; capture metadata contains D labels only.",
+    "Pointer release time was not recorded, so user-release-to-zero latency is unmeasured.",
+    "Any capture-boundary UART fragments remain in raw decode artifacts.",
+    "The prior run01 capture remains20kHz/unsuitable; this run02 is a separate4MHz capture matched to the new ESP log."
+  ]
+}

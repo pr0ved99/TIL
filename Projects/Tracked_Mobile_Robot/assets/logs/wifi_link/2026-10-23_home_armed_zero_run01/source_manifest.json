@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-23",
+  "source": "User attachment 3ddbfb40-fad8-4a5b-a2b2-35dec7ca1e2e/붙여넣은 텍스트.txt",
+  "raw_bytes": 9315088,
+  "raw_sha256": "05e506a4f593c4fe9d179ff8e34ce70cd20f9190c3e106da7aa738a8090e0db1",
+  "archive": "browser_report.json.gz",
+  "archive_sha256": "7477fefe4f921a79a28fbea416ad2c16e49be4ad5293f42faa9d01ec872d1c06",
+  "archive_lossless_verified": true,
+  "purpose": "ARM zero-speed traffic and focus-loss DISARM analysis; not movement acceptance",
+  "user_observation_ko": "화면 전환으로 DISARM 됐을꺼야. 그 전에 내가 DISARM 누른적 없음",
+  "configuration_basis": "Continuation of home battery / XL4015 #1 / two-board setup; no newly reported wiring change or measurement",
+  "current_supply_voltage_v": null,
+  "voltage_note": "Earlier 5.02V is not a voltage measurement for this capture",
+  "recorder_reinstalled": false,
+  "recorder_continuation_evidence": "Same initial stop at 68226.6 ms as idle baseline; ARM occurs at 517690.5 ms; original retained history was trimmed",
+  "history_dropped": 30000,
+  "telemetry_dropped": 3900
+}

@@ -1,0 +1,76 @@
+PASS Connection registration sends HELLO only, never ARM/PING/CMD
+PASS No ticket or no startup completion prevents ARM
+PASS Manual ARM consumes one ticket and sends exact contract
+PASS First zero CMD follows matching ARM result and CMD ticket
+PASS No CMD before ARM ACK even if state arrives first
+PASS Zero stream observes 80 ms target and needs fresh one-use tickets
+PASS Repeating a ticket snapshot does not extend its original client deadline
+PASS ARM stays available at the ticket cutoff but a click waits instead of sending
+PASS Short TTL tickets wait for a new ticket to fulfil exactly one manual ARM click
+PASS A delayed browser timer cannot allow a late ARM click to send
+PASS Repeated decreasing TTL snapshots reserve the margin only once
+PASS Zero CMD waits for a new ticket when the send cutoff meets its next interval
+PASS Transit margin blocks a click that would reach a simulated peer after expiry
+PASS IDLE button stays enabled through repeated ticket renewals without sending
+PASS A stale control offer disables ARM instead of keeping an idle button live forever
+PASS Repeated clicks cannot extend the bounded ARM preparation wait
+PASS A fresh offer at the ARM wait deadline is refused even if its timer is delayed
+PASS A control stream gap cancels preparation before a late fresh offer can revive it
+PASS Blur and hidden events cancel an unsent ARM even after focus returns
+PASS DISARM cancels an unsent ARM and leaves it cancelled after its own OK
+PASS PING cannot compete with an unsent manual ARM preparation
+PASS ARM preparation is cancelled by NONE, STOPPING, BLOCKED or a different active owner
+PASS Fault or stale telemetry cancels an unsent ARM before the control snapshot catches up
+PASS Disconnect, offline and boot changes cannot move a waiting ARM into a new session
+PASS A rejected ARM sent after preparation is not retried on subsequent tickets
+PASS ACTIVE keeps the ARM button disabled through changing CMD tickets
+PASS DISARM is enabled during ARM wait and supersedes its pending result
+PASS Blur sends one DISARM; returning focus never auto-arms
+PASS Hidden tab stops; hidden/unfocused ARM is rejected locally
+PASS Stale control stream closes socket even with otherwise live telemetry
+PASS STOPPING and BLOCKED snapshots revoke local stream without auto-retry
+PASS Server rejection of ARM stops intent and requests DISARM
+PASS Failed control result prevents further zero commands
+PASS Wrong boot/session results cannot complete ARM
+PASS Wrong control id cannot complete pending CMD
+PASS Malformed control state or a changed mode closes the connection
+PASS Rejected malformed diagnostic request preserves last valid result
+PASS PING diagnostic still follows request/notice/result flow
+PASS DISARM can preempt a waiting diagnostic PING
+PASS Disconnect/reconnect clears command intent and only sends HELLO
+PASS Old socket events cannot change the new session
+PASS ESP boot change closes and requires a new manual request
+PASS Send exception cancels local intent and starts one reconnect
+PASS Telemetry watchdog preserves last good values on timeout
+PASS Malformed telemetry preserves last data and closes
+PASS Idle never starts ARM/CMD automatically and no speed textbox exists
+46 browser cases PASS; simulated DOM/clock/WebSocket only
+PASS distance: manual ARM, first zero and stable post-ARM counts precede a distance request
+PASS distance: all four selections send mm goals under existing one-use tickets and cadence
+PASS distance: target is locked for this ARM and normal directions cannot bypass it
+PASS distance: release before queued target TX sends DISARM and never replays the goal
+PASS distance: release, pointercancel, lost capture, outside, blur and hidden interrupt in flight
+PASS distance: reached TEL waits for matching accepted UART seq, then disarms without restart
+PASS distance: wrong seq, nonzero PWM or another ARM cannot announce completion
+PASS distance: coasting final counts remain separate from cutoff and actual distance is not claimed
+PASS distance: duplicate telemetry generations cannot build a stationary window or refresh its age
+PASS distance: invalid encoder, wrong ARM, moving count, CPS and stale telemetry disable start
+PASS distance: sample clock regression, generation regression and fresh invalid sample stop a running target
+PASS distance: zero-only, untrusted and wrong pointer input cannot start target motion
+PASS distance: failure result, owner loss, stale stream and disconnect never resume a target
+PASS distance: a new manual ARM resets the run lock while preserving the previous trial log
+PASS distance: duplicate reached TEL cannot substitute for 200ms of fresh stationary generations
+PASS distance: telemetry history is bounded with an explicit drop count and sends no logging commands
+PASS distance: a stationary distance button stays enabled during zero CMD ACK and ticket renewal
+PASS distance: trusted hold during pending zero waits for ACK, ticket and the original cadence
+PASS distance: a consumed ticket permits a held request but cannot send without a new ticket
+PASS distance: release while zero ACK is pending cancels before a delayed ACK or ticket can move
+PASS distance: an unsent held request expires at200ms without extending on fresh offers
+PASS distance: delayed timer or direct send cannot transmit an expired unsent hold
+PASS distance: count changes or nonzero CPS while awaiting the first target TX cancel the held request
+PASS distance: plain HTTP copies the complete JSON without a secure Clipboard API or command sends
+PASS distance: secure Clipboard API copies the same report without selecting a fallback field
+PASS distance: clipboard denial or unsupported copy leaves complete text selected with honest failure status
+PASS distance: copy is unavailable with no trials or during active control
+PASS distance: delayed clipboard denial cannot focus a field after a new ARM intent
+28 distance browser cases PASS; simulated DOM/clock/WebSocket/clipboard only

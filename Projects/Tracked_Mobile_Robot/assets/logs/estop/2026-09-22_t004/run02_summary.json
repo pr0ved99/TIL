@@ -1,0 +1,686 @@
+{
+  "file": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run02_active_estop.sr",
+  "sha256": "cd1d3a968b35b6a5423c8c9321b6af82b353099cba1e02388d7f03301f6e51f0",
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "0": {
+      "high_samples": 61936578,
+      "high_width_samples_common": [
+        [
+          256,
+          1
+        ],
+        [
+          166,
+          1
+        ]
+      ],
+      "period_samples_common": [
+        [
+          30479075,
+          1
+        ],
+        [
+          328,
+          1
+        ]
+      ],
+      "high_runs": 3,
+      "first_rise_s": 1.89611025,
+      "last_fall_s": 25.0,
+      "last_runs_s": [
+        [
+          1.89611025,
+          1.89617425
+        ],
+        [
+          9.515879,
+          9.5159205
+        ],
+        [
+          9.515961,
+          25.0
+        ]
+      ],
+      "all_high_intervals_s": [
+        [
+          1.89611025,
+          1.89617425
+        ],
+        [
+          9.515879,
+          9.5159205
+        ],
+        [
+          9.515961,
+          25.0
+        ]
+      ],
+      "first_sustained_high_s": 9.515961
+    },
+    "1": {
+      "high_samples": 1300328,
+      "high_width_samples_common": [
+        [
+          11,
+          64758
+        ],
+        [
+          10,
+          58799
+        ]
+      ],
+      "period_samples_common": [
+        [
+          210,
+          83644
+        ],
+        [
+          211,
+          39906
+        ],
+        [
+          209,
+          6
+        ]
+      ],
+      "high_runs": 123557,
+      "first_rise_s": 3.019188,
+      "last_fall_s": 9.51585575,
+      "last_runs_s": [
+        [
+          9.51564275,
+          9.5156455
+        ],
+        [
+          9.5156955,
+          9.515698
+        ],
+        [
+          9.515748,
+          9.5157505
+        ],
+        [
+          9.5158005,
+          9.515803
+        ],
+        [
+          9.515853,
+          9.51585575
+        ]
+      ],
+      "mean_frequency_hz": 19018.37327305625,
+      "mean_duty_pct": 5.003788389449139,
+      "last_fall_minus_PC7_s": -0.00010525,
+      "high_samples_after_last_fall": 0,
+      "observed_low_after_last_fall_s": 15.48414425
+    },
+    "2": {
+      "high_samples": 1300270,
+      "high_width_samples_common": [
+        [
+          11,
+          64700
+        ],
+        [
+          10,
+          58857
+        ]
+      ],
+      "period_samples_common": [
+        [
+          210,
+          83644
+        ],
+        [
+          211,
+          39906
+        ],
+        [
+          209,
+          6
+        ]
+      ],
+      "high_runs": 123557,
+      "first_rise_s": 3.019188,
+      "last_fall_s": 9.51585575,
+      "last_runs_s": [
+        [
+          9.51564275,
+          9.5156455
+        ],
+        [
+          9.5156955,
+          9.515698
+        ],
+        [
+          9.515748,
+          9.5157505
+        ],
+        [
+          9.5158005,
+          9.515803
+        ],
+        [
+          9.515853,
+          9.51585575
+        ]
+      ],
+      "mean_frequency_hz": 19018.37327305625,
+      "mean_duty_pct": 5.00356519981807,
+      "last_fall_minus_PC7_s": -0.00010525,
+      "high_samples_after_last_fall": 0,
+      "observed_low_after_last_fall_s": 15.48414425
+    },
+    "4": {
+      "high_samples": 91414464,
+      "high_width_samples_common": [
+        [
+          35,
+          4934
+        ],
+        [
+          34,
+          2004
+        ],
+        [
+          69,
+          1479
+        ],
+        [
+          70,
+          1197
+        ],
+        [
+          104,
+          997
+        ]
+      ],
+      "period_samples_common": [
+        [
+          139,
+          2601
+        ],
+        [
+          104,
+          2317
+        ],
+        [
+          69,
+          2154
+        ],
+        [
+          70,
+          1747
+        ],
+        [
+          208,
+          631
+        ]
+      ]
+    },
+    "5": {
+      "high_samples": 84836627,
+      "high_width_samples_common": [
+        [
+          35,
+          54447
+        ],
+        [
+          34,
+          26015
+        ],
+        [
+          69,
+          19168
+        ],
+        [
+          104,
+          12346
+        ],
+        [
+          70,
+          10405
+        ]
+      ],
+      "period_samples_common": [
+        [
+          104,
+          32957
+        ],
+        [
+          69,
+          29069
+        ],
+        [
+          139,
+          22328
+        ],
+        [
+          70,
+          15932
+        ],
+        [
+          208,
+          10114
+        ]
+      ]
+    }
+  },
+  "uart": {
+    "4": {
+      "valid_bytes": 3785,
+      "invalid_frame_times_s": [
+        1.8984945
+      ],
+      "invalid_frame_count": 1,
+      "complete_lines": 71,
+      "partial_tail": "",
+      "message_types": {
+        "": 1,
+        "DISARM": 1,
+        "PING": 1,
+        "ARM": 1,
+        "CMD": 66,
+        "ESTOP_RESET": 1
+      },
+      "tel_count": 0,
+      "tel_fields": {
+        "state": {},
+        "reason": {},
+        "vx_mmps": {},
+        "w_mradps": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "err": {},
+        "drop": {}
+      },
+      "tel_state_changes": [],
+      "other_first": [
+        {
+          "time_s": 2.674192,
+          "text": ""
+        },
+        {
+          "time_s": 2.77426875,
+          "text": "DISARM,seq=1828822181"
+        },
+        {
+          "time_s": 2.787759,
+          "text": "PING,seq=1828822182"
+        },
+        {
+          "time_s": 2.914203,
+          "text": "ARM,seq=1828822183"
+        },
+        {
+          "time_s": 3.014218,
+          "text": "CMD,seq=1828822184,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 3.11421825,
+          "text": "CMD,seq=1828822185,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 3.21421675,
+          "text": "CMD,seq=1828822186,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 3.31421775,
+          "text": "CMD,seq=1828822187,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 3.41421875,
+          "text": "CMD,seq=1828822188,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        }
+      ],
+      "other_last": [
+        {
+          "time_s": 8.8142695,
+          "text": "CMD,seq=1828822242,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 8.9142705,
+          "text": "CMD,seq=1828822243,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.01427125,
+          "text": "CMD,seq=1828822244,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.11427225,
+          "text": "CMD,seq=1828822245,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.21427325,
+          "text": "CMD,seq=1828822246,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.31427425,
+          "text": "CMD,seq=1828822247,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.414275,
+          "text": "CMD,seq=1828822248,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.514276,
+          "text": "CMD,seq=1828822249,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.62019175,
+          "text": "ESTOP_RESET,seq=1828822250"
+        }
+      ],
+      "uart_near_estop": [
+        {
+          "time_s": 9.31427425,
+          "text": "CMD,seq=1828822247,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.414275,
+          "text": "CMD,seq=1828822248,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.514276,
+          "text": "CMD,seq=1828822249,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        },
+        {
+          "time_s": 9.62019175,
+          "text": "ESTOP_RESET,seq=1828822250"
+        }
+      ]
+    },
+    "5": {
+      "valid_bytes": 42840,
+      "invalid_frame_times_s": [
+        1.8984945
+      ],
+      "invalid_frame_count": 1,
+      "complete_lines": 300,
+      "partial_tail": "",
+      "message_types": {
+        "TEL": 230,
+        "ACK": 67,
+        "PONG": 1,
+        "ERR": 2
+      },
+      "tel_count": 230,
+      "tel_fields": {
+        "state": {
+          "DISARMED": 9,
+          "ARMED": 66,
+          "FAULT": 155
+        },
+        "reason": {
+          "BOOT": 7,
+          "DISARM": 2,
+          "NONE": 66,
+          "ESTOP_ACTIVE": 155
+        },
+        "vx_mmps": {
+          "0": 165,
+          "50": 65
+        },
+        "w_mradps": {
+          "0": 230
+        },
+        "left_pwm": {
+          "0": 165,
+          "50": 65
+        },
+        "right_pwm": {
+          "0": 165,
+          "50": 65
+        },
+        "left_cps": {
+          "0": 230
+        },
+        "right_cps": {
+          "0": 229,
+          "10": 1
+        },
+        "err": {
+          "0": 75,
+          "1": 1,
+          "2": 154
+        },
+        "drop": {
+          "0": 230
+        }
+      },
+      "tel_state_changes": [
+        {
+          "t_ms": "100",
+          "state": "DISARMED",
+          "reason": "BOOT",
+          "command_age_ms": "4294967295",
+          "last_seq": "0",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0",
+          "capture_s": 2.07716125
+        },
+        {
+          "t_ms": "802",
+          "state": "DISARMED",
+          "reason": "DISARM",
+          "command_age_ms": "4294967295",
+          "last_seq": "1828822181",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0",
+          "capture_s": 2.7799095
+        },
+        {
+          "t_ms": "1002",
+          "state": "ARMED",
+          "reason": "NONE",
+          "command_age_ms": "4294967295",
+          "last_seq": "1828822183",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0",
+          "capture_s": 2.97920775
+        },
+        {
+          "t_ms": "1102",
+          "state": "ARMED",
+          "reason": "NONE",
+          "command_age_ms": "60",
+          "last_seq": "1828822184",
+          "vx_mmps": "50",
+          "w_mradps": "0",
+          "left_pwm": "50",
+          "right_pwm": "50",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0",
+          "capture_s": 3.0792195
+        },
+        {
+          "t_ms": "7602",
+          "state": "FAULT",
+          "reason": "ESTOP_ACTIVE",
+          "command_age_ms": "154",
+          "last_seq": "1828822248",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "1",
+          "capture_s": 9.5729315
+        }
+      ],
+      "other_first": [
+        {
+          "time_s": 2.776274,
+          "text": "ACK,seq=1828822181,type=DISARM,t_ms=799"
+        },
+        {
+          "time_s": 2.8053605,
+          "text": "PONG,seq=1828822182,t_ms=828"
+        },
+        {
+          "time_s": 2.91594825,
+          "text": "ACK,seq=1828822183,type=ARM,t_ms=938"
+        },
+        {
+          "time_s": 3.019219,
+          "text": "ACK,seq=1828822184,type=CMD,t_ms=1042"
+        },
+        {
+          "time_s": 3.1192215,
+          "text": "ACK,seq=1828822185,type=CMD,t_ms=1142"
+        },
+        {
+          "time_s": 3.2192185,
+          "text": "ACK,seq=1828822186,type=CMD,t_ms=1242"
+        },
+        {
+          "time_s": 3.31922125,
+          "text": "ACK,seq=1828822187,type=CMD,t_ms=1342"
+        },
+        {
+          "time_s": 3.41922125,
+          "text": "ACK,seq=1828822188,type=CMD,t_ms=1442"
+        },
+        {
+          "time_s": 3.51921975,
+          "text": "ACK,seq=1828822189,type=CMD,t_ms=1542"
+        }
+      ],
+      "other_last": [
+        {
+          "time_s": 8.81927775,
+          "text": "ACK,seq=1828822242,type=CMD,t_ms=6847"
+        },
+        {
+          "time_s": 8.91926875,
+          "text": "ACK,seq=1828822243,type=CMD,t_ms=6947"
+        },
+        {
+          "time_s": 9.019274,
+          "text": "ACK,seq=1828822244,type=CMD,t_ms=7047"
+        },
+        {
+          "time_s": 9.11927025,
+          "text": "ACK,seq=1828822245,type=CMD,t_ms=7147"
+        },
+        {
+          "time_s": 9.21928175,
+          "text": "ACK,seq=1828822246,type=CMD,t_ms=7248"
+        },
+        {
+          "time_s": 9.31927475,
+          "text": "ACK,seq=1828822247,type=CMD,t_ms=7348"
+        },
+        {
+          "time_s": 9.41927375,
+          "text": "ACK,seq=1828822248,type=CMD,t_ms=7448"
+        },
+        {
+          "time_s": 9.51928125,
+          "text": "ERR,seq=1828822249,type=CMD,code=ESTOP_LATCHED,t_ms=7548"
+        },
+        {
+          "time_s": 9.6226545,
+          "text": "ERR,seq=1828822250,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=7651"
+        }
+      ],
+      "uart_near_estop": [
+        {
+          "time_s": 9.21928175,
+          "text": "ACK,seq=1828822246,type=CMD,t_ms=7248"
+        },
+        {
+          "time_s": 9.273316,
+          "text": "TEL,t_ms=7302,state=ARMED,reason=NONE,command_age_ms=54,last_seq=1828822246,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "time_s": 9.31927475,
+          "text": "ACK,seq=1828822247,type=CMD,t_ms=7348"
+        },
+        {
+          "time_s": 9.373191,
+          "text": "TEL,t_ms=7402,state=ARMED,reason=NONE,command_age_ms=54,last_seq=1828822247,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "time_s": 9.41927375,
+          "text": "ACK,seq=1828822248,type=CMD,t_ms=7448"
+        },
+        {
+          "time_s": 9.47305675,
+          "text": "TEL,t_ms=7502,state=ARMED,reason=NONE,command_age_ms=54,last_seq=1828822248,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "time_s": 9.51928125,
+          "text": "ERR,seq=1828822249,type=CMD,code=ESTOP_LATCHED,t_ms=7548"
+        },
+        {
+          "time_s": 9.5729315,
+          "text": "TEL,t_ms=7602,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=154,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        },
+        {
+          "time_s": 9.6226545,
+          "text": "ERR,seq=1828822250,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=7651"
+        },
+        {
+          "time_s": 9.672812,
+          "text": "TEL,t_ms=7702,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=254,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 9.7726525,
+          "text": "TEL,t_ms=7802,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=354,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 9.872522,
+          "text": "TEL,t_ms=7902,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=454,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 9.9724145,
+          "text": "TEL,t_ms=8002,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=554,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 10.07229775,
+          "text": "TEL,t_ms=8102,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=654,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 10.17215925,
+          "text": "TEL,t_ms=8202,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=754,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        },
+        {
+          "time_s": 10.27202825,
+          "text": "TEL,t_ms=8302,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=854,last_seq=1828822248,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        }
+      ]
+    }
+  }
+}

@@ -1,5 +1,8 @@
 # STM32F446RE 코어, 메모리, 인터럽트, 클럭 분석
 
+> 문서 역할·상태 대조: **2026-09-30** — 코어·메모리·인터럽트 개념 설명. 현재 펌웨어 구성은 코드와 구현 요약을 따른다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 STM32F446xC/E 데이터시트의 Section 3 Functional overview 중

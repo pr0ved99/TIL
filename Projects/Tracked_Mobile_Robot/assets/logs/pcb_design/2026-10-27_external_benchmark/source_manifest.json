@@ -1,0 +1,67 @@
+{
+  "access_date": "2026-10-27",
+  "sources": [
+    {
+      "file": "odrive_v3_5.pdf",
+      "url": "https://raw.githubusercontent.com/odriverobotics/ODriveHardware/master/v3/v3.5docs/schematic_v3.5.pdf",
+      "sha256": "28e49793f5d6b3e228287c4789fdb367ed09a1605dbf53d8627e741f0673489d",
+      "pages": 4,
+      "bytes": 1487829
+    },
+    {
+      "file": "vesc_6_5_revB.pdf",
+      "url": "https://vesc-project.com/sites/default/files/Benjamin%20Posts/VESC_6_plus.pdf",
+      "sha256": "034163b3b027ab25d63624bc02a290de48b6cd82dd22f10a3c7590e20394e085",
+      "pages": 6,
+      "bytes": 299228
+    },
+    {
+      "file": "waveshare_general_driver.pdf",
+      "url": "https://files.waveshare.com/wiki/RoArm-M2-S/General_Driver_for_Robots.pdf",
+      "sha256": "dab698578c1b75bdf72a5ade4bada2d9f5a5da54f37737e1f41b0b2c59b9ce8a",
+      "pages": 1,
+      "bytes": 1008991
+    }
+  ],
+  "scope": "Historical public revisions; schematic observations and author statements are distinguished from engineering interpretation. No hardware validation.",
+  "supporting_sources": [
+    {
+      "url": "https://github.com/waveshareteam/ugv_base_general",
+      "revision": "d308df91b333a513f45a238bef9ba9a0a5edf64c",
+      "purpose": "UGV01/General Driver architecture"
+    },
+    {
+      "url": "https://github.com/waveshareteam/ugv_base_general/blob/main/General_Driver/battery_ctrl.h",
+      "purpose": "INA219 0.01 ohm calibration and ADC/range configuration"
+    },
+    {
+      "url": "https://github.com/odriverobotics/ODriveHardware",
+      "revision": "079f30ac58f193226fcc552e4d6ba24553027ee1",
+      "purpose": "v3.1 output impedance erratum; repository with v3.5 schematic"
+    },
+    {
+      "url": "https://github.com/odriverobotics/ODriveHardware/blob/master/v3/CHANGELOG.md",
+      "purpose": "Kelvin connection, current scaling and Vbus filter changes"
+    },
+    {
+      "url": "https://vesc-project.com/node/324",
+      "purpose": "Benjamin 2018-02-23 author explanation for phase sensing with AD8418"
+    },
+    {
+      "url": "https://www.analog.com/en/products/ad8418.html",
+      "purpose": "20 V/V gain, PWM common-mode behavior, lifecycle warning"
+    },
+    {
+      "url": "https://www.ti.com/product/INA219",
+      "purpose": "Shunt/bus measurement and digital output"
+    },
+    {
+      "url": "https://www.pololu.com/product/5241",
+      "purpose": "Selected Hall current sensor transfer function and interface"
+    },
+    {
+      "url": "https://www.semitec-global.com/uploads/2022/01/P9-JT-Thermistor.pdf",
+      "purpose": "Selected NTC specifications and thermal-response context"
+    }
+  ]
+}

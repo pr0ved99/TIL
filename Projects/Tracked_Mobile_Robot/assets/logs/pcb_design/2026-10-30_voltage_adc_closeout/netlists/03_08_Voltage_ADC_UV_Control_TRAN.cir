@@ -1,0 +1,16 @@
+.title KiCad schematic
+.model __S1 SW
++           vt=1.65
++           ron=2
++           roff=1G
+C1 /VDIV 0 100n
+V1 /VRAIL 0 DC 16 AC 1 0 
+R2 Net-_R1-Pad2_ /VDIV 12k
+R1 /VRAIL Net-_R1-Pad2_ 12k
+S1 Net-_S1-N+_ /VADC /VCTRL 0 __S1
+R4 Net-_S1-N+_ /VDIV 1k
+R3 /VDIV 0 4.7k
+V3 /VDDA 0 PWL( 0 3.3 10m 3.3 13.3m 0 15m 0 ) 
+R5 /VADC 0 47k
+V2 /VCTRL 0 DC 3.3 
+.end

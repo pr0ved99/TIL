@@ -1,0 +1,11 @@
+# Reproducible local outputs. Existing tracked files remain tracked;
+# release/runtime evidence belongs in dated assets/logs with its manifest.
+/03_Firmware/**/build/
+/03_Firmware/**/Debug/
+/03_Firmware/**/Release/
+
+# KiCad local lock/autosave/backup state (not schematic or PCB sources).
+*.kicad_prl
+~*.lck
+_autosave-*
+*-backups/

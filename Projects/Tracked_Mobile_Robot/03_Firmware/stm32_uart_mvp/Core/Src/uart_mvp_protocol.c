@@ -1,24 +1,95 @@
 #include "uart_mvp_protocol.h"
 
+#include "drive_command_mapper.h"
+#include "distance_move.h"
 #include "motor_output.h"
 #include "ring_buffer.h"
+#include "uart_frame_parser.h"
 
+#include <inttypes.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define CMD_TIMEOUT_DEFAULT_MS 300u
 #define CMD_TIMEOUT_MIN_MS      50u
 #define CMD_TIMEOUT_MAX_MS     500u
 
-#define VX_MIN_MMPS -100
-#define VX_MAX_MMPS  100
+#define VX_MIN_MMPS  -100
+#define VX_MAX_MMPS   100
 #define W_MIN_MRADPS -500
 #define W_MAX_MRADPS  500
 
-#define UART_LINE_MAX 128u
-#define TEL_PERIOD_MS 100u
+/*
+ * Supervised drivetrain test:
+ * normal commands: up to 15%, pure rotation: up to 20%.
+ */
+#define CMD_OUTPUT_DUTY_CAP_PERMILLE       150U
+#define CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE  200U
+#define UART_FRAME_MAX_LEN              127u
+#define UART_LINE_BUFFER_SIZE           (UART_FRAME_MAX_LEN + 2u)
+#define UART_TX_BUFFER_SIZE             512u
+#define TEL_PERIOD_MS                   100u
+#define COMMAND_AGE_INVALID_MS          0xFFFFFFFFu
+
+#define UART_MVP_OUTPUT_TEST_ENABLED                        0U
+#define UART_MVP_OUTPUT_TEST_DUTY_PERMILLE                  100U
+#define UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED         0U
+#define UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED    0U
+#define UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED 0U
+#define UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED  0U
+#define UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED   0U
+#define UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED  0U
+#define UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED  0U
+#define UART_MVP_STALE_PONG_ONCE_TEST_ENABLED           0U
+#define UART_MVP_SUPPRESS_PONG_TEST_ENABLED             0U
+
+/* Bench only: stop immediately; delay one eligible DISARM ACK. */
+#define UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED 0U
+#define UART_MVP_DELAY_DISARM_ACK_MS             500U
+
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED > 1U
+#error "Delayed DISARM ACK test mode must be 0 or 1"
+#endif
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED && ( \
+    UART_MVP_OUTPUT_TEST_ENABLED || \
+    UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED || \
+    UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED || \
+    UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED || \
+    UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_STALE_PONG_ONCE_TEST_ENABLED || UART_MVP_SUPPRESS_PONG_TEST_ENABLED)
+#error "Do not combine delayed ACK with another bench fault/output mode"
+#endif
+
+/* Bench only: omit the tenth eligible zero CMD ACK once per STM boot. */
+#define UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED 0U
+
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED > 1U
+#error "CMD ACK drop test mode must be 0 or 1"
+#endif
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED && ( \
+    UART_MVP_OUTPUT_TEST_ENABLED || \
+    UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED || \
+    UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED || \
+    UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED || \
+    UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED || \
+    UART_MVP_STALE_PONG_ONCE_TEST_ENABLED || \
+    UART_MVP_SUPPRESS_PONG_TEST_ENABLED || \
+    UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED)
+#error "Do not combine CMD ACK drop with another bench fault/output mode"
+#endif
 
 typedef enum{
     ROBOT_DISARMED = 0,
@@ -26,22 +97,93 @@ typedef enum{
     ROBOT_FAULT
 } robot_state_t;
 
+typedef enum {
+    ROBOT_REASON_BOOT = 0,
+    ROBOT_REASON_NONE,
+    ROBOT_REASON_DISARM,
+    ROBOT_REASON_CMD_TIMEOUT,
+    ROBOT_REASON_ESTOP_ACTIVE,
+    ROBOT_REASON_ESTOP_LATCHED,
+    ROBOT_REASON_ESTOP_RESET,
+    ROBOT_REASON_OUTPUT_ERROR,
+    ROBOT_REASON_DISTANCE_RUNNING,
+    ROBOT_REASON_DISTANCE_REACHED,
+    ROBOT_REASON_DISTANCE_ABORTED
+} robot_reason_t;
+
 static UART_HandleTypeDef *s_uart;
 static uint8_t s_rx_byte;
 static ring_buffer_t s_rx_rb;
 
-static char s_line[UART_LINE_MAX];
+static char s_line[UART_LINE_BUFFER_SIZE];
 static uint16_t s_line_len;
 static uint8_t s_line_overflow;
+static volatile uint8_t s_rx_desync_pending;
+typedef enum {
+    UART_RX_COLLECT = 0,
+    UART_RX_DISCARD_ERROR,
+    UART_RX_DISCARD_CANCEL
+} uart_rx_line_mode_t;
 
+static uart_rx_line_mode_t s_rx_line_mode;
+
+static robot_reason_t s_reason = ROBOT_REASON_BOOT;
+static uint8_t s_has_accepted_cmd;
+static uint32_t s_last_accepted_cmd_ms;
 static robot_state_t s_state = ROBOT_DISARMED;
-static int32_t s_last_seq;
+static uint8_t s_estop_latched;
+static uint32_t s_last_seq;
+static uint8_t s_stale_disarm_ack_sent;
+static uint8_t s_duplicate_disarm_ack_seq_sent;
+static uint8_t s_trailing_comma_disarm_ack_sent;
+static uint8_t s_overflow_disarm_ack_seq_sent;
+static uint8_t s_partial_frame_name_disarm_ack_sent;
+static uint8_t s_wrong_disarm_ack_type_sent;
+static uint8_t s_embedded_cr_disarm_ack_sent;
+static uint8_t s_control_byte_disarm_ack_sent;
+static uint8_t s_overlong_disarm_ack_sent;
+static uint8_t s_stale_pong_sent;
 static int32_t s_vx_mmps;
 static int32_t s_w_mradps;
 static uint32_t s_cmd_timeout_ms;
 static uint32_t s_last_cmd_ms;
 static uint32_t s_last_tel_ms;
 static uint32_t s_error_count;
+static int32_t s_left_cps;
+static int32_t s_right_cps;
+
+typedef struct {
+    int64_t left_count;
+    int64_t right_count;
+    uint32_t sample_ms;
+    uint32_t arm_seq;
+    bool valid;
+    bool arm_valid;
+} encoder_sample_t;
+
+static encoder_sample_t s_encoder_sample;
+static uint32_t s_encoder_arm_seq;
+static bool s_encoder_arm_valid;
+static distance_move_t s_distance_move;
+static uint32_t s_distance_mm;
+static uint32_t s_distance_still_since_ms;
+
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
+static uint8_t s_cmd_ack_drop_used;
+static uint8_t s_cmd_ack_drop_zero_count;
+#endif
+
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+typedef struct {
+    uint8_t used;
+    uint8_t pending;
+    uint8_t zero_cmd_seen;
+    uint32_t seq;
+    uint32_t processed_ms;
+} delayed_disarm_ack_t;
+
+static delayed_disarm_ack_t s_delayed_disarm_ack;
+#endif
 
 static const char *state_name(robot_state_t state){
     switch (state){
@@ -56,237 +198,1030 @@ static const char *state_name(robot_state_t state){
     }
 }
 
-static void uart_sendf(const char *fmt, ...){
-    char tx[160];
-    va_list args;
-    int len;
+static const char *distance_abort_name(void){
+    switch (s_distance_move.reason){
+        case DISTANCE_MOVE_REASON_CANCELLED: return "DISTANCE_CANCELLED";
+        case DISTANCE_MOVE_REASON_NOT_PERMITTED: return "DISTANCE_NOT_PERMITTED";
+        case DISTANCE_MOVE_REASON_BAD_SAMPLE: return "DISTANCE_BAD_SAMPLE";
+        case DISTANCE_MOVE_REASON_STALE_SAMPLE: return "DISTANCE_STALE_SAMPLE";
+        case DISTANCE_MOVE_REASON_POLL_GAP: return "DISTANCE_POLL_GAP";
+        case DISTANCE_MOVE_REASON_COUNT_REVERSED: return "DISTANCE_REVERSED";
+        case DISTANCE_MOVE_REASON_COUNT_RANGE: return "DISTANCE_COUNT_RANGE";
+        case DISTANCE_MOVE_REASON_RUN_TIMEOUT: return "DISTANCE_RUN_TIMEOUT";
+        case DISTANCE_MOVE_REASON_NO_PROGRESS: return "DISTANCE_NO_PROGRESS";
+        case DISTANCE_MOVE_REASON_BAD_TARGET: return "DISTANCE_BAD_TARGET";
+        case DISTANCE_MOVE_REASON_NONE:
+        default: return "DISTANCE_ABORTED";
+    }
+}
 
-    if(s_uart == NULL){
-        return;
+static const char *reason_name(robot_reason_t reason){
+    switch (reason){
+        case ROBOT_REASON_BOOT:
+            return "BOOT";
+        case ROBOT_REASON_NONE:
+            return "NONE";
+        case ROBOT_REASON_DISARM:
+            return "DISARM";
+        case ROBOT_REASON_CMD_TIMEOUT:
+            return "CMD_TIMEOUT";
+        case ROBOT_REASON_ESTOP_ACTIVE:
+            return "ESTOP_ACTIVE";
+        case ROBOT_REASON_ESTOP_LATCHED:
+            return "ESTOP_LATCHED";
+        case ROBOT_REASON_ESTOP_RESET:
+            return "ESTOP_RESET";
+        case ROBOT_REASON_OUTPUT_ERROR:
+            return "OUTPUT_ERROR";
+        case ROBOT_REASON_DISTANCE_RUNNING:
+            return "DISTANCE_RUNNING";
+        case ROBOT_REASON_DISTANCE_REACHED:
+            return "DISTANCE_REACHED";
+        case ROBOT_REASON_DISTANCE_ABORTED:
+            return distance_abort_name();
+
+        default:
+            return "UNKNOWN";
+    }
+}
+
+static uint32_t command_age_ms(uint32_t now_ms){
+    if(s_has_accepted_cmd == 0U){
+        return COMMAND_AGE_INVALID_MS;
     }
 
+    return now_ms - s_last_accepted_cmd_ms;
+}
+
+/* One in-flight frame, four FIFO responses, one coalesced pending TEL. */
+#define UART_TX_RESPONSE_SLOTS 4U
+#define UART_TX_DEADLINE_MS 100U
+#define UART_RX_POLL_BYTE_BUDGET 64U
+static uint8_t s_tx_frame[UART_TX_BUFFER_SIZE];
+static uint8_t s_tx_responses[UART_TX_RESPONSE_SLOTS][UART_TX_BUFFER_SIZE];
+static uint16_t s_tx_response_len[UART_TX_RESPONSE_SLOTS];
+static uint8_t s_tx_head;
+static uint8_t s_tx_count;
+static uint8_t s_tx_tel[UART_TX_BUFFER_SIZE];
+static uint16_t s_tx_tel_len;
+static uint32_t s_tx_tel_ms;
+static uint32_t s_tx_started_ms;
+static volatile uint8_t s_tx_active;
+static uint8_t s_tx_fault;
+static volatile uint8_t s_tx_completed;
+
+static void uart_tx_force_safe(void){
+    if (s_tx_fault == 0U){
+        s_error_count++;
+    }
+    s_tx_fault = 1U;
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    if (s_estop_latched == 0U){
+        s_state = ROBOT_DISARMED;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+    }
+}
+
+void uart_mvp_on_tx_complete(UART_HandleTypeDef *huart){
+    if (huart == s_uart && s_tx_active != 0U){
+        /* ISR only publishes completion; queue and motor state belong to main. */
+        s_tx_completed = 1U;
+    }
+}
+
+static void uart_tx_enqueue(const uint8_t *data, uint16_t length, bool telemetry){
+    uint8_t slot;
+    if (s_tx_fault != 0U){
+        uart_tx_force_safe();
+        return;
+    }
+    if (data == NULL || length == 0U || length >= UART_TX_BUFFER_SIZE){
+        uart_tx_force_safe();
+        return;
+    }
+    if (telemetry){
+        memcpy(s_tx_tel, data, length);
+        s_tx_tel_len = length;
+        s_tx_tel_ms = HAL_GetTick();
+        return;
+    }
+    if (s_tx_count >= UART_TX_RESPONSE_SLOTS){
+        /* A missing control response must not leave motion enabled. */
+        uart_tx_force_safe();
+        return;
+    }
+    slot = (uint8_t)((s_tx_head + s_tx_count) % UART_TX_RESPONSE_SLOTS);
+    memcpy(s_tx_responses[slot], data, length);
+    s_tx_response_len[slot] = length;
+    s_tx_count++;
+}
+
+static void uart_tx_poll(void){
+    uint16_t length;
+    uint32_t now_ms = HAL_GetTick();
+    if (s_tx_fault != 0U){
+        uart_tx_force_safe();
+        return;
+    }
+    if (s_tx_active != 0U){
+        if (s_tx_completed == 0U){
+            if ((uint32_t)(now_ms - s_tx_started_ms) >= UART_TX_DEADLINE_MS){
+                uart_tx_force_safe();
+            }
+            return;
+        }
+        s_tx_active = 0U;
+        s_tx_completed = 0U;
+    }
+    if (s_tx_count != 0U){
+        length = s_tx_response_len[s_tx_head];
+        memcpy(s_tx_frame, s_tx_responses[s_tx_head], length);
+        s_tx_head = (uint8_t)((s_tx_head + 1U) % UART_TX_RESPONSE_SLOTS);
+        s_tx_count--;
+    }
+    else if (s_tx_tel_len != 0U){
+        length = s_tx_tel_len;
+        s_tx_tel_len = 0U;
+        /* Do not transmit a TEL that aged behind a response burst. */
+        if ((uint32_t)(now_ms - s_tx_tel_ms) > 50U){
+            return;
+        }
+        memcpy(s_tx_frame, s_tx_tel, length);
+    }
+    else{
+        return;
+    }
+    s_tx_started_ms = now_ms;
+    s_tx_completed = 0U;
+    s_tx_active = 1U;
+    if (HAL_UART_Transmit_IT(s_uart, s_tx_frame, length) != HAL_OK){
+        uart_tx_force_safe();
+    }
+}
+
+static void uart_sendf(const char *fmt, ...){
+    char tx[UART_TX_BUFFER_SIZE];
+    va_list args;
+    int len;
+    if (s_uart == NULL){
+        return;
+    }
     va_start(args, fmt);
     len = vsnprintf(tx, sizeof(tx), fmt, args);
     va_end(args);
-
-    if(len <= 0){
+    if (len <= 0 || (size_t)len >= sizeof(tx)){
+        uart_tx_force_safe();
         return;
     }
-
-    if((size_t)len >= sizeof(tx)){
-        len = (int)sizeof(tx) - 1;
-    }
-
-    HAL_UART_Transmit(s_uart, (uint8_t *)tx, (uint16_t)len, 100);
+    uart_tx_enqueue((const uint8_t *)tx, (uint16_t)len,
+        strncmp(tx, "TEL,", 4U) == 0);
 }
 
-static int parse_seq(const char *line, int32_t *seq){
-    const char *p;
 
-    if(line == NULL || seq == NULL){
-        return 0;
-    }
-
-    p = strstr(line, "seq=");
-    if(p == NULL){
-        return 0;
-    }
-
-    p += 4;
-
-    *seq = (int32_t)strtol(p, NULL, 10);
-
-    return 1;
-}
-
-static int parse_i32_field(const char *line, const char *key, int32_t *value){
-    const char *p;
-
-    if(line == NULL || key == NULL || value == NULL){
-        return 0;
-    }
-
-    p = strstr(line, key);
-    if(p == NULL){
-        return 0;
-    }
-
-    p += strlen(key);
-
-    *value = (int32_t)strtol(p, NULL, 10);
-
-    return 1;
-}
-
-static int parse_u32_field(const char *line, const char *key, uint32_t *value){
-    const char *p;
-
-    if(line == NULL || key == NULL || value == NULL){
-        return 0;
-    }
-
-    p = strstr(line, key);
-    if(p == NULL){
-        return 0;
-    }
-
-    p += strlen(key);
-
-    *value = (uint32_t)strtoul(p, NULL, 10);
-    return 1;
-}
-
-static void send_ack(int32_t seq, const char *type){
-    uart_sendf("ACK,seq=%ld,type=%s,t_ms=%lu\n",
-                (long)seq,
+static void send_ack(uint32_t seq, const char *type){
+    uart_sendf("ACK,seq=%lu,type=%s,t_ms=%lu\n",
+                (unsigned long)seq,
                 type,
                 (unsigned long)HAL_GetTick());
 }
 
-static void send_err(int32_t seq, const char *type, const char *code){
+static void send_err(uint32_t seq, const char *type, const char *code){
     s_error_count++;
 
-    uart_sendf("ERR,seq=%ld,type=%s,code=%s,t_ms=%lu\n",
-                (long)seq,
+    uart_sendf("ERR,seq=%lu,type=%s,code=%s,t_ms=%lu\n",
+                (unsigned long)seq,
                 type,
                 code,
                 (unsigned long)HAL_GetTick());
 }
 
+/* int64 needs at most 20 decimal characters, including its sign. */
+static void i64_to_decimal(int64_t value, char out[21])
+{
+    char reversed[20];
+    unsigned int digits = 0U;
+    unsigned int pos = 0U;
+    const bool negative = value < 0;
+    uint64_t magnitude = negative
+        ? (uint64_t)(-(value + 1)) + 1U
+        : (uint64_t)value;
+
+    do {
+        reversed[digits++] = (char)('0' + magnitude % 10U);
+        magnitude /= 10U;
+    } while (magnitude != 0U);
+
+    if (negative) {
+        out[pos++] = '-';
+    }
+    while (digits != 0U) {
+        out[pos++] = reversed[--digits];
+    }
+    out[pos] = '\0';
+}
+
 static void send_tel(void){
-    uart_sendf("TEL,t_ms=%lu,state=%s,last_seq=%ld,"
-                "vx_mmps=%ld,w_mradps=%ld,"
-                "left_pwm=0,right_pwm=0,"
-                "left_cps=0,right_cps=0,"
-                "batt_mv=0,drop=%lu,err=%lu\n",
-                (unsigned long)HAL_GetTick(),
+    uint32_t now_ms = HAL_GetTick();
+    motor_output_applied_t applied =
+        motor_output_get_applied();
+
+    char left_count[21];
+    char right_count[21];
+    i64_to_decimal(s_encoder_sample.left_count, left_count);
+    i64_to_decimal(s_encoder_sample.right_count, right_count);
+
+    uart_sendf("TEL,t_ms=%lu,state=%s,reason=%s,"
+               "command_age_ms=%lu,last_seq=%lu,"
+               "vx_mmps=%ld,w_mradps=%ld,"
+               "left_pwm=%ld,right_pwm=%ld,"
+               "left_cps=%ld,right_cps=%ld,"
+               "encoder_valid=%u,encoder_t_ms=%lu,"
+               "left_count=%s,right_count=%s,"
+               "encoder_arm_valid=%u,encoder_arm_seq=%lu,"
+               "batt_mv=0,drop=%lu,err=%lu\n",
+                (unsigned long)now_ms,
                 state_name(s_state),
-                (long)s_last_seq,
+                reason_name(s_reason),
+                (unsigned long)command_age_ms(now_ms),
+                (unsigned long)s_last_seq,
                 (long)s_vx_mmps,
                 (long)s_w_mradps,
+                (long)applied.left_signed_permille,
+                (long)applied.right_signed_permille,
+                (long)s_left_cps,
+                (long)s_right_cps,
+                s_encoder_sample.valid ? 1U : 0U,
+                (unsigned long)s_encoder_sample.sample_ms,
+                left_count,
+                right_count,
+                s_encoder_sample.arm_valid ? 1U : 0U,
+                (unsigned long)s_encoder_sample.arm_seq,
                 (unsigned long)ring_buffer_dropped(&s_rx_rb),
                 (unsigned long)s_error_count);
 }
 
-static void handle_cmd(const char *line){
-    int32_t seq = 0;
-    int32_t vx_mmps = 0;
-    int32_t w_mradps = 0;
-    uint32_t timeout_ms = 0u;
+static const char *parse_error_code(uart_frame_parse_result_t result){
+    switch(result){
+        case UART_FRAME_PARSE_MISSING_SEQ:
+        case UART_FRAME_PARSE_INVALID_SEQ:
+            return "MISSING_SEQ";
 
-    if(!parse_seq(line, &seq)){
-        send_err(0, "CMD", "MISSING_SEQ");
+        case UART_FRAME_PARSE_MISSING_FIELD:
+        case UART_FRAME_PARSE_BAD_FIELD_ORDER:
+        case UART_FRAME_PARSE_INVALID_NUMBER:
+        case UART_FRAME_PARSE_EXTRA_DATA:
+            return "MISSING_FIELD";
+
+        case UART_FRAME_PARSE_VELOCITY_OUT_OF_RANGE:
+            return "OUT_OF_RANGE";
+
+        case UART_FRAME_PARSE_TIMEOUT_OUT_OF_RANGE:
+            return "TIMEOUT_OUT_OF_RANGE";
+        case UART_FRAME_PARSE_DISTANCE_OUT_OF_RANGE:
+            return "DISTANCE_OUT_OF_RANGE";
+
+        case UART_FRAME_PARSE_NULL_ARGUMENT:
+        case UART_FRAME_PARSE_EMPTY:
+        case UART_FRAME_PARSE_BAD_TYPE:
+        case UART_FRAME_PARSE_OK:
+        default:
+            return "BAD_TYPE";
+    }
+}
+
+static void begin_rx_resynchronization(void){
+    uint32_t primask = __get_PRIMASK();
+
+    __disable_irq();
+    s_rx_desync_pending = 0u;
+    ring_buffer_discard_all(&s_rx_rb);
+    __set_PRIMASK(primask);
+
+    s_line_len = 0u;
+    s_line_overflow = 0u;
+    s_rx_line_mode = UART_RX_DISCARD_ERROR;
+}
+
+static uint8_t estop_input_active(void) {
+    return (HAL_GPIO_ReadPin(
+        ESTOP_SENSE_GPIO_Port,
+        ESTOP_SENSE_Pin
+        ) == GPIO_PIN_SET) ? 1U : 0U;
+}
+
+static void estop_latch_and_force_safe(void) {
+    uint8_t input_active = estop_input_active();
+
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_estop_latched = 1U;
+    s_state = ROBOT_FAULT;
+    s_reason = (input_active != 0U)
+        ? ROBOT_REASON_ESTOP_ACTIVE
+        : ROBOT_REASON_ESTOP_LATCHED;
+}
+
+static uint8_t estop_enforce_latch(void) {
+    if ((estop_input_active() != 0U) ||
+        (s_estop_latched != 0U)) {
+        estop_latch_and_force_safe();
+        return 1U;
+    }
+
+    return 0U;
+}
+
+static void command_timeout_enforce(void) {
+    if(s_state != ROBOT_ARMED){
         return;
     }
 
-    if(!parse_i32_field(line, "vx_mmps=", &vx_mmps) ||
-       !parse_i32_field(line, "w_mradps=", &w_mradps) ||
-       !parse_u32_field(line, "timeout_ms=", &timeout_ms)){
-        send_err(seq, "CMD", "MISSING_FIELD");
+    if((HAL_GetTick() - s_last_cmd_ms) < s_cmd_timeout_ms){
         return;
     }
 
-    if(vx_mmps < VX_MIN_MMPS || vx_mmps > VX_MAX_MMPS ||
-       w_mradps < W_MIN_MRADPS || w_mradps > W_MAX_MRADPS){
-        send_err(seq, "CMD", "OUT_OF_RANGE");
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_CMD_TIMEOUT;
+}
+
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
+static uint8_t drop_cmd_ack_once(uint32_t seq)
+{
+    const motor_output_applied_t applied = motor_output_get_applied();
+    if (s_cmd_ack_drop_used != 0U) {
+        return 0U;
+    }
+    if (s_state != ROBOT_ARMED || s_estop_latched != 0U ||
+        estop_input_active() != 0U || s_vx_mmps != 0 || s_w_mradps != 0 ||
+        applied.left_signed_permille != 0 || applied.right_signed_permille != 0 ||
+        s_left_cps != 0 || s_right_cps != 0) {
+        s_cmd_ack_drop_zero_count = 0U;
+        return 0U;
+    }
+    if (++s_cmd_ack_drop_zero_count < 10U) {
+        return 0U;
+    }
+    s_cmd_ack_drop_used = 1U;
+    uart_sendf("TEST_CMD_ACK_DROP,seq=%lu,t_ms=%lu,zero_count=%lu\n",
+        (unsigned long)seq,
+        (unsigned long)HAL_GetTick(),
+        (unsigned long)s_cmd_ack_drop_zero_count);
+    return 1U;
+}
+#endif
+
+static distance_move_sample_t distance_sample_now(void){
+    distance_move_sample_t sample = {
+        .left_count = s_encoder_sample.left_count,
+        .right_count = s_encoder_sample.right_count,
+        .sample_ms = s_encoder_sample.sample_ms,
+        .valid = s_encoder_sample.valid && s_encoder_sample.arm_valid &&
+            s_encoder_arm_valid && s_encoder_sample.arm_seq == s_encoder_arm_seq
+    };
+    return sample;
+}
+
+static void distance_abort_output(void){
+    distance_move_cancel(&s_distance_move);
+    motor_output_stop_all();
+    s_vx_mmps = 0;
+    s_w_mradps = 0;
+    s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_DISTANCE_ABORTED;
+}
+
+static void distance_motion_enforce(void){
+    drive_command_request_t request;
+    distance_move_sample_t sample;
+    distance_move_output_t gate;
+    uint32_t now_ms;
+    if (s_distance_mm == 0U){
+        return;
+    }
+    /* Preserve the E-stop/timeout/transport reason after their immediate stop. */
+    if (s_state != ROBOT_ARMED || s_estop_latched != 0U || s_tx_fault != 0U){
+        distance_move_cancel(&s_distance_move);
+        motor_output_stop_all();
+        return;
+    }
+    now_ms = HAL_GetTick();
+    sample = distance_sample_now();
+    distance_move_update(&s_distance_move, &sample, now_ms,
+        (uint32_t)(now_ms - s_last_cmd_ms) < s_cmd_timeout_ms);
+    if (s_distance_move.phase == DISTANCE_MOVE_ABORTED){
+        if (s_distance_move.reason == DISTANCE_MOVE_REASON_CANCELLED){
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            s_reason = ROBOT_REASON_DISTANCE_ABORTED;
+            return;
+        }
+        distance_abort_output();
+        return;
+    }
+    if (s_distance_move.phase == DISTANCE_MOVE_TARGET_REACHED){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = ROBOT_REASON_DISTANCE_REACHED;
+        return;
+    }
+    if (s_distance_move.phase != DISTANCE_MOVE_RUNNING ||
+        !drive_command_map(100, 0, CMD_OUTPUT_DUTY_CAP_PERMILLE, &request)){
+        distance_abort_output();
+        return;
+    }
+    gate = distance_move_output(&s_distance_move);
+    if (!gate.left_run){ request.left_signed_permille = 0; }
+    if (!gate.right_run){ request.right_signed_permille = 0; }
+    if (estop_enforce_latch() != 0U){
+        return;
+    }
+    const motor_output_applied_t applied = motor_output_get_applied();
+    if ((applied.left_signed_permille != request.left_signed_permille ||
+         applied.right_signed_permille != request.right_signed_permille) &&
+        motor_output_set_signed(request.left_signed_permille,
+                                request.right_signed_permille) != HAL_OK){
+        distance_abort_output();
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+        return;
+    }
+    if (estop_enforce_latch() != 0U){
+        return;
+    }
+    s_vx_mmps = 100;
+    s_w_mradps = 0;
+    s_reason = ROBOT_REASON_DISTANCE_RUNNING;
+}
+
+/* handle_cmd already checked ranges, ARM and E-stop before entering here. */
+static void handle_distance_cmd(const uart_frame_t *frame){
+    const uint32_t now_ms = HAL_GetTick();
+    const bool zero = frame->vx_mmps == 0 && frame->w_mradps == 0;
+    distance_move_sample_t sample = distance_sample_now();
+    if (UART_MVP_OUTPUT_TEST_ENABLED != 0U){
+        distance_abort_output();
+        send_err(frame->seq, "CMD", "DISTANCE_TEST_MODE");
+        return;
+    }
+    if (s_distance_mm != 0U && zero && frame->distance_mm == 0U){
+        distance_move_cancel(&s_distance_move);
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = s_distance_move.phase == DISTANCE_MOVE_TARGET_REACHED
+            ? ROBOT_REASON_DISTANCE_REACHED : ROBOT_REASON_DISTANCE_ABORTED;
+        /* Keep ARM for the stop ACK; nonzero commands stay locked this epoch. */
+    }
+    else{
+        if (frame->distance_mm == 0U || frame->vx_mmps != 100 ||
+            frame->w_mradps != 0 ||
+            (s_distance_mm != 0U && frame->distance_mm != s_distance_mm)){
+            distance_abort_output();
+            send_err(frame->seq, "CMD", "DISTANCE_LOCKED");
+            return;
+        }
+        if (s_distance_mm == 0U){
+            const motor_output_applied_t applied = motor_output_get_applied();
+            if (!sample.valid ||
+                (uint32_t)(now_ms - sample.sample_ms) > DISTANCE_MOVE_MAX_SAMPLE_AGE_MS ||
+                (uint32_t)(now_ms - s_distance_still_since_ms) < 100U ||
+                s_left_cps != 0 || s_right_cps != 0 ||
+                s_vx_mmps != 0 || s_w_mradps != 0 ||
+                applied.left_signed_permille != 0 || applied.right_signed_permille != 0){
+                distance_abort_output();
+                send_err(frame->seq, "CMD", "DISTANCE_NOT_STILL");
+                return;
+            }
+            s_distance_mm = frame->distance_mm;
+            if (!distance_move_start(&s_distance_move, frame->distance_mm,
+                                     &sample, now_ms, true)){
+                distance_abort_output();
+                send_err(frame->seq, "CMD", "DISTANCE_START_FAILED");
+                return;
+            }
+        }
+        else if (s_distance_move.phase == DISTANCE_MOVE_ABORTED){
+            distance_abort_output();
+            send_err(frame->seq, "CMD", "DISTANCE_REARM_REQUIRED");
+            return;
+        }
+    }
+    s_last_seq = frame->seq;
+    s_cmd_timeout_ms = frame->timeout_ms;
+    s_last_cmd_ms = now_ms;
+    s_last_accepted_cmd_ms = now_ms;
+    s_has_accepted_cmd = 1U;
+    if (s_distance_move.phase != DISTANCE_MOVE_ABORTED){
+        distance_motion_enforce();
+    }
+    if (s_state != ROBOT_ARMED){
+        send_err(frame->seq, "CMD", "DISTANCE_STOPPED");
+        return;
+    }
+    send_ack(frame->seq, "CMD");
+}
+
+static void handle_cmd(const uart_frame_t *frame){
+    drive_command_request_t request;
+    if(frame->vx_mmps < VX_MIN_MMPS || frame->vx_mmps > VX_MAX_MMPS ||
+       frame->w_mradps < W_MIN_MRADPS || frame->w_mradps > W_MAX_MRADPS){
+        send_err(frame->seq, "CMD", "OUT_OF_RANGE");
         return;
     }
 
-    if(timeout_ms < CMD_TIMEOUT_MIN_MS || timeout_ms > CMD_TIMEOUT_MAX_MS){
-        send_err(seq, "CMD", "TIMEOUT_OUT_OF_RANGE");
+    if(frame->timeout_ms < CMD_TIMEOUT_MIN_MS ||
+       frame->timeout_ms > CMD_TIMEOUT_MAX_MS){
+        send_err(frame->seq, "CMD", "TIMEOUT_OUT_OF_RANGE");
         return;
     }
 
     if(s_state != ROBOT_ARMED){
-        send_err(seq, "CMD", "NOT_ARMED");
+        send_err(frame->seq, "CMD", "NOT_ARMED");
         return;
     }
 
-    s_last_seq = seq;
-    s_vx_mmps = vx_mmps;
-    s_w_mradps = w_mradps;
-    s_cmd_timeout_ms = timeout_ms;
-    s_last_cmd_ms = HAL_GetTick();
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
 
-    send_ack(seq, "CMD");
+    if (frame->distance_mm != 0U || s_distance_mm != 0U){
+        handle_distance_cmd(frame);
+        return;
+    }
+
+    const uint16_t duty_cap_permille =
+        (frame->vx_mmps == 0 && frame->w_mradps != 0)
+        ? CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE
+        : CMD_OUTPUT_DUTY_CAP_PERMILLE;
+
+    if(!drive_command_map(
+        frame->vx_mmps,
+        frame->w_mradps,
+        duty_cap_permille,
+        &request
+    )){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+        send_err(frame->seq, "CMD", "MAPPER_FAILED");
+        return;
+    }
+
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
+
+    if(UART_MVP_OUTPUT_TEST_ENABLED != 0U){
+        if((frame->vx_mmps == 50) && (frame->w_mradps == 0)){
+            if(motor_output_set_raw(
+                UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET,
+                UART_MVP_OUTPUT_TEST_DUTY_PERMILLE,
+                GPIO_PIN_RESET
+            ) != HAL_OK){
+                motor_output_stop_all();
+                s_vx_mmps = 0;
+                s_w_mradps = 0;
+                s_reason = ROBOT_REASON_OUTPUT_ERROR;
+                send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
+                return;
+            }
+        }
+        else{
+            motor_output_stop_all();
+        }
+    }
+    else if(motor_output_set_signed(
+        request.left_signed_permille,
+        request.right_signed_permille
+    ) != HAL_OK){
+        motor_output_stop_all();
+        s_vx_mmps = 0;
+        s_w_mradps = 0;
+        s_reason = ROBOT_REASON_OUTPUT_ERROR;
+        send_err(frame->seq, "CMD", "MOTOR_OUTPUT_FAILED");
+        return;
+    }
+
+    if (estop_enforce_latch() != 0U) {
+        send_err(frame->seq, "CMD", "ESTOP_LATCHED");
+        return;
+    }
+    s_last_seq = frame->seq;
+    s_vx_mmps = frame->vx_mmps;
+    s_w_mradps = frame->w_mradps;
+    s_cmd_timeout_ms = frame->timeout_ms;
+    s_last_cmd_ms = HAL_GetTick();
+    s_last_accepted_cmd_ms = s_last_cmd_ms;
+    s_has_accepted_cmd = 1U;
+    s_reason = ROBOT_REASON_NONE;
+
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+    s_delayed_disarm_ack.zero_cmd_seen =
+        (uint8_t)(s_vx_mmps == 0 && s_w_mradps == 0);
+#endif
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
+    if (drop_cmd_ack_once(frame->seq) != 0U) {
+        return;
+    }
+#endif
+    send_ack(frame->seq, "CMD");
 }
 
-static void handle_line(const char *line){
-    int32_t seq = 0;
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+static uint8_t delayed_disarm_ack_eligible(void)
+{
+    const motor_output_applied_t applied = motor_output_get_applied();
+    return (uint8_t)(s_delayed_disarm_ack.used == 0U &&
+        s_delayed_disarm_ack.zero_cmd_seen != 0U &&
+        s_state == ROBOT_ARMED && s_estop_latched == 0U &&
+        estop_input_active() == 0U && s_vx_mmps == 0 && s_w_mradps == 0 &&
+        applied.left_signed_permille == 0 && applied.right_signed_permille == 0 &&
+        s_left_cps == 0 && s_right_cps == 0);
+}
 
-    if(line == NULL){
+static void delayed_disarm_ack_schedule(uint32_t seq)
+{
+    s_delayed_disarm_ack.used = 1U;
+    s_delayed_disarm_ack.pending = 1U;
+    s_delayed_disarm_ack.seq = seq;
+    s_delayed_disarm_ack.processed_ms = HAL_GetTick();
+    uart_sendf("TEST_ACK_DELAY,seq=%lu,t_ms=%lu,delay_ms=%lu\n",
+        (unsigned long)seq,
+        (unsigned long)s_delayed_disarm_ack.processed_ms,
+        (unsigned long)UART_MVP_DELAY_DISARM_ACK_MS);
+}
+
+static void delayed_disarm_ack_poll(void)
+{
+    if (s_delayed_disarm_ack.pending == 0U ||
+        (uint32_t)(HAL_GetTick() - s_delayed_disarm_ack.processed_ms) <
+            UART_MVP_DELAY_DISARM_ACK_MS) {
+        return;
+    }
+    s_delayed_disarm_ack.pending = 0U;
+    /* Original processing time: this is an old response, not a new stop. */
+    uart_sendf("ACK,seq=%lu,type=DISARM,t_ms=%lu\n",
+        (unsigned long)s_delayed_disarm_ack.seq,
+        (unsigned long)s_delayed_disarm_ack.processed_ms);
+}
+#endif
+
+static void handle_line(const char *line, size_t line_len){
+    uart_frame_t frame;
+    uart_frame_parse_result_t parse_result;
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+    uint8_t delay_disarm_ack;
+#endif
+
+
+    parse_result = uart_frame_parse(line, line_len, &frame);
+    if(parse_result != UART_FRAME_PARSE_OK){
+        send_err(
+            frame.seq,
+            uart_frame_type_name(frame.type),
+            parse_error_code(parse_result)
+        );
         return;
     }
 
-    if(strncmp(line, "PING", 4) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "PING", "MISSING_SEQ");
-            return;
-        }
+    if (s_tx_fault != 0U &&
+        (frame.type == UART_FRAME_TYPE_ARM || frame.type == UART_FRAME_TYPE_CMD)){
+        uart_tx_force_safe();
+        return;
+    }
 
-        s_last_seq = seq;
-        uart_sendf("PONG,seq=%ld,t_ms=%lu\n",
-                    (long)seq,
+    if(((frame.type == UART_FRAME_TYPE_ARM) ||
+        (frame.type == UART_FRAME_TYPE_CMD)) &&
+       (estop_enforce_latch() != 0U)) {
+        send_err(
+            frame.seq,
+            uart_frame_type_name(frame.type),
+            "ESTOP_LATCHED"
+        );
+        return;
+    }
+
+
+    switch(frame.type){
+        case UART_FRAME_TYPE_PING:
+            s_last_seq = frame.seq;
+
+#if UART_MVP_SUPPRESS_PONG_TEST_ENABLED
+            return;
+#endif
+
+#if UART_MVP_STALE_PONG_ONCE_TEST_ENABLED
+            if(s_stale_pong_sent == 0u){
+                s_stale_pong_sent = 1u;
+                uart_sendf("PONG,seq=%lu,t_ms=%lu\n",
+                        (unsigned long)(frame.seq - 1u),
+                        (unsigned long)HAL_GetTick());
+                return;
+            }
+#endif
+
+            uart_sendf("PONG,seq=%lu,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
                     (unsigned long)HAL_GetTick());
-        return;
-    }
-
-    if(strncmp(line, "DISARM", 6) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "DISARM", "MISSING_SEQ");
             return;
-        }
 
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
-        s_state = ROBOT_DISARMED;
-        s_last_seq = seq;
-        send_ack(seq, "DISARM");
-        return;
-    }
+        case UART_FRAME_TYPE_DISARM:
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+            delay_disarm_ack = delayed_disarm_ack_eligible();
+            s_delayed_disarm_ack.zero_cmd_seen = 0U;
+#endif
+            distance_move_cancel(&s_distance_move);
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            if (estop_enforce_latch() == 0U) {
+                s_state = ROBOT_DISARMED;
+                s_reason = ROBOT_REASON_DISARM;
+            }
+            s_last_seq = frame.seq;
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+            if (delay_disarm_ack != 0U && s_state == ROBOT_DISARMED) {
+                delayed_disarm_ack_schedule(frame.seq);
+                return;
+            }
+#endif
 
-    if(strncmp(line, "ARM", 3) == 0){
-        if(!parse_seq(line, &seq)){
-            send_err(0, "ARM", "MISSING_SEQ");
+#if UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
+            if(s_duplicate_disarm_ack_seq_sent == 0u){
+                s_duplicate_disarm_ack_seq_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,seq=%lu,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_trailing_comma_disarm_ack_sent == 0u){
+                s_trailing_comma_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,type=DISARM,t_ms=%lu,\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED
+            if(s_overflow_disarm_ack_seq_sent == 0u){
+                s_overflow_disarm_ack_seq_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=4294967296,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_partial_frame_name_disarm_ack_sent == 0U){
+                s_partial_frame_name_disarm_ack_sent = 1U;
+                uart_sendf(
+                    "AC,seq=%lu,type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_embedded_cr_disarm_ack_sent == 0u){
+                s_embedded_cr_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu,\rtype=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_control_byte_disarm_ack_sent == 0u){
+                s_control_byte_disarm_ack_sent = 1u;
+                uart_sendf(
+                    "ACK,seq=%lu," "\x01" "type=DISARM,t_ms=%lu\n",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+                return;
+            }
+#endif
+#if UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_overlong_disarm_ack_sent == 0u){
+                uint8_t overlong_tail[257u];
+                size_t i;
+
+                s_overlong_disarm_ack_sent = 1u;
+
+                uart_sendf(
+                    "ACK,seq=%lu,type=DISARM,t_ms=%lu,",
+                    (unsigned long)frame.seq,
+                    (unsigned long)HAL_GetTick()
+                );
+
+                for(i = 0U; i < 256U; i++){
+                    overlong_tail[i] = (uint8_t)'X';
+                }
+
+                overlong_tail[256U] = (uint8_t)'\n';
+
+                (void)HAL_UART_Transmit(
+                    s_uart,
+                    overlong_tail,
+                    (uint16_t)sizeof(overlong_tail),
+                    100
+                );
+                return;
+            }
+#endif
+#if UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED
+            if(s_stale_disarm_ack_sent == 0u){
+                s_stale_disarm_ack_sent = 1u;
+                send_ack(frame.seq - 1u, "DISARM");
+                return;
+            }
+#endif
+#if UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED
+            if(s_wrong_disarm_ack_type_sent == 0u){
+                s_wrong_disarm_ack_type_sent = 1u;
+                send_ack(frame.seq, "ARM");
+                return;
+            }
+#endif
+            send_ack(frame.seq, "DISARM");
             return;
-        }
 
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
-        s_state = ROBOT_ARMED;
-        s_last_seq = seq;
-        send_ack(seq, "ARM");
-        return;
+        case UART_FRAME_TYPE_ARM:
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+            s_delayed_disarm_ack.zero_cmd_seen = 0U;
+#endif
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
+            s_cmd_ack_drop_zero_count = 0U;
+#endif
+            if (s_distance_mm != 0U && frame.seq == s_encoder_arm_seq){
+                distance_abort_output();
+                send_err(frame.seq, "ARM", "DISTANCE_DUPLICATE_ARM");
+                return;
+            }
+            distance_move_init(&s_distance_move);
+            s_distance_mm = 0U;
+            s_distance_still_since_ms = HAL_GetTick();
+            motor_output_stop_all();
+
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+            s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
+            s_last_cmd_ms = HAL_GetTick();
+            s_state = ROBOT_ARMED;
+            s_reason = ROBOT_REASON_NONE;
+            s_last_seq = frame.seq;
+            /* New measurement interval; wait for a post-ARM sample. */
+            s_encoder_arm_seq = frame.seq;
+            s_encoder_arm_valid = true;
+            s_encoder_sample.valid = false;
+            s_encoder_sample.arm_valid = false;
+            s_encoder_sample.arm_seq = 0U;
+            send_ack(frame.seq, "ARM");
+            return;
+
+        case UART_FRAME_TYPE_ESTOP_RESET:
+            motor_output_stop_all();
+            s_vx_mmps = 0;
+            s_w_mradps = 0;
+
+            if (estop_input_active() != 0U) {
+                estop_latch_and_force_safe();
+                send_err(
+                    frame.seq,
+                    "ESTOP_RESET",
+                    "ESTOP_ACTIVE"
+                );
+                return;
+            }
+
+            s_estop_latched = 0U;
+            s_state = ROBOT_DISARMED;
+            s_reason = ROBOT_REASON_ESTOP_RESET;
+            s_last_seq = frame.seq;
+            send_ack(frame.seq, "ESTOP_RESET");
+            return;
+
+        case UART_FRAME_TYPE_CMD:
+            handle_cmd(&frame);
+            return;
+
+        case UART_FRAME_TYPE_UNKNOWN:
+        default:
+            send_err(0u, "UNKNOWN", "BAD_TYPE");
+            return;
     }
-
-    if(strncmp(line, "CMD", 3) == 0){
-        handle_cmd(line);
-        return;
-    }
-
-    send_err(0, "UNKNOWN", "BAD_TYPE");
 }
 
 void uart_mvp_init(UART_HandleTypeDef *huart){
     s_uart = huart;
     s_rx_byte = 0u;
+    s_tx_head = 0U;
+    s_tx_count = 0U;
+    s_tx_tel_len = 0U;
+    s_tx_active = 0U;
+    s_tx_completed = 0U;
+    s_tx_fault = 0U;
 
     ring_buffer_init(&s_rx_rb);
 
     s_line_len = 0u;
     s_line_overflow = 0u;
+    s_rx_desync_pending = 0u;
+    s_rx_line_mode = UART_RX_COLLECT;
 
     s_state = ROBOT_DISARMED;
+    s_reason = ROBOT_REASON_BOOT;
+    s_has_accepted_cmd = 0U;
+    s_last_accepted_cmd_ms = 0U;
+    s_estop_latched = 0U;
     s_last_seq = 0;
+    s_stale_disarm_ack_sent = 0u;
+    s_duplicate_disarm_ack_seq_sent = 0u;
+    s_trailing_comma_disarm_ack_sent = 0u;
+    s_overflow_disarm_ack_seq_sent = 0u;
+    s_partial_frame_name_disarm_ack_sent = 0u;
+    s_embedded_cr_disarm_ack_sent = 0u;
+    s_control_byte_disarm_ack_sent = 0u;
+    s_overlong_disarm_ack_sent = 0u;
+    s_wrong_disarm_ack_type_sent = 0u;
+    s_stale_pong_sent = 0u;
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+    s_delayed_disarm_ack = (delayed_disarm_ack_t){0};
+#endif
+#if UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED
+    s_cmd_ack_drop_used = 0U;
+    s_cmd_ack_drop_zero_count = 0U;
+#endif
     s_last_tel_ms = 0u;
     s_error_count = 0u;
+    s_left_cps = 0;
+    s_right_cps = 0;
+    s_encoder_sample = (encoder_sample_t){0};
+    s_encoder_arm_seq = 0U;
+    s_encoder_arm_valid = false;
+    distance_move_init(&s_distance_move);
+    s_distance_mm = 0U;
+    s_distance_still_since_ms = HAL_GetTick();
 
     s_vx_mmps = 0;
     s_w_mradps = 0;
     s_cmd_timeout_ms = CMD_TIMEOUT_DEFAULT_MS;
     s_last_cmd_ms = 0u;
+    (void)estop_enforce_latch();
+}
+
+void uart_mvp_set_encoder_sample(
+    int32_t left_cps,
+    int32_t right_cps,
+    int64_t left_count,
+    int64_t right_count,
+    uint32_t sample_ms,
+    bool valid
+){
+    /* Count must remain still for100ms after a fresh post-ARM baseline. */
+    if (!valid || !s_encoder_sample.valid || left_cps != 0 || right_cps != 0 ||
+        left_count != s_encoder_sample.left_count ||
+        right_count != s_encoder_sample.right_count ||
+        (uint32_t)(sample_ms - s_encoder_sample.sample_ms) > DISTANCE_MOVE_MAX_SAMPLE_AGE_MS){
+        s_distance_still_since_ms = sample_ms;
+    }
+    /* Both paths run in the main loop, not in the UART RX interrupt. */
+    s_left_cps = left_cps;
+    s_right_cps = right_cps;
+
+    s_encoder_sample = (encoder_sample_t){
+        .left_count = valid ? left_count : 0,
+        .right_count = valid ? right_count : 0,
+        .sample_ms = sample_ms,
+        .arm_seq = s_encoder_arm_valid ? s_encoder_arm_seq : 0U,
+        .valid = valid,
+        .arm_valid = s_encoder_arm_valid
+    };
 }
 
 void uart_mvp_start_rx(void){
@@ -303,6 +1238,7 @@ void uart_mvp_on_rx_complete(UART_HandleTypeDef *huart){
     }
     if(!ring_buffer_push(&s_rx_rb, s_rx_byte)){
         s_error_count++;
+        s_rx_desync_pending = 1u;
     }
     HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);
 }
@@ -313,19 +1249,64 @@ void uart_mvp_on_uart_error(UART_HandleTypeDef *huart){
     }
 
     s_error_count++;
+    s_rx_desync_pending = 1u;
 
     HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);
 }
 
 void uart_mvp_process(void){
     uint8_t byte;
+    uint32_t budget = UART_RX_POLL_BYTE_BUDGET;
 
-    while(ring_buffer_pop(&s_rx_rb, &byte)){
-        if(byte == '\r'){
+    uart_tx_poll();
+    for(; budget != 0U; budget--){
+        (void)estop_enforce_latch();
+        command_timeout_enforce();
+        distance_motion_enforce();
+
+        if(s_rx_desync_pending != 0u){
+            begin_rx_resynchronization();
+        }
+
+        if(!ring_buffer_pop(&s_rx_rb, &byte)){
+            break;
+        }
+
+        if(s_rx_desync_pending != 0u){
+            begin_rx_resynchronization();
+            continue;
+        }
+
+        /* CAN (0x18) cancels a pending line without executing it. 
+         * Keep discarding through LF; preserve a prior hardware-error report. 
+         * This changes framing only. DISARM below still owns the stop/ACK. 
+         */
+        if(byte == 0x18u){
+            s_line_len = 0u;
+            s_line_overflow = 0u;
+            if(s_rx_line_mode == UART_RX_COLLECT){
+                s_rx_line_mode = UART_RX_DISCARD_CANCEL;
+            }
+            continue;
+        }
+
+        if(s_rx_line_mode != UART_RX_COLLECT){
+            if(byte == '\n'){
+                if(s_rx_line_mode == UART_RX_DISCARD_ERROR){
+                    uart_sendf("ERR,seq=0,type=RX,code=RX_DESYNC\n");
+                }
+                s_rx_line_mode = UART_RX_COLLECT;
+            }
             continue;
         }
 
         if(byte == '\n'){
+            if(s_line_len > 0u && s_line[s_line_len - 1u] == '\r'){
+                s_line_len--;
+            }
+            if(s_line_len > UART_FRAME_MAX_LEN){
+                s_line_overflow = 1u;
+            }
             s_line[s_line_len] = '\0';
 
             if(s_line_overflow){
@@ -333,7 +1314,7 @@ void uart_mvp_process(void){
                 uart_sendf("ERR,seq=0,type=RX,code=LINE_OVERFLOW\n");
             }
             else if(s_line_len > 0u){
-                handle_line(s_line);
+                handle_line(s_line, (size_t)s_line_len);
             }
 
             s_line_len = 0u;
@@ -341,7 +1322,7 @@ void uart_mvp_process(void){
             continue;
         }
 
-        if(s_line_len < (UART_LINE_MAX - 1u)){
+        if(s_line_len < (UART_LINE_BUFFER_SIZE - 1u)){
             s_line[s_line_len] = (char)byte;
             s_line_len++;
         }
@@ -350,16 +1331,13 @@ void uart_mvp_process(void){
         }
     }
 
-    /* Force command velocity to zero when no fresh CMD arrives in time. */
-    if(s_state == ROBOT_ARMED &&
-       (HAL_GetTick() - s_last_cmd_ms) >= s_cmd_timeout_ms){
-        motor_output_stop_all();
-        s_vx_mmps = 0;
-        s_w_mradps = 0;
-    }
+#if UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED
+    delayed_disarm_ack_poll();
+#endif
 
     if((HAL_GetTick() - s_last_tel_ms) >= TEL_PERIOD_MS){
         s_last_tel_ms = HAL_GetTick();
         send_tel();
     }
+    uart_tx_poll();
 }

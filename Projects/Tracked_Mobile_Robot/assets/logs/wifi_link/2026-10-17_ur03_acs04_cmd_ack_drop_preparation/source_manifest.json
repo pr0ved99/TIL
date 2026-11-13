@@ -1,0 +1,88 @@
+{
+  "status": "BOUNDED_CMD_ACK_LOSS_BENCH_AND_NORMAL_RESTORE_COMPLETE",
+  "test": "UR03_ACS04_ONE_CMD_ACK_DROP",
+  "candidate_normalized_sha256": "a5069d10d51d80b6127213537697dd50cd33a6c32c20c0a435e88de093762d95",
+  "default_mode": 0,
+  "test_mode": 1,
+  "eligible_zero_cmd_index": 10,
+  "production_changed": false,
+  "native_case_groups": {
+    "mode0": 2,
+    "mode1": 6
+  },
+  "invalid_mode_rejected": true,
+  "combined_modes_rejected": 13,
+  "production_inputs": {
+    "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "03_Firmware/esp32_wifi_link/main/wifi_link_main.c": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c": "aee2e2f4fb23369b4c09b6602c4e70b1384fad6df024e3d2b1fb3de2415af3c0",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h": "7c8b46b52f394711c091a68f8c1a27ff9f3a4b9957391bfe78758bd9ccd2bb1b",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c": "e92638cb7d3f603df7bb24778134ca0b903370fd174a61b191e15582b4b2deab",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.h": "67c55429e3609ec76882e7fa52862d63b925b6de84a69eed6976027dbe386912",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.c": "98d12e20ca0539e3cc75618b946c963d205d7fba14855d08cb15ec3ba1a32e60",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.h": "d1538470361d576414e2b739a4195b1d167abc56b0979c37f1abae73a6e39c26",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.c": "564d235382da76de3ca621ff2909f64c24af2309a1e4f69807d6a8521fd5654e",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.h": "134e69e993bff5a30c1c58f56c2a02814fa8dfd70d2119964b46812b771e938d",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.c": "444579eb32812d18f42654f4ff0f6b8e1c1b4d23f18de9d99a152dd24903da4d",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.h": "8ae886974b00cde23834b7e1facfac3adf2a69522ee72a8d8c395dcaf2619d93"
+  },
+  "test_inputs": {
+    "uart_cmd_ack_drop_candidate.py": "2609bbd37cab9569fc88e76531d8b891316d49b85969da4367ce80adac5e28fb",
+    "uart_cmd_ack_drop_host_fixture.c": "d7a7502ebf8dfda36d853e39dae7cd4ceceece1f824be30462a47a9180a9a5c7",
+    "test_uart_cmd_ack_drop.py": "512a2cf6ff5c58afa1ed5f5494fe470f3ec8fb362e5e91f785db0a964d6a3f02",
+    "test_uart_late_ack.py": "c163222459aeeaa9830bf7883755ff484fbbe5c032edc4f2801a5e74ce3f9ca4"
+  },
+  "guide_normalized_sha256": "e02f5cd84861828f0a0c8c83e1a20f91ee96899d9633291adf62a866017b1862",
+  "observer_normalized_sha256": "efa113058994f6b9f494f703da13ceca2bd88944245aef6e6affc496a40575ea",
+  "guide_new_blocks_reproduce_candidate": true,
+  "pending": [],
+  "late_ack_regression": {
+    "file": "late_ack_regression.txt",
+    "existing_STM": {
+      "mode0_case_groups": 3,
+      "mode1_case_groups": 8
+    },
+    "new_candidate_drop_disabled": {
+      "mode0_case_groups": 3,
+      "mode1_case_groups": 8
+    },
+    "result": "PASS"
+  },
+  "observer_validation": "JavaScript syntax compiled in V8; no browser execution or automatic commands",
+  "production_changed_scope": "Original candidate preparation before user input; saved-source changes are tracked separately below.",
+  "saved_source_review": {
+    "file": "saved_source_review_corrected.json",
+    "status": "SAVED_SOURCE_PC_PASS_TEST_ACTIVATION_PENDING",
+    "saved_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+    "results": "saved_pc_corrected.txt"
+  },
+  "saved_source_review_history": [
+    {
+      "file": "saved_source_review.json",
+      "status": "PC_PASS_DUPLICATE_DECLARATION_CLEANUP_PENDING",
+      "saved_normalized_sha256": "017aaf7e0de97fc7ac07ddeb06544c86102a0b04e86bcca90d2cc0cefc05894f",
+      "results": "saved_pc.txt"
+    }
+  ],
+  "test_mode_readiness": {
+    "file": "test_mode_ready.json",
+    "stm_normalized_sha256": "5c9dd63d2c6f5050b47a633e615f1667487b4102302119f239d7326b72db57b7",
+    "reported_ready": true
+  },
+  "bench_result": {
+    "observations": "../2026-10-17_ur03_acs04_cmd_ack_drop_pwm_run01/observations.json",
+    "verdict": "PASS_WITHIN_ZERO_OUTPUT_SELECTIVE_CMD_ACK_LOSS_AND_AUTOMATIC_STOP_SCOPE",
+    "capture_sha256": "2694a6db5670e8d947b9ba4cbd23eeb17f8c5ebcff1005b3e81ed9661d869175"
+  },
+  "normal_restore_readiness": {
+    "file": "normal_restore_ready.json",
+    "stm_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370"
+  },
+  "normal_restoration_result": {
+    "observations": "../2026-10-17_ur03_acs04_cmd_ack_drop_restore_pwm_run01/observations.json",
+    "verdict": "PASS_WITHIN_NORMAL_MODE_ZERO_CMD_ACK_AND_DISARM_RESTORATION_SCOPE",
+    "capture_sha256": "f331095446044abf106a814f8dbb41df8179cf8dd90b339e01c57f7f301afe12",
+    "stm_normalized_sha256": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370"
+  },
+  "completion_scope": "Selective loss of the tenth eligible zero CMD ACK, automatic stop and subsequent normal-mode zero-command/manual DISARM restoration; not all AC-S04 cases."
+}

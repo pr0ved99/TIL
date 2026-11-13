@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-21",
+  "branch": "agent/dual-encoder-bringup",
+  "implementation_commit": "9d1d327a194e1a443ff59163f7c3dd7d096721da",
+  "implementation_commit_url": "https://github.com/pr0ved99/TIL/commit/9d1d327a194e1a443ff59163f7c3dd7d096721da",
+  "implementation_push_verified": true,
+  "implementation_remote_head_observed": "9d1d327a194e1a443ff59163f7c3dd7d096721da",
+  "implementation_files": 134,
+  "unrelated_files_preserved_and_not_committed": 17,
+  "raw_evidence_preservation": {
+    "implementation_commit_normalized_CRLF_to_LF": true,
+    "correction": "The follow-up commit containing this record adds scoped -text Git attributes and re-stages original dated evidence bytes. No firmware logic changes.",
+    "byte_identical_staged_evidence_files_verified": 72,
+    "hash_manifest": "evidence_bytes.json",
+    "followup_commit_lookup": "Use git log on this branch to identify the commit containing this record; compare its raw blobs with evidence_bytes.json."
+  },
+  "notion_pages_verified": 6,
+  "notion_git_links_read_back": true,
+  "calendar_events_verified": 12,
+  "calendar_times_preserved": true,
+  "main_merge_or_release": false,
+  "whole_mvp_complete": false
+}

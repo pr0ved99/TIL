@@ -1,0 +1,11 @@
+reference_A,range_A,meter_spec_bound_A,target_at_equal_DUT_reading_A,remaining_discrepancy_before_setup_bound_A,note
+0,2,0.008,0.2,0.192,steady DC; specification bound only; NOT calibration uncertainty
+0.25,2,0.013000000000000001,0.2,0.187,steady DC; specification bound only; NOT calibration uncertainty
+0.5,2,0.018000000000000002,0.2,0.182,steady DC; specification bound only; NOT calibration uncertainty
+1,2,0.028,0.2,0.17200000000000001,steady DC; specification bound only; NOT calibration uncertainty
+1.5,2,0.038,0.2,0.162,steady DC; specification bound only; NOT calibration uncertainty
+1.8,2,0.044000000000000004,0.2,0.156,steady DC; specification bound only; NOT calibration uncertainty
+3,20,0.09,0.2,0.11000000000000001,steady DC; specification bound only; NOT calibration uncertainty
+5,20,0.13,0.25,0.12,steady DC; specification bound only; NOT calibration uncertainty
+7.5,20,0.18,0.375,0.195,steady DC; specification bound only; NOT calibration uncertainty
+10,20,0.23,0.5,0.27,steady DC; specification bound only; NOT calibration uncertainty

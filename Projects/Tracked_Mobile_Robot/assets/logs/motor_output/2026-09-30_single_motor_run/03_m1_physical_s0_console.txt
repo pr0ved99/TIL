@@ -1,0 +1,77 @@
+I (43388) esp32_uart_bridge: TX UART1: ARM,seq=1819749844
+I (43388) esp32_uart_bridge: RX ACK: seq=1819749844 type=ARM ack_count=3
+I (43418) esp32_uart_bridge: RX TEL: t_ms=15679518 state=ARMED reason=NONE command_age_ms=87865 last_seq=1819749844 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=433
+I (43418) esp32_uart_bridge: TX UART1: CMD,seq=1819749845,vx_mmps=50,w_mradps=-250,timeout_ms=500
+W (43428) esp32_uart_bridge: BENCH: M1 positive 10% CMD sent; press and hold S0 on motion; 500ms backup timeout, no refresh
+I (43438) esp32_uart_bridge: RX ACK: seq=1819749845 type=CMD ack_count=4
+I (43518) esp32_uart_bridge: RX TEL: t_ms=15679618 state=ARMED reason=NONE command_age_ms=65 last_seq=1819749845 vx=50 w=-250 left_pwm=100 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=434
+I (43618) esp32_uart_bridge: RX TEL: t_ms=15679718 state=ARMED reason=NONE command_age_ms=165 last_seq=1819749845 vx=50 w=-250 left_pwm=100 right_pwm=0 left_cps=150 right_cps=0 err=1627 tel_count=435
+I (43718) esp32_uart_bridge: RX TEL: t_ms=15679818 state=ARMED reason=NONE command_age_ms=265 last_seq=1819749845 vx=50 w=-250 left_pwm=100 right_pwm=0 left_cps=300 right_cps=0 err=1627 tel_count=436
+I (43818) esp32_uart_bridge: RX TEL: t_ms=15679918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=365 last_seq=1819749845 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=330 right_cps=0 err=1627 tel_count=437
+I (43828) esp32_uart_bridge: BENCH: ESTOP_ACTIVE/PWM0 before 500ms; prior motion TEL=YES; keep S0 latched
+I (43918) esp32_uart_bridge: RX TEL: t_ms=15680018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=465 last_seq=1819749845 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=230 right_cps=0 err=1627 tel_count=438
+I (44018) esp32_uart_bridge: RX TEL: t_ms=15680118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=565 last_seq=1819749845 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=439
+I (44118) esp32_uart_bridge: RX TEL: t_ms=15680218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=665 last_seq=1819749845 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=440
+I (44118) esp32_uart_bridge: TX UART1: DISARM,seq=1819749846
+W (44128) esp32_uart_bridge: BENCH LOCKED: motion TEL -> S0 zero -> two CPS0 TEL observed; inspect trace and actual motor; DISARM TX=OK
+I (44138) esp32_uart_bridge: RX ACK: seq=1819749846 type=DISARM ack_count=5
+I (44218) esp32_uart_bridge: RX TEL: t_ms=15680318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=441
+I (44318) esp32_uart_bridge: RX TEL: t_ms=15680418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=442
+I (44418) esp32_uart_bridge: RX TEL: t_ms=15680518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=443
+I (44518) esp32_uart_bridge: RX TEL: t_ms=15680618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=444
+I (44618) esp32_uart_bridge: RX TEL: t_ms=15680718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=445
+I (44718) esp32_uart_bridge: RX TEL: t_ms=15680818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=446
+I (44818) esp32_uart_bridge: RX TEL: t_ms=15680918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=447
+I (44918) esp32_uart_bridge: RX TEL: t_ms=15681018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=448
+I (45018) esp32_uart_bridge: RX TEL: t_ms=15681118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=449
+I (45118) esp32_uart_bridge: RX TEL: t_ms=15681218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=450
+I (45208) esp32_uart_bridge: RX TEL: t_ms=15681318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=451
+I (45308) esp32_uart_bridge: RX TEL: t_ms=15681418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=452
+I (45408) esp32_uart_bridge: RX TEL: t_ms=15681518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=1965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=453
+I (45508) esp32_uart_bridge: RX TEL: t_ms=15681618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=454
+I (45608) esp32_uart_bridge: RX TEL: t_ms=15681718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=455
+I (45708) esp32_uart_bridge: RX TEL: t_ms=15681818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=456
+I (45808) esp32_uart_bridge: RX TEL: t_ms=15681918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=457
+I (45908) esp32_uart_bridge: RX TEL: t_ms=15682018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=458
+I (46008) esp32_uart_bridge: RX TEL: t_ms=15682118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=459
+I (46108) esp32_uart_bridge: RX TEL: t_ms=15682218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=460
+I (46208) esp32_uart_bridge: RX TEL: t_ms=15682318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=461
+I (46308) esp32_uart_bridge: RX TEL: t_ms=15682418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=462
+I (46408) esp32_uart_bridge: RX TEL: t_ms=15682518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=2965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=463
+I (46508) esp32_uart_bridge: RX TEL: t_ms=15682618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=464
+I (46608) esp32_uart_bridge: RX TEL: t_ms=15682718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=465
+I (46708) esp32_uart_bridge: RX TEL: t_ms=15682818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=466
+I (46808) esp32_uart_bridge: RX TEL: t_ms=15682918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=467
+I (46908) esp32_uart_bridge: RX TEL: t_ms=15683018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=468
+I (47008) esp32_uart_bridge: RX TEL: t_ms=15683118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=469
+I (47108) esp32_uart_bridge: RX TEL: t_ms=15683218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=470
+I (47208) esp32_uart_bridge: RX TEL: t_ms=15683318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=471
+I (47308) esp32_uart_bridge: RX TEL: t_ms=15683418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=472
+I (47408) esp32_uart_bridge: RX TEL: t_ms=15683518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=3965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=473
+I (47508) esp32_uart_bridge: RX TEL: t_ms=15683618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=474
+I (47608) esp32_uart_bridge: RX TEL: t_ms=15683718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=475
+I (47708) esp32_uart_bridge: RX TEL: t_ms=15683818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=476
+I (47808) esp32_uart_bridge: RX TEL: t_ms=15683918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=477
+I (47908) esp32_uart_bridge: RX TEL: t_ms=15684018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=478
+I (48008) esp32_uart_bridge: RX TEL: t_ms=15684118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=479
+I (48108) esp32_uart_bridge: RX TEL: t_ms=15684218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=480
+I (48208) esp32_uart_bridge: RX TEL: t_ms=15684318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=481
+I (48308) esp32_uart_bridge: RX TEL: t_ms=15684418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=482
+I (48408) esp32_uart_bridge: RX TEL: t_ms=15684518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=4965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=483
+I (48508) esp32_uart_bridge: RX TEL: t_ms=15684618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=484
+I (48608) esp32_uart_bridge: RX TEL: t_ms=15684718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=485
+I (48708) esp32_uart_bridge: RX TEL: t_ms=15684818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=486
+I (48808) esp32_uart_bridge: RX TEL: t_ms=15684918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=487
+I (48908) esp32_uart_bridge: RX TEL: t_ms=15685018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=488
+I (49008) esp32_uart_bridge: RX TEL: t_ms=15685118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=489
+I (49108) esp32_uart_bridge: RX TEL: t_ms=15685218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=490
+I (49208) esp32_uart_bridge: RX TEL: t_ms=15685318 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5765 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=491
+I (49308) esp32_uart_bridge: RX TEL: t_ms=15685418 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5865 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=492
+I (49408) esp32_uart_bridge: RX TEL: t_ms=15685518 state=FAULT reason=ESTOP_ACTIVE command_age_ms=5965 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=493
+I (49508) esp32_uart_bridge: RX TEL: t_ms=15685618 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6065 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=494
+I (49598) esp32_uart_bridge: RX TEL: t_ms=15685718 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6165 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=495
+I (49698) esp32_uart_bridge: RX TEL: t_ms=15685818 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6265 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=496
+I (49798) esp32_uart_bridge: RX TEL: t_ms=15685918 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6365 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=497
+I (49898) esp32_uart_bridge: RX TEL: t_ms=15686018 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6465 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=498
+I (49998) esp32_uart_bridge: RX TEL: t_ms=15686118 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6565 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=499
+I (50098) esp32_uart_bridge: RX TEL: t_ms=15686218 state=FAULT reason=ESTOP_ACTIVE command_age_ms=6665 last_seq=1819749846 vx=0 w=0 left_pwm=0 right_pwm=0 left_cps=0 right_cps=0 err=1627 tel_count=500

@@ -1,0 +1,51 @@
+{
+  "scope": "documentation/calculation closeout only",
+  "unrelated_files_checked": 17,
+  "unrelated_changed": [],
+  "protected_firmware_CAD_files_checked": 171,
+  "protected_changed": [],
+  "unexpected_scope": [],
+  "local_file_links_checked": 558,
+  "missing_local_file_links": [],
+  "note_sections": 16,
+  "note_tables": 7,
+  "note_table_width_issues": [],
+  "adc_calculation_recomputed": {
+    "LSB_mV": true,
+    "acquisition_us": true,
+    "external_share_mV": true,
+    "external_share_LSB": true,
+    "six_channel_us": true,
+    "quarter_LSB_not_implied_by_share": true,
+    "model_settings": true,
+    "cycles_3": true,
+    "cycles_15": true,
+    "cycles_28": true,
+    "cycles_480": true
+  },
+  "git_diff_check_exit": 0,
+  "scope_files": [
+    "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/README.md",
+    "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/README.md",
+    "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_adc_acquisition.json",
+    "Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md",
+    "Projects/Tracked_Mobile_Robot/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "Projects/Tracked_Mobile_Robot/docs/handoff/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/plans/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/progress/README.md",
+    "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-24_progress.md",
+    "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-25_progress.md",
+    "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-10-25_learning_closeout/publication.json",
+    "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-10-25_learning_closeout/validation.json"
+  ],
+  "limitations": [
+    "Local file existence checked; historical fragments and external manufacturer URLs were not re-fetched in closeout.",
+    "Notion verification is content readback, not a visual browser inspection.",
+    "No firmware build, flash or hardware measurement."
+  ],
+  "passed": true
+}

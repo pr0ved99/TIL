@@ -1,5 +1,17 @@
 # Embedded Learning Notes
 
+**현재 · 2026-11-14 마감:** 실습 A·B의 사용자 KiCad 원본과 CSV 후처리 결과를 확보했다. B는 VADC 뒤에 가상 잡음을 더해 평균의 효과를 관찰한 학습 모델이며, 실제 RC 잡음 억제·ADC 잡음 예산 검증이 아니다. 사용자가 B의 의미가 불분명하다고 밝혀 목적을 다시 설명했으며 수기·이해 완료는 미보고다. 다음은 B의 목적·결론을 짧게 연결해 확인한 뒤 기존 C(주기성 성분·alias) → 03_15 감지선 단락 실습 → 하네스·보호 정격 검토다. B 반복 실행이나 새 HTML/FFT 실습을 자동 추가하지 않는다.  [마감·재개 근거](../docs/progress/2026-11-14_progress.md).
+
+**이전 · 2026-11-13 마감:** 41-1~41-5 포트·정상조건·전원 전이·고장/오접속 설명 자료와 기본 도면·보고서/자료 최신화 누락 수정을 마감한다. 사용자 수기/이해 완료는 미보고이며 ADC 구현·실측/보호 PASS와 구분한다. 다음은41-6 보호 경로·검증 기준이다. [마감 기록](../docs/progress/2026-11-13_progress.md). 아래는 당시 이력이며 실제 게시 상태는 마감 영수증을 따른다.
+
+[실적·다음 작업](../docs/progress/2026-11-14_progress.md). 아래 날짜별 재개점은 당시 이력이다.
+
+**이전 · 11/8 학습 마감:** 14장 방전과37-2 입력 정착 관측을 보완했다. 사용자 위임으로 [37-2 필기·a,b 유도 보충](../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)을 완성했으며 이해 완료와 구분한다. 다음은 C2 제외 근사/포함 모델과VADC 전류식 하나부터 복습이다. 자료40-1의2kHz는 비교 후보이며 구현 전이다. [진행·게시](../docs/progress/2026-11-08_progress.md). 아래 날짜별 다음 작업은 당시 이력이다.
+
+**이전 · 11/5 학습/11/6 마감:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의37-4·38-1~3·39-1~3 자료를작성했다. 결론은±0.10V 목표/현재회로를유지하고39-2부품·보정·검증기준으로전압2채널초안을구체화하는것이다. 다음은기존쉴드CAD와계약대조·연결표작성. 자료39-3과사용자필기완료보고36-19를구분한다. 실제ADC/잡음·계수·잔차·보호는후속검증이며구현/PASS가아니다. [마감/다음재개](../docs/progress/2026-11-06_progress.md).
+
+**10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.
+
 이 폴더는 Tracked Mobile Robot 프로젝트를 임베디드 시스템 학습용으로 깊게 정리하는 공간이다.
 
 `01_System_Architecture`는 프로젝트의 공식 설계 결정과 인터페이스 계약을 담고,
@@ -14,6 +26,7 @@
 | `03_ESP32_Board_Practice` | ESP32-S3 보조 컨트롤러 실습 일지 |
 | `04_Interface_Protocol_Practice` | UART/CAN/telemetry protocol 설계와 검증 기록 |
 | `05_Debugging_Measurement` | DMM, logic analyzer, oscilloscope, serial log 기반 측정 기록 |
+| [`06_STM32_ESP32_Firmware_Textbook`](06_STM32_ESP32_Firmware_Textbook/README.md) | 기초 C부터 현재 STM·ESP 제어 코드까지 이어지는 한 권의 교과서와 PC 예제 |
 | `_templates` | 새 개념 노트와 실습 일지 작성 템플릿 |
 
 ## How To Use
@@ -42,6 +55,13 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 
 ## Current First Topics
 
+처음부터 순서대로 공부하려면 **[STM32·ESP32 펌웨어 교과서](06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)**를 읽는다.
+C·GPIO·시간·UART에서 시작해 STM 출력/상태, ESP 태스크/네트워크, ticket/owner/state/executor와 브라우저 취소까지 다룬다.
+각 장의 예제·문제·해설과 별도 PC 실행 예제 5개가 있다. 실제 소스의 2026-10-13 기준이며 공식 설계·검증 문서를 대체하지 않는다.
+
+노트북만 있는 날에는 [STM·ESP 코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)로 파일·호출 관계를 먼저 파악한다.
+이후 [단일 모터 시험 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 소스와 로그를 연결한다.
+
 | Topic | Note |
 | --- | --- |
 | GPIO alternate function | `01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md` |
@@ -51,3 +71,5 @@ CubeMX/HAL에서는 어떻게 설정되는가?
 | HAL, LL, direct register | `01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md` |
 | I2C vs SPI for IMU | `01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md` |
 | CubeMX generated code boundary | `01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` |
+| 단일 모터 시험과 로그 이해 | [명령·출력·피드백 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) |
+| STM·ESP 파일과 함수 이해 | [코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) |

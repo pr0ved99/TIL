@@ -1,0 +1,206 @@
+{
+  "source_name": "2026-10-17_UR03_ACS06_CMD_TIMEOUT_PWM_run01.sr",
+  "sha256": "4e48a0dc45a3968b3e7bc0c1166cabf21ab5bd0e1440b804c9b9aec7f9e83df5",
+  "samplerate_hz": 4000000.0,
+  "samples": 50000000,
+  "duration_s": 12.5,
+  "decode": "115200 baud, 8N1, LSB-first, non-inverted",
+  "channels": {
+    "D0": {
+      "role": "STM PA9 TX / JDBG_UART Pin1",
+      "decoded_bytes": 22006,
+      "complete_lf_lines": 130,
+      "invalid_stop_bits": 1,
+      "invalid_stop_times_s": [
+        0.0005255
+      ],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "\\x99\\xd1}\\xc1\\xdd\\xb50": 1,
+        "TEL": 125,
+        "ACK": 3,
+        "ERR": 1
+      },
+      "valid_tel_lines": 125,
+      "malformed_tel_lines": [],
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 121,
+          "ARMED": 4
+        },
+        "reason": {
+          "BOOT": 22,
+          "NONE": 4,
+          "CMD_TIMEOUT": 4,
+          "DISARM": 95
+        },
+        "left_pwm": {
+          "0": 125
+        },
+        "right_pwm": {
+          "0": 125
+        },
+        "left_cps": {
+          "0": 125
+        },
+        "right_cps": {
+          "0": 125
+        },
+        "drop": {
+          "0": 125
+        },
+        "err": {
+          "0": 27,
+          "1": 98
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 5.25e-06,
+          "end_s": 0.005831555555555556,
+          "text": "\\x99\\xd1}\\xc1\\xdd\\xb50,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "start_s": 2.21383925,
+          "end_s": 2.2173078055555555,
+          "text": "ACK,seq=1876337834,type=ARM,t_ms=123224"
+        },
+        {
+          "start_s": 2.33382325,
+          "end_s": 2.3372918055555556,
+          "text": "ACK,seq=1876337835,type=CMD,t_ms=123345"
+        },
+        {
+          "start_s": 2.73450075,
+          "end_s": 2.7392685555555554,
+          "text": "ERR,seq=1876337836,type=CMD,code=NOT_ARMED,t_ms=123746"
+        },
+        {
+          "start_s": 3.031214,
+          "end_s": 3.0349430555555554,
+          "text": "ACK,seq=1876337837,type=DISARM,t_ms=124043"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 5.25e-06,
+          "end_s": 0.005831555555555556,
+          "text": "\\x99\\xd1}\\xc1\\xdd\\xb50,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 12.47874825,
+          "end_s": 12.494015055555556,
+          "text": "TEL,t_ms=133500,state=DISARMED,reason=DISARM,command_age_ms=10155,last_seq=1876337837,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ]
+    },
+    "D1": {
+      "role": "STM PA10 RX / JDBG_UART Pin2",
+      "decoded_bytes": 153,
+      "complete_lf_lines": 5,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 2,
+        "\u0018": 1,
+        "DISARM": 1
+      },
+      "valid_tel_lines": 0,
+      "malformed_tel_lines": [],
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.20008025,
+          "end_s": 2.2017295555555556,
+          "text": "ARM,seq=1876337834"
+        },
+        {
+          "start_s": 2.3254455,
+          "end_s": 2.3302198055555556,
+          "text": "CMD,seq=1876337835,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.729585,
+          "end_s": 2.7343593055555555,
+          "text": "CMD,seq=1876337836,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.02902975,
+          "end_s": 3.0292035555555556,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 3.0292035,
+          "end_s": 3.0311133055555555,
+          "text": "DISARM,seq=1876337837"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 2.20008025,
+          "end_s": 2.2017295555555556,
+          "text": "ARM,seq=1876337834"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 3.0292035,
+          "end_s": 3.0311133055555555,
+          "text": "DISARM,seq=1876337837"
+        }
+      ]
+    }
+  },
+  "pairs": {},
+  "logic_levels": {
+    "D4": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 50000000,
+      "high_samples": 0,
+      "low_samples": 50000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "limits": [
+    "Sampled digital levels only; physical endpoints require user verification.",
+    "A capture boundary may truncate a line. Bytes are decoded at nominal baud.",
+    "Matching sampled logic does not establish analog signal integrity.",
+    "Telemetry reports firmware values, not physical motor output measurements."
+  ]
+}

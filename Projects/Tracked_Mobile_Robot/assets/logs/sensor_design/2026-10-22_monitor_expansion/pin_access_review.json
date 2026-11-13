@@ -1,0 +1,61 @@
+{
+  "status": "DESIGN_RECORD_CHECK_ONLY",
+  "vrt_sha256": "09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78",
+  "source_format_reference": "https://sources.debian.org/src/veroroute/2.28-1/Src/Component.h",
+  "scope": "two socket pin records, not whole netlist or physical continuity",
+  "known_reference_pins_matched": 4,
+  "candidates": [
+    {
+      "signal": "I_LEFT",
+      "mcu_candidate": "PC0",
+      "cn7_pin": 38,
+      "socket": "H_NUC_LOW_R28",
+      "socket_pin": 19,
+      "component_side_col": 24,
+      "component_side_row": 28,
+      "net": 0,
+      "label_offset": 96969,
+      "physical_access": "UNCONFIRMED",
+      "bridge_check": "REQUIRED"
+    },
+    {
+      "signal": "I_RIGHT",
+      "mcu_candidate": "PC1",
+      "cn7_pin": 36,
+      "socket": "H_NUC_LOW_R28",
+      "socket_pin": 18,
+      "component_side_col": 23,
+      "component_side_row": 28,
+      "net": 0,
+      "label_offset": 96936,
+      "physical_access": "UNCONFIRMED",
+      "bridge_check": "REQUIRED"
+    },
+    {
+      "signal": "T_LEFT",
+      "mcu_candidate": "PC2",
+      "cn7_pin": 35,
+      "socket": "H_NUC_LOW_R29",
+      "socket_pin": 18,
+      "component_side_col": 23,
+      "component_side_row": 29,
+      "net": 0,
+      "label_offset": 98956,
+      "physical_access": "UNCONFIRMED",
+      "bridge_check": "N/A"
+    },
+    {
+      "signal": "T_RIGHT",
+      "mcu_candidate": "PC3",
+      "cn7_pin": 37,
+      "socket": "H_NUC_LOW_R29",
+      "socket_pin": 19,
+      "component_side_col": 24,
+      "component_side_row": 29,
+      "net": 0,
+      "label_offset": 98989,
+      "physical_access": "UNCONFIRMED",
+      "bridge_check": "N/A"
+    }
+  ]
+}

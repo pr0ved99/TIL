@@ -1,0 +1,9 @@
+.title KiCad schematic
+C1 /VDIV 0 100n
+R2 Net-_R1-Pad2_ /VDIV 12k
+R4 /VADC /VDIV 1k
+I1 /VADC 0 DC 1u 
+R3 /VDIV 0 4.7k
+R1 /VRAIL Net-_R1-Pad2_ 12k
+V1 /VRAIL 0 DC 16 AC 1 0 
+.end

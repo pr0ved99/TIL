@@ -1,0 +1,36 @@
+{
+  "status": "USER_SIMULATION_REPORTED_AND_SAVED_FILES_CHECKED",
+  "source_sha256": {
+    "04_01_Voltage_BlockAverage_Step.kicad_sch": "db2b26acb40dae37959d5834ba00c9bbc54b40d401d9be8e1133e8dec020d0b2",
+    "04_01_BlockAverage_Step.wbk": "4eec3f8fb56773e088e0404098b43c8d9093177bb216fc02bbc68647cb54054b",
+    "04_01_step.csv": "6f258835a3b51f250f8326afc72cdcbc46d451dbd9395909bd32b1b02a7974b8"
+  },
+  "user_report": {
+    "one_tau_simulated_V": 1.81131,
+    "hand_calculated_V": 1.811226783
+  },
+  "saved_cursor_time_s": 0.055613286170000005,
+  "saved_TRAN": ".tran 5m 300m 0 5u",
+  "planned_TRAN": ".tran 5u 300m 0 5u",
+  "settings_difference": "First time-step field is 5m; maximum time step remains 5u. Preserve current evidence; correct first field before next run.",
+  "calculations": {
+    "K": 6.747204164780444,
+    "V0_V": 1.8674401562902767,
+    "Vf_V": 1.7785144345621684,
+    "Req_C1_ohm": 3632.8616973554567,
+    "tau_C1_s": 0.00036328616973554565,
+    "C1_ideal_step_one_tau_V": 1.811228379377272,
+    "C1_C2_ideal_step_at_C1_tau_V": 1.8112685638344619,
+    "C1_C2_1us_fall_at_C1_tau_from_start_V": 1.8113136423005343,
+    "user_report_difference_V": 8.32170000000243e-05,
+    "observed_remaining_residual_to_final_V": 0.032795565437831575
+  },
+  "CSV": {
+    "rows": 60015,
+    "max_time_gap_s": 5.1e-06,
+    "cursor_linear_interpolation_from_rounded_CSV_V": 1.8113152447,
+    "precision_note": "CSV values are rounded; cursor voltage is user-reported, not stored in workbook."
+  },
+  "average_results": "User CSV processed into 04_01_step_averages/; not hardware evidence or user understanding confirmation",
+  "hardware_measurement": false
+}

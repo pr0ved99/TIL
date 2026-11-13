@@ -1,0 +1,36 @@
+{
+  "cad_files_preserved": 74,
+  "preexisting_dirty_files_preserved_outside_scope": 34,
+  "initial_inventory_files": 2602,
+  "initial_markdown_files": 482,
+  "esp_main_matches_2026_10_24_review": true,
+  "veroroute_source_sha256": "09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78",
+  "veroroute_pdf_bytes": 172045,
+  "existing_document_files_updated": 38,
+  "scope": "Local project material freshness, current records and derived CAD reports. Not external publication or full engineering acceptance.",
+  "markdown_files_link_checked_after_updates": 485,
+  "relative_link_occurrences_checked": 4611,
+  "known_historical_link_issues": [
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 5,
+      "target": "2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md"
+    },
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 5,
+      "target": "2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md"
+    },
+    {
+      "file": "assets/logs/wifi_link/2026-10-12_executor_candidate/guide_final.md",
+      "line": 507,
+      "target": "../../assets/logs/wifi_link/2026-10-12_executor_candidate/README.md"
+    }
+  ],
+  "new_broken_relative_file_links": 0,
+  "shield_report_inputs_match_current_hashes": true,
+  "new_erc_drc_reports": true,
+  "cad_or_mcu_source_edits": false,
+  "mcu_build_flash_or_physical_test": false,
+  "external_publication": false
+}

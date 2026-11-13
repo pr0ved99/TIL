@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-08",
+  "timezone": "Asia/Seoul",
+  "unrelated_files_preserved": 19,
+  "relative_links_checked": 98,
+  "missing_relative_links": [],
+  "saved_workbooks": [
+    {
+      "file": "03_09_Discharge_Check_2026-11-07.wbk",
+      "analysis_index_1based": 4,
+      "command": ".tran 100n 10.35m 10.28m 100n",
+      "cursor_positions_s": [
+        0.0103047,
+        0.01032164
+      ]
+    },
+    {
+      "file": "03_14_InputSettling_Check_2026-11-07.wbk",
+      "analysis_index_1based": 5,
+      "command": ".tran 1u 6m 0 100n",
+      "cursor_positions_s": [
+        0.00368,
+        0.00369
+      ]
+    }
+  ],
+  "input_settling_schematic_sha256": "80e1dafc469504c31831c5ba72d22bcdae7c67c8c4f0703b34122a08eaa9b7ea",
+  "calculation_checks": {
+    "nodal_determinant_coefficients_exactly_equal": true,
+    "C2_zero_limit_equals_C1_approximation": true,
+    "ramp_crossing_within_user_bracket": true,
+    "new_simulator_or_hardware_execution": false
+  },
+  "Notion_snapshot_source": "readback after authorized append/targeted corrections; trailing whitespace normalized locally",
+  "scope_path_count": 37,
+  "physical_tests_and_firmware_build_flash": "not_run",
+  "git_whitespace": {
+    "authored_markdown_python_json_exit_code": 0,
+    "all_files_with_cr_at_eol_exit_code": 0,
+    "remaining_messages": [],
+    "note": "Original KiCad/CSV CRLF bytes preserved; CR at EOL is not treated as a source defect."
+  }
+}

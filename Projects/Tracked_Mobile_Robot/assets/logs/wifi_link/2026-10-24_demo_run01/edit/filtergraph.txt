@@ -1,0 +1,13 @@
+[0:v]setpts=PTS-STARTPTS,fps=24,crop=900:420:250:300,split[cb][cm];
+[cm]crop=280:124:0:0,boxblur=14:3[blur];
+[3:v]format=gray[mask];
+[blur][mask]alphamerge[maskedblur];
+[cb][maskedblur]overlay=0:0,scale=1100:514:flags=lanczos,setsar=1[cam];
+[1:v]setpts=PTS-STARTPTS,fps=24,split[fb][ctrl];
+[fb]crop=758:562:842:170,scale=700:520:flags=lanczos,setsar=1[feedback];
+[ctrl]crop=480:258:332:270,setsar=1[controls];
+[2:v]format=yuv420p[bg];
+[bg][cam]overlay=40:180:shortest=1[v1];
+[v1][feedback]overlay=1180:180:shortest=1[v2];
+[v2][controls]overlay=60:770:shortest=1[v3];
+[v3]ass=captions.ass,format=yuv420p[out]

@@ -1,0 +1,219 @@
+{
+  "analysis_dir": "C:\\Users\\eyh12\\AppData\\Local\\Temp\\robot_t005a_analysis_sbe22iq2",
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-30_M2_3s_Run_10pct_Encoder_Stability.sr",
+  "sha256": "a678548e701d5428dfa2510a75efe7b9a826df2068c23d3654f35a61fb8a131f",
+  "samples": 100000000,
+  "fs": 4000000.0,
+  "duration_s": 25.0,
+  "pwm2": {
+    "start_s": 1.40008375,
+    "end_s": 4.38887175,
+    "pulses": 56908,
+    "mean_hz": 19040.1928678155,
+    "mean_duty_percent": 10.002516910939745,
+    "duration_ms": 2988.7879999999996,
+    "period_min_us": 52.25,
+    "period_max_us": 52.75,
+    "gaps_gt_1_5_period": 0
+  },
+  "pc7": {
+    "high_runs": 0,
+    "high_samples": 0,
+    "high_at_start": false,
+    "high_at_end": false,
+    "high_intervals_s": []
+  },
+  "pwm1": {
+    "high_runs": 0,
+    "high_samples": 0,
+    "high_at_start": false,
+    "high_at_end": false,
+    "bursts": []
+  },
+  "uart": {
+    "D4": {
+      "invalid_stop_bits": 0,
+      "message_counts": {
+        "TEL": 250,
+        "ACK": 33
+      },
+      "trailing_partial_bytes": 0,
+      "first_lines": [
+        {
+          "start_s": 0.06993975,
+          "end_s": 0.08622380555555556,
+          "text": "TEL,t_ms=19670831,state=DISARMED,reason=ESTOP_RESET,command_age_ms=1188942,last_seq=2384354858,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1640"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.9179615,
+          "end_s": 24.933636805555555,
+          "text": "TEL,t_ms=19695731,state=DISARMED,reason=DISARM,command_age_ms=20671,last_seq=2384354891,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1640"
+        }
+      ]
+    },
+    "D5": {
+      "invalid_stop_bits": 0,
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 30,
+        "DISARM": 2
+      },
+      "trailing_partial_bytes": 0,
+      "first_lines": [
+        {
+          "start_s": 1.332046,
+          "end_s": 1.3336953055555556,
+          "text": "ARM,seq=2384354859"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 4.8838695,
+          "end_s": 4.885779305555556,
+          "text": "DISARM,seq=2384354891"
+        }
+      ]
+    }
+  },
+  "ack_check": {
+    "complete_commands": 33,
+    "matched": 33,
+    "missing_seqs": [],
+    "type_mismatches": []
+  },
+  "first_cmd": {
+    "start_s": 1.391136,
+    "end_s": 1.3961705555555555,
+    "text": "CMD,seq=2384354860,vx_mmps=50,w_mradps=250,timeout_ms=500"
+  },
+  "last_cmd": {
+    "start_s": 4.28549025,
+    "end_s": 4.290524805555556,
+    "text": "CMD,seq=2384354889,vx_mmps=50,w_mradps=250,timeout_ms=500"
+  },
+  "disarms": [
+    {
+      "start_s": 4.3852575,
+      "end_s": 4.3871670555555555,
+      "text": "DISARM,seq=2384354890"
+    },
+    {
+      "start_s": 4.8838695,
+      "end_s": 4.885779305555556,
+      "text": "DISARM,seq=2384354891"
+    }
+  ],
+  "cmd_refresh_interval_ms": {
+    "min": 99.76224999999994,
+    "max": 99.99099999999994
+  },
+  "first_cmd_to_scheduled_disarm_ms": 2994.1214999999997,
+  "scheduled_disarm_end_to_last_pwm_fall_us": 1704.6944444443213,
+  "encoder": {
+    "edges": 1384,
+    "transition_histogram": {
+      "11->10": 346,
+      "10->00": 346,
+      "00->01": 346,
+      "01->11": 346
+    },
+    "cycle_00_01_11_10": 1384,
+    "opposite_cycle": 0,
+    "both_bit_changes": [],
+    "first_edge_s": 1.4037575,
+    "last_edge_s": 4.49352775,
+    "last_edge_after_pwm_ms": 104.6560000000003,
+    "constant_tail_s": 20.50647225
+  },
+  "telemetry": {
+    "count": 250,
+    "interval_ms_counts": {
+      "100": 249
+    },
+    "states": {
+      "DISARMED": 219,
+      "ARMED": 31
+    },
+    "reasons": {
+      "ESTOP_RESET": 13,
+      "NONE": 31,
+      "DISARM": 206
+    },
+    "err_values": [
+      "1640"
+    ],
+    "drop_values": [
+      "0"
+    ],
+    "left_pwm_values": [
+      "0"
+    ],
+    "left_cps_values": [
+      "0"
+    ],
+    "active_right_cps": [
+      0,
+      80,
+      270,
+      320,
+      370,
+      390,
+      400,
+      420,
+      420,
+      440,
+      440,
+      450,
+      460,
+      460,
+      470,
+      480,
+      480,
+      490,
+      490,
+      500,
+      500,
+      500,
+      500,
+      500,
+      520,
+      520,
+      520,
+      540,
+      530,
+      540
+    ],
+    "after_first_second": {
+      "count": 20,
+      "min": 440,
+      "max": 540,
+      "mean": 494.5
+    },
+    "right_cps_integral_ticks": 1384.0,
+    "post_disarm_first_cps": [
+      540,
+      290,
+      10,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "zero_tail_samples": 203,
+    "zero_tail_mcu_seconds": 20.2
+  },
+  "log_compare": {
+    "log_tel_count": 84,
+    "capture_overlap_count": 84,
+    "matched": 84,
+    "mismatches": [],
+    "field_aliases": {
+      "vx": "vx_mmps",
+      "w": "w_mradps"
+    }
+  },
+  "operator_report": "B vehicle-forward then stop; A remained stationary (user confirmation)"
+}

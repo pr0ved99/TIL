@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-06",
+  "status": "PLACEMENT_REVIEW_ADJUSTMENTS_NEEDED",
+  "source_sha256": "86a6b4514f577b0f85c34152f642b1b717397cd2a8ce7027e54a27bb811f0484",
+  "source_unchanged_by_review": true,
+  "components": 31,
+  "new_refs": [
+    "C5",
+    "J7",
+    "R10",
+    "R11",
+    "R7",
+    "R8",
+    "R9"
+  ],
+  "values_and_symbol_types_match": true,
+  "new_footprints_blank": true,
+  "existing_24_components_unchanged": true,
+  "active_nets_unchanged": true,
+  "active_net_count": 10,
+  "new_pins_all_unconnected": true,
+  "pin_count_new": 14,
+  "new_erc_run": false,
+  "commands": [
+    {
+      "args": [
+        "sch",
+        "export",
+        "pdf",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_upstream_placement\\placement.pdf",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_upstream_placement\\placement.pdf'에 플롯됨.\n완료.\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_upstream_placement\\placement_netlist.xml",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "adjustments_proposed_not_applied": [
+    {
+      "ref": "J7",
+      "dy_mm": -2.54,
+      "purpose": "Align pin 2 to the horizontal resistor signal row at y=186.69mm"
+    },
+    {
+      "ref": "R9",
+      "dy_mm": 7.62,
+      "purpose": "Place shunt branch below signal row"
+    },
+    {
+      "ref": "C5",
+      "dy_mm": 7.62,
+      "purpose": "Place shunt branch below signal row"
+    }
+  ]
+}

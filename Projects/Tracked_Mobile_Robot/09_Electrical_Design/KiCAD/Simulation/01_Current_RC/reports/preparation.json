@@ -1,0 +1,80 @@
+{
+  "status": "SCHEMATIC_EXPORT_AND_CONNECTIVITY_CHECK_PASS",
+  "kicad_version": "10.0.5",
+  "ngspice_library_available": true,
+  "simulation_run": "NOT_RUN",
+  "hardware_test": "NOT_RUN",
+  "models": [
+    {
+      "schematic": "Current_RC_AC.kicad_sch",
+      "sha256": "1b186794b2f2eaea11ba2d4a43d050917afb9ff5d3c7389e10d5992194b99e7f",
+      "netlist": "Current_RC_AC.cir",
+      "devices": {
+        "C1": [
+          "C1",
+          "/VADC",
+          "0",
+          "100n"
+        ],
+        "R1": [
+          "R1",
+          "/VIN",
+          "/VADC",
+          "12k"
+        ],
+        "V1": [
+          "V1",
+          "/VIN",
+          "0",
+          "DC",
+          "1.65",
+          "SIN(",
+          "1.65",
+          "100m",
+          "19k",
+          "0",
+          "0",
+          "0",
+          ")",
+          "AC",
+          "1"
+        ]
+      },
+      "default_analysis": ".ac dec 200 1 1Meg"
+    },
+    {
+      "schematic": "Current_RC_Step.kicad_sch",
+      "sha256": "cf68dc2fe6717dc2720c4ac6c657695a889e2c464e077867ab1f0d7f70a3557a",
+      "netlist": "Current_RC_Step.cir",
+      "devices": {
+        "C1": [
+          "C1",
+          "/VADC",
+          "0",
+          "100n"
+        ],
+        "R1": [
+          "R1",
+          "/VIN",
+          "/VADC",
+          "12k"
+        ],
+        "V1": [
+          "V1",
+          "/VIN",
+          "0",
+          "PULSE(",
+          "1.43",
+          "1.87",
+          "1m",
+          "1u",
+          "1u",
+          "20m",
+          "40m",
+          ")"
+        ]
+      },
+      "default_analysis": ".tran 2u 30m 0 2u"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+I (1019) wifi_link: STARTUP: line sync sent
+I (1119) wifi_link: TX UART1: DISARM,seq=3395499802 attempt=1
+W (1619) wifi_link: STARTUP: retry DISARM attempt=2
+I (1619) wifi_link: TX UART1: DISARM,seq=3395499802 attempt=2
+W (2119) wifi_link: STARTUP: retry DISARM attempt=3
+I (2119) wifi_link: TX UART1: DISARM,seq=3395499802 attempt=3
+E (2619) wifi_link: STARTUP FAILED: no matching DISARM ACK
+I (10179) wifi_link: STM TEL #1 t_ms=100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
