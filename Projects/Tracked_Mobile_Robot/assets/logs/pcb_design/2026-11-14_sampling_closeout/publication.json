@@ -5,9 +5,15 @@
   "notion": "READBACK_VERIFIED_5_EXISTING_PAGES",
   "calendar": "READBACK_VERIFIED_3_EXISTING_EVENTS_BOUNDARIES_PRESERVED",
   "git": {
-    "status": "READY_FOR_SCOPED_COMMIT",
+    "status": "CONTENT_PUSH_VERIFIED",
     "branch": "agent/dual-encoder-bringup",
-    "remote": "origin"
+    "remote": "origin",
+    "content_commit": "1f3d8d515cb68674e9b876109c66f02e0c27d99a",
+    "remote_head_at_content_verification": "1f3d8d515cb68674e9b876109c66f02e0c27d99a",
+    "remote_verified": true,
+    "scoped_files": 66,
+    "remaining_preserved_files": 21,
+    "receipt_commit": "Subsequent scoped receipt commit; use this file history to resolve its hash."
   },
   "next": "B 목적·결론 연결 확인 → 기존 C →03_15 단락 →하네스/보호 정격",
   "understanding": "B purpose re-explained; user understanding/handwriting completion not reported",
@@ -15,5 +21,6 @@
   "current_state_and_handoff": "RECONCILED_B_PURPOSE_PENDING",
   "local_verification": "PASS_LINKS_HASHES_SYNTAX",
   "external_evidence": "external_verification.json",
-  "unrelated_files_preserved": 21
+  "unrelated_files_preserved": 21,
+  "all_five_closeout_actions": "COMPLETE; verified content publication, followed by receipt commit"
 }
