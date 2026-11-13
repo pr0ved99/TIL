@@ -1,8 +1,22 @@
 # Tracked Mobile Robot Project Memory
 
+**현재 · 2026-11-14 마감:** 실습 A·B의 사용자 KiCad 원본과 CSV 후처리 결과를 확보했다. B는 VADC 뒤에 가상 잡음을 더해 평균의 효과를 관찰한 학습 모델이며, 실제 RC 잡음 억제·ADC 잡음 예산 검증이 아니다. 사용자가 B의 의미가 불분명하다고 밝혀 목적을 다시 설명했으며 수기·이해 완료는 미보고다. 다음은 B의 목적·결론을 짧게 연결해 확인한 뒤 기존 C(주기성 성분·alias) → 03_15 감지선 단락 실습 → 하네스·보호 정격 검토다. B 반복 실행이나 새 HTML/FFT 실습을 자동 추가하지 않는다.  [마감·재개 근거](docs/progress/2026-11-14_progress.md).
+
+**이전 재개점 · 2026-11-13 순서 변경:** 사용자가미뤄진37-4/40-2통합실습을먼저요청했다. [04실습A-1](09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/README.md)의새회로복사/V1·V3설정안내단계다. 저장본확인→TRAN/CSV→재표본·평균으로진행한다. 처리도구의가상점검과사용자실습완료는별도. 단락실습/하네스·품번검토는이후로옮겼다.
+
+**이전 재개점 · 2026-11-13:** 사용자가 고장 상황 이해를 위한 KiCad실습 추가를 명시했다. [03_15 단락 실습](09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Sense_Cable_Short_Lab_ko.md) 구성 안내 단계이며 사용자저장/실행/관측전이다. 하네스·저항정격검토는 실습 후 진행한다. 기존실물전원분리/추가MCU작업없음.
+
+**이전 로컬 후속 · 2026-11-13:** [설계30](09_Electrical_Design/30_Voltage_Sense_Branch_Protection_Comparison_2026-11-13_ko.md)에서J7/J8감지분기각각의출발점직렬2.2kΩ을우선검토값으로제안했다.16V지속단락7.273mA/0.11636W,정상새K7.272077. 기존CAD/K6.747204는그대로다. 다음은감지선·커넥터·설치조건과저항정격대조이며사용자가새감지선굵기·편도길이·커넥터모두“미정”이라고답했다. 아래41-8직후재개점은당시이력이다. 부품선정/실물시험/보호PASS로확대하지않는다.
+
 This file stores stable project facts so future work does not repeat the same questions.
 
-Last updated: 2026-11-13 (port/power/fault notes through41-5 and material freshness closeout; next41-6 protection paths and verification criteria).
+Last updated: 2026-11-13 (local notes renumbered41-6/41-7;41-8 verification criteria drafted; next J7/J8 sense-branch conditions and protection comparison).
+
+## Current local follow-up — 2026-11-13
+
+- 41-6출발점 보호/41-7보드 입구·ADC 앞 보호로 기존 두 내용을 분리했고41-8 정상 성능·고장 보호·데이터 유효성의 검증 기준과 우선순위를 작성했다. 사용자 수기·이해/실측 완료와 구분한다.
+- 다음은 J7/J8 감지 분기 위치·전선/커넥터·전원/고장 조건표와 출발점 보호 방식 비교다. 이후 보드 입구·커넥터/전원 전이를 대조하고 필요한 변경만 CAD에 반영한다. 기본 분압/TPS/TMUX 유지, 새 보호 정격·실물 시험·펌웨어 구현을 확정하지 않았다.
+- 마지막 Git/Notion/Calendar 마감은 아래41-1~5 범위이며41-6~8은 로컬 후속이다. 아래 현재/다음 표현은 당시 이력이다.
 
 ## Current Checkpoint — 2026-11-12 port inventory and material audit
 

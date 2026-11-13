@@ -1,0 +1,19 @@
+{
+  "status": "SOFTWARE_CHECK_ONLY_SYNTHETIC_INPUT",
+  "first_block_expected_V": {
+    "100": 12.3,
+    "1000": 12.33,
+    "2000": 12.33
+  },
+  "second_and_third_blocks_V": 12.0,
+  "checks": [
+    "known step sample counts",
+    "block boundaries",
+    "semicolon KiCad CSV parser",
+    "linear interpolation"
+  ],
+  "rows": 60001,
+  "user_csv_processed": false,
+  "kicad_executed": false,
+  "hardware_test": false
+}

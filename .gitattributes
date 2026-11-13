@@ -59,3 +59,11 @@ Projects/Tracked_Mobile_Robot/docs/handoff/archive/2026-10-23_pre_ground_closeou
 # Preserve 10/24 observation receipts and CAD draft evidence bytes.
 Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-24*/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+
+# Preserve the exact source hashes of user A/B simulation evidence (2026-11-14).
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/*.kicad_sch -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/*.wbk -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step.csv -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise.csv -text whitespace=cr-at-eol
+Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-14_sampling_average_practice/04_02_b3_check.cir -text whitespace=cr-at-eol,-blank-at-eol
+Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/**/*.csv -text whitespace=cr-at-eol

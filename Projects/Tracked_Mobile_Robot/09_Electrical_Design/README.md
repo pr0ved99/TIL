@@ -1,5 +1,13 @@
 # Electrical Design
 
+**현재 · 2026-11-14 마감:** 실습 A·B의 사용자 KiCad 원본과 CSV 후처리 결과를 확보했다. B는 VADC 뒤에 가상 잡음을 더해 평균의 효과를 관찰한 학습 모델이며, 실제 RC 잡음 억제·ADC 잡음 예산 검증이 아니다. 사용자가 B의 의미가 불분명하다고 밝혀 목적을 다시 설명했으며 수기·이해 완료는 미보고다. 다음은 B의 목적·결론을 짧게 연결해 확인한 뒤 기존 C(주기성 성분·alias) → 03_15 감지선 단락 실습 → 하네스·보호 정격 검토다. B 반복 실행이나 새 HTML/FFT 실습을 자동 추가하지 않는다.  [마감·재개 근거](../docs/progress/2026-11-14_progress.md).
+
+**이전 · 11/13 우선순위 변경:** [37-4/40-2 통합 실습](KiCAD/Simulation/04_Sampling_and_Averaging/README.md)을먼저진행한다. A-1입력설정안내단계이며단락실습/부품선정은이후다. 제작CAD와기본PDF는미변경.
+
+**이전 · 11/13 사용자 요청:** [감지 케이블 단락 KiCad실습](KiCAD/Simulation/03_Voltage_Divider/03_15_Sense_Cable_Short_Lab_ko.md)을 부품선정 전에 추가했다. 사용자03_15구성/저장 안내 단계이며 실행/관측전이다. 제작용CAD와 기본PDF는 변경하지 않았다.
+
+**이전 · 11/13 감지 분기 검토:** [설계30 조건표·보호 방식 비교](30_Voltage_Sense_Branch_Protection_Comparison_2026-11-13_ko.md)를 작성했다. 출발점 직렬2.2kΩ을 우선 검토값으로 제안하며 정상 전달비/지속 단락 전력을 대조했다. 다음은 감지선·커넥터·설치 조건과 부품 정격 대조다. 실제 CAD/BOM에는 추가 전이며 아래 기본 PDF는 현재 저장 회로도를 반영한다.
+
 ## 최신 회로도 PDF — 2026-11-12 내보내기 동기화
 
 | 도면 | 기본 열람 경로 | 현재 저장 회로도 범위 |
@@ -11,7 +19,7 @@
 
 이후 회로도 변경 시 해당 프로젝트의 위 고정 경로 PDF와 README를 함께 갱신한다. 날짜가 붙은 검토 로그·체크포인트 PDF는 당시 상태를 보존한다. Shield의 `placement.pdf`는 22풋프린트 PCB 초안으로, 40부품 회로도를 반영한 배치도가 아니다.
 
-**11/13 마감·재개점:** 41-5까지 자료와 기본 exports/reports 최신화를 마감한다. 현재 필기/질문 뒤41-6 보호 경로·검증 기준으로 이어간다. 사용자 수기/이해·실측 완료는 별도다. 아래는 날짜별 당시 이력이다.
+**이전11/13 마감·재개점:** 41-5까지 자료와 기본 exports/reports 최신화를 마감한다. 현재 필기/질문 뒤41-6 보호 경로·검증 기준으로 이어간다. 사용자 수기/이해·실측 완료는 별도다. 아래는 날짜별 당시 이력이다.
 
 **11/12 자료 감사 후속:** 기본 Shield netlist/ERC/DRC·부품 목록/검사기와 MVP netlist/ERC도 최신 저장본으로 갱신했다. [Shield 현재 보고서](KiCAD/TMR_Monitor_Shield_RevA/reports/README.md) · [MVP 현재 보고서](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/README.md) · [전체 누락 점검](../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md). PCB는22풋프린트/미배선 상태이며 회로도 대조21건을 그대로 남긴다.
 

@@ -1,6 +1,6 @@
 # 프로젝트 파일 관리 기준
 
-2026-11-12 자료 최신성 점검을 반영했다. 현재 상태는 [인수인계](CURRENT_SESSION_CONTEXT.md), 실제 작업/게시 범위는 [진행 기록](../progress/2026-11-12_progress.md), 최신 점검은 [전체 자료 감사](../../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md)를 따른다. 아래11/4 수량·초기 조치는 당시 기록이다.
+2026-11-14 영향 범위의 자료 최신화 점검을 반영했다. 현재 상태는 [인수인계](CURRENT_SESSION_CONTEXT.md), 실제 작업/게시 범위는 [진행 기록](../progress/2026-11-14_progress.md), 최신 점검은 [11/14 마감](../../assets/logs/pcb_design/2026-11-14_sampling_closeout/README.md)을 따른다. 이전 광범위 점검은 [11/12 전체 자료 감사](../../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md)로 보존한다. 아래11/4 수량·초기 조치는 당시 기록이다.
 
 ## 저장 위치와 역할
 

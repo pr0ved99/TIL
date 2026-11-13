@@ -1,0 +1,97 @@
+{
+  "status": "CALCULATED_DESIGN_COMPARISON_NOT_IMPLEMENTED",
+  "assumptions": {
+    "input_V": 16.0,
+    "source_and_wire_impedance_ohm": 0,
+    "mode": "DC steady state; TMUX ON; common GND; nominal resistors; RON=2ohm",
+    "fault": "short to GND AFTER Rp and BEFORE PCB 24k; intact Rp",
+    "exclusions": [
+      "transients/stored energy",
+      "component failure",
+      "external overvoltage/reverse polarity",
+      "temperature/tolerance except isolated Rp +/-1% case",
+      "measured protection performance"
+    ],
+    "c1_tau": "C1-dominant approximation, not exact two-pole or whole-system response",
+    "resistance_range_is_not_part_selection": true
+  },
+  "lower_equivalent_ohm": 4280.8508216006985,
+  "baseline_conversion_K": 6.7472041647804435,
+  "rows": [
+    {
+      "source_resistance_ohm": 0.0,
+      "input_current_A": 0.0005657538417401262,
+      "source_drop_V": 0.0,
+      "source_power_W": 0.0,
+      "vdiv_V": 2.4219077982369708,
+      "vadc_V": 2.3713525794162247,
+      "rail_conversion_K": 6.747204164780444,
+      "estimate_using_old_K_V": 15.999999999999998,
+      "c1_dominant_tau_s": 0.00036328616973554565,
+      "input_referred_ideal_12bit_lsb_V": 0.005435979917913932,
+      "fault_current_A": null,
+      "fault_resistor_power_W": null
+    },
+    {
+      "source_resistance_ohm": 100.0,
+      "input_current_A": 0.0005637604066408883,
+      "source_drop_V": 0.056376040664088835,
+      "source_power_W": 3.178257960958998e-05,
+      "vdiv_V": 2.413374199954591,
+      "vadc_V": 2.362997112575846,
+      "rail_conversion_K": 6.7710620190131285,
+      "estimate_using_old_K_V": 15.94362395933591,
+      "c1_dominant_tau_s": 0.0003635144888681602,
+      "input_referred_ideal_12bit_lsb_V": 0.005455201333677569,
+      "fault_current_A": 0.16,
+      "fault_resistor_power_W": 2.56
+    },
+    {
+      "source_resistance_ohm": 1000.0,
+      "input_current_A": 0.0005464322091418423,
+      "source_drop_V": 0.5464322091418423,
+      "source_power_W": 0.0002985881591876341,
+      "vdiv_V": 2.3391947714539403,
+      "vadc_V": 2.290366115127186,
+      "rail_conversion_K": 6.9857827071072895,
+      "estimate_using_old_K_V": 15.453567790858155,
+      "c1_dominant_tau_s": 0.0003654991830396782,
+      "input_referred_ideal_12bit_lsb_V": 0.005628194075550306,
+      "fault_current_A": 0.016,
+      "fault_resistor_power_W": 0.256
+    },
+    {
+      "source_resistance_ohm": 2200.0,
+      "input_current_A": 0.0005249197305431306,
+      "source_drop_V": 1.1548234071948875,
+      "source_power_W": 0.0006061895917296404,
+      "vdiv_V": 2.247103059769978,
+      "vadc_V": 2.2001967378273606,
+      "rail_conversion_K": 7.272076957899502,
+      "estimate_using_old_K_V": 14.845176592805112,
+      "c1_dominant_tau_s": 0.00036796312603733385,
+      "input_referred_ideal_12bit_lsb_V": 0.005858851064713954,
+      "fault_current_A": 0.007272727272727273,
+      "fault_resistor_power_W": 0.11636363636363636
+    }
+  ],
+  "isolated_2k2_tolerance": [
+    {
+      "resistance_ohm": 2178.0,
+      "old_nominal_new_K_error_V": 0.011556575199168861,
+      "fault_current_A": 0.0073461891643709825,
+      "fault_power_W": 0.11753902662993572
+    },
+    {
+      "resistance_ohm": 2222.0,
+      "old_nominal_new_K_error_V": -0.011539904976709536,
+      "fault_current_A": 0.0072007200720072,
+      "fault_power_W": 0.1152115211521152
+    }
+  ],
+  "source_sha256": {
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml": "6a504bd9aa5a0ec3664035fbb6ffdf590166adf4fe8274c0cc51c72cafbf5953",
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch": "7474627bb7dbaa801496e60d5f692034a93f4cd438d332f763708573fbd67207"
+  }
+}
