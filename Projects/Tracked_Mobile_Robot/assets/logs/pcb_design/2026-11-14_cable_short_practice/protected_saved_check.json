@@ -1,0 +1,75 @@
+{
+  "status": "PROTECTED_MODEL_USER_CSV_VERIFIED_NOT_HARDWARE_PASS",
+  "source": "03_15_CableShort_Protected_2k2.csv",
+  "source_sha256": "446df072519827e8f5174c2f210b0d9ce65245a797b725490dcf5b62760dbb9b",
+  "source_bytes": 13994250,
+  "schematic_sha256": "323dbc70cd6db9b56ca80429118a79efb1bc8f4a19576dcee23e974eda1cadfc",
+  "workbook_sha256": "381c58766d308dcb7058e89807e7546d07e78eb3f80f8bd07d810def67e4f7ca",
+  "rows": 150023,
+  "time_range_s": [
+    0.0,
+    0.015
+  ],
+  "duplicate_printed_timestamps": 9,
+  "maximum_time_gap_s": 1.0000000000114084e-07,
+  "signals": [
+    "I(R1)",
+    "I(R7)",
+    "I(S2)",
+    "P(R7)",
+    "V(/VADC)",
+    "V(/VDIV)",
+    "V(/VRAIL)",
+    "V(/VRAW)"
+  ],
+  "maximum_KCL_rounding_residual_A": 9.899999999828584e-09,
+  "maximum_I2R_rounding_residual_W": 6.59446179995804e-07,
+  "selected_rows_nearest_requested_time_s": {
+    "0.004": {
+      "time": 0.00399996,
+      "I(R1)": 0.000524901,
+      "I(R7)": 0.000524916,
+      "I(S2)": 1.48447e-08,
+      "P(R7)": 0.000606182,
+      "V(/VADC)": 2.20012,
+      "V(/VDIV)": 2.24702,
+      "V(/VRAIL)": 15.9995,
+      "V(/VRAW)": 14.8447
+    },
+    "0.009": {
+      "time": 0.00899995,
+      "I(R1)": 2.55353e-07,
+      "I(R7)": 0.00726612,
+      "I(S2)": 0.00726587,
+      "P(R7)": 0.116152,
+      "V(/VADC)": 0.00111366,
+      "V(/VDIV)": 0.00113739,
+      "V(/VRAIL)": 15.9927,
+      "V(/VRAW)": 0.00726587
+    },
+    "0.0095": {
+      "time": 0.00949995,
+      "I(R1)": 2.56522e-07,
+      "I(R7)": 0.00726612,
+      "I(S2)": 0.00726587,
+      "P(R7)": 0.116152,
+      "V(/VADC)": 0.00108617,
+      "V(/VDIV)": 0.00110933,
+      "V(/VRAIL)": 15.9927,
+      "V(/VRAW)": 0.00726587
+    },
+    "0.0149": {
+      "time": 0.0149,
+      "I(R1)": 0.000524902,
+      "I(R7)": 0.000524916,
+      "I(S2)": 1.48447e-08,
+      "P(R7)": 0.000606182,
+      "V(/VADC)": 2.20012,
+      "V(/VDIV)": 2.24702,
+      "V(/VRAIL)": 15.9995,
+      "V(/VRAW)": 14.8447
+    }
+  },
+  "workbook_command": ".tran 1u 15m 0 100n",
+  "boundary": "Saved user simulation data; no new simulation run or source edits. Electrical checks include exported numeric rounding, not thermal/failure behavior."
+}

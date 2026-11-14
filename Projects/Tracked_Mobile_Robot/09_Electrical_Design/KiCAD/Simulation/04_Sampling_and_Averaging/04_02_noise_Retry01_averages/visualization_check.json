@@ -1,0 +1,36 @@
+{
+  "source_file": "04_02_noise_Retry01.csv",
+  "source_sha256": "de32add7f7479c9372b3630dd06a32932035ea6a275b8d1b2c0098adf1b7a44e",
+  "visualization_sha256": "2625293c9b2024f1aa931fb3721b90c674e3572d4ab554b3204d55b0a43239f7",
+  "data_checks": {
+    "source_hash_matched": true,
+    "uniform_samples_checked": 20000,
+    "block_means_recomputed_and_matched": 100,
+    "all_y_values_inside_fixed_domain": true,
+    "first_average_output_s": 0.1
+  },
+  "displayed_data": {
+    "detail": "First 0.5s: 1000 uniform samples and 5 block means; missing mean values are null.",
+    "full": "All 100 block means from 0.1 to 10 seconds.",
+    "y_domain_mV": [
+      -15,
+      20
+    ],
+    "zero_reference": "CSV VADC 1.77851V"
+  },
+  "browser_checks": {
+    "engine": "Microsoft Edge headless",
+    "states": [
+      "raw-detail",
+      "raw-full",
+      "bias-detail",
+      "bias-full"
+    ],
+    "state_change_and_render_passed": true,
+    "mobile_viewport_width": 320,
+    "iframe_width": 288,
+    "iframe_scroll_width": 288
+  },
+  "offline_schema_check": "Unavailable: Node runtime absent; actual browser rendering and control changes checked instead.",
+  "boundary": "Visualization of user KiCad simulation CSV postprocessing; no added noise, no hardware evidence. Original CSV, workbook and circuit unchanged."
+}

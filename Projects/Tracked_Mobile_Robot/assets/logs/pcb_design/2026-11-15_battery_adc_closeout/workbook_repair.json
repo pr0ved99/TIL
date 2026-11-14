@@ -1,0 +1,20 @@
+{
+  "scope": "Protected final TRAN tab plotting settings only; no simulation rerun or invented observations",
+  "source_before_sha256": "ead3c2f721ba1a9b31779b58f67310d57b7f1823984b21cb15a1527c4e26ec88",
+  "source_after_sha256": "71f2d96928e768cb8f55c2fd94de349f846d86e2460818fae126e2a336124eee",
+  "backup": "protected_workbook_before_repair.wbk",
+  "no_protection_workbook_sha256": "ead3c2f721ba1a9b31779b58f67310d57b7f1823984b21cb15a1527c4e26ec88",
+  "historical_tabs_preserved": true,
+  "command": ".tran 1u 15m 0 100n",
+  "signals": [
+    "I(R1)",
+    "I(R7)",
+    "I(S2)",
+    "P(R7)",
+    "V(/VADC)",
+    "V(/VDIV)",
+    "V(/VRAIL)",
+    "V(/VRAW)"
+  ],
+  "restoration": "Reconstructed from verified protected CSV signal list; not a byte-identical recovery of the earlier protected workbook. Historical cursor readings remain in conversation/CSV review evidence."
+}

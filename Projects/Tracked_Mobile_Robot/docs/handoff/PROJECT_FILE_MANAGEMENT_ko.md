@@ -1,6 +1,8 @@
 # 프로젝트 파일 관리 기준
 
-2026-11-14 영향 범위의 자료 최신화 점검을 반영했다. 현재 상태는 [인수인계](CURRENT_SESSION_CONTEXT.md), 실제 작업/게시 범위는 [진행 기록](../progress/2026-11-14_progress.md), 최신 점검은 [11/14 마감](../../assets/logs/pcb_design/2026-11-14_sampling_closeout/README.md)을 따른다. 이전 광범위 점검은 [11/12 전체 자료 감사](../../assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md)로 보존한다. 아래11/4 수량·초기 조치는 당시 기록이다.
+**현재 · 2026-11-15 마감:** B Retry01의 평균 효과와5mV 편향 잔류를 확인했고 사용자는 편향이 평균으로 제거되지 않음을 이해했다고 보고했다. C는 사용자 선택으로 실행 생략.03_15 감지선 단락의 R7 유무 비교 회로·CSV·워크북을 확보했다(공급7.266mA 대8.000A). 실제 ADC 잡음/보호/열 검증이나 제작 CAD 반영은 아니다. 다음은 J7/J8 하네스·설치 조건 → 보호 저항 정격 대조이며 새 감지선 사양은 미정이다. 수기 전체 완료는 미보고, NotebookLM 별도. [진행·근거](../progress/2026-11-15_progress.md) · [배터리 ADC 제조사 근거](../../09_Electrical_Design/31_Battery_Voltage_ADC_Reference_Basis_2026-11-15_ko.md).
+
+2026-11-15 영향 범위의 최신화 점검을 반영했다. 현재 상태는 [인수인계](CURRENT_SESSION_CONTEXT.md), 실적은 [11/15 진행](../progress/2026-11-15_progress.md), 최신 감사/게시 상태는 [11/15 영수증](../../assets/logs/pcb_design/2026-11-15_battery_adc_closeout/README.md)을 따른다. 아래 이전 날짜 수량·조치는 당시 기록이다.
 
 ## 저장 위치와 역할
 
