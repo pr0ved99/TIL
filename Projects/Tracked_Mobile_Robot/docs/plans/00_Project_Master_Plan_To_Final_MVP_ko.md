@@ -10,7 +10,7 @@
 
 **다음:** J7/J8 감지선의 출발점·길이·굵기·커넥터·절연/고정 조건 → 보호 저항 정격·온도·전압·펄스/TCR 대조. B Retry01/03_15의 확보한 실습 결과를 반복하지 않는다. C는 사용자 선택으로 실행 생략했다. [현재 계획](2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md).
 
-실제 판정은 원본 시험 자료 → [검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [최신 진행 기록](../progress/2026-11-14_progress.md)이 재개점이다. 완료한 거리·단절/복구·공중5/10/15cm 및 로컬 이미지 감사를 반복하지 않으며20cm는 사용자 요청 미실시로 남긴다. 아래 날짜별 계획은 당시 이력이고 현재 수행 지시가 아니다.
+실제 판정은 원본 시험 자료 → [검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [최신 진행 기록](../progress/2026-11-15_progress.md)이 재개점이다. 완료한 거리·단절/복구·공중5/10/15cm 및 로컬 이미지 감사를 반복하지 않으며20cm는 사용자 요청 미실시로 남긴다. 아래 날짜별 계획은 당시 이력이고 현재 수행 지시가 아니다.
 
 ## 최종 MVP 종료선
 
