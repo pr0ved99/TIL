@@ -1,5 +1,8 @@
 # Architecture Decision Record
 
+**2026-11-17 현재 계획:** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu24.04/Jazzy/Harmonic은 제안이며 새 설치/실행 전이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
+
+
 > 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
@@ -350,6 +353,13 @@ Consequence:
 - Timeout-to-`DISARMED` recovery는 `P-03A/P-03B` source/static/full-build에서 이 결정에 맞게 구현했다. Flash/board/PWM target runtime은 pending이다.
 - 이 결정은 command transport를 고정하며 STM32의 최종 safety authority를 ESP32로 이전하지 않는다.
 
+## ADR-016: 하드웨어 제작과 시뮬레이션 준비를 병행 — 2026-11-17
+
+**사용자 방향:** 내부 SSD를 나눠 Windows/Ubuntu 듀얼부팅, 하드웨어 제작 전 Nav2·가상 센서 실습과 가능한 강화학습 계획 수립.
+**실행 제안:** Ubuntu24.04/Jazzy/Harmonic, 차동 근사 모델·가상 IMU/scan·odom/TF·Nav2 기준선 이후 작은 RL 비교. 정확한 설치일/부품/실물 구현은 아직 미확정.
+**유지 계약:** 물리 명령은 ESP 단일 production ingress, STM32 최종 출력·timeout·안전 판단. sim 성공은 MVP/ADC/정지 미결을 닫지 않는다. CAN/RTOS/LL은 필수 후속 유지.
+**근거/진입 기준:** [단계·일자별 계획](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). 기존 YOLO 계획은 후속 보존. 구현/실험 NOT_RUN.
+
 ## Rejected or Deferred Alternatives
 
 | Alternative | Status | Reason |
@@ -371,7 +381,7 @@ Consequence:
 | CAN hardware | SN65HVD230 MCU-230 모듈은 보유. 모듈 상세·종단·전원 검증과 USB-CAN 장치 선정/확인은 남음 |
 | Battery voltage divider | 정확한 resistor value와 ADC calibration |
 | Motor current measurement | Current sensor를 추가할지 외부 측정으로 진행할지 |
-| ROS2 bridge path | 학습/시뮬레이션은 ROS 2 Humble에서 시작한다. 실제 command transport는 UART first, CAN later 중 무엇으로 연결할지 |
+| ROS2 bridge path | 11/17: 신규Ubuntu24.04/Jazzy/Harmonic 제안, Humble는 과거학습 이력. sim bridge부터 검증하고 실물은 PC→ESP32→STM32 UART 단일 ingress 유지; CAN은 후속 전환. 속도제어/시각/TF는 구현 전 |
 | Odometry calibration | Effective track width와 distance-per-count 값 |
 
 ## Evidence Roadmap

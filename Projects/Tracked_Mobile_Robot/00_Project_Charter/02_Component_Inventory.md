@@ -1,5 +1,7 @@
 # Component Inventory
 
+**11/17 추가:** 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 전선 보유와 J7/J8 하네스 선정/설치를 구분한다. [근거](../docs/progress/2026-11-17_progress.md).
+
 이 문서는 프로젝트에 사용할 부품 목록과 역할을 정리하는 문서다.
 
 부품 본문 기준: **2026-09-23**, 센서/계측기 상태는 **11/4 수령 보고·11/5 외부 관측을 11/12 대조**했다. 보유·사용 여부와 정량 검증 완료 여부는 구분한다.
@@ -97,7 +99,7 @@ USB-CAN 사전 조사 근거:
 | Driver | MDD10A | first motor driver path | dual-channel PWM+DIR driver for left/right DC motors |
 | Mechanical | tracked chassis | robot base | low-speed test platform |
 | Wiring | AWG14/16/18 wires | power wiring | high-current and auxiliary power |
-| Wiring | 24AWG wires | signal wiring | encoder/UART/I2C/PWM |
+| Wiring | 24AWG 실리콘 피복 연선 | 보유 사용자 보고(11/16~17 대화) | encoder/UART/I2C/PWM; 새 감지선 길이·피복 외경·정격/압착 호환·최종 선정 미정 |
 | Build | perfboard, headers, sockets | power/signal hub | do not route motor current through perfboard traces |
 
 ## Physical E-stop Procurement Snapshot — 2026-08-30

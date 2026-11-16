@@ -1,0 +1,33 @@
+{
+  "observed_on": "2026-11-17",
+  "mode": "read_only",
+  "disk": {
+    "model": "WD Blue SN5000 1TB",
+    "size_bytes": 1000204886016,
+    "partition_style": "GPT"
+  },
+  "c_volume": {
+    "size_bytes": 999056994304,
+    "free_bytes": 773254856704
+  },
+  "partitions": [
+    {
+      "type": "EFI System",
+      "size_bytes": 104857600
+    },
+    {
+      "type": "MSR",
+      "size_bytes": 16777216
+    },
+    {
+      "type": "C Basic",
+      "size_bytes": 999056998400
+    },
+    {
+      "type": "Recovery",
+      "size_bytes": 1023410176
+    }
+  ],
+  "bitlocker_status": "UNKNOWN: access denied from Get-CimInstance; later no-volume message does not prove encryption disabled",
+  "partition_mutations": false
+}
