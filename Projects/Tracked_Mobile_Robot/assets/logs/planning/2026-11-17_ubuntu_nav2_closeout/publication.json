@@ -1,6 +1,44 @@
 {
-  "documentation": "written",
-  "notion": "readback_verified",
-  "calendar": "readback_verified",
-  "git": "pending"
+  "date": "2026-11-17",
+  "documentation": "complete",
+  "current_guides_and_memory": "updated",
+  "freshness_audit": {
+    "documents": 30,
+    "local_file_links": 1448,
+    "broken_links": 0,
+    "cad_pdf_changed": false
+  },
+  "notion": {
+    "status": "readback_verified",
+    "existing_pages_updated": 6,
+    "roadmap_url": "https://app.notion.com/p/41aa7326f87b81768d92dea6564f277d"
+  },
+  "calendar": {
+    "status": "readback_verified",
+    "existing_event_updated": 1,
+    "closeout_record_created": 1,
+    "dated_plan_events_created": 14,
+    "existing_time_attendee_reminder_meet_fields_preserved": true,
+    "provisional_rl_dates_not_scheduled": true
+  },
+  "git": {
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "744b8859422526ad551a5636bebb149d690f9b58",
+    "verified_remote_head": "744b8859422526ad551a5636bebb149d690f9b58",
+    "receipt_note": "This publication receipt is committed separately after the content commit."
+  },
+  "unrelated_changes": {
+    "count": 21,
+    "hash_preserved": true,
+    "not_committed": true
+  },
+  "not_performed": [
+    "partition_resize_or_os_install",
+    "new_ROS_Gazebo_Nav2_RL_execution",
+    "MCU_build_flash",
+    "physical_test",
+    "production_CAD_edit",
+    "NotebookLM_refresh"
+  ]
 }
