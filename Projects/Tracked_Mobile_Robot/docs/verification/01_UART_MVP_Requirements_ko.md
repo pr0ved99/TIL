@@ -1,5 +1,7 @@
 # UART MVP Requirements
 
+**수용 상태 · 2026-11-19:** REQ-UART001~006은 정의된 UART 응답/소프트웨어 텔레메트리 범위에서 PASS다. 요구 문장은 유지하며 기존001~005 수용과 후속 T004 reset/복원·현재 소스 PC 검사를 연결했다. [검증표02](02_UART_MVP_Verification_Matrix_ko.md) · [판정 근거43 §7](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감). MCU 출력 핀·모터 에너지 차단·전체 release는 해당 별도 요구에서 판정한다.
+
 ## 목적
 
 이 문서는 PC-first UART MVP에서 STM32 하위 제어기가 만족해야 하는 최소 요구사항을 정의한다.
@@ -120,7 +122,7 @@ STM32 `TEL`은 motor-output 계층이 마지막으로 성공 적용한 좌우 so
 Acceptance criteria:
 
 - 두 field는 signed permille 단위이며 stop 상태는 `0`이다.
-- accepted `CMD(vx_mmps=50,w_mradps=0)`의 현재 100-permille cap vector는
+- accepted `CMD(vx_mmps=50,w_mradps=0)`의 검증용100-permille cap 조건에서는
   `left_pwm=50,right_pwm=50`으로 관찰된다.
 - `ARM`만 수락한 상태에서는 이전 output을 복원하지 않고 `0/0`을 유지한다.
 - command timeout, `DISARM`과 output error 경로는 `0/0`으로 복귀한다.
@@ -129,9 +131,12 @@ Acceptance criteria:
   motor 전압·회전·전류를 직접 측정한 feedback으로 해석하지 않는다.
 
 2026-08-29 P-04A positive symmetric/zero-state target UART vector와 post-test hook-0 safe runtime은
-위 수용 기준의 현재 검증 범위를 통과했다. Reverse/asymmetric sign과 same-run physical pin
-상관계측은 아직 남아 있다. 상세 결과는
+당시 검증 범위를 통과했다. 이후 10/17 NZ-02에서는 −50/−50, −50/+50, +50/−50 TEL과
+같은 회차의 PWM/DIR 관측을 확보했다. [11/19 원본 대조](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#2-저장-원본에서-다시-확인한-내용)에서 음수 부호를 다시 확인했다.
+이를 절댓값이 서로 다른 좌우 출력의 전체 파형 검증이나 과거 P-04A의 미저장 원본 복원으로 확대하지 않는다. 당시 상세 결과는
 [`22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md`](22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
+
+10/18 이후 일반150‰/순수회전200‰와 좌측 직진 보정이 적용된 현재 운용에서 같은 입력이 항상50/50이어야 한다는 뜻은 아니다. 당시100‰ 벡터를 보존하고 현재 cap/보정 결과는 현행 출력 검사로 대조한다.
 
 ### REQ-UART-006: TEL reports current reason and accepted-command age
 
@@ -169,13 +174,18 @@ Acceptance criteria:
   `state=DISARMED,reason=ESTOP_RESET`으로 관찰돼야 하며 implicit ARM 또는 command replay를
   만들면 안 된다.
 
-현재 판정은 **PARTIAL — UART/software-state scope**다. 2026-08-29 P-04B run02는 no-CMD
+**11/19 현재 대조:** 9/22 T004 run03 원본에 active reset ERR, 해제 뒤 reset ACK와
+DISARMED/ESTOP_RESET/PWM0, 이후 ARM-only0이 있다. [보고서26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)과
+[원본 대조43](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md)를 따른다. 이 분기들을 현재도 target 미실행이라고 안내하지 않는다.
+전체 release·실물 구성의 추적성과 당시 시험별 계측 한계는 검증표에서 별도로 유지한다.
+
+아래는 **8/29~30 당시의 PARTIAL — UART/software-state scope** 기록이다. 2026-08-29 P-04B run02는 no-CMD
 sentinel, accepted-CMD-only age reset과 500 ms timeout의 `CMD_TIMEOUT`을 통과했고, run04는
 direct-PC7 `ESTOP_ACTIVE -> ESTOP_LATCHED`를 통과했다. 2026-08-30에는 ESP32에 기본값 `0U`인
 P-04B reset closeout harness를 추가해 current canonical host/static `25 + 2 + 2 = 29/29`과
 ESP32 isolated build를 통과했다. 이 결과는 source/static/build 준비 증거이며, 새 TEL schema의
 active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`,
-그리고 변경 source의 target flash/runtime은 아직 실행하지 않았다. 상세 결과와 evidence boundary는
+그리고 변경 source의 target flash/runtime은 그 시점에는 실행 전이었다. 이후 T004 보완과 구분하며 당시 상세 결과와 evidence boundary는
 [`23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md`](23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md)를 따른다.
 
 ### REQ-SAFE-001: CMD is rejected before ARM

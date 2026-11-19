@@ -1,6 +1,17 @@
 # Electrical Design
 
-**현재 · 2026-11-17 마감:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](../docs/progress/2026-11-17_progress.md) · [검증/게시](../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
+**11/20 마감:** 다음 세션은 집에서 Ubuntu 준비부터 재개한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../docs/progress/2026-11-20_progress.md).
+
+**11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
+
+
+**MVP 수용 기록 · 2026-11-20:** [수용 변경안 채택44 §10](../docs/verification/44_EStop_Acceptance_Proposal_2026-11-19_ko.md)으로 **T005A PASS — 모터 분리·시험한 정상 전원 구성의 공급 차단/PWM 정지/무자동 재출발 기능 범위**. 수치 잔류 전압/에너지·전체 역급전 수용은 OPEN이다. 상위9 PASS·4 PARTIAL, T007 나머지 선행/정량 실측은 BLOCKED. 120fps 촬영 설정 보고를 확보했다. 수시로 바뀌는 모터 연결 상태와 다음 무전원 준비는 현재 인수인계/결정44의 최신 실물 기록을 따른다. 잔여 선행 수용과 정지 측정 준비가 남아 있다. K1 양쪽12AWG 확인으로14AWG 기반 교체/공구 구매 요구는 철회됐다. 새 회로/실물/빌드·플래시/외부 게시 없음. 아래 날짜별 판정은 당시 이력이다.
+
+**이전 우선순위 · 2026-11-19:** [11/19~20 기존 MVP 마무리 계획](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md). 확장 PCB는 기존 MVP 범위 밖이다. 당시 MVP 마무리를 우선했다. 현재 계측 설계와 실행 순서는 상단 재개점을 따른다.
+
+**검토 중 · 2026-11-18:** [세부 설계부터 최종 완성까지의 계획 v0.1](../docs/plans/2026-11-18_Detailed_Design_to_Final_Completion_Plan_ko.md). 전원·전압/전류/온도·포트/하네스·CAN·ADC·오차/보호 조건부터 PCB 제작/조립/시험까지 §6~9와§13에 상세화했다. 현재 CAD/BOM/PDF는 그대로이며 부품 선정/제작 승인 전이다.
+
+**직전 마감 · 2026-11-17:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](../docs/progress/2026-11-17_progress.md) · [검증/게시](../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 
 **이전 · 2026-11-15 마감:** B Retry01의 평균 효과와5mV 편향 잔류를 확인했고 사용자는 편향이 평균으로 제거되지 않음을 이해했다고 보고했다. C는 사용자 선택으로 실행 생략.03_15 감지선 단락의 R7 유무 비교 회로·CSV·워크북을 확보했다(공급7.266mA 대8.000A). 실제 ADC 잡음/보호/열 검증이나 제작 CAD 반영은 아니다. 다음은 J7/J8 하네스·설치 조건 → 보호 저항 정격 대조이며 새 감지선 사양은 미정이다. 수기 전체 완료는 미보고, NotebookLM 별도. [진행·근거](../docs/progress/2026-11-15_progress.md) · [배터리 ADC 제조사 근거](31_Battery_Voltage_ADC_Reference_Basis_2026-11-15_ko.md).
 

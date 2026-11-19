@@ -1,11 +1,30 @@
 # Physical E-stop Component And Rating Selection
 
+**11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
+
+
+**11/20 사용자 범위 변경:** 배선 길이 측정과 그 길이에 따른 전압강하 계산을 이번 MVP/T001 필수 설계 검토에서 삭제했다. 미실시/미완료 항목이나 구동 선행 조건으로 남기지 않고, 다른 이름의 추가 측정·자동 후속 과제로 복원하지 않는다. 기존1m 예시 계산과3% 목표는 과거 참고 자료이며 현재 합격 기준이 아니다. XT60 음극→GND 버스바는11/20 사용자 확인16AWG, GND 버스바→MDD B−도 기존 기록16AWG다. 굵기 확인을 길이·온도·전압강하 시험 완료로 확대하지 않는다.
+
+**11/19 기존 압착부 고정 관측:** 기존 K1 압착부 손당김 시 미분리 사용자 보고를 보존한다. 앞선14AWG 적용은 아래 최신 양쪽12AWG 확인으로 정정한다. 같은 검사를 반복하거나 새 공구 구매 근거로 쓰지 않는다. [관측 기록](../docs/progress/2026-11-19_progress.md).
+
+**11/19 공구 실물 식별 갱신:** 사용자 첨부3장으로 **STAREXON SR-CP5220 본체/WX-03B 다이**, 홈 표기0.5–1/1.5–2.5/4–6을 확인했다. 아래 `VH-30J`는 당시 주문/기록상의 명칭으로 보존하며 현재 공구 식별 미결을 반복하지 않는다. 특정 K1 단자의 압착 적합성은 별도이고 새 공구 구매·재촬영·새 시험은 지시하지 않았다. [구매안 §9.6](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md#96-최신-사용자-요청--k1-추가-구매안-비교).
+
+**11/19 최신 구성 정정:** **+버스바→K1 30번은12AWG, K1 87번→MDD10A B+도 중간 접속 없는12AWG**로 사용자 확인됐다. 새 배선 변경이 아니다.280756-4 지정 도체 범위12–10AWG에 포함되므로14AWG 불일치 지적과 이에 따른 선재/단자/압착기 추가 구매·교체 요구를 철회한다. 기존 손당김 미분리 보고는 보존하고 반복하지 않는다. 아래14AWG 상품·외경3.1~3.2mm·교체 검토는 정정 전 이력으로 현재 두 구간에 적용하지 않는다. 전체 접속부 수용 PASS로 확대하지 않는다. [최종 정정 §9.9](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md).
+
+**2026-11-19 제한적 재검토 승인:** 사용자는 “두 묶음만 다시 검토하자”라고 답했다. K1 전력 접속부의 단자·선재 적합성과 전원 차단·실제 정지 판정 기준만 재개한다. [현재 실행안](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md#9-남은4항목을-pass로-닫기-위한-실행안). 아래10/17 제외는 당시 이력이며 이번 두 범위 외에는 유지한다. TE 공식 제품 항목에서280756-4의12–10AWG와962835-3의17–13AWG를 재확인했으나 후자의 VCF7 소켓 호환/압착 적합성·구매는 미확정이다.
+
+**11/19 선재 정보 추가:** 사용자 보고는 실리콘14AWG/직경1.78mm/단면적2.07(원문 mm)/0.02Ω/m/55.6A/−60~+200°C다. 도체 단면적2.07mm²로 해석하면 후보962835-3의1.03–2.62mm² 안에 있지만, 직경1.78mm의 의미는 미확인이다. TE 제품 페이지의 `Dimensions → Compatible Insulation Diameter Range`는962835-3에서2.4–3.7mm,280756-4에서3.4–5.1mm로 재확인했다. 실제 피복 외경·소켓 잠금·압착 조건의 수용이나55.6A 설치 정격 채택은 아니다. 현재 해소안과 다음 입력은 위 실행안 §9.4를 따른다.
+
+**11/19 외경 추정 반영:** 사용자 “3.1~2mm”를 피복 포함 약3.1~3.2mm라는 뜻으로 해석했다. 이 가정에서14AWG/약2.07mm²·외경은962835-3의 도체/피복 지정 범위에 포함된다. 기존280756-4는 도체 범위와 피복 하한3.4mm 모두에 맞지 않는다. 판단은 선재 치수 대조 범위이며 소켓/압착 수용이나 설치 완료가 아니다.14AWG 유지+적합 단자 검토를 우선하며 추가 외경 캡처를 필수로 요구하지 않는다.
+
 **도면 동기화 · 2026-11-07:**
 
 이 문서와report18/19/24/25/30에기록된부품정체성을MVP RevB기능도면에반영했다. [설계29 대조표](../09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md). 새부품선정/실물/정격판정변경은없으며기능핀과실물핀의차이를유지한다.
 
 > 문서 역할·상태 대조: **2026-09-30** — 부품 선정·정격 근거·잔여 수용 조건. 조립/제한 시험 완료와 정격 release를 구분한다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
+**11/20 T001 재개:** [대조45](../docs/verification/45_T001_Design_Prerequisite_Closure_2026-11-20_ko.md)를 기준으로 기존 선행 조건을 순서대로 닫는다. Littelfuse PCN A0039B Attachment A(2012-10-15,p.1)는257/287 시리즈의257 하우징 각인이 공통이라고 명시한다. 각인 차이만으로 주문 불일치라고 보는 사유는 해소했다. 정확한 납품 SKU·보호협조 전체 수용은 별도이며 아래 날짜별257/287 의심 기록은 당시 이력이다. K1 양쪽12AWG 정정과 정량 전류/열의 후속 분리도 유지한다.
 
 ## 목적
 
@@ -407,8 +426,8 @@ K2-K1-ENABLE은 K1 coil current를 운반한다. Step 8에서는 각 contact에 
 | --- | --- | --- |
 | F1 | 입고 fuse marking `LITTELFUSE / 257 / 32V / 10`, holder Littelfuse marking과 `GXL 12AWG SCL -LF-` lead; no-power screen PASS | Ordered `0287010.PXCN`과 actual `257` marking/curve identity 대조, start waveform, nuisance opening, battery prospective short current와 thermal test |
 | K1 main terminal | TE socket/terminal identity PASS; coil 18 AWG와 main 14 AWG crimp/retention operator-reported PASS | `280756-4` documented AWG 12~10 대비 14 AWG 편차 해소, loaded contact resistance와 temperature rise |
-| Main wire | AWG 14는 전기 계산 minimum baseline. 주문한 `280756-4`가 AWG 12~10용이므로 released common path는 AWG 12 우선 | Exact wire insulation/temperature/ampacity, 왕복 길이, bundling와 ambient |
-| Per-motor branch | AWG 16 minimum candidate | Exact wire와 installed length/termination |
+| Main wire | AWG 14는 전기 계산 minimum baseline. 주문한 `280756-4`가 AWG 12~10용이므로 released common path는 AWG 12 우선 | Exact wire insulation/temperature/ampacity, bundling와 ambient. 왕복 길이/길이 기반 전압강하는11/20 사용자 결정으로 MVP 필수에서 삭제 |
+| Per-motor branch | AWG 16 minimum candidate | Exact wire와 termination. Installed length는11/20 사용자 결정으로 MVP 필수에서 삭제 |
 | Battery/K1/MDD10A connector | Common path 20 A 이상 DC-carry class를 출발 gate로 사용 | Exact official current/contact-resistance data, mating, keying와 strain relief |
 
 10 A ATOF의 정상-load ratio는 `2.88/10 = 28.8%`이고, 18.9 A simultaneous-stall은
@@ -465,7 +484,7 @@ PA4/PB0 divider는 post-MVP diagnostic option이다. 구현할 때는 `12.6 V`�
 
 ## 2026-10-17 제조사 자료 재검토
 
-**이 절은 검토 이력이다. 사용자 최신 결정으로 후속 조사·조치의 다음 작업 지정은 취소했다. 사용자 요청 없이 재개하거나 진행 조건으로 적용하지 않는다. 현재 실행 범위는 인수인계를 따른다.**
+**이 절은 당시 검토 이력이다. 11/19 추가 구매안 비교가 사용자 요청으로 재개됐으며, 현재 선택/미결은 위 §9.6 링크를 따른다. 아래 과거 수용 조건 전체를 새 필수 시험으로 복원한 것은 아니다.**
 
 - 기존 [280756-4](https://www.te.com/en/product-280756-4.html)는 12–10 AWG, 탭 9.53×1.22mm용이다. 현재 14 AWG는 단자의 지정 도체 범위를 벗어난다. 이는 압착 조합의 미결 사항이며, 14 AWG 자체의 허용 전류 부족을 확정한 것은 아니다. 사용자 14 AWG 유지 선택은 보존한다.
 - 대체 검토 후보 [962835-3](https://www.te.com/en/product-962835-3.html)는 17–13 AWG, 탭 9.53×1.22mm, 피복 외경 2.4–3.7mm, 길이 27mm다. 기존 280756-4는 길이 29mm·피복 외경 3.4–5.1mm다. 탭 치수 일치만으로 VCF7-1000 소켓 호환을 승인하지 않는다. 소켓 도면의 삽입 깊이·랜스 걸림, 실제 선재 피복 외경, 지정 압착 공구/압착 조건과 전류 조건 대조가 남았다. **구매·교체 확정 부품이 아니다.**

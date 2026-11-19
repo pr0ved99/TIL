@@ -1,0 +1,25 @@
+{
+  "scope": "Current UART/PWM document update and previous-work preservation only",
+  "markdown_files": 14,
+  "local_link_checks": 92,
+  "broken_links": [],
+  "top_level_must_pass": [
+    "MVP-001",
+    "MVP-004",
+    "MVP-006",
+    "MVP-008",
+    "MVP-009",
+    "MVP-010",
+    "MVP-011",
+    "MVP-012"
+  ],
+  "top_level_must_partial": [
+    "MVP-002",
+    "MVP-003",
+    "MVP-005",
+    "MVP-007",
+    "MVP-013"
+  ],
+  "preexisting_files_outside_scope_preserved": 26,
+  "diff_check": "PASS"
+}

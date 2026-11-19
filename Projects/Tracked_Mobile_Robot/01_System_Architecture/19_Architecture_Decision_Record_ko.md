@@ -348,9 +348,9 @@ Reason:
 
 Consequence:
 
-- `PC -> ESP32` production forwarding은 아직 구현하지 않았으며 별도 구현이 필요하다.
-- Production `CMD -> left/right PWM/DIR` mapper/caller는 `P-02` source/static/full-build에서 구현했다. Target runtime은 별도다.
-- Timeout-to-`DISARMED` recovery는 `P-03A/P-03B` source/static/full-build에서 이 결정에 맞게 구현했다. Flash/board/PWM target runtime은 pending이다.
+- ADR 채택 당시 `PC -> ESP32` production forwarding은 미구현이었다. **11/19 현재 대조:** browser/WebSocket→ESP session/ticket/owner→UART1 경로가 구현됐고NZ-01~04/후속 주행 근거가 있다. [MVP-002 PASS 근거](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#8-후속-판정--esp-단일-production-명령-경로). 추가 serial/Python bridge를 MVP 필수로 요구하지 않는다.
+- Production `CMD -> left/right PWM/DIR` mapper/caller의P-02 구현 이후 실제PWM·구동 근거가 추가됐다. 응답/신호 수용은 [검토43 §7](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감)을 따른다.
+- Timeout-to-`DISARMED` recovery의P-03A/P-03B 구현 뒤500ms target/PWM과10/20 실제 유실/복구 근거가 추가됐다. 당시 target pending을 현재 미실행으로 안내하지 않는다. 기계 정지시간·전체 전력/기계 수용은 별도다.
 - 이 결정은 command transport를 고정하며 STM32의 최종 safety authority를 ESP32로 이전하지 않는다.
 
 ## ADR-016: 하드웨어 제작과 시뮬레이션 준비를 병행 — 2026-11-17

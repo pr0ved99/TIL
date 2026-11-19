@@ -1,0 +1,113 @@
+{
+  "date": "2026-11-19",
+  "scope": "MVP-003 power evidence and original REQ-POWER-003 policy acceptance",
+  "decision": {
+    "MVP-003": "PARTIAL unchanged",
+    "REQ-POWER-001": "PASS unchanged",
+    "REQ-POWER-002": "CONDITIONAL PASS unchanged; prescribed historical load tests performed and recorded",
+    "REQ-POWER-003": "PASS within current board power connection policy/test configuration",
+    "REQ-POWER-004": "USER-REPORTED PASS unchanged",
+    "top_level_pass": 9,
+    "top_level_partial": [
+      "MVP-003",
+      "MVP-005",
+      "MVP-007",
+      "MVP-013"
+    ]
+  },
+  "checks": {
+    "buck_1_5min_and_3min_recorded": true,
+    "buck_2_5min_and_3min_recorded": true,
+    "board_power_policy_recorded": true,
+    "two_2p_policy_and_board_measurements": true,
+    "power_adjusted_user_voltage_recorded": true
+  },
+  "sources": [
+    {
+      "path": "02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md",
+      "sha256": "6776d2314d9bcdd2469b0da4b2547eeed232a2db7feee143329f241ab5b96130",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/progress/2026-07-18_progress.md",
+      "sha256": "eebd09a86707d770667edadaf19d43cb01c20fcb95345ecefd8305a980d53ad8",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/progress/2026-07-26_progress.md",
+      "sha256": "6780f7a8bcff60baa8f8c9d2160287c3b15e9ef0b336846d71de28ec92c85610",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/progress/2026-08-16_progress.md",
+      "sha256": "ad837fbdffec76340bb19c0c90eda414c9a4d965aa4f97a639186217d2f7a5ce",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/progress/2026-10-17_progress.md",
+      "sha256": "c39db993caff583e79cccbd580ed541c5afcbfa6b64629ceb822a9977d6af69d",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/progress/2026-10-23_progress.md",
+      "sha256": "d9a3939397f79f5c77f30ffd3ca79ce1614843dc071444227e318c91101dabf0",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md",
+      "sha256": "2f14815ad523f3bf88ed95760ff4179807f7a7b9f3ca9eeeb8682536f5e63864",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md",
+      "sha256": "107b9244a86d0b86e4bdfcf0cfd4c398f59a1984f3c686fbd3a7fd002e1384d9",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "sha256": "5ac2400d3b06f8330b2442914bcfdc6c67a07fa15cbe572033807ccba6aaa56b",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/session_observations.json",
+      "sha256": "529b5687af1d43f426eff423e1b24e0c174294d8e3bae245109c02e6835f09b5",
+      "role": "existing recorded evidence/current policy; no new physical measurement"
+    }
+  ],
+  "photos": [
+    {
+      "path": "assets/photos/power_bringup/2026-07-18_09_xl4015_02_096a_load_4v81.jpg",
+      "sha256": "c2b01705d4743073e6e1674cd0ae15975b000cd9fdaf93e4b5abeba526ab24e2",
+      "review": "existence and file identity only; not newly visually interpreted"
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-18_10_xl4015_02_172a_load_4v64.jpg",
+      "sha256": "1ca45a968e05aad069e78d8bcee267ac8fcdce9ac7185d5a9e05ef7f26329138",
+      "review": "existence and file identity only; not newly visually interpreted"
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-18_11_xl4015_01_1a_load_test.jpg",
+      "sha256": "15ea2108cd647d3b4a88027be5ccbca5fcbc9ffa2d9995a68fec1c2a9aa6b8dc",
+      "review": "existence and file identity only; not newly visually interpreted"
+    },
+    {
+      "path": "assets/photos/power_bringup/2026-07-18_12_xl4015_01_2a_load_test.jpg",
+      "sha256": "d7f0cec2fc04ca09e12dca29a3774a3505e1c242e1f46dcb284889f30c27a5c6",
+      "review": "existence and file identity only; not newly visually interpreted"
+    }
+  ],
+  "evidence_limits": [
+    "Durations and functional checks are existing operator reports, not a new continuous trace.",
+    "Buck terminal and USB-side values remain separate. The hot item reported for #1 was the electronic load.",
+    "#2 sustained high-load buck terminal voltage was not simultaneously measured; #1 USB-side photo digits were unreadable.",
+    "10/23 adjustment was later than July load tests; current_setting identity with July is not inferred.",
+    "REQ-POWER-003 PASS does not cover all downstream K1/GPIO backfeed paths or harness load/rating acceptance.",
+    "No new tests, circuit changes, MCU builds/flashes or external publication."
+  ],
+  "remaining": [
+    "Current intended branch loading versus observed supply conditions; retain prior conditional load acceptance.",
+    "Existing whole power-path acceptance gaps; excluded investigation not reopened.",
+    "T005A/T007 shared acceptance gaps remain."
+  ],
+  "next": "MVP-005 original no-load requirements versus existing single-motor records; avoid repeating completed tests"
+}

@@ -1,5 +1,11 @@
 # Firmware Safety Contract Tests
 
+## 2026-11-19 기존 MVP 근거 대조에 사용한 검사
+
+현행 STM source는 `test_distance_control_candidate.py --saved --cc <PC용-C-컴파일러> --output <결과.json>`로 검사했다. [결과](../../assets/logs/mvp_closeout/2026-11-19_evidence_review/current_stm_host_review.json)는 PASS이며 실제 C/HAL 모의 실행이다. MCU 빌드·플래시·실물 시험은 아니다.
+
+이전 `test_firmware_contract.py`의 선택 검사에서는 applied-output PASS, reason/age **FAIL(512 != 384)**을 확인했다. reason/age 검사는 count 확장 전 TX384바이트와 옛 ESP bridge를 전제하므로 현재 앱 전체의 수용 검사로 사용하지 않는다. 실패 기록은 [근거 대조](../../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#74-현재-소스-검사와-실패-기록)에 보존했다. 실패를 지우거나 production 버퍼를 과거 크기로 바꾸지 않았다.
+
 ## 브라우저 대시보드 표시 검사 — 2026-10-24
 
 [test_wifi_dashboard_page.js](test_wifi_dashboard_page.js)는 실제 PAGE를 읽어 표시10항목을 검사한다. 기존 공통46·거리28·방향21과 합쳐 중복 제외105 PASS. 새 값/지연/무효 엔코더/FAULT/BLOCKED·int64 보존·표시 예외 중 DISARM을 확인한다. [Chrome 배치/실행 방법](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md). MCU 빌드·플래시·실물 검사는 아니다.

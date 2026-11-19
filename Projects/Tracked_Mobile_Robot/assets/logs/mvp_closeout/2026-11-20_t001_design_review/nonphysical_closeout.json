@@ -1,0 +1,251 @@
+{
+  "date": "2026-11-20",
+  "scope": "Original MVP nonphysical review only; no acceptance criteria waived",
+  "report": "docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md",
+  "calculations": {
+    "motor_rated_sum_A": 2.88,
+    "motor_stall_estimate_12_6V_A": 18.9,
+    "K1_coil_20C_lower_resistance_A": 0.15555555555555556,
+    "K2_coil_20C_lower_resistance_A": 0.013618677042801555,
+    "total_coils_A": 0.16917423259835712,
+    "contact_voltage_screening_V": 35.1,
+    "sense_LOW_margin_V": 0.9299999999999999,
+    "sense_HIGH_margin_V": 0.9600000000000004,
+    "R14_external_sink_A": 0.00032497492477432294,
+    "LED_current_upper_A": 0.0075809580659603045,
+    "R13_power_upper_W": 0.03851126697507835,
+    "LED_power_upper_W": 0.009627816743769587
+  },
+  "calculation_conditions": "Existing source observations at 5.08V/3.30V and measured resistors; coil resistance tolerance at20C; no temperature/fault/waveform proof",
+  "source_hash_checks": [
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "expected_sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "actual_sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h",
+      "expected_sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+      "actual_sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c",
+      "expected_sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+      "actual_sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h",
+      "expected_sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+      "actual_sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/ring_buffer.c",
+      "expected_sha256": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+      "actual_sha256": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/ring_buffer.h",
+      "expected_sha256": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+      "actual_sha256": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c",
+      "expected_sha256": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed",
+      "actual_sha256": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/drive_command_mapper.h",
+      "expected_sha256": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+      "actual_sha256": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c",
+      "expected_sha256": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+      "actual_sha256": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/motor_output.h",
+      "expected_sha256": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+      "actual_sha256": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c",
+      "expected_sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+      "actual_sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h",
+      "expected_sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+      "actual_sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/distance_move.c",
+      "expected_sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+      "actual_sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Inc/distance_move.h",
+      "expected_sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+      "actual_sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "expected_sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "actual_sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_timing_candidate.py",
+      "expected_sha256": "9c962fcce0a3118ca5460d6a7ecf85bb91daa54e43af748927cec894165a71c9",
+      "actual_sha256": "9c962fcce0a3118ca5460d6a7ecf85bb91daa54e43af748927cec894165a71c9",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/drive_output_profile_host_fixture.c",
+      "expected_sha256": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b",
+      "actual_sha256": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_timing_guide_intro_ko.md",
+      "expected_sha256": "27ed04292e556b89a265907d6251462de6ee1698fbcfa3f9989cdced763e26d9",
+      "actual_sha256": "27ed04292e556b89a265907d6251462de6ee1698fbcfa3f9989cdced763e26d9",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_timing_host_fixture.c",
+      "expected_sha256": "dd494197e5ba6d0e990faae84828715b64fb88ac9ca81977f3ccc8edaa179ffd",
+      "actual_sha256": "dd494197e5ba6d0e990faae84828715b64fb88ac9ca81977f3ccc8edaa179ffd",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/test_distance_timing_candidate.py",
+      "expected_sha256": "349b817020f42cb002a73f1d026f1b21fbb3a881fb08ea639248a9a65450d127",
+      "actual_sha256": "349b817020f42cb002a73f1d026f1b21fbb3a881fb08ea639248a9a65450d127",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_control_candidate.py",
+      "expected_sha256": "6dafc268081e88886af21088f56e761a40bddf355b8894dfa4d68b7fc653e1ca",
+      "actual_sha256": "6dafc268081e88886af21088f56e761a40bddf355b8894dfa4d68b7fc653e1ca",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_control_host_fixture.c",
+      "expected_sha256": "ed4dfd1978bcc3142005e29f068c263d5bff359d8f0d78dc38365aa050c19a85",
+      "actual_sha256": "ed4dfd1978bcc3142005e29f068c263d5bff359d8f0d78dc38365aa050c19a85",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/test_distance_control_candidate.py",
+      "expected_sha256": "a6b137ad5c9b42f51c35f406dc04b41d40cfa708887682d46235ba56d784dada",
+      "actual_sha256": "a6b137ad5c9b42f51c35f406dc04b41d40cfa708887682d46235ba56d784dada",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/tests/distance_control_guide_intro_ko.md",
+      "expected_sha256": "c766b61e4f3840cf5709a0e522eafd531e0cf1896553ff5bd7a67c103273d500",
+      "actual_sha256": "c766b61e4f3840cf5709a0e522eafd531e0cf1896553ff5bd7a67c103273d500",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "expected_sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "actual_sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "expected_sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "actual_sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "expected_sha256": "37dc255d7caa7f02fc3a536650a3fb9202273300e27139d75f39a311264272b0",
+      "actual_sha256": "37dc255d7caa7f02fc3a536650a3fb9202273300e27139d75f39a311264272b0",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "expected_sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "actual_sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "match": true
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "expected_sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2",
+      "actual_sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2",
+      "match": true
+    }
+  ],
+  "source_hashes_all_match": true,
+  "new_host_test": false,
+  "build_flash_hardware_new_erc": false,
+  "downloads": {
+    "Vishay_VO617A.pdf": {
+      "sha256": "145893b5422f68cc3f2016e2dddfc33f6ee26f0d2444fe8889d0dc0388f805a1",
+      "pdf_header": true
+    },
+    "Vishay_P6KE.pdf": {
+      "sha256": "129aeb41a0936dce16d0c8118d704bfbf233f039132179c4acc1b0d1ce2a4a48",
+      "pdf_header": true
+    },
+    "Panasonic_TX.pdf": {
+      "sha256": "ebc3a98eff80e101b08ca7e37d1292f3222ed801bb2f3b75e102f0fcdb285e8a",
+      "pdf_header": true
+    }
+  },
+  "remaining": [
+    "R1 full protection coordination acceptance",
+    "R2 clamp stress evidence",
+    "R3 T002/T003 raw record acceptance",
+    "R4 encoder electrical / mechanical stop evidence"
+  ],
+  "updated_current_documents": [
+    "00_Project_Charter/02_Component_Inventory.md",
+    "01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md",
+    "01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md",
+    "01_System_Architecture/README.md",
+    "09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md",
+    "09_Electrical_Design/README.md",
+    "PROJECT_MEMORY.md",
+    "README.md",
+    "docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "docs/handoff/README.md",
+    "docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md",
+    "docs/plans/README.md",
+    "docs/progress/2026-11-20_progress.md",
+    "docs/progress/README.md",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+    "docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md",
+    "docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md",
+    "docs/verification/45_T001_Design_Prerequisite_Closure_2026-11-20_ko.md",
+    "docs/verification/README.md"
+  ],
+  "document_check": {
+    "markdown_files": 21,
+    "local_links_checked": 1395,
+    "missing_links": [],
+    "scoped_git_diff_check_exit_code": 0,
+    "scoped_git_diff_check_output": [],
+    "unrelated_build_output_whitespace": "pre-existing; untouched",
+    "limits": "Path checks, scoped diff and current-state review; historical anchors/external posts not revalidated."
+  },
+  "unique_source_files": 27
+}

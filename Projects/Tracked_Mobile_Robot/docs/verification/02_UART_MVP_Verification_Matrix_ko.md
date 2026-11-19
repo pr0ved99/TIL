@@ -1,5 +1,7 @@
 # UART MVP Verification Matrix
 
+**현재 판정 · 2026-11-19:** REQ-UART001~005의 기존 수용 범위를 유지하고,006의 active reset ERR/healthy reset ACK·TEL/정상 복원 미결을9/22 T004 run03/run07 근거로 닫았다. **001~006 PASS — 정의된 UART 응답/소프트웨어 텔레메트리 범위.** [요구별 대조와 검사 경계](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감). 아래8월 기록의 당시 미실행/OPEN은 최신 판정을 덮어쓰지 않는다. 출력실패 cache0의 현행 보완 근거는 PC 모의 실행이며 target 고장 주입이나 전체 전력/기계 수용은 아니다.
+
 ## 목적
 
 이 문서는 UART MVP 요구사항과 실제 검증 증거를 연결한다.
@@ -84,8 +86,8 @@
 | REQ-UART-002 | `PING,seq=1` 전송 후 `PONG,seq=1` 확인 | EV-IMG-02, EV-CSV-20260709 | PASS | CSV에 TX `PING,seq=1`, RX `PONG,seq=1` 존재 |
 | REQ-UART-003 | `ARM`, valid `CMD`, `DISARM`과 healthy-input `ESTOP_RESET` ACK 확인 | EV-IMG-04, EV-IMG-05, EV-IMG-08, EV-CSV-20260709, EV-ESTOP-DIRECT-PC7-20260824 | PASS — defined UART response scope | `ACK,type=ARM/CMD/DISARM`과 old-schema direct-PC7 healthy reset `ACK,type=ESTOP_RESET` 확인. P-04B 새-schema same-run vector는 `REQ-UART-006` closeout으로 별도 추적 |
 | REQ-UART-004 | invalid command와 active-input `ESTOP_RESET` ERR 확인 | EV-IMG-03, EV-IMG-07, EV-CSV-20260709, EV-ESTOP-DIRECT-PC7-20260824 | PASS — defined UART response scope | `NOT_ARMED`, `OUT_OF_RANGE`, `TIMEOUT_OUT_OF_RANGE` 및 old-schema direct-PC7 `ESTOP_ACTIVE` 확인. P-04B 새-schema same-run vector는 `REQ-UART-006` closeout으로 별도 추적 |
-| REQ-UART-005 | P-04A controlled forward/timeout/recovery sequence와 hook-0 restore에서 `left_pwm/right_pwm` 확인 | EV-P04A-UART-20260829, EV-P04A-RESTORE-UART-20260829 | PASS — UART/software-cached applied-output scope | Active 7 TEL은 `50/50`, ARM-only 5 + DISARMED 37 TEL은 `0/0`; restore의 50개 TEL도 모두 `DISARMED/0/0`. Reverse/asymmetric sign, same-run physical PWM와 actual motor는 미검증 |
-| REQ-UART-006 | TEL의 `reason/command_age_ms`로 no-CMD, accepted CMD, timeout과 direct-PC7 active/latch software state를 STM32 -> ESP32 strict parser/log에서 식별 | EV-P04B-RUN02-UART-20260829, EV-P04B-RUN03-UART-20260829, EV-P04B-RUN04-UART-20260829, EV-P04B-REPORT-20260829, EV-P04B-HOOK0-BUILD-20260829, EV-P04B-RESET-HARNESS-BUILD-20260830 | PARTIAL — UART/software-state telemetry scope | Current canonical host/static `25 + 2 + 2 = 29/29`, all-hooks/default reset harness `0U`와 current ESP32 isolated build PASS; run02 reason/age/timeout과 run04 `ESTOP_ACTIVE -> ESTOP_LATCHED` subset PASS. 새 schema의 active reset `ERR`, release 뒤 reset `ACK` + `DISARMED/ESTOP_RESET/PWM 0/0` + `VECTOR DONE`, 변경 source의 target flash/runtime은 `OPEN`. PC7 전압, conditioned Physical E-stop, K1 rail-off, measured PWM/MDD10A output과 actual motor를 증명하지 않음 |
+| REQ-UART-005 | P-04A forward/timeout/recovery·hook0 restore, 후속 NZ-02 signed TEL, 현재 출력실패 cache0 소스/PC 검사 | EV-P04A-UART-20260829, EV-P04A-RESTORE-UART-20260829, [대조43 §7](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감) | PASS — UART/software-cached applied-output scope | 기존49 TEL 중7개50/50·나머지0/0, restore50개zero. NZ-02 −50/−50·−50/+50·+50/−50 보완. 현재 signed/raw 범위 초과의 getter0/0는 실제 C의 모의 HAL 실행으로 확인. target 오류 주입·전력단 feedback·과거 미저장 파형 복원 아님 |
+| REQ-UART-006 | TEL reason/age의 boot·CMD·timeout·active/latch/reset와 정상 복원 대조 | EV-P04B-RUN02-UART-20260829, EV-P04B-RUN04-UART-20260829, [T004 보고서26](26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md), [대조43 §7](43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감) | PASS — 정의된 UART/software-state telemetry scope | P04B sentinel·accepted CMD만 age reset·500ms timeout·active/latch에 T004 run03 reset ERR/ACK·reason·age 유지·ARM-only0와 run07 199개DISARMED/zero를 연결. 옛 reset harness의 VECTOR DONE 문자열 자체를 별도 기능 요구로 만들지 않음. 전체 K1/MDD 에너지 차단·기계 정지·이미지 독립 추적성은 별도 |
 | REQ-SAFE-001 | DISARMED 상태에서 `CMD` 전송 | EV-IMG-03, EV-CSV-20260709 | PASS | `ERR,seq=2,type=CMD,code=NOT_ARMED` |
 | REQ-SAFE-002 | `ARM,seq=3` 전송 | EV-IMG-04, EV-CSV-20260709 | PASS | `ACK,seq=3,type=ARM`, 이후 `TEL,state=ARMED` |
 | REQ-SAFE-003 | ARMED 상태에서 `CMD,seq=20,vx_mmps=50,w_mradps=0,timeout_ms=500` 전송 | EV-IMG-05, EV-CSV-20260709 | PASS | `ACK,seq=20,type=CMD`, 이후 `TEL,last_seq=20,vx_mmps=50` |
@@ -122,6 +124,8 @@ RX TEL,...state=DISARMED,last_seq=26,vx_mmps=0,w_mradps=0...
 ```
 
 ## Residual Risk
+
+**아래 P04A/P04B 문단은8/29~30 당시 한계다.** 후속 NZ-02 signed TEL과 T004 reset/복원으로 보완한 현재 판정은 위 표를 따른다. 과거 실행 이미지/원시 캡처의 부족을 소급 복원했다는 뜻은 아니다.
 
 - `LAST CODE` display는 마지막 error code를 유지하므로 정상 ACK 화면에서도 이전 error가 남아 보일 수 있다. 이는 firmware behavior라기보다 dashboard display policy에 가깝다.
 - CSV에는 periodic `TEL`이 많이 포함되어 파일 크기가 커진다. 이후에는 test session 단위로 log trimming 또는 summary export를 추가할 수 있다.

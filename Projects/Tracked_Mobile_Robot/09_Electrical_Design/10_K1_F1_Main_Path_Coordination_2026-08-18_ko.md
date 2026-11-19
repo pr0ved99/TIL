@@ -1,6 +1,10 @@
 # K1, F1 And Main-Path Coordination — 2026-08-18
 
-## 목적과 판정
+**현재 — 2026-11-20 비실물 검토 완료:** [통합 결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
+
+이하8/18 후보 계산·9/5 조립 서술은 당시 이력이다. K1 현재12AWG/F1 holder식별/공통각인 정정과 후속 열·전류 분리는 위 현재 안내가 우선한다. 아래 과거 release 목록을 현재 필수 재시험 목록으로 사용하지 않는다.
+
+## 과거 설계 기록 — 목적과 당시 판정
 
 WHEELTEC가 직접 회신한 `MG540P30_12V` 전류값으로 Physical E-stop 주전원 경로의 K1,
 F1과 배선 후보를 계산한다. 이 문서는 구매 확정서가 아니라 `T-ESTOP-001`에 들어갈
@@ -200,7 +204,7 @@ Fuse holder는 32 VDC 이상, 10 A 이상이 아니라 접점 발열 여유를 �
 strain relief를 가져야 한다. Battery prospective short current가 1000 A interrupt rating 아래인지도
 battery 자료 또는 제한된 fault-current 근거로 확인한다.
 
-## Main wire와 voltage-drop 후보
+## 과거 참고 계산 — Main wire와 voltage drop (현재 MVP 필수 검토에서 제외)
 
 Alpha Wire의 tinned-copper conductor chart에서 예시 저항값을 사용한 1 m 왕복 loop 계산이다.
 실제 선정은 구매할 wire의 공식 insulation/temperature/ampacity 자료로 다시 승인한다.
@@ -218,7 +222,7 @@ Alpha Wire의 tinned-copper conductor chart에서 예시 저항값을 사용한 
 - 주문한 `280756-4`가 AWG 12~10용이므로 Battery–F1–S1–K1–MDD10A common positive와 matching negative return의 released harness는 AWG 12 우선
 - AWG 14를 섞는다면 별도 정격 접속부와 그 검증을 문서화하며, 단순 꼬임/납땜만으로 전선 굵기를 전환하지 않음
 - MDD10A에서 각 motor로 나가는 branch: AWG 16 minimum candidate
-- 실제 loop length, bundle, ambient, insulation temperature, crimp/terminal rating을 기록하기 전 release 금지
+- 배선 길이·길이 기반 전압강하 기록은11/20 사용자 결정으로 MVP release 선행에서 삭제했다. 나머지 적용 조건은 현재 검토45와 이미 합의한 후속/제외 범위를 따른다.
 - Connector/holder common path는 20 A 이상 DC carry와 낮은 contact resistance를 공식 자료로 확인
 
 ## 보호협조 결론
@@ -242,7 +246,7 @@ Alpha Wire의 tinned-copper conductor chart에서 예시 저항값을 사용한 
    released common-path terminal/wire 조합을 승인한다.
 2. 설치된 K1 `P6KE16CA`의 clamp 조건과 assembled drop-out/rail-decay 시간
 3. 입고 fuse의 `257` 각인과 주문 `0287010.PXCN` identity/curve 대조, exact holder와 실제
-   wire/terminal part, installed loop length
+   wire/terminal part (installed loop length는11/20 사용자 결정으로 MVP 필수에서 삭제)
 4. 무전원 pin-map/continuity/cross-wire 검사
 5. Motor-disconnected `T-ESTOP-001~005`
 6. 첫 lifted single-motor에서 supply current/start pulse/connector voltage drop/온도 기록

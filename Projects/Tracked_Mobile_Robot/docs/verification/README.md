@@ -1,5 +1,11 @@
 # Verification Documentation
 
+**11/20 마감:** 다음 세션은 집에서 Ubuntu 준비부터 재개한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../progress/2026-11-20_progress.md).
+
+**MVP 증거 대조 · 2026-11-20:** [통합 결과46](46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
+
+**이전 구성 정정 — 2026-11-19:** **+버스바→K1 30번은12AWG, K1 87번→MDD10A B+도 중간 접속 없는12AWG**로 사용자 확인됐다. 새 배선 변경이 아니다.280756-4 지정 도체 범위12–10AWG에 포함되므로14AWG 불일치 지적과 이에 따른 선재/단자/압착기 추가 구매·교체 요구를 철회한다. 기존 손당김 미분리 보고는 보존하고 반복하지 않는다. [최종 정정 §9.9](../plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md). 상위9 PASS·4 PARTIAL, T005A PARTIAL/T007 BLOCKED 유지. 다음은 기존 전원 차단·실제 정지 수용 검토다.
+
 최신 관측 대조: **2026-11-12**. 10/23 지상1m 실제/추정 거리·오차 기록, 10/24 149초 통합 시연, 11/5 짧은 공중 외부 전류·온도 표시 관측과 종료 전원 분리 보고를 반영한다. [검증 매트릭스](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [최근 외부 관측](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md). 정밀도·장시간 열적 수용·전체 MUST 인수 완료는 아니다.
 
 이전 비구동 Wi-Fi는 report37/38, 단일 모터는 report32의 해당 조건을 따른다. 현재 코드·PC 검사와 재개점은 [검사 안내](../../03_Firmware/tests/README.md)와 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 사용한다.

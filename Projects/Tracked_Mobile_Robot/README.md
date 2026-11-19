@@ -1,6 +1,16 @@
 # Tracked Mobile Robot
 
-**현재 · 2026-11-17 마감:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](docs/progress/2026-11-17_progress.md) · [검증/게시](assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
+**현재 · 2026-11-20 마감:** 추가 MVP 마감은 보류했다. 다음은 12시 이후 집에서 Ubuntu 환경 준비다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](docs/progress/2026-11-20_progress.md).
+
+**MVP 증거 대조 · 2026-11-20:** [통합 결과46](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
+
+**이전 구성 정정 — 2026-11-19:** **+버스바→K1 30번은12AWG, K1 87번→MDD10A B+도 중간 접속 없는12AWG**로 사용자 확인됐다. 새 배선 변경이 아니다.280756-4 지정 도체 범위12–10AWG에 포함되므로14AWG 불일치 지적과 이에 따른 선재/단자/압착기 추가 구매·교체 요구를 철회한다. 기존 손당김 미분리 보고는 보존하고 반복하지 않는다. [최종 정정 §9.9](docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md). 상위9 PASS·4 PARTIAL, T005A PARTIAL/T007 BLOCKED 유지. 다음은 기존 전원 차단·실제 정지 수용 검토다.
+
+[판정 근거와 남은 항목](docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md). 기본 단일 구동/정지 근거는 확보했고 소음 기록·선행 수용 미결을 구분했다. 완료한 시험은 반복하지 않으며, 위 실행안의 제한된 미결을 해결한 뒤 부족한 실제 관측만 보완한다.
+
+**검토 중 · 2026-11-18:** [세부 설계부터 최종 완성까지의 계획 v0.1](docs/plans/2026-11-18_Detailed_Design_to_Final_Completion_Plan_ko.md). 세부 설계부터 계측 PCB·임베디드 확장·Nav2·최종 인수까지의 전체 작업을 사용자 검토용으로 작성했다. 다음은 계획 검토이며 새 구현/실측 완료나 확정 일정이 아니다.
+
+**직전 마감 · 2026-11-17:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](docs/progress/2026-11-17_progress.md) · [검증/게시](assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 
 STM32와 ESP32-S3를 기반으로 **궤도형 모바일 로봇의 하위 구동 플랫폼**을 개발하는 프로젝트다.
 UART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 회로를 단계적으로 구현·검증한다.
@@ -160,7 +170,7 @@ flowchart LR
 | 통신·펌웨어 | Wi-Fi ARM/CMD/DISARM·선택 AC-S/nonzero,10/20 UART 명령선 단절/timeout 실제 정지·수동 복구 | 전체 UART release PARTIAL. run02 DISARM/UI 간헐 현상 원인 OPEN; 후속 정상 회차와 구분 |
 | 보드 전원·운영 | 실제 STM/ESP 공급·USB/standalone 분리 규칙·BX100 설정/표시·과거 주행 중 저전압 경고음→작업자 전원 차단 USER-REPORTED PASS | 감독하 경고 대응 운영 범위 완료. 최종 정격/부하 미수용, 기존 제외 조사 재개 없음 |
 | 구동·거리 | 지상 네 방향/놓음/DISARM,10/23 1m 실제/추정·오차 기록 PASS | 계수 지상 보정·정밀 속도/직진성·슬립·장시간/정격 수용 아님. 전류/온도는 후속 |
-| 물리 비상정지 | T004 감지/latch/reset/PWM PASS, 전력단 일부·A 구동 S0 관측 | 전체 T005A PARTIAL·정식 T-ESTOP-007 BLOCKED. 기존 사용자 제외와 정식 전체 안전 수용 사이 OPEN 경계 보존 |
+| 물리 비상정지 | T004 감지/latch/reset/PWM PASS, 전력단 일부·A 구동 S0 관측 | 11/20 T005A 정상 기능 한정 PASS. T007 나머지 선행/정량 실측 BLOCKED, 수치 잔류 에너지·전체 역급전 수용 OPEN |
 | 엔코더·기구 | 입력 전압·손회전/구동 count·정지, 장착/간격/배선 접근 사용자 확인 | 파형/출력형식/노이즈·전체 제작 identity/치수 미기록을 오늘 거리 결과로 소급 통과시키지 않음 |
 
 추가 근거: [보드 전원](docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md) ·

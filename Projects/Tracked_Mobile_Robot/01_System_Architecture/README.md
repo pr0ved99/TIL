@@ -1,6 +1,13 @@
 # 시스템 아키텍처 문서 안내
 
-**2026-11-17 현재 계획:** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu24.04/Jazzy/Harmonic은 제안이며 새 설치/실행 전이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
+**11/20 마감:** 다음 세션은 집에서 Ubuntu 준비부터 재개한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../docs/progress/2026-11-20_progress.md).
+
+**11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
+
+
+**MVP 수용 기록 · 2026-11-20:** [수용 변경안 채택44 §10](../docs/verification/44_EStop_Acceptance_Proposal_2026-11-19_ko.md)으로 **T005A PASS — 모터 분리·시험한 정상 전원 구성의 공급 차단/PWM 정지/무자동 재출발 기능 범위**. 수치 잔류 전압/에너지·전체 역급전 수용은 OPEN이다. 상위9 PASS·4 PARTIAL, T007 나머지 선행/정량 실측은 BLOCKED. 120fps 촬영 설정 보고를 확보했다. 수시로 바뀌는 모터 연결 상태와 다음 무전원 준비는 현재 인수인계/결정44의 최신 실물 기록을 따른다. 잔여 선행 수용과 정지 측정 준비가 남아 있다. K1 양쪽12AWG 확인으로14AWG 기반 교체/공구 구매 요구는 철회됐다. 새 회로/실물/빌드·플래시/외부 게시 없음. 아래 날짜별 판정은 당시 이력이다.
+
+**2026-11-17 로드맵 작성 이력:** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu24.04/Jazzy/Harmonic은 제안이며 새 설치/실행 전이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
 
 
 상태 대조일: **2026-11-12**. 기존 코드·시험 기록·현재 CAD를 대조한 문서 갱신이며 새 실물 시험 결과가 아니다.
@@ -22,7 +29,7 @@
 | 모터 매핑 | A=왼쪽/M1/JENC_1/TIM3, B=오른쪽/M2/JENC_2/TIM5. 지상 전·후진/양방향 회전 및 10/23 1m 실측·추정 기록 확보 | 정밀도·직진성·다양한 하중/노면 수용 |
 | PWM/DIR | PB6/PC8=M1, PB7/PC9=M2. B DIR HIGH=전진/LOW=후진 보정 뒤 양방향 단발 확인, A active DISARM과 A/B 각각10%·3초 구동 관측 | 부하·전류·온도·노이즈·반복 기동 및 전체 T-MOTOR-003 수용 조건 |
 | 엔코더 | PB4/PB5·PA0/PA1, 1kΩ 직렬+15kΩ 풀다운. CPS/count 및 10/23 지상1m 기록, k=1687/19500mm/count | 외부 기준 속도·노면/하중별 정확도·전체 구동 잡음 검증 |
-| 비상정지 | PC7은 `GPIO_Input`이며 EXTI 구현이 아님. conditioned sense/latch/reset/PWM의 모터 분리 T004 PASS, A 구동 중 S0/PWM/CPS 정지 관측 | 전체 T005A PARTIAL·정식 T-ESTOP-007 BLOCKED. 기계 정지 시간/거리·rail 동시 계측과 전력단 잔여 수용 조건 |
+| 비상정지 | PC7은 `GPIO_Input`이며 EXTI 구현이 아님. conditioned sense/latch/reset/PWM의 모터 분리 T004 PASS, A 구동 중 S0/PWM/CPS 정지 관측 | 11/20 T005A 정상 기능 한정 PASS. T007 정량 정지 및 나머지 선행 수용 미완료. 수치 잔류 에너지·전체 역급전 수용 OPEN |
 | 전원 | F1→S1→+버스바에서 K1·두 XL4015·F2 제어 분기. K1 87→MDD B+, MDD B−→GND. 11/5 종료 후 전원 분리 보고 | 정격·열·단자/전원 전이 등 기존 인수 미결. 사용자 제외한 rail-off 조사를 새 선행으로 복원하지 않음 |
 | IMU | PB8/PB9 I2C, PB1 INT, PC4 RST 배선·무전원 검사 완료 | CubeMX 설정·센서 전원/모드·풀업·실제 통신과 센서값 |
 | CAN | STM PA11 RX/PA12 TX 예약, MCU-230 및 CANable V2.0 Pro 보유 보고. 현재 운영은 UART | 실제 모듈·전원·종단·버스/펌웨어 검증, ESP GPIO4/5는 제안 |

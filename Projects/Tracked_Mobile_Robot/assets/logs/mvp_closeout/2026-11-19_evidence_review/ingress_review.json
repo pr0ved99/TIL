@@ -1,0 +1,81 @@
+{
+  "date": "2026-11-19",
+  "requirement": "MVP-002 / ADR-015",
+  "decision": "PASS: single production command ingress through ESP32; PC browser is upstream WebSocket client",
+  "method": "Current source inspection and stored actual board evidence; no new hardware or PC C runtime test in this block",
+  "source_checks": {
+    "stm_main_binds_protocol_to_huart1": true,
+    "rx_wrong_uart_returns_before_ring_push": true,
+    "only_selected_uart_armed_for_rx": true,
+    "receive_calls_only_in_protocol": true,
+    "ws_parses_typed_request_and_admits_session": true,
+    "arm_cmd_use_executor_ticket": true,
+    "executor_serializes_control_tx": true,
+    "uart_task_dispatches_control": true,
+    "esp_uart1_gpio17_18": true,
+    "partial_test_mode_off": true,
+    "normal_nonzero_contract": true
+  },
+  "source_files": [
+    {
+      "role": "stm_main",
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6"
+    },
+    {
+      "role": "stm_protocol",
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2"
+    },
+    {
+      "role": "esp_main",
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "sha256": "37dc255d7caa7f02fc3a536650a3fb9202273300e27139d75f39a311264272b0"
+    },
+    {
+      "role": "esp_contract",
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3"
+    },
+    {
+      "role": "esp_cmake",
+      "path": "03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "sha256": "43c2842bd827492917136f205368c339a4049f4b10ef5e01ae26f43baa8c32b2"
+    }
+  ],
+  "stm_receive_calls": [
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "line": 1232,
+      "code": "HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "line": 1243,
+      "code": "HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);"
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "line": 1254,
+      "code": "HAL_UART_Receive_IT(s_uart, &s_rx_byte, 1);"
+    }
+  ],
+  "current_esp_main_matches_recorded_ui_source": true,
+  "ui_review_source": "assets/logs/wifi_link/2026-10-24_browser_dashboard_review/validation.json",
+  "outside_PAGE_unchanged_in_ui_review": true,
+  "runtime_evidence": {
+    "nz02_path": "assets/logs/wifi_link/2026-10-17_nz02_reverse_turns_run01",
+    "esp_console_hash_matches": true,
+    "ws_cmd_and_control_tx_seen": true,
+    "command_ack_pairs": 194,
+    "esp_tx_subset_matches_capture": true,
+    "ground_followup": "assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json",
+    "ui_flash_user_report": "docs/progress/2026-10-24_progress.md"
+  },
+  "boundary": [
+    "STM USART2 is initialized for bench logging but command RX is not armed on it; wrong-UART callback guard is source evidence, not a new physical USB injection test.",
+    "This is an architecture/normal-operation requirement, not authentication, tamper resistance, exhaustive error combinations or independent flash-readback proof.",
+    "Production firmware unchanged; historical esp32_uart_bridge and PC-first USART2 tests remain historical."
+  ],
+  "next": "MVP-003 power acceptance gap disposition; preserve excluded investigations and T005A/T007 limits."
+}

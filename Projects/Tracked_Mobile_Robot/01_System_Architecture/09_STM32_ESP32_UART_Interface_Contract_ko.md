@@ -1,5 +1,7 @@
 # STM32-ESP32 UART 인터페이스 계약
 
+> **현재 경로 대조 · 2026-11-19:** PC browser→ESP Wi-Fi/WebSocket→ESP UART1 GPIO17/18↔STM USART1 PA9/10은 구현·실행 근거가 있다. STM 명령RX는huart1 하나이며USART2는진단TX다. [MVP-002 판정](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#8-후속-판정--esp-단일-production-명령-경로). 아래10/11 및 날짜별 미구현/미실행은 당시 기록이다. 전체 오류 조합·보안·전력/기계 인수 PASS로 확대하지 않는다.
+
 > 문서 역할·상태 대조: **2026-09-30** — 현재 UART frame·timeout·reset 계약. 날짜별 검사/이미지 기록은 당시 증거로 보존한다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
@@ -56,9 +58,9 @@ PC-first bench 실습은 동일 application frame의 검증 이력이지 별도 
 ### 역할
 
 ```text
-ESP32 = production command ingress + STM32 bridge; optional PC arbitration/logger/dashboard pending
+ESP32 = production command ingress + browser/WebSocket session arbitration + STM32 UART bridge
 STM32 = parser, safety gate, drivetrain authority
-PC    = optional ESP32 upstream client 또는 historical bench source
+PC    = 현재 browser/WebSocket upstream client; 직접 USART2 명령은 historical bench source
 ```
 
 규칙:
@@ -839,7 +841,7 @@ ESP32:
 영구 배선과 후속 통합 전에 답해야 할 항목이다. Command owner, production UART와 timeout
 recovery 정책은 ADR-015로 닫혔으며 아래 목록의 열린 항목이 아니다.
 
-- Optional `PC -> ESP32` forwarding을 구현할 경우 사용할 upstream transport와 arbitration 방식
+- 현재 PC upstream은 browser/WebSocket이며 ESP session/ticket/owner 중재를 사용한다. 별도 PC serial/Python bridge 추가는 후속 선택이며 기존 MVP 미구현 항목이 아니다.
 - GPIO17/18 ↔ PA9/PA10 영구 신호 경로는 배선됐다. 현재 ESP 외부 연장 시험과 최종 USB 접근·고정·service-disconnect를 구분해 마감
 - 현재 직접 UART 연결의 검증을 유지하고, 배선 길이·모듈을 바꿀 때 logic level과 signal integrity를 재평가
 - 최종 command/telemetry rate. 현재 후보는 `CMD 20 Hz`, `TEL 10 Hz`
@@ -854,8 +856,8 @@ recovery 정책은 ADR-015로 닫혔으며 아래 목록의 열린 항목이 아
 첫 STM32-ESP32 link는 3.3 V UART interface와 text message를 사용한다.
 
 Final MVP production path는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다.
-ESP32-S3가 유일한 external command ingress다. Optional PC forwarding/arbitration을 구현할
-경우 ESP32가 소유하고, USART2는 bench debug/encoder logger로만 사용한다. STM32가 모든
+ESP32-S3가 유일한 external command ingress다. 현재 PC browser forwarding/arbitration은
+ESP32가 소유하고, USART2는 bench debug/encoder logger로만 사용한다. STM32가 모든
 motor safety decision을 소유한다.
 Source loss recovery는 output/stored command zero, `DISARMED`, accepted `ARM` + valid `CMD`
 순서다. 이는 state-machine recovery 계약이며 transport freshness/anti-replay 입증은 아니다.

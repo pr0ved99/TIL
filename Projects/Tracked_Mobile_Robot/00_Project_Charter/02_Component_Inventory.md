@@ -1,5 +1,21 @@
 # Component Inventory
 
+11/20 공식 FHAC062923-B 표 대조: F1 **FHAC0002ZXJ30A/32V**, F2 **FHAC0001ZXJA20A/32V**. 설치10A/1A 퓨즈와 명목 비교 충족. 전체 고장 보호협조 PASS와 구분한다.
+
+
+**11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
+
+
+**11/19 공구 사진 식별 완료:** 사용자 첨부3장에서 손잡이의 **STAREXON SR-CP5220**, 분리 다이의 **WX-03B**, 근접 사진의 홈 표기 **0.5–1 / 1.5–2.5 / 4–6**을 확인했다. 아래8/30 표의 `VH-30J`는 당시 주문/기록상 명칭이다. 실물 식별은 이 사진 표기를 우선하며 같은 공구 사진을 다시 요구하지 않는다. 보유 공구를 계속 검토 대상으로 두고 새 공구 구매는 추가하지 않았다. K1 `280756-4` 특정 압착 조합의 적합성까지 확인한 것은 아니다. [판단과 출처](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md#96-최신-사용자-요청--k1-추가-구매안-비교).
+
+**11/19 최신 구성 정정:** **+버스바→K1 30번은12AWG, K1 87번→MDD10A B+도 중간 접속 없는12AWG**로 사용자 확인됐다. 새 배선 변경이 아니다.280756-4 지정 도체 범위12–10AWG에 포함되므로14AWG 불일치 지적과 이에 따른 선재/단자/압착기 추가 구매·교체 요구를 철회한다. 기존 손당김 미분리 보고는 보존하고 반복하지 않는다. 아래14AWG 상품·외경3.1~3.2mm·교체 검토는 정정 전 이력으로 현재 두 구간에 적용하지 않는다. 전체 접속부 수용 PASS로 확대하지 않는다. [최종 정정 §9.9](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md).
+
+**11/19 사용자 확인:** 오실로스코프는 현재 이용할 수 없다. 기존 DMM·FX2 로직 분석기·UT210E·GM1312 기록은 유지한다. K1 주전력선은 실리콘14AWG, 직경1.78mm, 단면적2.07(사용자 원문 mm; 면적 단위는 mm²), 저항0.02Ω/m, 허용전류55.6A, 허용온도−60~+200°C로 보고됐다. 제품 링크/제조사 조건과1.78mm가 도체인지 피복 포함인지 미확인이다. 이 표기를 실제 설치 허용전류나 기존280756-4 압착 적합성 PASS로 전환하지 않는다. [해소 검토](../docs/plans/2026-11-19_to_20_MVP_Closeout_Plan_ko.md#94-첫-재검토-결과--k1-접속부를-어떻게-닫을-것인가). 구매·교체·추가 장비 확보는 아직 없다.
+
+**11/19 구매 링크 수신:** [사용자가 제공한14AWG 상품 페이지](https://smartstore.naver.com/openhw/products/8872903167). 웹 도구 접근 불가, 직접 HTTP 요청429로 상세 규격 원문은 읽지 못했다. 위 보고값은 사용자 전달값이며 판매 페이지 확인값으로 바꾸지 않는다.
+
+**11/19 외경 후속:** 사용자는 “3.1~2mm되는 것 같아. 이걸로 유추해”라고 지시했다. **피복 포함 외경 약3.1~3.2mm로 해석해 검토 가정**으로 사용한다. 측정 도구/정확도는 보고되지 않았으며 제품 규격 확인값은 아니다. 이 가정에서는962835-3의 피복2.4~3.7mm 범위에 포함돼14AWG 유지 후보를 계속 검토한다. 캡처 추가 요청으로 진행을 막지 않는다. 소켓/압착 적합성과 구매·교체 확정은 별도다.
+
 **11/17 추가:** 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 전선 보유와 J7/J8 하네스 선정/설치를 구분한다. [근거](../docs/progress/2026-11-17_progress.md).
 
 이 문서는 프로젝트에 사용할 부품 목록과 역할을 정리하는 문서다.
@@ -27,7 +43,7 @@
 
 GM-1312의 열전대와 모니터링용 온도센서 2개는 별도 품목이다. 여분 열전대 구매 수량은 보고되지 않았다. 검색 후보의 가격·11/12 예정일을 실제 주문 내역으로 기록하지 않는다. 구매한 품목을 다시 구매 대상으로 안내하지 않는다.
 
-**온도 입력 부속 사용자 확인:** 10kΩ·1kΩ은 보유,100nF는 위 Vishay10개 구매 완료로 갱신했다. 저항의 정확한 수량/허용오차는 미확인이다.10kΩ0.1%는 필수가 아니고±1%도 초기 대안이다. [설계와 대체 조건](../docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md).
+**온도 입력 부속 사용자 확인:** 10kΩ·1kΩ은 보유,100nF는 위 Vishay10개 구매 완료로 갱신했다. **11/19 후속 사용자 확인:이번 진단용10kΩ은±1%·1/4W.** 앞선 정격 모름 답변을 갱신하며 다른 보유 저항 전체의 규격으로 확대하지 않는다. 정확한 수량과1kΩ의 규격은 미확인이다.10kΩ0.1%는 필수가 아니고±1%도 초기 대안이다. [설계와 대체 조건](../docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md).
 
 **4채널 확장 계산 후보:** 전류12kΩ 뒤100nF×2를 포함한100nF 예산은 온도2+전류 후보2=4개다.12kΩ은 보유지만 최종 필터값은 미확정이다. [별도 확장 연결안](../09_Electrical_Design/14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md)의 보호/전원·배치·기판/소켓·고정부속 선정은 남아 있다. 커패시터 구매가 전체 제작 준비 완료를 뜻하지 않는다.
 
@@ -90,8 +106,8 @@ USB-CAN 사전 조사 근거:
 | Power | LiPo charger | balance charge / storage mode | iMAX B6 class charger |
 | Power | XL4015 x2 | 5V buck converter | MCU/sensor power |
 | Power distribution | 커버형 6구 버스바 x2 | S1 OUT 이후 + 분배 / 공통 GND 분배 | 차량용 퓨즈 허브에서 변경하여 사용; 판매 표기 150 A는 실물 검증 정격이 아님. [연결 기록](../docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) |
-| Protection | AWG14 fuse holder | main power protection | use blade fuses |
-| Protection | main power switch | manual power control | DC 20A-30A class target |
+| Protection | F1 Littelfuse FHAC0002ZXJ inline ATO holder | main power protection,10A fuse | 사용자 확인32VDC30A, 기존 GXL12AWG 관측. 옛 AWG14 holder 후보를 현재 F1로 사용하지 않음. [근거45](../docs/verification/45_T001_Design_Prerequisite_Closure_2026-11-20_ko.md) |
+| Protection | S1 Battery Isolator, 사용자 제공50A형 | manual power control | 판매 사양DC32V·50A.11/20 사용자 수용으로 MVP S1 항목 PASS. 제조사명 미제공을 재개방 사유로 쓰지 않음. [근거45](../docs/verification/45_T001_Design_Prerequisite_Closure_2026-11-20_ko.md) |
 | Protection | 3S low-voltage alarm | LiPo over-discharge warning | required in operation |
 | Motor — other candidates | 기존 encoder DC motor 후보 | 비교·예비 후보 | JGB37-520 encoder 상태는 미확정; 현재 선택한 MG540-A/B와 구분 |
 | Motor — selected | WHEELTEC MG540P30_12V x2 | 현재 구동계의 모터·엔코더 | MG540-A=오른쪽/TIM5, MG540-B=왼쪽/TIM3; 기존 수동 회전 검증. 새 영구 배선의 연결 검증과 실모터 구동은 남음. [식별·시험 기록](../02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md) |
@@ -122,11 +138,11 @@ USB-CAN 사전 조사 근거:
 | U1 | Vishay `VO617A-3` | 1 | Galvanically isolated S0-B sense conditioner for STM32 PC7 | UNPOWERED DIODE/ISOLATION SCREEN PASS: 1->2 `955`, reverse OL, input-output open; CTR/powered margin OPEN |
 | R | measured `670.1 Ω`, `9.97 kΩ` | 1 each selected | Optocoupler LED current limit and PC7 external pull-up candidates | VALUE PRECHECK PASS / INTEGRATION OPEN |
 | F2 | Ordered Littelfuse `0287001.PXCN` 1 A ATOF | 1 | Control-loop wiring/short protection | Operator-reported unpowered continuity/movement PASS; exact physical marking and powered coordination OPEN |
-| F2 holder | Ordered Littelfuse `FHAC0001ZXJA` | 1 | Inline holder for F2 | Operator-reported unpowered screen PASS; powered drop/thermal OPEN |
+| F2 holder | Littelfuse `FHAC0001ZXJA` | 1 | Inline holder for F2 | 기존 구매·입고 기록과11/20 사용자 재확인 일치. 무전원 도통/움직임 정상 근거 재사용. F1의30A 정격을 이 부품에 대입하지 않음 |
 | D-clamp | Vishay `P6KE16CA-E3/54` | 3 | K1/K2 coil transient clamp candidates | UNPOWERED IDENTITY/GROSS-SHORT SCREEN PASS: exact `CA`, no stripe, both directions open; POWERED CLAMP BEHAVIOR OPEN |
 | J-ESTOP | Loose 6P waterproof connector kit + separate 18 AWG wire | 1 set | Removable S0/S2 operator-panel connection | INVENTORY/VISUAL PASS; not preterminated; CAVITY MAP, CRIMP, 6x6 ISOLATION, SEAL/RETENTION OPEN |
 | Crimp tool | `VH-30J` interchangeable-die set, ordered with `WX-03B` | 1 set | First-article 18 AWG connector crimp and candidate AWG 12 terminal tooling | USER-REPORTED RECEIVED / EXACT CONTENTS, CONDITION, DIE GEOMETRY AND CRIMP QUALITY NOT VALIDATED |
-| F1 | Received Littelfuse holder + fuse marked `257/32V/10` | 1 set | Main-path wiring/short protection prototype | UNPOWERED SCREEN PASS; ORDERED `287` VS ACTUAL `257` IDENTITY AND POWERED TEST OPEN |
+| F1 | Littelfuse `FHAC0002ZXJ` holder +10A fuse marked `257/32V/10` | 1 set | Main-path wiring/short protection prototype | 홀더 사용자 사양32VDC30A·기존 GXL12AWG·무전원 검사 PASS.11/20 제조사 공지로257/287 공통 각인 확인. 형번/명목 사양 확인 완료, 전체 보호협조와 구분. [근거45](../docs/verification/45_T001_Design_Prerequisite_Closure_2026-11-20_ko.md) |
 
 선정 부품의 배송 blocker는 해소됐지만 도착 자체는 조립 승인이나 시험 PASS가 아니다. Complete
 Physical E-stop integration과 powered K1/K2 coil test는 crimp-tool 구성/상태 확인, spare 18 AWG

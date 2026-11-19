@@ -1,5 +1,7 @@
 # 전원 분배와 안전 아키텍처
 
+**현재 대조 · 2026-11-19:** [전원 검토43 §9](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#9-후속-판정--전원-근거와-실제-잔여-조건). 현행 USB/buck 분리·두2P 운용 규칙 REQ-POWER-003은 PASS다. 전체 전력 경로 MVP-003과 기존 buck 부하 수용은 각각 PARTIAL/CONDITIONAL PASS로 구분한다. 회로·전원 규칙은 변경하지 않았고 기존 완료 시험을 재개하지 않는다.
+
 > 문서 역할·상태 대조: **2026-09-30** — 현재 전원 분배와 안전 경계. 초기 RevA 경로는 과거 비교 자료로 보존한다.
 > [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
 
@@ -65,7 +67,7 @@ LiPo+ -> F1(사용자 확인 10 A) -> S1 -> + busbar / VBAT_PROTECTED
 LiPo- -> GND busbar -> MDD10A B- / 두 XL4015 IN- / 공통 신호 기준
 ```
 
-K1 주선은 사용자 구성 14 AWG, MDD B− 귀환은 16 AWG다. 부품/단자 정격 편차와 부하·열 검증은 별도다.
+**11/19 구성 정정:** +버스바→K1 30번은12AWG, K1 87번→MDD10A B+도 중간 접속 없는12AWG다(사용자 보고). 새 배선 변경이 아니다. MDD B− 귀환은 기존16AWG 기록을 유지한다. 도체 굵기 확인을 전체 부하·열 검증으로 확대하지 않는다.
 K1은 S0/S2/K2 제어 경로로 모터 전원을 차단·수동 재인가하며 두 buck 입력은 K1 전단에서 분기한다.
 S0 감지와 STM32 래치/PWM 경로는 전력 차단 경로와 구분한다. 세부 계약은 [25 회로](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를 따른다.
 
