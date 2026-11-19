@@ -1,6 +1,8 @@
 # 분야별 문서 색인
 
-**현재 · 2026-11-17 마감:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](progress/2026-11-17_progress.md) · [검증/게시](../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
+**현재 안내:** 새 세션은 Ubuntu 준비부터 시작한다. 실제 ADC 실측은 NUCLEO와 저전압 시험 입력을 연결할 때 별도 진행한다. [재개점](handoff/CURRENT_SESSION_CONTEXT.md).
+
+**11/17 마감 이력:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](progress/2026-11-17_progress.md) · [검증/게시](../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 
 **이전 · 2026-11-15 마감:** B Retry01의 평균 효과와5mV 편향 잔류를 확인했고 사용자는 편향이 평균으로 제거되지 않음을 이해했다고 보고했다. C는 사용자 선택으로 실행 생략.03_15 감지선 단락의 R7 유무 비교 회로·CSV·워크북을 확보했다(공급7.266mA 대8.000A). 실제 ADC 잡음/보호/열 검증이나 제작 CAD 반영은 아니다. 다음은 J7/J8 하네스·설치 조건 → 보호 저항 정격 대조이며 새 감지선 사양은 미정이다. 수기 전체 완료는 미보고, NotebookLM 별도. [진행·근거](progress/2026-11-15_progress.md) · [배터리 ADC 제조사 근거](../09_Electrical_Design/31_Battery_Voltage_ADC_Reference_Basis_2026-11-15_ko.md).
 
