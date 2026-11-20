@@ -1,6 +1,6 @@
 # Tracked Mobile Robot — 세부 설계부터 최종 완성까지의 실행 계획
 
-**현재 재개점 · 2026-11-20 Ubuntu 인수인계:** Ubuntu 설치·초기 설정 완료가 보고됐다. 다음 작업은 Ubuntu에서 Codex와 TIL 개발 브랜치를 연결하고 ROS 2 Jazzy·Gazebo Harmonic 기본 실행을 확인하는 것이다. [다음 세션 시작](../handoff/NEXT_SESSION_START_PROMPT.md) · [11/20 진행 기록](../progress/2026-11-20_progress.md).
+**재개점 · 2026-11-21.** TurtleBot3의 Nav2 목표 이동과 TMR의 SIM-01~03 기본 주행을 확인했다. 다음은 SIM-04에서 가상 2D LiDAR를 연결하고 `/scan`을 검증하는 것이다. TMR 고정 지도·AMCL·Nav2 목표 이동과 IMU/EKF는 후속이다. [TMR 모델과 실행 방법](../../05_ROS2_Integration/README.md) · [11/21 진행 기록](../progress/2026-11-21_progress.md)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 
@@ -279,6 +279,8 @@ STM32 RTOS와 ESP-IDF가 이미 사용하는 RTOS를 구분한다. LL 전체 재
 
 ## 11. Ubuntu·시뮬레이션·Nav2
 
+초기 모델의 토픽과 TF는 [SIM-01 시뮬레이션 인터페이스](../../05_ROS2_Integration/README.md)를 따른다. 첫 목표 이동에는 Gazebo 오도메트리와 `odom → base_footprint → base_link`를 사용하고, 가상 IMU와 EKF 융합은 첫 이동 결과를 얻은 뒤 비교한다.
+
 | 작업 | 상세 수행 | 완료 근거 | 선행 |
 | --- | --- | --- | --- |
 | S01 | 외부 백업 복원·암호화/복구키·실제 축소 가능량·USB·OS 호환 검토→사용자 듀얼부팅 | 양 OS 부팅/장치·설치 버전. 내부SSD 절반은 방향이며 실제 분할값은 검사 후 결정 | Q11, 사용자 설치 시점 |
@@ -286,7 +288,7 @@ STM32 RTOS와 ESP-IDF가 이미 사용하는 RTOS를 구분한다. LL 전체 재
 | S03 | URDF/Xacro·충돌/관성·센서 위치·차동 구동 근사·속도 명령 | 전진/후진/회전/정지·encoder odom·평가용 ground truth 분리 | S02, 치수 가정표 |
 | S04 | 가상 IMU/scan·TF·시각·QoS·reset/stale 처리·EKF | 단위/축/발행률·동적TF 단일 주체·bag 확인 | S03 |
 | S05 | 계측 mock/replay·ROS/화면/로그 연동 | REAL/SIM/REPLAY 구별·seq/time/valid·중단 표시 | S02, M03 계약 |
-| N01 | 작은 고정 지도·AMCL·footprint/costmap·속도/가속 상한 | 초기 위치와 장애물 반영, map→odom·odom→base_link 소유권 | S04의 scan/TF·시각과 유효 odom; 초기 시뮬레이터 odom 가능 |
+| N01 | 작은 고정 지도·AMCL·footprint/costmap·속도/가속 상한 | 초기 위치와 장애물 반영, `map → odom`과 `odom → base_footprint`의 발행 주체 확인 | S04의 scan·TF·시각 확인과 유효한 시뮬레이터 odom |
 | N02 | Nav2 목표·취소·경로 차단·센서/명령 유실·복구 | 세부 scenario bag/CSV·종료 상태·실패 원인 | N01 |
 | N03 | 5경로×4조건/seed=20회 기준선 평가 | 성공/충돌/시간/오차·반복 재현·튜닝/평가 분리. G6 | N02 |
 | N04 | 필요 시 SLAM으로 지도 생성/저장 후 localization 복귀 | 자체 생성 지도와 고정 지도 기준선 비교·TF 충돌 없음 | N03 |

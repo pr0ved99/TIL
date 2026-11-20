@@ -1,6 +1,6 @@
 # 시스템 아키텍처 로드맵: CAN, RTOS, LL Driver
 
-**2026-11-17 현재 계획:** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu24.04/Jazzy/Harmonic은 제안이며 새 설치/실행 전이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
+**11/17 계획과 11/21 확인 결과.** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu 24.04/Jazzy/Harmonic에서 TMR 기본 주행을 확인했다. 다음은 가상 LiDAR 연결이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
 
 
 > 문서 역할·상태 대조: **2026-09-30** — 단계별 목표와 진입 조건. 현재 실행 순서는 최신 master plan과 인수인계를 따른다.

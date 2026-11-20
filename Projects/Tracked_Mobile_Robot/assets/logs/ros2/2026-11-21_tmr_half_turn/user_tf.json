@@ -1,0 +1,45 @@
+{
+  "source": "User's terminal readouts after left, then right, ROS_DOMAIN_ID=85; values transcribed at the displayed precision.",
+  "odom_to_base_footprint": {
+    "stamp_display": "1679.22000000",
+    "translation_m": [
+      0.198,
+      -0.0,
+      0.0
+    ],
+    "quaternion_xyzw": [
+      0,
+      0,
+      -0.062,
+      0.998
+    ],
+    "rpy_deg": [
+      0,
+      0,
+      -7.11
+    ]
+  },
+  "base_link_to_laser_frame": {
+    "stamp_display": "0.0",
+    "translation_m": [
+      0.065,
+      0,
+      0.045
+    ],
+    "quaternion_xyzw": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "rpy_deg": [
+      0,
+      0,
+      0
+    ],
+    "joint_type": "fixed",
+    "placement": "provisional"
+  },
+  "gazebo_final_yaw_rad": -0.140061,
+  "gazebo_pose_source": "Separate Gazebo world-pose readback after the user's commands. Individual turn angles were measured in a different run (result.json)."
+}

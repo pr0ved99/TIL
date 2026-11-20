@@ -1,8 +1,10 @@
 # Current Session Context
 
-**현재 재개점 · 2026-11-20 Ubuntu 인수인계:** 사용자가 Ubuntu 설치·기본 초기 설정과 VS Code·Terminator·Chrome 설치를 보고했다. Windows 복귀 후 읽기 전용 조회에서 WD Blue 1TB 디스크의 C: 약 480.4 GiB, Linux 파일시스템 유형 파티션 450 GiB, 기존 EFI·MSR·복구 파티션을 확인했다. Live USB의 UEFI 부팅·디스크 인식과 Wi-Fi 연결은 앞선 사용자 화면에서 확인했다. 설치된 Ubuntu의 마운트·드라이버·패키지 버전은 다음 Ubuntu 세션에서 확인한다.
+**재개점 · 2026-11-21.** Ubuntu의 TMR 시뮬레이션에서 전진·후진·좌우 제자리 회전과 명시적 정지를 확인했다. 사용자 실습 종료 TF는 `odom → base_footprint` yaw −7.110°, `base_link → laser_frame` (0.065, 0, 0.045)m·회전 0이다. LiDAR 장착 위치는 임시이며 거리 데이터 발행은 다음 단계다. 다음 세션에서는 사용자가 SIM-04 가상 2D LiDAR 코드를 직접 수정하고 `/scan`의 프레임·시각·거리와 RViz 장애물 정렬을 확인한다. [실행 안내](../../05_ROS2_Integration/README.md) · [11/21 기록](../progress/2026-11-21_progress.md)
 
-**다음 작업:** Ubuntu의 Linux 파일시스템에 체크아웃한 TIL 개발 브랜치 `agent/dual-encoder-bringup`을 VS Code에서 열고 Codex를 연결한다. 이후 ROS 2 Jazzy와 Gazebo Harmonic의 설치 상태·기본 실행을 확인한다. [시작 프롬프트](NEXT_SESSION_START_PROMPT.md) · [설치 이력과 확인 명령](../plans/2026-11-20_HP_Victus_Windows_Ubuntu_Dual_Boot_Runbook_ko.md) · [11/20 진행 기록](../progress/2026-11-20_progress.md).
+**현재 재개점 · 2026-11-20 Ubuntu와 Nav2:** Ubuntu 24.04.5에서 ext4의 TIL 개발 브랜치 `agent/dual-encoder-bringup`을 열었다. ROS 2 Jazzy·Gazebo Harmonic 8.15.0·Nav2 1.3.14로 제공 TurtleBot3 예제의 자동 목표 이동 2회를 확인했다. GUI 회차에서 Gazebo 모델이 0.815 m 이동했고 목표점까지 최종 거리는 0.198 m였다. 사용자가 RViz의 지도·LiDAR 표시와 직접 지정한 `Nav2 Goal` 이동을 확인했고, 사용자 실행 로그에 `Goal succeeded` 다섯 건이 있다. [11/20 진행 기록](../progress/2026-11-20_progress.md#ubuntu-ros-2-환경과-turtlebot3-목표-이동-확인)
+
+**SIM-02 첫 모델:** SIM-01 토픽·TF 규약에 맞춰 `tmr_description`을 작성했다. 실측 3.25kg·약 233mm와 이동량 등가 반지름 21.48mm를 사용하고 차체 외형·센서 위치·관성 가정을 기록했다. Jazzy에서 빌드·URDF 파싱·두 관절 상태와 다섯 TF·RViz 렌더링을 확인했다. 사용자가 모델 방향을 확인했고, SIM-03의 평지 주행 결과는 위 11/21 기록에 있다. [모델과 실행 안내](../../05_ROS2_Integration/README.md#rviz에서-모델-열기) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 

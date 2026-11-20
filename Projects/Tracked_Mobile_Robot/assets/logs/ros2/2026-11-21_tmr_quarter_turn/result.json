@@ -1,0 +1,180 @@
+{
+  "left": {
+    "before": {
+      "sim_s": 34.374,
+      "world_xyz_m": [
+        -0.0,
+        0.0,
+        0.0
+      ],
+      "world_rpy_rad": [
+        0.0,
+        0.002223,
+        0.0
+      ],
+      "odom_yaw_rad": 4.5938934770801024e-18,
+      "odom_xy_m": [
+        -2.0010890326992386e-14,
+        1.254726131169607e-33
+      ],
+      "odom_vx_m_s": 1.9525509312695237e-20,
+      "odom_wz_rad_s": -5.3363741182778084e-20,
+      "tf_yaw_rad": 4.588429017641273e-18,
+      "wheel_position_rad": {
+        "left_wheel_joint": -9.316499681097977e-13,
+        "right_wheel_joint": -9.31600195004431e-13
+      }
+    },
+    "after_stop": {
+      "sim_s": 40.528,
+      "world_xyz_m": [
+        5.7e-05,
+        -4.8e-05,
+        0.0
+      ],
+      "world_rpy_rad": [
+        0.0,
+        0.002222,
+        1.75211
+      ],
+      "odom_yaw_rad": 1.5582299554723862,
+      "odom_xy_m": [
+        4.1662849055935464e-14,
+        -2.4588805409265054e-14
+      ],
+      "odom_vx_m_s": 0.0,
+      "odom_wz_rad_s": 0.0,
+      "tf_yaw_rad": 1.5582299554723862,
+      "wheel_position_rad": {
+        "left_wheel_joint": -8.45147036830609,
+        "right_wheel_joint": 8.451470368308229
+      }
+    },
+    "stopped_again": {
+      "sim_s": 41.718,
+      "world_xyz_m": [
+        5.7e-05,
+        -4.8e-05,
+        0.0
+      ],
+      "world_rpy_rad": [
+        0.0,
+        0.002222,
+        1.75211
+      ],
+      "odom_yaw_rad": 1.5582299554723862,
+      "odom_xy_m": [
+        4.1662849055935464e-14,
+        -2.4588805409265054e-14
+      ],
+      "odom_vx_m_s": 0.0,
+      "odom_wz_rad_s": 0.0,
+      "tf_yaw_rad": 1.5582299554723862,
+      "wheel_position_rad": {
+        "left_wheel_joint": -8.45147036830609,
+        "right_wheel_joint": 8.451470368308229
+      }
+    },
+    "world_turn_deg": 100.38850824266667,
+    "odom_turn_deg": 89.27999995942592,
+    "max_sampled_center_offset_m": 7.453023165670774e-05,
+    "world_sample_count": 422,
+    "stopped_heading_change_deg": 0.0,
+    "stopped_center_change_m": 0.0,
+    "moving_cmd_wz_rad_s": 0.7853981633974483,
+    "peak_signed_odom_wz_rad_s": 0.785398163109123,
+    "wheel_delta_rad": {
+      "left_wheel_joint": -8.45147036830516,
+      "right_wheel_joint": 8.45147036830916
+    }
+  },
+  "right": {
+    "before": {
+      "sim_s": 90.95,
+      "world_xyz_m": [
+        5.7e-05,
+        -4.8e-05,
+        0.0
+      ],
+      "world_rpy_rad": [
+        0.0,
+        0.002222,
+        1.75211
+      ],
+      "odom_yaw_rad": 1.5582299554723862,
+      "odom_xy_m": [
+        4.1662849055935464e-14,
+        -2.4588805409265054e-14
+      ],
+      "odom_vx_m_s": 0.0,
+      "odom_wz_rad_s": 0.0,
+      "tf_yaw_rad": 1.5582299554723862,
+      "wheel_position_rad": {
+        "left_wheel_joint": -8.45147036830609,
+        "right_wheel_joint": 8.451470368308229
+      }
+    },
+    "after_stop": {
+      "sim_s": 97.104,
+      "world_xyz_m": [
+        0.0,
+        -1e-06,
+        0.0
+      ],
+      "world_rpy_rad": [
+        -0.0,
+        0.002222,
+        -0.00088
+      ],
+      "odom_yaw_rad": 2.2717124082108044e-13,
+      "odom_xy_m": [
+        -1.494174316793068e-14,
+        5.522021301157834e-15
+      ],
+      "odom_vx_m_s": 3.087002269628126e-20,
+      "odom_wz_rad_s": -9.659579168161561e-20,
+      "tf_yaw_rad": 2.2717123821922528e-13,
+      "wheel_position_rad": {
+        "left_wheel_joint": -1.7795873458508707e-12,
+        "right_wheel_joint": 7.033371953812038e-13
+      }
+    },
+    "stopped_again": {
+      "sim_s": 98.294,
+      "world_xyz_m": [
+        0.0,
+        -1e-06,
+        0.0
+      ],
+      "world_rpy_rad": [
+        -0.0,
+        0.002222,
+        -0.00088
+      ],
+      "odom_yaw_rad": 2.271714742781252e-13,
+      "odom_xy_m": [
+        -1.4941785666931425e-14,
+        5.522021301157834e-15
+      ],
+      "odom_vx_m_s": -5.782128938905049e-20,
+      "odom_wz_rad_s": -9.219951793332042e-20,
+      "tf_yaw_rad": 2.2717147447397462e-13,
+      "wheel_position_rad": {
+        "left_wheel_joint": -1.7795906048972982e-12,
+        "right_wheel_joint": 7.033364991144282e-13
+      }
+    },
+    "world_turn_deg": -100.43892852863819,
+    "odom_turn_deg": -89.2799999594129,
+    "max_sampled_center_offset_m": 7.364508165814844e-05,
+    "world_sample_count": 413,
+    "stopped_heading_change_deg": 0.0,
+    "stopped_center_change_m": 0.0,
+    "moving_cmd_wz_rad_s": -0.7853981633974483,
+    "peak_signed_odom_wz_rad_s": -0.785398163109528,
+    "wheel_delta_rad": {
+      "left_wheel_joint": 8.45147036830431,
+      "right_wheel_joint": -8.451470368307525
+    }
+  }
+}

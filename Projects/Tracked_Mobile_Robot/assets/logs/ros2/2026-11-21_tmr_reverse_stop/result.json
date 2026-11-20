@@ -1,0 +1,152 @@
+{
+  "before": {
+    "sim_s": 16.252,
+    "odom_xy_m": [
+      0.19849999999721177,
+      4.5441616673535155e-21
+    ],
+    "odom_vx_m_s": 0.0,
+    "odom_wz_rad_s": 0.0,
+    "world_xyz_m": [
+      0.198123,
+      0.0,
+      -0.0
+    ],
+    "world_rpy_rad": [
+      0.0,
+      -0.002224,
+      0.0
+    ]
+  },
+  "frames": [
+    "odom",
+    "base_footprint"
+  ],
+  "joint_names": [
+    "left_wheel_joint",
+    "right_wheel_joint"
+  ],
+  "after_stop": {
+    "sim_s": 22.066,
+    "odom_xy_m": [
+      9.999999997952227e-05,
+      6.452682855015735e-17
+    ],
+    "odom_vx_m_s": 0.0,
+    "odom_wz_rad_s": 0.0,
+    "world_xyz_m": [
+      0.0001,
+      0.0,
+      -0.0
+    ],
+    "world_rpy_rad": [
+      -0.0,
+      0.002224,
+      -0.0
+    ]
+  },
+  "stopped_again": {
+    "sim_s": 23.562,
+    "odom_xy_m": [
+      9.999999997952227e-05,
+      6.452682855015735e-17
+    ],
+    "odom_vx_m_s": 0.0,
+    "odom_wz_rad_s": 0.0,
+    "world_xyz_m": [
+      0.0001,
+      0.0,
+      -0.0
+    ],
+    "world_rpy_rad": [
+      -0.0,
+      0.002224,
+      -0.0
+    ]
+  },
+  "min_odom_vx_m_s": -0.09999999999986686,
+  "commands": [
+    {
+      "sim_s": 19.768,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 19.868,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 19.968,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.068,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.168,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.268,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.368,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.468,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.568,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.668,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.768,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.868,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 20.968,
+      "vx_m_s": -0.1,
+      "wz_rad_s": 0.0
+    },
+    {
+      "sim_s": 21.068,
+      "vx_m_s": 0.0,
+      "wz_rad_s": 0.0
+    }
+  ],
+  "tf_edges": [
+    "base_footprint -> base_link",
+    "base_link -> imu_link",
+    "base_link -> laser_frame",
+    "base_link -> left_wheel_link",
+    "base_link -> right_wheel_link",
+    "odom -> base_footprint"
+  ],
+  "stopped_odom_tf_x_m": 9.999999997952227e-05,
+  "world_dx_m": -0.198023,
+  "odom_dx_m": -0.19839999999723223,
+  "stopped_world_drift_m": 0.0
+}

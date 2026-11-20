@@ -1,6 +1,6 @@
 # Ubuntu 듀얼부팅·Nav2 시뮬레이션·강화학습 단계 계획
 
-**현재 재개점 · 2026-11-20 Ubuntu 인수인계:** Ubuntu 설치·초기 설정 완료가 보고됐다. 다음 작업은 Ubuntu에서 Codex와 TIL 개발 브랜치를 연결하고 ROS 2 Jazzy·Gazebo Harmonic 기본 실행을 확인하는 것이다. [다음 세션 시작](../handoff/NEXT_SESSION_START_PROMPT.md) · [11/20 진행 기록](../progress/2026-11-20_progress.md).
+**재개점 · 2026-11-21.** TurtleBot3의 Nav2 목표 이동과 TMR의 SIM-01~03 기본 주행을 확인했다. 다음은 SIM-04에서 가상 2D LiDAR를 연결하고 `/scan`을 검증하는 것이다. TMR 고정 지도·AMCL·Nav2 목표 이동과 IMU/EKF는 후속이다. [TMR 모델과 실행 방법](../../05_ROS2_Integration/README.md) · [11/21 진행 기록](../progress/2026-11-21_progress.md)
 
 **초기 실행 순서:** 환경 준비 → 양쪽 OS 부팅 → ROS 2/Gazebo 기본 실행 → 첫 가상 로봇 이동 → odom·TF·scan과 Nav2 첫 목표 이동. 최초 목표 이동에는 시뮬레이터 odom을 사용하고, IMU/EKF 비교·반복 평가·계측 mock은 이후 검증에서 다룬다. 아래 11/19~12/2 날짜와 하루 1~2시간 가정은 11/17 당시 제안이다. 현재 작업 가능일의 기준은 하루 5~7시간이다.
 
@@ -10,7 +10,7 @@
 
 ## 1. 이번 방향과 완료의 의미
 
-사용자는 현재 Windows에서 작업하고 있으며, **같은 노트북 내부 SSD를 약 절반 나누어 Ubuntu와 듀얼부팅**할 계획이라고 보고했다. 전환 시점은 미정이다. 기존 별도 Ubuntu SSD/Humble 기본 실행 이력은 과거 사실이며, 새 설치가 이미 있다는 뜻으로 사용하지 않는다.
+11/17 계획을 작성할 당시에 사용자는 Windows에서 작업하고 있었으며, **같은 노트북 내부 SSD를 약 절반 나누어 Ubuntu와 듀얼부팅**할 계획이라고 보고했다. 전환 시점은 미정이다. 기존 별도 Ubuntu SSD/Humble 기본 실행 이력은 과거 사실이며, 새 설치가 이미 있다는 뜻으로 사용하지 않는다.
 
 **11/17 당시 추천:** 11/17~18 기존 일정 후 11/19 백업·환경 점검, 조건이 갖춰지면 11/20 설치, 11/21 ROS/Gazebo 점검. PCB 제작을 기다리지 않고 가상 센서·오도메트리·Nav2를 병행한다. 전환을 PCB 완성까지 미루지 않는 이유는 모델·토픽·TF·지도/경로 계획을 실물 없이 먼저 검증할 수 있기 때문이다.
 
@@ -73,13 +73,13 @@ A~D는 PCB 제작을 기다리지 않는다. 반대로 시뮬레이션 성공은
 ## 4. 시뮬레이션에서 먼저 고정할 계약
 
 - 모델은 궤도형 로봇의 **차동 구동 근사**부터 시작한다. 유효 궤간·마찰·슬립·질량/관성 미확정은 파라미터 가정으로 둔다. 이상적인 바퀴 모델 결과를 실물 궤도 회전/견인 성능으로 주장하지 않는다.
-- TF: map→odom은 AMCL 또는 SLAM 한 주체, odom→base_link는 선택한 odometry/EKF 한 주체, base_link→imu_link/laser_frame은 robot_state_publisher/static transform이 담당한다. Gazebo와EKF가 같은 동적TF를 중복 발행하지 않게 한다.
+- TF는 `map → odom → base_footprint → base_link`로 연결한다. 첫 지도 주행에서 AMCL이 `map → odom`을 맡고, Gazebo 차동 구동과 bridge가 `odom → base_footprint`를 연결한다. `robot_state_publisher`가 차체와 센서의 고정 변환을 발행한다. EKF를 적용할 때는 `odom → base_footprint`의 발행 주체를 EKF 하나로 바꾼다. [TF 발행 주체](../../05_ROS2_Integration/README.md#좌표계와-발행-주체)
 - 센서: sensor_msgs/Imu의 m/s²·rad/s·축/중력 처리, LaserScan의 m·rad, Odometry의 m·m/s·rad/s, covariance와 timestamp를 명시한다. IMU만으로 장시간 위치가 유지된다고 가정하지 않는다.
 - 센서 추정 odom과 Gazebo ground truth를 구분한다. ground truth는 평가에만 쓰고 AMCL/EKF/RL 관측에 몰래 넣어 결과를 높이지 않는다. 이상적 odom으로 먼저 동작을 확인한 경우 그렇게 표시한다.
 - 전체 sim 노드는 use_sim_time/clock을 맞춘다. reset 시각 역행·센서 stale/유실, QoS·발행률/지연을 기록한다.
 - 명령은 m/s·rad/s의 cmd_vel 계열이다. 실제 메시지형(Twist/TwistStamped)과 토픽명은 **설치한 Jazzy/Nav2 버전**에서 확인해 고정한다. 현재 PWM 명령에 속도를 그대로 대입하지 않는다.
 - 전류·전압·온도는 별도 mock/replay provider로 먼저 노출한다. 단위(A/V/°C), source=SIM/REPLAY/REAL, valid, age, timestamp를 포함한다. 모의 온도/전류로 실제 배터리 소비·모터 발열·고장 임계값을 검증했다고 하지 않는다.
-- 초기 예정 패키지: tmr_description / tmr_sim / tmr_bringup / tmr_navigation / tmr_monitoring / tmr_interfaces, RL은 별도 환경. **아직 생성/구현하지 않은 계획 이름**이다.
+- 현재 패키지는 `tmr_description`과 `tmr_sim`이다. `tmr_bringup`, `tmr_navigation`, `tmr_monitoring`, `tmr_interfaces`는 후속 계획이며 RL은 별도 환경에서 진행한다.
 - 경로는 ROS package share/상대경로로 찾고 C:\\Users 또는 D: 아카이브에 의존하지 않도록 한다. bag/동영상은 별도 artifact와 manifest로 관리한다.
 
 Nav2 공식 가이드는 물리 로봇 없이 simulator로 TF·URDF·odometry·센서를 구성하는 순서를 제공한다. [First-Time Robot Setup](https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/), [robot_localization](https://docs.nav2.org/rolling/configuration_and_development/first_time_robot_setup_guide/odom/setup_robot_localization/). rolling 문서의 최신 파라미터를 Jazzy에 그대로 복사하지 않는다.
@@ -98,7 +98,7 @@ Nav2 공식 가이드는 물리 로봇 없이 simulator로 TF·URDF·odometry·�
 | 2026-11-24 | SIM-03 | 차동 구동 근사 | Gazebo 전진·후진·회전·명령 정지 4경로 로그; wheel odom과 평가용 정답 분리 | 궤도 미끄럼/실제 동역학 검증으로 확대하지 않음 |
 | 2026-11-25 | BUF-01 | 가벼운 점검·버퍼 | 환경/TF/모델 미결 1건 닫기 또는 실패 원인 기록 | 기존 개인 일정 유지; 새 설치/긴 실험 배정 없음 |
 | 2026-11-26 | SIM-04 | 가상 IMU·2D LiDAR | imu/data·scan·clock 기록; 축/단위/스탬프·센서 TF 확인 | 실제 IMU 통신/실제 LiDAR 선정 완료와 구분 |
-| 2026-11-27 | SIM-05 | 오도메트리·EKF | wheel odom+IMU 융합; odom→base_link 발행자 1개, 직선/회전 비교 bag | 중복 TF·같은 측정의 중복 융합이 있으면 먼저 해결 |
+| 2026-11-27 | SIM-05 | 오도메트리·EKF | wheel odom+IMU 융합, `odom → base_footprint` 발행자 1개, 직선/회전 비교 bag | 첫 목표 이동은 문서 상단 순서에 따라 시뮬레이터 odom으로 먼저 확인 |
 | 2026-11-28 | NAV-01 | 지도·자기 위치 | 작은 고정 지도에서 AMCL 초기화·반복 위치 추정; map→odom 확인 | SLAM은 기존 지도 경로 후 추가하며 같은 날 필수 아님 |
 | 2026-11-29 | NAV-02 | Nav2 첫 목표점 | 수동 지정 목표 도달·취소·경로 차단 3시나리오 로그 | 속도 상한/footprint/scan 장애물 반영 확인 |
 | 2026-11-30 | ELEC-01 | 보호 회로 판단 마감 | Rp/분기 퓨즈 결정표, 설치 미정, 정상 환산비·TCR 상한을 한 문서로 마감 | 미정은 담당 확인 항목으로 남김; 추가 온도 실습 자동 배정 없음 |
@@ -147,4 +147,4 @@ Gymnasium+Stable-Baselines3 PPO의 작은 MLP/CPU를 시작 후보로 둔다. se
 
 매일 남길 최소 세트: 목적1문장, 가정/변경, 실제 실행 명령·버전, 원본 bag/CSV/스크린샷 경로, 결과·한계, 다음 한 작업. 문서 작성/사용자 필기·이해/구현/실측을 분리한다.
 
-기본 최신 경로는 이 계획과 CURRENT_SESSION_CONTEXT이며 과거 날짜별 계획은 이력이다. 기존 KiCad PDF는 CAD가 그대로면 재생성하지 않고 해시 대조 결과를 기록한다. NotebookLM 업로드·영상 갱신은 별도다. 지금은 계획만 작성했으며 모든 ENV/SIM/NAV/RL 작업 상태는 NOT_STARTED다.
+기본 최신 경로는 이 계획과 CURRENT_SESSION_CONTEXT이며 과거 날짜별 계획은 이력이다. 기존 KiCad PDF는 CAD가 그대로면 재생성하지 않고 해시 대조 결과를 기록한다. NotebookLM 업로드·영상 갱신은 별도다. 11/17 초안 당시에는 전 단계가 계획이었다. 11/21 현재 TMR 기본 주행과 예제 Nav2 목표를 확인했다. ENV-03의 빈 월드 연속 5분 로그는 미확보이며 TMR 센서 데이터·Nav2·RL은 후속이다.

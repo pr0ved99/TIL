@@ -1,6 +1,8 @@
 # 진행 기록
 
-**11/20 Ubuntu 인수인계:** Ubuntu 설치·초기 설정 완료가 보고됐다. 다음 세션은 ROS 2·Gazebo 실행 환경을 준비한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](2026-11-20_progress.md).
+**11/21 Ubuntu 시뮬레이션 마감.** TMR의 정지 자세, 전진·후진·좌우 회전 및 0 명령 정지를 확인했다. 사용자가 각속도를 직접 수정한 회차의 명령·오도메트리·월드 결과, 최종 TF와 임시 센서 위치를 보존했다. 다음은 SIM-04 가상 LiDAR와 `/scan`이다. [실습 및 마감 기록](2026-11-21_progress.md)
+
+**11/20 TMR 시뮬레이션:** TurtleBot3의 Nav2 목표 이동을 확인하고 TMR 토픽·TF 규약과 첫 Xacro 모델을 작성했다. 빌드·TF·RViz 렌더링 확인 뒤 모델 배치를 함께 검토한다. 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](2026-11-20_progress.md#tmr-첫-차체-모델-sim-02)
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

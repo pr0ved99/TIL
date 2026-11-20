@@ -1,0 +1,16 @@
+#!/usr/bin/env python3
+import argparse
+from math import pi
+import sys
+
+from rclpy.utilities import remove_ros_args
+
+from drive_step import run_drive_step
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Turn in place for two simulation seconds, then stop.')
+    parser.add_argument('direction', choices=('left', 'right'))
+    args = parser.parse_args(remove_ros_args(sys.argv)[1:])
+    yaw_rate = pi / 8 if args.direction == 'left' else -pi / 8
+    run_drive_step('tmr_turn_stop', angular_z=yaw_rate)

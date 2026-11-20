@@ -1,6 +1,6 @@
 # Verification Documentation
 
-**11/20 Ubuntu 인수인계:** Ubuntu 설치·초기 설정 완료가 보고됐다. 다음 세션은 ROS 2·Gazebo 실행 환경을 준비한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../progress/2026-11-20_progress.md).
+**11/21 Ubuntu 실습 마감.** Gazebo에서 TMR 기본 주행을 확인했다. 다음은 가상 LiDAR의 `/scan` 연결이다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [11/21 기록](../progress/2026-11-21_progress.md).
 
 **MVP 증거 대조 · 2026-11-20:** [통합 결과46](46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
 

@@ -1,0 +1,158 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="tmr">
+  <xacro:arg name="gazebo_drive" default="false"/>
+  <!-- Measured assembly inputs and pitch-based rolling distance. SI units. -->
+  <xacro:property name="total_mass" value="3.25"/>
+  <xacro:property name="track_center_spacing" value="0.233"/>
+  <xacro:property name="track_pitch" value="0.00964"/>
+  <xacro:property name="sprocket_teeth" value="14"/>
+  <xacro:property name="links_per_track" value="61"/>
+  <xacro:property name="wheel_radius" value="${sprocket_teeth * track_pitch / (2 * pi)}"/>
+  <xacro:property name="track_length" value="${(links_per_track - sprocket_teeth) * track_pitch / 2 + 2 * wheel_radius}"/>
+
+  <!-- Initial geometry and mass distribution assumptions. -->
+  <xacro:property name="body_length" value="0.209"/>
+  <xacro:property name="body_width" value="0.174"/>
+  <xacro:property name="body_height" value="0.060"/>
+  <xacro:property name="body_clearance" value="0.020"/>
+  <xacro:property name="body_center_z" value="${body_clearance + body_height / 2}"/>
+  <xacro:property name="track_width" value="0.035"/>
+  <xacro:property name="track_height" value="0.050"/>
+  <xacro:property name="wheel_width" value="0.026"/>
+  <xacro:property name="wheel_mass" value="0.10"/>
+  <xacro:property name="body_mass" value="${total_mass - 2 * wheel_mass}"/>
+  <!-- Small clearance lets the drive wheels bear the chassis on level ground. -->
+  <xacro:property name="support_offset" value="0.090"/>
+  <xacro:property name="support_radius" value="0.010"/>
+  <xacro:property name="support_clearance" value="0.0002"/>
+
+  <material name="chassis_blue">
+    <color rgba="0.16 0.42 0.64 1"/>
+  </material>
+  <material name="track_gray">
+    <color rgba="0.15 0.17 0.20 1"/>
+  </material>
+  <material name="sensor_amber">
+    <color rgba="0.95 0.63 0.18 1"/>
+  </material>
+
+  <xacro:macro name="track_visual" params="lateral_offset">
+    <visual>
+      <origin xyz="0 ${lateral_offset} ${track_height / 2 - body_center_z}"/>
+      <geometry>
+        <box size="${track_length} ${track_width} ${track_height}"/>
+      </geometry>
+      <material name="track_gray"/>
+    </visual>
+  </xacro:macro>
+
+  <xacro:macro name="pitch_support" params="name x">
+    <collision name="${name}">
+      <origin xyz="${x} 0 ${support_clearance + support_radius - body_center_z}"/>
+      <geometry>
+        <sphere radius="${support_radius}"/>
+      </geometry>
+    </collision>
+  </xacro:macro>
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${body_center_z}"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+      <material name="chassis_blue"/>
+    </visual>
+    <xacro:track_visual lateral_offset="${track_center_spacing / 2}"/>
+    <xacro:track_visual lateral_offset="${-track_center_spacing / 2}"/>
+    <collision>
+      <geometry>
+        <box size="${body_length} ${body_width} ${body_height}"/>
+      </geometry>
+    </collision>
+    <xacro:pitch_support name="front_support" x="${support_offset}"/>
+    <xacro:pitch_support name="rear_support" x="${-support_offset}"/>
+    <inertial>
+      <mass value="${body_mass}"/>
+      <inertia ixx="${body_mass * (body_width**2 + body_height**2) / 12}"
+               iyy="${body_mass * (body_length**2 + body_height**2) / 12}"
+               izz="${body_mass * (body_length**2 + body_width**2) / 12}"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+
+  <xacro:macro name="drive_wheel" params="side lateral_offset">
+    <xacro:property name="transverse_inertia" value="${wheel_mass * (3 * wheel_radius**2 + wheel_width**2) / 12}"/>
+    <link name="${side}_wheel_link">
+      <collision>
+        <origin rpy="${-pi / 2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="${wheel_mass}"/>
+        <inertia ixx="${transverse_inertia}"
+                 iyy="${wheel_mass * wheel_radius**2 / 2}"
+                 izz="${transverse_inertia}"
+                 ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="${side}_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${side}_wheel_link"/>
+      <origin xyz="0 ${lateral_offset} ${wheel_radius - body_center_z}"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:drive_wheel side="left" lateral_offset="${track_center_spacing / 2}"/>
+  <xacro:drive_wheel side="right" lateral_offset="${-track_center_spacing / 2}"/>
+
+  <link name="laser_frame">
+    <visual>
+      <geometry>
+        <cylinder radius="0.0225" length="0.018"/>
+      </geometry>
+      <material name="sensor_amber"/>
+    </visual>
+  </link>
+  <joint name="laser_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser_frame"/>
+    <origin xyz="0.065 0 0.045"/>
+  </joint>
+
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.035"/>
+  </joint>
+
+  <xacro:if value="$(arg gazebo_drive)">
+    <gazebo>
+      <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+        <left_joint>left_wheel_joint</left_joint>
+        <right_joint>right_wheel_joint</right_joint>
+        <wheel_separation>${track_center_spacing}</wheel_separation>
+        <wheel_radius>${wheel_radius}</wheel_radius>
+        <frame_id>odom</frame_id>
+        <child_frame_id>base_footprint</child_frame_id>
+        <odom_publish_frequency>30</odom_publish_frequency>
+      </plugin>
+      <plugin filename="gz-sim-joint-state-publisher-system" name="gz::sim::systems::JointStatePublisher">
+        <joint_name>left_wheel_joint</joint_name>
+        <joint_name>right_wheel_joint</joint_name>
+        <topic>/model/tmr/joint_states</topic>
+        <update_rate>30</update_rate>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+</robot>

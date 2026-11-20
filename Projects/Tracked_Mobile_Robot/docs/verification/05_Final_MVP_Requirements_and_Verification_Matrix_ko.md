@@ -1,6 +1,6 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-**현재 · 2026-11-20 Ubuntu 인수인계:** 추가 MVP 마감은 보류했다. Ubuntu의 다음 작업은 Codex·TIL 연결과 ROS 2·Gazebo 기본 실행 확인이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-20_progress.md).
+**11/21 Ubuntu 실습 마감.** 추가 MVP 마감은 보류했다. TMR의 전진·후진·제자리 회전·정지를 확인했다. 다음은 가상 LiDAR의 `/scan` 연결이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-21_progress.md).
 
 ## 현재 판정 — 2026-11-20
 

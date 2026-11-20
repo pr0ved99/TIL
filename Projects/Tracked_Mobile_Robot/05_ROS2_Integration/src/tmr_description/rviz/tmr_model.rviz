@@ -1,0 +1,44 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: 10 cm Grid
+      Enabled: true
+      Cell Size: 0.1
+      Plane Cell Count: 10
+      Reference Frame: <Fixed Frame>
+    - Class: rviz_default_plugins/RobotModel
+      Name: TMR
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+        Durability Policy: Transient Local
+        Reliability Policy: Reliable
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Marker Scale: 0.18
+  Global Options:
+    Fixed Frame: base_footprint
+    Background Color: 40; 44; 51
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 0.75
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0.04
+      Pitch: 0.55
+      Yaw: 0.85
+      Target Frame: <Fixed Frame>
