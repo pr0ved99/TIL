@@ -1,10 +1,12 @@
 # Current Session Context
 
-**현재 재개점 · 2026-11-20 마감:** 다음 작업은 자고 일어난 뒤 **12시 이후 집에서 Ubuntu 듀얼부팅 준비(ENV-01/S01)**부터다. 외부 백업·복원, Windows 암호화/복구 준비, 설치 USB와 실제 축소 가능량을 확인한다. 설치 및 이후 일정은 준비 상태에 따라 정한다. 로봇은 기존 무선 주행·1m 거리·149초 시연 근거를 보존하고 추가 MVP 마감은 보류한다.
+**현재 재개점 · 2026-11-20 Ubuntu 인수인계:** 사용자가 Ubuntu 설치·기본 초기 설정과 VS Code·Terminator·Chrome 설치를 보고했다. Windows 복귀 후 읽기 전용 조회에서 WD Blue 1TB 디스크의 C: 약 480.4 GiB, Linux 파일시스템 유형 파티션 450 GiB, 기존 EFI·MSR·복구 파티션을 확인했다. Live USB의 UEFI 부팅·디스크 인식과 Wi-Fi 연결은 앞선 사용자 화면에서 확인했다. 설치된 Ubuntu의 마운트·드라이버·패키지 버전은 다음 Ubuntu 세션에서 확인한다.
+
+**다음 작업:** Ubuntu의 Linux 파일시스템에 체크아웃한 TIL 개발 브랜치 `agent/dual-encoder-bringup`을 VS Code에서 열고 Codex를 연결한다. 이후 ROS 2 Jazzy와 Gazebo Harmonic의 설치 상태·기본 실행을 확인한다. [시작 프롬프트](NEXT_SESSION_START_PROMPT.md) · [설치 이력과 확인 명령](../plans/2026-11-20_HP_Victus_Windows_Ubuntu_Dual_Boot_Runbook_ko.md) · [11/20 진행 기록](../progress/2026-11-20_progress.md).
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 
-검증·실물의 마지막 보고와 구동 조건은 아래 MVP 인수 이력에 남긴다. 이번 작업 블록에서 새 실물·펌웨어 빌드/플래시·OS 설치는 수행하지 않았다.
+검증·실물의 마지막 보고와 구동 조건은 아래 MVP 인수 이력에 남긴다. 이번 작업 블록에서 로봇 실물 시험·펌웨어 빌드 및 플래시는 수행하지 않았다.
 
 Previous checkpoint: **2026-11-20 비실물 검토 결과 — 검증 판정 보존, 실행 우선순위는 상단 결정이 대체**.
 

@@ -1,6 +1,6 @@
 # MVP 비실물 마감 — 설계 계산·기존 시험 근거·잔여 조건
 
-**현재 · 2026-11-20 마감:** 추가 MVP 마감은 보류했다. 다음은 12시 이후 집에서 Ubuntu 환경 준비다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-20_progress.md).
+**현재 · 2026-11-20 Ubuntu 인수인계:** 추가 MVP 마감은 보류했다. Ubuntu의 다음 작업은 Codex·TIL 연결과 ROS 2·Gazebo 기본 실행 확인이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-20_progress.md).
 
 2026-11-20. 사용자 요청: **“실물 작업 필요 없는거 전부 해결해.”** 기존 MVP의 남은 네 PARTIAL에 영향을 주는 문서·계산·저장 근거를 대조했다. 아래 비실물 검토는 완료했지만 **기존 계약에 따른 T001~T003 전체 수용과 전체 MVP 완료는 아니다.** 자료 부족과 실제 미시험을 구분한다.
 

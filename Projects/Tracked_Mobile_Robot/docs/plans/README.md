@@ -1,6 +1,6 @@
 # 실행 계획
 
-**현재 · 2026-11-20 마감:** 추가 MVP 마감은 보류했다. 다음은 12시 이후 집에서 Ubuntu 환경 준비다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-20_progress.md).
+**현재 · 2026-11-20 Ubuntu 인수인계:** 추가 MVP 마감은 보류했다. Ubuntu의 다음 작업은 Codex·TIL 연결과 ROS 2·Gazebo 기본 실행 확인이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](../handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](../progress/2026-11-20_progress.md).
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

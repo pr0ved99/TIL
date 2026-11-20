@@ -1,6 +1,6 @@
 # Tracked Mobile Robot
 
-**현재 · 2026-11-20 마감:** 추가 MVP 마감은 보류했다. 다음은 12시 이후 집에서 Ubuntu 환경 준비다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](docs/progress/2026-11-20_progress.md).
+**현재 · 2026-11-20 Ubuntu 인수인계:** 추가 MVP 마감은 보류했다. Ubuntu의 다음 작업은 Codex·TIL 연결과 ROS 2·Gazebo 기본 실행 확인이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](docs/progress/2026-11-20_progress.md).
 
 **MVP 증거 대조 · 2026-11-20:** [통합 결과46](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
 

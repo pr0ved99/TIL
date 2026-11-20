@@ -1,6 +1,6 @@
 # 시스템 아키텍처 문서 안내
 
-**11/20 마감:** 다음 세션은 집에서 Ubuntu 준비부터 재개한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../docs/progress/2026-11-20_progress.md).
+**11/20 Ubuntu 인수인계:** Ubuntu 설치·초기 설정 완료가 보고됐다. 다음 세션은 ROS 2·Gazebo 실행 환경을 준비한다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md) · [11/20 기록](../docs/progress/2026-11-20_progress.md).
 
 **11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 
