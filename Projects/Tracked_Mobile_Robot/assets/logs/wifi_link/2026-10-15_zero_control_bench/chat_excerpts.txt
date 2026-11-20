@@ -1,0 +1,45 @@
+Provenance: selected lines transcribed from user chat, not an original serial file.
+Bench date: 2026-10-15. Transcribed: 2026-10-16.
+
+[S0 during zero-only ARMED]
+I (251744) wifi_link: WS QUEUED: CMD request=9 session=1
+I (251764) wifi_link: STM TEL #2518 t_ms=1033700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=2
+I (251764) wifi_link: CONTROL TX: op=3 seq=1250320944 written=22/22
+I (251784) wifi_link: CONTROL RX MATCH: DISARM seq=1250320944
+I (251854) wifi_link: WS QUEUED: DISARM request=10 session=1
+I (363984) wifi_link: STM TEL #3643 t_ms=1146200 state=FAULT reason=ESTOP_LATCHED pwm=0/0 cps=0/0 drop=0 err=2
+I (496404) wifi_link: STM TEL #4969 t_ms=5300 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+
+[STM->ESP RX disconnect; last normal TEL and unmatched stop]
+I (97099) wifi_link: STM TEL #964 t_ms=80400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (97119) wifi_link: CONTROL RX MATCH: CMD seq=2760658620
+I (97189) wifi_link: WS QUEUED: CMD request=11 session=1
+W (97219) wifi_link: STM RX invalid line; discard until LF
+I (97219) wifi_link: CONTROL TX: op=2 seq=2760658621 written=55/55
+W (97269) wifi_link: STM RX invalid line; discard until LF
+I (97359) wifi_link: CONTROL TX: op=3 seq=2760658622 written=22/22
+I (97459) wifi_link: WS QUEUED: DISARM request=12 session=1
+
+[RX restored; stop processed by STM, ESP remained BLOCKED]
+W (179089) wifi_link: STM RX invalid line; discard until LF
+I (179349) wifi_link: STM TEL #965 t_ms=162800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (179449) wifi_link: STM TEL #966 t_ms=162900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+
+[TX restored; still CMD_TIMEOUT, no button pressed in this observation]
+I (1243089) wifi_link: STM TEL #11626 t_ms=1228900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1244379) wifi_link: STM TEL #11639 t_ms=1230200 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+
+[First manual recovery DISARM FAILED]
+I (1376169) wifi_link: STM TEL #12960 t_ms=1362300 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (1376209) wifi_link: WS QUEUED: DISARM request=23 session=1
+I (1376229) wifi_link: CONTROL TX: op=3 seq=2760658633 written=22/22
+I (1376249) wifi_link: STM RX: ERR,seq=0,type=CMD,code=MISSING_SEQ,t_ms=1362389
+I (1376269) wifi_link: STM TEL #12961 t_ms=1362400 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+
+[Second manual recovery DISARM succeeded]
+I (1532019) wifi_link: STM TEL #14522 t_ms=1518500 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+I (1532089) wifi_link: WS QUEUED: DISARM request=24 session=1
+I (1532099) wifi_link: CONTROL TX: op=3 seq=2760658634 written=22/22
+I (1532109) wifi_link: STM TEL #14523 t_ms=1518600 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+I (1532129) wifi_link: CONTROL RX MATCH: DISARM seq=2760658634
+I (1532219) wifi_link: STM TEL #14524 t_ms=1518700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1

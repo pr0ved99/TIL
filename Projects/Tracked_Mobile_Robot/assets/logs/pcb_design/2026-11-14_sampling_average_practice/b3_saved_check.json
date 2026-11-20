@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-14",
+  "status": "SAVED_MODEL_AND_CONNECTIVITY_CHECKED_NOT_SIMULATED",
+  "schematic_sha256": "a65a930acf5ffc6b2ef7335889bf5a823841facded80a07ee8fadc1fc3844ed6",
+  "netlist_file": "04_02_b3_check.cir",
+  "netlist_sha256": "a01b22092d7409149dd0b95eae2e959c754074a930461d585bb01bc367f89652",
+  "checked_spice_lines": [
+    "V4 /VNOISE 0 TRRANDOM( 2 500u 250u 3m 0 )",
+    "B3 /VRAW_BIAS 0 v=V(/VRAW)+0.005",
+    "B1 /VCTRL 0 v=V(/VDDA) > 3 ? V(/VDDA) : 0",
+    "B2 /VRAW 0 v=V(/VADC)+V(/VNOISE)",
+    "V1 /VRAIL 0 PWL( 0 12 10 12 )",
+    "V3 /VDDA 0 PWL( 0 3.3 10 3.3 )"
+  ],
+  "original_A_schematic_and_CSV_hashes_unchanged": true,
+  "schematic_readback": "Original wires, junctions, labels preserved; original component property differences versus A only V1/V3 PWL. B2/B3 output labels and 0 connections verified from pin coordinates and exported netlist.",
+  "next": "User TRAN 50u 10 0 50u, UIC off; plot VADC/VRAW/VRAW_BIAS, save workbook and CSV."
+}

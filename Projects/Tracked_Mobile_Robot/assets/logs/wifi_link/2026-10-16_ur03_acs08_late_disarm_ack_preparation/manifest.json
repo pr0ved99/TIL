@@ -1,0 +1,102 @@
+{
+  "test": "UR03_ACS08_LATE_DISARM_ACK_PREPARATION",
+  "date": "2026-10-16",
+  "status": "COMPLETE_BOUNDED_DELAYED_ACK_MANUAL_RECOVERY_MODE0_RESTORE",
+  "live_firmware_edited": false,
+  "physical_pass": true,
+  "configuration": {
+    "default_mode": 0,
+    "tested_modes": [
+      0,
+      1
+    ],
+    "delay_ms": 500,
+    "esp_ack_deadline_ms": 150
+  },
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "command": "python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_uart_late_ack.py --candidate",
+  "pc_results": {
+    "mode0_case_groups": 3,
+    "mode1_case_groups": 8,
+    "invalid_mode_compile_rejected": true,
+    "stacked_fault_modes_compile_rejected": 12
+  },
+  "candidate_mode0_text_sha256": "4b7f4cf0944238d8c3b1b7d65fd6072f13e543e02d750433d7dd832c19a89398",
+  "candidate_mode1_text_sha256": "a4046d29a983d364b332aa2195d274b5f6599989def950ebfb8fcb4036099ecd",
+  "inputs_sha256": {
+    "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "1a6a1576dba02a661abcfba2980f734e862329a0ba225b244558808dac9978ad",
+    "03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h": "de81fae7318f08052baa57ac7b46f95d65c5b076ac55ff8b53115e5b14c48b0d",
+    "03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "03_Firmware/stm32_uart_mvp/Core/Inc/ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "03_Firmware/stm32_uart_mvp/Core/Src/ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "03_Firmware/stm32_uart_mvp/Core/Inc/drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c": "fb28cd41efb7df446abfda3c2297aa6acca34a00bd75c1a0180d15fe07d7a234",
+    "03_Firmware/stm32_uart_mvp/Core/Inc/motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h": "9fd0156335c1b8bfcdfc76e09f90c3868182bf99b46bc8512dd986092b8d3ac8",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c": "26229f235fe04d22b7c2e9840e33f26daed5d70aee2e95c64c2fef8ce40951e4",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.c": "8b6482baba96d804e7fa0d1c4da8313cfce9b663dd44e30d8988412cb6179a23",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c": "be2f88f0e284f934402630292576b3c433a4c5273c5c77da92d64586c2caa109",
+    "03_Firmware/esp32_wifi_link/main/wifi_link_main.c": "2df00d35539203ac62b2eedae8b76d4a5399c6cb41db6f5a275e34c1faa74a94",
+    "03_Firmware/tests/uart_late_ack_candidate.py": "a974f6e102680397de682a9c4539d29af41d2eb5a83f9ea064ea3d0b455c2917",
+    "03_Firmware/tests/test_uart_late_ack.py": "c519f9e08f6fd372dd12f6ae381879fc687f681d66034ceb9aac4eb25ebe96d4",
+    "03_Firmware/tests/uart_late_ack_host_fixture.c": "007420bbfced09d3f38c64c1727f4d0a48b91111955365064df4a46699cab440",
+    "03_Firmware/tests/stm_uart_stream_host_fixture.c": "5bbf4762e8926d5b9f14efe28e087f76be38a5fa82c9ac5a7806c99b86c6e21b",
+    "03_Firmware/tests/reproduce_uart_reconnect.py": "25b120d6a8132bf97b2cf7a302ae46a704c6bcec6920a74100bde0f848007e54"
+  },
+  "guide": "docs/plans/2026-10-16_UART_Late_DISARM_ACK_Test_Code_Guide_ko.md",
+  "scope": "Zero-output selective DISARM ACK delay, late ACK ignored, subsequent manual recovery, and normal mode0 restore verified. Not all AC-S04/AC-S08.",
+  "saved_review": {
+    "source_text_sha256": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "candidate_difference": "Three additional blank lines only",
+    "mode_in_saved_source": 0,
+    "pc_command": "python Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_uart_late_ack.py --saved",
+    "pc_log": "saved_pc_check.txt",
+    "mode0_case_groups_pass": 3,
+    "mode1_case_groups_pass": 8,
+    "compile_rejection_variants_pass": 13,
+    "agent_edited_live_firmware": false,
+    "board_build_reported": false,
+    "physical_pass": false
+  },
+  "test_image_review": {
+    "source_text_sha256": "41fc4b7245507c908d51fc634ac6663cf36e03ec4c630c1d189725dbd950a74f",
+    "mode_in_saved_source": 1,
+    "matches_reviewed_mode1_ignoring_blank_lines": true,
+    "user_report": "STM 런까지 완료",
+    "board_build_run_user_reported": true,
+    "board_binary_independently_verified": false,
+    "physical_test_pass": false
+  },
+  "physical_evidence": {
+    "observations": "assets/logs/wifi_link/2026-10-16_ur03_acs08_late_disarm_ack_pwm_run01/observations.json",
+    "capture_sha256": "f65e262593d4860f53970ad80bfd1ec8b7bb517ba5dc4126162948d0210a115d",
+    "manual_recovery_verified": true,
+    "test_mode_restored": true,
+    "recovery_observations": "assets/logs/wifi_link/2026-10-16_ur03_acs08_recovery_pwm_run01/observations.json",
+    "recovery_capture_sha256": "37e988f616b16cb4faa53f7925d1c8027fa20c8be4a34e3262ea7998db507931",
+    "restore_observations": "assets/logs/wifi_link/2026-10-16_ur03_acs08_restore_pwm_run01/observations.json",
+    "restore_capture_sha256": "2aff27e0390a515711b3665bdeb32c844c64003a4bf0426984d680d84fbf7bbe"
+  },
+  "restoration": {
+    "saved_source_mode": 0,
+    "saved_source_text_sha256": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf",
+    "matches_pc_tested_mode0": true,
+    "user_latest_message": "다음",
+    "restored_build_flash_explicitly_reported": false,
+    "runtime_verified": true,
+    "runtime_basis": "Fresh STM BOOT/last_seq0, one ARM + 69 zero CMD, DISARM ACK 2.0075ms, no delay marker; 60 zero/disarmed TEL after ACK; user confirms request71 OK / IDLE.",
+    "flashed_binary_hash_independently_verified": false
+  },
+  "preparation_actions": {
+    "agent_edited_live_firmware": false,
+    "agent_ran_MCU_build": false,
+    "agent_flashed_board": false
+  }
+}

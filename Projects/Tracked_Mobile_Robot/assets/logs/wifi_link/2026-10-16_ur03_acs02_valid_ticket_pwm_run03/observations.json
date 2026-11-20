@@ -1,0 +1,49 @@
+{
+  "verdict": "PARTIAL_B_REJECTED_A_SAME_TICKET_NOT_SENT",
+  "capture_sha256": "6dab63971f1bd6eb34f06f41dfccaf6c3387deae47616f163250f4d2bb490f72",
+  "duration_s": 11.1232,
+  "samplerate_hz": 4000000.0,
+  "boot_id": 1797425356,
+  "A_session": 4,
+  "B_session": 5,
+  "control_id": 2,
+  "copied_ticket": 9765,
+  "B_request_id": 1,
+  "held_A_request_id": 3,
+  "stop_A_request_id": 4,
+  "console_B_round_trip_ms": 58.9,
+  "advertised_offer_ttl_ms": 109,
+  "client_send_budget_ms": 58.2,
+  "wait_budget_ms": 53.2,
+  "actual_timeout_callback_elapsed_ms": 58.3,
+  "callback_overrun_ms": 5.1,
+  "B_rejection": "TICKET_REJECTED confirmed by browser. Late response recorded, no held CMD released.",
+  "A_ticket_validity": "Not proven at B processing: same-ticket A request was never sent or accepted. Do not declare AC-S02 PASS.",
+  "uart": {
+    "ARM": 3522553852,
+    "CMD": [
+      3522553853
+    ],
+    "DISARM": 3522553854,
+    "matching_ACKs": 3,
+    "invalid_stop_bits": 0
+  },
+  "valid_tel_count": 111,
+  "tel_states": {
+    "DISARMED": 108,
+    "ARMED": 3
+  },
+  "PWM_CPS_drop_err": "all zero in valid telemetry",
+  "physical_levels": "D4/PB6, D7/PB7, D6/PC7 LOW for entire 11.1232 s",
+  "fresh_stop_tel": {
+    "start_s": 2.2594435,
+    "end_s": 2.2746108055555556,
+    "text": "TEL,t_ms=3043701,state=DISARMED,reason=DISARM,command_age_ms=239,last_seq=3522553854,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+  },
+  "post_stop_tel_count": 89,
+  "helper_stop_confirmed": true,
+  "esp_monitor": "Not supplied for run03; raw UART and browser transcript inspected.",
+  "method_finding": "Waiting for B network round trip before sending A consumes the short ticket deadline. Do not repeat by relaxing production TTL or removing the transit margin.",
+  "next_candidate": "Prepare a method that sends B then A without awaiting B response; prove actual B rejection precedes A acceptance using ESP request/session logs, identical ticket trace, matching UART ACKs and PWM. Reverse/ambiguous order is INCOMPLETE. Candidate only: not implemented or validated.",
+  "scope": "B rejection, bounded late-response discard and zero-output stop observed. Overall AC-S02 remains PARTIAL; no nonzero/powered-motor claim."
+}

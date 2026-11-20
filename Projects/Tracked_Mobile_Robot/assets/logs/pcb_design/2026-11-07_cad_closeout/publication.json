@@ -1,0 +1,163 @@
+{
+  "work_date": "2026-11-06",
+  "closeout_date": "2026-11-07",
+  "timezone": "Asia/Seoul",
+  "scope": {
+    "shield": "40 physical components + 2 PWR_FLAG, contract checked, existing ERC 0/0",
+    "mvp": "12 values and 1 net name reconciled, 48 components / 35 nets connectivity preserved, existing ERC 0/0",
+    "next": "After sleep: sampling/filter table then port/power conditions table",
+    "new_firmware_build_flash_hardware_run": false,
+    "notebooklm": "separate",
+    "T005A": "PARTIAL",
+    "T007": "BLOCKED"
+  },
+  "notion": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 4,
+      "page_last_edited_at": "2026-11-06T16:41:48.389Z"
+    },
+    {
+      "id": "3fca7326-f87b-8139-b949-d339de80d870",
+      "title": "🔧 TMR-04 · 후속 전류·전압 ADC 모니터링·자동 저전압 정지",
+      "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-06T16:41:50.416Z"
+    },
+    {
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "title": "🧭 TMR · 기술 자료와 코드 탐색",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-06T16:41:51.916Z"
+    },
+    {
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "title": "📘 TMR 학습 노트 · 측정 요구부터 NTC·RC·ADC 샘플링까지",
+      "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 3,
+      "page_last_edited_at": "2026-11-06T16:41:53.398Z"
+    },
+    {
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "title": "전압 ADC 학습 · 보호·오차 예산·회로도 인계 (39-3까지, 실측 검증 전)",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+      "readback_verified": true,
+      "existing_child_urls_preserved": 1,
+      "page_last_edited_at": "2026-11-06T16:41:55.641Z"
+    }
+  ],
+  "calendar": [
+    {
+      "id": "ds2sp7fk6rn7ub9i98gluajkp0",
+      "title": "[TMR] 11/6 실적 · Shield 연결/ERC 완료·MVP 도면 정돈",
+      "url": "https://www.google.com/calendar/event?eid=ZHMyc3A3Zms2cm43dWI5aTk4Z2x1YWprcDAgZXloMTI1QG0",
+      "start": "2026-11-06T00:00:00",
+      "end": "2026-11-07T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "1r4mgfjqv4o0n1tea1e3m3to80",
+      "title": "[TMR] 수면 후 재개 · 수집·필터 / 포트·전원 조건표",
+      "url": "https://www.google.com/calendar/event?eid=MXI0bWdmanF2NG8wbjF0ZWExZTNtM3RvODAgZXloMTI1QG0",
+      "start": "2026-11-07T00:00:00",
+      "end": "2026-11-08T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "q8f53ivlrs6oab2gbov42m7m9k",
+      "title": "[TMR] 1주차 보완 · 수집·보호 조건·필요한 해석",
+      "url": "https://www.google.com/calendar/event?eid=cThmNTNpdmxyczZvYWIyZ2JvdjQybTdtOWsgZXloMTI1QG0",
+      "start": "2026-11-08T00:00:00",
+      "end": "2026-11-09T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "9dftdv9mbviv1j2ocojcehhn44",
+      "title": "[TMR] 휴무 후 재개 · 남은 설계 조건·필요한 해석",
+      "url": "https://www.google.com/calendar/event?eid=OWRmdGR2OW1idml2MWoyb2NvamNlaGhuNDQgZXloMTI1QG0",
+      "start": "2026-11-11T00:00:00",
+      "end": "2026-11-12T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "4rv6rbftkv74v6e3a1aqm7emkc",
+      "title": "[TMR] 설계 보완 여유 · 조건 검토·회로/BOM",
+      "url": "https://www.google.com/calendar/event?eid=NHJ2NnJiZnRrdjc0djZlM2ExYXFtN2Vta2MgZXloMTI1QG0",
+      "start": "2026-11-12T00:00:00",
+      "end": "2026-11-13T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "aci2g46horqsvjtpioi25vuoko",
+      "title": "[TMR] 설계 보완 여유 · 회로·기구/풋프린트",
+      "url": "https://www.google.com/calendar/event?eid=YWNpMmc0NmhvcnFzdmp0cGlvaTI1dnVva28gZXloMTI1QG0",
+      "start": "2026-11-13T00:00:00",
+      "end": "2026-11-14T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "auav0k6uvleinn1260aidskh98",
+      "title": "[TMR] 변경 영향 검토 · 필요한 계산/ERC",
+      "url": "https://www.google.com/calendar/event?eid=YXVhdjBrNnV2bGVpbm4xMjYwYWlkc2toOTggZXloMTI1QG0",
+      "start": "2026-11-14T00:00:00",
+      "end": "2026-11-15T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    },
+    {
+      "id": "drm948ao31rgv6phfjfg4nt5ag",
+      "title": "[TMR] 2주차 마감 · 후속 설계·패키지 미결",
+      "url": "https://www.google.com/calendar/event?eid=ZHJtOTQ4YW8zMXJndjZwaGZqZmc0bnQ1YWcgZXloMTI1QG0",
+      "start": "2026-11-15T00:00:00",
+      "end": "2026-11-16T00:00:00",
+      "time_boundaries_preserved": true,
+      "attendees_reminders_conference_preserved": true,
+      "description_readback_verified": true
+    }
+  ],
+  "git": {
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "4b59efc7a432b989447f1eb57cc3a9efed27a535",
+    "remote_verified_commit": "4b59efc7a432b989447f1eb57cc3a9efed27a535",
+    "verification_method": "git ls-remote origin refs/heads/agent/dual-encoder-bringup",
+    "receipt_commit": "This receipt is committed after the verified content commit; see Git history."
+  },
+  "closeout_items": {
+    "documentation": "complete",
+    "progress_handoff_memory": "complete",
+    "git": "content_pushed_and_remote_verified",
+    "calendar": "updated_and_readback_verified",
+    "notion": "updated_and_readback_verified"
+  },
+  "validation": {
+    "contract_rows_passed": 14,
+    "BOM_rows_verified": 40,
+    "unrelated_files_preserved": 19,
+    "new_broken_relative_links": 0,
+    "authored_text_diff_check": "passed",
+    "generated_artifact_whitespace": "raw/generated artifacts preserved; details in closeout_validation.json",
+    "mvp_erc": "0 errors / 0 warnings; existing 4 ignored rules",
+    "shield_erc": "0 errors / 0 warnings; existing 4 ignored rules"
+  }
+}

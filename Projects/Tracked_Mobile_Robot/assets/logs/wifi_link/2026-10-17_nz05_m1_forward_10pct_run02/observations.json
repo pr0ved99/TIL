@@ -1,0 +1,167 @@
+{
+  "test": "NZ-05_M1_FORWARD_10PCT_RUN02",
+  "status": "NO_ROTATION",
+  "user_observation": "A did not rotate. MDD B+ to B- DC11.90V; during ARM/forward M1A to M1B DC about1.1V. B motor-side connector disconnected.",
+  "capture_sha256": "97a8f324fd383798de97a2618f960ee5875067dc1c30f02f1a1e25fb47211666",
+  "duration_s": 20.294784,
+  "pwm": {
+    "D4": {
+      "pulses": 46039,
+      "mean_duty_percent": 10.002825729976799,
+      "burst_span_s": 2.41884925,
+      "low_tail_s": 11.63615925
+    },
+    "D7": {
+      "pulses": 46039,
+      "mean_duty_percent": 10.002784387914227,
+      "burst_span_s": 2.41884925,
+      "low_tail_s": 11.63615925
+    }
+  },
+  "command_count": 123,
+  "ack_count": 123,
+  "all_commands_acknowledged_once": true,
+  "nonzero_commands": [
+    {
+      "start_s": 6.23480075,
+      "end_s": 6.239662055555556,
+      "text": "CMD,seq=729630708,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.393836,
+      "end_s": 6.398697055555556,
+      "text": "CMD,seq=729630709,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.493979,
+      "end_s": 6.498840055555556,
+      "text": "CMD,seq=729630710,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.6137815,
+      "end_s": 6.618642805555556,
+      "text": "CMD,seq=729630711,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.7738555,
+      "end_s": 6.778716555555556,
+      "text": "CMD,seq=729630712,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.87387175,
+      "end_s": 6.878732805555556,
+      "text": "CMD,seq=729630713,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 6.99384525,
+      "end_s": 6.998706305555556,
+      "text": "CMD,seq=729630714,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.09397625,
+      "end_s": 7.098837305555556,
+      "text": "CMD,seq=729630715,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.214074,
+      "end_s": 7.218935055555556,
+      "text": "CMD,seq=729630716,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.37384425,
+      "end_s": 7.378705555555556,
+      "text": "CMD,seq=729630717,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.49385225,
+      "end_s": 7.498713305555556,
+      "text": "CMD,seq=729630718,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.5945485,
+      "end_s": 7.599409555555556,
+      "text": "CMD,seq=729630719,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.71972675,
+      "end_s": 7.724588055555556,
+      "text": "CMD,seq=729630720,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.8348305,
+      "end_s": 7.839691555555556,
+      "text": "CMD,seq=729630721,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.934837,
+      "end_s": 7.939698055555556,
+      "text": "CMD,seq=729630722,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.0348305,
+      "end_s": 8.039691555555557,
+      "text": "CMD,seq=729630723,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.13482275,
+      "end_s": 8.139683805555556,
+      "text": "CMD,seq=729630724,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.23543575,
+      "end_s": 8.240296805555555,
+      "text": "CMD,seq=729630725,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.3538285,
+      "end_s": 8.358689805555557,
+      "text": "CMD,seq=729630726,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.4538555,
+      "end_s": 8.458716555555556,
+      "text": "CMD,seq=729630727,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 8.5538655,
+      "end_s": 8.558726555555555,
+      "text": "CMD,seq=729630728,vx_mmps=100,w_mradps=0,timeout_ms=300"
+    }
+  ],
+  "tel_pwm_pairs": [
+    [
+      "0",
+      "0"
+    ],
+    [
+      "100",
+      "100"
+    ]
+  ],
+  "tel_cps_pairs": [
+    [
+      "0",
+      "0"
+    ]
+  ],
+  "drop_err_pairs": [
+    [
+      "0",
+      "0"
+    ]
+  ],
+  "pc7_low": true,
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "trailing_partial": {
+    "D0": "TEL,t_ms=756933,state=DI",
+    "D1": ""
+  },
+  "limits": [
+    "DMM values are user reports without synchronized timestamps. DC readings are not PWM pulse amplitude or current measurements.",
+    "No run02 ESP console attachment supplied; capture retains UART evidence.",
+    "No mechanical rotation acceptance; insufficient startup torque is not a confirmed root cause."
+  ]
+}

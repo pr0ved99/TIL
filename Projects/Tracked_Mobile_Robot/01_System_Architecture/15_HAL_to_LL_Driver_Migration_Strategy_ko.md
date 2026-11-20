@@ -1,5 +1,8 @@
 # HAL to LL Driver Migration Strategy
 
+> 문서 역할·상태 대조: **2026-09-30** — 후속 선택적 LL 전환 계획. 현재 HAL 기반 검증을 유지하며 LL 전환 완료가 아니다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 drivetrain이 이미 동작한 뒤 STM32 firmware의 일부 경로를 HAL에서 LL Driver로 전환하는 전략을

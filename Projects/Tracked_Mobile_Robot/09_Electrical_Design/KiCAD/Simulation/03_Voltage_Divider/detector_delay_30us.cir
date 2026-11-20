@@ -1,0 +1,3 @@
+* Learning model: fixed 30 us signal delay
+.model TMR_DETECT_DELAY delay(delay=30u buffer_size=4096)
+A_DETECT_DELAY /VTRIP /VCTRL 0 TMR_DETECT_DELAY

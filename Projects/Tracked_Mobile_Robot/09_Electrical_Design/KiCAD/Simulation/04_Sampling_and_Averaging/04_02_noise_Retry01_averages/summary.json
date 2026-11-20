@@ -1,0 +1,122 @@
+{
+  "status": "PROCESSED_USER_KICAD_CSV_NOT_HARDWARE_EVIDENCE",
+  "source_file": "04_02_noise_Retry01.csv",
+  "source_sha256": "de32add7f7479c9372b3630dd06a32932035ea6a275b8d1b2c0098adf1b7a44e",
+  "source_validation": {
+    "csv_rows": 260008,
+    "time_start_s": 0.0,
+    "time_stop_s": 10.0,
+    "duplicate_time_rows": 18000,
+    "maximum_time_gap_s": 5.000000000165983e-05,
+    "maximum_bias_relation_error_V": 1.1535911115245767e-16,
+    "bias_relation_export_guard_V": 2e-05
+  },
+  "sampling": {
+    "fs_Hz": 2000,
+    "N": 200,
+    "duration_s": 10.0,
+    "sample_count": 20000,
+    "block_count": 100,
+    "convention": "Ts,2Ts,...; nonoverlapping blocks (0,100ms],(100ms,200ms],...",
+    "duplicate_time_policy": "Retain all rows; sample only unambiguous constant plateaus",
+    "accepted_plateau_samples": 20000
+  },
+  "K": 6.747204164780444,
+  "nominal_VADC_V": 1.7785144345621684,
+  "stored_VADC_V": 1.77851,
+  "summaries": {
+    "VADC": {
+      "raw_samples": {
+        "count": 20000,
+        "mean_V": 1.77851,
+        "population_sd_V": 0.0,
+        "minimum_V": 1.77851,
+        "maximum_V": 1.77851
+      },
+      "block_means": {
+        "count": 100,
+        "mean_V": 1.77851,
+        "population_sd_V": 0.0,
+        "minimum_V": 1.77851,
+        "maximum_V": 1.77851
+      }
+    },
+    "VRAW": {
+      "raw_samples": {
+        "count": 20000,
+        "mean_V": 1.7785289685,
+        "population_sd_V": 0.0030127789814401846,
+        "minimum_V": 1.76567,
+        "maximum_V": 1.78984
+      },
+      "block_means": {
+        "count": 100,
+        "mean_V": 1.7785289685,
+        "population_sd_V": 0.00023412434352870903,
+        "minimum_V": 1.7778349,
+        "maximum_V": 1.7790264
+      }
+    },
+    "VRAW_BIAS": {
+      "raw_samples": {
+        "count": 20000,
+        "mean_V": 1.7835289685,
+        "population_sd_V": 0.003012778981440183,
+        "minimum_V": 1.77067,
+        "maximum_V": 1.79484
+      },
+      "block_means": {
+        "count": 100,
+        "mean_V": 1.7835289685,
+        "population_sd_V": 0.00023412434352869317,
+        "minimum_V": 1.7828349000000001,
+        "maximum_V": 1.7840264
+      }
+    }
+  },
+  "observed_sd_reduction": 12.868285869088828,
+  "model_comparison": {
+    "assumed_source_sigma_V": 0.003,
+    "iid_expected_block_sigma_V": 0.00021213203435596425
+  },
+  "mean_bias_difference_V": 0.004999999999999893,
+  "maximum_block_bias_relation_error_V": 3.2873009869760494e-16,
+  "first_blocks": [
+    [
+      1,
+      0.1,
+      1.77851,
+      1.77844835,
+      1.7834483499999998
+    ],
+    [
+      2,
+      0.2,
+      1.77851,
+      1.7786166,
+      1.7836166
+    ],
+    [
+      3,
+      0.3,
+      1.77851,
+      1.7780444,
+      1.7830444
+    ],
+    [
+      4,
+      0.4,
+      1.77851,
+      1.7782031,
+      1.7832031000000002
+    ],
+    [
+      5,
+      0.5,
+      1.77851,
+      1.77824265,
+      1.78324265
+    ]
+  ],
+  "boundaries": "No additional noise or offset added. No ADC acquisition, quantization, firmware or hardware. CSV rounding retained; no inference of user understanding."
+}

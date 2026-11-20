@@ -1,0 +1,862 @@
+PAGE 1
+P6KE6.8A thru P6KE540A
+www.vishay.com
+Vishay General Semiconductor
+  
+ 
+Revision: 27-Sep-2021
+1
+Document Number: 88369
+For technical questions within your region: DiodesAmericas@vishay.com, DiodesAsia@vishay.com, DiodesEurope@vishay.com
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+TRANSZORB® Transient Voltage Suppressors
+DEVICES FOR BIDIRECTION APPLICATIONS
+For bidirectional types, use CA suffix (e.g. P6KE440CA).  
+Electrical characteristics apply in both directions.
+FEATURES
+• Glass passivated chip junction
+• Available in unidirectional and bidirectional
+• 600 W peak pulse power capability with a 
+10/1000 μs waveform, repetitive rate (duty cycle): 0.01 %
+• Excellent clamping capability
+• Very fast response time
+• Low incremental surge resistance
+• Solder dip 275 °C max. 10 s, per JESD 22-B106
+• AEC-Q101 qualified
+• Material categorization: for definitions of compliance 
+please see www.vishay.com/doc?99912
+TYPICAL APPLICATIONS
+Use in sensitive electronics protection against voltage 
+transients induced by inductive load switching and lighting 
+on ICs, MOSFET, signal lines of sensor units for consumer, 
+computer, industrial, automotive, and telecommunication.
+MECHANICAL DATA
+Case: DO-15 (DO-204AC)  
+Molded epoxy over passivated chip  
+Molding compound meets UL 94 V-0 flammability rating  
+Base P/N-E3 - RoHS compliant, commercial grade 
+Base P/NHE3 - RoHS compliant, AEC-Q101 qualified
+Terminals: matte tin plated leads, solderable per 
+J-STD-002 and JESD 22-B102 
+E3 suffix meets JESD 201 class 1A whisker test, HE3 suffix 
+meets JESD 201 class 2 whisker test
+Note
+•
+P6KE250A to P6KE540A and P6KE250CA to P6KE440CA for 
+commercial grade only
+Polarity: for unidirectional types the color band denotes 
+cathode end, no marking on bidirectional types
+Notes
+(1) Non-repetitive current pulse, per fig. 3 and derated above TA = 25 °C per fig. 2
+(2) Measured on 8.3 ms single half sine-wave or equivalent square wave, duty cycle = 4 pulses per minute maximum
+(3) VF = 3.5 V for P6KE220A and below; VF = 5.0 V for P6KE250A and above
+PRIMARY CHARACTERISTICS
+VWM
+5.8 V to 459 V
+VBR unidirectional
+6.8 V to 540 V
+VBR bidirectional
+6.8 V to 440 V
+PPPM
+600 W
+PD
+5.0 W
+IFSM (unidirectional only)
+100 A
+TJ max.
+175 °C
+Polarity
+Unidirectional, bidirectional
+Package
+DO-15 (DO-204AC)
+DO-15 (DO-204AC)
+MAXIMUM RATINGS (TA = 25 °C unless otherwise noted)
+PARAMETER
+SYMBOL
+VALUE
+UNIT
+Peak pulse power dissipation with a 10/1000 μs waveform (1) (fig. 1)
+PPPM
+600
+W
+Peak pulse current with a 10/1000 μs waveform (1) 
+IPPM
+See next table
+A
+Power dissipation on infinite heatsink at TL = 75 °C (fig. 5)
+PD
+5.0
+W
+Peak forward surge current 8.3 ms single half sine-wave (2)
+IFSM
+100
+A
+Maximum instantaneous forward voltage at 50 A for unidirectional only (3)
+VF
+3.5/5.0
+V
+Operating junction and storage temperature range
+TJ, TSTG
+-55 to +175
+°C
+
+PAGE 2
+P6KE6.8A thru P6KE540A
+www.vishay.com
+Vishay General Semiconductor
+  
+ 
+Revision: 27-Sep-2021
+2
+Document Number: 88369
+For technical questions within your region: DiodesAmericas@vishay.com, DiodesAsia@vishay.com, DiodesEurope@vishay.com
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+Notes
+(1) Pulse test: tp ≤ 50 ms
+(2) Surge current waveform per fig. 3 and derate per fig. 2
+(3) For bidirectional types with VWM of 10 V and less the ID limit is doubled
+(4) All terms and symbols are consistent with ANSI/EEE CA62.35
+(+) Underwriters laboratory recognition for the classification of protectors (QVGQ2) under the UL standard for safety 497B and file number 
+     E136766 for both unidirectional and bidirectional devices
+ELECTRICAL CHARACTERISTICS (TA = 25 °C unless otherwise noted)
+DEVICE TYPE
+BREAKDOWN 
+VOLTAGE 
+VBR AT IT (1)
+(V) 
+TEST 
+CURRENT 
+IT
+(mA)
+STAND-OFF 
+VOLTAGE
+VWM 
+(V)
+MAXIMUM
+REVERSE
+LEAKAGE 
+AT VWM (3) 
+ID (μA) 
+MAXIMUM
+PEAK 
+PULSE 
+CURRENT
+IPPM (2) 
+(A) 
+MAXIMUM
+CLAMPING
+VOLTAGE
+ AT IPPM
+VC (V) 
+MAXIMUM 
+TEMPERATURE 
+COEFFICIENT
+AT VBR
+(%/°C)
+MIN.
+MAX.
+(+)P6KE6.8A
+6.45
+7.14
+10
+5.80
+1000
+57.1
+10.5
+0.057
+(+)P6KE7.5A
+7.13
+7.88
+10
+6.40
+500
+53.1
+11.3
+0.061
+(+)P6KE8.2A
+7.79
+8.61
+10
+7.02
+200
+49.6
+12.1
+0.065
+(+)P6KE9.1A
+8.65
+9.55
+1.0
+7.78
+50
+44.8
+13.4
+0.068
+(+)P6KE10A
+9.50
+10.5
+1.0
+8.55
+10
+41.4
+14.5
+0.073
+(+)P6KE11A
+10.5
+11.6
+1.0
+9.40
+5.0
+38.5
+15.6
+0.075
+(+)P6KE12A
+11.4
+12.6
+1.0
+10.2
+5.0
+35.9
+16.7
+0.078
+(+)P6KE13A
+12.4
+13.7
+1.0
+11.1
+5.0
+33.0
+18.2
+0.081
+(+)P6KE15A
+14.3
+15.8
+1.0
+12.8
+1.0
+28.3
+21.2
+0.084
+(+)P6KE16A
+15.2
+16.8
+1.0
+13.6
+1.0
+26.7
+22.5
+0.086
+(+)P6KE18A
+17.1
+18.9
+1.0
+15.3
+1.0
+23.8
+25.2
+0.088
+(+)P6KE20A
+19.0
+21.0
+1.0
+17.1
+1.0
+21.7
+27.7
+0.090
+(+)P6KE22A
+20.9
+23.1
+1.0
+18.8
+1.0
+19.6
+30.6
+0.092
+(+)P6KE24A
+22.8
+25.2
+1.0
+20.5
+1.0
+18.1
+33.2
+0.094
+(+)P6KE27A
+25.7
+28.4
+1.0
+23.1
+1.0
+16.0
+37.5
+0.096
+(+)P6KE30A
+28.5
+31.5
+1.0
+25.6
+1.0
+14.5
+41.4
+0.097
+(+)P6KE33A
+31.4
+34.7
+1.0
+28.2
+1.0
+13.1
+45.7
+0.098
+(+)P6KE36A
+34.2
+37.8
+1.0
+30.8
+1.0
+12.0
+49.9
+0.099
+(+)P6KE39A
+37.1
+41.0
+1.0
+33.3
+1.0
+11.1
+53.9
+0.100
+(+)P6KE43A
+40.9
+45.2
+1.0
+36.8
+1.0
+10.1
+59.3
+0.101
+(+)P6KE47A
+44.7
+49.4
+1.0
+40.2
+1.0
+9.3
+64.8
+0.101
+(+)P6KE51A
+48.5
+53.6
+1.0
+43.6
+1.0
+8.6
+70.1
+0.102
+(+)P6KE56A
+53.2
+58.8
+1.0
+47.8
+1.0
+7.8
+77.0
+0.103
+(+)P6KE62A
+58.9
+65.1
+1.0
+53.0
+1.0
+7.1
+85.0
+0.104
+(+)P6KE68A
+64.6
+71.4
+1.0
+58.1
+1.0
+6.5
+92.0
+0.104
+(+)P6KE75A
+71.3
+78.8
+1.0
+64.1
+1.0
+5.8
+103
+0.105
+(+)P6KE82A
+77.9
+86.1
+1.0
+70.1
+1.0
+5.3
+113
+0.105
+(+)P6KE91A
+86.5
+95.5
+1.0
+77.8
+1.0
+4.8
+125
+0.106
+(+)P6KE100A
+95.0
+105
+1.0
+85.5
+1.0
+4.4
+137
+0.106
+(+)P6KE110A
+105
+116
+1.0
+94.0
+1.0
+3.9
+152
+0.107
+(+)P6KE120A
+114
+126
+1.0
+102
+1.0
+3.6
+165
+0.107
+(+)P6KE130A
+124
+137
+1.0
+111
+1.0
+3.4
+179
+0.107
+(+)P6KE150A
+143
+158
+1.0
+128
+1.0
+2.9
+207
+0.108
+(+)P6KE160A
+152
+168
+1.0
+136
+1.0
+2.7
+219
+0.108
+(+)P6KE170A
+162
+179
+1.0
+145
+1.0
+2.6
+234
+0.108
+(+)P6KE180A
+171
+189
+1.0
+154
+1.0
+2.4
+246
+0.108
+(+)P6KE200A
+190
+210
+1.0
+171
+1.0
+2.2
+274
+0.108
+(+)P6KE220A
+209
+231
+1.0
+185
+1.0
+1.8
+328
+0.108
+(+)P6KE250A
+237
+263
+1.0
+214
+1.0
+1.7
+344
+0.110
+(+)P6KE300A
+285
+315
+1.0
+256
+1.0
+1.4
+414
+0.110
+(+)P6KE350A
+333
+368
+1.0
+300
+1.0
+1.2
+482
+0.110
+(+)P6KE400A
+380
+420
+1.0
+342
+1.0
+1.1
+548
+0.110
+(+)P6KE440A
+418
+462
+1.0
+376
+1.0
+1.00
+602
+0.110
+P6KE480A 
+456
+504
+1.0
+408
+1.0
+0.91
+658
+0.110
+P6KE510A 
+485
+535
+1.0
+434
+1.0
+0.86
+698
+0.110
+P6KE540A 
+513
+567
+1.0
+459
+1.0
+0.81
+740
+0.110
+
+PAGE 3
+P6KE6.8A thru P6KE540A
+www.vishay.com
+Vishay General Semiconductor
+  
+ 
+Revision: 27-Sep-2021
+3
+Document Number: 88369
+For technical questions within your region: DiodesAmericas@vishay.com, DiodesAsia@vishay.com, DiodesEurope@vishay.com
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+Note
+(1) AEC-Q101 qualified
+RATINGS AND CHARACTERISTICS CURVES (TA = 25 °C unless otherwise noted)
+Fig. 1 - Peak Pulse Power Rating Curve
+Fig. 2 - Pulse Power or Current vs. Initial Junction Temperature
+Fig. 3 - Pulse Waveform
+Fig. 4 - Typical Junction Capacitance Unidirectional
+THERMAL CHARACTERISTICS (TA = 25 °C unless otherwise noted)
+PARAMETER
+SYMBOL
+VALUE
+UNIT
+Typical thermal resistance, junction to lead
+RθJL
+20
+°C/ W
+Typical thermal resistance, junction to ambient
+RθJA
+75
+ORDERING INFORMATION (Example)
+PREFERRED PIN
+UNIT WEIGHT (g)
+PREFERRED PACKAGE CODE
+BASE QUANTITY
+DELIVERY MODE
+P6KE6.8A-E3/54
+0.432
+54
+4000
+13" diameter paper tape and reel
+P6KE6.8AHE3/54 (1)
+0.432
+54
+4000
+13" diameter paper tape and reel
+td - Pulse Width (s)
+0.1
+1
+10
+100
+1.0 ms
+10 ms
+0.1 µs
+1.0 µs
+10 µs
+100 µs
+Non-Repetitive Pulse
+Waveform shown in Fig. 3
+TA = 25 °C
+PPPM - Peak Pulse Power (kW)
+100
+75
+50
+25
+0
+0
+25
+50
+75
+100
+125
+150
+175
+200
+Peak Pulse Power (PPP) or Current (IPP)
+Derating in Percentage, %
+TJ - Initial Temperature (°C)
+0
+50
+100
+150
+td
+0
+1.0
+2.0
+3.0
+4.0
+IPPM - Peak Pulse Current, % IRSM
+t - Time (ms)
+tr = 10 µs
+Peak Value
+IPPM
+Half Value -
+IPPM
+IPP
+2
+10/1000 µs Waveform
+as defined by R.E.A.
+TJ = 25 °C
+Pulse Width (td)
+is defined as the Point
+where the Peak Current
+decays to 50 % of IPPM
+10
+100
+1000
+6000
+10
+100
+200
+1.0
+CJ - Junction Capacitance (pF)
+VBR - Breakdown Voltage (V)
+TJ = 25 °C
+f = 1.0 MHz
+Vsig = 50 mVp-p
+Measured at
+Zero Bias
+Measured at Stand-Off
+Voltage VWM
+
+PAGE 4
+P6KE6.8A thru P6KE540A
+www.vishay.com
+Vishay General Semiconductor
+  
+ 
+Revision: 27-Sep-2021
+4
+Document Number: 88369
+For technical questions within your region: DiodesAmericas@vishay.com, DiodesAsia@vishay.com, DiodesEurope@vishay.com
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+Fig. 5 - Power Derating Curve
+Fig. 6 - Maximum Non-Repetitive Forward Surge Current
+Fig. 7 - Typical Transient Thermal Impedance
+6
+5
+4
+3
+2
+1
+0
+0
+25
+50
+75
+100
+125
+150
+175
+200
+L = 0.375" (9.5 mm)
+Lead Lengths
+PD - Power Dissipation (W)
+TL - Lead Temperature (°C)
+60 Hz
+Resistive or
+Inductive Load
+200
+100
+50 
+10
+1 
+5
+10
+50
+100 
+IFSM - Peak Forward Surge Current (A)
+Number of Cycles at 60 Hz 
+Uni-Directional Only
+TJ = TJ max.
+8.3 ms Single Half Sine-Wave
+tp - Pulse Duration (s)
+Transient Thermal Impedance (°C/W)
+10
+100
+1
+0.1
+0.001
+0.01
+0.1
+1
+10
+100
+1000
+
+PAGE 5
+P6KE6.8A thru P6KE540A
+www.vishay.com
+Vishay General Semiconductor
+  
+ 
+Revision: 27-Sep-2021
+5
+Document Number: 88369
+For technical questions within your region: DiodesAmericas@vishay.com, DiodesAsia@vishay.com, DiodesEurope@vishay.com
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+PACKAGE OUTLINE DIMENSIONS in inches (millimeters)
+Note
+•
+Dimensions of mold length and diameter do not include mold flash and gate burr, mold flash shall not exceed 0.015 inch per side. These 
+dimensions are measured at the outermost extreme of the plastic body 
+APPLICATION NOTES
+• This P6KE TVS series is a low cost commercial product for 
+use in applications where large voltage transients can 
+permanently damage voltage-sensitive components.
+• The P6KE series device types are designed in a small 
+package size where power and space is a consideration. 
+They are characterized by their high surge capability, 
+extremely fast response time, and low impedance, (Ron). 
+Because of the unpredictable nature of transients, and the 
+variation of the impedance with respect to these 
+transients, impedance, per se, is not specified as a 
+parametric value. However, a minimum voltage at low 
+current conditions (BV) and a maximum clamping voltage 
+(Vc) at a maximum peak pulse current is specified. 
+• In some instances, the thermal effect (see Vc Clamping 
+Voltage) may be responsible for 50 % to 70 % of the 
+observed voltage differential when subjected to high 
+current pulses for several duty cycles, thus making a 
+maximum impedance specification insignificant.
+• In case of a severe current overload or abnormal transient 
+beyond the maximum ratings, the Transient Voltage 
+Suppressor will initially fail ‘short’ thus tripping the 
+system’s circuit breaker or fuse while protecting the entire 
+circuit. Curves depicting clamping voltage vs. various 
+current pulses are available from the factory. Extended 
+power curves vs. pulse time are also available.
+DO-15 (DO-204AC)
+0.034 (0.86)
+0.028 (0.71)
+DIA.
+0.130 (3.3)
+0.138 (3.5)
+DIA.
+1.0 (25.4)
+MIN.
+0.242 (6.15)
+0.258 (6.55)
+1.0 (25.4)
+MIN.
+
+PAGE 6
+Legal Disclaimer Notice
+www.vishay.com
+Vishay
+   
+ 
+Revision: 01-Jan-2026
+1
+Document Number: 91000
+THIS DOCUMENT IS SUBJECT TO CHANGE WITHOUT NOTICE. THE PRODUCTS DESCRIBED HEREIN AND THIS DOCUMENT
+ARE SUBJECT TO SPECIFIC DISCLAIMERS, SET FORTH AT www.vishay.com/doc?91000
+Disclaimer
+ALL PRODUCT, PRODUCT SPECIFICATIONS AND DATA ARE SUBJECT TO CHANGE WITHOUT NOTICE TO IMPROVE 
+RELIABILITY, FUNCTION OR DESIGN OR OTHERWISE. 
+Vishay Intertechnology, Inc., its affiliates, agents, and employees, and all persons acting on its or their behalf (collectively, 
+“Vishay”), disclaim any and all liability for any errors, inaccuracies or incompleteness contained in any datasheet or in any other 
+disclosure relating to any product.
+Vishay makes no warranty, representation or guarantee regarding the suitability of the products for any particular purpose or 
+the continuing production of any product. To the maximum extent permitted by applicable law, Vishay disclaims (i) any and all 
+liability arising out of the application or use of any product, (ii) any and all liability, including without limitation special, 
+consequential or incidental damages, and (iii) any and all implied warranties, including warranties of fitness for particular 
+purpose, non-infringement and merchantability.
+Statements regarding the suitability of products for certain types of applications are based on Vishay's knowledge of typical 
+requirements that are often placed on Vishay products in generic applications. Such statements are not binding statements 
+about the suitability of products for a particular application. It is the customer's responsibility to validate that a particular product 
+with the properties described in the product specification is suitable for use in a particular application. Parameters provided in 
+datasheets and / or specifications may vary in different applications and performance may vary over time. All operating 
+parameters, including typical parameters, must be validated for each customer application by the customer's technical experts. 
+Product specifications do not expand or otherwise modify Vishay's terms and conditions of purchase, including but not limited 
+to the warranty expressed therein.
+Hyperlinks included in this datasheet may direct users to third-party websites. These links are provided as a convenience and 
+for informational purposes only. Inclusion of these hyperlinks does not constitute an endorsement or an approval by Vishay of 
+any of the products, services or opinions of the corporation, organization or individual associated with the third-party website. 
+Vishay disclaims any and all liability and bears no responsibility for the accuracy, legality or content of the third-party website 
+or for that of subsequent links.
+Vishay products are not designed for use in life-saving or life-sustaining applications or any application in which the failure of 
+the Vishay product could result in personal injury or death unless specifically qualified in writing by Vishay. Customers using or 
+selling Vishay products not expressly indicated for use in such applications do so at their own risk. Please contact authorized 
+Vishay personnel to obtain written terms and conditions regarding products designed for such applications.
+No license, express or implied, by estoppel or otherwise, to any intellectual property rights is granted by this document or by 
+any conduct of Vishay. Product names and markings noted herein may be trademarks of their respective owners.
+© 2026 VISHAY INTERTECHNOLOGY, INC. ALL RIGHTS RESERVED

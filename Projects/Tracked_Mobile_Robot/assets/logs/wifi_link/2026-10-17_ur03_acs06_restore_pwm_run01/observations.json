@@ -1,0 +1,177 @@
+{
+  "verdict": "PASS_MODE0_RESTORE_REARM_ZERO_AND_FINAL_STOP_WITH_AUTOMATIC_STOP_INTERVENING",
+  "gate_status": "MANUAL_DISARM_FROM_ACTIVE_NOT_DEMONSTRATED_IN_THIS_RUN",
+  "capture_name": "2026-10-17_UR03_ACS06_RESTORE_PWM_run01.sr",
+  "capture_sha256": "90fe0f070298786d75e727f30c47adf15a7fbe7dbf06424498ce1d3afd713345",
+  "duration_s": 12.5,
+  "samplerate_hz": 4000000.0,
+  "normal_mode_source_matches_reviewed_mode0": true,
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 27,
+    "DISARM": 2
+  },
+  "seq_range": [
+    573833964,
+    573833993
+  ],
+  "matching_ack_count": 30,
+  "uart_ERR_count": 0,
+  "bad_stop_bits_D0_D1": [
+    0,
+    0
+  ],
+  "valid_tel_count": 125,
+  "state_counts": {
+    "DISARMED": 93,
+    "ARMED": 32
+  },
+  "all_valid_tel_vx_w_pwm_cps_drop_zero": true,
+  "err": "1 throughout; no new STM error",
+  "rearm": {
+    "ARM": {
+      "start_s": 3.8864285,
+      "end_s": 3.8879910555555557,
+      "text": "ARM,seq=573833964"
+    },
+    "ARM_ACK": {
+      "start_s": 3.888084,
+      "end_s": 3.8914655555555555,
+      "text": "ACK,seq=573833964,type=ARM,t_ms=530757"
+    },
+    "first_zero_CMD": {
+      "start_s": 3.96966875,
+      "end_s": 3.9743560555555555,
+      "text": "CMD,seq=573833965,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "last_zero_CMD": {
+      "start_s": 6.88643,
+      "end_s": 6.891117555555556,
+      "text": "CMD,seq=573833991,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "accepted_zero_CMD_count": 27
+  },
+  "first_stop": {
+    "attribution": "ESP-initiated stop before manual request 30; exact triggering reason not logged",
+    "command": {
+      "start_s": 7.086608,
+      "end_s": 7.088431055555556,
+      "text": "DISARM,seq=573833992"
+    },
+    "ack": {
+      "start_s": 7.0885275,
+      "end_s": 7.092166305555556,
+      "text": "ACK,seq=573833992,type=DISARM,t_ms=533963"
+    },
+    "can_prefix_start_s": 7.0864345,
+    "last_CMD_start_to_CAN_start_ms": 200.00450000000035,
+    "last_CMD_start_to_DISARM_start_ms": 200.1780000000002,
+    "inference": "The 200.0045 ms last-CMD-to-CAN interval is consistent with the production source watchdog. User reports no focus switch; cause of the command-delivery gap remains unconfirmed. Do not attribute it to user blur or ticket expiry.",
+    "first_disarmed_tel": {
+      "start_s": 7.13278375,
+      "end_s": 7.147775805555556,
+      "text": "TEL,t_ms=534008,state=DISARMED,reason=DISARM,command_age_ms=242,last_seq=573833992,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "534008",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "242",
+        "last_seq": "573833992",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "tel_count_before_manual_stop": 20
+  },
+  "late_CMD_request29": {
+    "esp_result": "TICKET_REJECTED",
+    "uart_transmission": false,
+    "diagnostic": "got=232 expected=232 valid=0/0; check_ms=41604..41605 < expires_ms=41708. Snapshot indicates invalidated ticket, not proof of TTL expiry. Warning follows initial stop."
+  },
+  "manual_stop": {
+    "request_id": 30,
+    "session_id": 2,
+    "command": {
+      "start_s": 9.0966515,
+      "end_s": 9.098474555555557,
+      "text": "DISARM,seq=573833993"
+    },
+    "ack": {
+      "start_s": 9.0985615,
+      "end_s": 9.102202805555557,
+      "text": "ACK,seq=573833993,type=DISARM,t_ms=535977"
+    },
+    "precondition": "STM already DISARMED from first stop",
+    "first_followup_tel": {
+      "start_s": 9.12932575,
+      "end_s": 9.144404055555556,
+      "text": "TEL,t_ms=536008,state=DISARMED,reason=DISARM,command_age_ms=2242,last_seq=573833993,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "536008",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "2242",
+        "last_seq": "573833993",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "post_stop_tel_count": 34,
+    "capture_after_ack_s": 3.3977971944444434
+  },
+  "physical_levels": "D4/PB6, D6/PC7, D7/PB7 LOW for all 50,000,000 samples each (12.5 s). Existing user-confirmed mapping.",
+  "browser_screenshot": {
+    "source": "User-attached final screenshot, manually transcribed",
+    "test_banner": false,
+    "boot_id": 3570331004,
+    "startup_state": "READY",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_result": "DISARM request 30 OK",
+    "stm_t_ms": 568808,
+    "last_seq": 573833993,
+    "stm_age_ms": 42,
+    "outputs_and_cps": 0,
+    "drop": 0,
+    "err": 1
+  },
+  "provenance": {
+    "esp_monitor": "Byte-for-byte copy of attached text file",
+    "esp_monitor_sha256": "b81455abe44d78a9130deac5761b12cee1eeeddf32c7d37835f885b68d08772f",
+    "source_attachment": "C:\\Users\\eyh12\\.codex\\attachments\\40326f8c-bd56-4c24-8fa7-fba3d23f1914\\붙여넣은 텍스트.txt",
+    "current_main_normalized_sha256": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d"
+  },
+  "limits": [
+    "No manual ACTIVE-to-DISARMED transition in this run: first stop is automatic, manual request30 occurs later.",
+    "Root cause of the command delivery gap is unconfirmed.",
+    "All output values are zero; no rotating motor stop-time claim. Digital samples do not establish analog integrity."
+  ],
+  "next_action": "Manual ACTIVE-stop evidence obtained in linked restore run02. Root cause of this run01 command-delivery gap remains unconfirmed and separate from the completed bounded AC-S06 scope.",
+  "user_followup": {
+    "source": "User reply in this conversation",
+    "reported_focus_switch": false,
+    "manual_DISARM_timing": "User waited until ACTIVE had ended, then clicked DISARM",
+    "original_text": "전환은 안했구 ARM명령이 끝난 다음 ACTIVE 끝난 다음에 DISARM을 눌렀어"
+  },
+  "followup_run02": {
+    "review": "../2026-10-17_ur03_acs06_restore_pwm_run02/observations.json",
+    "result": "Manual DISARM from ARMED verified in run02. This does not change run01 observations or identify the cause of its automatic stop."
+  },
+  "next_action_at_initial_review": "Keep normal mode 0. Capture run02: manually ARM, observe ACTIVE/ARMED and zero outputs, click DISARM after about 1 second while ACTIVE is still displayed, then observe OK/IDLE/DISARMED. If ACTIVE ends first, retain logs and investigate rather than repeat blindly."
+}

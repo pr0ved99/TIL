@@ -1,0 +1,5 @@
+﻿id,conductor,motor,command,current_display_A,T1_A_C,T2_B_C,temperature_timing,stop_disarm_confirmed,no_anomaly_confirmed,note,requested_max_duration_s,actual_duration_s,zero_residual_display_A
+AIR01,M1B,A,forward,-0.18,26.7,26.7,30 seconds after stop; follow-up confirmation,True,True,First report called this voltage; unit A identifies current.,1,,-0.01
+AIR02,M1B,A,reverse,0.18,26.7,,"T1 26.6 during observation, 26.7 after stop; exact delay not reported",,,Stop reported; later user specified T1 only changed. No separate full DISARM checklist confirmation.,1,,-0.01
+AIR03,M2B,B,forward,0.2,26.9,27.0,30 seconds after stop,True,True,"Initial T1 27.0/T2 26.9 corrected by user: temperatures swapped, not probe wiring.",1,,-0.01
+AIR04,M2B,B,reverse,-0.23,26.9,27.0,30 seconds after stop,True,True,Raw current report: -00.23 A / 미포착. Final user supplement: 마지막은 이상 없음.,1,,-0.01

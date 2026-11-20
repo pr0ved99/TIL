@@ -1,0 +1,34 @@
+I (132135) wifi_link: STM TEL #1314 t_ms=122800 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (132235) wifi_link: STM TEL #1315 t_ms=122900 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (132335) wifi_link: STM TEL #1316 t_ms=123000 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (132435) wifi_link: STM TEL #1317 t_ms=123100 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (132505) wifi_link: AC-S06: TX step=0 seq=1876337834 written=19/19
+I (132525) wifi_link: STM TEL #1318 t_ms=123200 state=DISARMED reason=BOOT pwm=0/0 cps=0/0 drop=0 err=0
+I (132545) wifi_link: AC-S06: reply step=0 seq=1876337834 ACK t_ms=123224
+I (132545) wifi_link: CONTROL RX MATCH: ARM seq=1876337834
+I (132635) wifi_link: STM TEL #1319 t_ms=123300 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (132635) wifi_link: AC-S06: TX step=1 seq=1876337835 written=55/55
+I (132665) wifi_link: AC-S06: reply step=1 seq=1876337835 ACK t_ms=123345
+I (132665) wifi_link: CONTROL RX MATCH: CMD seq=1876337835
+I (132735) wifi_link: STM TEL #1320 t_ms=123400 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (132735) wifi_link: AC-S06: zero accepted; waiting CMD_TIMEOUT seq=1876337835
+I (132835) wifi_link: STM TEL #1321 t_ms=123500 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (132935) wifi_link: STM TEL #1322 t_ms=123600 state=ARMED reason=NONE pwm=0/0 cps=0/0 drop=0 err=0
+I (133035) wifi_link: STM TEL #1323 t_ms=123700 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=0
+I (133035) wifi_link: AC-S06: CMD_TIMEOUT seq=1876337835 age=355
+I (133035) wifi_link: AC-S06: TX step=2 seq=1876337836 written=55/55
+I (133065) wifi_link: AC-S06: reply step=2 seq=1876337836 NOT_ARMED t_ms=123746
+I (133065) wifi_link: CONTROL RX MATCH: CMD seq=1876337836
+I (133135) wifi_link: STM TEL #1324 t_ms=123800 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+I (133235) wifi_link: STM TEL #1325 t_ms=123900 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+I (133335) wifi_link: STM TEL #1326 t_ms=124000 state=DISARMED reason=CMD_TIMEOUT pwm=0/0 cps=0/0 drop=0 err=1
+I (133335) wifi_link: AC-S06: cleanup proof=1 problem=NONE
+I (133335) wifi_link: CONTROL TX: op=3 seq=1876337837 written=24/24
+I (133365) wifi_link: CONTROL RX MATCH: DISARM seq=1876337837
+I (133435) wifi_link: STM TEL #1327 t_ms=124100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1
+I (133435) wifi_link: AC-S06: end checks_ok=1 stop_confirmed=1 problem=NONE; capture and manual re-arm review required
+I (133535) wifi_link: STM TEL #1328 t_ms=124200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1
+I (133635) wifi_link: STM TEL #1329 t_ms=124300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1
+I (133735) wifi_link: STM TEL #1330 t_ms=124400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1
+I (133835) wifi_link: STM TEL #1331 t_ms=124500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1
+I (133935) wifi_link: STM TEL #1332 t_ms=124600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=1

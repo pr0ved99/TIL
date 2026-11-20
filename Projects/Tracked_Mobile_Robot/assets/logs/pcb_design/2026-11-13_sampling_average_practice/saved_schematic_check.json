@@ -1,0 +1,19 @@
+{
+  "status": "SAVED_MODEL_AND_TOPOLOGY_CHECK_PASS",
+  "source": "09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_Voltage_BlockAverage_Step.kicad_sch",
+  "sha256": "db2b26acb40dae37959d5834ba00c9bbc54b40d401d9be8e1133e8dec020d0b2",
+  "V1_PWL": "0 12.6 55.25m 12.6 55.251m 12 300m 12",
+  "V3_PWL": "0 3.3 300m 3.3",
+  "V1_visible_value": "16 (old display; PWL model governs)",
+  "reference": "03_14_Voltage_ADC_InputSettling_TRAN.kicad_sch",
+  "compared": {
+    "references_same": true,
+    "wires_labels_junctions_same": true,
+    "symbol_geometry_same": true,
+    "other_values_models_same": true,
+    "library_definitions_same": true
+  },
+  "simulation_run_by_codex": false,
+  "user_results_observed": false,
+  "next": "A-2 TRAN and CSV export"
+}

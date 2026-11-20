@@ -1,0 +1,8 @@
+MODE SAVED native PC only
+MAIN normalized SHA256 2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0
+PASS real PAGE C initializer + complete HTML/script, modes 0/1/2
+PASS mode=0: disabled handler/dispatch + 42 W5/main adapter regressions
+PASS mode=1: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+NEGATIVE CONTROL detected: LF-only executes old ARM even though final DISARM succeeds
+PASS mode=2: fixed bytes/STM cancellation, input, admission, deadlines, priority, failures
+Production inputs unchanged; board build/flash/LA capture remain unverified.

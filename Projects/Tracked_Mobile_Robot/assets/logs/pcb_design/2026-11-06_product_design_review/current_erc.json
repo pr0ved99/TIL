@@ -1,0 +1,308 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-06T22:14:52",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.5",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/ab81a25e-fef6-4674-b67e-a1a5021f20d1",
+            "violations": [
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 4 [~{MR}, Input, Line]",
+                            "pos": {
+                                "x": 2.8702,
+                                "y": 1.9812
+                            },
+                            "uuid": "e87bda5e-6240-4f0b-bbaf-4e210e8bb731"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 4 [~{MR}, Input, Line]",
+                            "pos": {
+                                "x": 2.8702,
+                                "y": 1.9812
+                            },
+                            "uuid": "e87bda5e-6240-4f0b-bbaf-4e210e8bb731"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 5 [CT, Passive, Line]",
+                            "pos": {
+                                "x": 2.8702,
+                                "y": 2.032
+                            },
+                            "uuid": "9f4cb1e9-ae67-4846-80ba-1543f6fdb57c"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 2 [VDD, Power input, Line]",
+                            "pos": {
+                                "x": 2.9464,
+                                "y": 1.9304
+                            },
+                            "uuid": "edaafff3-6b70-4480-9177-efb01cb3c7f0"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                },
+                {
+                    "description": "Input Power pin not driven by any Output Power pins",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 3 [GND, Power input, Line]",
+                            "pos": {
+                                "x": 2.9464,
+                                "y": 2.0828
+                            },
+                            "uuid": "0ea7b709-0c6e-485a-ac9f-cac6f7f42483"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "power_pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U1 핀 1 [~{RESET}, Output, Line]",
+                            "pos": {
+                                "x": 3.0226,
+                                "y": 2.0066
+                            },
+                            "uuid": "129116bd-28ab-4454-92a0-567f1c4454b9"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 1 [SEL1, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 1.905
+                            },
+                            "uuid": "e688c07e-990d-40c2-8409-a710adfad558"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 1 [SEL1, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 1.905
+                            },
+                            "uuid": "e688c07e-990d-40c2-8409-a710adfad558"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 4 [SEL2, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 1.9812
+                            },
+                            "uuid": "40f318ed-1e7d-4242-995b-4803f95cecfd"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 4 [SEL2, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 1.9812
+                            },
+                            "uuid": "40f318ed-1e7d-4242-995b-4803f95cecfd"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 9 [S3, Passive, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.032
+                            },
+                            "uuid": "61903c71-2cb3-4202-8652-13b30404f866"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 10 [SEL3, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.0574
+                            },
+                            "uuid": "f5f80c74-5d5b-46e0-9cfd-5ad8be66dca7"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 10 [SEL3, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.0574
+                            },
+                            "uuid": "f5f80c74-5d5b-46e0-9cfd-5ad8be66dca7"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 12 [S4, Passive, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.1082
+                            },
+                            "uuid": "9d61e84d-450f-4bc1-9196-7d8bf47220b0"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 13 [SEL4, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.1336
+                            },
+                            "uuid": "b0e91e9d-d744-4096-b12a-06322580fc8f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Input pin not driven by any Output pins",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 13 [SEL4, Input, Line]",
+                            "pos": {
+                                "x": 3.5306,
+                                "y": 2.1336
+                            },
+                            "uuid": "b0e91e9d-d744-4096-b12a-06322580fc8f"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_driven"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 8 [D3, Passive, Line]",
+                            "pos": {
+                                "x": 3.7846,
+                                "y": 2.032
+                            },
+                            "uuid": "d40f1dd7-ea6b-47e9-aae5-f40d6415fd66"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                },
+                {
+                    "description": "Pin not connected",
+                    "items": [
+                        {
+                            "description": "Symbol U2 핀 11 [D4, Passive, Line]",
+                            "pos": {
+                                "x": 3.7846,
+                                "y": 2.1082
+                            },
+                            "uuid": "9429f45f-e57a-4d58-a943-7415569d903a"
+                        }
+                    ],
+                    "severity": "error",
+                    "type": "pin_not_connected"
+                }
+            ]
+        }
+    ],
+    "source": "TMR_Monitor_Shield_RevA.kicad_sch"
+}

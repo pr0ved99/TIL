@@ -1,0 +1,293 @@
+{
+  "test": "NZ-01_FORWARD_RELEASE_DISARM",
+  "status": "PASS",
+  "scope": "UART and sampled STM PWM/PC7 with motors disconnected; no mechanical motion acceptance",
+  "capture": "2026-10-17_WIFI_NZ01_FORWARD_RELEASE_PWM_run01.sr",
+  "capture_sha256": "bcfc67885d1a3d42da70569d5ad0963ec193b15234b9951fba09891c5c698950",
+  "esp_log_sha256": "2be96e11d3e05857749a0cdbe56a11c27d11afd4d059641f39b690f283fef058",
+  "sample_rate_hz": 4000000.0,
+  "duration_s": 16.007296,
+  "checks": {
+    "uart_no_stop_bit_errors": true,
+    "all_commands_acknowledged_once": true,
+    "sequence_contiguous": true,
+    "expected_command_groups": true,
+    "cmd_timeout_300": true,
+    "zero_keeps_armed": true,
+    "final_disarmed": true,
+    "tel_no_fault_or_errors": true,
+    "cps_zero": true,
+    "pc7_low": true,
+    "pwm_five_percent": true,
+    "no_pwm_after_zero_ack": true,
+    "no_uart_commands_after_disarm": true,
+    "stopped_tel_through_capture": true
+  },
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 66,
+    "DISARM": 1
+  },
+  "ack_count": 68,
+  "tel_count": 160,
+  "command_groups": [
+    {
+      "key": [
+        "ARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 2.48888875,
+        "end_s": 2.4905380555555556,
+        "text": "ARM,seq=2197816735",
+        "kind": "ARM",
+        "fields": {
+          "seq": "2197816735"
+        }
+      },
+      "last": {
+        "start_s": 2.48888875,
+        "end_s": 2.4905380555555556,
+        "text": "ARM,seq=2197816735",
+        "kind": "ARM",
+        "fields": {
+          "seq": "2197816735"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 12,
+      "first": {
+        "start_s": 2.5883575,
+        "end_s": 2.5931318055555557,
+        "text": "CMD,seq=2197816736,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816736",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 3.88861575,
+        "end_s": 3.8933900555555554,
+        "text": "CMD,seq=2197816747,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816747",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "50",
+        "0"
+      ],
+      "count": 26,
+      "first": {
+        "start_s": 3.98837425,
+        "end_s": 3.9932355555555556,
+        "text": "CMD,seq=2197816748,vx_mmps=50,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816748",
+          "vx_mmps": "50",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 6.76841925,
+        "end_s": 6.773280305555556,
+        "text": "CMD,seq=2197816773,vx_mmps=50,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816773",
+          "vx_mmps": "50",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 28,
+      "first": {
+        "start_s": 6.86842775,
+        "end_s": 6.873202055555556,
+        "text": "CMD,seq=2197816774,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816774",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 9.9084295,
+        "end_s": 9.913203805555556,
+        "text": "CMD,seq=2197816801,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816801",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "DISARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 9.98857725,
+        "end_s": 9.990486805555555,
+        "text": "DISARM,seq=2197816802",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "2197816802"
+        }
+      },
+      "last": {
+        "start_s": 9.98857725,
+        "end_s": 9.990486805555555,
+        "text": "DISARM,seq=2197816802",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "2197816802"
+        }
+      }
+    }
+  ],
+  "first_zero_after_motion": {
+    "start_s": 6.86842775,
+    "end_s": 6.873202055555556,
+    "text": "CMD,seq=2197816774,vx_mmps=0,w_mradps=0,timeout_ms=300",
+    "kind": "CMD",
+    "fields": {
+      "seq": "2197816774",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "timeout_ms": "300"
+    }
+  },
+  "zero_tel": {
+    "start_s": 6.91544175,
+    "end_s": 6.929991555555556,
+    "text": "TEL,t_ms=506807,state=ARMED,reason=NONE,command_age_ms=43,last_seq=2197816774,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "506807",
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": "43",
+      "last_seq": "2197816774",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "disarm": {
+    "start_s": 9.98857725,
+    "end_s": 9.990486805555555,
+    "text": "DISARM,seq=2197816802",
+    "kind": "DISARM",
+    "fields": {
+      "seq": "2197816802"
+    }
+  },
+  "disarm_tel": {
+    "start_s": 10.01591875,
+    "end_s": 10.030994055555556,
+    "text": "TEL,t_ms=509914,state=DISARMED,reason=DISARM,command_age_ms=103,last_seq=2197816802,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "kind": "TEL",
+    "fields": {
+      "t_ms": "509914",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "103",
+      "last_seq": "2197816802",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "pwm": {
+    "D4": {
+      "pulses": 54822,
+      "first_rise_s": 3.99335275,
+      "last_fall_s": 6.87326925,
+      "burst_span_s": 2.8799165,
+      "mean_frequency_hz": 19035.637869741942,
+      "mean_duty_percent": 5.003673720812497,
+      "period_range_us": [
+        52.25,
+        52.75
+      ],
+      "high_width_range_us": [
+        2.5,
+        2.75
+      ],
+      "high_samples_after_zero_ack": 0,
+      "low_tail_s": 9.13402675
+    },
+    "D7": {
+      "pulses": 54822,
+      "first_rise_s": 3.99335275,
+      "last_fall_s": 6.87326925,
+      "burst_span_s": 2.8799165,
+      "mean_frequency_hz": 19035.637869741942,
+      "mean_duty_percent": 5.003847337107983,
+      "period_range_us": [
+        52.25,
+        52.75
+      ],
+      "high_width_range_us": [
+        2.5,
+        2.75
+      ],
+      "high_samples_after_zero_ack": 0,
+      "low_tail_s": 9.13402675
+    }
+  },
+  "stopped_tel_observation_s": 5.888962749999999,
+  "limits": [
+    "Probe identities follow the established channel map; capture metadata contains D labels only.",
+    "Pointer release time was not recorded, so user-release-to-zero latency is unmeasured.",
+    "The final partial TEL is truncated by the capture boundary.",
+    "Capture is 16.007296 seconds; the requested 30 seconds was not collected."
+  ]
+}

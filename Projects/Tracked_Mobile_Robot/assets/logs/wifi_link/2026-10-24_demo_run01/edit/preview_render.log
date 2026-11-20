@@ -1,0 +1,67 @@
+-filter_complex_script is deprecated, use -/filter_complex filtergraph.txt instead
+[Parsed_ass_21 @ 000001e1a3522fc0] libass API version: 0x1703000
+[Parsed_ass_21 @ 000001e1a3522fc0] libass source: commit: 0.17.3-32-g5298859c298d3c570d8d7e3b883a0d63490659b8
+[Parsed_ass_21 @ 000001e1a3522fc0] Shaper: FriBidi 1.0.16 (SIMPLE) HarfBuzz-ng 10.0.1 (COMPLEX)
+[Parsed_ass_21 @ 000001e1a3522fc0] Using font provider directwrite (with GDI)
+[Parsed_ass_21 @ 000001e1a3522fc0] Added subtitle file: 'captions.ass' (5 styles, 49 events)
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'C:\Users\eyh12\Desktop\mvp_cam_01.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf58.45.100
+  Duration: 00:01:13.63, start: 0.000000, bitrate: 1061 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 1280x720, 959 kb/s, 24 fps, 24 tbr, 90k tbn (default)
+      Metadata:
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 96 kb/s (default)
+      Metadata:
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Input #1, mov,mp4,m4a,3gp,3g2,mj2, from 'C:\Users\eyh12\Desktop\mvp_01.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp41isom
+    creation_time   : 2026-10-23T17:26:16.000000Z
+  Duration: 00:01:16.80, start: 0.000000, bitrate: 8894 kb/s
+  Stream #1:0[0x1](und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, unknown/reserved/reserved, progressive), 1920x1080 [SAR 1:1 DAR 16:9], 8710 kb/s, 30 fps, 30 tbr, 30k tbn (default)
+      Metadata:
+        creation_time   : 2026-10-23T17:26:16.000000Z
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : AVC Coding
+  Stream #1:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 192 kb/s (default)
+      Metadata:
+        creation_time   : 2026-10-23T17:26:16.000000Z
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Input #2, png_pipe, from 'layout.png':
+  Duration: N/A, bitrate: N/A
+  Stream #2:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1920x1080, 24 fps, 24 tbr, 24 tbn
+Stream mapping:
+  Stream #0:0 (h264) -> setpts:default
+  Stream #1:0 (h264) -> setpts:default
+  Stream #2:0 (png) -> format:default
+  select:output0 -> Stream #0:0 (png)
+[Parsed_ass_21 @ 000001e1a45b5e80] libass API version: 0x1703000
+[Parsed_ass_21 @ 000001e1a45b5e80] libass source: commit: 0.17.3-32-g5298859c298d3c570d8d7e3b883a0d63490659b8
+[Parsed_ass_21 @ 000001e1a45b5e80] Shaper: FriBidi 1.0.16 (SIMPLE) HarfBuzz-ng 10.0.1 (COMPLEX)
+[Parsed_ass_21 @ 000001e1a45b5e80] Using font provider directwrite (with GDI)
+[Parsed_ass_21 @ 000001e1a45b5e80] Added subtitle file: 'captions.ass' (5 styles, 49 events)
+[Parsed_ass_21 @ 000001e1a45b5e80] fontselect: (Malgun Gothic, 400, 0) -> MalgunGothic, 0, MalgunGothic
+[Parsed_ass_21 @ 000001e1a45b5e80] fontselect: (Malgun Gothic, 700, 0) -> MalgunGothicBold, 0, MalgunGothicBold
+Output #0, image2, to 'preview.png':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf61.7.100
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown, progressive), 1920x1080, q=2-31, 200 kb/s, 24 fps, 24 tbn
+      Metadata:
+        encoder         : Lavc61.19.100 png
+[image2 @ 000001e1a354f640] The specified filename 'preview.png' does not contain an image sequence pattern or a pattern is invalid.
+[image2 @ 000001e1a354f640] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.
+[out#0/image2 @ 000001e1a35b55c0] video:789KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    1 fps=0.3 q=-0.0 Lsize=N/A time=00:00:00.04 bitrate=N/A dup=288 drop=0 speed=0.0127x    

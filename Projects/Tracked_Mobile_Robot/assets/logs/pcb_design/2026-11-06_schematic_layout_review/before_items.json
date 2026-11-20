@@ -1,0 +1,3045 @@
+[
+  {
+    "kind": "text",
+    "at": [
+      "170.18",
+      "31.75",
+      "0"
+    ],
+    "text": "2. CURRENT INPUTS - SLOW TREND CANDIDATE"
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "113.03",
+      "0"
+    ],
+    "text": "CN7: 16=3V3, 20=GND\n35=PC2, 37=PC3\n36=PC1/PB9*, 38=PC0/PB8*\n* Verify solder bridges; preserve IMU PB8/PB9.\nCN10 pins intentionally unused by this shield.\nNC marks do not alter the NUCLEO wiring."
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "162.56",
+      "0"
+    ],
+    "text": "4. TEST POINTS"
+  },
+  {
+    "kind": "text",
+    "at": [
+      "205.74",
+      "142.24",
+      "0"
+    ],
+    "text": "12k + 100nF: nominal fc=132.6 Hz\n100nF is AFTER resistor, not directly on VIOUT."
+  },
+  {
+    "kind": "text",
+    "at": [
+      "294.64",
+      "31.75",
+      "0"
+    ],
+    "text": "3. NTC INPUTS - 103JT-025 OFF-BOARD"
+  },
+  {
+    "kind": "text",
+    "at": [
+      "213.36",
+      "210.82",
+      "0"
+    ],
+    "text": "OPEN MECHANICAL ITEMS\n- Connector models and resistor/capacitor body envelopes are provisional.\n- Template header positions only; actual socket height / clearance not verified.\n- Keep RESET / USER / jumpers / ST-LINK access and cable strain relief.\n- A clean ERC is not proof of these electrical or mechanical conditions."
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "31.75",
+      "0"
+    ],
+    "text": "1. NUCLEO-F446RE MORPHO INTERFACE"
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "17.78",
+      "0"
+    ],
+    "text": "DRAFT - NOT FOR FABRICATION OR CONNECTION\nSignal circuits only; current-sensor power path remains off-board."
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "12.7",
+      "0"
+    ],
+    "text": "TMR MONITOR SHIELD | RevA.0 DESIGN STARTER"
+  },
+  {
+    "kind": "text",
+    "at": [
+      "205.74",
+      "86.36",
+      "0"
+    ],
+    "text": "12k + 100nF: nominal fc=132.6 Hz\n100nF is AFTER resistor, not directly on VIOUT."
+  },
+  {
+    "kind": "text",
+    "at": [
+      "12.7",
+      "210.82",
+      "0"
+    ],
+    "text": "OPEN ELECTRICAL ITEMS\n- Input ESD / fault protection and unpowered backfeed not designed yet.\n- 3V3 supply margin, carrier decoupling and cable capacitance to be checked.\n- ADC acquisition/leakage budget and sensor disconnection handling remain open.\n- No automatic motor stop threshold is defined by this sheet."
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "368.3",
+      "121.92"
+    ]
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "330.2",
+      "121.92"
+    ]
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "248.92",
+      "111.76"
+    ]
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "368.3",
+      "60.96"
+    ]
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "330.2",
+      "60.96"
+    ]
+  },
+  {
+    "kind": "junction",
+    "at": [
+      "248.92",
+      "55.88"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "59.69"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "92.71"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "52.07"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "52.07"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "64.77"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "64.77"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "87.63"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "95.25"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "74.93"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "67.31"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "57.15"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "67.31"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "85.09"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "57.15"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "57.15"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "64.77"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "59.69"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "90.17"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "90.17"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "77.47"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "95.25"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "72.39"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "87.63"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "85.09"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "69.85"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "72.39"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "57.15"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "85.09"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "82.55"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "97.79"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "77.47"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "74.93"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "59.69"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "62.23"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "54.61"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "87.63"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "69.85"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "85.09"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "62.23"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "90.17"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "69.85"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "52.07"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "90.17"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "87.63"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "67.31"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "72.39"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "82.55"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "80.01"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "59.69"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "74.93"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "92.71"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "92.71"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "54.61"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "64.77"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "62.23"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "54.61"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "92.71"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "97.79"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "72.39"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "82.55"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "82.55"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "77.47"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "80.01"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "109.22",
+      "52.07"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "54.61"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "45.72",
+      "62.23"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "77.47"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "96.52",
+      "80.01"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "80.01"
+    ]
+  },
+  {
+    "kind": "no_connect",
+    "at": [
+      "33.02",
+      "67.31"
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "320.04",
+        "60.96"
+      ],
+      [
+        "xy",
+        "330.2",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "302.26",
+        "124.46"
+      ],
+      [
+        "xy",
+        "292.1",
+        "124.46"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "77.47"
+      ],
+      [
+        "xy",
+        "368.3",
+        "83.82"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "121.92"
+      ],
+      [
+        "xy",
+        "344.17",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "302.26",
+        "63.5"
+      ],
+      [
+        "xy",
+        "292.1",
+        "63.5"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "207.01",
+        "55.88"
+      ],
+      [
+        "xy",
+        "224.79",
+        "55.88"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "33.02",
+        "97.79"
+      ],
+      [
+        "xy",
+        "20.32",
+        "97.79"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "109.22"
+      ],
+      [
+        "xy",
+        "167.64",
+        "109.22"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "110.49"
+      ],
+      [
+        "xy",
+        "330.2",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "45.72",
+        "97.79"
+      ],
+      [
+        "xy",
+        "58.42",
+        "97.79"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "33.02",
+        "95.25"
+      ],
+      [
+        "xy",
+        "20.32",
+        "95.25"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "200.66",
+        "185.42"
+      ],
+      [
+        "xy",
+        "200.66",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "60.96"
+      ],
+      [
+        "xy",
+        "344.17",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "121.92"
+      ],
+      [
+        "xy",
+        "368.3",
+        "130.81"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "55.88"
+      ],
+      [
+        "xy",
+        "248.92",
+        "64.77"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "207.01",
+        "111.76"
+      ],
+      [
+        "xy",
+        "224.79",
+        "111.76"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "232.41",
+        "55.88"
+      ],
+      [
+        "xy",
+        "248.92",
+        "55.88"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "320.04",
+        "121.92"
+      ],
+      [
+        "xy",
+        "330.2",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "111.76"
+      ],
+      [
+        "xy",
+        "167.64",
+        "111.76"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "53.34"
+      ],
+      [
+        "xy",
+        "167.64",
+        "53.34"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "317.5",
+        "185.42"
+      ],
+      [
+        "xy",
+        "317.5",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "60.96"
+      ],
+      [
+        "xy",
+        "391.16",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "128.27"
+      ],
+      [
+        "xy",
+        "248.92",
+        "134.62"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "142.24",
+        "185.42"
+      ],
+      [
+        "xy",
+        "142.24",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "72.39"
+      ],
+      [
+        "xy",
+        "248.92",
+        "78.74"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "41.91"
+      ],
+      [
+        "xy",
+        "330.2",
+        "36.83"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "351.79",
+        "60.96"
+      ],
+      [
+        "xy",
+        "368.3",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "83.82",
+        "185.42"
+      ],
+      [
+        "xy",
+        "83.82",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "58.42"
+      ],
+      [
+        "xy",
+        "167.64",
+        "58.42"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "121.92"
+      ],
+      [
+        "xy",
+        "391.16",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "102.87"
+      ],
+      [
+        "xy",
+        "330.2",
+        "97.79"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "114.3"
+      ],
+      [
+        "xy",
+        "167.64",
+        "114.3"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "330.2",
+        "49.53"
+      ],
+      [
+        "xy",
+        "330.2",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "351.79",
+        "121.92"
+      ],
+      [
+        "xy",
+        "368.3",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "111.76"
+      ],
+      [
+        "xy",
+        "269.24",
+        "111.76"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "111.76"
+      ],
+      [
+        "xy",
+        "248.92",
+        "120.65"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "259.08",
+        "185.42"
+      ],
+      [
+        "xy",
+        "259.08",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "138.43"
+      ],
+      [
+        "xy",
+        "368.3",
+        "144.78"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "25.4",
+        "185.42"
+      ],
+      [
+        "xy",
+        "25.4",
+        "193.04"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "45.72",
+        "95.25"
+      ],
+      [
+        "xy",
+        "58.42",
+        "95.25"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "302.26",
+        "121.92"
+      ],
+      [
+        "xy",
+        "292.1",
+        "121.92"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "45.72",
+        "69.85"
+      ],
+      [
+        "xy",
+        "58.42",
+        "69.85"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "45.72",
+        "74.93"
+      ],
+      [
+        "xy",
+        "58.42",
+        "74.93"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "232.41",
+        "111.76"
+      ],
+      [
+        "xy",
+        "248.92",
+        "111.76"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "248.92",
+        "55.88"
+      ],
+      [
+        "xy",
+        "269.24",
+        "55.88"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "302.26",
+        "60.96"
+      ],
+      [
+        "xy",
+        "292.1",
+        "60.96"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "180.34",
+        "55.88"
+      ],
+      [
+        "xy",
+        "167.64",
+        "55.88"
+      ]
+    ]
+  },
+  {
+    "kind": "wire",
+    "pts": [
+      [
+        "xy",
+        "368.3",
+        "60.96"
+      ],
+      [
+        "xy",
+        "368.3",
+        "69.85"
+      ]
+    ]
+  },
+  {
+    "kind": "label",
+    "at": [
+      "248.92",
+      "78.74",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "292.1",
+      "124.46",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "269.24",
+      "55.88",
+      "0"
+    ],
+    "text": "I_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "58.42",
+      "69.85",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "20.32",
+      "97.79",
+      "0"
+    ],
+    "text": "T_RIGHT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "330.2",
+      "36.83",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "58.42",
+      "97.79",
+      "0"
+    ],
+    "text": "I_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "58.42",
+      "95.25",
+      "0"
+    ],
+    "text": "I_RIGHT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "320.04",
+      "60.96",
+      "0"
+    ],
+    "text": "T_LEFT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "114.3",
+      "0"
+    ],
+    "text": "I_RIGHT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "248.92",
+      "134.62",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "391.16",
+      "60.96",
+      "0"
+    ],
+    "text": "T_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "53.34",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "207.01",
+      "55.88",
+      "0"
+    ],
+    "text": "I_LEFT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "391.16",
+      "121.92",
+      "0"
+    ],
+    "text": "T_RIGHT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "330.2",
+      "97.79",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "292.1",
+      "121.92",
+      "0"
+    ],
+    "text": "T_RIGHT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "142.24",
+      "193.04",
+      "0"
+    ],
+    "text": "I_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "269.24",
+      "111.76",
+      "0"
+    ],
+    "text": "I_RIGHT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "368.3",
+      "144.78",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "83.82",
+      "193.04",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "58.42",
+      "74.93",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "317.5",
+      "193.04",
+      "0"
+    ],
+    "text": "T_RIGHT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "292.1",
+      "60.96",
+      "0"
+    ],
+    "text": "T_LEFT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "55.88",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "368.3",
+      "83.82",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "292.1",
+      "63.5",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "111.76",
+      "0"
+    ],
+    "text": "GND"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "259.08",
+      "193.04",
+      "0"
+    ],
+    "text": "T_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "207.01",
+      "111.76",
+      "0"
+    ],
+    "text": "I_RIGHT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "109.22",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "167.64",
+      "58.42",
+      "0"
+    ],
+    "text": "I_LEFT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "25.4",
+      "193.04",
+      "0"
+    ],
+    "text": "STM_3V3"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "320.04",
+      "121.92",
+      "0"
+    ],
+    "text": "T_RIGHT_RAW"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "20.32",
+      "95.25",
+      "0"
+    ],
+    "text": "T_LEFT_ADC"
+  },
+  {
+    "kind": "label",
+    "at": [
+      "200.66",
+      "193.04",
+      "0"
+    ],
+    "text": "I_RIGHT_ADC"
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "83.82",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP2",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP2",
+        [
+          "83.82",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "GND",
+        [
+          "83.82",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "83.82",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "83.82",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "83.82",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "228.6",
+      "111.76",
+      "90"
+    ],
+    "ref": "R2",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R2",
+        [
+          "228.6",
+          "105.41",
+          "90"
+        ]
+      ],
+      [
+        "Value",
+        "12k candidate",
+        [
+          "228.6",
+          "107.95",
+          "90"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "228.6",
+          "111.76",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "228.6",
+          "111.76",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Output isolation / RC; value and lead spacing remain provisional",
+        [
+          "228.6",
+          "111.76",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "228.6",
+      "55.88",
+      "90"
+    ],
+    "ref": "R1",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R1",
+        [
+          "228.6",
+          "49.53",
+          "90"
+        ]
+      ],
+      [
+        "Value",
+        "12k candidate",
+        [
+          "228.6",
+          "52.07",
+          "90"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "228.6",
+          "55.88",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "228.6",
+          "55.88",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Output isolation / RC; value and lead spacing remain provisional",
+        [
+          "228.6",
+          "55.88",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "368.3",
+      "134.62",
+      "0"
+    ],
+    "ref": "C4",
+    "lib": "Device:C",
+    "properties": [
+      [
+        "Reference",
+        "C4",
+        [
+          "374.65",
+          "133.35",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "100n",
+        [
+          "374.65",
+          "135.89",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+        [
+          "368.3",
+          "134.62",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "368.3",
+          "134.62",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional",
+        [
+          "368.3",
+          "134.62",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "185.42",
+      "55.88",
+      "0"
+    ],
+    "ref": "J3",
+    "lib": "Connector_Generic:Conn_01x03",
+    "properties": [
+      [
+        "Reference",
+        "J3",
+        [
+          "185.42",
+          "49.53",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "CURRENT_LEFT",
+        [
+          "185.42",
+          "52.07",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+        [
+          "185.42",
+          "55.88",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "185.42",
+          "55.88",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT",
+        [
+          "185.42",
+          "55.88",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "248.92",
+      "68.58",
+      "0"
+    ],
+    "ref": "C1",
+    "lib": "Device:C",
+    "properties": [
+      [
+        "Reference",
+        "C1",
+        [
+          "255.27",
+          "67.31",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "100n",
+        [
+          "255.27",
+          "69.85",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+        [
+          "248.92",
+          "68.58",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "248.92",
+          "68.58",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional",
+        [
+          "248.92",
+          "68.58",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "101.6",
+      "74.93",
+      "0"
+    ],
+    "ref": "J2",
+    "lib": "Connector_Generic:Conn_02x19_Odd_Even",
+    "properties": [
+      [
+        "Reference",
+        "J2",
+        [
+          "101.6",
+          "44.45",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "CN10_SOCKET",
+        [
+          "101.6",
+          "46.99",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+        [
+          "101.6",
+          "74.93",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "101.6",
+          "74.93",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Bottom female socket; height and mating geometry to be checked",
+        [
+          "101.6",
+          "74.93",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "307.34",
+      "60.96",
+      "0"
+    ],
+    "ref": "J5",
+    "lib": "Connector_Generic:Conn_01x02",
+    "properties": [
+      [
+        "Reference",
+        "J5",
+        [
+          "307.34",
+          "54.61",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "NTC_LEFT",
+        [
+          "307.34",
+          "57.15",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+        [
+          "307.34",
+          "60.96",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "307.34",
+          "60.96",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025",
+        [
+          "307.34",
+          "60.96",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "347.98",
+      "121.92",
+      "90"
+    ],
+    "ref": "R6",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R6",
+        [
+          "347.98",
+          "115.57",
+          "90"
+        ]
+      ],
+      [
+        "Value",
+        "1k",
+        [
+          "347.98",
+          "118.11",
+          "90"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "347.98",
+          "121.92",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "347.98",
+          "121.92",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "347.98",
+          "121.92",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "142.24",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP3",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP3",
+        [
+          "142.24",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "I_LEFT_ADC",
+        [
+          "142.24",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "142.24",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "142.24",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "142.24",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "190.5",
+      "254",
+      "0"
+    ],
+    "ref": "U2",
+    "lib": "TMR_Monitor:TMUX1511PW",
+    "properties": [
+      [
+        "Reference",
+        "U2",
+        [
+          "192.4686",
+          "231.14",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "TMUX1511PW",
+        [
+          "192.4686",
+          "233.68",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Package_SO:TSSOP-14_4.4x5mm_P0.65mm",
+        [
+          "190.5",
+          "254",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "https://www.ti.com/lit/ds/symlink/tmux1511.pdf",
+        [
+          "190.5",
+          "254",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "4-channel SPST analog switch with powered-off protection, TSSOP-14",
+        [
+          "190.5",
+          "254",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "259.08",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP5",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP5",
+        [
+          "259.08",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "T_LEFT_ADC",
+        [
+          "259.08",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "259.08",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "259.08",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "259.08",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "317.5",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP6",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP6",
+        [
+          "317.5",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "T_RIGHT_ADC",
+        [
+          "317.5",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "317.5",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "317.5",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "317.5",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "347.98",
+      "60.96",
+      "90"
+    ],
+    "ref": "R4",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R4",
+        [
+          "347.98",
+          "54.61",
+          "90"
+        ]
+      ],
+      [
+        "Value",
+        "1k",
+        [
+          "347.98",
+          "57.15",
+          "90"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "347.98",
+          "60.96",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "347.98",
+          "60.96",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "347.98",
+          "60.96",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "25.4",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP1",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP1",
+        [
+          "25.4",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "STM_3V3",
+        [
+          "25.4",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "25.4",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "25.4",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "25.4",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "307.34",
+      "121.92",
+      "0"
+    ],
+    "ref": "J6",
+    "lib": "Connector_Generic:Conn_01x02",
+    "properties": [
+      [
+        "Reference",
+        "J6",
+        [
+          "307.34",
+          "115.57",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "NTC_RIGHT",
+        [
+          "307.34",
+          "118.11",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
+        [
+          "307.34",
+          "121.92",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "307.34",
+          "121.92",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "JST-XH 2-pin candidate; 1=NTC node 2=GND; external 103JT-025",
+        [
+          "307.34",
+          "121.92",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "185.42",
+      "111.76",
+      "0"
+    ],
+    "ref": "J4",
+    "lib": "Connector_Generic:Conn_01x03",
+    "properties": [
+      [
+        "Reference",
+        "J4",
+        [
+          "185.42",
+          "105.41",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "CURRENT_RIGHT",
+        [
+          "185.42",
+          "107.95",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
+        [
+          "185.42",
+          "111.76",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "185.42",
+          "111.76",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "JST-XH 3-pin candidate, not purchased or verified; 1=3V3 2=GND 3=VIOUT",
+        [
+          "185.42",
+          "111.76",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "200.66",
+      "185.42",
+      "0"
+    ],
+    "ref": "TP4",
+    "lib": "Connector:TestPoint",
+    "properties": [
+      [
+        "Reference",
+        "TP4",
+        [
+          "200.66",
+          "179.07",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "I_RIGHT_ADC",
+        [
+          "200.66",
+          "181.61",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
+        [
+          "200.66",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "200.66",
+          "185.42",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Draft component",
+        [
+          "200.66",
+          "185.42",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "38.1",
+      "74.93",
+      "0"
+    ],
+    "ref": "J1",
+    "lib": "Connector_Generic:Conn_02x19_Odd_Even",
+    "properties": [
+      [
+        "Reference",
+        "J1",
+        [
+          "38.1",
+          "44.45",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "CN7_SOCKET",
+        [
+          "38.1",
+          "46.99",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
+        [
+          "38.1",
+          "74.93",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "38.1",
+          "74.93",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Bottom female socket; height and mating geometry to be checked",
+        [
+          "38.1",
+          "74.93",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "248.92",
+      "124.46",
+      "0"
+    ],
+    "ref": "C2",
+    "lib": "Device:C",
+    "properties": [
+      [
+        "Reference",
+        "C2",
+        [
+          "255.27",
+          "123.19",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "100n",
+        [
+          "255.27",
+          "125.73",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+        [
+          "248.92",
+          "124.46",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "248.92",
+          "124.46",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional",
+        [
+          "248.92",
+          "124.46",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "330.2",
+      "106.68",
+      "0"
+    ],
+    "ref": "R5",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R5",
+        [
+          "339.09",
+          "105.41",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "10k",
+        [
+          "339.09",
+          "107.95",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "330.2",
+          "106.68",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "330.2",
+          "106.68",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "NTC divider; actual resistance/tolerance and body size unconfirmed",
+        [
+          "330.2",
+          "106.68",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "139.7",
+      "254",
+      "0"
+    ],
+    "ref": "U1",
+    "lib": "TMR_Monitor:TPS3840PL30DBV",
+    "properties": [
+      [
+        "Reference",
+        "U1",
+        [
+          "154.94",
+          "247.5798",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "TPS3840PL30DBV",
+        [
+          "154.94",
+          "250.1198",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Package_TO_SOT_SMD:SOT-23-5",
+        [
+          "139.7",
+          "254",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "https://www.ti.com/lit/ds/symlink/tps3840.pdf",
+        [
+          "139.7",
+          "254",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "3.0V voltage supervisor, active-low push-pull reset, SOT-23-5",
+        [
+          "139.7",
+          "254",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "368.3",
+      "73.66",
+      "0"
+    ],
+    "ref": "C3",
+    "lib": "Device:C",
+    "properties": [
+      [
+        "Reference",
+        "C3",
+        [
+          "374.65",
+          "72.39",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "100n",
+        [
+          "374.65",
+          "74.93",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
+        [
+          "368.3",
+          "73.66",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "368.3",
+          "73.66",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional",
+        [
+          "368.3",
+          "73.66",
+          "0"
+        ]
+      ]
+    ]
+  },
+  {
+    "kind": "symbol",
+    "at": [
+      "330.2",
+      "45.72",
+      "0"
+    ],
+    "ref": "R3",
+    "lib": "Device:R",
+    "properties": [
+      [
+        "Reference",
+        "R3",
+        [
+          "339.09",
+          "44.45",
+          "0"
+        ]
+      ],
+      [
+        "Value",
+        "10k",
+        [
+          "339.09",
+          "46.99",
+          "0"
+        ]
+      ],
+      [
+        "Footprint",
+        "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
+        [
+          "330.2",
+          "45.72",
+          "0"
+        ]
+      ],
+      [
+        "Datasheet",
+        "",
+        [
+          "330.2",
+          "45.72",
+          "0"
+        ]
+      ],
+      [
+        "Description",
+        "NTC divider; actual resistance/tolerance and body size unconfirmed",
+        [
+          "330.2",
+          "45.72",
+          "0"
+        ]
+      ]
+    ]
+  }
+]

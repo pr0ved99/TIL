@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-04",
+  "checks": [
+    {
+      "document": "um1724",
+      "expected_download_name": "ST_UM1724_Nucleo64.pdf",
+      "revision": "UM1724 Rev17,2025-09",
+      "role": "보드 전원·점퍼·헤더",
+      "project": {
+        "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\datasheets\\um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf",
+        "pages": 91,
+        "bytes": 3781926,
+        "sha256": "576d9bee3bc32c8ee70bf0d77cf9494cec06ea7c1d9ff98eebf2738cb9314a14",
+        "first_page_excerpt": "September 2025\nUM1724 Rev 17\n1/91\n1\nUM1724\nUser manual\nSTM32 Nucleo-64 boards (MB1136)\nIntroduction\nThe STM32 Nucleo-64 boards based on the MB1136 reference board (NUCLEO-F030R8, \nNUCLEO-F070RB, NUCLEO-F072RB, NUCLEO-F091RC, NUCLEO-F103RB,  \nNUCLEO-F302R8, NUCLEO-F303RE, NUCLEO-F334R8, NUCLEO-F401RE,  \nNUCLEO-F410RB, NUCLEO-F411RE, NUCLEO-F446RE, NUCLEO-L010RB,  \nNUCLEO-L053R8, NUCLEO-L073RZ, NUCLEO-L152RE, NUCLEO-L452RE,  \nNUCLEO-L476RG) provide"
+      },
+      "desktop": {
+        "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04\\02_데이터시트와_설명서\\um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics (1).pdf",
+        "pages": 91,
+        "bytes": 3781926,
+        "sha256": "576d9bee3bc32c8ee70bf0d77cf9494cec06ea7c1d9ff98eebf2738cb9314a14",
+        "first_page_excerpt": "September 2025\nUM1724 Rev 17\n1/91\n1\nUM1724\nUser manual\nSTM32 Nucleo-64 boards (MB1136)\nIntroduction\nThe STM32 Nucleo-64 boards based on the MB1136 reference board (NUCLEO-F030R8, \nNUCLEO-F070RB, NUCLEO-F072RB, NUCLEO-F091RC, NUCLEO-F103RB,  \nNUCLEO-F302R8, NUCLEO-F303RE, NUCLEO-F334R8, NUCLEO-F401RE,  \nNUCLEO-F410RB, NUCLEO-F411RE, NUCLEO-F446RE, NUCLEO-L010RB,  \nNUCLEO-L053R8, NUCLEO-L073RZ, NUCLEO-L152RE, NUCLEO-L452RE,  \nNUCLEO-L476RG) provide"
+      },
+      "hash_match": true
+    },
+    {
+      "document": "mb1136",
+      "expected_download_name": "ST_MB1136_C04_Schematic.pdf",
+      "revision": "MB1136 C04,2022-08-17",
+      "role": "보드 회로도; 실제 조립 변형 별도 확인",
+      "project": {
+        "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\datasheets\\mb1136-default-c04_schematic.pdf",
+        "pages": 5,
+        "bytes": 1314815,
+        "sha256": "401f40ca598b008050e7749b5847e93ca8aa83e9a0bae4cbcbe7a016159e57c1",
+        "first_page_excerpt": "1\n5\nProject Overview\nTitle:\nSize:\nReference:\nSheet:\nof\nA4\nRevision:\nProject: NUCLEO-XXXXRX\nMB1136\nC 04\n17-AUG-2022\n[No Variations]\nDate:\n-\nVariant:\nTable of contents\nLegend\nGeneral comment such as function title, configuration, ...\nText to be added to silkscreen.\nSheet 1: Project overview (this page)\nSheet 2: Top & Power\nNUCLEO-XXXXRX\nMB1136\nSheet 3: MCU\nSheet 4: STLINK/V2-1\nSheet 5: Extension connectors\nWarning text.\nOpen Platform License Agreem"
+      },
+      "desktop": {
+        "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04\\02_데이터시트와_설명서\\mb1136-default-c04_schematic.pdf",
+        "pages": 5,
+        "bytes": 1314815,
+        "sha256": "401f40ca598b008050e7749b5847e93ca8aa83e9a0bae4cbcbe7a016159e57c1",
+        "first_page_excerpt": "1\n5\nProject Overview\nTitle:\nSize:\nReference:\nSheet:\nof\nA4\nRevision:\nProject: NUCLEO-XXXXRX\nMB1136\nC 04\n17-AUG-2022\n[No Variations]\nDate:\n-\nVariant:\nTable of contents\nLegend\nGeneral comment such as function title, configuration, ...\nText to be added to silkscreen.\nSheet 1: Project overview (this page)\nSheet 2: Top & Power\nNUCLEO-XXXXRX\nMB1136\nSheet 3: MCU\nSheet 4: STLINK/V2-1\nSheet 5: Extension connectors\nWarning text.\nOpen Platform License Agreem"
+      },
+      "hash_match": true
+    },
+    {
+      "document": "an4899",
+      "expected_download_name": "ST_AN4899_GPIO_Protection.pdf",
+      "revision": "AN4899 Rev4,2026-05",
+      "role": "GPIO·입력 모드·전원 조건",
+      "project": {
+        "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\datasheets\\an4899-guidelines-for-gpio-hardware-settings-and-lowpower-consumption-on-stm32-mcus-stmicroelectronics.pdf",
+        "pages": 33,
+        "bytes": 707053,
+        "sha256": "a04463891ce210d5fefe4f9d08ee79ecbe87225728b143ca7fddabfa76e56bd6",
+        "first_page_excerpt": "May 2026\nAN4899 Rev 4\n1/33\n1\nAN4899\nApplication note\nGuidelines for GPIO hardware settings and low-power consumption \non STM32 MCUs\nIntroduction\nThe STM32 microcontroller general-purpose input/output pin (GPIO) provides many ways to \ninterface with external circuits within an application framework. This application note \nprovides basic information about GPIO configurations as well as guidelines for hardware \nand software developers to optimize th"
+      },
+      "desktop": {
+        "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04\\02_데이터시트와_설명서\\an4899-guidelines-for-gpio-hardware-settings-and-lowpower-consumption-on-stm32-mcus-stmicroelectronics.pdf",
+        "pages": 33,
+        "bytes": 707053,
+        "sha256": "a04463891ce210d5fefe4f9d08ee79ecbe87225728b143ca7fddabfa76e56bd6",
+        "first_page_excerpt": "May 2026\nAN4899 Rev 4\n1/33\n1\nAN4899\nApplication note\nGuidelines for GPIO hardware settings and low-power consumption \non STM32 MCUs\nIntroduction\nThe STM32 microcontroller general-purpose input/output pin (GPIO) provides many ways to \ninterface with external circuits within an application framework. This application note \nprovides basic information about GPIO configurations as well as guidelines for hardware \nand software developers to optimize th"
+      },
+      "hash_match": true
+    },
+    {
+      "document": "an2834",
+      "expected_download_name": "ST_AN2834_ADC_Accuracy.pdf",
+      "revision": "DocID15067 Rev2,2013-09",
+      "role": "ADC 정확도 일반 원리; 최신 판본/개별 MCU 정격으로 사용하지 않음",
+      "project": {
+        "path": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\datasheets\\AN2834.PDF",
+        "pages": 45,
+        "bytes": 877439,
+        "sha256": "ea908d27be5e16ba155677ecc6a910c811d12071fc3aecb025b57ee329aade19",
+        "first_page_excerpt": "September 2013\nDocID15067 Rev 2\n1/45\nAN2834\nApplication note\nHow to get the best ADC accuracy in STM32Fx Series and \nSTM32L1 Series devices\nIntroduction\nThe STM32Fx Series and STM32L1 Series microcontroller families embed up to four \nadvanced 12-bit ADCs (depending on the device). A self-calibration feature is provided to \nenhance ADC accuracy versus environmental condition changes.\nIn applications involving analog-to-digital conversion, ADC accu"
+      },
+      "desktop": {
+        "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04\\02_데이터시트와_설명서\\AN2834.PDF",
+        "pages": 45,
+        "bytes": 877439,
+        "sha256": "ea908d27be5e16ba155677ecc6a910c811d12071fc3aecb025b57ee329aade19",
+        "first_page_excerpt": "September 2013\nDocID15067 Rev 2\n1/45\nAN2834\nApplication note\nHow to get the best ADC accuracy in STM32Fx Series and \nSTM32L1 Series devices\nIntroduction\nThe STM32Fx Series and STM32L1 Series microcontroller families embed up to four \nadvanced 12-bit ADCs (depending on the device). A self-calibration feature is provided to \nenhance ADC accuracy versus environmental condition changes.\nIn applications involving analog-to-digital conversion, ADC accu"
+      },
+      "hash_match": true
+    }
+  ],
+  "check_scope": "PDF identity/revision, all-page text access, SHA256 equality; not a new electrical review"
+}

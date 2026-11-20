@@ -1,0 +1,105 @@
+{
+  "mvp": {
+    "before_sha256": "241e97f06814d0d90501dd6b4d607909ce8f21b82a36485a655aa6514ae8ee9d",
+    "applied_sha256": "7474627bb7dbaa801496e60d5f692034a93f4cd438d332f763708573fbd67207",
+    "physical_components": 48,
+    "total_nets": 35,
+    "active_nets": 33,
+    "net_name_updates": {
+      "/XL4015_1_5V_OUT_CANDIDATE": "/XL4015_1_5V_OUT"
+    },
+    "connections_and_pin_types_preserved": true,
+    "library_symbols_preserved": true,
+    "erc_errors": 0,
+    "erc_warnings": 0,
+    "ignored_checks": [
+      "single_global_label",
+      "four_way_junction",
+      "simulation_model_issue",
+      "footprint_filter"
+    ],
+    "value_updates": [
+      {
+        "ref": "F2",
+        "before": "0.5A_TIME_DELAY_CANDIDATE",
+        "after": "Littelfuse_1A"
+      },
+      {
+        "ref": "J19",
+        "before": "K1_MAIN_CONTACT_INTERFACE_TBD",
+        "after": "K1_MAIN_CONTACT_INTERFACE"
+      },
+      {
+        "ref": "J17",
+        "before": "K1_COIL_INTERFACE_TBD",
+        "after": "K1_COIL_INTERFACE"
+      },
+      {
+        "ref": "S2",
+        "before": "REENABLE_MOMENTARY_NO_CANDIDATE",
+        "after": "ABW110G"
+      },
+      {
+        "ref": "S0",
+        "before": "A22NE-M-PD02-N_CANDIDATE",
+        "after": "SF2ER-E2R2B"
+      },
+      {
+        "ref": "U1",
+        "before": "VO617A-3_CANDIDATE",
+        "after": "VO617A-3"
+      },
+      {
+        "ref": "R13",
+        "before": "680R_CANDIDATE",
+        "after": "680R"
+      },
+      {
+        "ref": "K2",
+        "before": "TX2-12V_CANDIDATE",
+        "after": "TX2-12V"
+      },
+      {
+        "ref": "J13",
+        "before": "XL4015_1_OUT_CANDIDATE",
+        "after": "XL4015_1_OUT"
+      },
+      {
+        "ref": "K1",
+        "before": "12V_COIL_POWER_RELAY_TBD",
+        "after": "V23134J1052D642"
+      },
+      {
+        "ref": "F1",
+        "before": "FUSE_TBD",
+        "after": "Littelfuse_10A"
+      },
+      {
+        "ref": "R14",
+        "before": "10k_CANDIDATE",
+        "after": "10k"
+      }
+    ],
+    "annotation_updates": 17
+  },
+  "shield": {
+    "before_sha256": "aec1372b345783dd6129cf1ce5f1e0da10c3e57ffce72514b6a439ff29ffbaab",
+    "applied_sha256": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+    "physical_components": 40,
+    "total_nets": 91,
+    "active_nets": 22,
+    "net_name_updates": {},
+    "connections_and_pin_types_preserved": true,
+    "library_symbols_preserved": true,
+    "erc_errors": 0,
+    "erc_warnings": 0,
+    "ignored_checks": [
+      "single_global_label",
+      "four_way_junction",
+      "simulation_model_issue",
+      "footprint_filter"
+    ],
+    "value_updates": [],
+    "annotation_updates": 8
+  }
+}

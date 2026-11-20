@@ -1,0 +1,456 @@
+{
+  "date": "2026-11-12",
+  "timezone": "Asia/Seoul",
+  "purpose": "Whole-project work report and future plan sources for a later NotebookLM video",
+  "source_commit": "8bd69b2feef7638d260002e1ffc9dd36e2667e55",
+  "desktop_folder": "C:\\Users\\eyh12\\Desktop\\TMR_전체작업보고_향후계획_NotebookLM_2026-11-12",
+  "original_copies": [
+    {
+      "source": "Projects/Tracked_Mobile_Robot/01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md",
+      "copy": "02_원본_보관/01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md",
+      "bytes": 14876,
+      "sha256": "49d84efeed6751537ce4bcc161fba99653df28ac2e9767a629767bd80c4094a4"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md",
+      "copy": "02_원본_보관/01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md",
+      "bytes": 18542,
+      "sha256": "5c58ccd889206fc0135b98374cd40a5240345d7b865a47c87fbbea1dee0c99a0"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md",
+      "copy": "02_원본_보관/01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md",
+      "bytes": 22322,
+      "sha256": "7249b58b9f159807302e606c79946678a21051acb3370119470d2dea2b8ae3fb"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md",
+      "copy": "02_원본_보관/01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md",
+      "bytes": 12966,
+      "sha256": "6b59fb332c977448316a25e071a805ef1424e1521610c6e73a22bf179f012b72"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/01_System_Architecture/19_Architecture_Decision_Record_ko.md",
+      "copy": "02_원본_보관/01_System_Architecture/19_Architecture_Decision_Record_ko.md",
+      "bytes": 15931,
+      "sha256": "4bb42fa54de2abd7359210d4f7f797b909c49c1c335304c49a40d327432608de"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/03_Firmware/README.md",
+      "copy": "02_원본_보관/03_Firmware/README.md",
+      "bytes": 6743,
+      "sha256": "c0d0158b910bb6953a95b67b5c174bf8d0391b81940816698e5aca3bc132a107"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+      "copy": "02_원본_보관/07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+      "bytes": 313166,
+      "sha256": "0d252b555a9e695882fbfc4a8d1e757735a9b8cae570283f5fd4abb1269adf26"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md",
+      "bytes": 22625,
+      "sha256": "a2a61f6ea885f70b682404849c3e53574f2a7b6c50dddff818be3f607d109e37"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md",
+      "bytes": 16418,
+      "sha256": "9674be110c4cdc26edcb80a9e52621416adafd12487a51acf3ba4c58a4d81b9a"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md",
+      "bytes": 21026,
+      "sha256": "47398f2568cba7c9e6667a5fb3d1c439c3b0e3f69303d231dfc3027e6fd1c9bd"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md",
+      "bytes": 21637,
+      "sha256": "92adb7b97088a561c185eea76aa134f8f7a480fbd3c7c6a5acb8cd43da291192"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md",
+      "bytes": 22098,
+      "sha256": "3e151ba3f7dd563d472a14f6c69343e80d008ee11fe5f7a6c84625bec67cce54"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md",
+      "copy": "02_원본_보관/09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md",
+      "bytes": 5195,
+      "sha256": "6b576ffb3f26657fba3f46b65c5cdb75d44a1af678f587159f185cfdf73a28e5"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/README.md",
+      "copy": "02_원본_보관/README.md",
+      "bytes": 26788,
+      "sha256": "90d93c246797a1287bdcd65f2150c3fcc1b08ad32bf3818c9a89a90ac9f72ea2"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md",
+      "copy": "02_원본_보관/assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md",
+      "bytes": 7494,
+      "sha256": "2e0863163d315f11c75799d009b0cdce7a338eb6ad5141fba71a8e4df4db0b2f"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_cad_closeout/README.md",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_cad_closeout/README.md",
+      "bytes": 2078,
+      "sha256": "9649bd166d451464ea145a79a82e69fdd20a59cd7a5ee48b507a266c863a7a25"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.pdf",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.pdf",
+      "bytes": 209860,
+      "sha256": "d10d2d73b7ff6bb262518966a976cf35b510f4f6776cd4be47067115ea678850"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.png",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.png",
+      "bytes": 191189,
+      "sha256": "19003e13237778a77e8cac957e0dd011d116e01031cc347507288ffdc87004ab"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.pdf",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.pdf",
+      "bytes": 178954,
+      "sha256": "841477a5fc29e1fa6f1a4fff68b5b1a3ce5885a8662f405f3912a0aae799a946"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.png",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.png",
+      "bytes": 115091,
+      "sha256": "9376370688960fa7679c27d75c25351429fd3c4bd535a62d41e2aa994c460335"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_discharge_check/README.md",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_discharge_check/README.md",
+      "bytes": 4673,
+      "sha256": "b155306da304c35c0d5dfa7a5190904db5f1af37625b8bab60bbcbed3319d90e"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-07_input_settling_check/README.md",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-07_input_settling_check/README.md",
+      "bytes": 5851,
+      "sha256": "bbfabb147be91f4bf701383e248ab802b7e48bbc6a0e74031d1d310af7a5f1e4"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-08_sampling_filter_review/README.md",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-08_sampling_filter_review/README.md",
+      "bytes": 2290,
+      "sha256": "352bdbb9e32fc186768ba15a6ae8341f32acdc02c52c0d5a31b78dd20a37d805"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-08_sampling_filter_review/block_average_calculation.json",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-08_sampling_filter_review/block_average_calculation.json",
+      "bytes": 1479,
+      "sha256": "f14f85878c2deec92f2fb2a853574eb00cac99a83894ceaea4793276be675ec2"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-08_sampling_filter_review/frequency_response_calculation.json",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-08_sampling_filter_review/frequency_response_calculation.json",
+      "bytes": 8896,
+      "sha256": "e952929df5941a61f16c49380123c9a807d0dcdad96e65922bb3ca341aebf1f3"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-08_sampling_filter_review/frequency_response_calculation.py",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-08_sampling_filter_review/frequency_response_calculation.py",
+      "bytes": 4256,
+      "sha256": "c16afdf87dcd623855b341cac5e6b95b7403bdcc14cceb853de4f8b869736232"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/README.md",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/README.md",
+      "bytes": 3112,
+      "sha256": "7fb3f792725a07df0c6417b82e3d1a4b2c9d71548a80b007369afc4577823625"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/temperature_window_comparison.json",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/temperature_window_comparison.json",
+      "bytes": 5784,
+      "sha256": "c3e82855e3d2c9e79567bc6bb5540564d9f2123487c71c03f930622eb56f2023"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/temperature_window_comparison.py",
+      "copy": "02_원본_보관/assets/logs/pcb_design/2026-11-11_temperature_window_comparison/temperature_window_comparison.py",
+      "bytes": 5622,
+      "sha256": "3ce35e92d46f84d1cbd26cce047865c26a49fe47ec0ccf19b21c3a9f0e3bb789"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md",
+      "copy": "02_원본_보관/assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md",
+      "bytes": 6014,
+      "sha256": "8ead2734795132e351cb246bffe1c1d9bdb3243b0591e62a7425e93b700273d9"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/reports/progress/2026-11-06_project_progress/README.md",
+      "copy": "02_원본_보관/assets/reports/progress/2026-11-06_project_progress/README.md",
+      "bytes": 5627,
+      "sha256": "bf3d9724988236d16a9549252f2cc3d796117e2d71380c32d6cfc1a2a2ebf787"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/reports/progress/2026-11-06_project_progress/milestones.csv",
+      "copy": "02_원본_보관/assets/reports/progress/2026-11-06_project_progress/milestones.csv",
+      "bytes": 19218,
+      "sha256": "8f39ddcb43a7d5d551a3ac7c9ae14cc8a0c2d474a4cefb5d20dc5a0b08f06131"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/reports/progress/2026-11-06_project_progress/project_progress.html",
+      "copy": "02_원본_보관/assets/reports/progress/2026-11-06_project_progress/project_progress.html",
+      "bytes": 4869810,
+      "sha256": "cdeec1b0fde330d722737d1249e7f4e8e6a40759c4c85dc6bb5337df75de471e"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/reports/progress/2026-11-06_project_progress/project_progress.png",
+      "copy": "02_원본_보관/assets/reports/progress/2026-11-06_project_progress/project_progress.png",
+      "bytes": 216007,
+      "sha256": "c6fa2a79c6ab8848b77407ac0ecb8827ecd2a1d7b0c565375cc92fc221674b53"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/README.md",
+      "copy": "02_원본_보관/assets/videos/wifi_mvp/2026-10-24/README.md",
+      "bytes": 1646,
+      "sha256": "6bdaec73ba48a5d00ee8513b849f0c8f510cf30b7b637807b545b09c4a8bb95e"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
+      "copy": "02_원본_보관/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4",
+      "bytes": 30714961,
+      "sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "copy": "02_원본_보관/docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "bytes": 18474,
+      "sha256": "6a43b66c09c6c87dd8d08724781b2535ffafa1dc6991e132e63a95a4feb44015"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "copy": "02_원본_보관/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "bytes": 53360,
+      "sha256": "0d8700d39bcb77c8e8255675e8b0b4e3f2f31ada2bf32a3158259205613ef46f"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "copy": "02_원본_보관/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "bytes": 77838,
+      "sha256": "17b1542f245551037152106dcaa122ad27c50c9e382cc7a0906a2f0d448c6913"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md",
+      "copy": "02_원본_보관/docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md",
+      "bytes": 24614,
+      "sha256": "ec43385e4f8348968dfec7118d074992ccc2c7855ba300cfd3396b6fcf9342e2"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "copy": "02_원본_보관/docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "bytes": 9164,
+      "sha256": "9045118ac93aaad9e1bf6f0db6e0441deb75f29d356b219422620a71a6349066"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-23_progress.md",
+      "copy": "02_원본_보관/docs/progress/2026-10-23_progress.md",
+      "bytes": 49009,
+      "sha256": "d9a3939397f79f5c77f30ffd3ca79ce1614843dc071444227e318c91101dabf0"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/progress/2026-11-11_progress.md",
+      "copy": "02_원본_보관/docs/progress/2026-11-11_progress.md",
+      "bytes": 9690,
+      "sha256": "8c026245876c0af86ba447af238a9265ce2255a5f84f076a51f06e99f0b48582"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/progress/2026-11-12_progress.md",
+      "copy": "02_원본_보관/docs/progress/2026-11-12_progress.md",
+      "bytes": 5907,
+      "sha256": "a83d539f59ddcae09778f28f38e00fc150020f6278aec1787f7600ee5cce3bbb"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "copy": "02_원본_보관/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "bytes": 117116,
+      "sha256": "bd6a8b5dddcf356d6d50d71dfe11ec67c67df981f5352768f85d93030bcefc28"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md",
+      "copy": "02_원본_보관/docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md",
+      "bytes": 10461,
+      "sha256": "05130a3872c9df95fce11471f3730a95e34ad6db79b2d7e9fd1dac9111e081f0"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md",
+      "copy": "02_원본_보관/docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md",
+      "bytes": 7685,
+      "sha256": "7add0072c3e8b8da9b4f342ad27f28d714eb1aaa26892cfed160219f47499476"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md",
+      "copy": "02_원본_보관/docs/verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md",
+      "bytes": 10761,
+      "sha256": "3772a0f89704781e44b435e4366906f58a11a66f945026602b14ffffd3268668"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md",
+      "copy": "02_원본_보관/docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md",
+      "bytes": 10730,
+      "sha256": "cf78f0e3983628bfbca568f5e15f613a83c53c8e5ab4a4fe3f2cd9cbe5ea72d4"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md",
+      "copy": "02_원본_보관/docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md",
+      "bytes": 14021,
+      "sha256": "107b9244a86d0b86e4bdfcf0cfd4c398f59a1984f3c686fbd3a7fd002e1384d9"
+    },
+    {
+      "source": "Projects/Tracked_Mobile_Robot/docs/verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md",
+      "copy": "02_원본_보관/docs/verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md",
+      "bytes": 12409,
+      "sha256": "af54baf03c7d1ccc7c534f66b64f82c3dadd694b2f2b2961731a6a04ff0697d2"
+    }
+  ],
+  "upload_groups": {
+    "01_프로젝트개요_현재구현.txt": [
+      "README.md",
+      "docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "03_Firmware/README.md"
+    ],
+    "02_시스템구조_안전책임.txt": [
+      "01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md",
+      "01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md",
+      "01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md",
+      "01_System_Architecture/19_Architecture_Decision_Record_ko.md"
+    ],
+    "03_MVP_검증결과_인수미결.txt": [
+      "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md",
+      "docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md",
+      "docs/verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md"
+    ],
+    "04_대표실적_주행_정지_거리_시연.txt": [
+      "docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md",
+      "docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md",
+      "docs/verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md",
+      "docs/progress/2026-10-23_progress.md",
+      "assets/videos/wifi_mvp/2026-10-24/README.md",
+      "assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md",
+      "assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md"
+    ],
+    "05_PCB_요구_도면_제품검토.txt": [
+      "09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md",
+      "09_Electrical_Design/16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md",
+      "09_Electrical_Design/28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md",
+      "09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md",
+      "assets/logs/pcb_design/2026-11-07_cad_closeout/README.md"
+    ],
+    "06_ADC학습_실습근거_현재설계판단.txt": [
+      "assets/logs/pcb_design/2026-11-07_discharge_check/README.md",
+      "assets/logs/pcb_design/2026-11-07_input_settling_check/README.md",
+      "assets/logs/pcb_design/2026-11-08_sampling_filter_review/README.md",
+      "assets/logs/pcb_design/2026-11-11_temperature_window_comparison/README.md",
+      "docs/progress/2026-11-11_progress.md",
+      "docs/progress/2026-11-12_progress.md"
+    ],
+    "07_향후계획_다음작업_확장로드맵.txt": [
+      "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md",
+      "docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md"
+    ],
+    "08_프로젝트전체_날짜별성과_11월6일까지.txt": [
+      "assets/reports/progress/2026-11-06_project_progress/README.md",
+      "assets/reports/progress/2026-11-06_project_progress/milestones.csv"
+    ]
+  },
+  "handoff_excerpt": "Only current top section in upload07; full original preserved.",
+  "upload_pdfs": {
+    "09_MVP_최신기능회로도_2026-11-07.pdf": "assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.pdf",
+    "10_Monitor_Shield_최신회로도_2026-11-07.pdf": "assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.pdf"
+  },
+  "editing_media": {
+    "01_MVP_기능회로도_2026-11-07.png": "assets/logs/pcb_design/2026-11-07_cad_closeout/mvp_current.png",
+    "02_Shield_회로도_2026-11-07.png": "assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.png",
+    "03_프로젝트진도_11월6일까지.png": "assets/reports/progress/2026-11-06_project_progress/project_progress.png",
+    "04_프로젝트진도_11월6일까지.html": "assets/reports/progress/2026-11-06_project_progress/project_progress.html",
+    "05_MVP_149초_기존통합시연.mp4": "assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4"
+  },
+  "upload_files": [
+    {
+      "name": "00_최신상태와자료해석기준.txt",
+      "bytes": 5321,
+      "sha256": "954db268e230d437432bc8ca52a9ddb99342379e7a3d92aabf96c3cfd0fd0c41"
+    },
+    {
+      "name": "01_프로젝트개요_현재구현.txt",
+      "bytes": 53893,
+      "sha256": "619d57eb1498b4c9052d495e1ec9c64b0ede52e89ae497805cdadb225b0ab15c"
+    },
+    {
+      "name": "02_시스템구조_안전책임.txt",
+      "bytes": 71869,
+      "sha256": "c6b08a96f07bc16896b8fc1514601e748fa6e2a40e6a02688ce1ede984458ffa"
+    },
+    {
+      "name": "03_MVP_검증결과_인수미결.txt",
+      "bytes": 156673,
+      "sha256": "0808be89638fa8294317efc71ac86c39f89259c7cfe0fd81ec16cb47f5cbb591"
+    },
+    {
+      "name": "04_대표실적_주행_정지_거리_시연.txt",
+      "bytes": 96808,
+      "sha256": "c0e7e21ff40f66340712cf28abf8b5ffddd747f9b33862f1483b771b1765d0bf"
+    },
+    {
+      "name": "05_PCB_요구_도면_제품검토.txt",
+      "bytes": 71152,
+      "sha256": "4d27dc5e7d05b6e999a558a41a4cb6bfd78a1ad2902ce716a97541362440f00e"
+    },
+    {
+      "name": "06_ADC학습_실습근거_현재설계판단.txt",
+      "bytes": 34453,
+      "sha256": "5b9ee6ddcc1e89c439fee4f00d6e781de60be21e353fd73cd41dcd5d16179a7b"
+    },
+    {
+      "name": "07_향후계획_다음작업_확장로드맵.txt",
+      "bytes": 132698,
+      "sha256": "afd5a1055e4441956303d351388308244f479a1ec5af05be2b74d439a5ba7dfd"
+    },
+    {
+      "name": "08_프로젝트전체_날짜별성과_11월6일까지.txt",
+      "bytes": 26226,
+      "sha256": "8058014dd58dad56aa8831d787957295696a6776a245f6a9994544f6b3dcd2ee"
+    },
+    {
+      "name": "09_MVP_최신기능회로도_2026-11-07.pdf",
+      "bytes": 209860,
+      "sha256": "d10d2d73b7ff6bb262518966a976cf35b510f4f6776cd4be47067115ea678850"
+    },
+    {
+      "name": "10_Monitor_Shield_최신회로도_2026-11-07.pdf",
+      "bytes": 178954,
+      "sha256": "841477a5fc29e1fa6f1a4fff68b5b1a3ce5885a8662f405f3912a0aae799a946"
+    }
+  ],
+  "generated_summary": "00_최신상태와자료해석기준.txt (source-based orientation, not original evidence)",
+  "notebooklm_uploaded": true,
+  "video_generated": null,
+  "original_copy_hashes_verified": true,
+  "preexisting_worktree_unchanged": true,
+  "creation_state": {
+    "notebooklm_uploaded": false,
+    "video_generated": false
+  },
+  "latest_status": {
+    "date": "2026-11-12",
+    "upload_evidence": "USER_REPORTED_11_FILES_UPLOADED",
+    "producer_memo": "8_SECTIONS_SCREEN_OBSERVED",
+    "corrections_applied": "NOT_REPORTED",
+    "video_generation": "NOT_REPORTED",
+    "bundle_is_creation_time_snapshot": true,
+    "copy_and_upload_hashes_rechecked": 62
+  }
+}

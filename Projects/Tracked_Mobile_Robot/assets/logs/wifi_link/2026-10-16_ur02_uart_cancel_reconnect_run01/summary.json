@@ -1,0 +1,536 @@
+{
+  "source_name": "2026-10-16_ur02_uart_cancel_reconnect_run01.sr",
+  "sha256": "9df725381c6f84097ebb98d95b7e43ee310eed62202493c1325c36a545f67c42",
+  "samplerate_hz": 4000000.0,
+  "samples": 200000000,
+  "duration_s": 50.0,
+  "decode": "115200 baud, 8N1, LSB-first, non-inverted",
+  "channels": {
+    "D0": {
+      "role": "STM PA9 TX / JDBG_UART Pin1",
+      "decoded_bytes": 89009,
+      "complete_lf_lines": 515,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "TEL": 501,
+        "ACK": 14
+      },
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 486,
+          "ARMED": 15
+        },
+        "reason": {
+          "DISARM": 413,
+          "NONE": 15,
+          "CMD_TIMEOUT": 73
+        },
+        "left_pwm": {
+          "0": 501
+        },
+        "right_pwm": {
+          "0": 501
+        },
+        "left_cps": {
+          "0": 501
+        },
+        "right_cps": {
+          "0": 501
+        },
+        "drop": {
+          "0": 501
+        },
+        "err": {
+          "0": 501
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.32986425,
+          "end_s": 2.3333318055555554,
+          "text": "ACK,seq=1024243099,type=ARM,t_ms=327434"
+        },
+        {
+          "start_s": 2.43748825,
+          "end_s": 2.4409548055555557,
+          "text": "ACK,seq=1024243100,type=CMD,t_ms=327542"
+        },
+        {
+          "start_s": 2.5519765,
+          "end_s": 2.5554440555555553,
+          "text": "ACK,seq=1024243101,type=CMD,t_ms=327656"
+        },
+        {
+          "start_s": 2.65224275,
+          "end_s": 2.6557090555555556,
+          "text": "ACK,seq=1024243102,type=CMD,t_ms=327757"
+        },
+        {
+          "start_s": 2.7519925,
+          "end_s": 2.7554593055555556,
+          "text": "ACK,seq=1024243103,type=CMD,t_ms=327856"
+        },
+        {
+          "start_s": 2.8520135,
+          "end_s": 2.8554798055555555,
+          "text": "ACK,seq=1024243104,type=CMD,t_ms=327957"
+        },
+        {
+          "start_s": 2.95231975,
+          "end_s": 2.9557855555555554,
+          "text": "ACK,seq=1024243105,type=CMD,t_ms=328057"
+        },
+        {
+          "start_s": 3.07198175,
+          "end_s": 3.0754483055555557,
+          "text": "ACK,seq=1024243106,type=CMD,t_ms=328177"
+        },
+        {
+          "start_s": 3.17198375,
+          "end_s": 3.1754495555555553,
+          "text": "ACK,seq=1024243107,type=CMD,t_ms=328277"
+        },
+        {
+          "start_s": 3.27199575,
+          "end_s": 3.2754608055555554,
+          "text": "ACK,seq=1024243108,type=CMD,t_ms=328377"
+        },
+        {
+          "start_s": 3.3719905,
+          "end_s": 3.3754563055555553,
+          "text": "ACK,seq=1024243109,type=CMD,t_ms=328477"
+        },
+        {
+          "start_s": 3.4724525,
+          "end_s": 3.4759168055555554,
+          "text": "ACK,seq=1024243110,type=CMD,t_ms=328578"
+        },
+        {
+          "start_s": 3.59195575,
+          "end_s": 3.5954203055555554,
+          "text": "ACK,seq=1024243111,type=CMD,t_ms=328698"
+        },
+        {
+          "start_s": 11.15928025,
+          "end_s": 11.163006305555555,
+          "text": "ACK,seq=1024243114,type=DISARM,t_ms=336278"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 6.675e-05,
+          "end_s": 0.015752555555555554,
+          "text": "TEL,t_ms=325100,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=1024243098,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 49.920511,
+          "end_s": 49.935760055555555,
+          "text": "TEL,t_ms=375101,state=DISARMED,reason=DISARM,command_age_ms=46403,last_seq=1024243114,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ]
+    },
+    "D1": {
+      "role": "STM PA10 RX / JDBG_UART Pin2",
+      "decoded_bytes": 703,
+      "complete_lf_lines": 15,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 12,
+        "\u0018": 1,
+        "DISARM": 1
+      },
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.3281235,
+          "end_s": 2.3297728055555553,
+          "text": "ARM,seq=1024243099"
+        },
+        {
+          "start_s": 2.4291,
+          "end_s": 2.4338743055555554,
+          "text": "CMD,seq=1024243100,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.547061,
+          "end_s": 2.5518353055555556,
+          "text": "CMD,seq=1024243101,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.64732275,
+          "end_s": 2.6520970555555556,
+          "text": "CMD,seq=1024243102,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.747075,
+          "end_s": 2.7518493055555555,
+          "text": "CMD,seq=1024243103,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.84709475,
+          "end_s": 2.8518690555555555,
+          "text": "CMD,seq=1024243104,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.947408,
+          "end_s": 2.9521823055555556,
+          "text": "CMD,seq=1024243105,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.067064,
+          "end_s": 3.0718383055555556,
+          "text": "CMD,seq=1024243106,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.1670695,
+          "end_s": 3.1718438055555556,
+          "text": "CMD,seq=1024243107,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.267083,
+          "end_s": 3.2718573055555553,
+          "text": "CMD,seq=1024243108,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.36707925,
+          "end_s": 3.3718535555555555,
+          "text": "CMD,seq=1024243109,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.467539,
+          "end_s": 3.4723133055555553,
+          "text": "CMD,seq=1024243110,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.587039,
+          "end_s": 3.5918133055555557,
+          "text": "CMD,seq=1024243111,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 11.15710475,
+          "end_s": 11.157278305555556,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 11.1572785,
+          "end_s": 11.159188055555555,
+          "text": "DISARM,seq=1024243114"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 2.3281235,
+          "end_s": 2.3297728055555553,
+          "text": "ARM,seq=1024243099"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 11.1572785,
+          "end_s": 11.159188055555555,
+          "text": "DISARM,seq=1024243114"
+        }
+      ]
+    },
+    "D2": {
+      "role": "ESP GPIO18 RX",
+      "decoded_bytes": 89009,
+      "complete_lf_lines": 515,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "TEL": 501,
+        "ACK": 14
+      },
+      "telemetry_values": {
+        "state": {
+          "DISARMED": 486,
+          "ARMED": 15
+        },
+        "reason": {
+          "DISARM": 413,
+          "NONE": 15,
+          "CMD_TIMEOUT": 73
+        },
+        "left_pwm": {
+          "0": 501
+        },
+        "right_pwm": {
+          "0": 501
+        },
+        "left_cps": {
+          "0": 501
+        },
+        "right_cps": {
+          "0": 501
+        },
+        "drop": {
+          "0": 501
+        },
+        "err": {
+          "0": 501
+        }
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.32986425,
+          "end_s": 2.3333318055555554,
+          "text": "ACK,seq=1024243099,type=ARM,t_ms=327434"
+        },
+        {
+          "start_s": 2.43748825,
+          "end_s": 2.4409548055555557,
+          "text": "ACK,seq=1024243100,type=CMD,t_ms=327542"
+        },
+        {
+          "start_s": 2.5519765,
+          "end_s": 2.5554440555555553,
+          "text": "ACK,seq=1024243101,type=CMD,t_ms=327656"
+        },
+        {
+          "start_s": 2.65224275,
+          "end_s": 2.6557090555555556,
+          "text": "ACK,seq=1024243102,type=CMD,t_ms=327757"
+        },
+        {
+          "start_s": 2.7519925,
+          "end_s": 2.7554593055555556,
+          "text": "ACK,seq=1024243103,type=CMD,t_ms=327856"
+        },
+        {
+          "start_s": 2.8520135,
+          "end_s": 2.8554798055555555,
+          "text": "ACK,seq=1024243104,type=CMD,t_ms=327957"
+        },
+        {
+          "start_s": 2.95231975,
+          "end_s": 2.9557855555555554,
+          "text": "ACK,seq=1024243105,type=CMD,t_ms=328057"
+        },
+        {
+          "start_s": 3.07198175,
+          "end_s": 3.0754483055555557,
+          "text": "ACK,seq=1024243106,type=CMD,t_ms=328177"
+        },
+        {
+          "start_s": 3.17198375,
+          "end_s": 3.1754495555555553,
+          "text": "ACK,seq=1024243107,type=CMD,t_ms=328277"
+        },
+        {
+          "start_s": 3.27199575,
+          "end_s": 3.2754608055555554,
+          "text": "ACK,seq=1024243108,type=CMD,t_ms=328377"
+        },
+        {
+          "start_s": 3.3719905,
+          "end_s": 3.3754563055555553,
+          "text": "ACK,seq=1024243109,type=CMD,t_ms=328477"
+        },
+        {
+          "start_s": 3.4724525,
+          "end_s": 3.4759168055555554,
+          "text": "ACK,seq=1024243110,type=CMD,t_ms=328578"
+        },
+        {
+          "start_s": 3.59195575,
+          "end_s": 3.5954203055555554,
+          "text": "ACK,seq=1024243111,type=CMD,t_ms=328698"
+        },
+        {
+          "start_s": 11.15928025,
+          "end_s": 11.163006305555555,
+          "text": "ACK,seq=1024243114,type=DISARM,t_ms=336278"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 6.675e-05,
+          "end_s": 0.015752555555555554,
+          "text": "TEL,t_ms=325100,state=DISARMED,reason=DISARM,command_age_ms=4294967295,last_seq=1024243098,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 49.920511,
+          "end_s": 49.935760055555555,
+          "text": "TEL,t_ms=375101,state=DISARMED,reason=DISARM,command_age_ms=46403,last_seq=1024243114,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ]
+    },
+    "D3": {
+      "role": "ESP GPIO17 TX",
+      "decoded_bytes": 782,
+      "complete_lf_lines": 18,
+      "invalid_stop_bits": 0,
+      "invalid_stop_times_s": [],
+      "trailing_partial_text": "",
+      "message_counts": {
+        "ARM": 1,
+        "CMD": 13,
+        "\u0018": 2,
+        "DISARM": 2
+      },
+      "telemetry_values": {
+        "state": {},
+        "reason": {},
+        "left_pwm": {},
+        "right_pwm": {},
+        "left_cps": {},
+        "right_cps": {},
+        "drop": {},
+        "err": {}
+      },
+      "non_tel_lines": [
+        {
+          "start_s": 2.3281235,
+          "end_s": 2.3297728055555553,
+          "text": "ARM,seq=1024243099"
+        },
+        {
+          "start_s": 2.4291,
+          "end_s": 2.4338743055555554,
+          "text": "CMD,seq=1024243100,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.547061,
+          "end_s": 2.5518353055555556,
+          "text": "CMD,seq=1024243101,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.64732275,
+          "end_s": 2.6520970555555556,
+          "text": "CMD,seq=1024243102,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.747075,
+          "end_s": 2.7518493055555555,
+          "text": "CMD,seq=1024243103,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.84709475,
+          "end_s": 2.8518690555555555,
+          "text": "CMD,seq=1024243104,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 2.947408,
+          "end_s": 2.9521823055555556,
+          "text": "CMD,seq=1024243105,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.067064,
+          "end_s": 3.0718383055555556,
+          "text": "CMD,seq=1024243106,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.1670695,
+          "end_s": 3.1718438055555556,
+          "text": "CMD,seq=1024243107,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.267083,
+          "end_s": 3.2718573055555553,
+          "text": "CMD,seq=1024243108,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.36707925,
+          "end_s": 3.3718535555555555,
+          "text": "CMD,seq=1024243109,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.467539,
+          "end_s": 3.4723133055555553,
+          "text": "CMD,seq=1024243110,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.587039,
+          "end_s": 3.5918133055555557,
+          "text": "CMD,seq=1024243111,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.68708525,
+          "end_s": 3.6918595555555553,
+          "text": "CMD,seq=1024243112,vx_mmps=0,w_mradps=0,timeout_ms=300"
+        },
+        {
+          "start_s": 3.8471425,
+          "end_s": 3.8473160555555554,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 3.847316,
+          "end_s": 3.8492258055555557,
+          "text": "DISARM,seq=1024243113"
+        },
+        {
+          "start_s": 11.15710475,
+          "end_s": 11.157278305555556,
+          "text": "\u0018"
+        },
+        {
+          "start_s": 11.1572785,
+          "end_s": 11.159188055555555,
+          "text": "DISARM,seq=1024243114"
+        }
+      ],
+      "first_line": [
+        {
+          "start_s": 2.3281235,
+          "end_s": 2.3297728055555553,
+          "text": "ARM,seq=1024243099"
+        }
+      ],
+      "last_line": [
+        {
+          "start_s": 11.1572785,
+          "end_s": 11.159188055555555,
+          "text": "DISARM,seq=1024243114"
+        }
+      ]
+    }
+  },
+  "pairs": {
+    "D0_D2": {
+      "differing_samples": 5186,
+      "mismatch_runs": 5186,
+      "longest_mismatch_us": 0.25,
+      "decoded_bytes_equal": true,
+      "excursion_runs_by_channel": {},
+      "transition_skew_runs": 5186
+    },
+    "D3_D1": {
+      "differing_samples": 17781,
+      "mismatch_runs": 3405,
+      "longest_mismatch_us": 43.5,
+      "decoded_bytes_equal": false,
+      "excursion_runs_by_channel": {
+        "D1": 3138,
+        "D3": 242
+      },
+      "transition_skew_runs": 25
+    }
+  },
+  "limits": [
+    "Digital UART observations only; no PWM, PC7 or analog power probes.",
+    "A capture boundary may truncate a line. Bytes are decoded at nominal baud.",
+    "Matching sampled logic does not establish analog signal integrity.",
+    "Telemetry reports firmware values, not physical motor output measurements."
+  ]
+}

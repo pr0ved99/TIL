@@ -1,0 +1,282 @@
+{
+  "date": "2026-10-23",
+  "run_id": "2026-10-23_ground_1m_run01",
+  "test_id": "T-ODO-001",
+  "status": "VALID_LOG_WINDOW_APPROXIMATE_PHYSICAL_BASELINE_NOT_FINAL_ACCEPTANCE",
+  "user_observations": {
+    "forward_displacement_mm_approx": 1000,
+    "forward_original_text": "1m 정도 움직였어",
+    "lateral_offset_mm_approx": 20,
+    "lateral_direction": "right",
+    "lateral_original_text": "오른쪽으로 한 2cm정도 치우쳤어.",
+    "before_run_cell_voltages_v": [
+      4.03,
+      4.07,
+      4.04
+    ],
+    "after_run_cell_voltages_v": null,
+    "measurement_resolution_mm": null,
+    "final_heading_degrees": null,
+    "power_disconnected": null,
+    "track_center_spacing_physical_mm_approx": 233,
+    "track_center_spacing_definition": "User confirmed width center of each track to width center of opposite track",
+    "track_center_spacing_cad_mm": 228.31681
+  },
+  "identity": {
+    "boot_id": 1339414435,
+    "arm_seq": 2670353427,
+    "disarm_seq": 2670353876
+  },
+  "window": {
+    "status": "ACCEPTED",
+    "reason": "ACKED_ARM_TO_STOPPED_DISARM",
+    "start": {
+      "ms": 565562.1999999955,
+      "tel_count": 11599,
+      "stm_t_ms": 554100,
+      "encoder_t_ms": 554095,
+      "left_count": "0",
+      "right_count": "0",
+      "state": "ARMED",
+      "reason": "NONE",
+      "last_seq": 2670353427
+    },
+    "end": {
+      "ms": 609423.3999999985,
+      "tel_count": 12038,
+      "stm_t_ms": 598000,
+      "encoder_t_ms": 597995,
+      "left_count": "11492",
+      "right_count": "11431",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "last_seq": 2670353876
+    },
+    "delta_count": {
+      "left": "11492",
+      "right": "11431"
+    },
+    "source_samples": 440,
+    "max_stm_age_ms": 108,
+    "max_browser_receive_gap_ms": 119.89999999850988,
+    "missing_source_tel_steps": 0,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ]
+  },
+  "distance_estimate_mm": {
+    "left": "994.205333",
+    "right": "988.928051",
+    "center": "991.566692"
+  },
+  "left_minus_right_mm": 5.277282,
+  "approximate_1000mm_reference_comparison": {
+    "center_minus_reference_mm": -8.433308,
+    "absolute_reference_difference_percent": 0.843331,
+    "warning": "Actual travel was reported only as about 1 m. These are nominal-reference calculations, not a measured accuracy bound."
+  },
+  "motion": {
+    "tel_command_and_pwm_transitions": [
+      {
+        "ms": 565562.1999999955,
+        "stm_t_ms": 554100,
+        "tel_count": 11599,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "0",
+        "right_count": "0"
+      },
+      {
+        "ms": 571631.799999997,
+        "stm_t_ms": 560200,
+        "tel_count": 11660,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "left_count": "17",
+        "right_count": "18"
+      },
+      {
+        "ms": 584972.6000000015,
+        "stm_t_ms": 573500,
+        "tel_count": 11793,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "11119",
+        "right_count": "11061"
+      },
+      {
+        "ms": 585352.799999997,
+        "stm_t_ms": 573900,
+        "tel_count": 11797,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "left_count": "11134",
+        "right_count": "11077"
+      },
+      {
+        "ms": 585434.6999999955,
+        "stm_t_ms": 574000,
+        "tel_count": 11798,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "11184",
+        "right_count": "11126"
+      },
+      {
+        "ms": 585761.5,
+        "stm_t_ms": 574300,
+        "tel_count": 11801,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "left_count": "11201",
+        "right_count": "11142"
+      },
+      {
+        "ms": 585881.5,
+        "stm_t_ms": 574400,
+        "tel_count": 11802,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "11231",
+        "right_count": "11174"
+      },
+      {
+        "ms": 585922.1000000015,
+        "stm_t_ms": 574500,
+        "tel_count": 11803,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "left_count": "11231",
+        "right_count": "11172"
+      },
+      {
+        "ms": 586242.5,
+        "stm_t_ms": 574800,
+        "tel_count": 11806,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "11389",
+        "right_count": "11328"
+      },
+      {
+        "ms": 586453.1000000015,
+        "stm_t_ms": 575000,
+        "tel_count": 11808,
+        "command": [
+          100,
+          0
+        ],
+        "pwm": [
+          144,
+          150
+        ],
+        "left_count": "11391",
+        "right_count": "11329"
+      },
+      {
+        "ms": 586652.6999999955,
+        "stm_t_ms": 575200,
+        "tel_count": 11810,
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "left_count": "11490",
+        "right_count": "11428"
+      }
+    ],
+    "forward_output_intervals": 5,
+    "reverse_or_turn_command_seen": false,
+    "note": "One retained ARM interval includes the main forward segment and four short forward segments separated by zero output. Do not describe as a single continuous hold or automatic 1 m stop."
+  },
+  "stop": {
+    "post_disarm_samples": 48,
+    "all_post_disarm_zero_command_pwm_cps": true,
+    "post_disarm_counts_constant": true,
+    "post_disarm_stm_observation_ms": 2800,
+    "zero_output_cps_and_constant_counts_since_stm_t_ms": 575500,
+    "stable_through_stm_t_ms": 600800,
+    "stop_callback_observation": "At browser ms 609230 stopLocal(true) ran with focused=false, motion=null and intent=true. Matching DISARM result followed; this does not prove a manual DISARM-button click."
+  },
+  "buffer_retention": {
+    "history_dropped": 30000,
+    "telemetry_dropped": 4500,
+    "note": "Older pre-run rows evicted. Selected ARM ACK, stationary baseline, uninterrupted TEL window and stopped DISARM endpoint are retained. Browser eviction is not STM drop."
+  },
+  "limitations": [
+    "Single run; no repeatability or corrected gain claim",
+    "Physical distance and lateral displacement are approximate user reports; measurement method/resolution and final heading not supplied",
+    "Track-based encoder travel is not directly measured chassis path length; ground slip and chassis handling cannot be excluded solely from this log",
+    "Firmware/output/gain unchanged; temperature/current validation remain deferred",
+    "Acceptance and progress documents will be reconciled at bench closeout"
+  ],
+  "evidence": {
+    "browser_report": "browser_report.json",
+    "browser_sha256": "aee8c0ceb4d03f92d66f4840ec1987cf83afdc02f2e5450f2dd86ff43f55ca3c",
+    "analysis": "encoder_analysis.json",
+    "analysis_tool": "03_Firmware/tests/analyze_encoder_distance.py",
+    "analysis_tool_sha256": "90a0e09c121173e11025aba9881682e285b3f4dea9f6544a4c85dfb88c0be187",
+    "conditional_lateral_model": "lateral_model.json"
+  }
+}

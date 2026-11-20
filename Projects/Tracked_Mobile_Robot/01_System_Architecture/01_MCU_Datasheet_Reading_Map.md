@@ -1,5 +1,8 @@
 # STM32F446RE Datasheet Reading Map
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](01_MCU_Datasheet_Reading_Map_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document records how to read the STM32F446xC/E datasheet for the tracked

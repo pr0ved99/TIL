@@ -1,0 +1,22 @@
+{
+  "status": "DRAFT_CONNECTIVITY_AND_TEMPLATE_GEOMETRY_CHECK_PASS",
+  "active_nets_checked": 10,
+  "all_pads_checked": 112,
+  "header_pads_checked": 76,
+  "erc_violations": 0,
+  "drc_violations": 0,
+  "schematic_parity_issues": 0,
+  "unrouted_connections": 32,
+  "tracks": 0,
+  "full_drc_pass": false,
+  "physical_fit_verified": false,
+  "protection_design_complete": false,
+  "input_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "92cff6762f46624bb71abe86d0ae7478b44a2413104e939072aa94258b7ba3cd",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "reports/netlist.xml": "50e3a8f11b22784c22fa91728ec93d061b0c2374393fead9f778f28210337fb0",
+    "reports/erc.json": "b838c1b03a3a1fa3c0754ae0c218f72d5d78904eb386ec11e024cfddb15a98f1",
+    "reports/drc_unrouted.json": "50a682841f5d1a6d0deda5b85cb301f7117a7d94942e5a8b331e63a5c20fb83a"
+  },
+  "limits": "Passive draft only. No ADC performance, supply margin, protection, final footprint or real fit acceptance."
+}

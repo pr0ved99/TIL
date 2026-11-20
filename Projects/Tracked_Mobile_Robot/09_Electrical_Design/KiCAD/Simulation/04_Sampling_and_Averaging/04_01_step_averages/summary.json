@@ -1,0 +1,84 @@
+{
+  "status": "PROCESSED_USER_CSV_NOT_HARDWARE_EVIDENCE",
+  "source": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\Simulation\\04_Sampling_and_Averaging\\04_01_step.csv",
+  "source_sha256": "6f258835a3b51f250f8326afc72cdcbc46d451dbd9395909bd32b1b02a7974b8",
+  "rows": 60015,
+  "K": 6.747204164780444,
+  "sample_convention": "Ts,2Ts,...; blocks (0,100ms],(100,200ms],...",
+  "interpolation": "linear; not a physical ADC acquisition or quantization model",
+  "assumptions": "Fixed nominal K; no offsets or additional noise introduced",
+  "outputs": [
+    {
+      "fs_Hz": 100,
+      "N": 10,
+      "block": 1,
+      "t_s": 0.1,
+      "average_V": 12.299984512290631,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 100,
+      "N": 10,
+      "block": 2,
+      "t_s": 0.2,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 100,
+      "N": 10,
+      "block": 3,
+      "t_s": 0.3,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 1000,
+      "N": 100,
+      "block": 1,
+      "t_s": 0.1,
+      "average_V": 12.330803500843565,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 1000,
+      "N": 100,
+      "block": 2,
+      "t_s": 0.2,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 1000,
+      "N": 100,
+      "block": 3,
+      "t_s": 0.3,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 2000,
+      "N": 200,
+      "block": 1,
+      "t_s": 0.1,
+      "average_V": 12.332010238308435,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 2000,
+      "N": 200,
+      "block": 2,
+      "t_s": 0.2,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    },
+    {
+      "fs_Hz": 2000,
+      "N": 200,
+      "block": 3,
+      "t_s": 0.3,
+      "average_V": 11.999970079103669,
+      "VRAIL_V": 12.0
+    }
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "review_date_kst": "2026-11-15",
+  "status": "USER_CSV_VERIFIED_WORKBOOK_NAME_MISMATCH",
+  "source": "03_15_CableShort_NoProtection.csv",
+  "source_sha256": "e28d792c4e809675a468512c2ef243a693a787a71fad65c14d32633476bcdcbf",
+  "source_bytes": 11998394,
+  "rows": 150023,
+  "time_range_s": [
+    0.0,
+    0.015
+  ],
+  "duplicate_printed_timestamps": 9,
+  "decreasing_times": 0,
+  "maximum_time_gap_s": 1.0000000000114084e-07,
+  "all_finite": true,
+  "signals": [
+    "time",
+    "I(R1)",
+    "I(R6)",
+    "I(S2)",
+    "P(R6)",
+    "V(/VADC)",
+    "V(/VDIV)",
+    "V(/VRAIL)"
+  ],
+  "selected_rows_nearest_requested_time_s": {
+    "0.004": {
+      "time": 0.00399996,
+      "I(R1)": 0.000565734,
+      "I(R6)": 0.00056575,
+      "I(S2)": 1.59994e-08,
+      "P(R6)": 3.20073e-07,
+      "V(/VADC)": 2.37127,
+      "V(/VDIV)": 2.42182,
+      "V(/VRAIL)": 15.9994
+    },
+    "0.009": {
+      "time": 0.00899995,
+      "I(R1)": 0.000282871,
+      "I(R6)": 8.00014,
+      "I(S2)": 7.99986,
+      "P(R6)": 64.0023,
+      "V(/VADC)": 1.18568,
+      "V(/VDIV)": 1.21095,
+      "V(/VRAIL)": 7.99986
+    },
+    "0.0149": {
+      "time": 0.0149,
+      "I(R1)": 0.000565734,
+      "I(R6)": 0.00056575,
+      "I(S2)": 1.59994e-08,
+      "P(R6)": 3.20073e-07,
+      "V(/VADC)": 2.37127,
+      "V(/VDIV)": 2.42182,
+      "V(/VRAIL)": 15.9994
+    }
+  },
+  "electrical_checks": {
+    "KCL_A": {
+      "maximum_absolute_residual": 9.998000000058e-06,
+      "outside_csv_rounding_bound": 0
+    },
+    "R6_I2R_W": {
+      "maximum_absolute_residual": 0.0001199830999922824,
+      "outside_csv_rounding_bound": 0
+    },
+    "VRAIL_ohms_law_V": {
+      "maximum_absolute_residual": 3.425000000056855e-05,
+      "outside_csv_rounding_bound": 0
+    },
+    "R1_ohms_law_A": {
+      "maximum_absolute_residual": 2.083333333429381e-09,
+      "outside_csv_rounding_bound": 0
+    }
+  },
+  "rounding_method": "Per-cell half of least printed decimal unit; propagate bounds through each equation. Add 1e-12 numeric tolerance.",
+  "source_hashes": {
+    "03_15_Voltage_Sense_CableShort_TRAN.kicad_sch": "323dbc70cd6db9b56ca80429118a79efb1bc8f4a19576dcee23e974eda1cadfc",
+    "03_15_Voltage_Sense_CableShort_NoProtection_TRAN.kicad_sch": "3fd3a3a4deb23e3bd6c8d03e58f73494a79a7ae178da62ab2f3b45188c241569",
+    "03_15_CableShort_Protected_2k2.csv": "446df072519827e8f5174c2f210b0d9ce65245a797b725490dcf5b62760dbb9b",
+    "03_15_CableShort_NoProtection.csv": "e28d792c4e809675a468512c2ef243a693a787a71fad65c14d32633476bcdcbf",
+    "03_15_CableShort_Check_2026-11-14.wbk": "ead3c2f721ba1a9b31779b58f67310d57b7f1823984b21cb15a1527c4e26ec88",
+    "03_15_CableShort_NoProtection_Check_2026-11-14.wbk": "6b7435cd2f6fc49d01795e8c96d56d4f7f0ed8728ec25b2a4b73de93289651bd"
+  },
+  "workbook_review": {
+    "latest_seven_trace_settings_saved_in": "03_15_CableShort_Check_2026-11-14.wbk",
+    "tab_index_zero_based": 5,
+    "command": ".tran 1u 15m 0 100n",
+    "intended_no_protection_workbook": "03_15_CableShort_NoProtection_Check_2026-11-14.wbk",
+    "intended_workbook_status": "Prior two traces only; VRAIL cursor y-format still A.",
+    "protected_workbook_status": "Previous protected workbook hash changed; current final tab contains no-protection traces. Protected CSV and both schematics remain unchanged.",
+    "correction_performed": false
+  },
+  "boundary": "Read-only review of saved user results; no simulation rerun, source/workbook edits, thermal/failure test, or closeout posting. Protected and unprotected workbook settings need correct naming/reconciliation; CSV data are intact.",
+  "workbook_followup": {
+    "review_date_kst": "2026-11-15",
+    "status": "NO_PROTECTION_WORKBOOK_CORRECT_NAME_AND_SEVEN_TRACES_VERIFIED",
+    "file": "03_15_CableShort_NoProtection_Check_2026-11-14.wbk",
+    "sha256": "ead3c2f721ba1a9b31779b58f67310d57b7f1823984b21cb15a1527c4e26ec88",
+    "tab_index_zero_based": 5,
+    "commands": [
+      ".tran 1u 15m 0 100n",
+      ".kicad adjustpaths",
+      ".save all",
+      ".probe alli",
+      ".probe allp"
+    ],
+    "signals": [
+      "I(R1)",
+      "I(R6)",
+      "I(S2)",
+      "P(R6)",
+      "V(/VADC)",
+      "V(/VDIV)",
+      "V(/VRAIL)"
+    ],
+    "user_saved": true,
+    "protected_workbook_pending": "03_15_CableShort_Check_2026-11-14.wbk still has no-protection final-tab settings; restore protected plotting settings during closeout. Protected CSV and schematics are intact.",
+    "boundary": "Only saved simulation settings confirmed; no simulation rerun, no user CAD/workbook edits by assistant, no hardware verification."
+  }
+}

@@ -1,0 +1,143 @@
+{
+  "date": "2026-10-21",
+  "timezone": "Asia/Seoul",
+  "calendar_id": "primary",
+  "scope": "Existing October21-25 TMR titles/descriptions updated. All time boundaries and six other events preserved. No new events or guessed physical completion.",
+  "verified_readback": true,
+  "description_comparison": "Whitespace removed because Calendar search wraps lines, including inside URLs. Titles and time boundaries compared exactly.",
+  "unchanged_events": 6,
+  "events": [
+    {
+      "id": "a2llotmd2pehr9rja50q632u20",
+      "title_before": "[TMR] 부하·발열 관측 — 계측 준비 완료 시",
+      "title_after": "[TMR] 공중5·10·15cm 결과 확인·온도 준비",
+      "start": "2026-10-21T12:00:00+09:00",
+      "end": "2026-10-21T14:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=YTJsbG90bWQycGVocjlyamE1MHE2MzJ1MjAgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "1mf72i2dabkvta1sm6gc8et314",
+      "title_before": "[TMR] 부하·발열 결과 정리와 필요한 보완",
+      "title_after": "[TMR] 거리 결과·문서·Git·Notion·일정 마감",
+      "start": "2026-10-21T14:30:00+09:00",
+      "end": "2026-10-21T16:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=MW1mNzJpMmRhYmt2dGExc202Z2M4ZXQzMTQgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "sqjbdf819otis2k1m4559jph6s",
+      "title_before": "[TMR] 거리 모델·누적 count 전달 설계",
+      "title_after": "[TMR] 거리 변경 소스·실행 이미지·증거 기준점 정리",
+      "start": "2026-10-22T12:00:00+09:00",
+      "end": "2026-10-22T14:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=c3FqYmRmODE5b3RpczJrMW00NTU5anBoNnMgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "cb81dmp7taj2q9bcasadoudouc",
+      "title_before": "[TMR] 거리 계산·count 전달 PC 검사 준비",
+      "title_after": "[TMR] GM-1312 수령·프로브·온도 기준 준비",
+      "start": "2026-10-22T14:30:00+09:00",
+      "end": "2026-10-22T16:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=Y2I4MWRtcDd0YWoycTliY2FzYWRvdWRvdWMgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "bljrdlauckd5ohij8vqbj6877o",
+      "title_before": "[TMR] 부하·발열 및 거리 작업의 남은 준비 정리",
+      "title_after": "[TMR] 온도 관측 준비 상태·남은 조건 정리",
+      "start": "2026-10-22T18:30:00+09:00",
+      "end": "2026-10-22T19:30:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=YmxqcmRsYXVja2Q1b2hpajh2cWJqNjg3N28gZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "sd0ju6pelpp54fbuh9at3cm9uk",
+      "title_before": "[TMR] 누적 count 전달 구현 준비·저장본 검토",
+      "title_after": "[TMR] 외부 온도 관측 — 장비·기준 준비 완료 시",
+      "start": "2026-10-23T12:00:00+09:00",
+      "end": "2026-10-23T14:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=c2QwanU2cGVscHA1NGZidWg5YXQzY205dWsgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "1obai8qsktlon8sr1f5u99jdp8",
+      "title_before": "[TMR] 1m 실제·추정 거리 비교 준비",
+      "title_after": "[TMR] 온도 기록 검토·지상1m 측정 준비",
+      "start": "2026-10-23T14:30:00+09:00",
+      "end": "2026-10-23T16:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=MW9iYWk4cXNrdGxvbjhzcjFmNXU5OWpkcDggZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "snjr8tvbbishjba2dut38bmu60",
+      "title_before": "[TMR] 1m 실제·추정 거리 비교 — 준비 완료 시",
+      "title_after": "[TMR] 지상1m 실제·추정 거리 비교 — 선행 조건 충족 시",
+      "start": "2026-10-24T12:00:00+09:00",
+      "end": "2026-10-24T14:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=c25qcjh0dmJiaXNoamJhMmR1dDM4Ym11NjAgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "b19r0go3g1bfu87saos6p83rv4",
+      "title_before": "[TMR] 거리 비교 결과 검토·실제 누락 보완",
+      "title_after": "[TMR] 지상 거리·온도 결과 검토와 실제 누락 보완",
+      "start": "2026-10-24T14:30:00+09:00",
+      "end": "2026-10-24T16:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=YjE5cjBnbzNnMWJmdTg3c2FvczZwODNydjQgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "5iobptc8if74bnrm4tbttihh58",
+      "title_before": "[TMR] 거리·계측 관련 필요한 수정과 PC 검사",
+      "title_after": "[TMR] 실제 문제의 필요한 수정·관련 PC 검사",
+      "start": "2026-10-24T18:30:00+09:00",
+      "end": "2026-10-24T20:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=NWlvYnB0YzhpZjc0Ym5ybTR0YnR0aWhoNTggZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "0ui3rf1fa18t8fh4u8ag2uasmo",
+      "title_before": "[TMR] 부하·발열·거리 미완료 항목 한 묶음",
+      "title_after": "[TMR] 온도·지상 거리·MUST 활성 미결 한 묶음",
+      "start": "2026-10-25T12:00:00+09:00",
+      "end": "2026-10-25T14:00:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=MHVpM3JmMWZhMTh0OGZoNHU4YWcydWFzbW8gZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "19bnchnobsa7j46druji2ndgk8",
+      "title_before": "[TMR] 주간 결과 기록·다음 주 작업 1~3개 확정",
+      "title_after": "[TMR] 주간 근거 정리·다음 주 작업1~3개",
+      "start": "2026-10-25T14:30:00+09:00",
+      "end": "2026-10-25T15:30:00+09:00",
+      "timezone": "Asia/Seoul",
+      "title_description_verified": true,
+      "time_boundaries_preserved": true,
+      "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0&ctz=Asia/Seoul"
+    }
+  ]
+}

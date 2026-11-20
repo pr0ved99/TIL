@@ -1,0 +1,101 @@
+{
+  "evidence_kind": "manual transcription of selected JSON fields from user chat screenshots",
+  "original_image_files_saved": false,
+  "not_complete_json_payloads": true,
+  "observations": [
+    {
+      "label": "READY payload before browser page refresh",
+      "browser_time": "02:09:22",
+      "boot_id": 409305471,
+      "uptime_ms": 11199,
+      "startup_state": "READY",
+      "source": "STM_UART",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 22,
+      "tel_count": 110,
+      "err": 0,
+      "drop": 0
+    },
+    {
+      "label": "READY label after browser refresh",
+      "browser_time": "02:10:06",
+      "boot_id": 409305471,
+      "uptime_ms": 55199,
+      "startup_state": "READY",
+      "source": "STM_UART",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 52,
+      "tel_count": 550,
+      "err": 0,
+      "drop": 0
+    },
+    {
+      "label": "FAILED before the first STM TEL",
+      "browser_time": "02:13:44",
+      "boot_id": 3613383134,
+      "uptime_ms": 14238,
+      "startup_state": "FAILED",
+      "source": "ESP_ONLY",
+      "stm_connected": false,
+      "stm_stale": false,
+      "stm_age_ms": null,
+      "tel_count": 0
+    },
+    {
+      "label": "FAILED with stale TEL while STM RESET held; button state confirmed by user",
+      "browser_time": "02:16:15",
+      "boot_id": 3613383134,
+      "uptime_ms": 165239,
+      "startup_state": "FAILED",
+      "source": "STM_UART",
+      "stm_connected": false,
+      "stm_stale": true,
+      "stm_age_ms": 5792,
+      "tel_count": 1386,
+      "stm_t_ms": 138600,
+      "err": 0,
+      "drop": 0
+    },
+    {
+      "label": "FAILED with fresh TEL after STM RESET released",
+      "browser_time": "02:20:28",
+      "boot_id": 3613383134,
+      "uptime_ms": 418238,
+      "startup_state": "FAILED",
+      "source": "STM_UART",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 81,
+      "tel_count": 3814,
+      "stm_t_ms": 3200,
+      "err": 0,
+      "drop": 0
+    },
+    {
+      "label": "Final restored ESP boot: READY and fresh TEL",
+      "browser_time": "02:23:29",
+      "boot_id": 102159163,
+      "uptime_ms": 9218,
+      "startup_state": "READY",
+      "source": "STM_UART",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 51,
+      "tel_count": 90,
+      "stm_t_ms": 184900,
+      "err": 1,
+      "drop": 0,
+      "left_pwm": 0,
+      "right_pwm": 0,
+      "left_cps": 0,
+      "right_cps": 0
+    }
+  ],
+  "operator_reports": [
+    "READY retained while STM RESET held caused stale TEL; release restored fresh TEL; ESP boot_id unchanged",
+    "WebSocket disconnect/reconnect restored updates within the same ESP boot",
+    "Monitor restart changed ESP boot_id, but err did not increase; earlier no-reboot interpretation was corrected"
+  ]
+}

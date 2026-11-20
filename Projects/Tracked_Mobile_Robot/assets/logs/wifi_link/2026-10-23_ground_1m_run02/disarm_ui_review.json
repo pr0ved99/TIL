@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-23",
+  "status": "OPEN_DISARM_UI_OBSERVATION_AND_CAPTURE_GAP",
+  "source_report_sha256": "afdce8c84989f7d2145bd6ab2d5159719fa5083c96b3fb687052bc3c6f92e5b3",
+  "confirmed": [
+    {
+      "at_browser_ms_approx": 57542,
+      "fact": "ARM OK, session2, control13"
+    },
+    {
+      "at_browser_ms_approx": 84732,
+      "fact": "STM ARMED/NONE, command/PWM/CPS0, final counts11741/11489"
+    },
+    {
+      "at_browser_ms_approx": 85272,
+      "fact": "Last old-socket TEL/control received. Control ACTIVE; no DISARM admission/result in recorded events."
+    },
+    {
+      "at_browser_ms_approx": 97679,
+      "fact": "stopLocal snapshot sees session3/IDLE, STM DISARMED/DISARM, command/PWM/CPS0, same final counts"
+    }
+  ],
+  "source_behavior": {
+    "observer": "const ws=socket; ws.addEventListener(message) attaches only to installation socket. stopLocal wrapper reads live globals, so later snapshots may show newer session even while telemetry listener has stopped.",
+    "page": "sendCommand(DISARM) clears intent/controlId/motion and periodic control before ws.send; updateButtons should disable direction buttons at completion of this synchronous handler even before STM ACK.",
+    "released_forward": "Button release requests CMD0 while retaining intent/ACTIVE; zero PWM/CPS with enabled directions is expected before DISARM.",
+    "disconnect": "Page disconnect resets local control and reconnects. Server owner-closed path requests executor stop. This may produce DISARMED without identifying a manual DISARM-button action."
+  },
+  "bounded_conclusion": "The log proves session transition and missing terminal capture. It does not prove that a user DISARM request was sent, accepted or ACKed before the gap. The report that directions remained enabled after clicks requires investigation beyond recorder reconnection.",
+  "unknown": [
+    "Exact socket closure cause/time",
+    "DISARM pointer/click event and sendCommand execution",
+    "Manual DISARM admission, UART ACK and result delivery",
+    "Whether buttons were visually enabled or could initiate motion at the reported moment"
+  ],
+  "next_scope": "Observe current phase/state and instrument input-handler/send/disconnect/reconnect paths while stationary before another ground run. No motion induced or firmware changed by this review.",
+  "follow_up_user_report": "DISARMED/DISARM observed after switching screen; manual-click completion before focus loss remains unconfirmed.",
+  "diagnostic_follow_up": {
+    "observer": "../2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js",
+    "revision": "5.1-reconnect-disarm",
+    "pc_checks": "../2026-10-23_ground_distance_preparation/observer_reconnect_check.json",
+    "physical_retest": "NOT_RUN; refreshed-page installation and stationary ARM0-to-DISARM check pending user action"
+  },
+  "stationary_follow_up": {
+    "status": "PASS_STATIONARY_MANUAL_DISARM_CLICK_PATH_ONLY",
+    "evidence": "../2026-10-23_disarm_stationary_run01/observations.json",
+    "result": "Manual click, unchanged wire DISARM, ESP admission, OK result, IDLE and DISARMED proven before later focus loss; all directions disabled locally. Earlier failure not reproduced; reconnect cause still unknown."
+  },
+  "pc_follow_up": {
+    "date": "2026-10-23",
+    "evidence": "../2026-10-23_disarm_code_audit/review.json",
+    "status": "REVIEW_COMPLETE_HISTORICAL_CAUSE_UNDETERMINED_NOT_REPRODUCED",
+    "checks": "24 additional mocked path cases plus 67 existing PAGE cases passed; 4 retained reports compared",
+    "firmware_change": false,
+    "additional_physical_repeat_requested": false,
+    "clarification": "First retained window-blur stopLocal snapshot already has intent=false and IDLE/DISARMED. The screen switch does not establish the first stop cause. Earlier diagnostic_follow_up pending status predates the stationary and run03/04 results."
+  }
+}

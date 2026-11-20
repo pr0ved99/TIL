@@ -1,0 +1,77 @@
+Source: user-pasted KiCad OP results in the 2026-10-28 learning conversation.
+Saved during 2026-10-29 closeout. These are transcriptions of reported output,
+not a new execution. Units and reported rounding are preserved.
+
+[NTC 25C equivalent: V1=3.3V, R3=10k, R7=10k, R4=1k, C3=100n]
+I(c3):                    0A
+I(r4):                    0A
+I(r3):                    165uA
+I(r7):                    165uA
+I(v1):                    -165uA
+P(v1):                    -544.5uW
+P(r7):                    272.25uW
+V(net-_r3-pad1_):         3.3V
+P(r3):                    272.25uW
+V(/vntc):                 1.65V
+P(r4):                    0W
+V(/vadc):                 1.65V
+P(c3):                    0W
+
+[NTC 50C equivalent: R7=4147]
+I(r4):                    0A
+I(r3):                    233.265uA
+I(v1):                    -233.265uA
+I(c3):                    0A
+I(r7):                    233.265uA
+P(r7):                    225.649uW
+P(c3):                    0W
+P(v1):                    -769.775uW
+V(net-_r3-pad1_):         3.3V
+P(r3):                    544.126uW
+V(/vadc):                 967.35mV
+V(/vntc):                 967.35mV
+P(r4):                    0W
+
+[Voltage divider without C1/R4: V1=12.6V, R1=R2=12k, R3=4.7k]
+I(v1):                    -439.024uA
+I(r3):                    439.024uA
+I(r1):                    439.024uA
+I(r2):                    439.024uA
+P(r2):                    2.31291mW
+V(net-_r1-pad2_):         7.33171V
+P(r1):                    2.31291mW
+V(/vdiv):                 2.06341V
+P(r3):                    905.889uW
+V(/vrail):                12.6V
+P(v1):                    -5.53171mW
+
+[Voltage divider without C1/R4: V1=16V]
+I(v1):                    -557.491uA
+I(r3):                    557.491uA
+I(r1):                    557.491uA
+I(r2):                    557.491uA
+P(r2):                    3.72956mW
+V(net-_r1-pad2_):         9.3101V
+P(r1):                    3.72956mW
+V(/vdiv):                 2.62021V
+P(r3):                    1.46074mW
+V(/vrail):                16V
+P(v1):                    -8.91986mW
+
+[Voltage divider with C1=100n at VDIV and R4=1k to unloaded VADC: V1=16V]
+I(v1):                    -557.491uA
+I(r3):                    557.491uA
+I(c1):                    0A
+I(r1):                    557.491uA
+I(r2):                    557.491uA
+I(r4):                    0A
+V(/vadc):                 2.62021V
+P(r4):                    0W
+P(r2):                    3.72956mW
+V(net-_r1-pad2_):         9.3101V
+P(r1):                    3.72956mW
+P(c1):                    0W
+V(/vdiv):                 2.62021V
+P(r3):                    1.46074mW
+V(/vrail):                16V
+P(v1):                    -8.91986mW

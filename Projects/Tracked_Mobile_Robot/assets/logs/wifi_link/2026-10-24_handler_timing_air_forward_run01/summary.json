@@ -1,0 +1,544 @@
+{
+  "date": "2026-10-24",
+  "status": "FORWARD_TIMING_CAPTURE_CONSISTENT_MANUAL_RELEASE_AND_DISARM",
+  "scope": "ACC-COM-01 A v5.2 forward observation; no general reliability/ground-distance acceptance",
+  "raw_sha256": "a3f6d3babc915b8a79b4d5b33aaf64d897a2abbc724b2b7e2fe54feb2c0307d3",
+  "capture_tel_span_s": 60.871,
+  "forward_window_ms": [
+    3578,
+    52803.09999999963
+  ],
+  "first_forward_send_to_release_s": 49.225,
+  "window_definition": "First forward WS_SEND record to forward lostpointercapture with motion=null; not exact physical motion duration. Gap samples may begin before window entry.",
+  "event_counts": {
+    "OBSERVER_SOCKET_CHANGE": 1,
+    "CONTROL_RX": 3044,
+    "TEL_RX": 1016,
+    "BUTTON_POINTERDOWN": 2,
+    "BUTTON_POINTERUP": 2,
+    "BUTTON_CLICK": 2,
+    "blur": 4,
+    "WS_SEND": 500,
+    "APP_COMMAND": 2,
+    "command_notice": 500,
+    "command_result": 500,
+    "lostpointercapture": 1,
+    "APP_STOP": 2
+  },
+  "timing_metadata": {
+    "clock": "performance.now() minus observer start; milliseconds",
+    "columns": [
+      "rx_sequence",
+      "connection_id",
+      "handler_enter_ms",
+      "handler_exit_ms",
+      "observer_enter_ms",
+      "observer_exit_ms",
+      "kind_code",
+      "esp_uptime_ms"
+    ],
+    "kind_codes": {
+      "0": "INVALID_JSON",
+      "1": "STM_UART",
+      "2": "control_state",
+      "3": "command_notice",
+      "4": "command_result",
+      "5": "ESP_ONLY",
+      "6": "OTHER"
+    },
+    "capacity_rows": 8192,
+    "storage_bytes": 524288,
+    "written": 5060,
+    "overwritten": 0,
+    "missing_handler_pairs": 0,
+    "oldest_observer_ms": 36.59999999962747,
+    "newest_observer_ms": 60909.09999999963,
+    "retained_max_handler_ms": 1.299999998882413,
+    "retained_max_observer_ms": 0.19999999925494194,
+    "missing_times_export_as_null": true
+  },
+  "handler_duration": {
+    "samples": 5060,
+    "min_ms": 0.0,
+    "median_ms": 0.1,
+    "p95_ms": 0.3,
+    "p99_ms": 0.4,
+    "max_ms": 1.3,
+    "recorded_zero_samples": 1353,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "observer_duration": {
+    "samples": 5060,
+    "min_ms": 0.0,
+    "median_ms": 0.0,
+    "p95_ms": 0.1,
+    "p99_ms": 0.1,
+    "max_ms": 0.2,
+    "recorded_zero_samples": 4614,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "by_kind": {
+    "STM_UART": {
+      "handler_duration": {
+        "samples": 1016,
+        "min_ms": 0,
+        "median_ms": 0.2,
+        "p95_ms": 0.4,
+        "p99_ms": 0.5,
+        "max_ms": 0.8,
+        "recorded_zero_samples": 35,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 1016,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.2,
+        "recorded_zero_samples": 862,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    },
+    "control_state": {
+      "handler_duration": {
+        "samples": 3044,
+        "min_ms": 0.0,
+        "median_ms": 0.1,
+        "p95_ms": 0.2,
+        "p99_ms": 0.3,
+        "max_ms": 1.3,
+        "recorded_zero_samples": 1176,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 3044,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.2,
+        "recorded_zero_samples": 2823,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    },
+    "command_notice": {
+      "handler_duration": {
+        "samples": 500,
+        "min_ms": 0.0,
+        "median_ms": 0.2,
+        "p95_ms": 0.3,
+        "p99_ms": 0.4,
+        "max_ms": 0.4,
+        "recorded_zero_samples": 27,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 500,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.1,
+        "recorded_zero_samples": 462,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    },
+    "command_result": {
+      "handler_duration": {
+        "samples": 500,
+        "min_ms": 0.0,
+        "median_ms": 0.1,
+        "p95_ms": 0.3,
+        "p99_ms": 0.4,
+        "max_ms": 0.4,
+        "recorded_zero_samples": 115,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 500,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.2,
+        "recorded_zero_samples": 467,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    }
+  },
+  "tel_receive_gap": {
+    "samples": 1015,
+    "min_ms": 0.7,
+    "median_ms": 59.9,
+    "p95_ms": 90.5,
+    "p99_ms": 109.8,
+    "max_ms": 120.3,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "control_receive_gap": {
+    "samples": 3043,
+    "min_ms": 0,
+    "median_ms": 6.2,
+    "p95_ms": 60.0,
+    "p99_ms": 67.116,
+    "max_ms": 81.6,
+    "recorded_zero_samples": 36,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "forward": {
+    "timing_rows": 4234,
+    "telemetry_samples": 820,
+    "control_samples": 2456,
+    "handler_duration": {
+      "samples": 4234,
+      "min_ms": 0.0,
+      "median_ms": 0.1,
+      "p95_ms": 0.3,
+      "p99_ms": 0.4,
+      "max_ms": 0.8,
+      "recorded_zero_samples": 1113,
+      "samples_ge_200_ms": 0,
+      "samples_ge_250_ms": 0
+    },
+    "observer_duration": {
+      "samples": 4234,
+      "min_ms": 0.0,
+      "median_ms": 0.0,
+      "p95_ms": 0.1,
+      "p99_ms": 0.1,
+      "max_ms": 0.2,
+      "recorded_zero_samples": 3876,
+      "samples_ge_200_ms": 0,
+      "samples_ge_250_ms": 0
+    },
+    "tel_receive_gap": {
+      "samples": 820,
+      "min_ms": 9.3,
+      "median_ms": 59.8,
+      "p95_ms": 90.805,
+      "p99_ms": 109.962,
+      "max_ms": 120.3,
+      "recorded_zero_samples": 0,
+      "samples_ge_200_ms": 0,
+      "samples_ge_250_ms": 0
+    },
+    "control_receive_gap": {
+      "samples": 2456,
+      "min_ms": 0,
+      "median_ms": 9.0,
+      "p95_ms": 59.9,
+      "p99_ms": 62.445,
+      "max_ms": 81.6,
+      "recorded_zero_samples": 29,
+      "samples_ge_200_ms": 0,
+      "samples_ge_250_ms": 0
+    },
+    "command_age": {
+      "samples": 820,
+      "min_ms": 2,
+      "median_ms": 68.0,
+      "p95_ms": 110.0,
+      "p99_ms": 135.0,
+      "max_ms": 137,
+      "recorded_zero_samples": 0,
+      "samples_ge_200_ms": 0,
+      "samples_ge_250_ms": 0
+    },
+    "commanded_forward_samples": 820,
+    "pwm_per_mille": [
+      144,
+      150
+    ]
+  },
+  "commands_sent": {
+    "ARM": 1,
+    "CMD": 498,
+    "DISARM": 1
+  },
+  "CMD_values": {
+    "[0, 0]": 18,
+    "[100, 0]": 480
+  },
+  "result_status": {
+    "OK": 500
+  },
+  "cmd_send_gap": {
+    "samples": 497,
+    "min_ms": 80.5,
+    "median_ms": 84.1,
+    "p95_ms": 146.7,
+    "p99_ms": 147.704,
+    "max_ms": 148.1,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "cmd_send_record_to_result_record": {
+    "samples": 498,
+    "min_ms": 47.5,
+    "median_ms": 63.4,
+    "p95_ms": 130.86,
+    "p99_ms": 134.169,
+    "max_ms": 143.9,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "phase_edges": [
+    {
+      "ms": 36.69999999925494,
+      "phase": "IDLE",
+      "control_reason": 0
+    },
+    {
+      "ms": 2685.699999999255,
+      "phase": "ARM_PENDING",
+      "control_reason": 0
+    },
+    {
+      "ms": 2695,
+      "phase": "ZERO_PENDING",
+      "control_reason": 0
+    },
+    {
+      "ms": 2846.4000000003725,
+      "phase": "ACTIVE",
+      "control_reason": 0
+    },
+    {
+      "ms": 53668.09999999963,
+      "phase": "STOPPING",
+      "control_reason": 1
+    },
+    {
+      "ms": 53787.90000000037,
+      "phase": "IDLE",
+      "control_reason": 0
+    }
+  ],
+  "counts_first_last": [
+    [
+      "5780",
+      "6237"
+    ],
+    [
+      "53336",
+      "53856"
+    ]
+  ],
+  "count_delta": [
+    47556,
+    47619
+  ],
+  "negative_count_steps_whole_capture": [
+    {
+      "before_ms": 52998.300000000745,
+      "after_ms": 53078,
+      "delta_left_right": [
+        1,
+        -1
+      ],
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        750,
+        720
+      ],
+      "counts_after": [
+        "53336",
+        "53856"
+      ]
+    }
+  ],
+  "release_observations_ms": {
+    "to_zero_CMD_send": 29.4,
+    "to_zero_PWM_TEL": 195.2,
+    "to_zero_CPS_TEL": 494.9
+  },
+  "disarm": {
+    "request_id": 500,
+    "seq": 2142829997,
+    "click_to_send_ms": 0.3,
+    "send_to_result_ms": 196.1,
+    "send_to_IDLE_ms": 196.7,
+    "send_to_DISARMED_TEL_ms": 196.5,
+    "post_DISARMED_tel_span_s": 7.121,
+    "directions_disabled_after_command": true
+  },
+  "stops": [
+    {
+      "ms": 56360.800000000745,
+      "intent": false,
+      "focused": false,
+      "motion": null,
+      "stack": "Error\n    at <anonymous>:246:53\n    at trace (<anonymous>:35:31)\n    at stopLocal (<anonymous>:240:5)\n    at http://192.168.0.17/:488:36"
+    },
+    {
+      "ms": 58437.90000000037,
+      "intent": false,
+      "focused": false,
+      "motion": null,
+      "stack": "Error\n    at <anonymous>:246:53\n    at trace (<anonymous>:35:31)\n    at stopLocal (<anonymous>:240:5)\n    at http://192.168.0.17/:488:36"
+    }
+  ],
+  "observer_final": {
+    "connections_seen": 1,
+    "trace_errors": 0,
+    "state": {
+      "intent": false,
+      "focused": false,
+      "boot": 331448985,
+      "session": 5,
+      "control_id": 0,
+      "socket_state": 1,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "owner_session": 0,
+      "pending": null,
+      "motion": null,
+      "stm_state": "DISARMED",
+      "stm_reason": "DISARM",
+      "buttons_disabled": {
+        "arm": true,
+        "disarm": false,
+        "forward": true,
+        "reverse": true,
+        "left": true,
+        "right": true
+      }
+    }
+  },
+  "previous_v5_2_captures": {
+    "idle": {
+      "handler_duration": {
+        "samples": 6324,
+        "min_ms": 0.0,
+        "median_ms": 0.1,
+        "p95_ms": 0.3,
+        "p99_ms": 0.4,
+        "max_ms": 0.6,
+        "recorded_zero_samples": 1618,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 6324,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.3,
+        "recorded_zero_samples": 5680,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "tel_receive_gap": {
+        "samples": 1580,
+        "min_ms": 0.7,
+        "median_ms": 60.0,
+        "p95_ms": 70.6,
+        "p99_ms": 109.2,
+        "max_ms": 118.5,
+        "recorded_zero_samples": 0,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "control_receive_gap": {
+        "samples": 4742,
+        "min_ms": 0,
+        "median_ms": 1.0,
+        "p95_ms": 61.1,
+        "p99_ms": 69.4,
+        "max_ms": 108.9,
+        "recorded_zero_samples": 5,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    },
+    "armed_zero": {
+      "handler_duration": {
+        "samples": 4349,
+        "min_ms": 0,
+        "median_ms": 0.1,
+        "p95_ms": 0.3,
+        "p99_ms": 0.4,
+        "max_ms": 0.9,
+        "recorded_zero_samples": 1198,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 4349,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.3,
+        "recorded_zero_samples": 3996,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "tel_receive_gap": {
+        "samples": 897,
+        "min_ms": 1.6,
+        "median_ms": 60.1,
+        "p95_ms": 92.44,
+        "p99_ms": 109.924,
+        "max_ms": 122.1,
+        "recorded_zero_samples": 0,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "control_receive_gap": {
+        "samples": 2688,
+        "min_ms": 0,
+        "median_ms": 1.0,
+        "p95_ms": 61.165,
+        "p99_ms": 69.1,
+        "max_ms": 84.9,
+        "recorded_zero_samples": 43,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    }
+  },
+  "checks": {
+    "raw_archive_hashes_verified": true,
+    "all_timing_pairs_present": true,
+    "sequence_and_timestamp_order_valid": true,
+    "timing_events_matched": true,
+    "all_sent_commands_matched_to_OK_results_and_notices": true,
+    "counts_monotonic_within_forward_send_to_release_window": true,
+    "post_disarm_outputs_zero_counts_fixed": true
+  },
+  "limits": [
+    "Prior long-gap failure was not reproduced; ACC-COM-01 cause remains OPEN",
+    "Synchronous JS durations exclude pre-dispatch queueing, deferred layout/paint and export",
+    "Zero-duration records reflect clock resolution, not zero cost",
+    "Send/result and release/TEL intervals are not pure network or physical stop latency",
+    "One right-count decrement of 1 after release/PWM zero; no waveform evidence to identify rebound versus signal error",
+    "No independent physical support, voltage/current/temperature or ground-distance measurement",
+    "No new firmware/build/flash/limit changes or overall MVP acceptance"
+  ],
+  "next": "End this three-condition observation block. No automatic repeat or ESP instrumentation B; continue from existing MVP acceptance boundaries in report39 without waiving MUST requirements."
+}

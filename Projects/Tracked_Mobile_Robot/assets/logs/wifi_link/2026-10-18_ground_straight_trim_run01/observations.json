@@ -1,0 +1,140 @@
+{
+  "test": "GROUND_STRAIGHT_TRIM_RUN01",
+  "motion": [
+    {
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "source_samples": 45,
+      "steady_samples": 40,
+      "steady_abs_cps_median": [
+        790.0,
+        770.0
+      ],
+      "right_left_ratio": 0.9746835443037974,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "command": [
+        -100,
+        0
+      ],
+      "pwm": [
+        -140,
+        -150
+      ],
+      "source_samples": 51,
+      "steady_samples": 46,
+      "steady_abs_cps_median": [
+        768.0,
+        730.0
+      ],
+      "right_left_ratio": 0.9505208333333334,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    }
+  ],
+  "telemetry_dropped": 0,
+  "unique_source_samples": 209,
+  "unexpected_stop_capture": null,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 20715.70000000298,
+    "boot_id": 4138288356,
+    "gap_ms": 59.899999998509884,
+    "esp_uptime_ms": 52939,
+    "esp_step_ms": 60,
+    "tel_count": 527,
+    "stm_t_ms": 53227,
+    "stm_age_ms": 2,
+    "command_age_ms": 2773,
+    "last_seq": 3518121517,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "visual": "User reported less curvature after trimming. No video or quantitative path measurement supplied.",
+  "limits": [
+    "CPS measures encoder rotation, not motor torque or ground velocity.",
+    "Both encoders remained nonzero after the first 500ms. Forward and reverse wheel-rate mismatch differs; curvature requires physical observation.",
+    "CPS ratios are initial tuning evidence; PWM-to-speed response, battery voltage, load and track slip prevent treating them as calibrated gains.",
+    "Curvature reduction is operator-confirmed qualitatively; precision straight-line calibration and robustness across battery/load conditions remain unverified."
+  ],
+  "status": "FIRST_STRAIGHT_TRIM_CPS_AND_OPERATOR_CURVATURE_IMPROVEMENT_CONFIRMED",
+  "comparison": [
+    {
+      "command": [
+        100,
+        0
+      ],
+      "before_abs_cps_median": [
+        860.0,
+        825.0
+      ],
+      "after_abs_cps_median": [
+        790.0,
+        770.0
+      ],
+      "before_right_slower_percent": 4.069767441860462,
+      "after_right_slower_percent": 2.5316455696202556
+    },
+    {
+      "command": [
+        -100,
+        0
+      ],
+      "before_abs_cps_median": [
+        850.0,
+        790.0
+      ],
+      "after_abs_cps_median": [
+        768.0,
+        730.0
+      ],
+      "before_right_slower_percent": 7.058823529411762,
+      "after_right_slower_percent": 4.9479166666666625
+    }
+  ],
+  "held_unexpected_stops": [],
+  "stop_interpretation": "At 17955ms window blur while motion=null, command/PWM/CPS already zero; pending zero CMD cancelled and DISARM request186 OK. No focused held stop captured.",
+  "operator_confirmation": {
+    "curvature_reduced": true,
+    "source": "User reported less curvature after the forward/reverse trim test.",
+    "scope": "Qualitative combined report; no direction-specific distance or yaw measurement."
+  },
+  "current_setting": {
+    "left_forward_gain_permille": 960,
+    "left_reverse_gain_permille": 930,
+    "linear_nominal_cap_permille": 150,
+    "pure_turn_cap_permille": 200,
+    "next": "Keep the current gains; short combined manual-drive check can follow."
+  }
+}

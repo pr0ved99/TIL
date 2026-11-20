@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "scope": "PC corrected geometry replay only; no new board test",
+  "unit_test_methods": 36,
+  "failures": 0,
+  "errors": 0,
+  "archived_capture_replay": {
+    "arm_zero": {
+      "input_sha256": "d9652b5cb332ef17109a30adc07f845269b6ebb395b86073aa569f9492586e2c",
+      "input_unchanged": true,
+      "window_status_and_counts_unchanged": true,
+      "summary": {
+        "telemetry_rows": 1053,
+        "unique_source_tel": 633,
+        "browser_evicted_rows": 0,
+        "accepted_windows": 1,
+        "rejected_windows": 0,
+        "command_result_status_counts": {
+          "OK": 60
+        }
+      },
+      "accepted_distances_mm": [
+        {
+          "left": "0.000000",
+          "right": "0.000000",
+          "center": "0.000000"
+        }
+      ]
+    },
+    "forward_air": {
+      "input_sha256": "8e49afe9c85f58cfcf9c558dd60e744c767e49785ef294232e8757bc27fbf17a",
+      "input_unchanged": true,
+      "window_status_and_counts_unchanged": true,
+      "summary": {
+        "telemetry_rows": 2709,
+        "unique_source_tel": 1628,
+        "browser_evicted_rows": 3000,
+        "accepted_windows": 1,
+        "rejected_windows": 0,
+        "command_result_status_counts": {
+          "OK": 71
+        }
+      },
+      "accepted_distances_mm": [
+        {
+          "left": "222.078410",
+          "right": "205.381436",
+          "center": "213.729923"
+        }
+      ]
+    },
+    "reverse_air": {
+      "input_sha256": "954387851b3cc5327e192484859d029deaa472512efb927821d5fe7606259728",
+      "input_unchanged": true,
+      "window_status_and_counts_unchanged": true,
+      "summary": {
+        "telemetry_rows": 2850,
+        "unique_source_tel": 1713,
+        "browser_evicted_rows": 5100,
+        "accepted_windows": 1,
+        "rejected_windows": 1,
+        "command_result_status_counts": {
+          "OK": 91,
+          "CANCELLED": 1
+        }
+      },
+      "accepted_distances_mm": [
+        {
+          "left": "-253.050000",
+          "right": "-235.055333",
+          "center": "-244.052667"
+        }
+      ]
+    }
+  },
+  "cli_negative_controls": {
+    "input_overwrite_blocked": true,
+    "invalid_version_no_output": true
+  },
+  "sha256": {
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\analyze_encoder_distance.py": "73a1bfa95195d209c975e741c66854942385376898c19c411dd66459e897e76a",
+    "Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_encoder_distance_analysis.py": "6a3ad1c2f68b2b560a273fd41abeaf3d21188331558ca7a03e236bed96a64ecc",
+    "Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-20_track_geometry_14t_revision\\geometry_model.json": "15db3b58f412a2fc544d5f2199cbc587921959829f707331e71417c622e1ff48"
+  }
+}

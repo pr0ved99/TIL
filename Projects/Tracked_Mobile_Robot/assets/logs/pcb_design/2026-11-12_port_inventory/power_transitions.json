@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-12",
+  "status": "DOCUMENTED_AND_NOMINAL_CALCULATION_ONLY",
+  "source_lesson": "07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+  "assumptions": [
+    "VRAIL remains 16V",
+    "ideal common STM_AVDD and MCU VDDA for explanatory model only",
+    "nominal R_DIS=47kohm",
+    "C_ADC_eq=100pF is assumed, not measured/installed hardware",
+    "ignore leakage during discharge",
+    "V0 at switch cutoff=2.371352579V"
+  ],
+  "calculations": {
+    "tau_s": 4.7e-06,
+    "time_after_cutoff_to_1pct_s": 2.1644299874144032e-05,
+    "V0_V": 2.3713525794162247,
+    "V_at_1pct_V": 0.02371352579416225,
+    "no_cutoff_model_VDDA_start_V": 3,
+    "no_cutoff_model_slew_V_per_s": 1000,
+    "no_cutoff_voltage_crossing_time_s": 0.0006286474205837754
+  },
+  "sources": [
+    {
+      "url": "https://www.ti.com/lit/ds/symlink/tps3840.pdf",
+      "revision": "SNVSB03E May2026",
+      "pages": [
+        6,
+        7,
+        9
+      ],
+      "conditions": "timing header and individual rows/footnotes; CT open tD MAX50us; tSTRT includes CT-open tD"
+    },
+    {
+      "url": "https://www.ti.com/lit/ds/symlink/tmux1511.pdf",
+      "revision": "SCDS390B March2025",
+      "pages": [
+        7,
+        15,
+        16
+      ],
+      "conditions": "SEL transition vs supply transition are separate tests; RL200ohm CL15pF not current ADC load"
+    }
+  ],
+  "recovery": "Different initial conditions from 37-2 input step: with rail16V retained, VDIV capacitor can be precharged near2.620209V while ADC side is discharged. Re-evaluate settling and collect fresh normal samples.",
+  "user_handwriting_understanding": "NOT_REPORTED",
+  "next": "41-5 port faults and misconnection",
+  "new_simulation_or_hardware": false,
+  "cad_hashes": {
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "b0a9529007e3584cb59c3af3fd5ac3eae82c7b3c8add412b200e3c44514b14e1",
+    "TMR_Monitor_Shield_RevA.kicad_sch": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9"
+  }
+}

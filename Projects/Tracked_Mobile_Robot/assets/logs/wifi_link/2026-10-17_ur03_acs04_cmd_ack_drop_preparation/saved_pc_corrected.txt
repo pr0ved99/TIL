@@ -1,0 +1,16 @@
+MODE: SAVED / NATIVE PC ONLY
+COMPILER: C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe
+STM tested text SHA256: a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370
+PASS startup_and_normal_stop
+PASS tenth_only_and_restore_path
+PASS mode=0: 2 native case groups; no board evidence
+PASS startup_and_normal_stop
+PASS tenth_only_and_restore_path
+PASS reset_and_ineligible_commands
+PASS physical_state_dimensions
+PASS watchdog_estop_and_cancel_remain_live
+PASS esp_requires_ack_despite_fresh_tel
+PASS mode=1: 6 native case groups; no board evidence
+PASS invalid mode rejected
+PASS all 13 combined fault/output modes rejected
+Production unchanged. MCU build/flash and physical acceptance are separate.

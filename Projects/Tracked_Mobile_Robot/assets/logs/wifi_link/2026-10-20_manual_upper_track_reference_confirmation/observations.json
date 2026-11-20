@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-20",
+  "source_user_clarifications": [
+    "궤도를 지면에서 띄운 상태에서 윗부분의 특정 링크 이동거리를 잰 것",
+    "평평한 면이야"
+  ],
+  "classification": "User-reported manual straight upper-track travel versus encoder count; not chassis displacement",
+  "geometric_condition": "Same material point on one link is translated within a flat straight run, without passing into the sprocket bend; then linear travel can be compared with output encoder counts",
+  "measurement_applicability": "Suitable for preliminary track-travel coefficient diagnosis under that stated condition",
+  "paired_count_source": "../2026-10-20_manual_both_distance_check_run02/observations.json",
+  "scale_observation": {
+    "initial_mm_per_count": 0.07307692307692308,
+    "15cm_mean_count": "1740",
+    "initial_estimated_track_travel_mm": 127.15384615384616,
+    "reported_track_travel_mm": 150,
+    "initial_underestimate_percent": 15.23076923076923,
+    "candidate_common_mm_per_count_not_applied": 0.08620689655172414
+  },
+  "conditional_equivalent_pitch_mm": 11.206896551724139,
+  "pitch_inference_limits": "Only if1560 counts/output rev and12 actual engaged sprocket teeth are correct and no skipping; not a pitch measurement",
+  "still_not_verified": [
+    "Raw telemetry/freshness/time/control metadata",
+    "Measurement tool/resolution and precise flat-run point tracking",
+    "Current physical sprocket tooth count versus CAD12 assumption",
+    "Pitch9.5mm measurement endpoints and independent loop circumference reference"
+  ],
+  "unchanged": "Archived initial coefficient/firmware remain unchanged; no final ground calibration",
+  "next_measurement": {
+    "setup": "Stationary, motor power cut, upper track straight",
+    "method": "Pick the same repeated feature on6 consecutive identical links and measure from1st to6th;5 pitch intervals. Pin centers need not be visible.",
+    "equation": "pitch_mm = measured_span_mm / 5",
+    "purpose": "Distinguish actual link pitch from plastic body length; then verify actual tooth engagement count if needed."
+  }
+}

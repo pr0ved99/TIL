@@ -1,0 +1,90 @@
+{
+  "test": "LIFTED_CPS_COMPARISON",
+  "motion": [
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -150,
+        150
+      ],
+      "source_samples": 45,
+      "steady_samples": 40,
+      "steady_abs_cps_median": [
+        990.0,
+        800.0
+      ],
+      "right_left_ratio": 0.8080808080808081,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "command": [
+        0,
+        -500
+      ],
+      "pwm": [
+        150,
+        -150
+      ],
+      "source_samples": 62,
+      "steady_samples": 57,
+      "steady_abs_cps_median": [
+        980,
+        780
+      ],
+      "right_left_ratio": 0.7959183673469388,
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ]
+    }
+  ],
+  "telemetry_dropped": 0,
+  "unique_source_samples": 367,
+  "unexpected_stop_capture": null,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 36506,
+    "boot_id": 3432731077,
+    "gap_ms": 59.69999999552965,
+    "esp_uptime_ms": 1551178,
+    "esp_step_ms": 60,
+    "tel_count": 15529,
+    "stm_t_ms": 1279585,
+    "stm_age_ms": 11,
+    "command_age_ms": 14723,
+    "last_seq": 187613566,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "visual": "No new video supplied; report submitted in response to instructed lifted comparison.",
+  "limits": [
+    "CPS measures encoder rotation, not motor torque or ground velocity.",
+    "Right zero CPS under turning load is compatible with stalled output or missing encoder counts; physical belt observation is required to distinguish.",
+    "Median ratio from forward motion must not be used as a general compensation factor for turns."
+  ]
+}

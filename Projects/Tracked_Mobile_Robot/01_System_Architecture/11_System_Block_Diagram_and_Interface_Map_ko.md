@@ -1,5 +1,8 @@
 # 시스템 블록 다이어그램과 인터페이스 맵
 
+> 문서 역할·상태 대조: **2026-09-30** — 시스템 연결·역할 지도. 배선 완료·펌웨어 설정·제한 검증을 구분한다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트의 첫 전체 hardware/software interface map을 정의한다.
@@ -9,7 +12,7 @@
 - STM32는 하위 구동 제어와 safety를 담당한다.
 - MDD10A motor driver는 STM32 logic command를 motor power로 변환한다.
 - Encoder, IMU, battery sensing은 STM32에 feedback을 제공한다.
-- ESP32-S3는 telemetry, wireless UI, 추후 bridge를 위한 support controller다.
+- ESP32-S3는 Final MVP production external command ingress, telemetry와 wireless UI를 위한 support controller다.
 - UART는 첫 STM32-ESP32 interface다.
 - CAN, FreeRTOS, LL Driver 전환, ROS2, LiDAR, SLAM은 후속 확장 phase다.
 - ROS 2 Humble, RViz2, Gazebo classic 11은 현재 노트북 학습/시뮬레이션 baseline으로 준비되어 있다.
@@ -25,6 +28,7 @@ boundary 문서다.
 
 - 3S LiPo power input
 - fuse와 main switch
+- Physical E-stop actuator, DC power relay motor-energy cut와 STM32 auxiliary sense
 - logic power용 buck converter
 - STM32 NUCLEO-F446RE low-level controller
 - MDD10A dual-channel motor driver 1개
@@ -114,7 +118,7 @@ ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM3
 
 ## 3. 전원 블록 다이어그램
 
-상세 power architecture는 `12_Power_Distribution_and_Safety_Architecture.md`에서 다룬다.
+상세 power architecture는 [12 전원 구조](12_Power_Distribution_and_Safety_Architecture_ko.md)에서 다룬다.
 이 문서에서는 interface 수준의 power model만 기록한다.
 
 ```text
@@ -126,15 +130,15 @@ ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM3
     |
     +-- main power switch
     |
-    +-- motor power rail --------------------+
-    |                                        |
-    |                                  MDD10A POWER+
-    |
-    +-- buck converter input
-             |
-             +-- 5 V logic/aux rail candidate
-             |
-             +-- STM32 / ESP32 / sensor supply path
+    +-- protected battery rail
+            |
+            +-- E-stop controlled relay
+            |       |
+            |       +-- safe motor power rail -> MDD10A POWER+
+            |
+            +-- XL4015 #1 -> board logic 5 V (STM32 / ESP32)
+            +-- XL4015 #2 -> AUX5V (encoder / S0-B sense)
+            +-- F2 -> S0/S2/K2/K1 coil control
 ```
 
 공통 규칙:
@@ -156,7 +160,9 @@ ROS 2는 motion command를 만들 수 있지만, motor output permission은 STM3
 | Encoder counting | STM32 | RPM과 odometry에 필요 |
 | Battery voltage safety | STM32 | ESP32는 값을 표시할 수 있지만 safety 판단은 하지 않음 |
 | Command timeout | STM32 | valid command가 끊기면 motion stop |
-| Emergency stop behavior | STM32 | ESP32나 PC가 stop을 요청할 수 있지만 STM32가 집행 |
+| Physical E-stop motor-energy isolation | Mechanical E-stop + K1 DC power relay | MCU/software와 독립적으로 MDD10A `POWER+` feed 차단 |
+| E-stop monitoring, output zero와 latch | STM32 | 5 V S0-B NC loop와 optocoupler를 거친 PC7 후보; release 뒤 explicit reset/new ARM 전 motion 금지 |
+| K1 actual-off evidence/diagnostic | Bench/STM32 | MVP는 direct downstream DMM/continuity; PA4/PB0 upstream/downstream 비교는 post-MVP이며 physical isolation 대체 아님 |
 | Wireless dashboard | ESP32-S3 | UART telemetry 안정화 후 진행 |
 | Wi-Fi command forwarding | ESP32-S3 | 요청만 전달하고 최종 motor authority는 아님 |
 | USB serial debug | STM32 and ESP32 | Bring-up 중 사용 |
@@ -172,7 +178,7 @@ Motion 허용 여부는 STM32가 결정한다.
 
 ## 5. STM32 Interface Map
 
-첫 MVP를 위한 STM32 후보 interface:
+현재 배정과 후속 interface 후보:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
@@ -181,26 +187,36 @@ Motion 허용 여부는 STM32가 결정한다.
 | GPIO power gate/brake x2 | STM32 -> optional external circuit | Motor power or brake circuit | 별도 회로가 생길 때만 사용 | Optional |
 | Timer encoder input | Motor encoder -> STM32 | Left encoder A/B | Count and direction | Required |
 | Timer encoder input | Motor encoder -> STM32 | Right encoder A/B | Count and direction | Required |
-| ADC input | Battery divider -> STM32 | Main battery monitor | Low-voltage decision | Required |
+| ADC input PA4 candidate | `VBAT_PROTECTED` divider -> STM32 | K1 upstream/main battery monitor | Low-voltage and rail reference | Required, unconfigured |
+| ADC input PB0 candidate | `MOTOR_VBAT_SAFE` divider -> STM32 | K1 downstream motor rail | Actual-off/plausibility diagnostic | Post-MVP, unconfigured |
+| GPIO input PC7 (EXTI 미구현) | S0-B 5 V loop -> optocoupler -> STM32 | Physical E-stop sense | Safe output/latch request | Required, configured (firmware/PWM PASS) |
 | I2C | STM32 <-> BNO08x | IMU | Yaw/attitude candidate | Motor bring-up 이후 required |
-| USART1 | STM32 <-> ESP32 | Support controller | Command/telemetry | Required |
-| USB serial | STM32 <-> PC | Development PC | Debug and manual command | Required |
-| bxCAN | STM32 <-> CAN transceiver | Future CAN bus | 후속 command/telemetry path | Deferred |
+| GPIO/EXTI 후보 PB1 | BNO08x -> STM32 | IMU INT | Interrupt input | 배선 PASS / 설정·센서 동작 미완료 |
+| GPIO 후보 PC4 | STM32 -> BNO08x | IMU RESET | Hardware reset | 배선 PASS / 설정·센서 동작 미완료 |
+| USART1 | STM32 <-> ESP32 | Production ingress/support controller | Command/telemetry | Required, production |
+| USART2 / ST-LINK USB serial | STM32 -> PC | Development PC | Bench debug/encoder logger; historical PC-first command evidence | Development only, not production ingress |
+| bxCAN (PA11/PA12 예약) | STM32 <-> CAN transceiver (SN65HVD230 모듈 확정) | Future CAN bus | 후속 command/telemetry path | Deferred |
 
-이 문서에서 pin allocation은 확정하지 않는다.
+상세 pin status는 [`06_MCU_Pin_Allocation_Candidate_ko.md`](06_MCU_Pin_Allocation_Candidate_ko.md),
+회로 기능은
+[`25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](25_Physical_EStop_RevB_Circuit_Architecture_ko.md)를
+따른다. 부품 후보와 정격 판정은
+[`26_Physical_EStop_Component_and_Rating_Selection_ko.md`](26_Physical_EStop_Component_and_Rating_Selection_ko.md)를
+따른다. PC7은 MVP Step 6 target으로 설정 및 벤치 검증(T004)이 완료되었다. PA4/PB0는 post-MVP diagnostic candidate이며,
+아직 검증 전이다.
 
-현재 아키텍처는 MDD10A 경로가 motor 2개에 대해 PWM output 2개와 DIR GPIO 2개를 요구한다.
-따라서 기존 PB6/PB7 PWM, PC8/PC9 direction 후보를 유지할 수 있다.
+MDD10A 제어를 위해 PB6/PB7(PWM), PC8/PC9(DIR) 핀 할당이 확정되었으며,
+현재 영구 배선과 A/M1·B/M2 단발 회전을 관측했다. B 실제 양방향은 확인했고 A 양수 명령의 실제 전진 방향 관찰은 남아 있다. 전체 단일 모터/주행 수용 완료와 구분한다.
 
 ## 6. ESP32-S3 Interface Map
 
-ESP32-S3 후보 책임:
+ESP32-S3 책임:
 
 | Interface | Direction | Connected block | Purpose | Status |
 | --- | --- | --- | --- | --- |
-| UART | ESP32 <-> STM32 | Low-level controller | Command forwarding and telemetry | First interface |
+| UART | ESP32 <-> STM32 | Low-level controller | ESP32-originated production command와 telemetry bridge; optional PC forwarding은 계획 상태 | 현재 기능 구현·제한 runtime 확인; 전체 bridge/UART release는 PARTIAL |
 | USB Serial/JTAG | ESP32 <-> PC | Development PC | Flashing and debug | Required |
-| Wi-Fi | ESP32 <-> PC/phone | Dashboard or log bridge | Later |
+| Wi-Fi | ESP32 <-> PC/phone | Dashboard or log bridge | Wireless telemetry/control bridge | Later |
 | GPIO/RGB LED | ESP32 local | Board test | 이전 ESP32 실습에서 검증됨 | Optional |
 
 첫 아키텍처에서 ESP32는 motor-driver input에 직접 연결하지 않는다.
@@ -244,23 +260,24 @@ Sensor data ownership:
 
 ## 9. Communication Interface Map
 
-### Initial Path
+### Final MVP Production Path
 
 ```text
-PC serial terminal or ESP32
+optional PC client
         |
         v
-UART command request
+ESP32-S3 ingress / arbitration
         |
         v
-STM32 command parser
+UART1 GPIO17/GPIO18 <-> USART1 PA9/PA10
         |
         v
-safety gate + command clamp
-        |
-        v
-motor control output
+STM32 command parser -> safety gate -> motor control output
 ```
+
+Direct PC-to-STM32 USART2와 ESP32를 동시에 command owner로 두지 않는다. USART2는
+bench debug/encoder logger와 historical PC-first evidence에만 사용한다. STM32는 최종
+motor permission, timeout과 PWM/DIR authority를 유지한다.
 
 ### Telemetry Path
 
@@ -302,6 +319,7 @@ CAN은 UART와 동일한 safety ownership model을 재사용해야 한다.
 ### Future ROS2 Bridge Path
 
 ROS 2 bridge는 상위 계층에서 `/cmd_vel`을 받아 STM32가 이해하는 command transport로 변환한다.
+Final MVP UART 경로에서는 ESP32 ingress를 우회하지 않는다.
 
 ```text
 ROS 2 teleop / Nav2
@@ -312,9 +330,9 @@ ROS 2 teleop / Nav2
         v
 base_bridge_node
         |
-        +-- UART transport candidate
+        +-- Final MVP: ESP32 ingress -> STM32 USART1
         |
-        +-- CAN transport candidate
+        +-- Future: CAN transport after a separate architecture decision
         |
         v
 STM32 command queue
@@ -395,7 +413,7 @@ UART/CAN status publishing
 | Encoder output이 STM32 input tolerance를 초과 | encoder -> STM32 | 연결 전 encoder output 측정, 필요 시 level shifting |
 | UART wire가 motor noise를 받음 | STM32 <-> ESP32 | 짧은 wire, GND reference, motor power 전 test |
 | Buck converter 설정 오류 | logic power | MCU 연결 전 조정, multimeter로 확인 |
-| Command source freeze | UART/CAN command | STM32 command timeout stop |
+| Command source freeze | ESP32 production command | STM32 output/stored-command zero, `DISARMED`, accepted ARM 뒤 valid CMD state gate; queued/replayed pair 거부는 미포함 |
 | Software task가 motor loop를 block | firmware architecture | HAL baseline 이후 FreeRTOS 도입, queue/priority 사용 |
 | CAN wiring/debug complexity가 motor bring-up을 지연 | CAN bus | drivetrain 먼저 검증, CAN은 나중에 standalone test |
 
@@ -417,3 +435,7 @@ UART/CAN status publishing
 ESP32, PC, future CAN node, future ROS2 bridge는 robot motion을 요청하거나 표시할 수 있지만,
 motor output, sensor feedback, command timeout, safety gating의 low-level authority는 STM32가
 유지한다.
+
+Final MVP external command ingress는 ESP32-S3 하나이며 production UART는
+`ESP32 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다. PC control이 필요하면 ESP32를
+경유하고, USART2는 bench logger로만 사용한다.

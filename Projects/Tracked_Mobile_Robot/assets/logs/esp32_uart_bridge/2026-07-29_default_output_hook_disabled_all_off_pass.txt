@@ -1,0 +1,100 @@
+--- Waiting for the device to reconnect.
+I (476) esp32_uart_bridge: RX TEL: t_ms=26458 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=2
+I (576) esp32_uart_bridge: RX TEL: t_ms=26558 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=3
+I (676) esp32_uart_bridge: RX TEL: t_ms=26658 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=4
+I (776) esp32_uart_bridge: RX TEL: t_ms=26758 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=5
+I (876) esp32_uart_bridge: RX TEL: t_ms=26858 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=6
+I (976) esp32_uart_bridge: RX TEL: t_ms=26958 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=7
+I (1076) esp32_uart_bridge: RX TEL: t_ms=27058 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=8
+I (1176) esp32_uart_bridge: RX TEL: t_ms=27158 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=9
+I (1276) esp32_uart_bridge: TX UART1: CMD,seq=2,vx_mmps=50,w_mradps=0,timeout_ms=300
+I (1276) esp32_uart_bridge: RX TEL: t_ms=27258 state=DISARMED last_seq=6 vx=0 w=0 err=390 tel_count=10
+W (1286) esp32_uart_bridge: RX ERR: ERR,seq=2,type=CMD,code=NOT_ARMED,t_ms=27269
+I (1376) esp32_uart_bridge: RX TEL: t_ms=27358 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=11
+I (1476) esp32_uart_bridge: RX TEL: t_ms=27458 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=12
+I (1576) esp32_uart_bridge: RX TEL: t_ms=27558 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=13
+I (1676) esp32_uart_bridge: RX TEL: t_ms=27658 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=14
+I (1776) esp32_uart_bridge: RX TEL: t_ms=27758 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=15
+I (1876) esp32_uart_bridge: RX TEL: t_ms=27858 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=16
+I (1976) esp32_uart_bridge: RX TEL: t_ms=27958 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=17
+I (2076) esp32_uart_bridge: RX TEL: t_ms=28058 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=18
+I (2176) esp32_uart_bridge: RX TEL: t_ms=28158 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=19
+I (2276) esp32_uart_bridge: TX UART1: ARM,seq=3
+I (2276) esp32_uart_bridge: RX TEL: t_ms=28258 state=DISARMED last_seq=6 vx=0 w=0 err=391 tel_count=20
+I (2276) esp32_uart_bridge: RX ACK: ACK,seq=3,type=ARM,t_ms=28269
+I (2376) esp32_uart_bridge: RX TEL: t_ms=28358 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=21
+I (2476) esp32_uart_bridge: RX TEL: t_ms=28458 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=22
+I (2576) esp32_uart_bridge: RX TEL: t_ms=28558 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=23
+I (2676) esp32_uart_bridge: RX TEL: t_ms=28658 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=24
+I (2776) esp32_uart_bridge: RX TEL: t_ms=28758 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=25
+I (2876) esp32_uart_bridge: RX TEL: t_ms=28858 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=26
+I (2976) esp32_uart_bridge: RX TEL: t_ms=28958 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=27
+I (3076) esp32_uart_bridge: RX TEL: t_ms=29058 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=28
+I (3166) esp32_uart_bridge: RX TEL: t_ms=29158 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=29
+I (3266) esp32_uart_bridge: RX TEL: t_ms=29258 state=ARMED last_seq=3 vx=0 w=0 err=391 tel_count=30
+I (3286) esp32_uart_bridge: TX UART1: CMD,seq=4,vx_mmps=50,w_mradps=0,timeout_ms=300
+I (3286) esp32_uart_bridge: RX ACK: ACK,seq=4,type=CMD,t_ms=29284
+I (3366) esp32_uart_bridge: RX TEL: t_ms=29358 state=ARMED last_seq=4 vx=50 w=0 err=391 tel_count=31
+I (3466) esp32_uart_bridge: RX TEL: t_ms=29458 state=ARMED last_seq=4 vx=50 w=0 err=391 tel_count=32
+I (3566) esp32_uart_bridge: RX TEL: t_ms=29558 state=ARMED last_seq=4 vx=50 w=0 err=391 tel_count=33
+I (3666) esp32_uart_bridge: RX TEL: t_ms=29658 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=34
+I (3766) esp32_uart_bridge: RX TEL: t_ms=29758 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=35
+I (3866) esp32_uart_bridge: RX TEL: t_ms=29858 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=36
+I (3966) esp32_uart_bridge: RX TEL: t_ms=29958 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=37
+I (4066) esp32_uart_bridge: RX TEL: t_ms=30058 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=38
+I (4166) esp32_uart_bridge: RX TEL: t_ms=30158 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=39
+I (4266) esp32_uart_bridge: RX TEL: t_ms=30258 state=ARMED last_seq=4 vx=0 w=0 err=391 tel_count=40
+I (4286) esp32_uart_bridge: TX UART1: CMD,seq=5,vx_mmps=9999,w_mradps=0,timeout_ms=300
+W (4296) esp32_uart_bridge: RX ERR: ERR,seq=5,type=CMD,code=OUT_OF_RANGE,t_ms=30287
+I (4366) esp32_uart_bridge: RX TEL: t_ms=30358 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=41
+I (4466) esp32_uart_bridge: RX TEL: t_ms=30458 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=42
+I (4566) esp32_uart_bridge: RX TEL: t_ms=30558 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=43
+I (4666) esp32_uart_bridge: RX TEL: t_ms=30658 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=44
+I (4766) esp32_uart_bridge: RX TEL: t_ms=30758 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=45
+I (4866) esp32_uart_bridge: RX TEL: t_ms=30858 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=46
+I (4966) esp32_uart_bridge: RX TEL: t_ms=30958 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=47
+I (5066) esp32_uart_bridge: RX TEL: t_ms=31058 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=48
+I (5166) esp32_uart_bridge: RX TEL: t_ms=31158 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=49
+I (5266) esp32_uart_bridge: RX TEL: t_ms=31258 state=ARMED last_seq=4 vx=0 w=0 err=392 tel_count=50
+I (5286) esp32_uart_bridge: TX UART1: DISARM,seq=6
+I (5286) esp32_uart_bridge: RX ACK: ACK,seq=6,type=DISARM,t_ms=31287
+I (5366) esp32_uart_bridge: RX TEL: t_ms=31358 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=51
+I (5466) esp32_uart_bridge: RX TEL: t_ms=31458 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=52
+I (5566) esp32_uart_bridge: RX TEL: t_ms=31558 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=53
+I (5666) esp32_uart_bridge: RX TEL: t_ms=31658 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=54
+I (5766) esp32_uart_bridge: RX TEL: t_ms=31758 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=55
+I (5866) esp32_uart_bridge: RX TEL: t_ms=31858 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=56
+I (5966) esp32_uart_bridge: RX TEL: t_ms=31958 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=57
+I (6066) esp32_uart_bridge: RX TEL: t_ms=32058 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=58
+I (6166) esp32_uart_bridge: RX TEL: t_ms=32158 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=59
+I (6266) esp32_uart_bridge: RX TEL: t_ms=32258 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=60
+I (6366) esp32_uart_bridge: RX TEL: t_ms=32358 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=61
+I (6466) esp32_uart_bridge: RX TEL: t_ms=32458 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=62
+I (6566) esp32_uart_bridge: RX TEL: t_ms=32558 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=63
+I (6666) esp32_uart_bridge: RX TEL: t_ms=32658 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=64
+I (6766) esp32_uart_bridge: RX TEL: t_ms=32758 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=65
+I (6866) esp32_uart_bridge: RX TEL: t_ms=32858 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=66
+I (6956) esp32_uart_bridge: RX TEL: t_ms=32958 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=67
+I (7056) esp32_uart_bridge: RX TEL: t_ms=33058 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=68
+I (7156) esp32_uart_bridge: RX TEL: t_ms=33158 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=69
+I (7256) esp32_uart_bridge: RX TEL: t_ms=33258 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=70
+I (7356) esp32_uart_bridge: RX TEL: t_ms=33358 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=71
+I (7456) esp32_uart_bridge: RX TEL: t_ms=33458 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=72
+I (7556) esp32_uart_bridge: RX TEL: t_ms=33558 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=73
+I (7656) esp32_uart_bridge: RX TEL: t_ms=33658 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=74
+I (7756) esp32_uart_bridge: RX TEL: t_ms=33758 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=75
+I (7856) esp32_uart_bridge: RX TEL: t_ms=33858 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=76
+I (7956) esp32_uart_bridge: RX TEL: t_ms=33958 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=77
+I (8056) esp32_uart_bridge: RX TEL: t_ms=34058 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=78
+I (8156) esp32_uart_bridge: RX TEL: t_ms=34158 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=79
+I (8256) esp32_uart_bridge: RX TEL: t_ms=34258 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=80
+I (8356) esp32_uart_bridge: RX TEL: t_ms=34358 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=81
+I (8456) esp32_uart_bridge: RX TEL: t_ms=34458 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=82
+I (8556) esp32_uart_bridge: RX TEL: t_ms=34558 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=83
+I (8656) esp32_uart_bridge: RX TEL: t_ms=34658 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=84
+I (8756) esp32_uart_bridge: RX TEL: t_ms=34758 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=85
+I (8856) esp32_uart_bridge: RX TEL: t_ms=34858 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=86
+I (8956) esp32_uart_bridge: RX TEL: t_ms=34958 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=87
+I (9056) esp32_uart_bridge: RX TEL: t_ms=35058 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=88
+I (9156) esp32_uart_bridge: RX TEL: t_ms=35158 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=89
+I (9256) esp32_uart_bridge: RX TEL: t_ms=35258 state=DISARMED last_seq=6 vx=0 w=0 err=392 tel_count=90

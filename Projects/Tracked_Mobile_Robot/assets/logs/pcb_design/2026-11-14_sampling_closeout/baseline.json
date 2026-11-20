@@ -1,0 +1,432 @@
+{
+  "head": "f2d971366a9cfe5bfe60215aceefc621c77ea4c8",
+  "branch": "agent/dual-encoder-bringup",
+  "files": [
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+      "sha256": "8ab814ba351d672dab3bbb962d282cf51bc206cf23e07236c7b64c4b72b2a6bb",
+      "bytes": 157
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+      "sha256": "0f8fa407287c1dc852faab381b905efaf89e67e9f1f957c5ff2fb65577013f5c",
+      "bytes": 703568
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+      "sha256": "0c6f42380dd46ac85bfd0323632926600b4aee89714496c85cc5dcccb9980c8e",
+      "bytes": 170539
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml",
+      "sha256": "3d5d16e5336ac581a174357b8fc635258fbf3c1ec7820a19edd7377c1d8156ac",
+      "bytes": 507676
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref",
+      "sha256": "0d5fee305242c84d4dccb033ebbace561b19431d0de7d82aca34f2af4194bc00",
+      "bytes": 41
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log",
+      "sha256": "ed0e86350a1d20f8315e19c66aee7d99df467f998fa0e340952a403c0233b74f",
+      "bytes": 19494
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja",
+      "sha256": "338a2c63b9ea4a7b4e6a062f9334a8b9728d3b11d998cb4f16edfa2a364677c9",
+      "bytes": 7334751
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json",
+      "sha256": "3f4feb23550ddba60c357d983c30a7b567e9f2b3c62fe831c61c8210f3f335ac",
+      "bytes": 6237757
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin",
+      "sha256": "35685286ea5a0c7c56b8bf9ef1276129433af4210d0642ef8e667b343e47b151",
+      "bytes": 164208
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf",
+      "sha256": "249101e678ce40a9a82f39ccb54cb7025d4292b9803d2c6d064083bdd28d8d21",
+      "bytes": 3566528
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map",
+      "sha256": "34a63e8603dc4dcc2b2af81b3cde5dfa499235642d487ac43677adf38cb05524",
+      "bytes": 3626620
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json",
+      "sha256": "d32fe8027a3f183c27fc0abf6e8bbcaab60642295a7fa69a2bd76fcf6e8faa6b",
+      "bytes": 241133
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+      "sha256": "babfde5526b25aa8a63d9900cfc390cf867fc4641b2e4e32a029430fdda0e918",
+      "bytes": 386426
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/README.md",
+      "sha256": "720cbdc9d937055b5cec76f7c86fc8f90b5d645cdb8748622bab8f69baf716d6",
+      "bytes": 8419
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/README.md",
+      "sha256": "b46dede95a91538c0aefc0dc0cd855905413b7f5ad4045837d0de9acf75c54ed",
+      "bytes": 5432
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md",
+      "sha256": "8fb4375a084edbdcafd58c745d0834a49f97a7bf93511304f3338b58efc0af2c",
+      "bytes": 25079
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md",
+      "sha256": "906c0f2eb5b9e37b7966314912be21d7eb3076edf72ddd029f041ba2d0f2422f",
+      "bytes": 123411
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/README.md",
+      "sha256": "05af4472cec37334c84d3ec2c73eda1cd38a6655531843b65c8e2dd8ca9ac96e",
+      "bytes": 26671
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2",
+      "sha256": "5f28b410746ce39d0a3dff60d10a3f658717f8edd60cf12032af97cb0283c9d5",
+      "bytes": 537872
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c",
+      "sha256": "9241c5701bca83987939b4c45e4b282d3626d04ddc644899b7003ddc7315bd1f",
+      "bytes": 10890
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "sha256": "3817bfdc6bca87126c972785f9e636767dfa28765e6cecd2ad6996a5a7332261",
+      "bytes": 75903
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/NEXT_SESSION_START_PROMPT.md",
+      "sha256": "91d345d2134e63906440da6e3f24b0731075e6053e4c5c7d89b57255fd3420e3",
+      "bytes": 7751
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "sha256": "16bf0a5bc9c96ab93d8aaafa147277cd4935cae357e7ff417c95078474a8bb28",
+      "bytes": 11423
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/2026-11-13_progress.md",
+      "sha256": "0c2c27272a91c4f87becd068eb3de45bef33a89968e8be447af88d1a507f91c9",
+      "bytes": 21458
+    },
+    {
+      "status": " M",
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/README.md",
+      "sha256": "b6911873930ab7b8e5145455689a3c636ac18913871222495518bd7ee17e4944",
+      "bytes": 60181
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt",
+      "sha256": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a",
+      "bytes": 669448
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt",
+      "sha256": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236",
+      "bytes": 198984
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt",
+      "sha256": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb",
+      "bytes": 1003002
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/30_Voltage_Sense_Branch_Protection_Comparison_2026-11-13_ko.md",
+      "sha256": "b898cc74de06f38a3476abfe61aede94bfe007ba077463f9b460edad6f847b99",
+      "bytes": 11629
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch",
+      "sha256": "8ac79df91f35583d86e627f92337bcf86fd41fcb6138ed83d241dd0421eac30b",
+      "bytes": 858
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch",
+      "sha256": "8ac79df91f35583d86e627f92337bcf86fd41fcb6138ed83d241dd0421eac30b",
+      "bytes": 858
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Sense_Cable_Short_Lab_ko.md",
+      "sha256": "5823931abc43952b048fcd6f4a3899c5e557a35bd1c7ac2dc18b99d32370d5fd",
+      "bytes": 7331
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/.kicad_sch",
+      "sha256": "597ed68fee3a6636684333d27f0600b4e8c7db7b9dadf41d3a91714bfe9f614b",
+      "bytes": 857
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/.kicad_sch.kicad_sch",
+      "sha256": "597ed68fee3a6636684333d27f0600b4e8c7db7b9dadf41d3a91714bfe9f614b",
+      "bytes": 857
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_BlockAverage_Step.wbk",
+      "sha256": "4eec3f8fb56773e088e0404098b43c8d9093177bb216fc02bbc68647cb54054b",
+      "bytes": 1156
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_Voltage_BlockAverage_Step.kicad_pro",
+      "sha256": "ef56eafcd936e83ab681965a60f56e441ea322f89cf8eb35f72922f9becae3b1",
+      "bytes": 9196
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_Voltage_BlockAverage_Step.kicad_sch",
+      "sha256": "db2b26acb40dae37959d5834ba00c9bbc54b40d401d9be8e1133e8dec020d0b2",
+      "bytes": 54736
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step.csv",
+      "sha256": "6f258835a3b51f250f8326afc72cdcbc46d451dbd9395909bd32b1b02a7974b8",
+      "bytes": 1329112
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step_averages/block_average.csv",
+      "sha256": "1b06d378e6860307ac5df24b7d5f183d544e7589e250b348570b10c0b6cab1f5",
+      "bytes": 434
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step_averages/resampled.csv",
+      "sha256": "0921ed782b4f110eb6935cb45bbca2779f49e15a10a29d209a0c26d8ca23b859",
+      "bytes": 39997
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step_averages/review.html",
+      "sha256": "7088068f56b8e4979a17acafd1d6a5ca3c6296309405b48521500edd66020c4c",
+      "bytes": 226088
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_01_step_averages/summary.json",
+      "sha256": "07ca69ea57113b394541003317ef4bb38ff097ccdc440d1b93651014f5c3cc35",
+      "bytes": 2006
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Noise_Average.wbk",
+      "sha256": "c73e550666916dfcac78322ecffed697a6b5b9fc8af7f5af21a659939b9d72ae",
+      "bytes": 828
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Voltage_Noise_Average.kicad_pro",
+      "sha256": "db46f40c3fa1e2b91cd8afc3f182fba34aea9afa8abbdf4676f423afc1af9373",
+      "bytes": 9178
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Voltage_Noise_Average.kicad_sch",
+      "sha256": "a65a930acf5ffc6b2ef7335889bf5a823841facded80a07ee8fadc1fc3844ed6",
+      "bytes": 70993
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise.csv",
+      "sha256": "f3c493d2cdacd6d4d53847ca1d6c321731f09bf74e48bc4a9eefc0a617330e69",
+      "bytes": 8805857
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_averages/block_average.csv",
+      "sha256": "7760e8b546ee84cd7054e793a96e19ab4a5ec6c02ccf5e8e55ae9fd564e2c9f0",
+      "bytes": 14690
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_averages/resampled.csv",
+      "sha256": "8013c55541b88e8f80c2bad91fbca6f276e2195e4bd5ab1981178a6f1ae02e0c",
+      "bytes": 733335
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_averages/statistics.csv",
+      "sha256": "dd73d25667dacc1172887fe38415f70bcd9c7c5276529c3d21e4fae5011f880d",
+      "bytes": 903
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_averages/summary.json",
+      "sha256": "4f052721b4aac95538e3c7777b8f1b2faf9ca11f5b801f5b1348cd0f3de62a45",
+      "bytes": 3193
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_model/data.json",
+      "sha256": "b2d6e0f1d578c92be105d01978192f34467170f1d85104c26d3cec378402efce",
+      "bytes": 443838
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_model/review.html",
+      "sha256": "287a76659be9ee6fd79d0838cd01654e0ee22cd7047c04041d59b747cdf6234f",
+      "bytes": 452464
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_model/verification.json",
+      "sha256": "5b24a314122eb21b8a3dda05e452a93a2f6bf55cf50f2c91df6ccf068f1b2a42",
+      "bytes": 1055
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/README.md",
+      "sha256": "2c3daefd8112675ae9a87af7ae3f7de766a389e664d678f20ba907259c71c95b",
+      "bytes": 30438
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/analyze_block_average.py",
+      "sha256": "e43db9cbde70c7d305dece4bb411a374f04e798036cb479dfeac7080cddc0f1d",
+      "bytes": 4728
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/analyze_noise_average.py",
+      "sha256": "d26766f143fe99466bd01b442aa376a2604d21445bd0ae36d152e1442891768f",
+      "bytes": 8217
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/build_noise_bias_demo.py",
+      "sha256": "3ee4ebf8b1d41153bfe5389313fff39f652d0d411837d03d3b466b5bac8fc6c1",
+      "bytes": 10781
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/README.md",
+      "sha256": "4e238e21d86f8c10e40e78437f4f71953355be702f105bb7cd5f2a5a0288df7e",
+      "bytes": 3945
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/average_review_preview.png",
+      "sha256": "8b9aa0ec4a15792bc4864cdd5d9d55b778da4a2fedcb75d4bea7ff6974514f18",
+      "bytes": 69638
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/one_tau_observation.json",
+      "sha256": "d052e6c9eb898db0e062e7361012d7f20db48b1a1fd32537185d5b0dfd7f804e",
+      "bytes": 1697
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/saved_schematic_check.json",
+      "sha256": "db5490bc2b57425d23a48130e676da7f91b322e1fe01c5b7bcf4fe7a016c4d46",
+      "bytes": 790
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/software_check.json",
+      "sha256": "be8058ad829d9ad7ca662a5f85ce21cc7d939272fb7a8a9e30bffa93cc046648",
+      "bytes": 436
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sampling_average_practice/verification.json",
+      "sha256": "3853e391ef22ba8d3ddc25d3dba5bceeafabd432dea8747949e84aabf30d147a",
+      "bytes": 367
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sense_branch_protection/README.md",
+      "sha256": "009cd3dfe2b0358810b55840da582bba88f0839fc368b365d2e423e620c5ac1a",
+      "bytes": 886
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sense_branch_protection/calculate.py",
+      "sha256": "dbfe16f9f463cc52603916759407de22eee4453df28d3d3459e76ee0daa2361f",
+      "bytes": 3418
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sense_branch_protection/comparison.json",
+      "sha256": "69d57656adefb5bbafcbe74275c29bd5d5ce3c1d85da639df76437ca8e53e037",
+      "bytes": 3969
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-13_sense_branch_protection/verification.json",
+      "sha256": "14298cd364a77b8dd12d6bee763d540f82d48669b4123dcaf20a6c1fd0508078",
+      "bytes": 425
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-14_sampling_average_practice/04_02_b3_check.cir",
+      "sha256": "a01b22092d7409149dd0b95eae2e959c754074a930461d585bb01bc367f89652",
+      "bytes": 512
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-14_sampling_average_practice/b3_saved_check.json",
+      "sha256": "76903964ead6e667387b06d6b63d977ed5a138f61180adbb5b97ea0f415dd6e6",
+      "bytes": 992
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-14_sampling_average_practice/b_average_software_check.json",
+      "sha256": "70e0e89eb5558b3edee8f413e3850e5ea05e5431fef2f058ea1d1b8eaf26dd8b",
+      "bytes": 789
+    },
+    {
+      "status": "??",
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/2026-11-14_progress.md",
+      "sha256": "2a3193e41069a049c7351822bd58035fcbb48bad638e87ed68415b8327e386db",
+      "bytes": 8109
+    }
+  ]
+}

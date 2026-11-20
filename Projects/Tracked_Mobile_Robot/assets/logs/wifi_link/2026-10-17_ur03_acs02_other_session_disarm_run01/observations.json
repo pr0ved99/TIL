@@ -1,0 +1,137 @@
+{
+  "test": "UR03_ACS02_NON_OWNER_DISARM",
+  "run": "run01",
+  "status": "BOUNDED_NON_OWNER_DISARM_VERIFIED_HELPER_FALSE_ABORT",
+  "browser_report_stage_preserved": "INCOMPLETE",
+  "verdict": {
+    "non_owner_disarm_and_owner_revocation": "PASS for this zero-only run: distinct B session4 stopped owner A session3/control7; B OK plus matching UART DISARMED TEL precede A followup stop.",
+    "digital_output_observation": "D4/PB6, D6/PC7 and D7/PB7 LOW for the captured 25 seconds.",
+    "original_helper_automatic_verdict": "INCOMPLETE retained. It incorrectly treats the normal PAGE protective DISARM seq change as a failure.",
+    "revised_helper_bench_verdict": "NOT RUN; saved PAGE mock regression and guard tests only.",
+    "full_AC_S02_suite": "NOT CLAIMED; this does not add non-owner ARM rejection coverage."
+  },
+  "identity": {
+    "boot": 3570331004,
+    "A_owner_session": 3,
+    "B_non_owner_session": 4,
+    "owner_control_id": 7
+  },
+  "original_files": {
+    "esp_monitor.txt": "48e9f1d76054a9dd235c7c8302cef96cb83b4703bc5f3250302b54c95e5b1916",
+    "browser_report.json": "11e085805170bdce946411d125dc7a5cd193026572ae326c759aea554560d8d4",
+    "console_test_used.js": "0e1dea1fffbe4d88e1b7a024bdfcd2d9fb42c5038ebd2d877c2ab56959251fc3",
+    "browser_pc_before.json": "079c3e7daaeece9032f810c9c35af3092e04eb3adee248b0cfcba1dc5577cbaa",
+    "preparation_before.json": "ce088fae91c79cdae24890438d21452b887f9e1bb1d33f9e69bc72fd57e213a5"
+  },
+  "capture": {
+    "path": "../../../captures/logic_analyzer/2026-10-17_UR03_ACS02_OTHER_SESSION_DISARM_PWM_run01.sr",
+    "sha256": "effbc570edb117b9c8b681dedda8d35b24f6ece74307a3f0ffd07266851da621",
+    "samplerate_hz": 4000000.0,
+    "samples": 100000000,
+    "duration_s": 25.0,
+    "summary": "summary.json",
+    "D0_invalid_stop_bits": 0,
+    "D1_invalid_stop_bits": 0
+  },
+  "uart_evidence": {
+    "arm_seq": 573834448,
+    "zero_cmd_seqs": [
+      573834449,
+      573834450
+    ],
+    "both_zero_cmd_acknowledged": true,
+    "b_disarm_seq": 573834451,
+    "b_ack": {
+      "start_s": 7.26251275,
+      "end_s": 7.266234305555556,
+      "text": "ACK,seq=573834451,type=DISARM,t_ms=1212779"
+    },
+    "b_first_disarmed_tel": {
+      "start_s": 7.2917815,
+      "end_s": 7.306843055555556,
+      "text": "TEL,t_ms=1212809,state=DISARMED,reason=DISARM,command_age_ms=107,last_seq=573834451,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "a_protective_disarm_tx": {
+      "start_s": 7.34130575,
+      "end_s": 7.343128805555556,
+      "text": "DISARM,seq=573834452"
+    },
+    "b_stopped_tel_ends_before_a_protective_tx_ms": 34.462694,
+    "no_arm_or_cmd_after_b_ack_s": 17.733765694,
+    "post_b_disarmed_tel_count": 178,
+    "complete_tel_count": 251,
+    "all_tel_motion_fields_zero": true,
+    "drop_err_zero": true,
+    "subsequent_disarm_seqs": [
+      573834452,
+      573834453,
+      573834454
+    ],
+    "subsequent_stops_do_not_prove_a_single_uninterrupted_no_intervention_window": true
+  },
+  "sequence": [
+    {
+      "browser_ms": 14267.4,
+      "event": "B sends ticket-free DISARM request1 after two A zero ACKs"
+    },
+    {
+      "browser_ms": 14356.5,
+      "event": "A CMD request4 rejected BUSY; saved PAGE handleNotice -> stopLocal(true) sends protective DISARM request5"
+    },
+    {
+      "browser_ms": 14396.1,
+      "event": "B DISARM OK seq573834451"
+    },
+    {
+      "browser_ms": 14496.0,
+      "event": "Browser receives DISARMED/zero TEL last_seq573834451"
+    },
+    {
+      "browser_ms": 14496.8,
+      "event": "A protective DISARM request5 OK seq573834452"
+    },
+    {
+      "browser_ms": 14507.4,
+      "event": "Old helper starts observation against stale last_seq451 despite newer confirmed DISARM452"
+    },
+    {
+      "browser_ms": 14556.7,
+      "event": "Fresh DISARMED/zero TEL last_seq573834452"
+    },
+    {
+      "browser_ms": 14556.8,
+      "event": "Helper false abort; fallback A request6 sends DISARM453"
+    },
+    {
+      "esp_ms": 7574169,
+      "event": "Later session5 DISARM request1 sends seq573834454; later than helper abort and not its cause"
+    }
+  ],
+  "browser_telemetry": {
+    "count": 175,
+    "nonzero_motion_samples": 0
+  },
+  "screen_evidence": {
+    "source": "Two screenshots supplied in conversation; no local screenshot file asserted.",
+    "first_page": "READY / IDLE / DISARMED / DISARM request6 OK",
+    "second_page": "READY / IDLE / DISARMED / DISARM request1 OK",
+    "both_last_seq": 573834454,
+    "outputs_drop_err_zero": true
+  },
+  "correction": {
+    "helper": "../2026-10-17_ur03_acs02_other_session_disarm/console_test.js",
+    "revision": 2,
+    "behavior": "Track actual PAGE pending DISARM plus ACCEPTED and OK result separately from B stop. Require B matching stopped TEL, then fresh TEL for latest confirmed stop and 3.1 seconds stable observation. Never suppress PAGE protective stop; unexplained seq/rearm/output changes still invalidate trial.",
+    "regression": "../2026-10-17_ur03_acs02_other_session_disarm/followup_disarm_regression.json",
+    "pc_cases": 21,
+    "firmware_modified": false,
+    "firmware_rebuild_required": false
+  },
+  "limits": [
+    "Existing physical probe map retained; sampled digital levels do not establish analog integrity or powered-motor braking performance.",
+    "Additional protective, helper-fallback and later session5 DISARMs are retained as actual events.",
+    "Original helper INCOMPLETE is not overwritten or relabeled as APP_CHECKS_OK.",
+    "Corrected helper has PC evidence only; core B-stop evidence is already present before later stops, so this bounded criterion does not require a duplicate physical run."
+  ],
+  "next": "Keep run01 evidence; use revision2 for any later repeat. One visible focused robot page is sufficient because helper creates B internally. No immediate repeat needed solely to prove the observed non-owner DISARM."
+}

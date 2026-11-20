@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-20",
+  "test_id": "TK-MVP-03-04",
+  "status": "PASS_LOCAL_IDENTITY_RECONCILIATION_RUNTIME_READBACK_NOT_PERFORMED",
+  "repository_head": "9bc9e973b2e3af856a75132ad77aaa8a0846779f",
+  "source_matches_prior_closeout": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": true,
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": true,
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": true,
+    "03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": true
+  },
+  "prior_pc_input_identity": [
+    {
+      "evidence": "assets\\logs\\wifi_link\\2026-10-20_encoder_count_saved_review\\stm_nano_format_saved.json",
+      "input_count": 14,
+      "all_match": true
+    },
+    {
+      "evidence": "assets\\logs\\wifi_link\\2026-10-20_encoder_count_saved_review\\esp_control_saved.json",
+      "input_count": 19,
+      "all_match": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "03_Firmware\\stm32_uart_mvp\\Debug\\stm32_uart_mvp.elf",
+      "bytes": 1259392,
+      "sha256": "683e785fbc281500d72d699b093ff69296914bc2fec22dc5e97e9561a8ebe766",
+      "mtime_utc": "2026-10-19T16:35:45.051991+00:00"
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\esp32_wifi_link.elf",
+      "bytes": 9143196,
+      "sha256": "d1ce1b8a47feec18e28c4587f12517bd84493fdcfd09757c42a1a0df03d71642",
+      "mtime_utc": "2026-10-19T16:22:03.690383+00:00"
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\esp32_wifi_link.bin",
+      "bytes": 883312,
+      "sha256": "0da45923e5cbdfbf196eab31271b092b1358300d1cbd2c04ba39fe447c4c839d",
+      "mtime_utc": "2026-10-19T16:22:04.167651+00:00"
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\bootloader\\bootloader.bin",
+      "bytes": 21056,
+      "sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+      "mtime_utc": "2026-10-02T11:06:32.119978+00:00"
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\partition_table\\partition-table.bin",
+      "bytes": 3072,
+      "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+      "mtime_utc": "2026-10-02T11:02:14.110868+00:00"
+    },
+    {
+      "path": "03_Firmware\\esp32_wifi_link\\build\\flasher_args.json",
+      "bytes": 945,
+      "sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+      "mtime_utc": "2026-10-02T11:02:08.364007+00:00"
+    }
+  ],
+  "stm_evidence": {
+    "same_elf_as_prior_numeric_tel_capture": true,
+    "count_format_in_local_elf": "%s/%s",
+    "long_long_format_present": false,
+    "runtime_flash_identity": "User build/Run and numeric/nonzero TEL evidence; no MCU flash readback"
+  },
+  "esp_evidence": {
+    "embedded_elf_sha256": "d1ce1b8a47feec18e28c4587f12517bd84493fdcfd09757c42a1a0df03d71642",
+    "local_bin_matches_local_elf": true,
+    "boot_log_sha_prefix": "d1ce1b8a4",
+    "boot_log_prefix_matches": true,
+    "project": "esp32_wifi_link",
+    "version": "6240886-dirty",
+    "compile_date": "Oct 20 2026",
+    "compile_time": "01:21:39",
+    "idf": "v6.0.2",
+    "boot_log": "assets\\logs\\wifi_link\\2026-10-20_encoder_count_numeric_tel_run01\\esp_monitor.txt",
+    "version_interpretation": "6240886-dirty is build-time VCS metadata; do not equate current HEAD with a new binary build"
+  },
+  "source_settings": [
+    {
+      "source": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+      "defines": {
+        "MOTOR_OUTPUT_PIN_TEST_ENABLED": "0U",
+        "MOTOR_FAULT_INJECTION_TEST_ENABLED": "0U"
+      }
+    },
+    {
+      "source": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "defines": {
+        "CMD_TIMEOUT_DEFAULT_MS": "300u",
+        "CMD_OUTPUT_DUTY_CAP_PERMILLE": "150U",
+        "CMD_TURN_OUTPUT_DUTY_CAP_PERMILLE": "200U",
+        "UART_MVP_OUTPUT_TEST_ENABLED": "0U",
+        "UART_MVP_STALE_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_WRONG_DISARM_ACK_TYPE_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_DUPLICATE_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_TRAILING_COMMA_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_OVERFLOW_DISARM_ACK_SEQ_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_PARTIAL_FRAME_NAME_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_EMBEDDED_CR_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_CONTROL_BYTE_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_OVERLONG_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_STALE_PONG_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_SUPPRESS_PONG_TEST_ENABLED": "0U",
+        "UART_MVP_DELAY_DISARM_ACK_ONCE_TEST_ENABLED": "0U",
+        "UART_MVP_DROP_CMD_ACK_ONCE_TEST_ENABLED": "0U"
+      }
+    },
+    {
+      "source": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "defines": {
+        "WIFI_UART_PARTIAL_TEST_MODE": "0U"
+      }
+    },
+    {
+      "source": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "defines": {
+        "WIFI_CONTROL_ZERO_ONLY": "0U"
+      }
+    }
+  ],
+  "operator_current_state": {
+    "lipo": "disconnected",
+    "tracks": "reassembled",
+    "both_tracks": "lifted above ground",
+    "S1": "not reported"
+  },
+  "new_build_flash_motion": false,
+  "limits": [
+    "Hashes identify local artifacts; no new target readback or current boot observation",
+    "No claim that source timestamp or version string alone proves compilation/flash identity",
+    "No whole-MVP, dedicated timeout, external-temperature or ground-distance acceptance"
+  ],
+  "next": "Prepare separate UART signal-loss and STM command-timeout observations on the retained mode0 image; do not use browser source-timeout/DISARM as sole proof of STM CMD_TIMEOUT"
+}

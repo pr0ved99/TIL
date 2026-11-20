@@ -1,0 +1,766 @@
+{
+  "date": "2026-11-05",
+  "source_snapshot": "C:\\Users\\eyh12\\Desktop\\TMR_PCB_단원별_영상자료_2026-11-05",
+  "target": "C:\\Users\\eyh12\\Desktop\\TMR_PCB_NotebookLM_전체영상_2026-11-05",
+  "upload_sources": 39,
+  "unit_txt": 14,
+  "merged_original_txt": 61,
+  "byte_identical_support": 25,
+  "input_files_unchanged": 113,
+  "unit_source_mapping": [
+    {
+      "unit": "01_목표와_시스템_아키텍처",
+      "select": [
+        "U01_목표와_시스템_아키텍처.txt"
+      ]
+    },
+    {
+      "unit": "02_전원_기준전압과_ADC_기초",
+      "select": [
+        "U02_전원_기준전압과_ADC_기초.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D02_NUCLEO64_보드설명서.pdf",
+        "D03_NUCLEO64_C04_회로도.pdf"
+      ]
+    },
+    {
+      "unit": "03_전류센서_선정과_환산",
+      "select": [
+        "U03_전류센서_선정과_환산.txt",
+        "D04_ACS71240_데이터시트.pdf",
+        "D05_Pololu5241_캐리어.pdf",
+        "D11_UT210E_사용설명서.pdf"
+      ]
+    },
+    {
+      "unit": "04_전류_RC필터와_응답_시뮬레이션",
+      "select": [
+        "U04_전류_RC필터와_응답_시뮬레이션.txt",
+        "D04_ACS71240_데이터시트.pdf",
+        "D09_ST_AN2834_ADC정확도.pdf",
+        "E01_전류_RC_AC.png",
+        "E02_전류_RC_계단응답.png",
+        "E06_전류_RC_AC.csv",
+        "E07_전류_RC_계단응답.csv"
+      ]
+    },
+    {
+      "unit": "05_NTC_온도센서와_분압_회로",
+      "select": [
+        "U05_NTC_온도센서와_분압_회로.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D03_NUCLEO64_C04_회로도.pdf",
+        "D06_SEMITEC103JT_데이터시트.pdf",
+        "E03_NTC_25C_AC.png",
+        "E04_NTC_50C_AC.png",
+        "E08_NTC_25C_AC.csv",
+        "E09_NTC_50C_AC.csv"
+      ]
+    },
+    {
+      "unit": "06_전압_측정위치와_분압_필터",
+      "select": [
+        "U06_전압_측정위치와_분압_필터.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "E05_전압분압_AC.png",
+        "E10_전압분압_AC.csv"
+      ]
+    },
+    {
+      "unit": "07_저항공차_누설과_보정",
+      "select": [
+        "U07_저항공차_누설과_보정.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D07_TMUX1511_데이터시트.pdf",
+        "D09_ST_AN2834_ADC정확도.pdf",
+        "D11_UT210E_사용설명서.pdf"
+      ]
+    },
+    {
+      "unit": "08_MCU_OFF_입력차단과_잔류전하",
+      "select": [
+        "U08_MCU_OFF_입력차단과_잔류전하.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D07_TMUX1511_데이터시트.pdf",
+        "D10_ST_AN4899_GPIO.pdf"
+      ]
+    },
+    {
+      "unit": "09_실제_감시기_스위치_조건과_지연",
+      "select": [
+        "U09_실제_감시기_스위치_조건과_지연.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D07_TMUX1511_데이터시트.pdf",
+        "D08_TPS3840_데이터시트.pdf",
+        "D10_ST_AN4899_GPIO.pdf",
+        "E11_detector_delay_30us.txt"
+      ]
+    },
+    {
+      "unit": "10_TPS_TMUX_연결과_전원_상태",
+      "select": [
+        "U10_TPS_TMUX_연결과_전원_상태.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D02_NUCLEO64_보드설명서.pdf",
+        "D03_NUCLEO64_C04_회로도.pdf",
+        "D07_TMUX1511_데이터시트.pdf",
+        "D08_TPS3840_데이터시트.pdf"
+      ]
+    },
+    {
+      "unit": "11_전압_오차예산_ADC와_VREFINT",
+      "select": [
+        "U11_전압_오차예산_ADC와_VREFINT.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D07_TMUX1511_데이터시트.pdf",
+        "D09_ST_AN2834_ADC정확도.pdf"
+      ]
+    },
+    {
+      "unit": "12_온도변화_기준계기와_보정의_한계",
+      "select": [
+        "U12_온도변화_기준계기와_보정의_한계.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D04_ACS71240_데이터시트.pdf",
+        "D06_SEMITEC103JT_데이터시트.pdf",
+        "D11_UT210E_사용설명서.pdf"
+      ]
+    },
+    {
+      "unit": "13_외부정착_ADC취득과_채널전환",
+      "select": [
+        "U13_외부정착_ADC취득과_채널전환.txt",
+        "D01_STM32F446_데이터시트.pdf",
+        "D09_ST_AN2834_ADC정확도.pdf"
+      ]
+    },
+    {
+      "unit": "14_검증명세와_제작_전_남은일",
+      "select": [
+        "U14_검증명세와_제작_전_남은일.txt",
+        "D11_UT210E_사용설명서.pdf",
+        "D12_GM1312_사용설명서.pdf",
+        "E12_쉴드_회로도초안.pdf",
+        "E13_쉴드_가배치초안.pdf"
+      ]
+    }
+  ],
+  "manifest": [
+    {
+      "file": "U01_목표와_시스템_아키텍처.txt",
+      "sha256": "f5ed5e7b0e085810198a2ba0455784d9f66f8ccfab7c881a7d478904f95d37a2",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "01_목표와_시스템_아키텍처/00_단원범위와_현재상태.txt",
+          "source_sha256": "7dc85ca1273c6740d3d790e7c84e79ed33972b53d41e7c4cc19b9d83205941d8",
+          "start": 226,
+          "length": 1010
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/01_14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.txt",
+          "source_sha256": "82f1dd19d3496ac5dcf4a94340735ec2cd0f997003724d2d9edda2e64ab64396",
+          "start": 1331,
+          "length": 10242
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/02_15_Expansion_PCB_Requirements_2026-10-23_ko.txt",
+          "source_sha256": "7224d0645a87cd948892fe4840d0039340f23f213cd7f3581bb491bfa82a5234",
+          "start": 11658,
+          "length": 11911
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/03_16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.txt",
+          "source_sha256": "a5d5332d9ebf358cbb99df7af33764e7e37424bf1c345ff1b7fea4bc91900160",
+          "start": 23670,
+          "length": 9655
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/04_19_CAN_GPIO_and_Connector_Contract_2026-10-23_ko.txt",
+          "source_sha256": "919180d341a87706aa09a496c2c983278a54d12c6469c0f30725b4b2dd070982",
+          "start": 33415,
+          "length": 5987
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/05_20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.txt",
+          "source_sha256": "2b0f8ef0e1398e9c1e4852a5168415bafba74cd77596d7398781e9ab78335103",
+          "start": 39498,
+          "length": 6604
+        },
+        {
+          "source": "01_목표와_시스템_아키텍처/06_21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.txt",
+          "source_sha256": "87f54021b6ead01f0925f558db32f36181f734d80c1c0022f5bda3f1922e455f",
+          "start": 46208,
+          "length": 12216
+        }
+      ]
+    },
+    {
+      "file": "U02_전원_기준전압과_ADC_기초.txt",
+      "sha256": "bf68d2c6627a419b8ce1ead5b05d8fd381c494d8453399edeb51f5c804490884",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "02_전원_기준전압과_ADC_기초/00_단원범위와_현재상태.txt",
+          "source_sha256": "6fcab745795e86080019b226002a1488ca90478d258dc4e9a1178722d5ca4a5d",
+          "start": 232,
+          "length": 997
+        },
+        {
+          "source": "02_전원_기준전압과_ADC_기초/01_17_Expansion_Power_Budget_2026-10-23_ko.txt",
+          "source_sha256": "9a32b43a5cc1332f5d278962f3a54c7e9c2d71f86d4798f74984e1b7f8d1147b",
+          "start": 1313,
+          "length": 5366
+        },
+        {
+          "source": "02_전원_기준전압과_ADC_기초/02_18_Expansion_3V3_Supply_Structure_and_Assembly_2026-10-23_ko.txt",
+          "source_sha256": "4046a59a1948dfe791a738b478a4efc5f3a9dab9301144d4b770809d528e5c92",
+          "start": 6784,
+          "length": 4759
+        },
+        {
+          "source": "02_전원_기준전압과_ADC_기초/03_11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.txt",
+          "source_sha256": "fcb62b10f912a5b3243d6602ba3bd12da3b76a3f7de7d1d9999c55346c59ffaa",
+          "start": 11637,
+          "length": 3665
+        },
+        {
+          "source": "02_전원_기준전압과_ADC_기초/04_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "a7fa9709b4b282f4f9cd69e9e6d697535c9ee7f2644c05a547ed8733665f9bc5",
+          "start": 15402,
+          "length": 9235
+        }
+      ]
+    },
+    {
+      "file": "U03_전류센서_선정과_환산.txt",
+      "sha256": "9379b43c456f8583992f3e8476f3d4f1f205d53158e4cc5fd7564c00792b3b9a",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "03_전류센서_선정과_환산/00_단원범위와_현재상태.txt",
+          "source_sha256": "9849770a99f2595f44f2e99852fc668f045cae88c836f363be0dfe4a727885c6",
+          "start": 224,
+          "length": 989
+        },
+        {
+          "source": "03_전류센서_선정과_환산/01_11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.txt",
+          "source_sha256": "89b57acb89222c08b201e43540868f2dbe49decb69cedef81daf4355ffd0c50a",
+          "start": 1303,
+          "length": 2312
+        },
+        {
+          "source": "03_전류센서_선정과_환산/02_13_Current_Measurement_Error_Budget_and_Calibration_ko.txt",
+          "source_sha256": "5670f5a95ea1da6a508c60e3baf354248032251ca8c7fbb5246d5c8c9190cc96",
+          "start": 3710,
+          "length": 6958
+        },
+        {
+          "source": "03_전류센서_선정과_환산/03_14_Current_RC_ADC_Candidate_Decision_ko.txt",
+          "source_sha256": "09d0ab9e0ae604dd6d6a54eec9207892ad18523d892583ce7293d1eeb5ed3f73",
+          "start": 10748,
+          "length": 7138
+        },
+        {
+          "source": "03_전류센서_선정과_환산/04_22_Current_Channel_Verification_Spec_2026-10-27_ko.txt",
+          "source_sha256": "3a2c58696ada0678100ebcec8dbebc03cd06432e4795e855e92221f7a8d59ec8",
+          "start": 17977,
+          "length": 11470
+        }
+      ]
+    },
+    {
+      "file": "U04_전류_RC필터와_응답_시뮬레이션.txt",
+      "sha256": "c203620e29bc40bfeb2c078170334888d05985a09d254c1f62ef3c285890fb0d",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "04_전류_RC필터와_응답_시뮬레이션/00_단원범위와_현재상태.txt",
+          "source_sha256": "b3993cfaef0ce5653b173a98d45f9254e9b9140d575a0abba21b4617b877c0aa",
+          "start": 236,
+          "length": 1024
+        },
+        {
+          "source": "04_전류_RC필터와_응답_시뮬레이션/01_11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.txt",
+          "source_sha256": "455a278950981748439d13a7105fcb4ee4d0ba618b8c9e2d33fb8b828fdd5ad1",
+          "start": 1356,
+          "length": 2409
+        },
+        {
+          "source": "04_전류_RC필터와_응답_시뮬레이션/02_20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.txt",
+          "source_sha256": "d5592c44064436a24e533282dd27b4aafeeb2edfd56036e155d2a29a91629dec",
+          "start": 3858,
+          "length": 5346
+        },
+        {
+          "source": "04_전류_RC필터와_응답_시뮬레이션/03_README.txt",
+          "source_sha256": "d2317eb023d6d8fe51cf0ad53b86ef26f54ee031554c192975bbcd092d9c3da9",
+          "start": 9257,
+          "length": 6608
+        }
+      ]
+    },
+    {
+      "file": "U05_NTC_온도센서와_분압_회로.txt",
+      "sha256": "d756d5d74fdfa58c5f7049e455e0a82f52f5df9ee5894538f8f9ea15a72efc86",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "05_NTC_온도센서와_분압_회로/00_단원범위와_현재상태.txt",
+          "source_sha256": "710d2715a531f50deb1bc0e9ac21d0f9f6794d1d3ba76ed609e9fb3475d8dde2",
+          "start": 232,
+          "length": 1157
+        },
+        {
+          "source": "05_NTC_온도센서와_분압_회로/01_11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.txt",
+          "source_sha256": "7652cdbd9ec4bec49ca51d3497528b1e60559be43b1679bd08b54308e14337c5",
+          "start": 1483,
+          "length": 5469
+        },
+        {
+          "source": "05_NTC_온도센서와_분압_회로/02_20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.txt",
+          "source_sha256": "d501f98301c5d37d19b8f2c5a7fb7196d7565f4815d5c87d6948edfbd1d9ec8a",
+          "start": 7043,
+          "length": 4172
+        },
+        {
+          "source": "05_NTC_온도센서와_분압_회로/03_23_Temperature_Channel_Verification_Spec_2026-10-27_ko.txt",
+          "source_sha256": "9fe9c936c37f9d268ff48bc4bade368ae10e49720d5b536b33becdfe6d646c83",
+          "start": 11314,
+          "length": 11611
+        },
+        {
+          "source": "05_NTC_온도센서와_분압_회로/04_24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.txt",
+          "source_sha256": "465f4d2e095846a823dd1592fcc41bbdc755f8fcc32c2cc2a9bdae42e19aabcb",
+          "start": 23032,
+          "length": 3508
+        },
+        {
+          "source": "05_NTC_온도센서와_분압_회로/05_README.txt",
+          "source_sha256": "27a1a75b38759ed063da4ff4d2f2e14fc339ad8f2c5795ce0fffe015eb0738c1",
+          "start": 26591,
+          "length": 1379
+        }
+      ]
+    },
+    {
+      "file": "U06_전압_측정위치와_분압_필터.txt",
+      "sha256": "5a30b9e1427f370dd332dae3e8c9dd1b0c0d6bf94ae9724afdc1c0840da28b6c",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "06_전압_측정위치와_분압_필터/00_단원범위와_현재상태.txt",
+          "source_sha256": "250548d2cc4a0984dc8c7ece3fe907cad579e62cb4fff87e0ee9101fc6cd3351",
+          "start": 230,
+          "length": 886
+        },
+        {
+          "source": "06_전압_측정위치와_분압_필터/01_20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.txt",
+          "source_sha256": "9519a6c4ef5854322a405499cead51b17721ec48c0a8eae674890e315b73ebb7",
+          "start": 1206,
+          "length": 3226
+        },
+        {
+          "source": "06_전압_측정위치와_분압_필터/02_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "e7f9bf20e6693331d8032b5e25f91b6c4cf6b4ae7f7024233b4b5312dca99c65",
+          "start": 4531,
+          "length": 1513
+        },
+        {
+          "source": "06_전압_측정위치와_분압_필터/03_README.txt",
+          "source_sha256": "a96d6215f7685fb45a345a227bf1c3f1c20762cbb52f68e12ecbbde9924ad229",
+          "start": 6094,
+          "length": 4707
+        }
+      ]
+    },
+    {
+      "file": "U07_저항공차_누설과_보정.txt",
+      "sha256": "15cdc134a7b854ed2cb067f0e92b20fe4132c85babe33f8f43726db03eeb0c5d",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "07_저항공차_누설과_보정/00_단원범위와_현재상태.txt",
+          "source_sha256": "8dbf0ef0e4f65121b3fb9e185505f30f1fec8afdbb2f54a8f472b30c1ca3f9dd",
+          "start": 224,
+          "length": 1012
+        },
+        {
+          "source": "07_저항공차_누설과_보정/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "1e74176ddad2955d1ee9edec0f500cdbd970dfa712d8b5a2023d55f664691765",
+          "start": 1332,
+          "length": 6197
+        },
+        {
+          "source": "07_저항공차_누설과_보정/02_16_DC_Accuracy_and_Calibration_Verification_ko.txt",
+          "source_sha256": "597d96cc0f9412cfc9647b24c91daf3e4afd107b915c1d683c1daa4f67452b5e",
+          "start": 7616,
+          "length": 5908
+        },
+        {
+          "source": "07_저항공차_누설과_보정/03_19_Total_Measurement_vs_Input_Chain_Accuracy_ko.txt",
+          "source_sha256": "5a2d90fa6a0cfb39861e5662ee45aadb6594affa2624bf579873af9bc5675843",
+          "start": 13612,
+          "length": 11696
+        }
+      ]
+    },
+    {
+      "file": "U08_MCU_OFF_입력차단과_잔류전하.txt",
+      "sha256": "8a6aa38e6d249f3db196729f206bb380f4055c62e36065559a5cbb2e8beeae7d",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "08_MCU_OFF_입력차단과_잔류전하/00_단원범위와_현재상태.txt",
+          "source_sha256": "5d56a7376636faa6b4e5dbb7c94a5fbe9b9de7154066cc18ccc61cf94365e16b",
+          "start": 238,
+          "length": 941
+        },
+        {
+          "source": "08_MCU_OFF_입력차단과_잔류전하/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "1d615bb680278217fd5f61a47287e660007bdc245d38de29306685d58c86b88e",
+          "start": 1282,
+          "length": 6631
+        },
+        {
+          "source": "08_MCU_OFF_입력차단과_잔류전하/02_25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.txt",
+          "source_sha256": "a4dd7ce38314d750dd65e0098e30b1e636f5caa47d47ac6bcbd547ecd0b24a90",
+          "start": 8005,
+          "length": 3084
+        }
+      ]
+    },
+    {
+      "file": "U09_실제_감시기_스위치_조건과_지연.txt",
+      "sha256": "18cca6a3bcfa3f90e38476cbaf5f4c3f796ffb9ab769b0640f4a111d443ab2ab",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "09_실제_감시기_스위치_조건과_지연/00_단원범위와_현재상태.txt",
+          "source_sha256": "828763675d3a897ef78f5a3bc72385137404a735360d86a355cd276e874886fd",
+          "start": 236,
+          "length": 1052
+        },
+        {
+          "source": "09_실제_감시기_스위치_조건과_지연/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "4e5df8293861699efb27521accc579fafd50c2570b833b5a9f16435d2e07bf38",
+          "start": 1390,
+          "length": 8574
+        },
+        {
+          "source": "09_실제_감시기_스위치_조건과_지연/02_26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.txt",
+          "source_sha256": "fed03df9eb83ce6f984df7ec893d435d874067e6b22dae259f3a9e99c0cad518",
+          "start": 10078,
+          "length": 8913
+        }
+      ]
+    },
+    {
+      "file": "U10_TPS_TMUX_연결과_전원_상태.txt",
+      "sha256": "2a005525ff1ac1e44cd602ada06c62a0edc4d3e882ac3fe3deda65570e42882b",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "10_TPS_TMUX_연결과_전원_상태/00_단원범위와_현재상태.txt",
+          "source_sha256": "3e108c5b2ff09bd9c9a9d9e4016651e951f079fbd4f24091e6f6e09da9e0e3d1",
+          "start": 238,
+          "length": 931
+        },
+        {
+          "source": "10_TPS_TMUX_연결과_전원_상태/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "d912a327f5f9b9c13eb0d42af8424f5a9ecb5121e580bffef98159c70e5d82e3",
+          "start": 1272,
+          "length": 29854
+        }
+      ]
+    },
+    {
+      "file": "U11_전압_오차예산_ADC와_VREFINT.txt",
+      "sha256": "a793031b2b80b5731a5b999de37f5e6ce6ddbce0fcf67becf1d0657c4802f908",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "11_전압_오차예산_ADC와_VREFINT/00_단원범위와_현재상태.txt",
+          "source_sha256": "5e4977868b86401609382d00f057346f511da02551d4633d319754ffe6b47ba5",
+          "start": 242,
+          "length": 960
+        },
+        {
+          "source": "11_전압_오차예산_ADC와_VREFINT/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "7ad4d814713c701bd11085d6be4333c6da04faa577b597af466448d88c2c02dd",
+          "start": 1307,
+          "length": 10870
+        },
+        {
+          "source": "11_전압_오차예산_ADC와_VREFINT/02_19_Total_Measurement_vs_Input_Chain_Accuracy_ko.txt",
+          "source_sha256": "6196f6fce7c6bd05cfefc7e1f061dfa3f2eb17e53901453ff84e35692e825b2d",
+          "start": 12274,
+          "length": 11705
+        }
+      ]
+    },
+    {
+      "file": "U12_온도변화_기준계기와_보정의_한계.txt",
+      "sha256": "5d12fc4e44ca455dfdfef9e2ae91c7315a13874ecdb32c30731a09f0a7fd9896",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "12_온도변화_기준계기와_보정의_한계/00_단원범위와_현재상태.txt",
+          "source_sha256": "857be647eff210f7e396c51cebf4188ecb0082a4a79d8dfb71b446c284152243",
+          "start": 236,
+          "length": 1068
+        },
+        {
+          "source": "12_온도변화_기준계기와_보정의_한계/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "bc5dbf8d5965d048431f63dc58928a9b70eb70cb614f3ab6499f3ef7bd945fcd",
+          "start": 1406,
+          "length": 1802
+        },
+        {
+          "source": "12_온도변화_기준계기와_보정의_한계/02_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "fb253a32c5ff3587891e90381d88a8b4b9298a4c91b83b21d30759d54d05eda2",
+          "start": 3310,
+          "length": 5630
+        },
+        {
+          "source": "12_온도변화_기준계기와_보정의_한계/03_16_DC_Accuracy_and_Calibration_Verification_ko.txt",
+          "source_sha256": "4729cda4758e2c7b1ed18ef2b8e6e9ab9512efbac6113286d68fcff30579466c",
+          "start": 9033,
+          "length": 5914
+        },
+        {
+          "source": "12_온도변화_기준계기와_보정의_한계/04_19_Total_Measurement_vs_Input_Chain_Accuracy_ko.txt",
+          "source_sha256": "0aec3ec8cdd838f047af9f70ce456aae4d8acbd3c04054f6b26068b24d00ff2b",
+          "start": 15041,
+          "length": 11702
+        }
+      ]
+    },
+    {
+      "file": "U13_외부정착_ADC취득과_채널전환.txt",
+      "sha256": "99e49b79f401d5998b62fddb630ee7560ed18b429ccefcc72034a7c36c97504d",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "13_외부정착_ADC취득과_채널전환/00_단원범위와_현재상태.txt",
+          "source_sha256": "a46f9b7ef7226d8305f2dac4484c56e3ae1d8aa9b2b36ba0bd6c4e04345b5528",
+          "start": 234,
+          "length": 821
+        },
+        {
+          "source": "13_외부정착_ADC취득과_채널전환/01_21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.txt",
+          "source_sha256": "c9f20b2a0fae7559b257d327a1f5282d3ea183d175f2759f2e6db95a7dc9c5c8",
+          "start": 1156,
+          "length": 13993
+        }
+      ]
+    },
+    {
+      "file": "U14_검증명세와_제작_전_남은일.txt",
+      "sha256": "a2f4b438530de4095b309a48a83fee3f39181190dd32620ca82e8d4a9ed09812",
+      "mode": "verbatim_text_concatenation",
+      "sources": [
+        {
+          "source": "14_검증명세와_제작_전_남은일/00_단원범위와_현재상태.txt",
+          "source_sha256": "73c06957c66270e93a6704ce8d4f6a1c697305f3e004a0fa3f2235cf67d0c78b",
+          "start": 230,
+          "length": 1195
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/01_12_ADC_Sampling_Cadence_Averaging_and_PWM_ko.txt",
+          "source_sha256": "9f64691a2bead75c167350268d6ff00101c778a8d9c15355e77edb96903d4005",
+          "start": 1513,
+          "length": 4940
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/02_15_Verification_Targets_and_Acceptance_ko.txt",
+          "source_sha256": "366091f1a154d622ef23222be3a2499bde6a6d4444f2a783dd31f5fc6122d9ce",
+          "start": 6538,
+          "length": 5791
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/03_17_PWM_Sampling_and_Response_Verification_ko.txt",
+          "source_sha256": "14a6d03b7506fbb280470ab400dcce85aff44b3bf8c4ca80aa15512da3a843d3",
+          "start": 12417,
+          "length": 5803
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/04_18_Fault_Validity_and_Final_Decision_ko.txt",
+          "source_sha256": "a97ba057711afcda52792f6d08c1ec39ff429a4164ec63104a1283e73d1dd590",
+          "start": 18303,
+          "length": 5999
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/05_22_Current_Channel_Verification_Spec_2026-10-27_ko.txt",
+          "source_sha256": "80718bc1e611b9f0e7b3f09c7f98e500ee69756fa667f355963ac7d98942772b",
+          "start": 24396,
+          "length": 11473
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/06_23_Temperature_Channel_Verification_Spec_2026-10-27_ko.txt",
+          "source_sha256": "1bc5332865e29b7166526135c0db07a269816ca1a9e379dda78de38bb24d1389",
+          "start": 35967,
+          "length": 11610
+        },
+        {
+          "source": "14_검증명세와_제작_전_남은일/07_README.txt",
+          "source_sha256": "f640503c3accdee1f8d43ecc2a290d04552edca144376d2eb7c028ac415fc3d6",
+          "start": 47627,
+          "length": 22690
+        }
+      ]
+    },
+    {
+      "file": "D01_STM32F446_데이터시트.pdf",
+      "sha256": "3902cf9f939a0ef6994cb9cf256a22a700241b21e37a927d823dcab86f88efca",
+      "mode": "byte_identical_copy",
+      "source": "13_외부정착_ADC취득과_채널전환/데이터시트/stm32f446mc.pdf"
+    },
+    {
+      "file": "D02_NUCLEO64_보드설명서.pdf",
+      "sha256": "576d9bee3bc32c8ee70bf0d77cf9494cec06ea7c1d9ff98eebf2738cb9314a14",
+      "mode": "byte_identical_copy",
+      "source": "10_TPS_TMUX_연결과_전원_상태/데이터시트/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf"
+    },
+    {
+      "file": "D03_NUCLEO64_C04_회로도.pdf",
+      "sha256": "401f40ca598b008050e7749b5847e93ca8aa83e9a0bae4cbcbe7a016159e57c1",
+      "mode": "byte_identical_copy",
+      "source": "10_TPS_TMUX_연결과_전원_상태/데이터시트/mb1136-default-c04_schematic.pdf"
+    },
+    {
+      "file": "D04_ACS71240_데이터시트.pdf",
+      "sha256": "3588f4963ef6b3d4aaf93e2e11400e65133bfd4cbf264638de21de7ff119127f",
+      "mode": "byte_identical_copy",
+      "source": "12_온도변화_기준계기와_보정의_한계/데이터시트/Allegro_ACS71240_Datasheet.pdf"
+    },
+    {
+      "file": "D05_Pololu5241_캐리어.pdf",
+      "sha256": "9eb5866fed5aa902f22a1a70d4be49baafefc8e8e3fe2426f3e1937055799a08",
+      "mode": "byte_identical_copy",
+      "source": "03_전류센서_선정과_환산/데이터시트/Pololu_5241_Product_Page.pdf"
+    },
+    {
+      "file": "D06_SEMITEC103JT_데이터시트.pdf",
+      "sha256": "b430302b8002752e077803c594dac29ce98e86361444394faba51096d723b266",
+      "mode": "byte_identical_copy",
+      "source": "12_온도변화_기준계기와_보정의_한계/데이터시트/SEMITEC_103JT_Thermistor_Datasheet.pdf"
+    },
+    {
+      "file": "D07_TMUX1511_데이터시트.pdf",
+      "sha256": "04291b41a68347fedbbb0776aa44f500eaca65f2ca3af0e022ee60d41c7b1e9f",
+      "mode": "byte_identical_copy",
+      "source": "11_전압_오차예산_ADC와_VREFINT/데이터시트/TI_TMUX1511_SCDS390B_RevB.pdf"
+    },
+    {
+      "file": "D08_TPS3840_데이터시트.pdf",
+      "sha256": "bc66e11c84e5f3be2cded37ee6935c1b69d2b26e8fbc5f194099df6569381685",
+      "mode": "byte_identical_copy",
+      "source": "10_TPS_TMUX_연결과_전원_상태/데이터시트/TI_TPS3840_SNVSB03E_RevE.pdf"
+    },
+    {
+      "file": "D09_ST_AN2834_ADC정확도.pdf",
+      "sha256": "6ef3ef17a9c34c0b127b828b14df3dbcdab9f2f474a9703bfd559ca1f3303f9b",
+      "mode": "byte_identical_copy",
+      "source": "13_외부정착_ADC취득과_채널전환/데이터시트/cd00211314-how-to-optimize-the-adc-accuracy-in-the-stm32-mcus-stmicroelectronics.pdf"
+    },
+    {
+      "file": "D10_ST_AN4899_GPIO.pdf",
+      "sha256": "a04463891ce210d5fefe4f9d08ee79ecbe87225728b143ca7fddabfa76e56bd6",
+      "mode": "byte_identical_copy",
+      "source": "09_실제_감시기_스위치_조건과_지연/데이터시트/an4899-guidelines-for-gpio-hardware-settings-and-lowpower-consumption-on-stm32-mcus-stmicroelectronics.pdf"
+    },
+    {
+      "file": "D11_UT210E_사용설명서.pdf",
+      "sha256": "7c16360aad6d2f4c025f6a07a646388ca765c532aad6f452324de731f981c423",
+      "mode": "byte_identical_copy",
+      "source": "14_검증명세와_제작_전_남은일/데이터시트/UNI-T_UT210E_User_Manual.pdf"
+    },
+    {
+      "file": "D12_GM1312_사용설명서.pdf",
+      "sha256": "2d164cb2919db9a9427de4403da8f5e605de34327ece3ade62d198be30f62a75",
+      "mode": "byte_identical_copy",
+      "source": "14_검증명세와_제작_전_남은일/데이터시트/BENETECH_GM1312_User_Manual.pdf"
+    },
+    {
+      "file": "E01_전류_RC_AC.png",
+      "sha256": "9bd9f73483272852042357e1c2e6209c9554346b09a0162c3a36a0c846c1ef4c",
+      "mode": "byte_identical_copy",
+      "source": "04_전류_RC필터와_응답_시뮬레이션/관측과_모델근거/Current_RC_AC.png"
+    },
+    {
+      "file": "E02_전류_RC_계단응답.png",
+      "sha256": "bec8c24eacb25c5dac5f6c757c4d0302e81fcf34c6c377805ac5aad6a4289b12",
+      "mode": "byte_identical_copy",
+      "source": "04_전류_RC필터와_응답_시뮬레이션/관측과_모델근거/Current_RC_Step.png"
+    },
+    {
+      "file": "E03_NTC_25C_AC.png",
+      "sha256": "a495ee4a8680565719904b2211b5ec8e6d10c90a3eeba170bd9990cb8ad2e173",
+      "mode": "byte_identical_copy",
+      "source": "05_NTC_온도센서와_분압_회로/관측과_모델근거/NTC_25C_AC.png"
+    },
+    {
+      "file": "E04_NTC_50C_AC.png",
+      "sha256": "e06f9cbeaa35801e723ff566ba507a813172cd585f380f5a604821eaf123fe38",
+      "mode": "byte_identical_copy",
+      "source": "05_NTC_온도센서와_분압_회로/관측과_모델근거/NTC_50C_AC.png"
+    },
+    {
+      "file": "E05_전압분압_AC.png",
+      "sha256": "92295dd87e2546a11c3c6f5a83626fc36be99f1d210f3ba151fe5b3caca99f82",
+      "mode": "byte_identical_copy",
+      "source": "06_전압_측정위치와_분압_필터/관측과_모델근거/Voltage_Divider_AC.png"
+    },
+    {
+      "file": "E06_전류_RC_AC.csv",
+      "sha256": "448623e32d255ad510b4a98d5e5f26bbfa5aefc5eaa40e475014f8e6e2770992",
+      "mode": "byte_identical_copy",
+      "source": "04_전류_RC필터와_응답_시뮬레이션/관측과_모델근거/Current_RC_AC.csv"
+    },
+    {
+      "file": "E07_전류_RC_계단응답.csv",
+      "sha256": "32d662c47e60f6f45583fc57fce7089dc96561d6bcf9818fe304d60e37b0786d",
+      "mode": "byte_identical_copy",
+      "source": "04_전류_RC필터와_응답_시뮬레이션/관측과_모델근거/Current_RC_Step.csv"
+    },
+    {
+      "file": "E08_NTC_25C_AC.csv",
+      "sha256": "dd360df133b7f519abd315cde3f6665cf6596c1d306f85583ebd36fc7c49c7a9",
+      "mode": "byte_identical_copy",
+      "source": "05_NTC_온도센서와_분압_회로/관측과_모델근거/NTC_25C_AC.csv"
+    },
+    {
+      "file": "E09_NTC_50C_AC.csv",
+      "sha256": "1bdd5e8e32dfb794b8d13c9d6c65431e751ed5707939c9239415675e34649e04",
+      "mode": "byte_identical_copy",
+      "source": "05_NTC_온도센서와_분압_회로/관측과_모델근거/NTC_50C_AC.csv"
+    },
+    {
+      "file": "E10_전압분압_AC.csv",
+      "sha256": "11d57a9ddfd5760263406a13f9791fbb61d30e0e149430eece65c5dfec8d2a45",
+      "mode": "byte_identical_copy",
+      "source": "06_전압_측정위치와_분압_필터/관측과_모델근거/Voltage_Divider_AC.csv"
+    },
+    {
+      "file": "E11_detector_delay_30us.txt",
+      "sha256": "ac61e19c3aa5cde0c17c4dc84b5ecc1dc27f928691c576647440adf5409cc71b",
+      "mode": "byte_identical_copy_with_txt_extension",
+      "source": "09_실제_감시기_스위치_조건과_지연/관측과_모델근거/detector_delay_30us.cir"
+    },
+    {
+      "file": "E12_쉴드_회로도초안.pdf",
+      "sha256": "360d5c9138d99780de2286d891715561773aebb0d6ed61aaf293c809b9975f3b",
+      "mode": "byte_identical_copy",
+      "source": "14_검증명세와_제작_전_남은일/관측과_모델근거/TMR_Monitor_Shield_RevA_schematic.pdf"
+    },
+    {
+      "file": "E13_쉴드_가배치초안.pdf",
+      "sha256": "6db2ab711943533cbf5b475a031986e1e62d79970e9d79b609a751b74f0462d0",
+      "mode": "byte_identical_copy",
+      "source": "14_검증명세와_제작_전_남은일/관측과_모델근거/TMR_Monitor_Shield_RevA_placement.pdf"
+    }
+  ],
+  "notebooklm_uploaded": false,
+  "video_generated": false
+}

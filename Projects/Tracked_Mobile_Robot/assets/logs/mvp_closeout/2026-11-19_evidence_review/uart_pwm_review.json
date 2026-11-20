@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-19",
+  "scope": "Stored UART/electrical evidence plus current STM source with simulated PC HAL. No target build, flash or physical test.",
+  "files": [
+    {
+      "path": "04_PC_Serial_Control/logs/2026-07-09_uart_mvp_validation_session.csv",
+      "bytes": 3319200,
+      "sha256": "47c92f15df028bbef0c1c893ebbd8f2dee1b9c8c0582f609cd0582b3f795b018",
+      "recorded_hash_checked": false
+    },
+    {
+      "path": "assets/logs/esp32_uart_bridge/2026-08-29_p04a_applied_pwm_telemetry_runtime_run01.txt",
+      "bytes": 9806,
+      "sha256": "547d4e96b792934fdd3fc0d3550fea0d4ec2f749a69ee11c6fa59d6566b0138d",
+      "recorded_hash_checked": true
+    },
+    {
+      "path": "assets/logs/esp32_uart_bridge/2026-08-29_p04b_reason_command_age_clean_boot_runtime_run02.txt",
+      "bytes": 20923,
+      "sha256": "d12767c24948068ca1f9ceab6aff42d6a51f404e24e0a0f31f8c96f9411f55ee",
+      "recorded_hash_checked": true
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run07_D5_uart.txt",
+      "bytes": 41037,
+      "sha256": "50676a417e8da21a2e6ac36aee59e20b2d201c45a1272be4f5639c52131cc38f",
+      "recorded_hash_checked": false
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-08-18_perfboard_pwm19k_active_6step_capture_A.sr",
+      "sha256": "5795153918b66dfafe84e158747a936159b4c0650c911f81da279ae6ed4c3662",
+      "recorded_hash_checked": true
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-08-18_perfboard_pwm19k_active_6step_capture_B.sr",
+      "sha256": "8e6d9ef688d924124d2839cf838839239a691ffd274986932218af02eae7b6e3",
+      "recorded_hash_checked": true
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-08-18_perfboard_pwm19k_hook0_final_all_low.sr",
+      "sha256": "4964812c2ffdd07ec788e993cf226d130ec1e347239941e3c54eb6119271d76d",
+      "recorded_hash_checked": true
+    }
+  ],
+  "uart_checks": {
+    "initial_csv_rows": 17826,
+    "connected_ping_ack_error_vectors": true,
+    "p04a_tel_rows": 49,
+    "p04b_tel_rows": 99,
+    "p04b_timeout_bracket_ms": [
+      485,
+      585
+    ],
+    "t004_restore_tel_rows": 199
+  },
+  "preceding_reset_signed_wifi_checks": "review.json",
+  "current_host_review": "current_stm_host_review.json",
+  "legacy_selected_tests": {
+    "applied_output_telemetry_contract": "PASS",
+    "reason_and_command_age_telemetry_contract": "FAIL: 512 != historical fixed 384",
+    "interpretation": "Legacy contract uses pre-count TX size and old ESP bridge. Failure retained; not used as a current full-app acceptance runner. No production code changed to satisfy obsolete size."
+  },
+  "decision": {
+    "MVP-001": "PASS: defined UART response and software telemetry scope",
+    "MVP-004": "PASS: MCU PWM/DIR signal generation and verified MDD logic-input scope",
+    "MVP-009": "PASS: specified boot/reset/DISARM/timeout/fault PWM signal-zero scope"
+  },
+  "remaining_top_level_partial": [
+    "MVP-002",
+    "MVP-003",
+    "MVP-005",
+    "MVP-007",
+    "MVP-013"
+  ],
+  "limits": [
+    "Historical electrical capture decoding not rerun. Existing scoped test results retained with verified stored artifacts.",
+    "Current host tests use mock HAL and do not measure current board signals.",
+    "Motor energy cutoff, mechanical stop timing, power ratings and full release traceability remain outside these closed signal/response claims."
+  ]
+}

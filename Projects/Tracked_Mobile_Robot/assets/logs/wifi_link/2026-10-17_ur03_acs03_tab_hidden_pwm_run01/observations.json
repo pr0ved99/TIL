@@ -1,0 +1,210 @@
+{
+  "gate": "UR-03 / AC-S03 tab switch and return subcase",
+  "verdict": "PARTIAL_LOG_UI_STOP_CONFIRMED_CAPTURE_ENDS_BEFORE_TAB_SWITCH_STOP",
+  "gate_status": "TAB_SWITCH_STOP_AND_POST_RETURN_OUTPUT_CAPTURE_PENDING",
+  "user_report": {
+    "source": "Latest user message",
+    "paraphrase": "ACTIVE persisted until the tab switch; state changed after switching."
+  },
+  "capture_name": "2026-10-17_UR03_ACS03_TAB_HIDDEN_PWM_run01.sr",
+  "capture_sha256": "0d5cc712e1dd5772f1c3d4a228830d1e075f92df9c6cfc61420f10a099f21a09",
+  "duration_s": 12.5,
+  "samplerate_hz": 4000000.0,
+  "samples": 50000000,
+  "capture_review": {
+    "scope": "Earlier ARM/zero-command activity only. The capture ends while ARMED; it does not contain the later tab switch DISARM.",
+    "command_counts": {
+      "ARM": 1,
+      "CMD": 100,
+      "DISARM": 0
+    },
+    "seq_range": [
+      573834008,
+      573834108
+    ],
+    "matching_ack_count": 101,
+    "uart_ERR_count": 0,
+    "valid_tel_count": 125,
+    "state_counts": {
+      "DISARMED": 15,
+      "ARMED": 110
+    },
+    "first_tel": {
+      "start_s": 0.02759725,
+      "end_s": 0.042945805555555557,
+      "text": "TEL,t_ms=1431210,state=DISARMED,reason=DISARM,command_age_ms=580258,last_seq=573834007,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "1431210",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "580258",
+        "last_seq": "573834007",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "last_tel": {
+      "start_s": 12.4202095,
+      "end_s": 12.434782055555557,
+      "text": "TEL,t_ms=1443615,state=ARMED,reason=NONE,command_age_ms=85,last_seq=573834107,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "1443615",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "85",
+        "last_seq": "573834107",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "last_response": {
+      "start_s": 12.436031,
+      "end_s": 12.439500555555556,
+      "text": "ACK,seq=573834108,type=CMD,t_ms=1443630"
+    },
+    "all_valid_tel_vx_w_pwm_cps_drop_zero": true,
+    "err": "1 throughout",
+    "bad_stop_bits_D0_D1": [
+      0,
+      0
+    ],
+    "post_stop_tel_count": 0,
+    "physical_levels": {
+      "mapping": "D4/PB6 left PWM, D6/PC7, D7/PB7 right PWM; existing user-confirmed wiring",
+      "all_low": true,
+      "samples_per_channel": 50000000,
+      "limit": "LOW applies only to this earlier capture window, not the missing stop/return interval."
+    }
+  },
+  "monitor_review": {
+    "command_counts": {
+      "CMD": 72,
+      "DISARM": 1
+    },
+    "seq_range": [
+      573834251,
+      573834323
+    ],
+    "matched_response_count": 73,
+    "warnings_or_errors": 0,
+    "last_CMD": {
+      "seq": 573834322,
+      "tx_esp_ms": 973849,
+      "match_esp_ms": 973879
+    },
+    "stop": {
+      "request_id": 360,
+      "session_id": 2,
+      "seq": 573834323,
+      "queued_esp_ms": 973929,
+      "tx_esp_ms": 973939,
+      "match_esp_ms": 973949
+    },
+    "first_tel": {
+      "esp_ms": 966079,
+      "count": 9667,
+      "stm_t_ms": 1459223,
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": "0/0",
+      "cps": "0/0",
+      "drop": 0,
+      "err": 1
+    },
+    "last_pre_stop_tel": {
+      "esp_ms": 973859,
+      "count": 9745,
+      "stm_t_ms": 1467030,
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": "0/0",
+      "cps": "0/0",
+      "drop": 0,
+      "err": 1
+    },
+    "post_stop_tel": [
+      {
+        "esp_ms": 973979,
+        "count": 9746,
+        "stm_t_ms": 1467130,
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "pwm": "0/0",
+        "cps": "0/0",
+        "drop": 0,
+        "err": 1
+      },
+      {
+        "esp_ms": 974079,
+        "count": 9747,
+        "stm_t_ms": 1467230,
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "pwm": "0/0",
+        "cps": "0/0",
+        "drop": 0,
+        "err": 1
+      }
+    ],
+    "all_shown_pwm_cps_zero": true,
+    "drop": 0,
+    "err": "1 throughout",
+    "limit": "Monitor excerpt ends about 130 ms after DISARM ACK match; it cannot alone prove three seconds of no automatic commands after return."
+  },
+  "window_mismatch": {
+    "capture_last_ACK_stm_t_ms": 1443630,
+    "monitor_first_disarmed_stm_t_ms": 1467130,
+    "delta_ms": 23500,
+    "explanation": "Stop seq573834323 is absent from capture; capture seq573834008..573834108 does not overlap the submitted monitor seq573834251..573834323. Preserve both windows separately."
+  },
+  "browser_screenshot": {
+    "source": "User-attached final screenshot; manually transcribed, not a live query",
+    "boot_id": 3570331004,
+    "startup_state": "READY",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_result": "DISARM request 360 OK",
+    "last_seq": 573834323,
+    "uptime_ms": 1037179,
+    "stm_t_ms": 1530730,
+    "command_age_ms": 63685,
+    "stm_age_ms": 52,
+    "outputs_and_cps": 0,
+    "drop": 0,
+    "err": 1,
+    "limit": "Final snapshot confirms end state; it is not a continuous post-return UART or PWM trace."
+  },
+  "provenance": {
+    "esp_monitor": "Byte-for-byte copy of user attachment",
+    "source_attachment": "C:\\Users\\eyh12\\.codex\\attachments\\4214dc89-5a66-4cac-85a8-3cd5ce0e3687\\붙여넣은 텍스트.txt",
+    "esp_monitor_sha256": "839f731f1e32139cb999386dcf8e1e7715851487a4da4741359f277afa6ca3d4",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d"
+  },
+  "limits": [
+    "No precise browser blur/visibility timestamp or WebSocket continuity trace; do not claim which event handler initiated the stop.",
+    "No full tab-switch/post-return physical-output PASS because that interval is absent from this capture.",
+    "Zero-output and sampled digital levels only; no nonzero motor stopping or analog integrity claim.",
+    "This does not diagnose the separate AC-S06 restore run01 command-delivery gap."
+  ],
+  "next_action": "Bounded tab-switch stop/no-rearm observation completed in linked run02. Keep this run01 partial capture and original evidence.",
+  "followup_run02": {
+    "review": "../2026-10-17_ur03_acs03_tab_hidden_pwm_run02/observations.json",
+    "result": "Run02 includes the missing stop interval, 3.704 s post-ACK capture, 12.610 s post-ACK monitor and final IDLE/DISARMED/request429 OK screenshot. Run01 incomplete capture verdict is unchanged."
+  },
+  "next_action_at_initial_review": "Keep mode0 and current motor-power isolation. Capture run02 at 4 MHz / 200 M samples (50 s): manually ARM, verify ACTIVE, switch immediately to another browser tab without closing the robot tab, return after about 3 s, observe IDLE/DISARMED for at least 3 s without commands, then save. If ACTIVE ends before switching, preserve evidence and stop the attempt."
+}

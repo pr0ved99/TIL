@@ -1,0 +1,94 @@
+{
+  "date": "2026-11-05",
+  "notion": [
+    {
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+      "title": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "readback_verified": true,
+      "metadata": {
+        "type": "page"
+      }
+    },
+    {
+      "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+      "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6?pvs=204",
+      "title": "📝 TMR-01 · 전류·온도 센서/측정기 구매·수령·계측 준비",
+      "readback_verified": true,
+      "metadata": {
+        "type": "page"
+      }
+    },
+    {
+      "id": "3fca7326-f87b-8138-b25f-ebde08057a32",
+      "url": "https://app.notion.com/p/3fca7326f87b8138b25febde08057a32?pvs=204",
+      "title": "🔬 TMR-06 · 한정된 주행의 외부 온도 관측·모터 수용 보완",
+      "readback_verified": true,
+      "metadata": {
+        "type": "page"
+      }
+    },
+    {
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455?pvs=204",
+      "title": "전압 ADC 학습 · 보호·오차 예산·ADC 취득 (37-3까지, 설계 진행 중)",
+      "readback_verified": true,
+      "metadata": {
+        "type": "page"
+      }
+    }
+  ],
+  "calendar": [
+    {
+      "id": "d8l5dtuj7t8cvqdo0nt12om4tg",
+      "title": "[TMR] 11/5 실적 · ADC 학습·공중 계측·영상 자료 준비",
+      "start": "2026-11-05T00:00:00",
+      "end": "2026-11-06T00:00:00",
+      "transparency": "transparent",
+      "time_boundaries_preserved": true,
+      "description_readback_verified": true,
+      "url": "https://www.google.com/calendar/event?eid=ZDhsNWR0dWo3dDhjdnFkbzBudDEyb200dGcgZXloMTI1QG0&ctz=Asia/Seoul"
+    },
+    {
+      "id": "ds2sp7fk6rn7ub9i98gluajkp0",
+      "title": "[TMR] PCB 학습 37-4 · 잡음·평균·10Hz 처리",
+      "start": "2026-11-06T00:00:00",
+      "end": "2026-11-07T00:00:00",
+      "transparency": "transparent",
+      "time_boundaries_preserved": true,
+      "description_readback_verified": true,
+      "url": "https://www.google.com/calendar/event?eid=ZHMyc3A3Zms2cm43dWI5aTk4Z2x1YWprcDAgZXloMTI1QG0&ctz=Asia/Seoul"
+    }
+  ],
+  "git": {
+    "status": "content_commit_pushed_and_remote_verified",
+    "branch": "agent/dual-encoder-bringup",
+    "content_commit": "d994b0bd0cddbd9e60c17b5b0f2e797e33aa8a5e",
+    "remote_verified_commit": "d994b0bd0cddbd9e60c17b5b0f2e797e33aa8a5e",
+    "verification_method": "git ls-remote origin refs/heads/agent/dual-encoder-bringup",
+    "unrelated_worktree_paths_preserved": 19,
+    "receipt_commit": "This receipt is committed after the verified content commit; its own hash is in Git history."
+  },
+  "notebooklm": {
+    "packet_verified": true,
+    "units": 14,
+    "total_files": 170,
+    "manifest_entries": 166,
+    "hash_mismatches": 0,
+    "uploaded": false,
+    "video_generated": false,
+    "unit01_guide_prepared": true,
+    "unit01_guide": "assets/logs/pcb_design/2026-11-05_notebooklm_units/README.md",
+    "next": "01_목표와_시스템_아키텍처의 7개 TXT로 프로듀서 메모 검토"
+  },
+  "scope": {
+    "physical_session_ended": true,
+    "power_disconnected_user_report": true,
+    "T005A": "PARTIAL",
+    "T007": "BLOCKED",
+    "formal_thermal_acceptance": "NOT TESTED",
+    "learning_written_through": "37-3",
+    "handwritten_user_confirmed_through": "36-19",
+    "next_learning": "37-4"
+  }
+}

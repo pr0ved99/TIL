@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "mode": "CANDIDATE",
+  "scope": "Review proposed/saved STM C on native PC only; no board build or I/O.",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "firmware_unchanged": true,
+  "checks": [
+    "PASS UART -> mapper -> motor: straight +144/+150 and -140/-150; rounding at partial/low input; pure-turn200, mixed150 and zero",
+    "PASS 300ms timeout, no CMD-only rearm, DISARM and ESTOP stop at turn200",
+    "PASS mapper cap201 rejected; signed +/-201 and raw201 stop both outputs",
+    "PASS boot: no encoder sample or accepted ARM interval",
+    "PASS actual main publish block: TIM3 sign inverted, TIM5 kept, CPS paired with count",
+    "PASS accepted ARM: old sample invalidated without resetting accumulated count",
+    "PASS TEL: 20 fields, sample time distinct from send time, seq zero is a valid ARM",
+    "PASS DISARM: output zero and stopped endpoint retains the measurement interval",
+    "PASS reverse: decreasing/negative count stays valid in the same interval",
+    "PASS next ARM: a new interval label, same raw cumulative count",
+    "PASS rejected ARM: ESTOP stops and does not relabel the interval",
+    "PASS int64 endpoints: exact decimal serialization, uint32 sample tick and complete LF",
+    "PASS non-negatable left raw count: invalid measurement, CPS control input preserved",
+    "PASS STM init: prior interval cleared, even when new sample time is greater than old time"
+  ],
+  "wire_bound_bytes_including_lf": 428,
+  "buffer_bound_including_nul": 429,
+  "uart_8n1_115200_bound_ms": 37.15277777777778,
+  "inputs": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "da8dae56903f7ac56eac0796f4df6d54918ae3398cb3917c08839159f5634c86",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "dc25187ea6710e3196453967e869fe2e231fa7aa4b68cbf63b6be72f3fc85eea",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_frame_parser.c": "73a0fa5c77a7e7defcedd97aca37c57ea332ec1c1dc7ce2a6abafd66f145784e",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_frame_parser.h": "a367ada9cb6df5c781b6370c21ee628ba9056a383768ad6ab68bdf332ae6c233",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\ring_buffer.c": "02a2e8d360d113300305b7c70ee9215bdff9d74a9466adaec9b31f2da28b2465",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\ring_buffer.h": "2d94473999d76f763d976f4dc5a418cdbd4d9ab702bbfd99a4212c33d890a6ca",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\drive_command_mapper.c": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\drive_command_mapper.h": "9cba5c32c5a914c5e6e0211d3356d740a9063b4b5cf130f456ca47c0f2c30b6b",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\motor_output.c": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Inc\\motor_output.h": "9a66e0f6dbd3153cc07672ddc1c2d44a0f5cfa3f8d30fdfe005ee27bb1f6bdb7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "126152c108993fd68f5bf2ad3b8d231a31c7b347b373c901f56f01bc7d2da6c0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\drive_output_profile_host_fixture.c": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\encoder_count_host_fixture.c": "70d089616ca0064de62ebbbb8e91b0048a37e663244a742121c49c1c286545e0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\encoder_count_candidate.py": "64ed522c1e567c62ce9cab1d04a2ac6a71803497519feee50e339d5a30a6ffa0"
+  },
+  "candidate_hashes": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\stm32_uart_mvp\\Core\\Src\\uart_mvp_protocol.c": "dd38258c1beacb549e3c17535e11875a63379af98341e08ff867d20568ec5069"
+  },
+  "formatter_vectors": 9,
+  "formatter_guard_bytes": "PASS",
+  "target_runtime": "PENDING: native PC only; no STM build or flash",
+  "nano_compatibility": "Count formatting uses manual decimal conversion and %s; no long-long printf"
+}

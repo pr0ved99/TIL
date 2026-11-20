@@ -1,0 +1,47 @@
+PASS Connection registration sends HELLO only, never ARM/PING/CMD
+PASS No ticket or no startup completion prevents ARM
+PASS Manual ARM consumes one ticket and sends exact contract
+PASS First zero CMD follows matching ARM result and CMD ticket
+PASS No CMD before ARM ACK even if state arrives first
+PASS Zero stream observes 100 ms target and needs fresh one-use tickets
+PASS Repeating a ticket snapshot does not extend its original client deadline
+PASS ARM stays available at the ticket cutoff but a click waits instead of sending
+PASS Short TTL tickets wait for a new ticket to fulfil exactly one manual ARM click
+PASS A delayed browser timer cannot allow a late ARM click to send
+PASS Repeated decreasing TTL snapshots reserve the margin only once
+PASS Zero CMD waits for a new ticket when the send cutoff meets its next interval
+PASS Transit margin blocks a click that would reach a simulated peer after expiry
+PASS IDLE button stays enabled through repeated ticket renewals without sending
+PASS A stale control offer disables ARM instead of keeping an idle button live forever
+PASS Repeated clicks cannot extend the bounded ARM preparation wait
+PASS A fresh offer at the ARM wait deadline is refused even if its timer is delayed
+PASS A control stream gap cancels preparation before a late fresh offer can revive it
+PASS Blur and hidden events cancel an unsent ARM even after focus returns
+PASS DISARM cancels an unsent ARM and leaves it cancelled after its own OK
+PASS PING cannot compete with an unsent manual ARM preparation
+PASS ARM preparation is cancelled by NONE, STOPPING, BLOCKED or a different active owner
+PASS Fault or stale telemetry cancels an unsent ARM before the control snapshot catches up
+PASS Disconnect, offline and boot changes cannot move a waiting ARM into a new session
+PASS A rejected ARM sent after preparation is not retried on subsequent tickets
+PASS ACTIVE keeps the ARM button disabled through changing CMD tickets
+PASS DISARM is enabled during ARM wait and supersedes its pending result
+PASS Blur sends one DISARM; returning focus never auto-arms
+PASS Hidden tab stops; hidden/unfocused ARM is rejected locally
+PASS Stale control stream closes socket even with otherwise live telemetry
+PASS STOPPING and BLOCKED snapshots revoke local stream without auto-retry
+PASS Server rejection of ARM stops intent and requests DISARM
+PASS Failed control result prevents further zero commands
+PASS Wrong boot/session results cannot complete ARM
+PASS Wrong control id cannot complete pending CMD
+PASS Malformed control state closes the connection
+PASS Rejected malformed diagnostic request preserves last valid result
+PASS PING diagnostic still follows request/notice/result flow
+PASS DISARM can preempt a waiting diagnostic PING
+PASS Disconnect/reconnect clears command intent and only sends HELLO
+PASS Old socket events cannot change the new session
+PASS ESP boot change closes and requires a new manual request
+PASS Send exception cancels local intent and starts one reconnect
+PASS Telemetry watchdog preserves last good values on timeout
+PASS Malformed telemetry preserves last data and closes
+PASS No nonzero speed entry or hidden automatic ARM exists
+46 browser cases PASS; simulated DOM/clock/WebSocket only

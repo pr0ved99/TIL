@@ -1,0 +1,208 @@
+{
+  "date": "2026-10-23",
+  "status": "IDLE_BASELINE_CAPTURE_ACCEPTED_NO_LONG_GAP_OBSERVED",
+  "scope": "DISARMED/IDLE no-motion receive baseline; not ACTIVE command/drive acceptance",
+  "telemetry_samples": 1246,
+  "control_samples": 3738,
+  "telemetry_span_s": 74.702,
+  "capture_first_last_ms": [
+    32.700000000186265,
+    74734.59999999963
+  ],
+  "tel_receive_gap": {
+    "samples": 1245,
+    "min_ms": 0.5,
+    "median_ms": 59.9,
+    "p95_ms": 90.9,
+    "p99_ms": 109.8,
+    "max_ms": 125.4,
+    "gaps_ge_200_ms": 0,
+    "gaps_ge_250_ms": 0
+  },
+  "control_receive_gap": {
+    "samples": 3737,
+    "min_ms": 0,
+    "median_ms": 0.5,
+    "p95_ms": 61.1,
+    "p99_ms": 69.364,
+    "max_ms": 78.5,
+    "gaps_ge_200_ms": 0,
+    "gaps_ge_250_ms": 0
+  },
+  "esp_timestamp_step": {
+    "samples": 1245,
+    "min_ms": 58,
+    "median_ms": 60.0,
+    "p95_ms": 61.0,
+    "p99_ms": 62.0,
+    "max_ms": 62,
+    "gaps_ge_200_ms": 0,
+    "gaps_ge_250_ms": 0
+  },
+  "stm_age_at_esp": {
+    "samples": 1246,
+    "min_ms": 2,
+    "median_ms": 42.0,
+    "p95_ms": 90.0,
+    "p99_ms": 90.0,
+    "max_ms": 92,
+    "gaps_ge_200_ms": 0,
+    "gaps_ge_250_ms": 0
+  },
+  "stm_age_plus_interarrival_upper_bound_max_ms": 199.8,
+  "age_bound_scope": "Previous reported STM age plus next browser interarrival; excludes after final TEL; not measured controlTick age or one-way latency",
+  "boot_ids": [
+    331448985
+  ],
+  "connections_seen": 1,
+  "observer_trace_errors": 0,
+  "history_dropped": 0,
+  "telemetry_dropped": 0,
+  "event_counts": {
+    "OBSERVER_SOCKET_CHANGE": 1,
+    "TEL_RX": 1246,
+    "CONTROL_RX": 3738,
+    "APP_STOP": 1,
+    "blur": 1
+  },
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "encoder_valid_values": [
+    true
+  ],
+  "encoder_arm_valid_values": [
+    false
+  ],
+  "command_age_values": [
+    4294967295
+  ],
+  "all_command_pwm_cps_zero": true,
+  "counts_fixed_at": [
+    "0",
+    "0"
+  ],
+  "state_reason": {
+    "DISARMED/DISARM": 1246
+  },
+  "control_phases": {
+    "IDLE": 3738
+  },
+  "top_tel_gaps": [
+    {
+      "ms": 30359.5,
+      "gap_ms": 125.40000000037253,
+      "esp_uptime_ms": 424378,
+      "esp_step_ms": 60,
+      "stm_age_ms": 10,
+      "tel_count": 4248,
+      "stm_t_ms": 425300
+    },
+    {
+      "ms": 52014.40000000037,
+      "gap_ms": 119.20000000018626,
+      "esp_uptime_ms": 446039,
+      "esp_step_ms": 61,
+      "stm_age_ms": 21,
+      "tel_count": 4465,
+      "stm_t_ms": 447000
+    },
+    {
+      "ms": 47930.40000000037,
+      "gap_ms": 115.80000000074506,
+      "esp_uptime_ms": 441958,
+      "esp_step_ms": 60,
+      "stm_age_ms": 30,
+      "tel_count": 4424,
+      "stm_t_ms": 442900
+    },
+    {
+      "ms": 6707.5,
+      "gap_ms": 114.40000000037253,
+      "esp_uptime_ms": 400738,
+      "esp_step_ms": 60,
+      "stm_age_ms": 30,
+      "tel_count": 4011,
+      "stm_t_ms": 401600
+    },
+    {
+      "ms": 35687.59999999963,
+      "gap_ms": 113.09999999962747,
+      "esp_uptime_ms": 429719,
+      "esp_step_ms": 59,
+      "stm_age_ms": 61,
+      "tel_count": 4301,
+      "stm_t_ms": 430600
+    }
+  ],
+  "stops": [
+    {
+      "ms": 68226.59999999963,
+      "intent": false,
+      "focused": false,
+      "motion": null,
+      "sendStop": true,
+      "tel_local_age_ms": 6.3999999994412065
+    }
+  ],
+  "observer_final_state": {
+    "intent": false,
+    "focused": false,
+    "boot": 331448985,
+    "session": 1,
+    "control_id": 0,
+    "socket_state": 1,
+    "connection_id": 1,
+    "phase": "IDLE",
+    "owner_session": 0,
+    "pending": null,
+    "motion": null,
+    "stm_state": "DISARMED",
+    "stm_reason": "DISARM",
+    "buttons_disabled": {
+      "arm": true,
+      "disarm": false,
+      "forward": true,
+      "reverse": true,
+      "left": true,
+      "right": true
+    }
+  },
+  "previous_adjusted_drive_reference": {
+    "telemetry_span_s": 153.124,
+    "tel_receive_gap": {
+      "samples": 2552,
+      "median_ms": 60.3,
+      "p95_ms": 89.9,
+      "p99_ms": 104.703,
+      "max_ms": 126.3,
+      "gaps_ge_200_ms": 0,
+      "gaps_ge_250_ms": 0
+    },
+    "control_receive_gap": {
+      "samples": 5733,
+      "median_ms": 5.7,
+      "p95_ms": 60.2,
+      "p99_ms": 63.768,
+      "max_ms": 80.1,
+      "gaps_ge_200_ms": 0,
+      "gaps_ge_250_ms": 0
+    },
+    "note": "Different boot/session, duration and operating state; descriptive comparison only"
+  },
+  "interpretation": [
+    "No >=200ms TEL/control receive gap in retained idle capture",
+    "ESP timestamps advance 58..62ms while browser arrivals vary; aggregate does not identify ESP send queue, network, TCP or browser as cause",
+    "One focus-loss stop callback occurred with intent false and motion null; no command send/result events; not an unexpected driving DISARM",
+    "command_age UINT32_MAX and encoder_arm_valid false are compatible with no ARM/CMD in this capture"
+  ],
+  "limits": [
+    "No active command or ACK path exercised; no motion/power under load assessment",
+    "No new supply voltage/current/3.3V transient measurement",
+    "No synchronized host/ESP clock or per-stage send/receive timestamps; not absolute one-way latency",
+    "No firmware/timeout change, build, flash, physical action, Git or external publication by this script"
+  ]
+}

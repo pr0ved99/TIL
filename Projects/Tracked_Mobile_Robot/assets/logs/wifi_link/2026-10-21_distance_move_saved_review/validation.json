@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "mode": "SAVED_MODULE",
+  "scope": "Compile/run distance-move C on the PC; never build/flash STM or send commands.",
+  "compiler": "C:\\Users\\eyh12\\.codex\\tmp\\w5_host_tools\\tcc-0.9.27-win64-bin\\tcc\\tcc.exe",
+  "checks": "PASS 25 scenario groups including 120 synthetic target runs",
+  "firmware_unchanged": true,
+  "inputs": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\distance_move.h": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\distance_move.c": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+    "03_Firmware\\tests\\distance_move_host_fixture.c": "f7a4ea699e17d1787fb3493caf8a7111f286ad7598c14b5b03fa062853e206ee",
+    "03_Firmware\\tests\\test_distance_move_candidate.py": "9a9d85a8c6f5ae09b955fd9673747e83a2cc932de413008d6b9ba4c6731b0c9e"
+  },
+  "limits": [
+    "Synthetic host execution, not an STM build or physical test",
+    "Module not connected to sampling/UART/ESP/PWM/safety supervisor yet",
+    "100ms production encoder snapshots cannot satisfy the 20ms age bound",
+    "TARGET_REACHED means output cutoff criteria, not mechanical standstill"
+  ]
+}

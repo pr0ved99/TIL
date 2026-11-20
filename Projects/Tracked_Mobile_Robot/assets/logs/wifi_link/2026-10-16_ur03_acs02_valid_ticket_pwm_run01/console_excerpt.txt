@@ -1,0 +1,7 @@
+Source: user-provided DevTools output, 2026-10-16. Full report JSON not supplied.
+AC-S02 MANUAL_ARM {"ms":10253.7,"event":"MANUAL_ARM","request":1}
+AC-S02 ABORT {"ms":10253.9,"event":"ABORT","reason":"A 제어 중단: IDLE"}
+AC-S02 STOP {"ms":10254,"event":"STOP","reason":"A 제어 중단: IDLE"}
+AC-S02 DISARM_TX {"ms":10254.2,"event":"DISARM_TX","request":2}
+AC-S02 DISARM_RESULT {"ms":10442.7,"event":"DISARM_RESULT","kind":"command_result","boot_id":2634188439,"session_id":2,"request_id":2,"cmd":"DISARM","seq":2830180670,"control_id":0,"status":"OK"}
+AC-S02 INCOMPLETE {"ms":10443.3,"event":"INCOMPLETE","problem":"A 제어 중단: IDLE","stop_confirmed":true,"bRejected":false,"aConfirmed":false,"activeAfter":false,"armedAfter":false}

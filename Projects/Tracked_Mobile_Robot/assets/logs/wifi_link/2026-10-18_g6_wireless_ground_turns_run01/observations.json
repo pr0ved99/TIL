@@ -1,0 +1,33 @@
+{
+  "scope": "Battery-only wireless ground turning at15%",
+  "visual": "Sampled21.88s video shows chassis turning in both rotational senses with lateral translation, then stationary. No calibrated turn angle/rate or per-track speed measurement.",
+  "user_observation": "Right motor rotation weaker than left.",
+  "browser_captured": null,
+  "active_stop_count": 0,
+  "stop_reasons": [
+    1
+  ],
+  "final_tel": {
+    "ms": 40637.80000000447,
+    "event": "TEL_RX",
+    "gap_ms": 50.30000000447035,
+    "esp_uptime_ms": 770989,
+    "esp_step_ms": 59,
+    "tel_count": 7714,
+    "stm_t_ms": 498054,
+    "stm_age_ms": 22,
+    "command_age_ms": 8685,
+    "last_seq": 187613102,
+    "state": "DISARMED",
+    "pwm": [
+      0,
+      0
+    ]
+  },
+  "limits": [
+    "Equal PWM magnitude does not prove equal speed or torque.",
+    "Diagnostic TEL_RX records omit left/right CPS; cannot quantify encoder ratio from this report.",
+    "Manual-stop reason1 with cancelled CMD and successful DISARM is not an unexpected stop.",
+    "Wheel-track engagement was improved by shortening each track one link per user; increased tension remains possible load contributor, not established cause."
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "date": "2026-11-04",
+  "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04",
+  "originals": 243,
+  "upload_bundles": 8,
+  "pdfs": 21,
+  "required_missing": [],
+  "optional_not_required": [
+    "STM32F446 web revision"
+  ],
+  "user_supplied_pdfs_verified": 4,
+  "total_files_including_verification": 292,
+  "bytes_excluding_verification": 124938717,
+  "source_and_copy_hash_mismatches": [],
+  "pdf_open_check": "21/21",
+  "notebooklm_uploaded": false,
+  "design_changed": false,
+  "manifest_sha256": "8df14e0e14cc5649be8c7f474d5a25706d1f744c112ed35f9ace2b454f1c63ad",
+  "catalog_csv_sha256": "a08f0d15b72d9a40b26ed955907ee861bda392ba2224c1c0249cd831a6309713",
+  "previous_snapshot": {
+    "date": "2026-11-04",
+    "path": "C:\\Users\\eyh12\\Desktop\\TMR_온도·전류·전압_부품선정_참고자료_2026-11-04",
+    "originals": 239,
+    "upload_bundles": 8,
+    "pdfs": 17,
+    "download_failures": [
+      "ST_UM1724_Nucleo64.pdf",
+      "ST_MB1136_C04_Schematic.pdf",
+      "ST_AN4899_GPIO_Protection.pdf",
+      "ST_AN2834_ADC_Accuracy.pdf",
+      "ST_STM32F446_Current_Web_Revision.pdf"
+    ],
+    "total_files_including_verification": 283,
+    "bytes_excluding_verification": 109692660,
+    "source_and_copy_hash_mismatches": [],
+    "pdf_open_check": "17/17",
+    "notebooklm_uploaded": false,
+    "design_changed": false,
+    "manifest_sha256": "0e1f69d1c79e8b9822497b90042442903cb83cfdbee56a35a4c1333ca20e84c9",
+    "catalog_csv_sha256": "3f3257e9dfca3cca3958d58df45f6193ac1f9ce160c424d910b802a04656cb1b"
+  },
+  "user_pdf_check": "user_pdf_check.json"
+}

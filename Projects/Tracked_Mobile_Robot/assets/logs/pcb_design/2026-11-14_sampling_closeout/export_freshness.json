@@ -1,0 +1,24 @@
+{
+  "basis": "2026-11-12_export_sync/verification.json",
+  "exports": [
+    {
+      "name": "shield",
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch",
+      "source_sha256": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+      "source_matches_previous": true,
+      "pdf": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf",
+      "pdf_sha256": "12bf00e37c04a867c7381028c31f1e825fc3c379dd462fea1198ef0e98a4f7e4",
+      "pdf_matches_previous": true
+    },
+    {
+      "name": "mvp",
+      "source": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch",
+      "source_sha256": "7474627bb7dbaa801496e60d5f692034a93f4cd438d332f763708573fbd67207",
+      "source_matches_previous": true,
+      "pdf": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf",
+      "pdf_sha256": "fc9c7b8e8087f04b5c7cf551d1812bfd47994db6c56db8f48cfc826216d35d1c",
+      "pdf_matches_previous": true
+    }
+  ],
+  "new_erc_drc_or_pdf_generation": false
+}

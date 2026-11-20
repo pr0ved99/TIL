@@ -1,5 +1,11 @@
 # Architecture Decision Record
 
+**2026-11-17 현재 계획:** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu24.04/Jazzy/Harmonic은 제안이며 새 설치/실행 전이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
+
+
+> 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.
+> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.
+
 ## 목적
 
 이 문서는 궤도형 모바일 로봇 프로젝트에서 내린 주요 architecture decision을 요약한다.
@@ -286,6 +292,74 @@ Consequence:
 - FreeRTOS 실습 task 구조는 `13_FreeRTOS_Task_Architecture_ko.md`의 owner rule과 맞춰야 한다.
 - ROS 2 bridge 실습은 `11_System_Block_Diagram_and_Interface_Map_ko.md`의 STM32 safety authority를 우회하면 안 된다.
 
+## ADR-014: MDD10A Control Input은 External `10 kΩ` Pull-down으로 Reset-safe LOW 유지
+
+Status: Accepted
+
+Decision:
+
+- `PC8/DIR1`, `PB6/PWM1`, `PC9/DIR2`, `PB7/PWM2` 각각에 외부 `10 kΩ` pull-down을 둔다.
+- 이 저항은 firmware나 GPIO 초기화보다 먼저 존재하는 hardware default다.
+- Breadboard 계측 PASS를 RevB/permanent wiring PASS로 확대하지 않고 schematic 반영과
+  continuity를 별도 gate로 둔다.
+
+Reason:
+
+- Pull-down 미적용 external-reset capture에서 네 control input이 NRST LOW 동안 약 `159 ms`
+  HIGH로 판독됐다.
+- STM32 내부 weak pull은 일반적으로 `30~50 kΩ`이고 firmware configuration에 의존한다.
+  외부 `10 kΩ`은 reset 중에도 존재하며 GPIO input leakage 최대 `±1 µA` 기준 예상 LOW
+  offset은 약 `10 mV`다.
+- 3.3 V HIGH 구동 시 channel당 약 `0.33 mA`, 네 선 합계 최대 `1.32 mA`여서 logic output
+  부하로 작다.
+- 적용 후 5 s/20 M samples reset 재시험에서 네 signal의 transition과 HIGH sample이 모두
+  0이었다.
+
+Consequence:
+
+- RevB schematic, connector/perfboard plan과 continuity checklist에 네 저항을 반영한다.
+- 저항이 끊기거나 GND 기준이 유실되면 reset-safe acceptance를 재검증한다.
+- 이 결정은 MCU input pin 안전만 입증하며 MDD10A power stage나 actual motor stop을
+  자동으로 승인하지 않는다.
+
+Evidence:
+
+- [`08_Motor_Driver_and_HBridge_Control_ko.md`](08_Motor_Driver_and_HBridge_Control_ko.md)
+- [`../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md`](../docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md)
+
+## ADR-015: Final MVP Production Command Ingress는 ESP32-STM32 USART1 단일 경로
+
+Status: Accepted
+
+Decision:
+
+- Final MVP의 유일한 production external command ingress는 ESP32-S3다.
+- Production link는 `ESP32 UART1 GPIO17/GPIO18 <-> STM32 USART1 PA9/PA10`이다.
+- STM32 USART2 PA2/PA3는 bench debug/encoder logger로만 사용하고 production command를 받지 않는다.
+- PC interactive control이 필요하면 `PC -> ESP32 -> STM32`로 전달하며 direct dual-owner 구조는 허용하지 않는다.
+- STM32는 command parser, state machine, timeout, motor permission과 PWM/DIR의 최종 authority를 유지한다.
+- Command source loss 시 output과 stored command를 zero로 만들고 `DISARMED`로 전이한다. 재동작에는 accepted `ARM`과 valid `CMD`가 필요하다. 이는 stored command 자동 복원 방지 정책이며 transport anti-replay를 뜻하지 않는다.
+
+Reason:
+
+- Current firmware는 protocol을 `huart1`에만 연결하고 USART2는 진단 로그 TX로 사용한다.
+- 단일 ingress는 PC와 ESP32가 서로 다른 session과 sequence로 동시에 명령하는 문제를 제거한다.
+- 과거 USART2 PC-first 경로는 parser 학습과 bench evidence로 보존하되 final production 경로로 사용하지 않는다.
+
+Consequence:
+
+- ADR 채택 당시 `PC -> ESP32` production forwarding은 미구현이었다. **11/19 현재 대조:** browser/WebSocket→ESP session/ticket/owner→UART1 경로가 구현됐고NZ-01~04/후속 주행 근거가 있다. [MVP-002 PASS 근거](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#8-후속-판정--esp-단일-production-명령-경로). 추가 serial/Python bridge를 MVP 필수로 요구하지 않는다.
+- Production `CMD -> left/right PWM/DIR` mapper/caller의P-02 구현 이후 실제PWM·구동 근거가 추가됐다. 응답/신호 수용은 [검토43 §7](../docs/verification/43_MVP_Closeout_Evidence_Review_2026-11-19_ko.md#7-후속-판정--uart와-pwm-신호-요구-마감)을 따른다.
+- Timeout-to-`DISARMED` recovery의P-03A/P-03B 구현 뒤500ms target/PWM과10/20 실제 유실/복구 근거가 추가됐다. 당시 target pending을 현재 미실행으로 안내하지 않는다. 기계 정지시간·전체 전력/기계 수용은 별도다.
+- 이 결정은 command transport를 고정하며 STM32의 최종 safety authority를 ESP32로 이전하지 않는다.
+
+## ADR-016: 하드웨어 제작과 시뮬레이션 준비를 병행 — 2026-11-17
+
+**사용자 방향:** 내부 SSD를 나눠 Windows/Ubuntu 듀얼부팅, 하드웨어 제작 전 Nav2·가상 센서 실습과 가능한 강화학습 계획 수립.
+**실행 제안:** Ubuntu24.04/Jazzy/Harmonic, 차동 근사 모델·가상 IMU/scan·odom/TF·Nav2 기준선 이후 작은 RL 비교. 정확한 설치일/부품/실물 구현은 아직 미확정.
+**유지 계약:** 물리 명령은 ESP 단일 production ingress, STM32 최종 출력·timeout·안전 판단. sim 성공은 MVP/ADC/정지 미결을 닫지 않는다. CAN/RTOS/LL은 필수 후속 유지.
+**근거/진입 기준:** [단계·일자별 계획](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). 기존 YOLO 계획은 후속 보존. 구현/실험 NOT_RUN.
+
 ## Rejected or Deferred Alternatives
 
 | Alternative | Status | Reason |
@@ -304,13 +378,10 @@ Consequence:
 
 | Topic | Open question |
 | --- | --- |
-| Final PWM/DIR pins | CubeMX validation 이후 NUCLEO-F446RE에서 PB6/PB7 PWM과 PC8/PC9 DIR 후보가 충돌 없이 동작하는가? |
-| Encoder source quality | 어떤 motor encoder가 동작하고 counts per revolution은 얼마인가? |
-| CAN hardware | 어떤 CAN transceiver와 USB-CAN adapter를 구매할 것인가? |
+| CAN hardware | SN65HVD230 MCU-230 모듈은 보유. 모듈 상세·종단·전원 검증과 USB-CAN 장치 선정/확인은 남음 |
 | Battery voltage divider | 정확한 resistor value와 ADC calibration |
-| PWM frequency | MDD10A와 motor에 적합한 final frequency |
 | Motor current measurement | Current sensor를 추가할지 외부 측정으로 진행할지 |
-| ROS2 bridge path | 학습/시뮬레이션은 ROS 2 Humble에서 시작한다. 실제 command transport는 UART first, CAN later 중 무엇으로 연결할지 |
+| ROS2 bridge path | 11/17: 신규Ubuntu24.04/Jazzy/Harmonic 제안, Humble는 과거학습 이력. sim bridge부터 검증하고 실물은 PC→ESP32→STM32 UART 단일 ingress 유지; CAN은 후속 전환. 속도제어/시각/TF는 구현 전 |
 | Odometry calibration | Effective track width와 distance-per-count 값 |
 
 ## Evidence Roadmap
@@ -318,7 +389,7 @@ Consequence:
 | Decision area | Evidence to collect |
 | --- | --- |
 | Power safety | Wiring photo, fuse rating, buck voltage measurements |
-| Motor driver | PWM waveform, low-duty motor test, heat observation |
+| Motor driver | PWM waveform, reset-safe pull-down continuity, low-duty motor test, heat observation |
 | Encoder | Direction test, count-rate log, speed plot |
 | UART | Command/telemetry logs, timeout test |
 | FreeRTOS | Task table, timing counters, queue behavior |

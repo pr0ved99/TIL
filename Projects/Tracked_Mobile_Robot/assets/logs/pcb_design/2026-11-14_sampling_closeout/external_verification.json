@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-14",
+  "notion": [
+    {
+      "kind": "notion",
+      "key": "project",
+      "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d",
+      "current_present": true,
+      "pending_understanding": true,
+      "previous_body_preserved": true,
+      "child_pages_preserved": true,
+      "changed_properties": [
+        "요약"
+      ],
+      "status": "진행 중"
+    },
+    {
+      "kind": "notion",
+      "key": "task",
+      "id": "3fca7326-f87b-8139-b949-d339de80d870",
+      "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870",
+      "current_present": true,
+      "pending_understanding": true,
+      "previous_body_preserved": true,
+      "child_pages_preserved": true,
+      "changed_properties": [
+        "근거 링크"
+      ],
+      "status": "진행 중",
+      "verification": "NOT TESTED"
+    },
+    {
+      "kind": "notion",
+      "key": "nav",
+      "id": "3fca7326-f87b-8128-9979-cec9503cac85",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85",
+      "current_present": true,
+      "pending_understanding": true,
+      "previous_body_preserved": true,
+      "child_pages_preserved": true,
+      "changed_properties": []
+    },
+    {
+      "kind": "notion",
+      "key": "hub",
+      "id": "403a7326-f87b-816f-8115-fbe2c995f8f0",
+      "url": "https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0",
+      "current_present": true,
+      "pending_understanding": true,
+      "previous_body_preserved": true,
+      "child_pages_preserved": true,
+      "changed_properties": []
+    },
+    {
+      "kind": "notion",
+      "key": "lesson",
+      "id": "408a7326-f87b-8115-b9aa-c4609cb40455",
+      "url": "https://app.notion.com/p/408a7326f87b8115b9aac4609cb40455",
+      "current_present": true,
+      "pending_understanding": true,
+      "previous_body_preserved": true,
+      "child_pages_preserved": true,
+      "changed_properties": [
+        "title"
+      ]
+    }
+  ],
+  "calendar": [
+    {
+      "kind": "calendar",
+      "id": "aci2g46horqsvjtpioi25vuoko",
+      "title": "[TMR] 41-6~8·보호 비교 / 수집·평균 A 후속",
+      "start": "2026-11-13T00:00:00",
+      "end": "2026-11-14T00:00:00",
+      "title_matches": true,
+      "description_matches": false,
+      "original_description_preserved": true,
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "unchanged_other_fields": true,
+      "description_equivalent_ignoring_display_wrapping": true,
+      "current_marker_present": true,
+      "display_note": "Readback wraps long descriptions and escapes Markdown separators; normalized comparison used."
+    },
+    {
+      "kind": "calendar",
+      "id": "auav0k6uvleinn1260aidskh98",
+      "title": "[TMR] A·B 실습 마감 · 평균의 목적 재평가",
+      "start": "2026-11-14T00:00:00",
+      "end": "2026-11-15T00:00:00",
+      "title_matches": true,
+      "description_matches": false,
+      "original_description_preserved": true,
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "unchanged_other_fields": true,
+      "description_equivalent_ignoring_display_wrapping": true,
+      "current_marker_present": true,
+      "display_note": "Readback wraps long descriptions and escapes Markdown separators; normalized comparison used."
+    },
+    {
+      "kind": "calendar",
+      "id": "drm948ao31rgv6phfjfg4nt5ag",
+      "title": "[TMR] B 의미 확인 → 기존 C·감지선 고장 실습",
+      "start": "2026-11-15T00:00:00",
+      "end": "2026-11-16T00:00:00",
+      "title_matches": true,
+      "description_matches": false,
+      "original_description_preserved": true,
+      "changed_fields": [
+        "summary",
+        "description",
+        "display_title"
+      ],
+      "unchanged_other_fields": true,
+      "description_equivalent_ignoring_display_wrapping": true,
+      "current_marker_present": true,
+      "display_note": "Readback wraps long descriptions and escapes Markdown separators; normalized comparison used."
+    }
+  ]
+}

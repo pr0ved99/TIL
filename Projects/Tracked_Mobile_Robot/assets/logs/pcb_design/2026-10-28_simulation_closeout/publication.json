@@ -1,0 +1,175 @@
+{
+  "learning_date": "2026-10-28",
+  "closeout_date": "2026-10-29",
+  "timezone": "Asia/Seoul",
+  "status": "COMPLETE_CONTENT_AND_EXTERNAL_VERIFIED",
+  "documentation": "18-section learning note, design review24, raw OP transcriptions and user PNG/CSV/workbooks preserved",
+  "progress_handoff": "UPDATED",
+  "numeric_validation": {
+    "ac_files": 4,
+    "rows_per_ac": 1201,
+    "transient_rows": 15023,
+    "ac_max_error_below_db": 8.2e-05,
+    "transient_max_error_v": 1.628838199363436e-05,
+    "simulation_rerun": false
+  },
+  "notion": {
+    "learning_url": "https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48",
+    "created": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"pages\":[{\"id\":\"407a7326-f87b-8129-8703-fecc5a17ab48\",\"url\":\"https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48?pvs=204\",\"properties\":{\"title\":\"KiCad 실습 · 전류 RC·NTC·전압 분압 — 계산·그래프·설계 판단 (10/28)\"}}]}"
+        }
+      ],
+      "structuredContent": null,
+      "isError": false
+    },
+    "readback": [
+      {
+        "key": "learning",
+        "error": false,
+        "characters": 16946,
+        "has_fc": true,
+        "has_next": true,
+        "has_learning_link": true,
+        "sections": 18,
+        "has_last_section": true,
+        "images": 5
+      },
+      {
+        "key": "hub",
+        "error": false,
+        "characters": 22470,
+        "has_fc": true,
+        "has_next": true,
+        "has_learning_link": true
+      },
+      {
+        "key": "project",
+        "error": false,
+        "characters": 23877,
+        "has_fc": true,
+        "has_next": true,
+        "has_learning_link": true
+      },
+      {
+        "key": "task",
+        "error": false,
+        "characters": 14202,
+        "has_fc": true,
+        "has_next": true,
+        "has_learning_link": true
+      },
+      {
+        "key": "tech",
+        "error": false,
+        "characters": 11802,
+        "has_fc": true,
+        "has_next": true,
+        "has_learning_link": true
+      }
+    ],
+    "properties": {
+      "project": {
+        "status": "진행 중",
+        "summary": "10/28 사용자 KiCad 실습·10/29 마감: 전류RC AC/TRAN·NTC25/50상당 OP/AC·전압분압 OP/AC, PNG/CSV 및 상세학습노트 저장. 다음 전압±0.10V 오차예산·보호조건. 실제 쉴드/MCU/실물 미변경, 전체MVP 진행 중."
+      },
+      "task": {
+        "status": "진행 중",
+        "verification": "해당 없음",
+        "evidence": "https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/progress/2026-10-29_progress.md"
+      }
+    },
+    "operation_results": [
+      {
+        "key": "hub",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"page_id\":\"403a7326-f87b-816f-8115-fbe2c995f8f0\"}"
+            }
+          ],
+          "structuredContent": null,
+          "isError": false
+        }
+      },
+      {
+        "key": "project",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"page_id\":\"3fca7326-f87b-8124-b0ee-e212822ce80d\"}"
+            }
+          ],
+          "structuredContent": null,
+          "isError": false
+        }
+      },
+      {
+        "key": "task",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"page_id\":\"3fca7326-f87b-8184-a67e-cefc1a1600c6\"}"
+            }
+          ],
+          "structuredContent": null,
+          "isError": false
+        }
+      },
+      {
+        "key": "tech",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"page_id\":\"3fca7326-f87b-8128-9979-cec9503cac85\"}"
+            }
+          ],
+          "structuredContent": null,
+          "isError": false
+        }
+      }
+    ],
+    "skill": "notion:notion-research-documentation"
+  },
+  "calendar": {
+    "id": "19bnchnobsa7j46druji2ndgk8",
+    "start_unchanged": true,
+    "end_unchanged": true,
+    "title_unchanged": true,
+    "recurrence_unchanged": true,
+    "reminders_unchanged": true,
+    "has_learning": true,
+    "previous_description_preserved_ignoring_layout": true,
+    "before_characters": 2854,
+    "after_previous_characters": 2855,
+    "title": "[TMR] 주간 근거 정리·다음 작업 선정",
+    "start": "2026-10-25T14:30:00+09:00",
+    "end": "2026-10-25T15:30:00+09:00",
+    "readback_confirmed": true,
+    "layout_note": "The connector adds surrounding whitespace; previous description text is preserved after whitespace normalization."
+  },
+  "git": {
+    "content_commit": "1aadd3e3b63d8bae36b6f89f5cf3a3b3d9a0da66",
+    "content_files": 70,
+    "branch": "agent/dual-encoder-bringup",
+    "content_push_verified": true,
+    "source_bytes_verified": 35,
+    "receipt_commit_policy": "Publication receipt/backlinks are committed separately. Final receipt HEAD is verified with ls-remote and reported in the closing reply."
+  },
+  "hardware_tests": "NOT_RUN",
+  "firmware_build_flash": "NOT_PERFORMED",
+  "original_shield_cad": "UNCHANGED",
+  "unrelated_changes_preserved": 17,
+  "documentation_validation": {
+    "markdown_files": 18,
+    "local_links": 679,
+    "python_syntax": "PASS",
+    "unrelated_preserved": 17
+  }
+}

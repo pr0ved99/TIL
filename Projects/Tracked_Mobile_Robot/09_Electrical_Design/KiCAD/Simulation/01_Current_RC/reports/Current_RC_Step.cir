@@ -1,0 +1,6 @@
+.title KiCad schematic
+.tran 2u 30m 0 2u
+C1 /VADC 0 100n
+R1 /VIN /VADC 12k
+V1 /VIN 0 PULSE( 1.43 1.87 1m 1u 1u 20m 40m ) 
+.end

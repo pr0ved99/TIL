@@ -1,0 +1,202 @@
+{
+  "date": "2026-11-19",
+  "scope": "MVP-005 original single-motor requirements against existing evidence",
+  "decision": "MVP-005 / REQ-MOTOR-005 / T-MOTOR-003 remain PARTIAL; functional evidence specifically identified",
+  "raw_UART_checks": [
+    {
+      "path": "2026-09-29_single_motor_bench/05_m1_a_negative_10pct.txt",
+      "TEL_count": 102,
+      "side": "left",
+      "command_PWM_permille": -100,
+      "first_timeout_age_ms": 365,
+      "tail_zero_span_ms": 9300,
+      "opposite_channel_always_zero": true,
+      "physical_direction_basis": "existing operator report in reports31/32; UART alone cannot prove physical direction"
+    },
+    {
+      "path": "2026-09-29_single_motor_bench/11_m2_b_forward_after_dir_fix.txt",
+      "TEL_count": 98,
+      "side": "right",
+      "command_PWM_permille": 100,
+      "first_timeout_age_ms": 368,
+      "tail_zero_span_ms": 8900,
+      "opposite_channel_always_zero": true,
+      "physical_direction_basis": "existing operator report in reports31/32; UART alone cannot prove physical direction"
+    },
+    {
+      "path": "2026-09-29_single_motor_bench/12_m2_b_reverse_after_dir_fix.txt",
+      "TEL_count": 49,
+      "side": "right",
+      "command_PWM_permille": -100,
+      "first_timeout_age_ms": 372,
+      "tail_zero_span_ms": 4100,
+      "opposite_channel_always_zero": true,
+      "physical_direction_basis": "existing operator report in reports31/32; UART alone cannot prove physical direction"
+    },
+    {
+      "path": "2026-09-30_single_motor_run/01_m1_positive_timeout_console.txt",
+      "TEL_count": 36,
+      "side": "left",
+      "command_PWM_permille": 100,
+      "first_timeout_age_ms": 367,
+      "tail_zero_span_ms": 2800,
+      "opposite_channel_always_zero": true,
+      "physical_direction_basis": "existing operator report in reports31/32; UART alone cannot prove physical direction"
+    }
+  ],
+  "preserved_manifest_items_checked": [
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/01_uart_startup_ready.txt",
+      "sha256": "434a4db25bf53b64bccbb034d467f330f090d31682e1d35f1aafd0344d712bca"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/02_manual_estop_reset.txt",
+      "sha256": "229266e940b404cb92e8c78102e6ec0d110f8353ac00bc568fe752380ac4eb8d"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/03_m1_a_positive_5pct.txt",
+      "sha256": "5ac4657a9a4630f3e67ea41db1fd62053eb3a4dd212fa3caea287bcd7314b666"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/04_m1_a_positive_10pct.txt",
+      "sha256": "24c9cd757e5da2f27cebd222ce435ca2764bb0c8fd6523c0df5848a9d22d6d7f"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/05_m1_a_negative_10pct.txt",
+      "sha256": "0407cce59b9a3b5dd139f6a2a94baf0be6c571bc47e31b104fce56a4a85cf35e"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/06_m2_b_initial_no_rotation.txt",
+      "sha256": "57129a86b54c334b720e3d0e6823d617a5441fbe3ac439ff83e207c0ec12f20a"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/07_m2_uncertain_connector_trial.txt",
+      "sha256": "916ed54cb64d749c8471005874eb19d994bc5a16df00892fd4d1df5e241f9309"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/08_m2_a_cross_test.txt",
+      "sha256": "dfd6cfedd8ff1f36a5787f4906072c04fc58233d9cc5552a0ad4c4266bd8b20a"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/09_m1_b_cross_test.txt",
+      "sha256": "f4921bd17aa5a3b69278b33b17317529f278c69e114f456c6d9d4f41321f08d3"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/10_m2_b_positive_before_dir_fix.txt",
+      "sha256": "1d128011cd2a3a3f4f7521d592cc02ff55f7919636fa5d81270943746987f990"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/11_m2_b_forward_after_dir_fix.txt",
+      "sha256": "3c2e20d6e72952ec3712b7cd2eaa179122c5aa2472645592efc9890bae2ad95c"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-29_single_motor_bench/12_m2_b_reverse_after_dir_fix.txt",
+      "sha256": "ea84e938bba9bab748c47b1033733b24bbb681219fb0168d1c79594e0a05eb24"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/01_m1_positive_timeout_console.txt",
+      "sha256": "270796023f5ceed143c1b6e66409a5cb428b2b536856768f5774352c0a12c573"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/02_m1_active_disarm_console.txt",
+      "sha256": "41b8975e33931d0d2fb3738ca4c2afe2c39413b5de2b0a70ca4557a24925b1c6"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/03_m1_physical_s0_console.txt",
+      "sha256": "87d90966ec9145d5f41798af9df08944d05523d8a49b8d8bf5cdd24e9d19de6f"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/04_m1_three_second_console.txt",
+      "sha256": "984f3587aeae66cdde3e47f81375c97166c141bb3950eba6c362945c0a02d75f"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/05_m2_three_second_console.txt",
+      "sha256": "b871e6ff80da4e4813dad226f4178ea2b599e08d1e07ce0e222e2223f17c1891"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/02_m1_active_disarm_timing.json",
+      "sha256": "81dbec55be1b9f212d7f1ec65cd450f3ac8b3d64e081a264eedd8d13979ed551"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/02_m1_active_disarm_capture_summary.json",
+      "sha256": "78e3fc422c9c0cefbcfa99baab29a2f77231845aa120f353876a7a57220717aa"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/03_m1_physical_s0_analysis.json",
+      "sha256": "c8c43da32f8b6329b734dd10ff723c98ec657a56dc7345e08570b52d1eee81b0"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/04_m1_three_second_analysis.json",
+      "sha256": "e865a87c9b83e5b1e7972e3b6b0d1e68da1a572c4e8fe457b97a153522172af0"
+    },
+    {
+      "path": "assets/logs/motor_output/2026-09-30_single_motor_run/05_m2_three_second_analysis.json",
+      "sha256": "4a7eb484abaf96ca7d2fcd07312a1cba326175030736ab38f70cd4675aca4b8a"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_3s_Run_10pct_Encoder_Stability.pvs",
+      "sha256": "5a3a8e6fd16ca260e112f31ba81b4790ecf6ea6c9b9661a0be559a4385754979"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_3s_Run_10pct_Encoder_Stability.sr",
+      "sha256": "9126d331713a2978219e4ac3237f8dda732aae72069a4a876fe24b23a3a81348"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_Active_DISARM_10pct_500ms_Backup.pvs",
+      "sha256": "e77601fdd07cba15feecef01fd43a9a10c6d0102458cbfcfd0ac00763fd63840"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_Active_DISARM_10pct_500ms_Backup.sr",
+      "sha256": "d3d057718466fd56eb5e086c2fbc062315419fe980ed3e66241447efd736a485"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_Physical_S0_Stop_10pct_500ms_Backup.pvs",
+      "sha256": "5cadff7fc876d89c15ad1b762944231d5fbfa44af8b9decfe518cdc1fbf494cf"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M1_Physical_S0_Stop_10pct_500ms_Backup.sr",
+      "sha256": "d1918305fed15773ed6acc7b8fd89a3c1512776ce0a2d1b5a4bf9936559faf6d"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M2_3s_Run_10pct_Encoder_Stability.pvs",
+      "sha256": "c1b31c3207aa0361b9b528d9d3125f84d6922392b5dcfe17447cd3865b679500"
+    },
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-30_M2_3s_Run_10pct_Encoder_Stability.sr",
+      "sha256": "a678548e701d5428dfa2510a75efe7b9a826df2068c23d3654f35a61fb8a131f"
+    }
+  ],
+  "saved_capture_analysis": {
+    "method": "saved derived JSON and matching original capture hashes; no new full waveform decoding",
+    "A_active_DISARM_PWM_delay_us": 364.4444444432793,
+    "three_second_runs": [
+      {
+        "motor": "A",
+        "PWM_duration_ms": 2998.28925,
+        "encoder_edges": 1432,
+        "encoder_constant_tail_s": 20.00838025,
+        "DISARM_frame_end_to_last_PWM_fall_us": 48.94444444403234
+      },
+      {
+        "motor": "B",
+        "PWM_duration_ms": 2988.7879999999996,
+        "encoder_edges": 1384,
+        "encoder_constant_tail_s": 20.50647225,
+        "DISARM_frame_end_to_last_PWM_fall_us": 1704.6944444443213
+      }
+    ]
+  },
+  "remaining": [
+    "Specific successful single-motor forward/reverse acoustic-abnormality observations not located in inspected records; later dual-track observations not substituted.",
+    "T005A prerequisite acceptance remains unresolved; do not retroactively certify or execute a new gated run.",
+    "REQ-MOTOR-004 low-duty start proven; later 150/200permille settings and rationale recorded, unrestricted load/limit release not accepted."
+  ],
+  "correction": "No numeric repetition count or independent repeat-reliability PASS threshold is specified in current REQ-MOTOR-005 / Stage2. Do not create a repeat-test requirement from a limitation sentence.",
+  "limits": [
+    "Original physical direction/stop observations are operator reports.",
+    "PWM timing is a digital signal boundary, not shaft-stop time.",
+    "Early nonrotation, opposite-sign final tick and inter-run error increments retained.",
+    "No noise level/audio measurement, new runtime, firmware edit, build/flash, or physical test."
+  ],
+  "next": "MVP-007 encoder electrical acceptance; reuse existing transition/count evidence and identify only missing input-condition evidence"
+}

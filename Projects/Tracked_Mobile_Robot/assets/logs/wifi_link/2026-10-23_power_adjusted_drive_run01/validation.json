@@ -1,0 +1,12 @@
+{
+  "date": "2026-10-23",
+  "raw_attachment_hash_and_bytes_verified": true,
+  "tel_gap_values_exact_cross_check": 2552,
+  "control_gap_values_cross_checked": 5732,
+  "control_record_timestamp_max_difference_ms": 0.2,
+  "control_timestamp_note": "receive() takes now before record() obtains another performance.now(); small record-time differences are expected. Statistics use the explicit gap_ms field.",
+  "local_page_hash_matches_previous": true,
+  "mcu_sources_unchanged": true,
+  "additional_tests_or_hardware_actions": false,
+  "files_staged_or_published": false
+}

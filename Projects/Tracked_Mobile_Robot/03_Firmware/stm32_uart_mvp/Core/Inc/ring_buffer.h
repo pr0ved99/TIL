@@ -16,6 +16,8 @@ typedef struct{
 void ring_buffer_init(ring_buffer_t *rb);
 int ring_buffer_push(ring_buffer_t *rb, uint8_t data);
 int ring_buffer_pop(ring_buffer_t *rb, uint8_t *data);
+/* The caller must prevent concurrent ISR access while discarding queued bytes. */
+void ring_buffer_discard_all(ring_buffer_t *rb);
 uint16_t ring_buffer_available(const ring_buffer_t *rb);
 uint32_t ring_buffer_dropped(const ring_buffer_t *rb);
 

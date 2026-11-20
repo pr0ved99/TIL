@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-14",
+  "software_checks": [
+    "constant input has zero spread",
+    "known alternating noise averages to baseline in each 200-sample block",
+    "5mV offset survives averaging",
+    "sampling away from rounded duplicate timestamps succeeds",
+    "sampling an ambiguous duplicate-time edge is rejected"
+  ],
+  "workbook_sha256": "ace71d1327a57a49dbfbdf664a688c90f17169f5d03067b2af6f5735122f941b",
+  "workbook_commands": [
+    ".tran 50u 10 0 50u",
+    ".kicad adjustpaths",
+    ".save all",
+    ".probe alli",
+    ".probe allp"
+  ],
+  "workbook_plotted_signals": [
+    "V(/VADC)",
+    "V(/VRAW)",
+    "V(/VRAW_BIAS)"
+  ],
+  "schematic_hash_matches_b3_review": true,
+  "status": "POSTPROCESSOR_AND_SAVED_INPUT_CHECKS_PASS_NOT_HARDWARE_TEST"
+}

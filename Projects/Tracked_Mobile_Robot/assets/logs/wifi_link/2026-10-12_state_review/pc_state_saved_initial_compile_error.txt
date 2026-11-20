@@ -1,0 +1,16 @@
+setUpClass (__main__.WifiControlStateTest) ... ERROR
+
+======================================================================
+ERROR: setUpClass (__main__.WifiControlStateTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_wifi_control_state.py", line 70, in setUpClass
+    raise AssertionError("host compilation failed:\n" + result.stdout + result.stderr)
+AssertionError: host compilation failed:
+C:/Users/eyh12/AppData/Local/Temp/wifi-control-state-r3fm4vph/wifi_control_state.c:3: error: ';' expected (got "_Bool")
+
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.112s
+
+FAILED (errors=1)

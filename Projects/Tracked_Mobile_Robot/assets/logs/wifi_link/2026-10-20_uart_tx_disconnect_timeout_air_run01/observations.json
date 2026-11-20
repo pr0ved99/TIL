@@ -1,0 +1,342 @@
+{
+  "date_local": "2026-10-20",
+  "test_id": "TK-MVP-02-03 / T-DRIVE-001 subset",
+  "status": "PASS_TIMEOUT_STOP_SUBSET_RECOVERY_CONFIRMED_SEPARATELY",
+  "scope": "Single-direction ESP TX to STM RX disconnect; tracks suspended; normal firmware. Reconnection/no automatic restart not yet tested.",
+  "evidence": {
+    "raw_file": "browser_report.json",
+    "sha256": "f736ef38cf8f5a7a47ad15e52d99dc792827971f34259a9ecb81b30ebdadc44a",
+    "bytes": 2887518,
+    "attachment_id": "7ee211aa-7835-4694-8bcb-0a2d39b0fd0d",
+    "observer_version": 5
+  },
+  "reported_setup": {
+    "tracks": "reassembled and suspended",
+    "esp": "removed from perfboard and connected using jumpers",
+    "power_positive": "5V_ESP Pin2 to ESP 5V",
+    "power_ground": "5V_ESP Pin1 to ESP GND; STM and ESP common GND",
+    "uart": "STM RX to ESP TX; STM TX to ESP RX",
+    "ready_state": "READY / DISARMED/BOOT / IDLE reported before capture"
+  },
+  "instructed_trigger": "Hold forward, disconnect GPIO17 only, maintain power/GND/GPIO18, release forward after stop; leave GPIO17 disconnected.",
+  "physical_observation": {
+    "gpio17_disconnect_confirmed": true,
+    "physical_stop_confirmed": true,
+    "s0_used": false,
+    "user_confirmation": "S0 조작 없이 GPIO17 분리 후 정지",
+    "question_context": "Asked whether both tracks stopped while forward remained held, without S0. Response confirms GPIO17 disconnection followed by stop without S0; precise mechanical stop time was not measured."
+  },
+  "telemetry": {
+    "rows": 2619,
+    "unique_source_rows": 1574,
+    "conflicting_duplicates": 0,
+    "telemetry_dropped": 0,
+    "boot_ids": [
+      14253055
+    ],
+    "stm_tick_decreases": 0,
+    "max_source_step_ms": 100,
+    "max_stm_age_ms": 100,
+    "max_drop": 0,
+    "max_err": 0
+  },
+  "timeout": {
+    "last_accepted_cmd_seq": 837153199,
+    "inferred_last_accepted_cmd_stm_ms": 241437,
+    "configured_timeout_ms": 300,
+    "last_nonzero_tel": {
+      "ms": 144061.10000000056,
+      "boot_id": 14253055,
+      "gap_ms": 50.60000000055879,
+      "esp_uptime_ms": 260998,
+      "esp_step_ms": 60,
+      "tel_count": 2607,
+      "stm_t_ms": 241700,
+      "stm_age_ms": 30,
+      "command_age_ms": 263,
+      "last_seq": 837153199,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "cps": [
+        950,
+        740
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 241625,
+      "left_count": "1826",
+      "right_count": "1432",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "first_timeout_zero_pwm_tel": {
+      "ms": 144171.2000000002,
+      "boot_id": 14253055,
+      "gap_ms": 51.5,
+      "esp_uptime_ms": 261118,
+      "esp_step_ms": 59,
+      "tel_count": 2608,
+      "stm_t_ms": 241800,
+      "stm_age_ms": 50,
+      "command_age_ms": 363,
+      "last_seq": 837153199,
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        960,
+        760
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 241725,
+      "left_count": "1922",
+      "right_count": "1508",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "output_transition_command_age_ms": {
+      "lower_exclusive": 263,
+      "upper_inclusive": 363
+    },
+    "first_both_cps_zero_tel": {
+      "ms": 144509.5,
+      "boot_id": 14253055,
+      "gap_ms": 58.5,
+      "esp_uptime_ms": 261418,
+      "esp_step_ms": 60,
+      "tel_count": 2611,
+      "stm_t_ms": 242100,
+      "stm_age_ms": 50,
+      "command_age_ms": 663,
+      "last_seq": 837153199,
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 242026,
+      "left_count": "1959",
+      "right_count": "1541",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "final_tel": {
+      "ms": 157160,
+      "boot_id": 14253055,
+      "gap_ms": 50.200000000186265,
+      "esp_uptime_ms": 274079,
+      "esp_step_ms": 60,
+      "tel_count": 2738,
+      "stm_t_ms": 254800,
+      "stm_age_ms": 21,
+      "command_age_ms": 13363,
+      "last_seq": 837153199,
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 254726,
+      "left_count": "1959",
+      "right_count": "1541",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "zero_pwm_disarmed_followup_source_ms": 13000,
+    "timing_limit": "100 ms source TEL cadence bounds reported output-state transition to (263, 363] ms after last accepted CMD; exact electrical output shutoff and physical stop latency are not measured. CPS uses an earlier encoder sample/interval."
+  },
+  "control": {
+    "phase_changes": [
+      {
+        "ms": 126089.60000000056,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.10000000055879354,
+        "phase": "IDLE",
+        "ticket": 1474,
+        "ttl_ms": 70,
+        "control_reason": 0
+      },
+      {
+        "ms": 132960.7999999998,
+        "event": "CONTROL_RX",
+        "gap_ms": 51.59999999962747,
+        "phase": "ARM_PENDING",
+        "ticket": 0,
+        "ttl_ms": 0,
+        "control_reason": 0
+      },
+      {
+        "ms": 132961.2000000002,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.40000000037252903,
+        "phase": "ZERO_PENDING",
+        "ticket": 1518,
+        "ttl_ms": 150,
+        "control_reason": 0
+      },
+      {
+        "ms": 133160.7000000002,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.20000000018626451,
+        "phase": "ACTIVE",
+        "ticket": 1520,
+        "ttl_ms": 150,
+        "control_reason": 0
+      },
+      {
+        "ms": 143951.10000000056,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.5,
+        "phase": "STOPPING",
+        "ticket": 0,
+        "ttl_ms": 0,
+        "control_reason": 11
+      },
+      {
+        "ms": 144119.90000000037,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.40000000037252903,
+        "phase": "BLOCKED",
+        "ticket": 0,
+        "ttl_ms": 0,
+        "control_reason": 16
+      }
+    ],
+    "reason_mapping": {
+      "11": "ACK_TIMEOUT",
+      "16": "STOP_UNCONFIRMED"
+    },
+    "stop_snapshot": {
+      "ms": 143950.7999999998,
+      "sendStop": false,
+      "intent": true,
+      "focused": true,
+      "motionReady": false,
+      "motion": {
+        "button": "forward",
+        "vx": 100,
+        "w": 0
+      },
+      "pending": {
+        "id": 110,
+        "cmd": "CMD"
+      },
+      "offer": {
+        "kind": "control_state",
+        "boot_id": 14253055,
+        "session_id": 3,
+        "phase": "STOPPING",
+        "owner_session": 0,
+        "control_id": 0,
+        "ticket": 0,
+        "purpose": "NONE",
+        "ttl_ms": 0,
+        "zero_only": false,
+        "control_reason": 11
+      },
+      "offer_age_ms": 0.09999999962747097,
+      "tel": {
+        "source": "STM_UART",
+        "mode": "STA",
+        "boot_id": 14253055,
+        "uptime_ms": 260879,
+        "free_heap_bytes": 262624,
+        "startup_state": "READY",
+        "stm_connected": true,
+        "stm_stale": false,
+        "stm_age_ms": 11,
+        "stm_age_limit_ms": 500,
+        "tel_count": 2606,
+        "stm_t_ms": 241600,
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": 163,
+        "last_seq": 837153199,
+        "vx_mmps": 100,
+        "w_mradps": 0,
+        "left_pwm": 144,
+        "right_pwm": 150,
+        "left_cps": 970,
+        "right_cps": 730,
+        "encoder_valid": true,
+        "encoder_t_ms": 241525,
+        "left_count": "1731",
+        "right_count": "1358",
+        "encoder_arm_valid": true,
+        "encoder_arm_seq": 837153091,
+        "batt_mv": null,
+        "battery_available": false,
+        "drop": 0,
+        "err": 0
+      },
+      "tel_local_age_ms": 0.39999999944120646,
+      "stack": "Error\n    at stopLocal (<anonymous>:67:51)\n    at handleControl (http://192.168.0.17/:193:89)\n    at ws.onmessage (http://192.168.0.17/:302:79)"
+    },
+    "interpretation": "ESP entered STOPPING on missing CMD ACK, then BLOCKED without DISARM confirmation. STM remained on last accepted sequence and independently reported DISARMED/CMD_TIMEOUT; no later DISARM reason or ESTOP reason was observed."
+  },
+  "sources": [
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "sha256": "dd38258c1beacb549e3c17535e11875a63379af98341e08ff867d20568ec5069"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_state.h",
+      "sha256": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0"
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_control_state.c",
+      "sha256": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-20_encoder_count_saved_review/console_encoder_observe.js",
+      "sha256": "67c0f561966c8b2ea6246dd4f7398717e773a23609a75f204f16edab7f148dd8"
+    }
+  ],
+  "remaining": [
+    "Whole MVP and electrical waveform/precise mechanical stop-time acceptance are not inferred from this functional subset"
+  ],
+  "changes": "No firmware edits, builds, flashes, or robot commands performed by Codex.",
+  "recovery_evidence": "../2026-10-20_uart_tx_reconnect_recovery_air_run01/observations.json"
+}

@@ -1,0 +1,1092 @@
+{
+  "scope": "Wireless tracked driving, latency diagnostics, turn20 and first straight trim; source/tests/docs/raw evidence only.",
+  "hash_basis": "SHA256 of working-tree bytes; Git text newline normalization may change stored text bytes. Binary SR/MP4 are unchanged.",
+  "board_build_flash": "Performed by user; PC checks do not replace target runtime.",
+  "files": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/README.md",
+      "bytes": 6184,
+      "sha256": "0ef1c0fcb4cadd685db2512f176a000be61ea0c65ac4787b6ae3fe613d608776"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+      "bytes": 2413,
+      "sha256": "95291ee26c63f3ab0bdd9a838a073e32398f3f939e97458a18e0474723c4820a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "bytes": 110101,
+      "sha256": "ddb684c97211bdbd7cef5720baa2355892c7054305527935d14ea6215a9363c1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/drive_command_mapper.c",
+      "bytes": 2572,
+      "sha256": "134c1194bebd2f998956889b8af88da8884b5aa3eb5f164ce15f95c452d9b9ed"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/motor_output.c",
+      "bytes": 6958,
+      "sha256": "8d9c6a4b6312f0145636c6a45193367375d461e3023f9c1ce2a9bca62fd27821"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "bytes": 28247,
+      "sha256": "61cba264afb2c3064aabed5aa5c3080ab4c7fa97a584dcedac3c17dacd536d51"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/README.md",
+      "bytes": 44968,
+      "sha256": "45256a8b6fd3326e908964a030a4d3a6512064537e7b766115bfdc1ec0d8fab4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/drive_output_profile_host_fixture.c",
+      "bytes": 4694,
+      "sha256": "9a8669d4410e5019e3f72528cd5ff23c49fc68885c4f4d253fc821e7e30f809b"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_drive_command_mapper_contract.py",
+      "bytes": 4411,
+      "sha256": "684633c5fa9b52ddbbb2a5811ae6490b7a82f8ae2f0e995990f4f5b4048e762a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_drive_output_profile.py",
+      "bytes": 3295,
+      "sha256": "f0f1ed2b75bdbe79a35d17a89d0bb4d8f89b0ddcb2f47096a3b259db484f48ac"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_firmware_contract.py",
+      "bytes": 66115,
+      "sha256": "9a08fe465fac2fc48098611d221818bc8e319f84394948d6513f88b66539e243"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_control_main_page.js",
+      "bytes": 25139,
+      "sha256": "fc143db45f6b71dbf2b8ed398711fffae890a7e712bffc766ca681570fdd2bbd"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_nonzero_core.py",
+      "bytes": 8625,
+      "sha256": "6a4c44d5c5eff1c5c3c16ba54f2eb36ad94e5e8dc2ab67d37c0eefa3d98e608f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_nonzero_page.js",
+      "bytes": 8901,
+      "sha256": "3587beb0803c15e89117c83135e32d273afcc7eff34106149a261a4d4aff496d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/tests/wifi_nonzero_core_host_fixture.c",
+      "bytes": 8140,
+      "sha256": "508017e097b1947be14a35e153ea1f83b273e33354b9ebea162c302e0d204e37"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/README.md",
+      "bytes": 20459,
+      "sha256": "e1d8262ec554fc769d1986dde9227804f5122045c0e54ab18baf51fbb3672130"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ05_M1_FORWARD_RELEASE_10PCT_run02.pvs",
+      "bytes": 2564,
+      "sha256": "0064735be92312367e7dad6a6ffada1abd6bdd7498214338766bd9754d77a9b0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ05_M1_FORWARD_RELEASE_10PCT_run02.sr",
+      "bytes": 325302,
+      "sha256": "97a8f324fd383798de97a2618f960ee5875067dc1c30f02f1a1e25fb47211666"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ05_M1_FORWARD_RELEASE_run01.pvs",
+      "bytes": 2564,
+      "sha256": "b93ebf0da44e6680c04bd2e7bac521243212f65bb7f6dba5e3f02ec94adc03ba"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ05_M1_FORWARD_RELEASE_run01.sr",
+      "bytes": 340374,
+      "sha256": "46bb0ef71f7f851b5dc320c6828162e580c0569b20da4cc2a8ce0b72c0b08411"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ06_REVERSE_TURNS_10PCT_run01.pvs",
+      "bytes": 2564,
+      "sha256": "7f3c32f4e4f4c896444477fd1f00c211a21664ab074c84701091608c54f70d4c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ06_REVERSE_TURNS_10PCT_run01.sr",
+      "bytes": 778552,
+      "sha256": "c39381e74993e438752f8a56557eb3930d179408fdc6e634199321b2d44df473"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ07_BOTH_MOTORS_ACTIVE_DISARM_10PCT_run01.pvs",
+      "bytes": 2564,
+      "sha256": "8aa593b8d26ba8151451ed761ab0c5bd5e776692d9aaff88014bca9fb05cf626"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-17_WIFI_NZ07_BOTH_MOTORS_ACTIVE_DISARM_10PCT_run01.sr",
+      "bytes": 320202,
+      "sha256": "9446b03f9eb43010f73b5358080f27f67d1f64045c1659353c13bcfa4aaa6946"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run01.pvs",
+      "bytes": 2564,
+      "sha256": "9d142622237926d6689605c55e614fd974488b810aa488e5f429c37504410516"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run01.sr",
+      "bytes": 23136,
+      "sha256": "609a407f177e4a9609ae8fe3bdce4a58838f01558277a34f9f0457c5ce4cf0ca"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run02.pvs",
+      "bytes": 2599,
+      "sha256": "9a0d39de9ce322d56fef791a4062fa3cd4ce21c3ab3ccf078f8e495f2dc194ff"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run02.sr",
+      "bytes": 330368,
+      "sha256": "012ada50415c09a415fdfc7938f84a9809feeeb839754ff77595ef112a3b5095"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_02_TRACKS_LIFTED_REVERSE_TURNS_10PCT_run01.pvs",
+      "bytes": 2563,
+      "sha256": "94b4efba5231d6269103f32805f52fed6b512aeb9255c220e227edac8af4accb"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_02_TRACKS_LIFTED_REVERSE_TURNS_10PCT_run01.sr",
+      "bytes": 681506,
+      "sha256": "c4c2861ec0f35a3d3e048d7c087cd4ff42ce76b46d7814bd1a2606df7ecc3b1b"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_03_TRACKS_ACTIVE_DISARM_10PCT_run01.pvs",
+      "bytes": 2563,
+      "sha256": "4037d742823a7cfc40eae5b95cb2be5df8db8f6c3ec6343394cba460750a14f4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_G6_03_TRACKS_ACTIVE_DISARM_10PCT_run01.sr",
+      "bytes": 413890,
+      "sha256": "eca8b6005afc8eca3066c68eccf6dcd3b1a5d64476e77dad0bd217d1ede9e0c0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_WS50_run01.pvs",
+      "bytes": 2557,
+      "sha256": "85aa1ed1e624e2929570e08a868ccc99cf2de6d0a183e2c3a53b4bfd8f7117b6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_WS50_run01.sr",
+      "bytes": 1075469,
+      "sha256": "66c736a10fa2376fd7d20118d8bdf86ca6ab9e7d25a46bd976033b99f96992ff"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_run01.pvs",
+      "bytes": 2594,
+      "sha256": "3caf4c816331ff3f40088be67e7cb821649af5b14dab7a6cf3d9a954b1b5194e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_run01.sr",
+      "bytes": 1389550,
+      "sha256": "8441b13d6a10d4c143c703f30dd6c0b67b33259c5c1514dad70821b4cd1f00a0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_run02.pvs",
+      "bytes": 2591,
+      "sha256": "7b931d2bf6a4c4ab240b7de515b249741abe6e1465f28e1820b7e442a5f231bc"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_UNEXPECTED_STOP_15PCT_run02.sr",
+      "bytes": 1542547,
+      "sha256": "38dd639c91eb0baba45fac61bc4cb32691889f21a5a6cb17a19b6f8940ed213a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_WIFI_NZ08_FOCUS_LOSS_NO_REARM_10PCT_run01.pvs",
+      "bytes": 2563,
+      "sha256": "c294321600df4c7aca2be4bca287597ec4b33b63074060badbf0ad34fbde119c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/2026-10-18_WIFI_NZ08_FOCUS_LOSS_NO_REARM_10PCT_run01.sr",
+      "bytes": 330368,
+      "sha256": "fdb7d4b30ddbcfc205fff5838fd1bd5f80600a47ac48e6505644917b53ffb5de"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_forward100_saved_review",
+      "bytes": 4413,
+      "sha256": "993c61e185e3cb49f581f5dc181eee9f4955f76083748a6b467249b28716d44a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_forward100_saved_review.txt",
+      "bytes": 6741,
+      "sha256": "36f466a2e815cb503245601408365d7f8199942949e0065009e3f06a120464d1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/D0.txt",
+      "bytes": 47813,
+      "sha256": "d7b2bf61f0e77d3c6d69389c3504a75e2fbc6e5c9e3b7460c36cbd5901cf9fb7"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/D0_lines.json",
+      "bytes": 67831,
+      "sha256": "e9e7145d1aa746388d94ac29553f7cf01105be630ad586136b3203ed6541e1e0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/D1.txt",
+      "bytes": 9827,
+      "sha256": "c3e8275b89248f66e73a67aab2cbe84b5b8d44905813e83a13477ee58e2c3302"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/D1_lines.json",
+      "bytes": 17438,
+      "sha256": "12457bb0010d8d8e30207f584ccbabcb0df0b6a0177168fc244fc038c8bb2f72"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/followup_user_observations.json",
+      "bytes": 2096,
+      "sha256": "8948cc740db2963c28a359749360c3ef80919409e6265e1c56f00311bfde610a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/observations.json",
+      "bytes": 4739,
+      "sha256": "efca960f6c5a8affcb2ff65c646647a219f5fee753a92910878a8bb153f2bf7f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_10pct_run02/summary.json",
+      "bytes": 49614,
+      "sha256": "14a07f72d0618bf7af2f69c3691892a6f48ce3ba59f862a0ed8e1f4fa800f938"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/D0.txt",
+      "bytes": 44131,
+      "sha256": "5a0b07f8d2c8dc27bc87842c94b49547c0641f81ffc1dd38d14d9d85c61b3700"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/D0_lines.json",
+      "bytes": 63190,
+      "sha256": "d57b22e677e1d01a1664d20bb6204536160e5d459e18e6dd6b49a350a34f496c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/D1.txt",
+      "bytes": 10383,
+      "sha256": "46d64c413e97ce120be989b7915313b11c69a72337c88267ed35753faf6eabb5"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/D1_lines.json",
+      "bytes": 18309,
+      "sha256": "c283a5a6e824f5672c1fa9350cc17a6bc457c13217a4505def1fb33d8f98bc55"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/analyze.py",
+      "bytes": 6772,
+      "sha256": "d51b896bf32341bd472a63f78dd5fba11757d513219ca87df4ac4f6f7c5cba9f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/esp_console.txt",
+      "bytes": 47213,
+      "sha256": "d5852fb5343c7d2bc4d6cded49c380c5b42bbf5ecab182d4442c12ab38276506"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/observations.json",
+      "bytes": 8102,
+      "sha256": "325a5f9df04ae7384f223eeddd89be0dbabcec599adac7efa902aa45cc833367"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz05_m1_forward_run01/summary.json",
+      "bytes": 51564,
+      "sha256": "2a220ad38dc783fb914e45ff454bc7b980439e207052bb4a64f2fe34fac8f35a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_all_directions10_saved_review",
+      "bytes": 4413,
+      "sha256": "5f80f39d43745fb7a244244249c476bf5fc4f9d7552bb932e5da52ec18af4434"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_all_directions10_saved_review.txt",
+      "bytes": 6741,
+      "sha256": "33c29f216cb5aff73afc3784aa4b22782a03411294bfc6849d47ee752d245cac"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/D0.txt",
+      "bytes": 110983,
+      "sha256": "99ec677e399b4827f72b971a9329ca9284a2a2e1aaba1828f61ebbf8beb5948d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/D0_lines.json",
+      "bytes": 150087,
+      "sha256": "29a29eea7112451ad268b7b3231efcb4afa45abacbe7f580f2ddd634a6d81050"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/D1.txt",
+      "bytes": 11398,
+      "sha256": "408d7fd4f129b3e76e43ea458eac12517755c82972a4a6f50ecda68e92f4042a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/D1_lines.json",
+      "bytes": 19993,
+      "sha256": "04edeee07b351dc254dae03d3b48041e2859e86b2073c7f452c5765a76132888"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/analyze.py",
+      "bytes": 10917,
+      "sha256": "9d8a13d8665816ef952171767bce8794590a91e473728d3c1fc4e60ffc17da0d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/esp_console.txt",
+      "bytes": 46812,
+      "sha256": "1cecc0378da0c9ee1789a29629723cc1668b1dd3d287f8af24b2f001631d6fd0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/observations.json",
+      "bytes": 24064,
+      "sha256": "56e3bcf3e3f7a6374eca2b5c0506b89ab09edeac28cd3f6ef67f263b9421306d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz06_reverse_turns10_run01/summary.json",
+      "bytes": 57513,
+      "sha256": "a7059d1943a213ed529c896b96d96aa9766861ca25f314e76c96209f712524e5"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/D0.txt",
+      "bytes": 43169,
+      "sha256": "e60714273f365055ec6a199d24323b2c46f1baff0c42567580842868cf21a969"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/D0_lines.json",
+      "bytes": 58757,
+      "sha256": "f1a057d1e4db9a7086bf33a2325ba06231a75ba02bf30faa6e1fb68916744332"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/D1.txt",
+      "bytes": 4744,
+      "sha256": "13d96580cd434eed0cf61551cb7aacbb3c07b8731f87751823ef5abda50fd533"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/D1_lines.json",
+      "bytes": 8424,
+      "sha256": "239e6f2104f822f3adfcb85e73ae47c2355eceab9592056407f394016a6dc924"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/analyze.py",
+      "bytes": 7963,
+      "sha256": "bc767de735a8b4bf2f80ea73bf6a384153da6bac86cbf5a0d5414e9a4d94057a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/esp_console.txt",
+      "bytes": 24938,
+      "sha256": "5e32076cd446942e98ef3b08ca616c50f371a43e25be652663f8841ffa6e235c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/observations.json",
+      "bytes": 8134,
+      "sha256": "75c6115a547bdd86d9305f6336dedee6b71177ba3ceb13a0494a1c154e966dd1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-17_nz07_both_active_disarm_run01/summary.json",
+      "bytes": 29488,
+      "sha256": "8a3f63b50e850c296b04a901b9cc8cb5c192dccfef2b4f5bfaa5287adf40b6d3"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/D0.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/D0_lines.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/D1.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/D1_lines.json",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/analyze.py",
+      "bytes": 4796,
+      "sha256": "337111c3574205b48b3a51c43fa5a1dab58f099e53a9c1647e8a1543c98d2258"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/esp_console.txt",
+      "bytes": 17605,
+      "sha256": "c3ac6350feb20c174ec94fc852d487fe593c2eb17fe1dba3bc03ac308e476dca"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/observations.json",
+      "bytes": 2567,
+      "sha256": "0a82f0b548c9587d525182f6e4bf477b708cd91cc98ebafef0ef2f5cccf5ee84"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run01/summary.json",
+      "bytes": 336401,
+      "sha256": "e572ff78488b3f251549db53a1808c60ba4f2c8c5d76199d4b81e4ea22024275"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/D0.txt",
+      "bytes": 40881,
+      "sha256": "57fb4fc158a6eb861aae70ba27172cb5d0b8e7e159885f20ae760c19927e5750"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/D0_lines.json",
+      "bytes": 56480,
+      "sha256": "e5a7e3db1ab256501629f3d19d401776ca424f5b7b1502b663021f348ebc7d9e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/D1.txt",
+      "bytes": 5972,
+      "sha256": "bc763f155635f096ef0b7c24b3add0b39d06a9db79a481d8704f080b62729155"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/D1_lines.json",
+      "bytes": 10592,
+      "sha256": "c247af720494ee7011839745111b38963337a52ca9a70357ea3d2494b0f28f60"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/analyze.py",
+      "bytes": 7993,
+      "sha256": "c2de99c28b1ed3b71acb40bd369f6764af72dfd9706b20ea551d9ca421140dac"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/analyze_console.py",
+      "bytes": 5097,
+      "sha256": "8ff61c724e1a2c70a732b24cd988866af1b4c3da9b4b9d4ea367dea92b6ab487"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/console_observations.json",
+      "bytes": 2685,
+      "sha256": "fe4460955c873f7bdc426e615adf9b82a553f65e7e22b77f2a27592410c162f9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/esp_console.txt",
+      "bytes": 26917,
+      "sha256": "8addb1976a3e2ff5d77e1a7f80ae5f9ce793a2930f5aed4a7a1ac71a68551d76"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/observations.json",
+      "bytes": 8365,
+      "sha256": "644facdf5c97bd2d76fdb6c954b005610b04e6ad0532b4a4f3c8b797090b1e03"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_01_tracks_forward_run02/summary.json",
+      "bytes": 34590,
+      "sha256": "ec67f569cdf13b2ba12d3e70c211e68ea75a91c249abb28fa120035c6c06bd19"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/D0.txt",
+      "bytes": 76415,
+      "sha256": "f44edef5654637286049fdc98d85e38b28d6c82451c6f146d17278d03c4e5a29"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/D0_lines.json",
+      "bytes": 106027,
+      "sha256": "0f8e52b2e823883e145d0072ffd04726cb37bac72cc70bbcde59743820e8a780"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/D1.txt",
+      "bytes": 12720,
+      "sha256": "65795970fb2be316bb27138821c49c5489a998a16bcd34d7b2730bfc0d8b8ae6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/D1_lines.json",
+      "bytes": 22360,
+      "sha256": "318bf32d3aabad3f686ca6e741c771098163ef1d7355ce01b3e62b0f51cfa53e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/analyze.py",
+      "bytes": 3839,
+      "sha256": "1305db13e67f7ae2c6636c2be1437e65cb6ebd477b39f2c80ab8cc369777005d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/console_observe.js",
+      "bytes": 1445,
+      "sha256": "a11b14536cdf9997d791e01d8dc3669b0d8c7359a3e3dfa03dd9b0e0d367ec4c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/esp_console.txt",
+      "bytes": 58902,
+      "sha256": "9090beca35000fe890b26b2fe50598903d8d64c4a491139950b8e231a595327b"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/esp_console_followup.txt",
+      "bytes": 29824,
+      "sha256": "71228af5482cb925ec50a157cbc10f41c6152acc26cd9a1aad924e5e81a3d96c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/followup_observations.json",
+      "bytes": 1200,
+      "sha256": "1cdc0651aee9bc9cc57caf3acc5a27b100db6d6f6497bfa759c008117c898075"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/observations.json",
+      "bytes": 14602,
+      "sha256": "1679c4547867adaf7a686f2b4fd3931e399ba0bc53be98f1c20b393c9d5940f2"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_02_tracks_reverse_turns_run01/summary.json",
+      "bytes": 63662,
+      "sha256": "57d8b66648f020b17c7bde34be4c366bb5ffd81bc1ae1c9b0d0e22c7428fdfb1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/D0.txt",
+      "bytes": 49908,
+      "sha256": "9635962fc2fef07a635943cae239b05f7cd11898eb75cec1de09d9daff25c41e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/D0_lines.json",
+      "bytes": 68821,
+      "sha256": "25b38802150a22a937804eea8a1d52654b5de45c9bb15a5e9f00c3f503cbc7af"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/D1.txt",
+      "bytes": 7298,
+      "sha256": "d697598b0837028f8cb9daf5ec3671ed86f2daa942deb70f3e3ba03133248bca"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/D1_lines.json",
+      "bytes": 12886,
+      "sha256": "c8617749f4775de525fb0ac20847bbb96d5fbbb45567fa178accc028a6b0b60a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/analyze.py",
+      "bytes": 7949,
+      "sha256": "57d7437c61e7a87f886c37d557acfde917ed50d7991bc298fbb9f4cca492df91"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/esp_console.txt",
+      "bytes": 32741,
+      "sha256": "8681ad94313769389c88c3a90ebc1ee436aa1db396e7610271dea511ef5e8aa2"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/observations.json",
+      "bytes": 7923,
+      "sha256": "bc24fe06dc176833b33172794df3e92c904634dabd7f4dbf7a28864d1f3ac4e2"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_03_tracks_active_disarm_run01/summary.json",
+      "bytes": 40162,
+      "sha256": "ce1ec5d8f11cfdbde29a71d6bce22976b4c6192fe7550dbdd49c0acd23bfb9c7"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_04_ground_forward_run01/2026_10_18_MVP_moving_test_01.mp4",
+      "bytes": 2206884,
+      "sha256": "b51f78358fde9559692b4a740d0dc234c742e2b9d59872599bad74bf735a6929"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_04_ground_forward_run01/esp_console.txt",
+      "bytes": 33852,
+      "sha256": "2dda6a756350748acd84645a67810dbbb20076133d659d3045a351d32492796e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_04_ground_forward_run01/observations.json",
+      "bytes": 2304,
+      "sha256": "5853134ce0e15377aa3fc9319f60d44201fd9d2c0ad267848084787f049d9aca"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_05_ground_turns_15pct_run01/esp_console.txt",
+      "bytes": 45213,
+      "sha256": "ec02bf8662df7ef61df16daa9fce6b3497a0f6682a352c708c94619f49b873c9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_05_ground_turns_15pct_run01/observations.json",
+      "bytes": 555,
+      "sha256": "fbf313106397b7904d90f974b934b8da2faf980d120846dff7d5560b171dbd0c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_lifted_cps_comparison_run01/analyze.py",
+      "bytes": 2149,
+      "sha256": "08e825c97ebfbc537fceae9133345a5a18a84e36d36826ba23f11afc00cffc87"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_lifted_cps_comparison_run01/browser_report.json",
+      "bytes": 740715,
+      "sha256": "86fabb090a7ffc8568b3a19c9167d7f66361cff851ec5661db8be4f68df15b64"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_lifted_cps_comparison_run01/observations.json",
+      "bytes": 1914,
+      "sha256": "807fdc0466b3d2de13bb9cbc4d106a57b85824ffeed92cf9c64ccbf198c2d60f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/2026_10_18_MVP_rotation_add_cps_test_01.mp4",
+      "bytes": 3977483,
+      "sha256": "069e77151f464ac1116702171c4137e7dcb26b0462afd067466cac71d535c4ef"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/analyze.py",
+      "bytes": 2128,
+      "sha256": "59edf8a8ae84302028faa45e170e5cc5dee2ee0b9e67e5cf9fffd463f56a08b3"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/browser_report.json",
+      "bytes": 713247,
+      "sha256": "9d54774ba9300add215ebe747065eed8321c34127afa7bd01d606afe845c9cab"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/observations.json",
+      "bytes": 2282,
+      "sha256": "f0372205ffc756b4ed97a8615eafebb41a7adb61c935b91a8551c4d315850304"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_forward_reverse_run01/2026_10_18_MVP_moving_test_02.mp4",
+      "bytes": 2075790,
+      "sha256": "068a955461076700d47bf9b364ec875f97586c5879fdbef36d452a8281f3ef67"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_forward_reverse_run01/browser_report.json",
+      "bytes": 358883,
+      "sha256": "af878b48ceb9191912e6ce24bbe4e8fdcae5687c15e3cde7dac9ed4030f2b23c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_forward_reverse_run01/observations.json",
+      "bytes": 2074,
+      "sha256": "872963e18beb7fb9f2da46058ddb7c719116cb288591e0d6fa6a8d3b16a497f1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_turns_run01/2026_10_18_MVP_rotation_test_01.mp4",
+      "bytes": 2932690,
+      "sha256": "20c309922f52013dbbea0b2152df744cd277e5cd20749ab82f237773b495da70"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_turns_run01/browser_report.json",
+      "bytes": 338284,
+      "sha256": "3e02ff1fbb814243e95fbea9be30804ad1c0bd1a13170f2c92b30bd68dc36fd9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_g6_wireless_ground_turns_run01/observations.json",
+      "bytes": 1217,
+      "sha256": "2516370198d3ac81d28cab3df035035cd86d59dda7310b27d55b67d5f6259442"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/analyze.py",
+      "bytes": 3075,
+      "sha256": "fbd38d85d3699b4cab25374fa1d1336ea9b11f8eefb697971692a25e585342cf"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/browser_report.json",
+      "bytes": 815184,
+      "sha256": "ac30a92a5eb0175481741804f5603af7354b30ad92175ec7f8064492d2307658"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json",
+      "bytes": 7508,
+      "sha256": "671c4b1d8b6bbea671a5656a31921579e242ad5a46d0a9b2d881178aab704194"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_linear15_baseline_run01/analyze.py",
+      "bytes": 2242,
+      "sha256": "9cab5574fb9d414e27fea7cbaddc64ae1dbd25931fe4cb4ea6ed5caa9e2993f9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_linear15_baseline_run01/browser_report.json",
+      "bytes": 650504,
+      "sha256": "8dd9cb61295b24ae4f8707e8318da91b53506a5abb73c9cee64859348185b4d0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_linear15_baseline_run01/observations.json",
+      "bytes": 2240,
+      "sha256": "a155741aff03f88c4400fa05a02ade530630d68ddc08ac6373e853bc87c97988"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_straight_trim_run01/analyze.py",
+      "bytes": 2238,
+      "sha256": "7c281fab3aad0e03b2712aad4e0891853615e148d87f7ceeffbc033fd3a70cda"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_straight_trim_run01/browser_report.json",
+      "bytes": 631150,
+      "sha256": "0927df561babae03668ba572ed025316defec027800952ad490a2692854fd9d6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_straight_trim_run01/observations.json",
+      "bytes": 3662,
+      "sha256": "f39227359415d1534f008e7b443f5e73ba458e06f3bf9248ba55ba07a13bf070"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_run02/analyze.py",
+      "bytes": 2165,
+      "sha256": "64af2eb9c3102b75e3e6b74c9990bea8cdae37c11262eac76a2ba9fa55ba2ed8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_run02/browser_report.json",
+      "bytes": 587847,
+      "sha256": "355c61b7ceba98f2bc06bef39fa4f4c73bdca8df89ea2d873bba22c62833b53e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_run02/esp_active_tel_valid_disassembly.txt",
+      "bytes": 3805,
+      "sha256": "9dc86456f0c98fd8adc02e169dff93e11232cf3df117bc5c1e1982bb205dd874"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_run02/observations.json",
+      "bytes": 2377,
+      "sha256": "756213ff7e61a632193ce892ba9333c8af1ff8cba247205ed6f80fd3c9841096"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_stale_esp_run01/browser_report.json",
+      "bytes": 1175111,
+      "sha256": "c90891149f06f800ad9dbb78a908b4bf3f097ede7186e5f335e18b3c06303cfa"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_stale_esp_run01/esp_active_tel_valid_disassembly.txt",
+      "bytes": 3805,
+      "sha256": "f534c2eac7e2c3941f544a437aa91c7e2082808265e0925fbc0723c17c84d324"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_ground_turn20_stale_esp_run01/observations.json",
+      "bytes": 3321,
+      "sha256": "5e36626fdf2b2ace619de954b89e4fd92e13e86e79fcbd2db10a2039fa97f0a0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/esp_core.json",
+      "bytes": 3606,
+      "sha256": "f6c348ecd712ab7f050d6de1d6a9d1b34d73015cb5aa0db49af04f8acda9cab4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/esp_core.txt",
+      "bytes": 2609,
+      "sha256": "68697629954d9a2a13e0d082c58698339600282f8e30411dbe187b3e9f79dd56"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/esp_main.json",
+      "bytes": 4413,
+      "sha256": "edf19430b3020e0675a3ca1018f606c7f39aa0deb4421ecc6e7ac4ec0b795a77"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/esp_main.txt",
+      "bytes": 6828,
+      "sha256": "170dd5ee913a7affca1739a841883db132c6740478a5c266f7d1b770c9afe063"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/stm_contract.txt",
+      "bytes": 109,
+      "sha256": "20b8d479f13423e892403c2fcdb11476c1ba6cf09145c58e1e17e227d44ac973"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/stm_profile.json",
+      "bytes": 2680,
+      "sha256": "99b4035010e322ab0093b9105f4496762815be7d6474917edd84c62fd22f0d2d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_manual_drive_closeout_pc_review/stm_profile.txt",
+      "bytes": 274,
+      "sha256": "e76d2f0968b12976ca327630f66bafcbb33dc1a3b0cd5ac84c318c99b0a07688"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/D0.txt",
+      "bytes": 39852,
+      "sha256": "d9ebbcdf0df5c5d7ba4234306c447cb82a5277cfcd83f9b04400156d335066e8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/D0_lines.json",
+      "bytes": 55215,
+      "sha256": "ce5658217a706cea7d204d1223f731345599c192d337fe1d8c9fc352f619939c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/D1.txt",
+      "bytes": 5960,
+      "sha256": "8855764b0d82d920536109c6b8b9da613855c97a697ada0d0f440988c5189f1d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/D1_lines.json",
+      "bytes": 10566,
+      "sha256": "b0e1fa917668c072ecf268a705db3b13b630fa724d342bfd7ec011bb26ea10f7"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/analyze.py",
+      "bytes": 8186,
+      "sha256": "3895ef1a2afb88c1b934d88baa9625bc31b11f522ab7739540162871bf7dcd3c"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/esp_console.txt",
+      "bytes": 29908,
+      "sha256": "6b9a61d493d0a907878436f2f4c8d9323a623044fc93d4f4661f346814eb193f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/observations.json",
+      "bytes": 8064,
+      "sha256": "4a7a3f5fc10f4c604b141fcf2cd186bedaa78ffcac7abf50bd0bdf5362dece56"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_nz08_focus_loss_run01/summary.json",
+      "bytes": 34638,
+      "sha256": "c9a4239b5ac143fc02b26943331de88a4e5968c996e98373f24bcf87fad49a2e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_candidate/candidate_host_fixture.c",
+      "bytes": 4668,
+      "sha256": "b9899b661b7c0c8a02f10219b8ee965447cf86e545ad1b6eb4ec7f961adcda09"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_candidate/drive_command_mapper.c.txt",
+      "bytes": 2650,
+      "sha256": "81da4f9564adc27d725a04290795b7c36833950ed0f405945c977a2c334c2a04"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_candidate/pc_results.json",
+      "bytes": 2633,
+      "sha256": "f496aa91af90971d1e41092b74d7aba016db2fc5bddf0624ed9d02e9f87a6ec9"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_candidate/pc_results.txt",
+      "bytes": 257,
+      "sha256": "d6f0e7e1eb6e81244e61fcbac98869570ff50cff36b17672d8bbe45ab74509dc"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_saved_review/mapper_comparison.json",
+      "bytes": 320,
+      "sha256": "596587090b2d53a54f0aa5a30ff1141b0faa7fe54a0d65e1d86ae587b716dfeb"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_saved_review/stm_profile.json",
+      "bytes": 2680,
+      "sha256": "99b4035010e322ab0093b9105f4496762815be7d6474917edd84c62fd22f0d2d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_straight_trim_saved_review/stm_profile.txt",
+      "bytes": 274,
+      "sha256": "e76d2f0968b12976ca327630f66bafcbb33dc1a3b0cd5ac84c318c99b0a07688"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/esp_core.json",
+      "bytes": 3606,
+      "sha256": "f6c348ecd712ab7f050d6de1d6a9d1b34d73015cb5aa0db49af04f8acda9cab4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/esp_core.txt",
+      "bytes": 2609,
+      "sha256": "82e2834d692e47bfe718e86947f763e3a1f1b28c6a81e6cc11b69774b8650896"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/esp_main.json",
+      "bytes": 4413,
+      "sha256": "edf19430b3020e0675a3ca1018f606c7f39aa0deb4421ecc6e7ac4ec0b795a77"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/esp_main.txt",
+      "bytes": 6828,
+      "sha256": "170dd5ee913a7affca1739a841883db132c6740478a5c266f7d1b770c9afe063"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/stm_contract.txt",
+      "bytes": 109,
+      "sha256": "7a63fb74ac224ff1624e014e59a1bf6febc7fe0f91714071e0cec1f0b16d9a40"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/stm_profile.json",
+      "bytes": 2640,
+      "sha256": "77e19bae379c29164179572c85cec9ce7eb4ffffc78f99d3f416353eccf65d02"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_turn20_saved_review/stm_profile.txt",
+      "bytes": 234,
+      "sha256": "1924d612ee6a7e85c3284043b0d87b3342f833ff4121560fddf61ab95638e8e4"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/D0.txt",
+      "bytes": 118860,
+      "sha256": "38f4c6c06455cdda87caa626e27d9bdf112f8f69594d50e27a4a6466cdd74b26"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/D0_lines.json",
+      "bytes": 163940,
+      "sha256": "81a842174ba1fefd854e046981dca97b02eed3ee73fcf3e5b66e6fb346cf7ae3"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/D1.txt",
+      "bytes": 19678,
+      "sha256": "19422866fb8c678b74c85f877654db1df1ecf50b1b5086dfcb057d6eccf84c8a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/D1_lines.json",
+      "bytes": 34285,
+      "sha256": "85eb457caf154a4f226b6bc489b5de7205364ced79da533d102ab664515a8f53"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/browser_report.json",
+      "bytes": 6367,
+      "sha256": "ffbf6c7f53210df2875ea45ccd8b07c5918abd9c633b73f915321bfa7dc6ad9d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/console_timing_observe.js",
+      "bytes": 3607,
+      "sha256": "3dfe4ddf2511f2720728743f23a923ee4bfdade15099dbeea816152c496fee13"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/esp_console.txt",
+      "bytes": 73335,
+      "sha256": "47f063e21fab1e28ac22e2be2a65f4228501649783a93a331d0b4590181fe804"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/observations.json",
+      "bytes": 3060,
+      "sha256": "2afd80f4710a7b47074f727ecc79cca3d9aa41379683fc4134ae8e4b8dfdc542"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run01/summary.json",
+      "bytes": 90179,
+      "sha256": "25366e5bbe93a18d2344b4d8b5a5ec72edd9486bf0c261768a4c29b62d8b59cd"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/D0.txt",
+      "bytes": 121922,
+      "sha256": "ef04af1953e585dc75569d829eda160429207294b48662f00f8b51eadfd6dc7a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/D0_lines.json",
+      "bytes": 169540,
+      "sha256": "1816b80d92aea45a2e31c03f72b8264802009bda97ff612234cb847e3b79f4be"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/D1.txt",
+      "bytes": 23243,
+      "sha256": "af8c3af529983609db7269e3998d227cfa975fde63377c0c79c7f3ea899e1603"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/D1_lines.json",
+      "bytes": 40407,
+      "sha256": "7dab21e3e97378c6af84466827b30c2ee850ec32f0e8ddb645f194bd5fd2e77e"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/browser_report.json",
+      "bytes": 673675,
+      "sha256": "80cc42f74b5e8042fc1fc9f639a9c12967b17d0110721105fba7520827eccb28"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/esp_console.txt",
+      "bytes": 82473,
+      "sha256": "b6390a5435784a6e785a3a28f9df54ea7a760e7c7105c1af9d417391444f2443"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/observations.json",
+      "bytes": 5114,
+      "sha256": "39bffe7a412efe304db0da5370b48cf9c71f4b607a46bf368c0c9971b7ddd6e3"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_run02/summary.json",
+      "bytes": 104879,
+      "sha256": "6d965560be53b5f623425fc880495bfeb4267db9a6ac0356ddf922d32cd95ab1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_followup/browser_report.json",
+      "bytes": 633379,
+      "sha256": "2cde25b219a8fba74d4ca18474e21b192cd80fef5a7a1d4b69de9b31e380d8e6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/D0.txt",
+      "bytes": 89811,
+      "sha256": "aecd5ef5592e9d4171ed64d437e8576fa9a366ee5e491b09d9fe2d3357de55cb"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/D0_lines.json",
+      "bytes": 127178,
+      "sha256": "cd32ac648765c64e8a98f786be7e19cb3e4962b7a9b0a1535a9cca0620a31260"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/D1.txt",
+      "bytes": 20424,
+      "sha256": "73d581239767c62b199da6c16a2c4b1a71177cb1fccc22d33305c9afcfd84983"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/D1_lines.json",
+      "bytes": 35757,
+      "sha256": "9d2ddda4d432553a5eb14cec8257855250b256a8a7ec8cfae94e5469df36d604"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/browser_report.json",
+      "bytes": 327463,
+      "sha256": "bd5bb9345215eea40a7e5dc1bd811276a3589375e6fc86321bceca891a6a85f8"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/esp_console.txt",
+      "bytes": 69152,
+      "sha256": "b8d5889da01b8f95c91ed5e7b8ca1e2c94764e28c87b3c8b9b2c001100bdaf67"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/observations.json",
+      "bytes": 3794,
+      "sha256": "5d37327c0235e37a68d57d81b21aa3b90b03c42819d6bffc344c9cb87b45b8f6"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_15pct_ws50_run01/summary.json",
+      "bytes": 94623,
+      "sha256": "5f7df5ef170295cfe8d5c4f3afb3c56285f5a6aaa9b2943ec70ffdfd1471a3e0"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_psnone_run01/browser_report.json",
+      "bytes": 336895,
+      "sha256": "1841ef3148ebb00471de4eedf5bd409c874c073206f5d1a606694b0cc10e3548"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_psnone_run01/esp_console.txt",
+      "bytes": 1003002,
+      "sha256": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_psnone_run01/observations.json",
+      "bytes": 1157,
+      "sha256": "ceec5cfbd9179e4098084e31a90488cc4c6bcca3feefa97f49a3676e3a988b6f"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_cmd80_run01/browser_report.json",
+      "bytes": 722916,
+      "sha256": "c3e6467392c87df70bd2e06dc488357692ab431293cc600c2315523e4fc95c08"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_cmd80_run01/esp_console.txt",
+      "bytes": 198984,
+      "sha256": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_cmd80_run01/observations.json",
+      "bytes": 14226,
+      "sha256": "2d049f85315d093fc1343d64ef928539a74ff34f6ab6b606d7eec18e7cd4a6b1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_reason_run01/browser_report.json",
+      "bytes": 651789,
+      "sha256": "585ba9aa9c9fe0adbc9eb286c4f5b018ade1a30dd97b6b5504cd9c436999fedd"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_reason_run01/esp_console.txt",
+      "bytes": 669448,
+      "sha256": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-18_unexpected_stop_ws50_reason_run01/observations.json",
+      "bytes": 2339,
+      "sha256": "06add63cec95bef3733fc7e6855be220d078874440a682619c4c1ff09792eff1"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "bytes": 32490,
+      "sha256": "569d808033eb712ed0fe202cd978cc8cfaea94b64639cf92ca202206c65f1d3d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "bytes": 72717,
+      "sha256": "97a3313af937a7c3f5c2f66478addfcb14a658300dabe3f1ca2964f22daf8800"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-17_progress.md",
+      "bytes": 32291,
+      "sha256": "c39db993caff583e79cccbd580ed541c5afcbfa6b64629ceb822a9977d6af69d"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/2026-10-18_progress.md",
+      "bytes": 11083,
+      "sha256": "9d5e33114f0f39c7ca99e5a6008d0bf01fc168389a2c2771bfef08e655cb5fff"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/README.md",
+      "bytes": 23236,
+      "sha256": "b275e7fd423de3eac55913fdfd8ebae08f8313bc6e75fa9408294629248bf713"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "bytes": 71606,
+      "sha256": "920b071f64d2f5224ff581e6ae7ca8afde561e4e56843dae129f0ba72b87bd43"
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/verification/README.md",
+      "bytes": 32434,
+      "sha256": "21711b45c339e98e02d8501e12d66e497f0857e0b907c469474105f23148f6ff"
+    }
+  ]
+}

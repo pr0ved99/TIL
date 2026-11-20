@@ -1,0 +1,389 @@
+{
+  "date": "2026-11-06",
+  "status": "APPLIED_AND_NETLIST_VERIFIED",
+  "component_count": 24,
+  "net_count_including_unconnected": 99,
+  "active_net_count": 10,
+  "component_identity_unchanged": true,
+  "all_nets_and_pin_types_unchanged": true,
+  "embedded_library_symbols_unchanged": true,
+  "symbol_uuids_and_instances_unchanged": true,
+  "wire_count": 48,
+  "no_connect_count": 70,
+  "junction_count": 6,
+  "label_count": 36,
+  "protected_file_count": 23,
+  "source_sha256_before": "78d3eb14109c34798ca4ba2c587866be7deccfdc408b75d0a6f49ca43ee81b46",
+  "candidate_sha256": "aae4da2510d10b1a8123217f40e55c8e248a2d2e4d2bcc252dc6a2426a11d1d1",
+  "new_erc_run": false,
+  "new_drc_run": false,
+  "commands": [
+    {
+      "args": [
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\after_netlist.xml",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\candidate\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "pdf",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\after.pdf",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\candidate\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\after.pdf'에 플롯됨.\n완료.\n",
+      "stderr": ""
+    }
+  ],
+  "moves": [
+    {
+      "ref": "C1",
+      "from_mm": [
+        248.92,
+        68.58
+      ],
+      "to_mm": [
+        217.17,
+        78.74
+      ]
+    },
+    {
+      "ref": "C2",
+      "from_mm": [
+        248.92,
+        124.46
+      ],
+      "to_mm": [
+        217.17,
+        123.19
+      ]
+    },
+    {
+      "ref": "C3",
+      "from_mm": [
+        368.3,
+        73.66
+      ],
+      "to_mm": [
+        353.06,
+        78.74
+      ]
+    },
+    {
+      "ref": "C4",
+      "from_mm": [
+        368.3,
+        134.62
+      ],
+      "to_mm": [
+        353.06,
+        123.19
+      ]
+    },
+    {
+      "ref": "J1",
+      "from_mm": [
+        38.1,
+        74.93
+      ],
+      "to_mm": [
+        40.64,
+        76.2
+      ]
+    },
+    {
+      "ref": "J2",
+      "from_mm": [
+        101.6,
+        74.93
+      ],
+      "to_mm": [
+        93.98,
+        76.2
+      ]
+    },
+    {
+      "ref": "J3",
+      "from_mm": [
+        185.42,
+        55.88
+      ],
+      "to_mm": [
+        153.67,
+        66.04
+      ]
+    },
+    {
+      "ref": "J4",
+      "from_mm": [
+        185.42,
+        111.76
+      ],
+      "to_mm": [
+        153.67,
+        110.49
+      ]
+    },
+    {
+      "ref": "J5",
+      "from_mm": [
+        307.34,
+        60.96
+      ],
+      "to_mm": [
+        292.1,
+        66.04
+      ]
+    },
+    {
+      "ref": "J6",
+      "from_mm": [
+        307.34,
+        121.92
+      ],
+      "to_mm": [
+        292.1,
+        110.49
+      ]
+    },
+    {
+      "ref": "R1",
+      "from_mm": [
+        228.6,
+        55.88
+      ],
+      "to_mm": [
+        196.85,
+        66.04
+      ]
+    },
+    {
+      "ref": "R2",
+      "from_mm": [
+        228.6,
+        111.76
+      ],
+      "to_mm": [
+        196.85,
+        110.49
+      ]
+    },
+    {
+      "ref": "R3",
+      "from_mm": [
+        330.2,
+        45.72
+      ],
+      "to_mm": [
+        314.96,
+        50.8
+      ]
+    },
+    {
+      "ref": "R4",
+      "from_mm": [
+        347.98,
+        60.96
+      ],
+      "to_mm": [
+        332.74,
+        66.04
+      ]
+    },
+    {
+      "ref": "R5",
+      "from_mm": [
+        330.2,
+        106.68
+      ],
+      "to_mm": [
+        314.96,
+        95.25
+      ]
+    },
+    {
+      "ref": "R6",
+      "from_mm": [
+        347.98,
+        121.92
+      ],
+      "to_mm": [
+        332.74,
+        110.49
+      ]
+    },
+    {
+      "ref": "TP1",
+      "from_mm": [
+        25.4,
+        185.42
+      ],
+      "to_mm": [
+        30.48,
+        270.51
+      ]
+    },
+    {
+      "ref": "TP2",
+      "from_mm": [
+        83.82,
+        185.42
+      ],
+      "to_mm": [
+        78.74,
+        270.51
+      ]
+    },
+    {
+      "ref": "TP3",
+      "from_mm": [
+        142.24,
+        185.42
+      ],
+      "to_mm": [
+        127.0,
+        270.51
+      ]
+    },
+    {
+      "ref": "TP4",
+      "from_mm": [
+        200.66,
+        185.42
+      ],
+      "to_mm": [
+        175.26,
+        270.51
+      ]
+    },
+    {
+      "ref": "TP5",
+      "from_mm": [
+        259.08,
+        185.42
+      ],
+      "to_mm": [
+        223.52,
+        270.51
+      ]
+    },
+    {
+      "ref": "TP6",
+      "from_mm": [
+        317.5,
+        185.42
+      ],
+      "to_mm": [
+        271.78,
+        270.51
+      ]
+    },
+    {
+      "ref": "U1",
+      "from_mm": [
+        139.7,
+        254.0
+      ],
+      "to_mm": [
+        294.64,
+        200.66
+      ]
+    },
+    {
+      "ref": "U2",
+      "from_mm": [
+        190.5,
+        254.0
+      ],
+      "to_mm": [
+        365.76,
+        200.66
+      ]
+    }
+  ],
+  "panels_mm": {
+    "interface": [
+      12.7,
+      26.67,
+      116.84,
+      148.59
+    ],
+    "current": [
+      123.19,
+      26.67,
+      255.27,
+      148.59
+    ],
+    "ntc": [
+      261.62,
+      26.67,
+      406.4,
+      148.59
+    ],
+    "voltage_inputs": [
+      12.7,
+      153.67,
+      255.27,
+      247.65
+    ],
+    "voltage_control": [
+      261.62,
+      153.67,
+      406.4,
+      247.65
+    ],
+    "test_points": [
+      12.7,
+      251.46,
+      292.1,
+      281.94
+    ]
+  },
+  "applied_commands": [
+    {
+      "args": [
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\applied_netlist.xml",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "pdf",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\applied.pdf",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_schematic_layout_review\\applied.pdf'에 플롯됨.\n완료.\n",
+      "stderr": ""
+    }
+  ],
+  "source_sha256_after": "aae4da2510d10b1a8123217f40e55c8e248a2d2e4d2bcc252dc6a2426a11d1d1",
+  "live_file_matches_validated_candidate": true,
+  "protected_files_preserved": true,
+  "visual_review_complete": true,
+  "user_confirmed_editor_saved_and_closed": true
+}

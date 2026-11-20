@@ -1,0 +1,85 @@
+{
+  "mode": "SAVED",
+  "scope": "Stationary-button correction + complete PAGE/main regression; no board build.",
+  "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+  "node": "C:/Users/eyh12/.codex/tmp/w5_host_tools/node-v22.20.0.exe",
+  "input_sha256": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "c5b9859e018f81cc7da31b3d458aa2e69705d08d78d3280ccd6abb3c632fb0fd",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e"
+  },
+  "candidate_main_sha256": "bf0abe1a6c6a7740d4f4dcb28458f94aea9dbf729f2e05b11e25d7ac9feb1164",
+  "test_sha256": {
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_page_candidate.py": "21fa4155476b66ec355a6247a2c6d44fec686c8107db0057b6200bc8842be8e2",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_page.js": "44e4d58a07ca8bbba7ec1a721995a9059deae3b3af8e3c458ff4330eb4400965",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page.js": "ef76577da1757b9a365934e5aa71782f8215fff537dc2a8c0f774d0d09e33435",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_main_host_fixture.c": "00e7841cb51037d150c2943c1b5d998d3e54e853b60371ff4c526b504219b9d8",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_page_candidate.py": "5ecc778f378c3e4ac78a61808e8dd6cf19eea7567a74f5e20d3b5405bbbca30f",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_main.py": "492b537afed9d364631744d6f8c89aa36a13fd039e73b10af4563216c10caef7",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main.py": "e4ad6d5f7b861ffca8d88dfcd3331d6628fecf66048eca0bfee427c38a6ebd96",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main_page.js": "259c5004cc3bac464d52a8a6a7b1ea614648c5f8a18417dc331dca2242fe7941",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_page.js": "3587beb0803c15e89117c83135e32d273afcc7eff34106149a261a4d4aff496d",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_page_guide_intro_ko.md": "b31632cf5cd78ba09a558e41c11938a434513d2d3665253f10f35cffbbcf6b45",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_distance_button_candidate.py": "f96678291800d9adacd75d2d76a28d922f67cc5c8691957957eeb7a886ccccc5",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_button_candidate.py": "aa2ed435903d99bca1686165d22c51aa145c7093e1ba21c490837f257a9f4b55",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_distance_button_guide_intro_ko.md": "d80aa6a092d9e1d032eb5299d3c6768a9d4dda23da1b4b9d22de751d4eefa993"
+  },
+  "checks": {
+    "distance_browser": 23,
+    "mode_0_main_distance": 5,
+    "mode_1_main_distance": 5,
+    "negative_controls_detected": 2
+  },
+  "limitations": [
+    "Native C mocks and extracted PAGE DOM/clock/WebSocket only; no MCU build/flash",
+    "TEL cutoff/final observations are not physical stop-time or distance-accuracy acceptance",
+    "Browser baseline is a pre-command TEL observation, not the internal STM start timestamp"
+  ],
+  "baseline": {
+    "mode": "SAVED MAIN",
+    "scope": "PAGE/main + saved core in both modes; legacy C baseline forced to mode 1; native mocks only, no board build/flash/runtime",
+    "source": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c",
+    "compiler": "C:/Users/eyh12/.codex/tmp/w5_host_tools/tcc-0.9.27-win64-bin/tcc/tcc.exe",
+    "node": "C:/Users/eyh12/.codex/tmp/w5_host_tools/node-v22.20.0.exe",
+    "inputs": {
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_link_main.c": "c5b9859e018f81cc7da31b3d458aa2e69705d08d78d3280ccd6abb3c632fb0fd",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.c": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_contract.h": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.c": "415b4d1d7a234b6280ae37c4320c69fe8562baaa4f74d0eca8f2c96497a4ce94",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_ticket.h": "ad2dc0c8e622204365cd6817ae92f41f898b0a184b246b37a48376afb781afea",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.c": "707cd4d02ffe83faf8580cab3bf200b03f4e18ceec6251b4fd0124083a80e3bd",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_owner.h": "3797e5d06fe9a2a1ff954dd8f99c3c9c801aac7a566ae3b4f074de26a34209af",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.c": "8702aad966c8565bd6c2784370c452db73118ee4a2bd41abe28265372da1a3ba",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_state.h": "e9803035a6640a60d00fe783a0ed8a80d2a9cadb88e1e4a8ebd6f79b95f5e4e0",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.c": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\esp32_wifi_link\\main\\wifi_control_executor.h": "6f5b8b3f62e969ce7ac0ac74c3faab29cae7a3fa79d3f5013edccbd8affa862d",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_main.py": "492b537afed9d364631744d6f8c89aa36a13fd039e73b10af4563216c10caef7",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main.py": "e4ad6d5f7b861ffca8d88dfcd3331d6628fecf66048eca0bfee427c38a6ebd96",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_control_main_page.js": "259c5004cc3bac464d52a8a6a7b1ea614648c5f8a18417dc331dca2242fe7941",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\test_wifi_nonzero_page.js": "3587beb0803c15e89117c83135e32d273afcc7eff34106149a261a4d4aff496d",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_nonzero_main_host_fixture.c": "480c874e5870a515ac41bd5ae86a02c1e3110f9fd00099a67e1f0f89d3d42af5",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_control_main_host_fixture.c": "1ba4de19604f7c25be0b040ea4c788cf728a23943f18b9b8d105025777954fa7",
+      "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\03_Firmware\\tests\\wifi_w5_host_fixture.c": "aa54632e427c82d97ec01625b6cf7cf9e5e6e26512cf286a2026e867d8e51bc4"
+    },
+    "checks": {
+      "browser": 67,
+      "baseline_mode_1_existing_c": 42,
+      "mode_1_adapter": 6,
+      "mode_0_adapter": 6,
+      "page_c_initializer": 1,
+      "negative_controls_detected": 2
+    },
+    "input_zero_only": 0,
+    "status": "PASS"
+  },
+  "status": "PASS",
+  "correction": "Separate stationary readiness from ACK/ticket availability; bound unsent held request to200ms, cancel on release/stale/movement"
+}

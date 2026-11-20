@@ -1,0 +1,239 @@
+{
+  "gate": "UR-03 / AC-S03 tab switch and return subcase",
+  "verdict": "PASS_WITHIN_ZERO_OUTPUT_TAB_SWITCH_STOP_AND_NO_REARM_OBSERVATION_SCOPE",
+  "scope": "Completes the submitted tab-switch/return zero-output observation using UART/PWM capture, extended ESP monitor and final browser screenshot. Not the whole AC-S03 suite or isolated browser-event timing.",
+  "test_context": {
+    "source": "Run02 submitted in response to tab-switch/return procedure; final robot-page screenshot supplied in the following message.",
+    "procedure": "ARM manually, switch away while ACTIVE without closing the robot tab, return after about 3 seconds, observe IDLE/DISARMED without further commands.",
+    "timing_evidence": "No browser visibility/focus/return event timestamps supplied. UART stop timing and bounded post-stop observation are measured independently."
+  },
+  "capture_name": "2026-10-17_UR03_ACS03_TAB_HIDDEN_PWM_run02.sr",
+  "capture_sha256": "cb8a2a1f40d94dff35254e7b3a3cd9af0d325e658d28d6195ea051378d492674",
+  "duration_s": 12.5,
+  "samplerate_hz": 4000000.0,
+  "samples": 50000000,
+  "capture_duration_note": "Actual artifact is 50 M samples / 12.5 s, not the suggested 200 M / 50 s. This run includes stop and 3.704 s afterward; the monitor extends observation further.",
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 67,
+    "DISARM": 1
+  },
+  "seq_range": [
+    573834324,
+    573834392
+  ],
+  "matching_ack_count": 69,
+  "uart_ERR_count": 0,
+  "bad_stop_bits_D0_D1": [
+    0,
+    0
+  ],
+  "rearm": {
+    "request_id": 361,
+    "session_id": 2,
+    "ARM": {
+      "start_s": 1.45005675,
+      "end_s": 1.4516190555555555,
+      "text": "ARM,seq=573834324"
+    },
+    "ARM_ACK": {
+      "start_s": 1.451703,
+      "end_s": 1.4551698055555555,
+      "text": "ACK,seq=573834324,type=ARM,t_ms=2034983"
+    },
+    "first_zero_CMD": {
+      "start_s": 1.53279875,
+      "end_s": 1.5374863055555554,
+      "text": "CMD,seq=573834325,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "last_zero_CMD": {
+      "start_s": 8.75016075,
+      "end_s": 8.754848305555557,
+      "text": "CMD,seq=573834391,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    "last_zero_CMD_ACK": {
+      "start_s": 8.75499125,
+      "end_s": 8.758459555555556,
+      "text": "ACK,seq=573834391,type=CMD,t_ms=2042296"
+    }
+  },
+  "stop": {
+    "request_id": 429,
+    "session_id": 2,
+    "seq": 573834392,
+    "queued_esp_ms": 1548249,
+    "tx_esp_ms": 1548269,
+    "matched_esp_ms": 1548279,
+    "CAN_prefix": {
+      "start_s": 8.790066,
+      "end_s": 8.790239555555557,
+      "text": "\u0018"
+    },
+    "DISARM": {
+      "start_s": 8.7902395,
+      "end_s": 8.792062555555557,
+      "text": "DISARM,seq=573834392"
+    },
+    "ACK": {
+      "start_s": 8.7921565,
+      "end_s": 8.795884805555556,
+      "text": "ACK,seq=573834392,type=DISARM,t_ms=2042333"
+    },
+    "last_pre_stop_armed_tel": {
+      "start_s": 8.69580375,
+      "end_s": 8.710363555555556,
+      "text": "TEL,t_ms=2042237,state=ARMED,reason=NONE,command_age_ms=41,last_seq=573834390,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "2042237",
+        "state": "ARMED",
+        "reason": "NONE",
+        "command_age_ms": "41",
+        "last_seq": "573834390",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "first_disarmed_tel": {
+      "start_s": 8.7960495,
+      "end_s": 8.811047805555557,
+      "text": "TEL,t_ms=2042337,state=DISARMED,reason=DISARM,command_age_ms=41,last_seq=573834392,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "2042337",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "41",
+        "last_seq": "573834392",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "last_CMD_start_to_CAN_start_ms": 39.905250000000336,
+    "last_CMD_ACK_end_to_DISARM_start_ms": 31.779944444444652,
+    "attribution": "WS DISARM request429 precedes the sole DISARM. Consistent with the submitted tab-switch operation; exact blur versus visibilitychange handler not independently identified."
+  },
+  "capture_post_stop": {
+    "complete_tel_count": 37,
+    "last_tel": {
+      "start_s": 12.39174825,
+      "end_s": 12.406918055555556,
+      "text": "TEL,t_ms=2045937,state=DISARMED,reason=DISARM,command_age_ms=3641,last_seq=573834392,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "2045937",
+        "state": "DISARMED",
+        "reason": "DISARM",
+        "command_age_ms": "3641",
+        "last_seq": "573834392",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    "duration_after_ACK_s": 3.7041151944444444,
+    "ARM_count": 0,
+    "CMD_count": 0,
+    "other_uart_command_count": 0,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_seq": 573834392
+  },
+  "monitor_post_stop": {
+    "tel_count": 127,
+    "first_tel": {
+      "esp_ms": 1548309,
+      "count": 15498,
+      "stm_t_ms": 2042337,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": "0/0",
+      "cps": "0/0",
+      "drop": 0,
+      "err": 1
+    },
+    "last_tel": {
+      "esp_ms": 1560889,
+      "count": 15624,
+      "stm_t_ms": 2054937,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": "0/0",
+      "cps": "0/0",
+      "drop": 0,
+      "err": 1
+    },
+    "duration_after_ACK_match_s": 12.61,
+    "new_queued_or_TX_commands": 0,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "warnings_or_errors": 0
+  },
+  "valid_tel_count": 125,
+  "state_counts": {
+    "DISARMED": 52,
+    "ARMED": 73
+  },
+  "all_valid_tel_vx_w_pwm_cps_drop_zero": true,
+  "err": "1 throughout capture and monitor; no new STM error",
+  "physical_levels": {
+    "mapping": "D4/PB6 left PWM, D6/PC7, D7/PB7 right PWM; existing user-confirmed wiring",
+    "all_low": true,
+    "samples_per_channel": 50000000,
+    "duration_s": 12.5
+  },
+  "browser_screenshot": {
+    "source": "Latest user-attached final screenshot; manually transcribed, not a live query",
+    "test_banner": false,
+    "boot_id": 3570331004,
+    "startup_state": "READY",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_result": "DISARM request 429 OK",
+    "last_seq": 573834392,
+    "uptime_ms": 1591769,
+    "stm_t_ms": 2086137,
+    "command_age_ms": 43841,
+    "stm_age_ms": 62,
+    "outputs_and_cps": 0,
+    "drop": 0,
+    "err": 1
+  },
+  "capture_boundary": {
+    "excluded_trailing_partial_text": "TEL,t_ms=2046037,state=DISARMED,reason=DISARM,command_age_ms=3741,last_seq=573834392,vx_mmps=0,w",
+    "description": "Final unfinished TEL is excluded from the 125 complete TEL and 37 complete post-stop TEL. Neither UART stream has an invalid stop bit."
+  },
+  "provenance": {
+    "esp_monitor": "Byte-for-byte copy of user attachment",
+    "source_attachment": "C:\\Users\\eyh12\\.codex\\attachments\\6a6c9687-4637-4231-b775-85e79ef71e6c\\붙여넣은 텍스트.txt",
+    "esp_monitor_sha256": "ae60b4a2ae6ec67291060077af85a086ae33249526a565141414accfefe95b7e",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d"
+  },
+  "limits": [
+    "No precise browser return timestamp: do not label all 3.704 s of captured post-stop PWM as three seconds after return. Longer monitor and final returned-page state are separate evidence.",
+    "No proof of uninterrupted WebSocket connection or isolated blur versus visibilitychange trigger.",
+    "No RF-loss case or nonzero/powered-motor stopping-time claim.",
+    "4 MHz digital sampling does not establish analog voltage or absence of sub-sample pulses.",
+    "This does not diagnose the separate AC-S06 restore run01 command-delivery gap."
+  ],
+  "prior_attempt": "../2026-10-17_ur03_acs03_tab_hidden_pwm_run01/observations.json",
+  "next_action": "No repeat of this bounded tab-switch observation is required. Preserve remaining AC-S subcases and prior unexplained observations; aggregate progress and handoff at bench-block closeout."
+}

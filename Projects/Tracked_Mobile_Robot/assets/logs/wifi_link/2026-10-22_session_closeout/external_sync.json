@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-22",
+  "timezone": "Asia/Seoul",
+  "basis": "User report of completed purchases; receipt, installation and physical verification not reported.",
+  "notion": {
+    "pages": [
+      {
+        "label": "hub",
+        "id": "3fca7326-f87b-8124-b0ee-e212822ce80d",
+        "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d?pvs=204",
+        "content_verified": true,
+        "properties_verified": true,
+        "children_preserved": true
+      },
+      {
+        "label": "equipment",
+        "id": "3fca7326-f87b-8184-a67e-cefc1a1600c6",
+        "url": "https://app.notion.com/p/3fca7326f87b8184a67ecefc1a1600c6?pvs=204",
+        "content_verified": true,
+        "properties_verified": true,
+        "children_preserved": true
+      },
+      {
+        "label": "temperature",
+        "id": "3fca7326-f87b-8138-b25f-ebde08057a32",
+        "url": "https://app.notion.com/p/3fca7326f87b8138b25febde08057a32?pvs=204",
+        "content_verified": true,
+        "properties_verified": true,
+        "children_preserved": true
+      },
+      {
+        "label": "closeout",
+        "id": "3fca7326-f87b-81f7-b48e-fbda1ddf38c0",
+        "url": "https://app.notion.com/p/3fca7326f87b81f7b48efbda1ddf38c0?pvs=204",
+        "content_verified": true,
+        "properties_verified": true,
+        "children_preserved": true
+      },
+      {
+        "label": "monitor",
+        "id": "3fca7326-f87b-8139-b949-d339de80d870",
+        "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870?pvs=204",
+        "content_verified": true,
+        "properties_verified": true,
+        "children_preserved": true
+      }
+    ],
+    "verified_readback": true
+  },
+  "calendar": {
+    "calendar_id": "primary",
+    "events": [
+      {
+        "id": "sqjbdf819otis2k1m4559jph6s",
+        "title": "[TMR] 전류·온도 계측 방식·구매 검토 — 마감",
+        "start": "2026-10-22T12:00:00+09:00",
+        "end": "2026-10-22T14:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=c3FqYmRmODE5b3RpczJrMW00NTU5anBoNnMgZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "cb81dmp7taj2q9bcasadoudouc",
+        "title": "[TMR] 센서·GM-1312·UT210E 구매 완료",
+        "start": "2026-10-22T14:30:00+09:00",
+        "end": "2026-10-22T16:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=Y2I4MWRtcDd0YWoycTliY2FzYWRvdWRvdWMgZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "bljrdlauckd5ohij8vqbj6877o",
+        "title": "[TMR] 구매 기록·문서·Git·Notion·일정 마감",
+        "start": "2026-10-22T18:30:00+09:00",
+        "end": "2026-10-22T19:30:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=YmxqcmRsYXVja2Q1b2hpajh2cWJqNjg3N28gZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "sd0ju6pelpp54fbuh9at3cm9uk",
+        "title": "[TMR] 장비 수령 상태·계측 준비 — 미수령 시 문서 작업",
+        "start": "2026-10-23T12:00:00+09:00",
+        "end": "2026-10-23T14:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=c2QwanU2cGVscHA1NGZidWg5YXQzY205dWsgZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "1obai8qsktlon8sr1f5u99jdp8",
+        "title": "[TMR] 전류·온도 기록/연결 설계 — 실물 관측은 조건부",
+        "start": "2026-10-23T14:30:00+09:00",
+        "end": "2026-10-23T16:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=MW9iYWk4cXNrdGxvbjhzcjFmNXU5OWpkcDggZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "snjr8tvbbishjba2dut38bmu60",
+        "title": "[TMR] 지상1m 실제·추정 거리 비교 — 선행 조건 충족 시",
+        "start": "2026-10-24T12:00:00+09:00",
+        "end": "2026-10-24T14:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=c25qcjh0dmJiaXNoamJhMmR1dDM4Ym11NjAgZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "b19r0go3g1bfu87saos6p83rv4",
+        "title": "[TMR] 지상 거리·온도 결과 검토와 실제 누락 보완",
+        "start": "2026-10-24T14:30:00+09:00",
+        "end": "2026-10-24T16:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=YjE5cjBnbzNnMWJmdTg3c2FvczZwODNydjQgZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "5iobptc8if74bnrm4tbttihh58",
+        "title": "[TMR] 실제 문제의 필요한 수정·관련 PC 검사",
+        "start": "2026-10-24T18:30:00+09:00",
+        "end": "2026-10-24T20:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=NWlvYnB0YzhpZjc0Ym5ybTR0YnR0aWhoNTggZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "0ui3rf1fa18t8fh4u8ag2uasmo",
+        "title": "[TMR] 온도·지상 거리·MUST 활성 미결 한 묶음",
+        "start": "2026-10-25T12:00:00+09:00",
+        "end": "2026-10-25T14:00:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=MHVpM3JmMWZhMTh0OGZoNHU4YWcydWFzbW8gZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      },
+      {
+        "id": "19bnchnobsa7j46druji2ndgk8",
+        "title": "[TMR] 주간 근거 정리·다음 주 작업1~3개",
+        "start": "2026-10-25T14:30:00+09:00",
+        "end": "2026-10-25T15:30:00+09:00",
+        "url": "https://www.google.com/calendar/event?eid=MTlibmNobm9ic2E3ajQ2ZHJ1amkybmRnazggZXloMTI1QG0&ctz=Asia/Seoul",
+        "title_description_verified": true,
+        "time_boundaries_preserved": true
+      }
+    ],
+    "verified_readback": true,
+    "new_events": 0,
+    "time_boundaries_preserved": true
+  },
+  "hardware": {
+    "firmware_edited": false,
+    "mcu_build_or_flash": false,
+    "physical_measurements": false,
+    "receipt_confirmed": false
+  }
+}

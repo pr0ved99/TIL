@@ -1,0 +1,40 @@
+{
+  "source": "synthetic model; not user observation",
+  "numerical_checks": [
+    "fixed offset survives each block",
+    "fixed offset preserves scatter",
+    "equal block averaging preserves whole-record mean",
+    "zero-error baseline"
+  ],
+  "browser": "Edge headless; checkbox click events; DOM values and plot generation",
+  "cases": [
+    {
+      "case": "noise_only",
+      "mean_error_mV": -0.003004,
+      "raw_sd_mV": 3.00805,
+      "block_sd_mV": 0.193135,
+      "browser_click_and_render": "PASS"
+    },
+    {
+      "case": "noise_and_bias",
+      "mean_error_mV": 4.996996,
+      "raw_sd_mV": 3.00805,
+      "block_sd_mV": 0.193135,
+      "browser_click_and_render": "PASS"
+    },
+    {
+      "case": "bias_only",
+      "mean_error_mV": 5.0,
+      "raw_sd_mV": 0.0,
+      "block_sd_mV": 0.0,
+      "browser_click_and_render": "PASS"
+    },
+    {
+      "case": "ideal",
+      "mean_error_mV": 0.0,
+      "raw_sd_mV": 0.0,
+      "block_sd_mV": 0.0,
+      "browser_click_and_render": "PASS"
+    }
+  ]
+}

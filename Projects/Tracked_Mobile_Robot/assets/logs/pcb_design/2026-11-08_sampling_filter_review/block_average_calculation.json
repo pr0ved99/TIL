@@ -1,0 +1,44 @@
+{
+  "candidates": [
+    {
+      "fs_per_channel_Hz": 100,
+      "N": 10,
+      "sample_interval_ms": 10,
+      "output_period_ms": 100,
+      "sample_span_ms": 90,
+      "mean_sample_age_ms": 45
+    },
+    {
+      "fs_per_channel_Hz": 1000,
+      "N": 100,
+      "sample_interval_ms": 1,
+      "output_period_ms": 100,
+      "sample_span_ms": 99,
+      "mean_sample_age_ms": 49.5
+    },
+    {
+      "fs_per_channel_Hz": 2000,
+      "N": 200,
+      "sample_interval_ms": 0.5,
+      "output_period_ms": 100,
+      "sample_span_ms": 99.5,
+      "mean_sample_age_ms": 49.75
+    }
+  ],
+  "example_step_at_ms": 55.25,
+  "old_samples": 110,
+  "new_samples": 90,
+  "first_output_V": 12.33,
+  "first_output_delay_ms": 44.75,
+  "all_new_output_delay_ms": 144.75,
+  "external_plus_block_bound_ms": 202.683406121,
+  "date": "2026-11-08",
+  "evidence_type": "derived mathematical examples; no ADC acquisition or simulator execution",
+  "assumptions": [
+    "Per-channel evenly spaced valid samples; nonoverlapping fixed blocks",
+    "Sample representative times Ts,2Ts,...,N*Ts; ideal output at last sample; conversion/processing/transmission omitted",
+    "12.60->12.00V at55.25ms is synthetic; external RC omitted in this example",
+    "202.7ms is conservative external-settling plus fixed-block timing allowance, not exact settling crossing or overall PASS",
+    "Existing 2.683406121ms is nominal 0->16V in1us two-capacitor external-model calculation; other error sources separate"
+  ]
+}

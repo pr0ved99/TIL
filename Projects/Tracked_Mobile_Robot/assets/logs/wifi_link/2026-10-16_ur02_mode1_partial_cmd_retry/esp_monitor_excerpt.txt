@@ -1,0 +1,20 @@
+Source: user-provided ESP monitor excerpt, 2026-10-16.
+Matched capture: 2026-10-16_UR02_MODE1_PARTIAL_CMD_run02.sr
+Capture SHA256: bf6f76266281c1e0101227db167cc905bcd8775e34e530d3fca43f72b49d2e30
+This is a later retry; the earlier run02 capture SHA256 was eb39b1947479727e5adfddb692eefe4412816624ce61fe53602e8bf745c2fef4.
+User screenshot: boot_id=3417001124, READY/IDLE, fresh DISARMED/DISARM, last_seq=2750537414, PWM/CPS/drop/err=0, HTTP 202 QUEUED.
+
+I (26534) wifi_link: STM TEL #260 t_ms=32000 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (26554) wifi_link: UART TEST: mode=1 reserved_seq=2750537413 prefix=CMD,seq= written=8/8 NO_LF
+I (26634) wifi_link: STM TEL #261 t_ms=32100 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (26654) wifi_link: CONTROL TX: op=3 seq=2750537414 written=24/24
+I (26674) wifi_link: CONTROL RX MATCH: DISARM seq=2750537414
+I (26734) wifi_link: STM TEL #262 t_ms=32200 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (26734) wifi_link: UART TEST: end prefix_full=1 stop_confirmed=1; capture review required
+I (26834) wifi_link: STM TEL #263 t_ms=32300 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (26934) wifi_link: STM TEL #264 t_ms=32400 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (27034) wifi_link: STM TEL #265 t_ms=32500 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (27134) wifi_link: STM TEL #266 t_ms=32600 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (27234) wifi_link: STM TEL #267 t_ms=32700 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (27334) wifi_link: STM TEL #268 t_ms=32800 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0
+I (27434) wifi_link: STM TEL #269 t_ms=32900 state=DISARMED reason=DISARM pwm=0/0 cps=0/0 drop=0 err=0

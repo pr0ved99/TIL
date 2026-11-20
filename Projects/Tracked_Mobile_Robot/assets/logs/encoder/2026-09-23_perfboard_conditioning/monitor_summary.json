@@ -1,0 +1,46 @@
+{
+  "source": {
+    "path": "assets/logs/encoder/2026-09-23_perfboard_conditioning/esp32_stationary_monitor.txt",
+    "bytes": 84822,
+    "sha256": "970c17c2de8722bc579067b23da83e2cb5e411aa3d5d0f69941c6549ee32cb36"
+  },
+  "count": 400,
+  "first_t_ms": 4200,
+  "last_t_ms": 44100,
+  "elapsed_s": 39.9,
+  "distributions": {
+    "left_cps": {
+      "0": 400
+    },
+    "right_cps": {
+      "0": 400
+    },
+    "left_pwm": {
+      "0": 400
+    },
+    "right_pwm": {
+      "0": 400
+    },
+    "state": {
+      "FAULT": 400
+    },
+    "reason": {
+      "ESTOP_ACTIVE": 400
+    },
+    "err": {
+      "7": 400
+    }
+  },
+  "t_ms_step_counts": {
+    "100": 399
+  },
+  "tel_count_step_counts": {
+    "1": 399
+  },
+  "limits": [
+    "First 4.2 seconds of STM boot are absent; prior 300/400 ms false-count window is not covered.",
+    "Encoder cable connection and temporary breadboard pulldown removal at monitor capture were not separately reported.",
+    "ESP monitor omits STM drop field; no drop=0 claim.",
+    "err=7 exists at first sample and is unchanged; RX_DESYNC once then DISARM ACK/PONG/STARTUP READY."
+  ]
+}

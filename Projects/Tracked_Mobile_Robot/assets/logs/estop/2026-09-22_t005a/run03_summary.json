@@ -1,0 +1,201 @@
+{
+  "source": "Projects\\Tracked_Mobile_Robot\\assets\\captures\\logic_analyzer\\2026-09-22_T_ESTOP_005A_run03_esp_reset_hold_estop.sr",
+  "sha256": "e74e1edde3020236b72e321e98e56c0046842b64d1f426ce90d00f5683d591af",
+  "fs": 4000000.0,
+  "samples": 100000000,
+  "duration_s": 25.0,
+  "channels": {
+    "D0": {
+      "high_runs": 3,
+      "high_samples": 47899062,
+      "high_at_start": false,
+      "high_at_end": true,
+      "high_intervals_s": [
+        [
+          13.025162,
+          13.02521625
+        ],
+        [
+          13.0252575,
+          13.0252715
+        ],
+        [
+          13.02530275,
+          25.0
+        ]
+      ]
+    },
+    "D1": {
+      "high_runs": 247958,
+      "high_samples": 2606585,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": [
+        {
+          "start_s": 2.5e-05,
+          "end_s": 13.027873,
+          "pulses": 247958,
+          "mean_hz": 19032.84812198702,
+          "mean_duty_percent": 5.0019284654920195
+        }
+      ]
+    },
+    "D2": {
+      "high_runs": 247958,
+      "high_samples": 2606516,
+      "high_at_start": false,
+      "high_at_end": false,
+      "bursts": [
+        {
+          "start_s": 2.5e-05,
+          "end_s": 13.027873,
+          "pulses": 247958,
+          "mean_hz": 19032.84812198702,
+          "mean_duty_percent": 5.001796056796115
+        }
+      ]
+    },
+    "D4": {
+      "decoded_bytes": 48715,
+      "invalid_stop_bits": 0,
+      "lines": 383,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "TEL": 251,
+        "ACK": 130,
+        "ERR": 2
+      },
+      "telemetry_distributions": {
+        "state": {
+          "ARMED": 131,
+          "FAULT": 120
+        },
+        "reason": {
+          "NONE": 131,
+          "ESTOP_ACTIVE": 120
+        },
+        "left_pwm": {
+          "50": 131,
+          "0": 120
+        },
+        "right_pwm": {
+          "50": 131,
+          "0": 120
+        },
+        "left_cps": {
+          "0": 251
+        },
+        "right_cps": {
+          "0": 251
+        },
+        "err": {
+          "0": 131,
+          "1": 1,
+          "2": 119
+        },
+        "drop": {
+          "0": 251
+        }
+      },
+      "state_transitions": [
+        {
+          "start_s": 0.02050225,
+          "end_s": 0.035227555555555554,
+          "text": "TEL,t_ms=20500,state=ARMED,reason=NONE,command_age_ms=75,last_seq=2662347351,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        },
+        {
+          "start_s": 13.098069,
+          "end_s": 13.113319805555555,
+          "text": "TEL,t_ms=33600,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=161,last_seq=2662347481,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+        }
+      ],
+      "selected_commands_responses": [
+        {
+          "start_s": 13.03810275,
+          "end_s": 13.043128305555555,
+          "text": "ERR,seq=2662347482,type=CMD,code=ESTOP_LATCHED,t_ms=33540"
+        },
+        {
+          "start_s": 13.14164675,
+          "end_s": 13.147277555555556,
+          "text": "ERR,seq=2662347483,type=ESTOP_RESET,code=ESTOP_ACTIVE,t_ms=33643"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.02050225,
+          "end_s": 0.035227555555555554,
+          "text": "TEL,t_ms=20500,state=ARMED,reason=NONE,command_age_ms=75,last_seq=2662347351,vx_mmps=50,w_mradps=0,left_pwm=50,right_pwm=50,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 24.97366875,
+          "end_s": 24.989085055555556,
+          "text": "TEL,t_ms=45500,state=FAULT,reason=ESTOP_ACTIVE,command_age_ms=12061,last_seq=2662347481,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=2"
+        }
+      ]
+    },
+    "D5": {
+      "decoded_bytes": 7363,
+      "invalid_stop_bits": 0,
+      "lines": 132,
+      "trailing_partial_bytes": 0,
+      "message_counts": {
+        "CMD": 131,
+        "ESTOP_RESET": 1
+      },
+      "telemetry_distributions": {},
+      "state_transitions": [],
+      "selected_commands_responses": [
+        {
+          "start_s": 13.1391825,
+          "end_s": 13.141526305555557,
+          "text": "ESTOP_RESET,seq=2662347483"
+        }
+      ],
+      "first_lines": [
+        {
+          "start_s": 0.02297375,
+          "end_s": 0.027834805555555554,
+          "text": "CMD,seq=2662347352,vx_mmps=50,w_mradps=0,timeout_ms=500"
+        }
+      ],
+      "last_lines": [
+        {
+          "start_s": 13.1391825,
+          "end_s": 13.141526305555557,
+          "text": "ESTOP_RESET,seq=2662347483"
+        }
+      ]
+    }
+  },
+  "stop_check": {
+    "first_pc7_high_s": 13.025162,
+    "pc7_stable_high_s": 13.02530275,
+    "pc7_stable_release_s": null,
+    "last_pwm_fall_before_release_s": 13.027873,
+    "first_pwm_after_release_s": null,
+    "last_fall_minus_first_pc7_us": 2711.0,
+    "last_fall_minus_stable_pc7_us": 2570.25,
+    "high_samples_assert_plus_200ms_to_release": {
+      "D1": 0,
+      "D2": 0
+    }
+  },
+  "uart_roles": {
+    "D4": "STM32 TX / ESP32 RX (inferred from TEL/ACK/ERR)",
+    "D5": "ESP32 TX / STM32 RX (inferred from commands)"
+  },
+  "command_response_check": {
+    "complete_commands": 132,
+    "matched": 132,
+    "missing_seqs": [],
+    "type_mismatches": []
+  },
+  "limits": [
+    "This digital capture contains no analog MDD rail voltage.",
+    "A PWM last falling edge before PC7 assertion does not measure negative or exact-zero shutdown latency.",
+    "Physical operating steps and analog measurements require operator reports."
+  ]
+}

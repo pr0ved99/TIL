@@ -1,0 +1,30 @@
+{
+  "source": "User screenshot manually transcribed; raw PNG not saved by this script",
+  "display_time": "16:06:42",
+  "boot_id": 2634188439,
+  "uptime_ms": 1644869,
+  "startup_state": "READY",
+  "control_phase": "IDLE",
+  "stm_connected": true,
+  "stm_stale": false,
+  "stm_age_ms": 72,
+  "tel_count": 16462,
+  "stm_t_ms": 37400,
+  "state": "DISARMED",
+  "reason": "DISARM",
+  "command_age_ms": 4294967295,
+  "last_seq": 2830180668,
+  "vx_mmps": 0,
+  "w_mradps": 0,
+  "left_pwm": 0,
+  "right_pwm": 0,
+  "left_cps": 0,
+  "right_cps": 0,
+  "drop": 0,
+  "err": 0,
+  "last_result": {
+    "cmd": "DISARM",
+    "request_id": 119,
+    "result": "OK"
+  }
+}

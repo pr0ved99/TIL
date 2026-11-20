@@ -1,0 +1,14 @@
+{
+  "date": "2026-10-23",
+  "source": "User attachment 34c91c1e-e289-4d60-b01f-85cda5ec7e4c/붙여넣은 텍스트.txt",
+  "raw_bytes": 2919481,
+  "raw_sha256": "22f3bdb5c67c0a7b4b04f2800db1160c593ab547d50f7795ca70f416637a90e3",
+  "archive": "browser_report.json.gz",
+  "archive_sha256": "6a8fe89d25b8b066156a2e41bc34104cf1cd6d62f9a3fed244e130e1dff7c21d",
+  "archive_lossless_verified": true,
+  "purpose": "Battery-powered, DISARMED/IDLE no-motion receive baseline before further command-path observation",
+  "configuration_basis": "User followed battery / XL4015 #1 / two boards, USB power disconnected instructions; not independently instrumented",
+  "current_supply_voltage_v": null,
+  "voltage_note": "Prior 5.02V report is not a new voltage measurement for this capture",
+  "no_motion_authorized_by_this_analysis": true
+}

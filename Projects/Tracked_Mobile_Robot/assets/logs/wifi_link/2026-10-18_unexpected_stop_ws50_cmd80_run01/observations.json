@@ -1,0 +1,608 @@
+{
+  "finding": "SOURCE_TIMEOUT confirmed by control_reason=13. WS50/CMD80 did not resolve intermittent stop.",
+  "stop": {
+    "ms": 55436.10000000149,
+    "sendStop": true,
+    "intent": true,
+    "focused": true,
+    "motionReady": true,
+    "motion": {
+      "button": "right",
+      "vx": 0,
+      "w": -500
+    },
+    "pending": null,
+    "offer": {
+      "kind": "control_state",
+      "boot_id": 1245176460,
+      "session_id": 2,
+      "phase": "ACTIVE",
+      "owner_session": 2,
+      "control_id": 1,
+      "ticket": 0,
+      "purpose": "NONE",
+      "ttl_ms": 0,
+      "zero_only": false,
+      "control_reason": 0
+    },
+    "offer_age_ms": 0.7000000029802322,
+    "tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 1245176460,
+      "uptime_ms": 127648,
+      "free_heap_bytes": 262560,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 31,
+      "stm_age_limit_ms": 500,
+      "tel_count": 1275,
+      "stm_t_ms": 3741127,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": 72,
+      "last_seq": 3624641008,
+      "vx_mmps": 0,
+      "w_mradps": -500,
+      "left_pwm": 150,
+      "right_pwm": -150,
+      "left_cps": 990,
+      "right_cps": -850,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 5
+    },
+    "tel_local_age_ms": 71,
+    "stack": "Error\n    at stopLocal (<anonymous>:49:51)\n    at handleResult (http://192.168.0.17/:235:22)\n    at ws.onmessage (http://192.168.0.17/:271:78)"
+  },
+  "near_events": [
+    {
+      "ms": 55435.29999999702,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1245176460,
+        "session_id": 2,
+        "request_id": 450,
+        "cmd": "CMD",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 55435.39999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 70,
+      "phase": "ACTIVE",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 0
+    },
+    {
+      "ms": 55436.5,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1245176460,
+        "session_id": 2,
+        "request_id": 450,
+        "cmd": "CMD",
+        "seq": 0,
+        "control_id": 1,
+        "status": "TIMEOUT"
+      }
+    },
+    {
+      "ms": 55436.60000000149,
+      "event": "TEL_RX",
+      "gap_ms": 71.30000000447035,
+      "esp_uptime_ms": 127709,
+      "esp_step_ms": 61,
+      "tel_count": 1275,
+      "stm_t_ms": 3741127,
+      "stm_age_ms": 92,
+      "command_age_ms": 72,
+      "last_seq": 3624641008,
+      "state": "ARMED",
+      "pwm": [
+        150,
+        -150
+      ]
+    },
+    {
+      "ms": 55436.69999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.2999999970197678,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55436.89999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.20000000298023224,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55442.29999999702,
+      "event": "lostpointercapture",
+      "target": "right",
+      "hidden": false
+    },
+    {
+      "ms": 55445.39999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 8.5,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55525.10000000149,
+      "event": "command_notice",
+      "data": {
+        "kind": "command_notice",
+        "boot_id": 1245176460,
+        "session_id": 2,
+        "request_id": 451,
+        "cmd": "DISARM",
+        "stage": "ACCEPTED",
+        "reason": "QUEUED"
+      }
+    },
+    {
+      "ms": 55525.5,
+      "event": "TEL_RX",
+      "gap_ms": 88.89999999850988,
+      "esp_uptime_ms": 127768,
+      "esp_step_ms": 59,
+      "tel_count": 1276,
+      "stm_t_ms": 3741227,
+      "stm_age_ms": 52,
+      "command_age_ms": 172,
+      "last_seq": 3624641008,
+      "state": "ARMED",
+      "pwm": [
+        150,
+        -150
+      ]
+    },
+    {
+      "ms": 55525.60000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 80.20000000298023,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55525.69999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55525.79999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "STOPPING",
+      "ticket": 0,
+      "ttl_ms": 0,
+      "control_reason": 13
+    },
+    {
+      "ms": 55525.89999999851,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 1245176460,
+        "session_id": 2,
+        "request_id": 451,
+        "cmd": "DISARM",
+        "seq": 3624641009,
+        "control_id": 0,
+        "status": "OK"
+      }
+    },
+    {
+      "ms": 55575.19999999553,
+      "event": "TEL_RX",
+      "gap_ms": 49.69999999552965,
+      "esp_uptime_ms": 127829,
+      "esp_step_ms": 61,
+      "tel_count": 1277,
+      "stm_t_ms": 3741327,
+      "stm_age_ms": 12,
+      "command_age_ms": 272,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55575.39999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 49.600000001490116,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 55576.60000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.2000000029802322,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 133,
+      "control_reason": 0
+    },
+    {
+      "ms": 55576.69999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 113,
+      "control_reason": 0
+    },
+    {
+      "ms": 55636.5,
+      "event": "TEL_RX",
+      "gap_ms": 61.30000000447035,
+      "esp_uptime_ms": 127889,
+      "esp_step_ms": 60,
+      "tel_count": 1277,
+      "stm_t_ms": 3741327,
+      "stm_age_ms": 72,
+      "command_age_ms": 272,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55637.69999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 61,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 91,
+      "control_reason": 0
+    },
+    {
+      "ms": 55637.79999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 73,
+      "control_reason": 0
+    },
+    {
+      "ms": 55637.89999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 53,
+      "control_reason": 0
+    },
+    {
+      "ms": 55694.89999999851,
+      "event": "TEL_RX",
+      "gap_ms": 58.399999998509884,
+      "esp_uptime_ms": 127949,
+      "esp_step_ms": 60,
+      "tel_count": 1278,
+      "stm_t_ms": 3741427,
+      "stm_age_ms": 32,
+      "command_age_ms": 372,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55695,
+      "event": "CONTROL_RX",
+      "gap_ms": 57.100000001490116,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 31,
+      "control_reason": 0
+    },
+    {
+      "ms": 55695.10000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 899,
+      "ttl_ms": 13,
+      "control_reason": 0
+    },
+    {
+      "ms": 55695.10000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 0,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 55755.69999999553,
+      "event": "TEL_RX",
+      "gap_ms": 60.79999999701977,
+      "esp_uptime_ms": 128008,
+      "esp_step_ms": 59,
+      "tel_count": 1278,
+      "stm_t_ms": 3741427,
+      "stm_age_ms": 91,
+      "command_age_ms": 372,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55755.79999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 60.69999999552965,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 129,
+      "control_reason": 0
+    },
+    {
+      "ms": 55756.69999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.8999999985098839,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 111,
+      "control_reason": 0
+    },
+    {
+      "ms": 55756.79999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 55806.89999999851,
+      "event": "TEL_RX",
+      "gap_ms": 51.20000000298023,
+      "esp_uptime_ms": 128068,
+      "esp_step_ms": 60,
+      "tel_count": 1279,
+      "stm_t_ms": 3741527,
+      "stm_age_ms": 51,
+      "command_age_ms": 472,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55807.79999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 51,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 69,
+      "control_reason": 0
+    },
+    {
+      "ms": 55807.89999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 51,
+      "control_reason": 0
+    },
+    {
+      "ms": 55808,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 31,
+      "control_reason": 0
+    },
+    {
+      "ms": 55875.19999999553,
+      "event": "TEL_RX",
+      "gap_ms": 68.29999999701977,
+      "esp_uptime_ms": 128129,
+      "esp_step_ms": 61,
+      "tel_count": 1280,
+      "stm_t_ms": 3741627,
+      "stm_age_ms": 12,
+      "command_age_ms": 572,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55876.10000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 68.10000000149012,
+      "phase": "IDLE",
+      "ticket": 900,
+      "ttl_ms": 9,
+      "control_reason": 0
+    },
+    {
+      "ms": 55876.19999999553,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.09999999403953552,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 150,
+      "control_reason": 0
+    },
+    {
+      "ms": 55876.29999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 130,
+      "control_reason": 0
+    },
+    {
+      "ms": 55946.29999999702,
+      "event": "TEL_RX",
+      "gap_ms": 71.10000000149012,
+      "esp_uptime_ms": 128188,
+      "esp_step_ms": 59,
+      "tel_count": 1280,
+      "stm_t_ms": 3741627,
+      "stm_age_ms": 71,
+      "command_age_ms": 572,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 55946.39999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 70.10000000149012,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 108,
+      "control_reason": 0
+    },
+    {
+      "ms": 55947.5,
+      "event": "CONTROL_RX",
+      "gap_ms": 1.1000000014901161,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 90,
+      "control_reason": 0
+    },
+    {
+      "ms": 55947.60000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.10000000149011612,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 70,
+      "control_reason": 0
+    },
+    {
+      "ms": 56015.10000000149,
+      "event": "TEL_RX",
+      "gap_ms": 68.80000000447035,
+      "esp_uptime_ms": 128248,
+      "esp_step_ms": 60,
+      "tel_count": 1281,
+      "stm_t_ms": 3741727,
+      "stm_age_ms": 31,
+      "command_age_ms": 672,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 56015.29999999702,
+      "event": "CONTROL_RX",
+      "gap_ms": 67.69999999552965,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 48,
+      "control_reason": 0
+    },
+    {
+      "ms": 56016.10000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.8000000044703484,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 30,
+      "control_reason": 0
+    },
+    {
+      "ms": 56016.10000000149,
+      "event": "CONTROL_RX",
+      "gap_ms": 0,
+      "phase": "IDLE",
+      "ticket": 901,
+      "ttl_ms": 10,
+      "control_reason": 0
+    },
+    {
+      "ms": 56016.29999999702,
+      "event": "TEL_RX",
+      "gap_ms": 1.1999999955296516,
+      "esp_uptime_ms": 128308,
+      "esp_step_ms": 60,
+      "tel_count": 1281,
+      "stm_t_ms": 3741727,
+      "stm_age_ms": 91,
+      "command_age_ms": 672,
+      "last_seq": 3624641009,
+      "state": "DISARMED",
+      "pwm": [
+        0,
+        0
+      ]
+    },
+    {
+      "ms": 56016.39999999851,
+      "event": "CONTROL_RX",
+      "gap_ms": 0.29999999701976776,
+      "phase": "IDLE",
+      "ticket": 902,
+      "ttl_ms": 150,
+      "control_reason": 0
+    }
+  ],
+  "esp_timeline_ms": {
+    "last_cmd_tx": 127841,
+    "ack": 127891,
+    "next_cmd_accepted": 128031,
+    "automatic_disarm_tx": 128041
+  },
+  "result": "request450 CMD TIMEOUT seq0, then STOPPING reason13; automatic DISARM seq3624641009 ACK and eventual CPS zero",
+  "limits": [
+    "No isolated proof of TCP/Wi-Fi/browser scheduling root cause.",
+    "STM err=5 is pre-existing in nearby TEL; do not claim err0."
+  ]
+}

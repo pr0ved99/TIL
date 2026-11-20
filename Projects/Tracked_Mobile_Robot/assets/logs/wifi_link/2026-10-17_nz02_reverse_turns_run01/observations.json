@@ -1,0 +1,794 @@
+{
+  "test": "NZ-02_REVERSE_TURNS_DIR_PWM",
+  "status": "PASS",
+  "scope": "Motor-disconnected UART and sampled STM DIR/PWM/PC7 only",
+  "checks": {
+    "commands_ack_once": true,
+    "seq_contiguous": true,
+    "framing_artifacts_only_before_first_full_tel": true,
+    "no_malformed_tel": true,
+    "no_fault_errors_or_cps": true,
+    "pc7_low": true,
+    "all_direction_changes_with_pwm_low": true,
+    "all_motion_checks": true,
+    "no_extra_pwm_bursts": true,
+    "no_pwm_after_final_zero": true,
+    "final_disarmed_zero": true,
+    "cmd_timeout_300": true,
+    "esp_tx_subset_matches_capture": true,
+    "esp_rx_subset_matches_capture": true
+  },
+  "capture": "2026-10-17_WIFI_NZ02_REVERSE_TURNS_DIR_PWM_run01.sr",
+  "capture_sha256": "1bd07d5f666a3de05de54dada5361e09b3e9f03654b90d18fff4858917ef4a5e",
+  "esp_log_sha256": "e8d40f063ac50eab835403483e76ece35c4cead718858c951fe0502cd436b981",
+  "sample_rate_hz": 4000000.0,
+  "duration_s": 36.575104,
+  "command_counts": {
+    "ARM": 1,
+    "CMD": 192,
+    "DISARM": 1
+  },
+  "ack_count": 194,
+  "tel_count": 366,
+  "command_groups": [
+    {
+      "key": [
+        "ARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 3.9302875,
+        "end_s": 3.9319368055555555,
+        "text": "ARM,seq=2197816803",
+        "kind": "ARM",
+        "fields": {
+          "seq": "2197816803"
+        }
+      },
+      "last": {
+        "start_s": 3.9302875,
+        "end_s": 3.9319368055555555,
+        "text": "ARM,seq=2197816803",
+        "kind": "ARM",
+        "fields": {
+          "seq": "2197816803"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 43,
+      "first": {
+        "start_s": 4.07027125,
+        "end_s": 4.075045555555556,
+        "text": "CMD,seq=2197816804,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816804",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 8.67036175,
+        "end_s": 8.675136055555557,
+        "text": "CMD,seq=2197816846,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816846",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "-50",
+        "0"
+      ],
+      "count": 26,
+      "first": {
+        "start_s": 8.770362,
+        "end_s": 8.775309805555557,
+        "text": "CMD,seq=2197816847,vx_mmps=-50,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816847",
+          "vx_mmps": "-50",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 11.75040625,
+        "end_s": 11.755354055555555,
+        "text": "CMD,seq=2197816872,vx_mmps=-50,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816872",
+          "vx_mmps": "-50",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 23,
+      "first": {
+        "start_s": 11.870397,
+        "end_s": 11.875171305555556,
+        "text": "CMD,seq=2197816873,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816873",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 14.28054225,
+        "end_s": 14.285316555555555,
+        "text": "CMD,seq=2197816895,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816895",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "250"
+      ],
+      "count": 23,
+      "first": {
+        "start_s": 14.441229,
+        "end_s": 14.446177055555555,
+        "text": "CMD,seq=2197816896,vx_mmps=0,w_mradps=250,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816896",
+          "vx_mmps": "0",
+          "w_mradps": "250",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 16.870618,
+        "end_s": 16.875565805555556,
+        "text": "CMD,seq=2197816918,vx_mmps=0,w_mradps=250,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816918",
+          "vx_mmps": "0",
+          "w_mradps": "250",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 25,
+      "first": {
+        "start_s": 17.0204525,
+        "end_s": 17.025226805555555,
+        "text": "CMD,seq=2197816919,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816919",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 19.65047975,
+        "end_s": 19.655254055555556,
+        "text": "CMD,seq=2197816943,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816943",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "-250"
+      ],
+      "count": 21,
+      "first": {
+        "start_s": 19.7505005,
+        "end_s": 19.755535305555554,
+        "text": "CMD,seq=2197816944,vx_mmps=0,w_mradps=-250,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816944",
+          "vx_mmps": "0",
+          "w_mradps": "-250",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 21.9916045,
+        "end_s": 21.996639055555555,
+        "text": "CMD,seq=2197816964,vx_mmps=0,w_mradps=-250,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816964",
+          "vx_mmps": "0",
+          "w_mradps": "-250",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "CMD",
+        "0",
+        "0"
+      ],
+      "count": 31,
+      "first": {
+        "start_s": 22.0915725,
+        "end_s": 22.096346805555555,
+        "text": "CMD,seq=2197816965,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816965",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "last": {
+        "start_s": 25.44163925,
+        "end_s": 25.446413555555555,
+        "text": "CMD,seq=2197816995,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816995",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      }
+    },
+    {
+      "key": [
+        "DISARM",
+        null,
+        null
+      ],
+      "count": 1,
+      "first": {
+        "start_s": 25.56062375,
+        "end_s": 25.562533555555557,
+        "text": "DISARM,seq=2197816996",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "2197816996"
+        }
+      },
+      "last": {
+        "start_s": 25.56062375,
+        "end_s": 25.562533555555557,
+        "text": "DISARM,seq=2197816996",
+        "kind": "DISARM",
+        "fields": {
+          "seq": "2197816996"
+        }
+      }
+    }
+  ],
+  "motions": [
+    {
+      "name": "reverse",
+      "checks": {
+        "dir_matches": true,
+        "duty_five_percent": true,
+        "no_pwm_after_zero_ack": true,
+        "tel_matches": true,
+        "zero_returns_armed": true
+      },
+      "pwm": {
+        "D4": {
+          "pulses": 59439,
+          "first_rise_s": 8.779279,
+          "last_fall_s": 11.900141,
+          "span_s": 3.120862,
+          "mean_frequency_hz": 19045.394385745338,
+          "mean_duty_percent": 5.003966054864053,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            1
+          ],
+          "dir_D3_levels": [
+            0
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        },
+        "D7": {
+          "pulses": 59439,
+          "first_rise_s": 8.779279,
+          "last_fall_s": 11.900141,
+          "span_s": 3.120862,
+          "mean_frequency_hz": 19045.394385745338,
+          "mean_duty_percent": 5.0040942246839375,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            1
+          ],
+          "dir_D3_levels": [
+            0
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        }
+      },
+      "command_count": 26,
+      "first_seq": 2197816847,
+      "last_seq": 2197816872,
+      "zero_command": {
+        "start_s": 11.870397,
+        "end_s": 11.875171305555556,
+        "text": "CMD,seq=2197816873,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816873",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "zero_tel": {
+        "start_s": 11.9748245,
+        "end_s": 11.989365055555556,
+        "text": "TEL,t_ms=205110,state=ARMED,reason=NONE,command_age_ms=71,last_seq=2197816873,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+        "kind": "TEL",
+        "fields": {
+          "t_ms": "205110",
+          "state": "ARMED",
+          "reason": "NONE",
+          "command_age_ms": "71",
+          "last_seq": "2197816873",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0"
+        }
+      }
+    },
+    {
+      "name": "left",
+      "checks": {
+        "dir_matches": true,
+        "duty_five_percent": true,
+        "no_pwm_after_zero_ack": true,
+        "tel_matches": true,
+        "zero_returns_armed": true
+      },
+      "pwm": {
+        "D4": {
+          "pulses": 49048,
+          "first_rise_s": 14.449969,
+          "last_fall_s": 17.02530625,
+          "span_s": 2.57533725,
+          "mean_frequency_hz": 19044.904652191784,
+          "mean_duty_percent": 5.004544069906259,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            1
+          ],
+          "dir_D3_levels": [
+            1
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        },
+        "D7": {
+          "pulses": 49048,
+          "first_rise_s": 14.449969,
+          "last_fall_s": 17.02530625,
+          "span_s": 2.57533725,
+          "mean_frequency_hz": 19044.904652191784,
+          "mean_duty_percent": 5.004689682058777,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            1
+          ],
+          "dir_D3_levels": [
+            1
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        }
+      },
+      "command_count": 23,
+      "first_seq": 2197816896,
+      "last_seq": 2197816918,
+      "zero_command": {
+        "start_s": 17.0204525,
+        "end_s": 17.025226805555555,
+        "text": "CMD,seq=2197816919,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816919",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "zero_tel": {
+        "start_s": 17.06796425,
+        "end_s": 17.082506555555558,
+        "text": "TEL,t_ms=210215,state=ARMED,reason=NONE,command_age_ms=39,last_seq=2197816919,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+        "kind": "TEL",
+        "fields": {
+          "t_ms": "210215",
+          "state": "ARMED",
+          "reason": "NONE",
+          "command_age_ms": "39",
+          "last_seq": "2197816919",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0"
+        }
+      }
+    },
+    {
+      "name": "right",
+      "checks": {
+        "dir_matches": true,
+        "duty_five_percent": true,
+        "no_pwm_after_zero_ack": true,
+        "tel_matches": true,
+        "zero_returns_armed": true
+      },
+      "pwm": {
+        "D4": {
+          "pulses": 44514,
+          "first_rise_s": 19.75953325,
+          "last_fall_s": 22.0964065,
+          "span_s": 2.33687325,
+          "mean_frequency_hz": 19048.124403983875,
+          "mean_duty_percent": 5.003090671905011,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            0
+          ],
+          "dir_D3_levels": [
+            0
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        },
+        "D7": {
+          "pulses": 44514,
+          "first_rise_s": 19.75953325,
+          "last_fall_s": 22.0964065,
+          "span_s": 2.33687325,
+          "mean_frequency_hz": 19048.124403983875,
+          "mean_duty_percent": 5.003251142928117,
+          "period_range_us": [
+            52.25,
+            52.75
+          ],
+          "high_width_range_us": [
+            2.5,
+            2.75
+          ],
+          "dir_D2_levels": [
+            0
+          ],
+          "dir_D3_levels": [
+            0
+          ],
+          "high_samples_after_zero_ack_until_next_group": 0
+        }
+      },
+      "command_count": 21,
+      "first_seq": 2197816944,
+      "last_seq": 2197816964,
+      "zero_command": {
+        "start_s": 22.0915725,
+        "end_s": 22.096346805555555,
+        "text": "CMD,seq=2197816965,vx_mmps=0,w_mradps=0,timeout_ms=300",
+        "kind": "CMD",
+        "fields": {
+          "seq": "2197816965",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "timeout_ms": "300"
+        }
+      },
+      "zero_tel": {
+        "start_s": 22.15857725,
+        "end_s": 22.173117555555557,
+        "text": "TEL,t_ms=215318,state=ARMED,reason=NONE,command_age_ms=59,last_seq=2197816965,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+        "kind": "TEL",
+        "fields": {
+          "t_ms": "215318",
+          "state": "ARMED",
+          "reason": "NONE",
+          "command_age_ms": "59",
+          "last_seq": "2197816965",
+          "vx_mmps": "0",
+          "w_mradps": "0",
+          "left_pwm": "0",
+          "right_pwm": "0",
+          "left_cps": "0",
+          "right_cps": "0",
+          "batt_mv": "0",
+          "drop": "0",
+          "err": "0"
+        }
+      }
+    }
+  ],
+  "dir_transitions": [
+    {
+      "channel": "D3",
+      "t_s": 4.076638,
+      "new_level": 1,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": null,
+          "next_rise_us": 4702641.0
+        },
+        "D7": {
+          "previous_fall_us": null,
+          "next_rise_us": 4702641.0
+        }
+      }
+    },
+    {
+      "channel": "D2",
+      "t_s": 8.777263,
+      "new_level": 1,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": null,
+          "next_rise_us": 2016.0
+        },
+        "D7": {
+          "previous_fall_us": null,
+          "next_rise_us": 2016.0
+        }
+      }
+    },
+    {
+      "channel": "D3",
+      "t_s": 8.7772635,
+      "new_level": 0,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": null,
+          "next_rise_us": 2015.5
+        },
+        "D7": {
+          "previous_fall_us": null,
+          "next_rise_us": 2015.5
+        }
+      }
+    },
+    {
+      "channel": "D2",
+      "t_s": 11.901834,
+      "new_level": 0,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 1693.0,
+          "next_rise_us": 2548135.0
+        },
+        "D7": {
+          "previous_fall_us": 1693.0,
+          "next_rise_us": 2548135.0
+        }
+      }
+    },
+    {
+      "channel": "D3",
+      "t_s": 11.9018345,
+      "new_level": 1,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 1693.5,
+          "next_rise_us": 2548134.5
+        },
+        "D7": {
+          "previous_fall_us": 1693.5,
+          "next_rise_us": 2548134.5
+        }
+      }
+    },
+    {
+      "channel": "D2",
+      "t_s": 14.4479675,
+      "new_level": 1,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 2547826.5,
+          "next_rise_us": 2001.4999999999998
+        },
+        "D7": {
+          "previous_fall_us": 2547826.5,
+          "next_rise_us": 2001.4999999999998
+        }
+      }
+    },
+    {
+      "channel": "D2",
+      "t_s": 17.0269035,
+      "new_level": 0,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 1597.25,
+          "next_rise_us": 2732629.75
+        },
+        "D7": {
+          "previous_fall_us": 1597.25,
+          "next_rise_us": 2732629.75
+        }
+      }
+    },
+    {
+      "channel": "D3",
+      "t_s": 19.7574895,
+      "new_level": 0,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 2732183.25,
+          "next_rise_us": 2043.75
+        },
+        "D7": {
+          "previous_fall_us": 2732183.25,
+          "next_rise_us": 2043.75
+        }
+      }
+    },
+    {
+      "channel": "D3",
+      "t_s": 22.0975915,
+      "new_level": 1,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 1185.0,
+          "next_rise_us": null
+        },
+        "D7": {
+          "previous_fall_us": 1185.0,
+          "next_rise_us": null
+        }
+      }
+    },
+    {
+      "channel": "D3",
+      "t_s": 25.566251,
+      "new_level": 0,
+      "both_pwm_low": true,
+      "gaps": {
+        "D4": {
+          "previous_fall_us": 3469844.5,
+          "next_rise_us": null
+        },
+        "D7": {
+          "previous_fall_us": 3469844.5,
+          "next_rise_us": null
+        }
+      }
+    }
+  ],
+  "final_disarm": {
+    "start_s": 25.56062375,
+    "end_s": 25.562533555555557,
+    "text": "DISARM,seq=2197816996",
+    "kind": "DISARM",
+    "fields": {
+      "seq": "2197816996"
+    }
+  },
+  "stopped_tel_observation_s": 10.872852999999992,
+  "final_pwm_low_tail_s": 14.4786975,
+  "initial_partial_uart": {
+    "invalid_stop_times_s": [
+      2.15e-05,
+      0.0004805
+    ],
+    "fragments": [
+      {
+        "start_s": 0.000134,
+        "end_s": 0.006735055555555556,
+        "text": "\\x85\\x91\\xc1\\xcd0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+      }
+    ],
+    "first_full_tel_s": 0.091798
+  },
+  "esp_log_tx_count": 185,
+  "esp_log_rx_count": 186,
+  "limits": [
+    "D2=PC8 and D3=PC9 follow the instructed probe map; metadata records D labels only.",
+    "Initial mid-TEL fragment and its decoder framing artifacts are retained, not counted as full frames.",
+    "ESP paste starts after ARM; the capture contains ARM and the first zero sequence.",
+    "Pointer timestamps were not recorded; release-to-zero latency is unmeasured.",
+    "No actual motor direction, velocity or braking acceptance."
+  ]
+}

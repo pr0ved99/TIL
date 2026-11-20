@@ -1,0 +1,355 @@
+{
+  "work_date": "2026-11-06",
+  "status": "CAD_CONTRACT_COMPARISON_COMPLETE_NO_CAD_EDIT",
+  "cad_title_revision": "RevA.0-DRAFT",
+  "cad_generator_version": "9.0",
+  "export_tool_version": "10.0.5",
+  "component_count": 22,
+  "active_net_count": 10,
+  "unchanged_from_previous_active_netlist": true,
+  "components": [
+    {
+      "ref": "C1",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C2",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C3",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "C4",
+      "value": "100n",
+      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm"
+    },
+    {
+      "ref": "J1",
+      "value": "CN7_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical"
+    },
+    {
+      "ref": "J2",
+      "value": "CN10_SOCKET",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical"
+    },
+    {
+      "ref": "J3",
+      "value": "CURRENT_LEFT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J4",
+      "value": "CURRENT_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J5",
+      "value": "NTC_LEFT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+    },
+    {
+      "ref": "J6",
+      "value": "NTC_RIGHT",
+      "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
+    },
+    {
+      "ref": "R1",
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R2",
+      "value": "12k candidate",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R3",
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R4",
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R5",
+      "value": "10k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "R6",
+      "value": "1k",
+      "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal"
+    },
+    {
+      "ref": "TP1",
+      "value": "STM_3V3",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP2",
+      "value": "GND",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP3",
+      "value": "I_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP4",
+      "value": "I_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP5",
+      "value": "T_LEFT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    },
+    {
+      "ref": "TP6",
+      "value": "T_RIGHT_ADC",
+      "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm"
+    }
+  ],
+  "active_nets": {
+    "/GND": [
+      "C1.2",
+      "C2.2",
+      "C3.2",
+      "C4.2",
+      "J1.20",
+      "J3.2",
+      "J4.2",
+      "J5.2",
+      "J6.2",
+      "TP2.1"
+    ],
+    "/I_LEFT_ADC": [
+      "C1.1",
+      "J1.38",
+      "R1.2",
+      "TP3.1"
+    ],
+    "/I_LEFT_RAW": [
+      "J3.3",
+      "R1.1"
+    ],
+    "/I_RIGHT_ADC": [
+      "C2.1",
+      "J1.36",
+      "R2.2",
+      "TP4.1"
+    ],
+    "/I_RIGHT_RAW": [
+      "J4.3",
+      "R2.1"
+    ],
+    "/STM_3V3": [
+      "J1.16",
+      "J3.1",
+      "J4.1",
+      "R3.1",
+      "R5.1",
+      "TP1.1"
+    ],
+    "/T_LEFT_ADC": [
+      "C3.1",
+      "J1.35",
+      "R4.2",
+      "TP5.1"
+    ],
+    "/T_LEFT_RAW": [
+      "J5.1",
+      "R3.2",
+      "R4.1"
+    ],
+    "/T_RIGHT_ADC": [
+      "C4.1",
+      "J1.37",
+      "R6.2",
+      "TP6.1"
+    ],
+    "/T_RIGHT_RAW": [
+      "J6.1",
+      "R5.2",
+      "R6.1"
+    ]
+  },
+  "target_header_checks": [
+    {
+      "ref": "J1",
+      "pin": "32",
+      "contract_function": "CN7-32 / PA4 / ADC1_IN4",
+      "net": "unconnected-(J1-Pin_32-Pad32)",
+      "schematic_xy_mm": [
+        45.72,
+        90.17
+      ],
+      "explicit_no_connect": true
+    },
+    {
+      "ref": "J1",
+      "pin": "34",
+      "contract_function": "CN7-34 / PB0 / ADC1_IN8",
+      "net": "unconnected-(J1-Pin_34-Pad34)",
+      "schematic_xy_mm": [
+        45.72,
+        92.71
+      ],
+      "explicit_no_connect": true
+    },
+    {
+      "ref": "J2",
+      "pin": "7",
+      "contract_function": "CN10-7 / AVDD",
+      "net": "unconnected-(J2-Pin_7-Pad7)",
+      "schematic_xy_mm": [
+        96.52,
+        59.69
+      ],
+      "explicit_no_connect": true
+    }
+  ],
+  "no_connect_count": 70,
+  "proposed_references_not_applied": {
+    "upstream": [
+      "J7",
+      "R7",
+      "R8",
+      "R9",
+      "R10",
+      "R11",
+      "C5"
+    ],
+    "downstream": [
+      "J8",
+      "R12",
+      "R13",
+      "R14",
+      "R15",
+      "R16",
+      "C6"
+    ],
+    "shared": [
+      "U1",
+      "U2",
+      "C7",
+      "C8"
+    ]
+  },
+  "installed_standard_library_matches": [],
+  "library_search_scope": "C:\\Users\\eyh12\\AppData\\Local\\Programs\\KiCad\\10.0\\share\\kicad\\symbols",
+  "source_hashes_before": {
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": "92cff6762f46624bb71abe86d0ae7478b44a2413104e939072aa94258b7ba3cd",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": "0c3a2ba3bbba5174aa6b2a54a803058c953abf0878c55fb839401b553387d999",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": "0b37eec464fc1e6c95a5b736f871cf8acc98313cd1a5de42653039179877c91f",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml": "50e3a8f11b22784c22fa91728ec93d061b0c2374393fead9f778f28210337fb0",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json": "b838c1b03a3a1fa3c0754ae0c218f72d5d78904eb386ec11e024cfddb15a98f1",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json": "50a682841f5d1a6d0deda5b85cb301f7117a7d94942e5a8b331e63a5c20fb83a",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp": "8ab814ba351d672dab3bbb962d282cf51bc206cf23e07236c7b64c4b72b2a6bb",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps": "0f8fa407287c1dc852faab381b905efaf89e67e9f1f957c5ff2fb65577013f5c",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log": "0c6f42380dd46ac85bfd0323632926600b4aee89714496c85cc5dcccb9980c8e",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml": "3d5d16e5336ac581a174357b8fc635258fbf3c1ec7820a19edd7377c1d8156ac",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref": "0d5fee305242c84d4dccb033ebbace561b19431d0de7d82aca34f2af4194bc00",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log": "ed0e86350a1d20f8315e19c66aee7d99df467f998fa0e340952a403c0233b74f",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja": "338a2c63b9ea4a7b4e6a062f9334a8b9728d3b11d998cb4f16edfa2a364677c9",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json": "3f4feb23550ddba60c357d983c30a7b567e9f2b3c62fe831c61c8210f3f335ac",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin": "35685286ea5a0c7c56b8bf9ef1276129433af4210d0642ef8e667b343e47b151",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf": "249101e678ce40a9a82f39ccb54cb7025d4292b9803d2c6d064083bdd28d8d21",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map": "34a63e8603dc4dcc2b2af81b3cde5dfa499235642d487ac43677adf38cb05524",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json": "d32fe8027a3f183c27fc0abf6e8bbcaab60642295a7fa69a2bd76fcf6e8faa6b",
+    "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2": "5f28b410746ce39d0a3dff60d10a3f658717f8edd60cf12032af97cb0283c9d5",
+    "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c": "9241c5701bca83987939b4c45e4b282d3626d04ddc644899b7003ddc7315bd1f",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch": "110b896562939ed6d80831f4944c8e170416128a7eaf3202680db2b17ea1ef3b",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch": "110b896562939ed6d80831f4944c8e170416128a7eaf3202680db2b17ea1ef3b"
+  },
+  "source_hashes_after": {
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": "92cff6762f46624bb71abe86d0ae7478b44a2413104e939072aa94258b7ba3cd",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": "0c3a2ba3bbba5174aa6b2a54a803058c953abf0878c55fb839401b553387d999",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": "0b37eec464fc1e6c95a5b736f871cf8acc98313cd1a5de42653039179877c91f",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml": "50e3a8f11b22784c22fa91728ec93d061b0c2374393fead9f778f28210337fb0",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json": "b838c1b03a3a1fa3c0754ae0c218f72d5d78904eb386ec11e024cfddb15a98f1",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json": "50a682841f5d1a6d0deda5b85cb301f7117a7d94942e5a8b331e63a5c20fb83a",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp": "8ab814ba351d672dab3bbb962d282cf51bc206cf23e07236c7b64c4b72b2a6bb",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps": "0f8fa407287c1dc852faab381b905efaf89e67e9f1f957c5ff2fb65577013f5c",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log": "0c6f42380dd46ac85bfd0323632926600b4aee89714496c85cc5dcccb9980c8e",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml": "3d5d16e5336ac581a174357b8fc635258fbf3c1ec7820a19edd7377c1d8156ac",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref": "0d5fee305242c84d4dccb033ebbace561b19431d0de7d82aca34f2af4194bc00",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log": "ed0e86350a1d20f8315e19c66aee7d99df467f998fa0e340952a403c0233b74f",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja": "338a2c63b9ea4a7b4e6a062f9334a8b9728d3b11d998cb4f16edfa2a364677c9",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json": "3f4feb23550ddba60c357d983c30a7b567e9f2b3c62fe831c61c8210f3f335ac",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin": "35685286ea5a0c7c56b8bf9ef1276129433af4210d0642ef8e667b343e47b151",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf": "249101e678ce40a9a82f39ccb54cb7025d4292b9803d2c6d064083bdd28d8d21",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map": "34a63e8603dc4dcc2b2af81b3cde5dfa499235642d487ac43677adf38cb05524",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json": "d32fe8027a3f183c27fc0abf6e8bbcaab60642295a7fa69a2bd76fcf6e8faa6b",
+    "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2": "5f28b410746ce39d0a3dff60d10a3f658717f8edd60cf12032af97cb0283c9d5",
+    "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c": "9241c5701bca83987939b4c45e4b282d3626d04ddc644899b7003ddc7315bd1f",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch": "110b896562939ed6d80831f4944c8e170416128a7eaf3202680db2b17ea1ef3b",
+    "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch": "110b896562939ed6d80831f4944c8e170416128a7eaf3202680db2b17ea1ef3b"
+  },
+  "unrelated_files_preserved": 19,
+  "new_erc_run": false,
+  "new_drc_run": false,
+  "firmware_or_hardware_work": false,
+  "st_source": {
+    "file": "Projects/Tracked_Mobile_Robot/assets/datasheets/um1724-stm32-nucleo64-boards-mb1136-stmicroelectronics.pdf",
+    "sha256": "576d9bee3bc32c8ee70bf0d77cf9494cec06ea7c1d9ff98eebf2738cb9314a14",
+    "revision": "UM1724 Rev17",
+    "printed_page": 59,
+    "table": 29
+  },
+  "commands": [
+    {
+      "args": [
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "10.0.5\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "netlist",
+        "--format",
+        "kicadxml",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_schematic_audit\\current_netlist.xml",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "sch",
+        "export",
+        "pdf",
+        "--output",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_schematic_audit\\current_schematic.pdf",
+        "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch"
+      ],
+      "exit_code": 0,
+      "stdout": "'C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\pcb_design\\2026-11-06_voltage_schematic_audit\\current_schematic.pdf'에 플롯됨.\n완료.\n",
+      "stderr": ""
+    }
+  ]
+}

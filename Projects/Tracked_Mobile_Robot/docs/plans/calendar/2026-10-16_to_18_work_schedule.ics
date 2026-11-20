@@ -1,0 +1,288 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Tracked Mobile Robot//Work Plan//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Tracked Mobile Robot 10월 16~18일
+X-WR-TIMEZONE:Asia/Seoul
+BEGIN:VEVENT
+UID:tmr-20261016-18-01@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261016T030000Z
+DTEND:20261016T043000Z
+SUMMARY:[로봇] UART 시험 입력 설계
+DESCRIPTION:목표: ESP의 기존 UART 송신 경로를 이용해 부분 
+ 명령을 넣을 수 있는 제한된 시험 기능을 설계한다.\n완
+ 료 기준: 기본 비활성·수동 시작·IDLE/fresh/zero·송신 경
+ 합 방지·실패 시 BLOCKED 조건과 교체 범위를 정리한다.\n
+ 진행 조건: 보고서36의 완료 범위를 유지하고 기존 정상 
+ 재연결 시험은 반복하지 않는다.\n관련 Notion: https://app.no
+ tion.com/p/3faa7326f87b81ea8108eeef0aedd8f8\n전체 일정: https://app.no
+ tion.com/p/3faa7326f87b8122b119d7a9de00fe50\n한국시간 기준의 작업
+  예약 초안. 선행 작업이 남으면 이 시간에 이어서 진행
+ 합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:UART 시험 입력 설계 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-02@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261016T044500Z
+DTEND:20261016T064500Z
+SUMMARY:[로봇] 시험 코드 입력·저장본 검토
+DESCRIPTION:목표: 검토한 연결 코드 블록을 사용자 입력 후 
+ 실제 저장본과 대조한다.\n완료 기준: 정확한 교체 범위
+ 와 코드 설명을 확인하고 오타·상태 전이·기존 정지 조
+ 건을 검토한다.\n진행 조건: 앞 블록의 설계가 준비되지 
+ 않으면 설계·PC 후보 검토를 이어간다. 성급히 플래시하
+ 지 않는다.\n관련 Notion: https://app.notion.com/p/3faa7326f87b81ea81
+ 08eeef0aedd8f8\n전체 일정: https://app.notion.com/p/3faa7326f87b8122b1
+ 19d7a9de00fe50\n한국시간 기준의 작업 예약 초안. 선행 작업
+ 이 남으면 이 시간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:시험 코드 입력·저장본 검토 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-03@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261016T070000Z
+DTEND:20261016T080000Z
+SUMMARY:[로봇] PC 검사·금요일 마감
+DESCRIPTION:목표: 미완성 CMD와 LF 없는 ARM 조건을 PC에서 검
+ 사하고 다음 재개 지점을 남긴다.\n완료 기준: 검사 결과
+ 와 미완료 항목을 기록하고 17:00에 작업을 마친다.\n진행
+  조건: 17:00 이후는 저녁과 러닝을 위해 비운다. 검사 미
+ 완료는 토요일 첫 블록으로 이월한다.\n관련 Notion: https:/
+ /app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8\n전체 일정: https:/
+ /app.notion.com/p/3faa7326f87b8122b119d7a9de00fe50\n한국시간 기준의
+  작업 예약 초안. 선행 작업이 남으면 이 시간에 이어서 
+ 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:PC 검사·금요일 마감 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-04@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261017T030000Z
+DTEND:20261017T040000Z
+SUMMARY:[로봇] 사용자 빌드·시험 시작 준비
+DESCRIPTION:목표: PC 검토를 통과한 코드의 STM/ESP 빌드와 필
+ 요한 플래시·부팅 확인을 진행한다.\n완료 기준: 사용자
+  빌드 결과와 READY/IDLE·fresh TEL 등 시험 시작 조건을 확인
+ 한다.\n진행 조건: PC 검토 완료가 선행 조건이다. 사용자
+  보드 조작 전 현재 전원·배선과 프로브 위치를 확인한
+ 다.\n관련 Notion: https://app.notion.com/p/3faa7326f87b81ea8108eeef0aed
+ d8f8\n전체 일정: https://app.notion.com/p/3faa7326f87b8122b119d7a9de00
+ fe50\n한국시간 기준의 작업 예약 초안. 선행 작업이 남으
+ 면 이 시간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:사용자 빌드·시험 시작 준비 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-05@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261017T041500Z
+DTEND:20261017T054500Z
+SUMMARY:[로봇] 부분 CMD 복구 캡처
+DESCRIPTION:목표: 미완성 CMD를 남긴 뒤 CAN+LF와 첫 DISARM 복구
+ 를 UART 양끝에서 관측한다.\n완료 기준: 의도한 prefix·폐
+ 기·첫 DISARM의 정확한 ACK·새 정지 TEL을 한 증거 묶음에 
+ 저장한다.\n진행 조건: 시험 입력 기능과 시작 조건이 준
+ 비됐을 때만 실행한다. 준비가 안 됐으면 앞 작업을 이
+ 어간다. 속도 0·B+ 분리 조건.\n관련 Notion: https://app.notion.
+ com/p/3faa7326f87b81ea8108eeef0aedd8f8\n전체 일정: https://app.notion.
+ com/p/3faa7326f87b8122b119d7a9de00fe50\n한국시간 기준의 작업 예
+ 약 초안. 선행 작업이 남으면 이 시간에 이어서 진행합
+ 니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:부분 CMD 복구 캡처 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-06@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261017T060000Z
+DTEND:20261017T073000Z
+SUMMARY:[로봇] LF 없는 ARM 폐기 캡처
+DESCRIPTION:목표: 줄 끝 LF가 없는 ARM이 복구 과정에서 실행
+ 되지 않고 폐기되는지 확인한다.\n완료 기준: 오래된 ARM 
+ 실행·ACK 없음과 새 DISARM 복구 결과를 원본 캡처·로그로
+  남긴다.\n진행 조건: 앞선 시험의 예상 밖 결과는 먼저 
+ 분석한다. 속도 0·B+ 분리 조건이며 자세한 조작 순서는 
+ 실행 직전에 검토한다.\n관련 Notion: https://app.notion.com/p/3f
+ aa7326f87b81ea8108eeef0aedd8f8\n전체 일정: https://app.notion.com/p/3f
+ aa7326f87b8122b119d7a9de00fe50\n한국시간 기준의 작업 예약 초
+ 안. 선행 작업이 남으면 이 시간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:LF 없는 ARM 폐기 캡처 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-07@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261017T090000Z
+DTEND:20261017T103000Z
+SUMMARY:[로봇] UART 결과 해독·판정
+DESCRIPTION:목표: 두 부분 명령 시험의 캡처와 응답을 대조
+ 하고 보고서36·Notion에 결과를 반영한다.\n완료 기준: 각 
+ 조건을 PASS/미확인/실패로 구분하고 원본 경로와 다음 
+ 행동을 남긴다.\n진행 조건: 캡처가 없으면 준비·실패 
+ 원인을 정리한다. 전체 AC-S나 실제 모터 안전 완료로 확
+ 대하지 않는다.\n관련 Notion: https://app.notion.com/p/3faa7326f87b
+ 81ea8108eeef0aedd8f8\n전체 일정: https://app.notion.com/p/3faa7326f87b
+ 8122b119d7a9de00fe50\n한국시간 기준의 작업 예약 초안. 선행 
+ 작업이 남으면 이 시간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:UART 결과 해독·판정 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-08@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261018T030000Z
+DTEND:20261018T050000Z
+SUMMARY:[로봇] AC-S 잔여 항목 점검·보완
+DESCRIPTION:목표: 현재 이미지 CMD-only 거부와 선택적 ACK 유
+ 실·지연 등 남은 항목을 정리한다.\n완료 기준: 실행 가
+ 능한 한 묶음의 결과 또는 필요한 시험 도구·PC 검토안
+ 을 남긴다.\n진행 조건: UR-02가 남아 있으면 이 시간을 우
+ 선 사용한다. 선택적 ACK 시험 기능은 준비 상태에 따라 
+ 설계·PC 검토까지만 진행한다.\n관련 Notion: https://app.notio
+ n.com/p/3faa7326f87b81ea8108eeef0aedd8f8\n전체 일정: https://app.notio
+ n.com/p/3faa7326f87b8122b119d7a9de00fe50\n한국시간 기준의 작업 
+ 예약 초안. 선행 작업이 남으면 이 시간에 이어서 진행
+ 합니다.
+URL:https://app.notion.com/p/3faa7326f87b81ea8108eeef0aedd8f8
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:AC-S 잔여 항목 점검·보완 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-09@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261018T051500Z
+DTEND:20261018T070000Z
+SUMMARY:[로봇] PWM·PC7 계측 준비와 확인
+DESCRIPTION:목표: UART 결과와 실제 출력 LOW·E-stop 입력을 구
+ 분할 수 있도록 계측 계획을 세운다.\n완료 기준: 현재 
+ 실물의 측정점을 검토하고 준비가 되면 zero-only에서 파
+ 형을 저장한다. 미준비면 다음 계측 절차를 확정한다.\n
+ 진행 조건: 물리 연결은 사용자 확인 뒤 단계별로 진행
+ 한다. 모터 전력·주행 시험으로 확장하지 않는다.\n관련
+  Notion: https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca\n전체
+  일정: https://app.notion.com/p/3faa7326f87b8122b119d7a9de00fe50\n한국
+ 시간 기준의 작업 예약 초안. 선행 작업이 남으면 이 시
+ 간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:PWM·PC7 계측 준비와 확인 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-10@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261018T090000Z
+DTEND:20261018T103000Z
+SUMMARY:[로봇] 주간 결과·Notion 정리
+DESCRIPTION:목표: 완료한 시험과 남은 조건을 저장소 기록
+ 과 Notion 진행 지도에 맞춘다.\n완료 기준: 보고서·검증 
+ 매트릭스·현재 위치·다음 체크리스트의 상태와 근거가
+  일치한다.\n진행 조건: 코드·원시 증거는 저장소\, 요약
+ 과 탐색은 Notion에 둔다. Git 변경 범위 점검까지만 하며 c
+ ommit/push는 별도 요청을 따른다.\n관련 Notion: https://app.noti
+ on.com/p/3faa7326f87b81d6ae14e64ce21019ca\n전체 일정: https://app.noti
+ on.com/p/3faa7326f87b8122b119d7a9de00fe50\n한국시간 기준의 작업 
+ 예약 초안. 선행 작업이 남으면 이 시간에 이어서 진행
+ 합니다.
+URL:https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:주간 결과·Notion 정리 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:tmr-20261016-18-11@tracked-mobile-robot.local
+DTSTAMP:20261015T184728Z
+DTSTART:20261018T104500Z
+DTEND:20261018T113000Z
+SUMMARY:[로봇] 다음 주 작업 시간 확정
+DESCRIPTION:목표: 이번 주 남은 항목과 통합 준비를 기준으
+ 로 다음 주 작업 순서를 결정한다.\n완료 기준: 다음 1~3
+ 개 작업\, 선행 조건\, 시작·종료 시간을 정리한다.\n진
+ 행 조건: 미완료를 우선 이월한다. 실제 일정 예약과 기
+ 존 개인 일정 충돌은 캘린더 연결 확인 뒤 조정한다.\n관
+ 련 Notion: https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca\n전
+ 체 일정: https://app.notion.com/p/3faa7326f87b8122b119d7a9de00fe50\n한
+ 국시간 기준의 작업 예약 초안. 선행 작업이 남으면 이 
+ 시간에 이어서 진행합니다.
+URL:https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca
+STATUS:TENTATIVE
+TRANSP:OPAQUE
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT10M
+ACTION:DISPLAY
+DESCRIPTION:다음 주 작업 시간 확정 — 10분 뒤 시작
+END:VALARM
+END:VEVENT
+END:VCALENDAR

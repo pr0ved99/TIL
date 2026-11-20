@@ -1,0 +1,59 @@
+{
+  "test_id": "UR-01 run01",
+  "capture_sha256": "41820fdb5f5a761e6bd9450218d160cffb239cf404099d09712b539ad9ba7d48",
+  "capture_duration_s": 50.0,
+  "monitor_attachment_id": "13222d92-0bd1-4728-a15c-db844a6ad4f5",
+  "monitor_sha256": "7d7ba06ee177a9ade9e2b6bc6ac67d209485a7c681b39aee3ef2afa85719f966",
+  "monitor_scope": "108 lines; ends before manual recovery DISARM; recovery evidence comes from capture and supplied screenshot",
+  "screenshot_observation": {
+    "boot_id": 2317088236,
+    "phase": "IDLE",
+    "startup_state": "READY",
+    "request_id": 38,
+    "result": "OK",
+    "last_seq": 2760658648
+  },
+  "command_bytes_D3": 613,
+  "command_bytes_D1": 536,
+  "commands_present_only_at_ESP_TX_D3": [
+    {
+      "start_s": 6.98256725,
+      "end_s": 6.987341555555556,
+      "text": "CMD,seq=2760658646,vx_mmps=0,w_mradps=0,timeout_ms=300"
+    },
+    {
+      "start_s": 7.14295825,
+      "end_s": 7.144867805555556,
+      "text": "DISARM,seq=2760658647"
+    }
+  ],
+  "last_acknowledged_cmd_seq": 2760658645,
+  "timeout_first_tel": {
+    "start_s": 7.173224,
+    "end_s": 7.188809555555556,
+    "text": "TEL,t_ms=6634000,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=307,last_seq=2760658645,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+  },
+  "manual_disarm_tx_at_both_ends": {
+    "start_s": 13.732553,
+    "end_s": 13.734462555555556,
+    "text": "DISARM,seq=2760658648"
+  },
+  "manual_disarm_ack_at_both_ends": {
+    "start_s": 13.73456,
+    "end_s": 13.738367305555556,
+    "text": "ACK,seq=2760658648,type=DISARM,t_ms=6640577"
+  },
+  "recovery_first_tel": {
+    "start_s": 13.75746275,
+    "end_s": 13.772690555555556,
+    "text": "TEL,t_ms=6640600,state=DISARMED,reason=DISARM,command_age_ms=6907,last_seq=2760658648,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1"
+  },
+  "rx_boundary_note": "Capture begins mid-TEL. D0/D2 two invalid-stop candidates precede first captured LF at 0.001714056 s; no later invalid-stop candidates.",
+  "verdict": "UART command loss followed by CMD_TIMEOUT observed; first manual DISARM after reconnect ACKed, followed by new DISARMED/DISARM TEL and screenshot IDLE/OK. Earlier MISSING_SEQ fault not reproduced.",
+  "evidence_limits": [
+    "No partial CMD decoded at STM PA10 between complete CMD 2760658645 and DISARM 2760658648; STM internal line buffer is not directly measured.",
+    "No firmware correction was applied; one successful reconnect does not close the previously reproduced partial-line issue.",
+    "No physical PWM, PC7 or power measurements in this capture."
+  ],
+  "decoder": "../2026-10-16_ur00_uart_baseline_run01/decode_capture.py"
+}

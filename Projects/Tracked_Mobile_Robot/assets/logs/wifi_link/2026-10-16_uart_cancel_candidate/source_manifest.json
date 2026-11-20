@@ -1,0 +1,39 @@
+{
+  "mode": "CANDIDATE_NOT_APPLIED",
+  "input_encoding_note": "candidate hashes use UTF-8 with LF; base hashes are raw saved bytes",
+  "base": {
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127",
+    "esp32_wifi_link/main/wifi_control_executor.h": "5f169daf33d1334401566705cabf1a5dd36547666020d84428c546ee9dfce4f4",
+    "esp32_wifi_link/main/wifi_control_executor.c": "9058c358920028699c8dbc34df0ead9bbe5d79b355b9045a0da9078f0da49a41",
+    "esp32_wifi_link/main/wifi_link_main.c": "877205e6616a06ae79510e26f39f8e2b0731a928708779b83f00d66ac696afdc"
+  },
+  "candidate": {
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "559bbf5340bb03c536511e8aa40e315df6195fd598a6bf9fdc4e31cafc99c363",
+    "esp32_wifi_link/main/wifi_control_executor.h": "67c55429e3609ec76882e7fa52862d63b925b6de84a69eed6976027dbe386912",
+    "esp32_wifi_link/main/wifi_control_executor.c": "e92638cb7d3f603df7bb24778134ca0b903370fd174a61b191e15582b4b2deab",
+    "esp32_wifi_link/main/wifi_link_main.c": "d7c800239b37372acd66e6b8f057866dfd8865cb2b6a6c244a3fe7e6fe4a9a01"
+  },
+  "verification_artifacts": {
+    "candidate_pc.txt": "f50769a5f0f834afc4dce2d0682c3a195daeaf04cba77f84769a640c77f5c179",
+    "unchanged_baseline_regression.txt": "52020862f6a0f2bd912bc6020530834678805f390ef9d4128736648793d8220e"
+  },
+  "test_inputs": {
+    "uart_recovery_candidate.py": "04df48e2fbd047c6c360edf537d39a906c5fcad0ddf2f8050466769415313f64",
+    "test_uart_recovery.py": "417370c7e1b0608868516e0db36d995cd08b1c424c82f81bba06859745a99543",
+    "uart_recovery_host_fixture.c": "5fcbe73e774cb54ecc6d56ae6270b0b23bbf71c45cc94338fafa68cdd016dd43",
+    "stm_uart_stream_host_fixture.c": "5bbf4762e8926d5b9f14efe28e087f76be38a5fa82c9ac5a7806c99b86c6e21b",
+    "wifi_control_executor_host_fixture.c": "253ad6fbaecf292c2fd57ed3c79584116ef400f84490c32e1e5ef6ed53abd069",
+    "wifi_control_main_host_fixture.c": "1ba4de19604f7c25be0b040ea4c788cf728a23943f18b9b8d105025777954fa7",
+    "wifi_w5_host_fixture.c": "aa54632e427c82d97ec01625b6cf7cf9e5e6e26512cf286a2026e867d8e51bc4"
+  },
+  "guide_sha256": "49177726ed5a4a44b6440d26d2456a9a5ae99bf7bfb695be704b335e1de32b17",
+  "checks": {
+    "candidate_exit": 0,
+    "prefix_state_combinations": 513,
+    "executor_cases": 17,
+    "main_adapter_cases": 42,
+    "baseline_regression_17_42": "PASS",
+    "production_sources_unchanged": true,
+    "physical_acceptance": "PENDING"
+  }
+}

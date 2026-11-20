@@ -1,0 +1,240 @@
+{
+  "test": "UR03_ACS04_ONE_CMD_ACK_DROP",
+  "run": "2026-10-17_ur03_acs04_cmd_ack_drop_pwm_run01",
+  "verdict": "PASS_WITHIN_ZERO_OUTPUT_SELECTIVE_CMD_ACK_LOSS_AND_AUTOMATIC_STOP_SCOPE",
+  "normal_mode_restoration": "PASS_WITHIN_NORMAL_MODE_ZERO_CMD_ACK_AND_DISARM_RESTORATION_SCOPE",
+  "evidence": {
+    "capture": {
+      "path": "../../../captures/logic_analyzer/2026-10-17_UR03_ACS04_CMD_ACK_DROP_PWM_run01.sr",
+      "sha256": "2694a6db5670e8d947b9ba4cbd23eeb17f8c5ebcff1005b3e81ed9661d869175",
+      "samplerate_hz": 4000000.0,
+      "samples": 100000000,
+      "duration_s": 25.0,
+      "note": "Actual 100M / 25s capture covers full event and exceeds 3s post-stop requirement."
+    },
+    "browser_report": {
+      "file": "browser_report.json",
+      "sha256": "b82be80390875353c2149ed8c5bdcb9d293b0f6112aed546edbaf3c912d87bba",
+      "source_attachment_id": "9b3775c3-36b6-4417-97f3-13207372e6e5",
+      "copied_byte_for_byte": true
+    },
+    "esp_monitor": {
+      "file": "esp_monitor.txt",
+      "sha256": "23dce90f26d55f62852b0a2cb56a6588fb08696fe3438fc27b1b4bfa83ea15f9",
+      "source_attachment_id": "4a445e19-8357-46a3-88f2-2cd75f072ab0",
+      "copied_byte_for_byte": true
+    },
+    "screenshot": {
+      "source": "User-attached final screenshot in conversation; fields transcribed, image not saved as a local artifact",
+      "startup_state": "READY",
+      "control_phase": "IDLE",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "request_id": 441,
+      "result": "OK",
+      "boot_id": 3570331004,
+      "uptime_ms": 6137638,
+      "stm_t_ms": 232400,
+      "last_seq": 573834404,
+      "stm_age_ms": 91,
+      "command_age_ms": 78771,
+      "all_speed_pwm_cps_zero": true,
+      "drop": 0,
+      "err": 0
+    }
+  },
+  "uart": {
+    "arm_seq": 573834393,
+    "zero_cmd_count": 10,
+    "normal_cmd_ack_count": 9,
+    "drop_seq": 573834403,
+    "marker": {
+      "start_s": 3.053422,
+      "end_s": 3.0584485555555556,
+      "text": "TEST_CMD_ACK_DROP,seq=573834403,t_ms=153629,zero_count=10"
+    },
+    "dropped_cmd_ack_count": 0,
+    "ack_wait_matching_armed_tel": {
+      "start_s": 3.1243775,
+      "end_s": 3.1388528055555556,
+      "text": "TEL,t_ms=153700,state=ARMED,reason=NONE,command_age_ms=71,last_seq=573834403,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "line_cancel": {
+      "start_s": 3.193539,
+      "end_s": 3.1937125555555554,
+      "text": "\u0018"
+    },
+    "disarm": {
+      "start_s": 3.1937125,
+      "end_s": 3.1955355555555554,
+      "text": "DISARM,seq=573834404"
+    },
+    "disarm_ack": {
+      "start_s": 3.19562675,
+      "end_s": 3.1992655555555554,
+      "text": "ACK,seq=573834404,type=DISARM,t_ms=153771"
+    },
+    "cmd_start_to_disarm_start_ms": 153.29525,
+    "first_disarmed_tel": {
+      "start_s": 3.22422625,
+      "end_s": 3.2392150555555554,
+      "text": "TEL,t_ms=153800,state=DISARMED,reason=DISARM,command_age_ms=171,last_seq=573834404,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "post_disarm_ack_observation_s": 21.800734444,
+    "post_stop_tel_count": 219,
+    "post_stop_arm_cmd_count": 0,
+    "complete_tel_count": 251,
+    "tel_states": {
+      "DISARMED": 238,
+      "ARMED": 13
+    },
+    "all_speed_pwm_cps_zero": true,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ],
+    "invalid_stop_bits_D0_D1": [
+      0,
+      0
+    ],
+    "trailing_partial_lines": false
+  },
+  "browser": {
+    "boot_id": 3570331004,
+    "session_id": 2,
+    "control_id": 5,
+    "event_count": 1016,
+    "tel_count": 985,
+    "phase_sequence": [
+      "IDLE",
+      "ARM_PENDING",
+      "ZERO_PENDING",
+      "ACTIVE",
+      "STOPPING",
+      "IDLE"
+    ],
+    "cmd_timeout": {
+      "ms": 31086.6,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 3570331004,
+        "session_id": 2,
+        "request_id": 440,
+        "cmd": "CMD",
+        "seq": 573834403,
+        "control_id": 5,
+        "status": "TIMEOUT"
+      }
+    },
+    "stop_confirmed": {
+      "ms": 31156,
+      "event": "command_result",
+      "data": {
+        "kind": "command_result",
+        "boot_id": 3570331004,
+        "session_id": 2,
+        "request_id": 441,
+        "cmd": "DISARM",
+        "seq": 573834404,
+        "control_id": 0,
+        "status": "OK"
+      }
+    },
+    "idle": {
+      "ms": 31156.1,
+      "event": "CONTROL_STATE",
+      "data": {
+        "kind": "control_state",
+        "boot_id": 3570331004,
+        "session_id": 2,
+        "phase": "IDLE",
+        "owner_session": 0,
+        "control_id": 0,
+        "ticket": 37872,
+        "purpose": "ARM",
+        "ttl_ms": 150,
+        "zero_only": true
+      }
+    },
+    "fresh_matching_tel_received_before_timeout": true,
+    "post_idle_observed_s": 69.6616,
+    "post_idle_tel_count": 681,
+    "post_idle_command_notice_or_result_count": 0,
+    "max_stm_age_ms": 93,
+    "all_speed_pwm_cps_zero": true,
+    "drop_values": [
+      0
+    ],
+    "err_values": [
+      0
+    ],
+    "report_finished": false,
+    "report_finished_interpretation": "Passive observer was still collecting at copy time; this is not a test verdict."
+  },
+  "esp_monitor": {
+    "line_count": 62,
+    "arm_seq": 573834393,
+    "cmd_seq_first": 573834394,
+    "cmd_seq_last": 573834403,
+    "normal_cmd_matches": 9,
+    "dropped_seq_match_count": 0,
+    "drop_marker_count": 1,
+    "automatic_disarm_tx_ms": 6059379,
+    "page_followup_disarm_queued_ms": 6059429,
+    "disarm_tx_precedes_page_followup_request": true,
+    "disarm_wire_count": 1,
+    "warning_error_lines": []
+  },
+  "logic_levels": {
+    "D4": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "criteria": {
+    "one_tenth_cmd_ack_omitted": true,
+    "tel_continues_with_matching_seq": true,
+    "browser_times_out_despite_matching_fresh_tel": true,
+    "owner_revoked_then_can_lf_disarm": true,
+    "disarm_ack_and_fresh_disarmed_tel": true,
+    "no_delayed_dropped_ack_or_pending_cmd_replay_in_capture": true,
+    "zero_output_and_no_error_increase": true,
+    "post_stop_no_automatic_arm_cmd_at_least_3s": true
+  },
+  "limits": [
+    "Bounded zero-output selective CMD ACK-loss case; not all AC-S04 subcases.",
+    "Digital sampled levels do not measure motor stop performance or analog signal integrity.",
+    "Approximately 153.3ms is UART CMD-start to DISARM-start, not a physical motor stop latency or exact browser timeout.",
+    "Browser event times, STM time and ESP time have separate origins; correlated by sequence and telemetry fields."
+  ],
+  "normal_mode_restoration_evidence": "../2026-10-17_ur03_acs04_cmd_ack_drop_restore_pwm_run01/observations.json"
+}

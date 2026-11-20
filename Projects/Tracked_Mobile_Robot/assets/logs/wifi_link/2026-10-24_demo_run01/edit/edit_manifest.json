@@ -1,0 +1,138 @@
+{
+  "date": "2026-10-24",
+  "output": "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_demo_run01\\edit\\TMR_MVP_Demo_2026-10-24_review.mp4",
+  "output_sha256": "aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa",
+  "output_bytes": 11035476,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 24,
+  "duration_seconds": 65.0,
+  "audio_tracks": 0,
+  "sources": [
+    {
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_cam_01.mp4",
+      "sha256": "0fbe9434591317fe513e0c486c96517e45f265e85e3b77ce729dd965864c9172"
+    },
+    {
+      "path": "../../../../videos/wifi_mvp/2026-10-24/raw/mvp_01.mp4",
+      "sha256": "feef821386e7bc29c3dd8433e08f91955330d9304832fc7b37000cd1d1bdeb33"
+    }
+  ],
+  "screen_interval_seconds": [
+    6.0,
+    71.0
+  ],
+  "camera_interval_seconds": [
+    5.458333333333333,
+    70.45833333333333
+  ],
+  "camera_crop_xywh": [
+    250,
+    300,
+    900,
+    420
+  ],
+  "blur_in_camera_crop_xywh": [
+    0,
+    0,
+    280,
+    124
+  ],
+  "blur_mask_polygon_in_region": [
+    [
+      0,
+      0
+    ],
+    [
+      279,
+      0
+    ],
+    [
+      279,
+      70
+    ],
+    [
+      0,
+      123
+    ]
+  ],
+  "feedback_crop_xywh": [
+    842,
+    170,
+    758,
+    562
+  ],
+  "controls_crop_xywh": [
+    332,
+    270,
+    480,
+    258
+  ],
+  "alignment_offset_seconds": 0.5416666666666666,
+  "playback_speed": 1,
+  "internal_cuts": 0,
+  "originals_modified": false,
+  "published": false,
+  "audio_reviewed_by_listening": false,
+  "ffmpeg_command": [
+    "C:\\Users\\eyh12\\AppData\\Local\\Temp\\codex-video-merge-tools\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
+    "-hide_banner",
+    "-nostdin",
+    "-y",
+    "-ss",
+    "5.458333333",
+    "-i",
+    "C:\\Users\\eyh12\\Desktop\\mvp_cam_01.mp4",
+    "-ss",
+    "6.0",
+    "-i",
+    "C:\\Users\\eyh12\\Desktop\\mvp_01.mp4",
+    "-loop",
+    "1",
+    "-framerate",
+    "24",
+    "-i",
+    "layout.png",
+    "-loop",
+    "1",
+    "-framerate",
+    "24",
+    "-i",
+    "background_monitor_mask.png",
+    "-filter_complex_threads",
+    "2",
+    "-filter_complex_script",
+    "filtergraph.txt",
+    "-map",
+    "[out]",
+    "-an",
+    "-t",
+    "65.0",
+    "-r",
+    "24",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "medium",
+    "-crf",
+    "19",
+    "-pix_fmt",
+    "yuv420p",
+    "-movflags",
+    "+faststart",
+    "-map_metadata",
+    "-1",
+    "-metadata",
+    "title=Tracked Mobile Robot - Manual Control Demo - Review",
+    "C:\\Users\\eyh12\\workspace\\TIL\\Projects\\Tracked_Mobile_Robot\\assets\\logs\\wifi_link\\2026-10-24_demo_run01\\edit\\TMR_MVP_Demo_2026-10-24_review.mp4"
+  ],
+  "validation_status": "PASS: full decode 1560 frames, one H264 video stream, no audio; selected-frame visual review complete",
+  "desktop_copy": {
+    "path": "C:\\Users\\eyh12\\Desktop\\TMR_MVP_Demo_2026-10-24_review.mp4",
+    "sha256": "aa6f87968a8bec79b74affbd162ec0a37eed0c1dd964cdb7c46701fbc4f951fa",
+    "verified": true
+  },
+  "path_base": "manifest directory"
+}

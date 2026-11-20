@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-24",
+  "scope": "Three runtime report archives, offline analysis and updated pointers; no new MCU tests",
+  "raw_reports": {
+    "2026-10-24_handler_timing_idle_run01": {
+      "raw_sha256": "a75887413f6f5150a4ac7c2b900f55d8926e78033cda0255d0667b28c6d7811b",
+      "timing_rows": 6324,
+      "summary_sha256": "99b503b73001a7d149201b5a0671fc5327a1832a31fb67efdbaf915dab10a193"
+    },
+    "2026-10-24_handler_timing_armed_zero_run01": {
+      "raw_sha256": "4e8a9d011c68e98dc50dd4176041c423945933a7f70dbeb3fe6fde1e26b1f0b1",
+      "timing_rows": 4349,
+      "summary_sha256": "6d84315f1f623c13fd25ca35e4606d6b71a34d28434a72ad1d9b59961b4e937b"
+    },
+    "2026-10-24_handler_timing_air_forward_run01": {
+      "raw_sha256": "a3f6d3babc915b8a79b4d5b33aaf64d897a2abbc724b2b7e2fe54feb2c0307d3",
+      "timing_rows": 5060,
+      "summary_sha256": "decba65944201db758c47e1d048ad2f4d30553ad24c6ca90cf5d186ac208c1a4"
+    }
+  },
+  "reference_files_unchanged": {
+    "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/console_encoder_observe_1m_v5_2.js": "5c2cad7b016cc2cce1a974f4e1aad1c0b37df4ddf2946e68490b48e012a81ccb",
+    "assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js": "de9eb6d35910d39987c05bff2e1aa41a7453bc9c76c8f37b1b05e1741fcfbcb2",
+    "03_Firmware/esp32_wifi_link/main/wifi_link_main.c": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md": "1032ba3eee3ad451e65ff58c32c91fd006f55448bbe4fc2cfd5956b9e7760502"
+  },
+  "updated_doc_hashes": {
+    "docs/handoff/CURRENT_SESSION_CONTEXT.md": "496a62b3fdfd5b53b805f27d3f69db7ad8d6e1f9532eaabd1078963f69ceaffa",
+    "docs/handoff/NEXT_SESSION_START_PROMPT.md": "2bcbe6918b882bd3ce946bee8317859497e6e87e3b9240869639ece79ac57f60",
+    "docs/progress/2026-10-24_progress.md": "a435eb71ce9e24371ea6df6b475b93a80fa2a9776194028593be74ea5273349c",
+    "docs/progress/README.md": "eb8be1a31305c7bf2e1aa9c6756014a1d76f1fad973dc9413dada0b375c43aca",
+    "assets/logs/wifi_link/2026-10-24_browser_handler_timing_preparation/README.md": "8c290a676a028fec488da74204a1e5398d5b14c32b1c293024fd5279d64dda41",
+    "assets/logs/wifi_link/2026-10-24_handler_timing_armed_zero_run01/README.md": "231f64df451e6d9155f8fbc4f2d32ba8029caa98d316907685eea7f81dd91f95",
+    "assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md": "aa0297de799eb4026657eae0c502f9dc8d5c25e33340fb273e3a03bb85526c84"
+  },
+  "relative_file_links_verified": 183,
+  "total_timing_rows": 15733,
+  "original_observers_firmware_and_requirement_matrix_unchanged": true,
+  "automatic_repeat_planned": false,
+  "past_transport_cause_resolved": false,
+  "mcu_build_or_flash_performed": false,
+  "git_calendar_notion_publication_performed": false
+}

@@ -1,0 +1,73 @@
+# Embedded Learning Notes
+
+**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.
+
+[실적·다음 작업](../docs/progress/2026-11-12_progress.md). 아래 날짜별 재개점은 당시 이력이다.
+
+**최신 · 11/8 학습 마감:** 14장 방전과37-2 입력 정착 관측을 보완했다. 사용자 위임으로 [37-2 필기·a,b 유도 보충](../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)을 완성했으며 이해 완료와 구분한다. 다음은 C2 제외 근사/포함 모델과VADC 전류식 하나부터 복습이다. 자료40-1의2kHz는 비교 후보이며 구현 전이다. [진행·게시](../docs/progress/2026-11-08_progress.md). 아래 날짜별 다음 작업은 당시 이력이다.
+
+**최신 · 11/5 학습/11/6 마감:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의37-4·38-1~3·39-1~3 자료를작성했다. 결론은±0.10V 목표/현재회로를유지하고39-2부품·보정·검증기준으로전압2채널초안을구체화하는것이다. 다음은기존쉴드CAD와계약대조·연결표작성. 자료39-3과사용자필기완료보고36-19를구분한다. 실제ADC/잡음·계수·잔차·보호는후속검증이며구현/PASS가아니다. [마감/다음재개](../docs/progress/2026-11-06_progress.md).
+
+**10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.
+
+이 폴더는 Tracked Mobile Robot 프로젝트를 임베디드 시스템 학습용으로 깊게 정리하는 공간이다.
+
+`01_System_Architecture`는 프로젝트의 공식 설계 결정과 인터페이스 계약을 담고,
+이 폴더는 그 결정을 이해하기 위한 개념 노트, 보드 실습 일지, 디버깅 기록을 담는다.
+
+## Folder Map
+
+| Folder | Purpose |
+| --- | --- |
+| `01_Concept_Notes` | GPIO, Timer, UART, DMA, HAL/LL/Register 같은 개념 정리 |
+| `02_STM32_Board_Practice` | NUCLEO-F446RE 기반 실습 일지와 bring-up 기록 |
+| `03_ESP32_Board_Practice` | ESP32-S3 보조 컨트롤러 실습 일지 |
+| `04_Interface_Protocol_Practice` | UART/CAN/telemetry protocol 설계와 검증 기록 |
+| `05_Debugging_Measurement` | DMM, logic analyzer, oscilloscope, serial log 기반 측정 기록 |
+| [`06_STM32_ESP32_Firmware_Textbook`](06_STM32_ESP32_Firmware_Textbook/README.md) | 기초 C부터 현재 STM·ESP 제어 코드까지 이어지는 한 권의 교과서와 PC 예제 |
+| `_templates` | 새 개념 노트와 실습 일지 작성 템플릿 |
+
+## How To Use
+
+새 주제를 배울 때는 다음 순서로 정리한다.
+
+1. `01_Concept_Notes`에 개념과 STM32F446RE 관점의 동작 원리를 정리한다.
+2. 실제 보드에서 확인할 수 있으면 `02_STM32_Board_Practice` 또는 `03_ESP32_Board_Practice`에 실습 일지를 만든다.
+3. command/telemetry frame, parser, CRC, timeout처럼 interface 성격이 강하면 `04_Interface_Protocol_Practice`에 따로 기록한다.
+4. 측정값, 파형, 실패 원인, 재현 조건은 `05_Debugging_Measurement`에 남긴다.
+5. 프로젝트 공식 결정으로 확정된 내용만 `01_System_Architecture`나 `PROJECT_MEMORY.md`에 반영한다.
+
+## Learning Rule
+
+빠르게 동작시키는 것보다 다음 질문을 닫는 것을 우선한다.
+
+```text
+왜 필요한가?
+어떤 peripheral이 담당하는가?
+CubeMX/HAL에서는 어떻게 설정되는가?
+레지스터 관점에서는 어떤 비트가 바뀌는가?
+실제 하드웨어에서는 무엇을 측정해야 하는가?
+실패하면 어떤 fault 또는 recovery로 다룰 것인가?
+포트폴리오나 면접에서는 어떻게 설명할 것인가?
+```
+
+## Current First Topics
+
+처음부터 순서대로 공부하려면 **[STM32·ESP32 펌웨어 교과서](06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)**를 읽는다.
+C·GPIO·시간·UART에서 시작해 STM 출력/상태, ESP 태스크/네트워크, ticket/owner/state/executor와 브라우저 취소까지 다룬다.
+각 장의 예제·문제·해설과 별도 PC 실행 예제 5개가 있다. 실제 소스의 2026-10-13 기준이며 공식 설계·검증 문서를 대체하지 않는다.
+
+노트북만 있는 날에는 [STM·ESP 코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)로 파일·호출 관계를 먼저 파악한다.
+이후 [단일 모터 시험 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)에서 실제 소스와 로그를 연결한다.
+
+| Topic | Note |
+| --- | --- |
+| GPIO alternate function | `01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md` |
+| UART interrupt and ring buffer | `01_Concept_Notes/02_UART_Interrupt_Ring_Buffer_ko.md` |
+| Timer encoder mode | `01_Concept_Notes/03_Timer_Encoder_Mode_ko.md` |
+| DMA, interrupt, timer role split | `01_Concept_Notes/04_DMA_Interrupt_Timer_Comparison_ko.md` |
+| HAL, LL, direct register | `01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md` |
+| I2C vs SPI for IMU | `01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md` |
+| CubeMX generated code boundary | `01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md` |
+| 단일 모터 시험과 로그 이해 | [명령·출력·피드백 해설](01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md) |
+| STM·ESP 파일과 함수 이해 | [코드 구조와 함수 지도](01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md) |

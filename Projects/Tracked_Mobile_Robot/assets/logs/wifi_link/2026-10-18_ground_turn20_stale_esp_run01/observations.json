@@ -1,0 +1,144 @@
+{
+  "status": "OUTPUT_20_CONFIRMED_STOPPED_BY_ESP_STATE_CHECK_PERFORMANCE_NOT_ASSESSED",
+  "source_report_sha256": "c90891149f06f800ad9dbb78a908b4bf3f097ede7186e5f335e18b3c06303cfa",
+  "motion_groups": [
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -200,
+        200
+      ],
+      "source_samples": 1,
+      "first_stm_t_ms": 161600,
+      "last_stm_t_ms": 161600,
+      "cps": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -200,
+        200
+      ],
+      "source_samples": 1,
+      "first_stm_t_ms": 168000,
+      "last_stm_t_ms": 168000,
+      "cps": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "command": [
+        0,
+        -500
+      ],
+      "pwm": [
+        200,
+        -200
+      ],
+      "source_samples": 1,
+      "first_stm_t_ms": 173306,
+      "last_stm_t_ms": 173306,
+      "cps": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -200,
+        200
+      ],
+      "source_samples": 1,
+      "first_stm_t_ms": 177206,
+      "last_stm_t_ms": 177206,
+      "cps": [
+        [
+          0,
+          0
+        ]
+      ]
+    }
+  ],
+  "held_stops": [
+    {
+      "ms": 7442.60000000149,
+      "reason": 8,
+      "path": "Error\n    at stopLocal (<anonymous>:59:51)\n    at handleControl (http://192.168.0.17/:193:89)\n    at ws.onmessage (http://192.168.0.17/:269:79)"
+    },
+    {
+      "ms": 13852.79999999702,
+      "reason": 0,
+      "path": "Error\n    at stopLocal (<anonymous>:59:51)\n    at handleNotice (http://192.168.0.17/:215:18)\n    at ws.onmessage (http://192.168.0.17/:270:78)"
+    },
+    {
+      "ms": 19122.19999999553,
+      "reason": 8,
+      "path": "Error\n    at stopLocal (<anonymous>:59:51)\n    at handleControl (http://192.168.0.17/:193:89)\n    at ws.onmessage (http://192.168.0.17/:269:79)"
+    },
+    {
+      "ms": 23043,
+      "reason": 0,
+      "path": "Error\n    at stopLocal (<anonymous>:59:51)\n    at handleResult (http://192.168.0.17/:235:22)\n    at ws.onmessage (http://192.168.0.17/:271:78)"
+    }
+  ],
+  "local_elf_sha256": "3944de02ab048fa439f79770df949c9c7e975452a783286229ca4f234a6448c7",
+  "local_elf_pwm_limit": 150,
+  "source_header_pwm_limit": 200,
+  "runtime_interpretation": "STM reports +/-200 then ESP STOPPING reason8; consistent with older ESP cap150 image. Flash readback not performed.",
+  "telemetry_dropped": 0,
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "final_tel": {
+    "ms": 32223.10000000149,
+    "boot_id": 3829505156,
+    "gap_ms": 60.20000000298023,
+    "esp_uptime_ms": 213729,
+    "esp_step_ms": 61,
+    "tel_count": 2134,
+    "stm_t_ms": 186406,
+    "stm_age_ms": 12,
+    "command_age_ms": 9282,
+    "last_seq": 3801448346,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "next": "User rebuild ESP; inspect resulting ELF cap200 before reflash. No further torque increase."
+}

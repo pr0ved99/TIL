@@ -1,0 +1,94 @@
+{
+  "kind": "Analytical calculations only; not simulator or hardware measurement",
+  "nominal_K": 6.1063829787234045,
+  "divider_Rth_ohm": 3930.3135888501743,
+  "tolerance_cases": [
+    {
+      "name": "nominal",
+      "R1_ohm": 12000,
+      "R2_ohm": 12000,
+      "R3_ohm": 4700,
+      "VRAIL_V": 16,
+      "VDIV_V": 2.6202090592334493,
+      "nominal_conversion_error_V": 0.0,
+      "own_ratio_conversion_V": 16.0
+    },
+    {
+      "name": "1pct_high",
+      "R1_ohm": 11880,
+      "R2_ohm": 11880,
+      "R3_ohm": 4747,
+      "VRAIL_V": 16,
+      "VDIV_V": 2.664328059774792,
+      "nominal_conversion_error_V": 0.2694075139439427,
+      "own_ratio_conversion_V": 16.0
+    },
+    {
+      "name": "1pct_low",
+      "R1_ohm": 12120,
+      "R2_ohm": 12120,
+      "R3_ohm": 4653,
+      "VRAIL_V": 16,
+      "VDIV_V": 2.5766794725366005,
+      "nominal_conversion_error_V": -0.2658083272765026,
+      "own_ratio_conversion_V": 16.0
+    },
+    {
+      "name": "0p1pct_high",
+      "R1_ohm": 11988,
+      "R2_ohm": 11988,
+      "R3_ohm": 4704.7,
+      "VRAIL_V": 16,
+      "VDIV_V": 2.624594239331676,
+      "nominal_conversion_error_V": 0.026777589110448474,
+      "own_ratio_conversion_V": 16.0
+    },
+    {
+      "name": "0p1pct_low",
+      "R1_ohm": 12012,
+      "R2_ohm": 12012,
+      "R3_ohm": 4695.3,
+      "VRAIL_V": 16,
+      "VDIV_V": 2.615829773009788,
+      "nominal_conversion_error_V": -0.02674159885512495,
+      "own_ratio_conversion_V": 16.0
+    },
+    {
+      "name": "1pct_high_12p6",
+      "R1_ohm": 11880,
+      "R2_ohm": 11880,
+      "R3_ohm": 4747,
+      "VRAIL_V": 12.6,
+      "VDIV_V": 2.0981583470726486,
+      "nominal_conversion_error_V": 0.21215841723085482,
+      "own_ratio_conversion_V": 12.6
+    }
+  ],
+  "leak_1uA": {
+    "VADC_drop_V": 0.004930313588850175,
+    "rail_conversion_error_V": -0.03010638297872341
+  },
+  "isolation": {
+    "ON_VADC_V": 2.3713525794162247,
+    "ON_ratio": 0.14820953621351404,
+    "ON_K": 6.747204164780444,
+    "OFF_VADC_V": 0.0001231434309069887,
+    "OFF_current_A": 2.6200729980210363e-09
+  },
+  "C2_example": {
+    "C_F": 1e-10,
+    "R_ohm": 47000,
+    "tau_s": 4.7e-06,
+    "time_1tau_s": 0.0103047,
+    "voltage_1tau_V_ignoring_leak": 0.872371861736099,
+    "time_99pct_s": 0.010321644299874144,
+    "voltage_99pct_V_ignoring_leak": 0.02371352579416225,
+    "reported_cursor_voltages": null
+  },
+  "conditional_timing": {
+    "nominal_crossing_margin_us": 628.6474205837753,
+    "min_trip_only_margin_us": 583.6474205837754,
+    "datasheet_numbers_sum_us": 30.055,
+    "not_a_guaranteed_system_delay": true
+  }
+}

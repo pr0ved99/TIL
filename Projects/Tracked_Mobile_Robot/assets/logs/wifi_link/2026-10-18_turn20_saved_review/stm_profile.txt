@@ -1,0 +1,3 @@
+PASS UART -> mapper -> motor: linear150, pure-turn200, mixed150, partial turn and zero
+PASS 300ms timeout, no CMD-only rearm, DISARM and ESTOP stop at turn200
+PASS mapper cap201 rejected; signed +/-201 and raw201 stop both outputs

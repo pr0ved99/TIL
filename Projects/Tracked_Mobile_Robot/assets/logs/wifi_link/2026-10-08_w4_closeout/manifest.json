@@ -1,0 +1,76 @@
+{
+  "documented_on": "2026-10-08",
+  "work_dates": [
+    "2026-10-07",
+    "2026-10-08"
+  ],
+  "git_branch": "agent/dual-encoder-bringup",
+  "git_head": "cffae11",
+  "working_tree_modified_and_untracked": true,
+  "source_snapshot": [
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "sha256": "e14f960447861a8aa96acd7a6066ac8c084e31d276af11f46b1afd38217a6ebc",
+      "bytes": 35682
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/CMakeLists.txt",
+      "sha256": "01ba6a0623b7c2acfb7857b828f8cad1c71916fdb0f75911d570fdf731784529",
+      "bytes": 232
+    },
+    {
+      "path": "03_Firmware/esp32_wifi_link/sdkconfig.defaults",
+      "sha256": "58af640af8305106246f917dcb286ec057ed6cd85b4c1848d74476397325239d",
+      "bytes": 146
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/usart.c",
+      "sha256": "95f3f1373dfd4691eed857c69bbba5039259d1de663cb9f40625840e2e7fd88a",
+      "bytes": 5565
+    },
+    {
+      "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+      "sha256": "063f608de44673649e4feafc22a525532cd48552199af93aece1edc3ff1a5127",
+      "bytes": 21162
+    },
+    {
+      "path": "03_Firmware/tests/test_wifi_websocket_page.js",
+      "sha256": "719a2473d149545cb3583605ed2777157ee3f08b07ab2acd1f4a23a48dc1d19d",
+      "bytes": 19285
+    }
+  ],
+  "source_hash_is_not_flashed_binary_identity": true,
+  "flashed_binary_hash_recorded": false,
+  "log_excerpt_sources": [
+    {
+      "attachment_id": "eb19ee75-a168-46de-90f7-5c6ae7369ec5",
+      "source_sha256": "c131ce12b4da741a3cf1c076bdc23a7ae88639a4b9b7b98b4ffb25305e4b1561",
+      "saved_excerpt": "startup_ready_recovery_uart_excerpt.txt",
+      "excerpt_sha256": "52c94958f1b0b1979527225eba81b9e39843865f2a4cb6fda59b65b72c6c3a64",
+      "selection": "wifi_link log lines and USB reconnect notices; bootloader/Wi-Fi identifiers omitted"
+    },
+    {
+      "attachment_id": "67b64686-cf54-4a9d-822f-e1982d9dd434",
+      "source_sha256": "19a4cfbfd3fa71871223e138300ee92ac09a7c88d5c162b86ec2336e66151193",
+      "saved_excerpt": "startup_pong_missing_uart_excerpt.txt",
+      "excerpt_sha256": "a2976a1f40989fd693807734180603d413fa41c5acccb71bea4ee8e3e60db80c",
+      "selection": "wifi_link log lines and USB reconnect notices; bootloader/Wi-Fi identifiers omitted"
+    },
+    {
+      "saved_excerpt": "startup_disarm_ack_missing_user_excerpt.txt",
+      "evidence_kind": "manual transcription of the user's inline UART excerpt; not a complete raw monitor log"
+    }
+  ],
+  "browser_simulation": {
+    "passed": 25,
+    "evidence": "previous tool execution on actual saved C source in this session",
+    "C_build_or_board_runtime_proof": false
+  },
+  "private_wifi_config_included": false,
+  "power": {
+    "stm": "USB",
+    "esp": "USB",
+    "lipo_connected": false,
+    "final_usb_power_removal": "not yet reported"
+  }
+}

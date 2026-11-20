@@ -1,0 +1,6 @@
+PASS other-session DISARM from ACTIVE; result routed to B; ACK plus TEL required
+PASS other-session DISARM cancels A queued CMD before UART
+PASS other-session DISARM cancels A pending ACK and follows in-flight CMD
+PASS no automatic ARM/CMD during 3.1 seconds after each confirmed stop
+Saved main normalized SHA256: 2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0
+Production inputs unchanged; native PC simulation only.

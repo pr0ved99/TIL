@@ -1,0 +1,599 @@
+{
+  "gate": "UR-03 / AC-S03 tab close and reconnect subcase",
+  "verdict": "PASS within zero-only tab-close/reconnect scope",
+  "source_name": "2026-10-16_UR03_ACS03_TAB_CLOSE_PWM_run01.sr",
+  "source_sha256": "73489bb317bf4e67f8dbba3114381a4dc7a9e4df5fa1d79a59cc61c043860e3d",
+  "duration_s": 25.0,
+  "samplerate_hz": 4000000.0,
+  "samples": 100000000,
+  "mapping": {
+    "D0": "STM PA9 TX / JDBG_UART Pin1",
+    "D1": "STM PA10 RX / JDBG_UART Pin2",
+    "D4": "PB6 left PWM / JDBG_CTRL_1 Pin2",
+    "D6": "PC7 ESTOP_SENSE / JDBG_CTRL_2 Pin2",
+    "D7": "PB7 right PWM / JDBG_CTRL_2 Pin1; user-confirmed move from D5"
+  },
+  "tx_counts": {
+    "ARM": 1,
+    "CMD": 50,
+    "DISARM": 1
+  },
+  "wire_matching_ack_count": 52,
+  "serial_control_rx_match_count": 51,
+  "late_cmd_ack": {
+    "seq": 2298559402,
+    "wire_ack_start_s": 9.23529925,
+    "stop_tx_start_s": 9.2353255,
+    "log": "RX ACK then STARTUP: ignored non-matching ACK",
+    "interpretation": "CMD response arrived after DISARM transmission had begun; control reply did not match and startup fallback logged it. No subsequent ARM/CMD in capture.",
+    "is_planned_ack_delay_injection": false
+  },
+  "tel_count": 250,
+  "tel_state_transitions": [
+    {
+      "start_s": 0.06511525,
+      "end_s": 0.08053030555555556,
+      "state_reason": [
+        "DISARMED",
+        "DISARM"
+      ],
+      "stm_t_ms": 3711129,
+      "last_seq": 2298559351
+    },
+    {
+      "start_s": 3.85820075,
+      "end_s": 3.8731893055555555,
+      "state_reason": [
+        "ARMED",
+        "NONE"
+      ],
+      "stm_t_ms": 3714929,
+      "last_seq": 2298559352
+    },
+    {
+      "start_s": 9.25521575,
+      "end_s": 9.270285805555556,
+      "state_reason": [
+        "DISARMED",
+        "DISARM"
+      ],
+      "stm_t_ms": 3720337,
+      "last_seq": 2298559403
+    }
+  ],
+  "telemetry_values": {
+    "state": {
+      "DISARMED": 196,
+      "ARMED": 54
+    },
+    "reason": {
+      "DISARM": 196,
+      "NONE": 54
+    },
+    "left_pwm": {
+      "0": 250
+    },
+    "right_pwm": {
+      "0": 250
+    },
+    "left_cps": {
+      "0": 250
+    },
+    "right_cps": {
+      "0": 250
+    },
+    "drop": {
+      "0": 250
+    },
+    "err": {
+      "1": 250
+    }
+  },
+  "first_stop_tel": {
+    "start_s": 9.25521575,
+    "end_s": 9.270285805555556,
+    "text": "TEL,t_ms=3720337,state=DISARMED,reason=DISARM,command_age_ms=20,last_seq=2298559403,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+    "fields": {
+      "t_ms": "3720337",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "20",
+      "last_seq": "2298559403",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "1"
+    }
+  },
+  "post_stop_tel_count": 158,
+  "uart_after_disarm_bytes": 0,
+  "no_more_uart_tx_observation_s": 15.762764694444444,
+  "timing": {
+    "last_cmd_end_s": 9.235152055555556,
+    "disarm_end_s": 9.237235305555556,
+    "disarm_ack_end_s": 9.242837805555556,
+    "first_stop_tel_start_s": 9.25521575,
+    "first_stop_tel_end_s": 9.270285805555556,
+    "last_cmd_end_to_stop_tel_complete_ms": 35.133749999999964,
+    "disarm_end_to_stop_tel_complete_ms": 33.05049999999987,
+    "boundary": "Wire line-end to complete TEL receipt; tab-close wall time is not instrumented. PWM had no falling edge because it was LOW throughout."
+  },
+  "levels": {
+    "D4": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D6": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    },
+    "D7": {
+      "samples": 100000000,
+      "high_samples": 0,
+      "low_samples": 100000000,
+      "first_level": 0,
+      "last_level": 0,
+      "rising_edges": 0,
+      "falling_edges": 0,
+      "high_runs_first_20": []
+    }
+  },
+  "independent_raw_histogram_crosscheck": "PASS",
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "serial_attachment": {
+    "source_name": "붙여넣은 텍스트.txt",
+    "sha256": "b9e8f80bb85227b2305c161fc932b51f305492423c50c1b5e1e1c172d40447f8",
+    "saved_as": "esp_monitor.txt",
+    "lines": 294,
+    "first_esp_ms": 915239,
+    "last_esp_ms": 928819,
+    "all_52_tx_sequences_match_capture": true
+  },
+  "browser_evidence": "screen_transcription.json; same final DISARM seq after reopening",
+  "limits": [
+    "User reports tab close/reopen; UART has no exact browser close/reopen timestamps.",
+    "WS QUEUED DISARM is visible; browser blur/hidden stop and socket termination are not isolated by this run.",
+    "Does not test RF loss, abrupt Wi-Fi disconnection, or deliberately delayed/replayed ACK injection.",
+    "err is already 1 at first TEL and does not increase; origin is outside this capture.",
+    "4 MHz digital sampling cannot establish analog voltage, sub-sample pulses, or power/motor stopping performance.",
+    "PWM is zero before and after stop, so actual nonzero-output stopping latency is not measurable here."
+  ],
+  "uart_matches": [
+    {
+      "type": "ARM",
+      "seq": 2298559352,
+      "tx_start_s": 3.76939375,
+      "tx_end_s": 3.7710430555555554,
+      "ack_start_s": 3.77395775,
+      "ack_end_s": 3.7775093055555553
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559353,
+      "tx_start_s": 3.860293,
+      "tx_end_s": 3.8650673055555553,
+      "ack_start_s": 3.87705275,
+      "ack_end_s": 3.8806040555555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559354,
+      "tx_start_s": 3.969105,
+      "tx_end_s": 3.9738793055555557,
+      "ack_start_s": 3.97402125,
+      "ack_end_s": 3.9775740555555554
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559355,
+      "tx_start_s": 4.068883,
+      "tx_end_s": 4.073657305555556,
+      "ack_start_s": 4.07379175,
+      "ack_end_s": 4.077344055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559356,
+      "tx_start_s": 4.17444475,
+      "tx_end_s": 4.1792190555555555,
+      "ack_start_s": 4.17935875,
+      "ack_end_s": 4.182910555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559357,
+      "tx_start_s": 4.29106725,
+      "tx_end_s": 4.295841555555556,
+      "ack_start_s": 4.29598775,
+      "ack_end_s": 4.299539305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559358,
+      "tx_start_s": 4.4100165,
+      "tx_end_s": 4.414790805555556,
+      "ack_start_s": 4.4149395,
+      "ack_end_s": 4.418491805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559359,
+      "tx_start_s": 4.51002725,
+      "tx_end_s": 4.514801555555556,
+      "ack_start_s": 4.514936,
+      "ack_end_s": 4.518486555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559360,
+      "tx_start_s": 4.62996325,
+      "tx_end_s": 4.634737555555556,
+      "ack_start_s": 4.6348795,
+      "ack_end_s": 4.638430055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559361,
+      "tx_start_s": 4.7300175,
+      "tx_end_s": 4.734791805555556,
+      "ack_start_s": 4.734936,
+      "ack_end_s": 4.738486805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559362,
+      "tx_start_s": 4.8300335,
+      "tx_end_s": 4.834807805555556,
+      "ack_start_s": 4.834954,
+      "ack_end_s": 4.838505805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559363,
+      "tx_start_s": 4.93003,
+      "tx_end_s": 4.934804305555556,
+      "ack_start_s": 4.93494725,
+      "ack_end_s": 4.938497555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559364,
+      "tx_start_s": 5.03002625,
+      "tx_end_s": 5.034800555555556,
+      "ack_start_s": 5.03494375,
+      "ack_end_s": 5.038494055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559365,
+      "tx_start_s": 5.1307445,
+      "tx_end_s": 5.135518805555556,
+      "ack_start_s": 5.135655,
+      "ack_end_s": 5.139205805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559366,
+      "tx_start_s": 5.24999775,
+      "tx_end_s": 5.254772055555556,
+      "ack_start_s": 5.25491275,
+      "ack_end_s": 5.258462805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559367,
+      "tx_start_s": 5.35001475,
+      "tx_end_s": 5.354789055555556,
+      "ack_start_s": 5.35492375,
+      "ack_end_s": 5.358475305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559368,
+      "tx_start_s": 5.45003825,
+      "tx_end_s": 5.454812555555556,
+      "ack_start_s": 5.45495175,
+      "ack_end_s": 5.458503305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559369,
+      "tx_start_s": 5.55002375,
+      "tx_end_s": 5.554798055555556,
+      "ack_start_s": 5.55493575,
+      "ack_end_s": 5.558487055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559370,
+      "tx_start_s": 5.650166,
+      "tx_end_s": 5.654940305555556,
+      "ack_start_s": 5.655077,
+      "ack_end_s": 5.658628305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559371,
+      "tx_start_s": 5.76926525,
+      "tx_end_s": 5.774039555555556,
+      "ack_start_s": 5.77418,
+      "ack_end_s": 5.777730805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559372,
+      "tx_start_s": 5.9300415,
+      "tx_end_s": 5.934815805555556,
+      "ack_start_s": 5.93495725,
+      "ack_end_s": 5.938507805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559373,
+      "tx_start_s": 6.03022475,
+      "tx_end_s": 6.034999055555556,
+      "ack_start_s": 6.03514125,
+      "ack_end_s": 6.038691305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559374,
+      "tx_start_s": 6.1502595,
+      "tx_end_s": 6.155033805555556,
+      "ack_start_s": 6.1551795,
+      "ack_end_s": 6.158730805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559375,
+      "tx_start_s": 6.2691675,
+      "tx_end_s": 6.273941805555556,
+      "ack_start_s": 6.27408325,
+      "ack_end_s": 6.277635555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559376,
+      "tx_start_s": 6.360239,
+      "tx_end_s": 6.365013305555556,
+      "ack_start_s": 6.37307375,
+      "ack_end_s": 6.376625305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559377,
+      "tx_start_s": 6.4688845,
+      "tx_end_s": 6.473658805555556,
+      "ack_start_s": 6.4738005,
+      "ack_end_s": 6.477349555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559378,
+      "tx_start_s": 6.5686515,
+      "tx_end_s": 6.573425805555556,
+      "ack_start_s": 6.57356875,
+      "ack_end_s": 6.577119805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559379,
+      "tx_start_s": 6.6685945,
+      "tx_end_s": 6.673368805555556,
+      "ack_start_s": 6.6735085,
+      "ack_end_s": 6.677061055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559380,
+      "tx_start_s": 6.77381275,
+      "tx_end_s": 6.778587055555556,
+      "ack_start_s": 6.78744875,
+      "ack_end_s": 6.790999805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559381,
+      "tx_start_s": 6.891077,
+      "tx_end_s": 6.895851305555556,
+      "ack_start_s": 6.8959885,
+      "ack_end_s": 6.899541305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559382,
+      "tx_start_s": 7.0300445,
+      "tx_end_s": 7.034818805555556,
+      "ack_start_s": 7.0349605,
+      "ack_end_s": 7.038513805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559383,
+      "tx_start_s": 7.13005875,
+      "tx_end_s": 7.134833055555556,
+      "ack_start_s": 7.13496775,
+      "ack_end_s": 7.138519305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559384,
+      "tx_start_s": 7.23004825,
+      "tx_end_s": 7.234822555555556,
+      "ack_start_s": 7.23496025,
+      "ack_end_s": 7.238512055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559385,
+      "tx_start_s": 7.3500165,
+      "tx_end_s": 7.354790805555556,
+      "ack_start_s": 7.35493225,
+      "ack_end_s": 7.358483805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559386,
+      "tx_start_s": 7.43086275,
+      "tx_end_s": 7.435637305555556,
+      "ack_start_s": 7.43578125,
+      "ack_end_s": 7.439332055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559387,
+      "tx_start_s": 7.55004425,
+      "tx_end_s": 7.554818555555556,
+      "ack_start_s": 7.5549615,
+      "ack_end_s": 7.558512805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559388,
+      "tx_start_s": 7.6501745,
+      "tx_end_s": 7.654948805555556,
+      "ack_start_s": 7.65509375,
+      "ack_end_s": 7.658646555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559389,
+      "tx_start_s": 7.75005525,
+      "tx_end_s": 7.754829555555556,
+      "ack_start_s": 7.7549685,
+      "ack_end_s": 7.758519805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559390,
+      "tx_start_s": 7.85005175,
+      "tx_end_s": 7.854826055555556,
+      "ack_start_s": 7.85497075,
+      "ack_end_s": 7.858518805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559391,
+      "tx_start_s": 7.97444625,
+      "tx_end_s": 7.979220555555556,
+      "ack_start_s": 7.9851945,
+      "ack_end_s": 7.988745055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559392,
+      "tx_start_s": 8.07377175,
+      "tx_end_s": 8.078546055555556,
+      "ack_start_s": 8.0849745,
+      "ack_end_s": 8.088528305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559393,
+      "tx_start_s": 8.191085,
+      "tx_end_s": 8.195859305555556,
+      "ack_start_s": 8.196,
+      "ack_end_s": 8.199551555555557
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559394,
+      "tx_start_s": 8.291088,
+      "tx_end_s": 8.295862305555556,
+      "ack_start_s": 8.2959995,
+      "ack_end_s": 8.299550305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559395,
+      "tx_start_s": 8.391103,
+      "tx_end_s": 8.395877305555556,
+      "ack_start_s": 8.39601975,
+      "ack_end_s": 8.399571555555555
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559396,
+      "tx_start_s": 8.49218125,
+      "tx_end_s": 8.496955555555555,
+      "ack_start_s": 8.4971035,
+      "ack_end_s": 8.500655305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559397,
+      "tx_start_s": 8.63003125,
+      "tx_end_s": 8.634805555555555,
+      "ack_start_s": 8.634947,
+      "ack_end_s": 8.638497805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559398,
+      "tx_start_s": 8.7675095,
+      "tx_end_s": 8.772283805555556,
+      "ack_start_s": 8.77242675,
+      "ack_end_s": 8.775978555555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559399,
+      "tx_start_s": 8.87218075,
+      "tx_end_s": 8.876955305555557,
+      "ack_start_s": 8.88523425,
+      "ack_end_s": 8.888784805555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559400,
+      "tx_start_s": 9.0300105,
+      "tx_end_s": 9.034784805555557,
+      "ack_start_s": 9.03493075,
+      "ack_end_s": 9.038480305555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559401,
+      "tx_start_s": 9.13001075,
+      "tx_end_s": 9.134785055555556,
+      "ack_start_s": 9.13492275,
+      "ack_end_s": 9.138473055555556
+    },
+    {
+      "type": "CMD",
+      "seq": 2298559402,
+      "tx_start_s": 9.23037775,
+      "tx_end_s": 9.235152055555556,
+      "ack_start_s": 9.23529925,
+      "ack_end_s": 9.238851555555556
+    },
+    {
+      "type": "DISARM",
+      "seq": 2298559403,
+      "tx_start_s": 9.2353255,
+      "tx_end_s": 9.237235305555556,
+      "ack_start_s": 9.23902475,
+      "ack_end_s": 9.242837805555556
+    }
+  ]
+}

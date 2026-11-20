@@ -1,0 +1,67 @@
+{
+  "verdict": "PASS_ACS04_EXPIRED_OBSOLETE_ARM_TICKET_ZERO_OUTPUT_SUBCASE",
+  "capture_name": "2026-10-16_UR03_ACS04_EXPIRED_ARM_PWM_run01.sr",
+  "capture_sha256": "5556e92db0bd70945fec4220a3554a996f67f3018d00df20d78bd783782550f9",
+  "duration_s": 24.47104,
+  "samplerate_hz": 4000000.0,
+  "boot_id": 1797425356,
+  "page_session": 8,
+  "test_session": 9,
+  "expired_ticket": 44529,
+  "current_ticket_at_attempt": 44531,
+  "advertised_remaining_ttl_ms": 109,
+  "actual_wait_after_capture_ms": 211.89999999850988,
+  "browser_result": "One manual ARM attempt with expired/obsolete ticket; TICKET_REJECTED. Ten subsequent TEL and fifty IDLE snapshots observed; no reported anomaly.",
+  "uart": {
+    "D1_decoded_bytes": 0,
+    "ARM_commands": 0,
+    "CMD_commands": 0,
+    "DISARM_commands": 0,
+    "ACK_lines": 0,
+    "invalid_stop_bits": 0
+  },
+  "D1_sampled_idle": {
+    "samples": 97884160,
+    "high_samples": 97884160,
+    "low_samples": 0,
+    "edges": 0
+  },
+  "valid_tel_count": 245,
+  "all_tel_state_reason": "DISARMED / DISARM",
+  "last_seq_unchanged": 3522553868,
+  "vx_w_PWM_CPS_drop_err": "All zero throughout the complete valid TEL records.",
+  "physical_levels": "D4/PB6 left PWM, D7/PB7 right PWM, D6/PC7 all LOW throughout 24.47104 s. Endpoints use the user-confirmed existing wiring.",
+  "same_run_anchors": [
+    {
+      "start_s": 2.681895,
+      "end_s": 2.6974015555555555,
+      "text": "TEL,t_ms=8581804,state=DISARMED,reason=DISARM,command_age_ms=2167004,last_seq=3522553868,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    {
+      "start_s": 2.88154575,
+      "end_s": 2.8970538055555557,
+      "text": "TEL,t_ms=8582004,state=DISARMED,reason=DISARM,command_age_ms=2167204,last_seq=3522553868,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    {
+      "start_s": 3.87988675,
+      "end_s": 3.8954028055555554,
+      "text": "TEL,t_ms=8583004,state=DISARMED,reason=DISARM,command_age_ms=2168204,last_seq=3522553868,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    }
+  ],
+  "browser_stop_confirmed_false": "Expected: normal rejection path sends no DISARM. This field tracks fallback DISARM confirmation, not whether STM remained DISARMED.",
+  "capture_boundary": "First decoded line is a TEL suffix cut by capture start; excluded from 245 complete TEL records.",
+  "scope": "Expired/obsolete ARM request rejection with no UART ARM/CMD and zero sampled outputs only. Overall AC-S04 remains partial.",
+  "limits": [
+    "Current ticket changed to 44531 before submission of 44529. The runtime evidence does not isolate the EXPIRED branch from ticket-ID MISMATCH after replacement.",
+    "No exact expiry-boundary, selective ACK delay/loss, late ACK unlocking, CMD-only watchdog recovery, RF loss or nonzero/powered-motor stopping claim.",
+    "Digital 4 MHz samples do not establish analog voltage or sub-sample pulse absence.",
+    "No independent ESP monitor transcript provided; browser STM timestamps and last_seq match the raw capture."
+  ],
+  "provenance": {
+    "browser_report": "User-pasted copy(ur03Acs04.report()) JSON; original values preserved with normalized formatting.",
+    "browser_report_sha256": "366584a9bd7225a0deccd55d9bf367668ad9133c681a8ee132a7baf01c976c10",
+    "helper_sha256": "45dbba8ecd28d721f3116ab7f5615b234db85bb5cd501d53b5257beaa203f3e2",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d"
+  },
+  "next_action": "This bounded extra test is complete. Do not repeat it. Aggregate bench results at closeout; selective ACK and CMD-only cases remain pending."
+}

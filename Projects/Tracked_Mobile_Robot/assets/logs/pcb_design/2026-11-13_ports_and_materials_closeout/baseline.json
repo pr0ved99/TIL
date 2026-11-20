@@ -1,0 +1,725 @@
+{
+  "date": "2026-11-13",
+  "timezone": "Asia/Seoul",
+  "head": "8bd69b2feef7638d260002e1ffc9dd36e2667e55",
+  "branch": "agent/dual-encoder-bringup",
+  "unrelated_files": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+      "sha256": "8ab814ba351d672dab3bbb962d282cf51bc206cf23e07236c7b64c4b72b2a6bb",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+      "sha256": "0f8fa407287c1dc852faab381b905efaf89e67e9f1f957c5ff2fb65577013f5c",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+      "sha256": "0c6f42380dd46ac85bfd0323632926600b4aee89714496c85cc5dcccb9980c8e",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml",
+      "sha256": "3d5d16e5336ac581a174357b8fc635258fbf3c1ec7820a19edd7377c1d8156ac",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref",
+      "sha256": "0d5fee305242c84d4dccb033ebbace561b19431d0de7d82aca34f2af4194bc00",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log",
+      "sha256": "ed0e86350a1d20f8315e19c66aee7d99df467f998fa0e340952a403c0233b74f",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja",
+      "sha256": "338a2c63b9ea4a7b4e6a062f9334a8b9728d3b11d998cb4f16edfa2a364677c9",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json",
+      "sha256": "3f4feb23550ddba60c357d983c30a7b567e9f2b3c62fe831c61c8210f3f335ac",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin",
+      "sha256": "35685286ea5a0c7c56b8bf9ef1276129433af4210d0642ef8e667b343e47b151",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf",
+      "sha256": "249101e678ce40a9a82f39ccb54cb7025d4292b9803d2c6d064083bdd28d8d21",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map",
+      "sha256": "34a63e8603dc4dcc2b2af81b3cde5dfa499235642d487ac43677adf38cb05524",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json",
+      "sha256": "d32fe8027a3f183c27fc0abf6e8bbcaab60642295a7fa69a2bd76fcf6e8faa6b",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2",
+      "sha256": "5f28b410746ce39d0a3dff60d10a3f658717f8edd60cf12032af97cb0283c9d5",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c",
+      "sha256": "9241c5701bca83987939b4c45e4b282d3626d04ddc644899b7003ddc7315bd1f",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt",
+      "sha256": "3ef352b1ea9279067964e1ff62377c5c2fc6cbdf3a7281da2df9619bf3c8f26a",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt",
+      "sha256": "4734a3ca5f1c0ee09648536972efe403c08ccf3c17446880e7b0bafedea07236",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt",
+      "sha256": "40e3e370b378572d08c945794b2a229b7f8b5e7e94f744d322f15bd0ba741bcb",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch",
+      "sha256": "8ac79df91f35583d86e627f92337bcf86fd41fcb6138ed83d241dd0421eac30b",
+      "unchanged_since_previous_closeout": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/.kicad_sch.kicad_sch",
+      "sha256": "8ac79df91f35583d86e627f92337bcf86fd41fcb6138ed83d241dd0421eac30b",
+      "unchanged_since_previous_closeout": true
+    }
+  ],
+  "existing_scope_files": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/00_Project_Charter/02_Component_Inventory.md",
+      "sha256": "03c189a9b0aac128892789f11174d368175876e514cf27146e6724ef50564b46",
+      "bytes": 20916
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md",
+      "sha256": "9efd191db62241a0e5dab14be04e16db305fd834bd4812b5f5bb8ea68e96bf9c",
+      "bytes": 23634
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/01_System_Architecture/README.md",
+      "sha256": "66ee6d99458a6e7d25a319427038e7a6a2d4f54dfece55bf98bb92aa319a0549",
+      "bytes": 10932
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/02_Hardware_Validation/05_First_Motor_No_Load_Test.md",
+      "sha256": "e471a37f7c88ac395d030554e27749f26667f2dcbe7401c78a78b3f50876f998",
+      "bytes": 8584
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/02_Hardware_Validation/README.md",
+      "sha256": "685dab3dea140b5329acd4e97ca75f4e8ced464599ab6a59608afe684dbbdb15",
+      "bytes": 8513
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/README.md",
+      "sha256": "a5a5c2d8934bdbee7ccc9b1486465fef65eb6afea2deeb3438b40c9eb003e020",
+      "bytes": 6729
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/README.md",
+      "sha256": "8082690f87113a71480c3040dee755e02b33de28c32878675b51bfac940c9a8d",
+      "bytes": 10492
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/04_PC_Serial_Control/README.md",
+      "sha256": "3f0dcf279c8713d3fb5fa8014dc419c9c59ba5a47031d0e2f796867faf44358a",
+      "bytes": 5089
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md",
+      "sha256": "fda107b8172dad4aba07fa6485e4ef987662523d6846b980792b8bdab34dec88",
+      "bytes": 6942
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/04_PC_Serial_Control/web_serial_dashboard/README.md",
+      "sha256": "aa27d8dc2d5ba891fb1dc1b37bd4d30c145cd4f30852ee0e70a49e8454d87d71",
+      "bytes": 1565
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+      "sha256": "089ea738ac074c8bd11c4e8fc547d92fa1c64806db3ec9c5b3e6e4d284648e06",
+      "bytes": 352199
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/01_Concept_Notes/README.md",
+      "sha256": "7096cfc02bdfb36c211dd3fca60821ab5bfbd2b48069e4b8f7631ddaccb803ba",
+      "bytes": 10042
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/07_Embedded_Learning_Notes/README.md",
+      "sha256": "f6fc4544b57170e65428637a2d05236ae85a308c7aaf11c8a29429dba4381672",
+      "bytes": 6268
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/08_Mechanical_Design/README.md",
+      "sha256": "c2d6f1c263a594f0009aef6f098ff5dc9ad197b92a1ef9110c84346cd65d00e7",
+      "bytes": 7647
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md",
+      "sha256": "f5e8ac8bb36efc3ebabeafc0439375e0980610e3fbe05a6c9b7bbf78fadcb38d",
+      "bytes": 12003
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md",
+      "sha256": "bb0fd6ffec06ff004d6fd6d391c014d6e39fc69fcb2145a9dfe424d23cb1f1bb",
+      "bytes": 22870
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md",
+      "sha256": "d89bd2a1e8fc896e79f81693304b9f245339bdef21b7fc9a6115e1625bebace4",
+      "bytes": 42882
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/check_design.py",
+      "sha256": "552e2717e1a74fa7a603f7d479eab12ba6641bf618121088612c8000155fd9e0",
+      "bytes": 6497
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf",
+      "sha256": "12bf00e37c04a867c7381028c31f1e825fc3c379dd462fea1198ef0e98a4f7e4",
+      "bytes": 178954
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/README.md",
+      "sha256": "f930cb09d0c950813083025cea817b431e6572eea320be041cb0b7a6a420f1ac",
+      "bytes": 2316
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/design_parts.json",
+      "sha256": "4af0466f9bb70fd92a862efd216defe9c45c09cc14108db43681ef67587beb30",
+      "bytes": 29260
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/design_review.json",
+      "sha256": "3fa4bd2abbbff8138e802ba1df93acd2374630d5ad24725857717a76e11dc6bd",
+      "bytes": 3320
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json",
+      "sha256": "0f4285cfd974b596e98b98878df87a55226f552733c138459fd5fb6a65a2a0c0",
+      "bytes": 32173
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json",
+      "sha256": "a1f74b014671c40a7997868eaa9da0b5544a9b3a1973afecdda8fb3e028763be",
+      "bytes": 1032
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml",
+      "sha256": "6a504bd9aa5a0ec3664035fbb6ffdf590166adf4fe8274c0cc51c72cafbf5953",
+      "bytes": 71187
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/README.md",
+      "sha256": "c80cf5571fcc3f3943081aa128bc64ec3f36c316c5c913aba6f11e39aa166a01",
+      "bytes": 6593
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf",
+      "sha256": "fc9c7b8e8087f04b5c7cf551d1812bfd47994db6c56db8f48cfc826216d35d1c",
+      "bytes": 209860
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/README.md",
+      "sha256": "8024df1ec5b2052329f63b5a3792c4b7fb45400b8d6909dc0f127926723a9645",
+      "bytes": 521
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/current_review.json",
+      "sha256": "53e80e71819572879225571e6205fa0fdcd7892e54c8a2d0271082aa10f7884e",
+      "bytes": 893
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/erc.json",
+      "sha256": "5afae0745985244a52ee8a11df207ab754fa67c681b3a4a1b5b99d18f63fdfe1",
+      "bytes": 1041
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/netlist.xml",
+      "sha256": "fb5259412f8619f177e37748e0f21d3207ab32e9ee0aa9bed1677bac2e2a558f",
+      "bytes": 70445
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/README.md",
+      "sha256": "c202c7d9ad449ba1ed74aa39c64fb81e9ee9dd1fd8d75d542d5228c76628f363",
+      "bytes": 24036
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/VeroRoute/README.md",
+      "sha256": "60a2e13e0c573a015ca9030aeb068f2cec98fca61ad2a899f8e0fbad41aae9e3",
+      "bytes": 24206
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/PROJECT_MEMORY.md",
+      "sha256": "844f4ad4af6706ebf06aa71e3d620cf73c5bd75a47bdb190a4bc6112a683acb3",
+      "bytes": 120998
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/README.md",
+      "sha256": "60a1a26c385a7326d280904774ed20edf65c2018fd9d1777722b860b96d7653f",
+      "bytes": 26770
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/README.md",
+      "sha256": "223612dab64d96a224b09c4a48a446756a5b73284b14371a6a01c956f53b704b",
+      "bytes": 2190
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/baseline.json",
+      "sha256": "ee68fb591edfcf365135ffcaaa5990a8b0e3de34c55c5bb66cdff795aba2f6d7",
+      "bytes": 6733
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/mvp_export.pdf",
+      "sha256": "fc9c7b8e8087f04b5c7cf551d1812bfd47994db6c56db8f48cfc826216d35d1c",
+      "bytes": 209860
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/mvp_export.png",
+      "sha256": "ea0749c81e2666b7668475e44fb26b27facfda337c4f7f012e230165e9cccb73",
+      "bytes": 301605
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/shield_export.pdf",
+      "sha256": "12bf00e37c04a867c7381028c31f1e825fc3c379dd462fea1198ef0e98a4f7e4",
+      "bytes": 178954
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/shield_export.png",
+      "sha256": "e47977d479d156fd70dbaef05317dd809e4871fb70fb42bbb28acca4fc99ce21",
+      "bytes": 180109
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/shield_export_before.pdf",
+      "sha256": "360d5c9138d99780de2286d891715561773aebb0d6ed61aaf293c809b9975f3b",
+      "bytes": 124304
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_export_sync/verification.json",
+      "sha256": "e24bbe2e695f1d18c68a0089f52643752bffc0bf0e0a0eb3f29bba149b3882cf",
+      "bytes": 1707
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/README.md",
+      "sha256": "61e45f022ee465c8097ad39c399ae248ecd83a6b892a76b2c080ac58913ce978",
+      "bytes": 7654
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/baseline.json",
+      "sha256": "584f120b957fd2089dca8d86175b8c7a14e66f2a3c0379466a62d56c11d99759",
+      "bytes": 22675
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/00_Project_Charter/02_Component_Inventory.md",
+      "sha256": "52f4666ec34989577ba586bf3f2a271c0a4b5d519e92e7f707b18556a49090cd",
+      "bytes": 20809
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md",
+      "sha256": "1bfe63cd3e2bbb2a7ac9304d89ad4e3e1a580f501654a3377fd1cf16d31a2615",
+      "bytes": 23716
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/01_System_Architecture/README.md",
+      "sha256": "236fda861da9a6e8d3b0664743c33dc9d740c6ce041e5ea62f1c4397f6d90646",
+      "bytes": 10703
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/02_Hardware_Validation/05_First_Motor_No_Load_Test.md",
+      "sha256": "529d3fc7ca13e5c0f09eee21620f03861119c84bd2de5b0516496b28a58f9ac1",
+      "bytes": 8322
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/02_Hardware_Validation/README.md",
+      "sha256": "d82f9b9e25525364a204d679eebf2f4ddb96c1262697e51329974b60915252dd",
+      "bytes": 8424
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/03_Firmware/README.md",
+      "sha256": "c0d0158b910bb6953a95b67b5c174bf8d0391b81940816698e5aca3bc132a107",
+      "bytes": 6743
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/03_Firmware/esp32_wifi_link/README.md",
+      "sha256": "d063bf6136ede5ffad7d51ef5e4490f7faacfbf83ca7ff8a2e9220be88a52194",
+      "bytes": 10277
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/04_PC_Serial_Control/README.md",
+      "sha256": "443c4880157191c55a77860de1c79b7be65534385b54943e11426384040aaa84",
+      "bytes": 4690
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md",
+      "sha256": "01cfa9843663760cbdebc605a7f8c64645cc0caf5a285418c2866428b18c0e5e",
+      "bytes": 6537
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/04_PC_Serial_Control/web_serial_dashboard/README.md",
+      "sha256": "5de40acbf1754a49a0958af3fdf604fa6d2013e915e9de87995019767b20d291",
+      "bytes": 1160
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/07_Embedded_Learning_Notes/01_Concept_Notes/README.md",
+      "sha256": "521ce9d664d29faf3ec69c10ad0161c365ceaade3a6aa257adb5af660d316fc1",
+      "bytes": 10043
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/07_Embedded_Learning_Notes/README.md",
+      "sha256": "409daec36ce8302863466fbba7cd416ccb091231fb0c66a6cd49298f8f612d9e",
+      "bytes": 6269
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/08_Mechanical_Design/README.md",
+      "sha256": "fb5feb5413e27bc8de805cbad5cac45269c1eb21bd4761340436bdfb0ba91cb3",
+      "bytes": 7446
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md",
+      "sha256": "13d6c520e6403a4f4032410f0a3a7c32d60b1cb4a8982de558d7401d55341bb8",
+      "bytes": 11140
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md",
+      "sha256": "969e43212a226301292fa6403a87a8e19c20883fd19e3e20b5a2db3aa6ac8d55",
+      "bytes": 22495
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md",
+      "sha256": "ea4495651ccdcc67194bf9f788e45e2ede066b328c2e5837e526579c8375d298",
+      "bytes": 42623
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/check_design.py",
+      "sha256": "d820c01556de953064f149fb82d7424654b7d9392648f6947f1fa49df5a6af14",
+      "bytes": 3637
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_adc_acquisition.json",
+      "sha256": "9350b18fc62070001320ffbce782f776ea04b63f4f639ec8680ae991107fbef5",
+      "bytes": 4838
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_circuit_walkthrough.json",
+      "sha256": "a85dfe9a8e086d01e7a1f7111ed44f10c593b42eefd3848af14600813691eebc",
+      "bytes": 3622
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/current_sampling_cadence_review.json",
+      "sha256": "d64c8ea76e6cbcee50dcf49445a9bd7c166dc19c11d4c732bd7575a50d0e5ebe",
+      "bytes": 3087
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/design_parts.json",
+      "sha256": "11064a291a7c31f99196d817e276c8a7459a905463a61f5da7223da8dadd8bc5",
+      "bytes": 13373
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/design_review.json",
+      "sha256": "63ca5186e4d46b00e98f56dce7229de3e7140b37f2c48f7ac6e2581ea39feb23",
+      "bytes": 1051
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json",
+      "sha256": "50a682841f5d1a6d0deda5b85cb301f7117a7d94942e5a8b331e63a5c20fb83a",
+      "bytes": 26946
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json",
+      "sha256": "b838c1b03a3a1fa3c0754ae0c218f72d5d78904eb386ec11e024cfddb15a98f1",
+      "bytes": 1032
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml",
+      "sha256": "50e3a8f11b22784c22fa91728ec93d061b0c2374393fead9f778f28210337fb0",
+      "bytes": 48397
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/template_provenance.json",
+      "sha256": "691f08f52676d13d801ba3e24ba48d731d5979bb4bf3fcb3ac4fcbedf6387353",
+      "bytes": 973
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/09_Electrical_Design/VeroRoute/README.md",
+      "sha256": "2df92515e284c311d3f4bd3dede8c1539ef20708e9bb7675f7b2f3d3ab7925cb",
+      "bytes": 23875
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/PROJECT_MEMORY.md",
+      "sha256": "76bf217092e0ce28db8f00ece01c03173fce234cb2eec5ed07723162919c0834",
+      "bytes": 120059
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/README.md",
+      "sha256": "90d93c246797a1287bdcd65f2150c3fcc1b08ad32bf3818c9a89a90ac9f72ea2",
+      "bytes": 26788
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/assets/logs/pcb_design/2026-11-12_notebooklm_progress_plan_bundle/README.md",
+      "sha256": "6d90980adef7bb7f5d0196c0501e5028c38d366f36743a8bbf7c872459a1e935",
+      "bytes": 1177
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/assets/logs/pcb_design/2026-11-12_notebooklm_progress_plan_bundle/manifest.json",
+      "sha256": "619402e5704bcfdd1219d23521164d6fac696d7b27833454a3ed4956e15cb232",
+      "bytes": 24286
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/README.md",
+      "sha256": "6028d58d4353a2d5a941032717c2f474036d34557f9ea15c3f2ffd32fcfaf2f9",
+      "bytes": 38777
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "sha256": "6a43b66c09c6c87dd8d08724781b2535ffafa1dc6991e132e63a95a4feb44015",
+      "bytes": 18474
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "sha256": "26edd1063ba65434c04d7c92f6ea1d2f86ee64e385a6393fca9c5b7f9b5f2234",
+      "bytes": 56378
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/handoff/NEXT_SESSION_START_PROMPT.md",
+      "sha256": "a7a1d8b5ac4debc9b564e7c34175359a7c2d56dd4f12dc4876de1d234d2337ea",
+      "bytes": 3221
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/handoff/README.md",
+      "sha256": "7ff4244b2d0dde4b8676a98c7a3be639105588fad76033f7724d0d33ccac0fc3",
+      "bytes": 28558
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "sha256": "17b1542f245551037152106dcaa122ad27c50c9e382cc7a0906a2f0d448c6913",
+      "bytes": 77838
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md",
+      "sha256": "ce5952ce4f5b37b26e32ed9e55c9bc50bc7237f105ec59089208f7a3b7b83216",
+      "bytes": 9674
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md",
+      "sha256": "12fc6579e6fee511a750e573f6a59a5c2fca9070e4a3f46fc803fde71b06860e",
+      "bytes": 16679
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "sha256": "9045118ac93aaad9e1bf6f0db6e0441deb75f29d356b219422620a71a6349066",
+      "bytes": 9164
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/plans/README.md",
+      "sha256": "bc6a88eafca775005f7aca8251148180ce630b65d1c0f9ace28fb31eaa2b4e23",
+      "bytes": 41788
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md",
+      "sha256": "6beafbe2a21633460edbc47f2c08162ed8554a9a210ee02adf2a43ab8a11950c",
+      "bytes": 10620
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/progress/README.md",
+      "sha256": "7efd634b19fc18d25a33216a69821552e05191d77b5d8cd8aedc244d28acf15c",
+      "bytes": 57861
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "sha256": "bd6a8b5dddcf356d6d50d71dfe11ec67c67df981f5352768f85d93030bcefc28",
+      "bytes": 117116
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/before/docs/verification/README.md",
+      "sha256": "21711b45c339e98e02d8501e12d66e497f0857e0b907c469474105f23148f6ff",
+      "bytes": 32434
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/complete_audit_docs.py",
+      "sha256": "fcfd35cf4fdc993fe6f3a596f486a72113d4dfe5c07fbf34812295e179bbdbaa",
+      "bytes": 13352
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/document_changes.json",
+      "sha256": "059df8bcf136cfaf42786784cfb380a842ba0a3999ac92f257e9be142330475f",
+      "bytes": 1977
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/document_inventory.json",
+      "sha256": "ccb489eb7fab92f982709b1b9c87abde1260d220dd6ef3eb8f0200a1236caa0f",
+      "bytes": 274511
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/inventory.json",
+      "sha256": "8c85004082a4eb59d4b6ed772c64ddb09c78cdbca69e7f4f30a2d2739ae4ef8f",
+      "bytes": 380140
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/link_candidates.json",
+      "sha256": "ecdcc700eef209b46f0623266d7ca6bf103c75258c93d08785b5e19ca4ef83aa",
+      "bytes": 550
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/reconcile_documents.py",
+      "sha256": "ea656cd6cf3bc164ca4b2c826c4b5cbfb2baa42b2a3833918f34d7337aa032db",
+      "bytes": 19619
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/verification.json",
+      "sha256": "09eaad74d3b7acc030043a3ee699660aa70ea9ab9111210d86e1551293e6dd01",
+      "bytes": 1490
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_material_freshness_audit/verification_preliminary.json",
+      "sha256": "343e8ab9bece55b304ab4cf46ba46481069ae54e48cb8616718705ba5d0051af",
+      "bytes": 1949
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_notebooklm_progress_plan_bundle/README.md",
+      "sha256": "6c205c686775b467137b875e7cf0730c05449aa60f11635e625d2029bf29461b",
+      "bytes": 1737
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_notebooklm_progress_plan_bundle/manifest.json",
+      "sha256": "3472f7080462f312168ce116839d8e4dca9890854502b65e5f04b156da45273f",
+      "bytes": 24720
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/README.md",
+      "sha256": "20c92b7ef02703e5295548ee6de54058695c8c18e0469f61c210085df377b52d",
+      "bytes": 4771
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/current_netlist.xml",
+      "sha256": "a2e8a5424842df02cfdda450f80694597507b264c54fa94911b65f47de9cff5d",
+      "bytes": 71187
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/fault_conditions.json",
+      "sha256": "4ca6151117ce297799ebdd57ccea1a229694e0166ac843d14924aa664a43a8d2",
+      "bytes": 3995
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/inventory.json",
+      "sha256": "ca4b191fe5a3cfbf8853da083382ba64d8174f361a3e650eaca608c4e6dad64a",
+      "bytes": 5710
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/normal_conditions.json",
+      "sha256": "6eb816d4c4ec98f3f7264fdc7a6cf53eb2a244b07e1d1036719dbc2a065dad23",
+      "bytes": 2431
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/port_pins.csv",
+      "sha256": "f92fa2c059dd2e49d08ba2ff9c2f005ca33014306b7ab8a8ccc6cfe5759d200c",
+      "bytes": 2137
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/power_states.json",
+      "sha256": "d7790f980c85156832c3ad1208aec58eadfd7689174ee5ef55f5811277d7dc8c",
+      "bytes": 1776
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/pcb_design/2026-11-12_port_inventory/power_transitions.json",
+      "sha256": "28a1afc377ec36ff2c1dd9acacddc05a9ac8d59fc6c408382045dfa18f8820be",
+      "bytes": 2275
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/README.md",
+      "sha256": "f0bd670070685df7cf43b7f1ccb5b2dd1e0a6468ff9d5d729bbd1a3b6a22f3ec",
+      "bytes": 38837
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+      "sha256": "0fb5acffe386cf9d7a7be543d695e5fe42a04a833e070ba62062c158a49ddfcc",
+      "bytes": 18737
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "sha256": "d06f9e5610155639c444101cf310f2a697475df251f724ab7b0c6384b3678464",
+      "bytes": 57643
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/NEXT_SESSION_START_PROMPT.md",
+      "sha256": "2b0a0f1b48d42ef224864428bfb86ab903fb2ffd3b3370e87b68aed70a2b5bdb",
+      "bytes": 3558
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/PROJECT_FILE_MANAGEMENT_ko.md",
+      "sha256": "ab71a3305bbaedeed8122712a10ef90fd80f645ecaabbe186e3cac0a0e6fb530",
+      "bytes": 5706
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/handoff/README.md",
+      "sha256": "4d5ce300deb456e2f190e2965f105f9926c2c435d1f1354073166c6dcee10d00",
+      "bytes": 28557
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+      "sha256": "a4d123ac902753e641b3f3fca348acacce2a540bfc66d52209eed2d20cfe022d",
+      "bytes": 76699
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md",
+      "sha256": "13a1587d3d3d694e7712a23a3315ca55662be2809b4e98135a51ea485dfe740a",
+      "bytes": 9987
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md",
+      "sha256": "c3bb720ac6c2f781b91cc20d5dadeddc4df6a84cce5d5910b94c094a5c650995",
+      "bytes": 16729
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+      "sha256": "b11cc8c0d7073668655c8881d87375470be04f62ccbf24ad62b7236b269862b5",
+      "bytes": 9675
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/plans/README.md",
+      "sha256": "4828f46d71c04312135f0b46ad55ce6bad3fd6d9ca308c8e8eacacb96b610fa8",
+      "bytes": 41787
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md",
+      "sha256": "6b8acf45e90850c06f31b98544b67b009edf01fe870e76e0e1065987c6cc4a37",
+      "bytes": 9309
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/2026-11-12_progress.md",
+      "sha256": "fbdcaeea4225ab562935278fe383c74b9df8b0f3323d9f823776f43a18bf291b",
+      "bytes": 15257
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/progress/README.md",
+      "sha256": "014fae7c46991a931d549d15ed68234fb2217853565105f5e6bab6a56e88f9e7",
+      "bytes": 57592
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+      "sha256": "1d26a26f45578e03976c0e059e66193f87b0333e7915646e91cb99b04ac70660",
+      "bytes": 116962
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/docs/verification/README.md",
+      "sha256": "9832ddae5e41cc09f1cc4633cb7a62516b10b2cc805426fe4a90e394f06adf2c",
+      "bytes": 32108
+    }
+  ]
+}

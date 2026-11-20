@@ -1,0 +1,84 @@
+{
+  "test": "G6-01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_RUN02",
+  "status": "USER_CONSOLE_PASS_NEW_CAPTURE_NOT_FOUND",
+  "scope": "User visual observation and ESP console TX/RX/TEL only; no valid sampled UART/PWM evidence for this run",
+  "user_observation": "Both tracks rotated in forward direction and stopped afterward; exact pointer release timestamp not recorded.",
+  "checks": {
+    "tx_ack_match_in_console": true,
+    "writes_complete": true,
+    "arm_cmd_disarm_order": true,
+    "console_pwm_100_both": true,
+    "both_forward_encoder_seen": true,
+    "armed_zero_before_disarm": true,
+    "cps_zero_before_disarm": true,
+    "post_disarm_pwm_zero": true,
+    "post_disarm_cps_settles": true,
+    "no_console_fault_errors": true
+  },
+  "tx_counts": {
+    "ARM": 1,
+    "CMD": 72,
+    "DISARM": 1
+  },
+  "rx_count": 74,
+  "tel_count": 122,
+  "moving_cps_ranges": {
+    "left_cps": [
+      0,
+      470
+    ],
+    "right_cps": [
+      0,
+      400
+    ]
+  },
+  "first_zero_tel": {
+    "esp_log_ms": 506071,
+    "tel_count": 5058,
+    "stm_t_ms": 415110,
+    "state": "ARMED",
+    "reason": "NONE",
+    "left_pwm": 0,
+    "right_pwm": 0,
+    "left_cps": 430,
+    "right_cps": 350,
+    "drop": 0,
+    "err": 0
+  },
+  "first_zero_cps_tel": {
+    "esp_log_ms": 506271,
+    "tel_count": 5060,
+    "stm_t_ms": 415310,
+    "state": "ARMED",
+    "reason": "NONE",
+    "left_pwm": 0,
+    "right_pwm": 0,
+    "left_cps": 0,
+    "right_cps": 0,
+    "drop": 0,
+    "err": 0
+  },
+  "final_disarm": {
+    "esp_log_ms": 507941,
+    "op": 3,
+    "seq": 4005823094,
+    "written": 24,
+    "size": 24
+  },
+  "console_post_disarm_observation_s": 2.7,
+  "capture": {
+    "status": "Prior run01 file only: current candidate SHA unchanged from the old20kHz recording; no new run02 capture established",
+    "name": "2026-10-18_G6_01_TRACKS_LIFTED_FORWARD_RELEASE_10PCT_run01.sr",
+    "sha256": "609a407f177e4a9609ae8fe3bdce4a58838f01558277a34f9f0457c5ce4cf0ca",
+    "sample_rate_hz": 20000.0,
+    "duration_s": 35.4304,
+    "suitable_for_115200_uart_or_19khz_pwm": false,
+    "note": "20kHz means50us/sample, versus UART8.68us/bit and PWM about52.5us/period. Decode errors are sampling artifacts, not evidence of real UART failure."
+  },
+  "esp_console_sha256": "8addb1976a3e2ff5d77e1a7f80ae5f9ce793a2930f5aed4a7a1ac71a68551d76",
+  "limits": [
+    "Actual PWM duty, UART byte identities/timing and PC7 waveform are not established by this capture.",
+    "No measured mechanical stopping time/distance or ground-driving acceptance.",
+    "User has not separately reported absence of track binding/derailment."
+  ]
+}

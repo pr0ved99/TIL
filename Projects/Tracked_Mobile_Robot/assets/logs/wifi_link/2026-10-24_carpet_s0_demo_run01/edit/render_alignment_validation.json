@@ -1,0 +1,97 @@
+{
+  "output_sha256": "5df27a8829a6afc1803eeaa924fa4891d8b3805a5336c900de513f2768daedef",
+  "fps_sampled": 15,
+  "motion_threshold": 0.5,
+  "windows": [
+    {
+      "output_window_seconds": [
+        70,
+        97
+      ],
+      "pairs": [
+        {
+          "button_output_seconds": [
+            71.86666666666666,
+            85.8
+          ],
+          "camera_movement_output_seconds": [
+            71.86666666666666,
+            85.93333333333334
+          ],
+          "edge_difference_seconds": [
+            0.0,
+            -0.13333333333333286
+          ]
+        },
+        {
+          "button_output_seconds": [
+            87.8,
+            92.6
+          ],
+          "camera_movement_output_seconds": [
+            87.8,
+            92.6
+          ],
+          "edge_difference_seconds": [
+            0.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "output_window_seconds": [
+        125,
+        141
+      ],
+      "pairs": [
+        {
+          "button_output_seconds": [
+            125.93333333333334,
+            130.4
+          ],
+          "camera_movement_output_seconds": [
+            125.86666666666666,
+            130.4
+          ],
+          "edge_difference_seconds": [
+            0.06666666666666665,
+            0.0
+          ]
+        },
+        {
+          "button_output_seconds": [
+            132.33333333333334,
+            134.73333333333332
+          ],
+          "camera_movement_output_seconds": [
+            132.26666666666668,
+            134.73333333333332
+          ],
+          "edge_difference_seconds": [
+            0.06666666666666643,
+            0.0
+          ]
+        },
+        {
+          "button_output_seconds": [
+            136.13333333333333,
+            138.66666666666666
+          ],
+          "camera_movement_output_seconds": [
+            136.0,
+            138.66666666666666
+          ],
+          "edge_difference_seconds": [
+            0.13333333333333286,
+            0.0
+          ]
+        }
+      ]
+    }
+  ],
+  "complete_spans_checked": 5,
+  "max_abs_edge_difference_seconds": 0.13333333333333286,
+  "editing_check": "PASS: all 10 sampled button/movement edges agree within 0.3 seconds",
+  "limitation": "Visible response and encoded images only. Threshold, frame sampling, actuator/UI latency are included; not common-clock sync or safety latency measurement."
+}

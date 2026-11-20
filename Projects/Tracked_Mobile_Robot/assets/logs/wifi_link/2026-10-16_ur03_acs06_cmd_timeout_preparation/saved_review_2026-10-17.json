@@ -1,0 +1,23 @@
+{
+  "review_date": "2026-10-17",
+  "scope": "Saved source review and native PC tests only",
+  "status": "SAVED_PC_PASS_PENDING_USER_MODE3_BUILD",
+  "saved_main_normalized_sha256": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0",
+  "candidate_difference": "One blank line removed after UART_PARTIAL_TEST_END; code unchanged",
+  "esp_test_mode": 0,
+  "stm_test_flags": "All 13 remain 0U",
+  "other_production_inputs": "All match preparation manifest hashes, including wifi_control_state.h",
+  "command": "python 03_Firmware/tests/test_uart_watchdog.py --saved",
+  "compiler": "TCC 0.9.27 native PC",
+  "result": "PASS",
+  "checks": [
+    "42 existing W5/main adapter regressions",
+    "Existing modes 1/2 regressions",
+    "Actual PAGE C initializers modes 0/1/2/3 and invalid mode 4 rejection",
+    "Actual STM stream: ARM + zero CMD, timeout, NOT_ARMED, unchanged last_seq, cleanup, separate rearm",
+    "Mode 3 admission, cancellation, deadlines, wrong/missing replies, E-stop, outputs/counters/clock, short writes, cleanup loss"
+  ],
+  "firmware_edited_by_review": false,
+  "target_build_flash_capture": "NOT_RUN",
+  "next": "User changes WIFI_UART_PARTIAL_TEST_MODE from 0U to 3U and builds ESP; no STM change"
+}

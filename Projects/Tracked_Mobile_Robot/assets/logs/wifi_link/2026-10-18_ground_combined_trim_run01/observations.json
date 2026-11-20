@@ -1,0 +1,406 @@
+{
+  "test": "GROUND_COMBINED_TRIM_RUN01",
+  "status": "SELECTED_MANUAL_DRIVE_SEQUENCE_CONFIRMED_TELEMETRY_AND_OPERATOR",
+  "unique_source_samples": 418,
+  "telemetry_dropped": 0,
+  "groups": [
+    {
+      "state": "DISARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 27,
+      "source_duration_ms": 2600,
+      "steady_samples": 22,
+      "steady_abs_cps_median": [
+        0.0,
+        0.0
+      ],
+      "steady_zero_cps_counts": [
+        22,
+        22
+      ],
+      "both_zero_cps_samples": 27,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 28,
+      "source_duration_ms": 2704,
+      "steady_samples": 23,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        23,
+        23
+      ],
+      "both_zero_cps_samples": 28,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "source_samples": 38,
+      "source_duration_ms": 3702,
+      "steady_samples": 33,
+      "steady_abs_cps_median": [
+        790,
+        770
+      ],
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ],
+      "both_zero_cps_samples": 1,
+      "tail_cps": [
+        780,
+        760
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 18,
+      "source_duration_ms": 1701,
+      "steady_samples": 13,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        13,
+        13
+      ],
+      "both_zero_cps_samples": 15,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        500
+      ],
+      "pwm": [
+        -200,
+        200
+      ],
+      "source_samples": 19,
+      "source_duration_ms": 1802,
+      "steady_samples": 14,
+      "steady_abs_cps_median": [
+        825.0,
+        625.0
+      ],
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ],
+      "both_zero_cps_samples": 1,
+      "tail_cps": [
+        -800,
+        640
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 32,
+      "source_duration_ms": 3103,
+      "steady_samples": 27,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        27,
+        27
+      ],
+      "both_zero_cps_samples": 29,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        100,
+        0
+      ],
+      "pwm": [
+        144,
+        150
+      ],
+      "source_samples": 44,
+      "source_duration_ms": 4306,
+      "steady_samples": 39,
+      "steady_abs_cps_median": [
+        810,
+        800
+      ],
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ],
+      "both_zero_cps_samples": 1,
+      "tail_cps": [
+        810,
+        840
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 24,
+      "source_duration_ms": 2303,
+      "steady_samples": 19,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        19,
+        19
+      ],
+      "both_zero_cps_samples": 21,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        -500
+      ],
+      "pwm": [
+        200,
+        -200
+      ],
+      "source_samples": 21,
+      "source_duration_ms": 2003,
+      "steady_samples": 16,
+      "steady_abs_cps_median": [
+        805.0,
+        560.0
+      ],
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ],
+      "both_zero_cps_samples": 1,
+      "tail_cps": [
+        790,
+        -550
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 35,
+      "source_duration_ms": 3401,
+      "steady_samples": 30,
+      "steady_abs_cps_median": [
+        0.0,
+        0.0
+      ],
+      "steady_zero_cps_counts": [
+        30,
+        30
+      ],
+      "both_zero_cps_samples": 31,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        -100,
+        0
+      ],
+      "pwm": [
+        -140,
+        -150
+      ],
+      "source_samples": 56,
+      "source_duration_ms": 5500,
+      "steady_samples": 51,
+      "steady_abs_cps_median": [
+        780,
+        760
+      ],
+      "steady_zero_cps_counts": [
+        0,
+        0
+      ],
+      "both_zero_cps_samples": 1,
+      "tail_cps": [
+        -770,
+        -790
+      ]
+    },
+    {
+      "state": "ARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 16,
+      "source_duration_ms": 1500,
+      "steady_samples": 11,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        11,
+        11
+      ],
+      "both_zero_cps_samples": 12,
+      "tail_cps": [
+        0,
+        0
+      ]
+    },
+    {
+      "state": "DISARMED",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "source_samples": 60,
+      "source_duration_ms": 5900,
+      "steady_samples": 55,
+      "steady_abs_cps_median": [
+        0,
+        0
+      ],
+      "steady_zero_cps_counts": [
+        55,
+        55
+      ],
+      "both_zero_cps_samples": 60,
+      "tail_cps": [
+        0,
+        0
+      ]
+    }
+  ],
+  "held_unexpected_stops": [],
+  "captured": null,
+  "final_tel": {
+    "ms": 41777,
+    "boot_id": 4138288356,
+    "gap_ms": 59,
+    "esp_uptime_ms": 195209,
+    "esp_step_ms": 60,
+    "tel_count": 1951,
+    "stm_t_ms": 195662,
+    "stm_age_ms": 42,
+    "command_age_ms": 6046,
+    "last_seq": 3518121891,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "command": [
+      0,
+      0
+    ],
+    "pwm": [
+      0,
+      0
+    ],
+    "cps": [
+      0,
+      0
+    ],
+    "drop": 0,
+    "err": 0
+  },
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "operator_confirmation": {
+    "direction_changes_ok": true,
+    "release_stops_ok": true,
+    "source": "User confirmed no problems after review"
+  },
+  "visual": "User confirmed direction changes and release stops had no observed problems. No new video supplied.",
+  "limits": [
+    "CPS describes encoder rotation; chassis displacement, yaw angle and track slip are not quantified.",
+    "Intermediate zero PWM and settled zero CPS are sampled observations, not precise stopping-time measurements.",
+    "No unexpected held stop captured in this run; this does not establish permanent fault resolution."
+  ]
+}

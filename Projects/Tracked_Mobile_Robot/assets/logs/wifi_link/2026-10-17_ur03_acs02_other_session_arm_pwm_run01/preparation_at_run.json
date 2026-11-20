@@ -1,0 +1,90 @@
+{
+  "test": "UR03_ACS02_NON_OWNER_ARM_REJECTION",
+  "status": "PREPARED_PC_PASS_BENCH_PENDING",
+  "contract": "docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md AC-S02: non-owner ARM/CMD UART TX0; non-owner DISARM stop/revoke",
+  "this_scope": "One ARM from internal WebSocket B while A is ACTIVE and maintains zero-only control. B uses its last own IDLE ARM ticket, which is no longer offered in ACTIVE. Observe B TICKET_REJECTED, unchanged A owner/control ID, new A zero CMD acknowledgments and fresh matching ARMED/zero telemetry, then explicit cleanup DISARM confirmation.",
+  "prior_distinct_cases": [
+    "../2026-10-16_ur03_acs02_valid_ticket_pwm_run04/observations.json",
+    "../2026-10-17_ur03_acs02_other_session_disarm_run01/observations.json"
+  ],
+  "firmware_changes": false,
+  "firmware_rebuild_required": false,
+  "source_normalized_sha256": {
+    "stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "a3cac86b2e10e715dc5bf1477209b69966b3a0b9ac105d3195c8a61c2ca73370",
+    "esp32_wifi_link/main/wifi_link_main.c": "2122b341e74e2a85019dff3e060c8b2995667438f8df8a779cecfd170099d2a0"
+  },
+  "normal_modes": {
+    "all_14_stm_test_switches": 0,
+    "esp_partial_test_mode": 0
+  },
+  "files_sha256": {
+    "console_test.js": "9b18490fcd1c25b7ded32e4307194f497e92457333ea3babfa09b54c128b0aad",
+    "check_console_test.js": "91e98b4b8c96c56d74b29ba70e3563fe31f374c4f87c68a3137cdf8d23c6cf05",
+    "browser_pc.json": "8ab9127baa535c5054243009ebf59d38a15195faef5d47380741839eb337ce7b",
+    "host_cases.c": "2cdc09b3817ccc082a717493cd1826bb96d54dcdfd0bc4d1d742c450c37d0ba2",
+    "check_host.py": "dbea88cdd0909585ee13a8e7ce45ed2d24d82d05020edd7ab2a7da1123b57fc4",
+    "host_pc.txt": "bf8b25410c297152818986ac2e11c5b86b64bdc26c57041df53218b34960db73"
+  },
+  "pc_evidence": {
+    "browser_file": "browser_pc.json",
+    "browser_cases": 13,
+    "native_file": "host_pc.txt",
+    "native_cases": 3,
+    "native_cases_detail": [
+      "B own IDLE ticket revoked while original TTL is still live: TICKET_REJECTED, no B UART ARM, A owner and next CMD preserved",
+      "B own IDLE ticket revoked and expired: same rejection and A continuity",
+      "B during queued A CMD: BUSY, A queue preserved; helper does not treat BUSY as ticket rejection proof"
+    ],
+    "scope": "Saved production C and PAGE; IO/timers simulated. Not a firmware build or board/electrical result."
+  },
+  "operator_steps": [
+    "Retain current motor-power isolation (#1 board two plugs and MDD10A B+ disconnected/insulated), conditioned sense and common GND; normal firmware images.",
+    "Use one robot browser tab; reload and confirm READY / IDLE / fresh DISARMED / all motion fields zero.",
+    "Paste entire console_test.js once in DevTools Console. Wait for AC-S02 OTHER ARM READY. Installation creates B and sends HELLO only.",
+    "Start LA 4 MHz / 100M samples (25 s), return to robot page, click ARM once. Keep page focused; do not manually click additional ARM/DISARM while the planned observation runs.",
+    "Helper sends one B ARM attempt after two A zero CMD ACKs. After rejection it requires two later distinct A CMD ACKs, matching fresh ARMED/zero TEL and A ACTIVE continuity, observes another second, then requests A DISARM.",
+    "After final result, save .sr and ESP monitor. In Console execute copy(ur03OtherArm.report()); it copies JSON to clipboard. Paste that copied JSON into chat; undefined in Console is normal."
+  ],
+  "capture_name": "2026-10-17_UR03_ACS02_OTHER_SESSION_ARM_PWM_run01.sr",
+  "capture_settings": {
+    "samplerate_hz": 4000000,
+    "samples": 100000000,
+    "duration_s": 25,
+    "uart_channels": [
+      0,
+      1
+    ],
+    "level_channels": [
+      4,
+      6,
+      7
+    ]
+  },
+  "expected_events": [
+    "READY",
+    "A_MANUAL_ARM_OBSERVED",
+    "B_ARM_TX",
+    "B_ARM_REJECTED",
+    "A_STILL_ACTIVE",
+    "A_DISARM_REQUEST",
+    "APP_CHECKS_OK_CAPTURE_REQUIRED"
+  ],
+  "pass_requires": [
+    "B request1 ARM receives REJECTED/TICKET_REJECTED under the same boot and B session; no accepted/result success for B.",
+    "A remains same owner/control generation with ACTIVE snapshots, later zero CMD OK and matching fresh ARMED/zero telemetry.",
+    "Capture shows exactly one initial A ARM; zero additional UART ARM from the B attempt. Correlate browser/ESP identity with UART sequences.",
+    "Capture D4/PB6, D6/PC7 and D7/PB7 stay LOW; all observed speed/PWM/CPS zero, no increased drop/err.",
+    "Planned final DISARM accepted and OK plus matching fresh DISARMED/DISARM TEL and IDLE. Browser helper success alone is not final capture PASS."
+  ],
+  "stop_conditions": "Unexpected B ARM acceptance, A failure/stop/owner change before planned cleanup, focus/connection/freshness loss, FAULT, nonzero output or increased errors => INCOMPLETE plus bounded DISARM cleanup; no ARM retry. If visible state/output is unexpected, stop and return logs.",
+  "busy_policy": "B BUSY can reflect overlap with a normal A CMD. Keep INCOMPLETE and inspect evidence; no automatic ARM retry or success promotion.",
+  "limits": [
+    "B last IDLE ARM ticket is revoked and may also have expired by the probe. Live rejection does not isolate the owner-state branch from ticket validation or TTL. Native tests isolate still-unexpired revocation separately.",
+    "Two distinct WebSockets share one visible focused page, not independent devices/radio links. No second tab is needed.",
+    "No nonzero motor command, powered-motor stop time, analog signal integrity or whole-suite PASS claim.",
+    "This is the remaining ARM subcase; prior CMD rejection and non-owner DISARM evidence are preserved, not repeated."
+  ],
+  "remaining": [
+    "User bench run and matching browser/ESP/UART/PWM evidence review"
+  ]
+}

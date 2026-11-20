@@ -1,0 +1,254 @@
+{
+  "assessment": "GOAL_REACHED_AND_STOP_OBSERVED_IN_TEL",
+  "raw_sha256": "3911b79c8fd06d33c5ee013135357aeec57a169e681e00b2db199f93f1d54ac2",
+  "selected_run_index": 1,
+  "identity": {
+    "goal_mm": 150,
+    "boot_id": 1070385225,
+    "control_id": 4,
+    "arm_seq": 1201006635
+  },
+  "coefficient_mm_per_count": "1687/19500",
+  "nominal_target_counts_per_side": 1734,
+  "points": {
+    "baseline": {
+      "tel_count": 3373,
+      "stm_t_ms": 13400,
+      "counts": [
+        0,
+        0
+      ],
+      "delta_counts": [
+        0,
+        0
+      ],
+      "encoder_mm": [
+        0.0,
+        0.0
+      ],
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    },
+    "cutoff": {
+      "tel_count": 3398,
+      "stm_t_ms": 15900,
+      "counts": [
+        1760,
+        1760
+      ],
+      "delta_counts": [
+        1760,
+        1760
+      ],
+      "encoder_mm": [
+        152.2625641025641,
+        152.2625641025641
+      ],
+      "state": "ARMED",
+      "reason": "DISTANCE_REACHED",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        830
+      ]
+    },
+    "final": {
+      "tel_count": 3403,
+      "stm_t_ms": 16400,
+      "counts": [
+        1760,
+        1758
+      ],
+      "delta_counts": [
+        1760,
+        1758
+      ],
+      "encoder_mm": [
+        152.2625641025641,
+        152.08953846153847
+      ],
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ]
+    }
+  },
+  "phase_transitions_observed": [
+    {
+      "tel_count": 3373,
+      "stm_t_ms": 13400,
+      "state": "ARMED",
+      "reason": "NONE",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        0,
+        0
+      ]
+    },
+    {
+      "tel_count": 3375,
+      "stm_t_ms": 13600,
+      "state": "ARMED",
+      "reason": "DISTANCE_RUNNING",
+      "pwm": [
+        144,
+        150
+      ],
+      "counts": [
+        16,
+        12
+      ]
+    },
+    {
+      "tel_count": 3393,
+      "stm_t_ms": 15400,
+      "state": "ARMED",
+      "reason": "DISTANCE_RUNNING",
+      "pwm": [
+        0,
+        150
+      ],
+      "counts": [
+        1750,
+        1386
+      ]
+    },
+    {
+      "tel_count": 3398,
+      "stm_t_ms": 15900,
+      "state": "ARMED",
+      "reason": "DISTANCE_REACHED",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        1760,
+        1760
+      ]
+    },
+    {
+      "tel_count": 3400,
+      "stm_t_ms": 16100,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "pwm": [
+        0,
+        0
+      ],
+      "counts": [
+        1760,
+        1758
+      ]
+    }
+  ],
+  "checks": {
+    "no_report_runs_or_current_run_samples_dropped": true,
+    "tel_generations_contiguous": true,
+    "stm_encoder_steps_100ms": true,
+    "arm_seq_consistent": true,
+    "stm_age_below_250ms": true,
+    "drop_and_err_zero": true,
+    "baseline_armed_and_zero": true,
+    "cutoff_has_matching_accepted_seq": true,
+    "cutoff_goal_reached_zero_output": true,
+    "cutoff_above_nominal_target": true,
+    "final_disarmed_zero": true,
+    "final_embedded_in_samples": true,
+    "still_observed_and_goal_reason": true,
+    "no_post_still_change": true,
+    "zero_count_stable_at_least_200ms_before_final": true
+  },
+  "sample_count": 71,
+  "maximum_stm_age_ms": 60,
+  "browser_first_goal_wait_ms": 0.2,
+  "final_encoder_error_from_goal_mm": [
+    2.262564102564103,
+    2.0895384615384613
+  ],
+  "final_count_excess_over_nominal_target": [
+    26,
+    24
+  ],
+  "cutoff_to_final_delta_counts": [
+    0,
+    -2
+  ],
+  "post_final_stable_observation_ms": 4100,
+  "manual_link_travel_mm": {
+    "left_range_inclusive": [
+      151,
+      152
+    ],
+    "right_range_inclusive": [
+      151,
+      152
+    ],
+    "source": "User reported each side moved 1-2 mm beyond the 150 mm target",
+    "verbatim_ko": "오른쪽: 이론보다 1~2mm 더 이동 / 왼쪽: 이론보다 1~2mm 더 이동"
+  },
+  "manual_error_from_150mm_goal": {
+    "left_mm_range": [
+      1,
+      2
+    ],
+    "right_mm_range": [
+      1,
+      2
+    ],
+    "each_side_percent_range": [
+      0.6666666666666666,
+      1.3333333333333333
+    ]
+  },
+  "encoder_minus_manual_mm_range": {
+    "left": [
+      0.262564102564113,
+      1.262564102564113
+    ],
+    "right": [
+      0.08953846153846712,
+      1.0895384615384671
+    ]
+  },
+  "older_100mm_entry": {
+    "original_identity_baseline_cutoff_final_unchanged": true,
+    "samples_dropped_now": 1848,
+    "post_still_count_changed_now": true,
+    "interpretation": "Older completed run kept collecting later idle observations. It is not the 150 mm trial. Original 100 mm report remains separately preserved; later count change cause is unconfirmed."
+  },
+  "cross_run_clock_note": "STM t_ms decreases between the older 100 mm entry and new 150 mm entry. Different ARM sequence and fresh baseline isolate this trial; do not combine their source-time intervals. Reset cause not reported.",
+  "limitations": [
+    "Encoder conversion and user ruler measurements concern airborne track-link travel, not ground chassis travel.",
+    "TEL interval is 100 ms; samples do not identify each side's exact threshold-crossing, PWM electrical cutoff, or physical stop time.",
+    "Right count decreases by 2 after cutoff observation; physical relaxation versus measurement cause is not established.",
+    "Single run per target; no repeatability or overall accuracy acceptance. No coefficient or gain adjustment based on these observations."
+  ],
+  "next_step": "End this measurement series at 50/100/150 mm. User declined the 200 mm trial; keep current coefficient/output settings and await the next requested task.",
+  "followup_decision": {
+    "date": "2026-10-21",
+    "user_request_ko": "20은 하지말자.",
+    "distance_200mm_status": "NOT_PERFORMED_BY_USER_CHOICE",
+    "firmware_changes": false
+  }
+}

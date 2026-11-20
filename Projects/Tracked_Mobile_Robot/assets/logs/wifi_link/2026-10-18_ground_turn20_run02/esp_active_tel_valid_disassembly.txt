@@ -1,0 +1,71 @@
+
+C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link\build\esp32_wifi_link.elf:     file format elf32-xtensa-le
+
+
+Disassembly of section .iram0.vectors:
+
+Disassembly of section .iram0.text:
+
+Disassembly of section .flash.text:
+
+42014540 <active_tel_valid>:
+42014540:	004136               	entry	a1, 32
+42014543:	0288                	l32i.n	a8, a2, 0
+42014545:	551866               	bnei	a8, 1, 4201459e <active_tel_valid+0x5e>
+42014548:	3288                	l32i.n	a8, a2, 12
+4201454a:	2ba192               	movi	a9, 0x12b
+4201454d:	523987               	bltu	a9, a8, 420145a3 <active_tel_valid+0x63>
+42014550:	4288                	l32i.n	a8, a2, 16
+42014552:	9caf92               	movi	a9, -100
+42014555:	4f2897               	blt	a8, a9, 420145a8 <active_tel_valid+0x68>
+42014558:	64a092               	movi	a9, 100
+4201455b:	4e2987               	blt	a9, a8, 420145ad <active_tel_valid+0x6d>
+4201455e:	5278                	l32i.n	a7, a2, 20
+42014560:	0cae92               	movi	a9, 0xfffffe0c
+42014563:	4b2797               	blt	a7, a9, 420145b2 <active_tel_valid+0x72>
+42014566:	f4a192               	movi	a9, 0x1f4
+42014569:	4b2977               	blt	a9, a7, 420145b8 <active_tel_valid+0x78>
+4201456c:	6298                	l32i.n	a9, a2, 24
+4201456e:	38afa2               	movi	a10, -200
+42014571:	4829a7               	blt	a9, a10, 420145bd <active_tel_valid+0x7d>
+42014574:	c8a0a2               	movi	a10, 200
+42014577:	472a97               	blt	a10, a9, 420145c2 <active_tel_valid+0x82>
+4201457a:	072292               	l32i	a9, a2, 28
+4201457d:	38afa2               	movi	a10, -200
+42014580:	4429a7               	blt	a9, a10, 420145c8 <active_tel_valid+0x88>
+42014583:	c8a0a2               	movi	a10, 200
+42014586:	432a97               	blt	a10, a9, 420145cd <active_tel_valid+0x8d>
+42014589:	045856               	bnez	a8, 420145d2 <active_tel_valid+0x92>
+4201458c:	048756               	bnez	a7, 420145d8 <active_tel_valid+0x98>
+4201458f:	20a220               	or	a10, a2, a2
+42014592:	b39681               	l32r	a8, 420013ec <_stext+0x13cc> (4208ce7c <zero>)
+42014595:	0008e0               	callx8	a8
+42014598:	041a56               	bnez	a10, 420145dd <active_tel_valid+0x9d>
+4201459b:	001006               	j	420145df <active_tel_valid+0x9f>
+4201459e:	070c                	movi.n	a7, 0
+420145a0:	000ec6               	j	420145df <active_tel_valid+0x9f>
+420145a3:	070c                	movi.n	a7, 0
+420145a5:	000d86               	j	420145df <active_tel_valid+0x9f>
+420145a8:	070c                	movi.n	a7, 0
+420145aa:	000c46               	j	420145df <active_tel_valid+0x9f>
+420145ad:	070c                	movi.n	a7, 0
+420145af:	000b06               	j	420145df <active_tel_valid+0x9f>
+420145b2:	070c                	movi.n	a7, 0
+420145b4:	0009c6               	j	420145df <active_tel_valid+0x9f>
+420145b7:	070c00               	excw
+420145ba:	000846               	j	420145df <active_tel_valid+0x9f>
+420145bd:	070c                	movi.n	a7, 0
+420145bf:	000706               	j	420145df <active_tel_valid+0x9f>
+420145c2:	070c                	movi.n	a7, 0
+420145c4:	0005c6               	j	420145df <active_tel_valid+0x9f>
+420145c7:	070c00               	excw
+420145ca:	000446               	j	420145df <active_tel_valid+0x9f>
+420145cd:	070c                	movi.n	a7, 0
+420145cf:	000306               	j	420145df <active_tel_valid+0x9f>
+420145d2:	170c                	movi.n	a7, 1
+420145d4:	0001c6               	j	420145df <active_tel_valid+0x9f>
+420145d7:	170c00               	excw
+420145da:	000046               	j	420145df <active_tel_valid+0x9f>
+420145dd:	170c                	movi.n	a7, 1
+420145df:	042070               	extui	a2, a7, 0, 1
+420145e2:	f01d                	retw.n

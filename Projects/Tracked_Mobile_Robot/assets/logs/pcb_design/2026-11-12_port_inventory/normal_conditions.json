@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-12",
+  "scope": "41-2 normal powered-on nominal DC calculations; not measurement or fault thresholds",
+  "assumptions": {
+    "stm_3v3_v": 3.3,
+    "stm_avdd_v": 3.3,
+    "adc_reference_v": 3.3,
+    "tmux_on": true,
+    "tmux_ron_ohm_model": 2,
+    "ignore_dc_input_and_switch_leakage_for_nominal_calculation": true,
+    "settled_dc": true
+  },
+  "current": {
+    "ports": ["J3", "J4"],
+    "sensor": "Pololu #5241 / ACS71240KEXBLT-030B3",
+    "component_supply_range_v": [3.0, 3.6],
+    "zero_nominal_v": 1.65,
+    "sensitivity_nominal_v_per_a": 0.044,
+    "measurement_range_a": [-30, 30],
+    "accuracy_priority_range_a": [-10, 10],
+    "nominal_output_range_v_at_3v3": [0.33, 2.97]
+  },
+  "ntc": {
+    "ports": ["J5", "J6"],
+    "sensor": "SEMITEC 103JT-025",
+    "fixed_resistance_ohm": 10000,
+    "rows": [
+      {"temperature_c": 0, "resistance_ohm": 27700, "nominal_v": 2.424668435013263},
+      {"temperature_c": 25, "resistance_ohm": 10000, "nominal_v": 1.65},
+      {"temperature_c": 50, "resistance_ohm": 4147, "nominal_v": 0.9673499681911358},
+      {"temperature_c": 100, "resistance_ohm": 975.3, "nominal_v": 0.2932484761236595}
+    ]
+  },
+  "rail_voltage": {
+    "ports": ["J7", "J8"],
+    "input_range_v": [0, 16],
+    "r_top_ohm": 24000,
+    "r_bottom_ohm": 4700,
+    "r_series_ohm": 1000,
+    "r_discharge_ohm": 47000,
+    "r_lower_loaded_ohm": 4280.8508216006985,
+    "nominal_rail_per_adc_ratio": 6.747204164780444,
+    "adc_v_at_16v": 2.3713525794162247,
+    "adc_v_at_12v6": 1.867440156290277
+  },
+  "sources": {
+    "requirements": "09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md, measurement-target table",
+    "actual_pins": "current_netlist.xml and port_pins.csv in this directory",
+    "allegro": "ACS71240-DS Rev16, May 8 2026; printed/PDF p2 selection guide KEXBLT-030B3, p8 Electrical Characteristics VCC / 3.3V variant; nominal calculations at 3.3V",
+    "pololu": "https://www.pololu.com/product/5241, Details for item #5241 / Using the sensor, checked 2026-11-12",
+    "semitec": "JT Thermistor, printed p9/PDF p1, Resistance / temperature characteristics, 103JT column, 0/25/50/100C rows, kOhm; revision/date not printed on this sheet; local saved sheet and official P9-JT-Thermistor.pdf checked"
+  },
+  "no_new_cad_or_firmware_edits": true,
+  "no_new_hardware_test_or_build_flash": true,
+  "user_handwriting_or_understanding_complete": "NOT_REPORTED"
+}

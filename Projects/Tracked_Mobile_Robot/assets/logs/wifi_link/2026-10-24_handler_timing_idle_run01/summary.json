@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-24",
+  "status": "IDLE_TIMING_CAPTURE_CONSISTENT_NO_LONG_GAP_OBSERVED",
+  "scope": "ACC-COM-01 A v5.2 IDLE instrumentation baseline, not active/motion acceptance",
+  "raw_sha256": "a75887413f6f5150a4ac7c2b900f55d8926e78033cda0255d0667b28c6d7811b",
+  "telemetry_span_s": 94.801,
+  "first_last_tel_ms": [
+    13.900000000372529,
+    94814.79999999888
+  ],
+  "telemetry_samples": 1581,
+  "control_samples": 4743,
+  "timing_metadata": {
+    "clock": "performance.now() minus observer start; milliseconds",
+    "columns": [
+      "rx_sequence",
+      "connection_id",
+      "handler_enter_ms",
+      "handler_exit_ms",
+      "observer_enter_ms",
+      "observer_exit_ms",
+      "kind_code",
+      "esp_uptime_ms"
+    ],
+    "kind_codes": {
+      "0": "INVALID_JSON",
+      "1": "STM_UART",
+      "2": "control_state",
+      "3": "command_notice",
+      "4": "command_result",
+      "5": "ESP_ONLY",
+      "6": "OTHER"
+    },
+    "capacity_rows": 8192,
+    "storage_bytes": 524288,
+    "written": 6324,
+    "overwritten": 0,
+    "missing_handler_pairs": 0,
+    "oldest_observer_ms": 13,
+    "newest_observer_ms": 94814.90000000037,
+    "retained_max_handler_ms": 0.6000000014901161,
+    "retained_max_observer_ms": 0.2999999988824129,
+    "missing_times_export_as_null": true
+  },
+  "checks": {
+    "timestamp_order_valid": true,
+    "sequence_contiguous": true,
+    "timing_events_telemetry_matched": true,
+    "report_maxima_match_recalculation": true,
+    "raw_archive_sha256_verified": true
+  },
+  "handler_duration": {
+    "samples": 6324,
+    "min_ms": 0.0,
+    "median_ms": 0.1,
+    "p95_ms": 0.3,
+    "p99_ms": 0.4,
+    "max_ms": 0.6,
+    "recorded_zero_samples": 1618,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "observer_duration": {
+    "samples": 6324,
+    "min_ms": 0.0,
+    "median_ms": 0.0,
+    "p95_ms": 0.1,
+    "p99_ms": 0.1,
+    "max_ms": 0.3,
+    "recorded_zero_samples": 5680,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "handler_exit_to_observer_entry": {
+    "samples": 6324,
+    "min_ms": 0.0,
+    "median_ms": 0.0,
+    "p95_ms": 0.1,
+    "p99_ms": 0.1,
+    "max_ms": 0.2,
+    "recorded_zero_samples": 5867,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "handler_entry_to_observer_exit": {
+    "samples": 6324,
+    "min_ms": 0.0,
+    "median_ms": 0.1,
+    "p95_ms": 0.3,
+    "p99_ms": 0.4,
+    "max_ms": 0.8,
+    "recorded_zero_samples": 1281,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "by_kind": {
+    "STM_UART": {
+      "handler_duration": {
+        "samples": 1581,
+        "min_ms": 0.0,
+        "median_ms": 0.2,
+        "p95_ms": 0.4,
+        "p99_ms": 0.5,
+        "max_ms": 0.6,
+        "recorded_zero_samples": 11,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 1581,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.2,
+        "recorded_zero_samples": 1335,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "handler_entry_gap": {
+        "samples": 1580,
+        "min_ms": 0.7,
+        "median_ms": 60.0,
+        "p95_ms": 70.5,
+        "p99_ms": 109.1,
+        "max_ms": 118.6,
+        "recorded_zero_samples": 0,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    },
+    "control_state": {
+      "handler_duration": {
+        "samples": 4743,
+        "min_ms": 0.0,
+        "median_ms": 0.1,
+        "p95_ms": 0.2,
+        "p99_ms": 0.3,
+        "max_ms": 0.4,
+        "recorded_zero_samples": 1607,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "observer_duration": {
+        "samples": 4743,
+        "min_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.1,
+        "p99_ms": 0.1,
+        "max_ms": 0.3,
+        "recorded_zero_samples": 4345,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      },
+      "handler_entry_gap": {
+        "samples": 4742,
+        "min_ms": 0.0,
+        "median_ms": 1.0,
+        "p95_ms": 61.1,
+        "p99_ms": 69.3,
+        "max_ms": 108.7,
+        "recorded_zero_samples": 6,
+        "samples_ge_200_ms": 0,
+        "samples_ge_250_ms": 0
+      }
+    }
+  },
+  "tel_receive_gap": {
+    "samples": 1580,
+    "min_ms": 0.7,
+    "median_ms": 60.0,
+    "p95_ms": 70.6,
+    "p99_ms": 109.2,
+    "max_ms": 118.5,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "control_receive_gap": {
+    "samples": 4742,
+    "min_ms": 0,
+    "median_ms": 1.0,
+    "p95_ms": 61.1,
+    "p99_ms": 69.4,
+    "max_ms": 108.9,
+    "recorded_zero_samples": 5,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "esp_timestamp_step": {
+    "samples": 1580,
+    "min_ms": 57,
+    "median_ms": 60.0,
+    "p95_ms": 61.0,
+    "p99_ms": 62.0,
+    "max_ms": 63,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "stm_age_at_esp": {
+    "samples": 1581,
+    "min_ms": 2,
+    "median_ms": 50.0,
+    "p95_ms": 90.0,
+    "p99_ms": 90.0,
+    "max_ms": 91,
+    "recorded_zero_samples": 0,
+    "samples_ge_200_ms": 0,
+    "samples_ge_250_ms": 0
+  },
+  "event_counts": {
+    "OBSERVER_SOCKET_CHANGE": 1,
+    "CONTROL_RX": 4743,
+    "TEL_RX": 1581
+  },
+  "observer_final": {
+    "connections_seen": 1,
+    "trace_errors": 0,
+    "state": {
+      "intent": false,
+      "focused": false,
+      "boot": 331448985,
+      "session": 3,
+      "control_id": 0,
+      "socket_state": 1,
+      "connection_id": 1,
+      "phase": "IDLE",
+      "owner_session": 0,
+      "pending": null,
+      "motion": null,
+      "stm_state": "DISARMED",
+      "stm_reason": "DISARM",
+      "buttons_disabled": {
+        "arm": true,
+        "disarm": false,
+        "forward": true,
+        "reverse": true,
+        "left": true,
+        "right": true
+      }
+    }
+  },
+  "history_dropped": 0,
+  "telemetry_dropped": 0,
+  "boot_ids": [
+    331448985
+  ],
+  "control_sessions": [
+    3
+  ],
+  "state_reason": {
+    "DISARMED/DISARM": 1581
+  },
+  "control_phases": {
+    "IDLE": 4743
+  },
+  "all_command_pwm_cps_zero": true,
+  "counts_fixed_at": [
+    "5780",
+    "6237"
+  ],
+  "encoder_valid_values": [
+    true
+  ],
+  "encoder_arm_valid_values": [
+    true
+  ],
+  "drop_err_values": [
+    [
+      0,
+      0
+    ]
+  ],
+  "captured": null,
+  "stop_count": 0,
+  "interpretation": [
+    "6324 rows paired with original handlers; no capture drops, overwrite or trace errors",
+    "Retained IDLE handler max 0.6ms and diagnostic listener max 0.3ms; no >=200ms TEL/control gap",
+    "No ARM, CMD, DISARM, command_result or motion in this capture",
+    "Final focused=false has no corresponding blur/stop event; do not infer a focus-loss DISARM",
+    "Fixed encoder totals within this capture only; do not splice deltas across unrecorded intervals"
+  ],
+  "limits": [
+    "No reproduction of the prior long-gap failure; its cause remains OPEN",
+    "Synchronous handler durations exclude pre-dispatch waiting and deferred layout/paint",
+    "Listener timing excludes final cell write/return, export and other diagnostic callbacks",
+    "Recorded zero duration is bounded by clock resolution; not zero execution cost",
+    "ESP and browser clocks are not synchronized; no absolute one-way network delay claim",
+    "No new voltage/current/3.3V transient measurement or power-causality proof",
+    "This analysis performs no firmware edits, build, flash, physical action or external publication"
+  ],
+  "next": "Fresh v5.2 capture, supported tracks, ARM speed zero for 30s with robot page focused; manual DISARM then export. Do not use direction/distance controls."
+}

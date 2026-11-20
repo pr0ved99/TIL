@@ -1,0 +1,175 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "file": "01_Current_RC/Current_RC_AC.csv",
+      "rows": 1201,
+      "header": [
+        "frequency",
+        "V(/VADC) (게인)",
+        "V(/VIN) (게인)",
+        ""
+      ],
+      "a0": 1.0,
+      "tau_s": 0.0012,
+      "fc_theory_hz": 132.62911924324612,
+      "low_frequency_gain_theory_db": 0.0,
+      "gain_at_fc_theory_db": -3.010299956639812,
+      "gain_at_fc_csv_log_interpolation_db": -3.0103709656607514,
+      "maximum_gain_error_vs_theory_db": 8.125777804224299e-05,
+      "csv_rounding_check_limit_db": 0.002,
+      "pass": true
+    },
+    {
+      "file": "02_NTC/NTC_25C_AC.csv",
+      "rows": 1201,
+      "header": [
+        "frequency",
+        "V(/VADC) (게인)",
+        ""
+      ],
+      "a0": 0.5,
+      "tau_s": 0.0006,
+      "fc_theory_hz": 265.25823848649225,
+      "low_frequency_gain_theory_db": -6.020599913279624,
+      "gain_at_fc_theory_db": -9.030899869919436,
+      "gain_at_fc_csv_log_interpolation_db": -9.03094930400909,
+      "maximum_gain_error_vs_theory_db": 8.156902302403068e-05,
+      "csv_rounding_check_limit_db": 0.002,
+      "pass": true
+    },
+    {
+      "file": "02_NTC/NTC_50C_AC.csv",
+      "rows": 1201,
+      "header": [
+        "frequency",
+        "V(/VADC) (게인)",
+        ""
+      ],
+      "a0": 0.2931363539973139,
+      "tau_s": 0.0003931363539973139,
+      "fc_theory_hz": 404.8339500370468,
+      "low_frequency_gain_theory_db": -10.65860636331086,
+      "gain_at_fc_theory_db": -13.668906319950672,
+      "gain_at_fc_csv_log_interpolation_db": -13.66897081038281,
+      "maximum_gain_error_vs_theory_db": 7.151217140233257e-05,
+      "csv_rounding_check_limit_db": 0.002,
+      "pass": true
+    },
+    {
+      "file": "03_Voltage_Divider/Voltage_Divider_AC.csv",
+      "rows": 1201,
+      "header": [
+        "frequency",
+        "V(/VADC) (게인)",
+        ""
+      ],
+      "a0": 0.16376306620209058,
+      "tau_s": 0.0003930313588850174,
+      "fc_theory_hz": 404.9420981150174,
+      "low_frequency_gain_theory_db": -15.715680775965497,
+      "gain_at_fc_theory_db": -18.725980732605308,
+      "gain_at_fc_csv_log_interpolation_db": -18.726030897749553,
+      "maximum_gain_error_vs_theory_db": 7.487869871170005e-05,
+      "csv_rounding_check_limit_db": 0.002,
+      "pass": true
+    },
+    {
+      "file": "01_Current_RC/Current_RC_Step.csv",
+      "rows": 15023,
+      "maximum_error_vs_finite_ramp_solution_v": 1.628838199363436e-05,
+      "csv_rounding_and_solver_limit_v": 2e-05,
+      "pass": true,
+      "interpolated_cursor_values_v": {
+        "0.0022": 1.70806205,
+        "0.022201": 1.591942,
+        "0.0065262": 1.86559515,
+        "0.0265262": 1.43441,
+        "0.02653": 1.434391
+      }
+    }
+  ],
+  "original_shield_and_unrelated_preservation": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.bin_timestamp",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_deps",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/.ninja_log",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/CMakeConfigureLog.yaml",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/CMakeFiles/git-data/head-ref",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/bootloader/.ninja_log",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/build.ninja",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/compile_commands.json",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.bin",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.elf",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/hello_world.map",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_examples/01_hello_world/build/project_description.json",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/captures/logic_analyzer/Session 2",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-13_main_review/source_snapshot/wifi_control_executor.c",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018023740.txt",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018025004.txt",
+      "unchanged": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/log.esp32_wifi_link.20261018030120.txt",
+      "unchanged": true
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_pcb",
+      "unchanged": true
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_pro",
+      "unchanged": true
+    },
+    {
+      "path": "Projects\\Tracked_Mobile_Robot\\09_Electrical_Design\\KiCAD\\TMR_Monitor_Shield_RevA\\TMR_Monitor_Shield_RevA.kicad_sch",
+      "unchanged": true
+    }
+  ],
+  "meaning": "CSV/theory and saved-connectivity audit only; not a simulation rerun or hardware acceptance."
+}

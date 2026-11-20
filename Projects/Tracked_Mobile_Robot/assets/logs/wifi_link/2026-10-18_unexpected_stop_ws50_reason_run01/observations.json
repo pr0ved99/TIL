@@ -1,0 +1,73 @@
+{
+  "actual_motion_stop": {
+    "ms": 214674.8999999985,
+    "sendStop": true,
+    "intent": true,
+    "focused": true,
+    "motionReady": true,
+    "motion": {
+      "button": "reverse",
+      "vx": -100,
+      "w": 0
+    },
+    "pending": null,
+    "offer": {
+      "kind": "control_state",
+      "boot_id": 48342861,
+      "session_id": 1,
+      "phase": "ACTIVE",
+      "owner_session": 1,
+      "control_id": 2,
+      "ticket": 0,
+      "purpose": "NONE",
+      "ttl_ms": 0,
+      "zero_only": false,
+      "control_reason": 0
+    },
+    "offer_age_ms": 0.8999999985098839,
+    "tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 48342861,
+      "uptime_ms": 239288,
+      "free_heap_bytes": 263252,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 31,
+      "stm_age_limit_ms": 500,
+      "tel_count": 2392,
+      "stm_t_ms": 3151786,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": 72,
+      "last_seq": 643132858,
+      "vx_mmps": -100,
+      "w_mradps": 0,
+      "left_pwm": -150,
+      "right_pwm": -150,
+      "left_cps": -1010,
+      "right_cps": -780,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 5
+    },
+    "tel_local_age_ms": 71.19999999552965,
+    "stack": "Error\n    at stopLocal (<anonymous>:49:51)\n    at handleResult (http://192.168.0.17/:235:22)\n    at ws.onmessage (http://192.168.0.17/:271:78)"
+  },
+  "first_capture_is_not_motion_incident": true,
+  "timeline_esp_ms": {
+    "last_cmd_tx": 239481,
+    "last_cmd_ack": 239531,
+    "next_cmd_accepted": 239671,
+    "automatic_disarm_tx": 239681,
+    "disarm_ack": 239731,
+    "browser_followup_disarm_request": 239761
+  },
+  "finding": "Automatic ESP DISARM occurs 200 ms after preceding CMD TX, consistent with SOURCE_MS=200 deadline evaluated before queued CMD dispatch. Browser receives non-OK command result and calls stopLocal. Exact result status and ESP reason at transition were not retained.",
+  "limits": [
+    "First captured event is an earlier window blur with no motion, masking actual incident prehistory.",
+    "STM err=5 is present before incident and does not increase in displayed nearby TEL; origin not established."
+  ]
+}

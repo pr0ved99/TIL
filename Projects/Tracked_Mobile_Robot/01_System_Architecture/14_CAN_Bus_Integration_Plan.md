@@ -1,5 +1,8 @@
 # CAN Bus Integration Plan
 
+> Reference status reviewed **2026-09-30**. The [Korean counterpart](14_CAN_Bus_Integration_Plan_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.
+> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.
+
 ## Purpose
 
 This document defines how CAN will be introduced into the tracked mobile robot

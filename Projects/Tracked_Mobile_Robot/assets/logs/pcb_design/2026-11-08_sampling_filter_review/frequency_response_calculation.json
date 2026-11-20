@@ -1,0 +1,330 @@
+{
+  "date": "2026-11-08",
+  "evidence": "analytic frequency response and synthetic sequence arithmetic",
+  "assumptions": [
+    "Equally spaced valid samples, fixed linear conversion, equal weights",
+    "N-point averaging followed by retaining every Nth result (fixed block phase)",
+    "Steady-state tones; no startup or block-reset transient",
+    "All listed amplitudes are relative to input of digital processing",
+    "Analog RC attenuation, ADC acquisition, clock jitter, tolerances and real noise excluded",
+    "19000/19001/38001 Hz are illustrative residual tones, not observed PWM spectra",
+    "Exact zeros require exact tone/rate relation; dB null means ideal zero",
+    "At aliases 0 or output Nyquist, observed real-sinusoid amplitude depends on phase"
+  ],
+  "low_frequency_2k_200": [
+    {
+      "input_Hz": 0,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 0.0,
+      "boxcar_gain": 1.0,
+      "boxcar_dB": 0.0,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 1,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.983632047585882,
+      "boxcar_dB": -0.14334660023264184,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 2,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 2.0,
+      "boxcar_gain": 0.935490822608603,
+      "boxcar_dB": -0.5792093735411517,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 2.0
+    },
+    {
+      "input_Hz": 3,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 3.0,
+      "boxcar_gain": 0.8583968683446783,
+      "boxcar_dB": -1.3262375091717047,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 3.0
+    },
+    {
+      "input_Hz": 5,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 5.0,
+      "boxcar_gain": 0.6366263173993781,
+      "boxcar_dB": -3.9223082421959,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    },
+    {
+      "input_Hz": 9,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 9.0,
+      "boxcar_gain": 0.10929604539263701,
+      "boxcar_dB": -19.22791103277659,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 10,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 10.0,
+      "boxcar_gain": 0.0,
+      "boxcar_dB": null,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 15,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 15.0,
+      "boxcar_gain": 0.21222622701509503,
+      "boxcar_dB": -13.464018936111326,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    },
+    {
+      "input_Hz": 20,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 20.0,
+      "boxcar_gain": 0.0,
+      "boxcar_dB": null,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 25,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 25.0,
+      "boxcar_gain": 0.12735668528564228,
+      "boxcar_dB": -17.8995650569661,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    }
+  ],
+  "candidate_comparison": [
+    {
+      "input_Hz": 1,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9837934626359279,
+      "boxcar_dB": -0.14192135357757563,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 1,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9836332610945279,
+      "boxcar_dB": -0.14333588444140957,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 1,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.983632047585882,
+      "boxcar_dB": -0.14334660023264184,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 5,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 5.0,
+      "boxcar_gain": 0.6392453221499662,
+      "boxcar_dB": -3.8866488271397763,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    },
+    {
+      "input_Hz": 5,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 5.0,
+      "boxcar_gain": 0.6366459530600057,
+      "boxcar_dB": -3.922040344771049,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    },
+    {
+      "input_Hz": 5,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 5.0,
+      "boxcar_gain": 0.6366263173993781,
+      "boxcar_dB": -3.9223082421959,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 5.0
+    },
+    {
+      "input_Hz": 9,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 9.0,
+      "boxcar_gain": 0.11076231022629669,
+      "boxcar_dB": -19.112159890586113,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 9,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 9.0,
+      "boxcar_gain": 0.10930696822812962,
+      "boxcar_dB": -19.22704302512993,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 9,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 9.0,
+      "boxcar_gain": 0.10929604539263701,
+      "boxcar_dB": -19.22791103277659,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 19000,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 0.0,
+      "boxcar_gain": 1.0,
+      "boxcar_dB": 0.0,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 19000,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 0.0,
+      "boxcar_gain": 1.0,
+      "boxcar_dB": 0.0,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 19000,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 1000.0,
+      "boxcar_gain": 0.0,
+      "boxcar_dB": null,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 0.0
+    },
+    {
+      "input_Hz": 19001,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9837934626359279,
+      "boxcar_dB": -0.14192135357757563,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 19001,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9836332610945279,
+      "boxcar_dB": -0.14333588444140957,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 19001,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 999.0,
+      "boxcar_gain": 0.0015450868780488081,
+      "boxcar_dB": -56.22094191576798,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 38001,
+      "sample_rate_Hz": 100,
+      "N": 10,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9837934626359279,
+      "boxcar_dB": -0.14192135357757563,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 38001,
+      "sample_rate_Hz": 1000,
+      "N": 100,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.9836332610945279,
+      "boxcar_dB": -0.14333588444140957,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    },
+    {
+      "input_Hz": 38001,
+      "sample_rate_Hz": 2000,
+      "N": 200,
+      "raw_alias_Hz": 1.0,
+      "boxcar_gain": 0.983632047585882,
+      "boxcar_dB": -0.14334660023264184,
+      "output_rate_Hz": 10.0,
+      "output_alias_Hz": 1.0
+    }
+  ],
+  "minus_3dB_frequency_Hz": 4.429512495171309,
+  "synthetic_9Hz_100mV_peak": {
+    "output_1Hz_peak_V": 0.0109296045392637,
+    "expected_peak_V": 0.010929604539263702,
+    "output_samples_V": [
+      -0.010345887146610026,
+      -0.0062986183975631185,
+      0.00015450849718746931,
+      0.006548618397563131,
+      0.010441378649422578,
+      0.010345887146610038,
+      0.00629861839756312,
+      -0.00015450849718750555,
+      -0.006548618397563151,
+      -0.010441378649422564,
+      -0.010345887146610023,
+      -0.006298618397563083,
+      0.00015450849718749954,
+      0.00654861839756316,
+      0.01044137864942257,
+      0.010345887146610009,
+      0.0062986183975631,
+      -0.00015450849718751496,
+      -0.006548618397563184,
+      -0.010441378649422567
+    ]
+  },
+  "checks": {
+    "max_complex_sum_gain_difference": 4.0545444129927885e-14,
+    "synthetic_block_mean_1Hz_component_matches_gain": true,
+    "hardware_or_spice_run": false
+  }
+}

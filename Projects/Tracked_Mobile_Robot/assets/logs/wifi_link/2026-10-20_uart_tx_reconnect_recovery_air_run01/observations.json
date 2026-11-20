@@ -1,0 +1,219 @@
+{
+  "date_local": "2026-10-20",
+  "test_id": "TK-MVP-02-03 / T-DRIVE-001 recovery subset",
+  "status": "PASS_RECONNECT_NO_AUTOMATIC_MOTION_AND_MANUAL_DISARM_RECOVERY",
+  "evidence": {
+    "raw_file": "browser_report.json",
+    "sha256": "d9a060e12d727101f0a8f11f16af4d33116c4870ce5c90cf21fe3e15786c12e9",
+    "bytes": 2987561,
+    "attachment_id": "090c7d81-6484-42b6-aadb-7e64b5f9c48b",
+    "observer_version": 5
+  },
+  "previous_run": "../2026-10-20_uart_tx_disconnect_timeout_air_run01/observations.json",
+  "identity": {
+    "boot_id": 14253055,
+    "session_id": 3,
+    "encoder_arm_seq": 837153091,
+    "captured_stop_equal_to_previous_report": true,
+    "retained_counts": [
+      "1959",
+      "1541"
+    ]
+  },
+  "instructed_recovery": "Release forward; reconnect GPIO17 only without ARM; observe 3 s with no input; manually DISARM; verify IDLE; export without refresh/reset.",
+  "physical_observation": {
+    "reconnected_without_motion_confirmed": true,
+    "observation_interval_s": 3,
+    "user_confirmation": "양쪽 모두 계속 정지",
+    "question_context": "GPIO17 재연결 후 DISARM 전 3초 동안 실제 양쪽 궤도가 정지했는지 질문; 사용자 확인. Exact reconnect timestamp remains unlogged."
+  },
+  "telemetry": {
+    "rows": 2733,
+    "unique_source_rows": 1643,
+    "conflicting_duplicates": 0,
+    "telemetry_dropped": 4800,
+    "dropped_interpretation": "Observer ring evicted old browser samples; not STM UART drop. Earlier stop capture is preserved independently.",
+    "first_retained_tel": {
+      "ms": 288083,
+      "boot_id": 14253055,
+      "gap_ms": 59,
+      "esp_uptime_ms": 404998,
+      "esp_step_ms": 60,
+      "tel_count": 4049,
+      "stm_t_ms": 385900,
+      "stm_age_ms": 30,
+      "command_age_ms": 144463,
+      "last_seq": 837153199,
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 385826,
+      "left_count": "1959",
+      "right_count": "1541",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "first_disarm_tel": {
+      "ms": 445847.2999999998,
+      "boot_id": 14253055,
+      "gap_ms": 60.89999999944121,
+      "esp_uptime_ms": 562738,
+      "esp_step_ms": 58,
+      "tel_count": 5629,
+      "stm_t_ms": 543900,
+      "stm_age_ms": 50,
+      "command_age_ms": 302463,
+      "last_seq": 837153202,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 543826,
+      "left_count": "1959",
+      "right_count": "1541",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "last_retained_tel": {
+      "ms": 451987.7000000002,
+      "boot_id": 14253055,
+      "gap_ms": 60.200000000186265,
+      "esp_uptime_ms": 568919,
+      "esp_step_ms": 61,
+      "tel_count": 5691,
+      "stm_t_ms": 550100,
+      "stm_age_ms": 41,
+      "command_age_ms": 308663,
+      "last_seq": 837153202,
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command": [
+        0,
+        0
+      ],
+      "pwm": [
+        0,
+        0
+      ],
+      "cps": [
+        0,
+        0
+      ],
+      "encoder_valid": true,
+      "encoder_t_ms": 550026,
+      "left_count": "1959",
+      "right_count": "1541",
+      "encoder_arm_valid": true,
+      "encoder_arm_seq": 837153091,
+      "drop": 0,
+      "err": 0
+    },
+    "retained_source_duration_ms": 164200,
+    "zero_cmd_pwm_cps_and_fixed_counts_all_retained_rows": true,
+    "max_source_step_ms": 100,
+    "max_drop": 0,
+    "max_err": 0
+  },
+  "recovery": {
+    "notices": [
+      {
+        "ms": 445676.7000000002,
+        "event": "command_notice",
+        "data": {
+          "kind": "command_notice",
+          "boot_id": 14253055,
+          "session_id": 3,
+          "request_id": 111,
+          "cmd": "DISARM",
+          "stage": "ACCEPTED",
+          "reason": "QUEUED"
+        }
+      }
+    ],
+    "results": [
+      {
+        "ms": 445786.7999999998,
+        "event": "command_result",
+        "data": {
+          "kind": "command_result",
+          "boot_id": 14253055,
+          "session_id": 3,
+          "request_id": 111,
+          "cmd": "DISARM",
+          "seq": 837153202,
+          "control_id": 0,
+          "status": "OK"
+        }
+      }
+    ],
+    "phase_changes": [
+      {
+        "ms": 433238,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.20000000018626451,
+        "phase": "BLOCKED",
+        "ticket": 0,
+        "ttl_ms": 0,
+        "control_reason": 16
+      },
+      {
+        "ms": 445676.9000000004,
+        "event": "CONTROL_RX",
+        "gap_ms": 49.799999999813735,
+        "phase": "STOPPING",
+        "ticket": 0,
+        "ttl_ms": 0,
+        "control_reason": 1
+      },
+      {
+        "ms": 445786.9000000004,
+        "event": "CONTROL_RX",
+        "gap_ms": 0.20000000018626451,
+        "phase": "IDLE",
+        "ticket": 1627,
+        "ttl_ms": 150,
+        "control_reason": 0
+      }
+    ],
+    "sequence": 837153202,
+    "interpretation": "Manual DISARM request111 received OK, STM reason changed CMD_TIMEOUT to DISARM with zero outputs; ESP moved BLOCKED/16 -> STOPPING/1 -> IDLE/0. Successful response demonstrates bidirectional UART operation by that exchange."
+  },
+  "coverage_limit": {
+    "previous_report_last_stm_ms": 254800,
+    "new_report_first_stm_ms": 385900,
+    "between_report_endpoint_gap_ms": 131100,
+    "note": "Separate exports do not provide continuous telemetry for the intervening 131100 ms; do not reconstruct missing samples or an exact reconnect timestamp. No restart is observed in the retained recovery interval; physical confirmation anchors reconnect behavior."
+  },
+  "remaining": [
+    "Whole MVP, external temperature, and ground distance acceptance are separate",
+    "Final physical power-off or restoring perfboard mounting has not been reported"
+  ],
+  "changes": "Raw evidence archived and assessed; no firmware changes, builds, flashes, or remote motor commands."
+}

@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "scope": "Actual saved source structural check before host compile",
+  "exit_code": 1,
+  "failure": "Duplicate encoder_cps_to_i32 definition",
+  "inputs": {
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\main.c": "255685439b9e3ec3c6d23363052edacda43d84f51c638ae9199906daab9a1abd",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Src\\encoder_speed.c": "51c95028480650ae8b49365a7e4889b2dc8bdc969ef7afd0bc7e502d23ee77ed",
+    "03_Firmware\\stm32_uart_mvp\\Core\\Inc\\uart_mvp_protocol.h": "4672b13e2e744e857e5aa0df3fa1a31da69b7ba9efb5bfe7b2bfc7251d5ba783"
+  }
+}

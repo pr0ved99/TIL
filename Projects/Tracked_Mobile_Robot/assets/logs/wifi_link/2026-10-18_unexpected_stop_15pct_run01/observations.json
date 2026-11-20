@@ -1,0 +1,112 @@
+{
+  "browser_stop": {
+    "ms": 76852.89999999851,
+    "event": "stopLocal",
+    "sendStop": true,
+    "intent": true,
+    "focused": true,
+    "motionReady": false,
+    "motion": {
+      "button": "reverse",
+      "vx": -100,
+      "w": 0
+    },
+    "pending": {
+      "id": 1604,
+      "cmd": "CMD"
+    },
+    "offer": {
+      "kind": "control_state",
+      "boot_id": 2911775351,
+      "session_id": 3,
+      "phase": "ACTIVE",
+      "owner_session": 3,
+      "control_id": 9,
+      "ticket": 6643,
+      "purpose": "CMD",
+      "ttl_ms": 150,
+      "zero_only": false
+    },
+    "offer_age_ms": 109.60000000149012,
+    "tel": {
+      "source": "STM_UART",
+      "mode": "STA",
+      "boot_id": 2911775351,
+      "uptime_ms": 983858,
+      "free_heap_bytes": 263288,
+      "startup_state": "READY",
+      "stm_connected": true,
+      "stm_stale": false,
+      "stm_age_ms": 90,
+      "stm_age_limit_ms": 500,
+      "tel_count": 9847,
+      "stm_t_ms": 1025513,
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": 38,
+      "last_seq": 1404890459,
+      "vx_mmps": -100,
+      "w_mradps": 0,
+      "left_pwm": -150,
+      "right_pwm": -150,
+      "left_cps": -1060,
+      "right_cps": -890,
+      "batt_mv": null,
+      "battery_available": false,
+      "drop": 0,
+      "err": 0
+    },
+    "tel_local_age_ms": 160.30000000447035,
+    "stack": "Error\n    at stopLocal (<anonymous>:24:14)\n    at controlTick (http://192.168.0.17/:165:50)"
+  },
+  "effective_tel_age_ms": 250.30000000447035,
+  "effective_command_age_ms": 198.30000000447035,
+  "finding": "controlTick -> motionReady false: effective TEL age 250.3 ms violates <250 ms. Focus, ACTIVE ownership, PWM cap, command age and control-state age remain valid in snapshot.",
+  "transport_delay_root_cause": "Unresolved; ESP logs alone do not locate browser receive/event-loop or Wi-Fi delay.",
+  "capture": {
+    "source_name": "2026-10-18_UNEXPECTED_STOP_15PCT_run01.sr",
+    "sha256": "8441b13d6a10d4c143c703f30dd6c0b67b33259c5c1514dad70821b4cd1f00a0",
+    "samplerate_hz": 4000000.0,
+    "duration_s": 50.0
+  },
+  "stop_command": {
+    "start_s": 27.41979925,
+    "end_s": 27.421709055555556,
+    "text": "DISARM,seq=1404890463",
+    "kind": "DISARM",
+    "fields": {
+      "seq": "1404890463"
+    }
+  },
+  "uart_invalid_stop_bits": {
+    "D0": 0,
+    "D1": 0
+  },
+  "stop_ack": {
+    "start_s": 27.4218085,
+    "end_s": 27.425619055555558,
+    "text": "ACK,seq=1404890463,type=DISARM,t_ms=1025853",
+    "kind": "ACK",
+    "fields": {
+      "seq": "1404890463",
+      "type": "DISARM",
+      "t_ms": "1025853"
+    }
+  },
+  "post_stop_states": [
+    "DISARMED"
+  ],
+  "post_stop_drop_err_zero": true,
+  "pwm": {
+    "4": {
+      "last_high_end_s": 27.4217465,
+      "low_tail_s": 22.5782535,
+      "high_samples_after_stop_ack": 0
+    },
+    "7": {
+      "last_high_end_s": 27.4217465,
+      "low_tail_s": 22.5782535,
+      "high_samples_after_stop_ack": 0
+    }
+  }
+}

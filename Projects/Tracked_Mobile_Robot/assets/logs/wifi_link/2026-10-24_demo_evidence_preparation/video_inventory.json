@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-24",
+  "scope": "Existing video inventory and demo script preparation; prior excluded rail review corrected",
+  "videos": [
+    {
+      "path": "assets/logs/wifi_link/2026-10-18_g6_04_ground_forward_run01/2026_10_18_MVP_moving_test_01.mp4",
+      "bytes": 2206884,
+      "sha256": "b51f78358fde9559692b4a740d0dc234c742e2b9d59872599bad74bf735a6929",
+      "duration_seconds": 17.709,
+      "timescale": 1000,
+      "duration_ticks": 17709,
+      "basis": "MP4 mvhd; not a synchronized motion/stop measurement",
+      "observation_path": "assets/logs/wifi_link/2026-10-18_g6_04_ground_forward_run01/observations.json",
+      "observation_sha256": "5853134ce0e15377aa3fc9319f60d44201fd9d2c0ad267848084787f049d9aca",
+      "previous_video_hash_matches": true,
+      "visual_review": "Existing observations.json only; no new frame decode or visual review in this turn"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/2026_10_18_MVP_rotation_add_cps_test_01.mp4",
+      "bytes": 3977483,
+      "sha256": "069e77151f464ac1116702171c4137e7dcb26b0462afd067466cac71d535c4ef",
+      "duration_seconds": 29.875,
+      "timescale": 1000,
+      "duration_ticks": 29875,
+      "basis": "MP4 mvhd; not a synchronized motion/stop measurement",
+      "observation_path": "assets/logs/wifi_link/2026-10-18_g6_wireless_cps_comparison_run01/observations.json",
+      "observation_sha256": "f0372205ffc756b4ed97a8615eafebb41a7adb61c935b91a8551c4d315850304",
+      "previous_video_hash_matches": null,
+      "visual_review": "Existing observations.json only; no new frame decode or visual review in this turn"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-18_g6_wireless_ground_forward_reverse_run01/2026_10_18_MVP_moving_test_02.mp4",
+      "bytes": 2075790,
+      "sha256": "068a955461076700d47bf9b364ec875f97586c5879fdbef36d452a8281f3ef67",
+      "duration_seconds": 15.042,
+      "timescale": 1000,
+      "duration_ticks": 15042,
+      "basis": "MP4 mvhd; not a synchronized motion/stop measurement",
+      "observation_path": "assets/logs/wifi_link/2026-10-18_g6_wireless_ground_forward_reverse_run01/observations.json",
+      "observation_sha256": "872963e18beb7fb9f2da46058ddb7c719116cb288591e0d6fa6a8d3b16a497f1",
+      "previous_video_hash_matches": true,
+      "visual_review": "Existing observations.json only; no new frame decode or visual review in this turn"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-18_g6_wireless_ground_turns_run01/2026_10_18_MVP_rotation_test_01.mp4",
+      "bytes": 2932690,
+      "sha256": "20c309922f52013dbbea0b2152df744cd277e5cd20749ab82f237773b495da70",
+      "duration_seconds": 21.875,
+      "timescale": 1000,
+      "duration_ticks": 21875,
+      "basis": "MP4 mvhd; not a synchronized motion/stop measurement",
+      "observation_path": "assets/logs/wifi_link/2026-10-18_g6_wireless_ground_turns_run01/observations.json",
+      "observation_sha256": "2516370198d3ac81d28cab3df035035cd86d59dda7310b27d55b67d5f6259442",
+      "previous_video_hash_matches": null,
+      "visual_review": "Existing observations.json only; no new frame decode or visual review in this turn"
+    }
+  ],
+  "new_video_recorded": false,
+  "video_edited": false,
+  "physical_test_performed": false,
+  "firmware_build_or_flash_performed": false,
+  "published": false
+}

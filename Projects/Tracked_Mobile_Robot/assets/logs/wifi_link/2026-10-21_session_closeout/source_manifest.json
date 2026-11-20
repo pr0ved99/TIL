@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-21",
+  "scope": "Local saved source baseline; not an asserted flashed-image match",
+  "source_sha256": {
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_contract.c": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_contract.h": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_control_executor.c": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/distance_move.h": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/distance_move.c": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/main.c": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+    "Projects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2"
+  },
+  "pc_reports": {
+    "stm_distance_validation.json": "PASS",
+    "esp_core_validation.json": "PASS",
+    "esp_page_validation.json": "PASS"
+  },
+  "distance_analysis_unittests": {
+    "count": 45,
+    "status": "PASS"
+  },
+  "board_build_flash_by_codex": false
+}

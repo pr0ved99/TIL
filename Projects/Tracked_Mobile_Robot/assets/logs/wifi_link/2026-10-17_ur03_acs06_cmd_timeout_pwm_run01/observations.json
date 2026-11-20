@@ -1,0 +1,232 @@
+{
+  "verdict": "PASS_ACS06_CMD_TIMEOUT_NOT_ARMED_ZERO_OUTPUT_SUBCASE",
+  "gate_status": "AC_S06_ZERO_OUTPUT_TIMEOUT_REJECTION_AND_RESTORE_SCOPE_COMPLETE",
+  "capture_name": "2026-10-17_UR03_ACS06_CMD_TIMEOUT_PWM_run01.sr",
+  "capture_sha256": "4e48a0dc45a3968b3e7bc0c1166cabf21ab5bd0e1440b804c9b9aec7f9e83df5",
+  "duration_s": 12.5,
+  "samplerate_hz": 4000000.0,
+  "samples": 50000000,
+  "command_sequence": [
+    "ARM,seq=1876337834",
+    "CMD,seq=1876337835,vx_mmps=0,w_mradps=0,timeout_ms=300",
+    "CMD,seq=1876337836,vx_mmps=0,w_mradps=0,timeout_ms=300",
+    "\u0018",
+    "DISARM,seq=1876337837"
+  ],
+  "responses": [
+    {
+      "start_s": 2.21383925,
+      "end_s": 2.2173078055555555,
+      "text": "ACK,seq=1876337834,type=ARM,t_ms=123224"
+    },
+    {
+      "start_s": 2.33382325,
+      "end_s": 2.3372918055555556,
+      "text": "ACK,seq=1876337835,type=CMD,t_ms=123345"
+    },
+    {
+      "start_s": 2.73450075,
+      "end_s": 2.7392685555555554,
+      "text": "ERR,seq=1876337836,type=CMD,code=NOT_ARMED,t_ms=123746"
+    },
+    {
+      "start_s": 3.031214,
+      "end_s": 3.0349430555555554,
+      "text": "ACK,seq=1876337837,type=DISARM,t_ms=124043"
+    }
+  ],
+  "last_armed_before_timeout": {
+    "start_s": 2.58867725,
+    "end_s": 2.6033283055555554,
+    "text": "TEL,t_ms=123600,state=ARMED,reason=NONE,command_age_ms=255,last_seq=1876337835,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "fields": {
+      "t_ms": "123600",
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": "255",
+      "last_seq": "1876337835",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "first_timeout_tel": {
+    "start_s": 2.6885935,
+    "end_s": 2.7041155555555556,
+    "text": "TEL,t_ms=123700,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=355,last_seq=1876337835,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "fields": {
+      "t_ms": "123700",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "355",
+      "last_seq": "1876337835",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "not_armed_followup_tel": [
+    {
+      "start_s": 2.7884965,
+      "end_s": 2.8040160555555556,
+      "text": "TEL,t_ms=123800,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=455,last_seq=1876337835,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "123800",
+        "state": "DISARMED",
+        "reason": "CMD_TIMEOUT",
+        "command_age_ms": "455",
+        "last_seq": "1876337835",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    {
+      "start_s": 2.88839825,
+      "end_s": 2.9039215555555553,
+      "text": "TEL,t_ms=123900,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=555,last_seq=1876337835,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "123900",
+        "state": "DISARMED",
+        "reason": "CMD_TIMEOUT",
+        "command_age_ms": "555",
+        "last_seq": "1876337835",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    },
+    {
+      "start_s": 2.98832925,
+      "end_s": 3.0038505555555557,
+      "text": "TEL,t_ms=124000,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=655,last_seq=1876337835,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+      "fields": {
+        "t_ms": "124000",
+        "state": "DISARMED",
+        "reason": "CMD_TIMEOUT",
+        "command_age_ms": "655",
+        "last_seq": "1876337835",
+        "vx_mmps": "0",
+        "w_mradps": "0",
+        "left_pwm": "0",
+        "right_pwm": "0",
+        "left_cps": "0",
+        "right_cps": "0",
+        "batt_mv": "0",
+        "drop": "0",
+        "err": "1"
+      }
+    }
+  ],
+  "first_cleanup_tel": {
+    "start_s": 3.088249,
+    "end_s": 3.1033395555555554,
+    "text": "TEL,t_ms=124100,state=DISARMED,reason=DISARM,command_age_ms=755,last_seq=1876337837,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=1",
+    "fields": {
+      "t_ms": "124100",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "755",
+      "last_seq": "1876337837",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "1"
+    }
+  },
+  "valid_tel_count": 125,
+  "state_counts": {
+    "DISARMED": 121,
+    "ARMED": 4
+  },
+  "reason_counts": {
+    "BOOT": 22,
+    "NONE": 4,
+    "CMD_TIMEOUT": 4,
+    "DISARM": 95
+  },
+  "all_valid_tel_vx_w_pwm_cps_drop_zero": true,
+  "err_change": "0 -> 1 exactly at intentional NOT_ARMED; remains 1",
+  "accepted_cmd_seq": 1876337835,
+  "rejected_cmd_seq": 1876337836,
+  "cleanup_seq": 1876337837,
+  "no_rearm_after_probe": true,
+  "no_uart_commands_after_cleanup": true,
+  "post_cleanup_tel_count": 95,
+  "capture_after_cleanup_ack_s": 9.465056944444445,
+  "physical_levels": "D4 PB6 left PWM, D7 PB7 right PWM, D6 PC7: 50,000,000 LOW samples each throughout 12.5 s; existing user-confirmed wiring",
+  "browser_screenshot": {
+    "source": "User-attached screenshot; manually transcribed, not a new browser query",
+    "test_banner": "AC-S06 mode 3",
+    "startup_state": "READY",
+    "control_phase": "IDLE",
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "boot_id": 107934251,
+    "stm_t_ms": 182400,
+    "last_seq": 1876337837,
+    "stm_age_ms": 11,
+    "vx_w_pwm_cps": 0,
+    "drop": 0,
+    "err": 1,
+    "post_response": 202
+  },
+  "capture_boundary": {
+    "excluded_first_line": {
+      "start_s": 5.25e-06,
+      "end_s": 0.005831555555555556,
+      "text": "\\x99\\xd1}\\xc1\\xdd\\xb50,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0"
+    },
+    "D0_invalid_stop_times_s": [
+      0.0005255
+    ],
+    "description": "Only decoder stop-bit anomaly lies inside capture-start partial line. Excluded from complete TEL/ACK/ERR evidence. Complete test window has no reported bad stop bit. Raw capture and decoder output retained."
+  },
+  "provenance": {
+    "esp_monitor": "Verbatim user-pasted transcript, normalized newline convention",
+    "esp_monitor_sha256": "3c95038ab97beb4e2013ac07df4a7c0eee61a5a5dcad8a8d54c28c19b228dac7",
+    "decoder_sha256": "96dd9470eb1c86481b881877bec7f31e64b684b252fcd0bbb9dc9b46f57d925d",
+    "current_main_normalized_sha256": "dcf8822bf21a1331a86f6c3bf6268af2ede36bbcc3c794f7b2091b4b9203eb29",
+    "current_stm_normalized_sha256": "2c7f8c4f1896fd0335254569c88fa8d8bfcfc9a7c339ef3897f474ac7b5c67bf"
+  },
+  "limits": [
+    "STM timeout first appears at command_age_ms=355 in 100 ms telemetry. The exact state-transition instant is not measured; 355 ms is not a measured timeout setting or motor stopping delay.",
+    "Zero-output test with isolated motor power; no rotating motor stop-time claim.",
+    "Digital 4 MHz sampling does not establish analog voltage or absence of sub-sample pulses.",
+    "Mode 3 isolated UART actor bypasses normal ESP source-loss stop to reach STM timeout. Mode 0 restoration and fresh manual ARM/zero CMD/DISARM were subsequently verified in restore run02; see restore_review.",
+    "Local source hashes are not an independent readback hash of flashed firmware."
+  ],
+  "next_action": "No further rerun needed for this bounded AC-S06 scope; restoration and manual rearm/stop verified in linked run02. Earlier restore run01 command-delivery gap remains a separate open observation.",
+  "gate_status_at_initial_review": "PENDING_NORMAL_MODE_RESTORE_AND_FRESH_MANUAL_REARM",
+  "restore_review": "../2026-10-17_ur03_acs06_restore_pwm_run02/observations.json",
+  "next_action_at_initial_review": "User changes ESP WIFI_UART_PARTIAL_TEST_MODE to 0U, builds/flashes, confirms normal page READY/IDLE/DISARMED. Then capture fresh manual ARM/zero CMD/DISARM; no need to repeat this mode 3 subcase."
+}

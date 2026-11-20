@@ -1,0 +1,149 @@
+{
+  "documented_on": "2026-10-10",
+  "provenance": "Selected field transcription from user-provided conversation screenshots and text replies; not original PNG or full serial recordings.",
+  "screen_work_dates": "Not recorded separately; ESP uptime is not a wall-clock date.",
+  "button_run_common_fields": {
+    "boot_id": 1058366263,
+    "startup_state": "READY",
+    "stm_connected": true,
+    "stm_stale": false,
+    "state": "FAULT",
+    "reason": "ESTOP_ACTIVE"
+  },
+  "screens": [
+    {
+      "test_id": "W5-17",
+      "command": "PING",
+      "request_id": 1,
+      "status": "OK",
+      "uptime_ms": 116208,
+      "tel_count": 1161,
+      "stm_age_ms": 31,
+      "last_seq": 3438979494
+    },
+    {
+      "test_id": "W5-18",
+      "command": "DISARM",
+      "request_id": 2,
+      "status": "OK",
+      "uptime_ms": 168308,
+      "tel_count": 1683,
+      "stm_age_ms": 11,
+      "last_seq": 3438979495
+    },
+    {
+      "test_id": "W5-19",
+      "notice": "DISARM request 2 REJECTED DUPLICATE",
+      "retained_result": "DISARM request 2 OK",
+      "tel_count": 3300,
+      "stm_age_ms": 69,
+      "last_seq": 3438979495
+    },
+    {
+      "test_id": "W5-20",
+      "sent": "PING",
+      "notice": "REJECTED BAD_FORMAT; no parsed request_id/cmd",
+      "retained_result": "DISARM request 2 OK",
+      "tel_count": 4362,
+      "stm_age_ms": 51,
+      "last_seq": 3438979495
+    },
+    {
+      "test_id": "W5-21",
+      "notice": "PING request 3 REJECTED BOOT_MISMATCH",
+      "retained_result": "DISARM request 2 OK",
+      "tel_count": 5217,
+      "stm_age_ms": 90,
+      "last_seq": 3438979495
+    },
+    {
+      "test_id": "W5-22",
+      "command": "PING",
+      "request_id": 4,
+      "status": "TIMEOUT",
+      "uptime_ms": 978809,
+      "tel_count": 9777,
+      "stm_t_ms": 9900,
+      "stm_age_ms": 61,
+      "last_seq": 0
+    },
+    {
+      "test_id": "W5-22-followup",
+      "command": "PING",
+      "request_id": 5,
+      "status": "TIMEOUT",
+      "uptime_ms": 999810,
+      "tel_count": 9928,
+      "stm_t_ms": 2900,
+      "stm_age_ms": 3,
+      "last_seq": 0,
+      "qualification": "User clarified this was a separate manual click after request 4 TIMEOUT; no serial trace supplied."
+    },
+    {
+      "test_id": "W5-23",
+      "command": "PING",
+      "request_id": 6,
+      "status": "OK",
+      "uptime_ms": 2709409,
+      "tel_count": 27049,
+      "stm_t_ms": 1715000,
+      "stm_age_ms": 12,
+      "last_seq": 3438979498,
+      "qualification": "Screen evidence only; TX/MATCH trace not supplied."
+    },
+    {
+      "test_id": "W5-24-reconnected",
+      "notice": "이번 ESP 부팅의 명령 송신 대기",
+      "result": "이번 ESP 부팅의 명령 결과 수신 대기",
+      "uptime_ms": 2838408,
+      "tel_count": 28340,
+      "stm_t_ms": 1844100,
+      "stm_age_ms": 51,
+      "last_seq": 3438979498
+    },
+    {
+      "test_id": "W5-24-manual-ping",
+      "command": "PING",
+      "request_id": 1,
+      "status": "OK",
+      "uptime_ms": 2902510,
+      "tel_count": 28982,
+      "stm_t_ms": 1908300,
+      "stm_age_ms": 3,
+      "last_seq": 3438979499,
+      "left_pwm": 0,
+      "right_pwm": 0,
+      "left_cps": 0,
+      "right_cps": 0,
+      "drop": 0,
+      "err": 0,
+      "qualification": "Manual click after the no-auto-send observation; new session_id/TX/MATCH trace not supplied."
+    }
+  ],
+  "user_confirmations": [
+    {
+      "test_id": "W5-15",
+      "text": "마지막 명령 결과 · PING 요청 3: 응답 시간 초과 (TIMEOUT)",
+      "meaning": "Original connection kept its result while a second connection received request 1 OK."
+    },
+    {
+      "test_id": "W5-16",
+      "text": "맞아 저런 로그는 안나왔어",
+      "meaning": "No new W5 QUEUED/W5 TX UART1 for 3 seconds after reconnect, before a manual request."
+    },
+    {
+      "test_id": "W5-22",
+      "text": "요청 4의 TIMEOUT 이후 PING을 다시 눌렀음"
+    },
+    {
+      "test_id": "W5-24",
+      "text": "W5 Queued, W5 TX UART1없었어.",
+      "meaning": "No new W5 QUEUED/W5 TX UART1 for 3 seconds after reconnect, before manual PING request 1."
+    },
+    {
+      "test_id": "closeout",
+      "question": "W5 시험 마감 상태를 기록하려고 해. STM32·ESP32의 USB를 모두 분리했어?",
+      "text": "두 보드 모두 USB 분리 완료"
+    }
+  ]
+}

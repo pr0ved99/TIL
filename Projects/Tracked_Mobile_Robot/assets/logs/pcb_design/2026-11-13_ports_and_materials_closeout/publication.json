@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-13",
+  "timezone": "Asia/Seoul",
+  "scope": "41-1 through 41-5 learning materials, port/power/fault evidence, basic schematic exports and project material freshness reconciliation; closeout of local follow-up after prior publication.",
+  "previous_publication": "8bd69b2feef7638d260002e1ffc9dd36e2667e55",
+  "documentation": "COMPLETE",
+  "current_state_and_handoff": "RECONCILED_NEXT_41_6",
+  "notion": "READBACK_VERIFIED",
+  "calendar": "READBACK_VERIFIED_EXISTING_BOUNDARIES_PRESERVED",
+  "external_evidence": "external_verification.json",
+  "git": {
+    "branch": "agent/dual-encoder-bringup",
+    "remote": "origin",
+    "content_commit": "bda443378b9750d95884624383920b9bc1c4256f",
+    "remote_verified": true,
+    "status": "CONTENT_PUSH_VERIFIED",
+    "verified_remote_ref": "refs/heads/agent/dual-encoder-bringup",
+    "remote_head_at_content_verification": "bda443378b9750d95884624383920b9bc1c4256f",
+    "scoped_files": 132,
+    "remaining_worktree_files_at_content_verification": 19,
+    "receipt_commit": "Recorded in the subsequent scoped receipt commit; use this file history. The receipt commit hash is intentionally not self-referenced."
+  },
+  "unrelated_files_preserved": 19,
+  "next": "41-6 보호 경로·검증 기준",
+  "boundaries": {
+    "chapter_41_user_handwriting_understanding": "NOT_REPORTED",
+    "adc_sampling_averaging": "CANDIDATE_NOT_IMPLEMENTED",
+    "adc_noise_and_calibration_residuals": "NOT_MEASURED",
+    "power_transition_and_fault_protection": "NOT_VERIFIED",
+    "new_mcu_build_flash_or_physical_work": false,
+    "mvp": "PARTIAL/OPEN",
+    "T005A": "PARTIAL",
+    "T007": "BLOCKED",
+    "TMR_04": "NOT TESTED",
+    "NotebookLM": "11 sources uploaded USER_REPORTED; final video NOT_REPORTED; separate workflow"
+  },
+  "local_verification": "PASS_SCOPED_HASH_LINK_SYNTAX_CHECKS",
+  "local_evidence": "verification.json",
+  "all_five_closeout_actions": "COMPLETE; receipt publication follows content verification"
+}

@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-19",
+  "timezone": "Asia/Seoul",
+  "source": "User-reported readings in this conversation; no instrument file or screenshot supplied",
+  "test": "T-ESTOP-005A supporting diagnostic: temporary known load, motors disconnected",
+  "status": "OBSERVATIONS_RECORDED_AND_TEST_ENDED; not full T-ESTOP-005A PASS",
+  "instrument": {
+    "voltage_meter": "UNI-T UT210E",
+    "range": null,
+    "calibration_verified": false,
+    "manual_uncertainty_applied": false
+  },
+  "resistor": {
+    "nominal_ohm": 10000,
+    "tolerance_percent": 1,
+    "rated_power_w": 0.25,
+    "measured_ohm_user_report": 9950,
+    "resistance_measurement_instrument": null
+  },
+  "setup": {
+    "reported_preparation_complete": true,
+    "main_links_retained": [
+      "K1/87 -> MDD10A B+",
+      "GND busbar -> MDD10A B-"
+    ],
+    "temporary_load": "9.95 kohm across MDD10A B+ and B-",
+    "motor_power_leads": "4 disconnected and insulated per preparation instructions and completion report",
+    "control_5p": "retained per instructions and preparation completion report",
+    "power": "battery/buck; USB and logic analyzer disconnected per instructions",
+    "commands": "no ARM or CMD instructed"
+  },
+  "observations": [
+    {
+      "phase": "initial_off",
+      "event": "S1_ON_with_S0_latched_and_no_S2",
+      "elapsed_s": 5,
+      "reported_value": 0.1,
+      "reported_unit": "mV",
+      "voltage_v": 0.0001
+    },
+    {
+      "phase": "initial_off",
+      "event": "S1_ON_with_S0_latched_and_no_S2",
+      "elapsed_s": 30,
+      "reported_value": 0,
+      "reported_unit": "mV",
+      "voltage_v": 0
+    },
+    {
+      "phase": "rail_on",
+      "event": "S2_release",
+      "elapsed_s": 5,
+      "reported_value": 12.57,
+      "reported_unit": "V",
+      "voltage_v": 12.57
+    },
+    {
+      "phase": "after_cutoff",
+      "event": "S0_latch",
+      "elapsed_s": 5,
+      "reported_value": 200,
+      "reported_unit": "mV",
+      "voltage_v": 0.2
+    },
+    {
+      "phase": "after_cutoff",
+      "event": "S0_latch",
+      "elapsed_s": 30,
+      "reported_value": 5,
+      "reported_unit": "mV",
+      "voltage_v": 0.005
+    }
+  ],
+  "derived": [
+    {
+      "phase": "rail_on",
+      "event": "S2_release",
+      "elapsed_s": 5,
+      "resistor_current_a_from_display": 0.001263316582914573,
+      "resistor_power_w_from_display": 0.015879889447236183
+    },
+    {
+      "phase": "after_cutoff",
+      "event": "S0_latch",
+      "elapsed_s": 5,
+      "resistor_current_a_from_display": 0.000020100502512562815,
+      "resistor_power_w_from_display": 0.0000040201005025125635
+    },
+    {
+      "phase": "after_cutoff",
+      "event": "S0_latch",
+      "elapsed_s": 30,
+      "resistor_current_a_from_display": 5.025125628140703e-7,
+      "resistor_power_w_from_display": 2.512562814070352e-9
+    }
+  ],
+  "interpretation_limits": [
+    "Derived currents are currents through the test resistor, not total leakage or maximum available source current.",
+    "0.0 mV is a reported display value, not a proof of exact zero voltage.",
+    "No continuous waveform, exact switching delay or steady-state leakage was measured.",
+    "Temporary load changes discharge behavior; results do not establish unloaded V_RAIL_OFF_MAX or mechanical stopping performance."
+  ],
+  "end_state": {
+    "user_report": "전원 분리·저항 제거 완료",
+    "s1": "OFF per shutdown instruction",
+    "battery": "disconnected by user completion report",
+    "temporary_resistor": "removed by user report",
+    "motor_power_leads": "left disconnected and insulated per shutdown instruction; no reconnection reported",
+    "main_power_connections": "retained",
+    "post_shutdown_voltage_v": null
+  },
+  "next": "Reuse these completed observations in T005A disposition. Do not repeat this diagnostic automatically; formal rail-off acceptance remains unresolved."
+}

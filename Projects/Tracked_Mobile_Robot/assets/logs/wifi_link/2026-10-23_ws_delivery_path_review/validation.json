@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-23",
+  "scope": "ACC-COM-01 static review artifacts and current pointers",
+  "status": "PASS_WITH_RUNTIME_CAUSE_OPEN",
+  "source_identity_hashes_verified_unchanged": 6,
+  "previous_must_table_rows_preserved_verbatim": 24,
+  "report_links_resolve": 5,
+  "scoped_git_diff_check": "PASS",
+  "firmware_and_observer_git_diff": "EMPTY",
+  "utf8_replacement_check": "PASS",
+  "new_text_unexpected_cjk_check": "PASS",
+  "burst_window_metrics": [
+    {
+      "frames": 5,
+      "generation_span_ms": 239,
+      "browser_span_ms": 4.5
+    },
+    {
+      "frames": 4,
+      "generation_span_ms": 180,
+      "browser_span_ms": 2.8
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/verification/40_WS_Delivery_Path_and_Minimal_Observation_2026-10-23_ko.md",
+      "sha256": "cdc182bdaf5aef24d4dcc13c012db8a150f131736a5ec5ef8bddda4da5109f07"
+    },
+    {
+      "path": "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+      "sha256": "610bc79e57a9d85c9500006f0c5a5bc269f160d62efb679880c47762782ecf14"
+    },
+    {
+      "path": "docs/handoff/NEXT_SESSION_START_PROMPT.md",
+      "sha256": "dd2154a9ec31b733e25f8e0a81869dfdfd75223c7266b277f0b2e74c6906feb4"
+    },
+    {
+      "path": "docs/progress/2026-10-23_progress.md",
+      "sha256": "d9a3939397f79f5c77f30ffd3ca79ce1614843dc071444227e318c91101dabf0"
+    },
+    {
+      "path": "docs/progress/README.md",
+      "sha256": "590553109fa67264fd1aa9a102c90e750b2bba0f4ab978a17c008230b34afa82"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_ws_delivery_path_review/inspect.py",
+      "sha256": "dc40ed1df2c54e21094fd489ec04719b9d392d8c82a957087f6bfc3050224136"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_ws_delivery_path_review/review.json",
+      "sha256": "eb21d0e177e4052f63bdc4b6cc8b061183241464feebc926ff4249f018887889"
+    }
+  ],
+  "historical_validation_note": "Report39 validation hashes describe that milestone; current pointer hashes above supersede the overlapping document snapshots without rewriting historical validation.",
+  "new_instrumentation_implemented": false,
+  "new_runtime_test": false,
+  "build_or_flash": false,
+  "cause_resolved": false,
+  "overall_mvp_accepted": false,
+  "git_commit_push": false,
+  "calendar_update": false,
+  "notion_update": false
+}

@@ -69,6 +69,12 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : ESTOP_SENSE_Pin */
+  GPIO_InitStruct.Pin = ESTOP_SENSE_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(ESTOP_SENSE_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : MOTOR_LEFT_DIR_Pin MOTOR_RIGHT_DIR_Pin */
   GPIO_InitStruct.Pin = MOTOR_LEFT_DIR_Pin|MOTOR_RIGHT_DIR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;

@@ -1,0 +1,53 @@
+{
+  "custom_cursors": 2,
+  "last_sch_text_sim_command": ".ac dec 200 1 1Meg",
+  "tabs": [
+    {
+      "analysis": "AC",
+      "commands": [
+        ".ac dec 200 1 1Meg",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": false,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(228, 26, 28)",
+          "cursor1": {
+            "position": 132.62911924324612,
+            "x_format": "6~Hz",
+            "y_format": "6~dB"
+          },
+          "cursor2": {
+            "position": 19000.0,
+            "x_format": "6~Hz",
+            "y_format": "6~dB"
+          },
+          "cursorD": {
+            "x_format": "6~Hz",
+            "y_format": "6~dB"
+          },
+          "signal": "V(/VADC) (게인)",
+          "trace_type": 521
+        },
+        {
+          "color": "rgb(55, 126, 184)",
+          "signal": "V(/VIN) (게인)",
+          "trace_type": 521
+        }
+      ]
+    }
+  ],
+  "user_defined_signals": [],
+  "version": 7
+}

@@ -1,0 +1,94 @@
+{
+  "status": "CALCULATION_ONLY; candidate settings, not firmware configuration or measured performance",
+  "sources": {
+    "datasheet": "https://www.st.com/resource/en/datasheet/stm32f446vc.pdf",
+    "revision": "DS10693 Rev 11, Table 74 p140, Equation 1 p141; same selected RADC/CADC values and equation also read in locally stored Rev10",
+    "adc_principle": "https://www.st.com/resource/en/application_note/an2834-how-to-get-the-best-adc-accuracy-in-stm32-microcontrollers-stmicroelectronics.pdf"
+  },
+  "inputs": {
+    "external_R_nominal_ohms": 12000.0,
+    "assumed_R_tolerance_fraction": 0.01,
+    "internal_R_upper_ohms": 6000.0,
+    "internal_C_upper_F": 7e-12,
+    "external_C_nominal_F": 1e-07,
+    "reference_V": 3.3,
+    "resolution_bits": 12,
+    "candidate_ADC_clock_Hz": 14000000.0,
+    "sensitivity_V_per_A": 0.044
+  },
+  "assumptions": [
+    "Ideal voltage source with negligible output impedance; constant input during acquisition.",
+    "Internal 6kohm/7pF are conservative datasheet model bounds, not measured values at 3.3V.",
+    "R 1% is a calculation assumption, not an inspection of owned parts.",
+    "No pin/protection leakage, charge injection, layout parasitics, ADC intrinsic error, source noise or reference error included in dynamic models.",
+    "A full 3.3V initial difference is an analysis envelope, not the known initial voltage of the physical capacitor after every conversion.",
+    "Models below are separate and must not be treated as one proof of complete circuit accuracy."
+  ],
+  "no_external_cap_model": {
+    "definition": "C1 omitted ONLY for explanatory source-resistance acquisition model. Existing CAD retains C1.",
+    "formula": "tau=(Rexternal+RADC)*CADC; residual=deltaV*exp(-t/tau); ST Eq1 uses t=(k-0.5)/fADC.",
+    "LSB_mV": 0.8056640625,
+    "quarter_LSB_mV": 0.201416015625,
+    "initial_delta_V": 3.3,
+    "tau_nominal_us": 0.126,
+    "tau_Rmax_us": 0.12683999999999998,
+    "ln_ratio": 9.704060527839234,
+    "required_effective_us": 1.2308630373511285,
+    "required_cycles_lower_bound": 17.732082522915796,
+    "settings": [
+      {
+        "cycles": 3,
+        "sampling_us": 0.21428571428571427,
+        "eq1_effective_us": 0.17857142857142858,
+        "model_error_mV": 807.40858404861,
+        "model_error_LSB": 1002.1653212918505,
+        "below_quarter_LSB_in_no_external_cap_model": false
+      },
+      {
+        "cycles": 15,
+        "sampling_us": 1.0714285714285714,
+        "eq1_effective_us": 1.0357142857142856,
+        "model_error_mV": 0.9381549841500216,
+        "model_error_LSB": 1.1644493379025724,
+        "below_quarter_LSB_in_no_external_cap_model": false
+      },
+      {
+        "cycles": 28,
+        "sampling_us": 2.0,
+        "eq1_effective_us": 1.9642857142857144,
+        "model_error_mV": 0.0006207083490146738,
+        "model_error_LSB": 0.000770430726534577,
+        "below_quarter_LSB_in_no_external_cap_model": true
+      },
+      {
+        "cycles": 480,
+        "sampling_us": 34.285714285714285,
+        "eq1_effective_us": 34.25,
+        "model_error_mV": 1.7703012224394657e-114,
+        "model_error_LSB": 2.1973193354885002e-114,
+        "below_quarter_LSB_in_no_external_cap_model": true
+      }
+    ]
+  },
+  "with_external_cap_single_share_model": {
+    "definition": "External C already settled; one passive charge redistribution; sensor replenishment ignored during sharing. Does not bound every internal switching charge mechanism.",
+    "formula": "abs(deltaV_external)=initial_delta*CADC/(Cexternal+CADC)",
+    "external_shift_mV": 0.23098383113182078,
+    "external_shift_LSB": 0.2866999310048297,
+    "current_equivalent_A": 0.0052496325257232,
+    "external_recovery_tau_ms": 1.2,
+    "single_disturbance_remaining_fraction_after_1ms": 0.4345982085070782,
+    "single_disturbance_remaining_fraction_after_10ms": 0.00024036947641951407,
+    "external_shift_mV_with_C90nF": 0.2566467052562579,
+    "C90nF_note": "Initial -10% tolerance example only; not an effective-capacitance lower bound over bias and temperature."
+  },
+  "candidate_schedule": {
+    "sampling_cycles": 480,
+    "sampling_us": 34.285714285714285,
+    "SAR_conversion_cycles_12bit": 12,
+    "per_channel_us_excluding_trigger_and_software": 35.14285714285714,
+    "six_consecutive_channels_us_excluding_trigger_and_software": 210.85714285714286,
+    "per_channel_sample_rate": "NOT_SELECTED; distinguish acquisition window, repeated acquisitions, and 10Hz result generation."
+  },
+  "decision": "14MHz/480cycles retained as a conservative candidate for subsequent review. 12kohm/100nF not approved: repeat-sample recovery, source stability, aliasing and post-calibration error budget remain. Longer acquisition does not remove steady-state leakage error."
+}

@@ -1,0 +1,8 @@
+{
+  "status": "FAIL",
+  "scope": "Second actual saved-source review; structural check before native compile",
+  "remaining_issue": "Duplicate definitions in main.c: two CPS helpers and three sampling/log functions",
+  "proposed_deletion_current_line_start": 250,
+  "proposed_deletion_current_line_end": 385,
+  "main_sha256": "5aa321a84a54f5891b2b8e367dc640ed9b7a3a33aa9e930d4d13b5b9992bdbc0"
+}

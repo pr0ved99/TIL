@@ -1,0 +1,21 @@
+{
+  "invalid_stop_candidate_times_s": {
+    "D4": [
+      4.481026
+    ],
+    "D5": [
+      4.481026
+    ]
+  },
+  "nonzero_encoder_telemetry": [
+    {
+      "start_s": 4.95957425,
+      "end_s": 4.974142305555556,
+      "text": "TEL,t_ms=400,state=DISARMED,reason=BOOT,command_age_ms=4294967295,last_seq=0,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=10,batt_mv=0,drop=0,err=0"
+    }
+  ],
+  "pc7_startup_high_us": 62.74999999999999,
+  "operator_rail_voltage_V_approx": 0.55,
+  "operator_rail_condition": "S0 released, no S2, approximately 5 seconds after S1 ON",
+  "limit": "DMM value is operator-reported; the raw capture contains no analog rail voltage."
+}

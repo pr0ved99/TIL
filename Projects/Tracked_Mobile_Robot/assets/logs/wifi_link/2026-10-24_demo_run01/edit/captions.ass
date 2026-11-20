@@ -1,0 +1,65 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1920
+PlayResY: 1080
+ScaledBorderAndShadow: yes
+WrapStyle: 2
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chapter,Malgun Gothic,24,&H00CBD680,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Action,Malgun Gothic,46,&H00FFFFFF,&H00000000,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Detail,Malgun Gothic,27,&H00E8D8C8,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+Style: Note,Malgun Gothic,20,&H00B6A28F,&H00000000,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,7,0,0,0,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:00.00,0:00:08.75,Chapter,,0,0,0,,{\pos(620,774)}01 / 08 · 시작
+Dialogue: 0,0:00:00.00,0:00:08.75,Action,,0,0,0,,{\pos(620,817)}DISARM
+Dialogue: 0,0:00:00.00,0:00:08.75,Detail,,0,0,0,,{\pos(620,892)}조작 전 제어 해제
+Dialogue: 0,0:00:08.75,0:00:10.92,Chapter,,0,0,0,,{\pos(620,774)}02 / 08 · 준비
+Dialogue: 0,0:00:08.75,0:00:10.92,Action,,0,0,0,,{\pos(620,817)}ARM
+Dialogue: 0,0:00:08.75,0:00:10.92,Detail,,0,0,0,,{\pos(620,892)}속도0으로 제어 준비
+Dialogue: 0,0:00:10.92,0:00:14.75,Chapter,,0,0,0,,{\pos(620,774)}03 / 08 · 방향 입력
+Dialogue: 0,0:00:10.92,0:00:14.75,Action,,0,0,0,,{\pos(620,817)}짧은 전진
+Dialogue: 0,0:00:10.92,0:00:14.75,Detail,,0,0,0,,{\pos(620,892)}좌·우 궤도를 같은 방향으로 구동
+Dialogue: 0,0:00:14.75,0:00:19.42,Chapter,,0,0,0,,{\pos(620,774)}03 / 08 · 입력 해제
+Dialogue: 0,0:00:14.75,0:00:19.42,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:14.75,0:00:19.42,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:00:19.42,0:00:21.79,Chapter,,0,0,0,,{\pos(620,774)}04 / 08 · 방향 입력
+Dialogue: 0,0:00:19.42,0:00:21.79,Action,,0,0,0,,{\pos(620,817)}짧은 후진
+Dialogue: 0,0:00:19.42,0:00:21.79,Detail,,0,0,0,,{\pos(620,892)}좌·우 PWM과 엔코더 부호가 함께 반전
+Dialogue: 0,0:00:21.79,0:00:25.75,Chapter,,0,0,0,,{\pos(620,774)}04 / 08 · 입력 해제
+Dialogue: 0,0:00:21.79,0:00:25.75,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:21.79,0:00:25.75,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:00:25.75,0:00:27.75,Chapter,,0,0,0,,{\pos(620,774)}05 / 08 · 방향 입력
+Dialogue: 0,0:00:25.75,0:00:27.75,Action,,0,0,0,,{\pos(620,817)}짧은 좌회전
+Dialogue: 0,0:00:25.75,0:00:27.75,Detail,,0,0,0,,{\pos(620,892)}좌·우 궤도를 서로 반대 방향으로 구동
+Dialogue: 0,0:00:27.75,0:00:31.67,Chapter,,0,0,0,,{\pos(620,774)}05 / 08 · 입력 해제
+Dialogue: 0,0:00:27.75,0:00:31.67,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:27.75,0:00:31.67,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:00:31.67,0:00:35.25,Chapter,,0,0,0,,{\pos(620,774)}06 / 08 · 방향 입력
+Dialogue: 0,0:00:31.67,0:00:35.25,Action,,0,0,0,,{\pos(620,817)}짧은 우회전
+Dialogue: 0,0:00:31.67,0:00:35.25,Detail,,0,0,0,,{\pos(620,892)}좌회전과 반대인 PWM·엔코더 부호
+Dialogue: 0,0:00:35.25,0:00:39.62,Chapter,,0,0,0,,{\pos(620,774)}06 / 08 · 입력 해제
+Dialogue: 0,0:00:35.25,0:00:39.62,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:35.25,0:00:39.62,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:00:39.62,0:00:46.58,Chapter,,0,0,0,,{\pos(620,774)}07 / 08 · 방향 입력
+Dialogue: 0,0:00:39.62,0:00:46.58,Action,,0,0,0,,{\pos(620,817)}긴 좌회전
+Dialogue: 0,0:00:39.62,0:00:46.58,Detail,,0,0,0,,{\pos(620,892)}버튼을 누르는 동안 방향 입력 유지
+Dialogue: 0,0:00:46.58,0:00:49.25,Chapter,,0,0,0,,{\pos(620,774)}07 / 08 · 입력 해제
+Dialogue: 0,0:00:46.58,0:00:49.25,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:46.58,0:00:49.25,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:00:49.25,0:00:56.33,Chapter,,0,0,0,,{\pos(620,774)}08 / 08 · 방향 입력
+Dialogue: 0,0:00:49.25,0:00:56.33,Action,,0,0,0,,{\pos(620,817)}긴 우회전
+Dialogue: 0,0:00:49.25,0:00:56.33,Detail,,0,0,0,,{\pos(620,892)}버튼을 누르는 동안 방향 입력 유지
+Dialogue: 0,0:00:56.33,0:01:01.20,Chapter,,0,0,0,,{\pos(620,774)}08 / 08 · 입력 해제
+Dialogue: 0,0:00:56.33,0:01:01.20,Action,,0,0,0,,{\pos(620,817)}버튼 해제
+Dialogue: 0,0:00:56.33,0:01:01.20,Detail,,0,0,0,,{\pos(620,892)}속도0 요청 · 다음 조작 대기
+Dialogue: 0,0:01:01.20,0:01:01.35,Chapter,,0,0,0,,{\pos(620,774)}마지막 조작
+Dialogue: 0,0:01:01.20,0:01:01.35,Action,,0,0,0,,{\pos(620,817)}DISARM 요청
+Dialogue: 0,0:01:01.20,0:01:01.35,Detail,,0,0,0,,{\pos(620,892)}제어 해제 확인 중
+Dialogue: 0,0:01:01.35,0:01:05.00,Chapter,,0,0,0,,{\pos(620,774)}시연 종료
+Dialogue: 0,0:01:01.35,0:01:05.00,Action,,0,0,0,,{\pos(620,817)}DISARMED
+Dialogue: 0,0:01:01.35,0:01:05.00,Detail,,0,0,0,,{\pos(620,892)}PWM / CPS 0 · 최종 누적 count 3886 / −564
+Dialogue: 0,0:00:00.00,0:01:05.00,Note,,0,0,0,,{\pos(620,980)}같은 회차의 카메라와 화면 녹화를 정렬했습니다. 정지 지연 계측 자료는 아닙니다.

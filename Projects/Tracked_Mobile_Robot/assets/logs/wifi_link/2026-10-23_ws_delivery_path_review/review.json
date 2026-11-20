@@ -1,0 +1,294 @@
+{
+  "date": "2026-10-23",
+  "scope": "ACC-COM-01 static path review and observation design",
+  "status": "STATIC_REVIEW_COMPLETE_CAUSE_OPEN_INSTRUMENTATION_NOT_IMPLEMENTED",
+  "project_source": [
+    {
+      "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+      "sha256": "cd32d2ed0fffb66df8f79c598c0e4b1fb50951390ad1b02458d1ed8534dbda40",
+      "excerpts": [
+        {
+          "first_line": 816,
+          "last_line": 831,
+          "text": "static int status_json(char *json, size_t capacity)\n{\n    stm_telemetry_t tel;\n    uint32_t tel_count;\n    const char *startup_state;\n\n    xSemaphoreTake(s_stm_lock, portMAX_DELAY);\n    tel = s_stm_telemetry;\n    tel_count = s_stm_tel_count;\n    startup_state = s_stm_startup_status;\n    xSemaphoreGive(s_stm_lock);\n\n    /* Snapshot을 복사한 뒤 시각을 읽어 rx_ms보다 앞서지 않게 한다. */\n    const uint64_t uptime_ms = (uint64_t)esp_timer_get_time() / 1000U;\n    const uint64_t age_ms = tel.valid ? uptime_ms - tel.rx_ms : 0U;\n    const bool fresh = tel.valid && age_ms <= STM_TEL_STALE_MS;"
+        },
+        {
+          "first_line": 1094,
+          "last_line": 1135,
+          "text": "static int wifi_control_snapshot(wifi_ws_session_t *session, char *json, size_t capacity)\n{\n    static const char *const phases[] = {\"IDLE\", \"ARM_PENDING\", \"ZERO_PENDING\", \"ACTIVE\", \"STOPPING\", \"BLOCKED\"};\n    xSemaphoreTake(s_stm_lock, portMAX_DELAY);\n    const uint64_t now = wifi_control_now();\n    wifi_control_executor_poll(&s_control, wifi_control_ready_locked(), now);\n    wifi_control_cleanup_locked();\n    const wifi_control_state_t *state = &s_control.state;\n    const bool available = WIFI_UART_PARTIAL_TEST_MODE == 0U && !s_manual_stop_pending && s_wifi_command_owner_session_id == 0U &&\n        !s_control.queued && !s_control.waiting && !s_control.prepared && !s_control.have_result;\n    const bool fresh = state->have_tel && now >= state->tel_received_ms &&\n        now - state->tel_received_ms < WIFI_CONTROL_TEL_MS;\n    const bool zero = fresh && state->tel.vx_mmps == 0 && state->tel.w_mradps == 0 &&\n        state->tel.left_pwm == 0 && state->tel.right_pwm == 0;\n    const bool arm = available && wifi_control_ready_locked() && state->phase == WIFI_CONTROL_IDLE &&\n        zero && state->tel.state == WIFI_CONTROL_STM_DISARMED;\n    const bool cmd = available && (state->phase == WIFI_CONTROL_ZERO_PENDING || state->phase == WIFI_CONTROL_ACTIVE) &&\n        state->owner.ws_session_id == session->id;\n    if (!arm && !cmd) {\n        wifi_control_ticket_invalidate(&session->ticket);\n    } else {\n        const wifi_control_type_t purpose = arm ? WIFI_CONTROL_ARM : WIFI_CONTROL_CMD;\n        const uint32_t control_id = arm ? 0U : state->owner.control_id;\n        if (session->ticket.purpose != purpose || session->ticket.control_id != control_id)\n            wifi_control_ticket_invalidate(&session->ticket);\n        (void)wifi_control_ticket_issue(&s_ticket_pool, &session->ticket, session->id, purpose, control_id, now);\n    }\n    const bool valid = session->ticket.valid && now < session->ticket.expires_ms;\n    const uint32_t ttl = valid ? (uint32_t)(session->ticket.expires_ms - now) : 0U;\n    const int length = snprintf(json, capacity,\n        \"{\\\"kind\\\":\\\"control_state\\\",\\\"boot_id\\\":%\" PRIu32 \",\\\"session_id\\\":%\" PRIu32\n        \",\\\"phase\\\":\\\"%s\\\",\\\"owner_session\\\":%\" PRIu32 \",\\\"control_id\\\":%\" PRIu32\n        \",\\\"ticket\\\":%\" PRIu32 \",\\\"purpose\\\":\\\"%s\\\",\\\"ttl_ms\\\":%\" PRIu32\n        \",\\\"zero_only\\\":%s,\\\"control_reason\\\":%u}\",\n        s_boot_id, session->id, phases[state->phase],\n        state->owner.ws_session_id, state->owner.control_id,\n        valid ? session->ticket.id : 0U,\n        valid ? (arm ? \"ARM\" : \"CMD\") : \"NONE\", ttl,\n        WIFI_CONTROL_ZERO_ONLY ? \"true\" : \"false\",\n        (unsigned)state->reason);\n    xSemaphoreGive(s_stm_lock);\n    return length >= 0 && (size_t)length < capacity ? length : -1;"
+        },
+        {
+          "first_line": 1250,
+          "last_line": 1337,
+          "text": "static void ws_command_results(httpd_handle_t server)\n{\n    wifi_command_result_t result;\n    for (size_t n = 0U; n < WIFI_COMMAND_RESULT_QUEUE_LENGTH; ++n) {\n        if (xQueueReceive(s_wifi_command_result_queue, &result, 0) != pdPASS) break;\n        if (result.request.expected_boot_id != s_boot_id) continue;\n        int clients[WS_MAX_CLIENTS];\n        size_t count = WS_MAX_CLIENTS;\n        if (httpd_get_client_list(server, &count, clients) != ESP_OK) {\n            wifi_control_transport_lost();\n            return;\n        }\n        char json[320];\n        const int length = snprintf(json, sizeof(json),\n            \"{\\\"kind\\\":\\\"command_result\\\",\\\"boot_id\\\":%\" PRIu32 \",\\\"session_id\\\":%\" PRIu32\n            \",\\\"request_id\\\":%\" PRIu32 \",\\\"cmd\\\":\\\"%s\\\",\\\"seq\\\":%\" PRIu32\n            \",\\\"control_id\\\":%\" PRIu32 \",\\\"status\\\":\\\"%s\\\"}\",\n            s_boot_id, result.request.ws_session_id, result.request.request_id,\n            wifi_command_name(result.request.type), result.seq, result.control_id, result.status);\n        if (length < 0 || (size_t)length >= sizeof(json)) {\n            wifi_control_closed(result.request.ws_session_id);\n            continue;\n        }\n        for (size_t i = 0U; i < count; ++i) {\n            if (httpd_ws_get_fd_info(server, clients[i]) != HTTPD_WS_CLIENT_WEBSOCKET) continue;\n            const wifi_ws_session_t *session = httpd_sess_get_ctx(server, clients[i]);\n            if (session == NULL || session->id != result.request.ws_session_id) continue;\n            httpd_ws_frame_t frame = {.type = HTTPD_WS_TYPE_TEXT, .payload = (uint8_t *)json, .len = (size_t)length};\n            if (httpd_ws_send_frame_async(server, clients[i], &frame) != ESP_OK) {\n                wifi_control_closed(session->id);\n                (void)httpd_sess_trigger_close(server, clients[i]);\n            }\n            break;\n        }\n    }\n}\n\nstatic void ws_broadcast(void *arg)\n{\n    const httpd_handle_t server = (httpd_handle_t)arg;\n    static uint64_t last_status_ms;\n    ws_command_results(server);\n    const uint64_t now = wifi_control_now();\n    const bool send_status = now - last_status_ms >= WS_PERIOD_MS;\n    char status[STATUS_JSON_SIZE];\n    const int status_length = send_status ? status_json(status, sizeof(status)) : -1;\n    if (send_status) last_status_ms = now;\n    int clients[WS_MAX_CLIENTS];\n    size_t count = WS_MAX_CLIENTS;\n    if (httpd_get_client_list(server, &count, clients) != ESP_OK) {\n        wifi_control_transport_lost();\n    } else for (size_t i = 0U; i < count; ++i) {\n        if (httpd_ws_get_fd_info(server, clients[i]) != HTTPD_WS_CLIENT_WEBSOCKET) continue;\n        wifi_ws_session_t *session = httpd_sess_get_ctx(server, clients[i]);\n        esp_err_t result = ESP_OK;\n        if (status_length >= 0) {\n            httpd_ws_frame_t frame = {.type = HTTPD_WS_TYPE_TEXT, .payload = (uint8_t *)status, .len = (size_t)status_length};\n            result = httpd_ws_send_frame_async(server, clients[i], &frame);\n        }\n        if (result == ESP_OK && session != NULL) {\n            char control[320];\n            const int length = wifi_control_snapshot(session, control, sizeof(control));\n            if (length < 0) result = ESP_FAIL;\n            else {\n                httpd_ws_frame_t frame = {.type = HTTPD_WS_TYPE_TEXT, .payload = (uint8_t *)control, .len = (size_t)length};\n                result = httpd_ws_send_frame_async(server, clients[i], &frame);\n            }\n        }\n        if (result != ESP_OK) {\n            if (session != NULL) wifi_control_closed(session->id);\n            (void)httpd_sess_trigger_close(server, clients[i]);\n        }\n    }\n    atomic_store(&s_ws_work_pending, false);\n}\n\nstatic void ws_schedule(void)\n{\n    xSemaphoreTake(s_server_lock, portMAX_DELAY);\n    if (s_server != NULL && !atomic_load(&s_ws_work_pending)) {\n        atomic_store(&s_ws_work_pending, true);\n        if (httpd_queue_work(s_server, ws_broadcast, s_server) != ESP_OK) {\n            atomic_store(&s_ws_work_pending, false);\n            ESP_LOGW(TAG, \"WS work queue failed\");\n        }\n    }\n    xSemaphoreGive(s_server_lock);\n}"
+        },
+        {
+          "first_line": 1361,
+          "last_line": 1367,
+          "text": "    httpd_config_t config = HTTPD_DEFAULT_CONFIG();\n    config.stack_size = 6144;\n    config.max_open_sockets = WS_MAX_CLIENTS;\n    config.lru_purge_enable = true;\n    config.recv_wait_timeout = 2;\n    config.send_wait_timeout = 2;\n    ESP_ERROR_CHECK(httpd_start(&s_server, &config));"
+        },
+        {
+          "first_line": 772,
+          "last_line": 795,
+          "text": "    \" ws.onmessage=event=>{\\n\"\n    \"  if(socket!==ws)return;\\n\"\n    \"  try{\\n\"\n    \"   const r=JSON.parse(event.data);\\n\"\n    \"   if(r&&r.kind==='control_state'){if(!validControl(r))throw Error('control');handleControl(r);return;}\\n\"\n    \"   if(r&&r.kind==='command_notice'){if(!validNotice(r))throw Error('notice');handleNotice(r);return;}\\n\"\n    \"   if(r&&r.kind==='command_result'){if(!validResult(r))throw Error('result');handleResult(r);return;}\\n\"\n    \"   if(!validStatus(r))throw Error('status');\\n\"\n    \"   if(boot!==r.boot_id){\\n\"\n    \"    if(boot!==null){disconnect(ws,'ESP 부팅 변경');return;}\\n\"\n    \"    boot=r.boot_id;result.textContent='이번 ESP 부팅의 명령 결과 수신 대기';\\n\"\n    \"   }\\n\"\n    \"   startupFinished=['READY','FAILED'].includes(r.startup_state);\\n\"\n    \"   if(armWait!==null&&(r.startup_state!=='READY'||r.source!=='STM_UART'||!r.stm_connected||\\n\"\n    \"      r.state!=='DISARMED'||r.vx_mmps!==0||r.w_mradps!==0||r.left_pwm!==0||r.right_pwm!==0))\\n\"\n    \"    cancelArmWait('STM ARM 조건 변경 · 수동 ARM 필요');\\n\"\n    \"   latestTel=r;latestTelAt=performance.now();distanceObserve(r);\\n\"\n    \"   data.textContent=JSON.stringify(r,null,2);link.textContent='WebSocket 수신 정상 · '+new Date().toLocaleTimeString();\\n\"\n    \"   startup.textContent='이번 ESP 부팅의 응답 확인: '+r.startup_state;\\n\"\n    \"   stm.textContent=r.source==='ESP_ONLY'?'STM TEL 아직 수신 없음':r.stm_stale?\\n\"\n    \"    'STM TEL 수신 중단 · '+r.stm_age_ms+' ms · 아래 STM 값은 마지막 정상 TEL':'STM TEL 수신 정상 · '+r.state+' / '+r.reason;\\n\"\n    \"   armWatchdog(ws);updateButtons();\\n\"\n    \"  }catch(error){disconnect(ws,'잘못된 상태 응답');}\\n\"\n    \" };\\n\""
+        },
+        {
+          "first_line": 2615,
+          "last_line": 2638,
+          "text": "    stm_telemetry_t parsed = {0};\n\n    if (!stm_parse_tel(line, &parsed)) {\n        ESP_LOGW(TAG, \"STM TEL rejected: %s\", line);\n        return;\n    }\n\n    parsed.rx_ms = (uint64_t)esp_timer_get_time() / 1000U;\n    parsed.valid = true;\n\n    xSemaphoreTake(s_stm_lock, portMAX_DELAY);\n    s_stm_telemetry = parsed;\n    const wifi_control_tel_t tel = {\n        .state = strcmp(parsed.state, \"ARMED\") == 0 ? WIFI_CONTROL_STM_ARMED :\n                 strcmp(parsed.state, \"DISARMED\") == 0 ? WIFI_CONTROL_STM_DISARMED : WIFI_CONTROL_STM_FAULT,\n        .t_ms = parsed.t_ms, .last_seq = parsed.last_seq,\n        .command_age_ms = parsed.command_age_ms,\n        .vx_mmps = parsed.vx_mmps, .w_mradps = parsed.w_mradps,\n        .left_pwm = parsed.left_pwm, .right_pwm = parsed.right_pwm\n    };\n    wifi_control_executor_tel(&s_control, &tel, wifi_control_now());\n    wifi_control_cleanup_locked();\n    const uint32_t count = ++s_stm_tel_count;\n    xSemaphoreGive(s_stm_lock);"
+        },
+        {
+          "first_line": 2735,
+          "last_line": 2777,
+          "text": "static void stm_uart_rx_task(void *arg)\n{\n    (void)arg;\n    uint8_t bytes[64];\n\n    stm_startup_begin();\n    stm_startup_publish_status();\n\n    /* 사용자 요청 seq는 부팅용 PING 다음 값부터 시작한다. */\n    s_wifi_uart_next_seq = (uint32_t)(s_stm_startup.ping_seq + 1U);\n\n    for(;;) {\n        stm_startup_step((uint64_t)esp_timer_get_time() / 1000U);\n        wifi_uart_test_step();\n        wifi_control_step();\n        wifi_command_step();\n\n        const int count = uart_read_bytes(\n            STM_UART_PORT, bytes, sizeof(bytes),\n            pdMS_TO_TICKS(20)\n        );\n\n        if (count < 0) {\n            wifi_control_transport_lost();\n            wifi_command_finish(\"RX_ERROR\");\n            stm_startup_fail(\"UART read failed\");\n            stm_startup_publish_status();\n            s_stm_rx_length = 0U;\n            s_stm_discard_until_lf = true;\n            vTaskDelay(pdMS_TO_TICKS(100));\n            continue;\n        }\n\n        for (int i = 0; i < count; ++i) {\n            stm_uart_handle_byte(bytes[i]);\n        }\n\n        stm_startup_step((uint64_t)esp_timer_get_time() / 1000U);\n        stm_startup_publish_status();\n        wifi_uart_test_step();\n        wifi_control_step();\n        wifi_command_step();\n    }"
+        },
+        {
+          "first_line": 2909,
+          "last_line": 2912,
+          "text": "    for (;;) {\n        vTaskDelay(pdMS_TO_TICKS(CONTROL_PUMP_MS));\n        ws_schedule();\n    }"
+        }
+      ]
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js",
+      "sha256": "de9eb6d35910d39987c05bff2e1aa41a7453bc9c76c8f37b1b05e1741fcfbcb2",
+      "excerpts": [
+        {
+          "first_line": 46,
+          "last_line": 60,
+          "text": "  const receive = (ws, connectionId, event) => {\n    let r; try { r = JSON.parse(event.data); } catch { return; }\n    if (socket !== ws) {\n      record('WS_MESSAGE_OLD_SOCKET', {connection_id: connectionId,\n        kind: r?.kind ?? r?.source ?? null});\n      return;\n    }\n    if (!r || typeof r !== 'object') return;\n    const now = performance.now();\n    if (r.source === 'STM_UART') {\n      const detail = {\n        boot_id: r.boot_id,\n        gap_ms: lastTel === null ? null : now - lastTel.local,\n        esp_uptime_ms: r.uptime_ms,\n        esp_step_ms: lastTel === null ? null : r.uptime_ms - lastTel.esp,"
+        },
+        {
+          "first_line": 87,
+          "last_line": 101,
+          "text": "  const attachSocket = () => {\n    const ws = socket;\n    if (ws === observedSocket) return;\n    const previous = observedSocket == null ? null : socketIds.get(observedSocket);\n    observedSocket = ws;\n    if (ws === null) {\n      record('OBSERVER_SOCKET_CHANGE', {previous_connection_id: previous,\n        connection_id: null});\n      return;\n    }\n    if (!socketIds.has(ws)) {\n      const id = ++connectionCount;\n      socketIds.set(ws, id);\n      ws.addEventListener('message', event => trace(() => receive(ws, id, event)));\n      for (const name of ['open', 'close', 'error'])"
+        }
+      ]
+    },
+    {
+      "path": "C:\\esp\\v6.0.2\\esp-idf\\components\\esp_http_server\\src\\httpd_ws.c",
+      "sha256": "3f7edcf827efd1a290d5c383f6976cefc051679aef8ae29d8b4ee522a4ce5bca",
+      "excerpts": [
+        {
+          "first_line": 394,
+          "last_line": 460,
+          "text": "esp_err_t httpd_ws_send_frame(httpd_req_t *req, httpd_ws_frame_t *frame)\n{\n    esp_err_t ret = httpd_ws_check_req(req);\n    if (ret != ESP_OK) {\n        return ret;\n    }\n    return httpd_ws_send_frame_async(req->handle, httpd_req_to_sockfd(req), frame);\n}\n\nesp_err_t httpd_ws_send_frame_async(httpd_handle_t hd, int fd, httpd_ws_frame_t *frame)\n{\n    if (!frame) {\n        ESP_LOGW(TAG, LOG_FMT(\"Argument is invalid\"));\n        return ESP_ERR_INVALID_ARG;\n    }\n\n    /* Prepare Tx buffer - maximum length is 14, which includes 2 bytes header, 8 bytes length, 4 bytes mask key */\n    uint8_t tx_len = 0;\n    uint8_t header_buf[10] = {0 };\n    /* Set the `FIN` bit by default if message is not fragmented. Else, set it as per the `final` field */\n    header_buf[0] |= (!frame->fragmented) ? HTTPD_WS_FIN_BIT : (frame->final? HTTPD_WS_FIN_BIT: HTTPD_WS_CONTINUE);\n    header_buf[0] |= frame->type; /* Type (opcode): 4 bits */\n\n    if (frame->len <= 125) {\n        header_buf[1] = frame->len & 0x7fU; /* Length for 7 bits */\n        tx_len = 2;\n    } else if (frame->len > 125 && frame->len < UINT16_MAX) {\n        header_buf[1] = 126;                /* Length for 16 bits */\n        header_buf[2] = (frame->len >> 8U) & 0xffU;\n        header_buf[3] = frame->len & 0xffU;\n        tx_len = 4;\n    } else {\n        header_buf[1] = 127;                /* Length for 64 bits */\n        uint8_t shift_idx = sizeof(uint64_t) - 1; /* Shift index starts at 7 */\n        uint64_t len64 = frame->len; /* Raise variable size to make sure we won't shift by more bits\n                                      * than the length has (to avoid undefined behaviour) */\n        for (int8_t idx = 2; idx <= 9; idx++) {\n            /* Now do shifting (be careful of endianness, i.e. when buffer index is 2, frame length shift index is 7) */\n            header_buf[idx] = (len64 >> (shift_idx * 8)) & 0xffU;\n            shift_idx--;\n        }\n        tx_len = 10;\n    }\n\n    /* WebSocket server does not required to mask response payload, so leave the MASK bit as 0. */\n    header_buf[1] &= (~HTTPD_WS_MASK_BIT);\n\n    struct sock_db *sess = httpd_sess_get(hd, fd);\n    if (!sess) {\n        return ESP_ERR_INVALID_ARG;\n    }\n\n    /* Send off header */\n    if (sess->send_fn(hd, fd, (const char *)header_buf, tx_len, 0) < 0) {\n        ESP_LOGW(TAG, LOG_FMT(\"Failed to send WS header\"));\n        return ESP_FAIL;\n    }\n\n    /* Send off payload */\n    if(frame->len > 0 && frame->payload != NULL) {\n        if (sess->send_fn(hd, fd, (const char *)frame->payload, frame->len, 0) < 0) {\n            ESP_LOGW(TAG, LOG_FMT(\"Failed to send WS payload\"));\n            return ESP_FAIL;\n        }\n    }\n\n    return ESP_OK;"
+        }
+      ]
+    },
+    {
+      "path": "C:\\esp\\v6.0.2\\esp-idf\\components\\esp_http_server\\src\\httpd_main.c",
+      "sha256": "dc57a7e482257ab0138760fded86a76d7f9230536587bdac7d1a70244a3d7a00",
+      "excerpts": [
+        {
+          "first_line": 81,
+          "last_line": 96,
+          "text": "    struct timeval tv;\n    /* Set recv timeout of this fd as per config */\n    tv.tv_sec = hd->config.recv_wait_timeout;\n    tv.tv_usec = 0;\n    if (setsockopt(new_fd, SOL_SOCKET, SO_RCVTIMEO, (const char *)&tv, sizeof(tv)) < 0) {\n        ESP_LOGE(TAG, LOG_FMT(\"error in setsockopt SO_RCVTIMEO (%d)\"), errno);\n        goto exit;\n    }\n\n    /* Set send timeout of this fd as per config */\n    tv.tv_sec = hd->config.send_wait_timeout;\n    tv.tv_usec = 0;\n    if (setsockopt(new_fd, SOL_SOCKET, SO_SNDTIMEO, (const char *)&tv, sizeof(tv)) < 0) {\n        ESP_LOGE(TAG, LOG_FMT(\"error in setsockopt SO_SNDTIMEO (%d)\"), errno);\n        goto exit;\n    }"
+        },
+        {
+          "first_line": 142,
+          "last_line": 172,
+          "text": "esp_err_t httpd_queue_work(httpd_handle_t handle, httpd_work_fn_t work, void *arg)\n{\n    if (handle == NULL || work == NULL) {\n        return ESP_ERR_INVALID_ARG;\n    }\n\n    struct httpd_data *hd = (struct httpd_data *) handle;\n    struct httpd_ctrl_data msg = {\n        .hc_msg = HTTPD_CTRL_WORK,\n        .hc_work = work,\n        .hc_work_arg = arg,\n    };\n#if CONFIG_HTTPD_QUEUE_WORK_BLOCKING\n    // Semaphore is acquired here and released after work function is executed.\n    if (xSemaphoreTake(hd->ctrl_sock_semaphore, portMAX_DELAY) == pdTRUE) {\n#endif\n        int ret = cs_send_to_ctrl_sock(hd->msg_fd, hd->config.ctrl_port, &msg, sizeof(msg));\n        if (ret < 0) {\n            ESP_LOGW(TAG, LOG_FMT(\"failed to queue work\"));\n#if CONFIG_HTTPD_QUEUE_WORK_BLOCKING\n            xSemaphoreGive(hd->ctrl_sock_semaphore);\n#endif\n            return ESP_FAIL;\n        }\n        return ESP_OK;\n#if CONFIG_HTTPD_QUEUE_WORK_BLOCKING\n    }\n    ESP_LOGE(TAG, \"Unable to acquire semaphore\");\n    return ESP_FAIL;\n#endif\n}"
+        },
+        {
+          "first_line": 224,
+          "last_line": 230,
+          "text": "    switch (msg.hc_msg) {\n    case HTTPD_CTRL_WORK:\n        if (msg.hc_work) {\n            ESP_LOGD(TAG, LOG_FMT(\"work\"));\n            (*msg.hc_work)(msg.hc_work_arg);\n        }\n        break;"
+        },
+        {
+          "first_line": 298,
+          "last_line": 314,
+          "text": "    /* Case0: Do we have a control message? */\n    if (FD_ISSET(hd->ctrl_fd, &read_set)) {\n        ESP_LOGD(TAG, LOG_FMT(\"processing ctrl message\"));\n        httpd_process_ctrl_msg(hd);\n        if (hd->hd_td.status == THREAD_STOPPING) {\n            ESP_LOGD(TAG, LOG_FMT(\"stopping thread\"));\n            return ESP_FAIL;\n        }\n    }\n\n    /* Case1: Do we have any activity on the current data\n     * sessions? */\n    process_session_context_t context = {\n        .fdset = &read_set,\n        .hd = hd\n    };\n    httpd_sess_enum(hd, httpd_process_session, &context);"
+        }
+      ]
+    },
+    {
+      "path": "C:\\esp\\v6.0.2\\esp-idf\\components\\esp_http_server\\src\\httpd_txrx.c",
+      "sha256": "a7b4cb1f89448486added6eaa3827bab6fe24275dcd8aa6e1da5451d70e2b346",
+      "excerpts": [
+        {
+          "first_line": 788,
+          "last_line": 799,
+          "text": "int httpd_default_send(httpd_handle_t hd, int sockfd, const char *buf, size_t buf_len, int flags)\n{\n    (void)hd;\n    if (buf == NULL) {\n        return HTTPD_SOCK_ERR_INVALID;\n    }\n\n    int ret = send(sockfd, buf, buf_len, flags);\n    if (ret < 0) {\n        return httpd_sock_err(\"send\", sockfd);\n    }\n    return ret;"
+        }
+      ]
+    },
+    {
+      "path": "C:\\esp\\v6.0.2\\esp-idf\\components\\esp_http_server\\src\\httpd_sess.c",
+      "sha256": "4fe8f75bab61ec98ac37bf2815538ef5eafe4cfa6d3e4466a1c1c3a81ef9d276",
+      "excerpts": [
+        {
+          "first_line": 203,
+          "last_line": 212,
+          "text": "    }\n\n    // Clear session data\n    memset(session, 0, sizeof (struct sock_db));\n    session->fd = newfd;\n    session->handle = (httpd_handle_t) hd;\n    session->send_fn = httpd_default_send;\n    session->recv_fn = httpd_default_recv;\n    session->lru_counter = hd->lru_counter;\n"
+        }
+      ]
+    }
+  ],
+  "idf_git_describe": "v6.0.2",
+  "build_description_sha256": "1b5bebb06eb9fd6d0bf02d13f08a85812e7977332d4b9b6bd1e85163fec17244",
+  "sdkconfig_sha256": "3fd19330e7f1af532dd90f91b20b8efa95520bd119963efe9224415cdb24c7d2",
+  "selected_config": [
+    "CONFIG_HTTPD_WS_SUPPORT=y",
+    "# CONFIG_HTTPD_QUEUE_WORK_BLOCKING is not set",
+    "CONFIG_FREERTOS_HZ=100"
+  ],
+  "identity_limit": "Local build metadata and installed SDK, not a new board image readback",
+  "burst_windows": [
+    {
+      "source": "assets/logs/wifi_link/2026-10-23_forward_auto_disarm_run01/browser_report.json.gz",
+      "source_sha256": "089ccf15a2a6c3ae74374918001f46637aa779e0e57ad12ae5b1a14f8bafbfe4",
+      "trigger_sha256": "7ef5fd9e4debb73cfe966982b2ff80288492bec34211f8ce20aaf08e71b30cd9",
+      "stop_ms": 2958667.8999999985,
+      "selection": "First TEL after saved stop, then TEL within 5 ms of that first receive",
+      "previous_tel": {
+        "ms": 2958473.8999999985,
+        "gap_ms": 28.700000002980232,
+        "boot_id": 1339414435,
+        "esp_uptime_ms": 7452739,
+        "esp_step_ms": 61,
+        "stm_age_ms": 71,
+        "tel_count": 74664
+      },
+      "rows": [
+        {
+          "ms": 2958761.799999997,
+          "gap_ms": 287.8999999985099,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7452799,
+          "esp_step_ms": 60,
+          "stm_age_ms": 35,
+          "tel_count": 74665
+        },
+        {
+          "ms": 2958762.299999997,
+          "gap_ms": 0.5,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7452858,
+          "esp_step_ms": 59,
+          "stm_age_ms": 94,
+          "tel_count": 74665
+        },
+        {
+          "ms": 2958762.6999999955,
+          "gap_ms": 0.3999999985098839,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7452918,
+          "esp_step_ms": 60,
+          "stm_age_ms": 50,
+          "tel_count": 74666
+        },
+        {
+          "ms": 2958763.6000000015,
+          "gap_ms": 0.9000000059604645,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7452979,
+          "esp_step_ms": 61,
+          "stm_age_ms": 18,
+          "tel_count": 74667
+        },
+        {
+          "ms": 2958766.299999997,
+          "gap_ms": 2.6999999955296516,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7453038,
+          "esp_step_ms": 59,
+          "stm_age_ms": 77,
+          "tel_count": 74667
+        }
+      ],
+      "frames": 5,
+      "browser_gap_before_burst_ms": 287.9,
+      "browser_burst_span_ms": 4.5,
+      "esp_generation_span_ms": 239,
+      "esp_generation_steps_ms": [
+        59,
+        60,
+        61,
+        59
+      ]
+    },
+    {
+      "source": "assets/logs/wifi_link/2026-10-23_left_auto_disarm_run01/browser_report.json.gz",
+      "source_sha256": "e417c5d48ee0202f4741b11d8da2ecb1d2809678459481e8d40bec4fe711d111",
+      "trigger_sha256": "b98b74ac158e779b8c9eba83cb7eccbe93689982a7fdb97acd53e193ea148de7",
+      "stop_ms": 3160706.299999997,
+      "selection": "First TEL after saved stop, then TEL within 5 ms of that first receive",
+      "previous_tel": {
+        "ms": 3160501.1999999955,
+        "gap_ms": 80.39999999850988,
+        "boot_id": 1339414435,
+        "esp_uptime_ms": 7654750,
+        "esp_step_ms": 61,
+        "stm_age_ms": 16,
+        "tel_count": 76689
+      },
+      "rows": [
+        {
+          "ms": 3160720.3999999985,
+          "gap_ms": 219.20000000298023,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7654809,
+          "esp_step_ms": 59,
+          "stm_age_ms": 75,
+          "tel_count": 76689
+        },
+        {
+          "ms": 3160721.3999999985,
+          "gap_ms": 1,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7654869,
+          "esp_step_ms": 60,
+          "stm_age_ms": 42,
+          "tel_count": 76690
+        },
+        {
+          "ms": 3160722.299999997,
+          "gap_ms": 0.8999999985098839,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7654928,
+          "esp_step_ms": 59,
+          "stm_age_ms": 101,
+          "tel_count": 76690
+        },
+        {
+          "ms": 3160723.1999999955,
+          "gap_ms": 0.8999999985098839,
+          "boot_id": 1339414435,
+          "esp_uptime_ms": 7654989,
+          "esp_step_ms": 61,
+          "stm_age_ms": 51,
+          "tel_count": 76691
+        }
+      ],
+      "frames": 4,
+      "browser_gap_before_burst_ms": 219.2,
+      "browser_burst_span_ms": 2.8,
+      "esp_generation_span_ms": 180,
+      "esp_generation_steps_ms": [
+        60,
+        59,
+        61
+      ]
+    }
+  ],
+  "interpretation": "Generation continued across the sampled frames; downstream buffering/delivery is supported, but send-call, network, host stack and browser dispatch are not separated.",
+  "proposed_browser_ring": {
+    "rows": 8192,
+    "numeric_bytes_per_row": 64,
+    "bytes": 524288,
+    "implemented": false
+  },
+  "proposed_esp_ring": {
+    "rows": 512,
+    "record_bytes_budget": 64,
+    "bytes": 32768,
+    "implemented": false,
+    "layout_and_runtime_budget_validated": false
+  },
+  "hardware_action": false,
+  "firmware_edited": false,
+  "build_or_flash": false,
+  "safety_limits_changed": false,
+  "cause_resolved": false
+}

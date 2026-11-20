@@ -1,0 +1,117 @@
+{
+  "custom_cursors": 2,
+  "last_sch_text_sim_command": "",
+  "tabs": [
+    {
+      "analysis": "OP",
+      "commands": [
+        ".op",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ]
+    },
+    {
+      "analysis": "AC",
+      "commands": [
+        ".ac dec 200 1 1Meg",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": true,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(228, 26, 28)",
+          "cursor1": {
+            "position": 1.0,
+            "x_format": "9~s",
+            "y_format": "9~V"
+          },
+          "cursor2": {
+            "position": 404.942098,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VADC) (게인)",
+          "trace_type": 521
+        }
+      ]
+    },
+    {
+      "analysis": "TRAN",
+      "commands": [
+        ".tran 100n 10.1m 9.99m 100n",
+        ".kicad adjustpaths",
+        ".save all",
+        ".probe alli",
+        ".probe allp"
+      ],
+      "dottedSecondary": true,
+      "margins": {
+        "bottom": 45,
+        "left": 70,
+        "right": 70,
+        "top": 30
+      },
+      "measurements": [],
+      "showGrid": true,
+      "traces": [
+        {
+          "color": "rgb(55, 126, 184)",
+          "cursor1": {
+            "position": 0.010039999999999999,
+            "x_format": "9~s",
+            "y_format": "9~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VADC)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(77, 175, 74)",
+          "signal": "V(/VCTRL)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(228, 26, 28)",
+          "cursor2": {
+            "position": 0.010039999999999999,
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "cursorD": {
+            "x_format": "6~s",
+            "y_format": "6~V"
+          },
+          "signal": "V(/VDDA)",
+          "trace_type": 257
+        },
+        {
+          "color": "rgb(152, 78, 163)",
+          "signal": "V(/VTRIP)",
+          "trace_type": 1
+        }
+      ]
+    }
+  ],
+  "user_defined_signals": [],
+  "version": 7
+}

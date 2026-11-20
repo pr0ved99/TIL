@@ -1,0 +1,1367 @@
+[
+  {
+    "file": "README.md",
+    "lines": 234,
+    "intro": "# Tracked Mobile Robot\n\nSTM32와 ESP32-S3를 기반으로 **궤도형 모바일 로봇의 하위 구동 플랫폼**을 개발하는 프로젝트다.\nUART 명령 처리, PWM/DIR 출력, 엔코더 피드백과 물리 비상정지 회로를 단계적으로 구현·검증한다.\n목표는 저속 주행과 정지 동작을 검증하고, 이후 ROS 2 기반 상위 시스템으로 확장하는 것이다.\n\n- **담당:** 이영현 (`pr0ved99`) — 요구사항·인터페이스 설계, STM32/ESP32 펌웨어 구현,\n  전장·기구 배치, 배선·납땜, 보드 빌드·플래시와 실측 검증.\n- **작업 방식:** 설계·코드 검토와 로그 해석에 Codex를 활용하며, Python 검증 코드와 문서 정리에 지원을 받는다.\n- **최근 거리 결과 · 2026-10-23:** 지상1m 실제/추정 거리와 오차 기록 완료. run03/04 사용자 실측1002mm에 대해 엔코더 평균1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm다. ARM/종료 ACK와 정지 TEL·count가 보존됐고 drop/err0이다. `MVP-011 / REQ-ODO-001 / T-ODO-001`은 기록 범위 PASS이며 정밀도·직진성 보증은 아니다. [원본·판정·한계](docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조), [진행 기록](docs/progress/2026-10-23_progress.md).\n- **현재 범위:** 기본 무선 주행/정지·엔코더 거리 비교의 선택 기능 근거를 확보했다. 전체 MUST 인수는 미완료이며 기존 PARTIAL/OPEN을 검증표에 남긴다.10/23 사용자 결정으로 외부 온도는 후속으로 분리했으며 11/5 제한 관측 후에도 정식 열적 수용은 미완료다.  정량 전류·ADC·자동 저전압·IMU/PID/STM 스케줄링/CAN/ROS2도 후속이다. ESP는 이미 FreeRTOS 태스크·큐를 사용한다. 기존 출력·정지·셀 알람 운영은 유지한다.\n- **기준 설정:** 초기 공통k=1687/19500mm/count, 일반 cap150‰·회전200‰, 왼쪽 gain전진960‰/후진930‰. 지상 비교 후 계수나 출력을 바꾸지 않았다. 현재 ESP 앱은 `esp32_wifi_link`이며 두 MCU의 코드 입력·빌드/플래시와 실물 조작은 사용자가 수행한다."
+  },
+  {
+    "file": "PROJECT_MEMORY.md",
+    "lines": 681,
+    "intro": "# Tracked Mobile Robot Project Memory\n\nThis file stores stable project facts so future work does not repeat the same questions.\n\nLast updated: 2026-11-12 (sampling/filter learning closeout; next: port and power conditions).\n\n## Current Checkpoint — 2026-11-12 sampling/filter closeout\n\n- 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n- A/B의 명목 응답 상한 극한은 약1.975/1.487초,0.9Hz ADC 전압 진폭비는10.93%/69.86%이며 모두출력1Hz에서0.1Hz로 보인다. G는 진폭이고 alias는 관측 주파수다. 코드 평균 후 비선형 온도 환산을 적용했으며 실제 정확도/응답 PASS가 아니다.\n- 사용자37-2 수기·τs/τf 이해 보고를 반영한다. 40-2 부분 이해 및 마지막 B안 설명 이해 보고를 전체 수기/모든 개념 이해로 확대하지 않는다. 기본 수집·평균·환산 후보에 FFT 잡음 식별/자동 필터 조정은 포함하지 않는다.\n- 전압·전류2kHz/200개, 온도2kHz/2,000개, 기존100Hz DC시험안은 구현 전 비교안이다. 실제 잡음/보정 잔차/전원 보호 데이터는 남아 있다."
+  },
+  {
+    "file": "docs/verification/README.md",
+    "lines": 310,
+    "intro": "# Verification Documentation\n\n최신 통합 관측: **2026-10-18 배터리 단독 지상 수동 주행과 1차 직진 보정 완료**. [통합 회차](../../assets/logs/wifi_link/2026-10-18_ground_combined_trim_run01/observations.json), [진행 기록](../progress/2026-10-18_progress.md), [최신 검증 매트릭스](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 전·후진·양방향 회전·놓음/DISARM 정지는 사용자 관측과 TEL로 확인했다. 전체 MVP·1m/정밀 주행·모든 fault-stop 수용과 구분한다.\n\n이전 비구동 Wi-Fi는 report37/38, 단일 모터는 report32의 해당 조건을 따른다. 현재 코드·PC 검사와 재개점은 [검사 안내](../../03_Firmware/tests/README.md)와 [인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 사용한다.\n원본 로그·화면·빌드/플래시 식별값·관측 조건은 [증거 보존 절차](EVIDENCE_CAPTURE_GUIDE_ko.md)로 기록한다.\n\n이 폴더는 Tracked Mobile Robot 프로젝트의 요구사항, 검증 항목, 테스트 증거를 연결해 두는 곳이다.\n\n목표는 개인 프로젝트 규모에 맞는 경량 V-model을 적용하는 것이다. 즉, 큰 조직의 절차 문서를 흉내 내는 것이 아니라 다음 흐름을 작게라도 남긴다.\n\n```text"
+  },
+  {
+    "file": "docs/verification/EVIDENCE_CAPTURE_GUIDE_ko.md",
+    "lines": 80,
+    "intro": "# 시험·빌드 증거 보존 절차\n\n작성: **2026-10-11**. 다음 시험부터 원본과 판정의 연결을 남기기 위한 기록 방법이다.\n시험 동작·허가 조건은 해당 plan/report를 따른다. 이 문서 작성은 시험 실행·빌드·플래시 완료를 뜻하지 않는다.\n\n## 현재 보존 상태와 한계\n\n- [W5 보고서34](34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md): 소스 byte snapshot·사용자 로그 발췌·화면/확인 전사·PC 결과 전사를 보존했다. 원본 PNG·전체 serial capture·플래시 바이너리 hash는 미기록이다.\n- [10/11 기록](../progress/2026-10-11_progress.md): parser/ticket/owner 실제 저장본 PC15/12/9 PASS와 사용자 ESP 빌드 성공을 기록했다. 원본 빌드 로그·바이너리 hash·새 플래시/보드 실행은 미확인이다.\n- 과거 원본을 확보하지 못하면 `미보존/미제공`으로 유지한다. 발췌·재작성·후속 재실행을 과거 원본으로 대체하지 않는다. 증거 보완만을 위해 변경 없는 완료 시험을 다시 요구하지 않는다.\n\n## 기록 순서"
+  },
+  {
+    "file": "docs/verification/42_MVP_Design_Philosophy_Assessment_2026-10-27_ko.md",
+    "lines": 111,
+    "intro": "# MVP의 사전 설계·구현·검증 과정 평가\n\n기준일: 2026-10-27. 사용자 요청은 “철저히 설계한 뒤 구현한다”는 동일한 철학으로 현재 MVP를 평가하는 것이다. **본 문서는 기존 설계/코드/시험 기록의 분석이며 새 시험 결과나 인수 판정 변경이 아니다.**\n\n## 1. 종합 판단\n\n현재 MVP는 **안전 책임과 출력 규칙을 먼저 설계하고 단계적으로 구현·측정했으며, 실제 통합에서 발견한 문제를 보완한 시스템**이다. 모든 상세 조건을 제작 전에 확정한 뒤 한 번에 성공한 개발 과정은 아니다.\n\n- 강점: STM32의 최종 출력 책임, 명령과 출력의 분리, 재시작 방지, 하드웨어/소프트웨어 정지 경로, 모터 분리 상태의 신호 검증, 요구사항과 근거 연결.\n- 부족: 일부 실물 핀/관점 대조, 통신 전체 경로의 지연 여유와 관측 가능성, 정량 인수 조건 및 최종 실행 구성과 근거의 연결.\n- 완료한 것: 제한된 저속 주행·정지·통신 유실 복구·엔코더 전달·거리/오차 기록과 시연의 해당 범위.\n- 미완료: 현행 검증표가 정한 전체 MUST 인수. 센서/ADC·CAN·PID 등 후속 기능의 미구현과 혼동하지 않는다."
+  },
+  {
+    "file": "docs/verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md",
+    "lines": 79,
+    "intro": "# MVP 잔여 인수 항목 판정\n\n2026-10-24 · `TK-MVP-05-02/03/04` · 기존 증거와 원래 수용 조건의 대조. 실물 시험·펌웨어 변경·빌드/플래시·외부 게시 없음.\n\n**이번에 닫는 항목은 `MVP-012`의 현재 로컬 README 정보 요구사항이다.** 전원·구동·엔코더·비상정지의 정식 수용은 기존 판정을 유지한다. 이미 확인한 동작을 반복하는 대신, 부족한 근거와 먼저 결정해야 할 기준을 아래에 특정했다. [검증표](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)가 판정 정본이다.\n\n**후속 실행 범위는5절이 최신이다.** 4절의 rail-off 조사 재개 제안은10/17 기록/사용자 제외 대조 후 취소했으며, 현재는 기존 영상으로 시연 편집을 준비한다.\n\n## 1. README 요구사항과 전체 증거 감사 분리\n\n`MVP-012` 원문은 “README에서 구조, 사용자 역할, 검증 증거, 한계와 다음 단계를 찾을 수 있다”다. 전체 하드웨어 인수 완료나 새 영상 확보를 이 문장의 추가 조건으로 만들지 않는다.\n"
+  },
+  {
+    "file": "docs/verification/40_WS_Delivery_Path_and_Minimal_Observation_2026-10-23_ko.md",
+    "lines": 110,
+    "intro": "# ESP WS 전달 경로와 최소 관측 설계\n\n- 날짜: 2026-10-23\n- 범위: 보고서39의 `ACC-COM-01` — 실제 코드 경로 검토와 추가 관측 설계\n- 당시 판정: **정적 검토 완료, 전달 지연 원인 OPEN, 새 관측기 미구현**\n- 근거: [소스 identity·발췌·과거 두 사건 추출값](../../assets/logs/wifi_link/2026-10-23_ws_delivery_path_review/review.json), [오프라인 추출 스크립트](../../assets/logs/wifi_link/2026-10-23_ws_delivery_path_review/inspect.py)\n\n**10/24 후속:** 브라우저 계측A는 v5.2 구현·PC17검사와 [실제 IDLE/속도0/전진 관측](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)을 완료했다. 정상 표본이며 과거 지연 원인은OPEN이다. ESP 계측B는 미구현, 추가 관측 자동 반복 없음. 현재 재개점은 [운용 문서와 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.\n\n## 1. 결론\n\n과거 자동 정지 때 ESP가 약60ms 간격으로 만든 여러 TEL이 브라우저 기록에는 한꺼번에 나타났다. **TEL 생성 이후부터 브라우저 기록 시점까지의 전달 구간을 우선 조사할 근거가 있다.** ESP 작업 전체가 그 시간 내내 멈췄다는 설명만으로는 이 표본을 설명하기 어렵다. 그러나 이것만으로 Wi-Fi, TCP, PC 네트워크 처리, 브라우저 이벤트 전달 중 하나를 원인으로 확정할 수 없다."
+  },
+  {
+    "file": "docs/verification/39_Home_Communication_Observation_and_MVP_Acceptance_Review_2026-10-23_ko.md",
+    "lines": 64,
+    "intro": "# 귀가 후 통신 관측과 최종 MVP 잔여 인수 대조\n\n2026-10-23 · `TK-MVP-05-02/03` 증거 연결·잔여 항목 대조.\n\n**10/24 후속:** 아래4절의 코드 경로 검토는 [보고서40](40_WS_Delivery_Path_and_Minimal_Observation_2026-10-23_ko.md), 브라우저 계측A는 [v5.2 실제3조건 관측](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)으로 완료했다. 이어 [운용·재현 절차](../handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)와 [시연 구성안](../plans/2026-10-24_MVP_Demo_Outline_ko.md)을 작성했다. 새 영상/공개는 없으며 아래 인수 경계·원인OPEN을 유지한다. 본문의 “다음”은10/23 당시 계획이다.\n\n**오늘 세 관측의 분석과 증거 연결은 완료했다. 기본 주행·정지·거리 기록의 기존 판정을 유지하며 전체 MVP 인수는 미완료다.** 이번 작업은 추가 주행·펌웨어 수정이나 요구사항 면제가 아니다. [검증표](05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)가 요구사항 판정의 정본이다.\n\n## 1. 오늘 새로 연결한 증거\n\n| 기록 | 수용한 구간과 결과 | 주요 수치 | 보존 한계 |\n| --- | --- | --- | --- |"
+  },
+  {
+    "file": "docs/verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md",
+    "lines": 58,
+    "intro": "# Wi-Fi nonzero 모터 분리 시험 마감\n\n기준: 2026-10-17. **NZ-01~04의 선택한 모터 분리 UART/DIR/PWM 시나리오 PASS.**\n브라우저 방향 입력을 ESP가 현재 owner/ticket으로 STM에 전달하고, 놓음·DISARM·창 전환에 따라 출력을 정리하는 경로를 확인했다. 실제 모터 회전·차량 주행·기계 정지 성능의 수용은 별도다.\n\n## 구현과 실행 기준\n\n- 사용자 저장·빌드·플래시: ESP core contract/state/executor와 PAGE/snapshot을 통합하고 `WIFI_CONTROL_ZERO_ONLY=0U`로 실행했다. `WIFI_UART_PARTIAL_TEST_MODE=0U`, STM 시험 switch14개0U 유지. 이 문서 마감에서 firmware 변경·보드 빌드·플래시는 하지 않았다.\n- ARM → 첫 zero ACK/새 일치 TEL → ACTIVE를 유지한다. ACTIVE에서만 현재 입력을 새 ticket으로 송신한다. PAGE 명령은 직진±50mm/s, 회전±250mrad/s이며 실측 속도가 아니다. PWM cap은100permille, 이번 명령의 실제 듀티는 약5%다.\n- 놓음은 zero CMD, DISARM·focus/visibility 유실은 의도 폐기와 정지 경로다. 복귀 시 이전 방향을 자동 복원하지 않는다.\n- [mode0 저장본 PC 근거](../../assets/logs/wifi_link/2026-10-17_nonzero_mode0_saved_review/): 현재mode0 core13/adapter6, 임시mode1 회귀59+3+42+6, 브라우저66·PAGE C 초기화·negative control3 PASS. SDK 빌드·실물 증거와 구분한다. 사용자 mode0 빌드·플래시·화면 확인은 진행 기록에 있다.\n- [구현 범위](../plans/2026-10-17_WiFi_Nonzero_Control_Integration_Plan_ko.md), [core 변경 설명](../plans/2026-10-17_WiFi_Nonzero_Core_Code_Guide_ko.md), [PAGE 변경 설명](../plans/2026-10-17_WiFi_Nonzero_PAGE_Code_Guide_ko.md)."
+  },
+  {
+    "file": "docs/verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md",
+    "lines": 45,
+    "intro": "# Zero-only AC-S 실물 시험 마감\n\n기준: 2026-10-17. **UR-02 UART 복구와 UR-03의 AC-S01~08 선택 시나리오를 모터 동력 차단·속도 0 조건에서 마감한다.** 각 회차의 브라우저/ESP 기록과 UART·PWM·PC7 캡처를 대조했다. 전체 오류 조합, nonzero Wi-Fi 구동, 전력단·기계 정지 성능의 수용 판정은 별도다.\n\n요구사항은 [ARM/CMD 계약](../plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md), 이전 실패·복구 과정은 [보고서35](35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)와 [보고서36](36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 보존한다. 이 표가 이번 시험 묶음의 최신 완료 범위다. 날짜가 지난 문서의 미완료 표기는 당시 상태다.\n\n## 항목별 완료 범위\n\n아래 링크는 판정·원시 로그·캡처 식별값을 담은 회차별 observations.json이다. PASS는 해당 시나리오와 관측 시간 안에서의 판정이다.\n\n| 항목 | 확인한 시나리오 | 근거 | 경계 |\n| --- | --- | --- | --- |"
+  },
+  {
+    "file": "docs/verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md",
+    "lines": 92,
+    "intro": "# UART 줄 폐기 복구 — 코드·PC 검사·실물 재연결·부분 명령 시험\n\n> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.\n\n- 날짜: **2026-10-16**, 새벽 재연결 시험에 오후 부분 CMD/ARM 주입과 mode0 복원 결과를 추가했다.\n- 판정: **UR-02 UART 복구 범위 PASS** — 재연결·부분 CMD·LF 없는 ARM 폐기·첫 DISARM 복구 및 mode0 정상 이미지 복원 확인. **전체 AC-S는 PARTIAL.**\n- 사용자: 펌웨어 입력·보드 빌드/플래시·배선 조작·캡처. Codex: 코드 검토·PC 검사·UART 해독·증거 정리.\n- 이전 실패: [보고서35](35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md). 첫 DISARM23의 MISSING_SEQ 실패를 후속 성공으로 소급 변경하지 않는다.\n\n## 1. 변경과 검증 범위\n\nSTM은 줄 중간의 ASCII CAN `0x18`을 받으면 남은 줄을 실행하지 않고 LF까지 폐기한다. ESP는 부팅·기존 명령 경로·executor의 모든 DISARM 앞에 `0x18 0x0A`를 붙인다. CAN은 통신 줄 취소이며 CAN 버스나 모터 정지 명령이 아니다. 실제 정지는 뒤의 DISARM이 담당한다."
+  },
+  {
+    "file": "docs/verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md",
+    "lines": 93,
+    "intro": "# Wi-Fi zero-only 정지·리셋·UART 단절 관측\n\n> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.\n\n- 실물 시험일: **2026-10-15**. 문서화·PC 재현: **2026-10-16**.\n- 사용자: 조작·배선·모니터/화면 제공. Codex: 실제 소스 대조·로그 분석·PC 진단.\n- 최신 판정: **AC-S PARTIAL.** 10/15 첫 DISARM 실패는 아래 원관측으로 보존한다. 10/16 CAN+LF 수정·PC 검사·재연결 첫 정지 성공과 부분 명령 실물 수용 대기는 [보고서36](36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)을 따른다.\n- 원본 첨부에서 선택한 행, 대화 전사와 소스 식별값: [증거 묶음](../../assets/logs/wifi_link/2026-10-15_zero_control_bench/README.md).\n- 기준 Git HEAD: `c6fa6c85e10d0a9da83ca9a681c5015a2ff230b8`. 실행 바이너리 SHA256은 미확보다. 문서화 당시 소스 해시가 그 바이너리와 동일하다고 가정하지 않는다.\n\n## 1. 구성과 관측 범위\n"
+  },
+  {
+    "file": "docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md",
+    "lines": 102,
+    "intro": "# W5 WebSocket PING/DISARM 왕복·결과 표시·응답 대응 검사\n\n마감일: **2026-10-10**. 이번 W5 작업 묶음을 기록한다. 개별 시험의 벽시각·작업일은 모두 보존되지 않았으므로 ESP 로그의 uptime을 실제 날짜로 환산하지 않는다.\n\n**W5 비구동 PING/DISARM 범위 PASS.** 브라우저 요청 → ESP UART 송신 → STM PONG/ACK → 요청한 연결의 결과 표시, 입력 거부, timeout·복구와 재접속 후 자동 재전송 없음까지 확인했다. 마지막에 사용자가 **STM32·ESP32 두 USB 분리 완료**를 보고했다.\n\n이는 ARM/CMD·구동 중 통신 유실 안전·물리 정지·전체 MVP 완료 판정이 아니다. MVP-002/T-COM-002의 전체 PARTIAL은 유지한다.\n\n## 기준점과 증거 종류\n\n| 항목 | 기준점 |\n| --- | --- |"
+  },
+  {
+    "file": "docs/verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md",
+    "lines": 92,
+    "intro": "# W4 실제 STM TEL · WebSocket · 부팅 응답 확인 검증\n\n작업: **2026-10-07~08**, 정리: **2026-10-08**.\n판정: **W4 읽기 전용 상태 전달 범위 PASS**. W5 무선 명령·모터 구동·배터리 측정은 미실행이다.\n\n## 한눈에 보기\n\n| 항목 | 결과와 범위 |\n| --- | --- |\n| 데이터 경로 | 실제 STM32 TEL → 만능기판 UART → ESP32 snapshot → WebSocket → 브라우저 확인 |\n| 연결 감시 | STM RESET 유지 시 stale, 해제 시 새 TEL 복구. WebSocket 재접속·갱신 재개와 같은 부팅의 `boot_id` 유지 사용자 확인 |\n| 부팅 확인 | DISARM ACK → PING/PONG → READY, ACK/PONG 누락의 3회 제한 실패와 복원 확인 |"
+  },
+  {
+    "file": "docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md",
+    "lines": 100,
+    "intro": "# 단일 모터 구동·DISARM·S0·엔코더 검증\n\n시험일: 2026-09-30. 문서화: 2026-10-01 대화 마감.\n판정: **아래 개별 관측 범위 PASS / 전체 T-MOTOR-003·T005A는 PARTIAL**.\n정식 T-ESTOP-007 수용은 선행 조건·정지 시간/거리 기준과 증거가 미완료여서 BLOCKED를 유지한다.\n\n## 결과 요약\n\n| 시험 | 신호·로그 관측 | 사용자 육안 보고 | 범위 |\n| --- | --- | --- | --- |\n| A 양수 10%/300 ms | left PWM/CPS 양수, timeout 후 PWM0·CPS0 | A 차량 전진 후 정지, B 계속 정지 | A 양수 명령의 실제 전진 방향 확인 |\n| A active DISARM | PWM 구간 193.6725 ms, DISARM 프레임 끝→마지막 PWM 하강 364.44 μs | A 전진 후 정지, B 계속 정지 | 실제 구동 중 DISARM 출력 차단 |"
+  },
+  {
+    "file": "docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md",
+    "lines": 121,
+    "intro": "# 단일 모터 구동·교차시험과 오른쪽 방향 보정\n\n시험 세션: 2026-09-28~29. 문서 마감: 2026-09-29.\n근거는 [원본 로그 12개와 요약](../../assets/logs/motor_output/2026-09-29_single_motor_bench/README.md), 사용자 육안 관찰과 저장된 소스다.\n로그의 시간은 부팅 후 상대 시간이다. 날짜는 대화 세션 기준이며 원본에 없는 절대 시각을 부여하지 않는다.\n\n## 결과와 범위\n\n**B/M2는 DIR 보정 후 정방향·역방향 각각 10%·300ms 단발 구동, 엔코더 부호, timeout 이후 0 복귀를 확인했다.**\n두 시험에서 A는 움직이지 않았다는 사용자 보고가 있다.\nA/M1도 양수·음수 10% 명령의 회전과 CPS 부호·0 복귀를 확인했지만, 양수 시험의 실제 전진 방향은 사용자가 보지 못했다.\n따라서 왼쪽 실제 전진 방향 확인을 다음 작업으로 남긴다."
+  },
+  {
+    "file": "docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md",
+    "lines": 121,
+    "intro": "# 실제 엔코더와 전력단 검사 마감 기록\n\n검사 세션: 2026-09-26~27. 문서 마감: 2026-09-27.\n근거는 사용자 측정·통과 보고와 보존한 ESP monitor다. 모든 측정의 개별 시각·사진이 있는 것은 아니다.\n**실제 전동 구동은 아직 하지 않았다. T004의 기존 PASS, 전체 T005A의 PARTIAL을 유지한다.**\n\n## 1. 이번에 확인한 범위\n\n| 항목 | 결과와 근거 | 포함하지 않는 범위 |\n| --- | --- | --- |\n| 실제 엔코더 입력 | 네 A/B 입력 LOW 0V, HIGH 약 2.86V 사용자 보고 PASS | 전동 구동 중 파형·노이즈 |\n| 손회전 | 양쪽 정지 10초 이상 CPS0, 양방향 변화·채널 독립성·정지 복귀 사용자 보고 PASS | 실제 RPM 정확도·전동 구동 방향 |"
+  },
+  {
+    "file": "docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md",
+    "lines": 66,
+    "intro": "# 차량 좌우 매핑 정정과 엔코더 손회전 확인\n\n검사 세션 기준일: 2026-09-26. 문서 정리: 2026-09-27.\n근거는 이번 대화의 사용자 실물 확인과 검사 통과 보고다.\n새 원본 로그·사진·정량 CPS 값은 첨부되지 않았다.\n\n## 현재 기준\n\n사용자가 **모터 A는 실제 차량의 왼쪽 궤도 위치**라고 정정했다.\n좌우는 차량 뒤에서 전진 방향을 바라보는 기준으로 통일한다.\n과거 `A=right/TIM5, B=left/TIM3` 기록을 현재 실물의 연결 지시로 사용하지 않는다.\n"
+  },
+  {
+    "file": "docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md",
+    "lines": 196,
+    "intro": "# 엔코더 입력 조정부 납땜·저항·전원 검사\n\n- 날짜: 2026-09-23.\n- 사용자: VeroRoute 편집·저장, 실제 납땜, 보드 모니터링과 DMM 측정.\n- Codex: 저장 VRT/PDF 연결 검토, 모니터 로그 분석, 측정점 안내와 마감 문서화.\n- 완료: **설계 연결, 실제 납땜 사용자 보고, 저항 8곳, 전원 연결·단락 6곳, 두 출력 +5.05V**.\n- 미완료: 실제 엔코더 케이블 준비·연결, 새 배선에서 A/B 전압과 수동 회전 검증.\n\n## 1. 목적과 회로\n\n부동 엔코더 입력에서 나타난 CPS 튐을 줄이고, 기존 빵판 회로를 만능기판에 영구 구현한다.\n펌웨어의 카운트 계산이나 GPIO 설정은 이번 작업에서 변경하지 않았다."
+  },
+  {
+    "file": "docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md",
+    "lines": 103,
+    "intro": "# T-ESTOP-005A 모터 분리 전력단·명령 유실·안전 이미지 복구 기록\n\n- 시험일: 2026-09-22, 문서 마감: 2026-09-23.\n- 사용자: 배선, 계측, ESP 시험 hook 변경 및 빌드·플래시. Codex: 파일·파형·UART 분석과 문서화.\n- 판정: **T-ESTOP-005A PARTIAL**. 아래 관측된 하위 결과와 all-hooks-0U 복구를 보존한다.\n- 두 모터는 분리했다. 실제 모터 정지, 산업 안전 등급, 단일고장 내성의 PASS가 아니다.\n- [원본·파생 증거 및 SHA-256](../../assets/logs/estop/2026-09-22_t005a/README.md).\n\n## 1. 시험 구성과 이전 상태의 변경\n\n이전 T004 종료 뒤 MDD10A B+를 K1 87에 연결했다. B−는 GND 버스바에 **16 AWG**로 연결했고,\nK1 주접점 배선은 **14 AWG**다. MDD10A 5P 제어 하네스도 연결했다."
+  },
+  {
+    "file": "docs/verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md",
+    "lines": 143,
+    "intro": "# T-ESTOP-004 Conditioned PWM / Latch / Reset / Safe Restore\n\n- 시험일: 2026-09-22\n- 작업자: Lee Younghyun — 배선, 계측 조작, STM32·ESP32 코드 수정 및 빌드·플래시\n- 분석: Codex — 저장된 raw digital sample, 양방향 UART, 소스·artifact 식별과 Python 정적 검사\n- 판정: **T-ESTOP-004 PASS — 모터 분리 조건의 실제 S0-B/VO617A/PC7 펌웨어·PWM 경로**\n- 전체 Physical E-stop: **PARTIAL**. K1/MDD10A 전력 차단·실모터 정지 및 T-ESTOP-005A는 미완료다.\n\n## 1. 시험 구성과 판정 범위\n\nSTM32 NUCLEO-F446RE와 ESP32-S3는 만능기판에 장착했다. MDD10A B+는 K1 87 케이블과\n분리·절연했고 두 모터도 분리했다. S2는 누르지 않았다. LiPo/S1 ON 중 상류 전원과 K1 30은"
+  },
+  {
+    "file": "docs/verification/25_XL4015_Logic_Power_and_Physical_EStop_Conditioned_Sense_Test_Report_2026-09-08_ko.md",
+    "lines": 136,
+    "intro": "# XL4015 Logic Power And Physical E-stop Conditioned Sense Test Report\n\n- 시험일: 2026-09-08\n- 대상: XL4015 #1 NUCLEO/ESP32 logic-power distribution, XL4015 #2 `AUX_5V`, RevC S0-B/VO617A/PC7 sense path\n- 전원 범위: 3S LiPo, MDD10A `B+`와 motor 분리\n- 결과: `PARTIAL PASS — LOGIC-POWER AND CONDITIONED-SENSE FUNCTIONAL SUBSETS`\n- 전체 Physical E-stop 판정: `PARTIAL / NOT PASSED`\n\n## 1. 목적과 증거 경계\n\n이 보고서는 2026-09-08에 사용자가 직접 배선·측정한 결과를 기록한다. 원자료는 대화에서 보고한\nDMM 값과 도통음/동작 판정이다. DMM 화면, 계측기 모델·range, 사진과 연속 raw log는 repository에"
+  },
+  {
+    "file": "docs/verification/24_Physical_EStop_RevC_Assembly_and_Control_Path_Bench_Test_Report_2026-09-05_ko.md",
+    "lines": 179,
+    "intro": "# Physical E-stop RevC Assembly And Control-Path Bench Test Report\n\n- 시험일: 2026-09-05\n- 대상: RevC E-stop perfboard, 6P waterproof harness, S0/S2, K2, K1 control/main-terminal assembly\n- 전원 범위: 3S LiPo control-path bench, motor disconnected, MDD10A `B+` disconnected\n- 결과: `PARTIAL PASS — ASSEMBLY AND MOTOR-DISCONNECTED CONTROL-PATH SUBSET ONLY`\n- 전체 Physical E-stop 판정: `NOT PASSED`\n\n## 1. 목적과 증거 경계\n\n이 보고서는 2026-09-05 session에서 사용자가 조립하고 직접 측정한 RevC Physical E-stop의\n무전원 검사와 제한된 powered control-path 결과를 기록한다. 결과의 원자료는 사용자가 대화에서"
+  },
+  {
+    "file": "docs/verification/23_P04B_Stop_Reason_and_Command_Age_Telemetry_Runtime_Test_Report_2026-08-29_ko.md",
+    "lines": 223,
+    "intro": "# P-04B Stop Reason And Command Age Telemetry Runtime Test Report\n\n## 1. 목적과 현재 판정\n\n- 시험일: 2026-08-29\n- 대상: STM32 `TEL.reason/command_age_ms` actual source와 ESP32 strict parser/log 전달\n- 시험 범위: STM32+ESP32 UART, direct-PC7, motor/LiPo-disconnected bench scope\n- 현재 판정: **PARTIAL — reason/command-age와 E-stop active/latch UART software-state subset PASS**\n- 미완료: active E-stop 중 reset 거부, release 뒤 explicit reset 성공, all-hooks-`0U` target\n  reflash/runtime restore\n\nP-04B는 기존 `state`와 PWM 값만으로는 구분하기 어려웠던 정지 원인과 마지막 accepted CMD 이후"
+  },
+  {
+    "file": "docs/verification/22_P04A_Applied_PWM_Telemetry_Target_Runtime_Test_Report_2026-08-29_ko.md",
+    "lines": 170,
+    "intro": "# P-04A Applied PWM Telemetry Target Runtime Test Report\n\n## 1. 목적과 판정\n\n- 시험일: 2026-08-29\n- 대상: STM32 `TEL.left_pwm/right_pwm` 실제 software-applied 값 연결과 ESP32 parser/log 전달\n- 시험 범위: STM32+ESP32 UART, motor/LiPo-disconnected bench scope\n- 최종 판정: **PASS — UART/software-cached applied-output telemetry scope**\n- 상위 P-04 판정: **PARTIAL** — P-04A는 완료했지만 E-stop/timeout reason과 command-age는 P-04B에 남아 있다.\n\n기존 `left_pwm=0,right_pwm=0` placeholder를 STM32 motor-output 계층이 마지막으로 성공 적용한\nsigned permille 값으로 교체했다. Controlled runtime에서 forward `CMD(vx=50,w=0)` 뒤"
+  },
+  {
+    "file": "docs/verification/21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md",
+    "lines": 223,
+    "intro": "# REQ-SAFE-004 500 ms Command-Timeout And Recovery Target Runtime Test Report\n\n- 시험일: 2026-08-28\n- 요구사항: `REQ-SAFE-004`\n- 판정: `PASS — CURRENT-IMAGE 500 ms UART + STM32 MCU CONTROL-NET/STATE/RECOVERY SCOPE`\n- 시험 범위: STM32+ESP32, UART, PC8/PB6/PC9/PB7, motor/LiPo disconnected\n- Post-run safe source/static restore: `PASS — ESP32 CONTROLLED HOOKS 0U / CANONICAL 26/26`\n- Post-run safe build/flash/runtime restore: `PASS — SCRIPT DISABLED / SAFE UART / D0~D3 10 s ALL-LOW`\n- Actual motor/Physical E-stop 판정: `NOT TESTED`\n\n## 1. 목적과 결론\n"
+  },
+  {
+    "file": "docs/verification/20_P03_Command_Timeout_Disarmed_Rearm_Target_Runtime_Test_Report_2026-08-28_ko.md",
+    "lines": 323,
+    "intro": "# P-03 Command-Timeout DISARMED/Re-arm Target Runtime Test Report\n\n- 시험일: 2026-08-28\n- 시험 범위: STM32+ESP32 UART와 motor-output control net의 motor/LiPo-disconnected target runtime\n- P-03 판정: `PASS — MOTOR/LIPO-DISCONNECTED UART + MCU DIR/PWM SCOPE`\n- `REQ-SAFE-004` 전체 판정: `PARTIAL — 300 ms TARGET SUBVECTOR PASS / 500 ms ACCEPTANCE VECTOR OPEN`\n- Safe restore 판정: `PASS — ALL HOOKS 0U / 10 s FOUR-NET ALL-LOW`\n- 실제 motor/Physical E-stop 판정: `NOT TESTED`\n\n> 후속 상태: 이 문서는 300 ms checkpoint와 당시 safe restore의 역사 기록이다. 같은 날 수행한\n> canonical `timeout_ms=500` vector는\n> [`21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md`](21_REQ_SAFE_004_500ms_Command_Timeout_and_Recovery_Target_Runtime_Test_Report_2026-08-28_ko.md)에서"
+  },
+  {
+    "file": "docs/verification/19_Physical_EStop_Received_Component_Incoming_Precheck_2026-08-28_ko.md",
+    "lines": 291,
+    "intro": "# Physical E-stop Received-Component Incoming Precheck Report\n\n- 시험일: 2026-08-28\n- 현재 상태 갱신: 2026-08-30 `VH-30J + WX-03B` 압착 공구 도착 보고; incoming/die-fit/first-article 검증은 미수행\n- 시험 범위: K1, S0, S2, `VO617A-3`, P6KE, F2와 6P connector kit의 무전원 입고 선별\n- 결과: `PARTIAL PASS — RECEIVED-COMPONENT UNPOWERED PRECHECK ONLY`\n- 전체 Physical E-stop 판정: `NOT PASSED`\n\n## 1. 목적과 증거 경계\n\n2026-08-27~28에 도착이 보고된 Physical E-stop 부품 중 전원을 인가하지 않고 확인할 수 있는\n항목을 선별했다. 모든 저항·다이오드·도통 측정은 relay, switch와 semiconductor를 회로에서"
+  },
+  {
+    "file": "docs/verification/18_Physical_EStop_PC7_Direct_Runtime_and_Component_Incoming_Precheck_2026-08-24_ko.md",
+    "lines": 232,
+    "intro": "# Physical E-stop PC7 Direct Runtime and Component Incoming Precheck Report\n\n- 시험일: 2026-08-24\n- 대상: STM32 `PC7/ESTOP_SENSE` direct input, F1 holder/fuse, Panasonic `TX2-12V` K2 x2\n- 결과: `PARTIAL — direct PC7 firmware scope and unpowered incoming precheck only`\n- 전체 Physical E-stop 판정: `NOT PASSED`\n\n## 1. 목적과 증거 경계\n\n이 시험은 실제 S0/VO617A-3/K1 전력 차단 경로를 조립하기 전에 다음 두 범위만 먼저\n검증했다.\n"
+  },
+  {
+    "file": "docs/verification/17_Final_Perfboard_Active_DIR_PWM_and_Safe_Restore_Test_Report_2026-08-18_ko.md",
+    "lines": 133,
+    "intro": "# Final Perfboard Active DIR/PWM and Safe-Restore Test Report\n\n- 시험일: 2026-08-18\n- 대상: NUCLEO-F446RE -> permanent perfboard R9~R12/J5 -> MDD10A logic input\n- 결과: `PASS — motor-disconnected MDD10A-input scope`\n- 전체 drivetrain release: `PARTIAL`\n\n## 1. 목적과 증거 경계\n\n영구 만능기판에 실장한 네 개의 `10 kOhm` pull-down과 5선 logic harness가 기본 LOW만\n유지하는 것이 아니라, controlled 6-step의 active DIR/PWM도 MDD10A input까지 정확히\n전달하는지 확인했다. 시험이 끝난 뒤에는 모든 controlled hook을 `0U`로 복구하고 5초"
+  },
+  {
+    "file": "docs/verification/16_STM32_Timeout_Fault_And_Reset_Boot_Safety_Test_Report_2026-08-12_ko.md",
+    "lines": 268,
+    "intro": "# STM32 Timeout, Software Fault And Reset-Boot Safety Test Report\n\n## 1. 판정 요약\n\n2026-08-12 motor-disconnected logic-only 조건에서 다음 MCU 저수준 motor-output 안전 시험을\n완료했다.\n\n| 항목 | 판정 | 핵심 결과 |\n| --- | --- | --- |\n| Command timeout shutdown | `PASS — scoped baseline` | `timeout_ms=300`; UART-calibrated LF-to-last-edge 약 `299.690 ms`; 두 PWM 정지 후 약 `8.939 s` 재출력 없음 |\n| Software fault shutdown/latch | `PASS — bounded stop/latch` | PA5 fault marker 뒤 다음 PWM pulse 차단; 두 PWM edge 0회, 약 `2.052 s` 재출력 없음 |\n| External reset, pull-down 없음 | `FAIL` | NRST LOW 동안 DIR/PWM 네 선이 약 `159 ms` HIGH로 판독됨 |"
+  },
+  {
+    "file": "docs/verification/15_UART_Gate_C_Invalid_Control_And_STM32_Command_Recovery_Test_Report_2026-08-12_ko.md",
+    "lines": 135,
+    "intro": "# UART Gate C Invalid Control and STM32 Command Recovery Test Report\n\n- Test date: 2026-08-12\n- Test IDs: `T-BRIDGE-008A`, `T-BRIDGE-008B`\n- Result: **PASS — planned Gate C runtime vectors**\n\n## 목적\n\nUART line이 손상됐을 때 다음 두 parser가 fail-closed로 동작하고 다음 정상 frame에서\n복구하는지 실제 ESP32-S3–STM32 UART link로 확인한다.\n\n1. ESP32 startup-response parser가 embedded CR, control byte와 overlong response를"
+  },
+  {
+    "file": "docs/verification/14_ESP32_Partial_Frame_Name_ACK_Recovery_Test_Report_2026-08-11_ko.md",
+    "lines": 98,
+    "intro": "# ESP32 Partial Frame Name ACK Recovery Test Report\n\n- Controlled date: 2026-08-11\n- Safe closeout date: 2026-08-11\n- Test ID: `T-BRIDGE-008A` partial-frame-name subvector\n- Result: **PASS — partial-frame-name subvector only**\n\n## 목적\n\nESP32가 DISARM ACK의 frame name이 정확한 `ACK`가 아니라 그 prefix인 `AC`일 때 이를\n정상 응답으로 오인하지 않는지 확인한다. Malformed response 뒤 startup gate는 닫힌 상태를\n유지해야 하며, 같은 DISARM을 재시도한 뒤 exact ACK/PONG을 받아야만 READY로 진행해야 한다."
+  },
+  {
+    "file": "docs/verification/13_ESP32_Required_Seq_Uint32_Overflow_ACK_Recovery_Test_Report_2026-08-07_ko.md",
+    "lines": 100,
+    "intro": "# ESP32 Required `seq` Uint32 Overflow ACK Recovery Test Report\n\nControlled date: 2026-08-07\nSafe closeout date: 2026-08-07\nTest ID: `T-BRIDGE-008A` required-`seq` uint32 overflow subvector\nResult: **PASS — uint32 overflow subvector only**\n\n## 목적\n\nESP32가 otherwise-valid DISARM ACK의 required `seq` 값이 `uint32_t` 범위를 넘을 때\n응답을 거부하고 startup gate를 닫은 채 유지하는지 확인한다. 이후 같은 DISARM을\n재시도해 exact ACK/PONG에서만 READY로 복구하는 것도 함께 확인한다."
+  },
+  {
+    "file": "docs/verification/12_ESP32_Trailing_Comma_ACK_Recovery_Test_Report_2026-08-07_ko.md",
+    "lines": 94,
+    "intro": "# ESP32 Trailing-Comma ACK Recovery Test Report\n\nControlled date: 2026-08-06\nSafe closeout date: 2026-08-07\nTest ID: `T-BRIDGE-008A` trailing-comma subvector\nResult: **PASS — trailing-comma subvector only**\n\n## 목적\n\nESP32가 otherwise-valid DISARM ACK의 LF 직전 trailing comma를 malformed field list로\n거부하고, startup gate를 닫은 채 같은 request를 재시도한 뒤 exact ACK/PONG에서만\nREADY로 진행하는지 확인한다."
+  },
+  {
+    "file": "docs/verification/11_ESP32_Duplicate_Required_Seq_ACK_Recovery_Test_Report_2026-08-06_ko.md",
+    "lines": 93,
+    "intro": "# ESP32 Duplicate Required `seq` ACK Recovery Test Report\n\nDate: 2026-08-06\nTest ID: `T-BRIDGE-008A` first subvector\nOverall result: **PASS — duplicate-required-`seq` subvector only**\n\n## 목적\n\nESP32가 startup DISARM ACK의 required `seq` field 중복을 정상 응답으로 오인하지 않고,\ngate를 닫은 채 같은 request를 재시도한 뒤 exact ACK/PONG에서만 READY로 진행하는지\n확인한다.\n"
+  },
+  {
+    "file": "docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md",
+    "lines": 191,
+    "intro": "# STM32 Active DISARM Shutdown Latency Test Report - 2026-08-04\n\n## 판정\n\n```text\nActive DISARM UART-RX-to-PWM-zero baseline: PASS — STM32 MCU logic pins\nMeasured latency: 23.50 us\nOverall motor safety gate: PARTIAL\n```\n\nValid `DISARM,seq=72192971`의 마지막 LF stop bit가 STM32 USART1 RX에 도착한\n시점부터 `PB6/PWM1`, `PB7/PWM2`의 마지막 active edge까지를 같은 4 MHz raw"
+  },
+  {
+    "file": "docs/verification/09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md",
+    "lines": 255,
+    "intro": "# ESP32-STM32 UART Response-Gated Startup Test Report - 2026-08-03\n\n## 판정\n\n```text\nGate A response-gated happy path: PASS — raw runtime behavior\nGate B bounded no-response failure: PASS — DISARM ACK loss and PONG loss\nGate B stale-sequence rejection: PASS — stale ACK seq and stale PONG seq\nGate B controlled reset/new-startup recovery: PASS — post-failure linkage pending\nT-BRIDGE-007 required UART runtime vectors: PASS — wrong seq and matching-seq/wrong-type rejection\nGate C controlled normal sequence after READY: PASS\nGate C ESP-response/STM32-command parser recovery: NOT TESTED"
+  },
+  {
+    "file": "docs/verification/08_ESP32_STM32_UART_Strict_Parser_Normal_Sequence_Test_Report_2026-08-03_ko.md",
+    "lines": 92,
+    "intro": "# ESP32-STM32 UART Strict-Parser Normal-Sequence Test Report - 2026-08-03\n\n> 이 문서는 fixed-delay controlled run의 역사적 보고서다. 후속 response-gated\n> Gate A/B 결과는 [`09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md`](09_ESP32_STM32_UART_Response_Gated_Startup_Test_Report_2026-08-03_ko.md),\n> active DISARM pin timing은 [`10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)를 따른다.\n\n## 판정\n\n- Controlled normal sequence: `PASS`\n- Current strict-parser release gate: `PARTIAL`\n\n이번 시험은 2026-07-31에 관찰한 startup PING 유실과 RX frame-boundary 문제를 다시 확인하기 위한 board-only 회귀시험이다. ESP32 시험 harness에 `500 ms settle -> LF 전송 -> 100 ms 대기 -> PING` preamble을 임시 적용한 뒤, 정상 명령 시퀀스가 current STM32 strict parser에서 끝까지 동작하는지 확인했다."
+  },
+  {
+    "file": "docs/verification/07_STM32_Motor_Output_Waveform_and_Direction_Timing_Test_Report_2026-08-03_ko.md",
+    "lines": 215,
+    "intro": "# STM32 Motor Output Waveform and Direction Timing Test Report - 2026-08-03\n\n> 2026-08-04 후속 active DISARM MCU-pin timing은\n> [`10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md`](10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md)에 기록했다. 이 문서는 8/3 waveform/direction 실행 기록으로 보존한다.\n\n## Summary\n\n2026-08-03에 NUCLEO-F446RE의 MDD10A 제어용 GPIO/PWM 네 신호를 로직 분석기로 계측했다. 모터와 MDD10A 전력단은 분리한 상태에서 MCU 측 3.3 V 신호만 관찰했다.\n\n결론:\n\n```text"
+  },
+  {
+    "file": "docs/verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md",
+    "lines": 658,
+    "intro": "# Physical E-stop Requirements And Verification Plan\n\n## 목적\n\n이 문서는 Physical E-stop 요구사항의 시험 순서, 증거와 판정을 관리한다.\n\n설계 정본은 [`../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md`](../../01_System_Architecture/21_Physical_EStop_Architecture_ko.md)다.\n요구사항 정본은 [`../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md`](../../01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md)다.\nRevB 기능 회로 정본은\n[`../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md`](../../01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md)다.\n\n이 계획은 다음 두 주장을 분리한다."
+  },
+  {
+    "file": "docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md",
+    "lines": 727,
+    "intro": "# 최종 MVP 요구사항과 검증 매트릭스\n\n## 최신 판정 — 2026-10-24 잔여 인수 항목 대조\n\n[항목별 판정41](41_MVP_Acceptance_Disposition_2026-10-24_ko.md)에서 원래 수용 조건과 기존 근거를 대조했다. **MVP-012는 현재 로컬 README에서 구조·역할·증거·한계·다음 단계를 찾는 요구사항으로 PASS**다. 전체 증거 감사 T-DOC-001과 하드웨어 인수는 별개로 PARTIAL을 유지한다. 하위 MUST24개·최종 종료 규칙은 변경하지 않았다.\n\nreport32의 엔코더 디지털 전이·실제 A 구동 S0 근거는 이미 있으므로 미실행으로 재안내하지 않는다. 출력형식/아날로그 파형·전체 구동 잡음, 정식 T005A/T007은 기존 미완료다. 판정41 5절에서 해당 rail-off 검토의 중복 재개를 취소했다.10/17 수행/후속 제외 범위를 복원하지 않으며 T005A PARTIAL/T007 BLOCKED를 유지한다.\n\n## 2026-10-24 시연 영상 추가\n\n[149초 통합 시연·검증](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md)을 제작했다. 사용자 새 UI 플래시/정상 보고와 탁상·카펫 주행·S0 래치/ARM 차단·복구/재주행 영상이 있다.4470프레임 디코딩·21표본 검토는 편집본 검증이며 새로운 물리 정지 지연·거리 정확도·T005A/T007 수용 PASS가 아니다. 요구사항/Test 표행의 기존 판정은 유지한다.\n"
+  },
+  {
+    "file": "docs/verification/04_ESP32_STM32_UART_Bridge_Verification_Plan_ko.md",
+    "lines": 403,
+    "intro": "# ESP32-STM32 UART Bridge Verification Plan\n\n## 목적\n\n이 문서는 ESP32-S3 DevKitC가 STM32 UART MVP의 command source / telemetry relay로 동작하는지 검증하기 위한 계획이다.\n\n이 검증은 PC-first UART MVP 다음 단계다.\n\n```text\nPC-first UART MVP:\nPC Web Serial Dashboard\n<-> STM32 USART2"
+  },
+  {
+    "file": "docs/verification/03_UART_MVP_Test_Report_2026-07-09_ko.md",
+    "lines": 196,
+    "intro": "# UART MVP Test Report - 2026-07-09\n\n## Summary\n\n2026-07-09에 NUCLEO-F446RE와 PC Web Serial dashboard를 사용해 UART MVP를 검증했다.\n\n결론:\n\n```text\nPC-first UART MVP PASS\n```\n"
+  },
+  {
+    "file": "docs/verification/02_UART_MVP_Verification_Matrix_ko.md",
+    "lines": 147,
+    "intro": "# UART MVP Verification Matrix\n\n## 목적\n\n이 문서는 UART MVP 요구사항과 실제 검증 증거를 연결한다.\n\n검증 기준:\n\n- PASS: 지정한 actual target 범위를 STM32 보드에서 확인했고 추적 가능한 증거 파일이 존재한다.\n- PARTIAL: 일부 조건만 확인했거나 증거가 부족하다.\n- PLANNED: 아직 검증하지 않았다.\n"
+  },
+  {
+    "file": "docs/verification/01_UART_MVP_Requirements_ko.md",
+    "lines": 274,
+    "intro": "# UART MVP Requirements\n\n## 목적\n\n이 문서는 PC-first UART MVP에서 STM32 하위 제어기가 만족해야 하는 최소 요구사항을 정의한다.\n\n이번 MVP의 핵심은 실제 모터를 돌리기 전에 다음을 검증하는 것이다.\n\n- PC에서 STM32로 command frame을 보낼 수 있다.\n- STM32가 command를 parsing하고 ACK/ERR로 응답한다.\n- STM32가 telemetry frame을 주기적으로 송신한다.\n- 안전 상태에 맞지 않는 명령은 STM32가 거부한다."
+  },
+  {
+    "file": "docs/README.md",
+    "lines": 275,
+    "intro": "# 분야별 문서 색인\n\n[프로젝트 소개로 돌아가기](../README.md)\n\n기존 프로젝트 README의 상세 문서 링크를 분야별로 보존한 탐색용 목록이다.\n날짜가 붙은 문서와 설명은 해당 시점의 기록이며, 현재 완료 상태는\n[현재 작업 현황](handoff/CURRENT_SESSION_CONTEXT.md)과 [최신 진행 기록](progress/README.md)을 따른다.\n아키텍처의 한국어 `_ko.md` 문서를 우선 참조한다.\n\n기초부터 실제 코드를 공부하려면 [STM32·ESP32 펌웨어 교과서](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md)를 읽는다. 순차 본문·PC 예제·문제 해설·소스 지도를 포함하며, 현재 상태를 판정하는 검증 보고서와는 별도다.\n\n## 기획과 요구사항"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/_templates/Practice_Log_Template_ko.md",
+    "lines": 46,
+    "intro": "# <Practice Title>\n\n## Status\n\nPlanned / In Progress / Done / Blocked\n\n## Purpose\n\nTBD\n\n## Hardware\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/_templates/Concept_Note_Template_ko.md",
+    "lines": 29,
+    "intro": "# <Concept Title>\n\n## 왜 필요한가\n\nTBD\n\n## STM32F446RE에서는 어떤 peripheral이 담당하는가\n\nTBD\n\n## CubeMX/HAL에서는 어떻게 설정되는가\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/README.md",
+    "lines": 73,
+    "intro": "# Embedded Learning Notes\n\n**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n\n[실적·다음 작업](../docs/progress/2026-11-12_progress.md). 아래 날짜별 재개점은 당시 이력이다.\n\n**최신 · 11/8 학습 마감:** 14장 방전과37-2 입력 정착 관측을 보완했다. 사용자 위임으로 [37-2 필기·a,b 유도 보충](../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)을 완성했으며 이해 완료와 구분한다. 다음은 C2 제외 근사/포함 모델과VADC 전류식 하나부터 복습이다. 자료40-1의2kHz는 비교 후보이며 구현 전이다. [진행·게시](../docs/progress/2026-11-08_progress.md). 아래 날짜별 다음 작업은 당시 이력이다.\n\n**최신 · 11/5 학습/11/6 마감:** [학습21](01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의37-4·38-1~3·39-1~3 자료를작성했다. 결론은±0.10V 목표/현재회로를유지하고39-2부품·보정·검증기준으로전압2채널초안을구체화하는것이다. 다음은기존쉴드CAD와계약대조·연결표작성. 자료39-3과사용자필기완료보고36-19를구분한다. 실제ADC/잡음·계수·잔차·보호는후속검증이며구현/PASS가아니다. [마감/다음재개](../docs/progress/2026-11-06_progress.md).\n\n**10/24 모니터링 회로 복습 · 10/25 정리:** [측정 요구부터 NTC·RC·ADC 샘플링까지](01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md). 식의 목적·값의 출처·단위·예시·가정과 남은 판단을 16절로 정리했다. [Notion 학습 노트](https://app.notion.com/p/403a7326f87b816f8115fbe2c995f8f0)에도 같은 설명을 저장했다. 학습 문서이며 요구/부품 승인이나 실측 PASS가 아니다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/validation.md",
+    "lines": 50,
+    "intro": "# 교과서 예제 검증 — 2026-10-13\n\n검사 대상은 이 폴더의 **PC 학습 예제**다. firmware 변경·보드 빌드·플래시·전원 조작·원격 명령 송신은 수행하지 않았다.\n\n## 실제 실행\n\n- Python: `C:/Espressif/tools/python/python.exe`\n- C compiler: 로컬 TCC 0.9.27, `-std=c11 -Wall -Werror`\n- JavaScript: 로컬 Node.js v22.20.0\n- 실행 진입점: `examples/run_examples.py`, `--cc`와 `--node`로 실행 파일 지정.\n- C 4개 컴파일/실행 + JavaScript 1개 실행 성공, runner exit code **0**.\n- 아래는 도구 출력에서 옮긴 핵심 결과다. 독립적으로 수집한 보드 로그가 아니다."
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/STM32_ESP32_Firmware_Textbook_ko.md",
+    "lines": 1685,
+    "intro": "# 작은 C 프로그램에서 두 보드의 로봇 펌웨어까지\n\n## STM32·ESP32 펌웨어를 기초부터 다시 만드는 교과서\n\n**기준일: 2026-10-13 · 대상: NUCLEO-F446RE + ESP32-S3 · 현재 Wi-Fi 제어 범위: 속도 0**\n\n이 책의 목표는 기존 코드를 외우는 것이 아니다. 작은 프로그램에 요구사항을 하나씩 더했을 때 왜 지금의 함수, 자료구조, 상태, 시간 제한이 필요한지 설명하고, 독자가 작은 버전을 직접 재구성할 수 있게 하는 것이다.\n\n분석의 출발점은 실제 저장된 [STM main][stm-main]과 [ESP main][esp-main]이다. STM의 사용자 모듈과 주변장치 초기화, ESP의 다섯 제어 모듈과 내장 브라우저, 이전 UART bridge와 단계별 ESP 예제를 함께 대조했다. 전체 ST HAL·ESP-IDF 내부 구현을 줄마다 해설하는 책은 아니다. 그 라이브러리가 현재 앱과 만나는 지점까지 다룬다.\n\n저장된 소스와 보드에 올라간 바이너리는 다른 대상이다. [소스 목록과 해시](source_manifest.json)는 이 책이 읽은 작업 트리를 식별한다. 시험 통과를 선언하는 문서는 [검증 문서](../../docs/verification/README.md)이며, 이 책의 예제 실행 결과는 보드 검증을 대신하지 않는다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md",
+    "lines": 58,
+    "intro": "# STM32·ESP32 로봇 펌웨어 교과서\n\n**[교과서 본문 열기](STM32_ESP32_Firmware_Textbook_ko.md)**\n\n작성 기준: 2026-10-13 작업 트리. 두 보드의 실제 소스를 읽고, 기초에서 현재 구현까지 재구성한 학습서다. 본문 한 파일에 설명·예제·연습 문제·해설·소스 지도를 모았다.\n\n## 이곳에 둔 이유\n\n프로젝트 밖의 [STM32 학습 폴더](../../../../Embedded/STM32/README.md)와 [ESP32-S3 학습 폴더](../../../../Embedded/ESP32-S3/README.md)는 보드별 일반 학습에 적합하다. 이번 책의 중심은 이 로봇의 STM 출력 판단, ESP 중계, 브라우저 제어를 함께 이해하는 것이므로 프로젝트의 기존 학습 노트 아래에 둔다. 외부 학습 폴더에는 이 책의 링크만 추가해 복사본이 갈라지는 것을 피한다.\n\n공식 인터페이스 계약을 대체하는 문서는 아니다. 학습용 단순화, 현재 구현, 아직 없는 기능을 본문에서 구분한다.\n"
+  },
+  {
+    "file": "02_Hardware_Validation/README.md",
+    "lines": 112,
+    "intro": "# Hardware Validation\n\n이 폴더는 궤도형 모바일 로봇의 전원, 배선, 모터 드라이버, 엔코더, 초기 구동을 실제로 검증한 기록을 남기는 공간이다.\n\n**상태 대조: 2026-10-11.** 단일 모터의 후속 관측은 [report32](../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md),\n비구동 Wi-Fi 통신은 [report34](../docs/verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)를 따른다.\n재개 연결·전원은 [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에서 확인하며 문서 정리를 새 실측으로 기록하지 않는다.\n\n시스템 아키텍처 문서가 \"어떻게 설계할 것인가\"를 다룬다면, 이 폴더는 \"실제로 안전하게 동작하는지 어떻게 확인했는가\"를 다룬다.\n\n## Validation Principle\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/examples/README.md",
+    "lines": 149,
+    "intro": "# 교과서 PC 예제\n\n[본문으로 돌아가기](../STM32_ESP32_Firmware_Textbook_ko.md)\n\n처음에는 01 하나만 실행한다. [학습 단위](../README.md#study-route)에 맞춰 **결과 예상 → 실행 → 이유 설명 → 한 조건만 변경 → 원상 복구** 순서로 연습한다. 04가 어렵다면 아래 [따라 읽기](#walkthrough04)를 사용한다.\n\n| 파일 | 내용 | 실제 소스 사용 |\n| --- | --- | --- |\n| [01_c_and_time.c](01_c_and_time.c) | 구조체·주소·값 복사·시간 wrap·timeout 경계 | 독립 기초 예제 |\n| [02_stream_parser.c](02_stream_parser.c) | 분할 바이트·줄 조립·엄격 parser·버퍼 용량 | STM ring_buffer, uart_frame_parser |\n| [03_output_and_encoder.c](03_output_and_encoder.c) | 좌우 명령 혼합·엔코더 wrap·CPS·RPM | STM mapper, encoder_speed |\n| [04_control_flow.c](04_control_flow.c) | ARM→zero→ACTIVE→DISARM, ticket 만료, stop ACK 누락 | ESP 제어 모듈 5개 |"
+  },
+  {
+    "file": "02_Hardware_Validation/09_Motor_Output_Waveform_and_Shutdown_Latency_Test.md",
+    "lines": 382,
+    "intro": "# Motor Output Waveform And Shutdown Latency Test\n\n## 목적\n\n이 문서는 logic analyzer로 STM32의 실제 MDD10A control signals를 계측하는 절차를 정의한다.\n\n기존 DMM/LED 시험은 static routing과 기능적 all-off를 확인했다. 이 시험은 다음 미검증 항목을 닫는다.\n\n- `PB6/TIM4_CH1`, `PB7/TIM4_CH2`의 actual PWM frequency와 duty\n- `PC8/DIR1`, `PC9/DIR2`의 방향 mapping\n- `PWM zero -> DIR edge -> PWM resume`의 두 settle interval\n- boot/reset에서 unintended PWM pulse가 없는지"
+  },
+  {
+    "file": "02_Hardware_Validation/08_Adapter_Plate_Fit_Check.md",
+    "lines": 82,
+    "intro": "# Adapter Plate Fit Check\n\n## Status\n\n`USER-REPORTED MOUNTING / INSULATION / ACCESS CHECKS PASS (2026-10-17); WIRING PATH CHECK PASS (2026-10-20)`\n\n10/17 사용자가 섀시 가조립에 “가조립 맞음”, 전장부 고정·휨·납땜면 간격/접촉·USB/단자 접근성 묶음에 “모두 문제 없어”라고 보고했다. 아래 완료 항목은 사용자 육안·가조립 확인 범위다. 재료/치수·제작 revision 식별, 사진, 개별 지지점 상세와 배선 경로는 별도 미기록이며 이번 결과로 확대하지 않는다.\n\n10/20 후속: 사용자 “esp 복원 완료”, 이어서 “배선 확인 완료” 보고. 안내한 회전부 간섭·커넥터/단자 당김·남는 선 고정·전력선과 UART/엔코더 신호선 분리 배치 확인을 사용자 보고 범위로 반영한다. 아래 배선 경로를 갱신했으며 새 사진·치수·절연저항 측정 근거는 아니다. 이후 알람·로봇 주전원 분리 완료도 사용자 확인했다.\n\n2026-08-26 사용자가 custom PC adapter plate 수령을 보고했다. 이 문서는 도착 plate가 RevB\n주문 후보와 같은지 식별하고, chassis 체결, 전장 모듈 조립, 접근성과 절연 간격을 실물로"
+  },
+  {
+    "file": "02_Hardware_Validation/07_STM32_ESP32_UART_Wiring_Checklist.md",
+    "lines": 91,
+    "intro": "# STM32 ESP32 UART Wiring Checklist\n\n이 문서는 NUCLEO-F446RE와 ESP32-S3 DevKitC만으로 UART command bridge를 검증하기 전 확인할 배선 체크리스트다.\n\n목표는 모터나 LiPo를 연결하지 않은 상태에서 ESP32가 STM32에 command frame을 보내고, STM32가 `ACK`, `ERR`, `TEL`을 돌려주는지 확인하는 것이다.\n\n## Scope\n\n포함한다:\n\n- STM32와 ESP32 사이 UART TX/RX 교차 연결\n- common ground"
+  },
+  {
+    "file": "02_Hardware_Validation/06_Left_Right_Drivetrain_Test.md",
+    "lines": 218,
+    "intro": "# Left Right Drivetrain Test\n\n## 목적\n\n이 문서는 left/right motor와 MDD10A dual-channel driver를 사용해 궤도차량 drivetrain을 저속으로 검증하는 절차를 정의한다.\n\n목표는 한쪽 motor 단독 검증 이후, 좌우 방향, encoder sign, straight motion, rotation, timeout stop, heat behavior를 chassis 수준에서 확인하는 것이다.\n\n## Entry Criteria\n\n| Criteria | Required result |\n| --- | --- |"
+  },
+  {
+    "file": "02_Hardware_Validation/05_First_Motor_No_Load_Test.md",
+    "lines": 212,
+    "intro": "# First Motor No-Load Test\n\n> **2026-09-26 연결 정정:** 첫 시험 대상은 왼쪽 모터 A다.\n> Motor+→M1A, Motor−→M1B 연결 확인; 엔코더는 JENC_1/TIM3/left_cps다.\n> 오른쪽 B 엔코더는 JENC_2/TIM5/right_cps이며 동력선은 아직 분리한다.\n> 교환 후 손회전 채널·전진 양수/후진 음수·정지 0은 사용자 보고 PASS.\n> [현재 매핑과 확인 범위](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).\n> 실제 전동 구동과 DIR 정방향은 미검증이며, 아래 미결 선행 Gate를 이 손회전 결과로 전체 PASS 처리하지 않는다.\n> 9/27 현재 [M1 수동 코드](../docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md)는 사용자 입력 WIP다. 새 빌드·플래시·회전은 미실행이며 [report 30](../docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md)에 검사 마감을 보존했다.\n\n## 목적\n"
+  },
+  {
+    "file": "02_Hardware_Validation/04_Encoder_Signal_Safety_Test.md",
+    "lines": 365,
+    "intro": "# Encoder Signal Safety Test\n\n> **현재 좌우 기준 — 2026-09-26:** A=왼쪽/JENC_1/TIM3/left_cps,\n> B=오른쪽/JENC_2/TIM5/right_cps. 두 커넥터 교환 후 독립 손회전·전진 부호·정지 0 사용자 보고 PASS.\n> [정정 근거와 현재 연결](../docs/verification/29_Vehicle_Side_Mapping_Correction_and_Hand_Rotation_Check_2026-09-26_ko.md).\n> 아래 A=right/B=left 및 CW/CCW 표는 7월 당시 기록이다. 측정 원본은 보존하되 현재 배선에 적용하지 않는다.\n\n## 목적\n\n이 문서는 MG540P30_12V motor encoder를 STM32에 연결하기 전에 전원, A/B 신호 전압과 입력 보호 조건을 검증한 기록이다.\n\n2026-07-26 시험은 motor를 구동하지 않고 shaft를 손으로 돌리며 DMM으로 수행했다."
+  },
+  {
+    "file": "02_Hardware_Validation/03_MDD10A_Logic_Input_Test.md",
+    "lines": 327,
+    "intro": "# MDD10A Logic Input Test\n\n## 목적\n\n이 문서는 STM32 motor-output 핀과 MDD10A logic input을 실제 motor 없이 단계적으로 검증한 기록이다.\n\n목표는 다음 세 가지다.\n\n- STM32가 `PWM1`, `DIR1`, `PWM2`, `DIR2`를 결정적으로 제어하는지 확인한다.\n- Boot, idle, test-disabled 상태에서 PWM 출력이 0인지 확인한다.\n- MDD10A에 전원을 공급하되 motor를 분리한 상태에서 양 채널의 A/B 출력 선택이 입력과 일치하는지 확인한다.\n"
+  },
+  {
+    "file": "02_Hardware_Validation/02_Buck_Converter_Calibration_Log.md",
+    "lines": 220,
+    "intro": "# Buck Converter Calibration Log\n\n## 최신 추가 관측 — 2026-10-23\n\nXL4015 #1 조정 전 무부하5.03V/두 보드 연결4.96V. 사용자가 무부하5.10V 목표를 제시한 뒤 세팅/연결 완료5.02V를 보고했다. 최종 실제 무부하 값은 미보고다.\n\n기존 USB전류계와 약1A 저항 부하를 사용한 관측은 XL OUT5.00V, USB4.85~4.87V/0.93A다. 제공된배치도기준좌상단CC LED꺼짐을 사용자 확인했다. 같은배치/정상LED 조건에서 해당부하의전류제한비작동과일치하지만 정확설정A·순간부하수용은미확인이다. 두계기의전압차를경로저항으로단정하지않는다. 모터전류/새장비수령·열/정격승인은별도다.\n\n새운전153초에서지연정지미재현을관측했지만재부팅도동반되어전압원인확정은아니다. [비교](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/comparison_ko.md), [관측값](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/session_observations.json). 아래7월수치는당시조건의이력으로보존한다.\n\n\n## 목적"
+  },
+  {
+    "file": "02_Hardware_Validation/01_Power_Bringup_Checklist.md",
+    "lines": 271,
+    "intro": "# Power Bring-up Checklist\n\n## 목적\n\n이 문서는 3S LiPo battery를 로봇 전원계에 처음 연결하기 전후의 안전 확인 절차를 정의한다.\n\n목표는 firmware를 믿기 전에 battery, fuse, switch, wiring, polarity, ground path가 안전한지 확인하는 것이다.\n\n## Test Scope\n\n이 단계에서 허용되는 것:\n"
+  },
+  {
+    "file": "02_Hardware_Validation/00_MDD10A_Visual_and_Multimeter_Inspection.md",
+    "lines": 192,
+    "intro": "# MDD10A Visual And Multimeter Inspection\n\n## 목적\n\n이 문서는 MDD10A에 battery power를 넣기 전에 visual inspection과 multimeter만으로 obvious defect risk를 줄이는 절차를 정의한다.\n\n이 검사는 MDD10A가 정상 동작한다는 최종 proof가 아니다. 하드 쇼트, 단자 손상, 납땜 불량, 극성 혼동 같은 초기 위험을 먼저 거르는 단계다.\n\n## Test Scope\n\n이 단계에서 허용되는 것:\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/03_ESP32_Board_Practice/README.md",
+    "lines": 14,
+    "intro": "# ESP32 Board Practice\n\nESP32-S3 DevKitC를 보조 컨트롤러로 사용하는 실습 일지를 보관한다.\n\nESP32는 motor output authority가 아니다.\nWi-Fi, dashboard, telemetry forwarding, STM32 UART link 검증 같은 support role을 담당한다.\n\n## Index\n\n| File | Status | Purpose |\n| --- | --- | --- |\n| `000_Practice_Log_Index.md` | Active | ESP32 실습 목록과 진행 상태 |"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/03_ESP32_Board_Practice/002_ESP32_IDF_Environment_Bringup_ko.md",
+    "lines": 168,
+    "intro": "# ESP32-S3 ESP-IDF Environment Bring-up\n\nDate: 2026-07-14\n\n## Purpose\n\nESP32-S3를 STM32 command bridge로 사용하기 전에, PC 개발 환경에서 ESP-IDF 프로젝트가 정상적으로 생성, 빌드, 플래시, 모니터링되는지 먼저 검증한다.\n\n이번 검증은 아직 STM32와 UART command를 주고받는 단계가 아니다. ESP32-S3 보드와 ESP-IDF toolchain 자체가 정상 동작하는지 확인하는 bring-up 단계다.\n\n## Environment\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/03_ESP32_Board_Practice/001_ESP32_UART_Command_Bridge_ko.md",
+    "lines": 440,
+    "intro": "# ESP32 UART Command Bridge Practice\n\n## 목적\n\n이 실습은 ESP32-S3 DevKitC를 STM32 하위 제어기의 command source / telemetry relay로 사용하는 첫 단계다.\n\n이미 PC Web Serial dashboard로 STM32 UART MVP는 검증했다. 다음 목표는 PC가 직접 STM32에 붙는 구조에서 한 단계 나아가, ESP32가 상위 제어기 역할을 맡는 구조를 만드는 것이다.\n\n```text\nBefore:\nPC Web Serial Dashboard\n<-> STM32 USART2"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/03_ESP32_Board_Practice/000_Practice_Log_Index.md",
+    "lines": 15,
+    "intro": "# ESP32 Practice Log Index\n\n## Planned Sequence\n\n| No. | Practice | Board | Status | Notes |\n| --- | --- | --- | --- | --- |\n| 001 | [`ESP32 UART command bridge`](001_ESP32_UART_Command_Bridge_ko.md) | ESP32-S3 DevKitC | Planned | loopback -> PING/PONG -> scripted command -> telemetry relay |\n| 002 | [`ESP32-S3 ESP-IDF environment bring-up`](002_ESP32_IDF_Environment_Bringup_ko.md) | ESP32-S3 DevKitC | Done | ESP-IDF v6.0.2, COM4, hello_world build/flash/monitor PASS |\n| 003 | ESP32 to STM32 UART link | ESP32-S3 + NUCLEO-F446RE | Planned | common GND, 3.3 V logic |\n| 004 | Telemetry forwarding mock | ESP32-S3 | Planned | STM32 TEL frame을 PC 또는 Wi-Fi로 전달 |\n| 005 | Simple web dashboard mock | ESP32-S3 | Later | motor command authority는 STM32에 유지 |\n"
+  },
+  {
+    "file": "docs/portfolio/README.md",
+    "lines": 20,
+    "intro": "# Portfolio Notes\n\n이 폴더는 Tracked Mobile Robot 프로젝트를 포트폴리오 관점에서 정리하는 공간이다.\n\n목적은 단순히 구현 목록을 나열하는 것이 아니라, 로봇 시스템 통합 엔지니어 관점에서 어떤 역량을 보여줄 수 있는지, 현재 프로젝트가 어떤 강점을 갖고 있는지, 앞으로 어떤 증거를 더 쌓아야 하는지를 추적하는 것이다.\n\n## 문서 목록\n\n| 문서 | 목적 |\n| --- | --- |\n| [`01_Robotics_System_Integration_Engineer_Strengths_ko.md`](01_Robotics_System_Integration_Engineer_Strengths_ko.md) | 로봇 시스템 통합 엔지니어 포트폴리오에서 강조할 수 있는 역량 요소 정리 |\n| [`02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | 현재 Tracked Mobile Robot 프로젝트의 포트폴리오 강점과 추가 보강 항목 정리 |"
+  },
+  {
+    "file": "docs/portfolio/03_Engineering_Basis_and_Standards_Traceability_ko.md",
+    "lines": 194,
+    "intro": "# Engineering Basis And Standards Traceability\n\n## 문서 목적\n\n이 문서는 Tracked Mobile Robot의 계획, 설계 결정, 요구사항과 검증이 어떤 공학적 근거를 기반으로 하는지 추적하는 정본이다.\n\n표준 이름을 많이 나열하거나 인증을 암시하는 것이 목적이 아니다. 다음 연결을 유지해 설계 판단과 실제 증거를 함께 설명하는 것이 목적이다.\n\n```text\n위험/목표\n-> Engineering Basis ID\n-> 요구사항 ID"
+  },
+  {
+    "file": "docs/portfolio/02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md",
+    "lines": 327,
+    "intro": "# Tracked Mobile Robot 포트폴리오 강점과 보강 항목\n\n이 문서는 현재 Tracked Mobile Robot 프로젝트가 포트폴리오로서 어떤 강점을 가지고 있는지, 그리고 시스템 통합 엔지니어 포지션을 더 강하게 어필하기 위해 무엇을 추가하면 좋은지 정리한다.\n\n## 현재 포트폴리오 포지셔닝\n\n현재 프로젝트는 자율주행 전체 시스템을 바로 구현하는 프로젝트가 아니다.\n\n더 정확한 포지셔닝은 다음과 같다.\n\n> STM32F446RE 기반 tracked mobile robot lower controller를 개발하며, UART command/telemetry, safety state machine, MDD10A PWM/DIR motor control, encoder feedback을 단계적으로 통합하는 임베디드 로봇 시스템 통합 프로젝트.\n"
+  },
+  {
+    "file": "docs/portfolio/01_Robotics_System_Integration_Engineer_Strengths_ko.md",
+    "lines": 228,
+    "intro": "# 로봇 시스템 통합 엔지니어 포트폴리오 강조 요소\n\n이 문서는 로봇 시스템 통합 엔지니어 관점에서 포트폴리오에 강조할 수 있는 역량 요소를 정리한다.\n\nTracked Mobile Robot 프로젝트뿐 아니라 이후 다른 로봇 프로젝트에도 재사용할 수 있는 기준 문서로 사용한다.\n\n## 핵심 포지셔닝\n\n로봇 시스템 통합 엔지니어 포트폴리오는 특정 알고리즘 하나보다 다음 질문에 답해야 한다.\n\n- 서로 다른 하드웨어와 소프트웨어를 어떻게 연결했는가?\n- 요구사항을 어떤 인터페이스와 상태머신으로 분해했는가?"
+  },
+  {
+    "file": "04_PC_Serial_Control/README.md",
+    "lines": 125,
+    "intro": "# PC Serial Control\n\nThis folder contains PC-side UART command, telemetry logging, and dashboard mock tools.\n\nInitial direction:\n\n1. Start with fake `TEL` frame parsing without hardware.\n2. Add manual command frame generation.\n3. Add real serial-port input after USART2/USART1 bring-up.\n4. Keep STM32 as the final safety authority.\n5. Add WebSocket/frontend only after raw and parsed logging are stable.\n6. Keep AI-assisted diagnosis optional and never as the primary safety authority."
+  },
+  {
+    "file": "00_Project_Charter/03_Initial_Purchase_and_Safety.md",
+    "lines": 68,
+    "intro": "# Initial Purchase and Safety\n\n## Current Decision\n\n- BMS is not used in the initial power architecture.\n- CAN communication is deferred from first power and motor bring-up, but remains\n  a required later project phase.\n- UART / USB Serial is used first.\n- LiPo battery is charged only with a balance charger.\n- Main power line uses a fuse and a manual switch.\n- Low-voltage protection uses a 3S LiPo alarm and later STM32 ADC voltage monitoring.\n"
+  },
+  {
+    "file": "00_Project_Charter/02_Component_Inventory.md",
+    "lines": 147,
+    "intro": "# Component Inventory\n\n이 문서는 프로젝트에 사용할 부품 목록과 역할을 정리하는 문서다.\n\n부품 본문 기준: **2026-09-23**, 계측 장비/구매 상태: **2026-10-22**. 보유·사용 여부와 검증 완료 여부는 구분한다.\n[현재 작업 현황](../docs/handoff/CURRENT_SESSION_CONTEXT.md)을 재개 기준으로 사용한다.\n\n**10/22 추가 보유 확인:** 사용자가 `CANable V2.0 Pro CANbus 트랜시버 CAN2.0 USBCAN`을 집에 보유한다고 보고했다. PC 측 USB-CAN 어댑터 보유로 반영하고 추가 구매에서 제외한다. 상품명은 확인됐지만 실제 제조사·PCB 리비전·펌웨어/USB 인식·절연·단자/종단은 미확인이다. STM 측 MCU-230과 역할이 다르며 CAN 통신 검증 완료가 아니다. 아래10/19 USB-CAN 구매 후보는 이 확인 전의 이력이다.\n\n## 계측 장비와 센서 구매 — 2026-10-22\n\n**최신 입력 부속 보유 확인:** Vishay `K104K15X7RF53H5` 10개 구매 완료(2026-10-22 사용자 보고). 규격은100nF(0.1µF)·50V·X7R·±10%·리드형·피치5mm다. 수령 여부·실제 판매처/결제액·도착일은 미확인이다. 10kΩ·1kΩ·12kΩ 저항은 앞서 사용자 보유로 확인됐으며 정확한 수량/허용오차는 미보고다. 저항과 커패시터를 중복 구매 대상으로 안내하지 않는다. 현재 입력 회로 예산은 커패시터 온도2+전류 후보2=4개로, 구매10개 중6개는 이 예산 기준 예비분이다. 전체 제작 BOM 확정은 아니다."
+  },
+  {
+    "file": "00_Project_Charter/01_Goal_and_Scope.md",
+    "lines": 137,
+    "intro": "# Goal and Scope\n\n## 1. Project Summary\n\nSTM32 기반 하위 제어기와 엔코더 모터를 사용해 궤도형 모바일 로봇 플랫폼을 만들고, 이후 IMU, FreeRTOS, CAN, LL Driver 전환, ROS2, LiDAR로 확장 가능한 구조로 발전시킨다.\n\n이 프로젝트는 처음부터 완성형 자율주행 로봇을 만드는 것이 아니라, 자율주행으로 확장 가능한 안정적인 하위 구동 플랫폼을 만드는 것을 1차 목표로 한다.\n\n## 2. Motivation\n\n- 단순 RC카가 아니라 검증 가능한 모바일 로봇 플랫폼을 만든다.\n- 모터 제어, 엔코더, 전원 안전, 센서 통합을 직접 구현한다."
+  },
+  {
+    "file": "09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md",
+    "lines": 185,
+    "intro": "# 로봇 확장 PCB 기능과 요구조건 초안\n\n기준일: 2026-10-23. 설계 1단계인 요구사항 정의를 위한 검토본이다.\n\n이 PCB의 제안 목적은 **기존 로봇 제어 기판을 유지하면서 좌우 모터 상태와 전원 상태를 관측하고 CAN 확장을 연결하는 것**이다. 현재 주요 포함 후보는 전류2·온도2·전압2채널과 CAN이다. 기능 범위와 성능 조건을 함께 검토한 뒤 핀·전원·커넥터 설계로 넘어간다.\n\n**10/23 목표 구성 채택:** 사용자가 STM32 센서/구동 집중·ESP32 무선 게이트웨이·두 MCU 사이 CAN·개발용 CANable 관측 구성을 선택했다. 별도 센서 MCU는 추가하지 않는다. STM용과 ESP용 CAN 트랜시버가 각각 필요하며 실제 부품·배치·전원·GPIO는2단계 검토 대상이다. 아래 성능 수치와 제작 후보까지 개별 확정된 것은 아니다. [현재 전체 구성](16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md)을 따른다.\n\n## 설계 진행 순서\n\n| 단계 | 산출물 |\n| --- | --- |"
+  },
+  {
+    "file": "09_Electrical_Design/14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md",
+    "lines": 136,
+    "intro": "# 모터 전류·온도 4채널 확장 기판 연결안\n\n기준일: **2026-10-22**. 상태: **회로 블록·인출/커넥터 설계 초안 / 제작·배선 미승인**.\n\n## 2026-10-23 후속 구성 기준\n\n현재 범위는 ADC6채널+CAN이며 최신 전원 제안은 #2 병렬 분기→별도 LDO다. [6채널 연결·측정 기준 계약](20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md)과 연결된 전원/CAN 문서를 따른다. 아래 센서4채널·STM3.3V 공급과 부품/필터 수치는 당시 초안/계산이며 새6채널 전원·보호 확정값이 아니다.\n\n## 이번 작업의 결정\n\n기존 만능기판에 입력 회로를 분산 추가하지 않고, **전류2·온도2채널의 신호 회로를 별도 확장 기판에 모은다.** 이후 제작할 PCB에는 이 기능 블록을 옮길 수 있게 한다. 기존 STM/ESP·엔코더·E-stop 회로는 유지한다. 기존 [공간 검토](12_Dual_Rail_ADC_Space_Review_2026-09-30_ko.md)와 [하층 확장안](13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md)을 따른다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md",
+    "lines": 259,
+    "intro": "# 10×15 cm 만능기판 2층 확장 가능성\n\n검토일: 2026-09-30. 상태: **구성·공간 예산 제안 / 실물 배치·고정 미검증**.\n\n**10/22 후속:** 구매한 모터별 전류2·케이스 온도2채널의 실제 모델을 기준으로 [4채널 확장 연결안](14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md)을 작성했다. 아래 전압2채널·CAN 공간/핀 수는9/30 당시 제안이며 새 센서4채널의 크기·커넥터/인출 확정을 대신하지 않는다. 기존 기판 유지·별도 확장 방향과 실물 고정/접근 미확인 경계는 이어간다.\n\n## 결론\n\n현재 기판에 150×100 mm 기판 한 장을 추가하면 **확정된 MCU·센서·신호 회로와 향후 ADC/CAN을 수용할 가능성은 높다.**\n사용자 선호를 반영한 추천 방향은 **기존 기판을 최상층에 유지하고, 새 기판을 그 아래의 Advanced 확장 기판으로 추가하는 것**이다.\n기존 고정 헤더·저항·릴레이 등 납땜 부품은 유지한다. 현재 확인된 자료에서 이 부품들의 탈거를 요구할 근거는 없다.\n그러나 두 장에 전력 모듈·버스바·배터리·향후 LiDAR까지 모두 올릴 수 있다는 뜻은 아니다."
+  },
+  {
+    "file": "09_Electrical_Design/12_Dual_Rail_ADC_Space_Review_2026-09-30_ko.md",
+    "lines": 109,
+    "intro": "# PA4·PB0 전압 측정 회로의 공간 검토\n\n검토일: 2026-09-30. 상태: **배치 가능성 분석·후속 구성 제안**. 회로 값·실장 위치 확정이나 납땜 지시가 아니다.\n\n이후 사용자가 제안한 150×100 mm 기판 추가 적층은 [2층 확장 검토](13_Two_Deck_Perfboard_Expansion_Feasibility_2026-09-30_ko.md)에서 비교한다.\n아래 40×50 mm는 ADC 전용 기판의 초기 공간 예산이며, 이미 구매·제작 방식으로 확정된 것은 아니다.\n\n## 판단\n\n현재 기판에 빈 홀은 있지만, **기존 배선을 유지하면서 두 채널의 분압·필터·보호회로와 커넥터를 한곳에 넣을 여유는 확인되지 않았다.**\nSTM32 아래에 낮은 부품을 분산 배치할 가능성은 있으므로 물리적으로 불가능하다고 단정하지 않는다.\n다만 유지보수와 아날로그 배선을 고려하면 **STM32 가까이에 별도 소형 측정 기판을 고정하는 방식**을 우선 추천한다."
+  },
+  {
+    "file": "09_Electrical_Design/11_XL4015_1_Dual_Board_Power_Distribution_Plan_2026-09-08_ko.md",
+    "lines": 282,
+    "intro": "# XL4015 #1 Dual-Board Power Distribution Plan\n\n- 작성일: 2026-09-08\n- 상태: `DUAL-2P SOURCE HARNESS + NUCLEO/ESP32 POWERED FUNCTION OPERATOR-REPORTED PASS / LOAD-RELEASE EVIDENCE OPEN`\n- 대상: RevC 만능기판의 NUCLEO-F446RE와 ESP32-S3-DevKitC-1 standalone 5 V 공급\n- 제외: XL4015 #2 `AUX_5V`, motor-current path, 최종 fuse/connector/wire release\n\n## 1. 목적\n\nXL4015 #1의 5 V 출력을 NUCLEO `E5V`와 ESP32 `5V`에 공급하면서 다음 기존 전원 계약을\n동시에 보존한다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/10_K1_F1_Main_Path_Coordination_2026-08-18_ko.md",
+    "lines": 278,
+    "intro": "# K1, F1 And Main-Path Coordination — 2026-08-18\n\n## 목적과 판정\n\nWHEELTEC가 직접 회신한 `MG540P30_12V` 전류값으로 Physical E-stop 주전원 경로의 K1,\nF1과 배선 후보를 계산한다. 이 문서는 구매 확정서가 아니라 `T-ESTOP-001`에 들어갈\n정격 검토 기록이다.\n\n```text\nCurrent-envelope calculation: COMPLETE\nK1 selected part: TE Connectivity V23134J1052D642 / TE 1393304-9\nK1 procurement/incoming: RECEIVED / exact parts, 89.5-ohm coil, de-energized NO and cross-isolation unpowered PASS 2026-08-28"
+  },
+  {
+    "file": "09_Electrical_Design/09_Perfboard_KiCad_to_VeroRoute_Independent_Review_2026-08-15_ko.md",
+    "lines": 73,
+    "intro": "# KiCad-VeroRoute 5-Net 독립 대조 보고서\n\n## 판정\n\n- 상태: `DESIGN CROSS-CHECK PASS / NO SOLDER`\n- 대상: STM32-MDD10A `DIR1/PWM1/DIR2/PWM2/GND` 5개 Net\n- VeroRoute connectivity: `Broken Nets` 비어 있음\n- 증거 경계: 회로 정본, NUCLEO 커넥터 핀과 만능기판 홀 좌표의 설계 대조 결과다.\n  실제 납땜, 도통, 인접 Net 단락 또는 전원 인가 결과는 아니다.\n\n## 독립 입력\n"
+  },
+  {
+    "file": "09_Electrical_Design/08_Perfboard_STM32_to_MDD10A_Routing_Plan_ko.md",
+    "lines": 116,
+    "intro": "# STM32-MDD10A 만능기판 배선 경로 계획\n\n## 상태\n\n- 상태: `VEROROUTE DIGITAL CONNECTIVITY PASS — NET 1~5 CLOSED`\n- 대상 파일: `VeroRoute/Tracked_Mobile_Robot_Perfboard_RevB_WIP.vrt`\n- 좌표 기준: component-side 정본 좌표 `C1...C55`, `R1...R37`\n- VeroRoute 작업 레이어: `Bottom`\n- 물리 구현: 절연 점퍼선과 인접 한 홀 solder bridge만 사용\n\n이 문서는 KiCad RevB-WIP의 MDD10A logic net을 실제 만능기판 홀 좌표로 옮기기 위한\n작업 계획이다. Motor current는 이 기판을 통과하지 않는다."
+  },
+  {
+    "file": "09_Electrical_Design/07_Perfboard_Digital_Layout_Workflow_Decision_ko.md",
+    "lines": 100,
+    "intro": "# 만능기판 디지털 배치 워크플로 결정\n\n## 결정\n\n상태: `ADOPTED — ORCADPCB2 PILOT PASS / FIXED OCCUPANCY + LOCAL ROUTING WIP`\n\n실물 만능기판 dry placement와 permanent soldering 전에 다음 디지털 산출물을 만든다.\n\n1. `55 x 37홀`, `2.54 mm pitch` component-side 배치\n2. 고정 NUCLEO/ESP32/BNO085 header 점유 홀\n3. Onshape 기준 body/removal/USB/antenna keep-out\n4. 실제 부품 pin-hole 좌표"
+  },
+  {
+    "file": "09_Electrical_Design/06_Perfboard_Photo_Derived_Occupancy_and_Pulldown_Dry_Placement_ko.md",
+    "lines": 123,
+    "intro": "# 만능기판 사진 기반 점유 지도와 R9~R12 드라이 배치\n\n## 상태와 좌표 기준\n\n- 상태: `PHOTO + ONSHAPE CROSS-CHECKED PRELIMINARY / DRY PLACEMENT ONLY`\n- 대상: `150 x 100 mm`, `55 x 37홀`, `2.54 mm pitch` carrier\n- 기준면: component side\n- 원점: 좌상단 첫 usable hole 중심\n- 열: 왼쪽에서 오른쪽으로 `C1...C55`\n- 행: 위에서 아래로 `R1...R37`\n\n기판의 component-side 인쇄 열 번호는 사진에서 왼쪽부터 `55...01`로 보인다. 따라서 이 문서의"
+  },
+  {
+    "file": "09_Electrical_Design/05_Perfboard_Photo_Dimension_and_Dry_Placement_Input_Checklist_ko.md",
+    "lines": 114,
+    "intro": "# 만능기판 사진·치수 및 1:1 드라이 배치 입력 체크리스트\n\n## 목적과 현재 승인 범위\n\nPhysical E-stop RevB functional schematic/ERC 이후, 실제 `150 x 100 mm`, `55 x 37홀`\ncarrier의 빈 홀과 보유 부품 외형을 확인해 hole-coordinate 배치도를 만드는 입력 목록이다.\n\n현재 허용 작업은 **전원 없는 관찰, 촬영, 치수 측정과 부품을 올려보는 dry placement**뿐이다.\n\n```text\n새 납땜: 금지\nlead 절단/굽힘 고정: 금지"
+  },
+  {
+    "file": "09_Electrical_Design/04_RevB_Schematic_Functional_Layout_Learning_and_Rework_Plan_ko.md",
+    "lines": 106,
+    "intro": "# RevB 회로도 기능 배치 학습 및 후속 재작업 계획\n\n## 결정과 현재 상태\n\n2026-08-13의 RevB-WIP 회로도는 현재 MVP 진행에 사용할 **전기적 검토 기준본**으로\n동결한다.\n\n```text\nFunctional topology: REVIEWED\nKiCad ERC: 0 errors / 0 warnings\nComponent text rule: Reference 50 mil / Value 40 mil\nNetlist: 120 Ref/Pin/Net tuples preserved"
+  },
+  {
+    "file": "09_Electrical_Design/03_RevB_Schematic_Readability_Reallocation_Plan_ko.md",
+    "lines": 247,
+    "intro": "# RevB 회로도 가독성 재배치 계획\n\n## 목적\n\n이 문서는 [`02_RevB_Schematic_Position_Baseline_2026-08-13_ko.md`](02_RevB_Schematic_Position_Baseline_2026-08-13_ko.md)에\n기록한 실제 좌표와 `C:\\Users\\eyh12\\Desktop\\회로도 인쇄.pdf`의 A4 출력 결과를 기준으로\nRevB를 다시 배치하는 실행 계획이다.\n\n이번 재배치는 회로 기능, 부품 선정 상태 또는 net 이름을 변경하지 않는다. 목표는 다음과 같다.\n\n1. 기존 검증된 encoder, motor logic, UART 영역은 불필요하게 흔들지 않는다.\n2. Physical E-stop을 `main power`, `control/re-enable`, `sense`의 세 흐름으로 구분한다."
+  },
+  {
+    "file": "09_Electrical_Design/02_RevB_Schematic_Position_Baseline_2026-08-13_ko.md",
+    "lines": 150,
+    "intro": "# RevB 회로도 현재 위치 기준선\n\n## 목적\n\n이 문서는 Physical E-stop RevB 회로도를 다시 배치하기 전에 저장된 KiCad 원본의\n현재 위치를 고정한다. 이후 좌표 안내는 기억이나 화면 추정이 아니라 이 기준선과\n재배치 계획을 대조해서 수행한다.\n\n현재 단계에서는 **회로도 심볼을 이동하지 않았다.** 이 문서 작성은 읽기 전용 추출,\nPDF 검토와 ERC 재실행만 수행했다.\n\n## 기준 파일과 증거"
+  },
+  {
+    "file": "09_Electrical_Design/01_Perfboard_Low_Current_Allocation_Plan_ko.md",
+    "lines": 155,
+    "intro": "# Perfboard Low-current Allocation Plan\n\n## 목적과 상태\n\n이 문서는 `150 x 100 mm`, `55 x 37홀` controller carrier 만능기판의 **남은 영역**에\n들어갈 저전류 회로의 범위와 물리적 영역을 먼저 고정한다. 현재 상태는\n`DRAFT / NO NEW SOLDER`다.\n\n이 기판은 빈 만능기판이 아니다. 2026-08-12 사용자 확인에 따라 NUCLEO-F446RE,\nESP32-S3와 GY-BNO085용 socket/header 위치가 이미 영구 납땜돼 있다. Module은 분리할 수\n있지만 header 위치는 이동 대상으로 취급하지 않는다.\n"
+  },
+  {
+    "file": "docs/handoff/README.md",
+    "lines": 170,
+    "intro": "# Handoff Notes\n\n**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n\n[현재 맥락](CURRENT_SESSION_CONTEXT.md) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md) · [11/12 마감](../progress/2026-11-12_progress.md). 아래 재개점은 이전 이력이다.\n\n## 현재 위치 — 11/8 실습·필기 마감\n\n14장 방전과37-2 입력 정착 관측을 마쳤고 사용자 위임으로 Notion37-2 필기를 완성했다. 이해 완료와 구분하며 다음은 C2 제외 근사/포함 모델 → VADC 전류식 하나부터 복습이다. [11/8 기록](../progress/2026-11-08_progress.md) · [현재 맥락](CURRENT_SESSION_CONTEXT.md) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md).\n\n11/9·10휴무·기존MVP판정·실물전원분리·NotebookLM별도 유지. 아래 CAD 재개점은 이전 이력이다.\n"
+  },
+  {
+    "file": "docs/handoff/PROJECT_FILE_MANAGEMENT_ko.md",
+    "lines": 40,
+    "intro": "# 프로젝트 파일 관리 기준\n\n2026-11-04 전체 파일 목록/문서 연결 점검을 기준으로 작성했다. 현재 상태는 [인수인계](CURRENT_SESSION_CONTEXT.md), 실제 작업/게시 근거는 [최신 마감](../progress/2026-11-04_progress.md)을 따른다.\n\n## 저장 위치와 역할\n\n| 위치 | 보관할 것 | 주의할 점 |\n| --- | --- | --- |\n| 00_Project_Charter / 01_System_Architecture | 목표·채택한 구조·인터페이스 계약 | 한국어 정본 우선, 학습 후보를 채택 결정으로 자동 승격하지 않음 |\n| 03_Firmware / 04_PC_Serial_Control | 실제 앱·소스·PC 도구·검사 | build/Debug/Release는 재생성 출력. 기존 추적 산출물은 별도 이관 전까지 보존 |\n| 07_Embedded_Learning_Notes | 개념·계산·실습 해설 | 관측·가정·계산·설계 결정을 구분 |\n| 08_Mechanical_Design / 09_Electrical_Design | 편집 원본 CAD·회로 계산·설계 검토 | 제작 CAD와 Simulation 모델, 초안과 제작 승인을 구분 |"
+  },
+  {
+    "file": "docs/handoff/NEXT_SESSION_START_PROMPT.md",
+    "lines": 17,
+    "intro": "# 다음 세션 시작 프롬프트 — 2026-11-12 학습 마감 후 재개\n\nTracked_Mobile_Robot 프로젝트를 이어서 진행하자. 작업 폴더는 C:\\Users\\eyh12\\workspace\\TIL이다.\n\n먼저 루트/프로젝트 AGENTS.md, docs/handoff/CURRENT_SESSION_CONTEXT.md 상단, docs/progress/README.md와 2026-11-12_progress.md를 읽어라. 실제 게시 범위는 assets/logs/pcb_design/2026-11-12_sampling_filter_closeout/publication.json으로 확인한다. 이전 이력의 당시 다음 작업을 현재 지시로 해석하지 않는다.\n\n이번 첫 작업은 **41-2 포트별 정상 입력·공급 조건표**다. 41-1의현재CAD 포트목록/J1·J2접점대조는완료했으므로자동반복하지않는다. 근거는 assets/logs/pcb_design/2026-11-12_port_inventory/README.md다. 기존설계20과전류/NTC핀순서·공급원이다른점을유지하며최종하네스계약으로승격하지않는다. 현재 회로도/연결 계약의 커넥터별 정상 입력 범위·기준 GND·외부/MCU 전원 상태부터 확인하고, 고장·오접속·차단·복귀 조건과 보호 경로/검증 기준으로 이어간다. 검토 결과를 설명한 뒤 필요한 회로 변경 → 기구·풋프린트 → PCB로 진행한다. 실물·빌드·플래시는 시작하지 않는다.\n\n40-2 시간·진폭비·두 alias, 40-3 조건표·온도 평균 창 비교 자료를 작성했다. 사용자는 37-2 수기/두 시정수 원리 이해, 이후 40-2 부분 이해, 마지막 온도 B안의 G(f)와 alias 구분 이해를 보고했다. 이를 40장 전체 수기/이해 완료로 확대하지 말고 이미 이해한 37-2를 자동 반복하지 않는다.\n\n전압·전류 2kHz/200개·100ms, 온도 A 2kHz/2,000개·1초 평균은 비교 기준이다. B는 출력1Hz를 유지하며 직전1,000개·0.5초만 평균하는 대안이다. 명목 응답 약1.975/1.487초, 0.9Hz ADC 전압 진폭비 10.93%/69.86%, 두 안의 출력 alias는 모두0.1Hz다. A를 유지하고 B는 실제 응답·잡음·구간 대표성을 함께 판단할 때 비교한다. 기존100Hz DC 시험안도 유지한다. 계산은 실제 PASS/설정 구현이 아니다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/README.md",
+    "lines": 87,
+    "intro": "# Concept Notes\n\n**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n\n[실적·다음 작업](../../docs/progress/2026-11-12_progress.md). 아래 날짜별 재개점은 당시 이력이다.\n\n**11/8 재개점:** [학습21](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의14장·37-2 정량 관측을 보완했고, [Notion37-2 완료 필기](../../assets/logs/pcb_design/2026-11-08_learning_closeout/37_2_Notion_Completed.md)에 두 커패시터와a,b 유도를 정리했다. 작성 완료와 이해 완료는 다르다. 다음은 C2 제외 근사/포함 모델 → VADC 전류식 복습이다. 아래 학습 순서는 당시 이력이다.\n\n## 현재 위치 — 11/5 학습·11/6 마감\n\n[학습21](21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)의39-1~39-3 설명 자료를 작성했다. 최종 판단은±0.10V 목표·현재 분압/보호/내장 ADC 구조를 유지하고39-2 기준으로 전압2채널 회로도 초안을 구체화하는 것이다.39-3에 분석/실측 예산 구분,합격·실패·보류 기준,두 채널 연결과ERC 인계를 모았다. 자료 작성과 사용자 필기/이해·실측 완료는 구분하며 필기 완료 보고는36-19까지다. 설명은 필기 형식으로 대화에도 직접 제공한다.\n"
+  },
+  {
+    "file": "docs/handoff/CURRENT_SESSION_CONTEXT.md",
+    "lines": 198,
+    "intro": "# Current Session Context\n\nLast updated: **2026-11-12 — 41-1 포트 목록 확인; 다음41-2 정상 입력·공급 조건표**.\n\n## 현재 재개점 — 41-1 포트·GND 목록\n\n- **11/12 PDF 경로 누락 수정:** 현재 CAD에서 Shield/MVP PDF를 다시 생성해 `09_Electrical_Design/KiCAD/<각 프로젝트>/exports/*_schematic.pdf`를 최신화했다. [기본 열람 링크](../../09_Electrical_Design/README.md). 두 PDF는 11/7 게시본과 본문·렌더링이 동일하며 원본 CAD를 보존했다. 11/6 `applied.pdf`는 과거 기록, Shield `placement.pdf`는 22풋프린트 초기 PCB다. [동기화 근거](../../assets/logs/pcb_design/2026-11-12_export_sync/README.md). 다음 41-2 및 검증 경계는 유지한다.\n\n- 사용자“오늘계획리스트업→진행해”요청으로포트·전원조건표를시작했다. 첫단계41-1외부포트/기준GND설명자료와현재CAD대조를작성했다. 사용자수기/이해완료는미보고다.\n- 최신.kicad_sch에서KiCad CLI10.0.5로netlist를새로추출했다. 40부품/91net의연결은11/7게시본과동일. 외부측정포트J3~J8총6개와J1/CN7·J2/CN10헤더를확인했다. [포트표·원본·해시](../../assets/logs/pcb_design/2026-11-12_port_inventory/README.md).\n- 현재전류J3/J4는1=STM_3V3,2=GND,3=OUT;NTC J5/J6는1=NTC노드,2=GND;전압J7/J8는1=GND,2=RAW다. 설계20제안과전류/NTC핀순서및EXP_3V3공급원이다르다. 현재CAD기준으로기록하고제품·키·하네스대조후최종계약을맞춘다. 이번자동회로수정없음.\n- 공급은J1-16 STM_3V3(전류센서/NTC여기),J2-7 STM_AVDD(TPS/TMUX),공통GND는J1-20이다. 별도net가전원갈바닉절연을뜻하지않는다. PC0/1의bridge/IMU간섭조건과실물핀방향은미검증이다. 별도LDO/CAN은현재CAD에없다."
+  },
+  {
+    "file": "docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md",
+    "lines": 123,
+    "intro": "# 현재 MVP 운용·재현 절차\n\n기준일: **2026-10-24** · `TK-MVP-05-03/04` 문서 산출물. 기본 무선 주행·정지·거리 기록을 확인한 현재 구성의 설명서다. 전체 MVP 인수나 새 실물 시험 완료 선언은 아니다. 이 문서 작성으로 로봇을 조작하지 않았다.\n\n판정 정본은 [요구사항·검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md), 최신 시연은 [149초 통합본·S0 복구 관측](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md), UI 변경 전 원시 통신 계측은 [v5.2 전진·3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)다. 영상의 S2→리셋 순서는 시연 관측이며 아래 표준 복구 절차를 대체하지 않는다. 아래 운용 순서는 다음에 실제 사용할 때 참고하며, 완료한 관측을 다시 수행하라는 목록이 아니다.\n\n## 1. 현재 구성과 연결\n\n| 구분 | 현재 기준 | 근거 |\n| --- | --- | --- |\n| 제어기 | NUCLEO-F446RE가 최종 출력·timeout·엔코더 처리, ESP32-S3 DevKitC가 Wi-Fi/UART 전달 | [STM 프로토콜](../../03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c), [현재 ESP 앱](../../03_Firmware/esp32_wifi_link/main/wifi_link_main.c) |\n| 구동 | MDD10A, MG540P30_12V, A=왼쪽/M1, B=오른쪽/M2 | [배터리 단독·지상 주행 기록](../progress/2026-10-18_progress.md) |"
+  },
+  {
+    "file": "docs/handoff/CODEX_CONTEXT_WORKFLOW.md",
+    "lines": 70,
+    "intro": "# Codex Context And Storage Workflow\n\n## Purpose\n\nKeep project continuity in small repository documents instead of relying on one long Codex conversation or\nreloading archived session JSONL files.\n\n## Session Start\n\n1. Read `CURRENT_SESSION_CONTEXT.md`.\n2. Read `../progress/README.md` and the latest progress file.\n3. Read only the plan/report/source file needed for the current gate."
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md",
+    "lines": 3984,
+    "intro": "# 전압 ADC 실습 — 공차·보정·무전원 차단·방전\n\n**현재 · 2026-11-12 후속 — 41-1 포트 목록:** 최신저장회로도에서외부측정포트6개/J1·J2접점을대조했다. 기존설계20과전류/NTC핀순서·공급원이다름을기록하고현재CAD는유지했다. 다음41-2정상입력/공급조건표. 설명자료작성이며사용자수기/이해완료는미보고다. 아래는이전이력이다.\n\n**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n\n[11/12 실적·마감](../../docs/progress/2026-11-12_progress.md). 아래 현재/다음/미게시 문구는 당시 기록이며 상단 재개점을 우선한다.\n\n**현재 · 2026-11-11 — 40-3 온도 평균 창 비교:** 사용자가40-2를“어느 정도 이해”했다고 보고하고40-3진행을 요청했다. 기존1초평균과최근0.5초평균을명목RC·코드평균후비선형온도환산으로비교했다. 양방향/변화위상을고려한최대응답은A약1.975초/B약1.487초,0.9Hz진폭은각각10.93%/69.86%가남는다. 온도1초평균을비교기준으로유지하고0.5초는대안으로보관한다. 다음은포트·전원조건표다. 부분이해보고와자료작성·수기/구현/실측완료를구분하며아래는이전질문별이력이다.\n\n**현재 질문 · 2026-11-11 — 40-2 진폭비 G(f):** 시간 관계 복습에 이어 진폭비의 뜻, 중심값/변동 진폭 구분, 샘플 위상에 따른 상쇄, 사인 비의 출처와 2kHz/200개 수치 대입을 보충했다. G(f)는 해당 주파수 변동의 진폭에 곱하며 DC 중심 전체에 곱하지 않는다.40-2 이해/수기 완료를 추정하지 않고40-3 후속보다 해당 개념 보완을 우선한다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/20_KiCad_Current_NTC_Voltage_Simulation_Lab_ko.md",
+    "lines": 294,
+    "intro": "# KiCad 실습 노트 — 전류 RC·NTC·전압 분압을 계산과 그래프로 연결하기\n\n[Notion 학습 노트 — 같은 내용과 원본 그래프 5개](https://app.notion.com/p/407a7326f87b81298703fecc5a17ab48)\n\n학습 회차: **2026-10-28** · 마감: **2026-10-29, Asia/Seoul**. 사용자가 KiCad 10.0.5에서 직접 회로를 그리고 OP·AC·TRAN을 실행한 학습 기록이다. 계산값, 사용자가 보고한 값, 저장된 CSV를 구분한다. 기존 2장·3장에 장 번호를 추가하는 자료가 아니라 별도의 실습 노트다.\n\n## 1. 오늘의 목표와 확인 범위\n\n모터 모니터링 입력을 설계하면서 저항·커패시터의 계산이 시뮬레이션과 맞는지 확인했다. 전류는 외부 센서의 출력 전압을 RC로 거르고, 온도는 NTC 저항을 분압 전압으로 바꾸고, 전압은 배터리 수준의 전압을 낮춘다.\n\n| 실습 | 회로·입력 | 사용자가 확인한 것 |\n| --- | --- | --- |"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md",
+    "lines": 315,
+    "intro": "# TMR 학습 노트 · 3-1 보충: 전체 측정 정확도와 입력 회로 정확도 구분\n\n[Notion 복습 문서](https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8) · 2026-10-27 저장 후 13개 절과 예시 재조회 확인. 기존 학습 노트 시작점과 3-1 페이지에도 연결했다.\n\n작성: 2026-10-27 · **3-1의 보충 설명**이며 새 3-5장이 아니다. 3장은 기존 3-1~3-4 네 편을 유지한다. 아래 시험 숫자는 **명목 계산 또는 가상 예시**다. 실제 시험 결과가 아니며 현재 상태는 **NOT_RUN**이다.\n\n전체 측정 정확도는 **실제 물리량을 최종 결과까지 얼마나 잘 읽었는가**, 입력 회로 정확도는 **센서가 만들어줄 전기 신호를 센서 대신 넣었을 때 그 뒤의 경로가 얼마나 잘 읽는가**를 묻는다.\n\n시험의 시작점이 다르므로, 한쪽의 통과를 다른 쪽의 통과로 대신할 수 없다.\n\n관련 본문: [Notion 3-1 검증 대상과 합격 기준](https://app.notion.com/p/404a7326f87b81b7bf78c03a54178726) · [Notion 3-2 정확도와 보정 검증](https://app.notion.com/p/404a7326f87b81e9adeed4f4edd952d1)\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/18_Fault_Validity_and_Final_Decision_ko.md",
+    "lines": 148,
+    "intro": "# 3-4. 이상 상태와 최종 판정\n\n학습 회차: 2026-10-25 · 정리: 2026-10-26. 이전: [3-3 PWM·수집 조건과 응답 검증](17_PWM_Sampling_and_Response_Verification_ko.md). **3장의 마지막 필기**다. 아래 상태 이름·검출 규칙·시험 ID는 검토용 제안이며 현재 펌웨어에 구현됐다는 뜻이 아니다.\n\n**핵심:** 값이 맞는 것에 더해, 값을 믿을 수 없을 때 그 사실을 전달해야 한다. 최종 판정은 시험한 조건과 증거가 있는 범위까지만 내린다.\n\n---\n\n**① ‘측정값 0’과 ‘측정하지 못함’은 다르다**\n\n정상적으로 0A를 측정한 경우와 센서가 빠져서 읽지 못한 경우를 모두 0A로 표시하면 사용자는 고장을 정상 정지로 오해할 수 있다. 마지막 정상값을 계속 보여 주면서 새 값인 것처럼 표시해도 같은 문제가 생긴다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/17_PWM_Sampling_and_Response_Verification_ko.md",
+    "lines": 144,
+    "intro": "# 3-3. PWM·수집 조건과 응답 검증\n\n학습 회차: 2026-10-25 · 정리: 2026-10-26. 이전: [3-2 정확도와 보정 검증](16_DC_Accuracy_and_Calibration_Verification_ko.md). 명목 계산과 후속 시험안을 설명한다. 실제 PWM 리플이나 응답을 측정한 문서가 아니다.\n\n**핵심:** DC 입력에서 잘 읽더라도 모터 PWM과 ADC 수집의 시간 관계 때문에 다른 값이 보일 수 있다. 정확도, 흔들림, 새 값으로 바뀌는 시간은 각각 확인한다.\n\n---\n\n**① 먼저 ‘무슨 전류’를 비교하는지 맞춘다**\n\nPWM 구동 전류에는 시간에 따른 변화가 있다. 이 프로젝트의 첫 목표는 필터된 평균·부하 추세 관측이다. 순간 피크, RMS 전류, 고속 과전류 차단은 별도의 요구다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/16_DC_Accuracy_and_Calibration_Verification_ko.md",
+    "lines": 162,
+    "intro": "# 3-2. 정확도와 보정 검증\n\n학습 회차: 2026-10-25 · 정리: 2026-10-26. 이전: [3-1 검증 대상과 합격 기준](15_Verification_Targets_and_Acceptance_ko.md). 이 문서는 실행 전 학습 자료다. 아래 수치는 명목 환산 또는 **가상 예시**이며 실측 결과가 아니다.\n\n**핵심:** 보정에 사용한 점을 잘 맞췄다는 것과, 다른 입력에서도 정확하다는 것은 다르다. 센서를 제외한 입력계부터 잔차를 확인하고, 센서 포함 시험은 별도로 판정한다.\n\n---\n\n**① 먼저 ‘무엇이 틀어졌는지’ 볼 수 있는 입력을 만든다**\n\n모터를 돌려 측정값이 흔들리는 것만 보면 전류 자체가 변했는지, 센서가 흔들렸는지, ADC가 잘못 읽었는지 구분하기 어렵다. 그래서 첫 비교 대상으로 **알려진 안정 DC 전압**을 제안한다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/15_Verification_Targets_and_Acceptance_ko.md",
+    "lines": 150,
+    "intro": "# 3-1. 검증 대상과 합격 기준\n\n학습 회차: 2026-10-25 · 정리: 2026-10-26. [2-6 후보 종합 판단](14_Current_RC_ADC_Candidate_Decision_ko.md) 다음 자료다. 3장은 **3-1부터 3-4까지 총 네 편**으로 끝낸다. 이 문서는 필기용 검증 계획이며 시험 결과가 아니다.\n\n**핵심:** 무엇을 시험했는지, 무엇과 비교했는지, 어느 정도 차이까지 허용할지를 먼저 정해야 “통과했다”는 말에 의미가 생긴다.\n\n**3-1 보충 설명 · 10/27:** [전체 측정 정확도와 입력계 정확도](19_Total_Measurement_vs_Input_Chain_Accuracy_ko.md) · [Notion 복습 문서](https://app.notion.com/p/406a7326f87b81d0a897f34791e226c8). 시험 시작점과 비교 단위가 다른 이유를 1.738V/1.742V 및 2.00A/2.12A 가상 예시로 풀어쓴다. 새 시험 결과나 요구 확정이 아니다.\n\n---\n\n**① 계산 다음에 검증이 필요한 이유**\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/14_Current_RC_ADC_Candidate_Decision_ko.md",
+    "lines": 147,
+    "intro": "# 2-6. R·C와 ADC 설정 후보 종합 판단\n\n2026-10-25. [2-5 오차 예산·보정](13_Current_Measurement_Error_Budget_and_Calibration_ko.md)에 이어지는2장의 마지막 필기다. 전류 입력 R1/C1(오른쪽 R2/C2)을 종합한다. 다음은3장 검증 계획이며2-x 항목을 더 늘리지 않는다.\n\n**현재 판단:** 12kΩ/100nF와 ADC14MHz·12bit·480cycles를 비교·검증 후보로 유지한다. 필터와 시간 계산만으로 보정 후 정확도나 최종 부품을 확정하지 않는다. DC 입력계 검증의 첫 비교 조건으로 채널별100Hz·100ms 블록10개 평균을 제안한다. 운용 수집률/평균 채택이나 MCU 설정 변경은 아니다.\n\n---\n\n**① 전체 측정 경로에 맞춰 판단한다**\n\n```text\n모터 전류 → 센서 출력 → R1/C1 → ADC 획득·변환"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/13_Current_Measurement_Error_Budget_and_Calibration_ko.md",
+    "lines": 213,
+    "intro": "# 2-5. 측정 오차 예산과 보정\n\n2026-10-25. [2-3·2-4 수집·평균·PWM 노트](12_ADC_Sampling_Cadence_Averaging_and_PWM_ko.md)에서 이어지는 필기 자료다. 전류 한 채널을 예로 들어 설명한다. 수치 목표는 제안 상태이며, 아래 가상 보정값과 예산 배분 예시는 실측값·제조사 보증·채택 설계가 아니다.\n\n**이번 질문:** 전류를 허용 오차 안에서 읽으려면 측정 경로 전체에 얼마만큼의 오차를 허용할 수 있고, 보정 후 무엇을 확인해야 하는가?\n\n---\n\n**① 측정 오차와 목표부터 정한다**\n\n참값은 정확히 알 수 없으므로 실제 시험에서는 불확도를 가진 기준 계기로 비교한다. 관측한 차이는 `우리 측정값 - 기준 계기 값`이다. 예를 들어 기준이2.00A, 우리 값이2.12A라면 차이는+0.12A다. 이 차이가 곧 참값에 대한 오차로 완전히 확정되는 것은 아니다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/12_ADC_Sampling_Cadence_Averaging_and_PWM_ko.md",
+    "lines": 90,
+    "intro": "# ADC 수집 주기·평균·PWM의 관계\n\n2026-10-25 재개. [이전 학습 노트](11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md)의 14절에서 이어간다. 이번 기록은 수집 주기 비교의 첫 블록이며, 수집률·평균 방식·RC를 확정한 설계가 아니다.\n\n## 1. 오늘의 설계 목표\n\n전류·전압 결과를 100ms마다 만들고, 안정된 새 입력을 300ms 안에 허용 오차 범위로 반영한다는 제안 목표에 맞춰 원시 수집·평균·RC 조건을 연결한다. 온도 결과는 1초마다라는 별도 제안이다. 이 수치들은 [측정 요구 초안](../../09_Electrical_Design/15_Expansion_PCB_Requirements_2026-10-23_ko.md)의 검토 목표다.\n\n흐름은 수집 주기/채널 순서 → PWM과 aliasing → 평균 지연 → 보정 후 오차 예산 → RC 후보 판단이다. 오늘 첫 블록에서는 서로 다른 시간의 의미와 100Hz/1kHz 비교 근거를 만든다.\n\n## 2. 1회 획득, 반복 수집, 결과 갱신은 서로 다르다\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/11_Monitoring_ADC_Requirements_RC_and_Sampling_ko.md",
+    "lines": 427,
+    "intro": "# 모니터링 ADC 학습 노트 — 측정 요구, NTC, RC 필터와 샘플링\n\n학습 회차: **2026-10-24** · 정리: **2026-10-25**. 대화에서 설명한 내용을 나중에 처음부터 따라 읽을 수 있도록 재구성했다. 대화 원문을 그대로 옮긴 기록은 아니다.\n\n이 노트의 목표는 **“모터 상태를 신뢰할 수 있는 데이터로 읽기 위한 모니터링 입력 회로를 설계한다”**이다. 수치의 의미와 계산 이유를 배우는 문서이며, 제안 목표나 부품 후보를 승인된 설계로 바꾸지 않는다. 실제 회로 연결과 설계 판단은 아래 쉴드 문서와 16절의 요구사항·계산 근거를 따른다.\n\n- [현재 쉴드 회로와 상세 계산](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md)\n\n## 1. 먼저 무엇을 측정하려는가\n\n회로의 R과 C를 고르기 전에 **물리량, 범위, 허용 오차, 갱신 주기, 반응 시간, 고장 시 표시**를 정한다. 단순히 ADC 숫자가 바뀌는 것과 믿을 수 있는 온도·전류 값을 얻는 것은 다른 단계다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/10_ESP32_WiFi_WebSocket_Timing_and_W4_Dataflow_ko.md",
+    "lines": 80,
+    "intro": "# ESP Wi-Fi·WebSocket 타이밍과 W4 데이터 흐름\n\n작성일: 2026-10-06. 개념 설명과 저장 소스 대조이며 새 지연 측정·펌웨어 적용 결과가 아니다. 실행 범위는 [오늘 진행 기록](../../docs/progress/2026-10-06_progress.md), 구현 순서는 [W4 계획](../../docs/plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md)을 따른다.\n\n## 주기, 지연, 보장은 서로 다르다\n\n- **주기:** 상태를 생성하거나 전송을 시도하는 간격. 100ms 간격이면 약 10Hz다.\n- **지연:** 데이터가 만들어진 뒤 다음 단계에 도착할 때까지 걸린 시간.\n- **주기 변동(jitter):** 실제 간격·지연이 매번 달라지는 정도.\n- **시간 보장:** 정해진 조건에서 마감 시각을 넘지 않음을 입증한 것. 주기를 100ms로 설정하는 것만으로 얻지 못한다.\n\n100ms마다 만든 값을 100ms 이내에 브라우저가 반드시 표시한다는 뜻은 아니다. 생성·UART 전송·ESP task 대기·TCP/Wi-Fi·브라우저 처리가 각각 시간을 사용한다."
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md",
+    "lines": 417,
+    "intro": "# STM32·ESP32 코드 구조와 함수 지도\n\n기준: 2026-09-29에 저장된 소스. 보드 없이 파일을 열고 따라 읽는 안내서다.\n**10/11 연결 안내:** 이 함수 지도는 당시 `esp32_uart_bridge` 기준이다. 마지막 실행 ESP 앱은 이후 `esp32_wifi_link`로 바뀌어 W4/W5 비구동 범위를 완료했다.\n현재 앱·parser/ticket/owner 모듈과 아직 미연결인 제어 실행 경로는 [펌웨어 목차](../../03_Firmware/README.md)를 따른다. 아래 과거 ‘현재 역할/다음’ 문구를 새 앱의 설명이나 재개 지시로 사용하지 않는다.\n먼저 **어느 파일이 무엇을 맡는지**, 다음으로 **누가 그 함수를 언제 호출하는지**를 이해한다.\n이 문서 뒤에 [단일 모터 시험 해설](08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md)을 읽으면 실제 로그와 연결하기 쉽다.\n\n처음에는 1~4절의 STM 구조를 읽고 `main()`의 반복문을 찾아본다.\n이후 5~6절의 ESP 구조와 두 보드의 연결을 읽는다. 부록은 함수 이름을 만났을 때 찾아보는 사전이다.\n읽기용 설명이며 소스를 수정하거나 시험 설정을 켜는 절차가 아니다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/08_Single_Motor_Bench_Dataflow_and_Evidence_Review_ko.md",
+    "lines": 334,
+    "intro": "# 단일 모터 시험으로 이해하는 명령·출력·피드백\n\n작성 기준: 2026-09-29의 저장 소스와 9/28~29 시험 기록.\n노트북만 있는 날, 최근 작업을 설명할 수 있도록 정리한 학습 노트다.\n새 구동 절차가 아니며, 현재 상태의 원본은 [현재 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)와\n[단일 모터 시험 보고서](../../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)다.\n\n## 읽는 순서\n\n파일별 역할과 함수 호출 관계가 먼저 필요하면 [STM·ESP 코드 구조와 함수 지도](09_STM32_ESP32_Source_Structure_and_Function_Map_ko.md)를 선행한다.\n\n한 번에 소스 전체를 이해하려고 하지 않아도 된다. 다음 세 묶음으로 읽는다."
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/07_CubeMX_Generated_Code_and_User_Code_Boundary_ko.md",
+    "lines": 823,
+    "intro": "# CubeMX 생성 코드와 사용자 코드 경계\n\n## 목적\n\n이 문서는 `stm32_uart_mvp` firmware project에서 CubeMX가 자동 생성한 파일이 무엇이고, 각 파일 안의 코드가 어떤 의미를 가지는지 정리한다.\n\n대상 project:\n\n```text\nProjects/Tracked_Mobile_Robot/03_Firmware/stm32_uart_mvp/\n```\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/06_I2C_SPI_IMU_Interface_Choice_ko.md",
+    "lines": 58,
+    "intro": "# I2C vs SPI for BNO08x IMU\n\n## 현재 판단\n\n첫 MVP에서는 BNO08x IMU를 I2C 우선으로 검토한다.\n\n이유는 최고 성능이 아니라 초기 목표에 맞는 단순성이다.\n\n```text\n현재 IMU 목적:\nencoder yaw-rate와 IMU yaw-rate 비교\nheading correction 후보 검토"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/05_HAL_LL_Direct_Register_ko.md",
+    "lines": 82,
+    "intro": "# HAL, LL, Direct Register 접근 전략\n\n## 세 계층\n\nSTM32 firmware는 보통 다음 계층으로 접근할 수 있다.\n\n| 방식 | 예시 | 특징 |\n| --- | --- | --- |\n| HAL | `HAL_UART_Init()` | 추상화 높음, bring-up 빠름 |\n| LL | `LL_USART_Enable()` | 레지스터에 가까운 ST low-layer API |\n| Direct Register | `USART2->CR1 |= ...` | 레지스터를 직접 제어 |\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/04_DMA_Interrupt_Timer_Comparison_ko.md",
+    "lines": 71,
+    "intro": "# DMA, Interrupt, Timer 비교\n\n## 한 줄 구분\n\n```text\nTimer: 시간, pulse, PWM, encoder count를 처리하는 주변장치\nInterrupt: event가 생겼을 때 CPU가 ISR로 반응하는 방식\nDMA: CPU 대신 peripheral과 memory 사이의 데이터를 옮기는 장치\n```\n\n## Timer\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/03_Timer_Encoder_Mode_ko.md",
+    "lines": 76,
+    "intro": "# Timer Encoder Mode\n\n## 핵심 개념\n\nSTM32 Timer Encoder Mode는 A/B quadrature encoder 신호를 CPU interrupt로 직접 세지 않고, timer hardware가 자동으로 count하게 하는 기능이다.\n\n```text\nEncoder A -> TIMx_CH1\nEncoder B -> TIMx_CH2\n          -> input filter\n          -> edge detector\n          -> quadrature decoder"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/02_UART_Interrupt_Ring_Buffer_ko.md",
+    "lines": 109,
+    "intro": "# UART Interrupt and Ring Buffer\n\n## 핵심 개념\n\nUART RX interrupt는 byte가 도착했을 때 CPU가 ISR로 진입하게 하는 방식이다.\n\nISR에서는 오래 걸리는 parsing을 하지 않고, 받은 byte를 ring buffer에 넣은 뒤 즉시 빠져나오는 것이 기본이다.\n\n```text\nUART byte 도착\n-> RXNE flag set\n-> NVIC가 USART IRQ 전달"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/01_Concept_Notes/01_GPIO_Alternate_Function_and_CubeMX_ko.md",
+    "lines": 79,
+    "intro": "# GPIO Alternate Function and CubeMX\n\n## 핵심 개념\n\nSTM32의 핀은 단순 GPIO뿐 아니라 UART, I2C, SPI, Timer channel 같은 peripheral 신호로도 사용할 수 있다.\n\n핀을 peripheral에 연결하려면 두 단계를 설정한다.\n\n1. `GPIOx->MODER`에서 해당 핀을 alternate function mode로 설정한다.\n2. `GPIOx->AFR[]`에서 어떤 alternate function 번호를 쓸지 선택한다.\n\n예를 들어 NUCLEO-F446RE에서 USART2를 PC serial로 쓸 때 일반 후보는 다음과 같다."
+  },
+  {
+    "file": "04_PC_Serial_Control/web_serial_dashboard/README.md",
+    "lines": 52,
+    "intro": "# Web Serial UART MVP Dashboard\n\nThis static dashboard uses the browser Web Serial API to send UART MVP frames to\nSTM32 and monitor `PONG`, `ACK`, `ERR`, and `TEL` responses.\n\nIt does not use WebSocket or a backend process. The browser opens the serial\nport directly after the user presses `Connect`.\n\n## Requirements\n\n- Chrome or Edge on desktop\n- Localhost URL, not `file://`"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/05_Debugging_Measurement/README.md",
+    "lines": 21,
+    "intro": "# Debugging and Measurement\n\n측정 기반의 실습 기록을 보관한다.\n\n이 폴더는 단순 설명보다 실제 증거를 남기는 데 집중한다.\n\n## Evidence Types\n\n- DMM voltage/current measurement\n- logic analyzer capture\n- oscilloscope capture\n- serial log"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/05_Debugging_Measurement/001_Logic_Analyzer_DMM_Measurement_Log_ko.md",
+    "lines": 44,
+    "intro": "# 001 Logic Analyzer and DMM Measurement Log\n\n## Status\n\nDraft template\n\n## Measurement Target\n\nTBD\n\n## Setup\n"
+  },
+  {
+    "file": "04_PC_Serial_Control/logs/README.md",
+    "lines": 26,
+    "intro": "# UART MVP Logs\n\nThis folder stores UART MVP validation logs generated from the PC-side tools or Web Serial dashboard.\n\n## Captured Evidence\n\n| File | Source | Summary |\n| --- | --- | --- |\n| `2026-06-22_uart_mvp_web_serial_validation.csv` | Web Serial dashboard connected to ST-LINK VCP `COM3` at `115200` baud | Real STM32 UART MVP validation log with `PING/PONG`, `ARM`, `DISARM`, valid `CMD`, `NOT_ARMED`, `OUT_OF_RANGE`, and periodic `TEL` frames |\n\n## 2026-06-22 CSV Snapshot\n"
+  },
+  {
+    "file": "09_Electrical_Design/VeroRoute/README.md",
+    "lines": 355,
+    "intro": "# VeroRoute 만능기판 배치 작업 파일\n\n이 폴더는 150 x 100 mm, 55 x 37홀 만능기판의 납땜 전 디지털 배치 검토 파일을 보관한다.\n\n## 현재 작업 파일\n\n- **2026-09-23 현재:** [ENC Conditioning VRT](Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.vrt)와\n  [동일 이름 PDF](exports/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_ENC_Conditioning_WIP.pdf).\n  VRT 02:32 저장/182,515 bytes/SHA `09c1546d04eeaf581bc55ea9717965a56fd6dac742b565f9796924bdf8fbef78`.\n  PDF 02:36 export/172,045 bytes. 1kΩ 직렬+15kΩ 풀다운 네 채널, JENC_1/2와 Flying Wire Pad 19개,\n  지정 Net 및 Broken Nets 0개 확인. 실제 납땜·저항·전원 검사와 두 +5.05V는 사용자 보고 PASS.\n  좌표·pinout·검사 범위는 [report 28](../../docs/verification/28_Encoder_Conditioning_Assembly_and_Electrical_Check_Report_2026-09-23_ko.md)을 따른다."
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/02_STM32_Board_Practice/README.md",
+    "lines": 21,
+    "intro": "# STM32 Board Practice\n\nNUCLEO-F446RE에서 직접 수행하는 실습 일지를 보관한다.\n\n실습 일지는 \"동작했다\"보다 다음 정보를 남기는 것을 목표로 한다.\n\n- 사용 보드, 핀, peripheral\n- CubeMX 설정 또는 register 설정\n- 측정 방법\n- 예상 결과\n- 실제 결과\n- 실패와 수정"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/02_STM32_Board_Practice/002_TIM_Encoder_Mode_Bringup_ko.md",
+    "lines": 75,
+    "intro": "# 002 TIM Encoder Mode Bring-Up\n\n## Status\n\nPartial — TIM3/TIM5 dual motor-power-off independent hand-rotation PASS; production speed와 powered-noise pending\n\n## Purpose\n\nMG540-A/B encoder A/B 신호를 STM32 timer encoder mode로 읽고, motor power 없이\n정지 count 안정성, 회전 방향별 signed count와 provisional 1회전 count를 확인한다.\n\n## Hardware"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/02_STM32_Board_Practice/001_USART2_RX_Interrupt_Ring_Buffer_ko.md",
+    "lines": 51,
+    "intro": "# 001 USART2 RX Interrupt and Ring Buffer\n\n## Status\n\nPlanned\n\n## Purpose\n\nUSART2 수신 interrupt와 ring buffer 구조를 NUCLEO-F446RE에서 확인한다.\n\n이 실습은 PC serial command path의 가장 작은 단위다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/02_STM32_Board_Practice/000_Practice_Log_Index.md",
+    "lines": 22,
+    "intro": "# STM32 Practice Log Index\n\n## Policy\n\n실습 파일은 번호를 붙여 시간 순서와 의존성을 유지한다.\n\n```text\n001_<topic>_ko.md\n002_<topic>_ko.md\n...\n```\n"
+  },
+  {
+    "file": "AGENTS.md",
+    "lines": 136,
+    "intro": "# Tracked Mobile Robot Codex Instructions\n\nUse this file as project-specific working context for `Projects/Tracked_Mobile_Robot`.\n\n## Read First\n\nUse the smallest current context that can answer the task:\n\n1. `docs/handoff/CURRENT_SESSION_CONTEXT.md`\n2. `docs/progress/README.md` and only the latest dated progress file\n3. The one plan, verification report, design file, or firmware source directly needed for the task\n"
+  },
+  {
+    "file": "01_System_Architecture/README.md",
+    "lines": 63,
+    "intro": "# 시스템 아키텍처 문서 안내\n\n상태 대조일: **2026-10-11**. 코드·기존 시험 증거에 맞춘 문서 정리이며 새 하드웨어 시험 결과가 아니다.\n\n이 폴더는 **현재 설계 계약과 그 결정 근거**를 관리한다. 한국어 `_ko.md`가 정본이고 영문은 보조 참고본이다.\n초기 후보·과거 시험 기록·향후 계획은 해당 시점과 범위를 표시해 보존한다.\n파일명에 Candidate/Plan이 있거나 작성일이 오래됐다는 이유만으로 폐기된 설계로 취급하지 않는다.\n\n**2026-10-27 AI 후속 계획:** [노트북 인식·판단·후속 통합 계획](../docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md)을 문서화했다. 상위 연산은 노트북에서 먼저 검증하고 ESP 단일 명령 입구/STM 최종 출력을 유지하는 방향이다. 구현·실측·기존 인터페이스 계약 변경은 없으며 현재 작업은 PCB 3-1 학습 재개다.\n\n## 현재 구현과 검증 범위\n"
+  },
+  {
+    "file": "01_System_Architecture/27_Production_Open_Loop_Command_Mapper_ko.md",
+    "lines": 263,
+    "intro": "# Production Open-Loop Command Mapper\n\n> 문서 역할·상태 대조: **2026-09-30** — 현재 open-loop mapper 계약과 당시 빌드/검사 이력. TEL은 현재 적용 PWM을 보고한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 문서 상태\n\n- Work package: `P-02A / P-02B / P-02C-1 / P-02C-2`\n- 상태: `PRODUCTION CMD CALLER SOURCE/STATIC/BUILD PASS / BOARD RUNTIME PENDING`\n- 작성일: 2026-08-26\n- 최종 갱신: 2026-08-27\n- 적용 범위: motor/LiPo-disconnected source, host/static test와 이후 저속 output request"
+  },
+  {
+    "file": "01_System_Architecture/26_Physical_EStop_Component_and_Rating_Selection_ko.md",
+    "lines": 493,
+    "intro": "# Physical E-stop Component And Rating Selection\n\n**도면 동기화 · 2026-11-07:**\n\n이 문서와report18/19/24/25/30에기록된부품정체성을MVP RevB기능도면에반영했다. [설계29 대조표](../09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md). 새부품선정/실물/정격판정변경은없으며기능핀과실물핀의차이를유지한다.\n\n> 문서 역할·상태 대조: **2026-09-30** — 부품 선정·정격 근거·잔여 수용 조건. 조립/제한 시험 완료와 정격 release를 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 Step 6 기능 회로를 실제 부품과 정격으로 구체화하는 Step 7 정본이다."
+  },
+  {
+    "file": "01_System_Architecture/25_Physical_EStop_RevB_Circuit_Architecture_ko.md",
+    "lines": 510,
+    "intro": "# Physical E-stop RevB Circuit Architecture\n\n> 문서 역할·상태 대조: **2026-09-30** — 비상정지 회로 기능 계약과 구현 이력. Step 6·도착/검사 기록의 당시 상태를 현재로 소급하지 않는다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 `REQ-ESTOP-001~020`을 RevB 회로도로 옮기기 전에 기능 회로, net, 인터페이스와\n고장 시 동작을 고정하는 Step 6 정본이다.\n\n```text\nSG-ESTOP-001"
+  },
+  {
+    "file": "01_System_Architecture/24_Physical_EStop_Safety_Requirements_ko.md",
+    "lines": 215,
+    "intro": "# Physical E-stop Safety Requirements\n\n> 문서 역할·상태 대조: **2026-09-30** — 비상정지 요구사항·시험 대응. 모터 분리 T004 PASS와 전체 T005A PARTIAL·구동 중 S0 미완료를 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 Physical E-stop의 safety goal, architecture, hazard analysis와 FMEA에서 도출된\n검증 가능한 요구사항을 정의하는 정본이다.\n\n```text\nSG-ESTOP-001"
+  },
+  {
+    "file": "01_System_Architecture/23_Physical_EStop_FMEA_ko.md",
+    "lines": 263,
+    "intro": "# Physical E-stop FMEA\n\n> 문서 역할·상태 대조: **2026-09-30** — FMEA와 후속 조치 추적. 초기 Step 4 기록을 보존하며 원인/위험을 시험 PASS만으로 삭제하지 않는다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 Physical E-stop을 구성하는 K1 relay, S0 actuator, manual re-enable,\nmonitoring, wiring과 firmware의 failure mode가 local effect에서 system effect로 어떻게\n전파되는지 분석한다.\n\n정본 연결은 다음과 같다."
+  },
+  {
+    "file": "01_System_Architecture/22_Physical_EStop_Hazard_Analysis_ko.md",
+    "lines": 227,
+    "intro": "# Physical E-stop Hazard Analysis\n\n> 문서 역할·상태 대조: **2026-09-30** — 위험 분석과 Step 3 당시 근거. 실제 위험 감소·수용 상태는 최신 검증 매트릭스와 연결한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 Physical E-stop을 포함한 첫 powered drivetrain 시험에서 사람, 장비와 환경에\n발생할 수 있는 위해를 운용 상황 기준으로 식별하고 위험 감소 설계 입력을 도출한다.\n\n다음 문서 사이의 연결점이다.\n"
+  },
+  {
+    "file": "01_System_Architecture/21_Physical_EStop_Architecture_ko.md",
+    "lines": 558,
+    "intro": "# Physical E-stop Architecture\n\n> 문서 역할·상태 대조: **2026-09-30** — 비상정지 구조와 현재 범위. Step별 초기 판정을 최신 구현 상태와 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 첫 실제 모터 구동 전에 필요한 Physical E-stop의 설계 경계를 정의한다.\n\n이 프로젝트에서 Physical E-stop은 STM32 명령 하나가 아니다. 다음 두 경로가 서로 독립적으로 같은 안전 상태를 만든다.\n\n```text"
+  },
+  {
+    "file": "01_System_Architecture/20_Motor_Driver_Selection_Comparison_ko.md",
+    "lines": 178,
+    "intro": "# Motor Driver Selection Comparison\n\n> 문서 역할·상태 대조: **2026-09-30** — MDD10A 선택 근거와 현재 배선. BTS7960 비교는 과거 선택 이력이다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 첫 drivetrain MVP에서 BTS7960 대신 MDD10A를 선택하게 된 과정을 정리한다.\n\n목표는 BTS7960 검토 흔적을 지우는 것이 아니라, 실제 프로젝트 조건을 기준으로 왜 MDD10A가 더 적합한지\n보여주는 것이다. 포트폴리오 관점에서는 부품이 바뀐 사실보다, 바뀐 이유와 그에 따른 firmware, wiring,\nvalidation 영향이 더 중요하다."
+  },
+  {
+    "file": "01_System_Architecture/20_Motor_Driver_Selection_Comparison.md",
+    "lines": 170,
+    "intro": "# Motor Driver Selection Comparison\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](20_Motor_Driver_Selection_Comparison_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Both motor power leads are connected: A=left/M1, B=right/M2. K1 is in the motor-positive power path. B direction was verified; A actual forward observation remains open.\n\n## Purpose\n\nThis document records why the first drivetrain MVP moved from a BTS7960-style\ndual-PWM plan to the MDD10A motor-driver path.\n\nThe goal is not to erase the BTS7960 exploration. The useful portfolio story is"
+  },
+  {
+    "file": "01_System_Architecture/19_Architecture_Decision_Record_ko.md",
+    "lines": 420,
+    "intro": "# Architecture Decision Record\n\n> 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트에서 내린 주요 architecture decision을 요약한다.\n\n목표는 무엇을 선택했는지만 기록하는 것이 아니라, 왜 선택했는지와 무엇을 의도적으로 미뤘는지도 기록하는\n것이다. Embedded robotics project는 motor가 도는지뿐 아니라 design reasoning으로 평가되기 때문이다.\n"
+  },
+  {
+    "file": "01_System_Architecture/19_Architecture_Decision_Record.md",
+    "lines": 359,
+    "intro": "# Architecture Decision Record\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](19_Architecture_Decision_Record_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: The Korean ADR includes later ADR-013 through ADR-015, including the single ESP-to-STM USART1 production ingress. This English edition is not a complete synchronized decision log.\n\n## Purpose\n\nThis document summarizes the major architecture decisions made for the tracked\nmobile robot project.\n\nThe goal is not only to record what was selected, but also to record why it was"
+  },
+  {
+    "file": "01_System_Architecture/18_Fault_Model_and_Safety_Cases_ko.md",
+    "lines": 396,
+    "intro": "# Fault Model and Safety Cases\n\n> 문서 역할·상태 대조: **2026-09-30** — 고장별 요구 동작과 검증 계획. 모든 검출·복구 기능이 현재 구현된 것은 아니다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇에서 예상되는 fault case와 각 case의 required safe response를 정의한다.\n\n프로젝트는 3S LiPo battery, high-current DC motor, MDD10A motor driver, STM32 firmware, ESP32 support\nlogic, 그리고 향후 CAN/ROS2 integration을 사용한다. 따라서 fault handling은 electrical failure와\nsoftware failure를 모두 다뤄야 한다."
+  },
+  {
+    "file": "01_System_Architecture/18_Fault_Model_and_Safety_Cases.md",
+    "lines": 384,
+    "intro": "# Fault Model and Safety Cases\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](18_Fault_Model_and_Safety_Cases_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document defines the expected fault cases for the tracked mobile robot and\nthe required safe response for each case.\n\nThe project uses a 3S LiPo battery, high-current DC motors, an MDD10A motor\ndriver, STM32 firmware, ESP32 support logic, and later CAN/ROS2 integration."
+  },
+  {
+    "file": "01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md",
+    "lines": 1287,
+    "intro": "# Drivetrain Kinematics and Odometry Plan\n\n**10/20 최신 상태:** 실물 톱니 **14개** 확인. 연속6개 링크 동일 형상1→6의5간격48.1~48.3mm에서 피치9.62~9.66mm, 대표값9.64mm. 기존 실측1560counts/output rev 유지 →134.96mm/rev, 좌우 공통 초기 k=1687/19500≈0.08651282mm/count. 대표값은 측정 범위 중간값이며 수동 checkpoint 회귀 보정값이 아니다. 윗쪽 직선 궤도 수동 이동100/150mm의 좌우 평균 환산은100.138590/150.532308mm다. 기존12톱니 가정이 공통 scale 차이를 대부분 설명한다. 공중 궤도 이동 비교이며 지상 차체 거리 정확도·슬립/전체 MVP PASS는 아니다. 인수 이미지 고정·전용 정지/온도/지상1m는 미완료다.\n\n> 문서 역할·상태 대조: **2026-10-19** — 운동학·오도메트리 목표와 현재 좌우 매핑, 누적 count의 생산 경로 대조. 거리 보정·1 m 시험 완료를 뜻하지 않는다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 실물14톱니·5피치 측정에 따른 거리 모델 정정 — 2026-10-20\n\n실물 톱니 **14개** 확인. 연속6개 링크 동일 형상1→6의5간격48.1~48.3mm에서 피치9.62~9.66mm, 대표값9.64mm. 기존 실측1560counts/output rev 유지 →134.96mm/rev, 좌우 공통 초기 k=1687/19500≈0.08651282mm/count. 대표값은 측정 범위 중간값이며 수동 checkpoint 회귀 보정값이 아니다.\n\n[정정 모델](../assets/logs/wifi_link/2026-10-20_track_geometry_14t_revision/geometry_model.json), [PC 검증](../assets/logs/wifi_link/2026-10-20_encoder_distance_14t_review/validation.json). 분석기의 기본 모델을 갱신했다. unittest36·실제 CLI3·입력 덮어쓰기/구버전 거부2 PASS. 원본 hash·수용 구간·delta count 불변. 새 모델 공중 전진 평균213.729923mm, 후진-244.052667mm 상당값이다."
+  },
+  {
+    "file": "01_System_Architecture/17_Drivetrain_Kinematics_and_Odometry_Plan.md",
+    "lines": 418,
+    "intro": "# Drivetrain Kinematics and Odometry Plan\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](17_Drivetrain_Kinematics_and_Odometry_Plan_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Current vehicle mapping supersedes the July checkpoint: A=left/M1/JENC_1/TIM3, B=right/M2/JENC_2/TIM5. B actual forward/reverse was observed; A actual forward observation remains open.\n\n## Purpose\n\nThis document defines the first kinematics and odometry plan for the tracked\nmobile robot.\n\nThe robot uses a left/right tracked drivetrain. For low-speed control and first"
+  },
+  {
+    "file": "01_System_Architecture/16_Control_Loop_and_State_Machine_ko.md",
+    "lines": 379,
+    "intro": "# Control Loop and State Machine\n\n> 문서 역할·상태 대조: **2026-09-30** — 제어·안전 정책과 확장 목표 상태 모델. 현재 코드의 DISARMED/ARMED/FAULT+reason 표현과 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇의 low-level drivetrain control loop와 safety state machine을 정의한다.\n\n목표는 command가 USB/UART, ESP32, CAN, future ROS2 bridge 중 어디에서 오더라도 motor output을\ndeterministic하고 safe하게 만드는 것이다.\n"
+  },
+  {
+    "file": "01_System_Architecture/16_Control_Loop_and_State_Machine.md",
+    "lines": 386,
+    "intro": "# Control Loop and State Machine\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](16_Control_Loop_and_State_Machine_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: The detailed safety enum below is a target model. Current protocol states are DISARMED/ARMED/FAULT with a separate reason; low-voltage and expanded closed-loop states are not all implemented.\n\n## Purpose\n\nThis document defines the low-level drivetrain control loop and safety state\nmachine for the tracked mobile robot.\n\nThe goal is to make motor output deterministic and safe regardless of whether"
+  },
+  {
+    "file": "01_System_Architecture/15_HAL_to_LL_Driver_Migration_Strategy_ko.md",
+    "lines": 365,
+    "intro": "# HAL to LL Driver Migration Strategy\n\n> 문서 역할·상태 대조: **2026-09-30** — 후속 선택적 LL 전환 계획. 현재 HAL 기반 검증을 유지하며 LL 전환 완료가 아니다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 drivetrain이 이미 동작한 뒤 STM32 firmware의 일부 경로를 HAL에서 LL Driver로 전환하는 전략을\n정의한다.\n\nLL 전환은 필수 engineering-depth 목표지만, 첫 bring-up 단계는 아니다. 첫 firmware는 CubeMX와 HAL을\n사용해 wiring, clock, timer, peripheral 설정 위험을 줄인다. LL은 나중에 timing clarity, register-level"
+  },
+  {
+    "file": "01_System_Architecture/15_HAL_to_LL_Driver_Migration_Strategy.md",
+    "lines": 374,
+    "intro": "# HAL to LL Driver Migration Strategy\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](15_HAL_to_LL_Driver_Migration_Strategy_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document defines how the STM32 firmware can migrate selected paths from\nHAL to LL Driver after the drivetrain is already working.\n\nLL migration is a required engineering-depth goal, but it is not the first\nbring-up step. The first firmware should use CubeMX and HAL to reduce wiring,"
+  },
+  {
+    "file": "01_System_Architecture/14_CAN_Bus_Integration_Plan_ko.md",
+    "lines": 583,
+    "intro": "# CAN Bus Integration Plan\n\n> 문서 역할·상태 대조: **2026-09-30** — 후속 CAN 통합 계약·frame 정의. PA11/PA12 예약과 모듈 보유는 실제 통신 검증이 아니다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n\n## 2026-10-23 목표 구성 채택\n\n사용자가 STM32 센서/구동 집중 + ESP32 무선 게이트웨이 + 두 MCU 사이 CAN + 개발용 CANable 관측 구성을 채택했다. 별도 센서 MCU는 추가하지 않는다. STM32가 전류2·온도2·전압2채널과 기존 IMU/엔코더를 처리하고 최종 출력/안전 판단을 유지한다. ESP32는 Wi-Fi와 CAN 사이의 명령/상태 게이트웨이다.\n\n각 MCU에 별도 CAN 트랜시버가 필요하다. STM 측은 보유 MCU-230 활용을 검토하고 ESP 측은 별도 트랜시버를 확보한다. 두 트랜시버는 공통 버스 하나의 노드이며, CANable은 개발 시 같은 버스의 관측/시험 노드다. 평상시 무선 운용에는 CANable을 분리할 수 있다.\n"
+  },
+  {
+    "file": "01_System_Architecture/14_CAN_Bus_Integration_Plan.md",
+    "lines": 575,
+    "intro": "# CAN Bus Integration Plan\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](14_CAN_Bus_Integration_Plan_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document defines how CAN will be introduced into the tracked mobile robot\nproject.\n\nCAN is a required learning goal, but it is not part of the first motor bring-up\nMVP. The first drivetrain MVP uses UART or USB serial because it is easier to"
+  },
+  {
+    "file": "01_System_Architecture/13_FreeRTOS_Task_Architecture_ko.md",
+    "lines": 576,
+    "intro": "# FreeRTOS Task Architecture\n\n> 문서 역할·상태 대조: **2026-09-30** — STM32의 향후 FreeRTOS 전환 설계. ESP-IDF에서 FreeRTOS를 사용하는 사실과 구분하며 STM32 전환 완료가 아니다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 low-level controller의 FreeRTOS task architecture를 정의한다.\n\nFreeRTOS는 필수 학습 목표이자 architecture 목표지만, 첫 bring-up 단계는 아니다. 프로젝트는 먼저\nHAL bare-metal firmware로 PWM, encoder, ADC, UART, 기본 motor safety를 검증한다. 이 baseline이\n동작한 뒤 firmware를 task 기반 구조로 재구성한다."
+  },
+  {
+    "file": "01_System_Architecture/13_FreeRTOS_Task_Architecture.md",
+    "lines": 578,
+    "intro": "# FreeRTOS Task Architecture\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](13_FreeRTOS_Task_Architecture_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document defines the FreeRTOS task architecture for the tracked mobile\nrobot low-level controller.\n\nFreeRTOS is a required learning and architecture goal, but it is not the first\nbring-up step. The project first validates PWM, encoder, ADC, UART, and basic"
+  },
+  {
+    "file": "01_System_Architecture/12_Power_Distribution_and_Safety_Architecture_ko.md",
+    "lines": 518,
+    "intro": "# 전원 분배와 안전 아키텍처\n\n> 문서 역할·상태 대조: **2026-09-30** — 현재 전원 분배와 안전 경계. 초기 RevA 경로는 과거 비교 자료로 보존한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트의 첫 power distribution과 safety architecture를 정의한다.\n\n프로젝트의 안전 결정을 실제 전원 계획으로 확장한다.\n\n- 3S LiPo battery를 main energy source로 사용한다."
+  },
+  {
+    "file": "01_System_Architecture/12_Power_Distribution_and_Safety_Architecture.md",
+    "lines": 468,
+    "intro": "# Power Distribution and Safety Architecture\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](12_Power_Distribution_and_Safety_Architecture_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Current motor supply is LiPo -> F1 -> S1 -> positive busbar -> K1 30/87 -> MDD B+. The two XL4015 inputs branch before K1. The current USB bench disconnects #1 board-power connectors.\n\n## Purpose\n\nThis document defines the first power distribution and safety architecture for\nthe tracked mobile robot project.\n\nIt expands the project safety decisions into a practical power plan:"
+  },
+  {
+    "file": "01_System_Architecture/11_System_Block_Diagram_and_Interface_Map_ko.md",
+    "lines": 441,
+    "intro": "# 시스템 블록 다이어그램과 인터페이스 맵\n\n> 문서 역할·상태 대조: **2026-09-30** — 시스템 연결·역할 지도. 배선 완료·펌웨어 설정·제한 검증을 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트의 첫 전체 hardware/software interface map을 정의한다.\n\n이전 아키텍처 문서들을 하나의 시스템 관점으로 연결한다.\n\n- STM32는 하위 구동 제어와 safety를 담당한다."
+  },
+  {
+    "file": "01_System_Architecture/11_System_Block_Diagram_and_Interface_Map.md",
+    "lines": 371,
+    "intro": "# System Block Diagram and Interface Map\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](11_System_Block_Diagram_and_Interface_Map_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: PC7 is configured GPIO input; IMU auxiliary wiring is checked but sensor firmware/runtime remains pending. CAN PA11/PA12 and ADC PA4/PB0 remain unconfigured.\n\n## Purpose\n\nThis document defines the first complete hardware/software interface map for\nthe tracked mobile robot project.\n\nIt connects the previous architecture documents into one system view:"
+  },
+  {
+    "file": "01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md",
+    "lines": 379,
+    "intro": "# 시스템 아키텍처 로드맵: CAN, RTOS, LL Driver\n\n> 문서 역할·상태 대조: **2026-09-30** — 단계별 목표와 진입 조건. 현재 실행 순서는 최신 master plan과 인수인계를 따른다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 다음 세 가지 필수 학습 목표를 기준으로 프로젝트 아키텍처 로드맵을 갱신한다.\n\n1. CAN 통신 경험\n2. RTOS 기반 firmware architecture 경험\n3. HAL에서 LL Driver로 전환하는 경험"
+  },
+  {
+    "file": "01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL.md",
+    "lines": 335,
+    "intro": "# System Architecture Roadmap: CAN, RTOS, and LL Driver\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Pin configuration, permanent wiring, logic-power and bounded single-motor observations have progressed beyond the initial roadmap. Follow the current master plan for remaining gates.\n\n## Purpose\n\nThis document updates the project architecture roadmap based on three required\nlearning goals:\n\n1. CAN communication experience"
+  },
+  {
+    "file": "01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md",
+    "lines": 890,
+    "intro": "# STM32-ESP32 UART 인터페이스 계약\n\n> 문서 역할·상태 대조: **2026-09-30** — 현재 UART frame·timeout·reset 계약. 날짜별 검사/이미지 기록은 당시 증거로 보존한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n> **2026-10-11 후속 구현:** [Wi-Fi ARM/CMD 초기 계약·검증 계획](../docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md)에 persistent controller, 일회용ticket, 만료/정지 순서와 zero-only Gate를 작성했다. parser·ticket·owner 실제PC15/12/9 PASS, owner 포함 ESP 전체 빌드 성공은 사용자 확인이다. ESP ARM/CMD의 상태/기한·UART 실행 경로와 새 보드 시험은 미완료다. 초기 CMD100ms와 제어 TEL age250ms는 실측 전 설계값이며, 아래 UART frame·STM timeout300ms·ADR-015를 변경한 구현 증거가 아니다. STM RX 자체의 session/seq freshness는 여전히 별도다.\n\n## 목적\n\n이 문서는 STM32 NUCLEO-F446RE 하위 제어기와 ESP32-S3 DevKitC-1 보조\n컨트롤러 사이의 통신 계약을 정의한다. Final MVP production external command ingress는\nESP32-S3 하나다. PC serial terminal/Python script는 역사적 bench source로만 STM32"
+  },
+  {
+    "file": "01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract.md",
+    "lines": 786,
+    "intro": "# STM32-ESP32 UART Interface Contract\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](09_STM32_ESP32_UART_Interface_Contract_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Applied PWM, reason and command_age_ms telemetry are implemented. Conditioned T004 reset/latch/PWM passed. Current M2 bench hook is 1U; the 9/30 check was 30/31, with the all-hooks-off check failing. Historical 0U/29-test checkpoints are not current image status.\n\n## Purpose\n\nThis document defines the communication contract between the STM32\nNUCLEO-F446RE low-level controller and the ESP32-S3 DevKitC-1 support\ncontroller. ESP32-S3 is the only Final MVP production external command ingress.\nA PC serial terminal or Python script used STM32 USART2 only as a historical"
+  },
+  {
+    "file": "01_System_Architecture/08_Motor_Driver_and_HBridge_Control_ko.md",
+    "lines": 463,
+    "intro": "# 모터 드라이버와 H-Bridge 제어 결정\n\n> 문서 역할·상태 대조: **2026-09-30** — 드라이버 선택·출력 계약 및 검증 계획. 단발 구동 관측과 전체 구동 수용은 별개다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n> **2026-09-29 실물 방향 확인:** 현재 A=left/M1, B=right/M2, 각 Motor+→MxA/Motor−→MxB 연결이다.\n> 오른쪽은 DIR HIGH=전진, LOW=후진으로 펌웨어를 보정하고 양방향10%/300ms 단발 구동을 확인했다.\n> 왼쪽 정의는 LOW=전진/HIGH=후진을 유지하며, A 양수 명령의 실제 차량 전진 방향 관찰은 남아 있다.\n> 이는 현재 모터·배선·장착 기준의 대응이며 MDD10A의 보편적 전진 극성 규칙이 아니다.\n> [report31](../docs/verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)에 근거와 한계를 보존한다.\n\n## 목적"
+  },
+  {
+    "file": "01_System_Architecture/08_Motor_Driver_and_HBridge_Control.md",
+    "lines": 443,
+    "intro": "# Motor Driver and H-Bridge Control Decision\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](08_Motor_Driver_and_HBridge_Control_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: Current mapping: A=left/M1, B=right/M2. Right DIR HIGH=forward/LOW=reverse was verified in bounded pulses. Left actual forward observation remains open; permanent control pull-downs are installed.\n\n## Purpose\n\nThis document defines the first motor-driver decision for the tracked mobile\nrobot project and explains how the selected driver should be controlled from\nSTM32.\n"
+  },
+  {
+    "file": "01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md",
+    "lines": 369,
+    "intro": "# ESP32-S3 기능과 프로젝트 내 역할 분석\n\n> 문서 역할·상태 대조: **2026-09-30** — ESP32 역할 계약과 학습 경로. 수동 bench 콘솔 구현과 일반 forwarding 계획을 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 ESP32-S3의 주요 기능을 정리하고, 궤도형 모바일 로봇 프로젝트에서\nESP32-S3 DevKitC-1을 어떤 역할로 사용할지 정의한다.\n\n목표는 ESP32-S3가 STM32 하위 제어기를 대체하도록 만드는 것이 아니다.\n목표는 ESP32-S3를 무선 통신, UI, 센서 프로토타이핑, 개발 편의 기능을 담당하는"
+  },
+  {
+    "file": "01_System_Architecture/07_ESP32S3_Features_and_Project_Role.md",
+    "lines": 371,
+    "intro": "# ESP32-S3 Features and Project Role Analysis\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](07_ESP32S3_Features_and_Project_Role_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: The production mapper, timeout DISARMED path and manual bench console are implemented. General PC forwarding and Wi-Fi control remain planned.\n\n## Purpose\n\nThis document summarizes ESP32-S3 features and defines how the ESP32-S3\nDevKitC-1 should be used in the tracked mobile robot project.\n\nThe goal is not to replace the STM32 low-level controller. The goal is to"
+  },
+  {
+    "file": "01_System_Architecture/06_MCU_Pin_Allocation_Candidate_ko.md",
+    "lines": 408,
+    "intro": "# STM32F446RE 핀 배정 후보\n\n> 문서 역할·상태 대조: **2026-10-22** — 기존 핀 배정과 센서4채널 후속 후보를 구분한다. 새 센서 핀은 미배선/미설정이다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 NUCLEO-F446RE 기반 로봇의 현재 핀 배정과 후속 기능의 예약 후보를 관리한다.\n\n이 문서는 전체 최종 핀맵이 아니다. 후보안에서 시작했으며, 현재 CubeMX와 bench에서\n확인된 항목은 표와 각 절에 `validated`로 구분해 표시한다.\n"
+  },
+  {
+    "file": "01_System_Architecture/06_MCU_Pin_Allocation_Candidate.md",
+    "lines": 317,
+    "intro": "# STM32F446RE Pin Allocation Candidate\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](06_MCU_Pin_Allocation_Candidate_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n> Current scope: PC7 is configured as a GPIO input, not EXTI; conditioned motor-disconnected T004 passed. Both M1/A and M2/B power leads are connected. B powered forward/reverse was observed; A actual forward observation remains open.\n\n> English reference updated for the recorded IMU auxiliary-pin selection on 2026-09-23.\n> The [Korean pin map](06_MCU_Pin_Allocation_Candidate_ko.md) is canonical; candidates and completed wiring are not equivalent to firmware/runtime validation.\n\n## Purpose\n\nThis document proposes the first pin allocation candidate for the NUCLEO-F446RE"
+  },
+  {
+    "file": "01_System_Architecture/05_MCU_Communication_and_IO_Peripherals_ko.md",
+    "lines": 455,
+    "intro": "# STM32F446RE 통신 및 I/O 주변장치 분석\n\n> 문서 역할·상태 대조: **2026-09-30** — 주변장치 개념과 초기 후보. 현재 production 명령 경로는 ESP↔STM USART1이며 USART2는 bench logger다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트를 위해 STM32F446xC/E 데이터시트의\n통신, GPIO, ADC, 디버그 관련 주변장치를 분석한다.\n\n범위:\n"
+  },
+  {
+    "file": "01_System_Architecture/05_MCU_Communication_and_IO_Peripherals.md",
+    "lines": 469,
+    "intro": "# STM32F446RE Communication and I/O Peripheral Analysis\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](05_MCU_Communication_and_IO_Peripherals_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document analyzes the communication, GPIO, ADC, and debug-related\nperipherals in the STM32F446xC/E datasheet for the tracked mobile robot project.\n\nScope:\n"
+  },
+  {
+    "file": "01_System_Architecture/04_MCU_Timers_and_Watchdogs_ko.md",
+    "lines": 379,
+    "intro": "# STM32F446RE 타이머와 Watchdog 분석\n\n> 문서 역할·상태 대조: **2026-09-30** — 타이머 개념과 초기 배정 후보. 현재 PWM=TIM4, 엔코더=TIM3/TIM5이며 초기 후보표는 결정 이력이다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트를 위해 STM32F446xC/E 데이터시트의\n타이머와 watchdog 부분을 분석한다.\n\n범위:\n"
+  },
+  {
+    "file": "01_System_Architecture/04_MCU_Timers_and_Watchdogs.md",
+    "lines": 392,
+    "intro": "# STM32F446RE Timers and Watchdogs Analysis\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](04_MCU_Timers_and_Watchdogs_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document analyzes the timer and watchdog part of the STM32F446xC/E\ndatasheet for the tracked mobile robot project.\n\nScope:\n"
+  },
+  {
+    "file": "01_System_Architecture/03_MCU_Core_Memory_Interrupts_ko.md",
+    "lines": 422,
+    "intro": "# STM32F446RE 코어, 메모리, 인터럽트, 클럭 분석\n\n> 문서 역할·상태 대조: **2026-09-30** — 코어·메모리·인터럽트 개념 설명. 현재 펌웨어 구성은 코드와 구현 요약을 따른다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 STM32F446xC/E 데이터시트의 Section 3 Functional overview 중\n프로젝트와 먼저 연결되는 앞부분을 분석한다.\n\n범위:\n"
+  },
+  {
+    "file": "01_System_Architecture/03_MCU_Core_Memory_Interrupts.md",
+    "lines": 441,
+    "intro": "# STM32F446RE Core, Memory, Interrupt, and Clock Analysis\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](03_MCU_Core_Memory_Interrupts_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document analyzes the first project-relevant part of Section 3 Functional\noverview in the STM32F446xC/E datasheet.\n\nScope:\n"
+  },
+  {
+    "file": "01_System_Architecture/02_MCU_Introduction_and_Description_ko.md",
+    "lines": 317,
+    "intro": "# STM32F446RE Introduction and Description 분석\n\n> 문서 역할·상태 대조: **2026-09-30** — MCU 기능과 요구사항의 개념 검토. 기능 보유와 실제 구현 완료를 구분한다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 STM32F446xC/E 데이터시트의 다음 범위를 읽고, NUCLEO-F446RE가\n궤도형 모바일 로봇의 하위 제어기로 적절한지 1차 판단한 기록이다.\n\n- Section 1: Introduction\n- Section 2: Description"
+  },
+  {
+    "file": "01_System_Architecture/02_MCU_Introduction_and_Description.md",
+    "lines": 343,
+    "intro": "# STM32F446RE Introduction and Description Analysis\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](02_MCU_Introduction_and_Description_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document analyzes the following parts of the STM32F446xC/E datasheet and\nrecords the first suitability check for using the NUCLEO-F446RE as the\nlow-level controller of the tracked mobile robot.\n\n- Section 1: Introduction"
+  },
+  {
+    "file": "01_System_Architecture/01_MCU_Datasheet_Reading_Map_ko.md",
+    "lines": 156,
+    "intro": "# STM32F446RE 데이터시트 읽기 지도\n\n> 문서 역할·상태 대조: **2026-09-30** — 개념·자료 읽기 안내. 현재 배선 지시는 06 핀 배정과 최신 도면을 따른다.\n> [현재 구현·검증 범위와 문서 안내](README.md) · [최신 검증 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md). 날짜별 과거 수치·판정은 당시 기록이다.\n\n## 목적\n\n이 문서는 궤도형 모바일 로봇 프로젝트를 위해 STM32F446xC/E 데이터시트를\n어떤 순서와 관점으로 읽을지 기록한다.\n\n목표는 MCU의 모든 기능을 요약하는 것이 아니다. 목표는 NUCLEO-F446RE를\n모터 제어, 엔코더 입력, 배터리 전압 감시, 센서 인터페이스, PC/ESP32 통신을"
+  },
+  {
+    "file": "01_System_Architecture/01_MCU_Datasheet_Reading_Map.md",
+    "lines": 158,
+    "intro": "# STM32F446RE Datasheet Reading Map\n\n> Reference status reviewed **2026-09-30**. The [Korean counterpart](01_MCU_Datasheet_Reading_Map_ko.md) is canonical; this English reference is not a fully synchronized implementation/bench-status record.\n> Use the [current architecture guide](README.md) and linked evidence for wiring and test state. Dated measurements, builds and early candidates below retain their original scope.\n\n## Purpose\n\nThis document records how to read the STM32F446xC/E datasheet for the tracked\nmobile robot project.\n\nThe goal is not to summarize every feature of the MCU. The goal is to extract\nengineering evidence for why the NUCLEO-F446RE can be used as the low-level"
+  },
+  {
+    "file": "docs/plans/2026-10-08_W5_Two_Board_PING_DISARM_Plan_ko.md",
+    "lines": 96,
+    "intro": "# W5 두 보드 USB 환경의 무선 PING/DISARM 계획\n\n작성: **2026-10-08**. 사용자 선택: 다음 작업은 STM·ESP 두 보드를 가져가는 조건으로 계획한다.\n본문은 **10/8 작성 당시의 계획**이다. 당시 W4의 마지막 실측은 만능기판 장착·각 USB·LiPo 미연결 조건이었다. 후속 수행 결과는 아래 마감과 보고서34를 따른다.\n\n## 2026-10-10 마감 — 수행 결과\n\n**W5 비구동 PING/DISARM 범위 완료.** 정상 왕복·입력 거부·timeout/복구·요청자별 결과·버튼·재접속 후 자동 재전송 없음을 확인했다. [보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)에 W5-01~24 관측과 한계를 구분했다.\n실제 PAGE JS57·실제 C 함수 PC21 PASS이며 물리 UART 주입/동시 태스크 경합/구동 안전 증거가 아니다. **두 USB 분리 완료 사용자 확인**. WS 상태는100ms로 변경했고128byte·요청 간격/응답500ms·동시1개·자동 retry 없음 계약을 적용했다.\n다음은 ARM/CMD 세션·freshness·명령 유효시간·재허가 계약 설계이며 실제 구동은 별도 Gate다. 아래 ‘현재/제안/다음’은 계획 작성 당시 표현으로 보존한다.\n\n## 목표와 첫 세션 종료선"
+  },
+  {
+    "file": "docs/plans/2026-10-06_ESP32_WiFi_Learning_and_Integration_Plan_ko.md",
+    "lines": 137,
+    "intro": "# ESP32 Wi-Fi 학습 및 통합 계획\n\n작성일: **2026-10-06**, 갱신일: **2026-10-10**. 상태: **학습 예제 실행 확인 / W4 상태 전달 PASS / W5 비구동 PING/DISARM 완료 / ARM/CMD 미구현**.\n최신 근거는 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)와 [10/10 마감 기록](../progress/2026-10-10_progress.md), W4 당시 근거는 [보고서33](../verification/33_W4_STM_UART_WebSocket_and_Startup_Status_2026-10-08_ko.md)다.\n\n## 1. 목적 및 배경\n\n이 문서는 프로젝트 내 ESP32-S3의 역할과 그에 따른 펌웨어 학습 비중 및 통합 순서를 정의한다.\n\n### 1.1 프로젝트 내 ESP32의 역할\n프로젝트 아키텍처에 따르면 ESP32는 **\"무선 창구\"** 역할을 담당하며, 다음과 같이 역할이 명확히 분리된다.\n*   **STM32 (메인 컨트롤러):** 모터 출력, 명령 타임아웃, 배터리 안전 감시, 엔코더 리딩, **최종 안전 게이트**"
+  },
+  {
+    "file": "docs/plans/2026-10-02_ESP_Standalone_WebSocket_Code_Guide_ko.md",
+    "lines": 492,
+    "intro": "# ESP 단독 WebSocket 상태 전송 코드 입력 안내\n\n작성일: 2026-10-02. 상태: **입력용 기준 코드 준비. 실제 C 소스 반영·빌드·플래시·보드 검증 전**.\n\n기준은 현재 `03_Firmware/esp32_wifi_link`와 설치된 ESP-IDF 6.0.2다.\n공유기 STA 연결은 사용자 확인 완료이며, 이번 목표는 동일한 네트워크에서 ESP 자체 상태를 WebSocket으로 받는 것이다.\n사용자가 코드를 입력하고 Codex가 저장 파일을 검토한 다음 사용자가 빌드·플래시한다.\n개인 설정의 SSID/비밀번호와 `WIFI_LINK_USE_AP=0`은 그대로 유지한다.\n\n## 1. 먼저 이해할 흐름\n\n현재는 브라우저가 `/api/status`를 반복 요청한다. 이번에는 첫 화면을 HTTP로 받은 뒤 `/ws` 연결을 유지하고 ESP가 약 1초 주기로 상태를 보낸다."
+  },
+  {
+    "file": "docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md",
+    "lines": 142,
+    "intro": "# 노트북·ESP로 진행하는 Wi-Fi, PCB 설계와 프로젝트 이해\n\n**최신 구매/모니터링 방향:** [10/22 준비 계획](2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md)을 따른다. 아래 환경·선정/미구매 표현은10/1 당시 이력이다.\n\n작성일: 2026-10-01. 상태: **사용자 빌드·플래시 성공, AP HTTP 접속·갱신·연결 해제/복구 확인 / 새 PCB CAD 미실행**.\n사용자는 노트북과 ESP32-S3를 가지고 있다. STM32·만능기판·모터는 현재 작업 환경에 없다.\nAP·공유기·노트북 핫스폿 가능성을 모두 열어 두었으며 접속 방식은 아직 고정하지 않았다.\n\n## 목표와 가능한 범위\n\n| 작업 | 현재 환경에서 진행할 일 | 다른 장비가 있어야 확인할 일 |\n| --- | --- | --- |"
+  },
+  {
+    "file": "docs/plans/2026-10-01_ESP_Standalone_WiFi_HTTP_Code_Guide_ko.md",
+    "lines": 480,
+    "intro": "# ESP 단독 Wi-Fi·HTTP 상태 페이지 코드 입력 안내\n\n작성일: 2026-10-01. 단계: **사용자 빌드·플래시 성공, AP W1/W2 및 W3 연결 해제·복구 통과**.\n설치된 ESP-IDF 6.0.2의 softAP/station/HTTP server 예제와 관련 header를 대조했다.\n실제 결과는 [10/1 진행 기록](../progress/2026-10-01_progress.md#wi-fi-ap-실측--w1w2w3-결과)을 따른다. STA·WebSocket·STM 통합은 미검증이다.\n아래 기준 코드의 브라우저 script 모의 검사5개는 별도 사전 검사다. 실제 보드의 HTTP500·시간 초과 주입 시험으로 확대하지 않는다.\n8번의 오타·누락 목록은 수정 전 검토 이력이다. 사용자가 반영하고 빌드했으므로 같은 수정을 다시 요구하지 않는다.\n\n## 이번 단계의 목적\n\n노트북 브라우저가 USB 콘솔 대신 Wi-Fi로 ESP에 요청하고 ESP의 실제 동작 시간을 받는다.\nSTM32와 모터가 없어도 이 경로를 검증할 수 있다. STM의 상태·PWM·CPS는 연결하지 않은 데이터이므로 null이다."
+  },
+  {
+    "file": "docs/plans/2026-09-30_M1_Three_Second_Run_Console_Code_Guide_ko.md",
+    "lines": 533,
+    "intro": "# A/M1 3초 구동 콘솔 코드 입력 안내\n\n작성: 2026-09-30. **사용자 입력용 제안이며 실제 펌웨어 소스에는 적용하지 않았다.**\n사용자가 입력·저장한 뒤 Codex가 저장본을 검토하고, 사용자 빌드·플래시·계측 순서로 진행한다.\n\n## 이번에 하는 일\n\nA/M1의 방향·단발 timeout·구동 중 DISARM·S0 정지는 이번 대화에서 확인했다.\n이번 목표는 **A를 10%로 약 3초 유지했을 때 엔코더 신호와 CPS가 계속 정상인지** 관찰하는 것이다.\nB는 정지한다. 이미 완료한 방향·S0 반응 시험을 다시 시작하지 않는다.\n\n사용자는 XL830L만 가지고 있으며 전류 측정선을 고정할 절연 악어클립/연결선은 없다고 답했다."
+  },
+  {
+    "file": "docs/plans/2026-09-30_M1_Physical_S0_Stop_Console_Code_Guide_ko.md",
+    "lines": 487,
+    "intro": "# A/M1 구동 중 S0 정지 시험 코드 입력 안내\n\n작성: 2026-09-30. 작성 당시에는 **사용자 입력용 제안 코드**였으며 Codex가 실제 ESP 소스에 자동 적용하지 않았다.\n이후 사용자가 입력·빌드·플래시하고 단일 모터 시험을 수행했다. 아래 코드는 당시 실행 조건을 보존한다.\n\n## 시험 후 정정 — 사람의 조작 시간과 통신 timeout 구분\n\n**사람이 회전을 보고 S0을 누르는 시간을 500ms로 제한한 시험 설계는 부적절했다.**\n통신이 끊겼을 때 정지시키는 CMD timeout과 사람이 조작할 전체 시험 시간을 분리해야 한다.\n다음 수동 시험은 통신 timeout을 유지하면서, 유효한 상태·통신을 확인하는 동안에만 CMD를 갱신하고\n별도의 수 초 이내 전체 종료 기한을 두는 방식으로 설계한다. 단순히 STM timeout을 늘리는 수정은 아니다.\n이 후속 방식은 아직 구현하지 않았다. 아래 500ms 단발 코드를 향후 수동 S0 시험의 기본 절차로 재사용하지 않는다."
+  },
+  {
+    "file": "docs/plans/2026-09-30_M1_Active_DISARM_Console_Code_Guide_ko.md",
+    "lines": 433,
+    "intro": "# A/M1 구동 중 DISARM 시험 코드 입력 안내\n\n작성: 2026-09-30. **코드 제안 단계**이며 실제 ESP 소스에 자동 적용하지 않았다.\n사용자가 입력·저장하면 저장본 검토 → 사용자 빌드 → 전원 조건 확인 → 사용자 플래시·HELP 확인 순서로 진행한다.\n아래 코드는 보드에서 빌드·실행한 결과가 아니다.\n\n## 목적과 이전 시험의 차이\n\n직전 A/M1 양수 10%·300ms 시험에서는 사용자가 실제 전진 후 정지, B 무동작을 확인했다.\n첨부 로그는 CMD 수락 후 267ms에 처음 양수 CPS를 보고했고, 367ms TEL에서 CMD_TIMEOUT/PWM0을 보였다.\n그 결과는 명령 만료에 따른 정지이며, 이번 목표는 **회전 중 별도 DISARM 명령으로 출력을 끄는 것**이다.\n"
+  },
+  {
+    "file": "docs/plans/2026-09-29_Next_Session_M1_Direction_and_Bench_Closeout_ko.md",
+    "lines": 44,
+    "intro": "# 휴식 후 계획: 왼쪽 전진 방향 확인과 시험 마감\n\n작성: 2026-09-29. 오늘은 추가 구동하지 않는다.\n먼저 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md),\n[9/29 진행 기록](../progress/2026-09-29_progress.md),\n[단일 모터 보고서](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)를 읽는다.\n\n## 이미 끝난 범위\n\n- A/M1 양수·음수10%/300ms 회전·CPS 부호·timeout 후0 복귀.\n  양수 시험의 실제 전진 방향은 미확인이다.\n- B/M2는 오른쪽 DIR 보정 후 실제 전진/역회전·CPS 부호·A 무동작·timeout 후0 복귀까지 확인했다."
+  },
+  {
+    "file": "docs/plans/2026-09-27_M1_One_Shot_Console_Code_Guide_ko.md",
+    "lines": 436,
+    "intro": "# M1 수동 1회 펄스 시험 코드 입력 안내\n\n> **후속 완료:** 아래는9/27 입력 이력과 최초5% 설계다. 콘솔 완성과 실모터 시험은9/28~29에 진행했다.\n> 현재 M2 역방향10%/300ms 설정과 재개 위치는 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md), 결과는 [report31](../verification/31_Single_Motor_Pulse_Cross_Test_and_Right_DIR_Correction_2026-09-29_ko.md)을 따른다.\n\n상태: **2026-09-27 사용자 입력 도중 중단한 WIP**. 아래는 완성 목표 블록이며 실제 파일은 일부만 입력됐다.\nESP-IDF v6.0.2의 로컬 UART API와 현재 프로젝트 설정을 기준으로 작성했다.\n펌웨어 빌드·플래시·보드 동작은 아직 검증하지 않았다. 사용자가 입력한 실제 파일을 다시 검토한 뒤 진행한다.\n\n## 휴식 후 재개 위치\n\n실제 [uart_bridge_main.c](../../03_Firmware/esp32_uart_bridge/main/uart_bridge_main.c)는"
+  },
+  {
+    "file": "docs/plans/2026-09-22_Next_Session_Power_Path_and_T_ESTOP_005A_Plan_ko.md",
+    "lines": 105,
+    "intro": "# 다음 세션 — 전원 경로 정리와 T-ESTOP-005A 준비\n\n> 2026-09-23 상태: 이 문서는 당시 T005A 진입 계획이다. 이후 run01~06과 복구 결과는 [report 27](../verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md)에 보존했다. 현재 작업은 엔코더 영구 배선 검사 뒤 실제 엔코더 연결이며 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.\n\n- 작성일: 2026-09-22, T004 완료 후 휴식 전\n- 실행일: 사용자가 수면 후 재개하는 세션. 임의로 다음 날짜의 완료 기록을 만들지 않는다.\n- 상태: **PLAN ONLY — 아래 작업은 아직 실행하지 않음**\n- 시작 근거: [9/22 progress](../progress/2026-09-22_progress.md),\n  [T004 report 26](../verification/26_T_ESTOP_004_Conditioned_PWM_Latch_Reset_and_Safe_Restore_Test_Report_2026-09-22_ko.md)\n\n## 다음 세션 목표\n"
+  },
+  {
+    "file": "docs/plans/2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md",
+    "lines": 209,
+    "intro": "# UART·측정 헤더·IMU 신호 배선 납땜 순서\n\n## 검토 결과와 작업 범위\n\n- **9/19 Git 종료 기록:** CTRL수정본의 실제 저장본은 9/19 02:33:28, 160,699 bytes,\n  SHA-256 `96f881a54fd5efcd8a3a8456fb3716284d28075944ffd3d8f2bb95f179c36aa9`다.\n  아래 검토본과 hash가 달라 다음 도면 사용 전 변경분을 대조한다. 이번에는 Git 보존만 진행했다.\n  아래 사용자 보고 실물 검사 결과는 유지하며 새 저장본의 도면 검토 PASS로 확대하지 않는다.\n- **검토 기준(9/18 사용자 지정):** [CTRL수정본 VRT](../../09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt),\n  2026-09-18 19:21:55 저장, 161,191 bytes,\n  SHA-256 `251b271958db7ae46055e674bef86913f683b9c5241d12fd48fa47f34cbcb772`.\n  CTRL과 ENC는 각각 3핀 두 개이며, 아래 현재 핀표가 이전 6핀 안내를 대체한다."
+  },
+  {
+    "file": "docs/plans/2026-09-11_UART_Debug_Header_and_T004_Continuation_Plan_ko.md",
+    "lines": 552,
+    "intro": "# 2026-09-11 UART 고정 배선·측정 헤더와 T004 연장 계획\n\n## 현재 재개 지점 — 2026-09-19 납땜·무전원 검사·마감 완료\n\n- **이후 작업에 우선할 최신 기준:** 사용자 지정 [CTRL수정본 VRT](../../09_Electrical_Design/VeroRoute/Tracked_Mobile_Robot_Perfboard_RevC_Estop_Logic_Power_UART_Debug_WIP_CTRL수정본.vrt),\n  9/18 19:21 저장. CTRL/ENC가 각각 3핀 두 개로 분리됐다. CTRL GND는 CTRL_2 Pin3(C35/R7)다.\n  UART·IMU 배정은 유지되며 Broken Net은 0개다. 아래 9/16 파일 안내는 당시 기록이다.\n  9/19까지 전체 JDBG GND, UART 양방향, CTRL·ENC·IMU의 안내한 무전원 검사에 사용자 PASS가 보고됐다.\n  같은 날 마감·무전원 STM/ESP 장착 간섭 확인도 사용자 PASS다.\n  다음은 T004 BUILD-01의 사용자 STM32/ESP32 빌드이며 전원 인가/통신/T004는 미시험이다.\n  최신 좌표와 체크는 [납땜 순서 문서](2026-09-16_UART_Debug_IMU_Soldering_Sequence_ko.md)에 있다.\n"
+  },
+  {
+    "file": "docs/plans/2026-09-08_T_ESTOP_004_Firmware_PWM_Integration_Runbook_ko.md",
+    "lines": 338,
+    "intro": "# T-ESTOP-004 Firmware/PWM Integration Runbook\n\n- 작성일: 2026-09-08\n- 최근 확인일: 2026-09-22\n- 상태: `COMPLETE — MOTOR-DISCONNECTED T004 AND ALL-HOOKS-0U SAFE RESTORE PASS`\n- 정식 시험 판정: `PASS — S0-B/VO617A/PC7 firmware/PWM scope; full Physical E-stop PARTIAL`\n- 작업자: Lee Younghyun\n- 시작 branch: `agent/dual-encoder-bringup`\n- 시작 commit: `1e11ffdd0360dd36c2f27e6861d81a50f88e848f`\n\n2026-09-22: 사용자가 controlled 이미지 빌드·플래시와 모터 분리 시험을 완료했다.\nS0 assertion/release/reset/fresh command, pressed/open boot, active wire-open과 최종 hook-0"
+  },
+  {
+    "file": "docs/plans/2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md",
+    "lines": 274,
+    "intro": "# 2026-09-05 Physical E-stop Remaining Bench Gates\n\n## 상태와 목표\n\n- 상태: `CURRENT / GATE 2 FUNCTIONAL PASS — GATE 4 CONDITIONED VOLTAGE SUBSET PASS, GATE 5 NEXT`\n- 최신 결과: [`2026-09-08 progress`](../progress/2026-09-08_progress.md)\n- 공식 수용 기준: [`Physical E-stop verification plan`](../verification/06_Physical_EStop_Requirements_and_Verification_Plan_ko.md)\n- 목표: 완료된 K2/Gate 2, XL4015 #1/#2와 `T-ESTOP-003` voltage-function 결과를 보존하고,\n  motor-disconnected `T-ESTOP-004` firmware/PWM integration으로 이동한다.\n\n2026-09-07 사용자는 bottom-view 해석 오류를 설명하고 VeroRoute의 K2 Label을 정정해\n`Tracked_Mobile_Robot_Perfboard_RevC_Estop_K2_Label_Corrected_WIP.vrt`로 저장했다. 수정본의 Label 배열과"
+  },
+  {
+    "file": "docs/plans/2026-09-03_RevC_Unpowered_Photo_Hole_DMM_Inspection_Plan_ko.md",
+    "lines": 255,
+    "intro": "# 2026-09-03 RevC 부분 실장 무전원 검사 계획\n\n> **2026-09-05 실행 종료 / 역사 문서:** 이 runbook의 실행은 종료됐다. 실제 후속 결과와\n> evidence boundary는 [`2026-09-05 progress`](../progress/2026-09-05_progress.md), 남은 Gate는\n> [`2026-09-05 remaining bench gates`](2026-09-05_Physical_EStop_Remaining_Bench_Gates_ko.md)를 따른다.\n> 아래 K2 좌표표는 TX2 bottom-view를 component-side에 직접 적용한 오류가 있는 frozen 기록이므로\n> 실물 핀 식별의 정본으로 사용하지 않는다.\n\n## 상태와 오늘의 종료선\n\n- 상태: `EXECUTION CLOSED 2026-09-05 / PARTIAL EVIDENCE` — 2026-09-03 rail 0 V와 U1\n  `V-02~V-03` PASS 뒤 후속 배선 및 control-only powered subset까지 수행했다. 세부 결과와"
+  },
+  {
+    "file": "docs/plans/2026-08-26_Pre_Arrival_Schedule_ko.md",
+    "lines": 208,
+    "intro": "# 2026-08-26 Pre-Arrival Schedule\n\n## 문서 상태\n\n- 일정 구간: 2026-08-26 ~ 2026-09-15\n- 상태: `ACTIVE / ALL-SELECTED-PARTS-ARRIVED TRANSITION 2026-08-30`\n- 상위 실행계획: [`2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md`](2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md)\n- 현재 진행기록: [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)\n- 일정 수립 기록: [`../progress/2026-08-26_progress.md`](../progress/2026-08-26_progress.md)\n- 기준: 2026-08-30 K1/S0/S2/VO617A-3/P6KE/F2의 지정된 무전원 component screen은 report\n  19에 기록했다. 6P는 loose kit+별도 18 AWG로 미조립이다. `VH-30J`/`WX-03B` crimp-tool\n  set도 사용자 보고로 도착했지만 exact 구성/상태, die 형상과 first-article crimp는 미검증이다."
+  },
+  {
+    "file": "docs/plans/2026-08-25_Final_MVP_Remaining_Work_and_Pre_Arrival_Plan_ko.md",
+    "lines": 419,
+    "intro": "# Final MVP Remaining Work And Pre-Arrival Plan\n\n## 문서 상태\n\n- 기준일: 2026-08-25\n- 상태: `ACTIVE / P-04B PARTIAL + ALL-SELECTED-PARTS-ARRIVED UPDATE 2026-08-30`\n- 목적: Final MVP까지 남은 작업의 임계 순서와 잔여 부품 대기 중 병렬 작업을 분리한다.\n- 현재 진행 기록: [`../progress/2026-08-30_progress.md`](../progress/2026-08-30_progress.md)\n- 날짜별 실행 일정: [`2026-08-26_Pre_Arrival_Schedule_ko.md`](2026-08-26_Pre_Arrival_Schedule_ko.md)\n- 상위 계획: [`00_Project_Master_Plan_To_Final_MVP_ko.md`](00_Project_Master_Plan_To_Final_MVP_ko.md)\n\n초기 배송 예상은 2026년 9월 중순이었지만 2026-08-30 기준 선정한 E-stop 부품과 crimp-tool"
+  },
+  {
+    "file": "docs/plans/2026-08-16_next_session_perfboard_active_dir_pwm_plan_ko.md",
+    "lines": 192,
+    "intro": "# 다음 세션: Final Perfboard Active DIR/PWM 검증 계획\n\n작성일: 2026-08-16\n예상 소요: 문제 없을 때 45~60분\n완료일: 2026-08-18\n상태: `COMPLETE — motor-disconnected MDD10A-input scope`\n\n## 목적\n\n영구 만능기판의 `STM32 -> R9~R12/J5 -> MDD10A` 경로가 부팅·리셋 중 LOW를 유지하는\n것뿐 아니라, 실제 `DIR1/PWM1/DIR2/PWM2` active 신호도 올바르게 전달하는지 motor를\n분리한 상태에서 확인한다."
+  },
+  {
+    "file": "docs/plans/2026-07-10_board_only_stm32_esp32_uart_bridge_plan.md",
+    "lines": 281,
+    "intro": "# 2026-07-10 Board-Only STM32-ESP32 UART Bridge Plan\n\n## 목적\n\n현재 보유한 보드는 STM32 NUCLEO-F446RE와 ESP32-S3 DevKitC다. 모터, 엔코더, IMU 없이도 다음 단계의 시스템 통합 구조를 선행 검증할 수 있다.\n\n이번 계획의 목표는 PC-first UART MVP를 ESP32-controlled UART bridge 구조로 확장하기 위한 준비와 실습 순서를 정의하는 것이다.\n\n```text\n현재 검증 완료:\nPC Web Serial Dashboard\n<-> ST-LINK VCP"
+  },
+  {
+    "file": "docs/plans/2026-06-08_to_2026-06-10_hardware_execution_plan.md",
+    "lines": 110,
+    "intro": "# 2026-06-08 To 2026-06-10 Hardware Execution Plan\n\n## Purpose\n\n이 문서는 2026-06-08 월요일부터 2026-06-10 수요일까지의 실제 bench 작업 순서를 정리한다.\n\n현재 목표는 motor 구동이 아니라 power path와 MDD10A 초기 상태를 안전하게 확인하는 것이다.\n\n## Current Constraints\n\n- DC-rated main switch has not arrived yet.\n- Remaining parts are expected around Wednesday, 2026-06-10."
+  },
+  {
+    "file": "docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md",
+    "lines": 1062,
+    "intro": "# 최종 MVP까지의 전체 실행 계획\n\n갱신: **2026-10-24 통합 시연149초 제작·검증 완료**. [운용 절차](../handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)·[시연 구성안](2026-10-24_MVP_Demo_Outline_ko.md)에 현재 전원/배선·소스/산출물 기준, 시작~종료/복구와 기존 근거를 연결했다. 전체 MUST 최종 인수는 미완료다.\n\n**현재 위치:** `ST-MVP-03 / TK-MVP-03-05` 완료. run03/04 실측1002mm, 평균 추정1002.640333/1000.953333mm, 오차+0.640333/−1.046667mm. `MVP-011 / REQ-ODO-001 / T-ODO-001`은 거리/오차 기록 범위 PASS다. 정밀도·직진성 보증이나 자동1m 정지는 아니다. k=1687/19500, cap150/200‰·gain960/930 유지. [원본/판정](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조).\n\n**적용 범위:** 기존 MG540 유지, 온도 `MVP-015 / REQ-THERM-001 / T-LOAD-001 / ST-MVP-04`는 DEFERRED / NOT_RUN. 전류/ADC도 후속이며 장비 배송·열 기준을 MVP 선행으로 복원하지 않는다.10/17 사용자 제외한 정격/도면 조사는 재개하지 않는다. 미검증을 PASS로 바꾸거나 장시간/정격 운전 적합성을 주장하지 않는다.\n\n**다음:** [149초 완성본·검증](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md)의 재생 확인 또는 보류한 PCB 상세 검토. 기본 조작·카펫 주행·S0/ARM 차단·복구/재주행 편집을 완료했다. [판정41 후속 정정](../verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md#5-기준-검토-결과와-중복-재개-정정)에 따라10/17 이미 수행·후속 제외한 rail-off 조사를 다시 선행으로 걸지 않는다. 영상 제작 완료와 전체 MUST 인수 미완료를 구분한다.\n\n실제 판정은 원본 시험 자료 → [검증표](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) → 이 계획 순서로 확인한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)와 [오늘 기록](../progress/2026-10-24_progress.md)이 재개점이다. 완료한 거리·단절/복구·공중5/10/15cm 및 로컬 이미지 감사를 반복하지 않으며20cm는 사용자 요청 미실시로 남긴다. 아래 날짜별 계획은 당시 이력이고 현재 수행 지시가 아니다.\n"
+  },
+  {
+    "file": "docs/plans/2026-10-16_UART_Line_Cancel_Recovery_Code_Guide_ko.md",
+    "lines": 323,
+    "intro": "# UART 재연결 첫 DISARM 복구 코드 가이드\n\n작성: **2026-10-16**. 후속 상태: 사용자 4개 파일 입력·저장본 PC513조합+executor17+main42·양쪽 보드 빌드/플래시·재연결 관측 완료. 부분 명령 폐기의 실물 수용은 미완료이며 [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)을 따른다. 아래 교체 블록은 입력 당시 이력으로, 현재 파일에 다시 적용하지 않는다. 입력 전 후보 manifest의 guide hash에 해당하는 [원본 안내 snapshot](../../assets/logs/wifi_link/2026-10-16_uart_cancel_candidate/code_guide_snapshot.txt)을 보존했다.\n\n## 해결할 문제와 현재 증거\n\nSTM은 LF가 도착할 때 한 줄을 파싱한다. `CMD,seq=`가 남은 상태에서 `DISARM,seq=123\\n`이 붙으면 한 줄 `CMD,seq=DISARM,seq=123`으로 해석해 첫 정지 요청을 잃는다. PC에서 이 결합을 재현했다. 반대로 LF만 먼저 보내면 완성된 `ARM,seq=99` 뒤에 LF가 붙어 오래된 ARM이 실행될 수 있다.\n\n실물 UR-01 run01에서는 CMD와 자동 DISARM이 통째로 유실됐고, 재연결 첫 DISARM 2760658648은 성공했다. 이 성공은 부분 명령 실패가 고쳐졌다는 증거가 아니다. [실물 관측](../../assets/logs/wifi_link/2026-10-16_ur01_uart_reconnect_run01/observations.json)과 [기존 실패 보고](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)를 구분한다.\n\n## 수신과 송신의 책임\n"
+  },
+  {
+    "file": "docs/plans/2026-10-16_UART_Late_DISARM_ACK_Test_Code_Guide_ko.md",
+    "lines": 349,
+    "intro": "# UR-03 / AC-S08 — 늦은 DISARM ACK 시험 코드\n\n## 지금 할 일\n\n**STM `uart_mvp_protocol.c`에 아래 8개 교체 블록을 한 묶음으로 입력하고 저장한다.**\n새 설정값은 우선 `0U`로 둔다. 저장본 검토 후 시험값 `1U`와 STM 빌드·플래시를 안내한다.\nESP는 현재 정상 이미지(mode 0)를 사용한다. 이번 문서는 입력 단계이며 보드 조작 지시가 아니다.\n\n대상: [uart_mvp_protocol.c](../../03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c)\n\n## 왜 필요한가\n"
+  },
+  {
+    "file": "docs/plans/2026-10-16_UART_CMD_Timeout_Test_Code_Guide_ko.md",
+    "lines": 527,
+    "intro": "# UR-03 / AC-S06 — STM 명령 시간초과와 재무장 조건\n\n## 지금 할 일\n\n**ESP `wifi_link_main.c`의 아래 세 범위를 한 묶음으로 교체하고 저장한다.**\n`WIFI_UART_PARTIAL_TEST_MODE`는 우선 **`0U`**로 둔다. 저장본 검토 후 시험값 `3U`, ESP 빌드·플래시를 진행한다.\nSTM은 정상 모드로 복원한 현재 코드를 그대로 사용한다. 이 문서의 현재 단계는 코드 입력이며 보드 조작 단계가 아니다.\n\n대상: [wifi_link_main.c](../../03_Firmware/esp32_wifi_link/main/wifi_link_main.c)\n\n## 이번 시험에서 확인할 것\n"
+  },
+  {
+    "file": "docs/plans/2026-10-16_to_18_Work_Schedule_ko.md",
+    "lines": 120,
+    "intro": "# 10월 16–18일 작업 일정\n\n> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.\n\n기준: 2026-10-16. 현재 UART 줄 폐기/부분 명령 시험의 준비 상태를 반영한 **작업 시간 예약안**이다. 캘린더 이벤트의 완료 여부나 시험 PASS를 의미하지 않는다.\n\n- [Notion 일정표](https://app.notion.com/p/3faa7326f87b8122b119d7a9de00fe50)\n- [Google 캘린더 가져오기 파일](calendar/2026-10-16_to_18_work_schedule.ics) — 11개 일정, 한국시간, 각 시작 10분 전 알림을 파일에 포함.\n- **등록 상태:** Google Calendar 플러그인 설치는 확인했지만 이 대화에는 일정 조회·생성 도구가 없다. 실제 등록·기존 일정 충돌·알림 반영은 미확인이다.\n- 사용 가능 시간은 12:00–00:00. 사용자 확인에 따라 **10/16(금) 17:00 이후는 러닝 때문에 비운다.** 10/17·18은 17:00–18:00 저녁, 나머지 빈 시간은 휴식·지연 여유로 남긴다.\n\n## 시간표"
+  },
+  {
+    "file": "docs/plans/2026-10-13_WiFi_ARM_CMD_Main_Integration_Code_Guide_ko.md",
+    "lines": 2296,
+    "intro": "# Wi-Fi ARM/CMD — 기존 main·브라우저 연결\n\n작성: 2026-10-13. 아래 첫 전체 C 블록은 최초 입력 후보를 보존한 것이다.\n현재는 실제 `main/wifi_link_main.c`에 통합·진단 로그·ticket 전송 여유·IDLE ARM 버튼 안정화까지 적용했다.\n최신 변경은 이 문서 마지막의 **IDLE ARM 버튼 안정화**를 따른다.\n첫 전체 C 블록을 다시 덮어쓰면 이후 수정이 사라지므로, 현재 저장된 소스를 기준으로 진행한다.\n\n## 최초 입력 절차 — 적용 완료, 이력 보존\n\n`03_Firmware/esp32_wifi_link/main/wifi_link_main.c`를 열어 **첫 `#include`부터 마지막 `app_main()`의 닫는 중괄호까지 전체를 아래 C 블록으로 교체하고 저장**한다.\n기존 파일 안의 여러 연결 지점을 따로 붙이다 누락하는 일을 줄이기 위해 한 번에 제공한다.\n신규 펌웨어 모듈은 없고 CMake의 기존 여섯 source와 개인 Wi-Fi 설정은 그대로 사용한다."
+  },
+  {
+    "file": "docs/plans/2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md",
+    "lines": 593,
+    "intro": "# ARM/CMD state 실제 저장본 수정 안내 — 2026-10-12\n\n실제 저장한 `.h/.c`를 읽고 원래 안내와 대조했다. CMake의 다섯 source 등록과 의존성은 맞다.\n현재 저장본 PC 검사는 첫 `statc`에서 컴파일 실패해 **0 tests / ERROR1**이다. 이는 27개 동작 검사 실패가 아니라 실행 전 컴파일 실패다.\n안내의 C 블록은 앞서 PC27 PASS였던 snapshot과 byte 내용이 같음을 확인했다. 사용자 수정본의 PASS는 저장 후 별도로 검사한다.\n\n## 한 번에 수정할 곳\n\n줄 번호는 최초 저장본 기준이며 수정하면 달라질 수 있다. 표의 변경을 한 번에 반영하거나, 아래 두 완성본으로 전체 교체하면 된다. CMake는 유지한다.\n\n| 파일·줄 | 현재 내용·누락 | 올바른 내용·이유 |\n| --- | --- | --- |"
+  },
+  {
+    "file": "docs/plans/2026-10-12_WiFi_ARM_CMD_Executor_Code_Guide_ko.md",
+    "lines": 539,
+    "intro": "# UART 실행 모듈 입력 안내 — 2026-10-12\n\n상태: **10/13 사용자 executor 실제 저장본 PC17 PASS / `.h/.c` 안내 일치·CMake 등록 정상 / executor 포함 ESP 전체 빌드 성공 사용자 확인·main 연결 미실행**.\n헤더 두 오타 수정 후 실제 저장본 컴파일·17개 동작 검사를 통과했다. [검토 기록](../progress/2026-10-13_progress.md) 및 [원본 검사 출력](../../assets/logs/wifi_link/2026-10-13_executor_review/saved_revision_2/pc_executor_saved.txt)을 따른다.\n선행: parser PC15·ticket PC12·owner PC9·state PC27 실제 저장본 PASS, state 포함 ESP 전체 빌드 성공 사용자 확인.\n기준은 [제어 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md), 앞선 판단 모듈은 [state 안내](2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md)다.\n\n## 10/13 재개 — 이번 단계의 완료 범위\n\nexecutor를 별도 파일로 나누는 것은 설계 선택이다. 필요한 연결 기능을 기존 main에 작성하는 방법도 있다.\n이번에는 이미 검사한 후보 코드를 활용해 executor 한 쌍을 입력하고, 이어서 기존 main과 브라우저를 연결한다.\n이번 zero-only 단계에서 계획한 추가 펌웨어 모듈은 이 한 쌍으로 한정한다."
+  },
+  {
+    "file": "docs/plans/2026-10-11_WiFi_ARM_CMD_State_Code_Guide_ko.md",
+    "lines": 671,
+    "intro": "# ARM/CMD 네 번째 입력 블록 — 상태·시간 제한·응답과 정지 확인\n\n작성일: **2026-10-11**. 갱신: **2026-10-12**. 상태: **최종 사용자 저장본 PC27 PASS / state 포함 ESP 전체 빌드 성공 사용자 확인**.\n다음은 main의 제어 실행 adapter 연결이다. 새 플래시·보드 ARM/CMD 결과는 미확인이다.\n10/12 최종 `.h/.c`와 CMake를 대조하고 실제 저장본 27 tests/PASS를 확인했다. [최종 근거](../../assets/logs/wifi_link/2026-10-12_state_review/saved_revision_4/manifest.json)와 [진행 기록](../progress/2026-10-12_progress.md)을 따른다. 아래 최초 컴파일 실패·미입력 설명은 입력 당시 이력이다.\n10/12 실제 `.h/.c`와 CMake를 검토했다. CMake 등록은 맞으며 실제 저장본은 0 tests/ERROR1이다. [일괄 수정 안내](2026-10-12_WiFi_ARM_CMD_State_Corrections_ko.md)를 먼저 따른다. 아래 C 블록은 검사했던 후보와 동일하다.\n선행: parser PC15·ticket PC12·owner PC9 실제 저장본 PASS, owner 포함 ESP 빌드 성공 사용자 확인.\n기준: [초기 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md).\n\n오늘 두 보드 UART 재연결 뒤 DISARM ACK·PONG·STARTUP READY, TEL과 PWM0/0·drop/err0/0을 제공 로그에서 확인했다.\n후속 사용자가 핀의 바닥 접촉 때문에 CPS가 튀었고 보드를 띄우니 현상이 사라졌다고 확인했다. 해소 후 정확한 수치는 미보고다.\n엔코더 미연결 조건의 CPS는 실제 속도/정지 증거가 아니다. 이번 모듈의 TEL 정지 확인은 command/PWM0이며 CPS를 사용하지 않는다."
+  },
+  {
+    "file": "docs/plans/2026-10-11_WiFi_ARM_CMD_Owner_Code_Guide_ko.md",
+    "lines": 223,
+    "intro": "# ARM/CMD 세 번째 입력 블록 — 제어 연결의 소유권 기록\n\n작성일: **2026-10-11**. 상태: **사용자 저장본 실제 PC9 PASS / owner 포함 ESP 전체 빌드 성공 사용자 확인**.\n선행 결과: parser 실제PC15 PASS·ticket 실제PC12 PASS, ticket 포함 ESP 전체 빌드 성공 사용자 확인.\n기준: [초기 제어 계약](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md).\n\n사용자 `.h/.c`와 CMake 등록을 검토했다. 안내와 기능이 일치하고 실제 파일 PC 검사9개가 모두 PASS다.\n공백·끝줄 차이는 기능에 영향이 없다. 아래 블록은 입력 참고용으로 유지하며 추가 수정은 필요 없다.\n\n## 왜 별도 owner가 필요한가\n\n현재 W5의 `s_wifi_command_owner_session_id`는 PING/DISARM 요청 한 개가 끝나면 해제된다."
+  },
+  {
+    "file": "docs/plans/2026-10-10_WiFi_ARM_CMD_Ticket_Code_Guide_ko.md",
+    "lines": 270,
+    "intro": "# ARM/CMD 두 번째 입력 블록 — 일회용 ticket\n\n작성일: **2026-10-10**. 갱신일: **2026-10-11**. 상태: **사용자 수정본 실제 PC12 PASS / ticket 포함 ESP 전체 빌드 성공 사용자 확인**.\n선행 결과: [parser 안내](2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md)의 실제 저장본 PC15 PASS,\nESP 전체 빌드 성공은 사용자 확인이다. 새 플래시·보드 실행은 확인하지 않았다.\n기준: [제어 설계안](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md).\n\n## 만드는 이유와 이번 범위\n\nparser는 `ticket=9`를 숫자9로 바꿀 뿐, ESP가 발급한 번호인지 확인하지 않는다.\n이번 모듈은 **ESP가 어떤 연결에 어떤 용도로 언제 발급했는지**를 보관하고 실제 요청과 대조한다.\nticket은 암호나 로그인 인증이 아니다. 오래 대기한 입력과 재사용 입력을 거부하는 번호다."
+  },
+  {
+    "file": "docs/plans/2026-10-10_WiFi_ARM_CMD_Parser_Code_Guide_ko.md",
+    "lines": 350,
+    "intro": "# ARM/CMD 첫 입력 블록 — 요청 구조체와 parser\n\n작성일: **2026-10-10**. 단계: **parser 저장본 PC15 PASS / ESP 전체 빌드 성공 사용자 확인**.\n기준: [제어 설계안](2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md).\n\n이번에는 **문자열을 읽어 요청 구조체에 담는 부분**을 만든다.\n제어 owner·ticket 발급/소비·시간 검사·UART 송신·브라우저 버튼은 다음 연결 블록이다.\n기존 `wifi_link_main.c`의 W5 parser와 enum을 확장하지 않는다.\n\n## 저장본 검토와 이번 교체 범위\n\n사용자가 수정한 세 파일을 다시 읽었다. CMake 등록과 header 선언은 맞으며,"
+  },
+  {
+    "file": "docs/plans/2026-10-10_WiFi_ARM_CMD_Control_Contract_ko.md",
+    "lines": 299,
+    "intro": "# Wi-Fi ARM/CMD 제어 계약과 비구동 검증 계획\n\n> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.\n\n작성일: **2026-10-10**. 현재 상태 갱신: **2026-10-16 — zero-only 기능 관측·UART 줄 폐기 반영·재연결 첫 정지 확인 / 부분 명령 실물 수용 및 AC-S PARTIAL**.\n\n현재 ESP 앱에는 ARM/zero CMD와 제어 상태·브라우저가 연결돼 있다. [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)에 기능 관측/이전 실패를, [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md)에 CAN+LF 보완과 후속 PC/실물 근거를 분리했다. 다음은 [UR-02 부분 명령 통제 주입 준비](2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md)다.\n\n아래 초기 구현 설명과9절 구현 순서는10/10~11 설계 이력이다. 현재 미구현 목록으로 읽지 않는다. 수용 기준은 유지하며 문서 갱신만으로 PASS를 올리지 않는다.\nUART의 정본은 [인터페이스 계약09](../../01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md),\n완료한 비구동 범위는 [W5 보고서34](../verification/34_W5_PING_DISARM_WebSocket_and_Response_Matching_2026-10-10_ko.md)다.\n아래 시간값은 첫 구현·측정의 기준이며 무선 지연이나 실제 정지 시간을 보장하는 수치가 아니다."
+  },
+  {
+    "file": "docs/plans/2026-10-17_WiFi_Nonzero_PAGE_Code_Guide_ko.md",
+    "lines": 71,
+    "intro": "# Wi-Fi 방향 입력 — PAGE와 모드 표시 연결\n\n상태: **mode0 사용자 빌드/플래시와 NZ-01~04 모터 분리 시험 PASS**. 현재 `WIFI_CONTROL_ZERO_ONLY=0U`, `WIFI_UART_PARTIAL_TEST_MODE=0U`. 아래 최초 입력의1U 지시는 완료 이력이다. [보고서38](../verification/38_WiFi_Nonzero_Disconnected_Motor_Bench_Closeout_2026-10-17_ko.md)을 따른다.\n\n## 이번 변경의 목적\n\ncore가 요청값을 UART로 전달할 준비를 마쳤으므로, 브라우저에서 현재 누르는 방향을 CMD 값으로 만들고 ESP가 실제 설정을 알리도록 연결한다. ARM은 명시적 사용자 클릭이고 첫 CMD는0이다. ACTIVE가 된 뒤 방향 입력을 받는다.\n\n초기 조작은 방향 버튼 네 개로 제한한다. 전진/후진은 `vx=±50, w=0`, 좌/우 회전은 `vx=0, w=±250`이다. 기존 입력 한계 ±100mm/s·±500mrad/s 안의 고정 요청값이며 실측 속도가 아니다. 실제 모터 방향·회전·정지 특성은 후속 실물 시험 범위다.\n\n```text\n수동 ARM → ARM ACK → 첫 zero CMD ACK/새 TEL → ACTIVE"
+  },
+  {
+    "file": "docs/plans/2026-10-17_WiFi_Nonzero_Core_Code_Guide_ko.md",
+    "lines": 63,
+    "intro": "# Wi-Fi nonzero 제어 core — 첫 입력 묶음\n\n상태: **사용자 세 파일 저장·저장본 PC 검사 PASS / 사용자 ESP 빌드·플래시 완료 보고**. 기본 `WIFI_CONTROL_ZERO_ONLY=1U` 유지. 플래시 완료는 보드 UART/PWM 검증 완료를 의미하지 않는다.\n\n## 목적과 상태 흐름\n\n기존 core는 ACTIVE에서도 모든 nonzero CMD와 TEL을 거부하고 UART 문자열도 항상 0으로 만들었다. 이 묶음은 그 세 지점을 연결해 확장한다. 값 허용, 상태 허용과 UART 실행을 분리한다.\n\n```text\nIDLE: fresh DISARMED/출력0 + 새 ARM/ticket\n  → ARM_PENDING: ARM 전송/ACK\n  → ZERO_PENDING: zero CMD만 허용 + matching ACK 뒤 새 ARMED/zero TEL"
+  },
+  {
+    "file": "docs/plans/2026-10-17_WiFi_Nonzero_Control_Integration_Plan_ko.md",
+    "lines": 45,
+    "intro": "# Wi-Fi nonzero 명령 통합 실행 범위\n\n작성: 2026-10-17. 상태: **mode0 사용자 빌드/플래시·NZ-01~04 모터 분리 선택 시나리오 PASS / 실제 Wi-Fi 모터 구동 전**.\n\n## 목표\n\n완료한 ARM/zero CMD의 연결 소유권·ticket·만료·우선 정지를 유지하면서, ACTIVE에서 현재 사용자의 nonzero 입력을 STM으로 전달한다. 기존 zero-only 회차를 자동 반복하거나 후속 PCB 기능을 선행 조건으로 추가하지 않는다.\n\n배터리 ADC·자동 저전압 정지는 후속 PCB 단계다. 현재 MVP의 통전 주행은 셀 알람과 작업자 감독, 경고 시 즉시 수동 정지·시험 종료의 운영 범위다. 알람 보유는 사용자 확인이며 설정·정상 동작 확인과 실제 적용은 별도다.\n\n## 변경 전 저장본을 기준으로 정한 확장 지점\n"
+  },
+  {
+    "file": "docs/plans/2026-10-17_UART_CMD_ACK_Drop_Test_Code_Guide_ko.md",
+    "lines": 392,
+    "intro": "# STM CMD ACK 한 번 유실 시험 입력 가이드\n\nUR-03 / AC-S04의 **정상 TEL이 계속되는 동안 CMD ACK 하나만 유실되는 경우**를 확인한다.\n기존 늦은 DISARM ACK와 만료 ARM ticket 시험을 반복하지 않는다.\n이번에는 수동 ARM 후 정상 zero CMD를 처리하다가 10번째 조건 충족 CMD의 ACK만 생략한다.\nESP가 TEL만으로 성공 처리하지 않고 ACK timeout으로 제어 허가를 취소한 뒤 정지하는 것이 목표다.\n\n현재 단계는 **후보 코드 PC 검사 완료, 사용자 입력 전**이다.\n실제 STM/ESP 보드 빌드·플래시와 캡처는 아직 수행하지 않았다.\nPC 검사는 실제 STM protocol/parser/mapper와 ESP executor/state를 사용하지만 시간·UART·GPIO·모터는 모의 환경이다.\n\n## 지금 입력할 범위"
+  },
+  {
+    "file": "docs/plans/2026-10-16_WiFi_UART_Recovery_Bench_Plan_ko.md",
+    "lines": 68,
+    "intro": "# UART 재연결 첫 DISARM 복구와 AC-S 잔여 검증\n\n> 2026-10-17 마감: UR-02와 AC-S01~08 선택 zero-only 실물 시나리오는 완료했다. [최신 완료 범위와 근거](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md)를 우선한다. 아래 당시 계획·미완료·실패 기록과 원래 수용 조건은 보존한다.\n\n작성:2026-10-16. 목적은 **첫 정지 요청 실패를 설명·보완하고, zero-only 제어의 미확인 조건을 닫는 것**이다. [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md)의 기능 관측은 유지하며 같은 시험을 전부 다시 하지 않는다.\n\n## 현재 위치 — 10/16 오후 정상 이미지 복원\n\n- **UR-02 UART 복구 범위 PASS, 전체 AC-S PARTIAL.** 새벽 재연결에 오후 통제된 부분 CMD/ARM 주입을 추가했다. [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md).\n- mode1 DISARM2750537414, mode2 LF 없는 ARM1152473122 폐기/첫 DISARM1152473123의 양끝 해독·정확한 ACK/새 TEL·IDLE을 확인했다. 초기 D0/D1 미연결은 보완됐다.\n- 일반 이미지0U로 사용자 빌드·플래시 후 boot3996125447, DISARM ACK/PONG/READY, 시험 배너 없음·IDLE·fresh DISARMED/zero 확인. 전원 분리 완료는 미보고다.\n- D1 단발0.25µs 샘플 차이 원인과 아날로그 신호 품질은 미확정이다. PWM/PC7/전력·모터는 이번 UART 측정 범위 밖이다."
+  },
+  {
+    "file": "08_Mechanical_Design/02_Adapter_Plate_RevA_Manufacturing_Preflight_ko.md",
+    "lines": 145,
+    "intro": "# Adapter Plate Rev A Manufacturing Preflight\n\n> 이 문서는 RevA 주문 파일의 역사 기록이다. 현재 RevB 주문 판단은\n> [`03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)를 따른다.\n\n## 목적\n\n이 문서는 어댑터 플레이트 Rev A의 주문 전 치수, 1:1 출력, 벡터 파일과 업체 제출 상태를 기록한다.\n제조 파일이 준비된 상태와 실제 주문·제작·실물 적합성 검증을 명확히 구분한다.\n\n## Status\n"
+  },
+  {
+    "file": "docs/plans/2026-10-16_UART_Partial_Command_Test_Code_Guide_ko.md",
+    "lines": 798,
+    "intro": "# UR-02: 부분 명령 수동 주입 코드 입력 가이드\n\n작성: 2026-10-16. **오늘은 기본 비활성 코드 입력 → 실제 저장본 PC 검사까지 진행한다.** 시험용 빌드·플래시·주입은 이후 보드 조건을 확인하고 별도로 수행한다.\n\n## 1. 왜 만드는가\n\n새벽의 두 단절 캡처에서는 명령 전체가 유실됐다. CAN+LF를 붙인 첫 DISARM의 정상 재연결 복구는 확인했지만, **STM에 남은 미완성 명령을 실제로 폐기하는 조건**은 아직 확인하지 못했다. 별도 USB–UART 없이 ESP가 정해진 부분 문자열을 보내 이 조건을 만든다.\n\n```mermaid\nflowchart LR\n    A[수동 시험 요청] --> B[READY·IDLE·새 TEL·속도와 PWM 0 확인]\n    B --> C[LF 없는 고정 문자열 한 번 송신]"
+  },
+  {
+    "file": "08_Mechanical_Design/01_Adapter_Plate_and_Electronics_Layout_ko.md",
+    "lines": 182,
+    "intro": "# Adapter Plate and Electronics Layout\n\n> 현재 상태 안내: 이 문서는 2026-07-23/24의 Draft와 RevA 배치 기준을 보존하는 역사\n> 문서다. 현재 RevB 주문 후보와 E-stop 장착 판정은\n> [`03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)를 따른다.\n\n## 목적\n\n이 문서는 궤도 셰시의 기존 홀 패턴 위에 장착할 어댑터 플레이트와 전장 모듈의 배치 기준을\n기록한다. CAD 화면을 보존하는 데 그치지 않고, 배치 이유와 주문 전에 확인할 항목을 함께 남긴다.\n\n## Status"
+  },
+  {
+    "file": "docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md",
+    "lines": 156,
+    "intro": "# 103JT-025 모터 케이스 온도 2채널 입력 설계\n\n기준일: **2026-10-22**. 상태: **계산한 초기 설계안 / 실물 미연결 / ADC 미구현**.\n\n구매한 SEMITEC 103JT-025 두 개를 STM32 내장 ADC로 읽는 최소 회로다. [전체 모니터링 준비](2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md)의 온도 입력을 구체화한다. 센서·측정기는 모두 배송 대기다. 전류 입력 필터, 전체 전원 여유, 실제 모터 허용 온도와 자동 정지 정책은 이 문서의 확정 범위가 아니다.\n\n## 2026-10-23 별도 전원안 적용 경계\n\n후속 확장안은 XL4015 #2→별도 LDO 공급을 검토한다. [ADC6채널 계약](../../09_Electrical_Design/20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md)을 우선한다. 아래 동일 STM 여기 전원·g=1·rail 코드4079/16·STM과 동시 OFF는 당시 계산 조건이며 새 별도 전원에서 자동 성립하지 않는다. NTC 단선 시 노드는VEXC로 올라가므로 VDDA 초과/무전원 보호와 환산 비율을 다시 결정한다. 원본 계산/CSV는 명목 조건 이력으로 보존한다.\n\n## 채널별 회로와 부품\n"
+  },
+  {
+    "file": "08_Mechanical_Design/03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md",
+    "lines": 208,
+    "intro": "# Adapter Plate RevB E-stop Mounting Preflight\n\n## 목적과 현재 판정\n\n이 문서는 `P-07A`의 received-plate 기구 검토다. 기존 adapter plate에 E-stop 관련 부품을 모두\n직접 체결한다는 뜻이 아니라, 각 부품을 다음 네 종류로 나눠 장착 경계와 케이블 접근성을\n동결하는 것이 목적이다.\n\n1. adapter plate 또는 별도 강성 bracket에 고정할 부품\n2. permanent perfboard에 납땜할 저전류 부품\n3. harness 중간에 고정할 inline 부품\n4. 사용자가 접근하는 별도 operator panel 부품"
+  },
+  {
+    "file": "docs/plans/2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md",
+    "lines": 71,
+    "intro": "# 모터 전류·온도 모니터링과 계측 장비 구매 마감\n\n기준일: **2026-10-22**. [구매 완료 보고와 판단 근거](../progress/2026-10-22_progress.md), [부품/장비 대장](../../00_Project_Charter/02_Component_Inventory.md).\n\n## 현재 확정 범위\n\n사용자가 온도센서 2개·전류센서 2개·GM-1312·UT210E 구매 완료를 보고했다. 후속 답변으로 구매 센서 모델은 **SEMITEC `103JT-025`**, **Pololu `#5241 / ACS71240KEXBLT-030B3` ±30A·3.3V**로 확인됐다. 이어 **아직 모두 배송 대기**라고 확인했다. 실물 구성·결제액·납기는 미확인이다. 아래는 확인한 모델을 사용한 설계 초안이며 현재 배선·CubeMX 설정은 아니다.\n\n모터별 전류와 케이스 온도 각 2채널을 우선한다. GM-1312와 UT210E로 한정된 운전 조건을 관측하고, 후속 센서 ADC 로그를 비교한다. 배터리 셀별 측정, 보드별 전류 상시 채널, 추가 ADC, PSU·탑재 컴퓨터는 이번 최소 구매 범위에 넣지 않는다. 향후 PCB에는 신호 수집/보호·커넥터·시험점을 검토하되 실제 전류·부품 정격·배선과 센서 모델이 확정되기 전 전력 경로를 설계 완료로 표시하지 않는다.\n\n## 수령 후 준비 순서\n"
+  },
+  {
+    "file": "docs/plans/2026-10-20_External_Temperature_Test_Plan_ko.md",
+    "lines": 191,
+    "intro": "# 외부 온도 관측 계획 — T-LOAD-001\n\n**2026-11-05 회차 종료:** GM1312 T1=A/T2=B·UT210E로 짧은 공중 전진/후진4건을 관측하고 사용자 전원 분리 완료를 확인했다. [재개 기록](2026-11-05_MVP_External_Measurement_Reentry_ko.md)에 정정/조건/한계를 기록했다. 정식 장시간 열적 수용과 정량 중단 기준은 미결이며 아래 T-LOAD-001 전체 실행/PASS로 확대하지 않는다. 아래 날짜별 상태는 당시 이력이다.\n\n**2026-11-04 준비 상태 추가:** 사용자가 온도 측정기 보유와 UT210E 수령을 확인하고 MVP 잔여 작업 재개 가능 여부를 물었다. 기존 구매 모델은 GM-1312이며 실제 모델/프로브·부착 구성/표시 점검은 미보고다. PCB·내장 ADC를 기다리지 않고 외부 계측 준비를 진행할 수 있다. 아래10/23 후속 분리 결정은 유지하며 시험 NOT_RUN, 열 수치 기준 미정이다. 장비 보유만으로 아래 철회한 수치/시간 초안을 재승인하거나 전체 MVP 인수로 간주하지 않는다.\n\n**2026-10-23 최신 상태: DEFERRED / NOT_RUN.** 사용자 결정으로 온도 검증을 이번 MVP 필수에서 후속으로 분리했다. 기존 MG540 모터를 유지하며 본 계획의 장비·온도 기준 대기를 지상1m/MVP 선행 조건으로 사용하지 않는다. 아래 준비 절차와 철회 이력은 재개 참고용이고 열적 적합 PASS 또는 구동 시간/출력 확대 근거가 아니다. [범위 결정](../progress/2026-10-23_progress.md#기존-모터-유지와-온도-검증-후속-분리).\n\n작성: 2026-10-20. 연결: `ST-MVP-04`, `TK-MVP-04-01~04`, `REQ-THERM-001`, `MVP-015`.\n\n**상태: 근거 없는 온도 수치 초안 철회 / 장비 수령·실물 부착·근거 기반 기준 확정 대기(10/22 갱신).** 이전 GM-1312 주문은 재고 취소됐고10/22 사용자가 온도센서2·전류센서2·GM-1312·UT210E 구매 완료를 보고했다. 실제 수령·열전대/건전지·부속 구성·최종 납기는 미확인이다. [구매 기록](../progress/2026-10-22_progress.md), [계측/센서 준비](2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md). 아래 절차는 실행 전 후보이며 실제 수행은 준비 확인 후 한 단계씩 안내한다.\n"
+  },
+  {
+    "file": "docs/plans/2026-10-24_MVP_Demo_Outline_ko.md",
+    "lines": 79,
+    "intro": "# 현재 MVP 시연 구성안\n\n## 통합 시연 제작 완료\n\n[완성본149초](../../assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4) · [구성/원본/검증](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md). 기존65초 탁상 시연과 카펫 주행·S0 복구를 같은 디자인으로 통합했다. 전체4470프레임 디코딩 오류0·21표본 검토, 바탕화면 사본 저장. 카펫 화면을 기존 대비1.2667초 상대 지연해 재렌더링했고 원본18전이·출력10전이를 대조했다.149초 길이와 전체 인수의 기존 판정은 유지한다.\n\n## 추가 카펫 주행과 S0 복구 자료 — 편집 전 이력\n\n사용자가100×150cm 카펫·1m 이상 주행과 S0→해제→S2→STM reset→수동 재개 영상을 추가했다. [판독](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/observations.json)에서 카펫 이동과 두 번의 FAULT_ACTIVE→LATCHED→DISARMED/BOOT, ARM 비활성/재허용 및 후속 주행 표본을 확인했다. 대표 본편은 **카펫 연속 주행→S0 정지→S2 뒤에도 래치/ARM 차단→STM reset 뒤 ARM 재허용→새 ARM/짧은 주행→DISARM 종료** 흐름을 권한다. 두 번째 회차의 화면122~123.6초는 금지 커서에서 활성 버튼으로 바뀌는 구간이 명확하다.\n\n이 절은 편집 전 판독이며 새 통합본 제작 완료는 상단을 따른다. 아래65초 탁상 편집본도 보존한다. 카펫 치수와1m 이상은 사용자 보고이고 거리 정확도·자동 정지/지연 계측으로 소개하지 않는다. READY/IDLE가 FAULT 중에도 유지되므로 STM 상태와 ARM 허가를 함께 보여준다. S0/S2/reset 조작 명칭·순서는 사용자 설명에 연결하고 편집 때 두 파일의 시각을 별도로 정렬한다.\n"
+  },
+  {
+    "file": "docs/plans/2026-10-27_Laptop_AI_Integration_Plan_ko.md",
+    "lines": 219,
+    "intro": "# 노트북 기반 AI 확장 계획과 기존 PCB 작업 재개점\n\n작성일: 2026-10-27 · 상태: **계획 문서 작성 완료 / 구현·추론·시험 NOT_RUN**\n\n사용자의 최종 목표는 이 로봇에 AI를 접목하는 것이다. 이번 요청은 AI 계획을 Codex가 판단해 **문서화만** 하고, AI 논의 전 계획의 재개점을 설명하는 것이다. 아래 선택은 후속 구현을 위한 계획 기준이며 실제 설치·실행·하드웨어 변경을 뜻하지 않는다. 현재 진행 순서는 PCB 모니터링 입력 설계로 유지한다.\n\n## 1. 이번에 정한 방향\n\n**기존 노트북에서 영상 인식과 행동 판단을 먼저 검증하고, 필요한 성능과 탑재 조건이 드러난 뒤 상위 컴퓨터를 선정한다.**\n\n| 항목 | 계획 결정 | 이유와 경계 |\n| --- | --- | --- |"
+  },
+  {
+    "file": "09_Electrical_Design/23_Temperature_Channel_Verification_Spec_2026-10-27_ko.md",
+    "lines": 197,
+    "intro": "# 온도 측정 채널 검증 명세\n\n**2026-11-05 외부 관측 보완:** GM1312 실물 모델·두 열전대/T1=A·T2=B 부착 및 짧은 공중 관측 사용자 보고 확보. 최종 정지30초 후26.9/27.0°C. [조건/정정/한계](../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md).103JT-025/ADC 입력계 시험과 별개이며 접촉 오차/절대 정확도/열적 수용은 미검증이다. 아래 수령 문구는 당시 이력이다.\n\n기준일: 2026-10-27 · 시험 설계 기준 v0.1 · 전류 다음에 왼쪽/오른쪽 각각 확인.\n\n**수령 상태 갱신 · 2026-11-04:** 사용자 보고로 SEMITEC103JT-025 및 UT210E 도착, 후속 메시지로 온도 측정기도 보유 확인. 기존 구매 기록은 GM1312이며 실제 모델/프로브 구성·표시 점검은 아직 미보고다. 무전원 NTC 저항/온도 반응과 외부 온도계 비교 준비가 가능하나 실측 결과·기준 정확도·부착 오차 검증은 미결이다.\n\n## 1. 이번에 정한 결과\n\n온도 입력계는 **NTC 대신 알려진 저항을 연결하여 0~100°C에 대응하는 환산값을 확인**한다. 허용 오차는 기존 제안의 **±1.0°C**, 비교 기준의 오차 경계 목표는 **0.25°C 이하**다. 실제 NTC를 모터에 붙인 측정과는 시험 범위가 다르다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/22_Current_Channel_Verification_Spec_2026-10-27_ko.md",
+    "lines": 176,
+    "intro": "# 전류 측정 채널 검증 명세\n\n**2026-11-05 외부 관측 보완:** UT210E20A DC로 M1B 전진−0.18/후진+0.18A, M2B 전진+0.20/후진−0.23A 사용자 보고 확보. [관측 조건/한계](../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md). ACS71240/ADC 정량 검증과 별개이며 아래 센서 시험의 NOT_RUN 상태는 유지한다.\n\n기준일: 2026-10-27 · 시험 설계 기준 v0.1 · 연결 대상: 왼쪽 먼저, 오른쪽 독립 반복.\n\n**수령 상태 갱신 · 2026-11-04:** 사용자 보고로 Pololu #5241 및 UT210E 도착. 실물 라벨/수량/동작 확인과 ADC 입력계·펌웨어·DC 부하 준비는 아직 미보고다. 수령만으로 아래 정량 시험의 NOT_READY/NOT_RUN 상태를 PASS로 바꾸지 않는다.\n\n## 1. 이번에 정한 결과와 적용 범위\n\n전류 입력 회로의 **보정 후 DC 잔차 목표를 ±4.4mV**, 비교 기준의 오차 경계 목표를 **1.1mV 이하**로 정한다. 전체 전류는 기존 제안 `±max(0.20A, 읽음값 절댓값의 5%)`를 이번 시험 설계 기준으로 사용한다. 센서 제외 시험과 센서 포함 시험을 각각 판정한다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/21_External_Project_Monitoring_Architecture_Review_2026-10-27_ko.md",
+    "lines": 187,
+    "intro": "# 유사 프로젝트의 모니터링 회로와 시스템 구조 비교\n\n기준일: 2026-10-27. 사용자 요청에 따른 외부 설계 비교·진행 평가다. **기존 설계 방향은 타당하지만, 부품 선정과 측정 성능 검증은 아직 완료되지 않았다.** 아래 권고는 새 요구사항 채택이나 CAD 변경이 아니다.\n\n## 1. 평가 기준과 현재 프로젝트\n\n목표는 STM32 구동·안전 제어, ESP32 통신, 센서 입력과 사용자 화면을 통합하고 동작 근거를 남기는 로봇 플랫폼이다. 자체 모터 전력단 개발이 현재 목표인 것은 아니다. 따라서 비교 기준도 직접 설계한 IC의 수보다 **요구→측정 위치→회로→펌웨어→판정→증거가 연결되는가**로 잡는다.\n\n현재 확인된 경계:\n\n- 브라우저/Wi-Fi ↔ ESP32-S3 ↔ UART ↔ NUCLEO-F446RE ↔ MDD10A·좌우 브러시 DC 모터가 기존 경로다. 엔코더와 E-stop을 STM32가 처리하며 최종 출력·명령 timeout의 책임도 STM32에 있다.\n- 후속 목표는 STM32의 아날로그 6채널(전류2·온도2·전압2)과 CAN이다. CAN은 목표이며 현재 UART 경로를 이미 대체하지 않았다. 센서 MCU를 추가하지 않는다."
+  },
+  {
+    "file": "09_Electrical_Design/20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md",
+    "lines": 83,
+    "intro": "# 아날로그 6채널 연결 계약과 2단계 종합 검토\n\n2026-10-23. 전류2·온도2·전압2채널의 논리 연결과 측정 기준을 합친 **2단계 검토본**이다. 핀/기능/포트 제안을 작성한 상태이며 전원·보호 회로 선정이나 제작 승인 완료를 뜻하지 않는다. 기존 센서4채널 CAD를 확정 회로로 사용하지 않는다.\n\n## 채널과 커넥터 계약 제안\n\n아래 이름은 기능 식별자이며 CAD reference 번호가 아니다. 핀 순서는 **쉴드 측 커넥터의 설계 제안**으로, 센서 모듈의 실제 패드 순서와 별도 대조한다. 제품/키/피치/압착 부품은 미선정이다.\n\n| 채널 / 기능 포트 | 외부 연결 / 핀 순서 제안 | STM 접점 후보 | PCB 안에서 처리 |\n| --- | --- | --- | --- |\n| I_LEFT / CUR_L | 3P: 1=SIG_GND, 2=EXP_3V3, 3=I_L_OUT | PC0 / ADC1_IN10 / CN7-38 | 외부 #5241 출력→필터/보호→ADC |\n| I_RIGHT / CUR_R | 3P: 1=SIG_GND, 2=EXP_3V3, 3=I_R_OUT | PC1 / ADC1_IN11 / CN7-36 | 왼쪽과 독립된필터/보정 경로 |"
+  },
+  {
+    "file": "09_Electrical_Design/19_CAN_GPIO_and_Connector_Contract_2026-10-23_ko.md",
+    "lines": 88,
+    "intro": "# CAN GPIO와 커넥터 계약 초안\n\n2026-10-23. 설계2단계의 ESP CAN 핀·전원/신호 연결 검토안이다. 기존 UART를 유지하며 [전체 구성](16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md)과 [공급 구조](18_Expansion_3V3_Supply_Structure_and_Assembly_2026-10-23_ko.md)를 구체화한다. **아래 핀 순서는 설계 제안이며 보유 모듈의 핀 순서나 즉시 배선 지시가 아니다.**\n\n## 핀 후보와 기존 기능 보존\n\n| 기능 | MCU 접점 후보 | 연결 방향 | 상태 |\n| --- | --- | --- | --- |\n| ESP CAN TX | GPIO4 / 공식 DevKitC-1 J1-4 | ESP → ESP 트랜시버 D/TXD | 신규 예약 제안 |\n| ESP CAN RX | GPIO5 / 공식 DevKitC-1 J1-5 | ESP 트랜시버 R/RXD → ESP | 신규 예약 제안 |\n| STM CAN TX | PA12 / CN10-12 | STM → STM 트랜시버 D/TXD | 기존 예약 유지 |\n| STM CAN RX | PA11 / CN10-14 | STM 트랜시버 R/RXD → STM | 기존 예약 유지 |"
+  },
+  {
+    "file": "09_Electrical_Design/18_Expansion_3V3_Supply_Structure_and_Assembly_2026-10-23_ko.md",
+    "lines": 83,
+    "intro": "# 확장 3.3V 공급 구조와 조립 검토\n\n2026-10-23. 설계2단계 검토안. [부하 예산](17_Expansion_Power_Budget_2026-10-23_ko.md)의 연속300mA를 공급할 구조를 제안한다. 부품 채택·제작 승인이나 실물 검증 결과는 아니다.\n\n## 공급 구조 제안\n\n**XL4015 #2 출력에서 병렬 분기하고, 확장부의 LDO 하나로3.3V를 만든 뒤 센서와 CAN으로 나누는 안**을 우선 비교한다. 레귤레이터를 여러 개 두는 안은 독립 전원 차단·잡음·배치 조건이 이를 요구할 때 다시 비교한다. 단일 LDO 사용은 아직 사용자 확정 전이다.\n\n```mermaid\nflowchart LR\n    XL[\"XL4015 #2 AUX5V\"] --> EXIST[\"기존 엔코더2개 / S0-B 감지\"]\n    XL --> PROTECT[\"신규 병렬 분기 / 입력 보호 검토\"]"
+  },
+  {
+    "file": "09_Electrical_Design/17_Expansion_Power_Budget_2026-10-23_ko.md",
+    "lines": 101,
+    "intro": "# 확장 PCB 전원 부하와 3.3V 생성 사양\n\n기준일: 2026-10-23. 설계2단계 전원 예산 계산안이다. **XL4015 #2 AUX5V → 별도 분기 → 3.3V 레귤레이터 → 센서·CAN 회로**를 검토한다. 실제 배선·출력 설정·CAD/BOM은 변경하지 않았다.\n\n## 저항으로 전원을 낮추기 어려운 이유\n\n직렬 저항은 `VOUT = VIN − ILOAD × R`이다. 5V에서100mA일 때3.3V가 되도록17Ω을 넣으면 다음처럼 부하에 따라 출력이 바뀐다.\n\n| 부하 전류 | 출력 전압 |\n| ---: | ---: |\n| 0mA | 5.00V |\n| 10mA | 4.83V |"
+  },
+  {
+    "file": "09_Electrical_Design/16_Expansion_PCB_System_Blocks_and_Interfaces_2026-10-23_ko.md",
+    "lines": 181,
+    "intro": "# 확장 PCB 전체 구성과 인터페이스 초안\n\n기준일: 2026-10-23. **설계2단계의 첫 산출물인 블록도와 논리 인터페이스 검토본**이다. [요구조건1차안](15_Expansion_PCB_Requirements_2026-10-23_ko.md)을 바탕으로 작성했다. 커넥터 품번·실물 핀 순서·추가 전원 공급 능력은 후속 검토 항목이다.\n\n## 채택한 목표 구성\n\n2026-10-23 사용자가 **STM32 센서/구동 집중 + ESP32 무선 게이트웨이 + 두 MCU 사이 CAN + 개발용 CANable 관측** 구성을 채택했다. 별도 센서 MCU를 추가하지 않는다. 이는 후속 구현의 목표이며 현재 펌웨어의 UART 경로를 이미 CAN으로 전환했다는 뜻이 아니다. 측정 정확도·부품·전원 공급·핀·커넥터의 세부 후보는 계속 검토한다.\n\n- STM32는 전류2·온도2·전압2채널, 기존 IMU·엔코더·모터 출력과 최종 안전 판단을 맡는다.\n- ESP32는 브라우저/Wi-Fi와 CAN 사이에서 명령·상태를 전달한다. ESP용 CAN 트랜시버를 별도로 확보하고 핀·전원·배치를 검토한다.\n- STM 측 트랜시버와 ESP 측 트랜시버는 **공통 CAN 버스 하나의 서로 다른 노드**다. CANable은 개발 시 같은 버스에 붙이는 PC 관측/시험 노드이며 평상시 무선 운용에는 분리 가능하다.\n- 현재 UART를 기준 경로로 유지하며 CAN 상태 송수신 → 명령·타임아웃/오류·복구 검증 → 제어 입력 전환 순서로 도입한다. UART/CAN의 동시 제어권을 자동 허용하지 않는다. 기존 MVP 이후 후속 구현 경계를 유지한다."
+  },
+  {
+    "file": "09_Electrical_Design/27_Voltage_2Ch_Schematic_Contract_Comparison_2026-11-06_ko.md",
+    "lines": 138,
+    "intro": "# 전압 2채널 — 기존 쉴드 회로도 대조와 반영 연결표\n\n**최신 적용 확인 · 2026-11-07 마감:**\n\n아래 연결표의 전압2채널/공통 회로가 실제 CAD에 반영됐다.40부품+PWR_FLAG2개,PA4/PB0/AVDD와MR/CT 개방·미사용 채널GND를대조했고기존설정ERC0/0이다. [적용 연결표·PDF/ERC](../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 아래 최초22부품/24부품·PROPOSED_NOT_APPLIED 기록은 당시 스냅샷이다.\n\n2026-11-06. [오늘 계획](../docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md)에 따라 **기존 CAD 대조·반영 범위·연결표 작성**을 수행했다. 기존 `.kicad_sch/.kicad_pcb/.kicad_pro`는 수정하지 않았다. 아래 새 참조번호와 net 이름은 회로도 편집을 위한 제안이며 실제 연결 완료를 뜻하지 않는다.\n\n**같은 날 후속 상태:** 위 문장과 아래 수행 표는 최초 CAD 대조 당시 기록이다. 이후 사용자가 TPS/TMUX 심벌을 만들고 U1/U2를 배치했으며, 전체 도면 정돈을 위임받아 Codex가24부품을6개 기능 영역으로 재배치했다. [적용 도면·변경 전 백업·netlist 대조](../assets/logs/pcb_design/2026-11-06_schematic_layout_review/README.md). 활성10net와 미연결 포함99net는 동일하고 U1/U2는 아직 미배선이다. 현재 다음은 **04 전압 입력 영역에 J7/R7~R11/C5 배치**이며 아래 연결표는 계속 사용한다. 기존 PCB/프로젝트 설정/라이브러리를 보존했고 새ERC/DRC는 미실행이다.\n\n## 1. 오늘 결론\n"
+  },
+  {
+    "file": "09_Electrical_Design/26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md",
+    "lines": 158,
+    "intro": "# 전압 ADC 보호 부품 조건·제어 연결 초안\n\n**최신 CAD 결과 · 2026-11-07 마감:**\n\n설계27의전압2채널·공통제어가반영되어40부품/기존설정ERC0/0을확인했다. [최신도면·검증](../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 다음은 [제품검토28](28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md)의수집·필터/포트·전원조건표다. 아래심벌준비/배선예정은과거이력이다.\n\n**11/6 계획 재개 결과:** [설계27](27_Voltage_2Ch_Schematic_Contract_Comparison_2026-11-06_ko.md)에서 기존 CAD의 실제 연결을 대조하고 전압2채널 참조번호·연결표를 작성했다. 다음은 프로젝트용 TPS/TMUX 심벌 준비와 전단 한 채널 반영이다. 아래 마감 시점의 “대조 예정”은 이전 이력이며 실제 CAD 편집·ERC·성능 검증은 아직 수행하지 않았다.\n\n**11/6 마감·재개:** 11/5후속39-3자료까지마감한다. 수면후11/6첫작업은기존쉴드CAD와전압2채널계약대조·반영범위/연결표다. [이번마감/게시](../docs/progress/2026-11-06_progress.md). 아래11/5판단과그이전기록은보존하며실제CAD/ERC·구현·성능완료로확대하지않는다.\n\n## 설계 방향 먼저 보기 — 2026-11-05 권고안\n"
+  },
+  {
+    "file": "09_Electrical_Design/25_Voltage_ADC_PowerOff_Review_2026-10-30_ko.md",
+    "lines": 49,
+    "intro": "# 전압 ADC 공차·무전원 차단 검토\n\n> 10/31 후속 검토는 [설계26](26_Voltage_ADC_Component_Conditions_and_Control_Draft_2026-10-31_ko.md)을 따른다. 아래는10/30 판단과 당시 재개점이다.\n\n2026-10-30 마감. 설계 단계는 **회로 계산·보호 후보 검토**다. [학습 노트21](../07_Embedded_Learning_Notes/01_Concept_Notes/21_Voltage_ADC_Tolerance_Isolation_and_Discharge_Lab_ko.md)과 [근거](../assets/logs/pcb_design/2026-10-30_voltage_adc_closeout/README.md)에 사용자 결과·계산·가정을 분리했다.\n\n## 이번에 좁힌 판단\n\n- 12k+12k/4.7k의 ±1% 최악 조합은16V에서 명목 환산 오차 +0.2694/−0.2658V다. 저항만으로도 ±0.10V를 넘을 수 있다. ±0.1%는 약±0.0268V로 줄지만 전체 정확도 달성은 아니다.\n- 12.6V에서 알려진 실제 모델 분압비로 환산한12.600V는 보정 원리 확인이다. 실물 보정·독립점 검증과 구분한다. VREFINT 사용도 개념 검토이며 실제 ADC 코드 미취득이다.\n- 가정한 ADC 누설1µA가 VADC에 약−4.9303mV, 배터리 환산에 약−30.106mV를 더한다. 누설/보호를 오차 예산에 포함해야 한다.\n- 배터리 입력은 MCU 전원과 독립적으로 살아 있을 수 있어, 전원 OFF 전후 조건을 우선 검토한다. 전류/온도 채널도 잔류 전하·전원 순서 검토가 남는다."
+  },
+  {
+    "file": "09_Electrical_Design/24_Monitoring_Input_Simulation_and_Design_Review_2026-10-28_ko.md",
+    "lines": 47,
+    "intro": "# 모니터링 입력 — 시뮬레이션 결과와 설계 판단\n\n학습 회차 2026-10-28 · 마감 2026-10-29. **사용자 KiCad GUI 실습 완료 / 회로 기본안 검토 / 실물 NOT_RUN / 제작용 아님**.\n\n## 결과와 원본\n\n| 범위 | 원본·결과 | 판정의 경계 |\n| --- | --- | --- |\n| 전류 한 채널 | [AC·TRAN](KiCAD/Simulation/01_Current_RC/README.md): 12kΩ/100nF, 약133Hz/−3.01dB·19kHz/−43.1dB, 상승/하강 1τ와 변화량99% | 이상 RC와 입력 파형 안의 결과 |\n| 온도 한 채널 | [NTC](KiCAD/Simulation/02_NTC/README.md): 25°C 상당1.65V/fc265.258Hz, 50°C 상당967.35mV/fc404.834Hz | 고정 저항 대입·전원 AC 전달. NTC 열응답·센서 정확도 아님 |\n| 전압 한 채널 공통 모델 | [분압](KiCAD/Simulation/03_Voltage_Divider/README.md): 12.6V→2.06341V,16V→2.62021V, fc404.942Hz, 저주파−15.7157dB, 차단점−18.7260dB | PA4/PB0 실물 두 채널 구현 아님 |\n"
+  },
+  {
+    "file": "08_Mechanical_Design/README.md",
+    "lines": 91,
+    "intro": "# Mechanical Design\n\n## 현재 중량 — 2026-10-23 사용자 실측\n\n로봇 중량 **3.25kg**이 최종 보고다. 같은 대화의3.2kg·3.1kg은 최종 정정값으로 대체한다. 저울 모델/불확도·배터리/적재물별 내역은 미보고이며 과거 회차의 중량이나 구조/구동 정격 적합성으로 소급 확정하지 않는다. [최종 관측](../assets/logs/wifi_link/2026-10-23_power_adjusted_drive_run01/session_observations.json).\n\n\n이 폴더는 궤도형 모바일 로봇의 기구 통합 설계와 제작 기준을 관리한다.\n\nOnshape에서 계속 편집되는 형상, 특정 시점에 고정한 Version, 주문 업체에 전달한 도면, 제작 후 실물 검증을\n서로 구분해 기록하는 것이 목적이다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md",
+    "lines": 57,
+    "intro": "# MVP 기능 회로도 — 실제 부품 기록과 과거 Candidate 표기 대조\n\n2026-11-07 마감. 11/6 작업 후 사용자가 앞서 보류했던 과거 회로도 최신화를 명시적으로 위임했다. 대상은 기존 MVP 기능 회로도 `Tracked_Mobile_Robot_Wiring_RevB`이며, 새로운 실물 작업 없이 저장된 관측·구매·조립 기록을 도면에 반영했다.\n\n## 1. 반영 결과\n\n**확인된 부품명/값 12개와 XL4015 #1 출력 net 이름, 상태표·핀 대응·제목란을 갱신했다.** 48부품·전체35net(활성33+명시적 미연결2)의 핀 구성과 전기적 연결은 유지했다. net 이름은 `XL4015_1_5V_OUT_CANDIDATE`에서 `XL4015_1_5V_OUT`으로 바꿨고 연결된 핀 집합은 동일하다.\n\n| Ref | 이전 표기 | 현재 표기 | 근거와 경계 |\n| --- | --- | --- | --- |\n| S0 | A22NE-M-PD02-N_CANDIDATE | SF2ER-E2R2B | report19 실물 body. 주문 -A 접미사 사진 확인은 별도 |\n| S2 | REENABLE_MOMENTARY_NO_CANDIDATE | ABW110G | report19/24 입고·조립·제한 동작 |"
+  },
+  {
+    "file": "09_Electrical_Design/28_Product_Design_Noise_and_Robustness_Review_2026-11-06_ko.md",
+    "lines": 141,
+    "intro": "# 모니터링 쉴드 — 제품 관점의 잡음·정확도·고장 내성 검토\n\n**최신 상태 · 2026-11-07 마감:**\n\n공통RESET→SEL·미사용 핀·PWR_FLAG 처리까지 완료해현재40부품/기존설정ERC0/0이다. 아래공통미완성·오류18건은11/6 22:14 추출시점이력이다. [최신CAD/ERC](../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 회로 구조는 유지하고 다음은 수집·필터 표 → 포트·전원 조건표를 작성해 필요한 변경을 정한다.100Hz/10개는첫DC비교용,12kΩ은비교대상유지이며모터운용/정확도보증으로승격하지않는다. 실제잡음·전원전이·정확도검증은남는다.\n\n2026-11-06. 사용자는 현재 회로가 신호 잡음을 고려했으며 실제 제품으로 만들기에 좋은 설계인지 분석해 달라고 요청했다. 회로를 변경하지 않고 실제 저장 CAD, 새 netlist/PDF/ERC, 기존 요구·시험 명세 및 제조사 원문을 대조했다. 검토 중 저장본이38→40부품으로 바뀌어 다시 추출했으며, 아래 수량과 연결 상태는 근거 JSON/ERC에 기록한 추출 시점의 스냅샷이다.\n\n## 1. 판정\n\n**측정 회로의 기본 구성은 합리적이고 RC 필터·전원 OFF 차단을 고려한 방향도 타당하다. 제품 제작을 위한 설계 완료 판정은 아직 보류한다.** 현재는 전압 회로의 공통 제어가 미완성이며, 이를 완성하더라도 입력 보호, 샘플링과 필터의 조합, 접지·케이블, 전원 전이 조건을 더 구체화해야 한다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/README.md",
+    "lines": 175,
+    "intro": "# Electrical Design\n\n## 최신 회로도 PDF — 2026-11-12 내보내기 동기화\n\n| 도면 | 기본 열람 경로 | 현재 저장 회로도 범위 |\n| --- | --- | --- |\n| Monitor Shield | [최신 회로도 PDF](KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf) | 40부품, 전류·온도·전압 각 2채널, J7/J8 및 TPS/TMUX 포함 |\n| 기존 MVP 기능 회로 | [최신 회로도 PDF](KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf) | 48부품, 11/7 부품 표기·상태 정정 반영 |\n\n11/7 갱신본을 검토 로그에만 게시하고 기본 `exports` 경로를 갱신하지 않은 누락을 수정했다. 두 PDF를 현재 `.kicad_sch`에서 다시 생성했으며 11/7 게시본과 본문·렌더링이 일치한다. 제목란의 설계 날짜는 11/7을 유지한다. 회로 변경이나 새 설계 승인이 아니다. [내보내기 확인 기록](../assets/logs/pcb_design/2026-11-12_export_sync/README.md).\n\n이후 회로도 변경 시 해당 프로젝트의 위 고정 경로 PDF와 README를 함께 갱신한다. 날짜가 붙은 검토 로그·체크포인트 PDF는 당시 상태를 보존한다. Shield의 `placement.pdf`는 22풋프린트 PCB 초안으로, 40부품 회로도를 반영한 배치도가 아니다."
+  },
+  {
+    "file": "docs/plans/2026-11-05_MVP_External_Measurement_Reentry_ko.md",
+    "lines": 31,
+    "intro": "# MVP 후속 외부 계측 재개 — 2026-11-05\n\n사용자가 오늘 PCB 학습을37-3까지로 멈추고 보유 온도계·전류계를 이용해 MVP 검증을 이어가도록 요청했다. 기존 온도/전류 후속 분리 항목의 **외부 관측 준비를 재개**한다. 전체 MVP 필수 조건으로 자동 복원하거나 T005A PARTIAL/T007 BLOCKED를 변경하지 않는다.\n\n## 목적과 범위\n\n현재 로봇의 전류·표면 온도를 외부 계기로 관측할 준비를 한다. 내장 ACS71240/NTC·ADC 정확도 시험은 별도이며 PCB 조립/펌웨어 구현을 선행 조건으로 요구하지 않는다. 완료한 기본 주행/1m/S0를 처음부터 재시험하지 않는다. 제외된 rail-off·제조사 문의·단일고장 시험을 재개하는 요청으로 확대하지 않는다.\n\n연결 근거: [T-LOAD-001 기존 계획](2026-10-20_External_Temperature_Test_Plan_ko.md) · [MVP 판정41](../verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md). 기존 구동 프로파일은 후보이며 이번 장비 확인으로 승인되지 않는다. 모터/부품 표면 허용 온도·구동 시험의 수치 중단 기준은 여전히 미확정이다.\n\n## 현재 단계 — 제한된 공중 관측 후 회차 종료\n"
+  },
+  {
+    "file": "docs/plans/2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md",
+    "lines": 66,
+    "intro": "# 11/4~15 PCB 후속 작업 계획 — 11/9·10 휴무 반영\n\n**최신 조정 · 2026-11-12:** 37-2 수기/두 시정수 원리 이해 보고 이후 40-2·40-3 학습과 온도 평균 창 비교를 진행했다. A1초 평균은 비교 기준, B최근0.5초 평균은 대안으로 유지한다. 다음은 포트·전원 조건표이며 새 FFT/PWM 실습이나 회로 편집을 자동 추가하지 않는다. 아래 최초 날짜별 회로 목표는 이미 완료한11/6 기본 연결을 다시 하라는 지시가 아니다.\n\n| 기존 일정 날짜 | 현재 실적 또는 다음 범위 |\n| --- | --- |\n| 11/11 | 40-2 시간·진폭비·alias 보완,40-3 온도 창 명목 계산 |\n| 11/12 | alias 검토 목적·온도 B안 이해 연결, 문서·Git·Notion·Calendar 마감 |\n| 11/13 | 재개 후보: 포트·전원 조건표의 정상 입력/기준 GND/전원 상태부터 |\n| 11/14 | 조건표의 고장·오접속·차단·복귀 및 보호/검증 기준; 정해진 변경만 후속 계산/ERC |\n| 11/15 | 실제 진행 범위와 미결 마감; 선행 검토가 끝난 범위만 기구·풋프린트로 인계 |\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/README.md",
+    "lines": 13,
+    "intro": "# Interface Protocol Practice\n\nUART, CAN, telemetry, command frame처럼 interface contract 성격이 강한 실습을 보관한다.\n\n`01_System_Architecture`의 공식 contract를 바꾸기 전에 이 폴더에서 frame, parser, timeout, error case를 실험한다.\n\n## Index\n\n| File | Status | Purpose |\n| --- | --- | --- |\n| `001_UART_Command_Telemetry_Protocol_ko.md` | Draft | UART command/telemetry frame 실습 계획 |\n| `002_PC_Telemetry_Dashboard_Mock_ko.md` | Draft | PC-side dashboard mock 계획 |"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/003_Optional_WebSocket_AI_Log_Diagnosis_ko.md",
+    "lines": 120,
+    "intro": "# 003 Optional WebSocket and AI Log Diagnosis\n\n## Status\n\nOptional extension\n\n## Purpose\n\nWebSocket dashboard와 AI-assisted log diagnosis는 portfolio 확장 아이디어로 남긴다.\n\n현재 MVP의 우선순위는 다음이다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/002_PC_Telemetry_Dashboard_Mock_ko.md",
+    "lines": 102,
+    "intro": "# 002 PC Telemetry Dashboard Mock\n\n## Status\n\nDraft\n\n## Purpose\n\nUART protocol이 실제 STM32 firmware와 연결되기 전에, PC에서 fake telemetry를 생성하고 dashboard가 frame을 parsing, display, logging할 수 있는지 확인한다.\n\n이 실습의 목적은 예쁜 UI가 아니라 protocol과 data flow를 먼저 검증하는 것이다.\n"
+  },
+  {
+    "file": "07_Embedded_Learning_Notes/04_Interface_Protocol_Practice/001_UART_Command_Telemetry_Protocol_ko.md",
+    "lines": 346,
+    "intro": "# 001 UART Command and Telemetry Protocol\n\n## Status\n\nADR-015 aligned — 2026-08-26\n\n공식 MVP rule은 `01_System_Architecture/09_STM32_ESP32_UART_Interface_Contract_ko.md`를 따른다.\n이 문서는 그 규칙을 실습 관점에서 풀어 쓰는 학습 노트다.\n\n## Purpose\n\nESP32-S3 production ingress가 STM32에 motion command를 보내고, STM32가 encoder/safety"
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/06_STM32_UART_MVP_Detailed_Implementation_ko.md",
+    "lines": 1780,
+    "intro": "# STM32 UART MVP 상세 구현 가이드\n\n## 목적\n\n이 문서는 `NUCLEO-F446RE` 보드에서 PC Web Serial Dashboard 또는 terminal tool과 UART MVP\nprotocol을 검증했던 2026-07-09 historical PC-first STM32 firmware 상세 구현 가이드다.\n\n그 historical bench 구현 흐름은 다음을 기준으로 했다.\n\n```text\nSTM32CubeMX\n-> NUCLEO-F446RE board selection"
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/05_UART_MVP_Runbook_ko.md",
+    "lines": 317,
+    "intro": "# UART MVP 실행 가이드\n\n## 목적\n\n이 문서는 STM32와 PC를 USB로 연결해 UART MVP를 실행하는 순서를 한 번에 보기 위한 runbook이다.\n\n실행 대상은 두 가지다.\n\n1. Web Serial Dashboard\n2. Terminal UART Tool\n\n권장 순서는 다음이다."
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/04_Web_Serial_Dashboard_ko.md",
+    "lines": 168,
+    "intro": "# Web Serial UART MVP Dashboard\n\n## Purpose\n\n이 문서는 UART MVP 검증을 위한 웹 대시보드 실행 방법을 정리한다.\n\n이번 웹 대시보드는 WebSocket 서버를 만들지 않는다.\n브라우저의 Web Serial API를 사용해서 다음 경로로 직접 통신한다.\n\n```text\nChrome / Edge\n<-> Web Serial API"
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/03_Ubuntu_UART_MVP_Test_Tool_ko.md",
+    "lines": 355,
+    "intro": "# Ubuntu UART MVP Test Tool\n\n## Purpose\n\n이 문서는 Ubuntu PC에서 STM32 NUCLEO-F446RE를 USB로 연결한 뒤 UART MVP rule을 검증하는 방법을 정의한다.\n\nUbuntu에서는 ST-LINK Virtual COM Port가 보통 다음 device로 잡힌다.\n\n```text\n/dev/ttyACM0\n```\n"
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/02_STM32_UART_MVP_Firmware_Guide_ko.md",
+    "lines": 491,
+    "intro": "# STM32 UART MVP Firmware Guide\n\n## Purpose\n\n이 문서는 PC에서 보내는 UART MVP frame을 STM32 NUCLEO-F446RE가 받아 `ACK`, `ERR`, `TEL`로 응답하도록 만드는 단계별 firmware guide다.\n\n더 세부적인 STM32CubeMX/CubeIDE 클릭 절차, project 생성, CubeIDE import, file-by-file code skeleton은\n`06_STM32_UART_MVP_Detailed_Implementation_ko.md`를 기준으로 한다.\nCubeMX/CubeIDE 설정 스크린샷과 Web Serial 검증 스크린샷은 `assets/screenshots/uart_mvp/`에 저장하고, 상세 가이드의 `0.5 스크린샷 증거 반영 방식`에 따라 해당 절차 아래에 이미지로 반영한다.\n\n초기 목표는 motor control이 아니다.\n이번 firmware는 USB serial 기반 protocol 검증용이다."
+  },
+  {
+    "file": "04_PC_Serial_Control/docs/01_PC_UART_MVP_Test_Tool_ko.md",
+    "lines": 320,
+    "intro": "# PC UART MVP Test Tool\n\n## Purpose\n\n이 문서는 PC에서 STM32 NUCLEO-F446RE를 USB로 연결한 뒤 UART MVP rule을 검증하는 방법을 정의한다.\n\n목표는 모터, MDD10A, LiPo 전원 없이 다음을 먼저 증명하는 것이다.\n\n- PC가 MVP frame을 구성해 STM32로 보낸다.\n- STM32가 `PING`, `ARM`, `DISARM`, `CMD`를 parsing한다.\n- STM32가 rule에 맞게 `PONG`, `ACK`, `ERR`, `TEL`을 보낸다.\n- PC가 raw RX/TX log와 parsed CSV log를 남긴다."
+  },
+  {
+    "file": "docs/plans/templates/temperature_session_template_ko.md",
+    "lines": 75,
+    "intro": "# 외부 온도 관측 세션 — 작성 전 템플릿\n\n관련 시험: `T-LOAD-001` / `REQ-THERM-001`. [계획](../2026-10-20_External_Temperature_Test_Plan_ko.md).\n현재 판정: **NOT_RUN**. 빈칸은 미확인/미측정이며 실제 값으로 채우기 전에는 완료 근거가 아니다.\n원본 템플릿을 수정하지 말고 회차별 결과 폴더에 복사한다. CSV·사진·영상·브라우저 원본도 같은 회차 ID로 연결한다.\n\n## 회차 조건\n\n| 항목 | 기록 |\n| --- | --- |\n| run_id / 날짜·시각·시간대 / 조종자·관측자 | |\n| 측정 쌍 A/B/C / 공중·지상 / 바닥 | |"
+  },
+  {
+    "file": "docs/plans/templates/distance_1m_session_template_ko.md",
+    "lines": 60,
+    "intro": "# 1m 거리 비교 준비·기록표 — T-ODO-001\n\n작성: 2026-10-20. `TK-MVP-03-05` / `REQ-ODO-001` / `MVP-011`.\n**10/23 거리/오차 기록 범위 PASS.** 이 파일은 재사용 가능한 빈 양식이며 추가 주행 지시가 아니다. 실제 결과는 [run03/04 판정](../../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조)을 따른다. 이후 독립 시험을 요청한 경우에만 현재 조건을 확인해 사용한다. 온도는 후속 미실측 한계이며 선행 조건이 아니다. 빈칸은 미측정이다.\n\n이번 기준선은 현재 직진 보정 전진0.96/후진0.93과 일반 cap15%를 유지한다. 최대 전진 명령의 PWM은 좌/우144/150‰, 후진은−140/−150‰이며 실제 TEL과 회차의 source/이미지를 확인한다. 먼저 전진 기준 회차를 남기고 후진은 별도 ARM·별도 실측으로 기록한다. 이 시험에 동일 PWM 단계 비교나 IMU 보정을 섞지 않는다.\n\n## 측정 방법\n\n1. 평평한 바닥에 시작선과 목표 1,000mm 지점을 표시한다. 측정 도구·눈금·표시 방법과 주행 여유 공간을 기록한다.\n2. 좌우 궤도 사이 차체 중심선 위의 고정 기준점을 정해 사진에 표시한다. 같은 점의 바닥 투영을 시작과 정지 후에 읽는다. 궤도 링크 이동이나 명령 `vx`를 실제 차체 이동거리로 쓰지 않는다.\n3. 정지 상태에서 [관찰 v5.1](../../../assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js) 설치 → 새 ARM/유효 정지 기준점 → 전진 → 놓음/실제 정지 → DISARM/정지 TEL → 원본 저장을 한 회차로 묶는다. 코드·출력 제한은 유지하고 구동 방법·구간·종료 조건은 회차 전에 정한다. 온도 시험으로 확인된 운전 시간은 없으며, 이 양식이 1m 연속 구동을 승인하는 것은 아니다."
+  },
+  {
+    "file": "docs/plans/templates/current_observation_session_template_ko.md",
+    "lines": 52,
+    "intro": "# 외부 모터 전류 관측 — 작성 전 템플릿\n\n상태: **NOT_RUN / 실행 전 기준 미확정**. 장비 도착 전 문서 준비용이다. 실제 회차 폴더에 복사해 사용한다. 빈칸은 미측정이며0A로 채우지 않는다.\n\n[계측/센서 준비 계획](../2026-10-22_Motor_Current_Temperature_Monitoring_and_Procurement_ko.md), [온도 세션 양식](temperature_session_template_ko.md), [전류 CSV 헤더](current_readings_template.csv)를 함께 사용한다. 온도 절차/중단 조건을 중복 작성하지 않고 같은 회차 ID로 연결한다.\n\n## 실행 전에 채울 것\n\n| 항목 | 기록 |\n| --- | --- |\n| run_id / 비교 pair_id / 날짜·시각·시간대 | |\n| 관측 목적 / 대상 모터 LEFT 또는 RIGHT | |"
+  },
+  {
+    "file": "docs/plans/README.md",
+    "lines": 231,
+    "intro": "# 실행 계획\n\n**현재 · 2026-11-12 마감:** 40-2의 블록 평균·G(f)·두 단계 alias와 40-3 온도 창 비교를 정리했다. 온도 A(1초 평균)를 비교 기준으로 유지하며 B(최근0.5초 평균/출력1Hz)는 응답 개선 대안이다. 사용자는 마지막 B안의 진폭비/alias 구분 이해를 보고했다. 자료 작성·사용자 수기·실제 구현/검증은 별도다. **다음은 포트·전원 조건표**이며 새 정현파/PWM/FFT 실습을 추가하지 않는다.\n\n[11/4~15 갱신 계획](2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md) · [마감](../progress/2026-11-12_progress.md). 기존 날짜·시간 경계와11/9·10 휴무를 보존한다. 아래는 이전 이력이다.\n\n**현재 계획 · 2026-11-08:** 14장·37-2 관측/필기 마감 후37-2의 C1 근사/C2 포함 모델과 VADC 전류식부터 복습한다. 이후 선택36·38 → 37-4/40-2 → 수집·필터 표 → 포트·전원 조건표다. 40-1의2kHz는 비교 후보이며 구현 전이다. 11/9·10휴무와 기존 일정 경계 유지. [마감·다음](../progress/2026-11-08_progress.md). 아래 날짜별 계획은 당시 이력이다.\n\n**날짜별 조정 · 2026-11-04:** [11/4~15 PCB 노트북 작업 계획](2026-11-04_to_15_PCB_Laptop_Work_Plan_ko.md). 사용자 요청으로11/9월·11/10화는 프로젝트 작업을 비운다.11/4~8 전압 오차 예산/설계 판단,11/11~15 전압2채널 KiCad 회로 초안/ERC 검토를 목표로 한다.5일은 가볍게,8·15일은 보완/마감 여유일이다. 시간 블록/구매/제작 완료를 확정한 계획은 아니다.\n\n**현재 위치 · 11/7 마감:** Shield전압2채널/공통연결과ERC0/0완료. MVP기능도면의실제부품표기최신화완료. **다음은수집·필터표→포트·전원조건표**이며검토후필요한회로변경/기구/풋프린트로진행한다. [마감·게시](../progress/2026-11-07_progress.md) · [현재맥락](../handoff/CURRENT_SESSION_CONTEXT.md).\n"
+  },
+  {
+    "file": "08_Mechanical_Design/source/chassis/README.md",
+    "lines": 30,
+    "intro": "# Chassis Source Drawing\n\n## Status\n\n`SOURCE PRESERVED / UNMODIFIED`\n\n이 폴더는 어댑터 플레이트의 기준으로 사용한 궤도 셰시 원본 홀 패턴 도면을 보존한다. 제조용 Rev A\n파일과 구분하며, 원본 파일은 직접 편집하지 않는다.\n\n## File Record\n\n| 항목 | 값 |"
+  },
+  {
+    "file": "03_Firmware/tools/README.md",
+    "lines": 63,
+    "intro": "# 펌웨어 격리 빌드 도구\n\n`Build-Firmware.ps1`은 기존 `stm32_uart_mvp/Debug`,\n`stm32_uart_mvp/Release`, `esp32_uart_bridge/build`를 수정하지 않고 STM32와\nESP32 펌웨어를 빌드한다.\n\n각 소스 트리를 `%TEMP%\\tmr-fw` 아래의 짧고 고유한 경로로 복사하여 빌드하고, 로그와 주요\n바이너리는 저장소 밖의 다음 경로에 보존한다.\n\n```text\n%LOCALAPPDATA%\\TrackedMobileRobot\\builds\\<run-id>\n```"
+  },
+  {
+    "file": "03_Firmware/esp32_examples/README.md",
+    "lines": 53,
+    "intro": "# ESP32 단계별 예제 학습\n\n`esp32_wifi_link` 코드를 이해하기 위한 단계별 예제 모음입니다.\n\n**상태 안내 갱신: 2026-10-11.** 아래 학습 순서와 실행 결과는10/6 당시 기록이다.\n실제 앱은 이후 WebSocket·STM TEL의 W4와 비구동 PING/DISARM의 W5를 완료했다.\n현재는 ARM/CMD parser·ticket·owner PC15/12/9 PASS·ESP 전체 빌드 성공 사용자 확인 이후 상태·시간 제한 흐름을 준비한다.\n[실제 앱 안내](../esp32_wifi_link/README.md)와 [현재 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 재개 기준으로 사용한다.\n\n## 학습 순서 — 2026-10-06\n\n| 단계 | 폴더 | 핵심 개념 | wifi_link 코드와의 연결 | 상태 |"
+  },
+  {
+    "file": "08_Mechanical_Design/releases/revA/README.md",
+    "lines": 73,
+    "intro": "# Adapter Plate Rev A Release Files\n\n## Status\n\n`RELEASE FILES PREPARED / ORDER NOT SUBMITTED`\n\n이 폴더는 어댑터 플레이트 Rev A의 제조 기준 파일과 검증용 파일을 보관한다. 당시 제작 후보 사양은\n아크릴 3T이며, 2026-07-24 멀티메이커 주문 페이지의 서버 업로드 오류 때문에 실제 주문은 접수되지 않았다.\n현재 RevB 주문 후보와 engineering hold는\n[`../../03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md`](../../03_Adapter_Plate_RevB_EStop_Mounting_Preflight_2026-08-26_ko.md)에서 별도로 관리한다.\n\n## Release Baseline"
+  },
+  {
+    "file": "08_Mechanical_Design/references/vendor_templates/README.md",
+    "lines": 26,
+    "intro": "# Vendor Manufacturing Templates\n\n이 폴더는 제작 업체가 고객의 작업 파일 배치용으로 제공한 원본 양식을 보존한다. 프로젝트가 직접 만든\n제조 형상이나 발주 정본과 혼동하지 않는다.\n\n## Multimaker\n\n| 항목 | 값 |\n| --- | --- |\n| 저장 파일 | `2026-07-24_multimaker_work_file_template.pdf` |\n| Desktop 원본명 | `멀티메이커-작업-파일-양식.pdf` |\n| 확보일 | 2026-07-24 |"
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/README.md",
+    "lines": 88,
+    "intro": "# Tracked Mobile Robot Wiring RevB-WIP\n\n## 최신 열람 PDF — 2026-11-12\n\n[현재 MVP 기능 회로도 PDF](exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf)를 이 폴더의 저장 `.kicad_sch`에서 다시 생성했다. 48부품과 11/7 표기 정정이 반영되어 있으며, 11/7 게시 PDF와 본문·렌더링이 일치한다. 회로도 원본과 과거 날짜별 체크포인트는 보존했다. [내보내기 확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).\n\n회로도 변경 후에는 위 고정 경로의 PDF도 함께 갱신한다. 아래 8월 PDF와 날짜별 기록은 당시 상태이며, 최신 도면을 대신하지 않는다.\n\n## 2026-11-07 부품 표기·상태 최신화\n\n[설계29](../../29_MVP_Drawing_Identity_Reconciliation_2026-11-07_ko.md)에 따라 S0/S2/K1/K2/F1/F2/U1/R13/R14/J13/J17/J19와출력net 이름을 갱신했다. [최신 PDF·변경 전 백업·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md).48부품·전체35net의핀 연결/타입 보존·ERC0/0. K2 기능 핀과 실물 핀 대응을 표시했다. F1 series/F2 exact SKU/정격 release는OPEN. 과거8월 export와하위RevC는역사적자료로보존하며 현재 실물 전면 as-built 승인은 아니다.\n"
+  },
+  {
+    "file": "03_Firmware/tests/README.md",
+    "lines": 744,
+    "intro": "# Firmware Safety Contract Tests\n\n## 브라우저 대시보드 표시 검사 — 2026-10-24\n\n[test_wifi_dashboard_page.js](test_wifi_dashboard_page.js)는 실제 PAGE를 읽어 표시10항목을 검사한다. 기존 공통46·거리28·방향21과 합쳐 중복 제외105 PASS. 새 값/지연/무효 엔코더/FAULT/BLOCKED·int64 보존·표시 예외 중 DISARM을 확인한다. [Chrome 배치/실행 방법](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md). MCU 빌드·플래시·실물 검사는 아니다.\n\n```powershell\nnode Projects/Tracked_Mobile_Robot/03_Firmware/tests/test_wifi_dashboard_page.js Projects/Tracked_Mobile_Robot/03_Firmware/esp32_wifi_link/main/wifi_link_main.c\n```\n\n이 디렉터리는 정적 소스/독립 참조 모델 검사, 실제 C 함수·모듈의 PC 실행 검사,\n브라우저 PAGE JavaScript 모의 검사를 관리한다. 각 검사의 실행 대상과 증거 범위가 다르다."
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md",
+    "lines": 266,
+    "intro": "# TMR Monitor Shield RevA — 노트북 설계 시작점\n\n**현재 · 2026-11-12:** [기본 경로의 최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 현재 저장 회로도에서 다시 생성했다. 40부품과 PWR_FLAG 2개, J7/J8을 포함한 6개 측정 포트가 반영되어 있다. 왼쪽 아래 `04 VOLTAGE INPUTS – TWO CHANNELS` 영역의 위쪽은 J7/VBAT_SENSE, 아래쪽은 J8/VMOTOR_SENSE다. 11/7 게시본과 본문·렌더링이 일치하며 CAD 원본은 변경하지 않았다. [확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).\n\n41-1 포트·GND 목록 작성과 CAD 대조를 마쳤고 다음은 41-2 정상 입력·공급 조건표다. 회로도 변경 뒤에는 위 고정 경로의 PDF도 함께 갱신한다. 날짜별 검토 로그는 당시 기록으로 보존한다. 아래 재개점은 각 날짜의 이력이다.\n\n**현재 재개점 · 2026-11-07:**\n\n전압2채널·공통 제어와PWR_FLAG2개까지 사용자 작성 완료,40부품·활성22net·기존 설정 ERC0/0이다. Codex가 마감 시 오래된 주석/제목란만 갱신했다. [최신 PDF·검증](../../../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 다음은 수집·필터 표와 포트·전원 조건표이며 풋프린트/기구·PCB는 그 뒤다. 후보 BOM은40부품으로 갱신했으나 구매/제작 승인은 아니다. 아래는 당시 이력이다.\n\n**현재 재개점 · 2026-11-06:** TPS=U1·TMUX=U2 추가 후 [24부품을6영역으로 재배치](../../../assets/logs/pcb_design/2026-11-06_schematic_layout_review/README.md)했다. 이후 사용자가 배터리측 J7/R7~R11/C5를 배치해 **현재31부품**이다. J7 위100mil·R9/C5 아래300mil 이동을 실제 저장 파일에서 확인했다. [최신 배치 PDF·검토](../../../assets/logs/pcb_design/2026-11-06_voltage_upstream_placement/README.md). 다음은 사용자가 **전단 분압·필터 배선**→모터 공급측/공통→연결 대조/ERC 순으로 진행한다. [설계27 연결표](../../27_Voltage_2Ch_Schematic_Contract_Comparison_2026-11-06_ko.md)를 따른다. 새7부품14핀과 U1/U2의19핀은 미배선이고 모터 공급측 전압 채널·C7/C8은 미추가다. 활성10net·기존 X70개를 유지한다. 이 쉴드의 새ERC/DRC·PCB 편집은 미실행이며 풋프린트/TI 예시 패드 차이는 후속 검토다. 별도로 수행한 MVP RevB 정돈/ERC와 구분한다. [오늘 진행](../../../docs/progress/2026-11-06_progress.md). 아래 다음 작업은 당시 이력이다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/Simulation/README.md",
+    "lines": 33,
+    "intro": "# 모니터링 입력 KiCad 실습\n\n**최신 · 11/8 마감:** 14장 방전과37-2 입력 정착 사용자 관측을 완료했다. [03_14 회로·워크북/관측](../../../assets/logs/pcb_design/2026-11-07_input_settling_check/README.md)과 [완료 필기·두 노드 해석](../../../assets/logs/pcb_design/2026-11-08_learning_closeout/README.md)을 보존했다. 다음은37-2 이해 보완이며 새 실행을 요구하지 않는다. 03_14 PNG/CSV·1τ 관측은 미확인이다. 아래 미실행/준비 문구는 당시 이력이다.\n\n**11/7 추가 실습 완료:** [14장 방전 정량 관측](../../../assets/logs/pcb_design/2026-11-07_discharge_check/README.md).03_09 사용자 실행의1τ/약99% 전압872.468678mV/23.8408803mV, 별도 워크북·PNG·CSV701행을 확인했다. CSV 출력 시간 반올림과 정밀 커서값을 구분한다. 다음은37-2 정상 ON 입력 정착을 위한 사용자03_14 복사본/입력원 설정이며 아직 실행하지 않았다. 아래 미확보 기록은 보완 전 이력이다.\n\n## 최신 점검 — 2026-11-07\n\n[40장 이전 실습 상태](../../../assets/logs/pcb_design/2026-11-07_pre40_practice_audit/README.md)를 대조했다.14장 방전 두 커서 전압의 정량 기록 보완과37-2 정상 ON 입력 정착 GUI 비교를 먼저 권고한다.36·38은 선택 수치 실습,37-4는40-2와 통합한다.30~35 문서 검토와 이후 완료한 회로도/ERC를 실습 누락으로 처리하지 않는다. 새 모델 작성/실행은 아직 하지 않았다.03의 공통 워크북은 빠른 하강용 설정으로 저장돼 있어 이전 방전 설정과 구분해야 한다. 아래 재개점은 각 작성 당시 기록이다.\n\n## 현재 읽기 위치 — 2026-11-04\n"
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/README.md",
+    "lines": 84,
+    "intro": "# 전압 분압과 RC — 사용자 GUI 실습\n\n## 최신 — 2026-11-08 입력 정착·필기 마감\n\n[03_14 회로](03_14_Voltage_ADC_InputSettling_TRAN.kicad_sch) / [워크북](03_14_InputSettling_Check_2026-11-07.wbk)의분석5와 사용자 커서3.680ms/2.36985654V,3.690ms/약2.36990V를 확인했다. 입력 변화 시작1.000ms 기준2.680~2.690ms 사이에 입력 환산 잔차10mV를 만족한다. [원본 조건/전사](../../../../assets/logs/pcb_design/2026-11-07_input_settling_check/README.md) · [완료 필기/두 노드 계산](../../../../assets/logs/pcb_design/2026-11-08_learning_closeout/README.md).\n\nV1 PWL은`0 0 1m 0 1.001m 16 6m 16`,V3는고정3.3V,TRAN은`.tran 1u 6m 0 100n`. 다음은 C1 근사/C2 포함 모델과VADC 전류식 복습이다. 03_14 PNG/CSV 내보내기·1τ 커서 관측은 미확인이며 새 실행/실물 검증을 했다고 기록하지 않는다. 아래는 이전 이력이다.\n\n## 최신 — 2026-11-07 방전 정량 보완\n\n사용자가03_09를 실행해1τ/약99% 지점의 VADC872.468678mV/23.8408803mV를 관측했다. [워크북](03_09_Discharge_Check_2026-11-07.wbk) 분석4의TRAN과 두 커서 위치, [PNG](03_09_Discharge_Check_2026-11-07.png), [CSV](03_09_Discharge_Check_2026-11-07.csv)701행을 확인했다. 워크북의 분석3은 이전 빠른 하강 설정으로 구분한다. CSV의 시간 반올림 한계와 커서 원문은 [검증 기록](../../../../assets/logs/pcb_design/2026-11-07_discharge_check/README.md)에 남겼다. 기존 두 커서 전압 미보고를 이번 관측으로 보완했으며 아래는 과거 이력이다. 다음은37-2 정상 ON 입력 정착의 새 복사본 준비다.\n"
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/Simulation/02_NTC/README.md",
+    "lines": 16,
+    "intro": "# NTC 분압과 RC — 사용자 GUI 실습\n\n2026-10-28. [02_NTC.kicad_sch](02_NTC.kicad_sch) / [프로젝트](02_NTC.kicad_pro) / [워크북](02_NTC.wbk).\n\nR3=10kΩ, R4=1kΩ, C3=100nF, V1 DC3.3V/AC1V. R7은 고정 저항으로 NTC의 명목 R-T 표를 모사하며 **최종 저장값은4147Ω(50°C 상당)**이다. 25°C 조건은10kΩ으로 변경해야 한다. 자동 온도 모델이나 실제 열응답 시험이 아니다.\n\n| 조건 | 사용자 OP | 사용자 AC 커서 | 저장 원본 |\n| --- | --- | --- | --- |\n| 25°C 상당10kΩ | 1.65V,165µA | 1.19828Hz/−6.02069dB,265.258Hz/−9.0309dB,차이−3.01021dB | [PNG](NTC_25C_AC.png) · [CSV](NTC_25C_AC.csv) |\n| 50°C 상당4147Ω | 967.35mV,233.265µA | 1Hz/−10.6586dB,404.834Hz/−13.6689dB,차이−3.01027dB | [PNG](NTC_50C_AC.png) · [CSV](NTC_50C_AC.csv) |\n\nReq=1k+(10k||R7), A0=R7/(10k+R7). C3가 R4 뒤에 있으므로 시정수 계산에 R4를 포함한다."
+  },
+  {
+    "file": "09_Electrical_Design/KiCAD/Simulation/01_Current_RC/README.md",
+    "lines": 103,
+    "intro": "# 전류 RC 한 채널 — KiCad 시뮬레이션\n\n**사용자 GUI 추가 결과:** 약133Hz/−3.01dB·19kHz/−43.1dB, 상승2.20000ms/1.70807V·하강22.2010ms/1.59193V와변화량99%잔차를직접확인했다. [AC PNG](Current_RC_AC.png) · [AC CSV](Current_RC_AC.csv) · [계단 PNG](Current_RC_Step.png) · [계단 CSV](Current_RC_Step.csv) · [전체 실습과 현재 다음 작업](../README.md). 아래직접DLL실행/GUI NOT_RUN문구는추가실습이전실행의이력이다. 사용자회로를prepare.py로재생성하지않는다.\n\n작성: 2026-10-28 · 마감: 2026-10-29. **사용자 KiCad GUI AC/TRAN 실습·PNG/CSV/워크북 저장 완료 / 실물 NOT_RUN.**\n\n## 기존 계획과 이번 작업의 관계\n\n기존 목표는 전류·온도·전압을 MCU에서 읽는 모니터링 입력 회로를 구체화하는 것이다. 사용자의 시뮬레이션 제안으로 **전류 RC·NTC 계산 확인을 기존 전원/보호 결정 앞에 추가**했다. 목표는 유지하지만 당일 작업 순서는 조정했다. 아래 작업 전체를 오늘 완료한다는 일정 약속은 아니다.\n\n| 순서 | 작업 | 다음 단계로 넘어갈 때 남길 결과 |\n| --- | --- | --- |"
+  },
+  {
+    "file": "03_Firmware/README.md",
+    "lines": 47,
+    "intro": "# 펌웨어 앱과 검사 안내\n\n상태 대조: **2026-10-23**. 지상1m 실제/추정·오차 기록 범위 PASS: run03/04 실측1002mm, 평균1002.640333/1000.953333mm. [결과/한계](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md#2026-10-23-지상-1m-결과와-잔여-인수-대조). MCU코드·빌드/플래시는 변경하지 않았고 관찰기만v5.1로 수정했다. 초기k/cap/gain 유지, 정밀도·직진성·전체 MVP 인수는 별도다. 온도는 후속 미실시이며 공중20cm는 사용자 요청 미실시로 남긴다.\n\n**최신 전원 재설정 후 관측:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. MCU 소스/제한값·빌드/플래시 변경 없음. 전체 인수와 별개다.\n\n## 앱 선택과 마지막 실행\n\n| 프로젝트 폴더 | 역할·진입점 | 확인한 상태 |\n| --- | --- | --- |\n| [stm32_uart_mvp](stm32_uart_mvp/) | [main.c](stm32_uart_mvp/Core/Src/main.c)와 [UART 프로토콜](stm32_uart_mvp/Core/Src/uart_mvp_protocol.c). 명령 검사·상태/timeout·최종 출력 안전 판단 | W5 실제 PONG/ACK·TEL 관측. PA10 pull-up·PONG 시험 hook0U. 전체 전력단·주행 수용과 별개 |\n| [esp32_wifi_link](esp32_wifi_link/README.md) | [wifi_link_main.c](esp32_wifi_link/main/wifi_link_main.c). STM TEL을 WebSocket으로 전달하고 브라우저 PING/DISARM을 UART 응답과 연결 | **현재 마지막 실행 ESP 앱**. 10/18 지상 주행·10/20 count/ARM 연동, 10/21 공중 목표 거리·거리 JSON,10/23 지상1m count/수동 DISARM 확인. 반응형 PAGE·복사 기능 적용, 실제 배포 이미지 신원은 별도 |"
+  },
+  {
+    "file": "03_Firmware/esp32_wifi_link/README.md",
+    "lines": 90,
+    "intro": "# ESP32 Wi-Fi · STM UART 상태와 방향 제어\n\nSTM32의 UART TEL을 브라우저에 전달하고 PING/DISARM 및 ARM과 방향 CMD를 UART 응답·새 TEL과 연결하는 ESP-IDF 프로젝트다.\n\n## 현재 상태 — 2026-10-24\n\n**후속 적용 확인:** 사용자 ESP 플래시 성공, 새 UI ARM0→DISARM 정상·배터리 단독 보고를 받았다. [새 화면/실물 영상](../../assets/logs/wifi_link/2026-10-24_demo_run01/README.md)에서6개 구동 구간과 마지막 DISARM1512 OK·IDLE/DISARMED/출력0을 확인했다. 아래 보드 적용 대기는 구현 당시 이력이다. 이번 실행 이미지 해시/원본 TEL 로그는 미확보다.\n\n**로컬 UI 보완·보드 적용 대기:** [실제 PAGE 표시 재점검](../../assets/logs/wifi_link/2026-10-24_browser_dashboard_review/README.md)으로 좌우 PWM%/CPS/count 요약, 십자 방향 버튼, 큰 DISARM, 지연·FAULT 표시와 접이식 JSON을 추가했다. PC105검사와 Chrome4너비 검사 PASS. 기존 제어 코드/제한은 동일하며 새 빌드·플래시는 사용자 수행 대기다. 아래 통신 시간/해시와 “새 펌웨어 없음”은 UI 수정 전 관측 이력이다.\n\n[운용·재현 절차](../../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)에 배터리 단독 전원·UART/구동 연결·펌웨어 기준과 시작~종료/복구 순서를 모았다. v5.2 실제 IDLE/속도0/전진 계측은 [3조건 비교](../../assets/logs/wifi_link/2026-10-24_handler_timing_air_forward_run01/README.md)에 완료했다. 원인OPEN/전체 인수 미완료, 새 펌웨어/빌드·플래시는 없다. 아래10/23 전원 관측은 이전 회차이며 새 전압/종료 전원 분리는 미보고다.\n"
+  },
+  {
+    "file": "03_Firmware/esp32_uart_bridge/README.md",
+    "lines": 327,
+    "intro": "# ESP32-S3 UART Command Bridge\n\n> **최신 재개 안내 — 2026-10-01:** 아래 8월 검증 표와 절차는 당시 범위의 기록이다.\n> 이후 A/B 단일 모터 시험은 [report32](../../docs/verification/32_Single_Motor_Run_DISARM_S0_and_Encoder_Evidence_2026-09-30_ko.md)에 보존했다.\n> 현재 소스는 자동 hook 4개가 `0U`, 수동 `BRIDGE_M2_RUN_TEST_ENABLED`가 `1U`인 3초 시험 설정이다.\n> 최신 상태는 [현재 인수인계](../../docs/handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.\n> 노트북·ESP 단독 Wi-Fi 작업은 [10/1 작업 계획](../../docs/plans/2026-10-01_Laptop_ESP_WiFi_PCB_and_Project_Review_Plan_ko.md)에서 시작한다.\n\n이 프로젝트는 ESP32-S3 DevKitC를 STM32 NUCLEO-F446RE의 command source,\ntelemetry relay, UART logger로 사용하는 ESP-IDF 펌웨어다. ESP32는 motion을\n요청할 수 있지만, MDD10A PWM/DIR 출력과 최종 safety authority는 STM32가\n소유한다."
+  }
+]

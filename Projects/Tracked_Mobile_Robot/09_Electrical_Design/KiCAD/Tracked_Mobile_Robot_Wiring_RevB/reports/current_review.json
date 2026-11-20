@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-12T16:25:01",
+  "source_sha256": "7474627bb7dbaa801496e60d5f692034a93f4cd438d332f763708573fbd67207",
+  "source_unchanged": true,
+  "matches_2026_11_07_reviewed_netlist": true,
+  "components": 48,
+  "all_nets": 35,
+  "erc_errors": 0,
+  "erc_warnings": 0,
+  "ignored_checks": [
+    {
+      "description": "Global label only appears once in the schematic",
+      "key": "single_global_label"
+    },
+    {
+      "description": "Four connection points are joined together",
+      "key": "four_way_junction"
+    },
+    {
+      "description": "SPICE model issue",
+      "key": "simulation_model_issue"
+    },
+    {
+      "description": "Assigned footprint doesn't match footprint filters",
+      "key": "footprint_filter"
+    }
+  ],
+  "limits": "Functional schematic only; not an as-built harness or electrical-rating approval. No PCB acceptance."
+}

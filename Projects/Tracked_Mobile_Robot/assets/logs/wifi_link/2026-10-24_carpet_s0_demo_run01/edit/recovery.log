@@ -1,0 +1,86 @@
+-filter_complex_script is deprecated, use -/filter_complex recovery.filter instead
+[Parsed_ass_19 @ 000001e664c1dbc0] libass API version: 0x1703000
+[Parsed_ass_19 @ 000001e664c1dbc0] libass source: commit: 0.17.3-32-g5298859c298d3c570d8d7e3b883a0d63490659b8
+[Parsed_ass_19 @ 000001e664c1dbc0] Shaper: FriBidi 1.0.16 (SIMPLE) HarfBuzz-ng 10.0.1 (COMPLEX)
+[Parsed_ass_19 @ 000001e664c1dbc0] Using font provider directwrite (with GDI)
+[Parsed_ass_19 @ 000001e664c1dbc0] Added subtitle file: 'recovery.ass' (4 styles, 21 events)
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'C:\Users\eyh12\Desktop\mvp_cam_long_01.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2mp41
+    encoder         : Lavf58.45.100
+  Duration: 00:02:24.03, start: 0.000000, bitrate: 2705 kb/s
+  Stream #0:0[0x1](und): Video: hevc (Main) (hvc1 / 0x31637668), yuv420p(tv, bt709), 1920x1080, 2571 kb/s, 30 fps, 30 tbr, 19200 tbn (default)
+      Metadata:
+        handler_name    : Core Media Video
+        vendor_id       : [0][0][0][0]
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 44100 Hz, stereo, fltp, 126 kb/s (default)
+      Metadata:
+        handler_name    : Core Media Audio
+        vendor_id       : [0][0][0][0]
+Input #1, mov,mp4,m4a,3gp,3g2,mj2, from 'C:\Users\eyh12\Desktop\mvp_long_01.mp4':
+  Metadata:
+    major_brand     : mp42
+    minor_version   : 0
+    compatible_brands: mp41isom
+    creation_time   : 2026-10-23T17:55:05.000000Z
+  Duration: 00:02:25.77, start: 0.000000, bitrate: 8904 kb/s
+  Stream #1:0[0x1](und): Video: h264 (Main) (avc1 / 0x31637661), yuv420p(tv, unknown/reserved/reserved, progressive), 1920x1080 [SAR 1:1 DAR 16:9], 8710 kb/s, 30 fps, 30 tbr, 30k tbn (default)
+      Metadata:
+        creation_time   : 2026-10-23T17:55:05.000000Z
+        handler_name    : VideoHandler
+        vendor_id       : [0][0][0][0]
+        encoder         : AVC Coding
+  Stream #1:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 192 kb/s (default)
+      Metadata:
+        creation_time   : 2026-10-23T17:55:05.000000Z
+        handler_name    : SoundHandler
+        vendor_id       : [0][0][0][0]
+Input #2, png_pipe, from 'layout.png':
+  Duration: N/A, bitrate: N/A
+  Stream #2:0: Video: png, rgb24(pc, gbr/unknown/unknown), 1920x1080, 30 fps, 30 tbr, 30 tbn
+Stream mapping:
+  Stream #0:0 (hevc) -> setpts:default
+  Stream #1:0 (h264) -> setpts:default
+  Stream #2:0 (png) -> overlay
+  format:default -> Stream #0:0 (libx264)
+[Parsed_ass_19 @ 000001e666633e80] libass API version: 0x1703000
+[Parsed_ass_19 @ 000001e666633e80] libass source: commit: 0.17.3-32-g5298859c298d3c570d8d7e3b883a0d63490659b8
+[Parsed_ass_19 @ 000001e666633e80] Shaper: FriBidi 1.0.16 (SIMPLE) HarfBuzz-ng 10.0.1 (COMPLEX)
+[Parsed_ass_19 @ 000001e666633e80] Using font provider directwrite (with GDI)
+[Parsed_ass_19 @ 000001e666633e80] Added subtitle file: 'recovery.ass' (4 styles, 21 events)
+[Parsed_ass_19 @ 000001e666633e80] fontselect: (Malgun Gothic, 400, 0) -> MalgunGothic, 0, MalgunGothic
+[Parsed_ass_19 @ 000001e666633e80] fontselect: (Malgun Gothic, 700, 0) -> MalgunGothicBold, 0, MalgunGothicBold
+[libx264 @ 000001e664e9a500] using cpu capabilities: MMX2 SSE2Fast SSSE3 SSE4.2 AVX FMA3 BMI2 AVX2
+[libx264 @ 000001e664e9a500] profile High, level 4.0, 4:2:0, 8-bit
+[libx264 @ 000001e664e9a500] 264 - core 164 r3192 c24e06c - H.264/MPEG-4 AVC codec - Copyleft 2003-2024 - http://www.videolan.org/x264.html - options: cabac=1 ref=3 deblock=1:0:0 analyse=0x3:0x113 me=hex subme=7 psy=1 psy_rd=1.00:0.00 mixed_ref=1 me_range=16 chroma_me=1 trellis=1 8x8dct=1 cqm=0 deadzone=21,11 fast_pskip=1 chroma_qp_offset=-2 threads=4 lookahead_threads=1 sliced_threads=0 nr=0 decimate=1 interlaced=0 bluray_compat=0 constrained_intra=0 bframes=3 b_pyramid=2 b_adapt=1 b_bias=0 direct=1 weightb=1 open_gop=0 weightp=2 keyint=250 keyint_min=25 scenecut=40 intra_refresh=0 rc_lookahead=40 rc=crf mbtree=1 crf=19.0 qcomp=0.60 qpmin=0 qpmax=69 qpstep=4 ip_ratio=1.40 aq=1:1.00
+Output #0, mp4, to 'recovery.mp4':
+  Metadata:
+    encoder         : Lavf61.7.100
+  Stream #0:0: Video: h264 (avc1 / 0x31637661), yuv420p(tv, bt709/unknown/unknown, progressive), 1920x1080, q=2-31, 30 fps, 15360 tbn
+      Metadata:
+        encoder         : Lavc61.19.100 libx264
+      Side data:
+        cpb: bitrate max/min/avg: 0/0/0 buffer size: 0 vbv_delay: N/A
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A    frame=    5 fps=4.8 q=25.0 size=       0KiB time=00:00:00.10 bitrate=   3.8kbits/s speed=0.0967x    frame=   37 fps= 24 q=25.0 size=     512KiB time=00:00:01.16 bitrate=3595.4kbits/s speed=0.755x    frame=   71 fps= 34 q=25.0 size=     768KiB time=00:00:02.30 bitrate=2735.6kbits/s speed=1.11x    frame=  105 fps= 41 q=25.0 size=    1024KiB time=00:00:03.43 bitrate=2443.4kbits/s speed=1.33x    frame=  143 fps= 46 q=25.0 size=    1536KiB time=00:00:04.70 bitrate=2677.3kbits/s speed=1.52x    frame=  181 fps= 50 q=25.0 size=    1792KiB time=00:00:05.96 bitrate=2460.4kbits/s speed=1.65x    frame=  224 fps= 54 q=25.0 size=    2304KiB time=00:00:07.40 bitrate=2550.6kbits/s speed=1.79x    frame=  259 fps= 56 q=25.0 size=    2816KiB time=00:00:08.56 bitrate=2692.9kbits/s speed=1.84x    frame=  303 fps= 59 q=25.0 size=    3072KiB time=00:00:10.03 bitrate=2508.3kbits/s speed=1.94x    frame=  343 fps= 60 q=25.0 size=    3328KiB time=00:00:11.36 bitrate=2398.5kbits/s speed=   2x    frame=  383 fps= 62 q=25.0 size=    3584KiB time=00:00:12.70 bitrate=2311.9kbits/s speed=2.05x    frame=  423 fps= 63 q=25.0 size=    3840KiB time=00:00:14.03 bitrate=2241.6kbits/s speed=2.09x    frame=  459 fps= 64 q=25.0 size=    4096KiB time=00:00:15.23 bitrate=2202.7kbits/s speed=2.11x    frame=  499 fps= 64 q=25.0 size=    4352KiB time=00:00:16.56 bitrate=2152.0kbits/s speed=2.14x    frame=  536 fps= 65 q=25.0 size=    4864KiB time=00:00:17.80 bitrate=2238.6kbits/s speed=2.16x    frame=  577 fps= 66 q=25.0 size=    5376KiB time=00:00:19.16 bitrate=2297.8kbits/s speed=2.19x    frame=  620 fps= 67 q=25.0 size=    5632KiB time=00:00:20.60 bitrate=2239.7kbits/s speed=2.22x    frame=  660 fps= 67 q=25.0 size=    5888KiB time=00:00:21.93 bitrate=2199.2kbits/s speed=2.24x    frame=  700 fps= 68 q=25.0 size=    6144KiB time=00:00:23.26 bitrate=2163.3kbits/s speed=2.25x    frame=  737 fps= 68 q=25.0 size=    6400KiB time=00:00:24.50 bitrate=2140.0kbits/s speed=2.26x    frame=  778 fps= 69 q=25.0 size=    6912KiB time=00:00:25.86 bitrate=2189.1kbits/s speed=2.28x    frame=  819 fps= 69 q=25.0 size=    7424KiB time=00:00:27.23 bitrate=2233.2kbits/s speed= 2.3x    frame=  855 fps= 69 q=25.0 size=    7680KiB time=00:00:28.43 bitrate=2212.7kbits/s speed= 2.3x    frame=  895 fps= 69 q=25.0 size=    8192KiB time=00:00:29.76 bitrate=2254.5kbits/s speed=2.31x    frame=  936 fps= 70 q=25.0 size=    8448KiB time=00:00:31.13 bitrate=2222.9kbits/s speed=2.32x    frame=  975 fps= 70 q=25.0 size=    8704KiB time=00:00:32.43 bitrate=2198.5kbits/s speed=2.33x    frame= 1013 fps= 70 q=25.0 size=    9472KiB time=00:00:33.70 bitrate=2302.5kbits/s speed=2.33x    frame= 1053 fps= 70 q=25.0 size=    9728KiB time=00:00:35.03 bitrate=2274.8kbits/s speed=2.34x    frame= 1094 fps= 71 q=25.0 size=    9984KiB time=00:00:36.40 bitrate=2247.0kbits/s speed=2.35x    frame= 1137 fps= 71 q=25.0 size=   10496KiB time=00:00:37.83 bitrate=2272.7kbits/s speed=2.36x    frame= 1177 fps= 71 q=25.0 size=   10752KiB time=00:00:39.16 bitrate=2248.9kbits/s speed=2.37x    frame= 1217 fps= 71 q=25.0 size=   11264KiB time=00:00:40.50 bitrate=2278.4kbits/s speed=2.38x    frame= 1258 fps= 72 q=25.0 size=   11520KiB time=00:00:41.86 bitrate=2254.1kbits/s speed=2.39x    frame= 1309 fps= 72 q=25.0 size=   12032KiB time=00:00:43.56 bitrate=2262.4kbits/s speed=2.41x    [mp4 @ 000001e664c71780] Starting second pass: moving the moov atom to the beginning of the file
+[out#0/mp4 @ 000001e664cb2580] video:12107KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.136570%
+frame= 1326 fps= 73 q=-1.0 Lsize=   12123KiB time=00:00:44.13 bitrate=2250.3kbits/s speed=2.43x    
+[libx264 @ 000001e664e9a500] frame I:6     Avg QP:11.47  size:270068
+[libx264 @ 000001e664e9a500] frame P:335   Avg QP:15.82  size: 26557
+[libx264 @ 000001e664e9a500] frame B:985   Avg QP:21.64  size:  1908
+[libx264 @ 000001e664e9a500] consecutive B-frames:  0.8%  0.5%  0.5% 98.3%
+[libx264 @ 000001e664e9a500] mb I  I16..4: 45.1% 28.8% 26.1%
+[libx264 @ 000001e664e9a500] mb P  I16..4:  0.3%  0.4%  0.2%  P16..4: 14.0%  4.5%  4.8%  0.0%  0.0%    skip:76.0%
+[libx264 @ 000001e664e9a500] mb B  I16..4:  0.0%  0.0%  0.0%  B16..8:  8.6%  0.6%  0.2%  direct: 0.2%  skip:90.4%  L0:33.9% L1:59.7% BI: 6.4%
+[libx264 @ 000001e664e9a500] 8x8 transform intra:37.1% inter:55.3%
+[libx264 @ 000001e664e9a500] coded y,uvDC,uvAC intra: 41.2% 28.5% 19.2% inter: 3.8% 1.5% 0.2%
+[libx264 @ 000001e664e9a500] i16 v,h,dc,p: 55% 35%  6%  4%
+[libx264 @ 000001e664e9a500] i8 v,h,dc,ddl,ddr,vr,hd,vl,hu: 28% 13% 28%  4%  5%  5%  5%  5%  6%
+[libx264 @ 000001e664e9a500] i4 v,h,dc,ddl,ddr,vr,hd,vl,hu: 26% 24% 17%  5%  6%  6%  6%  5%  5%
+[libx264 @ 000001e664e9a500] i8c dc,h,v,p: 56% 28% 15%  2%
+[libx264 @ 000001e664e9a500] Weighted P-Frames: Y:0.0% UV:0.0%
+[libx264 @ 000001e664e9a500] ref P L0: 71.1% 13.1% 12.2%  3.5%
+[libx264 @ 000001e664e9a500] ref B L0: 90.6%  8.2%  1.1%
+[libx264 @ 000001e664e9a500] ref B L1: 94.1%  5.9%
+[libx264 @ 000001e664e9a500] kb/s:2243.73

@@ -1,0 +1,349 @@
+{
+  "scope": "Saved user models; netlist export only, no simulation execution",
+  "files": [
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_01_01_Voltage_Divider_Tolerance_0p1pct_Max_OP.kicad_sch",
+      "sha256": "df53aa4a2dcde080174ca2877e4172b223f0b7b70f5e96a11d464c9022e4eb2a",
+      "netlist": "netlists/03_01_01_Voltage_Divider_Tolerance_0p1pct_Max_OP.cir",
+      "netlist_sha256": "03677c3f113dc240524278da851c94b7967647f8e4f3fa32220b1d566adfb8e2",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.653k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12.12k",
+        "R2 Net-_R1-Pad2_ /VDIV 12.12k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_01_Voltage_Divider_Tolerance_Max_OP.kicad_sch",
+      "sha256": "2867cf0b6635c49159b8d64f38df92515f92c73da1e8e0ff70ae21447ab0c146",
+      "netlist": "netlists/03_01_Voltage_Divider_Tolerance_Max_OP.cir",
+      "netlist_sha256": "aff090278a21f0d8982d916461a26c4e8f9ff6b62e577a53a675c45ecf8e0e96",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.747k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 11.88k",
+        "R2 Net-_R1-Pad2_ /VDIV 11.88k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_02_Voltage_Divider_Tolerance_Min_OP.kicad_sch",
+      "sha256": "df53aa4a2dcde080174ca2877e4172b223f0b7b70f5e96a11d464c9022e4eb2a",
+      "netlist": "netlists/03_02_Voltage_Divider_Tolerance_Min_OP.cir",
+      "netlist_sha256": "03677c3f113dc240524278da851c94b7967647f8e4f3fa32220b1d566adfb8e2",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.653k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12.12k",
+        "R2 Net-_R1-Pad2_ /VDIV 12.12k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_03_Voltage_Divider_Tolerance_0p1pct_Max_OP.kicad_sch",
+      "sha256": "778e96950f7cb08ca5e11a767adcd2eda2aee0596e2ab4df30dcc55f496add67",
+      "netlist": "netlists/03_03_Voltage_Divider_Tolerance_0p1pct_Max_OP.cir",
+      "netlist_sha256": "03677c3f113dc240524278da851c94b7967647f8e4f3fa32220b1d566adfb8e2",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.653k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12.12k",
+        "R2 Net-_R1-Pad2_ /VDIV 12.12k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_04_Voltage_Divider_Tolerance_0p1pct_Min_OP.kicad_sch",
+      "sha256": "09bf51805971294e7f7e3ce15784d516191513df4c4d43a1773a9f566d65bb00",
+      "netlist": "netlists/03_04_Voltage_Divider_Tolerance_0p1pct_Min_OP.cir",
+      "netlist_sha256": "56792e93ada1d2a5ae312168768cab3c95a1d5e371a3e1740a5d598926cb90f3",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.7047k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 11.988k",
+        "R2 Net-_R1-Pad2_ /VDIV 11.988k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_05_Voltage_Divider_Leakage_OP.kicad_sch",
+      "sha256": "956b5fa56ffd9198737343b46bb19f212fde0271e2edcac3136a3fa049a9914c",
+      "netlist": "netlists/03_05_Voltage_Divider_Leakage_OP.cir",
+      "netlist_sha256": "941450269ef9efefa140e3fe5b38b74c6f4e2ef36484690ab6b1950aa1fe4a65",
+      "elements_and_models": [
+        "C1 /VDIV 0 100n",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "R4 /VADC /VDIV 1k",
+        "I1 /VADC 0 DC 1u ",
+        "R3 /VDIV 0 4.7k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_06_Voltage_ADC_Isolation_OP.kicad_sch",
+      "sha256": "3e7c5a41bda6d8f57db5d3b762a115dfcfe2aeac39c10e4346ba07f537c76ed6",
+      "netlist": "netlists/03_06_Voltage_ADC_Isolation_OP.cir",
+      "netlist_sha256": "f2494233c8eef60126bd9594b483adaa90eeb82354d91797492e3f2c0b299fbf",
+      "elements_and_models": [
+        ".model __S1 SW",
+        "+           vt=1.65",
+        "+           ron=2",
+        "+           roff=1G",
+        "C1 /VDIV 0 100n",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "S1 Net-_S1-N+_ /VADC /VCTRL 0 __S1",
+        "V1 /VRAIL 0 DC 16 AC 1 0 ",
+        "R5 /VADC 0 47k",
+        "V2 /VCTRL 0 DC 3.3 ",
+        "R4 Net-_S1-N+_ /VDIV 1k",
+        "R3 /VDIV 0 4.7k"
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_07_Voltage_ADC_PowerDown_Baseline_TRAN.kicad_sch",
+      "sha256": "3e7c5a41bda6d8f57db5d3b762a115dfcfe2aeac39c10e4346ba07f537c76ed6",
+      "netlist": "netlists/03_07_Voltage_ADC_PowerDown_Baseline_TRAN.cir",
+      "netlist_sha256": "f2494233c8eef60126bd9594b483adaa90eeb82354d91797492e3f2c0b299fbf",
+      "elements_and_models": [
+        ".model __S1 SW",
+        "+           vt=1.65",
+        "+           ron=2",
+        "+           roff=1G",
+        "C1 /VDIV 0 100n",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "S1 Net-_S1-N+_ /VADC /VCTRL 0 __S1",
+        "V1 /VRAIL 0 DC 16 AC 1 0 ",
+        "R5 /VADC 0 47k",
+        "V2 /VCTRL 0 DC 3.3 ",
+        "R4 Net-_S1-N+_ /VDIV 1k",
+        "R3 /VDIV 0 4.7k"
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_08_Voltage_ADC_UV_Control_TRAN.kicad_sch",
+      "sha256": "39a6bc9396b79a09de9e13ce3a2adf0a182ad400de9cc5a085764bc1531c7484",
+      "netlist": "netlists/03_08_Voltage_ADC_UV_Control_TRAN.cir",
+      "netlist_sha256": "07e669471d2341c76436a95255fe5c8eecce690b7408c9a0d09596c35371b714",
+      "elements_and_models": [
+        ".model __S1 SW",
+        "+           vt=1.65",
+        "+           ron=2",
+        "+           roff=1G",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 ",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "S1 Net-_S1-N+_ /VADC /VCTRL 0 __S1",
+        "R4 Net-_S1-N+_ /VDIV 1k",
+        "R3 /VDIV 0 4.7k",
+        "V3 /VDDA 0 PWL( 0 3.3 10m 3.3 13.3m 0 15m 0 ) ",
+        "R5 /VADC 0 47k",
+        "V2 /VCTRL 0 DC 3.3 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_09_Voltage_ADC_Discharge_TRAN.kicad_sch",
+      "sha256": "14807ced55efd9de52a75b972fb81b635e4650d3ec09c38e657fbb32ed0725d6",
+      "netlist": "netlists/03_09_Voltage_ADC_Discharge_TRAN.cir",
+      "netlist_sha256": "672dbd291b8a9cc037ed8ceb73681bda3968f2ab961bc136eed35f17f63d8fa2",
+      "elements_and_models": [
+        ".model __S1 SW",
+        "+           vt=1.65",
+        "+           ron=2",
+        "+           roff=1G",
+        "C1 /VDIV 0 100n",
+        "R3 /VDIV 0 4.7k",
+        "R4 Net-_S1-N+_ /VDIV 1k",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "S1 Net-_S1-N+_ /VADC /VCTRL 0 __S1",
+        "V1 /VRAIL 0 DC 16 AC 1 0 ",
+        "R5 /VADC 0 47k",
+        "B1 /VCTRL 0 v=V(/VDDA) > 3 ? V(/VDDA) : 0",
+        "V3 /VDDA 0 PWL( 0 3.3 10m 3.3 13.3m 0 15m 0 ) ",
+        "C2 /VADC 0 100p"
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_Voltage_Divider.kicad_sch",
+      "sha256": "e257f7ef8276cbaa910c8edd2686423af9a4f9e90b698124df8673793fa246dc",
+      "netlist": "netlists/03_Voltage_Divider.cir",
+      "netlist_sha256": "2082dda4084a7007409210d8a9660ee6e9d6162f2ae8ebfa50ac4b1d2e2f0b8c",
+      "elements_and_models": [
+        "R3 /VDIV 0 4.7k",
+        "R4 /VADC /VDIV 1k",
+        "R1 /VRAIL Net-_R1-Pad2_ 12k",
+        "R2 Net-_R1-Pad2_ /VDIV 12k",
+        "C1 /VDIV 0 100n",
+        "V1 /VRAIL 0 DC 16 AC 1 0 "
+      ]
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_01_01_Voltage_Divider_Tolerance_0p1pct_Max_OP.kicad_pro",
+      "sha256": "aa1ff9c62cbb255d394f71fd292750aabd37253fe07d7ce0ad5ef768aeeed289"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_01_Voltage_Divider_Tolerance_Max_OP.kicad_pro",
+      "sha256": "ebae280195d67f7d528ce6a83fce2947dbd0036ad2ed2cb2f86d55aee055f08e"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_02_Voltage_Divider_Tolerance_Min_OP.kicad_pro",
+      "sha256": "886db87aa2f4bd4b2a922452ea7ee9f8d244708b6227ff848ae61636874e362f"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_03_Voltage_Divider_Tolerance_0p1pct_Max_OP.kicad_pro",
+      "sha256": "cab6d99a12f12e7af223bd8747e4d623142c47d3aa7eb0b2c7e9546d9f36b235"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_04_Voltage_Divider_Tolerance_0p1pct_Min_OP.kicad_pro",
+      "sha256": "d04ddb1cba7e09549655304d7542106960f444b845f6d0505bf03c1e00f1f38a"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_05_Voltage_Divider_Leakage_OP.kicad_pro",
+      "sha256": "a5cf5f4c43df8a92303b81c2fd21523930988492b518cd3add7d4891c3fffa7b"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_06_Voltage_ADC_Isolation_OP.kicad_pro",
+      "sha256": "ca4626ac83d06f51b038fdbd97fa2791ebec537a844a179b10b9c03d089fe238"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_07_Voltage_ADC_PowerDown_Baseline_TRAN.kicad_pro",
+      "sha256": "84403ca1364ee41f5c62ba5c88848bbfd42182eb17d67402e599e2b5f3db8605"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_08_Voltage_ADC_UV_Control_TRAN.kicad_pro",
+      "sha256": "e7dfee908dcde3938a26d66d35e594e01df7ea26aaa887a204706cdbd0ddbba8"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_09_Voltage_ADC_Discharge_TRAN.kicad_pro",
+      "sha256": "f5bf616ce19c465de39817c86ff3c6a85f8a64220d857bac0568ef0f48888f26"
+    },
+    {
+      "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_Voltage_Divider.kicad_pro",
+      "sha256": "32c156ab738b8aacfaf6d2f5b2acef960c90a79c6899ffb1b7c6d4aa6188c76a"
+    }
+  ],
+  "workbook": {
+    "path": "09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_Voltage_Divider.wbk",
+    "sha256": "01b49940e7fbf6a51ea4a3038981a846398b4fc4ea77b75e7101040609a3cf78",
+    "tabs": [
+      {
+        "analysis": "OP",
+        "commands": [
+          ".op",
+          ".kicad adjustpaths",
+          ".save all",
+          ".probe alli",
+          ".probe allp"
+        ]
+      },
+      {
+        "analysis": "AC",
+        "commands": [
+          ".ac dec 200 1 1Meg",
+          ".kicad adjustpaths",
+          ".save all",
+          ".probe alli",
+          ".probe allp"
+        ],
+        "dottedSecondary": true,
+        "margins": {
+          "bottom": 45,
+          "left": 70,
+          "right": 70,
+          "top": 30
+        },
+        "measurements": [],
+        "showGrid": true,
+        "traces": [
+          {
+            "color": "rgb(228, 26, 28)",
+            "cursor1": {
+              "position": 1.0,
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "cursor2": {
+              "position": 404.942098,
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "cursorD": {
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "signal": "V(/VADC) (게인)",
+            "trace_type": 521
+          }
+        ]
+      },
+      {
+        "analysis": "TRAN",
+        "commands": [
+          ".tran 100n 10.35m 10.28m 100n",
+          ".kicad adjustpaths",
+          ".save all",
+          ".probe alli",
+          ".probe allp"
+        ],
+        "dottedSecondary": true,
+        "margins": {
+          "bottom": 45,
+          "left": 70,
+          "right": 70,
+          "top": 30
+        },
+        "measurements": [],
+        "showGrid": true,
+        "traces": [
+          {
+            "color": "rgb(55, 126, 184)",
+            "cursor1": {
+              "position": 0.0103047,
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "cursor2": {
+              "position": 0.01032164,
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "cursorD": {
+              "x_format": "6~s",
+              "y_format": "6~V"
+            },
+            "signal": "V(/VADC)",
+            "trace_type": 257
+          },
+          {
+            "color": "rgb(77, 175, 74)",
+            "signal": "V(/VCTRL)",
+            "trace_type": 257
+          },
+          {
+            "color": "rgb(228, 26, 28)",
+            "signal": "V(/VDDA)",
+            "trace_type": 257
+          }
+        ]
+      }
+    ],
+    "note": "Cursor positions are saved settings, not measured voltage results."
+  },
+  "attachment": {
+    "id": "12633254-db7a-4939-9ed2-58d7c3a58718",
+    "file": "user_discharge_tran_console.txt",
+    "sha256": "0e799db647727d5c70b59f7b3ead5dd64f02c63e007babd3f32d3bd5bbbbf806",
+    "source_matches": true,
+    "format": "Original user console log, unchanged bytes; no waveform CSV supplied."
+  }
+}

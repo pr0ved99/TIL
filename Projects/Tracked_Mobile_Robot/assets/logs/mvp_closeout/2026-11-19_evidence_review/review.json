@@ -1,0 +1,416 @@
+{
+  "date": "2026-11-19",
+  "scope": "Bounded stored-evidence review; no new hardware run, build, flash or full release acceptance.",
+  "limitations": [
+    "Saved UART decoded text and browser JSON rechecked; digital capture hashes checked but sample decoding not rerun.",
+    "Local source/artifact identity is not a board flash readback.",
+    "The eight-row disposition includes document-only screening of power, no-load and analog encoder gaps."
+  ],
+  "t004_files": [
+    {
+      "path": "assets/captures/logic_analyzer/2026-09-22_T_ESTOP_004_run03_estop_release_reset.sr",
+      "exists": true,
+      "bytes": 492557,
+      "sha256": "b5b5e121a7e9489913ade8cfef1ea64daca73bd3b6738319979e1a076282f7c7",
+      "matches_recorded_hash": true
+    },
+    {
+      "path": "assets/logs/estop/2026-09-22_t004/run03_D5_uart.txt",
+      "exists": true,
+      "bytes": 49949,
+      "sha256": "50ad85d090fb924480c25b9ade7adfe4f5c806572d393e0e6dd8af0d8eb17b4e",
+      "matches_recorded_hash": true
+    }
+  ],
+  "t004_reset": {
+    "reject": {
+      "start_s": 11.0024555,
+      "kind": "ERR",
+      "seq": "2525055104",
+      "type": "ESTOP_RESET",
+      "code": "ESTOP_ACTIVE",
+      "t_ms": "8373"
+    },
+    "ack": {
+      "start_s": 18.25675375,
+      "kind": "ACK",
+      "seq": "2525055105",
+      "type": "ESTOP_RESET",
+      "t_ms": "15638"
+    },
+    "latched_tel": {
+      "start_s": 18.22147,
+      "kind": "TEL",
+      "t_ms": "15603",
+      "state": "FAULT",
+      "reason": "ESTOP_LATCHED",
+      "command_age_ms": "7444",
+      "last_seq": "2525055102",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "2"
+    },
+    "reset_tel": {
+      "start_s": 18.3212885,
+      "kind": "TEL",
+      "t_ms": "15703",
+      "state": "DISARMED",
+      "reason": "ESTOP_RESET",
+      "command_age_ms": "7544",
+      "last_seq": "2525055105",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "2"
+    },
+    "arm_only_zero_tel": {
+      "start_s": 18.5209755,
+      "kind": "TEL",
+      "t_ms": "15903",
+      "state": "ARMED",
+      "reason": "NONE",
+      "command_age_ms": "7744",
+      "last_seq": "2525055106",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "2"
+    }
+  },
+  "nz02_files": [
+    {
+      "path": "assets/captures/logic_analyzer/2026-10-17_WIFI_NZ02_REVERSE_TURNS_DIR_PWM_run01.sr",
+      "exists": true,
+      "bytes": 686197,
+      "sha256": "1bd07d5f666a3de05de54dada5361e09b3e9f03654b90d18fff4858917ef4a5e",
+      "matches_recorded_hash": true
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-17_nz02_reverse_turns_run01/esp_console.txt",
+      "exists": true,
+      "bytes": 65212,
+      "sha256": "e8d40f063ac50eab835403483e76ece35c4cead718858c951fe0502cd436b981",
+      "matches_recorded_hash": true
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-17_nz02_reverse_turns_run01/D0.txt",
+      "exists": true,
+      "bytes": 85478,
+      "sha256": "f8f5323f6e87718aa97d16cd9d4e42236c6eaed76412d946a7f81e3525e93e0a"
+    },
+    {
+      "path": "assets/logs/wifi_link/2026-10-17_nz02_reverse_turns_run01/observations.json",
+      "exists": true,
+      "bytes": 20666,
+      "sha256": "55bf1795d5425f31daec72035fb4085dfe032a72edaf99d777e6b3d246cec854"
+    }
+  ],
+  "nz02": {
+    "signed_tel": {
+      "reverse": {
+        "pwm": [
+          -50,
+          -50
+        ],
+        "decoded_uart_contains_pair": true
+      },
+      "left": {
+        "pwm": [
+          -50,
+          50
+        ],
+        "decoded_uart_contains_pair": true
+      },
+      "right": {
+        "pwm": [
+          50,
+          -50
+        ],
+        "decoded_uart_contains_pair": true
+      }
+    },
+    "recorded_ack_count": 194,
+    "recorded_command_counts": {
+      "ARM": 1,
+      "CMD": 192,
+      "DISARM": 1
+    },
+    "recorded_dir_transition_count": 10,
+    "recorded_checks": {
+      "commands_ack_once": true,
+      "seq_contiguous": true,
+      "framing_artifacts_only_before_first_full_tel": true,
+      "no_malformed_tel": true,
+      "no_fault_errors_or_cps": true,
+      "pc7_low": true,
+      "all_direction_changes_with_pwm_low": true,
+      "all_motion_checks": true,
+      "no_extra_pwm_bursts": true,
+      "no_pwm_after_final_zero": true,
+      "final_disarmed_zero": true,
+      "cmd_timeout_300": true,
+      "esp_tx_subset_matches_capture": true,
+      "esp_rx_subset_matches_capture": true
+    },
+    "digital_sample_checks_rerun": false
+  },
+  "wifi_timeout_recovery": [
+    {
+      "run": "2026-10-20_uart_tx_disconnect_timeout_air_run01",
+      "raw": {
+        "path": "assets/logs/wifi_link/2026-10-20_uart_tx_disconnect_timeout_air_run01/browser_report.json",
+        "exists": true,
+        "bytes": 2887518,
+        "sha256": "f736ef38cf8f5a7a47ad15e52d99dc792827971f34259a9ecb81b30ebdadc44a",
+        "matches_recorded_hash": true
+      },
+      "rows": 2619,
+      "timeout_rows": 217,
+      "first_timeout": {
+        "ms": 144171.2000000002,
+        "boot_id": 14253055,
+        "gap_ms": 51.5,
+        "esp_uptime_ms": 261118,
+        "esp_step_ms": 59,
+        "tel_count": 2608,
+        "stm_t_ms": 241800,
+        "stm_age_ms": 50,
+        "command_age_ms": 363,
+        "last_seq": 837153199,
+        "state": "DISARMED",
+        "reason": "CMD_TIMEOUT",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          960,
+          760
+        ],
+        "encoder_valid": true,
+        "encoder_t_ms": 241725,
+        "left_count": "1922",
+        "right_count": "1508",
+        "encoder_arm_valid": true,
+        "encoder_arm_seq": 837153091,
+        "drop": 0,
+        "err": 0
+      },
+      "all_timeout_command_pwm_zero": true,
+      "physical_observation_source": "assets/logs/wifi_link/2026-10-20_uart_tx_disconnect_timeout_air_run01/observations.json"
+    },
+    {
+      "run": "2026-10-20_uart_tx_reconnect_recovery_air_run01",
+      "raw": {
+        "path": "assets/logs/wifi_link/2026-10-20_uart_tx_reconnect_recovery_air_run01/browser_report.json",
+        "exists": true,
+        "bytes": 2987561,
+        "sha256": "d9a060e12d727101f0a8f11f16af4d33116c4870ce5c90cf21fe3e15786c12e9",
+        "matches_recorded_hash": true
+      },
+      "rows": 2733,
+      "timeout_rows": 2629,
+      "first_timeout": {
+        "ms": 288083,
+        "boot_id": 14253055,
+        "gap_ms": 59,
+        "esp_uptime_ms": 404998,
+        "esp_step_ms": 60,
+        "tel_count": 4049,
+        "stm_t_ms": 385900,
+        "stm_age_ms": 30,
+        "command_age_ms": 144463,
+        "last_seq": 837153199,
+        "state": "DISARMED",
+        "reason": "CMD_TIMEOUT",
+        "command": [
+          0,
+          0
+        ],
+        "pwm": [
+          0,
+          0
+        ],
+        "cps": [
+          0,
+          0
+        ],
+        "encoder_valid": true,
+        "encoder_t_ms": 385826,
+        "left_count": "1959",
+        "right_count": "1541",
+        "encoder_arm_valid": true,
+        "encoder_arm_seq": 837153091,
+        "drop": 0,
+        "err": 0
+      },
+      "all_timeout_command_pwm_zero": true,
+      "physical_observation_source": "assets/logs/wifi_link/2026-10-20_uart_tx_reconnect_recovery_air_run01/observations.json",
+      "all_retained_rows_command_pwm_cps_zero": true,
+      "fixed_counts": [
+        "1959",
+        "1541"
+      ],
+      "manual_disarm_seen": true
+    }
+  ],
+  "local_identity_vs_pre_ui_oct24": {
+    "sources": [
+      {
+        "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c",
+        "exists": true,
+        "bytes": 5188,
+        "sha256": "e883c5b41a2a81c72f9787e68a2f9b0b2c3ef0be70c17c15c459c173261d6ea2",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h",
+        "exists": true,
+        "bytes": 3038,
+        "sha256": "d5c2d57a28ade8fdb4fb5e4d6f54e6edc7365471fc3e85554bb30e7aefd804f3",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c",
+        "exists": true,
+        "bytes": 10883,
+        "sha256": "dbcca0434c2079ffc2580358cd399e43a8d17a9b6965f585c8067cfc9ab14e5e",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/main/wifi_link_main.c",
+        "exists": true,
+        "bytes": 137464,
+        "sha256": "37dc255d7caa7f02fc3a536650a3fb9202273300e27139d75f39a311264272b0",
+        "matches_pre_ui_baseline": false
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Inc/distance_move.h",
+        "exists": true,
+        "bytes": 2743,
+        "sha256": "bdc0c09618f40ac947f3dde0b73cd3d80a8ebff9f82a29d95272dc2fb98e9b16",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Inc/encoder_speed.h",
+        "exists": true,
+        "bytes": 1137,
+        "sha256": "7290c09712712eacdf858d98bfc7b533a31ef15c8139c08c306c7c9e5f76edc1",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_frame_parser.h",
+        "exists": true,
+        "bytes": 1438,
+        "sha256": "baddfbba8b641969b7897c578a5378b851d341fbe71c3ec9f2f84fd1fdb1cbe0",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Inc/uart_mvp_protocol.h",
+        "exists": true,
+        "bytes": 615,
+        "sha256": "90e5e55e05dfb3d0105cd3204e8a2387996371c9925ab20eb1a995adb15e59b6",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Src/distance_move.c",
+        "exists": true,
+        "bytes": 5957,
+        "sha256": "142a6c676f507a7ec7e03df37e0c5d3bba987a1990af5e29db92295fc908c31a",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Src/encoder_speed.c",
+        "exists": true,
+        "bytes": 5085,
+        "sha256": "9a5ff6fc7b905a8522bf0191ef7c3b5e5354c6bd95d1b0f9c528970220e1033c",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Src/main.c",
+        "exists": true,
+        "bytes": 15322,
+        "sha256": "b0068dd3650cd8bd8e686b83681832abb0fe47ee1d3c4234cd7bf9ecb285d3f6",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_frame_parser.c",
+        "exists": true,
+        "bytes": 8629,
+        "sha256": "11d2465cab13b7aec796a52779645dcf49973e3528f2c7f9336c01731e68bf33",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Core/Src/uart_mvp_protocol.c",
+        "exists": true,
+        "bytes": 42820,
+        "sha256": "194b81b51e004f7c4a62bf96662b9ae8b9783aa244d6e25879ff92d9296369e2",
+        "matches_pre_ui_baseline": true
+      }
+    ],
+    "artifacts": [
+      {
+        "path": "03_Firmware/stm32_uart_mvp/Debug/stm32_uart_mvp.elf",
+        "exists": true,
+        "bytes": 1275124,
+        "sha256": "224e21dd8a86ba35c65467db969dcb2ab679d2d1d57424b16248e33c5486ab0d",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/build/esp32_wifi_link.elf",
+        "exists": true,
+        "bytes": 9166012,
+        "sha256": "4e5cc8416d73a7d00c9e6cae44f9bf8426c236763d45e031a5e38a679f1e3dda",
+        "matches_pre_ui_baseline": false
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/build/esp32_wifi_link.bin",
+        "exists": true,
+        "bytes": 905520,
+        "sha256": "b1fde6c287c8f9ee4d23c6daf725f68d84564e5df7c1b1fd05adc2aa92d83864",
+        "matches_pre_ui_baseline": false
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/build/bootloader/bootloader.bin",
+        "exists": true,
+        "bytes": 21056,
+        "sha256": "ad4f70ceb94878b476b27fd1d1ffa2c50e4f8a2062fd428bdceeacf7e737b7eb",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/build/partition_table/partition-table.bin",
+        "exists": true,
+        "bytes": 3072,
+        "sha256": "7f00b6c042a89b15b0cac534f82ed988caf29278ff5700b0c511eb1b5bb7c820",
+        "matches_pre_ui_baseline": true
+      },
+      {
+        "path": "03_Firmware/esp32_wifi_link/build/flasher_args.json",
+        "exists": true,
+        "bytes": 945,
+        "sha256": "e795f7999b7ea9bfb76c820f629f5866608f45ae95944f3c236148697ba3512e",
+        "matches_pre_ui_baseline": true
+      }
+    ]
+  }
+}

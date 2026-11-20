@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_distance_timing_candidate.py", line 148, in <module>
+    main()
+  File "C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\tests\test_distance_timing_candidate.py", line 38, in main
+    assert len(re.findall(r'static\s+int32_t\s+encoder_cps_to_i32\s*\(', main_src)) == 1, \
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: encoder_cps_to_i32 must have exactly one definition

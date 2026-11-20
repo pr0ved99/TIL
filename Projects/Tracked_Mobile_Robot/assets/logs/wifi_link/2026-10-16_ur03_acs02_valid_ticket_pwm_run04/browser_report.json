@@ -1,0 +1,141 @@
+{
+  "test": "UR03_ACS02_VALID_A_TICKET_FROM_B",
+  "stage": "APP_CHECKS_OK_CAPTURE_REQUIRED",
+  "boot": 1797425356,
+  "A": 6,
+  "B": 7,
+  "target": {
+    "a_request": 4,
+    "control_id": 3,
+    "ticket": 30870
+  },
+  "problem": null,
+  "events": [
+    {
+      "ms": 0.1,
+      "event": "INSTALLED",
+      "message": "자동 ARM 없음. B READY 대기 중."
+    },
+    {
+      "ms": 143.1,
+      "event": "READY",
+      "boot": 1797425356,
+      "A": 6,
+      "B": 7
+    },
+    {
+      "ms": 11346.7,
+      "event": "MANUAL_ARM",
+      "request": 1
+    },
+    {
+      "ms": 11346.9,
+      "event": "PRE_ARM_IDLE_IGNORED",
+      "request": 1
+    },
+    {
+      "ms": 11347.1,
+      "event": "PRE_ARM_IDLE_IGNORED",
+      "request": 1
+    },
+    {
+      "ms": 11347.2,
+      "event": "PRE_ARM_IDLE_IGNORED",
+      "request": 1
+    },
+    {
+      "ms": 11347.4,
+      "event": "PRE_ARM_IDLE_IGNORED",
+      "request": 1
+    },
+    {
+      "ms": 11363.4,
+      "event": "PRE_ARM_IDLE_IGNORED",
+      "request": 1
+    },
+    {
+      "ms": 11605,
+      "event": "B_COPIED_TICKET_TX",
+      "A": 6,
+      "B": 7,
+      "a_request": 4,
+      "control_id": 3,
+      "ticket": 30870,
+      "offer_ttl_ms": 150,
+      "offer_age_ms": 0.30000000074505806,
+      "client_send_budget_ms": 99.69999999925494,
+      "ttl_budget_ms": 94.69999999925494,
+      "text": "CMD,boot_id=1797425356,request_id=1,control_id=3,ticket=30870,vx_mmps=0,w_mradps=0"
+    },
+    {
+      "ms": 11663.6,
+      "event": "B_RESPONSE",
+      "kind": "command_notice",
+      "boot_id": 1797425356,
+      "session_id": 7,
+      "request_id": 1,
+      "cmd": "CMD",
+      "stage": "REJECTED",
+      "reason": "TICKET_REJECTED"
+    },
+    {
+      "ms": 11663.7,
+      "event": "A_SAME_TICKET_TX",
+      "request": 4,
+      "ticket": 30870,
+      "b_round_trip_ms": 58.69999999925494,
+      "client_send_budget_ms": 41,
+      "text": "CMD,boot_id=1797425356,request_id=4,control_id=3,ticket=30870,vx_mmps=0,w_mradps=0"
+    },
+    {
+      "ms": 11733.7,
+      "event": "A_SAME_TICKET_RESULT",
+      "kind": "command_result",
+      "boot_id": 1797425356,
+      "session_id": 6,
+      "request_id": 4,
+      "cmd": "CMD",
+      "seq": 3522553858,
+      "control_id": 3,
+      "status": "OK"
+    },
+    {
+      "ms": 11734.3,
+      "event": "A_STILL_ACTIVE",
+      "session": 6,
+      "control_id": 3
+    },
+    {
+      "ms": 12734.6,
+      "event": "STOP",
+      "reason": "시험 종료"
+    },
+    {
+      "ms": 12734.9,
+      "event": "DISARM_TX",
+      "request": 15
+    },
+    {
+      "ms": 12813.9,
+      "event": "DISARM_RESULT",
+      "kind": "command_result",
+      "boot_id": 1797425356,
+      "session_id": 6,
+      "request_id": 15,
+      "cmd": "DISARM",
+      "seq": 3522553868,
+      "control_id": 0,
+      "status": "OK"
+    },
+    {
+      "ms": 12873.7,
+      "event": "APP_CHECKS_OK_CAPTURE_REQUIRED",
+      "problem": null,
+      "stop_confirmed": true,
+      "bRejected": true,
+      "aConfirmed": true,
+      "activeAfter": true,
+      "armedAfter": true
+    }
+  ]
+}

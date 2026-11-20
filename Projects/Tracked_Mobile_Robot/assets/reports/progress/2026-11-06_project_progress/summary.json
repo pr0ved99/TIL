@@ -1,0 +1,65 @@
+{
+  "start": "2026-06-08",
+  "end": "2026-11-06",
+  "calendar_dates_inclusive": 152,
+  "record_dates": 81,
+  "selected_milestones": 30,
+  "category_counts": {
+    "hardware": 22,
+    "demo": 1,
+    "design": 7
+  },
+  "peak_milestones_per_week_trailing_14d": 4.5,
+  "peak_dates": [
+    "2026-10-28",
+    "2026-10-29",
+    "2026-10-30"
+  ],
+  "latest_milestones_per_week_trailing_14d": 3.0,
+  "monthly": {
+    "2026-06": {
+      "record_dates": 3,
+      "milestones": 1,
+      "hardware": 0,
+      "design": 1,
+      "demo": 0
+    },
+    "2026-07": {
+      "record_dates": 13,
+      "milestones": 7,
+      "hardware": 5,
+      "design": 2,
+      "demo": 0
+    },
+    "2026-08": {
+      "record_dates": 19,
+      "milestones": 4,
+      "hardware": 4,
+      "design": 0,
+      "demo": 0
+    },
+    "2026-09": {
+      "record_dates": 15,
+      "milestones": 5,
+      "hardware": 5,
+      "design": 0,
+      "demo": 0
+    },
+    "2026-10": {
+      "record_dates": 27,
+      "milestones": 11,
+      "hardware": 7,
+      "design": 3,
+      "demo": 1
+    },
+    "2026-11": {
+      "record_dates": 4,
+      "milestones": 2,
+      "hardware": 1,
+      "design": 1,
+      "demo": 0
+    }
+  },
+  "source_anchor_checks": 30,
+  "source_commit": "f99c583749337d27551820becf740027f13d54bd"
+}

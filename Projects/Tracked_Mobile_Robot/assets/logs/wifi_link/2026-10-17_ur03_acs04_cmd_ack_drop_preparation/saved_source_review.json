@@ -1,0 +1,40 @@
+{
+  "status": "PC_PASS_DUPLICATE_DECLARATION_CLEANUP_PENDING",
+  "saved_normalized_sha256": "017aaf7e0de97fc7ac07ddeb06544c86102a0b04e86bcca90d2cc0cefc05894f",
+  "reviewed_candidate_normalized_sha256": "a5069d10d51d80b6127213537697dd50cd33a6c32c20c0a435e88de093762d95",
+  "matches_candidate": false,
+  "differences": [
+    {
+      "line": 146,
+      "issue": "Repeated identical static tentative declaration of s_right_cps; accepted by native C compiler but remove paste duplication"
+    },
+    {
+      "issue": "One extra blank line before ESTOP_RESET case; no behavior impact"
+    }
+  ],
+  "all_stm_test_switches_zero": true,
+  "stm_test_switch_count": 14,
+  "other_manifest_production_files_unchanged": {
+    "03_Firmware/esp32_wifi_link/main/wifi_link_main.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_contract.h": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_executor.h": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_owner.h": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_state.h": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.c": true,
+    "03_Firmware/esp32_wifi_link/main/wifi_control_ticket.h": true
+  },
+  "pc_results_file": "saved_pc.txt",
+  "native_case_groups": {
+    "mode0": 2,
+    "mode1": 6
+  },
+  "invalid_mode_rejected": true,
+  "combined_modes_rejected": 13,
+  "firmware_edited_by_codex": false,
+  "board_build_run": false,
+  "board_runtime_verified": false
+}

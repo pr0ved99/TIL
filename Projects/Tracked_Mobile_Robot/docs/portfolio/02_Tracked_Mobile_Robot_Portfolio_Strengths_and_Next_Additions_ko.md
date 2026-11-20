@@ -10,7 +10,7 @@
 
 > STM32F446RE 기반 tracked mobile robot lower controller를 개발하며, UART command/telemetry, safety state machine, MDD10A PWM/DIR motor control, encoder feedback을 단계적으로 통합하는 임베디드 로봇 시스템 통합 프로젝트.
 
-현재 단계에서는 `UART MVP + safety gate + PC dashboard`가 가장 강한 증거다.
+2026-11-12 대조 기준으로 `Wi-Fi/UART 제어 → STM 출력·정지 → 엔코더/1m 거리 기록 → 통합 시연`이 가장 강한 근거다. 전류/온도/전압 Shield 설계·시뮬레이션은 제작/정량 검증과 구분한다.
 
 ## 현재까지의 강점
 
@@ -164,164 +164,29 @@ UART 정본은 [`../verification/01_UART_MVP_Requirements_ko.md`](../verificatio
 [`../verification/02_UART_MVP_Verification_Matrix_ko.md`](../verification/02_UART_MVP_Verification_Matrix_ko.md)이며,
 프로젝트 전체 추적성은 [`../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md`](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md)에서 관리한다.
 
-## 아직 포트폴리오에서 약한 부분
+## 확보한 증거와 현재 남은 범위 — 2026-11-12
 
-현재 프로젝트의 약점은 명확하다.
+| 영역 | 확보한 근거 | 남은 범위 |
+| --- | --- | --- |
+| 실제 모터·주행 | 단일 모터 PWM/DIR·정지 관측, 지상 전후진·양방향 회전과 149초 시연 | 전체 하중/노면·정밀 정지 시간/거리·장시간 정격 수용 |
+| 엔코더 | 신호 조정부·count/CPS·부호, 10/23 지상1m 실제/추정 거리와 오차 기록 | 일반화 가능한 정확도/직진성·슬립·외부 기준 속도 검증 |
+| 요구사항 추적 | 요구사항·검증 매트릭스 및 원본 증거 연결 | 전체 MUST 인수 PARTIAL/OPEN, T005A PARTIAL/T007 BLOCKED |
+| 소개·시연 | 구조·담당 역할·근거·한계가 있는 README와 149초 통합 영상 | 문서 최신성 유지, 검증 범위를 넘는 표현 방지 |
+| 모니터링 회로 | 전류/NTC/전압6채널 Shield40부품·ERC, RC/공차/정착 학습 | PCB22풋프린트·미배선, 포트 보호/기구·제작·ADC 잡음/보정 실측 |
 
-### 1. 실제 모터 구동 증거가 아직 부족하다
+[검증 매트릭스](../verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md) · [거리·MVP 판정](../verification/41_MVP_Acceptance_Disposition_2026-10-24_ko.md) · [통합 영상](../../assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md) · [11/5 외부 계측](../../assets/logs/mvp_measurements/2026-11-05_external_current_temperature_air_run01/README.md).
 
-현재는 UART와 firmware structure 증거가 강하지만, 로봇 프로젝트로 보이려면 다음 증거가 필요하다.
+기존의 “엔코더 증거 없음”, “첫 모터 시험 전”, “요구사항 검증표 없음”, “전체 약30%” 평가는 초기 상태에 머문 표현이라 철회한다. 근거가 다른 구현·실물·문서 작업을 하나의 완료율로 합산하지 않는다.
 
-- MDD10A PWM/DIR 입력 확인
-- no-load motor 저속 구동 영상
-- timeout 시 실제 PWM 0 확인
-- DISARM 시 실제 PWM 0 확인
+## 다음 보강 순서
 
-### 2. encoder feedback 증거가 아직 없다
+1. 11/13 마감 기준으로 41-1~41-5 포트·정상 입력·전원 조합·차단/복귀·고장 설명 자료를 작성했다. 다음 41-6에서 보호 경로·검증 기준을 정리한다. 사용자 수기·이해 완료와 실측은 별도다.
+2. 필요한 회로 변경을 판단한 뒤 기구·풋프린트/PCB·제작 검토로 진행한다. CAD/ERC를 실물 성능으로 표현하지 않는다.
+3. 준비된 범위에서 사용자 조립·ADC 구현·독립 기준 비교로 잡음/보정 잔차·정확도·응답/보호 근거를 확보한다.
+4. CAN·STM FreeRTOS/LL·ROS2/AI는 별도 후속 단계로 관리한다. 이미 완료한 첫 구동·1m 기록·시연을 다시 선행 과제로 나열하지 않는다.
 
-시스템 통합 포트폴리오에서 encoder는 매우 중요하다.
+## 포트폴리오 설명 문장
 
-추가해야 할 증거:
+> STM32F446RE와 ESP32-S3를 연결한 궤도형 로봇의 하위 구동 플랫폼을 개발했습니다. Wi-Fi/UART 명령·최종 출력 안전 판단·PWM/DIR·엔코더를 통합하고, 저속 지상 주행·정지와 1m 실제/추정 거리 기록 및 시연을 남겼습니다. 현재는 전류·온도·전압 측정 Shield의 회로/보호 조건을 검토하고 있으며 정량 ADC·전체 하드웨어 인수는 진행 중입니다.
 
-- A/B quadrature 신호 전압 확인
-- TIM encoder mode count 증가/감소
-- direction sign 확인
-- `left_cps`, `right_cps` telemetry 실제값 반영
-
-### 3. requirement-to-test traceability가 아직 문서로 분리되지 않았다
-
-지금은 각 문서에 검증 내용이 흩어져 있다.
-
-추가하면 좋은 문서:
-
-- `docs/verification/Requirements_ko.md`
-- `docs/verification/Verification_Matrix_ko.md`
-- `docs/verification/Test_Report_Template_ko.md`
-
-### 4. README의 포트폴리오용 첫인상이 아직 약하다
-
-현재 README는 handoff와 문서 색인 성격이 강하다.
-
-추가하면 좋은 것:
-
-- 1장짜리 system overview
-- architecture diagram
-- 현재 동작 GIF 또는 짧은 영상 링크
-- 검증 결과 표
-- 내가 구현한 범위
-- known limitations
-
-## 우선 추가하면 좋은 항목
-
-### Priority 1. UART MVP 검증 증거 완성
-
-목표:
-
-```text
-UART MVP는 완전히 검증된 기능으로 닫는다.
-```
-
-할 일:
-
-- timeout zero 동작을 Web Serial Dashboard에서 검증
-- CSV 로그 저장
-- dashboard screenshot 저장
-- `docs/progress/YYYY-MM-DD_progress.md` 작성
-- `Verification_Matrix`에 PASS로 연결
-
-### Priority 2. MDD10A logic input evidence
-
-목표:
-
-```text
-모터 전원 없이 MDD10A 입력 신호가 안전하게 들어가는지 확인한다.
-```
-
-할 일:
-
-- PWM pin idle 상태 확인
-- DIR pin idle 상태 확인
-- low duty PWM 출력 확인
-- MDD10A input terminal wiring 사진 저장
-- DMM/logic analyzer 증거 저장
-
-### Priority 3. First motor no-load test
-
-목표:
-
-```text
-실제 모터 1개를 저속으로 안전하게 구동한다.
-```
-
-할 일:
-
-- duty limit 적용
-- direction change 전 PWM zero
-- ARM 후 low speed command
-- timeout/DISARM 시 motor stop
-- 짧은 영상 저장
-
-### Priority 4. Encoder feedback
-
-목표:
-
-```text
-모터가 움직였다는 것뿐 아니라, STM32가 움직임을 측정한다는 증거를 만든다.
-```
-
-할 일:
-
-- TIM encoder mode 설정
-- count delta 계산
-- cps telemetry 반영
-- forward/backward 방향 부호 확인
-
-### Priority 5. README 포트폴리오화
-
-목표:
-
-```text
-프로젝트를 처음 보는 사람이 1분 안에 시스템 구조, 구현 범위, 검증 증거를 이해하게 한다.
-```
-
-추가할 섹션:
-
-- `What this project demonstrates`
-- `System architecture`
-- `Firmware architecture`
-- `Verification evidence`
-- `Current status`
-- `Next steps`
-
-## 포트폴리오에 넣을 수 있는 강한 문장
-
-### 짧은 버전
-
-> STM32F446RE 기반 하위 구동 제어기를 구현하며, UART command/telemetry protocol, safety state machine, MDD10A PWM/DIR 제어, encoder feedback을 단계적으로 통합하는 tracked mobile robot 플랫폼을 개발하고 있습니다.
-
-### 시스템 통합 강조 버전
-
-> 이 프로젝트에서는 MCU 펌웨어, 모터 드라이버, encoder, PC monitoring dashboard를 하나의 하위 구동 플랫폼으로 통합했습니다. 각 인터페이스는 요구사항과 검증 로그로 추적 가능하게 관리했고, STM32가 최종 motor safety authority를 갖도록 설계했습니다.
-
-### 검증 중심 버전
-
-> 단순 동작 데모가 아니라, UART command, safety state, timeout, telemetry를 요구사항 단위로 정의하고 Web Serial Dashboard 로그와 CSV 증거로 검증하는 lightweight V-model 흐름을 적용했습니다.
-
-## 현재 진행률 판단
-
-현재 포트폴리오 관점 진행률:
-
-```text
-문서/아키텍처 설계: 높음
-UART MVP: 높음
-펌웨어 구조 이해: 중간 이상
-PC dashboard/logging: 중간 이상
-MDD10A 실제 검증: 초기
-PWM motor control: 초기 전
-encoder feedback: 초기 전
-drivetrain integration: 초기 전
-```
-
-전체 최종 MVP 기준으로는 약 30% 수준이다.
-
-하지만 통신, 안전 상태머신, 검증 구조는 이미 포트폴리오의 뼈대로 사용할 수 있다. 다음 진척률을 크게 올리는 지점은 `MDD10A + PWM + first motor no-load test`다.
+소유 범위는 사용자 설계·코드 입력·배선/조립·빌드/플래시·실측과 Codex의 검토·분석/문서 지원을 구분한다. 최신 재개점은 [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)를 따른다.

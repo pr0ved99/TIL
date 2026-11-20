@@ -1,0 +1,228 @@
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link> $env:IDF_PATH = 'C:\esp\v6.0.2\esp-idf';
+PS C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link>  & 'C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe' 'C:\esp\v6.0.2\esp-idf\tools\idf_monitor.py' -p COM4 -b 115200 --toolchain-prefix xtensa-esp32s3-elf- --make '''C:\Espressif\tools\python\v6.0.2\venv\Scripts\python.exe'' ''C:\esp\v6.0.2\esp-idf\tools\idf.py''' --target esp32s3 'c:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\03_Firmware\esp32_wifi_link\build\esp32_wifi_link.elf'
+--- Warning: GDB cannot open serial ports accessed as COMx
+--- Using \\.\COM4 instead...
+--- esp-idf-monitor 1.9.0 on \\.\COM4 115200
+--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H
+I (31351) wifi_link: STM TEL #305 t_ms=6800 state=FAULT reason=EESP-ROM:esp32s3-20210327
+Build:Mar 27 2021
+rst:0x15 (USB_UART_CHIP_RESET),boot:0x8 (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4200b5ac
+--- 0x4200b5ac: uart_read_bytes at C:/esp/v6.0.2/esp-idf/components/esp_driver_uart/src/uart.c:1753
+SPIWP:0xee
+mode:DIO, clock div:1
+load:0x3fce2820,len:0x14f0
+load:0x403c8700,len:0xda0
+load:0x403cb700,len:0x2f54
+entry 0x403c8908
+I (24) boot: ESP-IDF v6.0.2 2nd stage bootloader
+I (24) boot: compile time Oct  2 2026 20:06:23
+I (25) boot: Multicore bootloader
+I (25) boot: chip revision: v0.2
+I (27) boot: efuse block revision: v1.3
+I (31) boot.esp32s3: Boot SPI Speed : 80MHz
+I (35) boot.esp32s3: SPI Mode       : DIO
+I (39) boot.esp32s3: SPI Flash Size : 2MB
+I (42) boot: Enabling RNG early entropy source...
+I (47) boot: Partition Table:
+I (50) boot: ## Label            Usage          Type ST Offset   Length
+I (56) boot:  0 nvs              WiFi data        01 02 00009000 00006000
+I (62) boot:  1 phy_init         RF data          01 01 0000f000 00001000
+I (69) boot:  2 factory          factory app      00 00 00010000 00100000
+I (75) boot: End of partition table
+I (79) esp_image: segment 0: paddr=00010020 vaddr=3c0a0020 size=256b8h (153272) map
+I (114) esp_image: segment 1: paddr=000356e0 vaddr=3fc98500 size=0509ch ( 20636) load
+I (119) esp_image: segment 2: paddr=0003a784 vaddr=40374000 size=05894h ( 22676) load
+I (125) esp_image: segment 3: paddr=00040020 vaddr=42000020 size=98dc0h (626112) map
+I (240) esp_image: segment 4: paddr=000d8de8 vaddr=40379894 size=0ec30h ( 60464) load
+I (254) esp_image: segment 5: paddr=000e7a20 vaddr=50000000 size=00024h (    36) load
+I (263) boot: Loaded app from partition at offset 0x10000
+I (263) boot: Disabling RNG early entropy source...
+I (273) cpu_start: Multicore app
+I (282) cpu_start: GPIO 44 and 43 are used as console UART I/O pins
+I (283) cpu_start: Pro cpu start user code
+I (283) cpu_start: cpu freq: 160000000 Hz
+I (284) app_init: Application information:
+I (288) app_init: Project name:     esp32_wifi_link
+I (292) app_init: App version:      6240886-dirty
+I (297) app_init: Compile time:     Oct 20 2026 01:21:39
+I (302) app_init: ELF file SHA256:  d1ce1b8a4...
+I (306) app_init: ESP-IDF:          v6.0.2
+I (310) efuse_init: Min chip rev:     v0.0
+I (314) efuse_init: Max chip rev:     v0.99 
+I (318) efuse_init: Chip rev:         v0.2
+I (322) heap_init: Initializing. RAM available for dynamic allocation:
+I (328) heap_init: At 3FCA19C0 len 00047D50 (287 KiB): RAM
+I (333) heap_init: At 3FCE9710 len 00005724 (21 KiB): RAM
+I (338) heap_init: At 3FCF0000 len 00008000 (32 KiB): DRAM
+I (344) heap_init: At 600FE000 len 00001FE8 (7 KiB): RTCRAM
+I (350) spi_flash: detected chip: generic
+I (353) spi_flash: flash io: dio
+W (356) spi_flash: Detected size(16384k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (368) sleep_gpio: Configure to isolate all GPIO pins in sleep state
+I (374) sleep_gpio: Enable automatic switching of GPIO sleep configuration
+I (381) main_task: Started on CPU0
+I (381) main_task: Calling app_main()
+I (391) pp: pp rom version: e7ae62f
+I (401) net80211: net80211 rom version: e7ae62f
+I (411) wifi:wifi driver task: 3fceed4c, prio:23, stack:6656, core=0
+I (411) wifi:wifi firmware version: 00ad238
+I (411) wifi:wifi certification version: v7.0
+I (411) wifi:config NVS flash: enabled
+I (411) wifi:config nano formatting: disabled
+I (421) wifi:Init data frame dynamic rx buffer num: 32
+I (421) wifi:Init static rx mgmt buffer num: 5
+I (421) wifi:Init management short buffer num: 32
+I (431) wifi:Init dynamic tx buffer num: 32
+I (431) wifi:Init static tx FG buffer num: 2
+I (441) wifi:Init static rx buffer size: 1600
+I (441) wifi:Init static rx buffer num: 10
+I (451) wifi:Init dynamic rx buffer num: 32
+I (451) wifi_init: rx ba win: 6
+I (451) wifi_init: accept mbox: 6
+I (451) wifi_init: tcpip mbox: 32
+I (461) wifi_init: udp mbox: 6
+I (461) wifi_init: tcp mbox: 6
+I (461) wifi_init: tcp tx win: 5760
+I (471) wifi_init: tcp rx win: 5760
+I (471) wifi_init: tcp mss: 1440
+I (471) wifi_init: WiFi IRAM OP enabled
+I (481) wifi_init: WiFi RX IRAM OP enabled
+I (481) wifi_link: STM UART RX ready: TX=GPIO17 RX=GPIO18 115200/8N1
+I (491) wifi_link: STARTUP: settle; DISARM seq=525914431 PING seq=525914432
+I (491) wifi_link: Wi-Fi + STM UART RX: mode=STA boot_id=1794076624
+I (501) wifi:Set ps type: 0, coexist: 0
+
+I (501) wifi_link: Wi-Fi power save disabled for control latency
+I (511) phy_init: phy_version 712,87e8c20e,Apr 13 2026,18:51:10
+I (561) wifi:mode : sta (20:6e:f1:b4:b5:5c)
+I (561) wifi:enable tsf
+I (631) wifi_link: STM TEL #1 t_ms=3600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (631) wifi:new:<1,1>, old:<1,0>, ap:<255,255>, sta:<1,1>, prof:1, snd_ch_cfg:0x0
+I (641) wifi:state: init -> auth (0xb0)
+I (641) wifi:state: auth -> assoc (0x0)
+I (651) wifi:Association refused temporarily time 2000, comeback time 2100 (TUs)
+I (731) wifi_link: STM TEL #2 t_ms=3700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (831) wifi_link: STM TEL #3 t_ms=3800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (931) wifi_link: STM TEL #4 t_ms=3900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1001) wifi_link: STARTUP: line cancel sent
+I (1031) wifi_link: STM TEL #5 t_ms=4000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1101) wifi_link: TX UART1: DISARM,seq=525914431 attempt=1
+I (1141) wifi_link: STM RX: pwm=0,left_cps=0,right_cps=0,encoder_valid=1,encoder_t_ms=4023,left_count=0,right_count=0,encoder_arm_valid=0,encoder_arm_seq=0,batt_mv=0,drop=0,err=0
+I (1141) wifi_link: RX ACK: seq=525914431 type=DISARM
+I (1141) wifi_link: STARTUP: DISARM acknowledged
+I (1151) wifi_link: TX UART1: PING,seq=525914432 attempt=1
+I (1171) wifi_link: RX PONG: seq=525914432
+I (1171) wifi_link: STARTUP READY: DISARM ACK and PONG verified
+I (1231) wifi_link: STM TEL #6 t_ms=4200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1331) wifi_link: STM TEL #7 t_ms=4300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1431) wifi_link: STM TEL #8 t_ms=4400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1531) wifi_link: STM TEL #9 t_ms=4500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1631) wifi_link: STM TEL #10 t_ms=4600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1731) wifi_link: STM TEL #11 t_ms=4700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1831) wifi_link: STM TEL #12 t_ms=4800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (1931) wifi_link: STM TEL #13 t_ms=4900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2031) wifi_link: STM TEL #14 t_ms=5000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2131) wifi_link: STM TEL #15 t_ms=5100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2231) wifi_link: STM TEL #16 t_ms=5200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2331) wifi_link: STM TEL #17 t_ms=5300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2431) wifi_link: STM TEL #18 t_ms=5400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2531) wifi_link: STM TEL #19 t_ms=5500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2631) wifi_link: STM TEL #20 t_ms=5600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2731) wifi_link: STM TEL #21 t_ms=5700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2801) wifi:state: assoc -> assoc (0x0)
+I (2811) wifi:state: assoc -> run (0x10)
+I (2831) wifi:connected with pvd_2G, aid = 2, channel 1, 40U, bssid = b0:38:6c:08:df:a6
+I (2831) wifi:security: WPA2-PSK, phy: bgn, rssi: -48, cipher(pairwise:0x3, group:0x3), pmf:1
+I (2831) wifi_link: STM TEL #22 t_ms=5800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (2831) wifi:pm start, type: 0
+
+I (2841) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us
+I (2851) wifi:set rx beacon pti, rx_bcn_pti: 0, bcn_timeout: 25000, mt_pti: 0, mt_time: 10000
+I (2871) wifi:AP's beacon interval = 102400 us, DTIM period = 1
+I (2931) wifi_link: STM TEL #23 t_ms=5900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3031) wifi_link: STM TEL #24 t_ms=6000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3131) wifi_link: STM TEL #25 t_ms=6100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3231) wifi_link: STM TEL #26 t_ms=6200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3331) wifi_link: STM TEL #27 t_ms=6300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3431) wifi_link: STM TEL #28 t_ms=6400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3531) wifi_link: STM TEL #29 t_ms=6500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3631) wifi_link: STM TEL #30 t_ms=6600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3731) wifi_link: STM TEL #31 t_ms=6700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3831) wifi_link: STM TEL #32 t_ms=6800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (3931) wifi_link: STM TEL #33 t_ms=6900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4031) wifi_link: STM TEL #34 t_ms=7000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4131) wifi_link: STM TEL #35 t_ms=7100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4231) wifi_link: STM TEL #36 t_ms=7200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4321) wifi_link: STM TEL #37 t_ms=7300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4371) esp_netif_handlers: sta ip: 192.168.0.17, mask: 255.255.255.0, gw: 192.168.0.1
+I (4371) wifi_link: Open http://192.168.0.17/
+I (4371) wifi_link: WebSocket status: /ws, period=50 ms
+I (4421) wifi_link: STM TEL #38 t_ms=7400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4521) wifi_link: STM TEL #39 t_ms=7500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4621) wifi_link: STM TEL #40 t_ms=7600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4721) wifi_link: STM TEL #41 t_ms=7700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4821) wifi_link: STM TEL #42 t_ms=7800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (4921) wifi_link: STM TEL #43 t_ms=7900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5021) wifi_link: STM TEL #44 t_ms=8000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5121) wifi_link: STM TEL #45 t_ms=8100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5221) wifi_link: STM TEL #46 t_ms=8200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5321) wifi_link: STM TEL #47 t_ms=8300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5421) wifi_link: STM TEL #48 t_ms=8400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5521) wifi_link: STM TEL #49 t_ms=8500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5621) wifi_link: STM TEL #50 t_ms=8600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5721) wifi_link: STM TEL #51 t_ms=8700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5821) wifi_link: STM TEL #52 t_ms=8800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (5921) wifi_link: STM TEL #53 t_ms=8900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6021) wifi_link: STM TEL #54 t_ms=9000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6121) wifi_link: STM TEL #55 t_ms=9100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6221) wifi_link: STM TEL #56 t_ms=9200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6321) wifi_link: STM TEL #57 t_ms=9300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6421) wifi_link: STM TEL #58 t_ms=9400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6521) wifi_link: STM TEL #59 t_ms=9500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6621) wifi_link: STM TEL #60 t_ms=9600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6721) wifi_link: STM TEL #61 t_ms=9700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6821) wifi_link: STM TEL #62 t_ms=9800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (6921) wifi_link: STM TEL #63 t_ms=9900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7021) wifi_link: STM TEL #64 t_ms=10000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7121) wifi_link: STM TEL #65 t_ms=10100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7221) wifi_link: STM TEL #66 t_ms=10200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7321) wifi_link: STM TEL #67 t_ms=10300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7421) wifi_link: STM TEL #68 t_ms=10400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7521) wifi_link: STM TEL #69 t_ms=10500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7621) wifi_link: STM TEL #70 t_ms=10600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7721) wifi_link: STM TEL #71 t_ms=10700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7821) wifi_link: STM TEL #72 t_ms=10800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (7921) wifi_link: STM TEL #73 t_ms=10900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8021) wifi_link: STM TEL #74 t_ms=11000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8121) wifi_link: STM TEL #75 t_ms=11100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8221) wifi_link: STM TEL #76 t_ms=11200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8321) wifi_link: STM TEL #77 t_ms=11300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8421) wifi_link: STM TEL #78 t_ms=11400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8521) wifi_link: STM TEL #79 t_ms=11500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8621) wifi_link: STM TEL #80 t_ms=11600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8721) wifi_link: STM TEL #81 t_ms=11700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8821) wifi_link: STM TEL #82 t_ms=11800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (8921) wifi_link: STM TEL #83 t_ms=11900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9021) wifi_link: STM TEL #84 t_ms=12000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9121) wifi_link: STM TEL #85 t_ms=12100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9211) wifi_link: STM TEL #86 t_ms=12200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9311) wifi_link: STM TEL #87 t_ms=12300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9411) wifi_link: STM TEL #88 t_ms=12400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9511) wifi_link: STM TEL #89 t_ms=12500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9611) wifi_link: STM TEL #90 t_ms=12600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9711) wifi_link: STM TEL #91 t_ms=12700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9811) wifi_link: STM TEL #92 t_ms=12800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (9911) wifi_link: STM TEL #93 t_ms=12900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10011) wifi_link: STM TEL #94 t_ms=13000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10111) wifi_link: STM TEL #95 t_ms=13100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10211) wifi_link: STM TEL #96 t_ms=13200 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10311) wifi_link: STM TEL #97 t_ms=13300 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10411) wifi_link: STM TEL #98 t_ms=13400 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10511) wifi_link: STM TEL #99 t_ms=13500 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10611) wifi_link: STM TEL #100 t_ms=13600 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10711) wifi_link: STM TEL #101 t_ms=13700 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10811) wifi_link: STM TEL #102 t_ms=13800 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (10911) wifi_link: STM TEL #103 t_ms=13900 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (11011) wifi_link: STM TEL #104 t_ms=14000 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0
+I (11111) wifi_link: STM TEL #105 t_ms=14100 state=FAULT reason=ESTOP_ACTIVE pwm=0/0 cps=0/0 drop=0 err=0

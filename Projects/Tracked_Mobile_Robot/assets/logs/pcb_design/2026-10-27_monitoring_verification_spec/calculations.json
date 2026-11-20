@@ -1,0 +1,40 @@
+{
+  "kind": "DESIGN_AND_TEST_BASELINE_v0.1_NOT_MEASURED",
+  "date": "2026-10-27",
+  "rt_source_sha256": "eb9094f303c656b8405fa782a44fd1080be6fd7a54d54447b66b322a42e66b68",
+  "current_input_tolerance_mV": 4.4,
+  "current_input_equivalent_A": 0.1,
+  "current_sensor_reserve_A": 0.1,
+  "comparison_guard_input_max_mV": 1.1,
+  "current_12k_1uA_mV": 12.0,
+  "current_12k_1uA_A": 0.27272727272727276,
+  "current_12k_10Mohm_probe_drop_at_1p65V_mV": 1.9776268477826608,
+  "adc_LSB_mV": 0.8056640625,
+  "adc_4LSB_screen_mV": 3.22265625,
+  "ut210e_1p65V_bound_mV": 14.55,
+  "ut210e_2p09V_20V_range_bound_mV": 44.629999999999995,
+  "temp_reference_resistor_0p1pct_max_C": 0.040048608455265367,
+  "temp_fixed_1pct_max_C": 0.39829762266199964,
+  "temp_leakage_1uA_max_C": 0.3029137807661378,
+  "temp_adc_4LSB_screen_max_C": 0.4852092688295784,
+  "temp_g_0p1pct_max_C": 0.0881754073244466,
+  "temp_beta_model_max_node_error_C": 0.7757654085123136,
+  "temp_still_air_self_heating_max_C": 0.38892857142857135,
+  "temperature_guard_max_C": 0.25,
+  "temperature_tolerance_C": 1.0,
+  "temperature_budget_C": {
+    "divider_and_drift": 0.25,
+    "adc_leakage_and_noise": 0.55,
+    "excitation_reference_ratio": 0.15,
+    "numerical_conversion": 0.05
+  },
+  "hardware_test_status": "NOT_RUN",
+  "limitations": [
+    "4.4 mV is an engineering allocation, not a manufacturer guarantee.",
+    "18 MHz ADC 4 LSB table is a screening comparison, not a 14 MHz guarantee.",
+    "Do not sum ADC TUE, INL and quantization as independent worst cases.",
+    "RT interpolation models the published nominal curve; no between-node physical accuracy claim.",
+    "Meter bounds are not calibrated expanded uncertainties.",
+    "Specified test voltages do not authorize motor current or physical connection."
+  ]
+}

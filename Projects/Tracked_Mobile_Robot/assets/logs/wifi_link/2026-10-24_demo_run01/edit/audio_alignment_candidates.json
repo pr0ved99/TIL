@@ -1,0 +1,16 @@
+{
+  "method": "10 ms RMS envelope Pearson correlation; not a latency measurement",
+  "rms_ranges": {
+    "camera": [
+      1.541103500742244,
+      577.347274177336
+    ],
+    "screen": [
+      0.0,
+      0.0
+    ]
+  },
+  "windows": [],
+  "usable": false,
+  "reason": "At least one decoded audio stream is entirely silent; no audio offset estimate."
+}

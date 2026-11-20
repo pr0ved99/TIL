@@ -1,0 +1,38 @@
+{
+  "status": "NO_UNEXPECTED_STOP_IN_OBSERVED_RUN",
+  "user_report": "No unexpected stop after disabling Wi-Fi power save.",
+  "scope": "User confirmed build/flash and startup message; saved ESP console and retained browser history.",
+  "tx_counts": {
+    "ARM": 1,
+    "CMD": 2907,
+    "DISARM": 1
+  },
+  "ack_count": 2909,
+  "ordered_ack_match": true,
+  "tx_observation_span_s": 270.34,
+  "cmd_gap_ms": {
+    "median": 80,
+    "p95": 140,
+    "max": 170
+  },
+  "browser_captured": null,
+  "active_browser_stops": [],
+  "retained_moving_tel_count": 120,
+  "retained_moving_tel_gap_max_ms": 112.80000000447035,
+  "tel_drop_err_counts": {
+    "0/5": 2890
+  },
+  "pwm_pair_counts": {
+    "0/0": 285,
+    "150/150": 680,
+    "-150/-150": 637,
+    "-150/150": 641,
+    "150/-150": 647
+  },
+  "limits": [
+    "No permanent reliability guarantee from one run.",
+    "err remains5; no new increment in this log, origin not established.",
+    "Browser recent history is truncated by ring buffer; not a full-run browser latency distribution.",
+    "Startup power-save message is user-confirmed, not present in saved log."
+  ]
+}

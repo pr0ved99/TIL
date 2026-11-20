@@ -1,0 +1,88 @@
+{
+  "review_date": "2026-11-20",
+  "scope": "T001 existing design evidence review; no new ERC run or hardware test",
+  "source": {
+    "publisher": "Littelfuse Automotive Business Unit",
+    "notice": "PCN A0039B Attachment A",
+    "date": "2012-10-15",
+    "page": 1,
+    "host": "DigiKey mirror of manufacturer notice",
+    "url": "https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/533/287_Series_257_Part_Marking.pdf",
+    "sha256": "0aeb75086465c3dbc6642167fd692be66d031d540e77f26b4dae39fead39ea14"
+  },
+  "finding": "257 marking is shared by 257 and 287 series; marking alone does not demonstrate ordered-part mismatch or establish the exact installed SKU.",
+  "files": {
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch": {
+      "sha256": "7474627bb7dbaa801496e60d5f692034a93f4cd438d332f763708573fbd67207"
+    },
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/erc.json": {
+      "sha256": "5afae0745985244a52ee8a11df207ab754fa67c681b3a4a1b5b99d18f63fdfe1"
+    },
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/netlist.xml": {
+      "sha256": "fb5259412f8619f177e37748e0f21d3207ab32e9ee0aa9bed1677bac2e2a558f"
+    }
+  },
+  "saved_erc": {
+    "date": "2026-11-12T16:25:01",
+    "tool": "10.0.5",
+    "violations": 0,
+    "ignored_checks": [
+      "single_global_label",
+      "four_way_junction",
+      "simulation_model_issue",
+      "footprint_filter"
+    ]
+  },
+  "saved_netlist": {
+    "date": "2026-11-12T16:24:59",
+    "component_count": 48,
+    "net_count": 35
+  },
+  "hardware_test": false,
+  "build_or_flash": false,
+  "new_erc_run": false,
+  "T001_overall": "PARTIAL; full acceptance not promoted",
+  "schematic_git": {
+    "last_commit": "4b59efc7 2026-11-07 docs(tmr): close shield ERC and reconcile recorded MVP components",
+    "changed_since_HEAD": false
+  },
+  "review_document_validation": {
+    "local_links_checked": 10,
+    "missing_local_targets": [],
+    "utf8": true,
+    "scope": "new review document only; not a whole-repo closeout"
+  },
+  "additional_sources": [
+    {
+      "name": "Vishay P6KE",
+      "document": "88369",
+      "revision": "27-Sep-2021",
+      "pages": [
+        1,
+        2
+      ],
+      "url": "https://www.vishay.com/docs/88369/p6ke.pdf",
+      "sha256": "129aeb41a0936dce16d0c8118d704bfbf233f039132179c4acc1b0d1ce2a4a48"
+    },
+    {
+      "name": "Panasonic TX",
+      "document": "ASCTB18E",
+      "revision": "202610",
+      "pages": [
+        4,
+        5
+      ],
+      "url": "https://industry.panasonic.com/ac/cdn/e/control/relay/signal/catalog/mech_eng_tx.pdf",
+      "sha256": "ebc3a98eff80e101b08ca7e37d1292f3222ed801bb2f3b75e102f0fcdb285e8a"
+    }
+  ],
+  "coil_calculation": {
+    "assumptions": "12.6 V, K1 90 ohm -10%, K2 1028 ohm -10% at20C; not full temperature envelope",
+    "k1_a": 0.15555555555555556,
+    "k2_a": 0.013618677042801555,
+    "total_a": 0.16917423259835712
+  },
+  "next_operator_action": "None during desk review. S1 identity/rating and holder identities are resolved. See report46 R1-R4; no new hardware step authorized by this review.",
+  "previous_next_operator_action": "Power disconnected, read S1 model and voltage/current markings; do not disconnect wiring or energize.",
+  "latest_review": "nonphysical_closeout.json"
+}

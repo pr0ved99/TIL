@@ -1,0 +1,86 @@
+{
+  "status": "SCHEMATIC_CONTRACT_PASS_PCB_REVIEW_OPEN",
+  "date": "2026-11-12T16:17:22",
+  "kicad_version": "10.0.5",
+  "reference": "assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.xml",
+  "reference_sha256": "a01236916449de47004ba54e358e3a28e529a2c2b265a2e48a21ace3d6d51588",
+  "source_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "b0a9529007e3584cb59c3af3fd5ac3eae82c7b3c8add412b200e3c44514b14e1",
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6"
+  },
+  "sources_unchanged": true,
+  "schematic_matches_reviewed_reference": true,
+  "bom_matches_schematic": true,
+  "schematic_components": 40,
+  "active_nets_checked": 22,
+  "all_nets": 91,
+  "erc_errors": 0,
+  "erc_warnings": 0,
+  "erc_violations": 0,
+  "erc_ignored_checks": [
+    {
+      "description": "Global label only appears once in the schematic",
+      "key": "single_global_label"
+    },
+    {
+      "description": "Four connection points are joined together",
+      "key": "four_way_junction"
+    },
+    {
+      "description": "SPICE model issue",
+      "key": "simulation_model_issue"
+    },
+    {
+      "description": "Assigned footprint doesn't match footprint filters",
+      "key": "footprint_filter"
+    }
+  ],
+  "pcb_footprints": 22,
+  "missing_on_pcb": [
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "J7",
+    "J8",
+    "R10",
+    "R11",
+    "R12",
+    "R13",
+    "R14",
+    "R15",
+    "R16",
+    "R7",
+    "R8",
+    "R9",
+    "U1",
+    "U2"
+  ],
+  "pcb_extra_references": [],
+  "header_pads_checked": 76,
+  "header_geometry_matches_template": true,
+  "header_side_matches_template": true,
+  "drc_violations": 0,
+  "schematic_parity_issues": 21,
+  "unrouted_connections": 32,
+  "tracks": 0,
+  "zones": 0,
+  "full_drc_pass": false,
+  "physical_fit_verified": false,
+  "protection_design_complete": false,
+  "input_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "2e09f159ccaa5e47303b62b013a28c26a86eb0d2eb821fa04408226ff97b6b2d",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "b0a9529007e3584cb59c3af3fd5ac3eae82c7b3c8add412b200e3c44514b14e1",
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6",
+    "bom_candidates.csv": "2176ae566f985ba00b1d9c0023b6c29e339f2d227e88038e946310d0783ee12b",
+    "reports/netlist.xml": "6a504bd9aa5a0ec3664035fbb6ffdf590166adf4fe8274c0cc51c72cafbf5953",
+    "reports/erc.json": "a1f74b014671c40a7997868eaa9da0b5544a9b3a1973afecdda8fb3e028763be",
+    "reports/drc_unrouted.json": "0f4285cfd974b596e98b98878df87a55226f552733c138459fd5fb6a65a2a0c0"
+  },
+  "limits": "Reviewed draft only; PCB not synchronized with all 40 schematic components. No fabrication, ADC performance, protection or physical fit acceptance."
+}

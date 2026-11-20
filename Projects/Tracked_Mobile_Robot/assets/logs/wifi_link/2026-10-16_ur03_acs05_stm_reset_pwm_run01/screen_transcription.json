@@ -1,0 +1,31 @@
+{
+  "source": "User screenshot manually transcribed; original PNG not saved by this script",
+  "display_time": "15:49:22",
+  "boot_id": 2634188439,
+  "uptime_ms": 604429,
+  "startup_state": "READY",
+  "control_phase": "IDLE",
+  "stm_connected": true,
+  "stm_stale": false,
+  "stm_age_ms": 62,
+  "tel_count": 6041,
+  "stm_t_ms": 37200,
+  "state": "DISARMED",
+  "reason": "DISARM",
+  "command_age_ms": 4294967295,
+  "last_seq": 2830180636,
+  "vx_mmps": 0,
+  "w_mradps": 0,
+  "left_pwm": 0,
+  "right_pwm": 0,
+  "left_cps": 0,
+  "right_cps": 0,
+  "drop": 0,
+  "err": 0,
+  "last_result": {
+    "cmd": "DISARM",
+    "request_id": 87,
+    "result": "OK"
+  },
+  "user_report": "Before manual DISARM the control phase was BLOCKED; immediately after reset STM reason was BOOT; after manual DISARM result became OK and STM reason DISARM."
+}

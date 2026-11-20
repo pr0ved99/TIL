@@ -26,6 +26,7 @@
 /* USER CODE BEGIN Includes */
 #include "uart_mvp_protocol.h"
 #include "motor_output.h"
+#include "encoder_speed.h"
 #include <stdio.h>
 /* USER CODE END Includes */
 
@@ -36,9 +37,18 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+/* Output-shaft count, calibrated with STM32 quadrature x4 decoding. */
+#define ENCODER_COUNTS_PER_OUTPUT_REV       1560U
 #define MOTOR_OUTPUT_PIN_TEST_ENABLED       0U
+#define MOTOR_FAULT_INJECTION_TEST_ENABLED  0U
 #define MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE 100U
 #define MOTOR_OUTPUT_PIN_TEST_DEBOUNCE_MS   50U
+#define ENCODER_SPEED_SAMPLE_PERIOD_MS      100U
+#define ENCODER_COUNT_SAMPLE_PERIOD_MS      5U
+
+#if MOTOR_FAULT_INJECTION_TEST_ENABLED && !MOTOR_OUTPUT_PIN_TEST_ENABLED
+#error "Fault injection requires the motor output pin test"
+#endif
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -55,53 +65,188 @@ static GPIO_PinState s_motor_output_test_button_raw = GPIO_PIN_SET;
 static GPIO_PinState s_motor_output_test_button_stable = GPIO_PIN_SET;
 
 static uint32_t s_motor_output_test_button_change_ms;
+
+static encoder_speed_t s_encoder_tim3;
+static encoder_speed_t s_encoder_tim5;
+static uint32_t s_encoder_last_publish_ms;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-static void Board_Hardware_Init(void);
 static void motor_output_pin_test_process(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-static void encoder_hand_test_log_process(void){
-  static uint32_t last_log_ms;
-  char tx[80];
-  uint32_t now_ms;
-  uint16_t raw_count;
-  int32_t centered_count;
-  int len;
+static bool encoder_speed_self_test_case(
+  encoder_counter_width_t counter_width,
+  uint32_t previous_raw,
+  uint32_t current_raw,
+  int64_t expected_delta
+){
+  encoder_speed_t test_state;
 
-  now_ms = HAL_GetTick();
-
-  if ((now_ms - last_log_ms) < 250U){
-    return;
+  if (!encoder_speed_init(
+      &test_state,
+      counter_width,
+      previous_raw,
+      0U,
+      100U
+  )){
+    return false;
   }
 
-  last_log_ms = now_ms;
-  raw_count = (uint16_t)__HAL_TIM_GET_COUNTER(&htim3);
-  centered_count = (int32_t)raw_count - 32768L;
+  if (!encoder_speed_update(
+      &test_state,
+      current_raw,
+      100U
+  )){
+    return false;
+  }
 
-  len = snprintf(
-    tx,
-    sizeof(tx),
-    "ENC3,raw=%u,count=%ld,dir=%s\r\n",
-    (unsigned int)raw_count,
-    (long)centered_count,
-    __HAL_TIM_IS_TIM_COUNTING_DOWN(&htim3) ? "DOWN" : "UP"
+  return (
+    test_state.delta_count == expected_delta &&
+    test_state.accumulated_count == expected_delta &&
+    test_state.counts_per_second == expected_delta * 10LL
   );
-
-  if ((len > 0) && (len < (int)sizeof(tx))){
-    (void)HAL_UART_Transmit(
-      &huart2,
-      (uint8_t *)tx,
-      (uint16_t)len,
-      50U
-    );
-  }
 }
+
+static bool encoder_speed_wrap_self_test(void){
+  return (
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_16,
+      65530U,
+      5U,
+      11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_16,
+      5U,
+      65530U,
+      -11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_32,
+      0xFFFFFFFAUL,
+      5U,
+      11LL
+    ) &&
+    encoder_speed_self_test_case(
+      ENCODER_COUNTER_WIDTH_32,
+      5U,
+      0xFFFFFFFAUL,
+      -11LL
+    )
+  );
+}
+
+static bool encoder_millirpm_self_test_case(
+  int64_t counts_per_second,
+  int32_t expected_millirpm
+){
+  int32_t actual_millirpm;
+
+  if (!encoder_speed_cps_to_millirpm(
+    counts_per_second,
+    ENCODER_COUNTS_PER_OUTPUT_REV,
+    &actual_millirpm
+  )){
+    return false;
+  }
+
+  return actual_millirpm == expected_millirpm;
+}
+
+static bool encoder_millirpm_self_test(void){
+  int32_t ignored_millirpm;
+
+  return (
+    encoder_millirpm_self_test_case(
+      0LL,
+      0
+    ) &&
+    encoder_millirpm_self_test_case(
+      780LL,
+      30000
+    ) &&
+    encoder_millirpm_self_test_case(
+      -780LL,
+      -30000
+    ) &&
+    encoder_millirpm_self_test_case(
+      1560LL,
+      60000
+    ) &&
+    encoder_millirpm_self_test_case(
+      -1560LL,
+      -60000
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      0LL,
+      0U,
+      &ignored_millirpm
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      0LL,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      NULL
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      INT64_MAX,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &ignored_millirpm
+    ) &&
+    !encoder_speed_cps_to_millirpm(
+      INT64_MIN,
+      ENCODER_COUNTS_PER_OUTPUT_REV,
+      &ignored_millirpm
+    )
+  );
+}
+
+static int32_t encoder_cps_to_i32(int64_t cps){
+    if (cps > (int64_t)INT32_MAX){
+        return INT32_MAX;
+    }
+    if (cps < (int64_t)INT32_MIN){
+        return INT32_MIN;
+    }
+    return (int32_t)cps;
+}
+
+static void encoder_speed_log_process(void){
+    uint32_t now_ms = HAL_GetTick();
+    uint32_t raw3;
+    uint32_t raw5;
+    int64_t left_raw_count;
+    int64_t right_count;
+    bool valid;
+
+    /* Name retained for the existing loop call; runtime USB logging removed. */
+    if ((uint32_t)(now_ms - s_encoder_last_publish_ms) <
+        ENCODER_COUNT_SAMPLE_PERIOD_MS){
+        return;
+    }
+    s_encoder_last_publish_ms = now_ms;
+    raw3 = __HAL_TIM_GET_COUNTER(&htim3);
+    raw5 = __HAL_TIM_GET_COUNTER(&htim5);
+    (void)encoder_speed_update(&s_encoder_tim3, raw3, now_ms);
+    (void)encoder_speed_update(&s_encoder_tim5, raw5, now_ms);
+
+    valid = encoder_speed_snapshot(&s_encoder_tim3, raw3, &left_raw_count) &&
+        encoder_speed_snapshot(&s_encoder_tim5, raw5, &right_count) &&
+        left_raw_count != INT64_MIN;
+    uart_mvp_set_encoder_sample(
+        encoder_cps_to_i32(-s_encoder_tim3.counts_per_second),
+        encoder_cps_to_i32(s_encoder_tim5.counts_per_second),
+        valid ? -left_raw_count : 0,
+        valid ? right_count : 0,
+        now_ms,
+        valid
+    );
+}
+
 static void motor_output_pin_test_process(void){
     GPIO_PinState button_now;
     uint32_t now_ms;
@@ -144,17 +289,24 @@ static void motor_output_pin_test_process(void){
             status = motor_output_set_raw(
                 MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
                 GPIO_PIN_RESET,
-                0U,
+                (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U)
+                ? MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE
+                : 0U,
                 GPIO_PIN_RESET
             );
             HAL_GPIO_WritePin(
                 LD2_GPIO_Port,
                 LD2_Pin,
-                GPIO_PIN_SET
+                (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U)
+                ? GPIO_PIN_RESET
+                : GPIO_PIN_SET
             );
             break;
 
         case 2U:
+            if (MOTOR_FAULT_INJECTION_TEST_ENABLED != 0U){
+              Error_Handler();
+            }
             status = motor_output_set_raw(
                 MOTOR_OUTPUT_PIN_TEST_DUTY_PERMILLE,
                 GPIO_PIN_SET,
@@ -221,7 +373,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  uint32_t encoder_init_ms;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -246,14 +398,69 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   MX_TIM3_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   if (motor_output_init(&htim4) != HAL_OK){
     Error_Handler();
   }
 
   __HAL_TIM_SET_COUNTER(&htim3, 32768U);
+  __HAL_TIM_SET_COUNTER(&htim5, 0x80000000U);
 
   if (HAL_TIM_Encoder_Start(&htim3, TIM_CHANNEL_ALL) != HAL_OK){
+    Error_Handler();
+  }
+
+  if (HAL_TIM_Encoder_Start(&htim5, TIM_CHANNEL_ALL) != HAL_OK){
+    Error_Handler();
+  }
+
+  encoder_init_ms = HAL_GetTick();
+
+  if (!encoder_speed_init(
+      &s_encoder_tim3,
+      ENCODER_COUNTER_WIDTH_16,
+      __HAL_TIM_GET_COUNTER(&htim3),
+      encoder_init_ms,
+      ENCODER_SPEED_SAMPLE_PERIOD_MS
+  )){
+    Error_Handler();
+  }
+
+  if (!encoder_speed_init(
+      &s_encoder_tim5,
+      ENCODER_COUNTER_WIDTH_32,
+      __HAL_TIM_GET_COUNTER(&htim5),
+      encoder_init_ms,
+      ENCODER_SPEED_SAMPLE_PERIOD_MS
+  )){
+    Error_Handler();
+  }
+
+  if (
+    encoder_speed_wrap_self_test() &&
+    encoder_millirpm_self_test()
+  ){
+    static uint8_t pass_message[] =
+      "ENC_SELF_TEST,wrap=PASS,millirpm=PASS\r\n";
+
+    (void)HAL_UART_Transmit(
+      &huart2,
+      pass_message,
+      (uint16_t)(sizeof(pass_message) - 1U),
+      50U
+    );
+  } else {
+    static uint8_t fail_message[] =
+      "ENC_SELF_TEST,wrap_or_millirpm=FAIL\r\n";
+
+    (void)HAL_UART_Transmit(
+      &huart2,
+      fail_message,
+      (uint16_t)(sizeof(fail_message) - 1U),
+      50U
+    );
+
     Error_Handler();
   }
   uart_mvp_init(&huart1);
@@ -267,7 +474,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    encoder_hand_test_log_process();
+    encoder_speed_log_process();
     motor_output_pin_test_process();
     uart_mvp_process();
   }
@@ -322,18 +529,16 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-static void Board_Hardware_Init(void)
-{
-  MX_GPIO_Init();
-  MX_USART2_UART_Init();
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_rx_complete(huart);
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_uart_error(huart);
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
+  uart_mvp_on_tx_complete(huart);
 }
 /* USER CODE END 4 */
 
@@ -345,6 +550,14 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+#if MOTOR_FAULT_INJECTION_TEST_ENABLED
+  HAL_GPIO_WritePin(
+    LD2_GPIO_Port,
+    LD2_Pin,
+    GPIO_PIN_SET
+  );
+#endif
+
   motor_output_stop_all();
   __disable_irq();
   while (1)

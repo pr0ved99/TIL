@@ -1,0 +1,139 @@
+{
+  "test_id": "UR-02 run01",
+  "status": "PASS_CAPTURED_RECONNECT_AND_FIRST_STOP",
+  "scope": "New cancellation prefix reaches both UART endpoints; first post-gap stop has matching ACK and a newer stopped TEL; final browser reports IDLE/OK.",
+  "capture": {
+    "source_name": "2026-10-16_ur02_uart_cancel_reconnect_run01.sr",
+    "sha256": "9df725381c6f84097ebb98d95b7e43ee310eed62202493c1325c36a545f67c42",
+    "samplerate_hz": 4000000.0,
+    "samples": 200000000,
+    "duration_s": 50.0,
+    "decode": "115200 baud, 8N1, LSB-first, non-inverted"
+  },
+  "settings_sha256": "de4ca8ae61b6f09a20db669c35f11f6bfdff1dcafbf3cc7b7656d3430a61aa91",
+  "source_test_manifest": "../2026-10-16_uart_cancel_saved/source_manifest.json",
+  "source_test_manifest_sha256": "754956ae667b7a93ecd4d915be0eb85a761eb98f178f2f06a651128f685e6d44",
+  "build_and_flash_evidence": "User reported STM/ESP build success; subsequent startup log has line cancel sent, matching DISARM ACK/PONG and READY. No flashed-binary hash readback.",
+  "channel_roles": {
+    "D0": "STM PA9 TX / JDBG_UART Pin1",
+    "D1": "STM PA10 RX / JDBG_UART Pin2",
+    "D2": "ESP GPIO18 RX",
+    "D3": "ESP GPIO17 TX"
+  },
+  "last_complete_received_cmd_seq": 1024243111,
+  "frames_present_on_D3_absent_on_D1": [
+    {
+      "command": "CMD",
+      "seq": 1024243112
+    },
+    {
+      "command": "CAN+LF then DISARM",
+      "seq": 1024243113
+    }
+  ],
+  "first_timeout_tel": {
+    "start_s": 3.8942535,
+    "end_s": 3.9097625555555555,
+    "text": "TEL,t_ms=329001,state=DISARMED,reason=CMD_TIMEOUT,command_age_ms=303,last_seq=1024243111,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "fields": {
+      "t_ms": "329001",
+      "state": "DISARMED",
+      "reason": "CMD_TIMEOUT",
+      "command_age_ms": "303",
+      "last_seq": "1024243111",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "recovery_cancel_lines": {
+    "D3": {
+      "start_s": 11.15710475,
+      "end_s": 11.157278305555556,
+      "text": "\u0018"
+    },
+    "D1": {
+      "start_s": 11.15710475,
+      "end_s": 11.157278305555556,
+      "text": "\u0018"
+    }
+  },
+  "recovery_prefix_hex": "18 0a",
+  "first_post_gap_disarm": {
+    "D3": {
+      "start_s": 11.1572785,
+      "end_s": 11.159188055555555,
+      "text": "DISARM,seq=1024243114"
+    },
+    "D1": {
+      "start_s": 11.1572785,
+      "end_s": 11.159188055555555,
+      "text": "DISARM,seq=1024243114"
+    }
+  },
+  "matching_ack": {
+    "start_s": 11.15928025,
+    "end_s": 11.163006305555555,
+    "text": "ACK,seq=1024243114,type=DISARM,t_ms=336278"
+  },
+  "first_new_tel_after_ack": {
+    "start_s": 11.181623,
+    "end_s": 11.196786555555557,
+    "text": "TEL,t_ms=336301,state=DISARMED,reason=DISARM,command_age_ms=7603,last_seq=1024243114,vx_mmps=0,w_mradps=0,left_pwm=0,right_pwm=0,left_cps=0,right_cps=0,batt_mv=0,drop=0,err=0",
+    "fields": {
+      "t_ms": "336301",
+      "state": "DISARMED",
+      "reason": "DISARM",
+      "command_age_ms": "7603",
+      "last_seq": "1024243114",
+      "vx_mmps": "0",
+      "w_mradps": "0",
+      "left_pwm": "0",
+      "right_pwm": "0",
+      "left_cps": "0",
+      "right_cps": "0",
+      "batt_mv": "0",
+      "drop": "0",
+      "err": "0"
+    }
+  },
+  "response_decoded_bytes_equal_D0_D2": true,
+  "uart_invalid_stop_counts": {
+    "D0": 0,
+    "D1": 0,
+    "D2": 0,
+    "D3": 0
+  },
+  "telemetry_count": 501,
+  "all_tel_outputs_zero": true,
+  "all_tel_drop_err_zero": true,
+  "no_rearm_after_recovery_until_capture_end": true,
+  "user_screenshot": {
+    "boot_id": 2324278617,
+    "request_id": 16,
+    "cmd": "DISARM",
+    "result": "OK",
+    "phase": "IDLE",
+    "startup_state": "READY",
+    "stm_connected": true,
+    "stm_stale": false,
+    "state": "DISARMED",
+    "reason": "DISARM",
+    "last_seq": 1024243114,
+    "drop": 0,
+    "err": 0
+  },
+  "limits": [
+    "No partial CMD/ARM bytes decoded at STM before recovery; the missing frames were absent in full. This capture does not exercise stale-partial-line cancellation on hardware.",
+    "Intermediate browser BLOCKED was not supplied as a screenshot/log; only STM CMD_TIMEOUT is directly observed in capture.",
+    "A UART digital capture cannot prove internal STM buffer contents or analog signal integrity. Single-sample discrepancies remain described in summary.json.",
+    "No physical PWM, PC7 or power-rail measurement. Telemetry zero is not measured motor output.",
+    "Full UR-02 hardware acceptance remains pending controlled partial-command trials."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-23",
+  "status": "PC_OBSERVER_CHECK_PASS_NOT_HARDWARE_EVIDENCE",
+  "file": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m_v5_original.js",
+  "sha256": "b46c29d37e172d18b9f9512599acb6cf1dbcfb5d35848464763fd3d7126a3eb9",
+  "checks": [
+    "Installation/export send no commands",
+    "ARM/DISARM and exact int64 text retained across 4002 events / simulated 40 seconds",
+    "Original stop function called once and return value preserved",
+    "Overflow remains bounded and reports history_dropped"
+  ],
+  "firmware_modified": false,
+  "original_path_at_validation": "Projects/Tracked_Mobile_Robot/assets/logs/wifi_link/2026-10-23_ground_distance_preparation/console_encoder_observe_1m.js",
+  "archive_note": "Original v5 bytes preserved before reconnect/DISARM diagnostic revision; hash unchanged."
+}

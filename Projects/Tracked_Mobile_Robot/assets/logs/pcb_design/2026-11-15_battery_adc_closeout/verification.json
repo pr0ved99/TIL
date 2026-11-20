@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-15",
+  "local_file_links_checked": 1266,
+  "missing_local_file_targets": [],
+  "initial_user_artifacts_preserved_except_documented_workbook_repair": true,
+  "unrelated_files_preserved": 21,
+  "updated_documents": 23,
+  "new_firmware_build_flash_or_simulation": false,
+  "pending": "No remaining task validation; final receipt push to be verified in the session.",
+  "staged_files": 55,
+  "git_diff_check_pass": true,
+  "raw_stage_hash_checks": [
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_CableShort_Check_2026-11-14.wbk",
+      "sha256": "71f2d96928e768cb8f55c2fd94de349f846d86e2460818fae126e2a336124eee",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_CableShort_NoProtection.csv",
+      "sha256": "e28d792c4e809675a468512c2ef243a693a787a71fad65c14d32633476bcdcbf",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_CableShort_NoProtection_Check_2026-11-14.wbk",
+      "sha256": "ead3c2f721ba1a9b31779b58f67310d57b7f1823984b21cb15a1527c4e26ec88",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_CableShort_Protected_2k2.csv",
+      "sha256": "446df072519827e8f5174c2f210b0d9ce65245a797b725490dcf5b62760dbb9b",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Voltage_Sense_CableShort_NoProtection_TRAN.kicad_pro",
+      "sha256": "99b54fdd03369f1ee328f5739ae99353bfc2045c1fc8bf68c3eb73df42843963",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Voltage_Sense_CableShort_NoProtection_TRAN.kicad_sch",
+      "sha256": "3fd3a3a4deb23e3bd6c8d03e58f73494a79a7ae178da62ab2f3b45188c241569",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Voltage_Sense_CableShort_TRAN.kicad_pro",
+      "sha256": "59f44c585cca9678334bbbe9249126e70f9f79b9e0ad614c61506e4452b42304",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/03_Voltage_Divider/03_15_Voltage_Sense_CableShort_TRAN.kicad_sch",
+      "sha256": "323dbc70cd6db9b56ca80429118a79efb1bc8f4a19576dcee23e974eda1cadfc",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Noise_Average_Retry01.wbk",
+      "sha256": "c6e0867b34526ecdd7aff55ccab541075ac35a4160bcdd650bff19366434ecd6",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Voltage_Noise_Average_Retry01.kicad_pro",
+      "sha256": "35cf7e54689476860cfecc42457ec5a0fb4f4278f09df20cb4f9d0cc26cd2fb7",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_Voltage_Noise_Average_Retry01.kicad_sch",
+      "sha256": "67bc264a93d965a4f1866dbbf846b8350e18e33667dbb6194e7601a20244d4aa",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_Retry01.csv",
+      "sha256": "de32add7f7479c9372b3630dd06a32932035ea6a275b8d1b2c0098adf1b7a44e",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_Retry01_averages/block_average.csv",
+      "sha256": "96fee27900799c03960d250c152691f485b1439e9d5082bc213e8bde72b34be3",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_Retry01_averages/noise-average.html",
+      "sha256": "2625293c9b2024f1aa931fb3721b90c674e3572d4ab554b3204d55b0a43239f7",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_Retry01_averages/resampled.csv",
+      "sha256": "a300347a94f21a4fbf856ec0ad673e1d6efbd87d2113bf59825866823f35cea4",
+      "index_bytes_match": true
+    },
+    {
+      "path": "Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/Simulation/04_Sampling_and_Averaging/04_02_noise_Retry01_averages/statistics.csv",
+      "sha256": "eb7d5d0d013f27f93b30a2f17653e76372c0aabc14c0bc863cce88e0158dd004",
+      "index_bytes_match": true
+    }
+  ],
+  "final_pointer_fix": "Master plan latest-progress link changed from11/14 to11/15; target exists.",
+  "content_remote_head_verified": "2f8d8f3e6ba48d78848c3b016d18a3254f5415b9",
+  "unrelated_files_rechecked_after_content_push": 21
+}
