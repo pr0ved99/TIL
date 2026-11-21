@@ -1,0 +1,6 @@
+ROS_DOMAIN_ID=85 ros2 topic echo /scan sensor_msgs/msg/LaserScan --once --field header
+stamp:
+  sec: 39
+  nanosec: 900000000
+frame_id: laser_frame
+---

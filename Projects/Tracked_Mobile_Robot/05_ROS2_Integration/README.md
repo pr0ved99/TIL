@@ -1,6 +1,6 @@
 # TMR ROS 2 시뮬레이션 인터페이스
 
-SIM-01에서 정한 토픽과 TF 기준, SIM-02에서 작성한 첫 [TMR 모델](src/tmr_description/urdf/tmr.urdf.xacro)을 담고 있다. 첫 TMR 모델은 좌우 궤도를 차동 구동으로 근사한다. Gazebo에서 기본 주행을 확인했다. 다음은 가상 LiDAR와 고정 지도를 연결해 Nav2가 목표점으로 이동하게 한다. 첫 목표 이동에는 Gazebo가 계산한 오도메트리를 사용하고, IMU/EKF 융합은 비교 단계에서 다룬다. [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
+SIM-01에서 정한 토픽과 TF 기준, SIM-02에서 작성한 첫 [TMR 모델](src/tmr_description/urdf/tmr.urdf.xacro)을 담고 있다. 첫 TMR 모델은 좌우 궤도를 차동 구동으로 근사한다. Gazebo에서 기본 주행을 확인했다. 가상 LiDAR, 고정 지도와 AMCL 초기화·전진 후 위치 갱신을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 첫 목표 이동에는 Gazebo가 계산한 오도메트리를 사용하고, IMU/EKF 융합은 비교 단계에서 다룬다. [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
 
 ## 첫 모델의 기준점과 치수
 
@@ -60,9 +60,13 @@ ROS_DOMAIN_ID=85 ros2 run tmr_sim turn_stop right
 ROS_DOMAIN_ID=85 ros2 run tf2_ros tf2_echo base_link laser_frame
 ```
 
-## 다음 실습 · 가상 2D LiDAR
+## 가상 2D LiDAR와 고정 지도
 
-현재 노란 원기둥은 센서 외형이며 `laser_joint`가 고정 TF를 제공한다. SIM-04에서는 이 측정 원점과 축에 Gazebo 센서를 배치하고, 거리 출력이 들어오면 `ros_gz_bridge`로 `/scan`에 연결한다. 알려진 위치에 둔 물체로 frame ID, 측정 시각, 거리와 RViz 정렬을 확인한다. 실제 센서 장착 후에는 실측한 `xyz/rpy`를 반영하고 장애물 높이와 스캔 정렬을 재검증한다. 이후 고정 지도와 AMCL을 연결해 TMR의 첫 Nav2 목표를 시험한다.
+`drive.launch.py`는 Sensors 플러그인이 있는 [drive.sdf](src/tmr_sim/worlds/drive.sdf)를 열고 `/model/tmr/scan`을 ROS `/scan`으로 연결한다. 가상 LiDAR는 `laser_frame`을 측정 원점으로 수평 1° 간격 360개를 10Hz로 측정한다. 실습 범위는 0.10~8.0m다. 센서 설치 위치는 임시값이다. 실물 장착 때 측정 원점까지의 `xyz/rpy`를 반영해 다시 검증한다.
+
+가상 벽 정면 1.000m를 0.999870m로 읽었다. 고정 지도를 로드하고 AMCL을 초기화했다. 약 0.396m 전진 후 지도 기준 위치의 평면 차이는 Gazebo 대비 약 6.3mm였다. RViz에서 `Fixed Frame=map`, `Map`의 `/map`은 `Transient Local`, `LaserScan`은 `/scan`으로 두고 벽 정렬을 확인했다. [11/22 결과와 실행 순서](../assets/logs/ros2/2026-11-22_tmr_lidar_amcl/README.md)
+
+다음 NAV-02는 같은 방과 지도를 다시 불러온 뒤 TMR의 첫 Nav2 목표·최종 위치·정지를 확인한다. 가상 IMU/EKF, 반복 위치 추정, 취소·경로 차단 실험은 후속이다.
 
 ## 주행과 센서 토픽
 

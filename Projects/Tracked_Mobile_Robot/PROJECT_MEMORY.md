@@ -1,6 +1,6 @@
 # Tracked Mobile Robot Project Memory
 
-**11/21 Ubuntu 실습 마감.** 추가 MVP 마감은 보류했다. TMR의 전진·후진·제자리 회전·정지를 확인했다. 다음은 가상 LiDAR의 `/scan` 연결이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](docs/progress/2026-11-21_progress.md).
+**11/22 Ubuntu 실습 마감.** 추가 MVP 마감은 보류했다. TMR의 가상 LiDAR·고정 지도·AMCL을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 첫 ADC 실측은 NUCLEO와 저전압 시험 입력을 사용할 수 있을 때 별도 진행한다. [현재 재개점](docs/handoff/CURRENT_SESSION_CONTEXT.md) · [진행 기록](docs/progress/2026-11-22_progress.md).
 
 ROS 학습에서는 사용자가 동작을 바꾸는 코드를 직접 입력하고 저장한다. 해당 줄에서 토픽과 Gazebo 관절까지 이어지는 경로를 설명하고, 저장본을 읽은 뒤 한 단계씩 검증한다. 새 터미널은 Bash에서 Jazzy와 TMR overlay를 불러오며 기본 도메인은 84, 주행 실습은 85다. LiDAR 임시 장착 TF는 `base_link` 기준 (0.065, 0, 0.045)m·회전 0이다. 실제 장착 시 측정 원점·축을 실측하고 스캔 정렬을 다시 확인한다.
 

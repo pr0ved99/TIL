@@ -1,6 +1,6 @@
 # Ubuntu 듀얼부팅·Nav2 시뮬레이션·강화학습 단계 계획
 
-**재개점 · 2026-11-21.** TurtleBot3의 Nav2 목표 이동과 TMR의 SIM-01~03 기본 주행을 확인했다. 다음은 SIM-04에서 가상 2D LiDAR를 연결하고 `/scan`을 검증하는 것이다. TMR 고정 지도·AMCL·Nav2 목표 이동과 IMU/EKF는 후속이다. [TMR 모델과 실행 방법](../../05_ROS2_Integration/README.md) · [11/21 진행 기록](../progress/2026-11-21_progress.md)
+**재개점 · 2026-11-22.** Ubuntu 개발 도구를 확인했다. TMR 가상 2D LiDAR와 고정 지도·AMCL을 연결하고 초기화와 한 차례 전진 후 위치 갱신을 확인했다. 다음은 **NAV-02 첫 목표 이동**이다. 가상 IMU/EKF와 반복 평가는 후속이다. [TMR 실행 방법](../../05_ROS2_Integration/README.md) · [11/22 진행 기록](../progress/2026-11-22_progress.md)
 
 **초기 실행 순서:** 환경 준비 → 양쪽 OS 부팅 → ROS 2/Gazebo 기본 실행 → 첫 가상 로봇 이동 → odom·TF·scan과 Nav2 첫 목표 이동. 최초 목표 이동에는 시뮬레이터 odom을 사용하고, IMU/EKF 비교·반복 평가·계측 mock은 이후 검증에서 다룬다. 아래 11/19~12/2 날짜와 하루 1~2시간 가정은 11/17 당시 제안이다. 현재 작업 가능일의 기준은 하루 5~7시간이다.
 
@@ -147,4 +147,4 @@ Gymnasium+Stable-Baselines3 PPO의 작은 MLP/CPU를 시작 후보로 둔다. se
 
 매일 남길 최소 세트: 목적1문장, 가정/변경, 실제 실행 명령·버전, 원본 bag/CSV/스크린샷 경로, 결과·한계, 다음 한 작업. 문서 작성/사용자 필기·이해/구현/실측을 분리한다.
 
-기본 최신 경로는 이 계획과 CURRENT_SESSION_CONTEXT이며 과거 날짜별 계획은 이력이다. 기존 KiCad PDF는 CAD가 그대로면 재생성하지 않고 해시 대조 결과를 기록한다. NotebookLM 업로드·영상 갱신은 별도다. 11/17 초안 당시에는 전 단계가 계획이었다. 11/21 현재 TMR 기본 주행과 예제 Nav2 목표를 확인했다. ENV-03의 빈 월드 연속 5분 로그는 미확보이며 TMR 센서 데이터·Nav2·RL은 후속이다.
+기본 최신 경로는 이 계획과 CURRENT_SESSION_CONTEXT이며 과거 날짜별 계획은 이력이다. 기존 KiCad PDF는 CAD가 그대로면 재생성하지 않고 해시 대조 결과를 기록한다. NotebookLM 업로드·영상 갱신은 별도다. 11/17 초안 당시에는 전 단계가 계획이었다. 11/22 사용자 실습에서 TMR 가상 LiDAR·고정 지도·AMCL 전진 후 갱신을 확인했다. ENV-03 빈 월드 연속 5분 로그, 가상 IMU/EKF, TMR 첫 Nav2 목표와 RL은 후속이다.

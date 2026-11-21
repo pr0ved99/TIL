@@ -24,8 +24,10 @@ def generate_launch_description():
 
     return LaunchDescription([
         SetEnvironmentVariable('GZ_PARTITION', EnvironmentVariable('GZ_PARTITION', default_value=partition)),
-        ExecuteProcess(cmd=['gz', 'sim', '-r', 'empty.sdf'], output='screen',
-                       on_exit=Shutdown(reason='TMR Gazebo world closed')),
+        ExecuteProcess(
+            cmd=['gz', 'sim', '-r', str(sim_share / 'worlds' / 'drive.sdf')],
+            output='screen',
+            on_exit=Shutdown(reason='TMR Gazebo world closed')),
         Node(package='ros_gz_sim', executable='create', output='screen',
              arguments=['-world', 'empty', '-name', 'tmr', '-z', '0.02', '-string', model]),
         Node(package='ros_gz_bridge', executable='parameter_bridge', name='tmr_drive_bridge',

@@ -1,6 +1,6 @@
 # Architecture Decision Record
 
-**11/17 계획과 11/21 확인 결과.** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). PCB와 가상 센서/odom/TF/Nav2를 병행하고 RL은 재현 가능한 기준선 뒤 선택적으로 비교한다. Ubuntu 24.04/Jazzy/Harmonic에서 TMR 기본 주행을 확인했다. 다음은 가상 LiDAR 연결이다. 내장ADC·실물IMU/LiDAR와 물리속도 제어는 미완료다. 기존 ESP 단일 ingress/STM 최종 안전 권한, CAN/RTOS/LL 후속 목표를 유지한다.
+**11/17 계획과 11/22 확인 결과.** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). TMR 가상 LiDAR·고정 지도·AMCL 초기화와 전진 후 위치 갱신을 확인했다. 다음은 NAV-02 첫 목표 이동이며 IMU/EKF와 RL 비교는 후속이다. [11/22 기록](../docs/progress/2026-11-22_progress.md)
 
 
 > 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.

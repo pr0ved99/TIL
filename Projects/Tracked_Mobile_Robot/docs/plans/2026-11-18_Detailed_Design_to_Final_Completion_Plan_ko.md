@@ -1,6 +1,6 @@
 # Tracked Mobile Robot — 세부 설계부터 최종 완성까지의 실행 계획
 
-**재개점 · 2026-11-21.** TurtleBot3의 Nav2 목표 이동과 TMR의 SIM-01~03 기본 주행을 확인했다. 다음은 SIM-04에서 가상 2D LiDAR를 연결하고 `/scan`을 검증하는 것이다. TMR 고정 지도·AMCL·Nav2 목표 이동과 IMU/EKF는 후속이다. [TMR 모델과 실행 방법](../../05_ROS2_Integration/README.md) · [11/21 진행 기록](../progress/2026-11-21_progress.md)
+**재개점 · 2026-11-22.** Ubuntu 개발 도구를 확인했다. TMR 가상 2D LiDAR와 고정 지도·AMCL을 연결하고 초기화와 한 차례 전진 후 위치 갱신을 확인했다. 다음은 **NAV-02 첫 목표 이동**이다. 가상 IMU/EKF와 반복 평가는 후속이다. [TMR 실행 방법](../../05_ROS2_Integration/README.md) · [11/22 진행 기록](../progress/2026-11-22_progress.md)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 

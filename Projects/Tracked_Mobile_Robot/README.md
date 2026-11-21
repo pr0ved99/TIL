@@ -1,6 +1,6 @@
 # Tracked Mobile Robot
 
-**11/21 Ubuntu 실습 마감.** TurtleBot3에서 Nav2 목표 이동을 확인했다. TMR은 SIM-01 토픽·TF, SIM-02 모델, SIM-03 평지 전진·후진·좌우 회전·명시적 정지까지 확인했다. 다음은 SIM-04에서 임시 LiDAR 장착점에 가상 센서를 연결하고 `/scan`을 확인하는 실습이다. 실물 MVP 추가 마감은 보류 중이며 첫 ADC 실측은 별도다. [실행 방법](05_ROS2_Integration/README.md) · [측정 기록](docs/progress/2026-11-21_progress.md)
+**11/22 Ubuntu 실습 마감.** TMR은 가상 2D LiDAR, 고정 지도와 AMCL을 연결했다. 약 0.396m 전진 후 지도 기준 위치와 Gazebo의 평면 차이 약 6.3mm를 확인했다. 다음은 NAV-02 첫 목표 이동이다. 실물 MVP 추가 마감은 보류 중이며 첫 ADC 실측은 별도다. [실행 방법](05_ROS2_Integration/README.md) · [측정 기록](docs/progress/2026-11-22_progress.md)
 
 **MVP 증거 대조 · 2026-11-20:** [통합 결과46](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
 

@@ -6,6 +6,20 @@
 
 **설치 절차의 첫 작업은 USB에서 Ubuntu를 체험하는 것이다.** 화면과 Wi-Fi를 확인한 뒤 Windows에서 공간을 확보하고 Ubuntu를 설치한다. 전원을 끄기 전에 이 파일을 휴대전화에 복사해 두면 USB로 부팅한 뒤에도 볼 수 있다.
 
+## 설치 후 개발 도구 · 2026-11-22
+
+| 작업 | 확인한 도구 |
+| --- | --- |
+| ROS와 시뮬레이션 | Ubuntu 24.04.5, ROS 2 Jazzy, Gazebo Harmonic 8.15.0, RViz2, Nav2와 ROS–Gazebo 브리지 |
+| 회로와 계측 | KiCad 10.0.8과 라이브러리, VeroRoute 2.40, PulseView 0.4.2와 FX2 펌웨어 |
+| STM32 개발 | STM32CubeIDE 2.1.1, STM32CubeMX 6.17.0, CubeF4 1.28.3, ST-LINK 도구 |
+| ESP32-S3 개발 | EIM 0.22.0, ESP-IDF 6.0.2, Xtensa 컴파일러와 Python 필수 패키지 |
+| 공통 | Chrome, VS Code와 ROS·STM32·ESP-IDF 확장, CMake, pySerial, `python3-venv`, ripgrep 14.1.0 |
+
+CubeF4 패치는 1.28.0 기본 패키지 설치 후 진행했다. 오프라인 패치에 필요한 기본 ZIP을 `~/STM32Cube/Repository`에 두고 CubeMX의 `From Local…`에서 1.28.3 패치 ZIP을 선택했다. ESP-IDF는 EIM 환경에서 `idf.py --version`과 ESP32-S3 컴파일러를 실행해 확인했다. 보드 빌드·플래시·연결 시험은 해당 작업에서 검증한다.
+
+Onshape 진단에서 Chrome이 RTX 3050 Ti로 WebGL을 렌더링하는 것을 확인했다. NVIDIA 고정 모드에서 화면 멈춤·영상 버벅임이 보고돼 `on-demand`로 복원했다. 멈춤 원인은 확정되지 않았다. Onshape에서 RTX로 시험할 때는 `switcherooctl list`에서 번호를 확인하고 Chrome 종료 후 `switcherooctl launch -g 1 google-chrome https://cad.onshape.com/check`를 실행한다. 실습 당시 RTX 번호는 1이었다.
+
 ## 0. 설치 전에 확인한 값
 
 | 항목 | 이 노트북의 상태 |
