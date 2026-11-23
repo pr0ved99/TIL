@@ -1,0 +1,27 @@
+# Gazebo seed 3102, GoalAngleCritic threshold 0.50 m
+[controller_server-1] [INFO] [1795420456.822653219] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.500000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420460.795768860] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, 0.85)
+[controller_server-1] [ERROR] [1795420478.517765210] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795420488.587271662] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795420499.206659705] [controller_server]: Failed to make progress
+[bt_navigator-6] [INFO] [1795420505.824555762] [bt_navigator]: Goal canceled
+
+# Gazebo seed 3102, GoalAngleCritic threshold 0.15 m
+[controller_server-1] [INFO] [1795420562.888073906] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420567.461515755] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, 0.85)
+[controller_server-1] [INFO] [1795420578.782952553] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795420578.821981172] [bt_navigator]: Goal succeeded
+
+# Gazebo seed 3103, GoalAngleCritic threshold 0.15 m
+[controller_server-1] [INFO] [1795420592.245536440] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420596.169390488] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, 0.85)
+[controller_server-1] [INFO] [1795420606.990528940] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795420607.019731900] [bt_navigator]: Goal succeeded
+
+# Gazebo seed 3103, GoalAngleCritic threshold 0.50 m
+[controller_server-1] [INFO] [1795420621.068610283] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.500000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420624.996356548] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, 0.85)
+[controller_server-1] [ERROR] [1795420642.617597226] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795420652.864779680] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795420663.437173079] [controller_server]: Failed to make progress
+[bt_navigator-6] [INFO] [1795420670.013531166] [bt_navigator]: Goal canceled

@@ -1,6 +1,6 @@
 # TMR ROS 2 시뮬레이션 인터페이스
 
-SIM-01에서 정한 토픽과 TF 기준, SIM-02에서 작성한 첫 [TMR 모델](src/tmr_description/urdf/tmr.urdf.xacro)을 담고 있다. 첫 TMR 모델은 좌우 궤도를 차동 구동으로 근사한다. Gazebo에서 기본 주행을 확인했다. 가상 LiDAR, 고정 지도와 AMCL 초기화·전진 후 위치 갱신을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 첫 목표 이동에는 Gazebo가 계산한 오도메트리를 사용하고, IMU/EKF 융합은 비교 단계에서 다룬다. [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
+SIM-01에서 정한 토픽과 TF 기준, SIM-02에서 작성한 첫 [TMR 모델](src/tmr_description/urdf/tmr.urdf.xacro)을 담고 있다. 첫 TMR 모델은 좌우 궤도를 차동 구동으로 근사한다. Gazebo에서 기본 주행을 확인했다. 가상 LiDAR, 고정 지도와 AMCL 초기화·전진 후 위치 갱신을 확인했다. NAV-02에서 Gazebo 오도메트리로 목표 도착·취소 후 정지·추가 벽 우회를 확인했다. 가상 IMU의 좌·우회전 각속도와 정지를 확인했다. 별도 EKF로 직진·회전을 비교했다. EKF 모드 패키지 런처로 Nav2 연결과 P05 도착을 확인했다. [EKF 주행 근거](../assets/logs/ros2/2026-11-23_tmr_nav_ekf/README.md) [EKF 측정](../assets/logs/ros2/2026-11-23_tmr_ekf_comparison/README.md) [IMU 측정 결과](../assets/logs/ros2/2026-11-23_tmr_imu_turns/result.json) [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
 
 ## 첫 모델의 기준점과 치수
 
@@ -38,7 +38,7 @@ RViz에서 **파란 차체, 좌우 회색 궤도, 전방 주황색 LiDAR 표시*
 ROS_DOMAIN_ID=85 ros2 launch tmr_sim drive.launch.py
 ```
 
-새 월드에는 `ground_plane`과 구동 가능한 `tmr`이 있다. 도메인 85는 기존 도메인 84에서 실행 중인 RViz 미리보기와 독립적이다. Gazebo Transport의 기본 파티션 이름은 `<호스트명>-<사용자명>-tmr-drive-<ROS 도메인 ID>`이며, 환경변수 `GZ_PARTITION`으로 지정할 수 있다. 주행 월드를 열어 둔 상태에서 다른 터미널에서 다음 명령을 한 번 실행한다.
+새 월드에는 `ground_plane`과 구동 가능한 `tmr`이 있다. 도메인 85는 TurtleBot3 예제의 도메인 84와 분리된다. 앞 절에서 도메인 85로 연 모델 미리보기는 창을 닫고 주행 런치를 실행한다. 두 런치 모두 같은 로봇의 TF를 발행한다. Gazebo Transport의 기본 파티션 이름은 `<호스트명>-<사용자명>-tmr-drive-<ROS 도메인 ID>`이며, 환경변수 `GZ_PARTITION`으로 지정할 수 있다. 주행 월드를 열어 둔 상태에서 다른 터미널에서 다음 명령을 한 번 실행한다.
 
 ```bash
 ROS_DOMAIN_ID=85 ros2 run tmr_sim forward_stop
@@ -66,7 +66,47 @@ ROS_DOMAIN_ID=85 ros2 run tf2_ros tf2_echo base_link laser_frame
 
 가상 벽 정면 1.000m를 0.999870m로 읽었다. 고정 지도를 로드하고 AMCL을 초기화했다. 약 0.396m 전진 후 지도 기준 위치의 평면 차이는 Gazebo 대비 약 6.3mm였다. RViz에서 `Fixed Frame=map`, `Map`의 `/map`은 `Transient Local`, `LaserScan`은 `/scan`으로 두고 벽 정렬을 확인했다. [11/22 결과와 실행 순서](../assets/logs/ros2/2026-11-22_tmr_lidar_amcl/README.md)
 
-다음 NAV-02는 같은 방과 지도를 다시 불러온 뒤 TMR의 첫 Nav2 목표·최종 위치·정지를 확인한다. 가상 IMU/EKF, 반복 위치 추정, 취소·경로 차단 실험은 후속이다.
+고정 지도와 AMCL을 실행한 뒤 `ros2 launch tmr_sim navigation.launch.py`로 TMR의 Nav2를 실행한다. NAV-03 예비 주행은 별도 도메인 86에서 `drive.launch.py headless:=true seed:=3101` 등으로 새 월드를 열고 5개 경로를 비교한다. [예비 주행 절차](../assets/logs/ros2/2026-11-23_tmr_nav03_baseline/README.md) · [정식 평가 결과](../assets/logs/ros2/2026-11-23_tmr_nav03_evaluation/README.md)
+
+바퀴 모드는 `ros2 launch tmr_sim drive.launch.py`, EKF 모드는 `ros2 launch tmr_sim drive_ekf.launch.py`로 선택한다. EKF 모드는 바퀴 원본 `/wheel/odom`에서 전진 속도를, `/imu/data`에서 차체의 Z축 각속도를 받아 평면 자세를 추정한다. 두 모드 모두 Nav2가 구독하는 토픽은 `/odom`이다.
+
+## SIM-06 모의 배터리 전압 한 표본
+
+`/tmr/sim/battery_voltage`에서 `diagnostic_msgs/msg/DiagnosticArray` 한 건을 발행하고 별도 ROS 구독자로 수신했다. 기존 [TEL 예제](../01_System_Architecture/07_ESP32S3_Features_and_Project_Role_ko.md)의 `batt_mv=11820`을 11.82 V로 환산한 모의값이다. `status[0].values`의 문자열 쌍에 `voltage`, `unit`, `source=SIM`, `valid=true`를 넣고 `header.stamp`는 모의 측정 생성 시각으로 쓴다. 이번 시험은 ROS 시스템 시각을 사용했다. `age`는 수신 측에서 현재 시각과 마지막 측정 시각의 차이로 계산한다.
+
+Jazzy 환경의 첫 번째 터미널에서 구독을 먼저 시작한다.
+
+```bash
+ROS_DOMAIN_ID=77 ros2 topic echo --no-daemon /tmr/sim/battery_voltage diagnostic_msgs/msg/DiagnosticArray --once
+```
+
+두 번째 터미널에서 다음 명령으로 한 번 발행한다.
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_sim06_battery
+ROS_DOMAIN_ID=77 ros2 topic pub --once /tmr/sim/battery_voltage diagnostic_msgs/msg/DiagnosticArray "$(cat sample.yaml)"
+```
+
+구독 메시지에서 전압 11.82, 단위 V, 출처 SIM, 유효 표시 true, 0보다 큰 측정 시각을 확인한다. [발행 입력](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/sample.yaml) · [수신 표본](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/received.yaml) · [시각 비교](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/receipt.json)
+
+### 발행 중단과 재개 확인
+
+ROS Jazzy를 불러온 두 터미널에서 각각 위의 `sample.yaml` 폴더로 이동한다. 첫 번째 터미널에서 감시기를 실행한다.
+
+```bash
+ROS_DOMAIN_ID=77 /usr/bin/python3 watch_voltage_age.py
+```
+
+두 번째 터미널에서 0.5초 간격으로 네 번 발행한다. 첫 번째 터미널에 `STALE`이 뜨면 같은 발행 명령을 한 번 더 실행한다.
+
+```bash
+ROS_DOMAIN_ID=77 ros2 topic pub --rate 2 --times 4 -w 1 \
+  /tmr/sim/battery_voltage diagnostic_msgs/msg/DiagnosticArray "$(cat sample.yaml)"
+```
+
+감시기는 표본을 기다리는 동안 `WAITING`을 표시한다. 표본이 들어오면 0.1초마다 현재 시각에서 가장 최근 표본의 `header.stamp`를 빼서 경과 시간을 구한다. 실습 기준인 1.5초 미만이면 `FRESH`, 1.5초 이상이면 `STALE`을 표시한다. 전압이 계속 11.82 V여도 새 시각의 표본이 들어오면 다시 `FRESH`가 된다. 상태가 바뀔 때만 출력하며, `Ctrl+C`로 종료한다. [감시기 코드](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/watch_voltage_age.py) · [전환 기록](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/freshness_transitions.log)
+
+사용자 회차에서 마지막 표본은 0.002초에 `FRESH`, 1.502초에 `STALE`이었다. 현재 감시기는 시각만 검사한다. 다음은 같은 표본에 담긴 `valid`도 읽어서 표시하는 것이다. [사용자 관찰 기록](../docs/progress/2026-11-23_progress.md)
 
 ## 주행과 센서 토픽
 
@@ -75,11 +115,11 @@ Gazebo의 차동 구동 플러그인은 속도 명령을 받아 좌우 구동 �
 | ROS 토픽 | 메시지 | 발행 주체와 수신 주체 | 값과 좌표계 | 사용 시점 |
 | --- | --- | --- | --- | --- |
 | `/cmd_vel` | `geometry_msgs/msg/Twist` | 수동 조종 또는 Nav2 최종 출력 → `ros_gz_bridge` → Gazebo 차동 구동 | 로봇 기준 `linear.x`는 m/s, `angular.z`는 rad/s. 앞쪽과 좌회전이 양수. 나머지 네 성분은 `0` | 기본 주행 |
-| `/odom` | `nav_msgs/msg/Odometry` | Gazebo 차동 구동 → `ros_gz_bridge` → RViz·Nav2 | `header.frame_id=odom`, `child_frame_id=base_footprint`. `pose`는 `odom` 기준 위치(m)·방향, `twist`는 `base_footprint` 기준 선속도(m/s)·각속도(rad/s) | 기본 주행 |
+| `/odom` | `nav_msgs/msg/Odometry` | 바퀴 모드는 `tmr_drive_bridge`, EKF 모드는 `ekf_filter_node` → RViz·Nav2 | `header.frame_id=odom`, `child_frame_id=base_footprint`. `pose`는 `odom` 기준 위치(m)·방향, `twist`는 `base_footprint` 기준 선속도(m/s)·각속도(rad/s) | 기본 주행 |
 | `/clock` | `rosgraph_msgs/msg/Clock` | Gazebo 월드 → `ros_gz_bridge` → 시뮬레이션 노드 | 월드에서 진행된 시뮬레이션 시간. ROS의 `/clock`에 월드 하나를 연결 | 모델 실행 |
 | `/joint_states` | `sensor_msgs/msg/JointState` | Gazebo 관절 상태 플러그인 → `ros_gz_bridge` → `robot_state_publisher` | 관절 이름은 URDF와 일치. 회전 관절 위치 rad, 속도 rad/s | 구동 관절 표시 |
 | `/scan` | `sensor_msgs/msg/LaserScan` | Gazebo 2D LiDAR → `ros_gz_bridge` → RViz·AMCL·Nav2 costmap | `header.frame_id=laser_frame`. 거리 m, 각도 rad. 센서가 측정한 시각을 유지 | LiDAR 연결 |
-| `/imu/data` | `sensor_msgs/msg/Imu` | Gazebo IMU → `ros_gz_bridge` → 기록·EKF | `header.frame_id=imu_link`. 각속도 rad/s, 선가속도 m/s². 축·중력 성분·공분산은 센서 시험에서 확인 | IMU 시험 및 융합 |
+| `/imu/data` | `sensor_msgs/msg/Imu` | Gazebo IMU → `ros_gz_bridge` → 기록·EKF | `header.frame_id=imu_link`. 각속도 rad/s, 선가속도 m/s². 좌회전 Z 양수·우회전 Z 음수, 정지 시 Z 가속도 약 +9.8 m/s², 첫 표본 공분산 미지정 | 시뮬레이션에서 발행 및 EKF 각속도 입력 확인 |
 | `/map` | `nav_msgs/msg/OccupancyGrid` | `map_server` → RViz·AMCL·Nav2 costmap | `header.frame_id=map`. 해상도는 셀당 m. 첫 목표 이동에는 고정 지도를 사용 | 지도 연결 |
 
 설치된 Jazzy 예제에서 `/cmd_vel`의 `Twist`, `/odom`의 `odom`·`base_footprint`와 bridge의 메시지 전달을 확인했다. 초기 TMR bridge는 예제의 RELIABLE/VOLATILE을 출발점으로 삼는다. 지도 `/map`과 고정 변환 `/tf_static`은 RELIABLE/TRANSIENT_LOCAL로 발행해 늦게 접속한 RViz도 받을 수 있게 한다. `/imu/data`와 `laser_frame`은 TMR에서 사용할 이름이다. bridge에서 ROS와 Gazebo 양쪽 토픽 이름을 명시하고, 센서 메시지의 `frame_id`를 실제 TF 프레임과 대조한다. [예제 실행 기록](../docs/progress/2026-11-20_progress.md#ubuntu-ros-2-환경과-turtlebot3-목표-이동-확인) · [Jazzy Odometry 메시지 정의](https://github.com/ros2/common_interfaces/blob/jazzy/nav_msgs/msg/Odometry.msg)
@@ -99,7 +139,7 @@ map
 
 | TF | 발행 주체 | 사용 시점 |
 | --- | --- | --- |
-| `odom → base_footprint` | Gazebo 차동 구동의 변환을 `ros_gz_bridge`가 `/tf`에 전달 | 기본 주행부터 사용. 나중에 EKF가 이 변환을 맡으면 발행 주체를 EKF 하나로 전환 |
+| `odom → base_footprint` | 바퀴 모드는 `tmr_drive_bridge`, EKF 모드는 `ekf_filter_node`가 `/tf`에 전달 | EKF 모드에서 브리지의 원래 차체 변환은 별도 토픽 `/wheel/tf`로 전달 |
 | `base_footprint → base_link`, `base_link → laser_frame`, `base_link → imu_link` | `robot_state_publisher`가 URDF 고정 조인트를 `/tf_static`에 발행 | 차체·센서 모델을 띄울 때 |
 | `map → odom` | AMCL이 LiDAR 스캔과 지도로 계산해 `/tf`에 발행 | 고정 지도와 자기 위치 추정을 연결할 때 |
 

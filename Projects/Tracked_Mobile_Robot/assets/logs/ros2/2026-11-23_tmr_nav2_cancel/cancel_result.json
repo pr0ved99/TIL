@@ -1,0 +1,129 @@
+{
+  "goal_uuid": "eef78b8c6b21449abbe862bec42f1300",
+  "status_events_bag_ns": [
+    {
+      "t_ns": 1795415616817272708,
+      "status": "EXECUTING"
+    },
+    {
+      "t_ns": 1795415623502036633,
+      "status": "CANCELING"
+    },
+    {
+      "t_ns": 1795415623528465676,
+      "status": "CANCELED"
+    }
+  ],
+  "elapsed_s_bag": 6.711192968,
+  "plan_endpoint_xy_m": [
+    -0.6647582054138184,
+    0.6371937394142151
+  ],
+  "first_feedback_xy_m": [
+    -0.17878148244854586,
+    -0.2754962800807531
+  ],
+  "last_feedback_xy_m": [
+    -0.3898974330942199,
+    -0.017110383886671743
+  ],
+  "last_feedback_distance_remaining_m": 0.7402504682540894,
+  "last_feedback_navigation_time_s": 6.669,
+  "max_recoveries": 0,
+  "last_moving_odom_sample_before_terminal": [
+    1795415623508909139,
+    2753490000000,
+    [
+      0.09999999999972253,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.380654692340985
+    ]
+  ],
+  "last_nonzero_cmd": [
+    1795415623615301701,
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.05290674448013305
+    ]
+  ],
+  "first_final_zero_cmd": [
+    1795415623655412736,
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "last_cmd": [
+    1795415624495375603,
+    [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  ],
+  "post_terminal_odom_samples": 69,
+  "stationary_threshold": 1e-06,
+  "stationary_odom": {
+    "first": [
+      1795415623680401651,
+      2753660000000,
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "last": [
+      1795415625855015705,
+      2755836000000,
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "samples": 65,
+    "duration_sim_s": 2.176,
+    "peak_abs_each": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "exact_zero_odom_final_samples": 65,
+  "exact_zero_odom_final_duration_sim_s": 2.176,
+  "sample_formats": {
+    "odom": [
+      "bag_receive_ns",
+      "header_sim_ns",
+      "twist_linear_xyz_angular_xyz"
+    ],
+    "cmd": [
+      "bag_receive_ns",
+      "twist_linear_xyz_angular_xyz"
+    ]
+  }
+}

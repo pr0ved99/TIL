@@ -1,0 +1,267 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.11">
+  <world name="empty">
+		<physics name="physics" type="ignored">
+			<max_step_size>0.001</max_step_size>
+			<real_time_factor>1.0</real_time_factor>
+		</physics>
+
+		<plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics" />
+		<plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands" />
+		<plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster" />
+		<plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact" />
+		<plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+			<render_engine>ogre2</render_engine>
+		</plugin>
+
+		<light name="sun" type="directional">
+			<direction>-0.5 0.1 -0.9</direction>
+		</light>
+
+		<model name="ground_plane">
+			<static>true</static>
+			<link name="ground">
+				<collision name="collision">
+					<geometry>
+						<plane>
+							<normal>0 0 1</normal>
+							<size>100 100</size>
+						</plane>
+					</geometry>
+				</collision>
+				<visual name="visual">
+					<geometry>
+						<plane>
+							<normal>0 0 1</normal>
+							<size>100 100</size>
+						</plane>
+					</geometry>
+				</visual>
+			</link>
+		</model>
+	<model name="eval_west"><static>true</static><pose>-1.8 -0.1 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>0.1 3.7 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>0.1 3.7 0.40</size></box></geometry></collision></link></model><model name="eval_east"><static>true</static><pose>2.8 -0.1 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>0.1 3.7 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>0.1 3.7 0.40</size></box></geometry></collision></link></model><model name="eval_south"><static>true</static><pose>0.5 -1.9 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>4.5 0.1 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>4.5 0.1 0.40</size></box></geometry></collision></link></model><model name="eval_north"><static>true</static><pose>0.5 1.7 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>4.5 0.1 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>4.5 0.1 0.40</size></box></geometry></collision></link></model><model name="eval_inner_wall"><static>true</static><pose>1.1 0.15 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>0.1 0.8 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>0.1 0.8 0.40</size></box></geometry></collision></link></model><model name="eval_southwest_pillar"><static>true</static><pose>-0.7 -0.85 0.20 0 0 0</pose><link name="body"><visual name="visual"><geometry><box><size>0.3 0.3 0.40</size></box></geometry></visual><collision name="collision"><geometry><box><size>0.3 0.3 0.40</size></box></geometry></collision></link></model><model name="tmr">
+    <link name="base_footprint">
+      <inertial>
+        <pose>0 0 0.050000000000000003 0 0 0</pose>
+        <mass>3.0499999999999998</mass>
+        <inertia>
+          <ixx>0.0086101500000000004</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.012017254166666659</iyy>
+          <iyz>0</iyz>
+          <izz>0.01879740416666666</izz>
+        </inertia>
+      </inertial>
+      <collision name="base_footprint_fixed_joint_lump__base_link_collision">
+        <pose>0 0 0.050000000000000003 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.20899999999999999 0.17399999999999999 0.059999999999999998</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name="base_footprint_fixed_joint_lump__front_support_collision_1">
+        <pose>0.089999999999999997 0 0.010200000000000001 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.01</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <collision name="base_footprint_fixed_joint_lump__rear_support_collision_2">
+        <pose>-0.089999999999999997 0 0.010200000000000001 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.01</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name="base_footprint_fixed_joint_lump__base_link_visual">
+        <pose>0 0 0.050000000000000003 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.20899999999999999 0.17399999999999999 0.059999999999999998</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.199999988 0.524999976 0.800000012 1</diffuse>
+          <ambient>0.199999988 0.524999976 0.800000012 1</ambient>
+        </material>
+      </visual>
+      <visual name="base_footprint_fixed_joint_lump__base_link_visual_1">
+        <pose>0 0.11650000000000001 0.025000000000000001 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.26949910223936441 0.035000000000000003 0.050000000000000003</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.187500015 0.212500006 0.25 1</diffuse>
+          <ambient>0.187500015 0.212500006 0.25 1</ambient>
+        </material>
+      </visual>
+      <visual name="base_footprint_fixed_joint_lump__base_link_visual_2">
+        <pose>0 -0.11650000000000001 0.025000000000000001 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.26949910223936441 0.035000000000000003 0.050000000000000003</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse>0.187500015 0.212500006 0.25 1</diffuse>
+          <ambient>0.187500015 0.212500006 0.25 1</ambient>
+        </material>
+      </visual>
+      <visual name="base_footprint_fixed_joint_lump__laser_frame_visual_3">
+        <pose>0.065000000000000002 0 0.095000000000000001 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.017999999999999999</length>
+            <radius>0.022499999999999999</radius>
+          </cylinder>
+        </geometry>
+        <material>
+          <diffuse>1 0.787499964 0.225000009 1</diffuse>
+          <ambient>1 0.787499964 0.225000009 1</ambient>
+        </material>
+      </visual>
+      <sensor name="tmr_lidar" type="gpu_lidar">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <topic>/model/tmr/scan</topic>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.1415926535897931</min_angle>
+              <max_angle>3.12413936106985</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.10000000000000001</min>
+            <max>8</max>
+            <resolution>0.01</resolution>
+          </range>
+        </lidar>
+        <pose>0.065000000000000002 0 0.095000000000000001 0 0 0</pose>
+        <gz_frame_id>laser_frame</gz_frame_id>
+      </sensor>
+    <sensor name="observe_base_footprint_fixed_joint_lump__base_link_collision" type="contact"><contact><collision>base_footprint_fixed_joint_lump__base_link_collision</collision></contact></sensor><sensor name="observe_base_footprint_fixed_joint_lump__front_support_collision_1" type="contact"><contact><collision>base_footprint_fixed_joint_lump__front_support_collision_1</collision></contact></sensor><sensor name="observe_base_footprint_fixed_joint_lump__rear_support_collision_2" type="contact"><contact><collision>base_footprint_fixed_joint_lump__rear_support_collision_2</collision></contact></sensor></link>
+    <joint name="left_wheel_joint" type="revolute">
+      <pose relative_to="base_footprint">0 0.11650000000000001 0.021479551119682191 0 0 0</pose>
+      <parent>base_footprint</parent>
+      <child>left_wheel_link</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name="left_wheel_link">
+      <pose relative_to="left_wheel_joint">0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.10000000000000001</mass>
+        <inertia>
+          <ixx>1.7167611240909352e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.3068555815152031e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1.7167611240909352e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name="left_wheel_link_collision">
+        <pose>0 0 0 -1.5707963267948959 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.025999999999999999</length>
+            <radius>0.021479551119682191</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+    <sensor name="observe_left_wheel_link_collision" type="contact"><contact><collision>left_wheel_link_collision</collision></contact></sensor></link>
+    <joint name="right_wheel_joint" type="revolute">
+      <pose relative_to="base_footprint">0 -0.11650000000000001 0.021479551119682191 0 0 0</pose>
+      <parent>base_footprint</parent>
+      <child>right_wheel_link</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-inf</lower>
+          <upper>inf</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name="right_wheel_link">
+      <pose relative_to="right_wheel_joint">0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.10000000000000001</mass>
+        <inertia>
+          <ixx>1.7167611240909352e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>2.3068555815152031e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1.7167611240909352e-05</izz>
+        </inertia>
+      </inertial>
+      <collision name="right_wheel_link_collision">
+        <pose>0 0 0 -1.5707963267948959 0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.025999999999999999</length>
+            <radius>0.021479551119682191</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+    <sensor name="observe_right_wheel_link_collision" type="contact"><contact><collision>right_wheel_link_collision</collision></contact></sensor></link>
+    <plugin name="gz::sim::systems::DiffDrive" filename="gz-sim-diff-drive-system">
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+      <wheel_separation>0.233</wheel_separation>
+      <wheel_radius>0.021479551119682194</wheel_radius>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_footprint</child_frame_id>
+      <odom_publish_frequency>30</odom_publish_frequency>
+    </plugin>
+    <plugin name="gz::sim::systems::JointStatePublisher" filename="gz-sim-joint-state-publisher-system">
+      <joint_name>left_wheel_joint</joint_name>
+      <joint_name>right_wheel_joint</joint_name>
+      <topic>/model/tmr/joint_states</topic>
+      <update_rate>30</update_rate>
+    </plugin>
+    <frame name="imu_joint" attached_to="base_link">
+      <pose>0 0 0.035000000000000003 0 0 0</pose>
+    </frame>
+    <frame name="imu_link" attached_to="imu_joint">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="laser_joint" attached_to="base_link">
+      <pose>0.065000000000000002 0 0.044999999999999998 0 0 0</pose>
+    </frame>
+    <frame name="laser_frame" attached_to="laser_joint">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name="base_footprint_joint" attached_to="base_footprint">
+      <pose>0 0 0.050000000000000003 0 0 0</pose>
+    </frame>
+    <frame name="base_link" attached_to="base_footprint_joint">
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+  <pose>0 0 0.02 0 0 0</pose></model>
+</world>
+</sdf>

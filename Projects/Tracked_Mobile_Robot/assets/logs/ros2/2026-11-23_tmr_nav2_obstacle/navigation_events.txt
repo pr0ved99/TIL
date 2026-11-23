@@ -1,0 +1,7 @@
+[bt_navigator-6] [INFO] [1795416214.238043312] [bt_navigator]: Begin navigating from current location (-0.39, -0.02) to (1.50, 0.85)
+[controller_server-1] [INFO] [1795416214.239079060] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-1] [ERROR] [1795416224.439271333] [controller_server]: Failed to make progress
+[controller_server-1] [INFO] [1795416224.458455303] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-1] [INFO] [1795416224.458851996] [controller_server]: Received a goal, begin computing control effort.
+[controller_server-1] [INFO] [1795416251.164340422] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795416251.188296642] [bt_navigator]: Goal succeeded

@@ -1,0 +1,128 @@
+{
+  "goal": [
+    -0.85,
+    0.6,
+    3.141592653589793
+  ],
+  "limits": {
+    "gz_xy_m": 0.2,
+    "gz_yaw_deg": 10,
+    "wall_timeout_s": 45
+  },
+  "trials": [
+    {
+      "seed": 3102,
+      "threshold_m": 0.15,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 14.6518397810014,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        5.886793765488683e-22,
+        4.3151852129464055e-41,
+        2.181350432730931e-20
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": null,
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 10.332064524000089,
+        "map_distance_m": 0.34382667218459373,
+        "map_yaw_deg": 128.86300958256055,
+        "gz_remaining_x_m": -0.25193274014067457
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 12.4821020770014,
+        "map_distance_m": 0.14590367492479356,
+        "map_yaw_deg": 134.86937378838522,
+        "gz_remaining_x_m": -0.09507311733999146
+      },
+      "stop_map": [
+        -0.896093068445361,
+        0.536164128059924,
+        3.1086840489603014
+      ],
+      "stop_gz": [
+        -0.8728351434824431,
+        0.5496417492904846,
+        -3.1094610839749097
+      ],
+      "stop_map_error_m": 0.07873747205148585,
+      "stop_gz_remaining_x_m": 0.022835143482443088,
+      "stop_gz_remaining_y_m": 0.050358250709515384,
+      "stop_gz_error_m": 0.05529373556187147,
+      "stop_gz_yaw_error_deg": 1.841003328063589,
+      "met_end_pose_criteria": true,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002,
+      "stop_gz_yaw_0_to_360_deg": 181.8410033280636,
+      "stop_map_yaw_error_deg": 1.8855241549345592,
+      "rtf": 0.9978269090109294,
+      "goal_id": "8794c7659e7d47e68d27102e52423dfd",
+      "sampled_gz_path_length_m": 1.2271665981728375,
+      "min_map_distance_before_first_recovery_m": 0.0331451589175039,
+      "map_yaw_error_at_that_sample_deg": 19.216599593189287
+    },
+    {
+      "seed": 3103,
+      "threshold_m": 0.15,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 14.60167176700088,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        5.886793765488683e-22,
+        4.3151852129464055e-41,
+        2.181350432730931e-20
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": null,
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 10.191939373000423,
+        "map_distance_m": 0.34269963245372587,
+        "map_yaw_deg": 128.52082279081807,
+        "gz_remaining_x_m": -0.2694924929539083
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 12.342229755000517,
+        "map_distance_m": 0.14506743858742574,
+        "map_yaw_deg": 135.32268177460128,
+        "gz_remaining_x_m": -0.11573589142565388
+      },
+      "stop_map": [
+        -0.8792439014480283,
+        0.5552408269833351,
+        3.0849533970094205
+      ],
+      "stop_gz": [
+        -0.8493784708649544,
+        0.5768949470442467,
+        -3.096647158441463
+      ],
+      "stop_map_error_m": 0.05346577728825923,
+      "stop_gz_remaining_x_m": -0.0006215291350455399,
+      "stop_gz_remaining_y_m": 0.02310505295575327,
+      "stop_gz_error_m": 0.023113411054058494,
+      "stop_gz_yaw_error_deg": 2.575187180125009,
+      "met_end_pose_criteria": true,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002,
+      "stop_gz_yaw_0_to_360_deg": 182.57518718012503,
+      "stop_map_yaw_error_deg": 3.245190356813926,
+      "rtf": 0.9989267141974594,
+      "goal_id": "0ba6442fb4bd45af82882ed334f43d4b",
+      "sampled_gz_path_length_m": 1.2232777164073183,
+      "min_map_distance_before_first_recovery_m": 0.022567162041248368,
+      "map_yaw_error_at_that_sample_deg": 9.170030459687407
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 펌웨어 앱과 검사 안내
 
-**11/22 Ubuntu 실습 마감.** Gazebo에서 TMR의 가상 LiDAR·고정 지도·AMCL을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](../docs/handoff/CURRENT_SESSION_CONTEXT.md) · [11/22 기록](../docs/progress/2026-11-22_progress.md).
+**11/23 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)
 
 상태 대조: **2026-11-12**. 10/23 지상1m 거리 기록, 10/24 새 UI 플래시 사용자 보고와 통합 시연, 11/5 외부 전류·온도 관측을 연결한다. 현재 앱은 STM `stm32_uart_mvp`와 ESP `esp32_wifi_link`이며 이번 점검에서 MCU 소스·빌드/플래시는 변경하지 않았다. ADC 수집/평균은 아직 설계 비교안이다. [현재 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 

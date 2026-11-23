@@ -1,0 +1,49 @@
+{
+  "last_cmd_vel_linear_xyz_angular_xyz": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "peak_abs_cmd_vel_m_s_rad_s": [
+    0.1,
+    0.39
+  ],
+  "post_goal_map_to_base_footprint": {
+    "sim_s": 1758.548,
+    "x_m": -0.2969577758989832,
+    "y_m": 0.14620191606234292,
+    "yaw_rad": 0.028257400127922105
+  },
+  "post_goal_odom_samples": [
+    {
+      "sim_s": 1757.562,
+      "linear_xyz_angular_xyz": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "sim_s": 1758.582,
+      "linear_xyz_angular_xyz": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "post_goal_gazebo_tmr": {
+    "x_m": -0.271137,
+    "y_m": 0.1623,
+    "yaw_rad": -0.050019
+  }
+}

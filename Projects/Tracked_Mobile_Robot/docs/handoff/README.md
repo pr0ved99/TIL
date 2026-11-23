@@ -1,6 +1,6 @@
 # Handoff Notes
 
-**11/22 Ubuntu 실습 마감.** Gazebo에서 TMR의 가상 LiDAR·고정 지도·AMCL을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 추가 MVP 마감은 보류했고 초기 ADC 실측은 NUCLEO·저전압 시험 입력·임시 배선으로 별도 진행한다. [현재 재개점](CURRENT_SESSION_CONTEXT.md) · [11/22 기록](../progress/2026-11-22_progress.md).
+**11/23 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [현재 인수인계](CURRENT_SESSION_CONTEXT.md)
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

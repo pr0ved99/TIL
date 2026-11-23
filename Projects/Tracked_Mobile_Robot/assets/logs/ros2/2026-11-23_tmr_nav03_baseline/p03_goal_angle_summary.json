@@ -1,0 +1,253 @@
+{
+  "order": [
+    [
+      3102,
+      0.5
+    ],
+    [
+      3102,
+      0.15
+    ],
+    [
+      3103,
+      0.15
+    ],
+    [
+      3103,
+      0.5
+    ]
+  ],
+  "goal_map": [
+    0.2,
+    -0.85,
+    -1.5707963267948966
+  ],
+  "alignment_observation": "First map heading within 5 deg of goal and held for >= 0.5 wall s in sampled feedback; not the goal criterion.",
+  "x_residual": "goal X minus Gazebo X after stop in meters; Gazebo world aligned to map at start",
+  "evaluation_target": {
+    "stop_gazebo_xy_m": 0.2,
+    "stop_gazebo_yaw_deg": 10.0
+  },
+  "results": [
+    {
+      "seed": 3102,
+      "threshold_m": 0.5,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 9.992256018000262,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        5.886793765488683e-22,
+        4.3151852129464055e-41,
+        2.181350432730931e-20
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": {
+        "t_wall_s": 4.742953068999668,
+        "map_distance_m": 0.6400773838000853,
+        "map_yaw_deg": -85.2596020191351,
+        "gz_remaining_x_m": 0.14032754823483168
+      },
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 7.8228135979998115,
+        "map_distance_m": 0.3390405480053871,
+        "map_yaw_deg": -89.48063707396982,
+        "gz_remaining_x_m": 0.16228969641613347
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 6.183085609000045,
+        "map_distance_m": 0.49921321491580206,
+        "map_yaw_deg": -87.29020787699334,
+        "gz_remaining_x_m": 0.14969405400214614
+      },
+      "stop_map": [
+        0.08005340783296055,
+        -0.7508868334507872,
+        -1.5586324754864582
+      ],
+      "stop_gz": [
+        0.019333083261986957,
+        -0.7177817802817654,
+        -1.6501415730650555
+      ],
+      "stop_map_error_m": 0.15559757310413963,
+      "stop_gz_remaining_x_m": 0.18066691673801305,
+      "stop_gz_remaining_y_m": -0.13221821971823455,
+      "stop_gz_error_m": 0.22387986159786566,
+      "stop_gz_yaw_error_deg": 4.546147735706244,
+      "met_end_pose_criteria": false,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002
+    },
+    {
+      "seed": 3102,
+      "threshold_m": 0.15,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 11.702790919000108,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        -2.3650515541418713e-25,
+        8.156630584998156e-56,
+        2.0257171896307995e-31
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": {
+        "t_wall_s": 4.723280729999715,
+        "map_distance_m": 0.6557715996470505,
+        "map_yaw_deg": -86.56303592722928,
+        "gz_remaining_x_m": 0.14150096090395636
+      },
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 7.823830004999763,
+        "map_distance_m": 0.346876438285132,
+        "map_yaw_deg": -83.31797868237477,
+        "gz_remaining_x_m": 0.18271467520150597
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 9.963284822999412,
+        "map_distance_m": 0.14500939588701947,
+        "map_yaw_deg": -68.91256828654457,
+        "gz_remaining_x_m": 0.14733695242162154
+      },
+      "stop_map": [
+        0.1218265362413848,
+        -0.8467474712205139,
+        -1.467661114196202
+      ],
+      "stop_gz": [
+        0.0831733979276955,
+        -0.8188467187448616,
+        -1.5121833267017524
+      ],
+      "stop_map_error_m": 0.07824109776505511,
+      "stop_gz_remaining_x_m": 0.11682660207230451,
+      "stop_gz_remaining_y_m": -0.031153281255138388,
+      "stop_gz_error_m": 0.12090898181988938,
+      "stop_gz_yaw_error_deg": 3.358277529937063,
+      "met_end_pose_criteria": true,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002
+    },
+    {
+      "seed": 3103,
+      "threshold_m": 0.15,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 12.55297689300005,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        5.886793765488683e-22,
+        4.3151852129464055e-41,
+        2.181350432730931e-20
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": {
+        "t_wall_s": 4.653550072000144,
+        "map_distance_m": 0.6711266546678442,
+        "map_yaw_deg": -85.3336726078277,
+        "gz_remaining_x_m": 0.14090569769098826
+      },
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 8.253383913000107,
+        "map_distance_m": 0.34067724969529944,
+        "map_yaw_deg": -83.14406083335663,
+        "gz_remaining_x_m": 0.18608771360989876
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 10.503576325999347,
+        "map_distance_m": 0.14271502505730047,
+        "map_yaw_deg": -64.92537706266262,
+        "gz_remaining_x_m": 0.13500022245328996
+      },
+      "stop_map": [
+        0.10899686424236309,
+        -0.8676116114447223,
+        -1.483008282629863
+      ],
+      "stop_gz": [
+        0.10090511008113474,
+        -0.8539576279977121,
+        -1.5294617402611994
+      ],
+      "stop_map_error_m": 0.09269163703054753,
+      "stop_gz_remaining_x_m": 0.09909488991886527,
+      "stop_gz_remaining_y_m": 0.003957627997712154,
+      "stop_gz_error_m": 0.09917388783041785,
+      "stop_gz_yaw_error_deg": 2.3682973562991334,
+      "met_end_pose_criteria": true,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002
+    },
+    {
+      "seed": 3103,
+      "threshold_m": 0.5,
+      "outcome": "SUCCEEDED",
+      "test_timeout": false,
+      "duration_wall_s": 11.351915704999556,
+      "recoveries": 0,
+      "first_progress_failure_wall_s": null,
+      "initial_map_pose": [
+        -2.3650515541418713e-25,
+        8.156630584998156e-56,
+        2.0257171896307995e-31
+      ],
+      "initial_gz_pose": [
+        -3.328450137256552e-21,
+        1.2858474058516168e-19,
+        -5.696876818703151e-20
+      ],
+      "at_first_map_heading_within_5deg_for_0p5wall_s": {
+        "t_wall_s": 4.502574961999926,
+        "map_distance_m": 0.6724096254605557,
+        "map_yaw_deg": -85.41169817964075,
+        "gz_remaining_x_m": 0.14283732753319467
+      },
+      "at_first_map_distance_le_0p35m": {
+        "t_wall_s": 7.773694360999798,
+        "map_distance_m": 0.3432610121130741,
+        "map_yaw_deg": -88.95345570211897,
+        "gz_remaining_x_m": 0.17818176553104037
+      },
+      "at_first_map_distance_le_threshold": {
+        "t_wall_s": 6.2426995009991515,
+        "map_distance_m": 0.4893265765084757,
+        "map_yaw_deg": -89.57061438166478,
+        "gz_remaining_x_m": 0.16948367156973118
+      },
+      "stop_map": [
+        0.06301634745405915,
+        -0.7945564359513195,
+        -1.5752903659480095
+      ],
+      "stop_gz": [
+        0.004767533978169687,
+        -0.7880553901406946,
+        -1.6277280140946873
+      ],
+      "stop_map_error_m": 0.14777858389918067,
+      "stop_gz_remaining_x_m": 0.19523246602183034,
+      "stop_gz_remaining_y_m": -0.06194460985930539,
+      "stop_gz_error_m": 0.2048239499657857,
+      "stop_gz_yaw_error_deg": 3.2619454028365573,
+      "met_end_pose_criteria": false,
+      "stop_odom_samples": 60,
+      "stop_odom_duration": 2.0060000000000002
+    }
+  ]
+}

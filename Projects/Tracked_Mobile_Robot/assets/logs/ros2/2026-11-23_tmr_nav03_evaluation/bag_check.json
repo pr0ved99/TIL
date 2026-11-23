@@ -1,0 +1,33 @@
+{
+  "trial": "P05-4101",
+  "counts": {
+    "/amcl_pose": 20,
+    "/clock": 36164,
+    "/cmd_vel": 611,
+    "/map": 1,
+    "/navigate_to_pose/_action/status": 2,
+    "/odom": 1063,
+    "/plan": 29,
+    "/scan": 362,
+    "/tf": 1955,
+    "/tf_static": 1
+  },
+  "bag_duration_s": 36.163,
+  "map_size": [
+    112,
+    90
+  ],
+  "goal_uuid": "e351570691404d208b01d476e6e7b6f3",
+  "action_states": [
+    2,
+    4
+  ],
+  "final_cmd": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ]
+}

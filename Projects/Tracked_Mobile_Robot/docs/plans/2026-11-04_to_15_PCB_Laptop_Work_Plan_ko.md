@@ -1,6 +1,6 @@
 # 11/4~15 PCB 후속 작업 계획 — 11/9·10 휴무 반영
 
-**현재 안내.** Ubuntu에서 TMR 가상 LiDAR·고정 지도·AMCL을 확인했다. 다음은 NAV-02 첫 목표 이동이다. 실제 ADC 실측은 NUCLEO와 저전압 시험 입력을 연결할 때 별도 진행한다. [재개점](../handoff/CURRENT_SESSION_CONTEXT.md).
+**11/23 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)
 
 **11/17 마감 이력:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](../progress/2026-11-17_progress.md) · [검증/게시](../../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 

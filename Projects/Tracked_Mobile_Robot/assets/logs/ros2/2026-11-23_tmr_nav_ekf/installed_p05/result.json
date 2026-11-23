@@ -1,0 +1,46 @@
+{
+  "route": "P05",
+  "seed": 4101,
+  "room": "2026-11-22_tmr_lidar_amcl",
+  "goal": [
+    1.5,
+    0.55,
+    0
+  ],
+  "goal_uuid": "f40413a5114d4e9ba72ee86369314eeb",
+  "status": 4,
+  "error_code": 0,
+  "recoveries": 0,
+  "sim_s": 26.997999999999998,
+  "world_final": [
+    1.5124411704481155,
+    0.5587351996051699,
+    -0.05148055875310711
+  ],
+  "xy_error_m": 0.01520152736606502,
+  "yaw_error_deg": 2.949618743528305,
+  "path_m": 2.0486398222527664,
+  "crossings_y_m": [
+    0.8229522052101744
+  ],
+  "stop": {
+    "wheel": {
+      "span_s": 2.074000000000005,
+      "max_abs_vx": 0.0,
+      "max_abs_wz": 0.0
+    },
+    "filtered": {
+      "span_s": 2.0900000000000034,
+      "max_abs_vx": 0.0006824342426989353,
+      "max_abs_wz": 1.1725884799397153e-10
+    }
+  },
+  "last_cmd": [
+    34.211,
+    0.0,
+    0.0
+  ],
+  "observed_odom_tf_publishers": {
+    "ekf_filter_node": 1050
+  }
+}

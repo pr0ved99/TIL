@@ -1,0 +1,120 @@
+{
+  "config_file": "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/install/tmr_sim/share/tmr_sim/config/ekf.yaml",
+  "source": "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/src/tmr_sim/config/ekf.yaml",
+  "results": [
+    {
+      "motion": "left",
+      "sim_windows_s": [
+        [
+          0.52,
+          1.02
+        ],
+        [
+          5.518,
+          6.018
+        ]
+      ],
+      "world": {
+        "displacement_m": 7.58143181000479e-09,
+        "delta_yaw_deg": 50.262994206046926
+      },
+      "wheel": {
+        "displacement_m": 2.4081694426868397e-15,
+        "delta_yaw_deg": 44.684999958453275,
+        "delta_yaw_error_deg": 5.577994247593651
+      },
+      "filter": {
+        "displacement_m": 1.8671706082412317e-15,
+        "delta_yaw_deg": 50.52094142509813,
+        "delta_yaw_error_deg": 0.25794721905120355
+      }
+    }
+  ],
+  "observed_odom_tf_senders": {
+    "tmr_drive_bridge": 150
+  },
+  "topics": {
+    "/odom": [
+      "tmr_drive_bridge"
+    ],
+    "/imu/data": [
+      "tmr_drive_bridge"
+    ],
+    "/tf": [
+      "ekf_filter_node",
+      "robot_state_publisher",
+      "tmr_drive_bridge"
+    ],
+    "/odometry/filtered": [
+      "ekf_filter_node"
+    ]
+  },
+  "tf_edges": [
+    [
+      "base_link",
+      "left_wheel_link"
+    ],
+    [
+      "base_link",
+      "right_wheel_link"
+    ],
+    [
+      "odom",
+      "base_footprint"
+    ]
+  ],
+  "frames": [
+    [
+      "filter",
+      "odom",
+      "base_footprint"
+    ],
+    [
+      "wheel",
+      "odom",
+      "base_footprint"
+    ]
+  ],
+  "publish_tf": false,
+  "odom0_enabled_indices": [
+    6
+  ],
+  "imu0_enabled_indices": [
+    11
+  ],
+  "tf_metadata_keys": [
+    "publication_sequence_number",
+    "received_timestamp",
+    "reception_sequence_number",
+    "source_timestamp"
+  ],
+  "bag_counts": {
+    "/tf_static": 1,
+    "/clock": 6043,
+    "/imu/data": 302,
+    "/odom": 177,
+    "/tf": 265,
+    "/odometry/filtered": 181,
+    "/cmd_vel": 21
+  },
+  "median_wz_rad_s": {
+    "steady_turn": {
+      "sim_window_s": [
+        3.032,
+        4.419
+      ],
+      "wheel": 0.3926990813162582,
+      "imu": 0.44200987285420135,
+      "filter": 0.44200987285399757
+    },
+    "settled": {
+      "sim_window_s": [
+        5.019,
+        5.619
+      ],
+      "wheel": 0.0,
+      "imu": 2.0056591023853494e-18,
+      "filter": 5.983955215011983e-18
+    }
+  }
+}

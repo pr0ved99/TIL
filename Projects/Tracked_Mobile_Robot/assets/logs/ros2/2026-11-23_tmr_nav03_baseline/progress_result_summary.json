@@ -1,0 +1,198 @@
+{
+  "0.50": {
+    "min_map_m": 0.16689129592462215,
+    "min_gazebo_m": 0.2115702934835681,
+    "failures_wall_elapsed_s": [
+      18.073364973068237,
+      28.14378571510315,
+      38.47397017478943
+    ],
+    "first_map_under_22cm_s": 9.942611431000842,
+    "late_motion_35_to_44_s": {
+      "map_x_range_m": [
+        0.02820695657708315,
+        0.02823056234395136
+      ],
+      "map_y_range_m": [
+        -0.8543305606798736,
+        -0.8494668019042192
+      ],
+      "max_abs_cmd_vx_wz": [
+        0.0067644501104950905,
+        0.016598587855696678
+      ]
+    },
+    "sample_count": 439,
+    "drive": {
+      "timed_out": true,
+      "goal_id": "3c566af4a5c64c249fa7328cf724ac97",
+      "status": 5,
+      "error_code": 0,
+      "recoveries": 4,
+      "wall_seconds": 45.033434467000006,
+      "simulation_seconds": 44.778,
+      "real_time_factor": 0.994327892819563,
+      "stop_map": [
+        0.028224380443290335,
+        -0.850354237732495,
+        -1.571490037965796
+      ],
+      "stop_gazebo": [
+        -0.010876170520359354,
+        -0.8317576243292865,
+        -1.6232498564851014
+      ],
+      "map_error": {
+        "xy_m": 0.1717759848129609,
+        "yaw_deg": 0.03974672229361052
+      },
+      "gazebo_error": {
+        "xy_m": 0.21166375117965552,
+        "yaw_deg": 3.005365871812897
+      },
+      "last_cmd_vel": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary_odom_samples": 60,
+      "stationary_odom_duration_s": 2.0060000000000002,
+      "max_abs_odom_after_stop": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "0.10": {
+    "min_map_m": 0.15044613340792706,
+    "min_gazebo_m": 0.21651152526745887,
+    "failures_wall_elapsed_s": [],
+    "first_map_under_22cm_s": 9.562985603000016,
+    "late_motion_35_to_44_s": null,
+    "sample_count": 115,
+    "drive": {
+      "timed_out": false,
+      "goal_id": "015911ea48d84539aa8a3a91a50cb560",
+      "status": 4,
+      "error_code": 0,
+      "recoveries": 0,
+      "wall_seconds": 12.052996105000602,
+      "simulation_seconds": 11.764,
+      "real_time_factor": 0.9760228824034297,
+      "stop_map": [
+        0.04408203594121833,
+        -0.820307722689965,
+        -1.5770198658121413
+      ],
+      "stop_gazebo": [
+        -0.010069304119950367,
+        -0.7998019287054536,
+        -1.6440637699122564
+      ],
+      "map_error": {
+        "xy_m": 0.15872001401238456,
+        "yaw_deg": 0.3565825193231177
+      },
+      "gazebo_error": {
+        "xy_m": 0.2159837005311571,
+        "yaw_deg": 4.197915266339553
+      },
+      "last_cmd_vel": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary_odom_samples": 60,
+      "stationary_odom_duration_s": 2.0060000000000002,
+      "max_abs_odom_after_stop": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "0.10-repeat": {
+    "min_map_m": 0.18028447999526404,
+    "min_gazebo_m": 0.21340452439866425,
+    "failures_wall_elapsed_s": [
+      23.973705530166626,
+      34.04352569580078,
+      44.46271228790283
+    ],
+    "first_map_under_22cm_s": 10.023862080000072,
+    "late_motion_35_to_44_s": {
+      "map_x_range_m": [
+        0.010643998343168938,
+        0.010672747381220085
+      ],
+      "map_y_range_m": [
+        -0.8544395348145705,
+        -0.849639589285764
+      ],
+      "max_abs_cmd_vx_wz": [
+        0.010345444083213806,
+        0.014956735074520111
+      ]
+    },
+    "sample_count": 439,
+    "drive": {
+      "timed_out": true,
+      "goal_id": "7ee7db91e0ba4eeaac4f03d7ee7a16aa",
+      "status": 5,
+      "error_code": 0,
+      "recoveries": 4,
+      "wall_seconds": 45.033132816000034,
+      "simulation_seconds": 44.71,
+      "real_time_factor": 0.9928245539274313,
+      "stop_map": [
+        0.010665521516520183,
+        -0.850081548290671,
+        -1.5707151479679096
+      ],
+      "stop_gazebo": [
+        -0.013053328375327284,
+        -0.8372624958503418,
+        -1.614332438630166
+      ],
+      "map_error": {
+        "xy_m": 0.18933449604531924,
+        "yaw_deg": 0.004651204172177463
+      },
+      "gazebo_error": {
+        "xy_m": 0.2134337479026398,
+        "yaw_deg": 2.4944354645704956
+      },
+      "last_cmd_vel": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stationary_odom_samples": 60,
+      "stationary_odom_duration_s": 2.0060000000000002,
+      "max_abs_odom_after_stop": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  }
+}

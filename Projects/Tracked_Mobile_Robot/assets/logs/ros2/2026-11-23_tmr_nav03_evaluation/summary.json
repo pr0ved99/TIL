@@ -1,0 +1,53 @@
+{
+  "completed": 20,
+  "succeeded": 20,
+  "all_conditions": 20,
+  "obstacle_episodes": 0,
+  "valid_contact_runs": 20,
+  "verified_stop_runs": 20,
+  "max_xy_m": 0.145093,
+  "max_yaw_deg": 5.29553,
+  "main_gate": true,
+  "auxiliary": [
+    {
+      "case": "cancel",
+      "route": "P05",
+      "seed": 4105,
+      "status": "CANCELED",
+      "trigger_sim_s": 5.066,
+      "reference_sim_s": 5.066,
+      "zero_cmd_sim_s": 5.241,
+      "stopped_odom_sim_s": 5.27,
+      "cmd_delay_s": 0.175,
+      "odom_delay_s": 0.204,
+      "action_end_sim_s": 5.066,
+      "observation_end_sim_s": 7.718,
+      "observed_stopped_s": 2.448,
+      "cancel_request_sim_s": 5.066,
+      "post_action_stopped": true,
+      "obstacle_episodes": 0,
+      "contact_valid": true,
+      "goal_uuid": "3c47d1a18244499ea69ccddae467d689"
+    },
+    {
+      "case": "scan_loss",
+      "route": "P05",
+      "seed": 4105,
+      "status": "ABORTED",
+      "trigger_sim_s": 5.236,
+      "reference_sim_s": 5.2,
+      "zero_cmd_sim_s": 6.248,
+      "stopped_odom_sim_s": 6.29,
+      "cmd_delay_s": 1.048,
+      "odom_delay_s": 1.09,
+      "action_end_sim_s": 6.46,
+      "observation_end_sim_s": 9.112,
+      "observed_stopped_s": 2.822,
+      "cancel_request_sim_s": null,
+      "post_action_stopped": true,
+      "obstacle_episodes": 0,
+      "contact_valid": true,
+      "goal_uuid": "1ec8c29b44a24f8d8f16e3c509964e93"
+    }
+  ]
+}

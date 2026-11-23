@@ -1,0 +1,20 @@
+header:
+  stamp:
+    sec: 1795431828
+    nanosec: 896198187
+  frame_id: ''
+status:
+- level: "\0"
+  name: tmr/battery_voltage
+  message: sample
+  hardware_id: tmr_mock
+  values:
+  - key: voltage
+    value: '11.82'
+  - key: unit
+    value: V
+  - key: source
+    value: SIM
+  - key: valid
+    value: 'true'
+---

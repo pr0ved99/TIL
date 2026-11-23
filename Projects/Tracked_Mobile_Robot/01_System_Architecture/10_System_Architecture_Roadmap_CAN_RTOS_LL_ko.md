@@ -1,6 +1,6 @@
 # 시스템 아키텍처 로드맵: CAN, RTOS, LL Driver
 
-**11/17 계획과 11/22 확인 결과.** [Ubuntu 듀얼부팅·Nav2·RL 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md). TMR 가상 LiDAR·고정 지도·AMCL 초기화와 전진 후 위치 갱신을 확인했다. 다음은 NAV-02 첫 목표 이동이며 IMU/EKF와 RL 비교는 후속이다. [11/22 기록](../docs/progress/2026-11-22_progress.md)
+**11/23 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [집에서 시작할 A11](../docs/progress/2026-11-23_progress.md#집에서-시작할-a11)
 
 
 > 문서 역할·상태 대조: **2026-09-30** — 단계별 목표와 진입 조건. 현재 실행 순서는 최신 master plan과 인수인계를 따른다.

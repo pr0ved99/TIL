@@ -1,0 +1,23 @@
+# Gazebo seed 3102, GoalAngleCritic threshold 0.50 m
+[controller_server-1] [INFO] [1795419947.880597763] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.500000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795419951.757196961] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, -0.85)
+[controller_server-1] [INFO] [1795419961.729803932] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795419961.747679234] [bt_navigator]: Goal succeeded
+
+# Gazebo seed 3102, GoalAngleCritic threshold 0.15 m
+[controller_server-1] [INFO] [1795419973.799823433] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795419977.260161849] [bt_navigator]: Begin navigating from current location (-0.00, -0.00) to (0.20, -0.85)
+[controller_server-1] [INFO] [1795419988.932055513] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795419988.961021360] [bt_navigator]: Goal succeeded
+
+# Gazebo seed 3103, GoalAngleCritic threshold 0.15 m
+[controller_server-1] [INFO] [1795420001.582010688] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420005.000254720] [bt_navigator]: Begin navigating from current location (-0.00, 0.00) to (0.20, -0.85)
+[controller_server-1] [INFO] [1795420017.521972854] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795420017.551088032] [bt_navigator]: Goal succeeded
+
+# Gazebo seed 3103, GoalAngleCritic threshold 0.50 m
+[controller_server-1] [INFO] [1795420029.898752514] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.500000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795420033.097384218] [bt_navigator]: Begin navigating from current location (-0.00, -0.00) to (0.20, -0.85)
+[controller_server-1] [INFO] [1795420044.419300229] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795420044.447981438] [bt_navigator]: Goal succeeded

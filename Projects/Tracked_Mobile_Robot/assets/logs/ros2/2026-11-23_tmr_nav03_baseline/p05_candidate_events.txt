@@ -1,0 +1,11 @@
+# P05 Gazebo seed 3102
+[controller_server-1] [INFO] [1795421965.473075447] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795421969.450883156] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (1.50, 0.55)
+[controller_server-1] [INFO] [1795421992.322143369] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795421992.351368742] [bt_navigator]: Goal succeeded
+
+# P05 Gazebo seed 3103
+[controller_server-1] [INFO] [1795422017.379891377] [controller_server]: GoalAngleCritic instantiated with 1 power, 3.000000 weight, 0.150000 angular threshold and symmetric_yaw_tolerance disabled
+[bt_navigator-6] [INFO] [1795422021.261466638] [bt_navigator]: Begin navigating from current location (-0.00, -0.00) to (1.50, 0.55)
+[controller_server-1] [INFO] [1795422044.232771517] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795422044.261827990] [bt_navigator]: Goal succeeded

@@ -1,0 +1,127 @@
+{
+  "launch": "ros2 launch tmr_sim drive.launch.py headless:=true",
+  "turns": [
+    "ros2 run tmr_sim turn_stop left",
+    "ros2 run tmr_sim turn_stop right"
+  ],
+  "configured_imu_hz": 50,
+  "measured_imu_hz": 49.8108853131611,
+  "imu_samples": 778,
+  "odom_samples": 459,
+  "imu_frame": "imu_link",
+  "tf": {
+    "translation": [
+      0.0,
+      0.0,
+      0.035
+    ],
+    "xyzw": [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "windows": {
+    "rest": {
+      "window_sim_s": [
+        4.474,
+        5.424
+      ],
+      "imu": {
+        "samples": 48,
+        "median_rad_s": -6.2637035079069484e-21,
+        "max_abs_rad_s": 6.188342105110904e-17
+      },
+      "odom": {
+        "samples": 28,
+        "median_rad_s": 7.399863538782846e-22,
+        "max_abs_rad_s": 1.0553461091837957e-20
+      }
+    },
+    "left": {
+      "window_sim_s": [
+        6.424,
+        7.716
+      ],
+      "imu": {
+        "samples": 64,
+        "median_rad_s": 0.44200879258793896,
+        "max_abs_rad_s": 0.4420105716493248
+      },
+      "odom": {
+        "samples": 38,
+        "median_rad_s": 0.3926990813148793,
+        "max_abs_rad_s": 0.39269908136349924
+      }
+    },
+    "left_stop": {
+      "window_sim_s": [
+        8.316,
+        9.916
+      ],
+      "imu": {
+        "samples": 80,
+        "median_rad_s": 1.0364335925932827e-17,
+        "max_abs_rad_s": 2.1725885056006826e-14
+      },
+      "odom": {
+        "samples": 47,
+        "median_rad_s": 0.0,
+        "max_abs_rad_s": 0.0
+      }
+    },
+    "right": {
+      "window_sim_s": [
+        12.324,
+        13.386000000000001
+      ],
+      "imu": {
+        "samples": 53,
+        "median_rad_s": -0.44200826209613125,
+        "max_abs_rad_s": 0.4420105569891106
+      },
+      "odom": {
+        "samples": 31,
+        "median_rad_s": -0.3926990813208429,
+        "max_abs_rad_s": 0.39269908136186427
+      }
+    },
+    "right_stop": {
+      "window_sim_s": [
+        13.986,
+        15.586
+      ],
+      "imu": {
+        "samples": 80,
+        "median_rad_s": -4.918291134760957e-18,
+        "max_abs_rad_s": 2.1855672840531074e-14
+      },
+      "odom": {
+        "samples": 47,
+        "median_rad_s": 0.0,
+        "max_abs_rad_s": 0.0
+      }
+    }
+  },
+  "repeat_world_comparison": {
+    "left": {
+      "window_sim_s": [
+        3.317,
+        4.371
+      ],
+      "world_yaw_rate_rad_s": 0.4420095707331331,
+      "imu_median_rad_s": 0.4420094210332943,
+      "odom_median_rad_s": 0.39269908132290077
+    },
+    "right": {
+      "window_sim_s": [
+        9.318,
+        10.338
+      ],
+      "world_yaw_rate_rad_s": -0.44200877487671225,
+      "imu_median_rad_s": -0.4420075770385251,
+      "odom_median_rad_s": -0.3926990813367711
+    }
+  }
+}

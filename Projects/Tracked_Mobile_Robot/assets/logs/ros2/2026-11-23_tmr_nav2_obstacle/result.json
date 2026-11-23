@@ -1,0 +1,59 @@
+{
+  "goal_id": "a268562583df4b6fb2898a45edf49653",
+  "goal_map_xy_m": [
+    1.5,
+    0.85
+  ],
+  "result": {
+    "status": 4,
+    "error_code": 0,
+    "error_msg": "",
+    "t": 36.95119856600013
+  },
+  "recoveries": 1,
+  "wall_world_xy_yaw": [
+    0.2346855244057408,
+    0.5799230982684467,
+    0.9104366415119134
+  ],
+  "wall_size_xyz_m": [
+    0.1,
+    0.6,
+    0.4
+  ],
+  "scan_hits_before_after": [
+    0,
+    47
+  ],
+  "peak_raw_cost_before_after": {
+    "before": {
+      "local": 70,
+      "global": 74
+    },
+    "after": {
+      "local": 254,
+      "global": 254
+    }
+  },
+  "baseline_plan_length_m": 2.151228544228602,
+  "baseline_centerline_min_distance_to_wall_m": 0.0,
+  "first_detour_after_goal_s": 3.064871115999722,
+  "detour_remaining_path_length_m": 3.033916705318653,
+  "detour_centerline_min_distance_to_wall_m": 0.23513407264813502,
+  "gazebo_sampled_travel_m": 2.799507350111976,
+  "gazebo_sampled_center_min_distance_to_added_wall_m": 0.26311035399796484,
+  "stopped_map_xy_m": [
+    1.2742683748813448,
+    0.7755198184969164
+  ],
+  "stopped_goal_error_m": 0.2377016281295552,
+  "last_cmd_vx_wz": [
+    0.0,
+    0.0
+  ],
+  "post_goal_odom_sample_span_sim_s": 1.9380000000001019,
+  "post_goal_max_abs_odom_vx_wz": [
+    0.0,
+    0.0
+  ]
+}

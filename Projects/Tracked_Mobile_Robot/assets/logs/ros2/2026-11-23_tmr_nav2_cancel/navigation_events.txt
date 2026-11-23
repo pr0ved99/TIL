@@ -1,0 +1,5 @@
+[bt_navigator-6] [INFO] [1795415616.817407713] [bt_navigator]: Begin navigating from current location (-0.18, -0.28) to (-0.66, 0.64)
+[controller_server-1] [INFO] [1795415623.528062893] [controller_server]: Cancellation was successful. Stopping the robot.
+[controller_server-1] [INFO] [1795415623.528114972] [controller_server]: [follow_path] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-6] [INFO] [1795415623.528198560] [bt_navigator]: [navigate_to_pose] [ActionServer] Client requested to cancel the goal. Cancelling.
+[bt_navigator-6] [INFO] [1795415623.528413237] [bt_navigator]: Goal canceled

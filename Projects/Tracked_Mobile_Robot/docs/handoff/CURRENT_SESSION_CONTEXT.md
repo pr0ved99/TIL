@@ -1,10 +1,12 @@
 # Current Session Context
 
-**재개점 · 2026-11-22.** SIM-04 가상 LiDAR가 정면 1.000m 벽을 0.999870m로 측정했고 사용자가 RViz에서 정렬을 확인했다. NAV-01 임시 방과 도메인 85의 고정 지도를 연결하고 AMCL을 초기화했다. 약 0.396m 전진 후 AMCL 갱신, 지도 기준 위치와 Gazebo의 약 6.3mm 차이, 정지 및 RViz 벽 정렬을 확인했다. 다음은 NAV-02에서 TMR의 첫 Nav2 목표 이동이다. [11/22 실습 기록](../progress/2026-11-22_progress.md)
+**11/23 재개점.** Nav2 바퀴 모드에서 5경로 × 4시드 모두 도착·정지했고 장애물 접촉은 0회였다. EKF 모드로 벽 우회 경로 P05를 별도로 재현했다. 모의 전압의 발행 중단·재개는 확인했고 값의 유효 판정은 다음 실습이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [집에서 시작할 A11](../progress/2026-11-23_progress.md#집에서-시작할-a11)
+
+**이전 실습 · 2026-11-22.** SIM-04 가상 LiDAR가 정면 1.000m 벽을 0.999870m로 측정했고 사용자가 RViz에서 정렬을 확인했다. NAV-01 임시 방과 도메인 85의 고정 지도를 연결하고 AMCL을 초기화했다. 약 0.396m 전진 후 AMCL 갱신, 지도 기준 위치와 Gazebo의 약 6.3mm 차이, 정지 및 RViz 벽 정렬을 확인했다. 다음은 NAV-02에서 TMR의 첫 Nav2 목표 이동이다. [11/22 실습 기록](../progress/2026-11-22_progress.md)
 
 **이전 실습 · 2026-11-21.** Ubuntu의 TMR 시뮬레이션에서 전진·후진·좌우 제자리 회전과 명시적 정지를 확인했다. 사용자 실습 종료 TF는 `odom → base_footprint` yaw −7.110°, `base_link → laser_frame` (0.065, 0, 0.045)m·회전 0이었다. 가상 LiDAR는 이 임시 장착 위치를 사용한다. [실행 안내](../../05_ROS2_Integration/README.md) · [11/21 기록](../progress/2026-11-21_progress.md)
 
-**현재 재개점 · 2026-11-20 Ubuntu와 Nav2:** Ubuntu 24.04.5에서 ext4의 TIL 개발 브랜치 `agent/dual-encoder-bringup`을 열었다. ROS 2 Jazzy·Gazebo Harmonic 8.15.0·Nav2 1.3.14로 제공 TurtleBot3 예제의 자동 목표 이동 2회를 확인했다. GUI 회차에서 Gazebo 모델이 0.815 m 이동했고 목표점까지 최종 거리는 0.198 m였다. 사용자가 RViz의 지도·LiDAR 표시와 직접 지정한 `Nav2 Goal` 이동을 확인했고, 사용자 실행 로그에 `Goal succeeded` 다섯 건이 있다. [11/20 진행 기록](../progress/2026-11-20_progress.md#ubuntu-ros-2-환경과-turtlebot3-목표-이동-확인)
+**이전 실습 · 2026-11-20 Ubuntu와 Nav2:** Ubuntu 24.04.5에서 ext4의 TIL 개발 브랜치 `agent/dual-encoder-bringup`을 열었다. ROS 2 Jazzy·Gazebo Harmonic 8.15.0·Nav2 1.3.14로 제공 TurtleBot3 예제의 자동 목표 이동 2회를 확인했다. GUI 회차에서 Gazebo 모델이 0.815 m 이동했고 목표점까지 최종 거리는 0.198 m였다. 사용자가 RViz의 지도·LiDAR 표시와 직접 지정한 `Nav2 Goal` 이동을 확인했고, 사용자 실행 로그에 `Goal succeeded` 다섯 건이 있다. [11/20 진행 기록](../progress/2026-11-20_progress.md#ubuntu-ros-2-환경과-turtlebot3-목표-이동-확인)
 
 **SIM-02 첫 모델:** SIM-01 토픽·TF 규약에 맞춰 `tmr_description`을 작성했다. 실측 3.25kg·약 233mm와 이동량 등가 반지름 21.48mm를 사용하고 차체 외형·센서 위치·관성 가정을 기록했다. Jazzy에서 빌드·URDF 파싱·두 관절 상태와 다섯 TF·RViz 렌더링을 확인했다. 사용자가 모델 방향을 확인했고, SIM-03의 평지 주행 결과는 위 11/21 기록에 있다. [모델과 실행 안내](../../05_ROS2_Integration/README.md#rviz에서-모델-열기) · [시작 프롬프트](NEXT_SESSION_START_PROMPT.md)
 

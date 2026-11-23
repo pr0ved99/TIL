@@ -1,6 +1,6 @@
 # Tracked Mobile Robot
 
-**11/22 Ubuntu 실습 마감.** TMR은 가상 2D LiDAR, 고정 지도와 AMCL을 연결했다. 약 0.396m 전진 후 지도 기준 위치와 Gazebo의 평면 차이 약 6.3mm를 확인했다. 다음은 NAV-02 첫 목표 이동이다. 실물 MVP 추가 마감은 보류 중이며 첫 ADC 실측은 별도다. [실행 방법](05_ROS2_Integration/README.md) · [측정 기록](docs/progress/2026-11-22_progress.md)
+**11/23 재개점.** Nav2 바퀴 모드에서 5경로 × 4시드 모두 도착·정지했고 장애물 접촉은 0회였다. EKF 모드로 벽 우회 경로 P05를 별도로 재현했다. 모의 전압의 발행 중단·재개는 확인했고 값의 유효 판정은 다음 실습이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](docs/progress/2026-11-23_progress.md) · [집에서 시작할 A11](docs/progress/2026-11-23_progress.md#집에서-시작할-a11)
 
 **MVP 증거 대조 · 2026-11-20:** [통합 결과46](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
 
@@ -178,7 +178,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-다음 작업은 잔여 운영 근거와 기존 제외 범위의 최종 인수 처리, 공개할 증거 묶음 정리다. 완료한 거리/단절·복구·공중5/10/15cm를 자동 반복하지 않으며20cm는 사용자 요청으로 미실시다. 전체 MVP 완료나 Git/외부 앱 게시 완료를 의미하지 않는다.
+집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. 노트북에서는 SIM-06 전압 표본의 시각과 발행 측 유효 표시를 함께 판단하는 것이 다음 작업이다. 추가 실물 MVP 마감은 보류 중이다. [11/23 시험 기록](docs/progress/2026-11-23_progress.md) · [집에서 시작할 A11](docs/progress/2026-11-23_progress.md#집에서-시작할-a11)
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),
@@ -242,6 +242,6 @@ PC–STM32 직접 연결 대시보드는 초기 UART MVP의 시험 도구다.
 | CAN | UART로 확인한 명령·상태 계약을 CAN 인터페이스로 확장 |
 | STM32 FreeRTOS | 검증된 STM32 bare-metal 동작을 태스크·주기·큐 구조로 옮기고 동작 유지 확인. ESP-IDF의 기존 FreeRTOS 환경과 구분 |
 | 선택적 LL 전환 | 계측으로 필요성이 확인된 타이밍 경로의 구현과 성능 비교 |
-| ROS 2 · LiDAR · SLAM/Nav2 | 하위 구동 플랫폼과 상위 명령·상태 연결 후 자율주행으로 확장 |
+| ROS 2 · LiDAR · SLAM/Nav2 | 고정 지도 주행 평가, IMU/EKF와 모의 전압 신선도 확인. 실물 센서 연동과 SLAM은 후속이다. |
 
 단계별 범위와 완료 기준은 [프로젝트 마스터 플랜](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md)을 따른다.

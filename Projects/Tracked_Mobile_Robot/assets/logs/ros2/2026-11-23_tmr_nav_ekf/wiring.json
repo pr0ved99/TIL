@@ -1,0 +1,74 @@
+{
+  "topics": {
+    "/odom": {
+      "publishers": [
+        "ekf_filter_node"
+      ],
+      "subscribers": [
+        "bt_navigator",
+        "controller_server",
+        "tmr_nav_ekf_check"
+      ]
+    },
+    "/wheel/odom": {
+      "publishers": [
+        "tmr_drive_bridge"
+      ],
+      "subscribers": [
+        "ekf_filter_node",
+        "tmr_nav_ekf_check"
+      ]
+    },
+    "/wheel/tf": {
+      "publishers": [
+        "tmr_drive_bridge"
+      ],
+      "subscribers": []
+    },
+    "/tf": {
+      "publishers": [
+        "amcl",
+        "ekf_filter_node",
+        "robot_state_publisher"
+      ],
+      "subscribers": [
+        "amcl",
+        "behavior_server",
+        "bt_navigator",
+        "collision_monitor",
+        "route_server",
+        "smoother_server",
+        "tmr_nav_ekf_check",
+        "tmr_tf_origin_probe",
+        "transform_listener_impl_55648e2e4b90",
+        "transform_listener_impl_5805b8f5eb40",
+        "transform_listener_impl_650c1782c080"
+      ]
+    },
+    "/imu/data": {
+      "publishers": [
+        "tmr_drive_bridge"
+      ],
+      "subscribers": [
+        "ekf_filter_node"
+      ]
+    }
+  },
+  "ekf_parameters": [
+    "/wheel/odom",
+    "/imu/data",
+    true
+  ],
+  "frames": [
+    [
+      "filtered",
+      "odom",
+      "base_footprint"
+    ],
+    [
+      "raw",
+      "odom",
+      "base_footprint"
+    ]
+  ]
+}

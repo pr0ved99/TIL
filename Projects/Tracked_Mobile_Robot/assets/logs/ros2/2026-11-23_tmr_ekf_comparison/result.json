@@ -1,0 +1,143 @@
+{
+  "results": [
+    {
+      "motion": "straight",
+      "sim_windows_s": [
+        [
+          0.52,
+          1.02
+        ],
+        [
+          5.518,
+          6.018
+        ]
+      ],
+      "world": {
+        "displacement_m": 0.19831267126213856,
+        "delta_yaw_deg": 1.089734008042464e-14
+      },
+      "wheel": {
+        "displacement_m": 0.19869999999726057,
+        "delta_yaw_deg": 3.332629219563913e-18,
+        "delta_yaw_error_deg": 1.0894007451205076e-14
+      },
+      "filter": {
+        "displacement_m": 0.20039918606423343,
+        "delta_yaw_deg": 0.0,
+        "delta_yaw_error_deg": 1.089734008042464e-14
+      }
+    },
+    {
+      "motion": "left",
+      "sim_windows_s": [
+        [
+          5.518,
+          6.018
+        ],
+        [
+          11.859,
+          12.359
+        ]
+      ],
+      "world": {
+        "displacement_m": 4.088064721430264e-05,
+        "delta_yaw_deg": 50.23743693274865
+      },
+      "wheel": {
+        "displacement_m": 1.8850400546063859e-13,
+        "delta_yaw_deg": 44.66249995827415,
+        "delta_yaw_error_deg": 5.574936974474504
+      },
+      "filter": {
+        "displacement_m": 9.116153838056084e-06,
+        "delta_yaw_deg": 50.1034134831708,
+        "delta_yaw_error_deg": 0.13402344957785317
+      }
+    },
+    {
+      "motion": "right",
+      "sim_windows_s": [
+        [
+          11.86,
+          12.36
+        ],
+        [
+          17.486,
+          17.986
+        ]
+      ],
+      "world": {
+        "displacement_m": 4.096871718516119e-05,
+        "delta_yaw_deg": -50.339184812123094
+      },
+      "wheel": {
+        "displacement_m": 1.8585852636759987e-13,
+        "delta_yaw_deg": -44.7299999582084,
+        "delta_yaw_error_deg": 5.609184853914691
+      },
+      "filter": {
+        "displacement_m": 3.362367226340368e-07,
+        "delta_yaw_deg": -50.48801066282124,
+        "delta_yaw_error_deg": 0.14882585069814525
+      }
+    }
+  ],
+  "observed_odom_tf_senders": {
+    "tmr_drive_bridge": 510
+  },
+  "topics": {
+    "/odom": [
+      "tmr_drive_bridge"
+    ],
+    "/imu/data": [
+      "tmr_drive_bridge"
+    ],
+    "/tf": [
+      "ekf_filter_node",
+      "robot_state_publisher",
+      "tmr_drive_bridge"
+    ],
+    "/odometry/filtered": [
+      "ekf_filter_node"
+    ]
+  },
+  "tf_edges": [
+    [
+      "base_link",
+      "left_wheel_link"
+    ],
+    [
+      "base_link",
+      "right_wheel_link"
+    ],
+    [
+      "odom",
+      "base_footprint"
+    ]
+  ],
+  "frames": [
+    [
+      "filter",
+      "odom",
+      "base_footprint"
+    ],
+    [
+      "wheel",
+      "odom",
+      "base_footprint"
+    ]
+  ],
+  "publish_tf": false,
+  "odom0_enabled_indices": [
+    6
+  ],
+  "imu0_enabled_indices": [
+    11
+  ],
+  "tf_metadata_keys": [
+    "publication_sequence_number",
+    "received_timestamp",
+    "reception_sequence_number",
+    "source_timestamp"
+  ]
+}

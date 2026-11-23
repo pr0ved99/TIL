@@ -1,6 +1,6 @@
 # Tracked Mobile Robot — 세부 설계부터 최종 완성까지의 실행 계획
 
-**재개점 · 2026-11-22.** Ubuntu 개발 도구를 확인했다. TMR 가상 2D LiDAR와 고정 지도·AMCL을 연결하고 초기화와 한 차례 전진 후 위치 갱신을 확인했다. 다음은 **NAV-02 첫 목표 이동**이다. 가상 IMU/EKF와 반복 평가는 후속이다. [TMR 실행 방법](../../05_ROS2_Integration/README.md) · [11/22 진행 기록](../progress/2026-11-22_progress.md)
+**11/23 재개점.** Nav2 바퀴 모드에서 5경로 × 4시드 모두 도착·정지했고 장애물 접촉은 0회였다. EKF 모드로 벽 우회 경로 P05를 별도로 재현했다. 모의 전압의 발행 중단·재개는 확인했고 값의 유효 판정은 다음 실습이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [집에서 시작할 A11](../progress/2026-11-23_progress.md#집에서-시작할-a11)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 
@@ -455,4 +455,4 @@ OS/ROS/Gazebo 조합은 11/17 계획의 Ubuntu24.04/Jazzy/Harmonic **기존 제�
 - [제작 Shield](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md), [기본 전기 도면 안내](../../09_Electrical_Design/README.md).
 - [CAN/RTOS/LL 전체 로드맵](../../01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md), [기존 Ubuntu/Nav2/RL 제안](2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md), [11/17 실적](../progress/2026-11-17_progress.md).
 
-다음 작업은 §16 기준으로 사용자가 계획을 검토하는 것이다. 검토 전 새 회로 변경이나 실물 실행으로 넘어가지 않는다.
+노트북에서는 SIM-06 전압 표본의 시각과 발행 측 유효 표시를 함께 판단하는 것이 다음 작업이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [집에서 시작할 A11](../progress/2026-11-23_progress.md#집에서-시작할-a11)

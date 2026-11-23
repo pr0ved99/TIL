@@ -143,4 +143,4 @@ Ubuntu 설치와 초기 설정은 사용자 완료 보고다. 아래 체크는 �
 - [ ] NVIDIA 인식 결과 또는 남은 오류 기록
 - [ ] Ubuntu 작업 폴더에 TIL 개발 브랜치 확인
 
-이후 프로젝트 재개점은 **ROS 2 Jazzy와 Gazebo Harmonic 기본 실행 확인**이다. 첫 가상 로봇 이동은 그다음이다. [ROS 2 Jazzy 설치](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html) · [Gazebo와 ROS의 호환 조합](https://gazebosim.org/docs/harmonic/ros_installation/) · [프로젝트 로드맵](2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
+노트북에서는 SIM-06 전압 표본의 시각과 발행 측 유효 표시를 함께 판단하는 것이 다음 작업이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [집에서 시작할 A11](../progress/2026-11-23_progress.md#집에서-시작할-a11)

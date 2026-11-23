@@ -1,0 +1,209 @@
+{
+  "3102": {
+    "seed": 3102,
+    "threshold_m": 0.15,
+    "outcome": "SUCCEEDED",
+    "test_timeout": false,
+    "duration_wall_s": 4.741697247000047,
+    "recoveries": 0,
+    "first_progress_failure_wall_s": null,
+    "initial_map_pose": [
+      -4.620140469019823e-25,
+      -8.156630584998156e-56,
+      4.655935640556143e-31
+    ],
+    "initial_gz_pose": [
+      -3.328450137256552e-21,
+      1.2858474058516168e-19,
+      -5.696876818703151e-20
+    ],
+    "at_first_map_heading_within_5deg_for_0p5wall_s": {
+      "t_wall_s": 0.0038974130002316087,
+      "map_distance_m": 0.6,
+      "map_yaw_deg": 2.05750524664137e-23,
+      "gz_remaining_x_m": 0.6
+    },
+    "at_first_map_distance_le_0p35m": {
+      "t_wall_s": 2.672623468000893,
+      "map_distance_m": 0.34913745172660765,
+      "map_yaw_deg": -0.9707049515624284,
+      "gz_remaining_x_m": 0.35034587372585224
+    },
+    "at_first_map_distance_le_threshold": {
+      "t_wall_s": 4.712621860000581,
+      "map_distance_m": 0.1484695937016573,
+      "map_yaw_deg": -0.007440170335295128,
+      "gz_remaining_x_m": 0.14641637001473817
+    },
+    "stop_map": [
+      0.45853234985787644,
+      -0.001575159217104537,
+      9.091343718868184e-05
+    ],
+    "stop_gz": [
+      0.46193713115181534,
+      -0.005968181550925378,
+      -0.016871319570096455
+    ],
+    "stop_map_error_m": 0.14147641910683736,
+    "stop_gz_remaining_x_m": 0.13806286884818464,
+    "stop_gz_remaining_y_m": 0.005968181550925378,
+    "stop_gz_error_m": 0.1381918049148206,
+    "stop_gz_yaw_error_deg": 0.9666554061829974,
+    "met_end_pose_criteria": true,
+    "stop_odom_samples": 60,
+    "stop_odom_duration": 2.0059999999999985,
+    "contact": {
+      "duration_s": 7.344,
+      "records": {
+        "ground": 21791
+      },
+      "observed_pairs": [
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::base_footprint::base_footprint_fixed_joint_lump__front_support_collision_1"
+          ],
+          "records": 13
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::base_footprint::base_footprint_fixed_joint_lump__rear_support_collision_2"
+          ],
+          "records": 7108
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::left_wheel_link::left_wheel_link_collision"
+          ],
+          "records": 7335
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::right_wheel_link::right_wheel_link_collision"
+          ],
+          "records": 7335
+        }
+      ],
+      "active_sensor_topics": [
+        "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__front_support_collision_1/contact",
+        "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__rear_support_collision_2/contact",
+        "/world/empty/model/tmr/link/left_wheel_link/sensor/observe_left_wheel_link_collision/contact",
+        "/world/empty/model/tmr/link/right_wheel_link/sensor/observe_right_wheel_link_collision/contact"
+      ],
+      "ground_physics_stamps": 7345,
+      "max_ground_gap_ms": 1.0,
+      "release_gap_ms": 100.0,
+      "obstacle_episodes": []
+    },
+    "contact_window_sim_ns": [
+      3978000000,
+      8704000000,
+      11322000000
+    ]
+  },
+  "3103": {
+    "seed": 3103,
+    "threshold_m": 0.15,
+    "outcome": "SUCCEEDED",
+    "test_timeout": false,
+    "duration_wall_s": 4.7019569169988245,
+    "recoveries": 0,
+    "first_progress_failure_wall_s": null,
+    "initial_map_pose": [
+      -1.763130509074247e-24,
+      -1.3866271994496865e-54,
+      1.2033691775017546e-30
+    ],
+    "initial_gz_pose": [
+      -3.328450137256552e-21,
+      1.2858474058516168e-19,
+      -5.696876818703151e-20
+    ],
+    "at_first_map_heading_within_5deg_for_0p5wall_s": {
+      "t_wall_s": 0.003311234999273438,
+      "map_distance_m": 0.6,
+      "map_yaw_deg": 5.606263815362247e-23,
+      "gz_remaining_x_m": 0.6
+    },
+    "at_first_map_distance_le_0p35m": {
+      "t_wall_s": 2.662197374000243,
+      "map_distance_m": 0.3454320970147959,
+      "map_yaw_deg": -1.1002455488334333,
+      "gz_remaining_x_m": 0.34545122993785643
+    },
+    "at_first_map_distance_le_threshold": null,
+    "stop_map": [
+      0.45447331988851525,
+      -0.00141412027493896,
+      -0.002821466356727526
+    ],
+    "stop_gz": [
+      0.45958931398594294,
+      -0.0067161622901944565,
+      -0.021197720855214677
+    ],
+    "stop_map_error_m": 0.1455335506349735,
+    "stop_gz_remaining_x_m": 0.14041068601405704,
+    "stop_gz_remaining_y_m": 0.0067161622901944565,
+    "stop_gz_error_m": 0.14057121889934063,
+    "stop_gz_yaw_error_deg": 1.214539940300247,
+    "met_end_pose_criteria": true,
+    "stop_odom_samples": 60,
+    "stop_odom_duration": 2.0060000000000002,
+    "contact": {
+      "duration_s": 7.344,
+      "records": {
+        "ground": 21773
+      },
+      "observed_pairs": [
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::base_footprint::base_footprint_fixed_joint_lump__front_support_collision_1"
+          ],
+          "records": 13
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::base_footprint::base_footprint_fixed_joint_lump__rear_support_collision_2"
+          ],
+          "records": 7091
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::left_wheel_link::left_wheel_link_collision"
+          ],
+          "records": 7334
+        },
+        {
+          "pair": [
+            "ground_plane::ground::collision",
+            "tmr::right_wheel_link::right_wheel_link_collision"
+          ],
+          "records": 7335
+        }
+      ],
+      "active_sensor_topics": [
+        "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__front_support_collision_1/contact",
+        "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__rear_support_collision_2/contact",
+        "/world/empty/model/tmr/link/left_wheel_link/sensor/observe_left_wheel_link_collision/contact",
+        "/world/empty/model/tmr/link/right_wheel_link/sensor/observe_right_wheel_link_collision/contact"
+      ],
+      "ground_physics_stamps": 7345,
+      "max_ground_gap_ms": 1.0,
+      "release_gap_ms": 100.0,
+      "obstacle_episodes": []
+    },
+    "contact_window_sim_ns": [
+      4148000000,
+      8874000000,
+      11492000000
+    ]
+  }
+}

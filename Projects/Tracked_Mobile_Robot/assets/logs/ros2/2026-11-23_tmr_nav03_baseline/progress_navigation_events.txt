@@ -1,0 +1,19 @@
+--- 0.50 m ---
+[bt_navigator-6] [INFO] [1795418823.643917950] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, -0.85)
+[controller_server-1] [ERROR] [1795418841.715969072] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795418851.786389757] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795418862.116574304] [controller_server]: Failed to make progress
+[bt_navigator-6] [INFO] [1795418868.675343060] [bt_navigator]: Goal canceled
+
+--- 0.10 m ---
+[bt_navigator-6] [INFO] [1795418884.132124978] [bt_navigator]: Begin navigating from current location (-0.00, -0.00) to (0.20, -0.85)
+[controller_server-1] [INFO] [1795418896.153995272] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795418896.182745348] [bt_navigator]: Goal succeeded
+
+--- 0.10-repeat m ---
+[bt_navigator-6] [INFO] [1795418932.293025306] [bt_navigator]: Begin navigating from current location (0.00, 0.00) to (0.20, -0.85)
+[controller_server-1] [ERROR] [1795418956.265570387] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795418966.335390481] [controller_server]: Failed to make progress
+[controller_server-1] [ERROR] [1795418976.754577142] [controller_server]: Failed to make progress
+[bt_navigator-6] [INFO] [1795418977.324470787] [bt_navigator]: Goal canceled
+

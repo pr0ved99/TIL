@@ -137,6 +137,14 @@
   </joint>
 
   <xacro:if value="$(arg gazebo_drive)">
+    <gazebo reference="imu_link">
+      <sensor name="tmr_imu" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50</update_rate>
+        <topic>/model/tmr/imu</topic>
+        <gz_frame_id>imu_link</gz_frame_id>
+      </sensor>
+    </gazebo>
     <gazebo reference="laser_frame">
       <sensor name="tmr_lidar" type="gpu_lidar">
         <always_on>true</always_on>

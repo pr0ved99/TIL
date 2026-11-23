@@ -1,0 +1,35 @@
+[bt_navigator-6] [INFO] [1795414386.057027031] [bt_navigator]: Begin navigating from current location (-0.02, -0.01) to (0.07, 0.44)
+[controller_server-1] [ERROR] [1795414396.129999606] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1795414396.131929753] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [INFO] [1795414396.147534709] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-1] [ERROR] [1795414406.265297005] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1795414406.266020651] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [INFO] [1795414406.277482452] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[planner_server-3] [INFO] [1795414406.277775703] [global_costmap.global_costmap]: Received request to clear entirely the global_costmap
+[bt_navigator-6] [INFO] [1795414416.487516997] [bt_navigator]: Received goal preemption request
+[bt_navigator-6] [INFO] [1795414416.488010902] [bt_navigator]: Begin navigating from current location (0.26, 0.14) to (0.02, 0.51)
+[controller_server-1] [ERROR] [1795414416.513326323] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1795414416.514113060] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [INFO] [1795414416.527669461] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-1] [INFO] [1795414421.213727942] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414421.237337125] [bt_navigator]: Goal succeeded
+[bt_navigator-6] [INFO] [1795414425.674218958] [bt_navigator]: Begin navigating from current location (0.24, 0.41) to (-0.66, 0.39)
+[controller_server-1] [INFO] [1795414433.885136692] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414433.924517937] [bt_navigator]: Goal succeeded
+[bt_navigator-6] [INFO] [1795414444.201175306] [bt_navigator]: Begin navigating from current location (-0.41, 0.34) to (-0.29, -0.08)
+[controller_server-1] [INFO] [1795414446.361837078] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414446.391438885] [bt_navigator]: Goal succeeded
+[bt_navigator-6] [INFO] [1795414451.581399685] [bt_navigator]: Begin navigating from current location (-0.38, 0.14) to (0.08, -0.73)
+[controller_server-1] [INFO] [1795414459.352241993] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414459.381704181] [bt_navigator]: Goal succeeded
+[bt_navigator-6] [INFO] [1795414464.736549658] [bt_navigator]: Begin navigating from current location (0.05, -0.49) to (-0.15, -0.58)
+[controller_server-1] [INFO] [1795414470.957446050] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414470.996803706] [bt_navigator]: Goal succeeded
+[bt_navigator-6] [INFO] [1795414521.209543927] [bt_navigator]: Begin navigating from current location (-0.05, -0.62) to (-0.58, 0.13)
+[bt_navigator-6] [INFO] [1795414537.590022497] [bt_navigator]: Received goal preemption request
+[bt_navigator-6] [INFO] [1795414537.590172031] [bt_navigator]: Begin navigating from current location (-0.33, 0.11) to (-0.33, 0.10)
+[controller_server-1] [ERROR] [1795414537.920272109] [controller_server]: Failed to make progress
+[controller_server-1] [WARN] [1795414537.921584418] [controller_server]: [follow_path] [ActionServer] Aborting handle.
+[controller_server-1] [INFO] [1795414537.939970271] [local_costmap.local_costmap]: Received request to clear entirely the local_costmap
+[controller_server-1] [INFO] [1795414542.205952414] [controller_server]: Reached the goal!
+[bt_navigator-6] [INFO] [1795414542.229842890] [bt_navigator]: Goal succeeded

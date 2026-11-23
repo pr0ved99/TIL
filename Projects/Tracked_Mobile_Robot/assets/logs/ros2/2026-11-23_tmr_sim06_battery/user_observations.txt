@@ -1,0 +1,11 @@
+2026-11-23 · 사용자 채팅으로 받은 ROS_DOMAIN_ID=77 터미널 출력 전사
+
+전압 발행 중단·재개 (터미널 그대로)
+WAITING
+FRESH  age=0.001 s
+STALE  age=1.600 s
+FRESH  age=0.100 s
+STALE  age=1.599 s
+
+valid=false 발행 명령 안내 후 사용자 보고 (발행 본문 없음)
+FRESH age는 0.002 s고 STALE age=1.502 s가 뜨는데
