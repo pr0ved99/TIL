@@ -1,6 +1,6 @@
 # Drivetrain Kinematics and Odometry Plan
 
-**11/23 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [집에서 시작할 A11](../docs/progress/2026-11-23_progress.md#집에서-시작할-a11)
+**11/24 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 **10/23 이후 현재 근거:** 지상1m 실측/추정·오차 기록은 확보했다. 아래10/20의 지상시험 미완료/다음안내는 과거 기록이며 새 지시가 아니다. 이 결과는 유효 궤간·슬립·속도 폐루프·실물 Nav2 검증을 뜻하지 않는다. [현재 검증표](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 

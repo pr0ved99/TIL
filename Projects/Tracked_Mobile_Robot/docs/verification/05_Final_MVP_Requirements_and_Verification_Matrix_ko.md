@@ -1,6 +1,6 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-**11/23 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md)
+**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
 
 ## 현재 판정 — 2026-11-20
 

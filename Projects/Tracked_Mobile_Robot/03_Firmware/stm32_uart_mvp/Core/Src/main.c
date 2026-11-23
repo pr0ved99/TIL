@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "adc.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -37,6 +38,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define TMR_ADC_BENCH_ENABLED	1U
 /* Output-shaft count, calibrated with STM32 quadrature x4 decoding. */
 #define ENCODER_COUNTS_PER_OUTPUT_REV       1560U
 #define MOTOR_OUTPUT_PIN_TEST_ENABLED       0U
@@ -399,7 +401,40 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM3_Init();
   MX_TIM5_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
+#if TMR_ADC_BENCH_ENABLED
+  uint32_t seq = 0U;
+
+  for (;;) {
+	  char line[80];
+	  long raw = -1;
+	  uint32_t sample_ms = HAL_GetTick();
+
+	  if (HAL_ADC_Start(&hadc1) == HAL_OK) {
+		  if (HAL_ADC_PollForConversion(&hadc1, 2U) == HAL_OK) {
+			  raw = (long)HAL_ADC_GetValue(&hadc1);
+		  }
+		  if (HAL_ADC_Stop(&hadc1) != HAL_OK) {
+			  raw = -1;
+		  }
+	  }
+
+	  int length = snprintf(line, sizeof(line),
+			  	  	  	  	"ADC,seq=%lu,ms=%lu,raw=%ld,valid=%u\r\n",
+							(unsigned long)seq, (unsigned long)sample_ms,
+							raw, (unsigned int)(raw >= 0));
+
+	  if (length > 0 && (size_t)length < sizeof(line)) {
+		  (void)HAL_UART_Transmit(&huart2, (uint8_t *)line,
+				  	  	  	  	 (uint16_t)length, 10U);
+	  }
+
+	  seq++;
+	  HAL_Delay(100U);
+  }
+#endif
+
   if (motor_output_init(&htim4) != HAL_OK){
     Error_Handler();
   }

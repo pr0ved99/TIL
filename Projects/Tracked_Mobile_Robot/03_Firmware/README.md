@@ -1,6 +1,6 @@
 # 펌웨어 앱과 검사 안내
 
-**11/23 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 NUCLEO-F446RE의 단일 ADC 시험 준비(A11)부터 진행한다. [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)
+**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 상태 대조: **2026-11-12**. 10/23 지상1m 거리 기록, 10/24 새 UI 플래시 사용자 보고와 통합 시연, 11/5 외부 전류·온도 관측을 연결한다. 현재 앱은 STM `stm32_uart_mvp`와 ESP `esp32_wifi_link`이며 이번 점검에서 MCU 소스·빌드/플래시는 변경하지 않았다. ADC 수집/평균은 아직 설계 비교안이다. [현재 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 

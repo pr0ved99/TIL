@@ -1,0 +1,128 @@
+{
+  "session_local_dates": [
+    "2026-11-23",
+    "2026-11-24"
+  ],
+  "source": "REAL",
+  "input": "A2 / PA4 / ADC1_IN4",
+  "board": "NUCLEO-F446RE",
+  "dmm_rail_v": 3.31,
+  "build_user_report": {
+    "errors": 0,
+    "warnings": 0,
+    "flash_console": "Download verified successfully",
+    "elf_sha256": "dbc77043440779cd300a5716cbaca17fcb93462b66ea860b0419695e8b65284f"
+  },
+  "captures": {
+    "A12": {
+      "file": "assets/logs/mvp_measurements/2026-11-24_a12_pa4/first_uart_samples.csv",
+      "sha256": "729b51038a3a758c93130ac617ffb8ac870fc483323fdba2b796ce8c088068b6",
+      "dmm_v": 1.512,
+      "n": 104,
+      "seq": [
+        0,
+        103
+      ],
+      "duration_ms": 10712,
+      "seq_step": 1,
+      "board_ms_step": 104,
+      "raw_min": 1861,
+      "raw_mean": 1872.32692,
+      "raw_max": 1884
+    },
+    "low": {
+      "file": "assets/logs/mvp_measurements/2026-11-24_a13_pa4/low_0p7mV.csv",
+      "sha256": "5a6d617f731732b81c4e1c7df0abcdfd9db1c0fc70d9cbb554a503114b5a42e0",
+      "dmm_v": 0.0007,
+      "n": 327,
+      "seq": [
+        2924,
+        3250
+      ],
+      "duration_ms": 33904,
+      "seq_step": 1,
+      "board_ms_step": 104,
+      "raw_min": 0,
+      "raw_mean": 3.62691,
+      "raw_max": 20
+    },
+    "mid": {
+      "file": "assets/logs/mvp_measurements/2026-11-24_a13_pa4/mid_1p512v.csv",
+      "sha256": "ed1e2e055428d32d25dfcf9ff6fa68c9b466e0c167954c24a42b320ad4d30c1e",
+      "dmm_v": 1.512,
+      "n": 327,
+      "seq": [
+        3028,
+        3354
+      ],
+      "duration_ms": 33904,
+      "seq_step": 1,
+      "board_ms_step": 104,
+      "raw_min": 1859,
+      "raw_mean": 1872.35168,
+      "raw_max": 1888
+    },
+    "high": {
+      "file": "assets/logs/mvp_measurements/2026-11-24_a13_pa4/high_1p797v.csv",
+      "sha256": "282e9bcf666831f0c63331dff091d878c618213538b680c714fee11b7600f5db",
+      "dmm_v": 1.797,
+      "n": 327,
+      "seq": [
+        481,
+        807
+      ],
+      "duration_ms": 33904,
+      "seq_step": 1,
+      "board_ms_step": 104,
+      "raw_min": 2209,
+      "raw_mean": 2224.42202,
+      "raw_max": 2239
+    }
+  },
+  "A14": {
+    "events": [
+      [
+        "WAITING",
+        0.0
+      ],
+      [
+        "RX_OPEN",
+        2.7e-05
+      ],
+      [
+        "FRESH",
+        1.084006
+      ],
+      [
+        "RX_PAUSED",
+        65.017256
+      ],
+      [
+        "STALE",
+        66.449511
+      ],
+      [
+        "RX_OPEN",
+        69.009486
+      ],
+      [
+        "FRESH",
+        70.030905
+      ],
+      [
+        "END",
+        82.026098
+      ]
+    ],
+    "samples": 732,
+    "dmm_v": 1.797,
+    "seq_gap_endpoints": [
+      3684,
+      3733
+    ],
+    "missing": 48,
+    "stale_age_s": 1.507593,
+    "source": "PC receipt pause, board remained powered",
+    "csv_sha256": "56b500837ca5cf8191f08257fec0296f8c993156f7925e8f36fb4d60a8c6c986"
+  }
+}
