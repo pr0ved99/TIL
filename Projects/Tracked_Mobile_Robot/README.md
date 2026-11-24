@@ -1,6 +1,6 @@
 # Tracked Mobile Robot
 
-브라우저로 조종하는 궤도 로봇입니다. ESP32-S3가 무선 명령을 전달하고, STM32F446RE가 주행 상태를 검사해 좌우 모터의 출력을 결정합니다. **[최신 프로젝트 README · 실물 시연, 계측 결과와 구현 코드](https://github.com/pr0ved99/TIL/tree/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot)**
+브라우저로 조종하는 궤도 로봇입니다. ESP32-S3가 무선 명령을 전달하고, STM32F446RE가 주행 상태를 검사해 좌우 모터의 출력을 결정합니다. **[최신 프로젝트 README · 실물 시연, 계측 결과와 구현 코드](https://github.com/pr0ved99/TIL/tree/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot#readme)**
 
 [![카펫 위에서 전진하는 차체와 좌우 모터의 실시간 피드백](https://raw.githubusercontent.com/pr0ved99/TIL/refs/heads/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/portfolio/figures/carpet_drive_80s.jpg)](https://raw.githubusercontent.com/pr0ved99/TIL/refs/heads/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)
 
