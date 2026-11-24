@@ -1,5 +1,7 @@
 # GitHub 프로필에서 TMR까지 · 임베디드 로봇 시스템 통합 직무용 README 수정안
 
+**반영 · 2026-11-25.** 프로필의 첫 프로젝트와 TIL 첫 화면을 최신 TMR로 연결했다. TMR에서는 영상의 카펫 주행 장면, 명령과 출력의 연결도, 원본 파형·ADC 비교·시뮬레이션 경로를 결과 옆에 배치했다. TIL 기본 브랜치에는 최신판 안내와 7월 보관본 링크를 두었다. 아래 표와 초안은 변경 전 검토 기록이다. [공개 프로필](https://github.com/pr0ved99) · [TIL](https://github.com/pr0ved99/TIL) · [프로젝트](../../README.md)
+
 2026-11-25 검토. 프로필이 명시한 **Embedded Robotics & Systems Integration Engineer**와 TIL의 데이터시트·저수준 검증 목표를 기준으로 했다. TMR의 역할은 상위 명령, STM32의 최종 출력 판단, 실물 동작과 검증 근거를 한 프로젝트에서 보여주는 것이다. [공개 프로필](https://github.com/pr0ved99) · [학습 목표](../../../../Career-Roadmap/Goal_Roadmap.md) · [기존 직무 기준](01_Robotics_System_Integration_Engineer_Strengths_ko.md)
 
 | 독자가 여는 곳 | 현재 확인한 문제 | 우선 제안 |

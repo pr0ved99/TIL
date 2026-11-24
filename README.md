@@ -1,55 +1,25 @@
-# TIL (Today I Learned)
-"**2026년 상반기 목표**: AI 의존도를 낮추고 데이터시트 기반의 기술 자립을 이룬다.
-(Current Status: Zero to One)"
+# TIL · 이영현의 기술 학습 기록
 
-<div align="center">
-  <h3>🚀 Lee YeongHyeon's Tech Archive</h3>
-  <p>삼성 청년 SW 아카데미(SSAFY) 임베디드 로봇 트랙에서 공부한 기록입니다.</p>
-</div>
+SSAFY 임베디드 로봇 트랙에서 시작한 학습 기록입니다. 데이터시트에서 읽은 동작을 보드에서 확인하고, 실험을 다시 해 볼 수 있도록 코드와 관측 결과를 함께 남깁니다.
 
-<div align="center">
-  <img src="https://img.shields.io/badge/C++-00599C?style=flat-square&logo=C%2B%2B&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=Python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/ROS 2-22314E?style=flat-square&logo=ros&logoColor=white"/>
-  <img src="https://img.shields.io/badge/STM32-03234B?style=flat-square&logo=stmicroelectronics&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black"/>
-  <img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white"/>
-</div>
+## 대표 프로젝트 · Tracked Mobile Robot
 
----
+브라우저의 무선 주행 명령이 STM32를 거쳐 좌우 궤도를 움직이는 로봇입니다. 프로젝트 README에서 실제 차체의 움직임, 펌웨어의 정지 판단, Gazebo 속 자율주행을 각각 확인할 수 있습니다. **[프로젝트 열기](https://github.com/pr0ved99/TIL/tree/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot)**
 
-## 📂 Category & Contents
-공부한 지식들을 체계적으로 분류하여 관리합니다.
+| 궁금한 점 | 바로 보기 |
+| --- | --- |
+| 실제 로봇은 어떻게 움직이나요? | [카펫 주행·비상정지·복구 영상 (2분 29초)](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4) |
+| 정지 명령을 받으면 출력이 언제 꺼지나요? | [STM32 두 PWM의 차단 파형과 측정 기준](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) |
+| 시뮬레이션에서 로봇은 벽을 어떻게 우회하나요? | [Nav2와 학습 기반 제어의 경로 비교](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/verification/48_Simulation_Gate02_2026-11-24_ko.md) |
 
-| 카테고리 | 상세 내용 |
-| :--- | :--- |
-| **💻 Language** | C, C++, Python 핵심 문법 및 고급 기법 |
-| **🔌 Embedded** | [STM32(NUCLEO-F446RE)](./Embedded/STM32), [CAN](./Embedded/STM32/CAN), [FreeRTOS](./Embedded/STM32/RTOS), Raspberry Pi 5, Linux 환경 설정 |
-| **🤖 Robotics** | [ROS 2 Humble](./Robotics/ROS2), [VSLAM](./Robotics/VSLAM), SLAM, Kinematics, URDF 모델링 |
-| **🧠 CS 기초** | Git 컨벤션, 네트워크, OS 원리 |
+## 주제별 기록
 
----
+| 주제 | 찾아볼 내용 |
+| --- | --- |
+| 임베디드 | [STM32 보드 실습](Embedded/STM32/) · [CAN](Embedded/STM32/CAN/) · [FreeRTOS](Embedded/STM32/RTOS/) · [ESP32-S3](Embedded/ESP32-S3/) · [Jetson](Embedded/Jetson/) |
+| 로보틱스 | [ROS 2](Robotics/ROS2/) · [VSLAM](Robotics/VSLAM/) |
+| 인공지능 | [강화학습](AI/Reinforcement_Learning/) |
+| 개발 기초와 도구 | [Git](CS/Git/) · [운영체제](CS/Operating_System/) · [개발 도구](Tools/) |
+| 알고리즘 | [Daily Algorithm](https://github.com/pr0ved99/daily-algorithm)에서 C++ 문제 풀이와 구현 연습을 관리합니다. |
 
-## 📝 Algorithm Study
-알고리즘 문제 풀이와 구현 연습은 전용 저장소에서 더욱 밀도 있게 관리하고 있습니다.
-
-> **[Daily Algorithm Repository 바로가기](https://github.com/pr0ved99/daily-algorithm)** > *이곳(TIL)에는 핵심 알고리즘 이론과 오답 노트만 기록합니다.*
-
----
-
-## 📊 GitHub Stats
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username={내_깃허브_아이디}&show_icons=true&theme=radical&hide_border=true&include_all_commits=true" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username={내_깃허브_아이디}&layout=compact&theme=radical&hide_border=true" alt="Top Langs" />
-</div>
-
----
-
-## 💡 My Principles
-- **매일 조금씩이라도 기록하기**: 망각하기 전에 내 언어로 정리한다.
-- **Why에 집중하기**: 단순 코드가 아닌, 동작 원리와 이유를 파헤친다.
-- **공유의 가치**: 누군가에게 도움이 될 수 있는 퀄리티로 작성한다.
-
-<div align="center">
-  <p>Copyright © 2026 Lee YeongHyeon. All rights reserved.</p>
-</div>
+2026년 상반기에 세운 목표는 AI 의존도를 줄이고 데이터시트를 직접 읽어 기술적 판단을 내리는 것입니다. 매일 배운 것을 제 언어로 기록하고, 다른 사람이 동작 원리와 선택 이유를 따라갈 수 있게 쓰려고 합니다. [학습 로드맵](Career-Roadmap/Goal_Roadmap.md)
