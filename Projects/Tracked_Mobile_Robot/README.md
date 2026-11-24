@@ -2,9 +2,18 @@
 
 브라우저에서 전진을 누르면 ESP32-S3가 명령을 보내고, STM32F446RE가 명령과 로봇 상태를 확인한 뒤 좌우 궤도를 구동합니다. **무선 명령이 끊겼을 때 누가 모터 출력을 끌 것인가**를 설계의 출발점으로 삼았습니다.
 
-[![카펫 위를 전진하는 궤도 로봇. 브라우저에는 좌우 PWM 14.4%, 15.0%와 엔코더 910, 940 count/s가 표시된다.](docs/portfolio/figures/carpet_drive_80s.jpg)](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)
+[![카펫 위를 전진하는 궤도 로봇. 브라우저에는 좌우 PWM 14.4%, 15.0%와 엔코더 910, 940 count/s가 표시된다.](docs/portfolio/figures/carpet_drive_80s.jpg)](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4?raw=1)
 
-**[실물 시연 보기 · 2분 29초](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4)**　위 장면은 1분 20초의 연속 전진입니다. 영상 후반에는 물리 비상정지 버튼을 누른 뒤 다시 주행하기까지의 조작이 담겨 있습니다. [촬영·편집 기록](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md)
+**[실물 시연 MP4 · 2분 29초](assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4?raw=1)**　위 장면은 1분 20초의 연속 전진입니다. 영상 후반에는 물리 비상정지 버튼을 누른 뒤 다시 주행하기까지의 조작이 담겨 있습니다. [촬영·편집 기록](assets/logs/wifi_link/2026-10-24_carpet_s0_demo_run01/README.md)
+
+<details>
+<summary>이 페이지에서 카펫 전진 8초 보기</summary>
+
+![74초부터 82초까지 차체가 카펫 왼쪽에서 가운데를 지나 오른쪽으로 전진하는 모습](docs/portfolio/figures/carpet_drive_74s_to_82s.gif)
+
+시연 영상의 1분 14초~1분 22초에서 차체 쪽 화면만 잘라낸 실시간 재생 구간입니다.
+
+</details>
 
 [정지 명령과 PWM 파형](#정지-명령을-받으면-pwm은-언제-꺼지는가) · [ADC 두 채널 비교](#adc가-외부-입력과-내부-기준을-구별하는가) · [Gazebo 주행 경로](#gazebo에서-벽-뒤-목표까지-어떻게-가는가) · [구현 코드](#구현-코드)
 
