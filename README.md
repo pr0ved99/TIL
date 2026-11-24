@@ -4,7 +4,7 @@ SSAFY 임베디드 로봇 트랙에서 시작한 학습 기록입니다. 데이�
 
 ## 대표 프로젝트 · Tracked Mobile Robot
 
-브라우저의 무선 주행 명령이 STM32를 거쳐 좌우 궤도를 움직이는 로봇입니다. 프로젝트 README에서 실제 차체의 움직임, 펌웨어의 정지 판단, Gazebo 속 자율주행을 각각 확인할 수 있습니다. **[프로젝트 열기](https://github.com/pr0ved99/TIL/tree/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot)**
+브라우저의 무선 주행 명령이 STM32를 거쳐 좌우 궤도를 움직이는 로봇입니다. 프로젝트 README에서 실제 차체의 움직임, 펌웨어의 정지 판단, Gazebo 속 자율주행을 각각 확인할 수 있습니다. **[프로젝트 열기](https://github.com/pr0ved99/TIL/tree/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot#readme)**
 
 | 궁금한 점 | 바로 보기 |
 | --- | --- |
