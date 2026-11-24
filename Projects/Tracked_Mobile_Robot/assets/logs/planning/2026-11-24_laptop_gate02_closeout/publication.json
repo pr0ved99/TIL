@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-24",
+  "timezone": "Asia/Seoul",
+  "scope": "노트북 SIM-06·ENV-03·RL-01~05·GATE-02 마감 및 집 E07/M01 재개 인계",
+  "work_commit": "4a2d31a350b69a3547e8aa746e7a2ee0f20cef75",
+  "remote_branch": "agent/dual-encoder-bringup",
+  "remote_work_commit_verified": true,
+  "checks": {
+    "sim06_replay_correct": 16,
+    "scored_gazebo_trials_verified": 9,
+    "rl05_sha256_matches": 59,
+    "bag_messages_decoded": 39114,
+    "bag_policy_commands_verified": 319,
+    "bag_trailing_zero_commands": 29,
+    "simulation_run_this_closeout": false,
+    "physical_test_this_closeout": false
+  },
+  "notion": [
+    {
+      "name": "🤖 Tracked Mobile Robot · 프로젝트 홈",
+      "url": "https://app.notion.com/p/3bba7326f87b803db34afab526f55bf7",
+      "verified": true
+    },
+    {
+      "name": "Ubuntu 듀얼부팅·Nav2·강화학습 로드맵 · 11/17 계획",
+      "url": "https://app.notion.com/p/41aa7326f87b81768d92dea6564f277d",
+      "verified": true
+    },
+    {
+      "name": "🗺️ 02 · 진행 지도 — 어디까지 만들었나",
+      "url": "https://app.notion.com/p/3faa7326f87b81d6ae14e64ce21019ca",
+      "verified": true
+    },
+    {
+      "name": "🧭 TMR · 기술 자료와 코드 탐색",
+      "url": "https://app.notion.com/p/3fca7326f87b81289979cec9503cac85",
+      "verified": true
+    },
+    {
+      "name": "🔧 TMR-04 · 후속 전류·전압 ADC 모니터링·자동 저전압 정지",
+      "url": "https://app.notion.com/p/3fca7326f87b8139b949d339de80d870",
+      "verified": true
+    },
+    {
+      "name": "🤖 Tracked Mobile Robot · 하위 구동 플랫폼 MVP",
+      "url": "https://app.notion.com/p/3fca7326f87b8124b0eee212822ce80d",
+      "verified": true
+    },
+    {
+      "name": "🧩 01 · 시스템 구조 — 무엇이 무엇을 움직이나",
+      "url": "https://app.notion.com/p/3faa7326f87b81c7bf68f0175354e9cd",
+      "verified": true
+    }
+  ],
+  "calendar": [
+    {
+      "name": "[TMR 계획] ENV-03 · ROS 2·Gazebo 기본 환경",
+      "url": "https://www.google.com/calendar/event?eid=Nml0MW84NmlvaWx0OTBhcW9tYTJvamJvbnMgZXloMTI1QG0",
+      "start": "2026-11-21",
+      "end_exclusive": "2026-11-22",
+      "description_and_times_verified": true
+    },
+    {
+      "name": "[TMR 계획] SIM-03 · 차동 구동 근사",
+      "url": "https://www.google.com/calendar/event?eid=NjFzamRuajZqODNqYnE2OWxzbHZ0Y2sxaW8gZXloMTI1QG0",
+      "start": "2026-11-24",
+      "end_exclusive": "2026-11-25",
+      "description_and_times_verified": true
+    },
+    {
+      "name": "[TMR 계획] ELEC-01 · 보호 회로 판단 마감",
+      "url": "https://www.google.com/calendar/event?eid=ZzNsbGc4NmMzbXNraDBvYnVrcGlrampic2cgZXloMTI1QG0",
+      "start": "2026-11-30",
+      "end_exclusive": "2026-12-01",
+      "description_and_times_verified": true
+    },
+    {
+      "name": "[TMR 계획] NAV-03 · 재현 가능한 Nav2 기준선",
+      "url": "https://www.google.com/calendar/event?eid=ZzhrM3NpcTVuODRwMGhyb2tlOHV2Z3Z0MDggZXloMTI1QG0",
+      "start": "2026-12-01",
+      "end_exclusive": "2026-12-02",
+      "description_and_times_verified": true
+    },
+    {
+      "name": "[TMR 계획] SIM-06 · 상태 모니터링 모의 연동",
+      "url": "https://www.google.com/calendar/event?eid=djU4dmt1ZnU4M2IydmUzbGhwbGJqaWs1ZTQgZXloMTI1QG0",
+      "start": "2026-12-02",
+      "end_exclusive": "2026-12-03",
+      "description_and_times_verified": true
+    }
+  ]
+}
