@@ -1,0 +1,14 @@
+Gymnasium 1.2.3 check_env PASS | NumPy 2.2.6
+scan front/left/rear (m): 0.635 2.000 1.065
+forward  1 s: dx=+0.100 m, dy=+0.000 m, yaw change=+0.00 deg
+reverse  1 s: dx=-0.100 m, dy=+0.000 m, yaw change=+0.00 deg
+left     1 s: dx=+0.000 m, dy=+0.000 m, yaw change=+22.35 deg
+right    1 s: dx=+0.000 m, dy=+0.000 m, yaw change=-22.35 deg
+straight action=[1, 0] outcome=goal      steps=185 terminated=True truncated=False return=6.6650
+blocked  action=[1, 0] outcome=collision steps= 51 terminated=True truncated=False return=-4.5510
+straight action=[-1, 0] outcome=collision steps= 81 terminated=True truncated=False return=-5.8810
+straight action=[0, 0] outcome=timeout   steps=800 terminated=False truncated=True return=-0.8000
+straight action=[0, 1] outcome=timeout   steps=800 terminated=False truncated=True return=-1.2000
+straight action=[1, 0] outcome=goal      steps=185 terminated=True truncated=False return=6.6650
+32 seeded resets and 640 repeated steps PASS (21 different start/goal pairs)
+Reward, terminal flags and reset checks PASS

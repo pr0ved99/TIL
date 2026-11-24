@@ -1,0 +1,17 @@
+{
+  "world": "/opt/ros/jazzy/opt/gz_sim_vendor/share/gz/gz-sim8/worlds/empty.sdf",
+  "topic": "/world/empty/stats",
+  "mode": "gz sim -s -r",
+  "wall_elapsed_s": 300.032,
+  "sim_elapsed_s": 299.997,
+  "received": 2983,
+  "max_receipt_gap_s": 0.102,
+  "mean_rtf": 0.9999,
+  "versions": {
+    "ros-jazzy-gz-sim-vendor": "0.0.13-1noble.20261031.125555",
+    "ros-jazzy-ros-gz-sim": "1.0.25-1noble.20261105.125630",
+    "ros-jazzy-rviz2": "14.1.24-1noble.20261105.153247",
+    "ros-jazzy-ros2cli": "0.32.14-1noble.20261105.101733",
+    "ros-jazzy-nav2-bringup": "1.3.14-1noble.20261109.092855"
+  }
+}

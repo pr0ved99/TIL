@@ -1,0 +1,6 @@
+domain=77 | Codex recheck on the running session
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.501 s | temperature=STALE valid=true age=1.501 s
+voltage=FRESH valid=true age=0.017 s | current=FRESH valid=true age=0.017 s | temperature=FRESH valid=false age=0.000 s
+voltage=FRESH valid=true age=0.084 s | current=FRESH valid=true age=0.084 s | temperature=STALE valid=false age=1.567 s
+voltage=STALE valid=true age=1.584 s | current=STALE valid=true age=1.584 s | temperature=STALE valid=false age=3.067 s

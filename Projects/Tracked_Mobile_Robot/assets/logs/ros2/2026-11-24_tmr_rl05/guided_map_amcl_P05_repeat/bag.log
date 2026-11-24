@@ -1,0 +1,21 @@
+stdin is not a terminal device. Keyboard handling disabled.[INFO] [1795521529.446523770] [rosbag2_recorder]: Press SPACE for pausing/resuming
+[INFO] [1795521529.446538017] [rosbag2_recorder]: Event publisher thread: Started
+[INFO] [1795521529.450326988] [rosbag2_recorder]: Starting recording to '/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_rl05/guided_map_amcl_P05_repeat/bag'
+[INFO] [1795521529.452294026] [rosbag2_recorder]: Listening for topics...
+[INFO] [1795521529.452320346] [rosbag2_recorder]: Recording...
+[INFO] [1795521529.452380650] [rosbag2_recorder]: Topics discovery started.
+[INFO] [1795521529.452414043] [rosbag2_recorder]: use_sim_time set, waiting for /clock before starting recording...
+[INFO] [1795521531.083878684] [rosbag2_recorder]: Sim time /clock found, starting recording.
+[INFO] [1795521531.087232914] [rosbag2_recorder]: Subscribed to topic '/clock'
+[INFO] [1795521531.090102237] [rosbag2_recorder]: Subscribed to topic '/rl05/cmd_vel'
+[INFO] [1795521531.094261448] [rosbag2_recorder]: Subscribed to topic '/tf'
+[INFO] [1795521531.096936744] [rosbag2_recorder]: Subscribed to topic '/map'
+[INFO] [1795521531.098174744] [rosbag2_recorder]: Subscribed to topic '/rl05/odom'
+[INFO] [1795521531.099961822] [rosbag2_recorder]: Subscribed to topic '/rl05/scan'
+[INFO] [1795521531.100429516] [rosbag2_recorder]: Subscribed to topic '/tf_static'
+[INFO] [1795521531.100453551] [rosbag2_recorder]: All requested topics are subscribed. Stopping discovery...
+[INFO] [1795521531.100464041] [rosbag2_recorder]: Topics discovery stopped.
+[INFO] [1795521568.405343148] [rosbag2_recorder]: Pausing recording.
+[INFO] [1795521568.405399094] [rosbag2_cpp]: Writing remaining messages from cache to the bag. It may take a while
+[INFO] [1795521568.409748565] [rosbag2_recorder]: Recording stopped
+[INFO] [1795521568.410373747] [rosbag2_recorder]: Event publisher thread: Exited

@@ -1,0 +1,27 @@
+{
+  "controller": "guided",
+  "route": "P05",
+  "goal": [
+    1.5,
+    0.55
+  ],
+  "gazebo_seed": 4101,
+  "reason": "stale_input",
+  "world_final": [
+    -3.328450137256552e-21,
+    1.2858474058516168e-19,
+    -5.696876818703151e-20
+  ],
+  "world_error_m": 1.5976545308670458,
+  "world_drift_stopped_m": 0.0,
+  "stop_window_s": 2.074,
+  "max_stopped_twist": 1.7733149399879076e-20,
+  "stop_ok": true,
+  "contact_ok": true,
+  "obstacle_episodes": 0,
+  "ground_gap_ms": 1.0,
+  "control_steps": 0,
+  "sim_duration_s": 0.48900000000000005,
+  "world_path_m": 1.792863262793148e-19,
+  "pass_goal": false
+}

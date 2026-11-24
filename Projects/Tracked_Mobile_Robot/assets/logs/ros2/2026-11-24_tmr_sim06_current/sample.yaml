@@ -1,0 +1,10 @@
+header: auto
+status:
+  - name: tmr/left_motor_current
+    hardware_id: tmr_mock
+    message: sample
+    values:
+      - {key: current, value: "0.50"}
+      - {key: unit,    value: "A"}
+      - {key: source,  value: "SIM"}
+      - {key: valid,   value: "true"}

@@ -2,6 +2,8 @@
 
 SIM-01에서 정한 토픽과 TF 기준, SIM-02에서 작성한 첫 [TMR 모델](src/tmr_description/urdf/tmr.urdf.xacro)을 담고 있다. 첫 TMR 모델은 좌우 궤도를 차동 구동으로 근사한다. Gazebo에서 기본 주행을 확인했다. 가상 LiDAR, 고정 지도와 AMCL 초기화·전진 후 위치 갱신을 확인했다. NAV-02에서 Gazebo 오도메트리로 목표 도착·취소 후 정지·추가 벽 우회를 확인했다. 가상 IMU의 좌·우회전 각속도와 정지를 확인했다. 별도 EKF로 직진·회전을 비교했다. EKF 모드 패키지 런처로 Nav2 연결과 P05 도착을 확인했다. [EKF 주행 근거](../assets/logs/ros2/2026-11-23_tmr_nav_ekf/README.md) [EKF 측정](../assets/logs/ros2/2026-11-23_tmr_ekf_comparison/README.md) [IMU 측정 결과](../assets/logs/ros2/2026-11-23_tmr_imu_turns/result.json) [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)
 
+독립 Python 2D 환경에서 전후진·회전 명령, 규칙 제어기와 PPO 모델을 실행할 수 있다. RL-04에서는 두 배치와 세 개의 PPO 학습 시드로 주행 결과를 비교했다. RL-05에서는 Gazebo에서 P01 직접 PPO, P05 지도 경로·AMCL·PPO의 도착과 정지를 확인했다. [2D 실습과 독립 평가](rl/README.md#rl-04-독립-평가) · [Gazebo 목표 도착·재현](../docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
+
 ## 첫 모델의 기준점과 치수
 
 평평한 바닥에서 가상 구동축 중앙을 바닥에 내린 점을 `base_footprint` 원점으로 잡았다. `base_link`는 수평 좌표를 공유하고, 현재 모델에서 바닥보다 50mm 높다. 몸체와 센서의 위치는 `base_link`를 기준으로 기록한다. 좌우 바퀴 축은 모두 `+Y` 방향이며, 바퀴 중심을 반지름만큼 들어 올려 충돌 실린더의 최하점이 바닥에 닿게 했다. [모델 원본](src/tmr_description/urdf/tmr.urdf.xacro)
@@ -106,7 +108,160 @@ ROS_DOMAIN_ID=77 ros2 topic pub --rate 2 --times 4 -w 1 \
 
 감시기는 표본을 기다리는 동안 `WAITING`을 표시한다. 표본이 들어오면 0.1초마다 현재 시각에서 가장 최근 표본의 `header.stamp`를 빼서 경과 시간을 구한다. 실습 기준인 1.5초 미만이면 `FRESH`, 1.5초 이상이면 `STALE`을 표시한다. 전압이 계속 11.82 V여도 새 시각의 표본이 들어오면 다시 `FRESH`가 된다. 상태가 바뀔 때만 출력하며, `Ctrl+C`로 종료한다. [감시기 코드](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/watch_voltage_age.py) · [전환 기록](../assets/logs/ros2/2026-11-23_tmr_sim06_battery/freshness_transitions.log)
 
-사용자 회차에서 마지막 표본은 0.002초에 `FRESH`, 1.502초에 `STALE`이었다. 현재 감시기는 시각만 검사한다. 다음은 같은 표본에 담긴 `valid`도 읽어서 표시하는 것이다. [사용자 관찰 기록](../docs/progress/2026-11-23_progress.md)
+사용자 회차에서 마지막 표본은 0.002초에 `FRESH`, 1.502초에 `STALE`이었다. 이때 사용한 `watch_voltage_age.py`는 시각만 검사한다. [사용자 관찰 기록](../docs/progress/2026-11-23_progress.md)
+
+### 최근에 도착한 무효 표본 확인
+
+첫 번째 터미널에서 감시기를 실행한다. 첫 표본을 기다리는 동안 `WAITING`이 표시된다.
+
+```bash
+ROS_DOMAIN_ID=77 ros2 run tmr_sim watch_voltage_state
+```
+
+두 번째 터미널에서 11.82 V 모의 표본을 한 번 발행한다. `invalid.yaml`에서 발행자가 측정값의 유효성을 `false`로 지정한다.
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_voltage_validity
+ROS_DOMAIN_ID=77 ros2 topic pub --once -w 1 \
+  /tmr/sim/battery_voltage diagnostic_msgs/msg/DiagnosticArray "$(cat invalid.yaml)"
+```
+
+첫 번째 터미널에 `FRESH valid=false`가 뜬다. 새 표본 없이 측정 시각에서 1.5초가 지나면 `STALE valid=false`가 된다. 같은 명령에서 파일명을 `../2026-11-23_tmr_sim06_battery/sample.yaml`로 바꾸면 유효한 새 표본을 발행해 `FRESH valid=true`를 확인할 수 있다. 감시기는 상태가 바뀔 때만 출력한다. [감시기 코드](src/tmr_sim/scripts/watch_voltage_state) · [무효 표본](../assets/logs/ros2/2026-11-24_tmr_sim06_voltage_validity/invalid.yaml) · [ROS 수신 결과](../assets/logs/ros2/2026-11-24_tmr_sim06_voltage_validity/transitions.log)
+
+### 모의 주행 요청 시 전압 표본 확인
+
+`watch_voltage_state`의 `/tmr/sim/check_drive_request` 서비스는 요청을 받을 때 최신 표본의 경과 시간을 다시 계산한다. `success=True`는 측정 후 1.5초 미만이고 발행자의 `valid`가 `true`라는 뜻이다. `message`에 판정 당시 상태가 담긴다. 이 서비스의 동작 범위는 전압 표본의 시각과 유효 표시를 평가해 응답하는 데까지다. [시험 응답](../assets/logs/ros2/2026-11-24_tmr_sim06_voltage_validity/drive_request_results.log)
+
+1. 첫 번째 터미널에서 이전 감시기를 `Ctrl+C`로 종료한 뒤 서비스가 추가된 감시기를 실행한다.
+
+   ```bash
+   ROS_DOMAIN_ID=77 ros2 run tmr_sim watch_voltage_state
+   ```
+
+2. 두 번째 터미널에서 유효한 11.82 V 표본을 0.5초마다 발행한다. 첫 번째 터미널에 `FRESH valid=true`가 뜨면 발행을 켜 둔다.
+
+   ```bash
+   cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_sim06_battery
+   ROS_DOMAIN_ID=77 ros2 topic pub --rate 2 -w 1 \
+     /tmr/sim/battery_voltage diagnostic_msgs/msg/DiagnosticArray "$(cat sample.yaml)"
+   ```
+
+3. 세 번째 터미널에서 모의 요청을 보낸다. `success=True`를 확인한 뒤 두 번째 터미널에서 발행을 `Ctrl+C`로 멈춘다. 첫 번째 터미널에 `STALE valid=true`가 뜨면 세 번째 터미널에서 같은 요청을 다시 보내 `success=False`를 확인한다.
+
+   ```bash
+   ROS_DOMAIN_ID=77 ros2 service call /tmr/sim/check_drive_request std_srvs/srv/Trigger '{}'
+   ```
+
+## SIM-06 왼쪽 모터 모의 전류 한 표본
+
+전기 설계의 왼쪽 모터 전류 채널 `I_LEFT`에 대응하는 실습 토픽은 `/tmr/sim/left_motor_current`다. 메시지 형식은 모의 전압과 같은 `diagnostic_msgs/msg/DiagnosticArray`다. 표본의 `0.50 A`는 통신 실습용으로 정한 값이며 `source=SIM`으로 표시한다. [전류 채널 정의](../09_Electrical_Design/20_Analog_6Ch_Contract_and_Stage2_Review_2026-10-23_ko.md) · [발행 표본](../assets/logs/ros2/2026-11-24_tmr_sim06_current/sample.yaml)
+
+첫 번째 터미널에서 표본 하나를 기다린다.
+
+```bash
+ROS_DOMAIN_ID=77 ros2 topic echo --no-daemon /tmr/sim/left_motor_current diagnostic_msgs/msg/DiagnosticArray --once
+```
+
+두 번째 터미널에서 표본을 한 번 보낸다.
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_current
+ROS_DOMAIN_ID=77 ros2 topic pub --once -w 1 /tmr/sim/left_motor_current diagnostic_msgs/msg/DiagnosticArray "$(cat sample.yaml)"
+```
+
+첫 번째 터미널의 `status[0].values`에서 `current=0.50`, `unit=A`, `source=SIM`, `valid=true`를 확인한다. `header: auto`는 ROS CLI가 발행할 때 측정 시각을 채운다. [도메인 78에서 검증한 수신 원본](../assets/logs/ros2/2026-11-24_tmr_sim06_current/received.yaml)
+
+사용자도 도메인 77에서 같은 전류 표본을 수신했다. [사용자 수신 출력](../assets/logs/ros2/2026-11-24_tmr_sim06_current/user_received.yaml)
+
+## SIM-06 왼쪽 모터 케이스 모의 온도 한 표본
+
+왼쪽 모터 케이스 온도 채널 `T_LEFT`의 실습용 값은 25.0 °C다. 첫 번째 터미널에서 구독하고 두 번째 터미널에서 발행한다. [입력 표본](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature/sample.yaml)
+
+```bash
+ROS_DOMAIN_ID=77 ros2 topic echo --no-daemon /tmr/sim/left_motor_case_temperature diagnostic_msgs/msg/DiagnosticArray --once
+```
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_temperature
+ROS_DOMAIN_ID=77 ros2 topic pub --once -w 1 /tmr/sim/left_motor_case_temperature diagnostic_msgs/msg/DiagnosticArray "$(cat sample.yaml)"
+```
+
+도메인 77에서 사용자가 `temperature=25.0`, `unit=°C`, `source=SIM`, `valid=true`를 수신했다. [사용자 수신 출력](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature/user_received.yaml) · [도메인 78 수신 원본](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature/received.yaml)
+
+## SIM-06 온도 발행이 끊겼을 때의 세 채널 상태
+
+`watch_sensor_states`는 전압·전류·온도의 마지막 측정 시각과 유효 표시를 채널별로 보관한다. ROS 시스템 시각을 기준으로 1.5초 이상 지난 채널을 `STALE`로 표시한다. 어느 한 채널의 상태나 유효 표시가 바뀌면 세 채널의 경과 시간을 같은 시점에 한 줄로 출력한다. [감시기](src/tmr_sim/scripts/watch_sensor_states) · [측정 시각 판정](src/tmr_sim/scripts/diagnostic_sample.py)
+
+첫 번째 터미널에서 감시기를 실행한다.
+
+```bash
+ROS_DOMAIN_ID=77 ros2 run tmr_sim watch_sensor_states
+```
+
+두 번째 터미널에서 실습 발행기를 실행한다. 앞서 사용한 전압 11.82 V, 전류 0.50 A, 케이스 온도 25.0 °C 표본을 0.5초마다 새 시각으로 발행한다. 온도는 여섯 번 발행한 뒤 멈추고 전압·전류는 계속 보낸다.
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap
+ROS_DOMAIN_ID=77 /usr/bin/python3 publish_temperature_gap.py
+```
+
+첫 번째 터미널에서 세 채널이 모두 `FRESH`가 된 줄과 온도만 `STALE`이 된 줄을 비교한다. 출력된 온도 `age`는 마지막 온도 측정 후 경과 시간이다. 도메인 77 사용자 회차에서는 온도만 1.501초에 STALE이었다. [사용자 출력](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/user_transitions.log)
+
+온도 복귀를 확인하려면 앞의 두 터미널을 켜 두고 세 번째 터미널에서 [온도 표본 한 건 발행 명령](#sim-06-왼쪽-모터-케이스-모의-온도-한-표본)을 한 번 실행한다. 사용자는 도메인 77에서 온도만 FRESH로 복귀한 뒤 새 표본 없이 약 1.5초가 지나 다시 STALE이 된 것을 확인했다. [복귀 검증](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/temperature_recovery.log)
+
+첫 번째 터미널에 전압·전류가 FRESH이고 온도만 STALE인 줄이 보이는지 확인한다. 전압과 전류도 STALE이고 두 번째 터미널이 셸 프롬프트로 돌아왔다면 위의 `publish_temperature_gap.py`를 다시 실행한다. 같은 줄에서 전압·전류가 FRESH이고 온도만 STALE이 되면, 발행기를 계속 실행한 상태로 세 번째 터미널에서 아래 명령을 입력한다. 같은 25.0 °C에 `valid=false`를 붙인 온도 표본만 0.5초 간격으로 여섯 번 발행한다.
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_temperature
+ROS_DOMAIN_ID=77 ros2 topic pub --rate 2 --times 6 -w 1 \
+  /tmr/sim/left_motor_case_temperature diagnostic_msgs/msg/DiagnosticArray "$(cat invalid.yaml)"
+```
+
+발행 중 전압·전류는 FRESH valid=true이고 온도는 FRESH valid=false다. 발행이 끝나고 1.5초가 지나면 온도는 STALE valid=false가 된다. [무효 입력](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature/invalid.yaml) · [도메인 78 검증](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/invalid_temperature.log)
+
+관찰 후 두 번째 터미널에서 발행기를 `Ctrl+C`로 종료하면 전압과 전류도 발행이 멈춘다. 첫 번째 터미널의 감시기도 `Ctrl+C`로 종료한다. [발행기](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/publish_temperature_gap.py) · [도메인 78 재현 기록](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/transitions.log)
+
+### 세 채널로 모의 주행 요청 판정
+
+`watch_sensor_states`의 `/tmr/sim/check_drive_sensors` 서비스는 요청을 받을 때 하나의 현재 시각으로 세 채널을 평가한다. 각 표본의 경과 시간이 1.5초 미만이고 발행자의 `valid`가 `true`이면 해당 채널이 통과한다. 세 채널이 모두 통과할 때만 `success=True`를 반환하고, `message`에 세 채널의 상태를 담는다. 실습 서비스는 판정 결과만 반환한다. [구현](src/tmr_sim/scripts/watch_sensor_states) · [도메인 78 서비스 응답](../assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap/drive_sensor_requests.log)
+
+1. 기존 세 채널 감시기를 종료하고 첫 번째 터미널에서 다시 실행한다.
+
+   ```bash
+   ROS_DOMAIN_ID=77 ros2 run tmr_sim watch_sensor_states
+   ```
+
+2. 두 번째 터미널에서 서비스를 1 Hz로 호출한다. 발행 전에는 세 채널이 `WAITING`이고 응답은 `False`다.
+
+   ```bash
+   ROS_DOMAIN_ID=77 ros2 service call --rate 1 /tmr/sim/check_drive_sensors std_srvs/srv/Trigger '{}'
+   ```
+
+3. 세 번째 터미널에서 온도 발행 중단 실습을 시작한다.
+
+   ```bash
+   cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_temperature_gap
+   ROS_DOMAIN_ID=77 /usr/bin/python3 publish_temperature_gap.py
+   ```
+
+두 번째 터미널에서 세 채널이 `FRESH valid=true`인 동안 `success=True`가 나온다. 온도만 `STALE valid=true`가 되면 같은 요청이 `success=False`로 바뀐다. 응답을 확인한 뒤 두 번째 터미널에서 `Ctrl+C`를 누르면 반복 호출이 끝난다. 세 번째 터미널의 발행기를 켜 두면 온도 복귀 실습 중에도 전압·전류가 갱신된다.
+
+### 저장 표본으로 SIM-06 일괄 재생
+
+빈 상태, 정상, 채널별 단선 모의·복구·발행 중단·재개, 전체 발행 중단·재개를 한 번에 검사한다. 저장된 표본의 값과 단위를 유지하고 `source=REPLAY` 및 원래 측정 시각 `recorded_stamp`를 넣는다. `header.stamp`는 매번 현재 재생 시각으로 채운다. 세 원본은 서로 다른 때에 수신했으며, 재생기가 단선·중단·복귀 순서를 만든다. 모의 단선 시 값의 유효 표시를 false로 바꾸고, 중단 시 해당 채널의 발행을 멈춘다. [재생기](../assets/logs/ros2/2026-11-24_tmr_sim06_replay/replay_sensor_checks.py) · [구독자가 확인한 원래 시각과 재생 시각](../assets/logs/ros2/2026-11-24_tmr_sim06_replay/wire_samples.json)
+
+독립 재현 시 첫 번째 터미널에서 도메인 78 감시기를 새로 실행한다. 두 번째 터미널의 재생기는 각 경우에 실제 서비스를 호출해 채널 상태와 응답을 대조하고 종료한다.
+
+```bash
+ROS_DOMAIN_ID=78 ros2 run tmr_sim watch_sensor_states
+```
+
+```bash
+cd ~/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-24_tmr_sim06_replay
+ROS_DOMAIN_ID=78 /usr/bin/python3 replay_sensor_checks.py
+```
+
+16건 모두 기대 응답과 일치했다. 세 채널 전체를 멈춘 회차에서 모두 STALE이었고 요청은 보류됐다. 세 채널을 재개하자 FRESH valid=true로 돌아와 요청이 통과했다. [전체 응답 CSV](../assets/logs/ros2/2026-11-24_tmr_sim06_replay/requests.csv)
 
 ## 주행과 센서 토픽
 

@@ -1,0 +1,27 @@
+{
+  "controller": "guided",
+  "route": "P01",
+  "goal": [
+    0.6,
+    0.0
+  ],
+  "gazebo_seed": 4101,
+  "reason": "target",
+  "world_final": [
+    0.49931284724974073,
+    -0.008122183958085142,
+    0.016042681906286733
+  ],
+  "world_error_m": 0.10101421979703161,
+  "world_drift_stopped_m": 0.0,
+  "stop_window_s": 2.039999999999999,
+  "max_stopped_twist": 0.0,
+  "stop_ok": true,
+  "contact_ok": true,
+  "obstacle_episodes": 0,
+  "ground_gap_ms": 1.0,
+  "control_steps": 76,
+  "sim_duration_s": 7.598999999999999,
+  "world_path_m": 0.499412809903406,
+  "pass_goal": true
+}

@@ -1,0 +1,22 @@
+{
+  "guided_P01_numpy": {
+    "commands": 76,
+    "max_abs_normalized_action_error": 2.980232238769531e-07
+  },
+  "guided_P05_numpy": {
+    "commands": 135,
+    "max_abs_normalized_action_error": 4.768371580921027e-07
+  },
+  "guided_map_P05": {
+    "commands": 330,
+    "max_abs_normalized_action_error": 4.76837158203125e-07
+  },
+  "guided_map_amcl_P05": {
+    "commands": 319,
+    "max_abs_normalized_action_error": 4.76837158203125e-07
+  },
+  "guided_map_amcl_P05_repeat": {
+    "commands": 319,
+    "max_abs_normalized_action_error": 4.768371583141473e-07
+  }
+}

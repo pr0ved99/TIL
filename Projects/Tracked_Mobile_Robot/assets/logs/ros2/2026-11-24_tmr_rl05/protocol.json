@@ -1,0 +1,14 @@
+{
+  "world": "../2026-11-23_tmr_nav03_evaluation/inputs/room_b.sdf",
+  "gazebo_seed": 4101,
+  "start_world_xy_yaw": [0, 0, 0],
+  "routes": {"P01": [0.60, 0.00], "P05": [1.50, 0.55]},
+  "position_tolerance_m": 0.15,
+  "max_sim_s": 80,
+  "stop_observation_sim_s": 2.0,
+  "max_stopped_twist_component": 0.001,
+  "max_obstacle_contacts": 0,
+  "max_ground_gap_s": 0.10,
+  "guided_ppo_admission": {"training_layout": "single", "dev_seeds": [52000, 52019], "min_goals_of_20": 18, "max_collisions": 0},
+  "comparison": "Published NAV-03 outcomes for the same SDF/seed/routes; identical position-only and stop/contact checks reported separately from Nav2 yaw/action semantics. Each live policy starts in a fresh simulation. No live hardware."
+}

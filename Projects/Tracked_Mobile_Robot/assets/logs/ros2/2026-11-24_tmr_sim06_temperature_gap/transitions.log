@@ -1,0 +1,10 @@
+voltage=WAITING | current=WAITING | temperature=WAITING
+voltage=FRESH valid=true age=0.001 s | current=WAITING | temperature=WAITING
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=WAITING
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.501 s | temperature=STALE valid=true age=1.500 s
+
+domain=78 rate_hz=2
+received before stopping demo: voltage=13 current=13 temperature=6
+voltage request while temperature is STALE: success=True FRESH valid=true age=0.002 s
+voltage request after stopping demo: success=False STALE valid=true age=1.533 s

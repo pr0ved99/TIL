@@ -1,0 +1,17 @@
+case,expected_success,actual_success,response
+before_replay,False,False,voltage=WAITING | current=WAITING | temperature=WAITING
+nominal,True,True,voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+voltage_open_circuit,False,False,voltage=FRESH valid=false age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=true age=0.000 s
+voltage_valid_again,True,True,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=true age=0.000 s
+voltage_stopped,False,False,voltage=STALE valid=true age=1.521 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+voltage_resumed,True,True,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=true age=0.000 s
+current_open_circuit,False,False,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=false age=0.000 s | temperature=FRESH valid=true age=0.000 s
+current_valid_again,True,True,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=true age=0.000 s
+current_stopped,False,False,voltage=FRESH valid=true age=0.001 s | current=STALE valid=true age=1.521 s | temperature=FRESH valid=true age=0.001 s
+current_resumed,True,True,voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+temperature_open_circuit,False,False,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=false age=0.000 s
+temperature_valid_again,True,True,voltage=FRESH valid=true age=0.000 s | current=FRESH valid=true age=0.000 s | temperature=FRESH valid=true age=0.000 s
+temperature_stopped,False,False,voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=STALE valid=true age=1.521 s
+temperature_resumed,True,True,voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+all_streams_stopped,False,False,voltage=STALE valid=true age=1.519 s | current=STALE valid=true age=1.519 s | temperature=STALE valid=true age=1.519 s
+all_streams_resumed,True,True,voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s

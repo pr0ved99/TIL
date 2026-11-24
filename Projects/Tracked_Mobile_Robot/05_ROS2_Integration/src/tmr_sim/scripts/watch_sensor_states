@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+"""Observe SIM-06 sensor states and evaluate them together on request."""
+
+from functools import partial
+
+import rclpy
+from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_sample import DiagnosticSample
+from rclpy.executors import ExternalShutdownException
+from rclpy.node import Node
+from std_srvs.srv import Trigger
+
+
+class SensorMonitor(Node):
+    def __init__(self):
+        super().__init__("tmr_sim_sensor_monitor")
+        channels = {
+            "voltage": "battery_voltage",
+            "current": "left_motor_current",
+            "temperature": "left_motor_case_temperature",
+        }
+        self.samples = {}
+        self.last_states = None
+        for label, channel in channels.items():
+            sample = DiagnosticSample(f"tmr/{channel}")
+            self.samples[label] = sample
+            self.create_subscription(
+                DiagnosticArray, f"/tmr/sim/{channel}", partial(self.receive, sample), 10)
+        self.create_service(Trigger, "/tmr/sim/check_drive_sensors", self.check_drive_sensors)
+        self.create_timer(0.1, self.report)
+        self.report()
+
+    def receive(self, sample, msg):
+        sample.receive(msg, self.get_clock().now().nanoseconds)
+        self.report()
+
+    def sensor_snapshot(self):
+        now_ns = self.get_clock().now().nanoseconds
+        states = []
+        columns = []
+        for label, sample in self.samples.items():
+            freshness, line = sample.state(now_ns)
+            states.append((freshness, sample.valid))
+            columns.append(f"{label}={line}")
+        return states, " | ".join(columns)
+
+    def check_drive_sensors(self, _request, response):
+        states, summary = self.sensor_snapshot()
+        response.success = all(freshness == "FRESH" and valid == "true"
+                               for freshness, valid in states)
+        response.message = summary
+        return response
+
+    def report(self):
+        states, summary = self.sensor_snapshot()
+        if states != self.last_states:
+            print(summary, flush=True)
+            self.last_states = states
+
+
+if __name__ == "__main__":
+    rclpy.init()
+    monitor = SensorMonitor()
+    try:
+        rclpy.spin(monitor)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        monitor.destroy_node()
+        rclpy.try_shutdown()

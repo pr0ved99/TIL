@@ -1,0 +1,59 @@
+{
+  "training_seed": 3101,
+  "evaluation_seeds": [
+    22000,
+    22001,
+    22002,
+    22003,
+    22004,
+    22005,
+    22006,
+    22007,
+    22008,
+    22009,
+    22010,
+    22011,
+    22012,
+    22013,
+    22014,
+    22015,
+    22016,
+    22017,
+    22018,
+    22019
+  ],
+  "training_steps": 65536,
+  "device": "cpu",
+  "torch_threads": 1,
+  "policy": "MlpPolicy",
+  "params": {
+    "n_steps": 1024,
+    "batch_size": 64,
+    "n_epochs": 6,
+    "learning_rate": 0.0003,
+    "gamma": 0.995,
+    "gae_lambda": 0.95,
+    "clip_range": 0.2,
+    "policy_kwargs": {
+      "net_arch": [
+        64,
+        64
+      ]
+    }
+  },
+  "training_limits": {
+    "seconds": 180,
+    "peak_rss_mib": 2048
+  },
+  "training_wall_s": 35.189,
+  "process_peak_through_training_mib": 348.59,
+  "train_and_evaluate_wall_s": 45.163,
+  "process_peak_mib": 348.97,
+  "python": "3.12.3",
+  "packages": {
+    "stable-baselines3": "2.7.1",
+    "torch": "2.9.1+cpu",
+    "gymnasium": "1.2.3",
+    "numpy": "2.2.6"
+  }
+}

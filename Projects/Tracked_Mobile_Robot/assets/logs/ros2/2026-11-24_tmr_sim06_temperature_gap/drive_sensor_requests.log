@@ -1,0 +1,8 @@
+domain=78 | std_srvs/srv/Trigger | /tmr/sim/check_drive_sensors
+no samples | std_srvs.srv.Trigger_Response(success=False, message='voltage=WAITING | current=WAITING | temperature=WAITING')
+all fresh and valid | std_srvs.srv.Trigger_Response(success=True, message='voltage=FRESH valid=true age=0.192 s | current=FRESH valid=true age=0.192 s | temperature=FRESH valid=true age=0.192 s')
+temperature stopped | std_srvs.srv.Trigger_Response(success=False, message='voltage=FRESH valid=true age=0.192 s | current=FRESH valid=true age=0.192 s | temperature=STALE valid=true age=1.692 s')
+temperature invalid | std_srvs.srv.Trigger_Response(success=False, message='voltage=FRESH valid=true age=0.193 s | current=FRESH valid=true age=0.193 s | temperature=FRESH valid=false age=0.030 s')
+last invalid sample ages | std_srvs.srv.Trigger_Response(success=False, message='voltage=FRESH valid=true age=0.193 s | current=FRESH valid=true age=0.193 s | temperature=STALE valid=false age=2.030 s')
+temperature recovers | std_srvs.srv.Trigger_Response(success=True, message='voltage=FRESH valid=true age=0.194 s | current=FRESH valid=true age=0.194 s | temperature=FRESH valid=true age=0.251 s')
+all publishers stopped | std_srvs.srv.Trigger_Response(success=False, message='voltage=STALE valid=true age=2.194 s | current=STALE valid=true age=2.194 s | temperature=STALE valid=true age=2.251 s')

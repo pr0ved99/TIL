@@ -1,0 +1,100 @@
+{
+  "route": "P01",
+  "seed": 4101,
+  "case": "regular",
+  "goal": [
+    0.6,
+    0.0,
+    0.0
+  ],
+  "world_final": [
+    0.4567952687194596,
+    -0.020730914647044667,
+    0.002318615185997719
+  ],
+  "map_final": [
+    0.45639707161154264,
+    -0.018723451873107613,
+    0.002943298942402484
+  ],
+  "action_status": 4,
+  "nav_error_code": 0,
+  "timeout": false,
+  "goal_id": "49671e405650469ab9e473209d6f1ffe",
+  "recoveries": 0,
+  "wall_s": 4.702911201999086,
+  "sim_s": 4.692,
+  "rtf": 0.997679904737634,
+  "path_m": 0.45742331706454625,
+  "xy_error_m": 0.1446974978471806,
+  "yaw_error_deg": 0.13284686447260965,
+  "stop_verified": true,
+  "stop_odom_samples": 61,
+  "stop_window_s": 2.040000000000001,
+  "max_abs_stopped_odom": 0.0,
+  "last_cmd": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "contact": {
+    "duration_s": 7.344,
+    "records": {
+      "ground": 21707
+    },
+    "observed_pairs": [
+      {
+        "pair": [
+          "ground_plane::ground::collision",
+          "tmr::base_footprint::base_footprint_fixed_joint_lump__front_support_collision_1"
+        ],
+        "records": 12
+      },
+      {
+        "pair": [
+          "ground_plane::ground::collision",
+          "tmr::base_footprint::base_footprint_fixed_joint_lump__rear_support_collision_2"
+        ],
+        "records": 7025
+      },
+      {
+        "pair": [
+          "ground_plane::ground::collision",
+          "tmr::left_wheel_link::left_wheel_link_collision"
+        ],
+        "records": 7335
+      },
+      {
+        "pair": [
+          "ground_plane::ground::collision",
+          "tmr::right_wheel_link::right_wheel_link_collision"
+        ],
+        "records": 7335
+      }
+    ],
+    "active_sensor_topics": [
+      "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__front_support_collision_1/contact",
+      "/world/empty/model/tmr/link/base_footprint/sensor/observe_base_footprint_fixed_joint_lump__rear_support_collision_2/contact",
+      "/world/empty/model/tmr/link/left_wheel_link/sensor/observe_left_wheel_link_collision/contact",
+      "/world/empty/model/tmr/link/right_wheel_link/sensor/observe_right_wheel_link_collision/contact"
+    ],
+    "ground_physics_stamps": 7345,
+    "max_ground_gap_ms": 1.0,
+    "release_gap_ms": 100.0,
+    "obstacle_episodes": []
+  },
+  "world_samples": 433,
+  "plan_updates": 5,
+  "first_plan_m": 0.6036599198456782,
+  "sim_interval": [
+    2.992,
+    7.684,
+    10.336
+  ],
+  "trigger_sim": null,
+  "cancel_sim": null,
+  "last_scan_before_cleanup": null
+}

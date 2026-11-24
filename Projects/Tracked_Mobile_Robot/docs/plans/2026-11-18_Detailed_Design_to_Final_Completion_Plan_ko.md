@@ -1,6 +1,6 @@
 # Tracked Mobile Robot — 세부 설계부터 최종 완성까지의 실행 계획
 
-**11/24 재개점.** Nav2 바퀴 모드에서 5경로 × 4시드 모두 도착·정지했고 장애물 접촉은 0회였다. EKF 모드로 벽 우회 경로 P05를 별도로 재현했다. 모의 전압의 발행 중단·재개는 확인했고 값의 유효 판정은 다음 실습이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+**11/24 집 재개점.** 노트북 SIM-06과 GATE-02를 마쳤다. 실물 첫 자율주행 기본 구성은 Nav2이며 PPO는 선택 연구로 남긴다. 집에서는 PA4 단일 채널 G1 이후 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드를 설계한다. [GATE-02 검증](../verification/48_Simulation_Gate02_2026-11-24_ko.md) · [실물 인계](../handoff/NEXT_SESSION_START_PROMPT.md)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 
@@ -457,4 +457,4 @@ OS/ROS/Gazebo 조합은 11/17 계획의 Ubuntu24.04/Jazzy/Harmonic **기존 제�
 - [제작 Shield](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md), [기본 전기 도면 안내](../../09_Electrical_Design/README.md).
 - [CAN/RTOS/LL 전체 로드맵](../../01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md), [기존 Ubuntu/Nav2/RL 제안](2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md), [11/17 실적](../progress/2026-11-17_progress.md).
 
-노트북에서는 SIM-06 전압 표본의 시각과 발행 측 유효 표시를 함께 판단하는 것이 다음 작업이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+노트북에서 SIM-06 세 채널 재생과 RL-05·GATE-02 주행을 마쳤고 다음 설계 작업은 ELEC-01 보호 저항·분기 퓨즈 검토다. [Gazebo 도착 근거](../verification/48_Simulation_Gate02_2026-11-24_ko.md) 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)

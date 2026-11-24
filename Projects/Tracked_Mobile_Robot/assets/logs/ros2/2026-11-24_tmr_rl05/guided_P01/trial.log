@@ -1,0 +1,74 @@
+/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.2.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 199, in <module>
+    run(sys.argv[1], sys.argv[2], Path(sys.argv[3]), sys.argv[4] if len(sys.argv)>4 else None)
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 56, in run
+    from stable_baselines3 import PPO
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/__init__.py", line 3, in <module>
+    from stable_baselines3.a2c import A2C
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/a2c/__init__.py", line 1, in <module>
+    from stable_baselines3.a2c.a2c import A2C
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/a2c/a2c.py", line 8, in <module>
+    from stable_baselines3.common.on_policy_algorithm import OnPolicyAlgorithm
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/on_policy_algorithm.py", line 10, in <module>
+    from stable_baselines3.common.base_class import BaseAlgorithm
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/base_class.py", line 19, in <module>
+    from stable_baselines3.common.env_util import is_wrapped
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/env_util.py", line 6, in <module>
+    from stable_baselines3.common.atari_wrappers import AtariWrapper
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/atari_wrappers.py", line 10, in <module>
+    import cv2
+Traceback (most recent call last):
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/numpy/core/_multiarray_umath.py", line 44, in __getattr__
+    raise ImportError(msg)
+ImportError: 
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.2.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+
+Traceback (most recent call last):
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 199, in <module>
+    run(sys.argv[1], sys.argv[2], Path(sys.argv[3]), sys.argv[4] if len(sys.argv)>4 else None)
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 99, in run
+    wait(lambda: world and scans and odometry and now() > 0 and pub.get_subscription_count() == 1
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 96, in wait
+    rclpy.spin_once(node, timeout_sec=.025)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 226, in spin_once
+    executor.spin_once(timeout_sec=timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 934, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 600, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 488, in _execute
+    await await_or_execute(sub.callback, *msg_tuple)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 116, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 76, in odom_cb
+    odometry.append([to_ns(msg.header.stamp)/1e9, p.position.x, p.position.y, yaw(p.orientation),
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_nav03_baseline/p01_contacts/contacts.py", line 14, in to_ns
+    return stamp.sec * NSEC + stamp.nsec
+                              ^^^^^^^^^^
+AttributeError: 'Time' object has no attribute 'nsec'. Did you mean: '_sec'?

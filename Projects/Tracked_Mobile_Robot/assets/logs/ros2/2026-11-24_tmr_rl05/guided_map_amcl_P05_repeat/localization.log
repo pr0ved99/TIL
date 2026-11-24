@@ -1,0 +1,78 @@
+[INFO] [launch]: All log files can be found below /tmp/tmr-rl05-d_q1pj54/ros-log/2026-11-24-20-58-49-297844-pvd-Victus-by-HP-Gaming-Laptop-15-fb0xxx-36071
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [map_server-1]: process started with pid [36154]
+[INFO] [amcl-2]: process started with pid [36155]
+[INFO] [lifecycle_manager-3]: process started with pid [36156]
+[lifecycle_manager-3] [INFO] [1795521529.548594169] [lifecycle_manager_localization]: Creating
+[lifecycle_manager-3] [INFO] [1795521529.551572879] [lifecycle_manager_localization]: [34m[1mCreating and initializing lifecycle service clients[0m[0m
+[amcl-2] [INFO] [1795521529.552307618] [amcl]: 
+[amcl-2] 	amcl lifecycle node launched. 
+[amcl-2] 	Waiting on external lifecycle transitions to activate
+[amcl-2] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[amcl-2] [INFO] [1795521529.552672437] [amcl]: Creating
+[map_server-1] [INFO] [1795521529.564801702] [map_server]: 
+[map_server-1] 	map_server lifecycle node launched. 
+[map_server-1] 	Waiting on external lifecycle transitions to activate
+[map_server-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[map_server-1] [INFO] [1795521529.564884038] [map_server]: Creating
+[lifecycle_manager-3] [INFO] [1795521529.679140739] [lifecycle_manager_localization]: [34m[1mStarting managed nodes bringup...[0m[0m
+[lifecycle_manager-3] [INFO] [1795521529.679214339] [lifecycle_manager_localization]: [34m[1mConfiguring map_server[0m[0m
+[map_server-1] [INFO] [1795521529.897735586] [map_server]: Configuring
+[map_server-1] [INFO] [1795521529.897799717] [map_io]: Loading yaml file: /home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_nav03_evaluation/inputs/room_b.yaml
+[map_server-1] [INFO] [1795521529.898004334] [map_io]: resolution: 0.05
+[map_server-1] [INFO] [1795521529.898012028] [map_io]: origin[0]: -2.25
+[map_server-1] [INFO] [1795521529.898015555] [map_io]: origin[1]: -2.25
+[map_server-1] [INFO] [1795521529.898019883] [map_io]: origin[2]: 0
+[map_server-1] [INFO] [1795521529.898023330] [map_io]: free_thresh: 0.25
+[map_server-1] [INFO] [1795521529.898026496] [map_io]: occupied_thresh: 0.65
+[map_server-1] [INFO] [1795521529.898030393] [map_io]: mode: trinary
+[map_server-1] [INFO] [1795521529.898034611] [map_io]: negate: 0
+[map_server-1] [INFO] [1795521529.898182972] [map_io]: Loading image_file: /home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_nav03_evaluation/inputs/room_b.pgm
+[map_server-1] [INFO] [1795521529.898502666] [map_io]: Read map /home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_nav03_evaluation/inputs/room_b.pgm: 112 X 90 map @ 0.05 m/cell
+[lifecycle_manager-3] [INFO] [1795521529.903523646] [lifecycle_manager_localization]: [34m[1mConfiguring amcl[0m[0m
+[amcl-2] [INFO] [1795521529.903695480] [amcl]: Configuring
+[amcl-2] [INFO] [1795521529.903757948] [amcl]: initTransforms
+[amcl-2] [INFO] [1795521529.908790501] [amcl]: initPubSub
+[amcl-2] [INFO] [1795521529.914640036] [amcl]: Subscribed to map topic.
+[lifecycle_manager-3] [INFO] [1795521529.916857097] [lifecycle_manager_localization]: [34m[1mActivating map_server[0m[0m
+[map_server-1] [INFO] [1795521529.916990549] [map_server]: Activating
+[map_server-1] [INFO] [1795521529.917108863] [map_server]: Creating bond (map_server) to lifecycle manager.
+[amcl-2] [INFO] [1795521529.917185357] [amcl]: Received a 112 X 90 map @ 0.050 m/pix
+[lifecycle_manager-3] [INFO] [1795521530.019784295] [lifecycle_manager_localization]: Server map_server connected with bond.
+[lifecycle_manager-3] [INFO] [1795521530.019824531] [lifecycle_manager_localization]: [34m[1mActivating amcl[0m[0m
+[amcl-2] [INFO] [1795521530.020027635] [amcl]: Activating
+[amcl-2] [INFO] [1795521530.020060367] [amcl]: initialPoseReceived
+[amcl-2] [INFO] [1795521530.020122675] [amcl]: Setting pose (0.000000): 0.000 0.000 0.000
+[amcl-2] [INFO] [1795521530.020481633] [amcl]: Creating bond (amcl) to lifecycle manager.
+[lifecycle_manager-3] [INFO] [1795521530.123075822] [lifecycle_manager_localization]: Server amcl connected with bond.
+[lifecycle_manager-3] [INFO] [1795521530.123109606] [lifecycle_manager_localization]: [34m[1mManaged nodes are active[0m[0m
+[lifecycle_manager-3] [INFO] [1795521530.123118272] [lifecycle_manager_localization]: [34m[1mCreating bond timer...[0m[0m
+[amcl-2] [INFO] [1795521533.049441200] [amcl]: createLaserObject
+[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[INFO] [lifecycle_manager-3]: sending signal 'SIGINT' to process[lifecycle_manager-3]
+[INFO] [amcl-2]: sending signal 'SIGINT' to process[amcl-2]
+[INFO] [map_server-1]: sending signal 'SIGINT' to process[map_server-1]
+[lifecycle_manager-3] [INFO] [1795521568.569066507] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-3] [INFO] [1795521568.569143412] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[lifecycle_manager-3] [INFO] [1795521568.569171475] [lifecycle_manager_localization]: [34m[1mTerminating bond timer...[0m[0m
+[map_server-1] [INFO] [1795521568.569070715] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[map_server-1] [INFO] [1795521568.569144865] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[map_server-1] [INFO] [1795521568.569194609] [map_server]: Deactivating
+[map_server-1] [INFO] [1795521568.569209457] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[amcl-2] [INFO] [1795521568.569070424] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-2] [INFO] [1795521568.569144825] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[amcl-2] [INFO] [1795521568.569194840] [amcl]: Deactivating
+[amcl-2] [INFO] [1795521568.569220157] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[map_server-1] [INFO] [1795521568.579423733] [map_server]: Cleaning up
+[amcl-2] [INFO] [1795521568.579436858] [amcl]: Cleaning up
+[map_server-1] [INFO] [1795521568.579471483] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[map_server-1] [INFO] [1795521568.579925321] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-2] [INFO] [1795521568.580758676] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[map_server-1] [INFO] [1795521568.581186425] [map_server]: Destroying
+[amcl-2] [INFO] [1795521568.581329325] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[amcl-2] [INFO] [1795521568.583040829] [amcl]: Destroying
+[lifecycle_manager-3] [INFO] [1795521568.591383147] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-3] [INFO] [1795521568.591933227] [lifecycle_manager_localization]: Destroying lifecycle_manager_localization
+[INFO] [map_server-1]: process has finished cleanly [pid 36154]
+[INFO] [amcl-2]: process has finished cleanly [pid 36155]
+[INFO] [lifecycle_manager-3]: process has finished cleanly [pid 36156]

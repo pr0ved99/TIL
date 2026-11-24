@@ -1,0 +1,20 @@
+header:
+  stamp:
+    sec: 1795511800
+    nanosec: 442865503
+  frame_id: ''
+status:
+- level: "\0"
+  name: tmr/left_motor_case_temperature
+  message: sample
+  hardware_id: tmr_mock
+  values:
+  - key: temperature
+    value: '25.0'
+  - key: unit
+    value: °C
+  - key: source
+    value: SIM
+  - key: valid
+    value: 'true'
+---

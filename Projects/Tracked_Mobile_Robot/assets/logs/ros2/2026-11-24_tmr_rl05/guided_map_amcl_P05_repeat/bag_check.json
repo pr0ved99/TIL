@@ -1,0 +1,48 @@
+{
+  "messages": 39114,
+  "topics": {
+    "/clock": 35450,
+    "/map": 1,
+    "/rl05/cmd_vel": 348,
+    "/rl05/odom": 1042,
+    "/rl05/scan": 355,
+    "/tf": 1917,
+    "/tf_static": 1
+  },
+  "map_cells": [
+    112,
+    90
+  ],
+  "transforms": [
+    [
+      "base_footprint",
+      "base_link"
+    ],
+    [
+      "base_link",
+      "imu_link"
+    ],
+    [
+      "base_link",
+      "laser_frame"
+    ],
+    [
+      "base_link",
+      "left_wheel_link"
+    ],
+    [
+      "base_link",
+      "right_wheel_link"
+    ],
+    [
+      "map",
+      "odom"
+    ],
+    [
+      "odom",
+      "base_footprint"
+    ]
+  ],
+  "policy_commands_verified": 319,
+  "trailing_zero_commands": 29
+}

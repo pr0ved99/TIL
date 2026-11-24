@@ -1,0 +1,20 @@
+header:
+  stamp:
+    sec: 1795509845
+    nanosec: 509785968
+  frame_id: ''
+status:
+- level: "\0"
+  name: tmr/left_motor_current
+  message: sample
+  hardware_id: tmr_mock
+  values:
+  - key: current
+    value: '0.50'
+  - key: unit
+    value: A
+  - key: source
+    value: SIM
+  - key: valid
+    value: 'true'
+---

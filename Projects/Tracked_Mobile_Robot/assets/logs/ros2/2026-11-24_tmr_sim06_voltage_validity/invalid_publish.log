@@ -1,0 +1,3 @@
+publisher: beginning loop
+publishing #1: diagnostic_msgs.msg.DiagnosticArray(header=std_msgs.msg.Header(stamp=builtin_interfaces.msg.Time(sec=1795501754, nanosec=387957872), frame_id=''), status=[diagnostic_msgs.msg.DiagnosticStatus(level=b'\x00', name='tmr/battery_voltage', message='sample', hardware_id='tmr_mock', values=[diagnostic_msgs.msg.KeyValue(key='voltage', value='11.82'), diagnostic_msgs.msg.KeyValue(key='unit', value='V'), diagnostic_msgs.msg.KeyValue(key='source', value='SIM'), diagnostic_msgs.msg.KeyValue(key='valid', value='false')])])
+

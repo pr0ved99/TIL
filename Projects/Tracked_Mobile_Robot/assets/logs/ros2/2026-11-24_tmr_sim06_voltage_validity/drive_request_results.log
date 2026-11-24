@@ -1,0 +1,27 @@
+ROS_DOMAIN_ID=78 | system clock | std_srvs/srv/Trigger
+no sample | success=False | WAITING
+valid sample | success=True | FRESH valid=true age=0.000 s
+valid sample after silence | success=False | STALE valid=true age=1.521 s
+invalid sample | success=False | FRESH valid=false age=0.000 s
+invalid sample after silence | success=False | STALE valid=false age=1.518 s
+missing flag | success=False | FRESH valid=unknown age=0.000 s
+recovery | success=True | FRESH valid=true age=0.000 s
+
+ROS CLI after recovery and silence
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=False, message='STALE valid=true age=3.750 s')
+
+ROS CLI at 2 Hz and after stopping publisher
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=True, message='FRESH valid=true age=0.401 s')
+waiting for service to become available...
+requester: making request: std_srvs.srv.Trigger_Request()
+
+response:
+std_srvs.srv.Trigger_Response(success=False, message='STALE valid=true age=2.725 s')

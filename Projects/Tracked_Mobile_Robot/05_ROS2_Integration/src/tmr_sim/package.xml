@@ -7,6 +7,7 @@
   <license>LicenseRef-Undeclared</license>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>gz_sim_vendor</exec_depend>
   <exec_depend>launch</exec_depend>
@@ -17,6 +18,7 @@
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
   <exec_depend>tmr_description</exec_depend>
   <exec_depend>xacro</exec_depend>
   <export>

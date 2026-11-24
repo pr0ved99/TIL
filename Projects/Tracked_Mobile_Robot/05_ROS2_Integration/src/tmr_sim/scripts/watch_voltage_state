@@ -1,0 +1,50 @@
+#!/usr/bin/python3
+"""Report SIM-06 voltage freshness and validity, including at mock request time."""
+
+import rclpy
+from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_sample import DiagnosticSample
+from rclpy.executors import ExternalShutdownException
+from rclpy.node import Node
+from std_srvs.srv import Trigger
+
+
+class VoltageMonitor(Node):
+    def __init__(self):
+        super().__init__("tmr_sim_voltage_monitor")
+        self.voltage = DiagnosticSample("tmr/battery_voltage")
+        self.last_state = None
+        self.create_subscription(
+            DiagnosticArray, "/tmr/sim/battery_voltage", self.receive, 10)
+        self.create_service(Trigger, "/tmr/sim/check_drive_request", self.check_drive_request)
+        self.create_timer(0.1, self.report)
+        self.report()
+
+    def receive(self, msg):
+        self.voltage.receive(msg, self.get_clock().now().nanoseconds)
+        self.report()
+
+    def check_drive_request(self, _request, response):
+        freshness, line = self.voltage.state(self.get_clock().now().nanoseconds)
+        response.success = freshness == "FRESH" and self.voltage.valid == "true"
+        response.message = line
+        return response
+
+    def report(self):
+        freshness, line = self.voltage.state(self.get_clock().now().nanoseconds)
+        state = (freshness, self.voltage.valid)
+        if state != self.last_state:
+            print(line, flush=True)
+            self.last_state = state
+
+
+if __name__ == "__main__":
+    rclpy.init()
+    monitor = VoltageMonitor()
+    try:
+        rclpy.spin(monitor)
+    except (KeyboardInterrupt, ExternalShutdownException):
+        pass
+    finally:
+        monitor.destroy_node()
+        rclpy.try_shutdown()

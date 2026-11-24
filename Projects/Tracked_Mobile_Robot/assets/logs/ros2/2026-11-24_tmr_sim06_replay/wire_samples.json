@@ -1,0 +1,62 @@
+[
+  {
+    "channel": "voltage",
+    "state": "normal",
+    "source": "REPLAY",
+    "valid": "true",
+    "value": "11.82",
+    "unit": "V",
+    "recorded_stamp": "1795431828.896198187",
+    "replay_stamp": "1795515150.135351887"
+  },
+  {
+    "channel": "current",
+    "state": "normal",
+    "source": "REPLAY",
+    "valid": "true",
+    "value": "0.50",
+    "unit": "A",
+    "recorded_stamp": "1795511673.723076667",
+    "replay_stamp": "1795515150.135351887"
+  },
+  {
+    "channel": "temperature",
+    "state": "normal",
+    "source": "REPLAY",
+    "valid": "true",
+    "value": "25.0",
+    "unit": "°C",
+    "recorded_stamp": "1795511953.294488326",
+    "replay_stamp": "1795515150.135351887"
+  },
+  {
+    "channel": "voltage",
+    "state": "open_circuit",
+    "source": "REPLAY",
+    "valid": "false",
+    "value": "11.82",
+    "unit": "V",
+    "recorded_stamp": "1795431828.896198187",
+    "replay_stamp": "1795515150.136303762"
+  },
+  {
+    "channel": "current",
+    "state": "open_circuit",
+    "source": "REPLAY",
+    "valid": "false",
+    "value": "0.50",
+    "unit": "A",
+    "recorded_stamp": "1795511673.723076667",
+    "replay_stamp": "1795515151.658997780"
+  },
+  {
+    "channel": "temperature",
+    "state": "open_circuit",
+    "source": "REPLAY",
+    "valid": "false",
+    "value": "25.0",
+    "unit": "°C",
+    "recorded_stamp": "1795511953.294488326",
+    "replay_stamp": "1795515153.181576161"
+  }
+]

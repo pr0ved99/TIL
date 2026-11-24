@@ -1,6 +1,6 @@
 # Handoff Notes
 
-**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+**11/24 · GATE-02 시뮬레이션 결과.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 다음 노트북 작업은 ELEC-01 보호 회로 검토, 집에서는 E07/M01의 PA4·VREFINT 읽기와 로그 설계다. [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

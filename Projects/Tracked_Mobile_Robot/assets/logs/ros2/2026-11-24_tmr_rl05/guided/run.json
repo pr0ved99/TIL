@@ -1,0 +1,19 @@
+{
+  "demo_seeds": [
+    51000,
+    51255
+  ],
+  "demo_samples": 59090,
+  "fit_epochs": 36,
+  "training_seed": 5101,
+  "ppo_steps": 16384,
+  "room": "single",
+  "qualification_seeds": [
+    52000,
+    52019
+  ],
+  "goals": 20,
+  "collisions": 0,
+  "timeouts": 0,
+  "elapsed_wall_s": 27.653
+}

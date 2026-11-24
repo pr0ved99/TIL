@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 199, in <module>
+    run(sys.argv[1], sys.argv[2], Path(sys.argv[3]), sys.argv[4] if len(sys.argv)>4 else None)
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 99, in run
+    wait(lambda: world and scans and odometry and now() > 0 and pub.get_subscription_count() == 1
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 96, in wait
+    rclpy.spin_once(node, timeout_sec=.025)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/__init__.py", line 226, in spin_once
+    executor.spin_once(timeout_sec=timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 934, in spin_once
+    self._spin_once_impl(timeout_sec)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 926, in _spin_once_impl
+    raise handler.exception()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/task.py", line 286, in _execute_coroutine_step
+    result = coro.send(None)
+             ^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 600, in handler
+    await call_coroutine()
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 488, in _execute
+    await await_or_execute(sub.callback, *msg_tuple)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/executors.py", line 116, in await_or_execute
+    return callback(*args)
+           ^^^^^^^^^^^^^^^
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 76, in odom_cb
+    odometry.append([to_ns(msg.header.stamp)/1e9, p.position.x, p.position.y, yaw(p.orientation),
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/assets/logs/ros2/2026-11-23_tmr_nav03_baseline/p01_contacts/contacts.py", line 14, in to_ns
+    return stamp.sec * NSEC + stamp.nsec
+                              ^^^^^^^^^^
+AttributeError: 'Time' object has no attribute 'nsec'. Did you mean: '_sec'?

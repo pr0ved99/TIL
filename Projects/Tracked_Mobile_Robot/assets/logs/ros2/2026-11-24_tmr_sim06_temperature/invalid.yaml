@@ -1,0 +1,10 @@
+header: auto
+status:
+  - name: tmr/left_motor_case_temperature
+    hardware_id: tmr_mock
+    message: sample
+    values:
+      - {key: temperature, value: "25.0"}
+      - {key: unit,        value: "°C"}
+      - {key: source,      value: "SIM"}
+      - {key: valid,       value: "false"}

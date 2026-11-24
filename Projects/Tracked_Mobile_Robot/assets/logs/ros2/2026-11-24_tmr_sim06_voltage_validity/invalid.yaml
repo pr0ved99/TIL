@@ -1,0 +1,10 @@
+header: auto
+status:
+  - name: tmr/battery_voltage
+    hardware_id: tmr_mock
+    message: sample
+    values:
+      - {key: voltage, value: "11.82"}
+      - {key: unit,    value: "V"}
+      - {key: source,  value: "SIM"}
+      - {key: valid,   value: "false"}

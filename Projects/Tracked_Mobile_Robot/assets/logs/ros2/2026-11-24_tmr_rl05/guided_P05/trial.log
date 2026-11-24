@@ -1,0 +1,45 @@
+/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.2.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+Traceback (most recent call last):  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 203, in <module>
+    run(sys.argv[1], sys.argv[2], Path(sys.argv[3]), sys.argv[4] if len(sys.argv)>4 else None)
+  File "/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/05_ROS2_Integration/rl/gazebo_goal.py", line 60, in run
+    from stable_baselines3 import PPO
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/__init__.py", line 3, in <module>
+    from stable_baselines3.a2c import A2C
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/a2c/__init__.py", line 1, in <module>
+    from stable_baselines3.a2c.a2c import A2C
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/a2c/a2c.py", line 8, in <module>
+    from stable_baselines3.common.on_policy_algorithm import OnPolicyAlgorithm
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/on_policy_algorithm.py", line 10, in <module>
+    from stable_baselines3.common.base_class import BaseAlgorithm
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/base_class.py", line 19, in <module>
+    from stable_baselines3.common.env_util import is_wrapped
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/env_util.py", line 6, in <module>
+    from stable_baselines3.common.atari_wrappers import AtariWrapper
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/stable_baselines3/common/atari_wrappers.py", line 10, in <module>
+    import cv2
+Traceback (most recent call last):
+  File "/home/pvd/.venvs/tmr-rl/lib/python3.12/site-packages/numpy/core/_multiarray_umath.py", line 44, in __getattr__
+    raise ImportError(msg)
+ImportError: 
+A module that was compiled using NumPy 1.x cannot be run in
+NumPy 2.2.6 as it may crash. To support both 1.x and 2.x
+versions of NumPy, modules must be compiled with NumPy 2.0.
+Some module may need to rebuild instead e.g. with 'pybind11>=2.12'.
+
+If you are a user of the module, the easiest solution will be to
+downgrade to 'numpy<2' or try to upgrade the affected module.
+We expect that some modules will need time to support NumPy 2.
+
+
+{'controller': 'guided', 'route': 'P05', 'goal': [1.5, 0.55], 'gazebo_seed': 4101, 'reason': 'stale_input', 'world_final': [-3.328450137256552e-21, 1.2858474058516168e-19, -5.696876818703151e-20], 'world_error_m': 1.5976545308670458, 'world_drift_stopped_m': 0.0, 'stop_window_s': 2.074, 'max_stopped_twist': 1.7733149399879076e-20, 'stop_ok': True, 'contact_ok': True, 'obstacle_episodes': 0, 'ground_gap_ms': 1.0, 'control_steps': 0, 'sim_duration_s': 0.48900000000000005, 'world_path_m': 1.792863262793148e-19, 'pass_goal': False}

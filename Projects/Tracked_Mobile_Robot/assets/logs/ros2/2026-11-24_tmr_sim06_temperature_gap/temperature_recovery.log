@@ -1,0 +1,4 @@
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.001 s | temperature=FRESH valid=true age=0.001 s
+voltage=FRESH valid=true age=0.001 s | current=FRESH valid=true age=0.501 s | temperature=STALE valid=true age=1.501 s
+voltage=FRESH valid=true age=0.353 s | current=FRESH valid=true age=0.353 s | temperature=FRESH valid=true age=0.001 s
+voltage=FRESH valid=true age=0.365 s | current=FRESH valid=true age=0.365 s | temperature=STALE valid=true age=1.513 s
