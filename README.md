@@ -8,7 +8,7 @@ SSAFY 임베디드 로봇 트랙에서 시작한 학습 기록입니다. 데이�
 
 | 궁금한 점 | 바로 보기 |
 | --- | --- |
-| 실제 로봇은 어떻게 움직이나요? | [카펫 주행·비상정지·복구 영상 (2분 29초)](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4) |
+| 실제 로봇은 어떻게 움직이나요? | [카펫 주행·비상정지·복구 MP4 (2분 29초)](https://raw.githubusercontent.com/pr0ved99/TIL/refs/heads/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/assets/videos/wifi_mvp/2026-10-24/final/TMR_MVP_Final_2026-10-24.mp4) |
 | 정지 명령을 받으면 출력이 언제 꺼지나요? | [STM32 두 PWM의 차단 파형과 측정 기준](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/verification/10_STM32_Active_DISARM_Shutdown_Latency_Test_Report_2026-08-04_ko.md) |
 | 시뮬레이션에서 로봇은 벽을 어떻게 우회하나요? | [Nav2와 학습 기반 제어의 경로 비교](https://github.com/pr0ved99/TIL/blob/agent/dual-encoder-bringup/Projects/Tracked_Mobile_Robot/docs/verification/48_Simulation_Gate02_2026-11-24_ko.md) |
 
