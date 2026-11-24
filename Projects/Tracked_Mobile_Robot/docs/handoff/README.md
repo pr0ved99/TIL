@@ -1,6 +1,6 @@
 # Handoff Notes
 
-**11/24 · GATE-02 시뮬레이션 결과.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 다음 노트북 작업은 ELEC-01 보호 회로 검토, 집에서는 E07/M01의 PA4·VREFINT 읽기와 로그 설계다. [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/25 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

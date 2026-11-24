@@ -143,4 +143,4 @@ Ubuntu 설치와 초기 설정은 사용자 완료 보고다. 아래 체크는 �
 - [ ] NVIDIA 인식 결과 또는 남은 오류 기록
 - [ ] Ubuntu 작업 폴더에 TIL 개발 브랜치 확인
 
-노트북에서 SIM-06 세 채널 재생과 RL-05·GATE-02 주행을 마쳤고 다음 설계 작업은 ELEC-01 보호 저항·분기 퓨즈 검토다. [Gazebo 도착 근거](../verification/48_Simulation_Gate02_2026-11-24_ko.md) 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+노트북에서 SIM-06 세 채널 재생과 RL-05·GATE-02 주행을 마쳤고 다음 설계 작업은 ELEC-01 보호 저항·분기 퓨즈 검토다. [Gazebo 도착 근거](../verification/48_Simulation_Gate02_2026-11-24_ko.md) 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)

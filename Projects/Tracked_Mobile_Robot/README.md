@@ -1,6 +1,6 @@
 # Tracked Mobile Robot
 
-**11/24 · GATE-02 시뮬레이션 결과.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 다음 노트북 작업은 ELEC-01 보호 회로 검토, 집에서는 E07/M01의 PA4·VREFINT 읽기와 로그 설계다. [결과·실패 회차·재현 명령](docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/25 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [결과·실패 회차·재현 명령](docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **MVP 증거 대조 · 2026-11-20:** [통합 결과46](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md)에 부품/선재 식별, 퓨즈·코일·옵토 계산, 저장 ERC와 기존 시험 근거 대조를 완료했다. 현재 소스27개에 대한 검사 입력29건의 해시가 이전 검사와 일치한다. 상위9 PASS·4 PARTIAL, T004/T005A 정상 기능 PASS 유지. 남은 것은R1 전체 보호협조 수용,R2 clamp stress 근거,R3 T002/T003 기록 수용,R4 엔코더 전기적·실제 정지 증거다. 자료 부족을 시험 미수행으로 바꾸거나 같은 부품/정상 동작을 재확인하지 않는다. 사용자 결정대로 기존 선행을 모두 닫은 뒤 촬영한다. 배선 길이/길이 기반 전압강하 검토는 제외했고, 후속 열·전류·T006을 새 필수로 복원하지 않는다.
 
@@ -178,7 +178,7 @@ flowchart LR
 [T005A 전력단 관측](docs/verification/27_T_ESTOP_005A_Motor_Disconnected_Rail_and_Safe_Restore_Report_2026-09-23_ko.md) ·
 [실제 엔코더·전력단](docs/verification/30_Actual_Encoder_and_Power_Bench_Closeout_2026-09-27_ko.md).
 
-집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. 노트북에서 SIM-06과 Gazebo GATE-02까지 마쳤고, 후속은 ELEC-01의 보호 저항·퓨즈 검토다. 추가 실물 MVP 마감은 보류 중이다. [11/23 시험 기록](docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](docs/progress/2026-11-24_progress.md)
+집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) 노트북에서 SIM-06과 Gazebo GATE-02까지 마쳤고, 후속은 ELEC-01의 보호 저항·퓨즈 검토다. 추가 실물 MVP 마감은 보류 중이다. [11/23 시험 기록](docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](docs/progress/2026-11-24_progress.md)
 
 작업 순서·완료 조건은 [전체 실행 계획](docs/plans/00_Project_Master_Plan_To_Final_MVP_ko.md),
 현재 전원·배선·시험 이미지와 재개 절차는 [현재 작업 현황](docs/handoff/CURRENT_SESSION_CONTEXT.md),

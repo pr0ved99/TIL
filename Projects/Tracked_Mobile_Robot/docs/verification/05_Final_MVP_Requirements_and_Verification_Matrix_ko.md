@@ -1,6 +1,6 @@
 # 최종 MVP 요구사항과 검증 매트릭스
 
-**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
 
 ## 현재 판정 — 2026-11-20
 

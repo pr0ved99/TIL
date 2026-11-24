@@ -407,23 +407,33 @@ int main(void)
   uint32_t seq = 0U;
 
   for (;;) {
-	  char line[80];
-	  long raw = -1;
+	  char line[96];
+	  long raw[2] = {-1L, -1L};
+    unsigned int valid = 0U;
 	  uint32_t sample_ms = HAL_GetTick();
 
 	  if (HAL_ADC_Start(&hadc1) == HAL_OK) {
-		  if (HAL_ADC_PollForConversion(&hadc1, 2U) == HAL_OK) {
-			  raw = (long)HAL_ADC_GetValue(&hadc1);
-		  }
-		  if (HAL_ADC_Stop(&hadc1) != HAL_OK) {
-			  raw = -1;
-		  }
+      unsigned int i;
+      for (i = 0U; i < 2U; ++i) {
+        if (HAL_ADC_PollForConversion(&hadc1, 2U) != HAL_OK) {
+          break;
+        }
+        raw[i] = (long)HAL_ADC_GetValue(&hadc1);
+      }
+
+      valid = (i == 2U && __HAL_ADC_GET_FLAG(&hadc1, ADC_FLAG_OVR) == RESET);
+
+      if (HAL_ADC_Stop(&hadc1) != HAL_OK) {
+        valid = 0U;
+      }
 	  }
 
 	  int length = snprintf(line, sizeof(line),
-			  	  	  	  	"ADC,seq=%lu,ms=%lu,raw=%ld,valid=%u\r\n",
+              "ADC,seq=%lu,ms=%lu,pa4_raw=%ld,vrefint_raw=%ld,valid=%u\r\n",
 							(unsigned long)seq, (unsigned long)sample_ms,
-							raw, (unsigned int)(raw >= 0));
+              valid ? raw[0] : -1L,
+              valid ? raw[1] : -1L,
+              valid);
 
 	  if (length > 0 && (size_t)length < sizeof(line)) {
 		  (void)HAL_UART_Transmit(&huart2, (uint8_t *)line,

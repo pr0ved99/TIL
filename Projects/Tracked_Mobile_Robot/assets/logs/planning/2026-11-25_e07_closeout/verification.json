@@ -1,0 +1,55 @@
+{
+  "session": "2026-11-24 evening bench, 2026-11-25 KST closeout",
+  "comparisons": {
+    "pa4_dmm_uart.log": {
+      "valid_pairs": 589,
+      "interval_ms_counts": {
+        "106": 588
+      },
+      "raw_sha256": "17a7d764e6671978e08c791cfd5caa6c3deaa71fe423d471dcc2631ee2f542ff"
+    },
+    "pa4_low_dmm_uart.log": {
+      "valid_pairs": 1021,
+      "interval_ms_counts": {
+        "105": 93,
+        "106": 927
+      },
+      "raw_sha256": "9b4b27328e32bb89381f0e9f270cee570d5c967591115b91fe6f8611587c8e64"
+    },
+    "pa4_mid_dmm_uart.log": {
+      "valid_pairs": 608,
+      "interval_ms_counts": {
+        "106": 607
+      },
+      "raw_sha256": "02e1c5de533492da0fda4b5e51e20d2cc19b6c3527c53eeade83fe1cc47bac09"
+    }
+  },
+  "first_uart_pairs_match_csv": 21,
+  "three_point_valid_total": 2218,
+  "user_reported_end_state": "Both USB cables, battery, both external two-pin power connectors and divider 3V3 lead disconnected.",
+  "working_evidence_matches_git_index": true,
+  "scope": "PC reanalysis, source and artifact inspection only during closeout. No new MCU build, flash, ERC or DRC.",
+  "cad_files_matching_prior_readback": {
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/erc.json": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/netlist.xml": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor.kicad_sym": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/sym-lib-table": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json": true
+  },
+  "locally_restored_git_ignored_videos_matching_previous_sha256": {
+    "assets/videos/wifi_mvp/2026-10-24/raw/mvp_cam_01.mp4": true,
+    "assets/videos/wifi_mvp/2026-10-24/raw/mvp_01.mp4": true,
+    "assets/videos/wifi_mvp/2026-10-24/raw/mvp_long_01.mp4": true,
+    "assets/videos/wifi_mvp/2026-10-24/raw/mvp_cam_long_01.mp4": true,
+    "assets/videos/uart_mvp/2026-06-22_uart_mvp_web_serial_demo.mp4": true
+  }
+}

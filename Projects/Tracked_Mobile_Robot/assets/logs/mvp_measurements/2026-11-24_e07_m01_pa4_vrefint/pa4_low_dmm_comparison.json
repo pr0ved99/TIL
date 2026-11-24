@@ -1,0 +1,39 @@
+{
+  "uart_file": "pa4_low_dmm_uart.log",
+  "first_record_received": "2026-11-24T23:49:38.963449+09:00",
+  "last_record_received": "2026-11-24T23:51:26.989397+09:00",
+  "measurement_context": "The user confirmed the 3V3 jumper at the 11.82 kOhm end was disconnected during both DMM readings. PA4 remained connected to GND through 9.95 kOhm. The DMM range, display resolution and exact reading times are unknown.",
+  "sample_count": 1021,
+  "valid_count": 1021,
+  "first_seq": 3,
+  "last_seq": 1023,
+  "mcu_interval_ms_counts": {
+    "105": 93,
+    "106": 927
+  },
+  "dmm_readings": [
+    {
+      "black_probe": "GND side of the 9.95 kOhm resistor",
+      "red_probe": "Divider midpoint side of the 9.95 kOhm resistor",
+      "reported_display": "0 V",
+      "voltage_V": 0
+    },
+    {
+      "black_probe": "GND side of the 9.95 kOhm resistor",
+      "red_probe": "Reported A2 jumper end",
+      "reported_display": "0.4 mV",
+      "voltage_V": 0.0004
+    }
+  ],
+  "vrefint_cal_counts": 1508,
+  "adc_full_scale": 4095,
+  "factory_reference_V": 3.3,
+  "pa4_raw_min": 0,
+  "pa4_raw_max": 73,
+  "pa4_raw_mean": 3.921645445641528,
+  "vrefint_raw_min": 1499,
+  "vrefint_raw_max": 1502,
+  "vrefint_raw_mean": 1500.6630754162586,
+  "pa4_fixed_mean_V": 0.0031603003591250405,
+  "pa4_compensated_mean_V": 0.0031759474749584343
+}

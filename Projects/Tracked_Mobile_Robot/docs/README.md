@@ -1,6 +1,6 @@
 # 분야별 문서 색인
 
-**11/24 · GATE-02 시뮬레이션 결과.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 다음 노트북 작업은 ELEC-01 보호 회로 검토, 집에서는 E07/M01의 PA4·VREFINT 읽기와 로그 설계다. [결과·실패 회차·재현 명령](verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/25 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [결과·실패 회차·재현 명령](verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **11/17 마감 이력:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](progress/2026-11-17_progress.md) · [검증/게시](../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 

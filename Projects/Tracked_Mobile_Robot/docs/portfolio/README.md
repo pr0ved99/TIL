@@ -11,6 +11,7 @@
 | [`01_Robotics_System_Integration_Engineer_Strengths_ko.md`](01_Robotics_System_Integration_Engineer_Strengths_ko.md) | 로봇 시스템 통합 엔지니어 포트폴리오에서 강조할 수 있는 역량 요소 정리 |
 | [`02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md`](02_Tracked_Mobile_Robot_Portfolio_Strengths_and_Next_Additions_ko.md) | 현재 Tracked Mobile Robot 프로젝트의 포트폴리오 강점과 추가 보강 항목 정리 |
 | [`03_Engineering_Basis_and_Standards_Traceability_ko.md`](03_Engineering_Basis_and_Standards_Traceability_ko.md) | 계획·설계·구현·검증에 사용한 공학적 근거 ID, 적용 수준, 표준 주장 경계와 요구사항 연결 정본 |
+| [GitHub 프로필·TIL·TMR README 수정안](04_GitHub_to_TMR_README_Proposal_2026-11-25_ko.md) | 직무 포지셔닝, 첫 화면 문안과 근거 링크 |
 
 ## 사용 방식
 

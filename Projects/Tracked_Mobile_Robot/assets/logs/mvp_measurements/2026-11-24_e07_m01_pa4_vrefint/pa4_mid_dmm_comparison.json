@@ -1,0 +1,21 @@
+{
+  "uart_file": "pa4_mid_dmm_uart.log",
+  "first_record_received": "2026-11-24T23:44:45.108007+09:00",
+  "last_record_received": "2026-11-24T23:45:49.442352+09:00",
+  "measurement_context": "UART capture through first inspection after the DMM reading was reported. DMM reading has no synchronized timestamp.",
+  "sample_count": 608,
+  "valid_count": 608,
+  "first_seq": 3,
+  "last_seq": 610,
+  "mcu_interval_ms": 106,
+  "observed_pa4_dmm_V": 1.513,
+  "vrefint_cal_counts": 1508,
+  "adc_full_scale": 4095,
+  "factory_reference_V": 3.3,
+  "pa4_raw_mean": 1872.0082236842106,
+  "vrefint_raw_mean": 1500.6743421052631,
+  "pa4_fixed_mean_V": 1.5085780557162136,
+  "pa4_compensated_mean_V": 1.515942297316308,
+  "fixed_minus_dmm_mV": -4.421944283786283,
+  "compensated_minus_dmm_mV": 2.942297316308018
+}

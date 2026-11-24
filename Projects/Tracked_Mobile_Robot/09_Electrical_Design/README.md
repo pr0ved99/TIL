@@ -1,6 +1,6 @@
 # Electrical Design
 
-**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
+**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 **11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

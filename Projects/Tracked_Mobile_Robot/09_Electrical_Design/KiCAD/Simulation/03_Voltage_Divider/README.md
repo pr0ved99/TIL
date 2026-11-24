@@ -1,6 +1,6 @@
 # 전압 분압과 RC — 사용자 GUI 실습
 
-**11/24 재개점.** 가상 TMR 주행 평가를 마쳤고 SIM-06 모의 전압 감시를 진행 중이다. 집에서는 PA4 한 채널 G1을 마쳤다. 다음은 E07/M01의 PA4·VREFINT 읽기 순서와 로그 필드 설계다. [현재 인수인계](../../../../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../../../../docs/progress/2026-11-24_progress.md)
+**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../../../../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../../../../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../../../../docs/progress/2026-11-24_progress.md)
 
 **11/17 마감 이력:** 보호 저항의 목적은 합선 판별이 아닌 전류 제한이다. 지속 단락 정격/설치 조건을 확인하고 TCR는 오차 상한 비교로 검토 깊이를 제한한다. 보유24AWG는 실리콘 피복 연선이라는 사용자 보고를 반영했다. 내부1TB SSD 절반을 Ubuntu 듀얼부팅에 배정할 계획이며11/19 백업·점검→조건 충족 시11/20 전환을 권고한다. PCB와 가상 IMU/LiDAR·odom/TF·Nav2를 병행하고 RL은 기준선 이후 선택적으로 비교한다. 새 설치/구현·실측 완료는 아니다. [새 단계·일자별 계획](../../../../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md) · [11/17 기록](../../../../docs/progress/2026-11-17_progress.md) · [검증/게시](../../../../assets/logs/planning/2026-11-17_ubuntu_nav2_closeout/README.md). 아래 날짜별 설명은 당시 범위다.
 
