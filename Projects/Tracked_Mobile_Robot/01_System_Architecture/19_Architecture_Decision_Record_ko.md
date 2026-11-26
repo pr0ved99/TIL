@@ -1,6 +1,6 @@
 # Architecture Decision Record
 
-**11/25 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
+**11/27 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 
 > 문서 역할·상태 대조: **2026-09-30** — 설계 결정 이력과 현재 유효한 계약. 과거 선택 이유를 보존하고 변경은 근거와 함께 남긴다.

@@ -1,0 +1,235 @@
+{
+  "session": "2026-11-26 to 2026-11-27 KST",
+  "method": "Separate contiguous captures, block means converted using 3300 mV * 1508 / 4095 * pin_x100 / vrefint_x100. DMM at A and B 1.797 V reported by operator.",
+  "adc7": {
+    "first_blocks_wemd2ds1.log": {
+      "seq": [
+        1,
+        30
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 822.5682,
+        "pb0": 1050.4591,
+        "pc0": 915.689,
+        "pc1": 893.5421,
+        "pc2": 872.0988,
+        "pc3": 847.9098
+      }
+    },
+    "pa4_after_wiring_seq3678_3707.log": {
+      "seq": [
+        3678,
+        3707
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 2.082,
+        "pb0": 997.8788,
+        "pc0": 925.9199,
+        "pc1": 894.89,
+        "pc2": 874.9599,
+        "pc3": 853.0639
+      }
+    },
+    "pa4_divider_seq636_665.log": {
+      "seq": [
+        636,
+        665
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 1801.3545,
+        "pb0": 1178.7525,
+        "pc0": 1004.1702,
+        "pc1": 947.1444,
+        "pc2": 881.2981,
+        "pc3": 860.3186
+      }
+    },
+    "pb0_divider_seq473_502.log": {
+      "seq": [
+        473,
+        502
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 976.9305,
+        "pb0": 1801.3317,
+        "pc0": 1372.857,
+        "pc1": 1169.4968,
+        "pc2": 1028.1233,
+        "pc3": 964.8497
+      }
+    },
+    "pc0_divider_seq611_640.log": {
+      "seq": [
+        611,
+        640
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 972.7182,
+        "pb0": 1064.873,
+        "pc0": 1801.6016,
+        "pc1": 1495.3506,
+        "pc2": 1273.3501,
+        "pc3": 1102.1267
+      }
+    },
+    "pc1_divider_seq525_554.log": {
+      "seq": [
+        525,
+        554
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 1040.4884,
+        "pb0": 1072.9223,
+        "pc0": 993.2042,
+        "pc1": 1801.3823,
+        "pc2": 1495.7742,
+        "pc3": 1274.7968
+      }
+    },
+    "pc2_divider_seq655_684.log": {
+      "seq": [
+        655,
+        684
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 1176.1101,
+        "pb0": 1088.8983,
+        "pc0": 1046.7489,
+        "pc1": 949.3097,
+        "pc2": 1801.5729,
+        "pc3": 1496.8986
+      }
+    },
+    "pc2_gnd_pc3_divider_seq1214_1243.log": {
+      "seq": [
+        1214,
+        1243
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 1350.958,
+        "pb0": 1115.4031,
+        "pc0": 1120.3654,
+        "pc1": 1031.8866,
+        "pc2": 1.3412,
+        "pc3": 1801.4858
+      }
+    },
+    "pc2_step_state_a_seq453_482.log": {
+      "seq": [
+        453,
+        482
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 2.2294,
+        "pb0": 2.2356,
+        "pc0": 2.1927,
+        "pc1": 2.2516,
+        "pc2": 2.0256,
+        "pc3": 1801.33
+      }
+    },
+    "pc2_step_state_b_seq111_140.log": {
+      "seq": [
+        111,
+        140
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 2.2153,
+        "pb0": 2.2804,
+        "pc0": 2.1861,
+        "pc1": 2.1224,
+        "pc2": 1801.123,
+        "pc3": 1801.2159
+      }
+    },
+    "pc3_divider_seq456_485.log": {
+      "seq": [
+        456,
+        485
+      ],
+      "valid_blocks": 30,
+      "delta_ms": 100,
+      "vrefint_corrected_mean_mV": {
+        "pa4": 1350.2479,
+        "pb0": 1115.1048,
+        "pc0": 1120.1226,
+        "pc1": 1031.0916,
+        "pc2": 951.1453,
+        "pc3": 1801.3806
+      }
+    }
+  },
+  "B_minus_A_mV": {
+    "pa4": -0.0141,
+    "pb0": 0.0447,
+    "pc0": -0.0066,
+    "pc1": -0.1292,
+    "pc2": 1799.0974,
+    "pc3": -0.1141
+  },
+  "raw_sha256": {
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/first_blocks_wemd2ds1.log": "25ced9e9512650952437da55ea5a76be168b1cac31deacf40d46f90e88ea202b",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pa4_after_wiring_seq3678_3707.log": "bd8b32850c309a6dbfa630480c997c4cf577271d45177d0eeeefaa0e19c1a124",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pa4_divider_seq636_665.log": "b93e580bc72363b9f2126f73404903a383658816ca6050b2831a4ca1a6df5f0e",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pb0_divider_seq473_502.log": "9283fa6af96e6e85c6aa1f5c5bc244effaf821fef0e52072f294821620903a9c",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc0_divider_seq611_640.log": "9f2cf5bb02c937c3398f7305fef02817256a88fb329688ba4fb1b541d2d9107c",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc1_divider_seq525_554.log": "6b8464f64b9c443ae01a9f75bd86b26176d10f0667eee1ebe66b4506bc6a27df",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc2_divider_seq655_684.log": "745f68d3c0f76f4a5ff14c30dec34ee71645e961f7ddc409bcfc1fd98f12fc12",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc2_gnd_pc3_divider_seq1214_1243.log": "3a86d3e6b38601c532b073d7ef29609e6cc97464bc93c3d891c14ca7bb04ef05",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc2_step_state_a_seq453_482.log": "225ea222f40f1e8654f8860948067253b79b9abeda92a7276209a3de4acf0f5f",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc2_step_state_b_seq111_140.log": "773eb72dbe257ac30fdc1051dc56d26ff2f1d4f82ce2fc28245d1dc5eb806472",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/pc3_divider_seq456_485.log": "a36c2479cbe2ee4021e533a49d9ae93f89bf79dd4a0b8fe2b778c345f7b02c11",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_adc7_dma/uart_reopen_mixed_seq32_3455.log": "425381fc8fa1c975899283cb4b3a1ffc297e7be058e322fe67c21b6de6d6bf4b",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/IMG_3283_adc_bridges.jpg": "144581ab8640508f7e83c2b78cd55384440cfe0578cfc88c8c3c635f4f943f84",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/block_changed_lmdlybj6.log": "6b36f02937fd1e59dee5b0b5b6da2490d284c64a8bd736ef1591aec2b8deb628",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/dma_disable_first_callback.png": "a902f9690e00a414bca88c1f70a161ef9541f2eb884dff12f16b2542a2c30cff",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/dma_disabled_after_fix_6xs0neol.log": "e27688408b09358804cd852366fbfaf9ce77e9ad528dd15d7675c569b226c066",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/dma_stream_disabled_jwdxsjqj.log": "37d94852a5a0b878083a8ac4928b91ac221006e567326147841590794dba3a56",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/missed_block_injection_efug05qj.log": "efd0dfbebe88698c949bbf2affd33aa0ae6e6694edb6ef19e487f672e6807992",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/normal_restart_after_fix_7u_nsk35.log": "717b14302161f61db648ab8856faeb4e2893e51a56058447e6a4b762fd5f68fa",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/pa4_1512mV_blocks_99zoxgvn.log": "99d01500ca146407e7949255ebcbb3da145beb52e2c1bf880531337366ba8264",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/pa4_1797mV_blocks_3l_qz0kx.log": "9d70fe3cab42b4b9ce1da0cb3ce4e3a003baae145eca6057688b79c8b24385f9",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/reset_recovery__zaf8jxf.log": "0073ca219317a18e8253527e46c5abf856c1228b86675847b47e570581c67cb5",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/tim2_trigger_timeout_1hm90bu3.log": "66bc62bd179bd0b0a2c067eab379d06d42cf14f0ad495c449271ea427852ea91",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/zero_blocks_qch_2cge.log": "680fc33ecc5a03f062203a0c54d13aef23a46427839399de7dfb83763adcb6f3",
+    "assets/logs/mvp_measurements/2026-11-26_e07_m01_pa4_dma/zero_start_u_zql8cy.log": "49f43b654edb5a28dabc8a2bfac6cd08bd384530fec613b9d325afb81a41f182"
+  },
+  "cad_matches_starting_commit": {
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_schematic.pdf": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/Tracked_Mobile_Robot_Wiring_RevB.kicad_sch": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/exports/Tracked_Mobile_Robot_Wiring_RevB_schematic.pdf": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/erc.json": true,
+    "09_Electrical_Design/KiCAD/Tracked_Mobile_Robot_Wiring_RevB/reports/netlist.xml": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pcb": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_pro": false,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor.kicad_sym": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/sym-lib-table": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/bom_candidates.csv": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/netlist.xml": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/erc.json": true,
+    "09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/reports/drc_unrouted.json": true
+  },
+  "cad_baseline_commit": "9338d827480f941567f2a961aa67885b32748cf1",
+  "elf_sha256_local_only": "36931fb84bd0a87a800cf88002de0063dc57dc39ae418c2da03b1d78cda35a5f"
+}

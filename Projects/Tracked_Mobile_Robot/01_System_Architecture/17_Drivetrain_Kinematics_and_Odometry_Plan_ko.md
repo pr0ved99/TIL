@@ -1,6 +1,6 @@
 # Drivetrain Kinematics and Odometry Plan
 
-**11/25 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
+**11/27 재개점.** [시뮬레이션 로드맵](../docs/plans/2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md)의 NAV-03 반복 평가와 SIM-05 EKF 주행을 확인했다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [11/23 시험 기록](../docs/progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 **10/23 이후 현재 근거:** 지상1m 실측/추정·오차 기록은 확보했다. 아래10/20의 지상시험 미완료/다음안내는 과거 기록이며 새 지시가 아니다. 이 결과는 유효 궤간·슬립·속도 폐루프·실물 Nav2 검증을 뜻하지 않는다. [현재 검증표](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 

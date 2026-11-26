@@ -1,8 +1,8 @@
 # 진행 기록
 
-[11/25 진행·재개점](2026-11-25_progress.md) · [11/24 G1·GATE-02](2026-11-24_progress.md)
+[11/27 집 벤치와 기상 후 작업](2026-11-27_progress.md) · [11/25 진행·재개점](2026-11-25_progress.md) · [11/24 G1·GATE-02](2026-11-24_progress.md)
 
-**11/25 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **11/22 Ubuntu 시뮬레이션.** TMR 가상 LiDAR의 `/scan` 프레임·시각·정면 1m 거리·RViz 표시를 확인했다. NAV-01 임시 방에서 고정 지도와 AMCL을 연결했고 전진 후 위치 갱신·정지·스캔 정렬을 확인했다. 다음은 TMR의 첫 Nav2 목표 이동이다. [실습 기록](2026-11-22_progress.md)
 

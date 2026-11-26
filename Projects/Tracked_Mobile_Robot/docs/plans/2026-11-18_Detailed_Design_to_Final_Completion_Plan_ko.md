@@ -1,6 +1,6 @@
 # Tracked Mobile Robot — 세부 설계부터 최종 완성까지의 실행 계획
 
-**11/25 집 재개점.** 노트북 SIM-06과 GATE-02를 마쳤다. 실물 첫 자율주행 기본 구성은 Nav2이며 PPO는 선택 연구로 남긴다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [GATE-02 검증](../verification/48_Simulation_Gate02_2026-11-24_ko.md) · [실물 인계](../handoff/NEXT_SESSION_START_PROMPT.md)
+**11/27 집 재개점.** 노트북 SIM-06과 GATE-02를 마쳤다. 실물 첫 자율주행 기본 구성은 Nav2이며 PPO는 선택 연구로 남긴다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [GATE-02 검증](../verification/48_Simulation_Gate02_2026-11-24_ko.md) · [실물 인계](../handoff/NEXT_SESSION_START_PROMPT.md)
 
 첫 실제 ADC 기록(A11~A14)은 보유 NUCLEO-F446RE, 허용 범위의 저전압 시험 입력·임시 배선, 시리얼 연결로 진행한다. 핀과 입력 조건 확인 후 입력 변화에 따른 raw·시간/순번을 PC CSV로 남긴다. 측정용 Shield 제작 전 별도 실물 작업으로 진행할 수 있다. Ubuntu·가상 로봇·Nav2 및 PCB 설계는 이 시험과 독립 착수한다.
 
@@ -228,7 +228,7 @@ Q01~Q12의 실물 정보가 없는 경우 Codex가 임의로 측정값을 채우
 | A13 | 검토된 입력 3수준의 실제 단자 전압/raw 방향·반복성 확인 | 수준당30초 이상을 초기 제안으로 CSV 저장. 포화/고정값/누락 판정. 정밀 정확도 판정은 보류 가능 | A12 |
 | A14 | PC 기록기와 기본 그래프·raw/시각 확인, 공급/수집 중단 표시 | 최소1분 CSV·입력 변화·중단 후 stale·재개 결과. G1 | A13 |
 
-11/24 A11~A14/G1 통과. PA4의 세 입력과 수신 단절·재개를 실제 벤치에서 확인했다. 후속 E07/M01에서 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+11/24 A11~A14/G1 통과. PA4의 세 입력과 수신 단절·재개를 실제 벤치에서 확인했다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
 
 첫 경로는 기존 UART 또는 보드 USB serial을 사용한다. 벤치 데이터 출력과 production 명령 권한을 혼동하지 않는다. 임시 입력망을 실제 배터리에 바로 연결하는 지시가 아니다.
 
@@ -236,7 +236,7 @@ Q01~Q12의 실물 정보가 없는 경우 Codex가 임의로 측정값을 채우
 
 | 작업 | 상세 수행 | 완료 근거 | 선행 |
 | --- | --- | --- | --- |
-| M01 | ADC 핀/rank/채널·VREFINT·원시 버퍼·trigger·DMA 설정 | ADC 설정표·버퍼 소유권, 채널 혼선/포화/실측 수집률 확인 | G1, E07 |
+| M01 | ADC 핀/rank/채널·VREFINT·원시 버퍼·trigger·DMA 설정 | [7채널 ADC 설정표·벤치 실측](2026-11-26_E07_M01_ADC_Scan_Table_ko.md)·버퍼 소유권, 채널 혼선/포화/실측 수집률 확인 | G1, E07 |
 | M02 | 전류/전압/온도별 필터·평균·초기 폐기·time stamp·overrun 처리 | 블록 수/창 길이/수집률과 실제 로그 일치, 입력 계단의 응답 지연 | M01 |
 | M03 | 물리량 환산·독립 채널 보정계수·계수버전·범위/유효성 | 알려진 raw 벡터의 단위/부호/경계·계수 로드 실패·초기값 처리 검사 | E04/E05/E07, M01 |
 | M04 | 기존 TEL/ESP/브라우저/CSV 확장, 통신량/명령지연 확인 | 측정 생성시각과 수신시각 분리, 6채널 값/상태·stale 표시, 제어 경로 회귀 | M02/M03 |
@@ -457,4 +457,4 @@ OS/ROS/Gazebo 조합은 11/17 계획의 Ubuntu24.04/Jazzy/Harmonic **기존 제�
 - [제작 Shield](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md), [기본 전기 도면 안내](../../09_Electrical_Design/README.md).
 - [CAN/RTOS/LL 전체 로드맵](../../01_System_Architecture/10_System_Architecture_Roadmap_CAN_RTOS_LL_ko.md), [기존 Ubuntu/Nav2/RL 제안](2026-11-17_Ubuntu_Nav2_Simulation_and_RL_Roadmap_ko.md), [11/17 실적](../progress/2026-11-17_progress.md).
 
-노트북에서 SIM-06 세 채널 재생과 RL-05·GATE-02 주행을 마쳤고 다음 설계 작업은 ELEC-01 보호 저항·분기 퓨즈 검토다. [Gazebo 도착 근거](../verification/48_Simulation_Gate02_2026-11-24_ko.md) 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+노트북에서 SIM-06 세 채널 재생과 RL-05·GATE-02 주행을 마쳤고 다음 설계 작업은 ELEC-01 보호 저항·분기 퓨즈 검토다. [Gazebo 도착 근거](../verification/48_Simulation_Gate02_2026-11-24_ko.md) 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [11/23 시험 기록](../progress/2026-11-23_progress.md) · [11/24 실측과 재개점](../progress/2026-11-24_progress.md)

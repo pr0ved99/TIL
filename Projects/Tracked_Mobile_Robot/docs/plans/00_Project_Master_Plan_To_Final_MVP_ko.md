@@ -1,6 +1,6 @@
 # 최종 MVP까지의 전체 실행 계획
 
-**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
+**11/27 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [현재 인수인계](../handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../progress/2026-11-24_progress.md)
 
 **MVP 수용 기록 · 2026-11-20:** [수용 변경안 채택44 §10](../verification/44_EStop_Acceptance_Proposal_2026-11-19_ko.md)으로 **T005A PASS — 모터 분리·시험한 정상 전원 구성의 공급 차단/PWM 정지/무자동 재출발 기능 범위**. 수치 잔류 전압/에너지·전체 역급전 수용은 OPEN이다. 상위9 PASS·4 PARTIAL, T007 나머지 선행/정량 실측은 BLOCKED. 120fps 촬영 설정 보고를 확보했다. 수시로 바뀌는 모터 연결 상태와 다음 무전원 준비는 현재 인수인계/결정44의 최신 실물 기록을 따른다. 잔여 선행 수용과 정지 측정 준비가 남아 있다. K1 양쪽12AWG 확인으로14AWG 기반 교체/공구 구매 요구는 철회됐다. 새 회로/실물/빌드·플래시/외부 게시 없음. 아래 날짜별 판정은 당시 이력이다.
 

@@ -2,6 +2,8 @@
 
 단일 채널 G1의 `raw=` 형식은 [ADC 수신 기록기](tools/record_adc.py)와 [그래프 도구](tools/plot_adc_recording.py)를 사용한다. PC 수신 시각과 보드 측정 시각을 별도 열에 저장한다. 두 채널 벤치에서는 USART2의 `pa4_raw`·`vrefint_raw`가 포함된 원문을 저장해 오프라인에서 비교했다. 기존 단일 채널 파서는 이 형식을 인식하지 않는다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
+현재 7채널 벤치에서는 ST-LINK 가상 시리얼(USART2)에서 `ADC_BLOCK` 원문을 저장한다. 각 `*_x100` 필드는 200표본의 평균 카운트 × 100이다. [7채널 UART 판독](../docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md)
+
 > **현재 용도 대조 · 2026-11-12:** 이 도구/절차는 초기 PC 직결 UART bench 경로다. 현재 로봇의 production 명령 입구는 ESP Wi-Fi이고 STM USART2는 bench logger다. 최신 펌웨어에 초기 runbook을 그대로 적용하지 않는다. [현재 운용 절차](../docs/handoff/CURRENT_MVP_OPERATION_RUNBOOK_ko.md)와 [현재 앱](../03_Firmware/README.md)을 따른다.
 
 This folder contains PC-side UART command, telemetry logging, and dashboard mock tools.

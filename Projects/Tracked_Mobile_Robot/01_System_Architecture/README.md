@@ -1,6 +1,6 @@
 # 시스템 아키텍처 문서 안내
 
-**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
+**11/27 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
 **11/20 비실물 대조:** [결과46](../docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
 

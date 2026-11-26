@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -61,6 +62,28 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+#if TMR_ADC_BENCH_ENABLED
+enum {
+  ADC_SLOT_PA4 = 0,
+  ADC_SLOT_VREFINT,
+  ADC_SLOT_PB0,
+  ADC_SLOT_PC0,
+  ADC_SLOT_PC1,
+  ADC_SLOT_PC2,
+  ADC_SLOT_PC3,
+  ADC_BENCH_CHANNELS
+};
+
+enum {
+  ADC_BENCH_SCANS_PER_HALF = 200U,
+  ADC_BENCH_HALF_SAMPLES = ADC_BENCH_CHANNELS * ADC_BENCH_SCANS_PER_HALF,
+  ADC_BENCH_BUFFER_SAMPLES = 2U * ADC_BENCH_HALF_SAMPLES
+};
+
+static volatile uint16_t s_adc_dma_raw[ADC_BENCH_BUFFER_SAMPLES] __ALIGNED(4);
+static volatile uint32_t s_adc_dma_completed_blocks = 0U;
+#endif
+
 static uint8_t s_motor_output_test_step;
 
 static GPIO_PinState s_motor_output_test_button_raw = GPIO_PIN_SET;
@@ -396,53 +419,102 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART2_UART_Init();
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   MX_TIM3_Init();
   MX_TIM5_Init();
   MX_ADC1_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 #if TMR_ADC_BENCH_ENABLED
-  uint32_t seq = 0U;
+  uint32_t last_block = 0U;
+  uint32_t last_ms = HAL_GetTick();
+  const char *fault = NULL;
+  char line[192];
 
-  for (;;) {
-	  char line[96];
-	  long raw[2] = {-1L, -1L};
-    unsigned int valid = 0U;
-	  uint32_t sample_ms = HAL_GetTick();
-
-	  if (HAL_ADC_Start(&hadc1) == HAL_OK) {
-      unsigned int i;
-      for (i = 0U; i < 2U; ++i) {
-        if (HAL_ADC_PollForConversion(&hadc1, 2U) != HAL_OK) {
-          break;
-        }
-        raw[i] = (long)HAL_ADC_GetValue(&hadc1);
-      }
-
-      valid = (i == 2U && __HAL_ADC_GET_FLAG(&hadc1, ADC_FLAG_OVR) == RESET);
-
-      if (HAL_ADC_Stop(&hadc1) != HAL_OK) {
-        valid = 0U;
-      }
-	  }
-
-	  int length = snprintf(line, sizeof(line),
-              "ADC,seq=%lu,ms=%lu,pa4_raw=%ld,vrefint_raw=%ld,valid=%u\r\n",
-							(unsigned long)seq, (unsigned long)sample_ms,
-              valid ? raw[0] : -1L,
-              valid ? raw[1] : -1L,
-              valid);
-
-	  if (length > 0 && (size_t)length < sizeof(line)) {
-		  (void)HAL_UART_Transmit(&huart2, (uint8_t *)line,
-				  	  	  	  	 (uint16_t)length, 10U);
-	  }
-
-	  seq++;
-	  HAL_Delay(100U);
+  if (HAL_ADC_Start_DMA(&hadc1, (uint32_t *)s_adc_dma_raw,
+                        ADC_BENCH_BUFFER_SAMPLES) != HAL_OK) {
+    fault = "adc_dma_start";
+  } else if (HAL_TIM_Base_Start(&htim2) != HAL_OK) {
+    fault = "tim2_start";
   }
+
+  while (fault == NULL) {
+    uint32_t block = s_adc_dma_completed_blocks;
+    uint32_t now_ms = HAL_GetTick();
+
+    if (HAL_ADC_GetError(&hadc1) != HAL_ADC_ERROR_NONE ||
+        __HAL_ADC_GET_FLAG(&hadc1, ADC_FLAG_OVR) != RESET) {
+      fault = "adc_or_dma_error";
+      break;
+    }
+
+    if (block == last_block) {
+      if (now_ms - last_ms >= 300U) {
+        fault = "block_timeout";
+        break;
+      }
+      __WFI();
+      continue;
+    }
+
+    if (block - last_block != 1U) {
+      fault = "missed_block";
+      break;
+    }
+
+    uint32_t first = (block % 2U == 1U) ? 0U : ADC_BENCH_HALF_SAMPLES;
+    uint32_t sums[ADC_BENCH_CHANNELS] = {0U};
+    unsigned long mean_x100[ADC_BENCH_CHANNELS];
+
+    for (uint32_t i = first; i < first + ADC_BENCH_HALF_SAMPLES;
+         i += ADC_BENCH_CHANNELS) {
+      for (uint32_t slot = 0; slot < ADC_BENCH_CHANNELS; ++slot) {
+        sums[slot] += s_adc_dma_raw[i + slot];
+      }
+    }
+
+    if (s_adc_dma_completed_blocks != block) {
+      fault = "block_changed";
+      break;
+    }
+
+    for (uint32_t slot = 0; slot < ADC_BENCH_CHANNELS; ++slot) {
+      mean_x100[slot] =
+          (sums[slot] * 100U + ADC_BENCH_SCANS_PER_HALF / 2U)
+          / ADC_BENCH_SCANS_PER_HALF;
+    }
+
+    int len = snprintf(line, sizeof(line),
+                       "ADC_BLOCK,seq=%lu,ms=%lu,pa4_x100=%lu,vrefint_x100=%lu,"
+                       "pb0_x100=%lu,pc0_x100=%lu,pc1_x100=%lu,"
+                       "pc2_x100=%lu,pc3_x100=%lu,valid=1\r\n",
+                       (unsigned long)block, (unsigned long)now_ms,
+                       mean_x100[ADC_SLOT_PA4], mean_x100[ADC_SLOT_VREFINT],
+                       mean_x100[ADC_SLOT_PB0], mean_x100[ADC_SLOT_PC0],
+                       mean_x100[ADC_SLOT_PC1], mean_x100[ADC_SLOT_PC2],
+                       mean_x100[ADC_SLOT_PC3]);
+
+    if (len <= 0 || (size_t)len >= sizeof(line) ||
+        HAL_UART_Transmit(&huart2, (uint8_t *)line, (uint16_t)len, 20U) != HAL_OK) {
+      fault = "uart";
+      break;
+    }
+
+    last_block = block;
+    last_ms = now_ms;
+  }
+
+  (void)HAL_TIM_Base_Stop(&htim2);
+  (void)HAL_ADC_Stop_DMA(&hadc1);
+
+  int len = snprintf(line, sizeof(line), "ADC_BLOCK,valid=0,reason=%s\r\n", fault);
+  if (len > 0 && (size_t)len < sizeof(line)) {
+    (void)HAL_UART_Transmit(&huart2, (uint8_t *)line, (uint16_t)len, 20U);
+  }
+  Error_Handler();
 #endif
 
   if (motor_output_init(&htim4) != HAL_OK){
@@ -574,6 +646,22 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+#if TMR_ADC_BENCH_ENABLED
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef *hadc)
+{
+  if (hadc == &hadc1 && (hadc->DMA_Handle->Instance->CR & DMA_SxCR_EN) != 0U) {
+    ++s_adc_dma_completed_blocks;
+  }
+}
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+{
+  if (hadc == &hadc1 && (hadc->DMA_Handle->Instance->CR & DMA_SxCR_EN) != 0U) {
+    ++s_adc_dma_completed_blocks;
+  }
+}
+#endif
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
   uart_mvp_on_rx_complete(huart);
 }

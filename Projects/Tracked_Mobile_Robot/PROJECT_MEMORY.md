@@ -1,6 +1,6 @@
 # Tracked Mobile Robot Project Memory
 
-**11/25 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [결과·실패 회차·재현 명령](docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 ROS 학습에서는 사용자가 동작을 바꾸는 코드를 직접 입력하고 저장한다. 해당 줄에서 토픽과 Gazebo 관절까지 이어지는 경로를 설명하고, 저장본을 읽은 뒤 한 단계씩 검증한다. 새 터미널은 Bash에서 Jazzy와 TMR overlay를 불러오며 기본 도메인은 84, 주행 실습은 85다. LiDAR 임시 장착 TF는 `base_link` 기준 (0.065, 0, 0.045)m·회전 0이다. 실제 장착 시 측정 원점·축을 실측하고 스캔 정렬을 다시 확인한다.
 

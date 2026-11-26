@@ -1,8 +1,8 @@
 # 펌웨어 앱과 검사 안내
 
-**11/25 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 집에서는 PA4와 VREFINT 두 채널을 폴링해 세 입력에서 구분을 확인했다. 다음은 타이머 트리거·DMA 버퍼와 오류 판정 설계다. [PA4·VREFINT 실측](../docs/verification/49_PA4_VREFINT_Bench_2026-11-25_ko.md) [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
+**11/27 재개점.** Gazebo GATE-02와 SIM-06 세 채널 재생을 마쳤다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [현재 인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md) [11/24 실측과 재개점](../docs/progress/2026-11-24_progress.md)
 
-**주행 앱 이력 · 2026-11-12.** 10/23 지상1m 거리 기록, 10/24 새 UI 플래시 사용자 보고와 통합 시연, 11/5 외부 전류·온도 관측을 연결한다. 현재 앱은 STM `stm32_uart_mvp`와 ESP `esp32_wifi_link`이며 이번 점검에서 MCU 소스·빌드/플래시는 변경하지 않았다. 현재 STM 보드는 PA4·VREFINT 폴링 벤치 이미지이며 `TMR_ADC_BENCH_ENABLED=1U`에서 모터 초기화 전 UART를 출력한다. DMA 블록 평균은 후속이다. [현재 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
+**주행 앱 이력 · 2026-11-12.** 10/23 지상1m 거리 기록, 10/24 새 UI 플래시 사용자 보고와 통합 시연, 11/5 외부 전류·온도 관측을 연결한다. 현재 앱은 STM `stm32_uart_mvp`와 ESP `esp32_wifi_link`이며 이번 점검에서 MCU 소스·빌드/플래시는 변경하지 않았다. 현재 STM32 벤치 이미지는 모터 초기화 전에 7채널 ADC를 읽고 DMA 블록 평균을 USART2로 출력한다(`TMR_ADC_BENCH_ENABLED=1U`). [현재 판정](../docs/verification/05_Final_MVP_Requirements_and_Verification_Matrix_ko.md).
 
 **10/23 전원 재설정 후 관측 이력:** 전원 재설정 후 두 보드 연결 전압5.02V, 로봇 최종 실측 중량3.25kg(사용자 보고). 새 로그153.124초/전·후진·좌우회전16개 비영 명령 구간에서 집중·버튼 유지 중 지연성 DISARM0건, TEL 최대126.3ms(비영 명령120ms), 제어 상태 최대80.1ms다. 이전 전진/좌회전 정지 근처 TEL287.9/219.2ms보다 긴 공백이 줄었지만 재부팅도 동반되어 전압 인과관계는 OPEN이다. MCU 소스/제한값·빌드/플래시 변경 없음. 전체 인수와 별개다.
 
@@ -44,6 +44,6 @@ UART 탈거·보드 탈거나 다음 연결 상태는 추정하지 않는다. �
 
 ## 다음 작업
 
-현재 프로젝트 다음 작업은 [인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)의 41-2 정상 입력·공급 조건표다. 펌웨어 기초를 별도로 복습할 때 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)을 사용한다. 완료한 지상 거리·유실/timeout 시험을 자동 반복하지 않으며 전체 안전·정량 ADC 수용과 구분한다.
+현재 프로젝트 다음 작업은 [인수인계](../docs/handoff/CURRENT_SESSION_CONTEXT.md)에 기록한 상태 B의 60초 수신과 7채널 TIM2 중단·재시작 시험이다. 펌웨어 기초를 별도로 복습할 때 [교과서 단위 1](../07_Embedded_Learning_Notes/06_STM32_ESP32_Firmware_Textbook/README.md#study-route)을 사용한다. 완료한 지상 거리·유실/timeout 시험을 자동 반복하지 않으며 전체 안전·정량 ADC 수용과 구분한다.
 
 코드/배선 변경이나 실패가 없는 완료 시험은 반복하지 않는다.
