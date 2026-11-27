@@ -1,6 +1,6 @@
 # Current Session Context
 
-**11/27~28 마감.** RevA 회로 부품 40개 풋프린트 지정·배치와 양면 배선, 필터 13개 부품 재배치, 아랫면 GND 면을 마쳤다. 최종 PCB의 DRC·미배선·회로도 대조 오류가 각각 0건이다. ChatGPT 검토 자료를 준비했고 답변 수신을 기다린다. 보호 분기 결정, 1:1 적층·하네스 확인과 제조 파일 대조가 발주 전에 남아 있다. 11/30 회로 판단, 12/04 발주는 조건부다. [11/27~28 쉴드 마감](../progress/2026-11-28_progress.md#112728-마감) · [검토 자료](../../assets/logs/pcb_design/2026-11-28_filter_relayout/external_review/README.md)
+**11/27~28 마감.** RevA 회로 부품 40개 풋프린트 지정·배치와 양면 배선, 필터 13개 부품 재배치, 아랫면 GND 면을 마쳤다. 최종 PCB의 DRC·미배선·회로도 대조 오류가 각각 0건이다. ChatGPT 독립 검토 답변을 받았다. 기존 GND 면의 외곽 0.0005 mm를 확인했고, 복사본의 0.50 mm 재채움은 DRC 0건이다. [검토 대조](../../assets/logs/pcb_design/2026-11-28_filter_relayout/external_review/review_check.md) 보호 분기 결정, 1:1 적층·하네스 확인과 제조 파일 대조가 발주 전에 남아 있다. 11/30 회로 판단, 12/04 발주는 조건부다. [11/27~28 쉴드 마감](../progress/2026-11-28_progress.md#112728-마감) · [검토 자료](../../assets/logs/pcb_design/2026-11-28_filter_relayout/external_review/README.md)
 
 **11/28 모니터 쉴드 필터 재배치 적용.** R1~R6, C1~C3, TP3~TP6의 위치 또는 방향을 바꾸고 B.Cu에 공통 GND 면을 채웠다. 필터에서 ADC 헤더까지 왼쪽 온도는 51.03 → 21.91 mm, 왼쪽 전류는 43.52 → 34.85 mm, 오른쪽 전류는 44.31 → 25.75 mm다. 오른쪽 온도는 8.66 mm다. 재배선 후 미배선·DRC 위반·회로도 대조 오류는 각 0건이다. [기능별 배치 전후 PDF](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_functional_placement_review.pdf) · [전체 배선 PDF](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_routing_review.pdf) · [검사와 비교 원본](../../assets/logs/pcb_design/2026-11-28_filter_relayout/README.md)
 
