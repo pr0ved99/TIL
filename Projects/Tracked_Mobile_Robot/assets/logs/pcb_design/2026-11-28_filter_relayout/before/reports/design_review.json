@@ -1,0 +1,623 @@
+{
+  "status": "SCHEMATIC_CONTRACT_PASS_PCB_REVIEW_OPEN",
+  "date": "2026-11-28T02:53:03",
+  "kicad_version": "10.0.8",
+  "reference": "assets/logs/pcb_design/2026-11-07_cad_closeout/shield_current.xml",
+  "reference_sha256": "a01236916449de47004ba54e358e3a28e529a2c2b265a2e48a21ace3d6d51588",
+  "source_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "ecab7a7140009f8c7a2256f0d72b6e1ecc90f7ed84dc42ff1a720ed4e38dcf9e",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "afda0b6cc1dacdd5494629baf3c246a9e6635e710dc30a7062d990ab529ebf16",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "c98adddcbd1216c9d6cdb85e60aec6bb04869d4fdd3a303291882fea1e787621",
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6",
+    "fp-lib-table": "90701793175a2a6fab7bcbb8fae38e3131b04d31a8eceae3813cad6a3de7dbd3",
+    "TMR_Monitor.pretty/JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical.kicad_mod": "1e23878b8d50fa173510d88613128a5bf574e082384a0e2c322d597034d5eb1f"
+  },
+  "sources_unchanged": true,
+  "schematic_matches_reviewed_reference": false,
+  "bom_matches_schematic": true,
+  "reviewed_footprint_assignments_2026_11_27": {
+    "J7": "TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical",
+    "J8": "TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical",
+    "C1": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C2": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C3": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C4": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C5": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C6": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+    "C7": "Capacitor_SMD:C_0805_2012Metric",
+    "C8": "Capacitor_SMD:C_0805_2012Metric",
+    "R7": "Resistor_SMD:R_0805_2012Metric",
+    "R8": "Resistor_SMD:R_0805_2012Metric",
+    "R12": "Resistor_SMD:R_0805_2012Metric",
+    "R13": "Resistor_SMD:R_0805_2012Metric",
+    "R9": "Resistor_SMD:R_1206_3216Metric",
+    "R14": "Resistor_SMD:R_1206_3216Metric",
+    "R10": "Resistor_SMD:R_2512_6332Metric",
+    "R15": "Resistor_SMD:R_2512_6332Metric",
+    "R11": "Resistor_SMD:R_0805_2012Metric",
+    "R16": "Resistor_SMD:R_0805_2012Metric"
+  },
+  "filter_capacitors": {
+    "Manufacturer": "Vishay",
+    "MPN": "K104K15X7RF53H5",
+    "schematic_fields_board_fields_footprint_and_pad_nets_match": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true
+    }
+  },
+  "voltage_resistor_selection_matches_schematic_and_bom": {
+    "R7": true,
+    "R8": true,
+    "R12": true,
+    "R13": true,
+    "R9": true,
+    "R14": true,
+    "R10": true,
+    "R15": true,
+    "R11": true,
+    "R16": true
+  },
+  "decoupling_capacitor_selection_matches_schematic_and_bom": {
+    "C7": true,
+    "C8": true
+  },
+  "voltage_header_pads": {
+    "J1.32": {
+      "net": "/V_UP_ADC",
+      "matches": true
+    },
+    "J1.34": {
+      "net": "/V_DOWN_ADC",
+      "matches": true
+    },
+    "J2.7": {
+      "net": "/STM_AVDD",
+      "matches": true
+    }
+  },
+  "voltage_common_placements": {
+    "U1": {
+      "position_mm": [
+        123.0,
+        72.1
+      ],
+      "rotation_deg": 0.0,
+      "matches": true
+    },
+    "U2": {
+      "position_mm": [
+        114.5,
+        82.0
+      ],
+      "rotation_deg": 180.0,
+      "matches": true
+    },
+    "C7": {
+      "position_mm": [
+        119.65,
+        72.6
+      ],
+      "rotation_deg": -90.0,
+      "matches": true
+    },
+    "C8": {
+      "position_mm": [
+        109.55,
+        83.0
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    }
+  },
+  "voltage_resistor_placements": {
+    "R7": {
+      "position_mm": [
+        115.0,
+        105.75
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R8": {
+      "position_mm": [
+        114.5,
+        98.25
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R12": {
+      "position_mm": [
+        127.5,
+        100.25
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R13": {
+      "position_mm": [
+        127.5,
+        96.0
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R9": {
+      "position_mm": [
+        119.25,
+        91.25
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R14": {
+      "position_mm": [
+        127.25,
+        87.25
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R10": {
+      "position_mm": [
+        113.5,
+        89.5
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    },
+    "R15": {
+      "position_mm": [
+        123.0,
+        81.5
+      ],
+      "rotation_deg": 180.0,
+      "matches": true
+    },
+    "R11": {
+      "position_mm": [
+        111.25,
+        94.75
+      ],
+      "rotation_deg": 0.0,
+      "matches": true
+    },
+    "R16": {
+      "position_mm": [
+        110.5,
+        98.25
+      ],
+      "rotation_deg": 90.0,
+      "matches": true
+    }
+  },
+  "board_only_mounting_holes": {
+    "H3": {
+      "position_mm": [
+        160.63,
+        59.7
+      ],
+      "drill_mm": 3.2,
+      "matches": true
+    },
+    "H1": {
+      "position_mm": [
+        145.39,
+        110.4
+      ],
+      "drill_mm": 3.2,
+      "matches": true
+    },
+    "H2": {
+      "position_mm": [
+        112.37,
+        58.43
+      ],
+      "drill_mm": 3.2,
+      "matches": true
+    }
+  },
+  "placed_electrical_components": 40,
+  "same_net_pad_center_straight_line_mm": {
+    "C4.1 - J1.37": 6.91,
+    "R8.2 - C5.1": 9.21,
+    "R9.1 - C5.1": 2.84,
+    "R13.2 - C6.1": 4.67,
+    "R14.1 - C6.1": 4.99,
+    "R10.2 - U2.2": 5.04,
+    "R15.2 - U2.5": 2.68
+  },
+  "reviewed_value_changes_from_reference": {
+    "C7": {
+      "before": "100n",
+      "after": "220n"
+    }
+  },
+  "schematic_matches_reference_with_reviewed_assignments": true,
+  "footprints_unassigned": [],
+  "schematic_components": 40,
+  "active_nets_checked": 22,
+  "all_nets": 91,
+  "erc_errors": 0,
+  "erc_warnings": 0,
+  "erc_violations": 0,
+  "erc_ignored_checks": [
+    {
+      "description": "Global label only appears once in the schematic",
+      "key": "single_global_label"
+    },
+    {
+      "description": "Four connection points are joined together",
+      "key": "four_way_junction"
+    },
+    {
+      "description": "SPICE model issue",
+      "key": "simulation_model_issue"
+    },
+    {
+      "description": "Assigned footprint doesn't match footprint filters",
+      "key": "footprint_filter"
+    }
+  ],
+  "pcb_footprints": 43,
+  "missing_on_pcb": [],
+  "pcb_extra_references": [
+    "H1",
+    "H2",
+    "H3"
+  ],
+  "header_pads_checked": 76,
+  "header_geometry_matches_template": true,
+  "header_side_matches_template": true,
+  "drc_violations": 0,
+  "schematic_parity_issues": 0,
+  "unrouted_connections": 0,
+  "routing_complete": true,
+  "active_net_pads_checked": 94,
+  "voltage_routed_groups": {
+    "/GND": {
+      "required_pads": [
+        "C1.2",
+        "C2.2",
+        "C3.2",
+        "C4.2",
+        "C5.2",
+        "C6.2",
+        "C7.2",
+        "C8.2",
+        "J1.20",
+        "J3.2",
+        "J4.2",
+        "J5.2",
+        "J6.2",
+        "J7.1",
+        "J8.1",
+        "R11.2",
+        "R14.2",
+        "R16.2",
+        "R9.2",
+        "TP2.1",
+        "U1.3",
+        "U2.10",
+        "U2.11",
+        "U2.12",
+        "U2.13",
+        "U2.7",
+        "U2.8",
+        "U2.9"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 88.61,
+        "B.Cu": 145.57
+      },
+      "net_vias": 1
+    },
+    "/MOTOR_VBAT_SAFE_SENSE_RAW": {
+      "required_pads": [
+        "J8.2",
+        "R12.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 9.73,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/STM_AVDD": {
+      "required_pads": [
+        "C7.1",
+        "C8.1",
+        "J2.7",
+        "U1.2",
+        "U2.14"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 54.73,
+        "B.Cu": 18.64
+      },
+      "net_vias": 2
+    },
+    "/VBAT_PROTECTED_SENSE_RAW": {
+      "required_pads": [
+        "J7.2",
+        "R7.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 4.64,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_DOWN_ADC": {
+      "required_pads": [
+        "J1.34",
+        "R16.1",
+        "U2.6"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 37.55,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_DOWN_DIV": {
+      "required_pads": [
+        "C6.1",
+        "R13.2",
+        "R14.1",
+        "R15.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 19.75,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_DOWN_SWITCH_IN": {
+      "required_pads": [
+        "R15.2",
+        "U2.5"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 2.74,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_DOWN_TOP_MID": {
+      "required_pads": [
+        "R12.2",
+        "R13.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 2.42,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_SENSE_EN": {
+      "required_pads": [
+        "U1.1",
+        "U2.1",
+        "U2.4"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 5.18,
+        "B.Cu": 15.03
+      },
+      "net_vias": 3
+    },
+    "/V_UP_ADC": {
+      "required_pads": [
+        "J1.32",
+        "R11.1",
+        "U2.3"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 23.46,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_UP_DIV": {
+      "required_pads": [
+        "C5.1",
+        "R10.1",
+        "R8.2",
+        "R9.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 15.28,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_UP_SWITCH_IN": {
+      "required_pads": [
+        "R10.2",
+        "U2.2"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 8.59,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/V_UP_TOP_MID": {
+      "required_pads": [
+        "R7.2",
+        "R8.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 5.88,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    }
+  },
+  "current_routed_groups": {
+    "/I_LEFT_ADC": {
+      "required_pads": [
+        "C1.1",
+        "J1.38",
+        "R1.2",
+        "TP3.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 35.24,
+        "B.Cu": 20.93
+      },
+      "net_vias": 1
+    },
+    "/I_LEFT_RAW": {
+      "required_pads": [
+        "J3.3",
+        "R1.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 42.66,
+        "B.Cu": 0.0
+      },
+      "net_vias": 0
+    },
+    "/I_RIGHT_ADC": {
+      "required_pads": [
+        "C2.1",
+        "J1.36",
+        "R2.2",
+        "TP4.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 52.63,
+        "B.Cu": 9.72
+      },
+      "net_vias": 1
+    },
+    "/I_RIGHT_RAW": {
+      "required_pads": [
+        "J4.3",
+        "R2.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 26.33,
+        "B.Cu": 16.33
+      },
+      "net_vias": 1
+    },
+    "/STM_3V3": {
+      "required_pads": [
+        "J1.16",
+        "J3.1",
+        "J4.1",
+        "R3.1",
+        "R5.1",
+        "TP1.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 51.75,
+        "B.Cu": 62.83
+      },
+      "net_vias": 3
+    }
+  },
+  "temperature_routed_groups": {
+    "/T_LEFT_ADC": {
+      "required_pads": [
+        "C3.1",
+        "J1.35",
+        "R4.2",
+        "TP5.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 30.62,
+        "B.Cu": 25.41
+      },
+      "net_vias": 2
+    },
+    "/T_LEFT_RAW": {
+      "required_pads": [
+        "J5.1",
+        "R3.2",
+        "R4.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 30.59,
+        "B.Cu": 5.38
+      },
+      "net_vias": 0
+    },
+    "/T_RIGHT_ADC": {
+      "required_pads": [
+        "C4.1",
+        "J1.37",
+        "R6.2",
+        "TP6.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 18.34,
+        "B.Cu": 26.14
+      },
+      "net_vias": 3
+    },
+    "/T_RIGHT_RAW": {
+      "required_pads": [
+        "J6.1",
+        "R5.2",
+        "R6.1"
+      ],
+      "missing_or_disconnected": [],
+      "net_segment_length_mm_by_layer": {
+        "F.Cu": 26.66,
+        "B.Cu": 5.38
+      },
+      "net_vias": 0
+    }
+  },
+  "tracks": 236,
+  "track_segments": 219,
+  "vias": 17,
+  "zones": 0,
+  "full_drc_pass": true,
+  "physical_fit_verified": false,
+  "protection_design_complete": false,
+  "input_hashes": {
+    "TMR_Monitor_Shield_RevA.kicad_sch": "ecab7a7140009f8c7a2256f0d72b6e1ecc90f7ed84dc42ff1a720ed4e38dcf9e",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "afda0b6cc1dacdd5494629baf3c246a9e6635e710dc30a7062d990ab529ebf16",
+    "TMR_Monitor_Shield_RevA.kicad_pro": "c98adddcbd1216c9d6cdb85e60aec6bb04869d4fdd3a303291882fea1e787621",
+    "TMR_Monitor.kicad_sym": "5788aad8719532076bbf13dca433e74d5665ee8a513513d14e5e83c238ff7c91",
+    "sym-lib-table": "7ae6c55597376336d426ad3cf26ad96c7bee35f1b88fbe7269d57e378ee3f5c6",
+    "fp-lib-table": "90701793175a2a6fab7bcbb8fae38e3131b04d31a8eceae3813cad6a3de7dbd3",
+    "TMR_Monitor.pretty/JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical.kicad_mod": "1e23878b8d50fa173510d88613128a5bf574e082384a0e2c322d597034d5eb1f",
+    "bom_candidates.csv": "1705c2bc0bedcace5948d7ec4fe3f6d92c0705528ba724b9be3e65fba235b387",
+    "reports/netlist.xml": "5abd0e8a508a5a90380982eee4f1afeffdd6e18e0672006593caeaa8b3c66d59",
+    "reports/erc.json": "3325b76b1f5b869a20fe060a0f452d0368a628faf049d20c85a190cdf5a05d4a",
+    "reports/drc_unrouted.json": "efa875f0051ae3519769422f6c0c0ffc6c8bfabef16809d49815d8d4af401797"
+  },
+  "limits": "Copper continuity is checked against the schematic pad list for every active net. DRC reports enabled rule checks, unrouted items and schematic parity. Fabrication review, power and protection behavior, ADC performance and assembled mechanical fit remain open."
+}

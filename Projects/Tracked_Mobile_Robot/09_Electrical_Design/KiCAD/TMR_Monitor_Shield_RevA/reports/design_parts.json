@@ -1,14 +1,16 @@
 {
   "schema_version": 2,
-  "date": "2026-11-12T16:17:22",
-  "source_sha256": "dd1e6e8db205ebf187d22574fdec5b08f7f9edf1e117f36455515187d7d945c9",
+  "date": "2026-11-28T04:51:51",
+  "source_sha256": "ecab7a7140009f8c7a2256f0d72b6e1ecc90f7ed84dc42ff1a720ed4e38dcf9e",
   "scope": "Current schematic identity and pin/net inventory; not placement coordinates or a fabrication BOM.",
   "parts": {
     "C1": {
       "value": "100n",
-      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "3e4b5cba-3cf6-48ed-84f3-4c898c31add5"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -24,9 +26,11 @@
     },
     "C2": {
       "value": "100n",
-      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "d6f9361a-4336-417c-9396-a647c489da7e"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -42,9 +46,11 @@
     },
     "C3": {
       "value": "100n",
-      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "ecad4903-1caf-4816-914d-8d16cb5cf7ff"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -60,9 +66,11 @@
     },
     "C4": {
       "value": "100n",
-      "footprint": "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "230c5ebf-11fa-49f1-a8ad-fa4507878b02"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -78,9 +86,11 @@
     },
     "C5": {
       "value": "100n",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "9497e768-39c5-4490-a209-42675955bca3"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -96,9 +106,11 @@
     },
     "C6": {
       "value": "100n",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm",
+      "datasheet": "https://www.vishay.com/docs/45171/kseries.pdf",
+      "uuids": [
+        "7d3f6ea8-e7bb-4875-933a-6d665fdbd4b1"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -113,10 +125,12 @@
       }
     },
     "C7": {
-      "value": "100n",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "value": "220n",
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0805C224K5RACTU",
+      "uuids": [
+        "0ffbf312-311c-40f9-94cd-eeb068513ad1"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -132,9 +146,11 @@
     },
     "C8": {
       "value": "100n",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Capacitor_SMD:C_0805_2012Metric",
+      "datasheet": "https://search.kemet.com/component-documentation/download/specsheet/C0805C104K5RACTU",
+      "uuids": [
+        "1b6f31d1-6a46-47a9-b425-259933700565"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -152,7 +168,9 @@
       "value": "CN7_SOCKET",
       "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "d1eb1490-9a81-4655-998e-a9d74bf17af7"
+      ],
       "pin_nets": {
         "20": {
           "net": "/GND",
@@ -350,7 +368,9 @@
       "value": "CN10_SOCKET",
       "footprint": "Connector_PinSocket_2.54mm:PinSocket_2x19_P2.54mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "4ca1d113-2208-44bb-990e-338bd0053ebf"
+      ],
       "pin_nets": {
         "7": {
           "net": "/STM_AVDD",
@@ -548,7 +568,9 @@
       "value": "CURRENT_LEFT",
       "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "3e0a53ec-8990-4182-a31a-7363b65230d9"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -571,7 +593,9 @@
       "value": "CURRENT_RIGHT",
       "footprint": "Connector_JST:JST_XH_B3B-XH-A_1x03_P2.50mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "c8ce9c4d-cf47-41c7-8781-f99dfbb8f13d"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -594,7 +618,9 @@
       "value": "NTC_LEFT",
       "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "5a4965ff-f302-44c1-8ab7-e715f8dc5cc0"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -612,7 +638,9 @@
       "value": "NTC_RIGHT",
       "footprint": "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "83020d5a-bafa-4bbb-a0bd-217a1a6e7767"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -628,9 +656,11 @@
     },
     "J7": {
       "value": "VBAT_SENSE",
-      "footprint": "",
+      "footprint": "TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "c8cf3701-ec9e-44bf-b3fd-59b2372fe856"
+      ],
       "pin_nets": {
         "1": {
           "net": "/GND",
@@ -646,9 +676,11 @@
     },
     "J8": {
       "value": "VMOTOR_SENSE",
-      "footprint": "",
+      "footprint": "TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "a589cf8f-d59e-47fe-b9f0-c2f10267f448"
+      ],
       "pin_nets": {
         "1": {
           "net": "/GND",
@@ -666,7 +698,9 @@
       "value": "12k candidate",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "1aeda273-7117-47e5-a51d-7ec72269a087"
+      ],
       "pin_nets": {
         "2": {
           "net": "/I_LEFT_ADC",
@@ -684,7 +718,9 @@
       "value": "12k candidate",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "06d98632-cfee-4200-aca0-00f3543cc100"
+      ],
       "pin_nets": {
         "2": {
           "net": "/I_RIGHT_ADC",
@@ -702,7 +738,9 @@
       "value": "10k",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "fc5a4cc6-4e27-4a6b-a418-8b52aa2b7366"
+      ],
       "pin_nets": {
         "1": {
           "net": "/STM_3V3",
@@ -720,7 +758,9 @@
       "value": "1k",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "6fb0bffb-9100-489f-9bcb-3041f54c019c"
+      ],
       "pin_nets": {
         "2": {
           "net": "/T_LEFT_ADC",
@@ -738,7 +778,9 @@
       "value": "10k",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "d89b294d-3462-4a9d-bad1-fecf5620dc6d"
+      ],
       "pin_nets": {
         "1": {
           "net": "/STM_3V3",
@@ -756,7 +798,9 @@
       "value": "1k",
       "footprint": "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P7.62mm_Horizontal",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "5b25fd46-e895-41af-8f62-b9d150b09798"
+      ],
       "pin_nets": {
         "2": {
           "net": "/T_RIGHT_ADC",
@@ -772,9 +816,11 @@
     },
     "R7": {
       "value": "12k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "bb8a9115-4017-4b35-8a9c-24a70af35704"
+      ],
       "pin_nets": {
         "1": {
           "net": "/VBAT_PROTECTED_SENSE_RAW",
@@ -790,9 +836,11 @@
     },
     "R8": {
       "value": "12k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "3203ca86-8288-43b5-bf8b-3c2dbc33afc8"
+      ],
       "pin_nets": {
         "2": {
           "net": "/V_UP_DIV",
@@ -808,9 +856,11 @@
     },
     "R9": {
       "value": "4.7k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_1206_3216Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "fcbfe083-bd33-4b4c-8c53-67b536a1349c"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -826,9 +876,11 @@
     },
     "R10": {
       "value": "1k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_2512_6332Metric",
+      "datasheet": "https://www.seielect.com/Catalog/SEI-RNCF.pdf",
+      "uuids": [
+        "12bc7f4c-853e-45ae-8f33-09965af4ea59"
+      ],
       "pin_nets": {
         "1": {
           "net": "/V_UP_DIV",
@@ -844,9 +896,11 @@
     },
     "R11": {
       "value": "47k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "2b429b43-81e7-4612-a93b-156738a9be61"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -862,9 +916,11 @@
     },
     "R12": {
       "value": "12k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "0f79c011-e677-43ef-a04c-82d8d2e1934c"
+      ],
       "pin_nets": {
         "1": {
           "net": "/MOTOR_VBAT_SAFE_SENSE_RAW",
@@ -880,9 +936,11 @@
     },
     "R13": {
       "value": "12k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "607bc0aa-7a4f-41db-8269-50cc7cfad27f"
+      ],
       "pin_nets": {
         "2": {
           "net": "/V_DOWN_DIV",
@@ -898,9 +956,11 @@
     },
     "R14": {
       "value": "4.7k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_1206_3216Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "276d2225-4cbb-4411-a079-ba9f4cc3f68a"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -916,9 +976,11 @@
     },
     "R15": {
       "value": "1k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_2512_6332Metric",
+      "datasheet": "https://www.seielect.com/Catalog/SEI-RNCF.pdf",
+      "uuids": [
+        "32a85aca-1880-4b6d-a2f5-cf467177dae8"
+      ],
       "pin_nets": {
         "1": {
           "net": "/V_DOWN_DIV",
@@ -934,9 +996,11 @@
     },
     "R16": {
       "value": "47k",
-      "footprint": "",
-      "datasheet": "",
-      "uuids": [],
+      "footprint": "Resistor_SMD:R_0805_2012Metric",
+      "datasheet": "https://www.vishay.com/docs/28758/tnpw_e3.pdf",
+      "uuids": [
+        "dd539a6b-1d18-4fd6-b6c5-6bdb63122805"
+      ],
       "pin_nets": {
         "2": {
           "net": "/GND",
@@ -954,7 +1018,9 @@
       "value": "STM_3V3",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "82e0ef7f-fdd9-4026-a6e2-5e877396f582"
+      ],
       "pin_nets": {
         "1": {
           "net": "/STM_3V3",
@@ -967,7 +1033,9 @@
       "value": "GND",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "0617fa42-cf32-4880-bdae-08118a542b01"
+      ],
       "pin_nets": {
         "1": {
           "net": "/GND",
@@ -980,7 +1048,9 @@
       "value": "I_LEFT_ADC",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "5fb426bb-cdf2-4441-bb9f-2bea09a7017e"
+      ],
       "pin_nets": {
         "1": {
           "net": "/I_LEFT_ADC",
@@ -993,7 +1063,9 @@
       "value": "I_RIGHT_ADC",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "c9677109-bbbb-450e-bf73-9d728c7f32b3"
+      ],
       "pin_nets": {
         "1": {
           "net": "/I_RIGHT_ADC",
@@ -1006,7 +1078,9 @@
       "value": "T_LEFT_ADC",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "69a9131c-9699-487d-8ec1-0516c8862bf4"
+      ],
       "pin_nets": {
         "1": {
           "net": "/T_LEFT_ADC",
@@ -1019,7 +1093,9 @@
       "value": "T_RIGHT_ADC",
       "footprint": "TestPoint:TestPoint_THTPad_D1.5mm_Drill0.7mm",
       "datasheet": "",
-      "uuids": [],
+      "uuids": [
+        "6da2e7ed-d44f-4e44-9efb-1115408d21a2"
+      ],
       "pin_nets": {
         "1": {
           "net": "/T_RIGHT_ADC",
@@ -1032,7 +1108,9 @@
       "value": "TPS3840PL30DBV",
       "footprint": "Package_TO_SOT_SMD:SOT-23-5",
       "datasheet": "https://www.ti.com/lit/ds/symlink/tps3840.pdf",
-      "uuids": [],
+      "uuids": [
+        "e70100f1-c85a-4a5f-aefe-9cd7296bbdfa"
+      ],
       "pin_nets": {
         "3": {
           "net": "/GND",
@@ -1065,7 +1143,9 @@
       "value": "TMUX1511PW",
       "footprint": "Package_SO:TSSOP-14_4.4x5mm_P0.65mm",
       "datasheet": "https://www.ti.com/lit/ds/symlink/tmux1511.pdf",
-      "uuids": [],
+      "uuids": [
+        "68b6a564-73ba-47a4-997e-6d747c9c3056"
+      ],
       "pin_nets": {
         "10": {
           "net": "/GND",

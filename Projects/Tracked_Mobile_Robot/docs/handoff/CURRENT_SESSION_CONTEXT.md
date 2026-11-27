@@ -1,6 +1,26 @@
 # Current Session Context
 
-**11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
+**11/27~28 마감.** RevA 회로 부품 40개 풋프린트 지정·배치와 양면 배선, 필터 13개 부품 재배치, 아랫면 GND 면을 마쳤다. 최종 PCB의 DRC·미배선·회로도 대조 오류가 각각 0건이다. ChatGPT 검토 자료를 준비했고 답변 수신을 기다린다. 보호 분기 결정, 1:1 적층·하네스 확인과 제조 파일 대조가 발주 전에 남아 있다. 11/30 회로 판단, 12/04 발주는 조건부다. [11/27~28 쉴드 마감](../progress/2026-11-28_progress.md#112728-마감) · [검토 자료](../../assets/logs/pcb_design/2026-11-28_filter_relayout/external_review/README.md)
+
+**11/28 모니터 쉴드 필터 재배치 적용.** R1~R6, C1~C3, TP3~TP6의 위치 또는 방향을 바꾸고 B.Cu에 공통 GND 면을 채웠다. 필터에서 ADC 헤더까지 왼쪽 온도는 51.03 → 21.91 mm, 왼쪽 전류는 43.52 → 34.85 mm, 오른쪽 전류는 44.31 → 25.75 mm다. 오른쪽 온도는 8.66 mm다. 재배선 후 미배선·DRC 위반·회로도 대조 오류는 각 0건이다. [기능별 배치 전후 PDF](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_functional_placement_review.pdf) · [전체 배선 PDF](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_routing_review.pdf) · [검사와 비교 원본](../../assets/logs/pcb_design/2026-11-28_filter_relayout/README.md)
+
+**다음 확인.** 시제품 발주 전 MCU-230 모듈의 1×6 핀열·높이와 하네스 탈착 여유를 1:1로 대조한다. 양산 출력 검토 및 시제품의 ADC 변동·채널 간 영향 측정은 후속 작업이다.
+
+**11/28 모니터 쉴드 배선 완료.** 남은 21건을 연결했다. 전체 미배선·DRC 위반·회로도 대조 오류 각 0건, 활성 22개 네트의 94개 패드 연결 확인. 다음은 1:1 장착·커넥터 방향·제조사 규칙과 제조 출력 검토다. [전체 배선 검토 PDF](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_routing_review.pdf)
+
+**11/28 오른쪽 전류 ADC와 시험점.** R2.2·C2.1·TP4.1·CN7-36(PC1)이 하나의 구리 경로로 이어진다. J4.2와 필터 C2.2도 기존 GND에 연결했다. [전류 배선 확대도 6~7쪽](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf)
+
+**11/28 오른쪽 전류 센서 출력.** J4.3 → R2.1 배선 42.66 mm와 관통 비아 하나를 확인했다. [전류 배선 확대도 5쪽](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf)
+
+**11/28 왼쪽 전류 센서 입력.** J3.3(VIOUT) → R1.1과 R1.2·C1.1·TP3.1·CN7-38(PC0)의 구리 연결을 확인했다. C1.2·J3.2의 GND도 아랫면에서 C6.2를 통해 CN7-20과 이어졌다. CN7-16에서 J3.1까지 3.3 V 전원선을 연결해 J3 세 핀의 PCB 배선을 확인했다. [센서 출력 1쪽 · ADC 배선 2쪽 · GND 귀환 3쪽 · 3.3 V 전원 4쪽](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf)
+
+**11/28 쉴드 전단·후단 ADC.** 전단(U2.3·R11.1·CN7-32)과 후단(U2.6·R16.1·CN7-34)이 각각 윗면 구리로 이어진다. 후단은 윗면 경로 37.55 mm를 선택했고 신호 비아는 0개다. R11.2·R16.2는 한 비아를 통해 아랫면 GND와 CN7-20으로 이어진다. ERC 오류·경고, DRC 위반, 회로도 대조 오류는 각 0건이었고 이 단계의 미배선은 32건이었다. V_SENSE_EN은 U1.1(감시기 출력)에서 U2.1(SEL1)과 U2.4(SEL2)까지 연결됐다. 제작 후 스위치가 열릴 때의 ADC 전압과 방전 시간도 확인한다. [전단 3쪽 · 후단 4쪽 · 풀다운 GND 5쪽 · 스위치 제어 6쪽](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_voltage_routing.pdf) · [진행 기록](../progress/2026-11-28_progress.md)
+
+**11/27 쉴드 전압 감지 신호선.** J7.2에서 R7·R8을 거쳐 전단 분압점까지, J8.2에서 R12·R13을 거쳐 후단 분압점까지 배선했다. 두 분압점은 각각 R10·R15를 통해 U2 입력으로 이어진다. KiCad 검사에서 10개 네트의 지정 패드 연결을 확인했다. ERC 오류·경고, DRC 위반, 회로도 대조 오류 모두 0건이며 전체 미배선은 40건이다. 아랫면에서 J7.1은 C5.2로, J8.1은 C6.2로 연결했고, 두 곳에서 CN7-20까지 구리가 이어진다. R1·U2·C8은 기존 위치를 유지했다. 이 단계까지 두 ADC 출력과 스위치 제어가 미배선이었다. [전압 감지 배선 확대도](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_voltage_routing.pdf) · [검사 결과](../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/27 일정 운영.** BOM 40행을 대조했다. 전압 감지 헤더 J7·J8을 USB 반대쪽 가장자리에 가배치했다. 두 자리 모두 상부 개방이며 24 AWG 전선 한 가닥을 USB 반대쪽으로 넘겼을 때 간섭이 없었다. PA 입고 후 두 하네스를 꽂고 각각 탈착을 확인한다. [윗면 배치도](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/exports/TMR_Monitor_Shield_RevA_placement.pdf) 다음 집 작업은 11/28 소켓·하네스·보유품 실측, 다음 일정 판정은 11/30 회로 확정과 12/04 발주 가능일 점검이다. 아래 ADC 장시간 실습은 12/08로 배정했다. [마일스톤 현황](../plans/2026-11-27_TMR_Milestone_Deadlines_ko.md) · [실물 확인표](../../09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/BOM_Bench_Check_2026-11-27_ko.md)
+
+**11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 상태 B의 60초 수신은 12/08, TIM2 중단·재시작은 12/09 집 작업으로 배정했다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **집 벤치 종료.** 직전 상태 B에서 CubeIDE Terminate 후 NUCLEO USB 분리를 확인했다. ESP32는 만능기판에서 분리돼 있다. 배터리와 외부 전원 두 2핀은 이 USB 벤치에서 사용하지 않았다. [11/27 배선·재개 기준과 이유](../progress/2026-11-27_progress.md)
 
@@ -399,7 +419,7 @@ Last updated: **2026-11-19 — T005A 여섯 정상 동작 근거 대조·수용 
 - 일반 cap150‰·순수 회전200‰·왼쪽gain전진960‰/후진930‰. 요청100mm/s→PWM144/150‰이며 실측 속도가 아니다. ESP ZERO_ONLY0·시험mode0, STM hook0 유지.
 - 실물14톱니·대표피치9.64mm·1560counts/output rev, 초기 공통k=1687/19500mm/count, 지상 보정 아님. 궤도 중심 간격 실측약233mm/CAD228.31681mm; 유효 skid-steer 폭은 미보정이다.
 - STM최종 출력/300ms timeout, browser CMD80ms·control200ms/TEL250ms, WS TEL50ms 유지. signed64 count문자열·sample/ARM metadata 보존. 새 MCU 변경/빌드/플래시 없음. 현재 로컬 PAGE hash는 이전과 같으며 보드 runtime hash readback의 새 증거는 아니다.
-- 마지막 구매/수령 보고:103JT-025×2·Pololu5241×2·GM1312·UT210E 배송 대기, Vishay100nF10개 구매/수령미확인,10k/1k/12k저항보유. 후속4채널/NTC/쉴드 계획 유지. CANableV2Pro·MCU-230보유, 통신미검증. ADS1115/PSU/탑재컴퓨터 추가 구매를 요구하지 않는다. MVP후 첫 기본 검증은 IMU다.
+- 마지막 구매/수령 보고:103JT-025×2·Pololu5241×2·GM1312·UT210E 배송 대기, Vishay 100 nF 10개 보유·봉투 품번 확인(11/27),10k/1k/12k저항보유. 후속4채널/NTC/쉴드 계획 유지. CANableV2Pro·MCU-230보유, 통신미검증. ADS1115/PSU/탑재컴퓨터 추가 구매를 요구하지 않는다. MVP후 첫 기본 검증은 IMU다.
 
 ## 정리 규칙과 게시
 

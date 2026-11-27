@@ -1,5 +1,7 @@
 # Tracked Mobile Robot Project Memory
 
+**11/28 모니터 쉴드 RevA.** RevA 회로 부품 40개 풋프린트 지정·배치와 양면 배선, 필터 13개 부품 재배치, 아랫면 GND 면을 마쳤다. 최종 PCB의 DRC·미배선·회로도 대조 오류가 각각 0건이다. ChatGPT 검토 자료를 준비했고 답변 수신을 기다린다. 보호 분기 결정, 1:1 적층·하네스 확인과 제조 파일 대조가 발주 전에 남아 있다. STM32 CAN 트랜시버는 쉴드, ESP32 쪽은 가까운 만능기판에 배치하기로 했다. 실제 쉴드에는 CAN 장착·배선을 추가할 단계가 남아 있다. [전후 비교](assets/logs/pcb_design/2026-11-28_filter_relayout/README.md) · [후속 일정](docs/plans/2026-11-27_TMR_Milestone_Deadlines_ko.md)
+
 **11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](docs/verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](docs/verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 ROS 학습에서는 사용자가 동작을 바꾸는 코드를 직접 입력하고 저장한다. 해당 줄에서 토픽과 Gazebo 관절까지 이어지는 경로를 설명하고, 저장본을 읽은 뒤 한 단계씩 검증한다. 새 터미널은 Bash에서 Jazzy와 TMR overlay를 불러오며 기본 도메인은 84, 주행 실습은 85다. LiDAR 임시 장착 TF는 `base_link` 기준 (0.065, 0, 0.045)m·회전 0이다. 실제 장착 시 측정 원점·축을 실측하고 스캔 정렬을 다시 확인한다.

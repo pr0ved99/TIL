@@ -1,0 +1,166 @@
+{
+  "date": "2026-11-28",
+  "inputs": {
+    "TMR_Monitor_Shield_RevA.kicad_pro": "c98adddcbd1216c9d6cdb85e60aec6bb04869d4fdd3a303291882fea1e787621",
+    "TMR_Monitor_Shield_RevA.kicad_sch": "ecab7a7140009f8c7a2256f0d72b6e1ecc90f7ed84dc42ff1a720ed4e38dcf9e",
+    "TMR_Monitor_Shield_RevA.kicad_pcb": "afda0b6cc1dacdd5494629baf3c246a9e6635e710dc30a7062d990ab529ebf16"
+  },
+  "reference_pdf_sha256": {
+    "2층 아날로그 센서 PCB 설계 검토 기준표.pdf": "65642654a769662c2de40b732072e0df9762395670504ce18bad863c3c035590",
+    "2층 아날로그 센서 PCB 배선 품질 검토 가이드.pdf": "a31aa2be92d2704f634ef9d8e3efc53a9bc722c8b131128cbd04eebfdd14101d",
+    "tmr_monitor_shield_reva_pcb_checklist.pdf": "bcfd704dec97046df966b2ca35341a9d3ea4fab152cfb8ece6d6d3ca1ea57485"
+  },
+  "new_netlist_matches_saved": true,
+  "connected_physical_pins": 94,
+  "active_nets": 22,
+  "kicad_version": "10.0.8",
+  "gerber_job": {
+    "Header": {
+      "GenerationSoftware": {
+        "Vendor": "KiCad",
+        "Application": "Pcbnew",
+        "Version": "10.0.8-10.0.8~ubuntu24.04.1"
+      },
+      "CreationDate": "2026-11-28T03:31:33+09:00"
+    },
+    "GeneralSpecs": {
+      "ProjectId": {
+        "Name": "TMR_Monitor_Shield_RevA",
+        "GUID": "544d525f-4d6f-46e6-9974-6f725f536869",
+        "Revision": "RevA.0-DRAFT"
+      },
+      "Size": {
+        "X": 70.1,
+        "Y": 57.6
+      },
+      "LayerNumber": 2,
+      "BoardThickness": 1.6,
+      "Finish": "None"
+    },
+    "DesignRules": [
+      {
+        "Layers": "Outer",
+        "PadToPad": 0.0,
+        "PadToTrack": 0.0,
+        "TrackToTrack": 0.2,
+        "MinLineWidth": 0.25
+      }
+    ],
+    "FilesAttributes": [
+      {
+        "Path": "TMR_Monitor_Shield_RevA-F_Cu.gtl",
+        "FileFunction": "Copper,L1,Top",
+        "FilePolarity": "Positive"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-B_Cu.gbl",
+        "FileFunction": "Copper,L2,Bot",
+        "FilePolarity": "Positive"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-F_Silkscreen.gto",
+        "FileFunction": "Legend,Top",
+        "FilePolarity": "Positive"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-B_Silkscreen.gbo",
+        "FileFunction": "Legend,Bot",
+        "FilePolarity": "Positive"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-F_Mask.gts",
+        "FileFunction": "SolderMask,Top",
+        "FilePolarity": "Negative"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-B_Mask.gbs",
+        "FileFunction": "SolderMask,Bot",
+        "FilePolarity": "Negative"
+      },
+      {
+        "Path": "TMR_Monitor_Shield_RevA-Edge_Cuts.gm1",
+        "FileFunction": "Profile",
+        "FilePolarity": "Positive"
+      }
+    ],
+    "MaterialStackup": [
+      {
+        "Type": "Legend",
+        "Name": "Top Silk Screen"
+      },
+      {
+        "Type": "SolderPaste",
+        "Name": "Top Solder Paste"
+      },
+      {
+        "Type": "SolderMask",
+        "Thickness": 0.01,
+        "Name": "Top Solder Mask"
+      },
+      {
+        "Type": "Copper",
+        "Thickness": 0.035,
+        "Name": "F.Cu"
+      },
+      {
+        "Type": "Dielectric",
+        "Thickness": 1.51,
+        "Material": "FR4",
+        "Name": "F.Cu/B.Cu",
+        "Notes": "Type: dielectric layer 1 (from F.Cu to B.Cu)"
+      },
+      {
+        "Type": "Copper",
+        "Thickness": 0.035,
+        "Name": "B.Cu"
+      },
+      {
+        "Type": "SolderMask",
+        "Thickness": 0.01,
+        "Name": "Bottom Solder Mask"
+      },
+      {
+        "Type": "SolderPaste",
+        "Name": "Bottom Solder Paste"
+      },
+      {
+        "Type": "Legend",
+        "Name": "Bottom Silk Screen"
+      }
+    ]
+  },
+  "drill_tools": {
+    "T1": {
+      "diameter": 0.4,
+      "holes": 17
+    },
+    "T2": {
+      "diameter": 0.7,
+      "holes": 6
+    },
+    "T3": {
+      "diameter": 0.75,
+      "holes": 4
+    },
+    "T4": {
+      "diameter": 0.8,
+      "holes": 24
+    },
+    "T5": {
+      "diameter": 0.95,
+      "holes": 6
+    },
+    "T6": {
+      "diameter": 1.0,
+      "holes": 80
+    },
+    "T7": {
+      "diameter": 1.15,
+      "holes": 2
+    },
+    "T8": {
+      "diameter": 3.2,
+      "holes": 3
+    }
+  }
+}

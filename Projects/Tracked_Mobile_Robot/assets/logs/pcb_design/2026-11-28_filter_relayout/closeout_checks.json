@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-28",
+  "board_sha256": "2d9137acc41da4927c122165093d573265f0fc44528822748f292dbfbaa12ab3",
+  "before_sha256": "afda0b6cc1dacdd5494629baf3c246a9e6635e710dc30a7062d990ab529ebf16",
+  "drc": {
+    "violations": 0,
+    "unconnected": 0,
+    "schematic_parity": 0
+  },
+  "erc": {
+    "violations": 0
+  },
+  "default_pdf_page_counts": {
+    "TMR_Monitor_Shield_RevA_current_routing.pdf": 3,
+    "TMR_Monitor_Shield_RevA_functional_placement_review.pdf": 5,
+    "TMR_Monitor_Shield_RevA_placement.pdf": 1,
+    "TMR_Monitor_Shield_RevA_quality_audit.pdf": 6,
+    "TMR_Monitor_Shield_RevA_routing_review.pdf": 8,
+    "TMR_Monitor_Shield_RevA_schematic.pdf": 1,
+    "TMR_Monitor_Shield_RevA_voltage_routing.pdf": 3
+  },
+  "local_link_targets_checked": 217,
+  "external_review_package_sha256": "da9e94fd1d5672df7cfa7d083397f68f11908f676229fedd8df550dbf5fad162"
+}

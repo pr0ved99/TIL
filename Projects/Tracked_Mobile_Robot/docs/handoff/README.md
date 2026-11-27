@@ -1,5 +1,7 @@
 # Handoff Notes
 
+**11/28 쉴드 재개점.** RevA 회로 부품 40개 풋프린트 지정·배치와 양면 배선, 필터 13개 부품 재배치, 아랫면 GND 면을 마쳤다. 최종 PCB의 DRC·미배선·회로도 대조 오류가 각각 0건이다. ChatGPT 검토 자료를 준비했고 답변 수신을 기다린다. 보호 분기 결정, 1:1 적층·하네스 확인과 제조 파일 대조가 발주 전에 남아 있다. [현재 인수인계](CURRENT_SESSION_CONTEXT.md) · [11/27~28 쉴드 마감](../progress/2026-11-28_progress.md#112728-마감)
+
 **11/27 · 실물 계측과 시뮬레이션.** TMR이 Gazebo에서 벽 뒤 목표 P05에 도착했다. Nav2는 4.30 cm, A* 경로·AMCL 위치 보정·PPO 속도 제어는 두 번 실행해 8.49 cm와 8.10 cm 오차였다. 세 회차 모두 장애물 접촉 0회와 2초 이상 정지를 확인했다. 기본 주행은 Nav2다. 노트북에서는 ELEC-01 보호 회로를 검토한다. 외부 입력 여섯 핀과 VREFINT의 7채널 DMA 출력을 확인했다. 집에서는 상태 B의 60초 연속 수신과 TIM2 중단·재시작을 확인한다. [7채널 벤치 실측](../verification/50_ADC_DMA_7_Channel_Bench_2026-11-27_ko.md) [결과·실패 회차·재현 명령](../verification/48_Simulation_Gate02_2026-11-24_ko.md)
 
 **11/20 비실물 대조:** [결과46](../verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) — 부품/선재 기록과 계산·기존 시험 대조 완료. 현재 남은 설계/기록 수용과 실물 증거를 구분하며 이전 날짜의 다음 작업을 재실행하지 않는다.
@@ -70,7 +72,7 @@ ChatGPT Pro에서 Plus로 전환할 때만 [`2026-07-29_codex_plus_transition_ha
 
 | Date | File | Use |
 | --- | --- | --- |
-| Current | [`CURRENT_SESSION_CONTEXT.md`](CURRENT_SESSION_CONTEXT.md) | **First read**: 11/5 외부 관측 종료·NotebookLM 01단원, PCB 다음 37-4 |
+| Current | [현재 작업 현황](CURRENT_SESSION_CONTEXT.md) | RevA 발주 전 보호·기구·제조 검토와 별도 ADC 벤치 재개점. |
 | 2026-10-17 | [최신 진행 기록](../progress/2026-10-17_progress.md) / [보고서37](../verification/37_Zero_Only_ACS_Bench_Closeout_2026-10-17_ko.md) | AC-S01~08 선택 zero-only 마감·Git/Notion 최신화·미해결 관측 |
 | 2026-10-16 | [진행 기록](../progress/2026-10-16_progress.md) / [보고서36](../verification/36_UART_Line_Cancel_Recovery_2026-10-16_ko.md) | UART 줄 취소·부분 CMD/ARM 실물 검증과 mode0 복원 이력 |
 | 2026-10-15 | [실물 기록](../progress/2026-10-15_progress.md) / [보고서35](../verification/35_WiFi_Zero_Control_Fault_Recovery_2026-10-15_ko.md) | zero-only 정지·리셋·S0·두 연결·UART 단절 기능과 AC-S 미완료 조건 |

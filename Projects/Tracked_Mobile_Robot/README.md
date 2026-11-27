@@ -136,6 +136,8 @@ NUCLEO 보드에서 분압 입력 PA4와 내부 기준 VREFINT를 차례로 읽�
 
 ## 4. 현재 검증 범위와 남은 작업
 
+[프로젝트 전체 간트 차트](docs/plans/2026-11-27_TMR_Project_Gantt_ko.md)에서 2026년 5월 첫 기록부터 무선 주행·가상 자율주행 실적, 제작 보드와 실물 Nav2의 목표 일정까지 볼 수 있습니다. 모니터 쉴드 RevA의 [현재 PCB·회로도와 배선 검토](09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/README.md)도 확인할 수 있습니다.
+
 | 확인한 범위 | 다음에 확인할 내용 |
 | --- | --- |
 | **실물 주행**　카펫에서 무선 전후진·회전·정지와 재출발을 관측했습니다. 1 m 시험 두 회차에서 실측은 각각 1,002 mm, 엔코더 추정은 1,002.64 mm와 1,000.95 mm였습니다. | 정밀 직진성과 기계적 제동 거리, 엔코더 전기적 여유와 전체 보호 회로의 수용 근거가 남아 있습니다. [MVP 잔여 항목](docs/verification/46_MVP_Nonphysical_Closeout_2026-11-20_ko.md) |

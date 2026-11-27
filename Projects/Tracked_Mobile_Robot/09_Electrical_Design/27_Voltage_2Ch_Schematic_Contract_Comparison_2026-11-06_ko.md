@@ -1,6 +1,8 @@
 # 전압 2채널 — 기존 쉴드 회로도 대조와 반영 연결표
 
-**최신 적용 확인 · 2026-11-07 마감:**
+**11/27 정식 회로도 변경.** 아래 11/6 연결표에서 100 nF로 제안했던 C7은 220 nF로 변경했다. C8은 100 nF이며 두 자리 모두 KEMET 0805다. C7·C8의 각 1번 패드는 STM_AVDD, 2번 패드는 GND다. [용량 선정과 적용 품번](KiCAD/TMR_Monitor_Shield_RevA/BOM_Bench_Check_2026-11-27_ko.md#c7c8-전원-디커플링-배치-검토--1127)
+
+**2026-11-07 마감 기록:**
 
 아래 연결표의 전압2채널/공통 회로가 실제 CAD에 반영됐다.40부품+PWR_FLAG2개,PA4/PB0/AVDD와MR/CT 개방·미사용 채널GND를대조했고기존설정ERC0/0이다. [적용 연결표·PDF/ERC](../assets/logs/pcb_design/2026-11-07_cad_closeout/README.md). 아래 최초22부품/24부품·PROPOSED_NOT_APPLIED 기록은 당시 스냅샷이다.
 

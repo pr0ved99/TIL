@@ -1,6 +1,38 @@
 # TMR Monitor Shield RevA — 노트북 설계 시작점
 
-**현재 · 2026-11-12:** [기본 경로의 최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 현재 저장 회로도에서 다시 생성했다. 40부품과 PWR_FLAG 2개, J7/J8을 포함한 6개 측정 포트가 반영되어 있다. 왼쪽 아래 `04 VOLTAGE INPUTS – TWO CHANNELS` 영역의 위쪽은 J7/VBAT_SENSE, 아래쪽은 J8/VMOTOR_SENSE다. 11/7 게시본과 본문·렌더링이 일치하며 CAD 원본은 변경하지 않았다. [확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
+**11/28 필터 재배치와 아랫면 접지.** R1~R6, C1~C3, TP3~TP6의 위치 또는 방향을 바꾸고 B.Cu에 공통 GND 면을 채웠다. 필터에서 ADC 헤더까지 왼쪽 온도는 51.03 → 21.91 mm, 왼쪽 전류는 43.52 → 34.85 mm, 오른쪽 전류는 44.31 → 25.75 mm다. 오른쪽 온도는 8.66 mm다. 재배선 후 미배선·DRC 위반·회로도 대조 오류는 각 0건이다. [배선 근접 구간 확대 · 품질 검토 2쪽](exports/TMR_Monitor_Shield_RevA_quality_audit.pdf) · [기능별 배치 전후 PDF](exports/TMR_Monitor_Shield_RevA_functional_placement_review.pdf) · [전체 배선 PDF](exports/TMR_Monitor_Shield_RevA_routing_review.pdf) · [검사와 비교 원본](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/README.md)
+
+### 재배치 이전의 검토와 설계 이력
+
+**11/28 기능별 부품 배치 재검토.** 커넥터 위치와 K1 전·후단 분압기, U1·C7, 오른쪽 온도 필터 C4는 유지할 후보로 판단했다. 왼쪽 온도 C3에서 CN7까지 신호는 51.03 mm, GND는 103.27 mm다. 첫 비교안은 R4 출력·C3를 CN7-35 가까이에 배치하고 접지 경로를 단축하는 것이다. 이어서 두 전류 필터의 출력 방향과 J3·J4의 공통 GND를 비교한다. 길이는 저장된 PCB의 배선을 따라 측정했으며 잡음 성능은 제작 후 확인한다. [기능별 배치도와 C3·C4 실제 경로 · 3쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_functional_placement_review.pdf) · [58개 패드 쌍의 배선 길이와 직선거리](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/functional_placement_paths.csv)
+
+**11/28 CAN 트랜시버 배치 결정.** 쉴드에는 STM32용 1개를, ESP32 가까운 만능기판에는 ESP32용 1개를 배치한다. 보유 MCU-230 실측은 약 16 × 14 mm이며, 16 mm 변에 단자 6개가 한 줄로 있다. 기존 NUCLEO는 CN7·CN10 헤더로 만능기판에 고정되어 있다. 쉴드의 J1·J2는 이 두 헤더에 결합하며 H1~H3은 보조 고정용이다. H3 중심 단면에서 M3 체결 공간을 확보하면 J3까지 11.00 mm, H3을 비워 두면 기판 외곽부터 J3까지 18.65 mm다. 빈 홀 위로 모듈 몸체가 지나가는 배치는 후보로 유지한다. 핀 피치·가장자리 여백·높이와 전체 외곽을 대조해 위치를 결정한다. CAN 회로는 설계 전이다. [CAN 연결 계획](../../19_CAN_GPIO_and_Connector_Contract_2026-10-23_ko.md) · [모듈 외형 비교](../../../assets/logs/pcb_design/2026-11-28_can_header_fit/mcu230_body_fit.pdf) · [MCU-230용 1×6 커넥터 한 줄 가배치](../../../assets/logs/pcb_design/2026-11-28_can_header_fit/header_fit.pdf)
+
+**11/28 배선 품질 재검토.** J3·J4 공통 GND 72.00 mm와 C3의 신호/귀환 51.03/103.27 mm를 우선 비교 대상으로 확인했다. 활성 DRC·ERC 및 회로도 대조는 0건이다. 발주 전 실크의 초안 표기, 하네스, 제조 규칙을 대조한다. [세 검토표 대조 결과 · 7쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_quality_audit.pdf)
+
+**11/28 쉴드 전체 배선 완료.** 활성 22개 네트의 94개 패드가 회로도대로 연결됐다. 미배선 0건, DRC 위반 0건, 회로도 대조 오류 0건이다. 제작 전 검토에서 커넥터 1번 방향과 1:1 실물 장착, 제조 규칙과 Gerber·드릴을 확인한다. [전체 배선 검토 PDF · 양면 배선, 온도 채널, 전원·GND, 검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_routing_review.pdf)
+
+**11/28 오른쪽 전류 ADC와 시험점.** R2.2에서 아랫면으로 C2.1까지 연결했다. C2.1에서 윗면으로 가는 갈래는 시험점 TP4.1에, 아랫면에서 비아 하나를 거쳐 윗면으로 오는 갈래는 CN7-36(PC1)에 닿는다. 네 패드의 연결에 이어 J4.2·C2.2도 기존 GND에 연결했다. [전류 배선 확대도 6~7쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf)
+
+**11/28 오른쪽 전류 센서 출력.** J4.3에서 필터 저항 R2.1까지 폭 0.25 mm로 연결했다. 기존 아랫면 GND 위를 지나 비아에서 층을 바꾸고, 윗면 분압 신호 아래를 통과한다. [오른쪽 센서 출력과 교차점 · 전류 확대도 5쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf)
+
+**11/28 왼쪽 전류 센서 J3.** J3.3의 VIOUT는 왼쪽 모터 전류에 따라 변하는 센서 출력 전압이다. J3.3과 필터 저항 R1.1 사이를 선폭 0.25 mm, 길이 42.66 mm의 윗면 배선으로 연결했다. 가장 가까운 다른 네트는 J3.2(GND)로 구리 가장자리 사이가 0.704 mm다. R1 뒤에서는 R1.2·C1.1·TP3.1·CN7-38(PC0)이 하나의 ADC 신호로 이어진다. PC0으로 가는 배선은 관통 비아 하나를 사용한다.
+
+J3.2와 C1.2는 아랫면 구리로 C6.2를 거쳐 CN7-20 GND에 연결했다. CN7-16에서 J3.1로 가는 3.3 V 전원선은 아랫면을 지난 뒤 비아 하나를 거쳐 윗면에서 센서에 닿는다. J3의 세 핀 모두 PCB에서 연결을 확인했다. [센서 출력 1쪽 · ADC 배선 2쪽 · GND 귀환 3쪽 · 3.3 V 전원 4쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_current_routing.pdf) · [검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/28 전단·후단 ADC 출력 배선.** U2.3에서 R11.1과 NUCLEO CN7-32까지 전단 전압 신호를 윗면으로 연결했다. R11은 ADC와 같은 노드에 붙는 47 kΩ 풀다운 저항이다. 후단도 U2.6·R16.1·CN7-34를 윗면에 연결했다. 후단 신호 총길이는 37.55 mm, 다른 네트 구리와의 최소 간격은 0.325 mm다. R11.2와 R16.2는 공용 비아를 통해 CN7-20의 기존 GND에 연결했다. U1.1에서 U2.4(SEL2)와 U2.1(SEL1)로 가는 제어선도 연결했다. 두 감지 경로는 함께 켜지고 꺼지며 각기 다른 ADC 입력으로 이어진다. 제어선 배선 직후의 보드 전체 미배선은 32건이었다. [전단 3쪽 · 후단 4쪽 · 풀다운 5쪽 · 제어선 6쪽](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_voltage_routing.pdf) · [검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/27 전압 감지 입력 배선.** K1 전단은 J7.2 → R7 → R8 → 분압점 → R10 → U2.2, 후단은 J8.2 → R12 → R13 → 분압점 → R15 → U2.5로 이어진다. C5·C6은 각 분압점과 GND 사이의 필터다. 커넥터에서 각 분압기로 가는 윗면 신호선의 폭은 0.25 mm다. 아랫면에서는 J7.1을 C5.2에, J8.1을 C6.2에 폭 0.30 mm로 배선해 두 커넥터의 GND가 CN7-20까지 이어진다. 이 단계에서 DRC 위반과 회로도 대조 오류는 0건이었고, 전체 미배선은 40건이었다. [전압 감지 배선 확대도](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_voltage_routing.pdf) · [검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json) · [후단 배선과 C2 패드 간격](../../../assets/logs/pcb_design/2026-11-27_voltage_routing_review/voltage_clearance_detail.pdf)
+
+**11/27 전체 부품 배치.** 정식 PCB에 회로 부품 40개와 기구 전용 H1~H3(Ø3.2 mm 비도금 홀)를 배치했다. C4는 CN7-37 옆으로 옮겼고 K1 전단 R7~R11·후단 R12~R16의 20개 패드가 회로도와 일치한다. 배치 완료 시점의 미배선은 72건이었다. [윗면 배치도](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_placement.pdf) · [거리와 검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/27 전압 감시기·스위치 배치 이력.** U1·C7(220 nF)과 U2·C8(100 nF)을 왼쪽 CN7 근처 윗면에 배치했다. J1-32·J1-34·J2-7 패드의 네트를 회로도와 맞췄다. 이때 R7~R16의 위치는 미정이었다. [정식 배치도](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_placement.pdf) · [패드 연결과 좌표](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/27 필터 커패시터.** C1~C6은 보유 중인 Vishay `K104K15X7RF53H5`(100 nF)를 쓴다. 회로도와 PCB에 제조사·품번·자료 링크를 넣고 리드 피치 5.00 mm, 홀 Ø0.80 mm인 공통 풋프린트를 지정했다. C5는 전단 분압점, C6은 후단 분압점의 필터로 PCB에 가배치했다. 다음 저항 배치에서 분압점에서 필터까지의 경로를 확인한다. [부품별 BOM](bom_candidates.csv) · [윗면 배치도](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_placement.pdf)
+
+**11/27 전압 커넥터.** 쉴드 회로도의 J7·J8에 JST PA `B02B-PASK-1` 풋프린트를 지정했다. 사용자가 지정한 USB 반대쪽 가장자리에 J7·J8을 가배치했다. 윗면 몸체 사이가 9.0 mm이고 두 하네스는 위로 뽑아 같은 가장자리로 넘긴다. 두 자리 모두 상부 개방이며 24 AWG 전선을 USB 반대쪽으로 넘길 때 간섭이 없었다. PA 입고 후 걸쇠 접근과 두 하네스 탈착을 확인한다. [윗면 배치도](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/exports/TMR_Monitor_Shield_RevA_placement.pdf) [회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf) · [풋프린트와 도면](BOM_Bench_Check_2026-11-27_ko.md) · [검사 결과](../../../assets/logs/pcb_design/2026-11-28_filter_relayout/before/reports/design_review.json)
+
+**11/12 출력 이력:** [기본 경로의 최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 현재 저장 회로도에서 다시 생성했다. 40부품과 PWR_FLAG 2개, J7/J8을 포함한 6개 측정 포트가 반영되어 있다. 왼쪽 아래 `04 VOLTAGE INPUTS – TWO CHANNELS` 영역의 위쪽은 J7/VBAT_SENSE, 아래쪽은 J8/VMOTOR_SENSE다. 11/7 게시본과 본문·렌더링이 일치하며 CAD 원본은 변경하지 않았다. [확인 기록](../../../assets/logs/pcb_design/2026-11-12_export_sync/README.md).
 
 **11/20 확인:** 위 회로도 PDF와 [보고서](reports/README.md)를 기본 열람 경로로 사용한다. 회로도는 J7/J8을 포함한 40부품, PCB는 22풋프린트의 초기 배치다. 제작 및 실측은 준비 전이다. [현재 실행 순서](../../../docs/handoff/CURRENT_SESSION_CONTEXT.md). 아래 날짜별 연결·배치 설명은 당시 상태다.
 
@@ -42,7 +74,7 @@
 | 좌우 모터 전류 2채널 | 외부 #5241의 전원·출력 신호 접속, 입력 필터·보호 | PC0/PC1 초안 있음. 모터 전류가 통과하는 센서 주전류 단자·배선은 외부 유지 |
 | 좌우 모터 온도 2채널 | 외부 NTC 접속, 분압·필터·보호 | PC2/PC3 초안 있음. 보호·단선 판정·실물 부품 대조 미완료 |
 | **K1 전단·후단 전압 2채널** | 분압·필터·보호·측정점 추가 설계 대상 | 10/23 당시 PA4/PB0 예약 단계였다. 11/7 이후 회로도의 반영 상태는 위 최신 PDF를 따른다. 상류 `VBAT_PROTECTED_SENSE`와 하류 `MOTOR_VBAT_SAFE_SENSE` 구분 |
-| **CAN** | 트랜시버 접속, CANH/CANL/GND 커넥터, 종단 선택·디커플링·보호 검토 | PA12 TX/PA11 RX 예약. 보유 MCU-230 활용 우선 검토; 실제 단자·크기·RS·내장 종단 미확인. 현재 CAD에는 없음 |
+| **CAN** | 트랜시버 접속, CANH/CANL/GND 커넥터, 종단 선택·디커플링·보호 검토 | PA12 TX/PA11 RX 예약. 보유 MCU-230의 외형과 단자 표기 확인. 핀 피치·결합 방향·RS 배선·내장 종단은 미확인. 현재 CAD에는 없음 |
 | IMU | **기존 만능기판 위치·배선 유지. 새 PCB에 중복 실장하지 않음** | PB8/PB9 I2C, PB1 INT, PC4 RESET 보존. 기존 JDBG 접근·상면 간섭만 검토. 새 IMU 커넥터도 기본 추가 대상이 아님 |
 | 로직 전원·유지보수 | 센서와 CAN을 포함한 3.3V 부하 예산, 전원 디커플링·입력 보호·역급전 경로, 전원/신호 시험점 검토 | 기존 XL4015 전원 경계와 USB 전환 정책 유지. 기존 UART/엔코더/제어/SWD/RESET 접근 보존; 모든 신호의 커넥터 중복 추가는 불필요 |
 | 향후 LiDAR·상위 컴퓨터 | 모델 선정 전까지 필요한 전원·데이터 연결 조건과 하네스 통로를 미결 항목으로 관리 | 별도 장착이 기존 방향. 공급 전압·정상/기동 전류·USB/UART/Ethernet 등 실제 인터페이스·커넥터가 정해진 뒤 PCB 포함 여부 결정. 지금 레귤레이터·USB 허브·레벨 변환기를 임의로 추가하지 않음 |
@@ -60,17 +92,19 @@ MDD10A·XL4015·K1·버스바·퓨즈·배터리는 기존 별도 전력 구역�
 
 1. [KiCad 프로젝트](TMR_Monitor_Shield_RevA.kicad_pro)를 연다.
 2. [회로도](TMR_Monitor_Shield_RevA.kicad_sch)를 먼저 보고, [PCB](TMR_Monitor_Shield_RevA.kicad_pcb)에서 배치를 확인한다.
-3. 편집 없이 확인하려면 [최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 사용한다. [PCB 초기 배치 PDF](exports/TMR_Monitor_Shield_RevA_placement.pdf)는 22풋프린트 초안으로, 최신 회로도의 40부품이 모두 반영된 배치도가 아니다.
+3. 편집 없이 확인하려면 [최신 회로도 PDF](exports/TMR_Monitor_Shield_RevA_schematic.pdf)를 사용한다. [PCB 윗면 배치 PDF](exports/TMR_Monitor_Shield_RevA_placement.pdf)는 회로 부품 40개와 장착 홀 3개의 위치를 축척 1:1로 표시한다. 실물 대조용 인쇄는 실제 크기(100%)를 사용한다.
 
-[부품 후보 CSV](bom_candidates.csv)는 풋프린트 대조용이며 구매·제작 BOM이 아니다.
+[부품 후보 CSV](bom_candidates.csv)에서 40개 참조번호의 보유 상태, 구매 후보와 풋프린트 검토안을 확인한다. 11/27에 추가한 조달 검토 열에는 최종 선정 전 후보도 포함된다. [발주 전 실물 확인표](BOM_Bench_Check_2026-11-27_ko.md)에 소켓·케이블·보유 부품 실측을 모은다.
+
+차체에 장착하는 K1 감지선 보호 저항용 소형 만능기판은 [차체 부속 후보 BOM](bom_chassis_candidates.csv)에서 수량과 구매 조건을 확인한다.
 
 | 산출물 | 현재 범위 |
 | --- | --- |
 | 회로도 | Morpho 암 소켓 2개, 외부 측정 커넥터 6개, 저항 16개, 커패시터 8개, IC 2개, 시험점 6개: 총 40부품. PWR_FLAG 2개 별도 |
-| PCB | 부품 22개 배치, 구리 배선/영역 0개. 연결선 32개 미배선 |
-| ERC | 11/12 새 추출: 40부품 회로도 오류 0/경고 0, 기존 무시 규칙 4개 유지 |
-| DRC | 11/12 저장 PCB 검사: 배치 위반 0, 회로도 대조 21건(미반영 부품18 + net 충돌3), 미배선32. **전체 DRC PASS가 아님** |
-| 연결 대조 | 11/12 저장 회로도 추출 결과 전체 91net(활성 22개 포함), 11/7 게시본과 동일. 헤더·외부 포트 활성 핀 23개를 대조 |
+| PCB | 40부품 모두 풋프린트 지정. 40개 전부 배치, 기구 전용 장착 홀 3개 별도. 구리 선분 194개, 관통 비아 12개, 아랫면 GND 영역 1개, 기구 홀 구리 금지 영역 3개, 미배선 0건 |
+| ERC | 11/28 재검사에서 40부품 회로도 오류 0/경고 0, 기존 무시 규칙 4개 유지 |
+| DRC | 11/28 PCB 검사에서 배치·배선 위반 0건, 회로도 대조 오류 0건, 미배선 0건 |
+| 연결 대조 | 11/28 저장 회로도에서 추출한 전체 91개 네트(활성 22개)의 핀 연결이 11/7 검토본과 일치. 헤더·외부 포트 활성 핀 23개를 대조 |
 
 현재 연결·ERC·PCB 대조·BOM은 [기본 보고서 안내](reports/README.md)와 [검사 결과](reports/design_review.json)를 따른다. 기본 `netlist.xml`/ERC/DRC/부품 목록과 `check_design.py`를 40부품 회로도 기준으로 갱신했다. 계산 기록과 초기 템플릿 근거는 적용 시점을 별도로 표시한다. ERC/DRC는 입력 보호·ADC 성능·실물 간섭의 검증을 대신하지 않는다.
 
@@ -235,7 +269,7 @@ STM_3V3 ─ R3 10k ─┬─ R4 1k ─┬─ PC2 후보 (CN7-35)
 ## 풋프린트와 형상은 아직 후보
 
 - J1/J2: 설치된 KiCad 10.0.5의 `STM32_Nucleo-64_Morpho` 템플릿에서 패드 좌표·외곽을 가져왔다. 소켓은 설치 라이브러리의 최신 동일 형식으로 교체하고 **76개 패드 좌표와 밑면 실장**을 대조했다. 소켓 높이·접촉 길이·실물 맞춤은 미검증이다.
-- 외곽은 템플릿의 윤곽이며 최종 크기 선정 결과가 아니다. 템플릿 장착홀은 지지 방식이 정해지지 않아 제거했다. RESET/USER·전원 점퍼·ST-LINK·기존 하네스 접근을 검토한 뒤 외곽/지지점을 정한다.
+- 외곽은 템플릿의 윤곽이며 최종 크기 선정 결과가 아니다. 11/27에 템플릿 위치로 장착 홀 H1~H3을 반영했다. 실물 적층에서 스페이서·나사 머리 여유, RESET/USER·전원 점퍼·ST-LINK·기존 하네스 접근을 확인한다.
 - R1~R6: 축형 DIN0207, 7.62mm 리드 간격을 배치 후보로 사용했다. 보유 저항의 실제 몸체·허용오차를 확인한 결과가 아니다.
 - C1~C4: 구매한 Vishay의 명목 5mm 리드 피치에 맞춘 **범용 D5.0/W2.5mm 임시 외형**이다. 해당 Vishay 몸체 최대치·리드 지름과의 일치가 확인된 전용 풋프린트가 아니다.
 - J3/J4: JST-XH 3핀, J5/J6: JST-XH 2핀은 배치 후보다. 소켓/하우징/크림프 품번·보유 여부·케이블 방향은 미확정이며 구매 목록이 아니다. J3/J4의 1=3V3, 2=GND, 3=VIOUT는 **쉴드 커넥터 번호**이고 Pololu 모듈 패드의 물리 순서를 뜻하지 않는다.
@@ -249,13 +283,13 @@ STM_3V3 ─ R3 10k ─┬─ R4 1k ─┬─ PC2 후보 (CN7-35)
 4. 전류 12kΩ 후보의 누설 오차·ADC 획득 시간·샘플링 조건. 필터 계산만으로 실측 성능을 확정하지 않는다.
 5. 각 부품의 실제 몸체/리드/소켓/하우징 도면, 사용자가 가진 부품과의 대응.
 6. CN7-36/38 보드 설정과 상면 점유, 소켓 높이·부품 간섭·기구 지지·케이블 당김 처리.
-7. 회로 확정 후 최종 배선·구리영역·규칙 검사와 1:1 대조. 현재 Gerber/드릴 제작 파일은 생성하지 않았다.
+7. 현재 회로의 두 층 배선과 프로젝트 규칙 검사를 완료했다. 제작 전 1:1 기구 대조, 제조사 규칙, Gerber·드릴 출력 검토가 남았다.
 
 현재 10kΩ 저항은 보유품의 허용오차가 미확인이다. 0.1% 추가 구매를 요구하지 않는다. 입력값/온도 환산을 확정할 때 실제 사용값을 반영한다.
 
 ## 검사 재현과 근거
 
-KiCad에 포함된 Python으로 [check_design.py](check_design.py)를 실행하면 현재 저장 원본에서 `reports/netlist.xml`, `reports/erc.json`, `reports/drc_unrouted.json`을 먼저 재생성한다. 이어 11/7 검토본과 부품/전체 net·핀 타입, BOM, 초기 헤더 위치를 대조하고 [현재 부품 목록](reports/design_parts.json)과 [검사 결과](reports/design_review.json)를 갱신한다. 회로도·PCB·프로젝트·심벌 원본 해시 보존을 검사한다. PCB의 미반영/충돌/미배선은 별도 OPEN으로 보고하며 스크립트 종료0은 전체 DRC/제작 PASS가 아니다. 회로가 바뀌면 검토를 거쳐 비교 기준을 갱신해야 하며 자동으로 새 회로를 승인하지 않는다.
+Ubuntu의 `/usr/bin/python3` 또는 Windows KiCad에 포함된 Python으로 [check_design.py](check_design.py)를 실행하면 현재 저장 원본에서 `reports/netlist.xml`, `reports/erc.json`, `reports/drc_unrouted.json`을 먼저 재생성한다. 이어 11/7 검토본과 부품/전체 net·핀 타입, BOM, 초기 헤더 위치를 대조하고 [현재 부품 목록](reports/design_parts.json)과 [검사 결과](reports/design_review.json)를 갱신한다. 회로도·PCB·프로젝트·심벌 원본 해시 보존을 검사한다. 검사기는 활성 네트의 패드별 구리 연결과 DRC 미배선·규칙 위반·회로도 불일치를 함께 확인한다. 실물 기구·보호·제작 승인 여부는 별도로 기록한다. 회로가 바뀌면 검토를 거쳐 비교 기준을 갱신해야 하며 자동으로 새 회로를 승인하지 않는다.
 
 - [기존 확장 연결안](../../14_Motor_Monitoring_Expansion_Interface_2026-10-22_ko.md)
 - [NTC 계산안](../../../docs/plans/2026-10-22_NTC_Temperature_Input_Design_ko.md)

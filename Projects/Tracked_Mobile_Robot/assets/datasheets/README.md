@@ -8,6 +8,7 @@
 
 | 자료 | 로컬 파일 | 참고 |
 | --- | --- | --- |
+| JST PA | [카탈로그 PDF](JST_PA_Family.pdf) | [3쪽 기판 홀 배치](JST_PA_Family_p03.png) · [6쪽 B02B-PASK-1 수직 헤더](JST_PA_Family_p06.png) · [제조사 원본](https://www.jst.com/wp-content/uploads/2021/08/ePA-F-new.pdf) |
 | Cytron MDD10A | [매뉴얼](Cytron_MDD10A_User_Manual.pdf) | V2.0, June2017,11쪽 |
 | XL4015 | [데이터시트](XL4015_Datasheet.pdf) | Rev2.0,10쪽. IC 자료이며 완제품 모듈 전체의 정격 보증과 구분 |
 | UNI-T UT210E | [설명서](UNI-T_UT210E_User_Manual.pdf) | MAY2018 REV2,2쪽. 이미지 중심 PDF |

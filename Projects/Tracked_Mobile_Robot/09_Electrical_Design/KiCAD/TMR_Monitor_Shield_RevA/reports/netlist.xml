@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="E">
   <design>
-    <source>C:\Users\eyh12\workspace\TIL\Projects\Tracked_Mobile_Robot\09_Electrical_Design\KiCAD\TMR_Monitor_Shield_RevA\TMR_Monitor_Shield_RevA.kicad_sch</source>
-    <date>2026-11-12T16:17:06</date>
-    <tool>Eeschema 10.0.5</tool>
+    <source>/home/pvd/workspace/github-repos/TIL/Projects/Tracked_Mobile_Robot/09_Electrical_Design/KiCAD/TMR_Monitor_Shield_RevA/TMR_Monitor_Shield_RevA.kicad_sch</source>
+    <date>2026-11-28T04:51:49</date>
+    <tool>Eeschema 10.0.8-10.0.8~ubuntu24.04.1</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
         <title>TMR Monitor Shield</title>
@@ -26,14 +26,19 @@
   <components>
     <comp ref="C1">
       <value>100n</value>
-      <footprint>Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</footprint>
-      <description>Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint">Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</field>
-        <field name="Datasheet"/>
-        <field name="Description">Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -51,14 +56,19 @@
     </comp>
     <comp ref="C2">
       <value>100n</value>
-      <footprint>Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</footprint>
-      <description>Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint">Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</field>
-        <field name="Datasheet"/>
-        <field name="Description">Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -76,14 +86,19 @@
     </comp>
     <comp ref="C3">
       <value>100n</value>
-      <footprint>Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</footprint>
-      <description>Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint">Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</field>
-        <field name="Datasheet"/>
-        <field name="Description">Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -101,14 +116,19 @@
     </comp>
     <comp ref="C4">
       <value>100n</value>
-      <footprint>Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</footprint>
-      <description>Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint">Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm</field>
-        <field name="Datasheet"/>
-        <field name="Description">Vishay K104K15X7RF53H5 purchased; generic body envelope remains provisional</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -126,13 +146,19 @@
     </comp>
     <comp ref="C5">
       <value>100n</value>
-      <description>Unpolarized capacitor</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
-        <field name="Description">Unpolarized capacitor</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -150,13 +176,19 @@
     </comp>
     <comp ref="C6">
       <value>100n</value>
-      <description>Unpolarized capacitor</description>
+      <footprint>Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</footprint>
+      <datasheet>https://www.vishay.com/docs/45171/kseries.pdf</datasheet>
+      <description>Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
-        <field name="Description">Unpolarized capacitor</field>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">K104K15X7RF53H5</field>
+        <field name="Footprint">Capacitor_THT:C_Disc_D5.1mm_W3.2mm_P5.00mm</field>
+        <field name="Datasheet">https://www.vishay.com/docs/45171/kseries.pdf</field>
+        <field name="Description">Radial ceramic capacitor, 100 nF, 50 V, X7R, +/-10%, 5 mm lead pitch</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="K104K15X7RF53H5"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -173,14 +205,20 @@
       </units>
     </comp>
     <comp ref="C7">
-      <value>100n</value>
+      <value>220n</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <datasheet>https://search.kemet.com/component-documentation/download/specsheet/C0805C224K5RACTU</datasheet>
       <description>Unpolarized capacitor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">KEMET</field>
+        <field name="MPN">C0805C224K5RACTU</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet">https://search.kemet.com/component-documentation/download/specsheet/C0805C224K5RACTU</field>
         <field name="Description">Unpolarized capacitor</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="KEMET"/>
+      <property name="MPN" value="C0805C224K5RACTU"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -198,13 +236,19 @@
     </comp>
     <comp ref="C8">
       <value>100n</value>
+      <footprint>Capacitor_SMD:C_0805_2012Metric</footprint>
+      <datasheet>https://search.kemet.com/component-documentation/download/specsheet/C0805C104K5RACTU</datasheet>
       <description>Unpolarized capacitor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">KEMET</field>
+        <field name="MPN">C0805C104K5RACTU</field>
+        <field name="Footprint">Capacitor_SMD:C_0805_2012Metric</field>
+        <field name="Datasheet">https://search.kemet.com/component-documentation/download/specsheet/C0805C104K5RACTU</field>
         <field name="Description">Unpolarized capacitor</field>
       </fields>
       <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <property name="Manufacturer" value="KEMET"/>
+      <property name="MPN" value="C0805C104K5RACTU"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="cap capacitor"/>
@@ -446,9 +490,10 @@
     </comp>
     <comp ref="J7">
       <value>VBAT_SENSE</value>
+      <footprint>TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical</footprint>
       <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
       <fields>
-        <field name="Footprint"/>
+        <field name="Footprint">TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical</field>
         <field name="Datasheet"/>
         <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
       </fields>
@@ -470,9 +515,10 @@
     </comp>
     <comp ref="J8">
       <value>VMOTOR_SENSE</value>
+      <footprint>TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical</footprint>
       <description>Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
       <fields>
-        <field name="Footprint"/>
+        <field name="Footprint">TMR_Monitor:JST_PA_B02B-PASK-1_1x02_P2.00mm_Vertical</field>
         <field name="Datasheet"/>
         <field name="Description">Generic connector, single row, 01x02, script generated (kicad-library-utils/schlib/autogen/connector/)</field>
       </fields>
@@ -644,13 +690,19 @@
     </comp>
     <comp ref="R7">
       <value>12k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080512K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080512K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -668,13 +720,19 @@
     </comp>
     <comp ref="R8">
       <value>12k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080512K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080512K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -692,13 +750,19 @@
     </comp>
     <comp ref="R9">
       <value>4.7k</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW12064K70BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_1206_3216Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW12064K70BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -716,13 +780,19 @@
     </comp>
     <comp ref="R10">
       <value>1k</value>
+      <footprint>Resistor_SMD:R_2512_6332Metric</footprint>
+      <datasheet>https://www.seielect.com/Catalog/SEI-RNCF.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Stackpole</field>
+        <field name="MPN">RNCF2512BKE1K00</field>
+        <field name="Footprint">Resistor_SMD:R_2512_6332Metric</field>
+        <field name="Datasheet">https://www.seielect.com/Catalog/SEI-RNCF.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Stackpole"/>
+      <property name="MPN" value="RNCF2512BKE1K00"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -740,13 +810,19 @@
     </comp>
     <comp ref="R11">
       <value>47k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080547K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080547K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -764,13 +840,19 @@
     </comp>
     <comp ref="R12">
       <value>12k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080512K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080512K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -788,13 +870,19 @@
     </comp>
     <comp ref="R13">
       <value>12k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080512K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080512K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -812,13 +900,19 @@
     </comp>
     <comp ref="R14">
       <value>4.7k</value>
+      <footprint>Resistor_SMD:R_1206_3216Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW12064K70BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_1206_3216Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW12064K70BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -836,13 +930,19 @@
     </comp>
     <comp ref="R15">
       <value>1k</value>
+      <footprint>Resistor_SMD:R_2512_6332Metric</footprint>
+      <datasheet>https://www.seielect.com/Catalog/SEI-RNCF.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Stackpole</field>
+        <field name="MPN">RNCF2512BKE1K00</field>
+        <field name="Footprint">Resistor_SMD:R_2512_6332Metric</field>
+        <field name="Datasheet">https://www.seielect.com/Catalog/SEI-RNCF.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Stackpole"/>
+      <property name="MPN" value="RNCF2512BKE1K00"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
@@ -860,13 +960,19 @@
     </comp>
     <comp ref="R16">
       <value>47k</value>
+      <footprint>Resistor_SMD:R_0805_2012Metric</footprint>
+      <datasheet>https://www.vishay.com/docs/28758/tnpw_e3.pdf</datasheet>
       <description>Resistor</description>
       <fields>
-        <field name="Footprint"/>
-        <field name="Datasheet"/>
+        <field name="Manufacturer">Vishay</field>
+        <field name="MPN">TNPW080547K0BEEA</field>
+        <field name="Footprint">Resistor_SMD:R_0805_2012Metric</field>
+        <field name="Datasheet">https://www.vishay.com/docs/28758/tnpw_e3.pdf</field>
         <field name="Description">Resistor</field>
       </fields>
       <libsource lib="Device" part="R" description="Resistor"/>
+      <property name="Manufacturer" value="Vishay"/>
+      <property name="MPN" value="TNPW080547K0BEEA"/>
       <property name="Sheetname" value="TMR_Monitor_Shield_RevA"/>
       <property name="Sheetfile" value="TMR_Monitor_Shield_RevA.kicad_sch"/>
       <property name="ki_keywords" value="R res resistor"/>
